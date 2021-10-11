@@ -30,10 +30,15 @@ class OspfIfService(Service):
         vrf_rtrid = {}
         drop_indices = []
         for i, entry in enumerate(processed_data):
+
             if '_entryType' in entry:
                 # Retrieve the VRF and routerID
                 vrf_rtrid[entry.get('vrf', 'default')] = \
                     entry.get('routerId', '')
+                drop_indices.append(i)
+                continue
+
+            if not entry.get('ifname', ''):
                 drop_indices.append(i)
                 continue
 
@@ -45,7 +50,7 @@ class OspfIfService(Service):
                 entry['bfdStatus'] = "invalid"
             entry["networkType"] = entry["networkType"].lower()
             entry["isUnnumbered"] = False
-            if entry.get('state', '') in ['dr', 'p2p']:
+            if entry.get('state', '') in ['dr', 'p2p', 'backupDr']:
                 entry['state'] = 'up'
 
         for i, entry in enumerate(processed_data):
@@ -61,9 +66,15 @@ class OspfIfService(Service):
 
     def _clean_junos_data(self, processed_data, raw_data):
 
-        for entry in processed_data:
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
             if entry['_entryType'] == 'overview':
                 routerId = entry['routerId']
+                continue
+
+            if not entry.get('ifname', ''):
+                drop_indices.append(i)
                 continue
 
             entry['routerId'] = routerId
@@ -81,6 +92,7 @@ class OspfIfService(Service):
             entry['networkType'] = entry['networkType'].lower()
 
         # Skip the original record as we don't need the overview record
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data[1:]
 
     def _clean_nxos_data(self, processed_data, raw_data):
@@ -88,6 +100,10 @@ class OspfIfService(Service):
         drop_indices = []
 
         for i, entry in enumerate(processed_data):
+            if not entry.get('ifname', ''):
+                drop_indices.append(i)
+                continue
+
             if entry['_entryType'] == 'interfaces':
                 entry["networkType"] = entry["networkType"].lower()
                 if entry['ifname'].startswith('loopback'):
@@ -118,7 +134,14 @@ class OspfIfService(Service):
         return processed_data
 
     def _clean_ios_data(self, processed_data, raw_data):
-        for entry in processed_data:
+
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
+            if not entry.get('ifname', ''):
+                drop_indices.append(i)
+                continue
+
             area = entry.get('area', '')
             if area and area.isdecimal():
                 entry['area'] = str(ip_address(int(area)))
@@ -142,6 +165,7 @@ class OspfIfService(Service):
             else:
                 entry['state'] = entry['state'].lower()
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_iosxe_data(self, processed_data, raw_data):

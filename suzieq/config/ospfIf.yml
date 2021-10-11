@@ -100,12 +100,12 @@ apply:
     command:
       - command: show ip ospf interface vrf all | json native
         normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*?/[
-        "ifname: ifname",
-        "proto_status: state",
-        "admin_status: _adminState",
-        "addr: ipAddress",
+        "ifname: ifname?|",
+        "proto_status: state?|",
+        "admin_status: _adminState?|",
+        "addr: ipAddress?|",
         "masklen: maskLen?|32",
-        "area: area",
+        "area: area?|",
         "type_str: networkType?|",
         "nbr_adjs: nbrCount?|0",
         "hello_interval: helloTime?|10",
@@ -119,8 +119,8 @@ apply:
 
       - command: show ip ospf vrf all | json native
         normalize: 'TABLE_ctx/ROW_ctx/*?/[
-        "rid: routerId",
-        "TABLE_area/ROW_area/[*]?/aname: ifname",
+        "rid: routerId?|",
+        "TABLE_area/ROW_area/[*]?/aname: ifname?|",
         "TABLE_area/ROW_area/[*]?/stub: _stub",
         "TABLE_area/ROW_area/[*]?/no_summary: _no_summary",
         "TABLE_area/ROW_area/[*]?/nssa: _nssa",

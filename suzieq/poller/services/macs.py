@@ -129,6 +129,13 @@ class MacsService(Service):
                 entry['remoteVtepIp'] = ''
             if entry.get('vlan', '-') == '-':
                 entry['vlan'] = 0
+            # Handling old NXOS
+            if entry.get('_isStatic', 'disabled') == 'enabled':
+                entry['flags'] = 'static'
+            flags = entry.get('flags').strip()
+            if not flags or (flags == '*'):
+                entry['flags'] = 'dynamic'
+
             self._add_mackey_protocol(entry)
 
         return processed_data

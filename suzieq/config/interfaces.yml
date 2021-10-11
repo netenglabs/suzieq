@@ -30,7 +30,8 @@ apply:
         "name: ifname",
         "mtu: mtu?|0",
         "description: description",
-        "physicalAddress: macaddr",
+        "burnedInAddress: macaddr?|",
+        "physicalAddress: macaddr?|macaddr",
         "bandwidth: speed?|0",
         "srcIpAddr: srcVtepIp",
         "vlanToVniMap/*: vlan?|0",
@@ -61,6 +62,7 @@ apply:
           "ifname: ifname?|varp",
           "type: type?|varp",
           "virtualMac: _anycastMac?|",
+          "virtualMacs: _virtualMacs?|"
         ]'
 
   iosxe:
@@ -144,6 +146,7 @@ apply:
         normalize: 'TABLE_interface/ROW_interface/*?/[
         "interface: ifname",
         "state: state",
+        "oper_state: state?|state",
         "svi_admin_state: state?|state",
         "speed: speed?|",
         "mtu: mtu?|0",

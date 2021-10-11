@@ -1,6 +1,6 @@
 import pytest
 
-
+import warnings
 import pandas as pd
 from ipaddress import ip_interface
 
@@ -56,8 +56,9 @@ def _validate_svi_and_subif(df: pd.DataFrame):
     for row in df.itertuples():
         if row.ifname == "Vlan999" or row.state != "up":
             continue
-        assert ((len(row.ipAddressList) != 0) or
-                (len(row.ip6AddressList) != 0))
+        if ((len(row.ipAddressList) == 0) and
+                (len(row.ip6AddressList) == 0)):
+            warnings.warn("VLAN {} has no IP address".format(row.ifname))
         assert all(ip_interface(x) for x in row.ipAddressList)
         assert all(ip_interface(x) for x in row.ip6AddressList)
 
@@ -117,7 +118,8 @@ def test_interfaces(table, datadir, get_table_data):
 
     df = get_table_data
 
-    validation_fns = {'bond': _validate_bond_if,
+    validation_fns = {'adaptive-services': None,
+                      'bond': _validate_bond_if,
                       'bond_slave': _validate_bond_if,
                       'bridge': None,
                       'ethernet': _validate_ethernet_if,
@@ -127,7 +129,9 @@ def test_interfaces(table, datadir, get_table_data):
                       'igbe': None,
                       'internal': None,
                       'ip-over-ip': None,
+                      'linkservice': None,
                       'logical': None,
+                      'logical-tunnel': None,
                       'loopback': _validate_loopback_if,
                       'lsi': None,
                       'macvlan': None,
@@ -137,6 +141,7 @@ def test_interfaces(table, datadir, get_table_data):
                       'pim-encapsulator': None,
                       'pppoe': None,
                       'remote-beb': None,
+                      'secure-tunnel': None,
                       'software-pseudo': None,
                       'subinterface': None,
                       'tap': None,
@@ -161,8 +166,9 @@ def test_interfaces(table, datadir, get_table_data):
     assert not df.empty
     validate_host_shape(df, ns_dict)
 
-    assert df.state.isin(['up', 'down', 'notConnected']).all()
-    assert df.adminState.isin(['up', 'down']).all()
+    assert df.state.isin(['up', 'down', 'notPresent', 'notConnected']).all()
+    # EOS uses disabled admin state on interfaces that have no XCVR
+    assert df.adminState.isin(['up', 'down', 'disabled']).all()
 
     assert (df.type != "").all()
     assert df.type.isin(validation_fns.keys()).all()
@@ -175,4 +181,4 @@ def test_interfaces(table, datadir, get_table_data):
 
                 assert (subdf.macaddr.str.len() == 17).all()
                 assert (subdf.macaddr.str.contains(':')).all()
-        assert (df.mtu != 0).all()
+        assert (df.query('state != "notConnected"').mtu != 0).all()

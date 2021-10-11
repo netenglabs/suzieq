@@ -192,6 +192,18 @@ class RoutesService(Service):
                     oiflist.append(oif)
             entry['oifs'] = oiflist
 
+            nhips = []
+            nhoifs = []
+            for ent in entry['nexthopIps']:
+                if '%' in ent:
+                    nhip, vrf = ent.split('%')
+                    nhips.append(nhip)
+                    nhoifs.append(f'_nexthopvrf:{vrf}')
+
+            if nhips:
+                entry['nexthopIps'] = nhips
+                entry['oifs'] = nhoifs
+
             if not entry['oifs']:
                 oiflist = []
                 for nhv in entry.get('_nexthopVrf', []):

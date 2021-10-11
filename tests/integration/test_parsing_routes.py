@@ -18,7 +18,7 @@ def validate_routes(df: pd.DataFrame):
     assert (df.ipvers.isin([4, 6])).all()
 
     for row in df.itertuples():
-        assert ip_network(row.prefix)
+        assert ip_network(row.prefix, strict=False)
         assert ((row != "forward") or ((row.action == "forward") and
                                        ((row.nexthopIps != []).all() or
                                         (row.oifs != []).all())))
@@ -26,15 +26,17 @@ def validate_routes(df: pd.DataFrame):
                                          row.hostname == "internet" and
                                          row.prefix == "0.0.0.0/0")) or
                 ((row.os != "linux") and (row.protocol != "")))
-        if row.nexthopIps != []:
+        if row.nexthopIps.any():
             assert ([ip_address(x) for x in row.nexthopIps])
 
     noncl_data = df.query(
         'os != "linux" and os != "cumulus" and not protocol.isin(["direct", "local", "connected"])')
-    assert (noncl_data.query('nexthopIps.str.len() != 0').preference != 0).all()
+    assert (noncl_data.query(
+        'nexthopIps.str.len() != 0 and protocol != "hsrp"').preference != 0).all()
 
     # The OS that supply route uptime
-    upt_df = df.query('not os.isin(["linux", "cumulus", "EOS", "eos"])')
+    upt_df = df.query('not os.isin(["linux", "cumulus", "EOS", "eos"]) and '
+                      'not protocol.isin(["local", "connected", "static"])')
     assert (upt_df.statusChangeTimestamp != 0).all()
 
 

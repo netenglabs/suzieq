@@ -38,14 +38,8 @@ class LldpService(Service):
             entry['peerHostname'] = convert_macaddr_format_to_colon(
                 entry.get('peerHostname', '0000.0000.0000'))
 
-        subtype = entry.get('subtype', '')
-        if not isinstance(subtype, str):
-            if subtype == 7:
-                subtype = 'interface name'
-            else:
-                subtype = 'unknown'
-        subtype = subtype.lower()
-        if subtype in ["interface name", '']:
+        subtype = str(entry.get('subtype', '')).lower()
+        if subtype in ["interface name", '', '5', '7']:
             entry['peerMacaddr'] = '00:00:00:00:00:00'
             entry['peerIfindex'] = 0
             entry['subtype'] = 'interface name'  # IOS* don't provide subtype
@@ -55,7 +49,7 @@ class LldpService(Service):
             entry['peerIfname'] = '-'
             entry['peerIfindex'] = 0
             entry['subtype'] = 'mac address'
-        elif subtype.startswith('locally'):
+        elif subtype.startswith(('locally', '1')):
             entry['peerIfindex'] = entry['peerIfname']
             entry['peerIfname'] = '-'
             entry['peerMacaddr'] = '00:00:00:00:00:00'
@@ -77,6 +71,7 @@ class LldpService(Service):
                 if not entry.get('description', ''):
                     old_entry = processed_data[entries[entry['ifname']]]
                     entry['description'] = old_entry.get('description', '')
+                    entry['subtype'] = old_entry.get('subtype', '')
                     drop_indices.append(entries[entry['ifname']])
             else:
                 entries[entry['ifname']] = i

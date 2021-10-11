@@ -56,8 +56,18 @@ class InterfaceService(Service):
             if entry['type'] == 'varp':
                 for elem in vlan_entries:
                     ventry = vlan_entries[elem]
-                    ventry['interfaceMac'] = ventry['macaddr']
-                    ventry['macaddr'] = entry['_anycastMac']
+                    amac = ventry.get('_anycastMac', '')
+                    if amac:
+                        ventry['interfaceMac'] = ventry['macaddr']
+                        ventry['macaddr'] = amac
+                    else:
+                        # Found this format in some of the real life deployment
+                        amacs = entry.get('_virtualMacs', []) or []
+                        for amac in amacs:
+                            if amac.get('macType', '') == 'varp':
+                                ventry['interfaceMac'] = ventry['macaddr']
+                                ventry['macaddr'] = amac['macAddress']
+                                break
                 drop_indices.append(i)
                 continue
 
@@ -468,8 +478,12 @@ class InterfaceService(Service):
             if entry.get('_entryType', '') == 'mtumac':
                 old_entry = entry_dict[entry['ifname']]
                 if old_entry:
-                    if entry['adminState']:
-                        old_entry['adminState'] = entry['adminState']
+                    admin_state = entry['adminState'].lower()
+                    if admin_state:
+                        if admin_state == "administratively":
+                            admin_state = "down"
+                        old_entry['adminState'] = admin_state
+
                     old_entry['mtu'] = entry.get('mtu', 0) or old_entry['mtu']
                     macaddr = entry.get('macaddr', '')
                     if macaddr and not old_entry.get('_anycastMac', ''):
@@ -527,6 +541,10 @@ class InterfaceService(Service):
                                        "xcvr not inserted"]:
                     entry['state'] = 'notConnected'
 
+            if entry['reason'] == 'administratively down':
+                entry['adminState'] = 'down'
+            else:
+                entry['adminState'] = 'up'
             portmode = entry.get('_portmode', '')
             if portmode == 'access' or portmode == 'trunk':
                 entry['master'] = 'bridge'

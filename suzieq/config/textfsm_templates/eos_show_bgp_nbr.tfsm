@@ -10,6 +10,8 @@ Value state (.+?)
 Value estdTime (.+?)
 Value holdTime (\d+)
 Value keepaliveTime (\d+)
+Value configHoldtime (\d+)
+Value configKeepalive (\d+)
 Value bfdStatus (\w+)
 Value rrclient (route reflector client)
 Value List afi (\w+|EVPN)
@@ -51,6 +53,7 @@ Start
   ^\s+Description:\s+${description}\s*$$
   ^\s+BGP\s+state\s+is\s+${state}(?:,\s+up\s+for\s+${estdTime})?\s*$$
   ^\s+Hold\s+time\s+is\s+${holdTime},\s+keepalive\s+interval\s+is\s+${keepaliveTime}
+  ^\s+Configured\s+hold\s+time\s+is\s+${configHoldtime},\s+keepalive\s+interval\s+is\s+${configKeepalive}
   ^\s+Number\s+of\s+transitions.*${numChanges}$$
   ^\s+BFD\s+is\s+enabled\s+and\s+state\s+is\s+${bfdStatus}
   ^\s+Neighbor\s+capabilities:

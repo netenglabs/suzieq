@@ -24,6 +24,10 @@ class BgpService(Service):
                 entry['afi'] = entry['safi'] = ''
                 if not entry.get('bfdStatus', ''):
                     entry['bfdStatus'] = ''
+                if (entry.get('holdTime', '0') == '0' and
+                        entry.get('configHoldtime', '')):
+                    entry['holdTime'] = entry['configHoldtime']
+                    entry['keepaliveTime'] = entry['configKeepalive']
                 continue
 
             estdTime = parse(
