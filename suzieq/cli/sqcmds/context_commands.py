@@ -179,5 +179,5 @@ class SqHelpCommand (Command):
         if not self._allcmds:
             ctx = context.get_context()
             self._allcmds = ctx.registry.get_all_commands_map()
-            self._sqcmds = [x for x in self._allcmds
+            self._sqcmds = [x for x in sorted(self._allcmds)
                             if not self._allcmds[x].built_in]
