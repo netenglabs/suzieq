@@ -1,5 +1,17 @@
 # Release Notes
 
+## 0.15.3 (Oct 11, 2021)
+
+This is a bug fix release with the following important changes:
+
+* Fixed support for SoNIC: The SoNIC poller was broken due to lack of testing data. Thanks to Timo for help in fixing this.
+* Fixed inconsistencies between REST API arguments and whats supported by the CLI. Added tests to catch such errors in the future.
+* Improved Help: As per multiple user request, fixed help to work more intuitively. Now, "help", "help interface" and "help interface show" all work, with compleitions support.
+* Support both singular and plural forms of the command now for routes, macs, interfaces.
+* Fixed issues in parsing data across NXOS and EOS.
+* Updated tests to handle more variations in test data, converting some errors into warnings. Updated pytest options to display warnings, and caught a few more bugs in tests.
+
+
 ## 0.15.1 (Oct 4, 2021)
 
 This is a hotfix release for those who tried to install Suzieq via PyPi. There were multiple failures in the PyPi package that had been uploaded including some missing specifications for certain dependencies. (Issue #430).
