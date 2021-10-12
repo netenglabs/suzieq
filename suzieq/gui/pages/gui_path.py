@@ -155,10 +155,8 @@ def path_sidebar(state, sqobjs):
                                            namespaces, key='path_namespace', index=nsidx)
             src_ph = st.empty()
             dst_ph = st.empty()
-            state.source = src_ph.text_input('Source IP', key='path_source',
-                                             value=state.source)
-            state.dest = dst_ph.text_input(
-                'Dest IP', key='path_dest', value=state.dest)
+            state.source = src_ph.text_input('Source IP', key='path_source')
+            state.dest = dst_ph.text_input('Dest IP', key='path_dest')
 
             state.vrf = st.text_input('VRF', value=state.vrf,
                                       key='path_vrf')
@@ -177,11 +175,7 @@ def path_sidebar(state, sqobjs):
                                          on_change=path_sync_state)
         swap_src_dest = st.button(
             'Source <-> Dest', key='path_swap', on_click=path_sync_state)
-        if swap_src_dest:
-            source, dest = state.dest, state.source
-            source = src_ph.text_input('Source IP', value=source)
-            dest = dst_ph.text_input('Dest IP', value=dest)
-            state.source, state.dest = state.dest, state.source
+
     return
 
 
@@ -327,17 +321,18 @@ def path_sync_state():
     wsstate = st.session_state
     state = wsstate.pathSessionState
 
+    if wsstate.path_swap:
+        state.source, state.dest = state.dest, state.source
+        wsstate.path_source = state.source
+        wsstate.path_dest = state.dest
+    else:
+        state.source = wsstate.path_source
+        state.dest = wsstate.path_dest
     state.namespace = wsstate.path_namespace
-    state.source = wsstate.path_source
-    state.dest = wsstate.path_dest
     state.vrf = wsstate.path_vrf
     state.start_time = wsstate.path_start_time
     state.end_time = wsstate.path_end_time
     state.show_ifnames = wsstate.path_show_ifnames
-    if wsstate.path_swap:
-        state.source, state.dest = state.dest, state.source
-        wsstate.source = state.source
-        wsstate.dest = state.dest
 
 
 def path_run():
