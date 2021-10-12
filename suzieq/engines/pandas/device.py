@@ -3,7 +3,6 @@ import numpy as np
 import operator
 from packaging import version
 from .engineobj import SqPandasEngine
-from suzieq.sqobjects.sqPoller import SqPollerObj
 from suzieq.utils import humanize_timestamp
 
 
@@ -52,7 +51,7 @@ class DeviceObj(SqPandasEngine):
         if view == 'latest' and 'status' in df.columns:
             df['status'] = np.where(df.active, df['status'], 'dead')
 
-        poller_df = SqPollerObj(context=self.ctxt).get(
+        poller_df = self._get_table_sqobj('sqPoller').get(
             namespace=kwargs.get('namespace', []),
             hostname=kwargs.get('hostname', []),
             service='device',
@@ -84,6 +83,7 @@ class DeviceObj(SqPandasEngine):
                 (df['status_y'] != 0) & (df['status_y'] != 200) &
                 (df['status'] == "N/A"),
                 'neverpoll', df['status'])
+            df = df[df.status != 'N/A']
             df.timestamp = np.where(df['timestamp'] == 0,
                                     df['timestamp_y'], df['timestamp'])
             if 'address' in df.columns:

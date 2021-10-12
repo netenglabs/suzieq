@@ -1,5 +1,5 @@
 from suzieq.gui.guiutils import sq_gui_style, gui_get_df, SuzieqMainPages, display_title
-from suzieq.sqobjects import get_sqobject, get_tables
+from suzieq.sqobjects import get_sqobject
 import numpy as np
 import pandas as pd
 import altair as alt
@@ -158,7 +158,9 @@ def xplore_sidebar(state, sqobjs: dict):
                                           on_change=xplore_sync_state)
 
     if state.table:
-        tables_obj = get_sqobject('tables')()
+        tables_obj = get_sqobject('tables')(start_time=state.state_time,
+                                            end_time=state.end_time,
+                                            view=state.view)
         fields = tables_obj.describe(table=state.table)
         colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                 fields.name.tolist())))

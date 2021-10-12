@@ -8,7 +8,6 @@ from copy import copy
 import numpy as np
 import pandas as pd
 
-from suzieq.sqobjects import interfaces, routes, arpnd, macs, mlag
 from suzieq.exceptions import EmptyDataframeError, PathLoopError
 from .engineobj import SqPandasEngine
 from suzieq.utils import expand_nxos_ifname, MAX_MTU
@@ -31,14 +30,14 @@ class PathObj(SqPandasEngine):
 
         namespace = [ns]
         try:
-            self._if_df = interfaces.IfObj(context=self.ctxt) \
-                                    .get(namespace=namespace, state='up',
-                                         addnl_fields=['macaddr']) \
-                                    .explode('ipAddressList') \
-                                    .fillna({'ipAddressList': ''}) \
-                                    .explode('ip6AddressList') \
-                                    .fillna({'ip6AddressList': ''}) \
-                                    .reset_index(drop=True)
+            self._if_df = self._get_table_sqobj('interfaces') \
+                .get(namespace=namespace, state='up',
+                     addnl_fields=['macaddr']) \
+                .explode('ipAddressList') \
+                .fillna({'ipAddressList': ''}) \
+                .explode('ip6AddressList') \
+                .fillna({'ip6AddressList': ''}) \
+                .reset_index(drop=True)
             if self._if_df.empty:
                 raise EmptyDataframeError
         except (EmptyDataframeError, KeyError):
@@ -46,7 +45,7 @@ class PathObj(SqPandasEngine):
                 f"No interface information found for {namespace}")
 
         # Need this in determining L2 peer
-        mlag_df = mlag.MlagObj(context=self.ctxt).get(namespace=namespace)
+        mlag_df = self._get_table_sqobj('mlag').get(namespace=namespace)
         mlag_peers = defaultdict(str)
         mlag_peerlink = defaultdict(str)
         if not mlag_df.empty:
@@ -65,10 +64,10 @@ class PathObj(SqPandasEngine):
         try:
             # access-internal is an internal Junos route we want to
             # ignore
-            self._rdf = routes.RoutesObj(context=self.ctxt) \
-                              .lpm(namespace=namespace, address=dest) \
-                              .query('protocol != "access-internal"') \
-                              .reset_index(drop=True)
+            self._rdf = self._get_table_sqobj('routes') \
+                .lpm(namespace=namespace, address=dest) \
+                .query('protocol != "access-internal"') \
+                .reset_index(drop=True)
             if self._rdf.empty:
                 raise EmptyDataframeError
         except (KeyError, EmptyDataframeError):
@@ -76,10 +75,10 @@ class PathObj(SqPandasEngine):
                                       format(dest))
 
         try:
-            self._rpf_df = routes.RoutesObj(context=self.ctxt) \
-                                 .lpm(namespace=namespace, address=source) \
-                                 .query('protocol != "access-internal"') \
-                                 .reset_index(drop=True)
+            self._rpf_df = self._get_table_sqobj('routes') \
+                .lpm(namespace=namespace, address=source) \
+                .query('protocol != "access-internal"') \
+                .reset_index(drop=True)
             if self._rpf_df.empty:
                 raise EmptyDataframeError
         except (KeyError, EmptyDataframeError):
@@ -87,8 +86,8 @@ class PathObj(SqPandasEngine):
                                       format(source))
 
         # We ignore the lack of ARPND for now
-        self._arpnd_df = arpnd.ArpndObj(
-            context=self.ctxt).get(namespace=namespace)
+        self._arpnd_df = self._get_table_sqobj('arpnd') \
+            .get(namespace=namespace)
         if self._arpnd_df.empty:
             raise EmptyDataframeError(
                 f"No ARPND information found for {dest}")
@@ -104,7 +103,7 @@ class PathObj(SqPandasEngine):
             .query('state != "failed"') \
             .reset_index(drop=True)
 
-        self._macsobj = macs.MacsObj(context=self.ctxt, namespace=namespace)
+        self._macsobj = self._get_table_sqobj('macs')
 
         if ':' in source:
             self._src_df = self._if_df[self._if_df.ip6AddressList.astype(str)
@@ -365,9 +364,9 @@ class PathObj(SqPandasEngine):
                 if not vtep:
                     raise AttributeError(
                         f'false vtep {vtep_list}: vrf {vrf_list}')
-                self._underlay_dfs[vtep] = routes.RoutesObj(
-                    context=self.ctxt).lpm(namespace=[self.namespace],
-                                           address=[vtep], vrf=[vrf])
+                self._underlay_dfs[vtep] = self._get_table_sqobj('routes') \
+                    .lpm(namespace=[self.namespace],
+                         address=[vtep], vrf=[vrf])
             vtep_df = self._underlay_dfs[vtep]
             rslt = vtep_df.query(
                 f'hostname == "{hostname}" and vrf == "{vrf}"')

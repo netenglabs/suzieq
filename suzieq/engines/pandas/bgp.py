@@ -1,5 +1,3 @@
-from suzieq.sqobjects.address import AddressObj
-
 import pandas as pd
 import numpy as np
 

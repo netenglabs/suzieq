@@ -1,7 +1,6 @@
 import pandas as pd
 import numpy as np
 from .engineobj import SqPandasEngine
-from suzieq.sqobjects import get_sqobject
 
 
 class InventoryObj(SqPandasEngine):
@@ -60,7 +59,7 @@ class InventoryObj(SqPandasEngine):
             # Lets see if we can name the ports properly
             namespaces = kwargs.get('namespace', [])
             hostnames = kwargs.get('hostname', [])
-            ifdf = get_sqobject('interfaces')(context=self.ctxt) \
+            ifdf = self._get_table_sqobj('interfaces') \
                 .get(namespace=namespaces, hostname=hostnames,
                      columns=['namespace', 'hostname', 'ifname'],
                      type=['ethernet', 'flexible-ethernet', 'bond_slave'])

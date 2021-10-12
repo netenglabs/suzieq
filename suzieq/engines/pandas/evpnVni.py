@@ -3,9 +3,6 @@ import pandas as pd
 import ipaddress
 
 from .engineobj import SqPandasEngine
-from suzieq.sqobjects.macs import MacsObj
-from suzieq.sqobjects.interfaces import IfObj
-from suzieq.sqobjects.routes import RoutesObj
 
 
 class EvpnvniObj(SqPandasEngine):
@@ -51,7 +48,7 @@ class EvpnvniObj(SqPandasEngine):
         iflist = list(set([x for x in df[df.vlan == 0]['ifname'].to_list()
                            if x and x != 'None']))
         if iflist:
-            ifdf = IfObj(context=self.ctxt).get(
+            ifdf = self._get_table_sqobj('interfaces').get(
                 namespace=kwargs.get('namespace', []), ifname=iflist,
                 columns=['namespace', 'hostname', 'ifname', 'state', 'vlan',
                          'vni'])
@@ -68,7 +65,7 @@ class EvpnvniObj(SqPandasEngine):
                        .astype({'vlan': int})
 
         # Now we try to see if we can get the VRF info for all L2 VNIs as well
-        ifdf = IfObj(context=self.ctxt) \
+        ifdf = self._get_table_sqobj('interfaces') \
             .get(namespace=kwargs.get('namespace', []), type=['vlan'],
                  columns=['namespace', 'hostname', 'vlan', 'master']) \
             .query('master != ""') \
@@ -91,7 +88,7 @@ class EvpnvniObj(SqPandasEngine):
             vlanlist = []
         if vlanlist:
             if 'numMacs' in df.columns:
-                macdf = MacsObj(context=self.ctxt).get(
+                macdf = self._get_table_sqobj('macs').get(
                     namespace=kwargs.get('namespace'))
                 df['numMacs'] = df.apply(self._count_macs, axis=1,
                                          args=(macdf, ))
@@ -193,7 +190,7 @@ class EvpnvniObj(SqPandasEngine):
         if (not her_df.empty and
                 (her_df.remoteVtepList.str.len() != 0).any()):
             # Check if every VTEP we know is reachable
-            rdf = RoutesObj(context=self.ctxt).get(
+            rdf = self._get_table_sqobj('routes').get(
                 namespace=kwargs.get('namespace'), vrf='default')
             if not rdf.empty:
                 rdf['prefixlen'] = rdf['prefix'].str.split('/') \
@@ -233,7 +230,7 @@ class EvpnvniObj(SqPandasEngine):
             else [], axis=1)
 
         devices = df["hostname"].unique().tolist()
-        ifdf = IfObj(context=self.ctxt) \
+        ifdf = self._get_table_sqobj('interfaces') \
             .get(namespace=kwargs.get("namespace", ""), hostname=devices,
                  type='vxlan')
 
@@ -298,9 +295,9 @@ class EvpnvniObj(SqPandasEngine):
             # of invoking route's lpm to accomplish the task.
             cached_df = self._routes_df \
                             .query(f'namespace=="{row.namespace}" and hostname=="{row.hostname}"')
-            route = RoutesObj(context=self.ctxt).lpm(vrf='default',
-                                                     address=vtep,
-                                                     cached_df=cached_df)
+            route = self._get_table_sqobj('routes').lpm(vrf='default',
+                                                        address=vtep,
+                                                        cached_df=cached_df)
 
             if route.empty:
                 reason += [f"{vtep} not reachable"]

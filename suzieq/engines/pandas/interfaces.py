@@ -2,8 +2,6 @@ from ipaddress import ip_network
 import pandas as pd
 
 from suzieq.exceptions import NoLLdpError
-from suzieq.sqobjects.lldp import LldpObj
-from suzieq.sqobjects.vlan import VlanObj
 from .engineobj import SqPandasEngine
 
 
@@ -167,8 +165,8 @@ class InterfacesObj(SqPandasEngine):
 
             return if_df
 
-        lldpobj = LldpObj(context=self.ctxt, start_time=stime, end_time=etime)
-        vlanobj = VlanObj(context=self.ctxt, start_time=stime, end_time=etime)
+        lldpobj = self._get_table_sqobj('lldp')
+        vlanobj = self._get_table_sqobj('vlan')
 
         # can't pass all kwargs, because lldp acceptable arguements are
         # different than interface

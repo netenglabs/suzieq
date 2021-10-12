@@ -7,8 +7,6 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from suzieq.sqobjects import interfaces, lldp, bgp, ospf, basicobj, address, evpnVni, arpnd, device, macs
-from suzieq.sqobjects.basicobj import SqObject
 from suzieq.exceptions import EmptyDataframeError
 
 
@@ -35,11 +33,10 @@ class TopologyObj(SqPandasEngine):
     def _init_dfs(self, namespaces):
         """Initialize the dataframes used"""
 
-        self._if_df = interfaces.IfObj(
-            context=self.ctxt).get(
-                namespace=namespaces, state="up",
-                columns=['namespace', 'hostname', 'ifname', 'ipAddressList',
-                         'ip6AddressList', 'state', 'type', 'master', 'macaddr'])
+        self._if_df = self._get_table_sqobj('interfaces') \
+            .get(namespace=namespaces, state="up",
+                 columns=['namespace', 'hostname', 'ifname', 'ipAddressList',
+                          'ip6AddressList', 'state', 'type', 'master', 'macaddr'])
 
         if self._if_df.empty:
             raise EmptyDataframeError(f"No interface found for {namespaces}")
@@ -76,18 +73,18 @@ class TopologyObj(SqPandasEngine):
         self._ip_table = pd.DataFrame()
 
         self.services = [
-            Services('lldp', lldp.LldpObj, {}, ['ifname', 'vrf'],
+            Services('lldp', {}, ['ifname', 'vrf'],
                      self._augment_lldp_show),
-            Services('arpnd', arpnd.ArpndObj, {},
+            Services('arpnd', {},
                      ['ipAddress', 'macaddr', 'ifname', 'vrf', 'arpndBidir'],
                      self._augment_arpnd_show),
-            Services('bgp', bgp.BgpObj, {'state': 'Established',
-                                         'columns': ['*']},
+            Services('bgp', {'state': 'Established',
+                             'columns': ['*']},
                      ['vrf'],
                      self._augment_bgp_show),
-            # Services('evpnVni', evpnVni.EvpnvniObj, {}, 'peerHostname',
+            # Services('evpnVni', {}, 'peerHostname',
             #    'vni', self._augment_evpnvni_show),
-            Services('ospf', ospf.OspfObj, {'state': 'full'},
+            Services('ospf', {'state': 'full'},
                      ['ifname', 'vrf'], self._augment_ospf_show),
         ]
 
@@ -97,7 +94,7 @@ class TopologyObj(SqPandasEngine):
         for srv in self.services:
             if 'columns' not in srv.extra_args:
                 srv.extra_args['columns'] = columns
-            df = srv.data(context=self.ctxt).get(
+            df = self._get_table_sqobj(srv.name).get(
                 **kwargs,
                 **srv.extra_args
             )
@@ -167,8 +164,8 @@ class TopologyObj(SqPandasEngine):
         if self.lsdb.empty:
             return
 
-        devices = device.DeviceObj(context=self.ctxt).get(namespace=self._namespaces,
-                                                          columns=['namespace', 'hostname'])
+        devices = self._get_table_sqobj('device').get(namespace=self._namespaces,
+                                                      columns=['namespace', 'hostname'])
         self.lsdb = devices.merge(self.lsdb, how='outer',
                                   indicator=True)
         self.lsdb = self.lsdb.rename(columns={'_merge': 'polled'})
@@ -243,7 +240,7 @@ class TopologyObj(SqPandasEngine):
                    .drop_duplicates()
 
             # Use MAC table entries to find the local port for a MAC on an SVI
-            mac_df = macs.MacsObj(context=self.ctxt) \
+            mac_df = self._get_table_sqobj('macs')\
                          .get(namespace=self._namespaces, localOnly=True,
                               columns=['namespace', 'hostname', 'vlan',
                                        'macaddr', 'oif'])
@@ -384,7 +381,6 @@ class TopologyObj(SqPandasEngine):
 @dataclass(frozen=True)
 class Services:
     name: str
-    data: SqObject
     extra_args: dict
     extra_cols: list
     augment: any

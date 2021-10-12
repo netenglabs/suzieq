@@ -1,7 +1,6 @@
 import pandas as pd
 
 from suzieq.engines.pandas.engineobj import SqPandasEngine
-from suzieq.sqobjects import get_sqobject
 
 
 class TableObj(SqPandasEngine):
@@ -20,7 +19,7 @@ class TableObj(SqPandasEngine):
         tables = []
 
         for table in table_list:
-            table_obj = get_sqobject(table)
+            table_obj = self._get_table_sqobj(table)
 
             if not table_obj:
                 # This is a table without an sqobject backing store
@@ -28,10 +27,10 @@ class TableObj(SqPandasEngine):
                 # table functions or because this table is collapsed into a
                 # single table as in the case of ospf
                 unknown_tables.append(table)
-                table_inst = get_sqobject('tables')(context=self.ctxt)
+                table_inst = self._get_table_sqobj('tables')
                 table_inst._table = table
             else:
-                table_inst = table_obj(context=self.ctxt)
+                table_inst = table_obj
 
             info = {'table': table}
             info.update(table_inst.get_table_info(

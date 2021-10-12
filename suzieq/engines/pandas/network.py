@@ -2,7 +2,6 @@ from typing import List
 import pandas as pd
 import numpy as np
 from .engineobj import SqPandasEngine
-from suzieq.sqobjects import get_sqobject
 from suzieq.utils import convert_macaddr_format_to_colon
 
 
@@ -28,7 +27,7 @@ class NetworkObj(SqPandasEngine):
         drop_cols = []
 
         if os or model or vendor or os_version:
-            df = get_sqobject('device')(context=self.ctxt).get(
+            df = self._get_table_sqobj('device').get(
                 columns=['namespace', 'hostname', 'os', 'model', 'vendor',
                          'version'],
                 os=os,
@@ -38,7 +37,7 @@ class NetworkObj(SqPandasEngine):
                 namespace=namespace,
                 **kwargs)
         else:
-            df = get_sqobject('device')(context=self.ctxt).get(
+            df = self._get_table_sqobj('device').get(
                 columns=['namespace', 'hostname'], namespace=namespace,
                 **kwargs)
 
@@ -48,10 +47,11 @@ class NetworkObj(SqPandasEngine):
         namespace = df.namespace.unique().tolist()
 
         # Get list of namespaces we're polling
-        pollerdf = get_sqobject('sqPoller')(context=self.ctxt) \
+        pollerdf = self._get_table_sqobj('sqPoller') \
             .get(columns=['namespace', 'hostname', 'service', 'status', 'timestamp'],
                  namespace=namespace,
                  **kwargs)
+
         if pollerdf.empty:
             return pd.DataFrame()
 
@@ -62,7 +62,6 @@ class NetworkObj(SqPandasEngine):
             'deviceCnt': nsgrp['hostname'].nunique().tolist(),
             'serviceCnt': nsgrp['service'].nunique().tolist()
         })
-
         errsvc_df = pollerdf.query('status != 0 and status != 200') \
                             .groupby(by=['namespace'])['service'] \
                             .nunique().reset_index()
@@ -75,7 +74,7 @@ class NetworkObj(SqPandasEngine):
         # What protocols exist
         for table, fld in [('ospf', 'hasOspf'), ('bgp', 'hasBgp'),
                            ('evpnVni', 'hasVxlan'), ('mlag', 'hasMlag')]:
-            df = get_sqobject(table)(context=self.ctxt) \
+            df = self._get_table_sqobj(table) \
                 .get(namespace=pollerns, columns=['namespace'])
             if df.empty:
                 newdf[fld] = False
@@ -167,8 +166,8 @@ class NetworkObj(SqPandasEngine):
         except ValueError:
             return pd.DataFrame({'error': ['ASNs must be an integers']})
 
-        return get_sqobject('bgp')(context=self.ctxt).get(asn=asn, columns=['default'],
-                                                          **kwargs)
+        return self._get_table_sqobj('bgp') \
+            .get(asn=asn, columns=['default'], **kwargs)
 
     def _find_address(self, addr: str, resolve_bond: bool,
                       **kwargs) -> pd.DataFrame:
@@ -193,7 +192,7 @@ class NetworkObj(SqPandasEngine):
             addr = convert_macaddr_format_to_colon(addr)
         addr = addr.lower()
 
-        addr_df = get_sqobject('address')(context=self.ctxt).get(
+        addr_df = self._get_table_sqobj('address').get(
             address=addr.split(),
             columns=['namespace', 'hostname', 'ifname', 'vrf', 'ipAddressList',
                      'ip6AddressList', 'macaddr', 'vlan', 'timestamp'],
@@ -244,7 +243,7 @@ class NetworkObj(SqPandasEngine):
         hosts = df.hostname.unique().tolist()
         master = df.ifname.unique().tolist()
 
-        ifdf = get_sqobject('interfaces')(context=self.ctxt) \
+        ifdf = self._get_table_sqobj('interfaces') \
             .get(namespace=ns, hostname=hosts, master=master)
 
         if ifdf.empty:
@@ -274,14 +273,14 @@ class NetworkObj(SqPandasEngine):
                 'vrf', 'ipAddress', 'macaddr', 'timestamp']
 
         if any(x in addr for x in ['::', '.']):
-            arpdf = get_sqobject('arpnd')(context=self.ctxt).get(
+            arpdf = self._get_table_sqobj('arpnd').get(
                 ipAddress=addr, **kwargs)
         else:
-            arpdf = get_sqobject('arpnd')(context=self.ctxt).get(
+            arpdf = self._get_table_sqobj('arpnd').get(
                 macaddr=addr, **kwargs)
 
         if not arpdf.empty:
-            ifdf = get_sqobject('interfaces')(context=self.ctxt) \
+            ifdf = self._get_table_sqobj('interfaces') \
                 .get(namespace=arpdf.namespace.unique().tolist(),
                      hostname=arpdf.hostname.unique().tolist(),
                      ifname=arpdf.oif.unique().tolist())
@@ -295,7 +294,7 @@ class NetworkObj(SqPandasEngine):
                 .drop(columns=['oif']) \
                 .rename(columns={'master': 'vrf'})
 
-            macdf = get_sqobject('macs')(context=self.ctxt) \
+            macdf = self._get_table_sqobj('macs') \
                 .get(namespace=arpdf.namespace.unique().tolist(),
                      hostname=arpdf.hostname.unique().tolist(),
                      vlan=arpdf.vlan.astype(str).unique().tolist(),
@@ -330,7 +329,7 @@ class NetworkObj(SqPandasEngine):
         # We'll need to resolve bond interfaces first
         l2_addr_df = addr_df
 
-        lldp_df = get_sqobject('lldp')(context=self.ctxt).get(
+        lldp_df = self._get_table_sqobj('lldp').get(
             namespace=l2_addr_df.namespace.unique().tolist(),
             columns=['namespace', 'hostname', 'ifname', 'peerHostname',
                      'peerIfname'])
@@ -359,7 +358,7 @@ class NetworkObj(SqPandasEngine):
                     errors='ignore') \
                     .rename(columns={'peerHostname': 'hostname',
                                      'peerIfname': 'ifname'})
-                macdf = get_sqobject('macs')(context=self.ctxt) \
+                macdf = self._get_table_sqobj('macs') \
                     .get(namespace=new_l2_addr_df.namespace.unique().tolist(),
                          macaddr=new_l2_addr_df.macaddr.unique().tolist(),
                          vlan=new_l2_addr_df.vlan.astype(

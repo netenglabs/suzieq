@@ -1,6 +1,5 @@
 import numpy as np
 from .engineobj import SqPandasEngine
-from suzieq.sqobjects import get_sqobject
 
 
 class LldpObj(SqPandasEngine):
@@ -38,7 +37,7 @@ class LldpObj(SqPandasEngine):
         macdf = df.query('subtype.isin(["", "mac address"])')
         if not macdf.empty:
             macs = df.peerMacaddr.unique().tolist()
-            addrdf = get_sqobject('address')(context=self.iobj.ctxt).get(
+            addrdf = self._get_table_sqobj('address').get(
                 namespace=namespace, address=macs,
                 columns=['namespace', 'hostname', 'ifname', 'macaddr'])
 
@@ -60,7 +59,7 @@ class LldpObj(SqPandasEngine):
         ifindices = ifidx_df.query('peerIfindex != 0').peerIfindex \
             .unique().tolist()
         if not ifidx_df.empty and ifindices:
-            ifdf = get_sqobject('interfaces')(context=self.iobj.ctxt).get(
+            ifdf = self._get_table_sqobj('interfaces').get(
                 namespace=namespace, ifindex=ifindices,
                 columns=['namespace', 'hostname', 'ifname', 'ifindex'])
             df = df.merge(

@@ -2,7 +2,6 @@ from ipaddress import IPv4Network
 import pandas as pd
 import numpy as np
 
-from suzieq.sqobjects import get_sqobject
 from .engineobj import SqPandasEngine
 from suzieq.utils import SchemaForTable, build_query_str, humanize_timestamp
 
@@ -273,7 +272,7 @@ class OspfObj(SqPandasEngine):
                     if x["hostname_y"] is not np.nan and len(x['hostname_y']) != 1 else [], axis=1))
 
         # Now  peering match
-        lldp_df = get_sqobject('lldp')(context=self.iobj.ctxt).get(
+        lldp_df = self._get_table_sqobj('lldp').get(
             namespace=kwargs.get('namespace', []), columns=['default'])
         if lldp_df.empty:
             ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |

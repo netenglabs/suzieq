@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from suzieq.utils import SchemaForTable, humanize_timestamp
 from suzieq.engines.base_engine import SqEngineObj
+from suzieq.sqobjects import get_sqobject
 from suzieq.db import get_sqdb_engine
 from suzieq.exceptions import DBReadError, UserQueryError
 import dateparser
@@ -238,6 +239,24 @@ class SqPandasEngine(SqEngineObj):
                'deviceCnt': self._unique_or_zero(all_time_df, 'hostname')}
 
         return ret
+
+    def _get_table_sqobj(self, table: str):
+        """Normalize pulling data from other tables into this one function
+
+        Typically pulling data involves calling get_sqobject with a bunch of
+        parameters that need to be passed to it, that a caller can forget to pass.
+        A classic example is passing the view, start-time and end-time which is
+        often forgotten. This function fixes this issue.
+
+        Args:
+            table (str): The table to retrieve the info from
+            verb (str): The verb to use in the get_sqobject call
+        """
+
+        return get_sqobject(table)(context=self.ctxt,
+                                   start_time=self.iobj.start_time,
+                                   end_time=self.iobj.end_time,
+                                   view=self.iobj.view)
 
     def _unique_or_zero(self, df: pd.DataFrame, col: str) -> int:
         """Returns the unique count of a column in a dataframe or 0
