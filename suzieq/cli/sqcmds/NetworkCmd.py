@@ -44,8 +44,7 @@ class NetworkCmd(SqCommand):
     @argument('version', description='NOS version to filter with')
     def show(self, os: str = "", vendor: str = "", model: str = "",
              version: str = "") -> int:
-        """
-        Show network info
+        """Show network info
         """
 
         now = time.time()

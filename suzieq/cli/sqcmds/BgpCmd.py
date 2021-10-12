@@ -94,8 +94,7 @@ class BgpCmd(SqCommand):
 
     @command("summarize", help="Provide summary info about BGP per namespace")
     def summarize(self):
-        """
-        Summarize bgp info
+        """Summarize bgp info
         """
         self._init_summarize()
         return self._post_summarize()

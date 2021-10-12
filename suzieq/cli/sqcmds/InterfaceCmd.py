@@ -81,7 +81,7 @@ class InterfaceCmd(SqCommand):
               choices=['True'])
     @argument("type", description="include type of ports to include")
     def unique(self, count: str = '', type: str = '', **kwargs):
-        """Get all unique values associated with requested field"""
+        """Get unique values (and counts) associated with requested field"""
         now = time.time()
 
         df = self._invoke_sqobj(self.sqobj.unique,

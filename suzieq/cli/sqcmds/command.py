@@ -23,7 +23,7 @@ class ArgHelpClass(object):
 
 @argument(
     "engine",
-    description="which analytical engine to use",
+    description="Which analytical engine to use",
     choices=["pandas"],
 )
 @argument(
@@ -38,18 +38,18 @@ class ArgHelpClass(object):
 )
 @argument(
     "view",
-    description="view all records or just the latest",
+    description="View all records or just the latest",
     choices=["all", "latest"],
 )
 @argument("columns", description="Space separated list of columns, * for all")
 @argument(
     "format",
-    description="select the pformat of the output",
+    description="Select the pformat of the output",
     choices=["text", "json", "csv", "markdown"],
 )
 @argument(
     "query_str",
-    description="Trailing blank terminated pandas query format to further filter the output.",
+    description="Trailing blank terminated pandas query format to further filter the output",
 )
 class SqCommand:
     """Base Command Class for use with all verbs"""
@@ -143,7 +143,7 @@ class SqCommand:
     @argument("count", description="include count of times a value is seen",
               choices=['True'])
     def unique(self, count='', **kwargs):
-        """Get all unique values associated with requested field"""
+        """Get unique values (and counts) associated with requested field"""
         now = time.time()
 
         df = self._invoke_sqobj(self.sqobj.unique,

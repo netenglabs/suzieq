@@ -50,7 +50,7 @@ class PathCmd(SqCommand):
 
     @command("show")
     def show(self):
-        """show paths between specified from source to target ip addresses"""
+        """Show paths between specified from source to target ip addresses"""
         # Get the default display field names
         if self.columns is None:
             return
@@ -108,7 +108,7 @@ class PathCmd(SqCommand):
     @argument("count", description="include count of times a value is seen",
               choices=['True'])
     def unique(self, count: str = 'False'):
-        """Display unique values for specified field of a path"""
+        """Display unique values (and counts) for specified field of a path"""
         # Get the default display field names
         if self.columns is None:
             return

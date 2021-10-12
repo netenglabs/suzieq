@@ -103,7 +103,7 @@ class OspfCmd(SqCommand):
               choices=["all", "fail", "pass"])
     def aver(self, vrf: str = "", status: str = 'all') -> pd.DataFrame:
         """
-        Test OSPF runtime state is good
+        Test OSPF runtime state is without errors
         """
         if self.hostname:
             df = pd.DataFrame(

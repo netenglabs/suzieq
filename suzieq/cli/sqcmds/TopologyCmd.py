@@ -46,7 +46,7 @@ class TopologyCmd(SqCommand):
               description="filter the result by specified peerHostname")
     def show(self, polled: str = '', ifname: str = '', via: str = '',
              peerHostname: str = ''):
-        """show table of topology information"""
+        """Show table of topology information"""
         # Get the default display field names
         if self.columns is None:
             return

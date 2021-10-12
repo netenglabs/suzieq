@@ -65,7 +65,7 @@ class EvpnVniCmd(SqCommand):
     @argument("status", description="Show only assert that matches this value",
               choices=["all", "fail", "pass"])
     def aver(self, status: str = 'pass'):
-        """Assert BGP is functioning properly"""
+        """Assert VXLAN Forwarding is functioning properly"""
 
         now = time.time()
 
