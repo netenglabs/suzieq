@@ -266,7 +266,8 @@ class InterfacesObj(SqPandasEngine):
 
         combined_df['assertReason'] += combined_df.apply(
             lambda x: []
-            if set(x['vlanList']) == set(x['vlanListPeer'])
+            if (not vlan_df.empty and
+              set(x['vlanList']) == set(x['vlanListPeer']))
             else ['VLAN set mismatch'], axis=1)
 
         combined_df['assert'] = combined_df.apply(
