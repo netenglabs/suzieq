@@ -1,6 +1,7 @@
 # Service File Definition #
 
 A service definition file specifies how to monitor a service and extract state from it. More specifically, a service file definition file is a YAML file that specifies:
+
   * The name of the service
   * For each type of device to collect service state from:
       * the command to execute to obtain information about the service
@@ -86,8 +87,9 @@ If the command to extract state produces structured output such as JSON (the onl
 The normalized field name is to create a single name for a field that is named differently in different device outputs. For example, bytesReceived, rxBytes, bytesRx and inBytes can all be mapped to a common rxBytes field. 
 
 Simple arithmetic operations are used to:
-    * normalize the value across different devices. For example, a time field defined in seconds in one device output and as milliseconds in another, can be converted to either seconds or milliseconds. 
-	* unify a field that maybe specified as a single field on one device and as multiple fields in another. For example, if one device provides a single totalLinkTransitions field while another provides totalLinkUps and totalLinkDowns fields, the observer can unify the second output by summing the two fields
+
+* normalize the value across different devices. For example, a time field defined in seconds in one device output and as milliseconds in another, can be converted to either seconds or milliseconds.
+* unify a field that maybe specified as a single field on one device and as multiple fields in another. For example, if one device provides a single totalLinkTransitions field while another provides totalLinkUps and totalLinkDowns fields, the observer can unify the second output by summing the two fields
 
 To keep the data consistent across outputs, especially if missing, and the value is not a string, the user must specify a default value for the field.
 
@@ -100,11 +102,12 @@ To see how a field normalization works, let's look at a few examples:
 ## Generating A Schema ##
 
 Suzieq provides a script, gen_schema.py which can be used to generate the schema for the state of the service that is extracted. This schema is written out in AVRO format. The schema is used to ensure that the data that is stored is in a consistent format, which simplifies querying later. The schema tries some simple tricks to understand the type of the field, and failing this, it declares the field to be of type "string". The naive rules it uses to determine the type are:
-    * if the field name ends in "name" or "Name", it must be a string
-	* if the field name ends in "Cnt" or "Count", it must be an int64
-	* if the field name ends in "list" or "List", it must be an array
-	* if the field name ends in "time" or "timestamp", it must be a double
-	* if the service type is counters, all fields which don't match the above rules are int64
+
+* if the field name ends in "name" or "Name", it must be a string
+* if the field name ends in "Cnt" or "Count", it must be an int64
+* if the field name ends in "list" or "List", it must be an array
+* if the field name ends in "time" or "timestamp", it must be a double
+* if the service type is counters, all fields which don't match the above rules are int64
 	
 The user is encouraged to go fix the types, and add default values, if necessary, after the schema files have been generated. The schema files are stored as .avsc files under a directory called schema under the directory where the service file definitions are present.
 
