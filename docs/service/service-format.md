@@ -34,53 +34,129 @@ apply:
 	  copy: <the name of the device or hostname from which to copy the commands and fields for this service>
 ```
 
-## Service Name ##
-This is a simple camelCase string that defines the service such as "bgp", "ifCounters". This must be unique.
+### `service` ###
 
-## Period ##
+> **Type:** String <br>
+> **Required:** Yes <hr>
+> The **Service Name** is a simple camelCase string that defines the service
+> such as "bgp", "ifCounters". Must be unique.
 
-This is an optional field that defines how frequently must suzieq extract the state of this service. If this field is unspecified, the default is 15 seconds. 
+### `period` ###
 
-## Type ##
-This is an optional field that allows a single value today, "counters", to indicate that the output is potentially different every time the command is run, and to avoid trying to check for changes. This helps suzieq optimize the running of this service
+> **Type:** Integer <br>
+> **Required:** No <br>
+> **Default:** 15 <hr>
+> Defines how frequently must suzieq extract the state of this service. If this
+> field is unspecified, the default is 15 seconds.
 
-## Ignored Fields ##
+### `type` ###
 
-The basic idea in monitoring state is to only record changes in service state. In many cases, certain fields change in every state collected. For example, a field such as lastUpTime can be a relative time that changes every time the command is run. Another example is that a protocol may change between multiple inactive states while not in a good state. The observer may only wish to record whether the protocol in a good state or bad state to avoid the uninteresting state transitions when down (think of BGP's Idle, Active and Connect as an example). Suzieq provides two ways to handle this:
-    * Define a list of fields to ignore in comparing if the state has changed
-	* Normalize the value to record a single value for a state
-	
-This is an optional field.
+> **Type:** String <br>
+> **Required:** No <br>
+> **Valid Values:** counters <hr>
+> Set to "counters", to indicate that the output is potentially different every
+> time the command is run, and to avoid trying to check for changes. This helps
+> suzieq optimize the running of this service
 
-## Keys ##
+### `ignored-fields` ###
 
-This is a mandatory field that identifies which set of fields define a record uniquely. For example, in the case of interface counters, the interface name is the key field. The hostname is automatically added as a key field by suzieq. The primary purpose of this field is to simplify queries during the analysis or observation phase.
+> **Type:** List of String <br>
+> **Required:** No <hr>
+> The basic idea in monitoring state is to only record changes in service
+> state. In many cases, certain fields change in every state collected. For
+> example, a field such as `lastUpTime` can be a relative time that changes
+> every time the command is run. Another example is that a protocol may change
+> between multiple inactive states while not in a good state. The observer may
+> only wish to record whether the protocol in a good state or bad state to
+> avoid the uninteresting state transitions when down (think of BGP's Idle,
+> Active and Connect as an example). Suzieq provides two ways to handle this:
+>
+>   * Define a list of fields to ignore in comparing if the state has changed
+>   * Normalize the value to record a single value for a state
 
-## Apply ##
+### `keys` ###
 
-This is the workhorse section on the file. It identifies the command to run to obtain the relevant information for this service and how to extract and transform the fields. It contains several subfields. 
+> **Type:** List of String <br>
+> **Required:** Yes <hr>
+> Identifies which set of fields define a record uniquely. For example, in the
+> case of interface counters, the interface name is the key field. The hostname
+> is automatically added as a key field by suzieq. The primary purpose of this
+> field is to simplify queries during the analysis or observation phase.
 
-## Device Type or Hostname ##
+### `apply` ###
 
-The most common way to breakup the **apply** field is by device type. Device type is identified when suzieq starts up. Examples of device types are linux (for Linux servers), eos (for Arista's OS), cumulus (for Cumulus Linux), nxos (for Cisco's NXOS) and so on. 
-
-Sometimes, a specific device might need to run a special command even though it is of a specific type. An example might be a modified Linux server that provides interface counters differently than via the /proc/net/dev file. In such cases, the device name can be specified instead of the device type. This should be a rare case.
-
-When suzieq is looking for what command to execute for a device to extract state, it first checks to see if there's a section with the hostname, and if that fails, then by device type. If neither of these two options is found for a device, suzieq skips trying to extract any service state from the device.
-
-## Version ##
-
-This specifies if the command and extraction of state is different for different versions of the device or the same. Currently, this field is assumed to be always **all**. Future versions will support the full extent of this field.
-
-## Command ##
-
-This specifies the command to be run to extract state for this service. 
-
-## Command Output Type ##
-
-If the command to extract state produces structured output such as JSON (the only structured output supported for now), the extraction and normalization of the field name is specified via as a list of xpath-like fields. For commands that do not produce structured output, we rely on the textfsm module to convert the unstructured command output to a structured format.
-
-**normalize** is used to define the mapping and transformation of the fields when the output is structured. ***textfsm** is used when the output is unstructured. The textfsm field contains the name of the textfsm file to be used for this extraction. The path of the file must be fully specified or its assumed to be in the "config/textfsm" directory.
+> **Type:** List of String <br>
+> **Required:** No <hr>
+> This is the workhorse section on the file. It identifies the command to run
+> to obtain the relevant information for this service and how to extract and
+> transform the fields. It contains several subfields.
+>
+> #### `Device Type or Hostname` ####
+>
+> **Type:** Dictionary <br>
+> **Required:** Yes <hr>
+> The most common way to breakup the **apply** field is by device type. Device
+> type is identified when suzieq starts up. Examples of device types are linux
+> (for Linux servers), eos (for Arista's OS), cumulus (for Cumulus Linux), nxos
+> (for Cisco's NXOS) and so on.
+>
+> Sometimes, a specific device might need to run a special command even though
+> it is of a specific type. An example might be a modified Linux server that
+> provides interface counters differently than via the /proc/net/dev file. In
+> such cases, the device name can be specified instead of the device type. This
+> should be a rare case.
+>
+> When suzieq is looking for what command to execute for a device to extract
+> state, it first checks to see if there's a section with the hostname, and if
+> that fails, then by device type. If neither of these two options is found for
+> a device, suzieq skips trying to extract any service state from the device.
+>
+> ##### `version` #####
+>
+> **Type:** String <br>
+> **Required:** Yes <hr>
+> This specifies if the command and extraction of state is different for
+> different versions of the device or the same. Currently, this field is
+> assumed to be always **all**. Future versions will support the full extent of
+> this field.
+>
+> #### `command` ####
+>
+> **Type:** String <br>
+> **Required:** Yes <hr>
+> This specifies the command to be run to extract state for this service.
+>
+> #### `normalize` ####
+>
+> **Type:** String <br>
+> **Required:** Yes if ***textfsm*** is not set. <hr>
+> If the command to extract state produces structured output such as JSON (the
+> only structured output supported for now), the extraction and normalization
+> of the field name is specified via as a list of xpath-like fields. For
+> commands that do not produce structured output, we rely on the textfsm module
+> to convert the unstructured command output to astructured format.
+>
+> **normalize** is used to define the mapping and transformation of the fields
+> when the output is structured. Otherwise ***textfsm*** is used when the
+> output is unstructured.
+>
+> #### `textfsm` ####
+>
+> **Type:** String <br>
+> **Required:** Yes if ***normalize*** is not set. <hr>
+> The textfsm field contains the name of the textfsm file to be used for this
+> extraction. The path of the file must be fully specified or its assumed to be
+> in the "config/textfsm" directory.
+>
+> **textfsm** is used when the output is unstructured. Otherwise
+> ***normalized*** is used when the output is structured.
+>
+> #### `copy` ####
+>
+> **Type:** String <br>
+> **Required:** No <hr>
+> The name of the device or hostname from which to copy the commands and fields
+> for this service
 
 ## Normalizing the Data ##
 
