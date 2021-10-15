@@ -1,6 +1,7 @@
 from datetime import datetime
 from collections import defaultdict
 from dateparser import parse
+import re
 
 import numpy as np
 from suzieq.poller.services.service import Service
@@ -365,9 +366,10 @@ class InterfaceService(Service):
                         .get('data', '')
                 if not macaddr:
                     macaddr = entry.get('macaddr', '00:00:00:00:00:00')
-                afi_mtu = lentry.get('mtu', [{}][0].get('data', entry['mtu']))
 
                 for elem in afis:
+                    afi_mtu = elem.get('mtu', [{}])[0].get(
+                        'data', entry['mtu'])
                     afi = elem.get('address-family-name', [{}])[0] \
                         .get('data', '')
                     if afi == 'inet':
@@ -611,6 +613,8 @@ class InterfaceService(Service):
 
             if entry['ifname'].startswith('Vlan'):
                 entry['type'] = 'vlan'
+            elif re.match(r'.\d+', entry['ifname']):
+                entry['type'] = 'subinterface'
             elif entry['ifname'].startswith('nve'):
                 entry['type'] = 'vxlan'
                 entry['master'] = 'bridge'
