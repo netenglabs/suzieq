@@ -1,7 +1,7 @@
 import os
 import re
 import sys
-from typing import Tuple
+from typing import Tuple, List
 from pathlib import Path
 import logging
 from logging.handlers import RotatingFileHandler
@@ -15,6 +15,7 @@ import fcntl
 from importlib.util import find_spec
 import errno
 from dateparser import parse
+from itertools import groupby
 
 import pandas as pd
 import pyarrow as pa
@@ -40,7 +41,7 @@ def validate_sq_config(cfg):
 
     if not isinstance(cfg, dict):
         return "FATAL: Invalid config file format"
-        
+
     ddir = cfg.get("data-directory", None)
     if not ddir:
         return "FATAL: No data directory for output files specified"
@@ -605,6 +606,27 @@ def convert_rangestring_to_list(rangestr: str) -> list:
         logger.error(f"Range string parsing failed for {rangestr}")
         return []
     return tmplst
+
+
+def convert_numlist_to_ranges(numList: List[int]) -> str:
+    """Convert a given list of numbers into a range string
+
+    Args:
+        numList (List[int]): unsorted/sorted list of integers
+
+    Returns:
+        str: Range string such as '1-5, 10, 12-20'
+    """
+    result = ''
+    for a, b in groupby(enumerate(sorted(numList)),
+                        lambda pair: pair[1] - pair[0]):
+        b = list(b)
+        if len(b) > 1:
+            result += f'{b[0][1]}-{b[-1][1]}, '
+        else:
+            result += f'{b[0][1]}, '
+
+    return result[:-2]
 
 
 def build_query_str(skip_fields: list, schema, ignore_regex=True,
