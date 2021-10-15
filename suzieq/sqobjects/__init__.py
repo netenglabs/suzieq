@@ -23,7 +23,11 @@ def get_sqobject(table_name: str):
             or raises ModuleNotFoundError if the table is not found
 
     '''
-
+    # Handle singular/plural conversion
+    if table_name in ['interface', 'route', 'mac', 'table']:
+        table_name += 's'
+    if table_name in ['paths', 'devices']:
+        table_name = table_name[:-1]
     try:
         mod = import_module(f'suzieq.sqobjects.{table_name}')
         for mbr in inspect.getmembers(mod):
