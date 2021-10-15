@@ -419,6 +419,7 @@ async def query_interface_assert(request: Request,
                                  what: str = None,
                                  matchval: int = Query(None, alias="value"),
                                  status: AssertStatusValues = Query(None),
+                                 ignore_missing_peer: bool = Query(False),
                                  query_str: str = None,
                                  ):
     function_name = inspect.currentframe().f_code.co_name
@@ -443,6 +444,7 @@ async def query_interface(verb: CommonVerbs, request: Request,
                           ifindex: List[str] = Query(None),
                           matchval: int = Query(None, alias="value"),
                           status: AssertStatusValues = Query(None),
+                          ignore_missing_peer: bool = Query(False),
                           query_str: str = None,
                           ):
     function_name = inspect.currentframe().f_code.co_name
@@ -710,6 +712,7 @@ async def query_table(verb: TableVerbs, request: Request,
                       start_time: str = "", end_time: str = "",
                       view: ViewValues = "latest", namespace: List[str] = Query(None),
                       columns: List[str] = Query(default=["default"]),
+                      query_str: str = None
                       ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())

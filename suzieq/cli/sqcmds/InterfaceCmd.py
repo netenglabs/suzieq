@@ -115,8 +115,12 @@ class InterfaceCmd(SqCommand):
     @argument("value", description="Value to match against")
     @argument("status", description="Show only assert that matches this value",
               choices=["all", "fail", "pass"])
+    @argument("ignore_missing_peer",
+              description="Treat missing peer as passing assert check",
+              choices=["True", "False"])
     def aver(self, ifname: str = "", state: str = "", what: str = "",
-             value: str = '', status: str = 'all'):
+             value: str = '', status: str = 'all',
+             ignore_missing_peer: str = "False"):
         """Assert aspects about the interface
         """
         if self.columns != ["default"]:
@@ -139,6 +143,8 @@ class InterfaceCmd(SqCommand):
                                 what=what,
                                 matchval=value.split(),
                                 status=status,
+                                ignore_missing_peer=(
+                                    ignore_missing_peer == "True"),
                                 )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)

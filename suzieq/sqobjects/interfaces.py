@@ -10,8 +10,8 @@ class IfObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'ifname', 'columns',
                                 'state', 'type', 'mtu', 'master', 'ifindex',
                                 'vrf', 'query_str']
-        self._valid_assert_args = ['namespace', 'hostname', 'ifname',
-                                   'what', 'matchval', 'status']
+        self._valid_assert_args = ['namespace', 'hostname', 'ifname', 'what',
+                                   'matchval', 'status', 'ignore_missing_peer']
         self._valid_arg_vals = {
             'state': ['up', 'down', 'notConnected', ''],
             'status': ['all', 'pass', 'fail'],
