@@ -5,6 +5,7 @@ import pandas as pd
 from fastapi.testclient import TestClient
 from filelock import FileLock
 import inspect
+import warnings
 
 from tests.conftest import cli_commands, create_dummy_config_file
 
@@ -258,8 +259,7 @@ def get(endpoint, service, verb, args):
 
     if response.status_code != 200:
         if c_v in argval or argval == ['all']:
-            assert(False,
-                   f"{c_v_f} should not be in good responses list")
+            assert False, f"{c_v_f} should not be in good responses list"
     else:
         if c_v in argval or argval == ['all']:
             df = pd.DataFrame(json.loads(
@@ -271,8 +271,7 @@ def get(endpoint, service, verb, args):
                 assert df.empty
         elif argval[0].split('/')[0] == "all":
             match_verb = argval[0].split('/')[1]
-            assert (match_verb == verb,
-                    f"Unable to match good result for {c_v_f}")
+            assert match_verb == verb, f"Unable to match good result for {c_v_f}"
 
         if ((c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER) and
                 (c_all not in GOOD_FILTER_EMPTY_RESULT_FILTER)):
@@ -292,6 +291,8 @@ def get(endpoint, service, verb, args):
 @ pytest.mark.parametrize("service, verb, arg", [
     (cmd, verb, filter) for cmd in cli_commands
     for verb in VERBS for filter in FILTERS
+
+
 ])
 def test_rest_services(app_initialize, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
@@ -303,35 +304,76 @@ def test_rest_services(app_initialize, service, verb, arg):
 def test_rest_arg_consistency(service, verb):
     '''check that the arguments used in REST match whats in sqobjects'''
 
+    if verb == "describe" and not service == "tables":
+        return
+    if service in ['topcpu', 'topmem', 'sqPoller']:
+        return
     # import all relevant functions from the rest code first
+
     fnlist = list(filter(lambda x: x[0] == f'query_{service}_{verb}',
                          inspect.getmembers(query, inspect.isfunction)))
-    if not fnlist:
+    if not fnlist and service.endswith('s'):
+        # Try the singular version
+        fnlist = list(filter(lambda x: x[0] == f'query_{service[:-1]}_{verb}',
+                             inspect.getmembers(query, inspect.isfunction)))
+
+    if fnlist:
+        found_service_rest_fn = True
+    else:
+        found_service_rest_fn = False
         fnlist = list(filter(lambda x: x[0] == f'query_{service}',
                              inspect.getmembers(query, inspect.isfunction)))
+    if not fnlist and service.endswith('s'):
+        # Try the singular version
+        fnlist = list(filter(lambda x: x[0] == f'query_{service[:-1]}',
+                             inspect.getmembers(query, inspect.isfunction)))
+    if not fnlist:
+        assert fnlist, f"No functions found for {service}/{verb}"
+
     for fn in fnlist:
         rest_args = [i for i in inspect.getfullargspec(fn[1]).args
                      if i not in
                      ['verb', 'token', 'request']]
         sqobj = get_sqobject(service)()
+        supported_verbs = {x[0].replace('aver', 'assert').replace('get', 'show')
+                           for x in inspect.getmembers(sqobj)
+                           if inspect.ismethod(x[1]) and not x[0].startswith('_')}
+
+        if verb not in supported_verbs:
+            continue
 
         arglist = getattr(sqobj, f'_valid_{verb}_args', None)
         if not arglist:
-            arglist = getattr(sqobj, '_valid_get_args')
-        if not arglist:
-            pytest.set_trace()
+            if verb == "show":
+                arglist = getattr(sqobj, f'_valid_get_args', None)
+            else:
+                warnings.warn(
+                    f'Skipping arg check for {verb} in {service} due to missing '
+                    'valid_args list', category=ImportWarning)
+                return
+
         arglist.extend(['namespace', 'hostname', 'start_time', 'end_time',
                         'format', 'view', 'columns', 'query_str'])
 
         valid_args = set(arglist)
 
+        if service == "interface" and verb == "assert":
+            pytest.set_trace()
+        # In the tests below, we warn when we don't have the exact
+        # {service}_{verb} REST function, which prevents us from picking the
+        # correct set of args.
         for arg in valid_args:
-            assert arg in rest_args, f"{arg} missing from {fn} arguments"
+            assert arg in rest_args, f"{arg} missing from {fn} arguments for verb {verb}"
 
         for arg in rest_args:
             if arg not in valid_args and arg != "status":
                 # status is usually part of assert keyword and so ignore
-                assert False, f"{arg} not in {service} sqobj {verb} arguments"
+                if found_service_rest_fn:
+                    assert False, f"{arg} not in {service} sqobj {verb} arguments"
+                else:
+                    warnings.warn(
+                        f"{arg} not in {service} sqobj {verb} arguments",
+                        category=ImportWarning)
 
 
 @ pytest.fixture()
