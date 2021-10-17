@@ -9,6 +9,8 @@ from http import HTTPStatus
 import json
 import re
 from asyncssh import known_hosts
+import operator
+from packaging import version as version_parse
 
 import yaml
 from urllib.parse import urlparse
@@ -236,7 +238,7 @@ class Node(object):
         self.cmd_timeout = 10  # default command timeout in seconds
         self.batch_size = 4    # Number of commands to issue in parallel
         self.bootupTimestamp = 0
-        self.version = 0                 # OS Version to pick the right defn
+        self.version = "all"                 # OS Version to pick the right defn
         self._service_queue = None
         self._conn = None
         self._tunnel = None
@@ -307,7 +309,7 @@ class Node(object):
 
         devtype = kwargs.get("devtype", None)
         if devtype:
-            self.set_devtype(devtype)
+            self.set_devtype(devtype, '')
 
         await self.init_node()
         if not self.hostname:
@@ -535,12 +537,34 @@ class Node(object):
         }
         return result
 
+    def _extract_nos_version(self, data: str) -> None:
+        """Extract the version from the output of show version
+
+        Args:
+            data (str): output of show version
+
+        Returns:
+            str: version
+        """
+        if self.devtype == "linux":
+            for line in data.splitlines():
+                if line.startswith("VERSION_ID"):
+                    self.version = line.split('=')[1] \
+                        .strip().replace('"', '')
+                    break
+            else:
+                self.version = "all"
+                self.logger.error(
+                    f'Cannot parse version from {self.address}:{self.port}')
+
     async def _parse_device_type_hostname(self, output, cb_token) -> None:
         devtype = ""
         hostname = None
 
         if output[0]["status"] == 0:
             data = output[0]["data"]
+            version_str = data
+
             if 'Arista' in data or 'vEOS' in data:
                 devtype = "eos"
             elif "JUNOS " in data:
@@ -600,13 +624,12 @@ class Node(object):
                 _, hostname = hostline.split(":")
                 hostname = hostname.strip()
 
-            if output[2]["status"] == 0:
+            if output[1]["status"] == 0:
                 data = output[2]["data"]
-                for line in data.splitlines():
-                    if line.startswith("VERSION_ID"):
-                        self.version = line.split('=')[1] \
-                            .strip().replace('"', '')
-                        break
+                version_str = data
+
+            if output[2]['status'] == 0:
+                self._extract_nos_version(output[2].get('data', ''))
 
         if not devtype:
             if not self.current_exception:
@@ -617,7 +640,7 @@ class Node(object):
         else:
             self.logger.warning(
                 f'Detected {devtype} for {self.address}:{self.port}, {hostname}')
-            self.set_devtype(devtype)
+            self.set_devtype(devtype, version_str)
             self.set_hostname(hostname)
             self.current_exception = None
 
@@ -632,7 +655,15 @@ class Node(object):
             self.bootupTimestamp = int(int(time.time()*1000)
                                        - float(upsecs)*1000)
         if output[1]["status"] == 0:
-            self.hostname = output[1]["data"].strip()
+            data = output[1].get("data", '')
+            hostline = data.splitlines()[0].strip()
+            if hostline.startswith("Static hostname"):
+                _, hostname = hostline.split(":")
+                self.hostname = hostname.strip()
+
+        if output[2]["status"] == 0:
+            data = output[2].get("data", '')
+            self._extract_nos_version(data)
 
     async def init_node(self):
         devtype = None
@@ -651,7 +682,7 @@ class Node(object):
                 self._status = "init"
                 return
             else:
-                self.set_devtype(devtype)
+                self.set_devtype(devtype, '')
                 self._status = "good"
 
                 self.set_hostname(hostname)
@@ -669,7 +700,7 @@ class Node(object):
                              "cat /etc/os-release", "show hostname"], None,
                             'text')
 
-    def set_devtype(self, devtype):
+    def set_devtype(self, devtype: str, version_str: str) -> None:
         """Change the class based on the device type"""
 
         self.devtype = devtype
@@ -698,6 +729,10 @@ class Node(object):
         elif self.devtype.startswith("sonic"):
             self.__class__ == SonicNode
 
+        # Now invoke the class specific NOS version extraction
+        if version_str:
+            self._extract_nos_version(version_str)
+
     def set_unreach_status(self):
         self._status = "unreachable"
 
@@ -714,7 +749,8 @@ class Node(object):
     async def init_boot_time(self):
         """Fill in the boot time of the node by running the appropriate command"""
         await self.exec_cmd(self._parse_boottime_hostname,
-                            ["cat /proc/uptime", "hostname"], None, 'text')
+                            ["cat /proc/uptime", "hostnamectl",
+                             "cat /etc/os-release"], None, 'text')
 
     def post_commands(self, service_callback, svc_defn: dict,
                       cb_token: RsltToken):
@@ -897,9 +933,28 @@ class Node(object):
             if isinstance(use, list):
                 # There's more than one version here, we have to pick ours
                 for item in use:
-                    if (item["version"] == "all" or
-                            item["version"] == self.version):
+                    if item['version'] != "all":
+                        os_version = item['version']
+                        opdict = {'>': operator.gt, '<': operator.lt,
+                                  '>=': operator.ge, '<=': operator.le,
+                                  '=': operator.eq, '!=': operator.ne}
+                        op = operator.eq
+
+                        for elem in opdict:
+                            if os_version.startswith(elem):
+                                os_version = os_version.replace(
+                                    elem, '').strip()
+                                op = opdict[elem]
+                                break
+
+                        if op(version_parse.LegacyVersion(self.version),
+                                version_parse.LegacyVersion(os_version)):
+                            cmd = item.get('command', None)
+                            use = item
+                            break
+                    else:
                         cmd = item.get("command", None)
+                        use = item
                         break
             else:
                 cmd = use.get("command", None)
@@ -962,6 +1017,10 @@ class EosNode(Node):
             else:
                 data = output[0]["data"]
             self.bootupTimestamp = data["bootupTimestamp"]
+            self.version = data.get('version', '')
+            if not self.version:
+                self.logger.error(f'nodeinit: Error getting version for '
+                                  f'{self.address}: {self.port}')
 
         if output[1]["status"] == 0 or output[1]["status"] == 200:
             if self.transport == 'ssh':
@@ -1076,6 +1135,15 @@ class EosNode(Node):
                 self.hostname = jout["hostname"]
             except:
                 self.hostname = "-"
+
+    def _extract_nos_version(self, data) -> None:
+        match = re.search(r'Software Image Version:\s+(\S+)', data)
+        if match:
+            self.version = match.group(1).strip()
+        else:
+            self.logger.warning(
+                f'Cannot parse version from {self.address}:{self.port}')
+            self.version = "all"
 
 
 class CumulusNode(Node):
@@ -1192,6 +1260,8 @@ class IosXRNode(Node):
                     f'Cannot parse uptime from {self.address}:{self.port}')
                 self.bootupTimestamp = -1
 
+            self._extract_nos_version(data)
+
         if output[1]["status"] == 0:
             data = output[1]['data']
             hostname = re.search(r'hostname (\S+)', data.strip())
@@ -1200,6 +1270,15 @@ class IosXRNode(Node):
                 self.logger.error(f'set hostname of {self.address}:{self.port} to '
                                   f'{hostname.group(1)}')
         self.ssh_ready.set()
+
+    def _extract_nos_version(self, data) -> None:
+        match = re.search(r'Version\s+:\s+ (\S+)', data)
+        if match:
+            self.version = match.group(1).strip()
+        else:
+            self.logger.warning(
+                f'Cannot parse version from {self.address}:{self.port}')
+            self.version = "all"
 
 
 class IosXENode(Node):
@@ -1222,6 +1301,8 @@ class IosXENode(Node):
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
                 self.bootupTimestamp = -1
+
+            self._extract_nos_version(data)
 
     async def ssh_gather(self, service_callback, cmd_list, cb_token, oformat,
                          timeout):
@@ -1279,6 +1360,15 @@ class IosXENode(Node):
         self._conn = None
         await service_callback(result, cb_token)
 
+    def _extract_nos_version(self, data: str) -> None:
+        match = re.search(r', Version\s+(\S+),', data)
+        if match:
+            self.version = match.group(1).strip()
+        else:
+            self.logger.warning(
+                f'Cannot parse version from {self.address}:{self.port}')
+            self.version = "all"
+
 
 class IOSNode(IosXENode):
     pass
@@ -1310,10 +1400,22 @@ class JunosNode(Node):
                 timestr, output[0]['timestamp']/1000)/1000)
 
         if output[1]["status"] == 0:
-            data = output[0]["data"]
+            data = output[1]["data"]
             hmatch = re.search(r'\nHostname:\s+(\S+)\n', data)
             if hmatch:
                 self.set_hostname(hmatch.group(1))
+
+            self._extract_nos_version(data)
+
+    def _extract_nos_version(self, data) -> None:
+        """Extract the version from the output of show version"""
+        match = re.search(r'Junos: (\S+)', data)
+        if match:
+            self.version = match.group(1).strip()
+        else:
+            self.logger.warning(
+                f'Cannot parse version from {self.address}:{self.port}')
+            self.version = "all"
 
 
 class NxosNode(Node):
@@ -1337,6 +1439,11 @@ class NxosNode(Node):
             if upsecs:
                 self.bootupTimestamp = int(int(time.time()*1000)
                                            - float(upsecs)*1000)
+            self.version = data.get('nxos_ver_str', '')
+            if not self.version:
+                self.logger.error(
+                    f'Cannot extract version from {self.address}:{self.port}')
+
         if len(output) > 1:
             if output[1]["status"] == 0:
                 hostname = output[1]["data"].strip()
@@ -1347,13 +1454,22 @@ class NxosNode(Node):
         if hostname:
             self.set_hostname(hostname)
 
+    def _extract_nos_version(self, data: str) -> None:
+        match = re.search(r'NXOS:\s+version\s+(\S+)', data)
+        if match:
+            self.version = match.group(1).strip()
+        else:
+            self.logger.warning(
+                f'Cannot parse version from {self.address}:{self.port}')
+            self.version = "all"
+
 
 class SonicNode(Node):
 
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self.exec_cmd(self._parse_boottime_hostname,
-                            ["cat /proc/uptime", "hostname"], None, 'text')
+                            ["cat /proc/uptime", "hostname", "show version"], None, 'text')
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -1364,3 +1480,14 @@ class SonicNode(Node):
                                        - float(upsecs)*1000)
         if output[1]["status"] == 0:
             self.hostname = output[1]["data"].strip()
+        if output[2]["status"] == 0:
+            self._extract_nos_version(output[1]["data"])
+
+    def _extract_nos_version(self, data: str) -> None:
+        match = re.search(r'Version:\s+SONiC-OS-([^-]+)', data)
+        if match:
+            self.version = match.group(1).strip()
+        else:
+            self.logger.warning(
+                f'Cannot parse version from {self.address}:{self.port}')
+            self.version = "all"

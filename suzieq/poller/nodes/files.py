@@ -152,18 +152,30 @@ class FileNode(object):
     async def exec_service(self, service_callback, svc_defn: dict,
                            cb_token: RsltToken):
 
-        cmdset = set()
-        for device in svc_defn.keys():
-            cmd = svc_defn[device].get('command', None)
-            if not cmd:
-                continue
-
+        def _add_cmd_to_cmdset(cmd: str, cmdset: set) -> None:
+            """Add a command to the set of commands to be executed"""
             if isinstance(cmd, list):
                 # the first command is what we need
                 subcmd = cmd[0]['command'].split('|')[0].strip()
                 cmdset.add(subcmd)
             else:
                 cmdset.add(cmd.split('|')[0].strip())
+
+        cmdset = set()
+        for device in svc_defn.keys():
+            defn = svc_defn[device]
+            if isinstance(defn, list):
+                for elem in defn:
+                    cmd = elem.get('command', None)
+                    if not cmd:
+                        continue
+                    _add_cmd_to_cmdset(cmd, cmdset)
+            else:
+                cmd = defn.get('command', None)
+                if not cmd:
+                    continue
+
+                _add_cmd_to_cmdset(cmd, cmdset)
 
         nodata = True
         for cmd in cmdset:

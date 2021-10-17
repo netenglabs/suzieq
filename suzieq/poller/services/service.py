@@ -1,5 +1,5 @@
 import os
-from typing import List
+from typing import List, Union, Dict
 import asyncio
 from datetime import datetime, timezone
 import time
@@ -11,6 +11,8 @@ from tempfile import mkstemp
 from dataclasses import dataclass, field
 from http import HTTPStatus
 from collections import defaultdict
+import operator
+from packaging import version as version_parse
 
 import pyarrow as pa
 
@@ -260,6 +262,40 @@ class Service(object):
                 self.logger.warning(f"Node post failed for {node}")
                 continue
 
+    def _get_def_for_version(self, defn: List, version: str) -> Dict:
+        '''Extract the right definition for the version'''
+        if isinstance(defn, dict):
+            return defn
+
+        if not isinstance(defn, list):
+            return defn
+
+        for item in defn:
+            os_version = item.get('version', '')
+            if os_version == "all":
+                return item
+            if version == 0:
+                # There are various outputs that due to an old parsing bug
+                # return a node version of 0. Use 'all' for those
+                continue
+            opdict = {'>': operator.gt, '<': operator.lt,
+                      '>=': operator.ge, '<=': operator.le,
+                      '=': operator.eq, '!=': operator.ne}
+            op = operator.eq
+
+            for elem in opdict:
+                if os_version.startswith(elem):
+                    os_version = os_version.replace(
+                        elem, '').strip()
+                    op = opdict[elem]
+                    break
+
+            if op(version_parse.LegacyVersion(version),
+                  version_parse.LegacyVersion(os_version)):
+                return item
+
+        return None
+
     def _process_each_output(self, elem_num, data):
         """Workhorse processing routine for each element in output"""
 
@@ -275,9 +311,13 @@ class Service(object):
             if nfn:
                 # If we're riding on the coattails of another device
                 # get that device's normalization function
-                copynfn = nfn.get("copy", None)
-                if copynfn:
-                    nfn = self.defn.get(copynfn, {})
+                if isinstance(nfn, dict):
+                    copynfn = nfn.get("copy", None)
+                    if copynfn:
+                        nfn = self.defn.get(copynfn, {})
+                if isinstance(nfn, list):
+                    nfn = self._get_def_for_version(nfn, data.get("version"))
+
                 norm_str = nfn.get("normalize", None)
                 if norm_str is None and isinstance(nfn.get('command', None),
                                                    list):

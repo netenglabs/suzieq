@@ -15,6 +15,69 @@ from .service import Service
 logger = logging.getLogger(__name__)
 
 
+def parse_nos_version(svc_dir, filename, svc_def, elem, val):
+
+    if (("command" not in val) or
+                ((isinstance(val['command'], list) and not
+                  all('textfsm' in x or 'normalize' in x
+                      for x in val['command'])) or
+                 (not isinstance(val['command'], list) and (
+                     "normalize" not in val
+                     and "textfsm" not in val)))
+            ):
+        logger.error(
+            "Ignoring invalid service file "
+            'definition. Need both "command" and '
+            '"normalize/textfsm" keywords: {}, {}'.format(
+                filename, val)
+        )
+        return
+
+    if "textfsm" in val:
+        # We may have already visited this element and parsed
+        # the textfsm file. Check for this
+        if val["textfsm"] and isinstance(
+            val["textfsm"], textfsm.TextFSM
+        ) or (val["textfsm"] is None):
+            return
+        tfsm_file = svc_dir + "/" + val["textfsm"]
+        if not isfile(tfsm_file):
+            logger.error(
+                "Textfsm file {} not found. Ignoring"
+                " service".format(tfsm_file)
+            )
+            return
+        with open(tfsm_file, "r") as f:
+            tfsm_template = textfsm.TextFSM(f)
+            val["textfsm"] = tfsm_template
+    elif (isinstance(val['command'], list)):
+        for subelem in val['command']:
+            if 'textfsm' in subelem:
+                if subelem["textfsm"] and isinstance(
+                    subelem["textfsm"], textfsm.TextFSM
+                ):
+                    continue
+                tfsm_file = svc_dir + "/" + subelem["textfsm"]
+                if not isfile(tfsm_file):
+                    logger.error(
+                        "Textfsm file {} not found. Ignoring"
+                        " service".format(tfsm_file)
+                    )
+                    continue
+                with open(tfsm_file, "r") as f:
+                    try:
+                        tfsm_template = textfsm.TextFSM(f)
+                        subelem["textfsm"] = tfsm_template
+                    except Exception:
+                        logger.exception(
+                            'Unable to load TextFSM file '
+                            f'{tfsm_file} for service '
+                            f'{svc_def["service"]}')
+                        continue
+    else:
+        tfsm_template = None
+
+
 async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
                         def_interval: int, run_once: str):
     """Process service definitions by reading each file in svc dir"""
@@ -58,7 +121,7 @@ async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
         if "service" not in svc_def or "apply" not in svc_def:
             logger.error(
                 'Ignoring invalid service file definition. \
-            Need both "service" and "apply" keywords: {}'.format(
+                 "service" and "apply" keywords: {}'.format(
                     filename
                 )
             )
@@ -66,7 +129,7 @@ async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
 
         period = svc_def.get("period", def_interval)
         for elem, val in svc_def["apply"].items():
-            if "copy" in val:
+            if isinstance(val, dict) and "copy" in val:
                 newval = svc_def["apply"].get(val["copy"], None)
                 if not newval:
                     logger.error(
@@ -75,68 +138,16 @@ async def init_services(svc_dir: str, schema_dir: str, queue, svclist: list,
                             val["copy"], elem, svc_def["service"]
                         )
                     )
-                    continue
+                    return
                 val = newval
 
-            if (("command" not in val) or
-                    ((isinstance(val['command'], list) and not
-                      all('textfsm' in x or 'normalize' in x
-                                  for x in val['command'])) or
-                     (not isinstance(val['command'], list) and (
-                                 "normalize" not in val
-                                 and "textfsm" not in val)))
-                    ):
-                logger.error(
-                    "Ignoring invalid service file "
-                    'definition. Need both "command" and '
-                    '"normalize/textfsm" keywords: {}, {}'.format(
-                        filename, val)
-                )
-                continue
-
-            if "textfsm" in val:
-                # We may have already visited this element and parsed
-                # the textfsm file. Check for this
-                if val["textfsm"] and isinstance(
-                    val["textfsm"], textfsm.TextFSM
-                ) or (val["textfsm"] is None):
-                    continue
-                tfsm_file = svc_dir + "/" + val["textfsm"]
-                if not isfile(tfsm_file):
-                    logger.error(
-                        "Textfsm file {} not found. Ignoring"
-                        " service".format(tfsm_file)
-                    )
-                    continue
-                with open(tfsm_file, "r") as f:
-                    tfsm_template = textfsm.TextFSM(f)
-                    val["textfsm"] = tfsm_template
-            elif (isinstance(val['command'], list)):
-                for subelem in val['command']:
-                    if 'textfsm' in subelem:
-                        if subelem["textfsm"] and isinstance(
-                            subelem["textfsm"], textfsm.TextFSM
-                        ):
-                            continue
-                        tfsm_file = svc_dir + "/" + subelem["textfsm"]
-                        if not isfile(tfsm_file):
-                            logger.error(
-                                "Textfsm file {} not found. Ignoring"
-                                " service".format(tfsm_file)
-                            )
-                            continue
-                        with open(tfsm_file, "r") as f:
-                            try:
-                                tfsm_template = textfsm.TextFSM(f)
-                                subelem["textfsm"] = tfsm_template
-                            except Exception:
-                                logger.exception(
-                                    'Unable to load TextFSM file '
-                                    f'{tfsm_file} for service '
-                                    f'{svc_def["service"]}')
-                                continue
+            if isinstance(val, list):
+                for subele in val:
+                    parse_nos_version(svc_dir, filename, svc_def, elem,
+                                      subele)
             else:
-                tfsm_template = None
+
+                parse_nos_version(svc_dir, filename, svc_def, elem, val)
 
         try:
             schema = SchemaForTable(svc_def['service'],
