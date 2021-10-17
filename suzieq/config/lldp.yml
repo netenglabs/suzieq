@@ -60,25 +60,38 @@ apply:
     textfsm: textfsm_templates/lldpd.tfsm
 
   junos-qfx:
-    version: all
-    command: show lldp neighbors detail | display json | no-more
-    normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
-    "lldp-local-port-id/[0]/data: ifname?|",
-    "lldp-local-interface/[0]/data: ifname?|ifname",
-    "lldp-remote-system-name/[0]/data: peerHostname",
-    "lldp-remote-port-id/[0]/data: peerIfname?|",
-    "lldp-remote-port-id-subtype/[0]/data: subtype?|",
-    "lldp-remote-port-description/[0]/data: description?|",
-    "lldp-remote-management-address/[0]/data: mgmtIP?|",
-    "lldp-system-description/[0]/lldp-remote-system-description/[0]/data: description?|description",
-    ]'
+    - version: < 19.1
+      command: show lldp neighbors | display json | no-more
+      normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
+      "lldp-local-port-id/[0]/data: ifname?|",
+      "lldp-local-interface/[0]/data: ifname?|ifname",
+      "lldp-remote-system-name/[0]/data: peerHostname",
+      "lldp-remote-port-id/[0]/data: peerIfname?|",
+      "lldp-remote-port-id-subtype/[0]/data: subtype?|",
+      "lldp-remote-port-description/[0]/data: description?|",
+      "lldp-remote-management-address/[0]/data: mgmtIP?|",
+      "lldp-system-description/[0]/lldp-remote-system-description/[0]/data: description?|description",
+      ]'
+
+    - version: all
+      command: show lldp neighbors detail | display json | no-more
+      normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
+      "lldp-local-port-id/[0]/data: ifname?|",
+      "lldp-local-interface/[0]/data: ifname?|ifname",
+      "lldp-remote-system-name/[0]/data: peerHostname",
+      "lldp-remote-port-id/[0]/data: peerIfname?|",
+      "lldp-remote-port-id-subtype/[0]/data: subtype?|",
+      "lldp-remote-port-description/[0]/data: description?|",
+      "lldp-remote-management-address/[0]/data: mgmtIP?|",
+      "lldp-system-description/[0]/lldp-remote-system-description/[0]/data: description?|description",
+      ]'
 
   junos-ex:
     copy: junos-qfx
 
   junos-mx:
     version: all
-    command: show lldp neighbors detail | display json | no-more
+    command: show lldp neighbors | display json | no-more
     normalize: 'lldp-neighbors-information/[0]/lldp-neighbor-information/*/[
     "lldp-local-port-id/[0]/data: ifname?|",
     "lldp-remote-system-name/[0]/data: peerHostname",
