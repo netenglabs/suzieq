@@ -209,8 +209,8 @@ apply:
         "peer-id/[0]/data: peerRouterId",
         "local-id/[0]/data: routerId",
         "keepalive-interval/[0]/data: keepaliveTime?|0",
-        "bgp-bfd/[0]/bfd-operational-state/[0]/data: bfdStatus",
-        "local-interface-name/[0]/data: ifname",
+        "bgp-bfd/[0]/bfd-operational-state/[0]/data: bfdStatus?|disabled",
+        "local-interface-name/[0]/data: ifname?|",
         "bgp-rib/[*]/advertised-prefix-count/[0]/data: _pfxTxList",
         "bgp-rib/[*]/received-prefix-count/[0]/data: _pfxRxList?|",
         "bgp-rib/[*]/suppressed-prefix-count/[0]/data: _pfxSuppressList?|",
@@ -220,7 +220,6 @@ apply:
         "output-updates/[0]/data: updatesTx?|0",
         "bgp-output-queue/[*]/table-name/[0]/data: _tableNameList",
         "bgp-output-queue/[*]/rib-adv-nlri/[0]/data: _tableAfiList",
-        "bgp-rib/[*]/name/[0]/data: vrf?|default",
         "entry_type: _entryType?|neighbors",
         ]'
 
