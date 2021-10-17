@@ -119,7 +119,7 @@ class DeviceObj(SqPandasEngine):
                     break
 
             df = df.loc[df.version.apply(
-                lambda x: op(version.parse(x), version.parse(os_version)))]
+                lambda x: op(version.LegacyVersion(x), version.LegacyVersion(os_version)))]
 
         df = self._handle_user_query_str(df, user_query)
 
