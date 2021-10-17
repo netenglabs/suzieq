@@ -84,7 +84,12 @@ class VlanService(Service):
                 entry['vlanName'] = f'vlan{entry["vlan"]}'
             if entry['interfaces'] == [[None]]:
                 entry['interfaces'] = []
-            entry['interfaces'] = [x.split('.')[0]
+            # We don't need the explicit .<vlan> tag for interfaces
+            # to keep it consistent with the other devices, but we
+            # cannot remove the VTEP info
+            entry['interfaces'] = [x.split('.')[0].replace('*', '')
+                                   if not x.startswith('vtep')
+                                   else x.replace('*', '')
                                    for x in entry['interfaces']]
             entry['state'] = entry['state'].lower()
             entry['vlanName'] = entry['vlanName'].lower()

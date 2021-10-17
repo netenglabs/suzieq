@@ -175,11 +175,6 @@ class BgpService(Service):
             entry['estdTime'] = get_timestamp_from_junos_time(
                 entry['estdTime'], raw_data[0]['timestamp']/1000)
 
-            # Junos names its VRFs thus: VRFA.inet.0
-            # and we want to strip off the .inet.0 part (Bug #404)
-            if entry.get('vrf') != None:
-                entry['vrf'] = entry.get('vrf', ['default'])[0].split('.')[0]
-
             if entry['state'] != 'Established':
                 entry['afi'] = entry['safi'] = ''
                 continue
@@ -198,6 +193,8 @@ class BgpService(Service):
                 zip(entry['_pfxType'], entry['_pfxBestRxList']))
 
             for orig_elem in table_afi_map:
+                # Junos names its VRFs thus: VRFA.inet.0
+                # and we want to strip off the .inet.0 part (Bug #404)
                 new_entry = deepcopy(entry)
                 elem = _rename_afi_safi(orig_elem)
                 afi, safi = elem.split()
@@ -208,6 +205,18 @@ class BgpService(Service):
                 new_entry['pfxBestRx'] = 0
                 new_entry['pfxSuppressRx'] = 0
                 for table in table_afi_map[orig_elem]:
+                    vrf = table
+                    if vrf == "inet.0":
+                        vrf = "default"
+                    elif vrf == "inet6.0":
+                        vrf = "default"
+                    elif vrf == "bgp.evpn.0":
+                        vrf = "default"
+                    elif vrf.startswith(('__default_evpn__.', 'default-switch.')):
+                        continue
+                    else:
+                        vrf = vrf.split('.')[0]
+                    new_entry['vrf'] = vrf
                     new_entry['pfxRx'] += int(pfxrx_list.get(table, 0) or 0)
                     new_entry['pfxTx'] += int(pfxtx_list.get(table, 0) or 0)
                     new_entry['pfxSuppressRx'] += int(pfxsupp_list.get(table, 0)

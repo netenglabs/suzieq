@@ -109,6 +109,9 @@ class LldpService(Service):
         drop_indices = []
 
         for i, entry in enumerate(processed_data):
+            if not entry['ifname']:
+                drop_indices.append(i)
+
             subtype = entry.get('subtype', '')
             if subtype == 'interfaceName':
                 entry['subtype'] = 'interface name'
@@ -125,7 +128,12 @@ class LldpService(Service):
         return processed_data
 
     def _clean_cumulus_data(self, processed_data, raw_data):
-        for entry in processed_data:
+
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
+            if not entry['ifname']:
+                drop_indices.append(i)
             subtype = entry.get('subtype', '')
             if subtype == "ifname":
                 entry['subtype'] = "interface name"
@@ -134,10 +142,15 @@ class LldpService(Service):
 
             self._common_cleaner(entry)
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_linux_data(self, processed_data, raw_data):
-        for entry in processed_data:
+
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            if not entry['ifname']:
+                drop_indices.append(i)
             subtype = entry.get('subtype', '')
             if subtype == 'ifname':
                 entry['subtype'] = 'interface name'
@@ -147,21 +160,34 @@ class LldpService(Service):
                 entry['subtype'] = 'mac address'
             self._common_cleaner(entry)
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_iosxr_data(self, processed_data, raw_data):
-        for entry in processed_data:
+
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            if not entry['ifname']:
+                drop_indices.append(i)
             self._common_cleaner(entry)
+
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_iosxe_data(self, processed_data, raw_data):
-        for entry in processed_data:
+
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+
+            if not entry['ifname']:
+                drop_indices.append(i)
             for field in ['ifname', 'peerIfname']:
                 entry[field] = expand_ios_ifname(entry[field])
                 if ' ' in entry.get(field, ''):
                     entry[field] = entry[field].replace(' ', '')
             self._common_cleaner(entry)
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_ios_data(self, processed_data, raw_data):
