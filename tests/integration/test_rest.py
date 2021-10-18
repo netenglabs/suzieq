@@ -16,8 +16,8 @@ from suzieq.restServer import query
 
 ENDPOINT = "http://localhost:8000/api/v2"
 
-VERBS = ['show', 'summarize', 'assert', 'lpm',
-         'unique', 'find', 'top', 'describe']
+VERBS = ['show', 'summarize', 'assert', 'lpm', 'top',
+         'unique', 'find', 'describe']
 
 #
 # The code logic is that you define all the filters you want to test in
@@ -54,7 +54,7 @@ FILTERS = ['',  # for vanilla commands without any filter
            'macaddr=44:39:39:ff:00:13&macaddr=44:39:39:ff:00:24',
            'peer=eth1.2',
            'vni=13',
-           'vni=13%2024',
+           'vni=13&vni=24',
            'mountPoint=/',
            'ifname=swp1',
            'type=ethernet',
@@ -88,7 +88,11 @@ FILTERS = ['',  # for vanilla commands without any filter
            'state=active',
            'priVtepIp=10.0.0.112',
            'query_str=hostname%20==%20"leaf01"',
-           'query_str=hostname=="leaf01"%20and%201000<mtu<2000'
+           'query_str=hostname=="leaf01"%20and%201000<mtu<2000',
+           'what=mtu',
+           'what=numChanges',
+           'what=uptime',
+           'what=prefixLen'
            ]
 
 # Valid filters for commands should be present in this list
@@ -96,22 +100,30 @@ FILTERS = ['',  # for vanilla commands without any filter
 # if a filter is valid for all commands but only specific verbs,
 # use ['all/<verb>']
 # Everything else is assumed to be a failure i.e. response code != 200
+NOT_SUMMARIZE = ['all/top', 'all/unique', 'all/show',
+                 'route/lpm', 'all/assert', 'network/find']
+NOT_UNIQUE = ['all/top', 'all/summarize', 'all/show',
+              'route/lpm', 'all/assert', 'network/find']
 GOOD_FILTERS_FOR_SERVICE_VERB = {
     '': ['all'],  # this is for all non-filtered requests
     'address=10.0.0.11': ['route/lpm'],
     'address=10.0.0.11&view=all': ['route/lpm'],
     'address=172.16.1.101': ['network/find'],
     'bd=': ['mac/show'],
-    'hostname=leaf01&hostname=spine01': ['all'],
-    'namespace=ospf-ibgp&namespace=ospf-single': ['all'],
-    'namespace=ospf-ibgp': ['all'],
+    'hostname=leaf01&hostname=spine01': NOT_UNIQUE,
+    'hostname=leaf01&hostname=spine01&columns=hostname': ['all/unique'],
+    'namespace=ospf-ibgp&namespace=ospf-single': NOT_UNIQUE,
+    'namespace=ospf-ibgp&namespace=ospf-single&columns=namespace': ['all/unique'],
+    'namespace=ospf-ibgp': NOT_UNIQUE,
+    'namespace=ospf-ibgp&columns=namespace': ['all/unique'],
     'view=latest': ['all'],
-    'columns=namespace': ['all'],
-    'hostname=leaf01': ['all'],
+    'columns=namespace': NOT_SUMMARIZE,
+    'hostname=leaf01': NOT_UNIQUE,
+    'hostname=leaf01&columns=hostname': ['all/unique'],
     'dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp':
     ['path/show', 'path/summarize'],
     'ifname=swp1': ['interface/show', 'interface/assert',
-                    'lldp/show', 'ospf/show', 'ospf/assert'],
+                    'lldp/show', 'ospf/show'],
     'ipAddress=10.0.0.11': ['arpnd/show'],
     'ipvers=v4': ['address/show'],
     'localOnly=True': ['mac/show'],
@@ -168,11 +180,15 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'macaddr=44:39:39:FF:40:95': ['mac/show'],
     'macaddr=44:39:39:ff:40:95': ['mac/show'],
     'query_str=hostname=="leaf01"%20and%201000<mtu<2000':
-    ['interface/show', 'interface/summaeize', 'interface/unique']
+    ['interface/show', 'interface/summaeize', 'interface/unique'],
+    'what=mtu': ['interface/top'],
+    'what=numChanges': ['bgp/top', 'ospf/top', 'interface/top'],
+    'what=uptime': ['device/top'],
+    'what=prefixLen': ['route/top'],
 }
 
 GOOD_FILTER_EMPTY_RESULT_FILTER = [
-    'sqpoller/show?status=fail',
+    'sqPoller/show?status=fail',
     'ospf/assert?status=fail',
     'evpnVni/assert?status=fail',
     'interface/show?state=notConnected',
@@ -180,7 +196,30 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'device/show?status=neverpoll',
     'device/show?status=dead',
     'inventory/all',
+    'vlan/unique?state=notConnected',
 ]
+
+GOOD_SERVICE_VERBS = {
+    'show': 'all',
+    'unique': 'all',
+    'summarize': 'all',
+    'assert': ['bgp', 'interface', 'ospf'],
+    'lpm': ['route'],
+    'find': ['network'],
+    'describe': ['tables']
+}
+
+MANDATORTY_VERB_ARGS = {
+    # Use namespace as it is present in every object
+    'unique': ['columns'],
+    'lpm': ['address'],
+    'find': ['address'],
+    'top': ['what'],
+}
+
+MANDATORY_SERVICE_ARGS = {
+    'path': ['src', 'dest', 'namespace'],
+}
 
 ####
 # Validation functions: Needed especially for filters that specify multiple
@@ -247,6 +286,17 @@ def get(endpoint, service, verb, args):
     api_key = get_configured_api_key()
     url = f"{endpoint}/{service}/{verb}?{args}"
 
+    # Check if we need to add the mandatory filter for the keyword
+    for mandatory_column in MANDATORTY_VERB_ARGS.get(verb, []):
+        if mandatory_column not in args:
+            return
+
+    for mandatory_column in MANDATORY_SERVICE_ARGS.get(service, []):
+        if mandatory_column not in args:
+            return
+
+    # Check if we need to add the mandatory filter for the keyword
+
     client = TestClient(app)
     response = client.get(url, headers={API_KEY_NAME: api_key})
 
@@ -255,13 +305,19 @@ def get(endpoint, service, verb, args):
     v_f = f"{verb}?{args}"
     c_all = f"{service}/all"
 
+    verb_use = GOOD_SERVICE_VERBS.get(verb, [])
+    if not 'all' in verb_use and not service in verb_use:
+        return
+
     argval = GOOD_FILTERS_FOR_SERVICE_VERB.get(args, [])
 
     if response.status_code != 200:
         if c_v in argval or argval == ['all']:
             assert False, f"{c_v_f} should not be in good responses list"
     else:
+        validate_output = False
         if c_v in argval or argval == ['all']:
+            validate_output = True
             df = pd.DataFrame(json.loads(
                 response.content.decode('utf-8')))
             if ((c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER) and
@@ -269,13 +325,16 @@ def get(endpoint, service, verb, args):
                 assert(not df.empty)
             else:
                 assert df.empty
-        elif argval[0].split('/')[0] == "all":
-            match_verb = argval[0].split('/')[1]
-            assert match_verb == verb, f"Unable to match good result for {c_v_f}"
+        else:
+            for elem in argval:
+                if f'{service}/{verb}' in GOOD_FILTERS_FOR_SERVICE_VERB:
+                    validate_output = True
+                    match_verb = argval[0].split('/')[1]
+                    assert match_verb == verb, f"Unable to match good result for {c_v_f}"
 
         if ((c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER) and
                 (c_all not in GOOD_FILTER_EMPTY_RESULT_FILTER)):
-            if args in VALIDATE_OUTPUT_FILTER:
+            if args in VALIDATE_OUTPUT_FILTER and validate_output:
                 VALIDATE_OUTPUT_FILTER[args](response.json(), service, verb)
             else:
                 df = pd.DataFrame(json.loads(response.content.decode('utf-8')))
@@ -291,8 +350,6 @@ def get(endpoint, service, verb, args):
 @ pytest.mark.parametrize("service, verb, arg", [
     (cmd, verb, filter) for cmd in cli_commands
     for verb in VERBS for filter in FILTERS
-
-
 ])
 def test_rest_services(app_initialize, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
@@ -306,7 +363,7 @@ def test_rest_arg_consistency(service, verb):
 
     if verb == "describe" and not service == "tables":
         return
-    if service in ['topcpu', 'topmem', 'sqPoller']:
+    if service in ['topcpu', 'topmem', 'sqPoller', 'ospfIf', 'ospfNbr', 'time', 'ifCounters']:
         return
     # import all relevant functions from the rest code first
 
@@ -357,8 +414,6 @@ def test_rest_arg_consistency(service, verb):
 
         valid_args = set(arglist)
 
-        if service == "interface" and verb == "assert":
-            pytest.set_trace()
         # In the tests below, we warn when we don't have the exact
         # {service}_{verb} REST function, which prevents us from picking the
         # correct set of args.
