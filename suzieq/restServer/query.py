@@ -13,7 +13,7 @@ import inspect
 import logging
 import uvicorn
 
-from suzieq.sqobjects import *
+from suzieq.sqobjects import get_sqobject
 from suzieq.utils import (load_sq_config, get_sq_install_dir, get_log_params,
                           sq_get_config_file)
 
@@ -257,7 +257,7 @@ async def query_address(verb: CommonVerbs, request: Request,
                         namespace: List[str] = Query(None),
                         columns: List[str] = Query(default=["default"]),
                         address: List[str] = Query(None),
-                        ipvers: str = None,
+                        ipvers: str = None, what: str = None,
                         vrf: str = None, query_str: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
@@ -276,7 +276,7 @@ async def query_arpnd(verb: CommonVerbs, request: Request,
                       ipAddress: List[str] = Query(None),
                       macaddr: List[str] = Query(None),
                       oif: List[str] = Query(None),
-                      query_str: str = None,
+                      query_str: str = None, what: str = None,
                       ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -313,7 +313,7 @@ async def query_bgp(verb: CommonVerbs, request: Request,
                     vrf: List[str] = Query(None),
                     asn: List[str] = Query(None),
                     status: AssertStatusValues = Query(None),
-                    query_str: str = None,
+                    query_str: str = None, what: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -332,7 +332,7 @@ async def query_device(verb: CommonVerbs, request: Request,
                        os: List[str] = Query(None),
                        vendor: List[str] = Query(None),
                        model: List[str] = Query(None),
-                       version: str = "",
+                       version: str = "", what: str = None,
                        status: List[DeviceStatus] = Query(None),
                        ):
     function_name = inspect.currentframe().f_code.co_name
@@ -366,7 +366,7 @@ async def query_evpnVni_assert(request: Request,
                                namespace: List[str] = Query(None),
                                columns: List[str] = Query(default=["default"]),
                                status: AssertStatusValues = None,
-                               query_str: str = None,
+                               query_str: str = None, 
                                ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, "assert", request, locals())
@@ -384,7 +384,7 @@ async def query_evpnVni(verb: CommonVerbs, request: Request,
                         vni: List[str] = Query(None),
                         priVtepIp: List[str] = Query(None),
                         status: AssertStatusValues = None,
-                        query_str: str = None,
+                        query_str: str = None, what: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -399,7 +399,7 @@ async def query_fs(verb: CommonVerbs, request: Request,
                    view: ViewValues = "latest",
                    namespace: List[str] = Query(None),
                    columns: List[str] = Query(default=["default"]),
-                   mountPoint: List[str] = Query(None),
+                   mountPoint: List[str] = Query(None), what: str = None,
                    usedPercent: str = None, query_str: str = None,
                    ):
     function_name = inspect.currentframe().f_code.co_name
@@ -464,7 +464,7 @@ async def query_inventory(verb: CommonVerbs, request: Request,
                           type: List[str] = Query(None),
                           serial: List[str] = Query(None),
                           model: List[str] = Query(None),
-                          vendor: List[str] = Query(None),
+                          vendor: List[str] = Query(None), what: str = None,
                           status: InventoryStatusValues = Query(None),
                           ):
     function_name = inspect.currentframe().f_code.co_name
@@ -481,7 +481,7 @@ async def query_lldp(verb: CommonVerbs, request: Request,
                      namespace: List[str] = Query(None),
                      columns: List[str] = Query(default=["default"]),
                      ifname: List[str] = Query(None),
-                     query_str: str = None,
+                     query_str: str = None, what: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -501,7 +501,7 @@ async def query_mac(verb: CommonVerbs, request: Request,
                     macaddr: List[str] = Query(None),
                     remoteVtepIp: List[str] = Query(None),
                     vlan: List[str] = Query(None),
-                    query_str: str = None,
+                    query_str: str = None, what: str = None,
                     moveCount: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
@@ -517,7 +517,7 @@ async def query_mlag(verb: CommonVerbs, request: Request,
                      view: ViewValues = "latest",
                      namespace: List[str] = Query(None),
                      columns: List[str] = Query(default=["default"]),
-                     query_str: str = None,
+                     query_str: str = None, what: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -554,7 +554,7 @@ async def query_network(verb: CommonVerbs, request: Request,
                         model: List[str] = Query(None),
                         vendor: List[str] = Query(None),
                         os: List[str] = Query(None),
-                        query_str: str = None,
+                        query_str: str = None, what: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -590,7 +590,7 @@ async def query_ospf(verb: CommonVerbs, request: Request,
                      state: OspfStateValues = Query(None),
                      vrf: List[str] = Query(None),
                      status: AssertStatusValues = None,
-                     query_str: str = None,
+                     query_str: str = None, what: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -608,7 +608,7 @@ async def query_path(verb: CommonVerbs, request: Request,
                      vrf: str = None,
                      dest: str = None,
                      source: str = Query(None, alias="src"),
-                     query_str: str = None,
+                     query_str: str = None, what: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -628,14 +628,14 @@ async def query_route(verb: RouteVerbs, request: Request,
                       protocol: List[str] = Query(None),
                       prefixlen: str = None, ipvers: str = None,
                       add_filter: str = None, address: str = None,
-                      query_str: str = None,
+                      query_str: str = None, what: str = None,
                       ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/sqpoller/{verb}")
-async def query_sqpoller(verb: CommonVerbs, request: Request,
+@ app.get("/api/v2/sqPoller/{verb}")
+async def query_sqPoller(verb: CommonVerbs, request: Request,
                          token: str = Depends(get_api_key),
                          format: str = None,
                          hostname: List[str] = Query(None),
@@ -645,7 +645,7 @@ async def query_sqpoller(verb: CommonVerbs, request: Request,
                          columns: List[str] = Query(default=["default"]),
                          service: str = None,
                          status: AssertStatusValues = Query(None),
-                         query_str: str = None,
+                         query_str: str = None, what: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -680,7 +680,7 @@ async def query_topology(verb: CommonVerbs, request: Request,
                          via: List[str] = Query(None),
                          ifname: List[str] = Query(None),
                          peerHostname: List[str] = Query(None),
-                         query_str: str = None,
+                         query_str: str = None, what: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -698,7 +698,7 @@ async def query_vlan(verb: CommonVerbs, request: Request,
                      vlan: List[str] = Query(None),
                      state: str = None,
                      vlanName: List[str] = Query(None),
-                     query_str: str = None
+                     query_str: str = None, what: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -740,21 +740,30 @@ def create_filters(function_name, command, request, local_vars):
     verb_args = {}
     remove_args = ['verb', 'token', 'format', 'request', 'access_token']
     all_cmd_args = ['namespace', 'hostname',
-                    'start_time', 'end_time', 'view', 'columns']
+                    'start_time', 'end_time', 'view', 'columns', 'format']
     both_verb_and_command = ['namespace', 'hostname', ]
+    alias_args = {'src': 'source'}
+    def_val_args = {
+        'namespace': [],
+        'hostname': [],
+    }
 
     query_ks = request.query_params
     for arg in query_ks.keys():
         if arg in remove_args:
             continue
+        if arg in alias_args:
+            tryarg = alias_args[arg]
+        else:
+            tryarg = arg
         if arg in all_cmd_args:
             if query_ks.get(arg) is not None:
-                command_args[arg] = local_vars.get(arg, None)
+                command_args[tryarg] = local_vars.get(tryarg, None)
                 if arg in both_verb_and_command:
-                    verb_args[arg] = command_args[arg]
+                    verb_args[tryarg] = command_args[arg]
         else:
             if query_ks.get(arg) is not None:
-                verb_args[arg] = local_vars.get(arg, None)
+                verb_args[tryarg] = local_vars.get(tryarg, None)
 
     return command_args, verb_args
 
@@ -784,27 +793,7 @@ def get_svc(command):
     """
     command_name = command
 
-    # we almost have a consistent naming scheme, but not quite.
-    # sometime there are s at the end and sometimes not
-    try:
-        module = globals()[command]
-    except KeyError:
-        if command == 'sqpoller':
-            command = 'sqPoller'
-        else:
-            command = f"{command}s"
-        module = globals()[command]
-
-    try:
-        svc = getattr(module, f"{command.title()}Obj")
-    except AttributeError:
-        if command == 'interfaces':
-            # interfaces doesn't follow the same pattern as everything else
-            svc = getattr(module, 'IfObj')
-        elif command == 'sqPoller':
-            svc = getattr(module, 'SqPollerObj')
-        else:
-            svc = getattr(module, f"{command_name.title()}Obj")
+    svc = get_sqobject(command_name)
     return svc
 
 
@@ -820,6 +809,8 @@ def run_command_verb(command, verb, command_args, verb_args, columns=['default']
     """
     svc = get_svc(command)
     try:
+        if svc == "vlan" and verb == "unique":
+            breakpoint()
         svc_inst = svc(**command_args, config_file=app.cfg_file)
         df = getattr(svc_inst, verb)(**verb_args)
 
