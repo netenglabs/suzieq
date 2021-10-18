@@ -5,7 +5,7 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.sqPoller import SqPollerObj
 
 
-@command("sqpoller", help="Act on SqPoller data")
+@command("sqPoller", help="Act on SqPoller data", aliases=['sqpoller'])
 class SqPollerCmd(SqCommand):
     """Information about the poller"""
 
