@@ -231,6 +231,7 @@ class SqObject(object):
 
         # This raises ValueError if it fails
         self.validate_columns(columns)
+        self._check_input_for_valid_vals(self._valid_arg_vals, **kwargs)
         return self.engine.unique(**kwargs, columns=columns)
 
     def aver(self, **kwargs):
