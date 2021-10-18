@@ -6,52 +6,55 @@ tests:
   output: '[{"hostname": "server101", "numRows": 3}, {"hostname": "server102", "numRows":
     3}, {"hostname": "server201", "numRows": 3}, {"hostname": "server202", "numRows":
     3}, {"hostname": "firewall01", "numRows": 10}, {"hostname": "dcedge01", "numRows":
-    32}, {"hostname": "spine01", "numRows": 36}, {"hostname": "spine02", "numRows":
-    36}, {"hostname": "exit01", "numRows": 41}, {"hostname": "exit02", "numRows":
-    41}, {"hostname": "leaf01", "numRows": 41}, {"hostname": "leaf02", "numRows":
-    41}]'
+    44}, {"hostname": "spine01", "numRows": 46}, {"hostname": "spine02", "numRows":
+    46}, {"hostname": "leaf01", "numRows": 49}, {"hostname": "leaf02", "numRows":
+    49}, {"hostname": "exit01", "numRows": 52}, {"hostname": "exit02", "numRows":
+    52}]'
 - command: interface unique --count=True --format=json --columns=type
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
-  output: '[{"type": "vrf", "numRows": 6}, {"type": "flexible-tunnel-interface", "numRows":
-    7}, {"type": "gre", "numRows": 7}, {"type": "mgmt-vlan", "numRows": 7}, {"type":
-    "null", "numRows": 7}, {"type": "flexible-ethernet", "numRows": 8}, {"type": "vlan",
-    "numRows": 10}, {"type": "vtep", "numRows": 16}, {"type": "loopback", "numRows":
-    30}, {"type": "ethernet", "numRows": 192}]'
+  output: '[{"type": "flexible-ethernet", "numRows": 2}, {"type": "vrf", "numRows":
+    6}, {"type": "flexible-tunnel-interface", "numRows": 7}, {"type": "gre", "numRows":
+    7}, {"type": "mgmt-vlan", "numRows": 7}, {"type": "null", "numRows": 7}, {"type":
+    "vlan", "numRows": 10}, {"type": "loopback", "numRows": 12}, {"type": "vtep",
+    "numRows": 14}, {"type": "ethernet", "numRows": 140}, {"type": "subinterface",
+    "numRows": 148}]'
 - command: interface unique --count=True --format=json --columns=mtu
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
-  output: '[{"mtu": 9194, "numRows": 6}, {"mtu": 9216, "numRows": 6}, {"mtu": 9200,
-    "numRows": 16}, {"mtu": 9214, "numRows": 16}, {"mtu": 1500, "numRows": 55}, {"mtu":
-    65536, "numRows": 67}, {"mtu": 1514, "numRows": 124}]'
+  output: '[{"mtu": 9194, "numRows": 6}, {"mtu": 9216, "numRows": 6}, {"mtu": 1986,
+    "numRows": 7}, {"mtu": 9200, "numRows": 16}, {"mtu": 9214, "numRows": 16}, {"mtu":
+    65536, "numRows": 69}, {"mtu": 1500, "numRows": 113}, {"mtu": 1514, "numRows":
+    127}]'
 - command: interface unique --count=True --format=json --columns=state
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
-  output: '[{"state": "down", "numRows": 7}, {"state": "up", "numRows": 283}]'
+  output: '[{"state": "down", "numRows": 7}, {"state": "up", "numRows": 353}]'
 - command: interface unique --count=True --format=json --columns=adminState
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
-  output: '[{"adminState": "up", "numRows": 290}]'
+  output: '[{"adminState": "up", "numRows": 360}]'
 - command: interface unique --count=True --format=json --columns=vlan
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
-  output: '[{"vlan": 10, "numRows": 1}, {"vlan": 20, "numRows": 1}, {"vlan": 2, "numRows":
-    2}, {"vlan": 3, "numRows": 2}, {"vlan": 4, "numRows": 2}, {"vlan": 30, "numRows":
-    2}, {"vlan": 0, "numRows": 280}]'
+  output: '[{"vlan": 10, "numRows": 1}, {"vlan": 20, "numRows": 1}, {"vlan": 30, "numRows":
+    2}, {"vlan": 2, "numRows": 4}, {"vlan": 3, "numRows": 4}, {"vlan": 4, "numRows":
+    4}, {"vlan": 999, "numRows": 4}, {"vlan": 1, "numRows": 7}, {"vlan": 16385, "numRows":
+    7}, {"vlan": 32768, "numRows": 14}, {"vlan": 0, "numRows": 312}]'
 - command: interface unique --count=True --format=json --columns=speed
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
   output: '[{"speed": 800, "numRows": 7}, {"speed": 1000, "numRows": 75}, {"speed":
-    0, "numRows": 94}, {"speed": 10000, "numRows": 114}]'
+    0, "numRows": 110}, {"speed": 10000, "numRows": 168}]'
 - command: interface unique --count=True --format=json --columns=master
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
-  output: '[{"master": "bridge", "numRows": 4}, {"master": "internet-vrf", "numRows":
-    4}, {"master": "evpn-vrf", "numRows": 10}, {"master": "", "numRows": 272}]'
+  output: '[{"master": "internet-vrf", "numRows": 4}, {"master": "bridge", "numRows":
+    6}, {"master": "evpn-vrf", "numRows": 10}, {"master": "", "numRows": 340}]'
 - command: interface unique --count=True --format=json --columns=reason
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
-  output: '[{"reason": "", "numRows": 290}]'
+  output: '[{"reason": "", "numRows": 360}]'
 - command: interface unique --count=True --format=json --query-str='macaddr == ""
     ' --columns=macaddr
   data-directory: tests/data/junos/parquet-out/

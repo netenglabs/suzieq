@@ -5,21 +5,21 @@ tests:
   marks: network show all  cumulus
   output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
     0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1623850905769}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
+    1634522169638}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
     "errSvcCnt": 0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag":
-    true, "lastUpdate": 1623850834754}, {"namespace": "ospf-single", "deviceCnt":
+    true, "lastUpdate": 1634522089050}, {"namespace": "ospf-single", "deviceCnt":
     14, "serviceCnt": 16, "errSvcCnt": 0, "hasOspf": true, "hasBgp": false, "hasVxlan":
-    false, "hasMlag": false, "lastUpdate": 1623850976567}]'
+    false, "hasMlag": false, "lastUpdate": 1634522254949}]'
 - command: network show --format=json --os=cumulus
   data-directory: tests/data/multidc/parquet-out
   marks: network show all  cumulus
   output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
     0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1623850905769}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
+    1634522169638}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
     "errSvcCnt": 0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag":
-    true, "lastUpdate": 1623850834754}, {"namespace": "ospf-single", "deviceCnt":
+    true, "lastUpdate": 1634522089050}, {"namespace": "ospf-single", "deviceCnt":
     14, "serviceCnt": 16, "errSvcCnt": 0, "hasOspf": true, "hasBgp": false, "hasVxlan":
-    false, "hasMlag": false, "lastUpdate": 1623850976567}]'
+    false, "hasMlag": false, "lastUpdate": 1634522254949}]'
 - command: network find --address="172.16.1.101" --format=json
   data-directory: tests/data/multidc/parquet-out
   marks: network find all  cumulus

@@ -362,6 +362,9 @@ tests:
     "mgmt0", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan":
     0, "master": "management", "ipAddressList": ["10.255.2.189/24"], "ip6AddressList":
     [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
+    "Ethernet1/11", "state": "notConnected", "adminState": "up", "type": "ethernet",
+    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
     "Ethernet1/10", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
@@ -373,9 +376,6 @@ tests:
     [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
     "Ethernet1/7", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
-    "Ethernet1/6", "state": "up", "adminState": "up", "type": "bond_slave", "mtu":
-    9216, "vlan": 1, "master": "port-channel1", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
     "Ethernet1/5", "state": "up", "adminState": "up", "type": "bond_slave", "mtu":
     9216, "vlan": 1, "master": "port-channel1", "ipAddressList": [], "ip6AddressList":
@@ -401,8 +401,8 @@ tests:
     "Ethernet1/26", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
-    "Ethernet1/11", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    "Ethernet1/6", "state": "up", "adminState": "up", "type": "bond_slave", "mtu":
+    9216, "vlan": 1, "master": "port-channel1", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
     "Ethernet1/28", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
@@ -557,101 +557,154 @@ tests:
     [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "dcedge01",
     "ifname": "gr-0/0/0", "state": "up", "adminState": "up", "type": "gre", "mtu":
     65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "em2.32768",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
-    "master": "", "ipAddressList": ["192.168.1.2/24"], "ip6AddressList": [], "timestamp":
-    1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "lo0",
-    "state": "up", "adminState": "up", "type": "loopback", "mtu": 65536, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985},
+    1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/9.0",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985},
     {"namespace": "nxos", "hostname": "dcedge01", "ifname": "vme", "state": "down",
     "adminState": "up", "type": "mgmt-vlan", "mtu": 1514, "vlan": 0, "master": "",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
     "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/0.0", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["169.254.127.0/31"], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
     "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/1.0", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["169.254.127.2/31"], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
+    "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/2.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/3.0", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/4.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+    "xe-0/0/5.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/6.0",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985},
+    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/7.0", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
+    "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/8.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/10.0", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/11.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+    "bme0.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1986,
+    "vlan": 0, "master": "", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2", "128.0.0.16/2",
+    "128.0.0.63/2"], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
     "nxos", "hostname": "dcedge01", "ifname": "em0.0", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["10.255.2.250/24"], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
     "nxos", "hostname": "dcedge01", "ifname": "em1.0", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["169.254.0.2/24"], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
+    "nxos", "hostname": "dcedge01", "ifname": "em2.32768", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 32768, "master": "", "ipAddressList":
+    ["192.168.1.2/24"], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
     "nxos", "hostname": "dcedge01", "ifname": "em4.32768", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 32768, "master": "", "ipAddressList":
     ["192.0.2.2/24"], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
+    "nxos", "hostname": "dcedge01", "ifname": "jsrv.1", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 1514, "vlan": 1, "master": "", "ipAddressList":
+    ["128.0.0.127/2"], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
     "nxos", "hostname": "dcedge01", "ifname": "lo0.0", "state": "up", "adminState":
-    "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
     ["10.0.0.41/32"], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
     "nxos", "hostname": "dcedge01", "ifname": "lo0.16385", "state": "up", "adminState":
-    "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": ["fe80::205:860f:fc71:3c00/32"], "timestamp": 1619275258985},
-    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "vtep", "state": "up",
-    "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
-    "dcedge01", "ifname": "fti0", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "dcedge01", "ifname": "lo0", "state": "up", "adminState": "up", "type": "loopback",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01",
-    "ifname": "em4", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    "ifname": "vtep", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/0",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
     "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985},
-    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "esi", "state": "up",
-    "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/1", "state": "up",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
+    "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/2", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/2", "state": "up", "adminState": "up", "type": "ethernet",
+    "dcedge01", "ifname": "xe-0/0/3", "state": "up", "adminState": "up", "type": "ethernet",
     "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
     "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "xe-0/0/3", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
+    "xe-0/0/5", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/6",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985},
+    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/7", "state": "up",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
+    "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/8", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/9", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+    "xe-0/0/10", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
     "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/4",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
     "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985},
-    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/5", "state": "up",
-    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
-    "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/6", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/7", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "xe-0/0/8", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
-    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/1",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985},
-    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/10", "state":
+    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/11", "state":
     "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
     "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
-    "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/9", "state": "up", "adminState":
+    "nxos", "hostname": "dcedge01", "ifname": "fti0", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
+    "nxos", "hostname": "dcedge01", "ifname": "em4", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
     "dcedge01", "ifname": "em3", "state": "up", "adminState": "up", "type": "ethernet",
     "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
     "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "em2", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan":
+    "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan":
     0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985},
-    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "em0", "state": "up",
+    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "em1", "state": "up",
     "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace":
-    "nxos", "hostname": "dcedge01", "ifname": "em1", "state": "up", "adminState":
+    "nxos", "hostname": "dcedge01", "ifname": "em0", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/11", "state": "up", "adminState": "up", "type":
-    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    "dcedge01", "ifname": "dsc", "state": "up", "adminState": "up", "type": "null",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01",
-    "ifname": "dsc", "state": "up", "adminState": "up", "type": "null", "mtu": 65536,
-    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275258985}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/30",
+    "ifname": "em2", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275258985}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/37",
     "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
     "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/25",
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/32",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/38",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/36",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/35",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/34",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/33",
     "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
     "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/31",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/25",
     "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
     "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/29",
@@ -669,163 +722,160 @@ tests:
     1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/24",
     "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
     "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/19",
-    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/22",
-    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/21",
-    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/20",
-    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/18",
-    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/17",
-    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/16",
-    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/15",
-    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
-    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/32",
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/39",
     "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
     "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/23",
     "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
     "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/33",
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/30",
     "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
     "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/1",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9216, "vlan": 0,
-    "master": "default", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": [],
-    "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/35", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/14", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/52", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/51", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/50", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/49", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/48", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/47", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/46", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/34", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/45", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/43", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/42", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/41", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/40", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/39", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/38", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/37", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/36", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/44", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/13", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/51", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/11", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Ethernet1/53", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/52", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/53", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/54", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/55", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/56", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/57", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/58", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/59", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/60", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/61", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/62", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/63", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "Ethernet1/64", "state": "notConnected", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
-    "ifname": "loopback0", "state": "up", "adminState": "up", "type": "loopback",
-    "mtu": 1500, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.22/32"],
-    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine02", "ifname": "loopback1", "state": "up", "adminState": "up", "type": "loopback",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/40",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/8",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/42",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/22",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/57",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/56",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/55",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/54",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/53",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/52",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/41",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/51",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/49",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/48",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/47",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/46",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/45",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/44",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/43",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/50",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/21",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/58",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/19",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/52",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/53",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/54",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/55",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/56",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/57",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/58",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/51",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/59",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/61",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/62",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/63",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/64",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "loopback0",
+    "state": "up", "adminState": "up", "type": "loopback", "mtu": 1500, "vlan": 0,
+    "master": "default", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": [],
     "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname":
-    "Vlan1", "state": "down", "adminState": "down", "type": "vlan", "mtu": 1500, "vlan":
-    1, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    "loopback1", "state": "up", "adminState": "up", "type": "loopback", "mtu": 1500,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname": "Vlan1",
+    "state": "down", "adminState": "down", "type": "vlan", "mtu": 1500, "vlan": 1,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/60", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/20", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
     {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/50", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/48", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/18", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/17", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/16", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/15", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/14", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/13", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
     {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/12", "state":
@@ -834,10 +884,7 @@ tests:
     {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/49", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/47", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/10", "state":
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/11", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
     {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/9", "state":
@@ -858,57 +905,24 @@ tests:
     {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/4", "state":
     "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan": 30, "master":
     "port-channel4", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/37", "state":
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/47", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/38", "state":
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/10", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/39", "state":
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/9", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/40", "state":
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/59", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/41", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/42", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/43", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/44", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/45", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/46", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/48", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine01", "ifname": "mgmt0", "state": "up",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "management",
-    "ipAddressList": ["10.255.2.119/24"], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/54", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/56", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/35", "state":
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/61", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
     {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/36", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/3", "state":
-    "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan": 20, "master":
-    "port-channel3", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
     {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/37", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
@@ -924,6 +938,9 @@ tests:
     {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/41", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/3", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan": 20, "master":
+    "port-channel3", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
     {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/42", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
@@ -939,16 +956,16 @@ tests:
     {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/46", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/34", "state":
-    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
     {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/47", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/49", "state":
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/48", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/50", "state":
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/35", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/49", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
     {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/51", "state":
@@ -984,43 +1001,52 @@ tests:
     {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/61", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/48", "state":
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/62", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/33", "state":
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/63", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/64", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/50", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "loopback0", "state": "up",
+    "adminState": "up", "type": "loopback", "mtu": 1500, "vlan": 0, "master": "default",
+    "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/34", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
     {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/32", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/31", "state":
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/7", "state":
     "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/2", "state":
+    {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/6", "state":
     "up", "adminState": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
     "default", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/3",
+    1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/5",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9216, "vlan": 0,
     "master": "default", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList": [],
     "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname":
     "Ethernet1/4", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9216,
     "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
     [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine01",
-    "ifname": "Ethernet1/5", "state": "up", "adminState": "up", "type": "ethernet",
+    "ifname": "Ethernet1/3", "state": "up", "adminState": "up", "type": "ethernet",
     "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.21/32"],
     "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "Ethernet1/6", "state": "up", "adminState": "up", "type":
+    "spine01", "ifname": "Ethernet1/2", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.21/32"],
     "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "Ethernet1/7", "state": "notConnected", "adminState": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "Ethernet1/8", "state": "notConnected", "adminState": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "Ethernet1/9", "state": "notConnected", "adminState": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine01", "ifname": "Ethernet1/1", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.21/32"],
+    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine01", "ifname": "mgmt0", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1500, "vlan": 0, "master": "management", "ipAddressList": ["10.255.2.119/24"],
+    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
     "spine01", "ifname": "Ethernet1/10", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
@@ -1039,10 +1065,10 @@ tests:
     "spine01", "ifname": "Ethernet1/15", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "Ethernet1/16", "state": "notConnected", "adminState": "up",
+    "spine01", "ifname": "Ethernet1/33", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "Ethernet1/17", "state": "notConnected", "adminState": "up",
+    "spine01", "ifname": "Ethernet1/16", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
     "spine01", "ifname": "Ethernet1/18", "state": "notConnected", "adminState": "up",
@@ -1084,278 +1110,287 @@ tests:
     "spine01", "ifname": "Ethernet1/30", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "Ethernet1/62", "state": "notConnected", "adminState": "up",
+    "spine01", "ifname": "Ethernet1/31", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "Ethernet1/63", "state": "notConnected", "adminState": "up",
+    "spine01", "ifname": "Ethernet1/17", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "Ethernet1/64", "state": "notConnected", "adminState": "up",
+    "leaf04", "ifname": "Ethernet1/60", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "loopback0", "state": "up", "adminState": "up", "type": "loopback",
-    "mtu": 1500, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.21/32"],
-    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine01", "ifname": "loopback1", "state": "up", "adminState": "up", "type": "loopback",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+    "default", "state": "up", "adminState": "up", "type": "vrf", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/33", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/34", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/35", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/36", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/37", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/38", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/39", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/40", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/41", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/42", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/43", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/44", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/45", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/46", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/32", "state":
+    "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "management", "state": "up",
+    "adminState": "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "leaf04", "ifname": "default", "state": "up", "adminState": "up", "type": "vrf",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
+    "nve1", "state": "up", "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan999",
+    "state": "up", "adminState": "up", "type": "vlan", "mtu": 9000, "vlan": 999, "master":
+    "evpn-vrf", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan30", "state": "up",
+    "adminState": "up", "type": "vlan", "mtu": 9000, "vlan": 30, "master": "evpn-vrf",
+    "ipAddressList": ["172.16.3.254/24"], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan20", "state": "up",
+    "adminState": "up", "type": "vlan", "mtu": 9000, "vlan": 20, "master": "evpn-vrf",
+    "ipAddressList": ["172.16.2.254/24"], "ip6AddressList": [], "timestamp": 1619275259180},
+    {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan1", "state": "down",
+    "adminState": "down", "type": "vlan", "mtu": 1500, "vlan": 1, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "leaf04", "ifname": "loopback1", "state": "up", "adminState": "up", "type": "loopback",
+    "mtu": 1500, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.204/32",
+    "10.0.0.134/32"], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
+    "nxos", "hostname": "leaf04", "ifname": "loopback0", "state": "up", "adminState":
+    "up", "type": "loopback", "mtu": 1500, "vlan": 0, "master": "default", "ipAddressList":
+    ["10.0.0.14/32"], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
+    "nxos", "hostname": "leaf04", "ifname": "port-channel4", "state": "up", "adminState":
+    "up", "type": "bond", "mtu": 9216, "vlan": 30, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "leaf04", "ifname": "port-channel3", "state": "up", "adminState": "up", "type":
+    "bond", "mtu": 9216, "vlan": 20, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
+    "port-channel1", "state": "up", "adminState": "up", "type": "bond", "mtu": 9216,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/64",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/63",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/62",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "evpn-vrf",
+    "state": "up", "adminState": "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
+    "nxos", "hostname": "spine01", "ifname": "Vlan1", "state": "down", "adminState":
+    "down", "type": "vlan", "mtu": 1500, "vlan": 1, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/31", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
     "spine02", "ifname": "Ethernet1/29", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine01", "ifname": "management", "state": "up", "adminState": "up", "type":
+    "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
+    "ifname": "mgmt0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1500, "vlan": 0, "master": "management", "ipAddressList": ["10.255.2.120/24"],
+    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/1", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.22/32"],
+    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/2", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.22/32"],
+    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/3", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.22/32"],
+    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/4", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.22/32"],
+    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/5", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.22/32"],
+    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/6", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.22/32"],
+    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/7", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/8", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/9", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/10", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/11", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/12", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
     "spine02", "ifname": "Ethernet1/30", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine02", "ifname": "Ethernet1/31", "state": "notConnected", "adminState": "up",
+    "spine02", "ifname": "Ethernet1/13", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine02", "ifname": "Ethernet1/32", "state": "notConnected", "adminState": "up",
+    "spine02", "ifname": "Ethernet1/15", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine02", "ifname": "Ethernet1/33", "state": "notConnected", "adminState": "up",
+    "spine02", "ifname": "Ethernet1/16", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine02", "ifname": "Ethernet1/34", "state": "notConnected", "adminState": "up",
+    "spine02", "ifname": "Ethernet1/17", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine02", "ifname": "Ethernet1/35", "state": "notConnected", "adminState": "up",
+    "spine02", "ifname": "Ethernet1/18", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine02", "ifname": "Ethernet1/36", "state": "notConnected", "adminState": "up",
+    "spine02", "ifname": "Ethernet1/19", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "leaf04", "ifname": "management", "state": "up", "adminState": "up", "type": "vrf",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf", "mtu": 1500, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "leaf04", "ifname": "default", "state": "up",
-    "adminState": "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    "spine02", "ifname": "Ethernet1/20", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "leaf04", "ifname": "nve1", "state": "up", "adminState": "up", "type": "vxlan",
-    "mtu": 9216, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "Vlan999", "state": "up", "adminState": "up", "type": "vlan", "mtu": 9000, "vlan":
-    999, "master": "evpn-vrf", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan30",
-    "state": "up", "adminState": "up", "type": "vlan", "mtu": 9000, "vlan": 30, "master":
-    "evpn-vrf", "ipAddressList": ["172.16.3.254/24"], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan20",
-    "state": "up", "adminState": "up", "type": "vlan", "mtu": 9000, "vlan": 20, "master":
-    "evpn-vrf", "ipAddressList": ["172.16.2.254/24"], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan1",
-    "state": "down", "adminState": "down", "type": "vlan", "mtu": 1500, "vlan": 1,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "leaf04", "ifname": "loopback1", "state": "up",
-    "adminState": "up", "type": "loopback", "mtu": 1500, "vlan": 0, "master": "default",
-    "ipAddressList": ["10.0.0.204/32", "10.0.0.134/32"], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "loopback0",
-    "state": "up", "adminState": "up", "type": "loopback", "mtu": 1500, "vlan": 0,
-    "master": "default", "ipAddressList": ["10.0.0.14/32"], "ip6AddressList": [],
-    "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-    "port-channel4", "state": "up", "adminState": "up", "type": "bond", "mtu": 9216,
-    "vlan": 30, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "port-channel3",
-    "state": "up", "adminState": "up", "type": "bond", "mtu": 9216, "vlan": 20, "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "leaf04", "ifname": "port-channel1", "state":
-    "up", "adminState": "up", "type": "bond", "mtu": 9216, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "Ethernet1/64", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "Ethernet1/63", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "Ethernet1/62", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "Ethernet1/61", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "Ethernet1/60", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "Ethernet1/59", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "Ethernet1/58", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "Ethernet1/57", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/28", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "Ethernet1/55", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/27", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/25", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine01", "ifname": "loopback1", "state": "up", "adminState":
-    "up", "type": "loopback", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    "spine02", "ifname": "Ethernet1/21", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine01", "ifname": "Vlan1", "state": "down", "adminState": "down", "type": "vlan",
-    "mtu": 1500, "vlan": 1, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname":
-    "default", "state": "up", "adminState": "up", "type": "vrf", "mtu": 1500, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180},
-    {"namespace": "nxos", "hostname": "spine01", "ifname": "management", "state":
-    "up", "adminState": "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master": "",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "mgmt0", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "management", "ipAddressList":
-    ["10.255.2.120/24"], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/1", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList":
-    ["10.0.0.22/32"], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/2", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList":
-    ["10.0.0.22/32"], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/3", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList":
-    ["10.0.0.22/32"], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/4", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList":
-    ["10.0.0.22/32"], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/5", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList":
-    ["10.0.0.22/32"], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/6", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList":
-    ["10.0.0.22/32"], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/7", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/8", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/9", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/10", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/11", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/12", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/13", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/14", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/15", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/16", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/17", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/18", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/19", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/20", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/21", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/22", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/23", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/24", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "Ethernet1/26", "state": "notConnected",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "leaf04", "ifname": "Ethernet1/2", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList":
-    ["10.0.0.14/32"], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace":
-    "nxos", "hostname": "spine02", "ifname": "management", "state": "up", "adminState":
-    "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [],
-    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "leaf04", "ifname": "mgmt0", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 0, "master": "management", "ipAddressList": ["10.255.2.191/24"],
-    "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "leaf04", "ifname": "Ethernet1/1", "state": "up", "adminState": "up", "type":
+    "spine02", "ifname": "Ethernet1/22", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/23", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/24", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/25", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/26", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/27", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/28", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/14", "state": "notConnected", "adminState": "up",
+    "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+    "leaf04", "ifname": "Ethernet1/2", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.14/32"],
     "ip6AddressList": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
-    "spine02", "ifname": "default", "state": "up", "adminState": "up", "type": "vrf",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/21", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/22", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/23", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/24", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/25", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/26", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/27", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/28", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/29", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/30", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/31", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/32", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/33", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/34", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/35", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/20", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/19", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/18", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/17", "state": "notConnected", "adminState": "up", "type": "ethernet",
-    "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
+    "spine02", "ifname": "management", "state": "up", "adminState": "up", "type":
+    "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
     "mgmt0", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan":
-    0, "master": "management", "ipAddressList": ["10.255.2.188/24"], "ip6AddressList":
+    0, "master": "management", "ipAddressList": ["10.255.2.191/24"], "ip6AddressList":
+    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
+    "Ethernet1/1", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9216,
+    "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.14/32"], "ip6AddressList":
+    [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02",
+    "ifname": "default", "state": "up", "adminState": "up", "type": "vrf", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259180}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/21",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/22",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/23",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/24",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/25",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/26",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/27",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/29",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/20",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/30",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/31",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/32",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/33",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/34",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/35",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/28",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/19",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/18",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/17",
+    "state": "notConnected", "adminState": "up", "type": "ethernet", "mtu": 1500,
+    "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "mgmt0",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
+    "master": "management", "ipAddressList": ["10.255.2.188/24"], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
     "Ethernet1/1", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9216,
     "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.12/32"], "ip6AddressList":
@@ -1411,7 +1446,7 @@ tests:
     "Ethernet1/37", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/51", "state": "notConnected", "adminState": "up", "type": "ethernet",
+    "Ethernet1/46", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
     "Ethernet1/39", "state": "notConnected", "adminState": "up", "type": "ethernet",
@@ -1493,19 +1528,19 @@ tests:
     "Ethernet1/59", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/46", "state": "notConnected", "adminState": "up", "type": "ethernet",
+    "Ethernet1/47", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/47", "state": "notConnected", "adminState": "up", "type": "ethernet",
+    "Ethernet1/48", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
     "Ethernet1/45", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/49", "state": "notConnected", "adminState": "up", "type": "ethernet",
+    "Ethernet1/50", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/50", "state": "notConnected", "adminState": "up", "type": "ethernet",
+    "Ethernet1/51", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
     "Ethernet1/52", "state": "notConnected", "adminState": "up", "type": "ethernet",
@@ -1526,7 +1561,7 @@ tests:
     "Ethernet1/57", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-    "Ethernet1/48", "state": "notConnected", "adminState": "up", "type": "ethernet",
+    "Ethernet1/49", "state": "notConnected", "adminState": "up", "type": "ethernet",
     "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "exit01", "ifname":
     "Ethernet1/51", "state": "notConnected", "adminState": "up", "type": "ethernet",
@@ -2060,69 +2095,73 @@ tests:
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
-    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
+    "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
-    "spine01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "spine01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
-    "leaf04"}, {"hostname": "spine02"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "leaf04"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    {"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
     "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "spine02"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname": "leaf04"}, {"hostname":
     "spine01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "leaf04"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
     {"hostname": "spine01"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf04"}, {"hostname":
-    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
-    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
-    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
-    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname":
-    "leaf04"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine01"},
-    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
-    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    "spine01"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
     "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
     "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
     "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
-    {"hostname": "spine02"}, {"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname":
-    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname": "leaf02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf04"},
+    {"hostname": "spine02"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "spine02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
     {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
     "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
     {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
@@ -2144,7 +2183,7 @@ tests:
     {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
     "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
     {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
-    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "exit01"}, {"hostname": "exit01"},
     {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
     "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
     {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
@@ -2166,7 +2205,7 @@ tests:
     {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
     "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
     {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
-    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
     "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
@@ -2188,14 +2227,14 @@ tests:
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
     "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
-    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}]'
+    "exit02"}, {"hostname": "exit02"}]'
 - command: interface summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: interface summarize nxos
-  output: '{"nxos": {"deviceCnt": 14, "interfaceCnt": 668, "devicesWithL2Cnt": 8,
+  output: '{"nxos": {"deviceCnt": 14, "interfaceCnt": 680, "devicesWithL2Cnt": 8,
     "devicesWithVxlanCnt": 6, "ifDownCnt": 469, "ifAdminDownCnt": 8, "ifWithMultipleIPCnt":
-    4, "uniqueMTUCnt": 5, "uniqueIfTypesCnt": 12, "speedCnt": 7, "ifChangesStat":
-    [0, 6, 0], "ifPerDeviceStat": [5, 78, 70.0], "uniqueIPv4AddrCnt": 58, "uniqueIPv6AddrCnt":
+    5, "uniqueMTUCnt": 6, "uniqueIfTypesCnt": 13, "speedCnt": 7, "ifChangesStat":
+    [0, 6, 0], "ifPerDeviceStat": [5, 78, 70.0], "uniqueIPv4AddrCnt": 63, "uniqueIPv6AddrCnt":
     0}}'
 - command: interface unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
@@ -2208,22 +2247,22 @@ tests:
 - command: interface top --what=statusChangeTimestamp --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: interface top nxos
-  output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/4", "state":
+  output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/6", "state":
     "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
     "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1619013552985,
     "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "xe-0/0/6", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
+    "xe-0/0/5", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
     "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
     1619013552985, "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/5", "state": "up", "adminState": "up", "type": "ethernet",
+    "dcedge01", "ifname": "xe-0/0/4", "state": "up", "adminState": "up", "type": "ethernet",
     "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
     "statusChangeTimestamp": 1619013552985, "timestamp": 1619275258985}, {"namespace":
-    "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/1.0", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["169.254.127.2/31"], "ip6AddressList": [], "statusChangeTimestamp": 1619013551985,
-    "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "xe-0/0/1", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
-    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/7", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "statusChangeTimestamp": 1619013551985, "timestamp":
+    1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/3",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
     1619013551985, "timestamp": 1619275258985}]'
 - command: interface show --ifname="Ethernet1/1" --format=json
   data-directory: tests/data/nxos/parquet-out/
@@ -2310,7 +2349,7 @@ tests:
   output: '[{"hostname": "server101", "numRows": 5}, {"hostname": "server102", "numRows":
     5}, {"hostname": "server301", "numRows": 5}, {"hostname": "server302", "numRows":
     5}, {"hostname": "firewall01", "numRows": 10}, {"hostname": "dcedge01", "numRows":
-    32}, {"hostname": "spine01", "numRows": 70}, {"hostname": "spine02", "numRows":
+    44}, {"hostname": "spine01", "numRows": 70}, {"hostname": "spine02", "numRows":
     70}, {"hostname": "exit01", "numRows": 77}, {"hostname": "exit02", "numRows":
     77}, {"hostname": "leaf01", "numRows": 78}, {"hostname": "leaf02", "numRows":
     78}, {"hostname": "leaf03", "numRows": 78}, {"hostname": "leaf04", "numRows":
@@ -2318,105 +2357,286 @@ tests:
 - command: interface assert --format=json
   data-directory: tests/data/nxos/parquet-out/
   error:
-    error: '[{"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/6",
-      "state": "up", "peerHostname": "exit02", "peerIfname": "Ethernet1/2", "assert":
-      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "spine02", "ifname":
-      "Ethernet1/4", "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/2",
-      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "spine02",
-      "ifname": "Ethernet1/3", "state": "up", "peerHostname": "leaf03", "peerIfname":
-      "Ethernet1/2", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
-      "hostname": "spine02", "ifname": "Ethernet1/2", "state": "up", "peerHostname":
-      "leaf02", "peerIfname": "Ethernet1/2", "assert": "pass", "assertReason": []},
-      {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/1", "state":
-      "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/2", "assert": "pass",
-      "assertReason": []}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+    error: '[{"namespace": "nxos", "hostname": "firewall01", "ifname": "eth2.2", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "firewall01", "ifname": "eth1.2", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "firewall01", "ifname": "eth2.3", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "firewall01", "ifname": "eth1.3", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "firewall01", "ifname": "eth2.4", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "firewall01", "ifname": "eth1.4", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Vlan20", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan20", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Vlan30", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Vlan30", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan30", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Vlan30", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Vlan999", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Vlan999", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan999", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Vlan999", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Vlan999", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Vlan999", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Vlan10", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Vlan10", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "lo0.16385", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+      "em2.32768", "state": "up", "peerHostname": "", "peerIfname": "", "assert":
+      "fail", "assertReason": ["No Peer Found"]}, {"namespace": "nxos", "hostname":
+      "dcedge01", "ifname": "em4.32768", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace": "nxos",
+      "hostname": "dcedge01", "ifname": "jsrv.1", "state": "up", "peerHostname": "",
+      "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace":
+      "nxos", "hostname": "server101", "ifname": "eth1", "state": "up", "peerHostname":
+      "", "peerIfname": "", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "server101", "ifname": "bond0", "state": "up", "peerHostname": "",
+      "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace":
+      "nxos", "hostname": "server101", "ifname": "eth2", "state": "up", "peerHostname":
+      "", "peerIfname": "", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "server101", "ifname": "eth0", "state": "up", "peerHostname": "",
+      "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace":
+      "nxos", "hostname": "server102", "ifname": "bond0", "state": "up", "peerHostname":
+      "", "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]},
+      {"namespace": "nxos", "hostname": "server102", "ifname": "eth1", "state": "up",
+      "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "server102", "ifname": "eth2", "state": "up",
+      "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "server102", "ifname": "eth0", "state": "up",
+      "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason": ["No
+      Peer Found"]}, {"namespace": "nxos", "hostname": "server301", "ifname": "eth0",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "server301", "ifname":
+      "eth1", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "server301", "ifname":
+      "eth2", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "server301", "ifname":
+      "bond0", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail",
+      "assertReason": ["No Peer Found"]}, {"namespace": "nxos", "hostname": "firewall01",
+      "ifname": "eth2", "state": "up", "peerHostname": "", "peerIfname": "", "assert":
+      "fail", "assertReason": ["No Peer Found"]}, {"namespace": "nxos", "hostname":
+      "firewall01", "ifname": "eth1", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace": "nxos",
+      "hostname": "firewall01", "ifname": "eth0", "state": "up", "peerHostname": "",
+      "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace":
+      "nxos", "hostname": "server302", "ifname": "eth2", "state": "up", "peerHostname":
+      "", "peerIfname": "", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "server302", "ifname": "eth0", "state": "up", "peerHostname": "",
+      "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace":
+      "nxos", "hostname": "server302", "ifname": "bond0", "state": "up", "peerHostname":
+      "", "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]},
+      {"namespace": "nxos", "hostname": "server302", "ifname": "eth1", "state": "up",
+      "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/4", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/3", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "port-channel1",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "port-channel3",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "port-channel4",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/4", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/3", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "port-channel1",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "port-channel4",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "port-channel3",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "lo0", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+      "xe-0/0/3", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail",
+      "assertReason": ["No Peer Found"]}, {"namespace": "nxos", "hostname": "dcedge01",
+      "ifname": "xe-0/0/4", "state": "up", "peerHostname": "", "peerIfname": "", "assert":
+      "fail", "assertReason": ["No Peer Found"]}, {"namespace": "nxos", "hostname":
+      "dcedge01", "ifname": "xe-0/0/5", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace": "nxos",
+      "hostname": "dcedge01", "ifname": "xe-0/0/6", "state": "up", "peerHostname":
+      "", "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]},
+      {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/7", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+      "xe-0/0/8", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail",
+      "assertReason": ["No Peer Found"]}, {"namespace": "nxos", "hostname": "dcedge01",
+      "ifname": "xe-0/0/10", "state": "up", "peerHostname": "", "peerIfname": "",
+      "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace": "nxos",
+      "hostname": "dcedge01", "ifname": "xe-0/0/11", "state": "up", "peerHostname":
+      "", "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]},
+      {"namespace": "nxos", "hostname": "dcedge01", "ifname": "bme0", "state": "up",
+      "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason": ["No
+      Peer Found"]}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "em0",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+      "em1", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail",
+      "assertReason": ["No Peer Found"]}, {"namespace": "nxos", "hostname": "dcedge01",
+      "ifname": "em2", "state": "up", "peerHostname": "", "peerIfname": "", "assert":
+      "fail", "assertReason": ["No Peer Found"]}, {"namespace": "nxos", "hostname":
+      "dcedge01", "ifname": "em4", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace": "nxos",
+      "hostname": "dcedge01", "ifname": "xe-0/0/2", "state": "up", "peerHostname":
+      "", "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]},
+      {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/9", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+      "em3", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail",
+      "assertReason": ["No Peer Found"]}, {"namespace": "nxos", "hostname": "leaf04",
+      "ifname": "Ethernet1/4", "state": "up", "peerHostname": "", "peerIfname": "",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf04",
+      "ifname": "port-channel4", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
+      "leaf04", "ifname": "port-channel3", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
+      "leaf04", "ifname": "port-channel1", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
+      "leaf04", "ifname": "Ethernet1/3", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
+      "leaf02", "ifname": "Ethernet1/3", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
+      "leaf02", "ifname": "Ethernet1/4", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
+      "leaf02", "ifname": "port-channel3", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
+      "leaf02", "ifname": "port-channel4", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
+      "leaf02", "ifname": "port-channel1", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
+      "exit01", "ifname": "Ethernet1/3.3", "state": "up", "peerHostname": "", "peerIfname":
+      "", "assert": "fail", "assertReason": ["No Peer Found"]}, {"namespace": "nxos",
+      "hostname": "exit01", "ifname": "Ethernet1/3.2", "state": "up", "peerHostname":
+      "", "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"]},
+      {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/3", "state":
+      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/3.4",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/3",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/3.2",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/3.3",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/3.4",
+      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      ["No Peer Found"]}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/6",
+      "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/6", "assert":
+      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf03", "ifname":
+      "Ethernet1/5", "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/5",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf03",
+      "ifname": "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "Ethernet1/3", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "leaf03", "ifname": "Ethernet1/1", "state": "up", "peerHostname":
+      "spine01", "peerIfname": "Ethernet1/3", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "leaf03", "ifname": "mgmt0", "state": "up",
+      "peerHostname": "spine01", "peerIfname": "mgmt0", "assert": "pass", "assertReason":
+      []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0", "state":
+      "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "assert": "fail", "assertReason":
+      ["Speed mismatch"]}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+      "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "assert":
+      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
+      "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "assert":
+      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
+      "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "assert":
+      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "exit01", "ifname":
       "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "assert":
       "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "exit02", "ifname":
       "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "assert":
       "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
-      "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "assert":
-      "fail", "assertReason": ["Speed mismatch"]}, {"namespace": "nxos", "hostname":
-      "leaf04", "ifname": "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "mgmt0", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
-      "exit01", "ifname": "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "mgmt0", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
-      "leaf02", "ifname": "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "mgmt0", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
-      "leaf03", "ifname": "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "mgmt0", "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname":
-      "spine02", "ifname": "Ethernet1/5", "state": "up", "peerHostname": "exit01",
-      "peerIfname": "Ethernet1/2", "assert": "pass", "assertReason": []}, {"namespace":
-      "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/0", "state": "up", "peerHostname":
-      "exit01", "peerIfname": "Ethernet1/4", "assert": "fail", "assertReason": ["MTU
-      mismatch", "Speed mismatch", "IP address mismatch"]}, {"namespace": "nxos",
-      "hostname": "dcedge01", "ifname": "xe-0/0/1", "state": "up", "peerHostname":
-      "exit02", "peerIfname": "Ethernet1/4", "assert": "fail", "assertReason": ["MTU
-      mismatch", "Speed mismatch", "IP address mismatch"]}, {"namespace": "nxos",
+      "Ethernet1/1", "state": "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/1",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf01",
+      "ifname": "Ethernet1/6", "state": "up", "peerHostname": "leaf02", "peerIfname":
+      "Ethernet1/6", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "leaf01", "ifname": "Ethernet1/5", "state": "up", "peerHostname":
+      "leaf02", "peerIfname": "Ethernet1/5", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2", "state":
+      "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/1", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
+      "xe-0/0/1", "state": "up", "peerHostname": "exit02", "peerIfname": "Ethernet1/4",
+      "assert": "fail", "assertReason": ["Speed mismatch"]}, {"namespace": "nxos",
+      "hostname": "dcedge01", "ifname": "xe-0/0/0", "state": "up", "peerHostname":
+      "exit01", "peerIfname": "Ethernet1/4", "assert": "fail", "assertReason": ["Speed
+      mismatch"]}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/1",
+      "state": "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/1", "assert":
+      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
+      "Ethernet1/6", "state": "up", "peerHostname": "leaf03", "peerIfname": "Ethernet1/6",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf04",
+      "ifname": "Ethernet1/5", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "Ethernet1/5", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "spine01", "ifname": "mgmt0", "state": "up", "peerHostname": "leaf03",
+      "peerIfname": "mgmt0", "assert": "pass", "assertReason": []}, {"namespace":
+      "nxos", "hostname": "spine01", "ifname": "Ethernet1/2", "state": "up", "peerHostname":
+      "leaf02", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/3", "state":
+      "up", "peerHostname": "leaf03", "peerIfname": "Ethernet1/1", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "spine01", "ifname":
+      "Ethernet1/4", "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/1",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "spine01",
+      "ifname": "Ethernet1/5", "state": "up", "peerHostname": "exit01", "peerIfname":
+      "Ethernet1/1", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "spine01", "ifname": "Ethernet1/6", "state": "up", "peerHostname":
+      "exit02", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/1", "state":
+      "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/2", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+      "Ethernet1/2", "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet1/2",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "spine02",
+      "ifname": "Ethernet1/3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "Ethernet1/2", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "spine02", "ifname": "Ethernet1/4", "state": "up", "peerHostname":
+      "leaf04", "peerIfname": "Ethernet1/2", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/5", "state":
+      "up", "peerHostname": "exit01", "peerIfname": "Ethernet1/2", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "spine02", "ifname":
+      "Ethernet1/6", "state": "up", "peerHostname": "exit02", "peerIfname": "Ethernet1/2",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf04",
+      "ifname": "Ethernet1/1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet1/4", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "leaf04", "ifname": "Ethernet1/2", "state": "up", "peerHostname":
+      "spine02", "peerIfname": "Ethernet1/4", "assert": "pass", "assertReason": []},
+      {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/1", "state":
+      "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/2", "assert": "pass",
+      "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/2",
+      "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/2", "assert":
+      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
+      "Ethernet1/5", "state": "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/5",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02",
+      "ifname": "Ethernet1/6", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "Ethernet1/6", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
+      "hostname": "exit01", "ifname": "Ethernet1/4", "state": "up", "peerHostname":
+      "dcedge01", "peerIfname": "xe-0/0/0", "assert": "fail", "assertReason": ["Speed
+      mismatch"]}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/2",
+      "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/5", "assert":
+      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "exit01", "ifname":
+      "Ethernet1/1", "state": "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/5",
+      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "exit02",
+      "ifname": "Ethernet1/1", "state": "up", "peerHostname": "spine01", "peerIfname":
+      "Ethernet1/6", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
       "hostname": "exit02", "ifname": "Ethernet1/2", "state": "up", "peerHostname":
       "spine02", "peerIfname": "Ethernet1/6", "assert": "pass", "assertReason": []},
       {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/4", "state":
       "up", "peerHostname": "dcedge01", "peerIfname": "xe-0/0/1", "assert": "fail",
-      "assertReason": ["MTU mismatch", "Speed mismatch", "IP address mismatch"]},
-      {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/1", "state":
-      "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/6", "assert": "pass",
-      "assertReason": []}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1",
-      "state": "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/1", "assert":
-      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
-      "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/1",
-      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf01",
-      "ifname": "Ethernet1/5", "state": "up", "peerHostname": "leaf02", "peerIfname":
-      "Ethernet1/5", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
-      "hostname": "leaf01", "ifname": "Ethernet1/6", "state": "up", "peerHostname":
-      "leaf02", "peerIfname": "Ethernet1/6", "assert": "pass", "assertReason": []},
-      {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/6", "state":
-      "up", "peerHostname": "leaf03", "peerIfname": "Ethernet1/6", "assert": "pass",
-      "assertReason": []}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/5",
-      "state": "up", "peerHostname": "leaf03", "peerIfname": "Ethernet1/5", "assert":
-      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-      "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/4",
-      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf04",
-      "ifname": "Ethernet1/1", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "Ethernet1/4", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
-      "hostname": "exit01", "ifname": "Ethernet1/1", "state": "up", "peerHostname":
-      "spine01", "peerIfname": "Ethernet1/5", "assert": "pass", "assertReason": []},
-      {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/2", "state":
-      "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/5", "assert": "pass",
-      "assertReason": []}, {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/4",
-      "state": "up", "peerHostname": "dcedge01", "peerIfname": "xe-0/0/0", "assert":
-      "fail", "assertReason": ["MTU mismatch", "Speed mismatch", "IP address mismatch"]},
-      {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/6", "state":
-      "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/6", "assert": "pass",
-      "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/5",
-      "state": "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/5", "assert":
-      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-      "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/2",
-      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf02",
-      "ifname": "Ethernet1/1", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "Ethernet1/2", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
-      "hostname": "leaf03", "ifname": "Ethernet1/5", "state": "up", "peerHostname":
-      "leaf04", "peerIfname": "Ethernet1/5", "assert": "pass", "assertReason": []},
-      {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/1", "state":
-      "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/3", "assert": "pass",
-      "assertReason": []}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/6",
-      "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/6", "assert":
-      "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "leaf03", "ifname":
-      "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/3",
-      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "spine01",
-      "ifname": "Ethernet1/4", "state": "up", "peerHostname": "leaf04", "peerIfname":
-      "Ethernet1/1", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
-      "hostname": "spine01", "ifname": "Ethernet1/5", "state": "up", "peerHostname":
-      "exit01", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": []},
-      {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/6", "state":
-      "up", "peerHostname": "exit02", "peerIfname": "Ethernet1/1", "assert": "pass",
-      "assertReason": []}, {"namespace": "nxos", "hostname": "spine01", "ifname":
-      "Ethernet1/2", "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet1/1",
-      "assert": "pass", "assertReason": []}, {"namespace": "nxos", "hostname": "spine01",
-      "ifname": "Ethernet1/1", "state": "up", "peerHostname": "leaf01", "peerIfname":
-      "Ethernet1/1", "assert": "pass", "assertReason": []}, {"namespace": "nxos",
-      "hostname": "spine01", "ifname": "mgmt0", "state": "up", "peerHostname": "leaf03",
-      "peerIfname": "mgmt0", "assert": "pass", "assertReason": []}, {"namespace":
-      "nxos", "hostname": "spine01", "ifname": "Ethernet1/3", "state": "up", "peerHostname":
-      "leaf03", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": []}]'
+      "assertReason": ["Speed mismatch"]}]'
   marks: interface assert nxos
 - command: interface show --query-str='adminState == "down" and state == "up" ' --format=json
   data-directory: tests/data/nxos/parquet-out/

@@ -10,6 +10,8 @@ def validate_lldp_tbl(df: pd.DataFrame):
 
     assert (df.ifname != "").all()
     assert (df.peerHostname != "").all()
+    assert (df.query('subtype == "interface name"').peerIfname != "").all()
+    assert (df.query('subtype == "locally assigned"').peerIfindex != "").all()
     assert (df.subtype.isin(['interface name', 'mac address',
                              'locally assigned'])).all()
 

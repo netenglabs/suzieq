@@ -6,23 +6,23 @@ tests:
   output: '[{"namespace": "junos", "hostname": "exit01", "vlanName": "vlan1", "state":
     "active", "interfaces": [], "vlan": 1, "timestamp": 1623025796342}, {"namespace":
     "junos", "hostname": "leaf01", "vlanName": "vlan10", "state": "active", "interfaces":
-    ["xe-0/0/2.0*"], "vlan": 10, "timestamp": 1623025796342}, {"namespace": "junos",
-    "hostname": "leaf01", "vlanName": "vlan30", "state": "active", "interfaces": ["vtep.32769*",
-    "xe-0/0/3.0*"], "vlan": 30, "timestamp": 1623025796342}, {"namespace": "junos",
-    "hostname": "leaf01", "vlanName": "vlan1", "state": "active", "interfaces": [],
-    "vlan": 1, "timestamp": 1623025796342}, {"namespace": "junos", "hostname": "leaf02",
-    "vlanName": "vlan20", "state": "active", "interfaces": ["xe-0/0/2.0*"], "vlan":
-    20, "timestamp": 1623025796342}, {"namespace": "junos", "hostname": "leaf02",
-    "vlanName": "vlan30", "state": "active", "interfaces": ["vtep.32769*", "xe-0/0/3.0*"],
-    "vlan": 30, "timestamp": 1623025796342}, {"namespace": "junos", "hostname": "leaf02",
-    "vlanName": "vlan1", "state": "active", "interfaces": [], "vlan": 1, "timestamp":
-    1623025796342}, {"namespace": "junos", "hostname": "dcedge01", "vlanName": "vlan1",
-    "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1623025796549}, {"namespace":
-    "junos", "hostname": "spine01", "vlanName": "vlan1", "state": "active", "interfaces":
+    ["xe-0/0/2"], "vlan": 10, "timestamp": 1623025796342}, {"namespace": "junos",
+    "hostname": "leaf01", "vlanName": "vlan30", "state": "active", "interfaces": ["vtep.32769",
+    "xe-0/0/3"], "vlan": 30, "timestamp": 1623025796342}, {"namespace": "junos", "hostname":
+    "leaf01", "vlanName": "vlan1", "state": "active", "interfaces": [], "vlan": 1,
+    "timestamp": 1623025796342}, {"namespace": "junos", "hostname": "leaf02", "vlanName":
+    "vlan20", "state": "active", "interfaces": ["xe-0/0/2"], "vlan": 20, "timestamp":
+    1623025796342}, {"namespace": "junos", "hostname": "leaf02", "vlanName": "vlan30",
+    "state": "active", "interfaces": ["vtep.32769", "xe-0/0/3"], "vlan": 30, "timestamp":
+    1623025796342}, {"namespace": "junos", "hostname": "leaf02", "vlanName": "vlan1",
+    "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1623025796342}, {"namespace":
+    "junos", "hostname": "dcedge01", "vlanName": "vlan1", "state": "active", "interfaces":
     [], "vlan": 1, "timestamp": 1623025796549}, {"namespace": "junos", "hostname":
-    "spine02", "vlanName": "vlan1", "state": "active", "interfaces": [], "vlan": 1,
-    "timestamp": 1623025797192}, {"namespace": "junos", "hostname": "exit02", "vlanName":
-    "vlan1", "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1623025797193}]'
+    "spine01", "vlanName": "vlan1", "state": "active", "interfaces": [], "vlan": 1,
+    "timestamp": 1623025796549}, {"namespace": "junos", "hostname": "spine02", "vlanName":
+    "vlan1", "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1623025797192},
+    {"namespace": "junos", "hostname": "exit02", "vlanName": "vlan1", "state": "active",
+    "interfaces": [], "vlan": 1, "timestamp": 1623025797193}]'
 - command: vlan show --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan show junos

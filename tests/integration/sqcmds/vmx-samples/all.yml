@@ -840,9 +840,9 @@ tests:
 - command: bgp show --columns='*' --format=json
   data-directory: tests/data/vmx/parquet-out
   marks: bgp show junos all vmx
-  output: '[{"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "inet", "peer":
-    "10.0.100.1", "peerHostname": "", "state": "Established", "afi": "ipv4", "safi":
-    "unicast", "asn": 65100, "peerAsn": 65000, "pfxRx": 6, "pfxTx": 0, "numChanges":
+  output: '[{"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default",
+    "peer": "10.0.100.1", "peerHostname": "", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 65100, "peerAsn": 65000, "pfxRx": 6, "pfxTx": 0, "numChanges":
     1, "estdTime": 1630658723674, "afisAdvOnly": [], "afisRcvOnly": ["ipv4 unicast"],
     "pfxBestRx": 6, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
@@ -865,7 +865,7 @@ tests:
     "bfdStatus": "down", "nhUnchanged": false, "nhSelf": false, "rrclient": "False",
     "notificnReason": "Hold Timer Expired Error", "extnhAdvertised": false, "extnhReceived":
     false, "extnhEnabled": false, "peerIP": "10.0.10.1", "mrai": 0, "reason": "Hold
-    Timer Expired Error", "lastDownTime": 0, "ifname": "None", "timestamp": 1631009088674,
+    Timer Expired Error", "lastDownTime": 0, "ifname": "", "timestamp": 1631009088674,
     "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
     "vrf": "VRF-A", "peer": "10.0.10.3", "peerHostname": "TOR4CRP-DGW-RT01", "state":
     "Established", "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn": 65000,
@@ -878,9 +878,9 @@ tests:
     "routerId": "10.0.0.3", "bfdStatus": "up", "nhUnchanged": false, "nhSelf": false,
     "rrclient": "False", "notificnReason": "Hold Timer Expired Error", "extnhAdvertised":
     false, "extnhReceived": false, "extnhEnabled": false, "peerIP": "10.0.10.3", "mrai":
-    0, "reason": "Hold Timer Expired Error", "lastDownTime": 0, "ifname": "None",
-    "timestamp": 1631009088674, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace":
-    "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "peer": "10.0.20.1", "peerHostname":
+    0, "reason": "Hold Timer Expired Error", "lastDownTime": 0, "ifname": "", "timestamp":
+    1631009088674, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "vmx",
+    "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "peer": "10.0.20.1", "peerHostname":
     "", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn":
     65000, "pfxRx": 1, "pfxTx": 2, "numChanges": 1, "estdTime": 1630658722674, "afisAdvOnly":
     [], "afisRcvOnly": ["ipv4 unicast"], "pfxBestRx": 1, "pfxWithdrawnRx": 0, "pfxSuppressRx":
@@ -891,9 +891,9 @@ tests:
     "routerId": "10.0.0.3", "bfdStatus": "down", "nhUnchanged": false, "nhSelf": false,
     "rrclient": "False", "notificnReason": "Hold Timer Expired Error", "extnhAdvertised":
     false, "extnhReceived": false, "extnhEnabled": false, "peerIP": "10.0.20.1", "mrai":
-    0, "reason": "Hold Timer Expired Error", "lastDownTime": 0, "ifname": "None",
-    "timestamp": 1631009088674, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace":
-    "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "peer": "10.0.20.3", "peerHostname":
+    0, "reason": "Hold Timer Expired Error", "lastDownTime": 0, "ifname": "", "timestamp":
+    1631009088674, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "vmx",
+    "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "peer": "10.0.20.3", "peerHostname":
     "TOR4CRP-DGW-RT01", "state": "Established", "afi": "ipv4", "safi": "unicast",
     "asn": 65000, "peerAsn": 65000, "pfxRx": 2, "pfxTx": 2, "numChanges": 3, "estdTime":
     1630916572674, "afisAdvOnly": [], "afisRcvOnly": ["ipv4 unicast"], "pfxBestRx":
@@ -905,8 +905,8 @@ tests:
     "up", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
     "Hold Timer Expired Error", "extnhAdvertised": false, "extnhReceived": false,
     "extnhEnabled": false, "peerIP": "10.0.20.3", "mrai": 0, "reason": "Hold Timer
-    Expired Error", "lastDownTime": 0, "ifname": "None", "timestamp": 1631009088674,
-    "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    Expired Error", "lastDownTime": 0, "ifname": "", "timestamp": 1631009088674, "active":
+    true, "afiSafi": "ipv4 unicast"}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
     "vrf": "VRF-A", "peer": "10.0.10.1", "peerHostname": "", "state": "Established",
     "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn": 65000, "pfxRx": 1,
     "pfxTx": 2, "numChanges": 0, "estdTime": 1630916569873, "afisAdvOnly": [], "afisRcvOnly":
@@ -918,46 +918,45 @@ tests:
     "bfdStatus": "down", "nhUnchanged": false, "nhSelf": false, "rrclient": "False",
     "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled":
     false, "peerIP": "10.0.10.1", "mrai": 0, "reason": "None", "lastDownTime": 0,
-    "ifname": "None", "timestamp": 1631009088873, "active": true, "afiSafi": "ipv4
-    unicast"}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A",
-    "peer": "10.0.10.2", "peerHostname": "TOR1CRP-DGW-RT01", "state": "Established",
-    "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn": 65000, "pfxRx": 2,
-    "pfxTx": 2, "numChanges": 0, "estdTime": 1630916579873, "afisAdvOnly": [], "afisRcvOnly":
-    ["ipv4 unicast"], "pfxBestRx": 1, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
-    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
-    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard", "extended"],
-    "defOriginate": false, "keepaliveTime": 30, "updateSource": "10.0.10.3", "holdTime":
-    90, "updatesRx": 0, "updatesTx": 2, "peerRouterId": "10.0.0.3", "routerId": "10.0.0.4",
-    "bfdStatus": "up", "nhUnchanged": false, "nhSelf": false, "rrclient": "False",
-    "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled":
-    false, "peerIP": "10.0.10.2", "mrai": 0, "reason": "None", "lastDownTime": 0,
-    "ifname": "None", "timestamp": 1631009088873, "active": true, "afiSafi": "ipv4
-    unicast"}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B",
-    "peer": "10.0.20.1", "peerHostname": "", "state": "Established", "afi": "ipv4",
-    "safi": "unicast", "asn": 65000, "peerAsn": 65000, "pfxRx": 1, "pfxTx": 2, "numChanges":
-    0, "estdTime": 1630916569873, "afisAdvOnly": [], "afisRcvOnly": ["ipv4 unicast"],
+    "ifname": "", "timestamp": 1631009088873, "active": true, "afiSafi": "ipv4 unicast"},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A", "peer": "10.0.10.2",
+    "peerHostname": "TOR1CRP-DGW-RT01", "state": "Established", "afi": "ipv4", "safi":
+    "unicast", "asn": 65000, "peerAsn": 65000, "pfxRx": 2, "pfxTx": 2, "numChanges":
+    0, "estdTime": 1630916579873, "afisAdvOnly": [], "afisRcvOnly": ["ipv4 unicast"],
     "pfxBestRx": 1, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent":
     0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
     "softReconfig": false, "communityTypes": ["standard", "extended"], "defOriginate":
-    false, "keepaliveTime": 30, "updateSource": "10.0.20.3", "holdTime": 90, "updatesRx":
-    0, "updatesTx": 2, "peerRouterId": "10.0.0.0", "routerId": "10.0.0.4", "bfdStatus":
-    "down", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
-    "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
-    "10.0.20.1", "mrai": 0, "reason": "None", "lastDownTime": 0, "ifname": "None",
-    "timestamp": 1631009088873, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace":
-    "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "peer": "10.0.20.2", "peerHostname":
-    "TOR1CRP-DGW-RT01", "state": "Established", "afi": "ipv4", "safi": "unicast",
-    "asn": 65000, "peerAsn": 65000, "pfxRx": 2, "pfxTx": 2, "numChanges": 0, "estdTime":
-    1630916571873, "afisAdvOnly": [], "afisRcvOnly": ["ipv4 unicast"], "pfxBestRx":
-    1, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx": 0, "pfxWarnPercent": 0,
-    "hopsMax": 0, "advertiseAllVnis": false, "egressRmap": "", "ingressRmap": "",
-    "softReconfig": false, "communityTypes": ["standard", "extended"], "defOriginate":
-    false, "keepaliveTime": 30, "updateSource": "10.0.20.3", "holdTime": 90, "updatesRx":
+    false, "keepaliveTime": 30, "updateSource": "10.0.10.3", "holdTime": 90, "updatesRx":
     0, "updatesTx": 2, "peerRouterId": "10.0.0.3", "routerId": "10.0.0.4", "bfdStatus":
     "up", "nhUnchanged": false, "nhSelf": false, "rrclient": "False", "notificnReason":
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
-    "10.0.20.2", "mrai": 0, "reason": "None", "lastDownTime": 0, "ifname": "None",
-    "timestamp": 1631009088873, "active": true, "afiSafi": "ipv4 unicast"}]'
+    "10.0.10.2", "mrai": 0, "reason": "None", "lastDownTime": 0, "ifname": "", "timestamp":
+    1631009088873, "active": true, "afiSafi": "ipv4 unicast"}, {"namespace": "vmx",
+    "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "peer": "10.0.20.1", "peerHostname":
+    "", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn":
+    65000, "pfxRx": 1, "pfxTx": 2, "numChanges": 0, "estdTime": 1630916569873, "afisAdvOnly":
+    [], "afisRcvOnly": ["ipv4 unicast"], "pfxBestRx": 1, "pfxWithdrawnRx": 0, "pfxSuppressRx":
+    0, "pfxMaxRx": 0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false,
+    "egressRmap": "", "ingressRmap": "", "softReconfig": false, "communityTypes":
+    ["standard", "extended"], "defOriginate": false, "keepaliveTime": 30, "updateSource":
+    "10.0.20.3", "holdTime": 90, "updatesRx": 0, "updatesTx": 2, "peerRouterId": "10.0.0.0",
+    "routerId": "10.0.0.4", "bfdStatus": "down", "nhUnchanged": false, "nhSelf": false,
+    "rrclient": "False", "notificnReason": "", "extnhAdvertised": false, "extnhReceived":
+    false, "extnhEnabled": false, "peerIP": "10.0.20.1", "mrai": 0, "reason": "None",
+    "lastDownTime": 0, "ifname": "", "timestamp": 1631009088873, "active": true, "afiSafi":
+    "ipv4 unicast"}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B",
+    "peer": "10.0.20.2", "peerHostname": "TOR1CRP-DGW-RT01", "state": "Established",
+    "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn": 65000, "pfxRx": 2,
+    "pfxTx": 2, "numChanges": 0, "estdTime": 1630916571873, "afisAdvOnly": [], "afisRcvOnly":
+    ["ipv4 unicast"], "pfxBestRx": 1, "pfxWithdrawnRx": 0, "pfxSuppressRx": 0, "pfxMaxRx":
+    0, "pfxWarnPercent": 0, "hopsMax": 0, "advertiseAllVnis": false, "egressRmap":
+    "", "ingressRmap": "", "softReconfig": false, "communityTypes": ["standard", "extended"],
+    "defOriginate": false, "keepaliveTime": 30, "updateSource": "10.0.20.3", "holdTime":
+    90, "updatesRx": 0, "updatesTx": 2, "peerRouterId": "10.0.0.3", "routerId": "10.0.0.4",
+    "bfdStatus": "up", "nhUnchanged": false, "nhSelf": false, "rrclient": "False",
+    "notificnReason": "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled":
+    false, "peerIP": "10.0.20.2", "mrai": 0, "reason": "None", "lastDownTime": 0,
+    "ifname": "", "timestamp": 1631009088873, "active": true, "afiSafi": "ipv4 unicast"}]'
 - command: device show --columns='*' --format=json
   data-directory: tests/data/vmx/parquet-out
   marks: device show junos all vmx
@@ -1158,21 +1157,21 @@ tests:
     0, "speed": 0, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     1631009088901, "vni": 0, "lacpBypass": false, "timestamp": 1631009088901, "active":
     true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fxp0.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan":
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
     0, "master": "", "ipAddressList": ["172.26.145.154/22"], "ip6AddressList": [],
     "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "50:06:00:0f:00:00",
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": 1000, "innerVlan":
     0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 1630916522901, "vni":
     0, "lacpBypass": false, "timestamp": 1631009088901, "active": true}, {"namespace":
     "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "em1.0", "state": "up", "adminState":
-    "up", "type": "subinterface", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "ip6AddressList": [], "ifindex":
     0, "reason": "", "routeDistinguisher": "", "macaddr": "50:06:00:0f:00:01", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": 1000, "innerVlan": 0, "vlanName":
     "", "srcVtepIp": "", "statusChangeTimestamp": 1630916522901, "vni": 0, "lacpBypass":
     false, "timestamp": 1631009088901, "active": true}, {"namespace": "vmx", "hostname":
     "TOR4CRP-DGW-RT01", "ifname": "irb.201", "state": "up", "adminState": "up", "type":
-    "vlan", "mtu": 1514, "vlan": 201, "master": "", "ipAddressList": ["172.16.21.254/24"],
+    "vlan", "mtu": 1500, "vlan": 201, "master": "", "ipAddressList": ["172.16.21.254/24"],
     "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr":
     "2c:6b:f5:7d:f6:f0", "interfaceMac": "", "description": "", "numChanges": 0, "speed":
     0, "innerVlan": 0, "vlanName": "-", "srcVtepIp": "", "statusChangeTimestamp":
@@ -1185,13 +1184,13 @@ tests:
     "-", "srcVtepIp": "", "statusChangeTimestamp": 1631009088901, "vni": 0, "lacpBypass":
     false, "timestamp": 1631009088901, "active": true}, {"namespace": "vmx", "hostname":
     "TOR4CRP-DGW-RT01", "ifname": "ae1.20", "state": "up", "adminState": "up", "type":
-    "subinterface", "mtu": 1518, "vlan": 20, "master": "", "ipAddressList": ["10.0.20.3/29"],
+    "subinterface", "mtu": 65536, "vlan": 20, "master": "", "ipAddressList": ["10.0.20.3/29"],
     "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr":
     "2c:6b:f5:7d:f6:c1", "interfaceMac": "", "description": "CRP-DIS-SW01:ae2", "numChanges":
     0, "speed": 2000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     1630916567901, "vni": 0, "lacpBypass": false, "timestamp": 1631009088901, "active":
     true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae1.10",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1518, "vlan":
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
     10, "master": "", "ipAddressList": ["10.0.10.3/29"], "ip6AddressList": [], "ifindex":
     0, "reason": "", "routeDistinguisher": "", "macaddr": "2c:6b:f5:7d:f6:c1", "interfaceMac":
     "", "description": "CRP-DIS-SW01:ae2", "numChanges": 0, "speed": 2000, "innerVlan":
@@ -1223,7 +1222,7 @@ tests:
     0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 1631009088901, "vni":
     0, "lacpBypass": false, "timestamp": 1631009088901, "active": true}, {"namespace":
     "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "irb.101", "state": "up", "adminState":
-    "up", "type": "vlan", "mtu": 1514, "vlan": 101, "master": "", "ipAddressList":
+    "up", "type": "vlan", "mtu": 1500, "vlan": 101, "master": "", "ipAddressList":
     ["172.16.11.254/24"], "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher":
     "", "macaddr": "2c:6b:f5:7d:f6:f0", "interfaceMac": "", "description": "", "numChanges":
     0, "speed": 0, "innerVlan": 0, "vlanName": "-", "srcVtepIp": "", "statusChangeTimestamp":
@@ -1265,14 +1264,14 @@ tests:
     0, "speed": 0, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     1631009089182, "vni": 0, "lacpBypass": false, "timestamp": 1631009089182, "active":
     true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "em1.0", "state":
-    "up", "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan": 0, "master":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
     "", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "ip6AddressList":
     [], "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "50:06:00:03:00:01",
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": 1000, "innerVlan":
     0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 1629105521182, "vni":
     0, "lacpBypass": false, "timestamp": 1631009089182, "active": true}, {"namespace":
     "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fxp0.0", "state": "up", "adminState":
-    "up", "type": "subinterface", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["172.26.145.152/22"], "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher":
     "", "macaddr": "50:06:00:03:00:00", "interfaceMac": "", "description": "", "numChanges":
     0, "speed": 1000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
@@ -1501,14 +1500,14 @@ tests:
     0, "speed": 0, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     1631009089423, "vni": 0, "lacpBypass": false, "timestamp": 1631009089423, "active":
     true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "em1.0", "state":
-    "up", "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan": 0, "master":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
     "", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "ip6AddressList":
     [], "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "50:06:00:0b:00:01",
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": 1000, "innerVlan":
     0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 1629105508423, "vni":
     0, "lacpBypass": false, "timestamp": 1631009089423, "active": true}, {"namespace":
     "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fxp0.0", "state": "up", "adminState":
-    "up", "type": "subinterface", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["172.26.145.151/22"], "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher":
     "", "macaddr": "50:06:00:0b:00:00", "interfaceMac": "", "description": "", "numChanges":
     0, "speed": 1000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
@@ -1719,27 +1718,27 @@ tests:
     0, "speed": 0, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     1631009089434, "vni": 0, "lacpBypass": false, "timestamp": 1631009089434, "active":
     true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "ge-0/0/2.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan":
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
     0, "master": "", "ipAddressList": ["10.0.100.0/31"], "ip6AddressList": [], "ifindex":
     0, "reason": "", "routeDistinguisher": "", "macaddr": "50:06:00:0c:00:04", "interfaceMac":
     "", "description": "TOR1CRP-SEC-FW01:eth1/3", "numChanges": 0, "speed": 1000,
     "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 1629185745434,
     "vni": 0, "lacpBypass": false, "timestamp": 1631009089434, "active": true}, {"namespace":
     "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "ge-0/0/3.0", "state": "down",
-    "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan": 0, "master":
+    "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master":
     "", "ipAddressList": [], "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher":
     "", "macaddr": "50:06:00:0c:00:05", "interfaceMac": "", "description": "", "numChanges":
     0, "speed": 1000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     1629185275434, "vni": 0, "lacpBypass": false, "timestamp": 1631009089434, "active":
     true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "em1.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan":
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
     0, "master": "", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"],
     "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr":
     "50:06:00:01:00:01", "interfaceMac": "", "description": "", "numChanges": 0, "speed":
     1000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     1629185229434, "vni": 0, "lacpBypass": false, "timestamp": 1631009089434, "active":
     true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "fxp0.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan":
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
     0, "master": "", "ipAddressList": ["172.26.145.155/22"], "ip6AddressList": [],
     "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "50:06:00:01:00:00",
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": 0, "innerVlan":
@@ -2049,34 +2048,34 @@ tests:
     0, "speed": 0, "innerVlan": 0, "vlanName": "-", "srcVtepIp": "", "statusChangeTimestamp":
     1631009089864, "vni": 0, "lacpBypass": false, "timestamp": 1631009089864, "active":
     true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "irb.200",
-    "state": "up", "adminState": "up", "type": "vlan", "mtu": 1514, "vlan": 200, "master":
+    "state": "up", "adminState": "up", "type": "vlan", "mtu": 1500, "vlan": 200, "master":
     "", "ipAddressList": ["172.16.20.254/24"], "ip6AddressList": [], "ifindex": 0,
     "reason": "", "routeDistinguisher": "", "macaddr": "2c:6b:f5:b6:ce:f0", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName":
     "-", "srcVtepIp": "", "statusChangeTimestamp": 1631009089864, "vni": 0, "lacpBypass":
     false, "timestamp": 1631009089864, "active": true}, {"namespace": "vmx", "hostname":
     "TOR1CRP-DGW-RT01", "ifname": "irb.100", "state": "up", "adminState": "up", "type":
-    "vlan", "mtu": 1514, "vlan": 100, "master": "", "ipAddressList": ["172.16.10.254/24"],
+    "vlan", "mtu": 1500, "vlan": 100, "master": "", "ipAddressList": ["172.16.10.254/24"],
     "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr":
     "2c:6b:f5:b6:ce:f0", "interfaceMac": "", "description": "", "numChanges": 0, "speed":
     0, "innerVlan": 0, "vlanName": "-", "srcVtepIp": "", "statusChangeTimestamp":
     1631009089864, "vni": 0, "lacpBypass": false, "timestamp": 1631009089864, "active":
     true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "em1.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan":
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
     0, "master": "", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"],
     "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr":
     "50:06:00:0d:00:01", "interfaceMac": "", "description": "", "numChanges": 0, "speed":
     1000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     1629182559864, "vni": 0, "lacpBypass": false, "timestamp": 1631009089864, "active":
     true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.20",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1518, "vlan":
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
     20, "master": "", "ipAddressList": ["10.0.20.2/29"], "ip6AddressList": [], "ifindex":
     0, "reason": "", "routeDistinguisher": "", "macaddr": "2c:6b:f5:b6:ce:c1", "interfaceMac":
     "", "description": "CRP-DIS-SW01:ae1", "numChanges": 0, "speed": 2000, "innerVlan":
     0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 1629183409864, "vni":
     0, "lacpBypass": false, "timestamp": 1631009089864, "active": true}, {"namespace":
     "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.10", "state": "up", "adminState":
-    "up", "type": "subinterface", "mtu": 1518, "vlan": 10, "master": "", "ipAddressList":
+    "up", "type": "subinterface", "mtu": 65536, "vlan": 10, "master": "", "ipAddressList":
     ["10.0.10.2/29"], "ip6AddressList": [], "ifindex": 0, "reason": "", "routeDistinguisher":
     "", "macaddr": "2c:6b:f5:b6:ce:c1", "interfaceMac": "", "description": "CRP-DIS-SW01:ae1",
     "numChanges": 0, "speed": 2000, "innerVlan": 0, "vlanName": "", "srcVtepIp": "",
@@ -2113,7 +2112,7 @@ tests:
     0, "speed": 0, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     1631009089864, "vni": 0, "lacpBypass": false, "timestamp": 1631009089864, "active":
     true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "fxp0.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan":
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
     0, "master": "", "ipAddressList": ["172.26.145.153/22"], "ip6AddressList": [],
     "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "50:06:00:0d:00:00",
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": 0, "innerVlan":
@@ -2261,7 +2260,7 @@ tests:
   marks: network show vmx all vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1632943992076}]'
+    1634522087740}]'
 - command: ospf show --columns='*' --format=json
   data-directory: tests/data/vmx/parquet-out
   marks: ospf show junos all vmx

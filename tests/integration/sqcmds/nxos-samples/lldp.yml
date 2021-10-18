@@ -32,10 +32,10 @@ tests:
     "Ethernet1/2", "peerHostname": "spine02", "peerIfname": "Ethernet1/6", "description":
     "N9K-C9300v", "mgmtIP": "10.255.2.120", "timestamp": 1619275257142}, {"namespace":
     "nxos", "hostname": "exit02", "ifname": "Ethernet1/4", "peerHostname": "dcedge01",
-    "peerIfname": "xe-0/0/1", "description": "", "mgmtIP": "not advertised", "timestamp":
-    1619275257142}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/1",
-    "peerHostname": "spine01", "peerIfname": "Ethernet1/6", "description": "N9K-C9300v",
-    "mgmtIP": "10.255.2.119", "timestamp": 1619275257142}, {"namespace": "nxos", "hostname":
+    "peerIfname": "xe-0/0/1", "description": "", "mgmtIP": "", "timestamp": 1619275257142},
+    {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "peerIfname": "Ethernet1/6", "description": "N9K-C9300v", "mgmtIP":
+    "10.255.2.119", "timestamp": 1619275257142}, {"namespace": "nxos", "hostname":
     "exit02", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname": "mgmt0",
     "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257142}, {"namespace":
     "nxos", "hostname": "leaf01", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname":
@@ -71,8 +71,8 @@ tests:
     "spine02", "peerIfname": "Ethernet1/5", "description": "N9K-C9300v", "mgmtIP":
     "10.255.2.120", "timestamp": 1619275257671}, {"namespace": "nxos", "hostname":
     "exit01", "ifname": "Ethernet1/4", "peerHostname": "dcedge01", "peerIfname": "xe-0/0/0",
-    "description": "", "mgmtIP": "not advertised", "timestamp": 1619275257671}, {"namespace":
-    "nxos", "hostname": "leaf02", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname":
+    "description": "", "mgmtIP": "", "timestamp": 1619275257671}, {"namespace": "nxos",
+    "hostname": "leaf02", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname":
     "mgmt0", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257674},
     {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/6", "peerHostname":
     "leaf01", "peerIfname": "Ethernet1/6", "description": "N9K-C9300v", "mgmtIP":
@@ -134,7 +134,7 @@ tests:
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp summarize nxos
   output: '{"nxos": {"deviceCnt": 9, "nbrCnt": 44, "peerHostnameCnt": 44, "uniquePeerMgmtIPCnt":
-    10, "missingPeerInfoCnt": 8}}'
+    9, "missingPeerInfoCnt": 10}}'
 - command: lldp unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp unique nxos

@@ -55,7 +55,8 @@ tests:
 - command: bgp unique --count=True --format=json --columns=vrf
   data-directory: tests/data/junos/parquet-out/
   marks: bgp unique junos
-  output: '[{"vrf": "default", "numRows": 32}]'
+  output: '[{"vrf": "evpn-vrf", "numRows": 2}, {"vrf": "internet-vrf", "numRows":
+    4}, {"vrf": "default", "numRows": 26}]'
 - command: bgp unique --count=True --format=json --columns=nhUnchanged
   data-directory: tests/data/junos/parquet-out/
   marks: bgp unique junos

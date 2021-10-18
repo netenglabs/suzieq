@@ -61,14 +61,14 @@ tests:
     "firewall01", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn":
     64520, "peerAsn": 65533, "pfxRx": 0, "pfxTx": 0, "numChanges": 0, "estdTime":
     1622998918026, "timestamp": 1623025798026}, {"namespace": "junos", "hostname":
-    "exit01", "vrf": "default", "peer": "169.254.254.10", "peerHostname": "firewall01",
+    "exit01", "vrf": "internet-vrf", "peer": "169.254.254.10", "peerHostname": "firewall01",
     "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn":
     65533, "pfxRx": 9, "pfxTx": 5, "numChanges": 0, "estdTime": 1622998919026, "timestamp":
-    1623025798026}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    1623025798026}, {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf",
     "peer": "169.254.254.6", "peerHostname": "firewall01", "state": "Established",
     "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 0,
     "pfxTx": 3, "numChanges": 0, "estdTime": 1622998918026, "timestamp": 1623025798026},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "default", "peer": "169.254.127.0",
+    {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.127.0",
     "peerHostname": "dcedge01", "state": "Established", "afi": "ipv4", "safi": "unicast",
     "asn": 64520, "peerAsn": 65534, "pfxRx": 6, "pfxTx": 3, "numChanges": 0, "estdTime":
     1622999270026, "timestamp": 1623025798026}, {"namespace": "junos", "hostname":
@@ -83,14 +83,14 @@ tests:
     "peerHostname": "exit02", "state": "Established", "afi": "ipv4", "safi": "unicast",
     "asn": 65534, "peerAsn": 64520, "pfxRx": 3, "pfxTx": 6, "numChanges": 0, "estdTime":
     1622999494026, "timestamp": 1623025798026}, {"namespace": "junos", "hostname":
-    "exit02", "vrf": "default", "peer": "169.254.253.6", "peerHostname": "firewall01",
+    "exit02", "vrf": "evpn-vrf", "peer": "169.254.253.6", "peerHostname": "firewall01",
     "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn":
     65533, "pfxRx": 0, "pfxTx": 0, "numChanges": 0, "estdTime": 1622999478028, "timestamp":
     1623025798028}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
     "peer": "169.254.253.2", "peerHostname": "firewall01", "state": "Established",
     "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn": 65533, "pfxRx": 0,
     "pfxTx": 0, "numChanges": 0, "estdTime": 1622999470028, "timestamp": 1623025798028},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "default", "peer": "169.254.127.2",
+    {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.127.2",
     "peerHostname": "dcedge01", "state": "Established", "afi": "ipv4", "safi": "unicast",
     "asn": 64520, "peerAsn": 65534, "pfxRx": 6, "pfxTx": 3, "numChanges": 0, "estdTime":
     1622999494028, "timestamp": 1623025798028}, {"namespace": "junos", "hostname":
@@ -101,7 +101,7 @@ tests:
     "peer": "10.0.0.21", "peerHostname": "spine01", "state": "Established", "afi":
     "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx":
     0, "numChanges": 137, "estdTime": 1623025778028, "timestamp": 1623025798028},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "default", "peer": "169.254.253.10",
+    {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.253.10",
     "peerHostname": "firewall01", "state": "Established", "afi": "ipv4", "safi": "unicast",
     "asn": 64520, "peerAsn": 65533, "pfxRx": 9, "pfxTx": 5, "numChanges": 0, "estdTime":
     1622999486028, "timestamp": 1623025798028}, {"namespace": "junos", "hostname":
@@ -137,7 +137,7 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: bgp summarize junos junos
   output: '{"junos": {"deviceCnt": 8, "totalPeerCnt": 32, "uniqueAsnCnt": 3, "uniqueVrfsCnt":
-    1, "failedPeerCnt": 0, "iBGPPeerCnt": 16, "eBGPPeerCnt": 16, "rrClientPeerCnt":
+    3, "failedPeerCnt": 0, "iBGPPeerCnt": 16, "eBGPPeerCnt": 16, "rrClientPeerCnt":
     8, "activeAfiSafiCnt": 2, "upTimeStat": [19000, 27023000, 26428000], "updatesRxStat":
     [0, 1389, 9.5], "updatesTxStat": [0, 1388, 9]}}'
 - command: bgp unique --format=json
@@ -202,53 +202,53 @@ tests:
       "vrf": "default", "peer": "169.254.254.2", "asn": 64520, "peerAsn": 65533, "state":
       "Established", "peerHostname": "firewall01", "assert": "fail", "assertReason":
       "Not all Afi/Safis enabled", "timestamp": 1623025798026}, {"namespace": "junos",
-      "hostname": "exit01", "vrf": "default", "peer": "169.254.254.10", "asn": 64520,
-      "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "assert":
-      "pass", "assertReason": "-", "timestamp": 1623025798026}, {"namespace": "junos",
-      "hostname": "exit01", "vrf": "default", "peer": "169.254.254.6", "asn": 64520,
-      "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "assert":
-      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1623025798026},
-      {"namespace": "junos", "hostname": "exit01", "vrf": "default", "peer": "169.254.127.0",
-      "asn": 64520, "peerAsn": 65534, "state": "Established", "peerHostname": "dcedge01",
+      "hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.254.10", "asn":
+      64520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
       "assert": "pass", "assertReason": "-", "timestamp": 1623025798026}, {"namespace":
-      "junos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.22", "asn":
-      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine02",
-      "assert": "pass", "assertReason": "-", "timestamp": 1623025798026}, {"namespace":
-      "junos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.21", "asn":
-      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine01",
-      "assert": "pass", "assertReason": "-", "timestamp": 1623025798026}, {"namespace":
-      "junos", "hostname": "dcedge01", "vrf": "default", "peer": "169.254.127.3",
-      "asn": 65534, "peerAsn": 64520, "state": "Established", "peerHostname": "exit02",
+      "junos", "hostname": "exit01", "vrf": "evpn-vrf", "peer": "169.254.254.6", "asn":
+      64520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
       "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1623025798026}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
-      "peer": "169.254.253.6", "asn": 64520, "peerAsn": 65533, "state": "Established",
-      "peerHostname": "firewall01", "assert": "fail", "assertReason": "Not all Afi/Safis
-      enabled", "timestamp": 1623025798028}, {"namespace": "junos", "hostname": "exit02",
-      "vrf": "default", "peer": "169.254.253.2", "asn": 64520, "peerAsn": 65533, "state":
-      "Established", "peerHostname": "firewall01", "assert": "fail", "assertReason":
+      1623025798026}, {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf",
+      "peer": "169.254.127.0", "asn": 64520, "peerAsn": 65534, "state": "Established",
+      "peerHostname": "dcedge01", "assert": "pass", "assertReason": "-", "timestamp":
+      1623025798026}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+      "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine02", "assert": "pass", "assertReason": "-", "timestamp":
+      1623025798026}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+      "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine01", "assert": "pass", "assertReason": "-", "timestamp":
+      1623025798026}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
+      "peer": "169.254.127.3", "asn": 65534, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "exit02", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1623025798026}, {"namespace": "junos", "hostname": "exit02",
+      "vrf": "evpn-vrf", "peer": "169.254.253.6", "asn": 64520, "peerAsn": 65533,
+      "state": "Established", "peerHostname": "firewall01", "assert": "fail", "assertReason":
       "Not all Afi/Safis enabled", "timestamp": 1623025798028}, {"namespace": "junos",
-      "hostname": "exit02", "vrf": "default", "peer": "169.254.127.2", "asn": 64520,
-      "peerAsn": 65534, "state": "Established", "peerHostname": "dcedge01", "assert":
-      "pass", "assertReason": "-", "timestamp": 1623025798028}, {"namespace": "junos",
-      "hostname": "exit02", "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn":
-      64520, "state": "Established", "peerHostname": "spine02", "assert": "pass",
-      "assertReason": "-", "timestamp": 1623025798028}, {"namespace": "junos", "hostname":
-      "exit02", "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520,
-      "state": "Established", "peerHostname": "spine01", "assert": "pass", "assertReason":
-      "-", "timestamp": 1623025798028}, {"namespace": "junos", "hostname": "exit02",
-      "vrf": "default", "peer": "169.254.253.10", "asn": 64520, "peerAsn": 65533,
-      "state": "Established", "peerHostname": "firewall01", "assert": "pass", "assertReason":
-      "-", "timestamp": 1623025798028}, {"namespace": "junos", "hostname": "spine02",
-      "vrf": "default", "peer": "10.0.0.12", "asn": 64520, "peerAsn": 64520, "state":
-      "Established", "peerHostname": "leaf02", "assert": "pass", "assertReason": "-",
-      "timestamp": 1623025798030}, {"namespace": "junos", "hostname": "spine02", "vrf":
-      "default", "peer": "10.0.0.31", "asn": 64520, "peerAsn": 64520, "state": "Established",
-      "peerHostname": "exit01", "assert": "pass", "assertReason": "-", "timestamp":
-      1623025798030}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
-      "peer": "10.0.0.11", "asn": 64520, "peerAsn": 64520, "state": "Established",
-      "peerHostname": "leaf01", "assert": "pass", "assertReason": "-", "timestamp":
-      1623025798030}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
-      "peer": "10.0.0.32", "asn": 64520, "peerAsn": 64520, "state": "Established",
-      "peerHostname": "exit02", "assert": "pass", "assertReason": "-", "timestamp":
-      1623025798030}]'
+      "hostname": "exit02", "vrf": "default", "peer": "169.254.253.2", "asn": 64520,
+      "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1623025798028},
+      {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "peer":
+      "169.254.127.2", "asn": 64520, "peerAsn": 65534, "state": "Established", "peerHostname":
+      "dcedge01", "assert": "pass", "assertReason": "-", "timestamp": 1623025798028},
+      {"namespace": "junos", "hostname": "exit02", "vrf": "default", "peer": "10.0.0.22",
+      "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine02",
+      "assert": "pass", "assertReason": "-", "timestamp": 1623025798028}, {"namespace":
+      "junos", "hostname": "exit02", "vrf": "default", "peer": "10.0.0.21", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine01",
+      "assert": "pass", "assertReason": "-", "timestamp": 1623025798028}, {"namespace":
+      "junos", "hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.253.10",
+      "asn": 64520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
+      "assert": "pass", "assertReason": "-", "timestamp": 1623025798028}, {"namespace":
+      "junos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.12", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "leaf02", "assert":
+      "pass", "assertReason": "-", "timestamp": 1623025798030}, {"namespace": "junos",
+      "hostname": "spine02", "vrf": "default", "peer": "10.0.0.31", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "exit01", "assert":
+      "pass", "assertReason": "-", "timestamp": 1623025798030}, {"namespace": "junos",
+      "hostname": "spine02", "vrf": "default", "peer": "10.0.0.11", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "leaf01", "assert":
+      "pass", "assertReason": "-", "timestamp": 1623025798030}, {"namespace": "junos",
+      "hostname": "spine02", "vrf": "default", "peer": "10.0.0.32", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "exit02", "assert":
+      "pass", "assertReason": "-", "timestamp": 1623025798030}]'
   marks: bgp assert junos junos

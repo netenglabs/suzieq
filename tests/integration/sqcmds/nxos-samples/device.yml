@@ -3,20 +3,35 @@ tests:
 - command: device show --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device show nxos
-  output: '[{"namespace": "nxos", "hostname": "dcedge01", "model": "vqfx-10000", "version":
+  output: '[{"namespace": "nxos", "hostname": "server101", "model": "vm", "version":
+    "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "10.255.2.204", "bootupTimestamp": 1619182381000, "timestamp": 1619275256203},
+    {"namespace": "nxos", "hostname": "server102", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.2.39", "bootupTimestamp": 1619182381000, "timestamp": 1619275256290},
+    {"namespace": "nxos", "hostname": "server301", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.2.140", "bootupTimestamp": 1619182381000, "timestamp": 1619275256319},
+    {"namespace": "nxos", "hostname": "server302", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.2.114", "bootupTimestamp": 1619182381000, "timestamp": 1619275256394},
+    {"namespace": "nxos", "hostname": "firewall01", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.2.249", "bootupTimestamp": 1619013132000, "timestamp": 1619275256497},
+    {"namespace": "nxos", "hostname": "dcedge01", "model": "vqfx-10000", "version":
     "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
     "10.255.2.250", "bootupTimestamp": 1619013129329, "timestamp": 1619275258329},
-    {"namespace": "nxos", "hostname": "leaf02", "model": "Nexus9000 C9300v Chassis",
+    {"namespace": "nxos", "hostname": "spine02", "model": "Nexus9000 C9300v Chassis",
     "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core Processor
-    (Skylake, IBRS)", "status": "alive", "address": "10.255.2.188", "bootupTimestamp":
-    1619043783000, "timestamp": 1619275265679}, {"namespace": "nxos", "hostname":
-    "leaf01", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
+    (Skylake, IBRS)", "status": "alive", "address": "10.255.2.120", "bootupTimestamp":
+    1619013194000, "timestamp": 1619275263055}, {"namespace": "nxos", "hostname":
+    "spine01", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
     "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status": "alive",
-    "address": "10.255.2.189", "bootupTimestamp": 1619043771000, "timestamp": 1619275265510},
-    {"namespace": "nxos", "hostname": "exit02", "model": "Nexus9000 C9300v Chassis",
+    "address": "10.255.2.119", "bootupTimestamp": 1619013190000, "timestamp": 1619275263589},
+    {"namespace": "nxos", "hostname": "leaf03", "model": "Nexus9000 C9300v Chassis",
     "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core Processor
-    (Skylake, IBRS)", "status": "alive", "address": "10.255.2.254", "bootupTimestamp":
-    1619013188000, "timestamp": 1619275265196}, {"namespace": "nxos", "hostname":
+    (Skylake, IBRS)", "status": "alive", "address": "10.255.2.190", "bootupTimestamp":
+    1619043796000, "timestamp": 1619275263596}, {"namespace": "nxos", "hostname":
     "exit01", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
     "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status": "alive",
     "address": "10.255.2.253", "bootupTimestamp": 1619013183000, "timestamp": 1619275265064},
@@ -24,39 +39,24 @@ tests:
     "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core Processor
     (Skylake, IBRS)", "status": "alive", "address": "10.255.2.191", "bootupTimestamp":
     1619043813000, "timestamp": 1619275265167}, {"namespace": "nxos", "hostname":
-    "leaf03", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
+    "exit02", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
     "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status": "alive",
-    "address": "10.255.2.190", "bootupTimestamp": 1619043796000, "timestamp": 1619275263596},
-    {"namespace": "nxos", "hostname": "spine01", "model": "Nexus9000 C9300v Chassis",
+    "address": "10.255.2.254", "bootupTimestamp": 1619013188000, "timestamp": 1619275265196},
+    {"namespace": "nxos", "hostname": "leaf01", "model": "Nexus9000 C9300v Chassis",
     "version": "9.3(4)", "vendor": "Cisco", "architecture": "Intel Core Processor
-    (Skylake, IBRS)", "status": "alive", "address": "10.255.2.119", "bootupTimestamp":
-    1619013190000, "timestamp": 1619275263589}, {"namespace": "nxos", "hostname":
-    "spine02", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
+    (Skylake, IBRS)", "status": "alive", "address": "10.255.2.189", "bootupTimestamp":
+    1619043771000, "timestamp": 1619275265510}, {"namespace": "nxos", "hostname":
+    "leaf02", "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor":
     "Cisco", "architecture": "Intel Core Processor (Skylake, IBRS)", "status": "alive",
-    "address": "10.255.2.120", "bootupTimestamp": 1619013194000, "timestamp": 1619275263055},
-    {"namespace": "nxos", "hostname": "firewall01", "model": "vm", "version": "18.04.3
-    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "10.255.2.249", "bootupTimestamp": 1619013132000, "timestamp": 1619275256497},
-    {"namespace": "nxos", "hostname": "server301", "model": "vm", "version": "18.04.3
-    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "10.255.2.140", "bootupTimestamp": 1619182381000, "timestamp": 1619275256319},
-    {"namespace": "nxos", "hostname": "server302", "model": "vm", "version": "18.04.3
-    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "10.255.2.114", "bootupTimestamp": 1619182381000, "timestamp": 1619275256394},
-    {"namespace": "nxos", "hostname": "server101", "model": "vm", "version": "18.04.3
-    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "10.255.2.204", "bootupTimestamp": 1619182381000, "timestamp": 1619275256203},
-    {"namespace": "nxos", "hostname": "server102", "model": "vm", "version": "18.04.3
-    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "10.255.2.39", "bootupTimestamp": 1619182381000, "timestamp": 1619275256290}]'
+    "address": "10.255.2.188", "bootupTimestamp": 1619043783000, "timestamp": 1619275265679}]'
 - command: device show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device show nxos
-  output: '[{"hostname": "dcedge01"}, {"hostname": "leaf02"}, {"hostname": "leaf01"},
-    {"hostname": "exit02"}, {"hostname": "exit01"}, {"hostname": "leaf04"}, {"hostname":
-    "leaf03"}, {"hostname": "spine01"}, {"hostname": "spine02"}, {"hostname": "firewall01"},
-    {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "server101"},
-    {"hostname": "server102"}]'
+  output: '[{"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server301"},
+    {"hostname": "server302"}, {"hostname": "firewall01"}, {"hostname": "dcedge01"},
+    {"hostname": "spine02"}, {"hostname": "spine01"}, {"hostname": "leaf03"}, {"hostname":
+    "exit01"}, {"hostname": "leaf04"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}]'
 - command: device summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device summarize nxos

@@ -5,13 +5,13 @@ tests:
   marks: network show all junos vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1632943992076}]'
+    1634522087740}]'
 - command: network show --format=json --model=vmx
   data-directory: tests/data/vmx/parquet-out
   marks: network show all junos vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1632943992076}]'
+    1634522087740}]'
 - command: network find --address="172.16.11.11" --format=json
   data-directory: tests/data/vmx/parquet-out
   marks: network find all junos vmx
@@ -34,49 +34,49 @@ tests:
   data-directory: tests/data/vmx/parquet-out
   marks: network find all junos vmx
   output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1",
-    "vrf": "default", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "vrf": "default", "ipAddress": "", "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1",
     "how": "polled", "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
-    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "vrf": "ae1", "ipAddress": [], "vlan":
+    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "vrf": "ae1", "ipAddress": "", "vlan":
     0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/1", "vrf":
-    "ae1", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled",
+    "ae1", "ipAddress": "", "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled",
     "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ae1.20", "vrf": "default", "ipAddress": ["10.0.20.2/29"], "vlan": 20,
+    "ifname": "ae1.20", "vrf": "default", "ipAddress": "10.0.20.2/29", "vlan": 20,
     "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.10", "vrf":
-    "default", "ipAddress": ["10.0.10.2/29"], "vlan": 10, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "default", "ipAddress": "10.0.10.2/29", "vlan": 10, "macaddr": "2c:6b:f5:b6:ce:c1",
     "how": "polled", "timestamp": 1631009089864}]'
 - command: network find --address="2c6b.f5b6.cec1" --format=json
   data-directory: tests/data/vmx/parquet-out
   marks: network find all junos vmx
   output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1",
-    "vrf": "default", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "vrf": "default", "ipAddress": "", "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1",
     "how": "polled", "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
-    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "vrf": "ae1", "ipAddress": [], "vlan":
+    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "vrf": "ae1", "ipAddress": "", "vlan":
     0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/1", "vrf":
-    "ae1", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled",
+    "ae1", "ipAddress": "", "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled",
     "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ae1.20", "vrf": "default", "ipAddress": ["10.0.20.2/29"], "vlan": 20,
+    "ifname": "ae1.20", "vrf": "default", "ipAddress": "10.0.20.2/29", "vlan": 20,
     "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.10", "vrf":
-    "default", "ipAddress": ["10.0.10.2/29"], "vlan": 10, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "default", "ipAddress": "10.0.10.2/29", "vlan": 10, "macaddr": "2c:6b:f5:b6:ce:c1",
     "how": "polled", "timestamp": 1631009089864}]'
 - command: network find --address="2C6b.F5B6.CEC1" --format=json
   data-directory: tests/data/vmx/parquet-out
   marks: network find all junos vmx
   output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1",
-    "vrf": "default", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "vrf": "default", "ipAddress": "", "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1",
     "how": "polled", "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
-    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "vrf": "ae1", "ipAddress": [], "vlan":
+    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "vrf": "ae1", "ipAddress": "", "vlan":
     0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/1", "vrf":
-    "ae1", "ipAddress": [], "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled",
+    "ae1", "ipAddress": "", "vlan": 0, "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled",
     "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ae1.20", "vrf": "default", "ipAddress": ["10.0.20.2/29"], "vlan": 20,
+    "ifname": "ae1.20", "vrf": "default", "ipAddress": "10.0.20.2/29", "vlan": 20,
     "macaddr": "2c:6b:f5:b6:ce:c1", "how": "polled", "timestamp": 1631009089864},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.10", "vrf":
-    "default", "ipAddress": ["10.0.10.2/29"], "vlan": 10, "macaddr": "2c:6b:f5:b6:ce:c1",
+    "default", "ipAddress": "10.0.10.2/29", "vlan": 10, "macaddr": "2c:6b:f5:b6:ce:c1",
     "how": "polled", "timestamp": 1631009089864}]'
 - command: network find --asn=65000 --format=json
   data-directory: tests/data/vmx/parquet-out

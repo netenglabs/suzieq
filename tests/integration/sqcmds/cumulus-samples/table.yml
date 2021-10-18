@@ -27,8 +27,8 @@ tests:
     {"table": "ospfNbr", "firstTime": 1616352403840, "latestTime": 1616681583332,
     "intervals": 12, "allRows": 48, "namespaces": 2, "deviceCnt": 8}, {"table": "routes",
     "firstTime": 1616352402600, "latestTime": 1616681582006, "intervals": 21, "allRows":
-    655, "namespaces": 3, "deviceCnt": 14}, {"table": "sqPoller", "firstTime": 1623850834289,
-    "latestTime": 1623850976567, "intervals": 412, "allRows": 650, "namespaces": 3,
+    655, "namespaces": 3, "deviceCnt": 14}, {"table": "sqPoller", "firstTime": 1634522086101,
+    "latestTime": 1634522254949, "intervals": 519, "allRows": 650, "namespaces": 3,
     "deviceCnt": 14}, {"table": "time", "firstTime": 1616352402525, "latestTime":
     1616681581441, "intervals": 19, "allRows": 42, "namespaces": 3, "deviceCnt": 14},
     {"table": "topcpu", "firstTime": 1616352402700, "latestTime": 1616681581961, "intervals":
@@ -36,13 +36,13 @@ tests:
     1616352402799, "latestTime": 1616681583091, "intervals": 31, "allRows": 441, "namespaces":
     3, "deviceCnt": 14}, {"table": "vlan", "firstTime": 1616352402915, "latestTime":
     1616681582524, "intervals": 11, "allRows": 38, "namespaces": 3, "deviceCnt": 6},
-    {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1623850976567, "intervals":
-    412, "allRows": 4700, "namespaces": 3, "deviceCnt": 14}]'
+    {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1634522254949, "intervals":
+    519, "allRows": 4700, "namespaces": 3, "deviceCnt": 14}]'
 - command: table show --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: table show
   xfail:
-    error: '"Error running command: Invalid columns specified: [''hostname'']\n------------------------------------------------------------\n------------------------------------------------------------"'
+    error: '[]'
     reason: uncaught exception
 - command: table show --namespace=dummy --format=json
   data-directory: tests/data/multidc/parquet-out/
@@ -79,8 +79,8 @@ tests:
     {"table": "ospfNbr", "firstTime": 1616352403840, "latestTime": 1616681583332,
     "intervals": 12, "allRows": 48, "namespaces": 2, "deviceCnt": 8}, {"table": "routes",
     "firstTime": 1616352402600, "latestTime": 1616681582006, "intervals": 21, "allRows":
-    655, "namespaces": 3, "deviceCnt": 14}, {"table": "sqPoller", "firstTime": 1623850834289,
-    "latestTime": 1623850976567, "intervals": 412, "allRows": 650, "namespaces": 3,
+    655, "namespaces": 3, "deviceCnt": 14}, {"table": "sqPoller", "firstTime": 1634522086101,
+    "latestTime": 1634522254949, "intervals": 519, "allRows": 650, "namespaces": 3,
     "deviceCnt": 14}, {"table": "time", "firstTime": 1616352402525, "latestTime":
     1616681581441, "intervals": 19, "allRows": 42, "namespaces": 3, "deviceCnt": 14},
     {"table": "topcpu", "firstTime": 1616352402700, "latestTime": 1616681581961, "intervals":
@@ -88,8 +88,8 @@ tests:
     1616352402799, "latestTime": 1616681583091, "intervals": 31, "allRows": 441, "namespaces":
     3, "deviceCnt": 14}, {"table": "vlan", "firstTime": 1616352402915, "latestTime":
     1616681582524, "intervals": 11, "allRows": 38, "namespaces": 3, "deviceCnt": 6},
-    {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1623850976567, "intervals":
-    412, "allRows": 4700, "namespaces": 3, "deviceCnt": 14}]'
+    {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1634522254949, "intervals":
+    519, "allRows": 4700, "namespaces": 3, "deviceCnt": 14}]'
 - command: table show --hostname=leaf01 --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: table show
@@ -116,8 +116,8 @@ tests:
     1}, {"table": "ospfNbr", "firstTime": 1616352403840, "latestTime": 1616681582902,
     "intervals": 2, "allRows": 4, "namespaces": 2, "deviceCnt": 1}, {"table": "routes",
     "firstTime": 1616352402813, "latestTime": 1616681581705, "intervals": 3, "allRows":
-    52, "namespaces": 3, "deviceCnt": 1}, {"table": "sqPoller", "firstTime": 1623850834289,
-    "latestTime": 1623850976564, "intervals": 51, "allRows": 51, "namespaces": 3,
+    52, "namespaces": 3, "deviceCnt": 1}, {"table": "sqPoller", "firstTime": 1634522086104,
+    "latestTime": 1634522254895, "intervals": 51, "allRows": 51, "namespaces": 3,
     "deviceCnt": 1}, {"table": "time", "firstTime": 1616352402726, "latestTime": 1616681581440,
     "intervals": 3, "allRows": 3, "namespaces": 3, "deviceCnt": 1}, {"table": "topcpu",
     "firstTime": 1616352402876, "latestTime": 1616681581896, "intervals": 3, "allRows":
@@ -125,7 +125,7 @@ tests:
     "latestTime": 1616681583091, "intervals": 3, "allRows": 30, "namespaces": 3, "deviceCnt":
     1}, {"table": "vlan", "firstTime": 1616352402915, "latestTime": 1616681581935,
     "intervals": 3, "allRows": 8, "namespaces": 3, "deviceCnt": 1}, {"table": "TOTAL",
-    "firstTime": 1616352402479, "latestTime": 1623850976564, "intervals": 51, "allRows":
+    "firstTime": 1616352402479, "latestTime": 1634522254895, "intervals": 51, "allRows":
     458, "namespaces": 3, "deviceCnt": 1}]'
 - command: table show --namespace='ospf-single' --format=json
   data-directory: tests/data/multidc/parquet-out/
@@ -147,8 +147,8 @@ tests:
     "firstTime": 1616352403840, "latestTime": 1616352403996, "intervals": 5, "allRows":
     24, "namespaces": 1, "deviceCnt": 8}, {"table": "routes", "firstTime": 1616352402600,
     "latestTime": 1616352402876, "intervals": 8, "allRows": 137, "namespaces": 1,
-    "deviceCnt": 14}, {"table": "sqPoller", "firstTime": 1623850973370, "latestTime":
-    1623850976567, "intervals": 119, "allRows": 207, "namespaces": 1, "deviceCnt":
+    "deviceCnt": 14}, {"table": "sqPoller", "firstTime": 1634522249723, "latestTime":
+    1634522254949, "intervals": 146, "allRows": 207, "namespaces": 1, "deviceCnt":
     14}, {"table": "time", "firstTime": 1616352402525, "latestTime": 1616352402799,
     "intervals": 12, "allRows": 14, "namespaces": 1, "deviceCnt": 14}, {"table": "topcpu",
     "firstTime": 1616352402700, "latestTime": 1616352402946, "intervals": 9, "allRows":
@@ -156,8 +156,8 @@ tests:
     "latestTime": 1616352403217, "intervals": 6, "allRows": 153, "namespaces": 1,
     "deviceCnt": 14}, {"table": "vlan", "firstTime": 1616352402915, "latestTime":
     1616352402976, "intervals": 3, "allRows": 4, "namespaces": 1, "deviceCnt": 4},
-    {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1623850976567, "intervals":
-    119, "allRows": 1106, "namespaces": 1, "deviceCnt": 14}]'
+    {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1634522254949, "intervals":
+    146, "allRows": 1106, "namespaces": 1, "deviceCnt": 14}]'
 - command: table show --namespace='ospf-single dual-evpn' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: table show filter
@@ -183,8 +183,8 @@ tests:
     {"table": "ospfNbr", "firstTime": 1616352403840, "latestTime": 1616352403996,
     "intervals": 5, "allRows": 24, "namespaces": 1, "deviceCnt": 8}, {"table": "routes",
     "firstTime": 1616352402600, "latestTime": 1616644822167, "intervals": 12, "allRows":
-    402, "namespaces": 2, "deviceCnt": 14}, {"table": "sqPoller", "firstTime": 1623850902372,
-    "latestTime": 1623850976567, "intervals": 261, "allRows": 424, "namespaces": 2,
+    402, "namespaces": 2, "deviceCnt": 14}, {"table": "sqPoller", "firstTime": 1634522166712,
+    "latestTime": 1634522254949, "intervals": 324, "allRows": 424, "namespaces": 2,
     "deviceCnt": 14}, {"table": "time", "firstTime": 1616352402525, "latestTime":
     1616644821714, "intervals": 15, "allRows": 28, "namespaces": 2, "deviceCnt": 14},
     {"table": "topcpu", "firstTime": 1616352402700, "latestTime": 1616644822253, "intervals":
@@ -192,8 +192,8 @@ tests:
     1616352402799, "latestTime": 1616644822493, "intervals": 18, "allRows": 293, "namespaces":
     2, "deviceCnt": 14}, {"table": "vlan", "firstTime": 1616352402915, "latestTime":
     1616644821824, "intervals": 5, "allRows": 20, "namespaces": 2, "deviceCnt": 6},
-    {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1623850976567, "intervals":
-    261, "allRows": 2963, "namespaces": 2, "deviceCnt": 14}]'
+    {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1634522254949, "intervals":
+    324, "allRows": 2963, "namespaces": 2, "deviceCnt": 14}]'
 - command: table describe --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: table describe
