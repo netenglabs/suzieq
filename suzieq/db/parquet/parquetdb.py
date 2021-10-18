@@ -249,7 +249,7 @@ class SqParquetDB(SqDB):
 
         return 0
 
-    def coalesce(self, tables: List[str] = [], period: str = '',
+    def coalesce(self, tables: List[str] = None, period: str = '',
                  ign_sqpoller: bool = False) -> None:
         """Coalesce all the resource parquet files in specified folder.
 
@@ -611,7 +611,7 @@ class SqParquetDB(SqDB):
                 filelist.extend(dataset.files)
             else:
                 ns_filelist = []
-                for ns in namespace:
+                for ns in namespace or []:
                     if ns.startswith('!'):
                         ns = ns[1:]
                         ns_filelist.extend([x for x in dataset.files
@@ -623,7 +623,7 @@ class SqParquetDB(SqDB):
                 filelist.extend(ns_filelist)
 
             host_filelist = []
-            for hn in hostname:
+            for hn in hostname or []:
                 if hn.startswith('!'):
                     hn = hn[1:]
                     host_filelist.extend([x for x in filelist
