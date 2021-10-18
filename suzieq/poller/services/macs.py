@@ -111,6 +111,8 @@ class MacsService(Service):
                 drop_indices.append(i)
             else:
                 entry['flags'] = flags.strip()
+                if entry['oif'] and not entry['oif'].startswith('vtep'):
+                    entry['oif'] = entry['oif'].split('.')[0]
                 self._add_mackey_protocol(entry)
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
