@@ -99,6 +99,9 @@ class DeviceObj(SqPandasEngine):
                 uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
                 df.insert(len(df.columns)-1, 'uptime', uptime_cols)
 
+        if df.empty:
+            return df
+
         # The poller merge kills the filtering we did earlier, so redo:
         if status:
             df = df.loc[df.status.isin(status)]
