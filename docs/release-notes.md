@@ -1,5 +1,17 @@
 # Release Notes
 
+## 0.15.4 (Oct 18, 2021)
+
+This is a largely a bug fix release of the 0.15.0 release. However, it does add one important foundational feature: support for parsers/commands based on NOS version.
+
+* Support for multiple NOS versions: Different versions of a NOS produce either different outputs or sometimes even require different command names. One example that impacted Suzieq right away is Junos' QFX command for getting the LLDP neighbors. The post 19.1(?) release use "show lldp neighbors detail" to get the peer interface name, while older versions of Junos only require 'show lldp neighbors" for the same info. With this release, we can specify both commands with the versions they're relevant to, and Suzieq poller will pick the right command to use based on the version of the node it is polling. So, even in the same namespace, you can have two different versions of the same NOS, and the poller will pick the right command and parser to use for each version.
+* Bug fix for proper use of start and end times: Many commands didn't properly apply the user-specified start and end times to the additional tables they called upon. For example, ```network find``` didn't use the start and end times when invoking arpnd or mac address tables, leading to the wrong output. This is fixed now across all commands.
+* Bug fix for GUI Path: The swap source and dest button the GUI was not working correctly.
+* Bug fix for interface assert: Interface assert was broken in certain cases such as a network without VLANs. Fixing that led to a far more improved interface assert than before. We now check subinterfaces also for consistency, Junos interfaces are supported and more. We added a new flag "ignore-missing-peer" to have the interface assert pass if no peer was found for an interface. For example, if you're peering with a device in a different administrative domain. By default, missing peers will be treated as assert failure. Using the ignore-missing-peer flag, the missing peer is reported, but the assert does not fail.
+* More REST API fixes (interface assert was broken, for example). 
+* Additional parsing fixes and tests: For example, we make the mac address table output consistent across MX/QFX now.
+* Minor cleanups and typo fixes to help output.
+
 ## 0.15.3 (Oct 11, 2021)
 
 This is a bug fix release with the following important changes:
@@ -16,7 +28,7 @@ This is a bug fix release with the following important changes:
 
 This is a hotfix release for those who tried to install Suzieq via PyPi. There were multiple failures in the PyPi package that had been uploaded including some missing specifications for certain dependencies. (Issue #430).
 
-## 0.15.0 (Oct 3, 2022)
+## 0.15.0 (Oct 3, 2021)
 
 This is a major release with tons of new features and important bug fixes.
 
