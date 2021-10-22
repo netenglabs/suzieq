@@ -110,6 +110,7 @@ class BgpCmd(SqCommand):
         df = self._invoke_sqobj(self.sqobj.aver,
                                 vrf=vrf.split(),
                                 namespace=self.namespace,
+                                hostname=self.hostname,
                                 status=status,
                                 )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
