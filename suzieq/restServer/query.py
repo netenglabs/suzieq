@@ -809,8 +809,6 @@ def run_command_verb(command, verb, command_args, verb_args, columns=['default']
     """
     svc = get_svc(command)
     try:
-        if svc == "vlan" and verb == "unique":
-            breakpoint()
         svc_inst = svc(**command_args, config_file=app.cfg_file)
         df = getattr(svc_inst, verb)(**verb_args)
 
