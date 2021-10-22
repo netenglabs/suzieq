@@ -8,7 +8,7 @@ class NetworkObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'version',
                                 'os', 'model', 'vendor', 'columns', 'query_str']
         self._valid_find_args = ['namespace', 'hostname', 'vrf', 'vlan',
-                                 'address', 'asn', 'resolve_bond']
+                                 'address', 'query_str']
 
     def find(self, **kwargs):
 

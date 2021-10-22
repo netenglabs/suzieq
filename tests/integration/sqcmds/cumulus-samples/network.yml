@@ -23,87 +23,41 @@ tests:
 - command: network find --address="172.16.1.101" --format=json
   data-directory: tests/data/multidc/parquet-out
   marks: network find all  cumulus
-  output: '[{"namespace": "ospf-single", "hostname": "server101", "ifname": "eth1",
-    "vrf": "default", "ipAddress": "172.16.1.101/24", "vlan": 0, "macaddr": "00:03:00:11:11:01",
-    "how": "polled", "timestamp": 1616352402700}, {"namespace": "dual-evpn", "hostname":
-    "server101", "ifname": "bond0", "vrf": "default", "ipAddress": "172.16.1.101/24",
-    "vlan": 0, "macaddr": "52:54:00:a0:c3:0b", "how": "polled", "timestamp": 1616644822254},
-    {"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "bond0", "vrf":
-    "default", "ipAddress": "172.16.1.101/24", "vlan": 0, "macaddr": "52:54:00:c5:1d:06",
-    "how": "polled", "timestamp": 1616681581492}]'
+  output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "172.16.1.101", "vlan": "10", "macaddr": "00:03:00:11:11:01", "ifname": "swp5",
+    "bondMembers": "", "timestamp": 1616352402479}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "vrf": "default", "ipAddress": "172.16.1.101", "vlan": "13", "macaddr":
+    "52:54:00:a0:c3:0b", "ifname": "bond01", "bondMembers": "swp5", "timestamp": 1616644821712},
+    {"namespace": "dual-evpn", "hostname": "leaf02", "vrf": "default", "ipAddress":
+    "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond01",
+    "bondMembers": "swp5", "timestamp": 1616644821714}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers": "swp5",
+    "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
+    "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:c5:1d:06",
+    "ifname": "bond01", "bondMembers": "swp5", "timestamp": 1616681581182}]'
 - command: network find --address="52:54:00:c5:1d:06" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out
   marks: network find all  cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "bond0",
-    "vrf": "default", "ipAddress": "172.16.1.101/24", "vlan": 0, "macaddr": "52:54:00:c5:1d:06",
-    "how": "polled", "timestamp": 1616681581492}, {"namespace": "ospf-ibgp", "hostname":
-    "server101", "ifname": "eth2", "vrf": "bond0", "ipAddress": "", "vlan": 0, "macaddr":
-    "52:54:00:c5:1d:06", "how": "polled", "timestamp": 1616681581492}, {"namespace":
-    "ospf-ibgp", "hostname": "server101", "ifname": "eth1", "vrf": "bond0", "ipAddress":
-    "", "vlan": 0, "macaddr": "52:54:00:c5:1d:06", "how": "polled", "timestamp": 1616681581492}]'
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01",
+    "bondMembers": "swp5", "timestamp": 1616681581180}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers": "swp5",
+    "timestamp": 1616681581182}]'
 - command: network find --address="72:f0:17:6d:80:3f" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out
   marks: network find all  cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vni24", "vrf":
-    "bridge", "ipAddress": "", "vlan": 24, "macaddr": "72:f0:17:6d:80:3f", "how":
-    "polled", "timestamp": 1616681582523}]'
+  output: '[]'
 - command: network find --address="5254.00c5.1d06" --format=json
   data-directory: tests/data/multidc/parquet-out
   marks: network find all  cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "bond0",
-    "vrf": "default", "ipAddress": "172.16.1.101/24", "vlan": 0, "macaddr": "52:54:00:c5:1d:06",
-    "how": "polled", "timestamp": 1616681581492}, {"namespace": "ospf-ibgp", "hostname":
-    "server101", "ifname": "eth1", "vrf": "bond0", "ipAddress": "", "vlan": 0, "macaddr":
-    "52:54:00:c5:1d:06", "how": "polled", "timestamp": 1616681581492}, {"namespace":
-    "ospf-ibgp", "hostname": "server101", "ifname": "eth2", "vrf": "bond0", "ipAddress":
-    "", "vlan": 0, "macaddr": "52:54:00:c5:1d:06", "how": "polled", "timestamp": 1616681581492}]'
-- command: network find --asn=65530 --format=json
-  data-directory: tests/data/multidc/parquet-out
-  marks: network find all  cumulus
-  output: '[{"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer":
-    "eth1.2", "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi":
-    "unicast", "asn": 65530, "peerAsn": 65201, "pfxRx": 10, "pfxTx": 16, "numChanges":
-    1, "estdTime": 1616644608000.0, "timestamp": 1616644822492}, {"namespace": "dual-evpn",
-    "hostname": "edge01", "vrf": "default", "peer": "eth1.3", "peerHostname": "exit01",
-    "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65530, "peerAsn":
-    65201, "pfxRx": 3, "pfxTx": 16, "numChanges": 1, "estdTime": 1616644608000.0,
-    "timestamp": 1616644822492}, {"namespace": "dual-evpn", "hostname": "edge01",
-    "vrf": "default", "peer": "eth1.4", "peerHostname": "exit01", "state": "Established",
-    "afi": "ipv4", "safi": "unicast", "asn": 65530, "peerAsn": 65201, "pfxRx": 4,
-    "pfxTx": 16, "numChanges": 1, "estdTime": 1616644608000.0, "timestamp": 1616644822492},
-    {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer": "eth2.2",
-    "peerHostname": "exit02", "state": "Established", "afi": "ipv4", "safi": "unicast",
-    "asn": 65530, "peerAsn": 65202, "pfxRx": 9, "pfxTx": 16, "numChanges": 1, "estdTime":
-    1616644608000.0, "timestamp": 1616644822492}, {"namespace": "dual-evpn", "hostname":
-    "edge01", "vrf": "default", "peer": "eth2.3", "peerHostname": "exit02", "state":
-    "Established", "afi": "ipv4", "safi": "unicast", "asn": 65530, "peerAsn": 65202,
-    "pfxRx": 2, "pfxTx": 16, "numChanges": 1, "estdTime": 1616644608000.0, "timestamp":
-    1616644822492}, {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default",
-    "peer": "eth2.4", "peerHostname": "exit02", "state": "Established", "afi": "ipv4",
-    "safi": "unicast", "asn": 65530, "peerAsn": 65202, "pfxRx": 4, "pfxTx": 16, "numChanges":
-    1, "estdTime": 1616644608000.0, "timestamp": 1616644822492}, {"namespace": "ospf-ibgp",
-    "hostname": "edge01", "vrf": "default", "peer": "eth1.2", "peerHostname": "exit01",
-    "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65530, "peerAsn":
-    65000, "pfxRx": 10, "pfxTx": 16, "numChanges": 1, "estdTime": 1616681047000.0,
-    "timestamp": 1616681582563}, {"namespace": "ospf-ibgp", "hostname": "edge01",
-    "vrf": "default", "peer": "eth1.3", "peerHostname": "exit01", "state": "Established",
-    "afi": "ipv4", "safi": "unicast", "asn": 65530, "peerAsn": 65000, "pfxRx": 2,
-    "pfxTx": 16, "numChanges": 1, "estdTime": 1616681047000.0, "timestamp": 1616681582563},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.4",
-    "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi": "unicast",
-    "asn": 65530, "peerAsn": 65001, "pfxRx": 3, "pfxTx": 16, "numChanges": 1, "estdTime":
-    1616681047000.0, "timestamp": 1616681582563}, {"namespace": "ospf-ibgp", "hostname":
-    "edge01", "vrf": "default", "peer": "eth2.2", "peerHostname": "exit02", "state":
-    "Established", "afi": "ipv4", "safi": "unicast", "asn": 65530, "peerAsn": 65000,
-    "pfxRx": 10, "pfxTx": 16, "numChanges": 1, "estdTime": 1616681047000.0, "timestamp":
-    1616681582563}, {"namespace": "ospf-ibgp", "hostname": "edge01", "vrf": "default",
-    "peer": "eth2.3", "peerHostname": "exit02", "state": "Established", "afi": "ipv4",
-    "safi": "unicast", "asn": 65530, "peerAsn": 65000, "pfxRx": 2, "pfxTx": 16, "numChanges":
-    1, "estdTime": 1616681047000.0, "timestamp": 1616681582563}, {"namespace": "ospf-ibgp",
-    "hostname": "edge01", "vrf": "default", "peer": "eth2.4", "peerHostname": "exit02",
-    "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65530, "peerAsn":
-    65001, "pfxRx": 3, "pfxTx": 16, "numChanges": 1, "estdTime": 1616681047000.0,
-    "timestamp": 1616681582563}]'
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01",
+    "bondMembers": "swp5", "timestamp": 1616681581180}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers": "swp5",
+    "timestamp": 1616681581182}]'
 - command: network summarize --namespace=cumulus --format=json
   data-directory: tests/data/multidc/parquet-out
   marks: network summarize all  cumulus

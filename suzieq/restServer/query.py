@@ -366,7 +366,7 @@ async def query_evpnVni_assert(request: Request,
                                namespace: List[str] = Query(None),
                                columns: List[str] = Query(default=["default"]),
                                status: AssertStatusValues = None,
-                               query_str: str = None, 
+                               query_str: str = None,
                                ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, "assert", request, locals())
@@ -533,8 +533,6 @@ async def query_network_find(request: Request,
                              start_time: str = "", end_time: str = "",
                              view: ViewValues = "latest",
                              address: str = "", vlan: str = '', vrf: str = '',
-                             resolve_bond: bool = False,
-                             asn: str = '',
                              query_str: str = None,
                              ):
     function_name = inspect.currentframe().f_code.co_name

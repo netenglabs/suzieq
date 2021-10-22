@@ -58,17 +58,15 @@ class NetworkCmd(SqCommand):
 
         return self._gen_output(df)
 
-    @command("find", help="find an address, bgp session by asn, etc")
+    @command("find", help="find where an IP/MAC address is attached")
     @argument("address", type=str, description="IP/MAC address to find")
     @argument("vrf", type=str,
               description="Find within this VRF, used for IP addr")
     @argument("vlan", type=str,
               description="Find MAC within this VLAN")
-    @argument("asn", type=str, description="Autonomous system number")
-    @argument("resolve_bond", type=bool, description="Resolve the bond")
     def find(self, address: str = '', asn: str = '', vrf: str = '',
-             vlan: str = '', resolve_bond: bool = False):
-        """Find a network object such as an IP address, BGP session, etc.
+             vlan: str = ''):
+        """Find the network attach point of a given IP or MAC address.
         """
         now = time.time()
 
@@ -76,10 +74,9 @@ class NetworkCmd(SqCommand):
             namespace=self.namespace,
             hostname=self.hostname,
             address=address.split(),
-            asn=asn.split(),
             vlan=vlan,
             vrf=vrf,
-            resolve_bond=resolve_bond,
+            query_str=self.query_str,
         )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
