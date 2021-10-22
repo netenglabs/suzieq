@@ -22,13 +22,12 @@ class OspfObj(SqPandasEngine):
         user_query = kwargs.pop('query_str', '')
         hostname = kwargs.pop('hostname', [])
 
-        cols = SchemaForTable('ospf', schema=self.schemas) \
-            .get_display_fields(columns)
+        cols = self.schema.get_display_fields(columns)
         if columns == ['default']:
             cols.append('timestamp')
 
-        ifschema = SchemaForTable('ospfIf', schema=self.schemas)
-        nbrschema = SchemaForTable('ospfNbr', schema=self.schemas)
+        ifschema = SchemaForTable('ospfIf', schema=self.all_schemas)
+        nbrschema = SchemaForTable('ospfNbr', schema=self.all_schemas)
 
         if (columns != ['default']) and (columns != ['*']):
             ifkeys = ifschema.key_fields()

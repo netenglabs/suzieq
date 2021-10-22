@@ -23,7 +23,7 @@ class BgpObj(SqPandasEngine):
 
         drop_cols = ['origPeer', 'peerHost']
         addnl_fields.extend(['origPeer'])
-        sch = SchemaForTable(self.iobj.table, self.schemas)
+        sch = self.schema
         fields = sch.get_display_fields(columns)
 
         for col in ['peerIP', 'updateSource', 'state', 'namespace', 'vrf',

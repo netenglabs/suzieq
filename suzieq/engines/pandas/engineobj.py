@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from suzieq.utils import SchemaForTable, humanize_timestamp
+from suzieq.utils import SchemaForTable, humanize_timestamp, Schema
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects import get_sqobject
 from suzieq.db import get_sqdb_engine
@@ -24,8 +24,12 @@ class SqPandasEngine(SqEngineObj):
                                       None)
 
     @property
-    def schemas(self):
+    def all_schemas(self) -> Schema:
         return self.ctxt.schemas
+
+    @property
+    def schema(self) -> SchemaForTable:
+        return self.iobj.schema
 
     @property
     def cfg(self):
@@ -85,7 +89,8 @@ class SqPandasEngine(SqEngineObj):
             print("Specify an analysis engine using set engine command")
             return pd.DataFrame(columns=["namespace", "hostname"])
 
-        sch = SchemaForTable(table, schema=self.schemas)
+        # Thanks to things like OSPF, we cannot use self.schema here
+        sch = SchemaForTable(table, self.all_schemas)
         phy_table = sch.get_phy_table_for_table()
 
         columns = kwargs.pop('columns', ['default'])
@@ -179,6 +184,8 @@ class SqPandasEngine(SqEngineObj):
 
                 if hdf_list:
                     table_df = pd.concat(hdf_list)
+                else:
+                    return pd.DataFrame(columns=table_df.columns.tolist())
 
             if view == "all" or not active_only:
                 table_df.drop(columns=drop_cols, inplace=True)
@@ -240,23 +247,25 @@ class SqPandasEngine(SqEngineObj):
 
         return ret
 
-    def _get_table_sqobj(self, table: str):
+    def _get_table_sqobj(self, table: str, start_time: str = None,
+                         end_time: str = None, view=None):
         """Normalize pulling data from other tables into this one function
 
         Typically pulling data involves calling get_sqobject with a bunch of
-        parameters that need to be passed to it, that a caller can forget to pass.
-        A classic example is passing the view, start-time and end-time which is
-        often forgotten. This function fixes this issue.
+        parameters that need to be passed to it, that a caller can forget to 
+        pass. A classic example is passing the view, start-time and end-time 
+        which is often forgotten. This function fixes this issue.
 
         Args:
             table (str): The table to retrieve the info from
             verb (str): The verb to use in the get_sqobject call
         """
 
-        return get_sqobject(table)(context=self.ctxt,
-                                   start_time=self.iobj.start_time,
-                                   end_time=self.iobj.end_time,
-                                   view=self.iobj.view)
+        return get_sqobject(table)(
+            context=self.ctxt,
+            start_time=start_time or self.iobj.start_time,
+            end_time=end_time or self.iobj.end_time,
+            view=view or self.iobj.view)
 
     def _unique_or_zero(self, df: pd.DataFrame, col: str) -> int:
         """Returns the unique count of a column in a dataframe or 0

@@ -160,8 +160,6 @@ class RoutesObj(SqPandasEngine):
         if not self.iobj._table:
             raise NotImplementedError
 
-        drop_cols = []
-
         addr = kwargs.pop('address')
         kwargs.pop('ipvers', None)
         df = kwargs.pop('cached_df', pd.DataFrame())
@@ -173,15 +171,18 @@ class RoutesObj(SqPandasEngine):
         except ValueError as e:
             raise ValueError(e)
 
-        cols = kwargs.pop("columns", ["namespace", "hostname", "vrf", "metric",
-                                      "prefix", "prefixlen", "nexthopIps",
-                                      "oifs", "protocol", "ipvers"])
+        usercols = kwargs.pop('columns', ['default'])
+        if usercols == ['default']:
+            usercols = self.schema.get_display_fields(usercols)
+            if 'timestamp' not in usercols:
+                usercols.append('timestamp')
+        else:
+            usercols = self.schema.get_display_fields(usercols)
+        cols = ["default"]
+        drop_cols = []
 
-        if cols != ['default'] and cols != ['*']:
-            if 'prefix' not in cols:
-                addnl_fields.insert(-1, 'prefix')
-                drop_cols.append('prefix')
-
+        addnl_fields, drop_cols = self._cons_addnl_fields(
+            cols, addnl_fields)
         rslt = pd.DataFrame()
 
         # if not using a pre-populated dataframe
@@ -228,10 +229,7 @@ class RoutesObj(SqPandasEngine):
             else:
                 rslt = pd.DataFrame()
 
-        if drop_cols:
-            return rslt.drop(columns=drop_cols, errors='ignore')
-        else:
-            return rslt
+        return rslt[usercols]
 
     def aver(self, **kwargs) -> pd.DataFrame:
         """Verify that the routing table is consistent
