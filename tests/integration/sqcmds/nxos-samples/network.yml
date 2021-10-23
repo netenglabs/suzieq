@@ -1,0 +1,67 @@
+description: Testing network table
+tests:
+- command: network show --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522092858}]'
+- command: network show --format=json --model=vmx
+  data-directory: tests/data/nxos/parquet-out
+  marks: network show nxos
+  output: '[]'
+- command: network show --format=json --os=nxos
+  data-directory: tests/data/nxos/parquet-out
+  marks: network show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 8, "serviceCnt": 15, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522092858}]'
+- command: network show --format=json --vendor=Juniper
+  data-directory: tests/data/nxos/parquet-out
+  marks: network show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 1, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1634522092851}]'
+- command: network find --address="172.16.1.101" --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network find nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": "10", "macaddr": "32:bb:c5:b5:3a:20", "ifname": "port-channel3",
+    "bondMembers": "Ethernet1/3", "type": "bridged", "timestamp": 1619275264428},
+    {"namespace": "nxos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": "10", "macaddr": "32:bb:c5:b5:3a:20", "ifname": "port-channel3", "bondMembers":
+    "Ethernet1/3", "type": "bridged", "timestamp": 1619275264429}]'
+- command: network summarize --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network summarize nxos
+  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [18, 18, 18.0], "nsWithMlagCnt":
+    1, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
+    0}}'
+- command: network find --address="10.0.0.11" --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network find nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "10.0.0.11", "vlan": "0", "macaddr": "44:01:02:01:1b:08", "ifname": "loopback0",
+    "bondMembers": "", "type": "routed", "timestamp": 1619275262853, "bondMbrs": ""}]'
+- command: network find --address="169.254.127.0" --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network find nxos
+  output: '[{"namespace": "nxos", "hostname": "dcedge01", "vrf": "default", "ipAddress":
+    "169.254.127.0", "vlan": "0", "macaddr": "02:05:86:71:3c:03", "ifname": "xe-0/0/0",
+    "bondMembers": "", "type": "routed", "timestamp": 1619275264358}]'
+- command: network find --address="169.254.127.1" --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network find nxos
+  output: '[{"namespace": "nxos", "hostname": "exit01", "vrf": "internet-vrf", "ipAddress":
+    "169.254.127.1", "vlan": "0", "macaddr": "44:01:03:01:1b:08", "ifname": "Ethernet1/4",
+    "bondMembers": "", "type": "routed", "timestamp": 1619275261428}]'
+- command: network find --address="10.0.0.31" --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network find nxos
+  output: '[{"namespace": "nxos", "hostname": "exit01", "vrf": "default", "ipAddress":
+    "10.0.0.31", "vlan": "0", "macaddr": "44:01:03:01:1b:08", "ifname": "loopback0",
+    "bondMembers": "", "type": "routed", "timestamp": 1619275262853, "bondMbrs": ""}]'
+- command: network find --address="10.0.0.112" --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network find nxos
+  output: '[]'

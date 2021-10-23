@@ -1032,3 +1032,17 @@ tests:
   output: '[{"prefixlen": 16, "numRows": 4}, {"prefixlen": 31, "numRows": 6}, {"prefixlen":
     0, "numRows": 14}, {"prefixlen": 30, "numRows": 19}, {"prefixlen": 128, "numRows":
     20}, {"prefixlen": 24, "numRows": 53}, {"prefixlen": 32, "numRows": 119}]'
+- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route lpm junos
+  output: '[{"hostname": "leaf02", "nexthopIps": ["10.0.0.11"]}, {"hostname": "leaf01",
+    "nexthopIps": []}, {"hostname": "exit01", "nexthopIps": ["10.0.0.11"]}, {"hostname":
+    "exit02", "nexthopIps": ["169.254.253.10"]}, {"hostname": "exit01", "nexthopIps":
+    ["10.0.0.11"]}, {"hostname": "server101", "nexthopIps": [""]}, {"hostname": "dcedge01",
+    "nexthopIps": ["169.254.127.1"]}, {"hostname": "server201", "nexthopIps": ["172.16.2.254"]},
+    {"hostname": "server102", "nexthopIps": ["172.16.3.254"]}, {"hostname": "server202",
+    "nexthopIps": ["172.16.3.254"]}, {"hostname": "exit01", "nexthopIps": ["10.255.5.1"]},
+    {"hostname": "spine01", "nexthopIps": ["10.255.5.1"]}, {"hostname": "spine02",
+    "nexthopIps": ["10.255.5.1"]}, {"hostname": "leaf02", "nexthopIps": ["10.255.5.1"]},
+    {"hostname": "exit02", "nexthopIps": ["10.255.5.1"]}, {"hostname": "leaf01", "nexthopIps":
+    ["10.255.5.1"]}, {"hostname": "firewall01", "nexthopIps": ["10.255.5.1"]}]'

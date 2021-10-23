@@ -1,0 +1,86 @@
+description: Testing network table for EOS
+tests:
+- command: network show --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network show eos
+  output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522087571}]'
+- command: network show --format=json --os=eos
+  data-directory: tests/data/eos/parquet-out
+  marks: network show  eos
+  output: '[{"namespace": "eos", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522087560}]'
+- command: network find --address="172.16.1.101" --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find eos
+  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
+    "bondMembers": "Ethernet3", "type": "bridged", "timestamp": 1623025177307}, {"namespace":
+    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
+    "Ethernet3", "type": "bridged", "timestamp": 1623025177688}]'
+- command: network find --address="66:49:0d:d4:d8:63" --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find eos
+  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
+    "bondMembers": "Ethernet3", "type": "bridged", "timestamp": 1623025177307}, {"namespace":
+    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
+    "Ethernet3", "type": "bridged", "timestamp": 1623025177688}]'
+- command: network find --address="6649.0dd4.d863" --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find  eos
+  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
+    "bondMembers": "Ethernet3", "type": "bridged", "timestamp": 1623025177307}, {"namespace":
+    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
+    "Ethernet3", "type": "bridged", "timestamp": 1623025177688}]'
+- command: network find --address="66:49:0d:D4:D8:63" --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find eos
+  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
+    "bondMembers": "Ethernet3", "type": "bridged", "timestamp": 1623025177307}, {"namespace":
+    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
+    "Ethernet3", "type": "bridged", "timestamp": 1623025177688}]'
+- command: network summarize --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network summarize eos
+  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [18, 18, 18.0], "nsWithMlagCnt":
+    1, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
+    0}}'
+- command: network find --address="10.0.0.11" --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find eos
+  output: '[{"namespace": "eos", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "10.0.0.11", "vlan": "0", "macaddr": "44:38:39:e3:19:2e", "ifname": "Ethernet1",
+    "bondMembers": "", "type": "routed", "timestamp": 1623025177202}]'
+- command: network find --address="169.254.127.0" --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find eos
+  output: '[{"namespace": "eos", "hostname": "dcedge01", "vrf": "default", "ipAddress":
+    "169.254.127.0", "vlan": "0", "macaddr": "02:05:86:71:f0:03", "ifname": "xe-0/0/0",
+    "bondMembers": "", "type": "routed", "timestamp": 1623025177530}]'
+- command: network find --address="169.254.127.1" --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find eos
+  output: '[{"namespace": "eos", "hostname": "exit01", "vrf": "internet-vrf", "ipAddress":
+    "169.254.127.1", "vlan": "0", "macaddr": "44:38:39:33:d8:43", "ifname": "Ethernet4",
+    "bondMembers": "", "type": "routed", "timestamp": 1623025181909}]'
+- command: network find --address="10.0.0.21" --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find eos
+  output: '[{"namespace": "eos", "hostname": "spine01", "vrf": "default", "ipAddress":
+    "10.0.0.21", "vlan": "0", "macaddr": "44:38:39:ba:d2:34", "ifname": "Ethernet3",
+    "bondMembers": "", "type": "routed", "timestamp": 1623025177304}]'
+- command: network find --address="10.0.0.32" --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find eos
+  output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "default", "ipAddress":
+    "10.0.0.32", "vlan": "0", "macaddr": "44:38:39:c3:55:cb", "ifname": "Ethernet1",
+    "bondMembers": "", "type": "routed", "timestamp": 1623025177202}]'

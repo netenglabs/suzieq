@@ -1482,3 +1482,23 @@ tests:
     "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs":
     ["_nexthopVrf:default"], "protocol": "bgp", "source": "", "preference": 200, "ipvers":
     4, "action": "forward", "timestamp": 1619275257722}]'
+- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route lpm nxos
+  output: '[{"hostname": "exit02", "nexthopIps": ["10.0.0.112"]}, {"hostname": "leaf01",
+    "nexthopIps": ["172.16.1.101"]}, {"hostname": "leaf04", "nexthopIps": ["10.0.0.112"]},
+    {"hostname": "exit01", "nexthopIps": ["10.0.0.112"]}, {"hostname": "leaf03", "nexthopIps":
+    ["10.0.0.112"]}, {"hostname": "leaf02", "nexthopIps": ["172.16.1.101"]}, {"hostname":
+    "exit01", "nexthopIps": ["169.254.254.10"]}, {"hostname": "exit02", "nexthopIps":
+    ["169.254.253.2"]}, {"hostname": "exit02", "nexthopIps": ["169.254.253.10"]},
+    {"hostname": "dcedge01", "nexthopIps": ["169.254.127.3"]}, {"hostname": "exit01",
+    "nexthopIps": ["169.254.254.2"]}, {"hostname": "firewall01", "nexthopIps": ["169.254.253.5",
+    "169.254.254.5"]}, {"hostname": "server101", "nexthopIps": [""]}, {"hostname":
+    "server302", "nexthopIps": ["172.16.3.254"]}, {"hostname": "server102", "nexthopIps":
+    ["172.16.3.254"]}, {"hostname": "server301", "nexthopIps": ["172.16.2.254"]},
+    {"hostname": "leaf01", "nexthopIps": ["10.255.2.1"]}, {"hostname": "exit02", "nexthopIps":
+    ["10.255.2.1"]}, {"hostname": "leaf04", "nexthopIps": ["10.255.2.1"]}, {"hostname":
+    "spine01", "nexthopIps": ["10.255.2.1"]}, {"hostname": "spine02", "nexthopIps":
+    ["10.255.2.1"]}, {"hostname": "leaf03", "nexthopIps": ["10.255.2.1"]}, {"hostname":
+    "exit01", "nexthopIps": ["10.255.2.1"]}, {"hostname": "leaf02", "nexthopIps":
+    ["10.255.2.1"]}]'

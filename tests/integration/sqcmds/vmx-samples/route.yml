@@ -1,0 +1,12 @@
+description: 'Testing verbs for route: show summarize unique lpm'
+tests:
+- command: route lpm --address='172.16.1.11' --columns='hostname nexthopIps' --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: route lpm vmx
+  output: '[{"hostname": "CRP-ACC-SW01", "nexthopIps": ["172.26.147.254"]}, {"hostname":
+    "TOR4CRP-DGW-RT01", "nexthopIps": ["10.0.10.1"]}, {"hostname": "TOR4CRP-DGW-RT01",
+    "nexthopIps": ["10.0.20.1"]}, {"hostname": "TOR4CRP-DGW-RT01", "nexthopIps": ["172.26.147.254"]},
+    {"hostname": "TOR1CRP-DGW-RT01", "nexthopIps": ["172.26.147.254"]}, {"hostname":
+    "TOR1CRP-DGW-RT01", "nexthopIps": ["10.0.20.1"]}, {"hostname": "TOR1CRP-DGW-RT01",
+    "nexthopIps": ["10.0.10.1"]}, {"hostname": "CRP-DIS-SW01", "nexthopIps": ["172.26.147.254"]},
+    {"hostname": "TOR1BBN-PE-RT01", "nexthopIps": ["172.26.147.254"]}]'

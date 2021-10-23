@@ -1,0 +1,64 @@
+description: Testing network table
+tests:
+- command: network show --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: network show junos
+  output: '[{"namespace": "junos", "deviceCnt": 12, "serviceCnt": 17, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
+    1634534036232}]'
+- command: network show --format=json --model=vmx
+  data-directory: tests/data/junos/parquet-out
+  marks: network show junos
+  output: '[]'
+- command: network show --format=json --os=junos-qfx
+  data-directory: tests/data/junos/parquet-out
+  marks: network show junos
+  output: '[{"namespace": "junos", "deviceCnt": 7, "serviceCnt": 13, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
+    1634534036223}]'
+- command: network show --format=json --vendor=Juniper
+  data-directory: tests/data/junos/parquet-out
+  marks: network show junos
+  output: '[{"namespace": "junos", "deviceCnt": 7, "serviceCnt": 13, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
+    1634534036223}]'
+- command: network find --address="172.16.1.101" --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: network find junos
+  output: '[{"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": "10", "macaddr": "28:b7:ad:3c:81:d0", "ifname": "xe-0/0/2",
+    "bondMembers": "", "type": "bridged", "timestamp": 1623025797193}]'
+- command: network summarize --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: network summarize junos
+  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [17, 17, 17.0], "nsWithMlagCnt":
+    0, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
+    0}}'
+- command: network find --address="10.0.0.11" --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: network find junos
+  output: '[{"namespace": "junos", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "10.0.0.11", "vlan": "0", "macaddr": "02:05:86:71:ad:03", "ifname": "xe-0/0/0",
+    "bondMembers": "", "type": "routed", "timestamp": 1623025796956}]'
+- command: network find --address="169.254.127.0" --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: network find junos
+  output: '[{"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "ipAddress":
+    "169.254.127.0", "vlan": "0", "macaddr": "02:05:86:71:c2:03", "ifname": "xe-0/0/0",
+    "bondMembers": "", "type": "routed", "timestamp": 1623025796956}]'
+- command: network find --address="169.254.127.1" --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: network find junos
+  output: '[{"namespace": "junos", "hostname": "exit01", "vrf": "default", "ipAddress":
+    "169.254.127.1", "vlan": "0", "macaddr": "02:05:86:71:74:0f", "ifname": "xe-0/0/3",
+    "bondMembers": "", "type": "routed", "timestamp": 1623025797193}]'
+- command: network find --address="10.0.0.31" --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: network find junos
+  output: '[{"namespace": "junos", "hostname": "exit01", "vrf": "default", "ipAddress":
+    "10.0.0.31", "vlan": "0", "macaddr": "02:05:86:71:74:03", "ifname": "xe-0/0/0",
+    "bondMembers": "", "type": "routed", "timestamp": 1623025796956}]'
+- command: network find --address="10.0.0.112" --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: network find junos
+  output: '[]'

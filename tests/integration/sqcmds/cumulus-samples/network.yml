@@ -2,7 +2,7 @@ description: Testing network table for Cumulus
 tests:
 - command: network show --format=json
   data-directory: tests/data/multidc/parquet-out
-  marks: network show all  cumulus
+  marks: network show cumulus
   output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
     0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
     1634522169638}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
@@ -12,53 +12,120 @@ tests:
     false, "hasMlag": false, "lastUpdate": 1634522254949}]'
 - command: network show --format=json --os=cumulus
   data-directory: tests/data/multidc/parquet-out
-  marks: network show all  cumulus
-  output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
+  marks: network show  cumulus
+  output: '[{"namespace": "dual-evpn", "deviceCnt": 9, "serviceCnt": 17, "errSvcCnt":
     0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1634522169638}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
-    "errSvcCnt": 0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag":
-    true, "lastUpdate": 1634522089050}, {"namespace": "ospf-single", "deviceCnt":
-    14, "serviceCnt": 16, "errSvcCnt": 0, "hasOspf": true, "hasBgp": false, "hasVxlan":
-    false, "hasMlag": false, "lastUpdate": 1634522254949}]'
+    1634522169638}, {"namespace": "ospf-ibgp", "deviceCnt": 9, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522089050}, {"namespace": "ospf-single", "deviceCnt": 9, "serviceCnt": 16,
+    "errSvcCnt": 0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag":
+    false, "lastUpdate": 1634522254931}]'
 - command: network find --address="172.16.1.101" --format=json
   data-directory: tests/data/multidc/parquet-out
-  marks: network find all  cumulus
+  marks: network find cumulus
   output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ipAddress":
     "172.16.1.101", "vlan": "10", "macaddr": "00:03:00:11:11:01", "ifname": "swp5",
-    "bondMembers": "", "timestamp": 1616352402479}, {"namespace": "dual-evpn", "hostname":
-    "leaf01", "vrf": "default", "ipAddress": "172.16.1.101", "vlan": "13", "macaddr":
-    "52:54:00:a0:c3:0b", "ifname": "bond01", "bondMembers": "swp5", "timestamp": 1616644821712},
-    {"namespace": "dual-evpn", "hostname": "leaf02", "vrf": "default", "ipAddress":
+    "bondMembers": "", "type": "bridged", "timestamp": 1616352402479}, {"namespace":
+    "dual-evpn", "hostname": "server103", "vrf": "default", "ipAddress": "172.16.1.101",
+    "vlan": "0", "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond0", "bondMembers":
+    "eth1, eth2", "type": "routed", "timestamp": 1616644821711}, {"namespace": "dual-evpn",
+    "hostname": "leaf01", "vrf": "default", "ipAddress": "172.16.1.101", "vlan": "13",
+    "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond01", "bondMembers": "swp5", "type":
+    "bridged", "timestamp": 1616644821712}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "vrf": "default", "ipAddress": "172.16.1.101", "vlan": "13", "macaddr":
+    "52:54:00:a0:c3:0b", "ifname": "bond01", "bondMembers": "swp5", "type": "bridged",
+    "timestamp": 1616644821714}, {"namespace": "ospf-ibgp", "hostname": "server103",
+    "vrf": "default", "ipAddress": "172.16.1.101", "vlan": "0", "macaddr": "52:54:00:c5:1d:06",
+    "ifname": "bond0", "bondMembers": "eth1, eth2", "type": "routed", "timestamp":
+    1616681581179}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf",
+    "ipAddress": "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:c5:1d:06", "ifname":
+    "bond01", "bondMembers": "swp5", "type": "bridged", "timestamp": 1616681581180},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01",
+    "bondMembers": "swp5", "type": "bridged", "timestamp": 1616681581182}]'
+- command: network find --namespace=dual-evpn --address="172.16.1.101" --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network find cumulus
+  output: '[{"namespace": "dual-evpn", "hostname": "server103", "vrf": "default",
+    "ipAddress": "172.16.1.101", "vlan": "0", "macaddr": "52:54:00:a0:c3:0b", "ifname":
+    "bond0", "bondMembers": "eth1, eth2", "type": "routed", "timestamp": 1616644821711},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "vrf": "default", "ipAddress":
     "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond01",
-    "bondMembers": "swp5", "timestamp": 1616644821714}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
-    "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers": "swp5",
-    "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
-    "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:c5:1d:06",
-    "ifname": "bond01", "bondMembers": "swp5", "timestamp": 1616681581182}]'
+    "bondMembers": "swp5", "type": "bridged", "timestamp": 1616644821712}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "vrf": "default", "ipAddress": "172.16.1.101",
+    "vlan": "13", "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond01", "bondMembers":
+    "swp5", "type": "bridged", "timestamp": 1616644821714}]'
 - command: network find --address="52:54:00:c5:1d:06" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out
-  marks: network find all  cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
+  marks: network find cumulus
+  output: '[{"namespace": "ospf-ibgp", "hostname": "server103", "vrf": "default",
+    "ipAddress": "172.16.1.101", "vlan": "0", "macaddr": "52:54:00:c5:1d:06", "ifname":
+    "bond0", "bondMembers": "eth1, eth2", "type": "routed", "timestamp": 1616681581179},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01",
-    "bondMembers": "swp5", "timestamp": 1616681581180}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
-    "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers": "swp5",
-    "timestamp": 1616681581182}]'
+    "bondMembers": "swp5", "type": "bridged", "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers":
+    "swp5", "type": "bridged", "timestamp": 1616681581182}]'
 - command: network find --address="72:f0:17:6d:80:3f" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out
-  marks: network find all  cumulus
+  marks: network find  cumulus
   output: '[]'
 - command: network find --address="5254.00c5.1d06" --format=json
   data-directory: tests/data/multidc/parquet-out
-  marks: network find all  cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
+  marks: network find cumulus
+  output: '[{"namespace": "ospf-ibgp", "hostname": "server103", "vrf": "default",
+    "ipAddress": "172.16.1.101", "vlan": "0", "macaddr": "52:54:00:c5:1d:06", "ifname":
+    "bond0", "bondMembers": "eth1, eth2", "type": "routed", "timestamp": 1616681581179},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01",
-    "bondMembers": "swp5", "timestamp": 1616681581180}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
-    "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers": "swp5",
-    "timestamp": 1616681581182}]'
-- command: network summarize --namespace=cumulus --format=json
+    "bondMembers": "swp5", "type": "bridged", "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers":
+    "swp5", "type": "bridged", "timestamp": 1616681581182}]'
+- command: network summarize --format=json
   data-directory: tests/data/multidc/parquet-out
-  marks: network summarize all  cumulus
-  output: '{}'
+  marks: network summarize cumulus
+  output: '{"summary": {"namespacesCnt": 3, "servicePerNsStat": [16, 18, 17.0], "nsWithMlagCnt":
+    2, "nsWithBgpCnt": 2, "nsWithOspfCnt": 2, "nsWithVxlanCnt": 2, "nsWithErrsvcCnt":
+    0}}'
+- command: network find --address="10.0.0.11" --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network find cumulus
+  output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "10.0.0.11", "vlan": "0", "macaddr": "44:38:39:00:00:53", "ifname": "swp1", "bondMembers":
+    "", "type": "routed", "timestamp": 1616352402449}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "vrf": "default", "ipAddress": "10.0.0.11", "vlan": "0",
+    "macaddr": "52:54:00:e6:0f:5c", "ifname": "swp1", "bondMembers": "", "type": "routed",
+    "timestamp": 1616681581180}]'
+- command: network find --address="169.254.127.0" --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network find cumulus
+  output: '[{"namespace": "dual-evpn", "hostname": "internet", "vrf": "default", "ipAddress":
+    "169.254.127.0", "vlan": "0", "macaddr": "52:54:00:71:0c:94", "ifname": "swp1",
+    "bondMembers": "", "type": "routed", "timestamp": 1616644821714}, {"namespace":
+    "ospf-ibgp", "hostname": "internet", "vrf": "default", "ipAddress": "169.254.127.0",
+    "vlan": "0", "macaddr": "52:54:00:88:3d:81", "ifname": "swp1", "bondMembers":
+    "", "type": "routed", "timestamp": 1616681581180}]'
+- command: network find --address="169.254.127.1" --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network find cumulus
+  output: '[{"namespace": "dual-evpn", "hostname": "exit01", "vrf": "internet-vrf",
+    "ipAddress": "169.254.127.1", "vlan": "0", "macaddr": "52:54:00:c7:58:66", "ifname":
+    "swp6", "bondMembers": "", "type": "routed", "timestamp": 1616644821714}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "vrf": "internet-vrf", "ipAddress": "169.254.127.1",
+    "vlan": "0", "macaddr": "52:54:00:cf:70:e0", "ifname": "swp6", "bondMembers":
+    "", "type": "routed", "timestamp": 1616681581503}]'
+- command: network find --address="10.0.0.21" --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network find cumulus
+  output: '[{"namespace": "ospf-single", "hostname": "spine01", "vrf": "default",
+    "ipAddress": "10.0.0.21", "vlan": "0", "macaddr": "44:38:39:00:00:54", "ifname":
+    "swp1", "bondMembers": "", "type": "routed", "timestamp": 1616352402479}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ipAddress": "10.0.0.21",
+    "vlan": "0", "macaddr": "52:54:00:e5:e3:d4", "ifname": "swp5", "bondMembers":
+    "", "type": "routed", "timestamp": 1616681581179}]'
+- command: network find --address="10.0.0.32" --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network find cumulus
+  output: '[]'

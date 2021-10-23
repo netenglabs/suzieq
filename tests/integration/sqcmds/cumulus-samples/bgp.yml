@@ -2426,11 +2426,39 @@ tests:
       "hostname": "leaf03", "vrf": "default", "peer": "swp2", "asn": 65103, "peerAsn":
       65000, "state": "Established", "peerHostname": "spine02", "assert": "pass",
       "assertReason": "-", "timestamp": 1616638471475}]'
-  marks: bgp assert
+  marks: bgp assert cumulus
 - command: bgp assert --status=whatever --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: bgp assert
+  marks: bgp assert cumulus
   output: '[]'
+- command: bgp assert --hostname=leaf01 --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"namespace": "dual-evpn", "hostname": "leaf01", "vrf": "default", "peer":
+      "swp1", "asn": 65101, "peerAsn": 65000, "state": "Established", "peerHostname":
+      "spine01", "assert": "pass", "assertReason": "-", "timestamp": 1616644823039},
+      {"namespace": "dual-evpn", "hostname": "leaf01", "vrf": "default", "peer": "swp2",
+      "asn": 65101, "peerAsn": 65000, "state": "Established", "peerHostname": "spine02",
+      "assert": "pass", "assertReason": "-", "timestamp": 1616644823039}, {"namespace":
+      "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "peer": "swp2", "asn":
+      65000, "peerAsn": 65000, "state": "Established", "peerHostname": "spine02",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1616681583330}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default",
+      "peer": "swp1", "asn": 65000, "peerAsn": 65000, "state": "Established", "peerHostname":
+      "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1616681583330}]'
+  marks: bgp assert cumulus
+- command: bgp assert --hostname=leaf01 --namespace=ospf-ibgp --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "peer":
+      "swp2", "asn": 65000, "peerAsn": 65000, "state": "Established", "peerHostname":
+      "spine02", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1616681583330}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default",
+      "peer": "swp1", "asn": 65000, "peerAsn": 65000, "state": "Established", "peerHostname":
+      "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1616681583330}]'
+  marks: bgp assert cumulus
 - command: bgp unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp unique

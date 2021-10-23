@@ -4695,3 +4695,57 @@ tests:
   output: '[{"prefixlen": 0}, {"prefixlen": 8}, {"prefixlen": 16}, {"prefixlen": 24},
     {"prefixlen": 30}, {"prefixlen": 31}, {"prefixlen": 32}, {"prefixlen": 64}, {"prefixlen":
     128}]'
+- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: route lpm cumulus
+  output: '[{"hostname": "leaf03", "nexthopIps": ["10.0.0.112"]}, {"hostname": "leaf04",
+    "nexthopIps": ["10.0.0.112"]}, {"hostname": "exit01", "nexthopIps": ["10.0.0.112"]},
+    {"hostname": "exit02", "nexthopIps": ["10.0.0.112"]}, {"hostname": "exit01", "nexthopIps":
+    ["169.254.254.10"]}, {"hostname": "server103", "nexthopIps": [""]}, {"hostname":
+    "server101", "nexthopIps": [""]}, {"hostname": "server103", "nexthopIps": [""]},
+    {"hostname": "leaf04", "nexthopIps": ["169.254.0.1", "169.254.0.1"]}, {"hostname":
+    "spine02", "nexthopIps": ["169.254.0.1", "169.254.0.1"]}, {"hostname": "leaf02",
+    "nexthopIps": [""]}, {"hostname": "spine01", "nexthopIps": ["169.254.0.1", "169.254.0.1"]},
+    {"hostname": "exit01", "nexthopIps": [""]}, {"hostname": "edge01", "nexthopIps":
+    ["169.254.253.5", "169.254.254.5"]}, {"hostname": "internet", "nexthopIps": ["169.254.127.1",
+    "169.254.127.3"]}, {"hostname": "spine02", "nexthopIps": ["10.0.0.11"]}, {"hostname":
+    "exit01", "nexthopIps": ["169.254.254.10"]}, {"hostname": "server101", "nexthopIps":
+    [""]}, {"hostname": "leaf02", "nexthopIps": ["169.254.0.1", "169.254.0.1"]}, {"hostname":
+    "leaf03", "nexthopIps": ["169.254.0.1", "169.254.0.1"]}, {"hostname": "leaf01",
+    "nexthopIps": ["169.254.0.1", "169.254.0.1"]}, {"hostname": "exit02", "nexthopIps":
+    ["169.254.253.10"]}, {"hostname": "exit02", "nexthopIps": ["169.254.253.2"]},
+    {"hostname": "exit02", "nexthopIps": ["169.254.253.10"]}, {"hostname": "exit02",
+    "nexthopIps": [""]}, {"hostname": "exit01", "nexthopIps": ["169.254.254.2"]},
+    {"hostname": "server101", "nexthopIps": [""]}, {"hostname": "edge01", "nexthopIps":
+    ["169.254.253.5", "169.254.254.5"]}, {"hostname": "leaf01", "nexthopIps": [""]},
+    {"hostname": "exit02", "nexthopIps": ["10.0.0.21", "10.0.0.22"]}, {"hostname":
+    "leaf04", "nexthopIps": ["10.0.0.21", "10.0.0.22"]}, {"hostname": "spine01", "nexthopIps":
+    ["10.0.0.11"]}, {"hostname": "leaf01", "nexthopIps": [""]}, {"hostname": "leaf02",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"]}, {"hostname": "leaf03", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"]}, {"hostname": "internet", "nexthopIps": ["169.254.127.1",
+    "169.254.127.3"]}, {"hostname": "exit01", "nexthopIps": ["10.0.0.21", "10.0.0.22"]},
+    {"hostname": "server103", "nexthopIps": ["172.16.3.1"]}, {"hostname": "server104",
+    "nexthopIps": ["172.16.4.1"]}, {"hostname": "server102", "nexthopIps": ["172.16.2.1"]},
+    {"hostname": "server104", "nexthopIps": ["172.16.2.1"]}, {"hostname": "server102",
+    "nexthopIps": ["172.16.2.1"]}, {"hostname": "server102", "nexthopIps": ["172.16.2.1"]},
+    {"hostname": "server104", "nexthopIps": ["172.16.2.1"]}, {"hostname": "spine02",
+    "nexthopIps": ["169.254.0.1"]}, {"hostname": "leaf03", "nexthopIps": ["192.168.123.1"]},
+    {"hostname": "exit01", "nexthopIps": ["169.254.254.2"]}, {"hostname": "leaf04",
+    "nexthopIps": ["192.168.123.1"]}, {"hostname": "exit02", "nexthopIps": ["192.168.123.1"]},
+    {"hostname": "exit01", "nexthopIps": ["192.168.123.1"]}, {"hostname": "spine01",
+    "nexthopIps": ["192.168.123.1"]}, {"hostname": "spine02", "nexthopIps": ["192.168.123.1"]},
+    {"hostname": "spine01", "nexthopIps": ["169.254.0.1", "169.254.0.1"]}, {"hostname":
+    "leaf02", "nexthopIps": ["192.168.123.1"]}, {"hostname": "leaf01", "nexthopIps":
+    ["192.168.123.1"]}, {"hostname": "exit02", "nexthopIps": ["169.254.253.2"]}, {"hostname":
+    "leaf03", "nexthopIps": ["192.168.121.1"]}, {"hostname": "spine02", "nexthopIps":
+    ["10.255.2.1"]}, {"hostname": "internet", "nexthopIps": ["10.255.2.1"]}, {"hostname":
+    "spine01", "nexthopIps": ["10.255.2.1"]}, {"hostname": "exit01", "nexthopIps":
+    ["10.255.2.1"]}, {"hostname": "leaf03", "nexthopIps": ["10.255.2.1"]}, {"hostname":
+    "leaf01", "nexthopIps": ["10.255.2.1"]}, {"hostname": "exit02", "nexthopIps":
+    ["10.255.2.1"]}, {"hostname": "leaf04", "nexthopIps": ["10.255.2.1"]}, {"hostname":
+    "leaf02", "nexthopIps": ["10.255.2.1"]}, {"hostname": "edge01", "nexthopIps":
+    ["10.255.2.1"]}, {"hostname": "spine01", "nexthopIps": ["192.168.121.1"]}, {"hostname":
+    "exit02", "nexthopIps": ["192.168.121.1"]}, {"hostname": "leaf02", "nexthopIps":
+    ["192.168.121.1"]}, {"hostname": "leaf04", "nexthopIps": ["192.168.121.1"]}, {"hostname":
+    "leaf01", "nexthopIps": ["192.168.121.1"]}, {"hostname": "exit01", "nexthopIps":
+    ["192.168.121.1"]}, {"hostname": "spine02", "nexthopIps": ["192.168.121.1"]}]'

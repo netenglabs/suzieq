@@ -164,3 +164,7 @@ tests:
     "10.255.2.120", "timestamp": 1619275257705}, {"namespace": "nxos", "hostname":
     "spine01", "ifname": "Ethernet1/2", "peerHostname": "leaf02", "peerIfname": "Ethernet1/1",
     "description": "N9K-C9300v", "mgmtIP": "10.255.2.188", "timestamp": 1619275257776}]'
+- command: lldp show --namespace=nxos --hostname=leaf02 --ifname=Ethernet1/3 --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: lldp show nxos
+  output: '[]'

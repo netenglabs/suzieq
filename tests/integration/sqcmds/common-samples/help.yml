@@ -749,12 +749,11 @@ tests:
   marks: network help
   output: "network: \e[36mOverall network information such as namespaces present etc.\e\
     [0m\n\nSupported verbs are: \n - describe: \e[36mDisplay the schema of the table\e\
-    [0m\n - find: \e[36mFind a network object such as an IP address, BGP session,\
-    \ etc.\e[0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow\
-    \ network info\e[0m\n - summarize: \e[36mSummarize relevant information about\
-    \ the table\e[0m\n - top: \e[36mReturn the top n values for a field in a table\e\
-    [0m\n - unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n"
+    [0m\n - find: \e[36mFind the network attach point of a given IP or MAC address.\e\
+    [0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow network\
+    \ info\e[0m\n - summarize: \e[36mSummarize relevant information about the table\e\
+    [0m\n - top: \e[36mReturn the top n values for a field in a table\e[0m\n - unique:\
+    \ \e[36mGet unique values (and counts) associated with requested field\e[0m\n"
 - command: network help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -788,19 +787,18 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: network help command
-  output: "network find: \e[36mFind a network object such as an IP address, BGP session,\
-    \ etc.\e[0m\n\e[33m\nArguments:\e[0m\n - address: \e[36mIP/MAC address to find\e\
-    [0m\n - asn: \e[36mAutonomous system number\e[0m\n - columns: \e[36mSpace separated\
-    \ list of columns, * for all\e[0m\n - end_time: \e[36mEnd of time window, try\
-    \ natural language spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e\
-    [0m\n - format: \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - resolve_bond: \e[36mResolve\
-    \ the bond\e[0m\n - start_time: \e[36mStart of time window, try natural language\
-    \ spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n - vlan:\
-    \ \e[36mFind MAC within this VLAN\e[0m\n - vrf: \e[36mFind within this VRF, used\
-    \ for IP addr\e[0m\n"
+  output: "network find: \e[36mFind the network attach point of a given IP or MAC\
+    \ address.\e[0m\n\e[33m\nArguments:\e[0m\n - address: \e[36mIP/MAC address to\
+    \ find\e[0m\n - columns: \e[36mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36mEnd of time window, try natural language spec \e[0m\n - engine:\
+    \ \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames to\
+    \ qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
+    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
+    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n\
+    \ - vlan: \e[36mFind MAC within this VLAN\e[0m\n - vrf: \e[36mFind within this\
+    \ VRF, used for IP addr\e[0m\n"
 - command: network help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
