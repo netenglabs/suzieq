@@ -279,8 +279,8 @@ class InterfacesObj(SqPandasEngine):
                 right_on=['namespace', 'hostname', 'ifname'],
                 how="outer",
             )
-            .drop(columns=['ifname_y'])
-            .rename({'ifname_x': 'ifname'}, axis=1)
+            .drop(columns=['ifname_y', 'timestamp_y'])
+            .rename({'ifname_x': 'ifname', 'timestamp_x': 'timestamp'}, axis=1)
         )
         idf_nonsubif = idf.query('~type.isin(["subinterface", "vlan"])')
         idf_subif = idf.query('type.isin(["subinterface", "vlan"])')
@@ -303,7 +303,7 @@ class InterfacesObj(SqPandasEngine):
             [idf_subif, idf_nonsubif]).reset_index(drop=True)
 
         combined_df = combined_df \
-            .drop(columns=["hostnamePeer", "pifnamePeer", "timestamp_x",
+            .drop(columns=["hostnamePeer", "pifnamePeer",
                            "mgmtIP", "description"]) \
             .dropna(subset=['hostname', 'ifname']) \
             .drop_duplicates(subset=['namespace', 'hostname', 'ifname'])
@@ -411,5 +411,5 @@ class InterfacesObj(SqPandasEngine):
 
         return combined_df[['namespace', 'hostname', 'ifname', 'state',
                             'peerHostname', 'peerIfname', 'check',
-                            'assertReason']] \
+                            'assertReason', 'timestamp']] \
             .rename({'check': 'assert'}, axis=1)
