@@ -179,9 +179,30 @@ class BgpObj(SqPandasEngine):
     def aver(self, **kwargs) -> pd.DataFrame:
         """BGP Assert"""
 
+        def _check_if_arp_state(row, if_df, arp_df):
+            reason = 'Missing peer:'
+
+            if not if_df.empty:
+                thisif = if_df.query(f'namespace=="{row.namespace}" and '
+                                     f'hostname=="{row.hostname}" and '
+                                     f'ifname=="{row.ifname}"')
+                if not thisif.empty:
+                    if thisif.adminState.unique()[0] != 'up':
+                        return [f'{reason} interface admin down']
+                    if thisif.state.unique()[0] != 'up':
+                        return [f'{reason} interface down']
+
+            if (arp_df.empty or
+                arp_df.query(f'namespace=="{row.namespace}" and '
+                             f'"hostname=="{row.hostname}" and '
+                             f'ipAddress=="{row.peerIP}"').empty):
+                return [f'{reason} no arp entry']
+
+            return [reason]
+
         assert_cols = ["namespace", "hostname", "vrf", "peer", "peerHostname",
                        "afi", "safi", "asn", "state", "peerAsn", "bfdStatus",
-                       "reason", "notificnReason", "afisAdvOnly",
+                       "reason", "notificnReason", "afisAdvOnly", 'ifname',
                        "afisRcvOnly", "peerIP", "updateSource"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
@@ -208,33 +229,57 @@ class BgpObj(SqPandasEngine):
         # interested only in session info here
         df = df.drop_duplicates(
             subset=['namespace', 'hostname', 'vrf', 'peer'])
-        df['assertReason'] = [[] for _ in range(len(df))]
 
-        df['assertReason'] += df.apply(lambda x: ["asn mismatch"]
-                                       if x['state'] != "Established" and
-                                       (x['peerHostname'] and
-                                        ((x["asn"] != x["peerAsn_y"]) or
-                                         (x['asn_y'] != x['peerAsn'])))
-                                       else [], axis=1)
+        failed_df = df.query("state != 'Established'").reset_index(drop=True)
+        passed_df = df.query("state == 'Established'").reset_index(drop=True)
+
+        # Get the interface information
+        if_df = self._get_table_sqobj('interfaces').get(
+            namespace=failed_df.namespace.unique().tolist(),
+            hostname=failed_df.hostname.unique().tolist(),
+            ifname=failed_df.ifname.unique().tolist(),
+            columns=['namespace', 'hostname', 'ifname', 'state', 'adminState']
+        )
+
+        arp_df = self._get_table_sqobj('arpnd').get(
+            namespace=failed_df.namespace.unique().tolist(),
+            hostname=failed_df.hostname.unique().tolist(),
+            ipAddress=failed_df.peerIP.unique().tolist(),
+            query_str='state != "failed"',
+        )
+
+        failed_df['assertReason'] = [[] for _ in range(len(failed_df))]
+        passed_df['assertReason'] = [[] for _ in range(len(passed_df))]
+
+        if not failed_df.empty:
+            # For not established entries, check if route/ARP entry exists
+            failed_df['assertReason'] += failed_df.apply(
+                lambda x, ifdf, arpdf: _check_if_arp_state(x, ifdf, arpdf),
+                args=(if_df, arp_df,), axis=1)
+
+            failed_df['assertReason'] += failed_df.apply(
+                lambda x: ["asn mismatch"]
+                if x['state'] != "Established" and
+                (x['peerHostname'] and ((x["asn"] != x["peerAsn_y"]) or
+                                        (x['asn_y'] != x['peerAsn'])))
+                else [], axis=1)
 
         # Get list of peer IP addresses for peer not in Established state
         # Returning to performing checks even if we didn't get LLDP/Intf info
+
+        passed_df['assertReason'] += passed_df.apply(
+            lambda x: ['Not all Afi/Safis enabled']
+            if x['afisAdvOnly'].any() or x['afisRcvOnly'].any() else [],
+            axis=1)
+
+        df = pd.concat([failed_df, passed_df])
+
         df['assertReason'] += df.apply(
             lambda x: [f"{x['reason']}:{x['notificnReason']}"]
             if ((x['state'] != 'Established') and
                 (x['reason'] and x['reason'] != 'None' and
                  x['reason'] != "No error"))
             else [],
-            axis=1)
-
-        df['assertReason'] += df.apply(
-            lambda x: ['Matching BGP Peer not found']
-            if x['state'] == 'NotEstd' and not x['assertReason']
-            else [],  axis=1)
-
-        df['assertReason'] += df.apply(
-            lambda x: ['Not all Afi/Safis enabled']
-            if x['afisAdvOnly'].any() or x['afisRcvOnly'].any() else [],
             axis=1)
 
         df['assert'] = df.apply(lambda x: 'pass'

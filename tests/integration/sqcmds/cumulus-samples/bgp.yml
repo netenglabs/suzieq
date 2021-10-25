@@ -1864,8 +1864,14 @@ tests:
 - command: bgp assert --format=json
   data-directory: tests/data/multidc/parquet-out
   error:
-    error: '[{"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer":
-      "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
+    error: '[{"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "peer":
+      "swp2", "asn": 65000, "peerAsn": 0, "state": "NotEstd", "peerHostname": "",
+      "assert": "fail", "assertReason": "Missing peer: no arp entry", "timestamp":
+      1616681583200}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default",
+      "peer": "swp2", "asn": 65000, "peerAsn": 0, "state": "NotEstd", "peerHostname":
+      "", "assert": "fail", "assertReason": "Waiting for Peer IPv6 LLA:", "timestamp":
+      1616681583200}, {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default",
+      "peer": "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
       "exit01", "assert": "pass", "assertReason": "-", "timestamp": 1616644822492},
       {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer": "eth1.3",
       "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname": "exit01",
@@ -2040,9 +2046,6 @@ tests:
       {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "peer": "swp1",
       "asn": 65000, "peerAsn": 65000, "state": "Established", "peerHostname": "spine01",
       "assert": "pass", "assertReason": "-", "timestamp": 1616681583200}, {"namespace":
-      "ospf-ibgp", "hostname": "exit02", "vrf": "default", "peer": "swp2", "asn":
-      65000, "peerAsn": 0, "state": "NotEstd", "peerHostname": "", "assert": "fail",
-      "assertReason": "Waiting for Peer IPv6 LLA:", "timestamp": 1616681583200}, {"namespace":
       "ospf-ibgp", "hostname": "exit02", "vrf": "default", "peer": "swp5.2", "asn":
       65000, "peerAsn": 65530, "state": "Established", "peerHostname": "edge01", "assert":
       "pass", "assertReason": "-", "timestamp": 1616681583200}, {"namespace": "ospf-ibgp",
