@@ -77,11 +77,14 @@ apply:
 ### `keys` ###
 
 > **Type:** List of String <br>
-> **Required:** Yes <hr>
+> **Required:** Usually <hr>
 > Identifies which set of fields define a record uniquely. For example, in the
-> case of interface counters, the interface name is the key field. The hostname
-> is automatically added as a key field by suzieq. The primary purpose of this
-> field is to simplify queries during the analysis or observation phase.
+> case of interface counters, the interface name is the key field. The namespace 
+ > and hostname fields are automatically added. If a device can produce more than
+ > one record for a service, the key field is mandatory. Examples include interfaces,
+ > BGP, OSPF etc. Example of a service not requiring a key field is the device
+ > service.The primary purpose of this field is to simplify queries during the 
+ > analysis or observation phase.
 
 ### `apply` ###
 
