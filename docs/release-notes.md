@@ -1,5 +1,17 @@
 # Release Notes
 
+## 0.15.5 (Oct 25, 2021)
+
+Another bugfix release of the 0.15.5 release train. The main fix is the reworking of the network find algorithm.
+
+* __network find__: (BREAKING CHANGE) The network find algorithm has been rewritten to work correctly when time is specified. We also got rid of the resolve-bond keyword and now always display the members of the port channel if outgoing interface is a port channel. We got rid of the "how" column, and added "type" column that indicates if the given address is connected as a bridge or a routed port. The members of a port channel if present are displayed in the "bondMembers" column.
+* Improved BGP assert: To display a possible reason in case of a BGP session that's not established, and has a missing peer.
+* Fix #312: We display the timestamp in the interface assert output, to make it consistent with the other assert outputs.
+* Handle the case of a hostname or namespace specification not selecting any data correctly. Before this fix, a hostname that doesn't exist would result in displaying all hosts.
+* Added more tests, and updated tests and data to match the poller updates from the earlier versions of this release.
+
+__NOTE__: If you're installing Suzieq as a pip package, you'll have to install version 0.15.5.1 because of how pip dragged in an incompotible version of the pyparsing library resulting in random parsing errors. 
+
 ## 0.15.4 (Oct 18, 2021)
 
 This is a largely a bug fix release of the 0.15.0 release. However, it does add one important foundational feature: support for parsers/commands based on NOS version.
