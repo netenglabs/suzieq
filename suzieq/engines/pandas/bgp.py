@@ -193,8 +193,8 @@ class BgpObj(SqPandasEngine):
                         return [f'{reason} interface down']
 
             if (arp_df.empty or
-                arp_df.query(f'namespace=="{row.namespace}" and '
-                             f'"hostname=="{row.hostname}" and '
+                arp_df.query(f'namespace == "{row.namespace}" and '
+                             f'hostname=="{row.hostname}" and '
                              f'ipAddress=="{row.peerIP}"').empty):
                 return [f'{reason} no arp entry']
 
@@ -259,9 +259,14 @@ class BgpObj(SqPandasEngine):
 
             failed_df['assertReason'] += failed_df.apply(
                 lambda x: ["asn mismatch"]
-                if x['state'] != "Established" and
-                (x['peerHostname'] and ((x["asn"] != x["peerAsn_y"]) or
-                                        (x['asn_y'] != x['peerAsn'])))
+                if (x['peerHostname'] and ((x["asn"] != x["peerAsn_y"]) or
+                                           (x['asn_y'] != x['peerAsn'])))
+                else [], axis=1)
+
+            failed_df['assertReason'] += failed_df.apply(
+                lambda x: [f"{x['reason']}:{x['notificnReason']}"]
+                if ((x['reason'] and x['reason'] != 'None' and
+                     x['reason'] != "No error"))
                 else [], axis=1)
 
         # Get list of peer IP addresses for peer not in Established state
@@ -273,14 +278,6 @@ class BgpObj(SqPandasEngine):
             axis=1)
 
         df = pd.concat([failed_df, passed_df])
-
-        df['assertReason'] += df.apply(
-            lambda x: [f"{x['reason']}:{x['notificnReason']}"]
-            if ((x['state'] != 'Established') and
-                (x['reason'] and x['reason'] != 'None' and
-                 x['reason'] != "No error"))
-            else [],
-            axis=1)
 
         df['assert'] = df.apply(lambda x: 'pass'
                                 if not len(x.assertReason) else 'fail',
