@@ -1,12 +1,60 @@
 Value Required ifname (\S+)
 Value Required peerHostname (\S+)
 Value description (.*)
-Value peerIfname (\S+)
+Value peerIfname (.*)
 Value subtype (\S+)
 
 Start
  ^Interface:.*$$ -> Continue.Record
  ^Interface:\s+${ifname}, .*$$
- ^\s+SysName:\s+ ${peerHostname}.*$$
- ^\s+SysDescr:\s+ ${description}.*$$
+ ^\s+SysName:\s+${peerHostname}.*$$
+ ^\s+SysDescr:\s+${description}.*$$
  ^\s+PortID:\s+${subtype}\s+${peerIfname}.*$$
+
+#-------------------------------------------------------------------------------
+#LLDP neighbors:
+#-------------------------------------------------------------------------------
+#Interface:    eth0, via: LLDP, RID: 8, Time: 0 day, 01:48:33
+#  Chassis:     
+#    ChassisID:    mac b1:a4:f1:46:ed:f5
+#    SysName: email-21
+#    TTL:          120
+#  Port:        
+#    PortID:       ifname GigabitEthernet 1/47
+#    PortDescr:    GigabitEthernet 1/47
+#-------------------------------------------------------------------------------
+#Interface:    Ethernet52, via: LLDP, RID: 9, Time: 0 day, 00:07:57
+#  Chassis:     
+#    ChassisID:    mac 2b:6c:be:86:9b:0c
+#    SysName: desktop-06
+#    SysDescr:     SONiC Software Version: SONiC.3.4.0-Enterprise_Base - HwSku: DellEMC-S5232f-C32 - Distribution: Debian 9.13 - Kernel: 4.9.0-11-2-amd64
+#    TTL:          120
+#    MgmtIP:       197.142.137.154
+#    Capability:   Bridge, off
+#    Capability:   Router, on
+#    Capability:   Wlan, off
+#    Capability:   Station, on
+#  Port:        
+#    PortID:       local Ethernet32
+#    PortDescr:    Eth1/9
+#    PMD autoneg:  supported: no, enabled: no
+#      MAU oper type: 100GbaseCR10 - 100GBASE-R PCS/PMA over 10 lane shielded copper balanced cable
+#-------------------------------------------------------------------------------
+#Interface:    Ethernet24, via: LLDP, RID: 6, Time: 0 day, 01:48:37
+#  Chassis:     
+#    ChassisID:    mac b3:9a:b2:9b:b6:a5
+#    SysName: web-21
+#    SysDescr:     Alpine Linux v3.13 Linux 5.10.52-talos #1 SMP Mon Aug 9 15:24:47 UTC 2021 x86_64
+#    TTL:          120
+#    MgmtIP:       197.179.212.20
+#    MgmtIP:       39b3:2652:a6f:6af3:9bbb:ebf7:eccf:5a14
+#    Capability:   Bridge, off
+#    Capability:   Router, on
+#    Capability:   Wlan, off
+#    Capability:   Station, off
+#  Port:        
+#    PortID:       mac b3:9a:b2:9b:b6:a5
+#    PortDescr:    eth0
+#    PMD autoneg:  supported: no, enabled: no
+#      MAU oper type: 10GigBaseCX4 - X copper over 8 pair 100-Ohm balanced cable
+#
