@@ -367,11 +367,16 @@ class SqPandasEngine(SqEngineObj):
         what = kwargs.pop("what", None)
         reverse = kwargs.pop("reverse", False)
         sqTopCount = kwargs.pop("count", 5)
+        columns = kwargs.pop("columns", ['default'])
 
         if not what:
             return pd.DataFrame()
 
-        df = self.get(addnl_fields=self.iobj._addnl_fields, **kwargs)
+        columns = self.schema.get_display_fields(columns)
+        if what not in columns:
+            columns.append(what)
+        df = self.get(addnl_fields=self.iobj._addnl_fields, columns=columns,
+                      **kwargs)
         if df.empty or ('error' in df.columns):
             return df
 
