@@ -1,5 +1,5 @@
 import time
-from nubia import command, argument
+from nubia import command
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand

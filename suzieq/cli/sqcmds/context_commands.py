@@ -1,21 +1,21 @@
 import typing
 import os
-from nubia import command, argument, context, CompletionDataSource
+from nubia import command, argument, context
 from nubia.internal.commands.help import HelpCommand
-from nubia.internal.cmdbase import Command, AutoCommand
+from nubia.internal.cmdbase import Command
 from prompt_toolkit.completion import Completion
-from nubia.internal import parser
 from termcolor import cprint, colored
-from suzieq.sqobjects import get_tables
 
 
 @command("set")
 @argument("namespace", description="namespace to qualify selection")
 @argument("hostname", description="Name of host to qualify selection")
 @argument(
-    "start_time", description="Start of time window in YYYY-MM-dd HH:mm:SS format"
+    "start_time",
+    description="Start of time window in YYYY-MM-dd HH:mm:SS format"
 )
-@argument("end_time", description="End of time window in YYYY-MM-dd HH:mm:SS format")
+@argument("end_time",
+          description="End of time window in YYYY-MM-dd HH:mm:SS format")
 @argument("pager", description="Enable pagination prompt on longer outputs",
           choices=['on', 'off'])
 @argument('col_width', description='Max Width of each column in table display')
@@ -73,10 +73,13 @@ def set_ctxt(
 @argument("namespace", description="namespace to qualify selection")
 @argument("hostname", description="Name of host to qualify selection")
 @argument(
-    "start_time", description="Start of time window in YYYY-MM-dd HH:mm:SS format"
+    "start_time",
+    description="Start of time window in YYYY-MM-dd HH:mm:SS format"
 )
-@argument("end_time", description="End of time window in YYYY-MM-dd HH:mm:SS format")
-@argument("pager", description="End of time window in YYYY-MM-dd HH:mm:SS format")
+@argument("end_time",
+          description="End of time window in YYYY-MM-dd HH:mm:SS format")
+@argument("pager",
+          description="End of time window in YYYY-MM-dd HH:mm:SS format")
 def clear_ctxt(
         pager: str = 'off',
         hostname: str = "",
@@ -131,7 +134,8 @@ class SqHelpCommand (Command):
             if not document.text:
                 return [Completion(x)
                         for x in self._sqcmds]
-            completions = [Completion(text=x, start_position=-len(document.text))
+            completions = [Completion(text=x,
+                                      start_position=-len(document.text))
                            for x in self._sqcmds
                            if x.startswith(document.text)]
             return completions
@@ -154,9 +158,10 @@ class SqHelpCommand (Command):
         if len(args) == 0:
             helpcmd = HelpCommand()
             helpcmd.run_interactive('', '', '')
-            cprint("Use "
-                   f"{colored('help <name of command/service> [<verb>]', 'cyan')} "
-                   "to get more help")
+            cprint(
+                "Use "
+                f"{colored('help <name of command/service> [<verb>]', 'cyan')}"
+                " to get more help")
             cprint(f"For example: {colored('help route', 'cyan')}"
                    f" or {colored('help route show', 'cyan')}")
             return
@@ -173,7 +178,7 @@ class SqHelpCommand (Command):
                 self._allcmds[service].run_interactive(
                     service, f'help command={verb}', '')
             else:
-                self._allcmds[service].run_interactive(service, f'help', '')
+                self._allcmds[service].run_interactive(service, 'help', '')
 
     def _build_cmd_verb_list(self):
         if not self._allcmds:

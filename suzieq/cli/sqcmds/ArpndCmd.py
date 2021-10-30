@@ -35,8 +35,10 @@ class ArpndCmd(SqCommand):
         )
 
     @command("show")
-    @argument("address", description="IP address, in quotes, to qualify output")
-    @argument("macaddr", description="MAC address, in quotes, to qualify output")
+    @argument("address",
+              description="IP address, in quotes, to qualify output")
+    @argument("macaddr",
+              description="MAC address, in quotes, to qualify output")
     @argument("oif", description="outgoing interface to qualify")
     def show(self, address: str = "", macaddr: str = '', oif: str = ''):
         """Show ARP/ND info

@@ -36,7 +36,7 @@ class FsCmd(SqCommand):
         )
 
     @command("show")
-    @argument("mountPoint", description="The mount point inside the FileSystem")
+    @argument("mountPoint", description="Mount point inside the FileSystem")
     @argument("used_percent", description="must be of the form "
               "[<|<=|>=|>|!]value. Eg: '<=20'")
     def show(self, mountPoint: str = '', used_percent: str = ''):
