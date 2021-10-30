@@ -1,4 +1,3 @@
-from numpy.lib.shape_base import take_along_axis
 from suzieq.poller.services.service import Service
 from suzieq.utils import convert_macaddr_format_to_colon, expand_ios_ifname
 import re

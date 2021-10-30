@@ -192,11 +192,11 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                             # EOS routes case: vrfs/*:vrf/routes/*:prefix
                             # Otherwise there's usually one element here
                             if isinstance(ele["rest"], list) and ele['rest']:
-                                # We need to check for empty rest because in 
-                                # older NXOS, where there are OSPF neighbors 
-                                # defined in a VRF, we can end up in this 
+                                # We need to check for empty rest because in
+                                # older NXOS, where there are OSPF neighbors
+                                # defined in a VRF, we can end up in this
                                 # if clause and miss out on good data thats
-                                # actually present in the else clause of this. 
+                                # actually present in the else clause of this.
                                 for subidx, subele in enumerate(ele["rest"]):
                                     if xstr in subele:
                                         if nokeys:
@@ -254,7 +254,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                                 for key in elekeys:
                                     del entry[0][key]
                                 # We should only have 'rest' entries now
-                            nokeys = True  # We've moved all the external keys in
+                            nokeys = True  # We've moved all the external keys
 
                         # Handle the output of the likes of EOS' BGP with
                         # starting string: 'vrfs/*/peerList/*/[ by

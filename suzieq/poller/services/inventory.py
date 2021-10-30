@@ -1,7 +1,6 @@
 import re
 import numpy as np
 from suzieq.poller.services.service import Service
-from suzieq.utils import expand_nxos_ifname
 
 
 class InventoryService(Service):
@@ -47,7 +46,8 @@ class InventoryService(Service):
                     "model": entry['_fanTraySlots'][fanNum]
                     .get('name', ''),
                     "status": "present",
-                    "vendor": entry['_fanTraySlots'][fanNum].get('vendor', 'Arista'),
+                    "vendor": entry['_fanTraySlots'][fanNum].get('vendor',
+                                                                 'Arista'),
                     "version": ''
                 }
                 new_data.append(newentry)
@@ -61,7 +61,8 @@ class InventoryService(Service):
                     "model": entry['_powerSupplySlots'][powerNum]
                     .get('name', ''),
                     "status": "present",
-                    "vendor": entry['_powerSupplySlots'][powerNum].get('vendor', 'Arista'),
+                    "vendor": entry['_powerSupplySlots'][powerNum].get(
+                        'vendor', 'Arista'),
                     "version": ''  # Arista does not provide this
                 }
                 new_data.append(newentry)
@@ -82,8 +83,10 @@ class InventoryService(Service):
                     .get('serialNum', ''),
                     "model": model.lower(),
                     "status": status,
-                    "vendor": entry['_cardSlots'][fabricNum].get('vendor', 'Arista'),
-                    "version": entry['_cardSlots'][fabricNum].get('hardwareRev', ''),
+                    "vendor": entry['_cardSlots'][fabricNum].get('vendor',
+                                                                 'Arista'),
+                    "version": entry['_cardSlots'][fabricNum].get(
+                        'hardwareRev', ''),
                 }
                 new_data.append(newentry)
 
@@ -170,9 +173,12 @@ class InventoryService(Service):
                         'status': 'present',
                         'type': 'port-adapter',
                         'version': ele.get('version', [{}])[0].get('data', ''),
-                        'serial': ele.get('serial-number', [{}])[0].get('data', ''),
-                        'model': ele.get('model-number', [{}])[0].get('data', ''),
-                        'partNum': ele.get('part-number', [{}])[0].get('data', '')
+                        'serial': ele.get('serial-number', [{}])[0].get('data',
+                                                                        ''),
+                        'model': ele.get('model-number', [{}])[0].get('data',
+                                                                      ''),
+                        'partNum': ele.get('part-number', [{}])[0].get('data',
+                                                                       '')
                     }
                     new_data.append(nentry)
                     picent = ele.get('chassis-sub-sub-module', [])

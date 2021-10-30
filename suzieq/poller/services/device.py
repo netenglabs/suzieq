@@ -1,9 +1,8 @@
-from datetime import timedelta, datetime, timezone
+from datetime import timedelta, datetime
 
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_junos_time
 from dateparser import parse
-from datetime import datetime
 
 
 class DeviceService(Service):
@@ -79,7 +78,7 @@ class DeviceService(Service):
 
     def _clean_sonic_data(self, processed_data, raw_data):
         processed_data = self._clean_linux_data(processed_data, raw_data)
-        #Sonic specific updates
+        # Sonic specific updates
         for entry in processed_data:
             entry['os'] = 'sonic'
             entry['vendor'] = entry['model'].split('-')[0]
@@ -118,7 +117,8 @@ class DeviceService(Service):
 
         for entry in processed_data:
             entry['bootupTimestamp'] = get_timestamp_from_junos_time(
-                entry['bootupTimestamp'], int(raw_data[0]["timestamp"])/1000)/1000
+                entry['bootupTimestamp'],
+                int(raw_data[0]["timestamp"])/1000)/1000
 
         return self._common_data_cleaner(processed_data, raw_data)
 

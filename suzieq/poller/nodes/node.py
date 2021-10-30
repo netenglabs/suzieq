@@ -8,7 +8,6 @@ import random
 from http import HTTPStatus
 import json
 import re
-from asyncssh import known_hosts
 import operator
 from packaging import version as version_parse
 
@@ -238,7 +237,7 @@ class Node(object):
         self.cmd_timeout = 10  # default command timeout in seconds
         self.batch_size = 4    # Number of commands to issue in parallel
         self.bootupTimestamp = 0
-        self.version = "all"                 # OS Version to pick the right defn
+        self.version = "all"   # OS Version to pick the right defn
         self._service_queue = None
         self._conn = None
         self._tunnel = None
@@ -489,7 +488,8 @@ class Node(object):
                         options=options)
 
                 self.logger.info(
-                    f"Connected to {self.address}:{self.port} at {time.time()}")
+                    f"Connected to {self.address}:{self.port} at "
+                    f"{time.time()}")
                 if init_boot_time:
                     await self.init_boot_time()
                 elif rel_lock:
@@ -634,12 +634,14 @@ class Node(object):
         if not devtype:
             if not self.current_exception:
                 self.logger.info(
-                    f'Unable to determine devtype for {self.address}:{self.port}')
+                    f'Unable to determine devtype for '
+                    f'{self.address}:{self.port}')
                 self.current_exception = UnknownDevtypeError()
             self._status = 'init'
         else:
             self.logger.warning(
-                f'Detected {devtype} for {self.address}:{self.port}, {hostname}')
+                f'Detected {devtype} for {self.address}:{self.port},'
+                f' {hostname}')
             self.set_devtype(devtype, version_str)
             self.set_hostname(hostname)
             self.current_exception = None
@@ -673,7 +675,7 @@ class Node(object):
             try:
                 await self.get_device_type_hostname()
                 devtype = self.devtype
-            except Exception as e:
+            except Exception:
                 devtype = None
 
             if not devtype:
@@ -747,7 +749,7 @@ class Node(object):
             self.hostname = hostname
 
     async def init_boot_time(self):
-        """Fill in the boot time of the node by running the appropriate command"""
+        """Fill in the boot time of the node by executing certain cmds"""
         await self.exec_cmd(self._parse_boottime_hostname,
                             ["cat /proc/uptime", "hostnamectl",
                              "cat /etc/os-release"], None, 'text')
@@ -801,7 +803,8 @@ class Node(object):
 
                 if not proc.returncode:
                     d = stdout.decode('ascii', 'ignore')
-                    result.append(self._create_result(cmd))
+                    result.append(self._create_result(
+                        cmd, proc.returncode, d))
                 else:
                     d = stderr('ascii', 'ignore')
                     result.append(self._create_error(cmd))
@@ -877,8 +880,8 @@ class Node(object):
                        oformat='json', timeout=None):
 
         if self.transport == "ssh":
-            await self.ssh_gather(service_callback, cmd_list, cb_token, oformat,
-                                  timeout)
+            await self.ssh_gather(service_callback, cmd_list, cb_token,
+                                  oformat, timeout)
         elif self.transport == "https":
             await self.rest_gather(service_callback, cmd_list,
                                    cb_token, oformat, timeout)
@@ -925,7 +928,8 @@ class Node(object):
                 self.error_svcs_proc.add(svc_defn.get("service"))
             return await service_callback(result, cb_token)
 
-        # TODO This kind of logic should be encoded in config and node shouldn't have to know about it
+        # TODO This kind of logic should be encoded in config and node
+        # shouldn't have to know about it
         if "copy" in use:
             use = svc_defn.get(use.get("copy"))
 
@@ -989,7 +993,7 @@ class EosNode(Node):
                 connector=aiohttp.TCPConnector(ssl=False),
             )
             await self.get_device_boottime_hostname()
-        except Exception as e:
+        except Exception:
             if self.sigend:
                 await self._terminate()
                 return
@@ -1011,7 +1015,8 @@ class EosNode(Node):
                     data = json.loads(output[0]["data"])
                 except json.JSONDecodeError:
                     self.logger.error(
-                        f'nodeinit: Error decoding JSON for {self.address}:{self.port}')
+                        f'nodeinit: Error decoding JSON for '
+                        f'{self.address}:{self.port}')
                     self._status = 'init'
                     return
             else:
@@ -1028,7 +1033,8 @@ class EosNode(Node):
                     data = json.loads(output[1]["data"])
                 except json.JSONDecodeError:
                     self.logger.error(
-                        f'nodeinit: Error decoding JSON for {self.address}:{self.port}')
+                        f'nodeinit: Error decoding JSON for '
+                        f'{self.address}:{self.port}')
                     self._status = 'init'
                     return
             else:
@@ -1133,7 +1139,7 @@ class EosNode(Node):
             try:
                 jout = json.loads(data)
                 self.hostname = jout["hostname"]
-            except:
+            except Exception:
                 self.hostname = "-"
 
     def _extract_nos_version(self, data) -> None:
@@ -1181,7 +1187,8 @@ class CumulusNode(Node):
                         result.append(
                             {
                                 "status": response.status,
-                                "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
+                                "timestamp": int(datetime.now(tz=timezone.utc)
+                                                 .timestamp() * 1000),
                                 "cmd": cmd,
                                 "devtype": self.devtype,
                                 "namespace": self.nsname,
@@ -1267,8 +1274,8 @@ class IosXRNode(Node):
             hostname = re.search(r'hostname (\S+)', data.strip())
             if hostname:
                 self.hostname = hostname.group(1)
-                self.logger.error(f'set hostname of {self.address}:{self.port} to '
-                                  f'{hostname.group(1)}')
+                self.logger.error(f'set hostname of {self.address}:{self.port}'
+                                  f' to {hostname.group(1)}')
         self.ssh_ready.set()
 
     def _extract_nos_version(self, data) -> None:
@@ -1389,9 +1396,12 @@ class JunosNode(Node):
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
                 if self.devtype != "junos-mx":
-                    jdata = jdata['multi-routing-engine-results'][0]['multi-routing-engine-item'][0]
+                    jdata = (jdata['multi-routing-engine-results'][0]
+                             ['multi-routing-engine-item'][0])
 
-                timestr = jdata['system-uptime-information'][0]['system-booted-time'][0]['time-length'][0]['attributes']
+                timestr = (jdata['system-uptime-information'][0]
+                           ['system-booted-time'][0]['time-length'][0]
+                           ['attributes'])
             except Exception:
                 self.logger.warning(
                     f'Unable to parse junos boot time from {data}')
@@ -1469,7 +1479,8 @@ class SonicNode(Node):
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self.exec_cmd(self._parse_boottime_hostname,
-                            ["cat /proc/uptime", "hostname", "show version"], None, 'text')
+                            ["cat /proc/uptime", "hostname", "show version"],
+                            None, 'text')
 
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""

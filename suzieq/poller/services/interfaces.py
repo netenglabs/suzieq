@@ -95,7 +95,7 @@ class InterfaceService(Service):
                 if words[-1].strip().startswith("Port-Channel"):
                     entry["type"] = "bond_slave"
                     entry["master"] = words[-1].strip()
-            entry["lacpBypass"] = (entry["lacpBypass"] == True)
+            entry["lacpBypass"] = (entry["lacpBypass"] is True)
             if entry["forwardingModel"] == "bridged":
                 entry["master"] = "bridge"  # Convert it for Linux model
                 del entry["forwardingModel"]
@@ -306,7 +306,8 @@ class InterfaceService(Service):
 
             if 'statusChangeTimestamp' in entry:
                 ts = get_timestamp_from_junos_time(
-                    entry['statusChangeTimestamp'], raw_data[0]['timestamp']/1000)
+                    entry['statusChangeTimestamp'],
+                    raw_data[0]['timestamp']/1000)
                 entry['statusChangeTimestamp'] = int(ts)
 
             if entry.get('speed', ''):
@@ -437,7 +438,7 @@ class InterfaceService(Service):
                 new_entry['ip6AddressList'] = v6addresses
                 new_entry['ipAddressList'] = v4addresses
 
-            entry.pop('_logIf')
+            entry.pop('_logIf', [])
 
         if drop_indices:
             processed_data = np.delete(processed_data, drop_indices).tolist()

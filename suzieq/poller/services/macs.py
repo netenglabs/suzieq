@@ -1,7 +1,8 @@
 from suzieq.poller.services.service import Service
 import re
 from suzieq.utils import convert_macaddr_format_to_colon
-from suzieq.utils import expand_nxos_ifname, expand_eos_ifname, expand_ios_ifname
+from suzieq.utils import (expand_nxos_ifname, expand_eos_ifname,
+                          expand_ios_ifname)
 import numpy as np
 
 
@@ -169,7 +170,8 @@ class MacsService(Service):
 
         for i, entry in enumerate(processed_data):
             entry['oif'] = expand_eos_ifname(entry['oif'])
-            if entry['oif'].startswith('Vxlan') and 'remoteVtepIp' not in entry:
+            if (entry['oif'].startswith('Vxlan') and
+                    'remoteVtepIp' not in entry):
                 drop_indices.append(i)
                 continue
             if '.' in entry['macaddr']:
