@@ -5172,3 +5172,14 @@ tests:
     "peerlink"], "vlan": 13, "timestamp": 1616681582524}, {"namespace": "ospf-ibgp",
     "hostname": "leaf04", "vlanName": "vlan4001", "state": "active", "interfaces":
     ["vxlan4001"], "vlan": 4001, "timestamp": 1616681582524}]'
+- command: network show --columns='*' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network show all cumulus
+  output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
+    0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522169638, "sqvers": "2.0", "active": true}, {"namespace": "ospf-ibgp", "deviceCnt":
+    14, "serviceCnt": 18, "errSvcCnt": 0, "hasOspf": true, "hasBgp": true, "hasVxlan":
+    true, "hasMlag": true, "lastUpdate": 1634522089050, "sqvers": "2.0", "active":
+    true}, {"namespace": "ospf-single", "deviceCnt": 14, "serviceCnt": 16, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1634522254949, "sqvers": "2.0", "active": true}]'

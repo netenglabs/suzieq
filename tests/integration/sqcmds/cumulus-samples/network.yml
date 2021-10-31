@@ -20,6 +20,27 @@ tests:
     1634522089050}, {"namespace": "ospf-single", "deviceCnt": 9, "serviceCnt": 16,
     "errSvcCnt": 0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag":
     false, "lastUpdate": 1634522254931}]'
+- command: network show --columns='namespace' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network show cumulus
+  output: '[{"namespace": "dual-evpn"}, {"namespace": "ospf-ibgp"}, {"namespace":
+    "ospf-single"}]'
+- command: network show --columns='hasOspf hasBgp' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network show cumulus
+  output: '[{"hasOspf": false, "hasBgp": true}, {"hasOspf": true, "hasBgp": true},
+    {"hasOspf": true, "hasBgp": false}]'
+- command: network show --columns='*' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network show cumulus
+  output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
+    0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522169638, "sqvers": "2.0", "active": true}, {"namespace": "ospf-ibgp", "deviceCnt":
+    14, "serviceCnt": 18, "errSvcCnt": 0, "hasOspf": true, "hasBgp": true, "hasVxlan":
+    true, "hasMlag": true, "lastUpdate": 1634522089050, "sqvers": "2.0", "active":
+    true}, {"namespace": "ospf-single", "deviceCnt": 14, "serviceCnt": 16, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1634522254949, "sqvers": "2.0", "active": true}]'
 - command: network find --address="172.16.1.101" --format=json
   data-directory: tests/data/multidc/parquet-out
   marks: network find cumulus

@@ -2674,3 +2674,9 @@ tests:
     {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "name": "midplane", "model":
     "", "status": "present", "vendor": "Juniper", "type": "midplane", "version": "",
     "serial": "", "partNum": "", "timestamp": 1631009090098, "active": true}]'
+- command: network show --columns='*' --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network show all junos vmx
+  output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1634522087740, "sqvers": "2.0", "active": true}]'

@@ -5964,3 +5964,9 @@ tests:
     "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1623025174550}, {"namespace":
     "eos", "hostname": "dcedge01", "vlanName": "vlan1", "state": "active", "interfaces":
     [], "vlan": 1, "timestamp": 1623025176433}]'
+- command: network show --columns='*' --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network show all eos
+  output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522087571, "sqvers": "2.0", "active": true}]'

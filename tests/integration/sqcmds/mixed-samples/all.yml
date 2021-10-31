@@ -4523,3 +4523,9 @@ tests:
     "Ethernet1/52", "Ethernet1/53", "Ethernet1/54", "Ethernet1/55", "Ethernet1/56",
     "Ethernet1/57", "Ethernet1/58", "Ethernet1/59", "Ethernet1/60", "Ethernet1/61",
     "Ethernet1/62", "Ethernet1/63", "Ethernet1/64"], "vlan": 1, "timestamp": 1627395439618}]'
+- command: network show --columns='*' --format=json
+  data-directory: tests/data/mixed/parquet-out
+  marks: network show all mixed
+  output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1634522095162, "sqvers": "2.0", "active": true}]'

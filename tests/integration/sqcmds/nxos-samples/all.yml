@@ -10874,3 +10874,9 @@ tests:
     "vlan": 1, "timestamp": 1619275257683}, {"namespace": "nxos", "hostname": "exit02",
     "vlanName": "vlan999", "state": "active", "interfaces": [""], "vlan": 999, "timestamp":
     1619275257683}]'
+- command: network show --columns='*' --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network show all nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522092858, "sqvers": "2.0", "active": true}]'

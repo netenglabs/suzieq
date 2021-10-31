@@ -2,47 +2,53 @@ description: Testing network table
 tests:
 - command: network show --format=json
   data-directory: tests/data/vmx/parquet-out
-  marks: network show all junos vmx
+  marks: network show junos vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1634522087740}]'
 - command: network show --format=json --model=vmx
   data-directory: tests/data/vmx/parquet-out
-  marks: network show all junos vmx
+  marks: network show junos vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1634522087740}]'
+- command: network show --columns='*' --os=junos --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network show vmx junos
+  output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1634522087740, "sqvers": "2.0", "active": true}]'
 - command: network find --address="172.16.11.11" --format=json
   data-directory: tests/data/vmx/parquet-out
-  marks: network find all junos vmx
+  marks: network find junos vmx
   output: '[{"namespace": "vmx", "hostname": "CRP-ACC-SW01", "vrf": "default", "ipAddress":
     "172.16.11.11", "vlan": "101", "macaddr": "00:50:79:66:68:08", "ifname": "ge-0/0/8",
     "bondMembers": "", "timestamp": 1631009089424}]'
 - command: network find --address="00:50:79:66:68:08" --format=json
   data-directory: tests/data/vmx/parquet-out
-  marks: network find all junos vmx
+  marks: network find junos vmx
   output: '[{"namespace": "vmx", "hostname": "CRP-ACC-SW01", "vrf": "default", "ipAddress":
     "172.16.11.11", "vlan": "101", "macaddr": "00:50:79:66:68:08", "ifname": "ge-0/0/8",
     "bondMembers": "", "timestamp": 1631009089424}]'
 - command: network find --address="10.0.20.2" --format=json
   data-directory: tests/data/vmx/parquet-out
-  marks: network find all junos vmx
+  marks: network find junos vmx
   output: '[]'
 - command: network find --address="2c:6b:f5:b6:ce:c1" --format=json
   data-directory: tests/data/vmx/parquet-out
-  marks: network find all junos vmx
+  marks: network find junos vmx
   output: '[]'
 - command: network find --address="2c6b.f5b6.cec1" --format=json
   data-directory: tests/data/vmx/parquet-out
-  marks: network find all junos vmx
+  marks: network find junos vmx
   output: '[]'
 - command: network find --address="2C6b.F5B6.CEC1" --format=json
   data-directory: tests/data/vmx/parquet-out
-  marks: network find all junos vmx
+  marks: network find junos vmx
   output: '[]'
 - command: network summarize --namespace=vmx --format=json
   data-directory: tests/data/vmx/parquet-out
-  marks: network summarize all junos vmx
+  marks: network summarize junos vmx
   output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [13, 13, 13.0], "nsWithMlagCnt":
     0, "nsWithBgpCnt": 1, "nsWithOspfCnt": 0, "nsWithVxlanCnt": 0, "nsWithErrsvcCnt":
     0}}'
