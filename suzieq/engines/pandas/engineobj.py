@@ -4,9 +4,8 @@ from suzieq.utils import SchemaForTable, humanize_timestamp, Schema
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects import get_sqobject
 from suzieq.db import get_sqdb_engine
-from suzieq.exceptions import DBReadError, UserQueryError
+from suzieq.exceptions import UserQueryError
 import dateparser
-from datetime import datetime
 from pandas.core.groupby import DataFrameGroupBy
 
 
@@ -375,6 +374,8 @@ class SqPandasEngine(SqEngineObj):
         columns = self.schema.get_display_fields(columns)
         if what not in columns:
             columns.append(what)
+        if 'timestamp' not in columns:
+            columns.append('timestamp')
         df = self.get(addnl_fields=self.iobj._addnl_fields, columns=columns,
                       **kwargs)
         if df.empty or ('error' in df.columns):
@@ -478,7 +479,7 @@ class SqPandasEngine(SqEngineObj):
 
         Args:
             check_empty_col (str, optional): column name to check to remove
-                                             namespace that's empty. 
+                                             namespace that's empty.
                                              Defaults to 'deviceCnt'.
         """
         # this is needed in the case that there is a namespace that has no
