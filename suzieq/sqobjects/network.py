@@ -5,8 +5,8 @@ from suzieq.sqobjects.basicobj import SqObject
 class NetworkObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='network', **kwargs)
-        self._valid_get_args = ['namespace', 'hostname', 'version',
-                                'os', 'model', 'vendor', 'columns', 'query_str']
+        self._valid_get_args = ['namespace', 'hostname', 'version', 'os',
+                                'model', 'vendor', 'columns', 'query_str']
         self._valid_find_args = ['namespace', 'hostname', 'vrf', 'vlan',
                                  'address', 'query_str']
 

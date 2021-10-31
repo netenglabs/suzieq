@@ -1,4 +1,3 @@
-import logging
 import typing
 import pandas as pd
 
@@ -202,7 +201,8 @@ class SqObject(object):
                   query_str='') -> pd.DataFrame:
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
-                {'error': ['ERROR: You cannot specify columns with summarize']})
+                {'error':
+                 ['ERROR: You cannot specify columns with summarize']})
             return self.summarize_df
         if not self._table:
             raise NotImplementedError
@@ -221,7 +221,6 @@ class SqObject(object):
             raise AttributeError('No analysis engine specified')
 
         columns = kwargs.pop('columns', self.columns)
-        column = columns[0]
 
         if columns is None or columns == ['default']:
             raise ValueError('Must specify columns with unique')
@@ -267,12 +266,15 @@ class SqObject(object):
         ftype = table_schema.field(what).get('type', 'str')
         if ftype not in ['long', 'double', 'float', 'int', 'timestamp',
                          'timedelta64[s]']:
-            return pd.DataFrame({'error': [f'{what} not numeric; top can be used with numeric fields only']})
+            return pd.DataFrame({'error':
+                                 [f'{what} not numeric; top can be used with'
+                                  f' numeric fields only']})
 
         if what not in columns:
             self._addnl_fields.append(what)
 
-        return self.engine.top(what=what, count=count, reverse=reverse, **kwargs)
+        return self.engine.top(what=what, count=count, reverse=reverse,
+                               **kwargs)
 
     def describe(self, **kwargs):
         """Describes the fields for a given table"""

@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 from suzieq.sqobjects.basicobj import SqObject
-from suzieq.utils import SchemaForTable, humanize_timestamp
+from suzieq.utils import humanize_timestamp
 
 
 class OspfObj(SqObject):
