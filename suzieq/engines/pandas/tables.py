@@ -14,7 +14,7 @@ class TableObj(SqPandasEngine):
 
         table_list = self._dbeng.get_tables()
         df = pd.DataFrame()
-        columns = kwargs.pop('columns', ['default'])
+        kwargs.pop('columns', ['default'])
         unknown_tables = []
         tables = []
 

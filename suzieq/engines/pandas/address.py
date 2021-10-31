@@ -2,7 +2,7 @@ import pandas as pd
 from ipaddress import ip_interface
 
 from .engineobj import SqPandasEngine
-from suzieq.utils import build_query_str, convert_macaddr_format_to_colon
+from suzieq.utils import convert_macaddr_format_to_colon
 
 
 class AddressObj(SqPandasEngine):

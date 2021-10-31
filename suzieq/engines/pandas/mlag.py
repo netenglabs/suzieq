@@ -17,12 +17,14 @@ class MlagObj(SqPandasEngine):
 
         self._summarize_on_add_with_query = [
             ('devicesWithfailedStateCnt', 'state != "active"', 'state'),
-            ('devicesWithBackupInactiveCnt', 'state == "active"', 'backupActive')
+            ('devicesWithBackupInactiveCnt', 'state == "active"',
+             'backupActive')
         ]
 
         self._summarize_on_add_stat = [
             ('mlagNumDualPortsStat', 'state == "active"', 'mlagDualPortsCnt'),
-            ('mlagNumSinglePortStat', 'state == "active"', 'mlagSinglePortsCnt'),
+            ('mlagNumSinglePortStat', 'state == "active"',
+             'mlagSinglePortsCnt'),
             ('mlagNumErrorPortStat', 'state == "active"', 'mlagErrorPortsCnt')
         ]
 

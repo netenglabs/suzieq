@@ -1,5 +1,3 @@
-import numpy as np
-
 from .engineobj import SqPandasEngine
 
 

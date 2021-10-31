@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 from .engineobj import SqPandasEngine
-from suzieq.utils import build_query_str, SchemaForTable, humanize_timestamp
+from suzieq.utils import build_query_str, humanize_timestamp
 
 
 class BgpObj(SqPandasEngine):
@@ -37,7 +37,8 @@ class BgpObj(SqPandasEngine):
         except KeyError as ex:
             if ('afi' in str(ex)) or ('safi' in str(ex)):
                 df = pd.DataFrame(
-                    {'error': [f'ERROR: Migrate BGP data first using sq-coalescer']})
+                    {'error':
+                     ['ERROR: Migrate BGP data first using sq-coalescer']})
                 return df
 
         if df.empty:
@@ -161,7 +162,8 @@ class BgpObj(SqPandasEngine):
             .fillna(value={'peerHostname': '', 'peerHost': ''}) \
             .reset_index(drop=True)
 
-        df = df.merge(mdf[['namespace', 'hostname', 'vrf', 'peer', 'peerHost']],
+        df = df.merge(mdf[['namespace', 'hostname', 'vrf', 'peer',
+                           'peerHost']],
                       on=['namespace', 'hostname', 'vrf', 'peer'], how='left')
 
         df['peerHostname'] = np.where((df['peerHostname'] == '') &

@@ -11,14 +11,15 @@ from suzieq.exceptions import EmptyDataframeError
 
 
 # TODO:
-#  topology for different VRFs?
-#  iBGP vs eBGP?
-#  color by device type?
-#  physical topology without LLDP -- is this possible?
-#  how to draw multiple topologies
-#  be able to ask if a node has neighbors by type (physical, overlay, protocol, etc)
-#  questions
-#    * without knowing hierarchy, labels or tags it's unclear how to group things for good picture
+# topology for different VRFs?
+# iBGP vs eBGP?
+# color by device type?
+# physical topology without LLDP -- is this possible?
+# how to draw multiple topologies
+# be able to ask if a node has neighbors by type (physical, overlay, protocol,
+# etc) questions
+# * without knowing hierarchy, labels or tags it's unclear how to group things
+#   for good picture
 # how could we add state of connection (like Established) per protocol
 
 graph_output_dir = '/tmp/suzieq-graphs'
@@ -36,7 +37,8 @@ class TopologyObj(SqPandasEngine):
         self._if_df = self._get_table_sqobj('interfaces') \
             .get(namespace=namespaces, state="up",
                  columns=['namespace', 'hostname', 'ifname', 'ipAddressList',
-                          'ip6AddressList', 'state', 'type', 'master', 'macaddr'])
+                          'ip6AddressList', 'state', 'type', 'master',
+                          'macaddr'])
 
         if self._if_df.empty:
             raise EmptyDataframeError(f"No interface found for {namespaces}")
@@ -164,8 +166,8 @@ class TopologyObj(SqPandasEngine):
         if self.lsdb.empty:
             return
 
-        devices = self._get_table_sqobj('device').get(namespace=self._namespaces,
-                                                      columns=['namespace', 'hostname'])
+        devices = self._get_table_sqobj('device').get(
+            namespace=self._namespaces, columns=['namespace', 'hostname'])
         self.lsdb = devices.merge(self.lsdb, how='outer',
                                   indicator=True)
         self.lsdb = self.lsdb.rename(columns={'_merge': 'polled'})
@@ -181,7 +183,8 @@ class TopologyObj(SqPandasEngine):
     def _create_graphs_from_lsdb(self):
         self.graphs = {}
         for ns, df in self.lsdb.groupby(by=['namespace']):
-            attrs = [srv.name for srv in self.services if srv.name in df.columns]
+            attrs = [srv.name for srv in self.services
+                     if srv.name in df.columns]
             self.graphs[ns] = nx.from_pandas_edgelist(
                 df, 'hostname', 'peerHostname', attrs, nx.MultiGraph)
 
@@ -282,7 +285,8 @@ class TopologyObj(SqPandasEngine):
                                                   'hostname': 'peerHostname'})
                 self._ip_table['peerIP'] = self._ip_table['peerIP'] \
                                                .str.replace("/.+", "")
-                self._ip_table = self._ip_table[self._ip_table['peerIP'] != '-']
+                self._ip_table = \
+                    self._ip_table[self._ip_table['peerIP'] != '-']
         return self._ip_table
 
     def summarize(self, **kwargs):
@@ -304,7 +308,8 @@ class TopologyObj(SqPandasEngine):
                          nx.get_edge_attributes(self.graphs[ns], srv.name)]:
 
                 G = nx.Graph([(s, d, data) for s, d, data in
-                              self.graphs[ns].edges(data=True) if data[name] == True])
+                              self.graphs[ns].edges(data=True)
+                              if data[name] is True])
                 if G.nodes:
                     self.ns[ns][f'{name}_number_of_nodes'] = len(G.nodes)
                     self.ns[ns][f'{name}_number_of_edges'] = len(G.edges)
@@ -321,17 +326,19 @@ class TopologyObj(SqPandasEngine):
                     self.ns[ns][f'{name}_number_of_disjoint_sets'] = len(
                         list(nx.connected_components(G)))
 
-                    self.ns[ns][f'{name}_degree_histogram'] = nx.degree_histogram(
-                        G)
+                    self.ns[ns][f'{name}_degree_histogram'] = \
+                        nx.degree_histogram(G)
 
-                    # if there are too many degrees than the column gets too big
+                    # too many degrees => the column gets too big
                     if len(self.ns[ns][f'{name}_degree_histogram']) > 6:
                         self.ns[ns][f'{name}_degree_histogram'] = '...'
 
                 else:
                     for k in [f'{name}_is_fully_connected', f'{name}_center',
-                              f'{name}_self_loops', f'{name}_number_of_disjoint_sets',
-                              f'{name}_degree_histogram', f'{name}_number_of_nodes',
+                              f'{name}_self_loops',
+                              f'{name}_number_of_disjoint_sets',
+                              f'{name}_degree_histogram',
+                              f'{name}_number_of_nodes',
                               f'{name}_number_of_edges']:
                         self.ns[ns][k] = None
 
@@ -342,8 +349,9 @@ class TopologyObj(SqPandasEngine):
             pos = nx.spring_layout(self.graphs[ns])
             for name in [srv.name for srv in self.services if
                          nx.get_edge_attributes(self.graphs[ns], srv.name)]:
-                edges = [(u, v) for u, v, d in self.graphs[ns].edges(data=True) if
-                         d[name] == True]
+                edges = [(u, v)
+                         for u, v, d in self.graphs[ns].edges(data=True)
+                         if d[name] is True]
                 if len(edges) > 1:
 
                     nx.draw_networkx_nodes(
@@ -362,7 +370,6 @@ class TopologyObj(SqPandasEngine):
         '''Unique values for topology'''
         columns = kwargs.pop('columns', ['default'])
         count = kwargs.pop("count", 0)
-        query_str = kwargs.get('query_str', '')
 
         df = self.get(columns=['*'], **kwargs)
         column = columns[0]

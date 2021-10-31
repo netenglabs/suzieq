@@ -156,9 +156,10 @@ class EvpnvniObj(SqPandasEngine):
     def aver(self, **kwargs) -> pd.DataFrame:
         """Assert for EVPN Data"""
 
-        assert_cols = ["namespace", "hostname", "vni", "vlan", "remoteVtepList", "vrf",
-                       "mcastGroup", "type", "priVtepIp", "state", "l2VniList",
-                       "ifname", "secVtepIp"]
+        assert_cols = ["namespace", "hostname", "vni", "vlan",
+                       "remoteVtepList", "vrf", "mcastGroup", "type",
+                       "priVtepIp", "state", "l2VniList", "ifname",
+                       "secVtepIp"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
         status = kwargs.pop('status', 'all')
@@ -294,7 +295,8 @@ class EvpnvniObj(SqPandasEngine):
             # came down from 194s to 4s with the below piece of code instead
             # of invoking route's lpm to accomplish the task.
             cached_df = self._routes_df \
-                            .query(f'namespace=="{row.namespace}" and hostname=="{row.hostname}"')
+                            .query(f'namespace=="{row.namespace}" and '
+                                   f'hostname=="{row.hostname}"')
             route = self._get_table_sqobj('routes').lpm(vrf='default',
                                                         address=vtep,
                                                         cached_df=cached_df)

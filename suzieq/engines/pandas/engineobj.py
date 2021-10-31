@@ -241,45 +241,14 @@ class SqPandasEngine(SqEngineObj):
                'latestTime': all_time_df.timestamp.max(),
                'intervals': len(times),
                'allRows': len(all_time_df),
-               'namespaces': self._unique_or_zero(all_time_df, 'namespace'),
-               'deviceCnt': self._unique_or_zero(all_time_df, 'hostname')}
-
+               'namespaces': all_time_df.get('namespace',
+                                             pd.Series(dtype='category'))
+               .nunique(),
+               'deviceCnt': all_time_df.get('hostname',
+                                            pd.Series(dtype='category'))
+               .nunique(),
+               }
         return ret
-
-    def _get_table_sqobj(self, table: str, start_time: str = None,
-                         end_time: str = None, view=None):
-        """Normalize pulling data from other tables into this one function
-
-        Typically pulling data involves calling get_sqobject with a bunch of
-        parameters that need to be passed to it, that a caller can forget to 
-        pass. A classic example is passing the view, start-time and end-time 
-        which is often forgotten. This function fixes this issue.
-
-        Args:
-            table (str): The table to retrieve the info from
-            verb (str): The verb to use in the get_sqobject call
-        """
-
-        return get_sqobject(table)(
-            context=self.ctxt,
-            start_time=start_time or self.iobj.start_time,
-            end_time=end_time or self.iobj.end_time,
-            view=view or self.iobj.view)
-
-    def _unique_or_zero(self, df: pd.DataFrame, col: str) -> int:
-        """Returns the unique count of a column in a dataframe or 0
-
-        Args:
-            df (pd.DataFrame): The dataframe to use
-            col (str): The column name to use
-
-        Returns:
-            int: Count of unique values
-        """
-        if col in df.columns:
-            return df[col].nunique()
-        else:
-            return 0
 
     def summarize(self, **kwargs):
         """Summarize the info about this resource/service.
@@ -298,7 +267,8 @@ class SqPandasEngine(SqEngineObj):
         at the end of te summarize
         return pd.DataFrame(self.ns).convert_dtypes()
 
-        If you don't override this, then you get a default summary of all columns
+        If you don't override this, then you get a default summary of all
+        columns
         """
         self._init_summarize(self.iobj._table, **kwargs)
         if self.summary_df.empty:
@@ -387,6 +357,26 @@ class SqPandasEngine(SqEngineObj):
         else:
             return df.nlargest(sqTopCount, columns=what, keep="all") \
                      .head(sqTopCount)
+
+    def _get_table_sqobj(self, table: str, start_time: str = None,
+                         end_time: str = None, view=None):
+        """Normalize pulling data from other tables into this one function
+
+        Typically pulling data involves calling get_sqobject with a bunch of
+        parameters that need to be passed to it, that a caller can forget to
+        pass. A classic example is passing the view, start-time and end-time
+        which is often forgotten. This function fixes this issue.
+
+        Args:
+            table (str): The table to retrieve the info from
+            verb (str): The verb to use in the get_sqobject call
+        """
+
+        return get_sqobject(table)(
+            context=self.ctxt,
+            start_time=start_time or self.iobj.start_time,
+            end_time=end_time or self.iobj.end_time,
+            view=view or self.iobj.view)
 
     def _init_summarize(self, table: str, **kwargs) -> None:
         """Initialize the data structures for use with generating summary
@@ -513,7 +503,7 @@ class SqPandasEngine(SqEngineObj):
         Args:
             field (str): Column name to add in the summary dataframe
             method (str, optional): pandas method name. Defaults to 'nunique'.
-            field_name (str, optional): column name to compute on. Defaults to None.
+            field_name (str, optional): column to compute on. Defaults to None.
         """
         if not field_name:
             field_name = field
@@ -523,7 +513,7 @@ class SqPandasEngine(SqEngineObj):
 
     def _add_list_or_count_to_summary(self, field: str,
                                       field_name: str = None) -> None:
-        """if there are less than 3 unique things, add as a list, otherwise return the count"""
+        """add as a list if < 3 things, otherwise return the count"""
         if not field_name:
             field_name = field
 
@@ -531,10 +521,12 @@ class SqPandasEngine(SqEngineObj):
 
         for n in self.ns.keys():
             if 3 >= count_per_ns[n] > 0:
-                # can't do a value_counts on all groups, incase one of the groups other groups doesn't have data
+                # can't do a value_counts on all groups, incase one of the
+                # groups other groups doesn't have data
                 unique_for_ns = self.nsgrp.get_group(n)[field].value_counts()
                 value = unique_for_ns.to_dict()
-                # Filter numm entries if category because of how pandas behaves here
+                # Filter numm entries if category because of how pandas
+                # behaves here
                 if self.nsgrp[field].dtype[n].name == 'category':
                     value = dict(filter(lambda x: x[1] != 0, value.items()))
 

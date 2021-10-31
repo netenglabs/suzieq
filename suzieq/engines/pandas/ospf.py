@@ -268,7 +268,8 @@ class OspfObj(SqPandasEngine):
                 ospf_df.merge(df, on=["routerId"], how="outer")
                 .apply(lambda x: ["duplicate routerId {}".format(
                     x["hostname_y"])]
-                    if x["hostname_y"] is not np.nan and len(x['hostname_y']) != 1 else [], axis=1))
+                    if (x["hostname_y"] is not np.nan and
+                        len(x['hostname_y']) != 1) else [], axis=1))
 
         # Now  peering match
         lldp_df = self._get_table_sqobj('lldp').get(
@@ -312,7 +313,7 @@ class OspfObj(SqPandasEngine):
             .dropna(how="any")
 
         if int_df.empty:
-            # Weed out the loopback and SVI interfaces as they have no LLDP peers
+            # Weed out the loopback, SVI interfaces as they have no LLDP peers
             if status == "pass":
                 ospf_df = ospf_df[(ospf_df.ifname.str.contains('loopback') |
                                    ospf_df.ifname.str.contains('Vlan'))]

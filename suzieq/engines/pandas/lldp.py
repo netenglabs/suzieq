@@ -14,7 +14,6 @@ class LldpObj(SqPandasEngine):
         addnl_fields = kwargs.get('addnl_fields', [])
         namespace = kwargs.get('namespace', [])
         columns = kwargs.get('columns', [])
-        fields = kwargs.get('fields', [])
         dropcols = []
 
         if columns == ['default']:
@@ -51,7 +50,8 @@ class LldpObj(SqPandasEngine):
 
                 if not df.empty:
                     df['peerIfname'] = np.where(df['peerIfname'] == '-',
-                                                df['ifname_y'], df['peerIfname'])
+                                                df['ifname_y'],
+                                                df['peerIfname'])
                     df = df.drop(columns=['hostname_y', 'ifname_y',
                                           'timestamp_y', 'vrf', 'macaddr'])
 
