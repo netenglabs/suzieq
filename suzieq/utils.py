@@ -1,8 +1,7 @@
 import os
 import re
 import sys
-from typing import Tuple, List
-from pathlib import Path
+from typing import List
 import logging
 from logging.handlers import RotatingFileHandler
 import json
@@ -140,8 +139,8 @@ def load_sq_config(validate=True, config_file=None):
                 sys.exit(1)
 
     if not cfg:
-        print(f"suzieq requires a configuration file either in ./suzieq-cfg.yml "
-              "or ~/suzieq/suzieq-cfg.yml")
+        print("suzieq requires a configuration file either in "
+              "./suzieq-cfg.yml or ~/suzieq/suzieq-cfg.yml")
         sys.exit(1)
 
     return cfg
@@ -213,7 +212,8 @@ class Schema(object):
         return self._types[table]
 
     def key_fields_for_table(self, table):
-        # return [f['name'] for f in self._schema[table] if f.get('key', None) is not None]
+        # return [f['name'] for f in self._schema[table]
+        # if f.get('key', None) is not None]
         return self._sort_fields_for_table(table, 'key')
 
     def augmented_fields_for_table(self, table):
@@ -240,7 +240,8 @@ class Schema(object):
         arrays = []
         for f_name in fields:
             field = self.field_for_table(table, f_name)
-            if isinstance(field['type'], dict) and field['type'].get('type', None) == 'array':
+            if (isinstance(field['type'], dict) and
+                    field['type'].get('type', None) == 'array'):
                 arrays.append(f_name)
         return arrays
 
@@ -255,7 +256,7 @@ class Schema(object):
             return self._sort_fields_for_table(table, 'partition')
 
     def get_arrow_schema(self, table):
-        """Convert the internal AVRO schema into the equivalent PyArrow schema"""
+        """Convert internal AVRO schema into PyArrow schema"""
 
         avro_sch = self._schema.get(table, None)
         if not avro_sch:
@@ -692,11 +693,11 @@ def get_log_params(prog: str, cfg: dict, def_logfile: str) -> tuple:
     within the hierarchy of the config dictionary. Thus, the poller log file
     will be {'poller': {'logfile': '/tmp/sq-poller.log'}}, for example.
 
-    :param prog: str, The name of the program. Valid values are poller, 
+    :param prog: str, The name of the program. Valid values are poller,
                       coaelscer, and rest.
     :param cfg: dict, The config dictionary
     :param def_logfile: str, The default log file to return
-    :returns: log file name, log level, log size, and 
+    :returns: log file name, log level, log size, and
               True/False for logging to stdout
     :rtype: str, str and int
 
@@ -730,7 +731,8 @@ def init_logger(logname: str,
     """
 
     fh = sh = None
-    # this needs to be suzieq.poller, so that it is the root of all the other pollers
+    # this needs to be suzieq.poller, so that it is the root of all the
+    # other pollers
     logger = logging.getLogger(logname)
     logger.setLevel(loglevel.upper())
     if logfile:
