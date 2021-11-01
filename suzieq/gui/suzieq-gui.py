@@ -1,55 +1,32 @@
-from suzieq.sqobjects import *
-from suzieq.gui.pages import *
-from suzieq.gui.guiutils import (get_image_dir, display_title,
-                                 get_main_session_by_id, SuzieqMainPages)
-import streamlit as st
-from streamlit import caching
-from types import ModuleType
+from importlib.util import find_spec
+from importlib import import_module
 from collections import defaultdict
-import base64
+
+import streamlit as st
+
+from suzieq.gui.guiutils import (display_title,
+                                 get_main_session_by_id, SuzieqMainPages)
 
 
 def build_pages():
-    '''Build the pages and the corresponding functions to be called'''
+    '''Build dict of page name and corresponding module'''
 
     page_tbl = defaultdict(dict)
-    module_list = globals()
-    for key in module_list:
-        if isinstance(module_list[key], ModuleType):
-            if module_list[key].__package__ == 'suzieq.gui.pages':
-                objlist = filter(
-                    lambda x: x == "page_work" or x == "get_title",
-                    dir(module_list[key]))
-                page_name = None
-                for obj in objlist:
-                    if obj == 'get_title':
-                        page_name = getattr(module_list[key], obj)()
-                    else:
-                        work_fn = getattr(module_list[key], obj)
-                if page_name:
-                    page_tbl[page_name] = work_fn
+    module_list = find_spec('suzieq.gui.pages').loader.contents()
+    for entry in module_list:
+        if entry.startswith('__'):
+            continue
+        if entry.endswith('.py'):
+            entry = entry[:-3]
+        mod = import_module(f'suzieq.gui.pages.{entry}')
+        page_fn = getattr(mod, 'get_title', None)
+        if page_fn:
+            page_name = page_fn()
+            work_fn = getattr(mod, 'page_work', None)
+            if work_fn:
+                page_tbl[page_name] = work_fn
 
     return page_tbl
-
-
-def build_sqobj_table() -> dict:
-    '''Build available list of suzieq table objects'''
-
-    sqobj_tables = {}
-    module_list = globals()
-    blacklisted_tables = ['path', 'topmem', 'topcpu', 'ifCounters', 'topology',
-                          'time']
-    for key in module_list:
-        if isinstance(module_list[key], ModuleType):
-            if key in blacklisted_tables:
-                continue
-            if module_list[key].__package__ == 'suzieq.sqobjects':
-                objlist = list(filter(lambda x: x.endswith('Obj'),
-                                      dir(module_list[key])))
-                for obj in objlist:
-                    sqobj_tables[key] = getattr(module_list[key], obj)
-
-    return sqobj_tables
 
 
 def apprun():
@@ -68,8 +45,7 @@ def apprun():
 
     if not state.pages:
         state.pages = build_pages()
-        state.sqobjs = build_sqobj_table()
-        # Hardcoding the order of these three
+        # Hardcoding the order of these pages
         state.pagelist = [SuzieqMainPages.STATUS.value,
                           SuzieqMainPages.XPLORE.value,
                           SuzieqMainPages.PATH.value,
@@ -86,12 +62,14 @@ def apprun():
 
         old_session_state = get_main_session_by_id(
             url_params.get('session', [''])[0])
-        if page == "_Path_Debug_":
-            state.pages[page](old_session_state, True)
-            st.stop()
-        elif page == "_Help_":
-            state.pages[page](old_session_state, None)
-            st.stop()
+        if old_session_state:
+            if page == "_Path_Debug_":
+                state.pages[page](old_session_state)
+                st.stop()
+            elif page == "_Help_":
+                state.pages[page](old_session_state)
+                st.stop()
+
         if isinstance(page, list):
             page = page[0]
     else:

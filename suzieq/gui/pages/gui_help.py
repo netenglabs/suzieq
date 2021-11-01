@@ -29,8 +29,8 @@ def help_sidebar(state: HelpSessionState, helpdir: str):
 def page_work(state_container):
     '''Main page workhorse'''
 
-    if not 'helpSessionState' not in state_container:
-        state_container.helpSessionState = HelpSessionState()
+    if 'helpSessionState' not in state_container:
+        state_container['helpSessionState'] = HelpSessionState()
 
     state = state_container.helpSessionState
 
@@ -44,7 +44,7 @@ def page_work(state_container):
     helpdir = os.path.dirname(
         find_spec('suzieq.gui.pages').loader.path) + '/help'
 
-    page_help_on = help_sidebar(state, helpdir)
+    _ = help_sidebar(state, helpdir)
 
     helptext = ''
     with open(f'{helpdir}/{help_on}.md', 'r') as f:

@@ -1,11 +1,13 @@
-from suzieq.gui.guiutils import sq_gui_style, gui_get_df, SuzieqMainPages, display_title
-from suzieq.sqobjects import get_sqobject
+from dataclasses import dataclass, field, asdict
+from typing import List
+
 import numpy as np
 import pandas as pd
 import altair as alt
 import streamlit as st
-from dataclasses import dataclass, field, asdict
-from typing import List
+
+from suzieq.gui.guiutils import sq_gui_style, gui_get_df, SuzieqMainPages
+from suzieq.sqobjects import get_sqobject, get_tables
 
 
 @dataclass
@@ -21,7 +23,6 @@ class XploreSessionState:
     columns:  List[str] = field(default_factory=list)
     uniq_clicked: str = '-'
     assert_clicked: bool = False
-    state_changed: bool = False
 
 
 def get_title():
@@ -39,8 +40,8 @@ def xplore_run_summarize(sqobject, **kwargs):
     # tries to do this. It didn't fix the Timedelta being added to display
     # if not df.empty:
     #     if 'upTimeStat' in df.T.columns:
-    #         df.T['upTimeStat'] = df.T.upTimeStat.apply(lambda x: [str(y)
-    #                                                               for y in x])
+    #         df.T['upTimeStat'] = df.T.upTimeStat \
+    #               .apply(lambda x: [str(y) for y in x])
 
     return df
 
@@ -64,6 +65,7 @@ def xplore_run_unique(df: pd.DataFrame, **kwargs) -> pd.DataFrame:
                 .rename(columns={column: 'numRows',
                                  'index': column})
                 .sort_values(by=['numRows'], ascending=False))
+    return pd.DataFrame()
 
 
 @st.cache(ttl=90)
@@ -79,13 +81,18 @@ def xplore_run_assert(sqobject, **kwargs):
     return df
 
 
-def xplore_sidebar(state, sqobjs: dict):
+def xplore_sidebar(state):
     '''Draw appropriate sidebar for the page'''
 
     stime = state.start_time
     etime = state.end_time
 
-    table_vals = [''] + sorted(list(sqobjs.keys()))
+    tables = filter(
+        lambda x: x not in ['path', 'tables', 'ospfIf', 'ospfNbr',
+                            'topmem', 'topcpu', 'ifCounters', 'time'],
+        get_tables()
+    )
+    table_vals = [''] + sorted(tables)
 
     if state.table:
         if isinstance(state.table, list):
@@ -97,7 +104,7 @@ def xplore_sidebar(state, sqobjs: dict):
     assert_val = state.assert_clicked
     view_idx = 1 if state.view == 'all' else 0
 
-    devdf = gui_get_df(sqobjs['device'], columns=['namespace', 'hostname'])
+    devdf = gui_get_df('device', columns=['namespace', 'hostname'])
     if devdf.empty:
         st.error('Unable to retrieve any namespace info')
         st.stop()
@@ -111,7 +118,8 @@ def xplore_sidebar(state, sqobjs: dict):
     with st.sidebar:
         with st.form('Xplore'):
             namespace = st.selectbox('Namespace',
-                                     namespaces, key='xplore_namespace', index=nsidx)
+                                     namespaces, key='xplore_namespace',
+                                     index=nsidx)
             state.start_time = st.text_input('Start time',
                                              value=stime,
                                              key='xplore_stime')
@@ -120,7 +128,8 @@ def xplore_sidebar(state, sqobjs: dict):
                                            key='xplore_etime')
 
             table = st.selectbox(
-                'Select Table to View', tuple(table_vals), key='xplore_table', index=tblidx)
+                'Select Table to View', tuple(table_vals), key='xplore_table',
+                index=tblidx)
             if table != state.table:
                 # We need to reset the specific variables
                 state.query = ''
@@ -131,7 +140,7 @@ def xplore_sidebar(state, sqobjs: dict):
 
             view_vals = ('latest', 'all')
             if state.start_time and state.end_time:
-                # We show everything thats happened when both times are specified
+                # Show everything thats happened when both times are specified
                 view_idx = 1
             state.view = st.radio("View of Data", view_vals,
                                   index=view_idx, key='xplore_view')
@@ -158,7 +167,7 @@ def xplore_sidebar(state, sqobjs: dict):
                                           on_change=xplore_sync_state)
 
     if state.table:
-        tables_obj = get_sqobject('tables')(start_time=state.state_time,
+        tables_obj = get_sqobject('tables')(start_time=state.start_time,
                                             end_time=state.end_time,
                                             view=state.view)
         fields = tables_obj.describe(table=state.table)
@@ -168,10 +177,8 @@ def xplore_sidebar(state, sqobjs: dict):
                                          ['default', 'all'] + colist,
                                          key='xplore_columns',
                                          default=state.columns)
-        if ('default' in columns or 'all' in columns) and len(columns) == 1:
-            col_sel_val = True
-        else:
-            col_sel_val = False
+        col_sel_val = (('default' in columns or 'all' in columns)
+                       and len(columns) == 1)
 
         col_ok = st.sidebar.checkbox('Column Selection Done',
                                      key='xplore_col_done',
@@ -188,7 +195,8 @@ def xplore_sidebar(state, sqobjs: dict):
     state.columns = columns
     if state.table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:
         state.assert_clicked = st.sidebar.checkbox(
-            'Run Assert', value=assert_val,  key='xplore_assert', on_change=xplore_sync_state)
+            'Run Assert', value=assert_val,  key='xplore_assert',
+            on_change=xplore_sync_state)
     else:
         state.assert_clicked = False
 
@@ -209,7 +217,8 @@ def xplore_sidebar(state, sqobjs: dict):
         key='xplore_query', on_change=xplore_sync_state)
 
     st.sidebar.markdown(
-        "[query syntax help](https://suzieq.readthedocs.io/en/latest/pandas-query-examples/)")
+        "[query syntax help]"
+        "(https://suzieq.readthedocs.io/en/latest/pandas-query-examples/)")
 
     if columns == ['all']:
         columns = ['*']
@@ -260,10 +269,8 @@ def page_work(state_container):
         state = XploreSessionState()
         state_container.xploreSessionState = state
 
-    sqobjs = state_container.sqobjs
-
     # All the user input is preserved in the state vars
-    xplore_sidebar(state, sqobjs)
+    xplore_sidebar(state)
     xplore_run()
 
 
@@ -272,38 +279,28 @@ def xplore_sync_state():
     wsstate = st.session_state
     state = wsstate.xploreSessionState
 
-    state_changed = False
     if wsstate.xplore_namespace != state.namespace:
         state.namespace = wsstate.xplore_namespace
-        state_changed = True
 
     if wsstate.xplore_hostname != state.hostname:
         state.hostname = wsstate.xplore_hostname
-        state_changed = True
     if wsstate.xplore_stime != state.start_time:
         state.start_time = wsstate.xplore_stime
-        state_changed = True
     if wsstate.xplore_etime != state.end_time:
         state.end_time = wsstate.xplore_etime
-        state_changed = True
     if wsstate.xplore_view != state.view:
         state.view = wsstate.xplore_view
-        state_changed = True
     xplore_col_done = wsstate.get('xplore_col_done', False)
     if xplore_col_done and (wsstate.xplore_columns != state.columns):
         state.columns = wsstate.xplore_columns
-        state_changed = True
     if wsstate.xplore_query != state.query:
         state.query = wsstate.xplore_query
-        state_changed = True
     assert_clicked = wsstate.get('xplore_assert', '')
     if assert_clicked and (assert_clicked != state.assert_clicked):
         state.assert_clicked = wsstate.xplore_assert
-        state_changed = True
     uniq_sel = wsstate.get('xplore_uniq_col', '')
     if uniq_sel and (state.uniq_clicked != uniq_sel):
         state.uniq_clicked = uniq_sel
-        state_changed = True
 
     if wsstate.xplore_table != state.table:
         # Reset all dependent vars when table changes
@@ -312,15 +309,12 @@ def xplore_sync_state():
         state.assert_clicked = False
         state.uniq_clicked = '-'
         state.columns = ['default']
-        state_changed = True
-
-    state.state_changed = state_changed
 
 
 def xplore_create_layout(state):
     '''Create all the layout widgets for Xplore page
 
-    This helps avoid bad screen effects such as screen shifting, 
+    This helps avoid bad screen effects such as screen shifting,
     jerkiness etc. when changing or updating the page
     '''
     grid1 = st.container()
@@ -358,7 +352,7 @@ def xplore_run():
 
     layout = xplore_create_layout(state)
     sqobj = get_sqobject(state.table)
-    df = gui_get_df(sqobj, _table=state.table,
+    df = gui_get_df(state.table,
                     namespace=state.namespace.split(),
                     hostname=state.hostname.split(),
                     start_time=state.start_time, end_time=state.end_time,
@@ -385,18 +379,16 @@ def xplore_run():
         query_str = ''
 
     if not show_df.empty:
-        xplore_draw_summary_df(layout, state.table, state, sqobj, query_str)
-        xplore_draw_uniq_histogram(layout, state.table, state,
-                                   wsstate, show_df)
+        xplore_draw_summary_df(layout, state, sqobj, query_str)
+        xplore_draw_uniq_histogram(layout, state, wsstate, show_df)
         xplore_draw_assert_df(layout, state, sqobj)
 
     xplore_draw_table_df(layout, state.table, show_df)
 
     st.experimental_set_query_params(**asdict(state))
-    state.state_changed = False
 
 
-def xplore_draw_summary_df(layout, table, state, sqobj, query_str):
+def xplore_draw_summary_df(layout, state, sqobj, query_str):
     '''Display the summary dataframe'''
     summ_df = xplore_run_summarize(sqobj,
                                    namespace=state.namespace.split(),
@@ -407,7 +399,8 @@ def xplore_draw_summary_df(layout, table, state, sqobj, query_str):
 
     header_col = layout['header_ph']
     header_col.write(
-        f'<h2 style="color: darkblue; font-weight: bold;">{state.table} View</h2>',
+        f'<h2 style="color: darkblue; font-weight: bold;">'
+        f'{state.table} View</h2>',
         unsafe_allow_html=True)
 
     summ_ph = layout['summ_ph']
@@ -416,7 +409,7 @@ def xplore_draw_summary_df(layout, table, state, sqobj, query_str):
         summ_ph.dataframe(data=summ_df.astype(str))
 
 
-def xplore_draw_uniq_histogram(layout, table, state, wsstate, show_df):
+def xplore_draw_uniq_histogram(layout, state, wsstate, show_df):
     '''Display the unique histogram'''
 
     dfcols = show_df.columns.tolist()
@@ -446,7 +439,8 @@ def xplore_draw_uniq_histogram(layout, table, state, wsstate, show_df):
         if 'xplore_uniq_col' not in wsstate:
             state.uniq_clicked = st.selectbox(
                 'Distribution Count of', options=['-'] + dfcols,
-                index=selindex, key='xplore_uniq_col', on_change=xplore_sync_state)
+                index=selindex, key='xplore_uniq_col',
+                on_change=xplore_sync_state)
         else:
             wsstate.xplore_uniq_col = uniq_sel
             state.uniq_clicked = st.selectbox(
@@ -465,7 +459,8 @@ def xplore_draw_uniq_histogram(layout, table, state, wsstate, show_df):
     if not uniq_df.empty:
         if uniq_df.shape[0] > 16:
             scol2.warning(
-                f'{state.uniq_clicked} has cardinality of {uniq_df.shape[0]}. Displaying top 16')
+                f'{state.uniq_clicked} has cardinality of {uniq_df.shape[0]}'
+                '. Displaying top 16')
             chart = alt.Chart(
                 uniq_df.head(16),
                 title=f'{state.uniq_clicked} Distribution') \
@@ -494,14 +489,16 @@ def xplore_draw_assert_df(layout, state, sqobj):
         assert_df = pd.DataFrame()
 
     if state.table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:
-        if assert_df.empty:
-            expand_assert = False
-        else:
-            expand_assert = True
+
         assert_expander = layout['assert_expander']
         with assert_expander:
             if not assert_df.empty:
-                st.dataframe(data=assert_df)
+                convert_dict = {
+                    x: 'str'
+                    for x in assert_df.select_dtypes('category').columns}
+                st.dataframe(data=sq_gui_style(assert_df
+                                               .astype(convert_dict),
+                                               state.table, True))
             elif state.assert_clicked:
                 st.write('Assert passed')
             else:
@@ -514,7 +511,8 @@ def xplore_draw_table_df(layout, table, show_df):
     with expander:
         if show_df.shape[0] > 256:
             st.write(
-                f'Showing first 256 of {show_df.shape[0]} rows, use query to filter')
+                f'Showing first 256 of {show_df.shape[0]} rows, ;'
+                'use query to filter')
         if not show_df.empty:
             convert_dict = {
                 x: 'str' for x in show_df.select_dtypes('category').columns}

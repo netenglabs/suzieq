@@ -1,5 +1,4 @@
 from itertools import zip_longest
-from typing import Collection
 
 import pandas as pd
 import streamlit as st
