@@ -177,6 +177,8 @@ class SqPandasEngine(SqEngineObj):
             if hostname:
                 hdf_list = []
                 for hn in hostname:
+                    if hn.startswith('~'):
+                        hn = hn[1:]
                     df1 = table_df.query(f"hostname.str.match('{hn}')")
                     if not df1.empty:
                         hdf_list.append(df1)

@@ -618,6 +618,8 @@ class SqParquetDB(SqDB):
                                             if not re.search(f'namespace={ns}/',
                                                              x)])
                     else:
+                        if ns.startswith('~'):
+                            ns = ns[1:]
                         ns_filelist.extend([x for x in dataset.files
                                             if re.search(f'namespace={ns}/', x)])
                 filelist.extend(ns_filelist)
