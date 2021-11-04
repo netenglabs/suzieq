@@ -1,4 +1,4 @@
-from typing import Optional, Sequence, List
+from typing import List
 import os
 import argparse
 import json
@@ -100,11 +100,13 @@ def get_log_config_level(cfg):
     log_config = uvicorn.config.LOGGING_CONFIG
     if logfile and not log_stdout:
         log_config['handlers']['access']['filename'] = logfile
-        log_config['handlers']['access']['class'] = 'logging.handlers.RotatingFileHandler'
+        log_config['handlers']['access']['class'] = \
+            'logging.handlers.RotatingFileHandler'
         log_config['handlers']['access']['maxBytes'] = logsize
         log_config['handlers']['access']['backupCount'] = 2
 
-        log_config['handlers']['default']['class'] = 'logging.handlers.RotatingFileHandler'
+        log_config['handlers']['default']['class'] = \
+            'logging.handlers.RotatingFileHandler'
         log_config['handlers']['default']['maxBytes'] = logsize
         log_config['handlers']['default']['backupCount'] = 2
         log_config['handlers']['default']['filename'] = logfile
@@ -145,7 +147,7 @@ def rest_main(*args) -> None:
     app = app_init(config_file)
     cfg = load_sq_config(config_file=config_file)
     try:
-        api_key = cfg['rest']['API_KEY']
+        _ = cfg['rest']['API_KEY']
     except KeyError:
         print('missing API_KEY in config file')
         exit(1)
@@ -407,21 +409,22 @@ async def query_fs(verb: CommonVerbs, request: Request,
 
 
 @ app.get("/api/v2/interface/assert")
-async def query_interface_assert(request: Request,
-                                 token: str = Depends(get_api_key),
-                                 format: str = None,
-                                 hostname: List[str] = Query(None),
-                                 start_time: str = "", end_time: str = "",
-                                 view: ViewValues = "latest",
-                                 namespace: List[str] = Query(None),
-                                 columns: List[str] = Query(default=["default"]),
-                                 ifname: List[str] = Query(None),
-                                 what: str = None,
-                                 matchval: int = Query(None, alias="value"),
-                                 status: AssertStatusValues = Query(None),
-                                 ignore_missing_peer: bool = Query(False),
-                                 query_str: str = None,
-                                 ):
+async def query_interface_assert(
+    request: Request,
+    token: str = Depends(get_api_key),
+    format: str = None,
+    hostname: List[str] = Query(None),
+    start_time: str = "", end_time: str = "",
+    view: ViewValues = "latest",
+    namespace: List[str] = Query(None),
+    columns: List[str] = Query(default=["default"]),
+    ifname: List[str] = Query(None),
+    what: str = None,
+    matchval: int = Query(None, alias="value"),
+    status: AssertStatusValues = Query(None),
+    ignore_missing_peer: bool = Query(False),
+    query_str: str = None,
+):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, "assert", request, locals())
 
@@ -650,17 +653,18 @@ async def query_sqPoller(verb: CommonVerbs, request: Request,
 
 
 @ app.get("/api/v2/topology/summarize")
-async def query_topology_summarize(request: Request,
-                                   token: str = Depends(get_api_key),
-                                   format: str = None,
-                                   hostname: List[str] = Query(None),
-                                   start_time: str = "", end_time: str = "",
-                                   view: ViewValues = "latest",
-                                   namespace: List[str] = Query(None),
-                                   columns: List[str] = Query(default=["default"]),
-                                   via: List[str] = Query(None),
-                                   query_str: str = None,
-                                   ):
+async def query_topology_summarize(
+    request: Request,
+    token: str = Depends(get_api_key),
+    format: str = None,
+    hostname: List[str] = Query(None),
+    start_time: str = "", end_time: str = "",
+    view: ViewValues = "latest",
+    namespace: List[str] = Query(None),
+    columns: List[str] = Query(default=["default"]),
+    via: List[str] = Query(None),
+    query_str: str = None,
+):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, "summarize", request, locals())
 
@@ -703,15 +707,16 @@ async def query_vlan(verb: CommonVerbs, request: Request,
 
 
 @ app.get("/api/v2/table/{verb}")
-async def query_table(verb: TableVerbs, request: Request,
-                      token: str = Depends(get_api_key),
-                      format: str = None,
-                      hostname: List[str] = Query(None),
-                      start_time: str = "", end_time: str = "",
-                      view: ViewValues = "latest", namespace: List[str] = Query(None),
-                      columns: List[str] = Query(default=["default"]),
-                      query_str: str = None
-                      ):
+async def query_table(
+    verb: TableVerbs, request: Request,
+    token: str = Depends(get_api_key),
+    format: str = None,
+    hostname: List[str] = Query(None),
+    start_time: str = "", end_time: str = "",
+    view: ViewValues = "latest", namespace: List[str] = Query(None),
+    columns: List[str] = Query(default=["default"]),
+    query_str: str = None
+):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
@@ -741,10 +746,6 @@ def create_filters(function_name, command, request, local_vars):
                     'start_time', 'end_time', 'view', 'columns', 'format']
     both_verb_and_command = ['namespace', 'hostname', ]
     alias_args = {'src': 'source'}
-    def_val_args = {
-        'namespace': [],
-        'hostname': [],
-    }
 
     query_ks = request.query_params
     for arg in query_ks.keys():
@@ -795,9 +796,10 @@ def get_svc(command):
     return svc
 
 
-def run_command_verb(command, verb, command_args, verb_args, columns=['default'], format=None):
+def run_command_verb(command, verb, command_args, verb_args,
+                     columns=['default'], format=None):
     """
-    Runs the command and verb with the command_args and verb_args as dictionaries
+    Runs the command and verb with the command_args and verb_args
 
     HTTP Return Codes
         404 -- Missing command or argument (including missing valid path)
@@ -812,7 +814,8 @@ def run_command_verb(command, verb, command_args, verb_args, columns=['default']
 
     except AttributeError as err:
         return_error(
-            404, f"{verb} not supported for {command} or missing arguement: {err}")
+            404, (f"{verb} not supported for {command} or "
+                  f"missing arguement: {err}"))
 
     except NotImplementedError as err:
         return_error(404, f"{verb} not supported for {command}: {err}")
@@ -825,7 +828,8 @@ def run_command_verb(command, verb, command_args, verb_args, columns=['default']
 
     except Exception as err:
         return_error(
-            500, f"exceptional exception {verb} for {command} of type {type(err)}: {err}")
+            500,
+            f"{command}:{verb} got an exception {type(err)}: {err}")
 
     if df.columns.to_list() == ['error']:
         return_error(
@@ -863,4 +867,5 @@ def missing_verb(command):
 @ app.get("/", include_in_schema=False)
 def bad_path():
     return_error(
-        404, "bad path. Try something like '/api/v2/device/show' or '/api/docs'")
+        404,
+        "bad path. Try something like '/api/v2/device/show' or '/api/docs'")
