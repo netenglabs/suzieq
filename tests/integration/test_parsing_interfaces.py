@@ -5,6 +5,12 @@ import pandas as pd
 from ipaddress import ip_interface
 
 from tests.conftest import DATADIR, validate_host_shape
+from suzieq.utils import MISSING_SPEED
+
+def validate_speed_if(df: pd.DataFrame):
+    '''Validate interface speed'''
+    if not df.empty:
+        assert(df.speed != MISSING_SPEED).all()
 
 
 def _validate_ethernet_if(df: pd.DataFrame):
@@ -14,7 +20,7 @@ def _validate_ethernet_if(df: pd.DataFrame):
     # A bunch of internal Junos interface names including SVIs show up as
     # ethernet interfaces
     assert (df.query('~os.isin(["linux", "sonic", "eos"]) '
-                     'and (state == "up")').speed != 0).all()
+                     'and (state == "up")').speed != MISSING_SPEED).all()
 
 
 def _validate_bridged_if(df: pd.DataFrame):
@@ -22,6 +28,24 @@ def _validate_bridged_if(df: pd.DataFrame):
     for row in df.itertuples():
         assert ((len(row.ipAddressList) == 0) and
                 (len(row.ip6AddressList) == 0))
+
+def _validate_junos_speed_if(df: pd.DataFrame):
+    '''
+    Validate junos interface speed
+    
+    All logical and physical interfaces must have the same speed
+    '''
+    ifnames = dict()
+    for _, row in df.iterrows():
+        pIfname = row["ifname"].split(".")[0]
+        hostAndPIfname = f'{row["hostname"]}{pIfname}'
+        if pIfname != row["ifname"]:
+            # logical interface
+            if ifnames.get(hostAndPIfname,'') == '':
+                ifnames[hostAndPIfname] = []
+            ifnames[hostAndPIfname].append(row["speed"])
+    for ifSpeeds in ifnames.values():
+        assert(len(set(ifSpeeds)) == 1)
 
 
 def _validate_bond_if(df: pd.DataFrame):
@@ -176,9 +200,15 @@ def test_interfaces(table, datadir, get_table_data):
     for iftype in validation_fns.keys():
         if validation_fns[iftype]:
             subdf = df.query(f'type == "{iftype}"').reset_index(drop=True)
+            subdf_without_junos = subdf.query('os.str.match("^(?:(?!junos).)*$")')
             if not subdf.empty:
+                # validate interface speed without Juniper
+                validate_speed_if(subdf_without_junos)
                 validation_fns[iftype](subdf)
 
                 assert (subdf.macaddr.str.len() == 17).all()
                 assert (subdf.macaddr.str.contains(':')).all()
         assert (df.query('state != "notConnected"').mtu != 0).all()
+
+    # Juniper interfaces speed must be tested with specific function
+    _validate_junos_speed_if(df.query('os.str.match("junos.*")'))
