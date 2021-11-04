@@ -186,6 +186,172 @@ tests:
     "leaf01"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
     "exit02"}, {"hostname": "exit02"}]'
+- command: arpnd show --address="169.254.253.1" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: arpnd show junos filter
+  output: '[{"namespace": "junos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
+    "oif": "eth2.2", "macaddr": "02:05:86:71:27:0b", "state": "reachable", "remote":
+    false, "timestamp": 1623025795113}]'
+- command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: arpnd show junos filter
+  output: '[{"namespace": "junos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
+    "oif": "eth2.2", "macaddr": "02:05:86:71:27:0b", "state": "reachable", "remote":
+    false, "timestamp": 1623025795113}, {"namespace": "junos", "hostname": "exit02",
+    "ipAddress": "169.254.253.2", "oif": "xe-0/0/2.2", "macaddr": "28:b7:ad:21:bd:53",
+    "state": "reachable", "remote": false, "timestamp": 1623025797433}]'
+- command: arpnd show --address="invalidaddress" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  error:
+    error: '[{"error": "Invalid IP address specified"}]'
+  marks: arpnd show junos filter
+- command: arpnd show --macaddr="52:54:00:52:09:f3" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: arpnd show junos filter
+  output: '[{"namespace": "junos", "hostname": "server102", "ipAddress": "10.255.5.1",
+    "oif": "eth0", "macaddr": "52:54:00:52:09:f3", "state": "reachable", "remote":
+    false, "timestamp": 1623025795112}, {"namespace": "junos", "hostname": "server201",
+    "ipAddress": "10.255.5.1", "oif": "eth0", "macaddr": "52:54:00:52:09:f3", "state":
+    "reachable", "remote": false, "timestamp": 1623025795112}, {"namespace": "junos",
+    "hostname": "firewall01", "ipAddress": "10.255.5.1", "oif": "eth0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025795113},
+    {"namespace": "junos", "hostname": "server101", "ipAddress": "10.255.5.1", "oif":
+    "eth0", "macaddr": "52:54:00:52:09:f3", "state": "reachable", "remote": false,
+    "timestamp": 1623025795113}, {"namespace": "junos", "hostname": "server202", "ipAddress":
+    "10.255.5.1", "oif": "eth0", "macaddr": "52:54:00:52:09:f3", "state": "reachable",
+    "remote": false, "timestamp": 1623025795113}, {"namespace": "junos", "hostname":
+    "leaf02", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr": "52:54:00:52:09:f3",
+    "state": "reachable", "remote": false, "timestamp": 1623025796778}, {"namespace":
+    "junos", "hostname": "exit01", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025796956},
+    {"namespace": "junos", "hostname": "spine01", "ipAddress": "10.255.5.1", "oif":
+    "em0.0", "macaddr": "52:54:00:52:09:f3", "state": "reachable", "remote": false,
+    "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "spine02", "ipAddress":
+    "10.255.5.1", "oif": "em0.0", "macaddr": "52:54:00:52:09:f3", "state": "reachable",
+    "remote": false, "timestamp": 1623025796956}, {"namespace": "junos", "hostname":
+    "dcedge01", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr": "52:54:00:52:09:f3",
+    "state": "reachable", "remote": false, "timestamp": 1623025797193}, {"namespace":
+    "junos", "hostname": "leaf01", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025797193},
+    {"namespace": "junos", "hostname": "exit02", "ipAddress": "10.255.5.1", "oif":
+    "em0.0", "macaddr": "52:54:00:52:09:f3", "state": "reachable", "remote": false,
+    "timestamp": 1623025797433}]'
+- command: arpnd show --macaddr="52:54:00:52:09:f3 28:b7:ad:3b:11:1c" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: arpnd show junos filter
+  output: '[{"namespace": "junos", "hostname": "server102", "ipAddress": "10.255.5.1",
+    "oif": "eth0", "macaddr": "52:54:00:52:09:f3", "state": "reachable", "remote":
+    false, "timestamp": 1623025795112}, {"namespace": "junos", "hostname": "server201",
+    "ipAddress": "10.255.5.1", "oif": "eth0", "macaddr": "52:54:00:52:09:f3", "state":
+    "reachable", "remote": false, "timestamp": 1623025795112}, {"namespace": "junos",
+    "hostname": "firewall01", "ipAddress": "10.255.5.1", "oif": "eth0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025795113},
+    {"namespace": "junos", "hostname": "server101", "ipAddress": "10.255.5.1", "oif":
+    "eth0", "macaddr": "52:54:00:52:09:f3", "state": "reachable", "remote": false,
+    "timestamp": 1623025795113}, {"namespace": "junos", "hostname": "server202", "ipAddress":
+    "10.255.5.1", "oif": "eth0", "macaddr": "52:54:00:52:09:f3", "state": "reachable",
+    "remote": false, "timestamp": 1623025795113}, {"namespace": "junos", "hostname":
+    "leaf02", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr": "52:54:00:52:09:f3",
+    "state": "reachable", "remote": false, "timestamp": 1623025796778}, {"namespace":
+    "junos", "hostname": "exit01", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025796956},
+    {"namespace": "junos", "hostname": "spine01", "ipAddress": "10.255.5.1", "oif":
+    "em0.0", "macaddr": "52:54:00:52:09:f3", "state": "reachable", "remote": false,
+    "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "spine02", "ipAddress":
+    "10.255.5.1", "oif": "em0.0", "macaddr": "52:54:00:52:09:f3", "state": "reachable",
+    "remote": false, "timestamp": 1623025796956}, {"namespace": "junos", "hostname":
+    "dcedge01", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr": "52:54:00:52:09:f3",
+    "state": "reachable", "remote": false, "timestamp": 1623025797193}, {"namespace":
+    "junos", "hostname": "leaf01", "ipAddress": "10.255.5.1", "oif": "em0.0", "macaddr":
+    "52:54:00:52:09:f3", "state": "reachable", "remote": false, "timestamp": 1623025797193},
+    {"namespace": "junos", "hostname": "exit02", "ipAddress": "10.255.5.1", "oif":
+    "em0.0", "macaddr": "52:54:00:52:09:f3", "state": "reachable", "remote": false,
+    "timestamp": 1623025797433}, {"namespace": "junos", "hostname": "exit02", "ipAddress":
+    "169.254.0.1", "oif": "em1.0", "macaddr": "28:b7:ad:3b:11:1c", "state": "reachable",
+    "remote": false, "timestamp": 1623025797433}]'
+- command: arpnd show --macaddr="invalidaddress" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  error:
+    error: '[{"error": "Invalid mac address specified"}]'
+  marks: arpnd show junos filter
+- command: arpnd show --prefix="169.254.253.0/24" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: arpnd show junos filter
+  output: '[{"namespace": "junos", "hostname": "firewall01", "ipAddress": "169.254.253.5",
+    "oif": "eth2.3", "macaddr": "02:05:86:71:27:0b", "state": "reachable", "remote":
+    false, "timestamp": 1623025795113}, {"namespace": "junos", "hostname": "firewall01",
+    "ipAddress": "169.254.253.9", "oif": "eth2.4", "macaddr": "02:05:86:71:27:0b",
+    "state": "reachable", "remote": false, "timestamp": 1623025795113}, {"namespace":
+    "junos", "hostname": "firewall01", "ipAddress": "169.254.253.1", "oif": "eth2.2",
+    "macaddr": "02:05:86:71:27:0b", "state": "reachable", "remote": false, "timestamp":
+    1623025795113}, {"namespace": "junos", "hostname": "exit02", "ipAddress": "169.254.253.6",
+    "oif": "xe-0/0/2.3", "macaddr": "28:b7:ad:21:bd:53", "state": "reachable", "remote":
+    false, "timestamp": 1623025797433}, {"namespace": "junos", "hostname": "exit02",
+    "ipAddress": "169.254.253.2", "oif": "xe-0/0/2.2", "macaddr": "28:b7:ad:21:bd:53",
+    "state": "reachable", "remote": false, "timestamp": 1623025797433}, {"namespace":
+    "junos", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "xe-0/0/2.4",
+    "macaddr": "28:b7:ad:21:bd:53", "state": "reachable", "remote": false, "timestamp":
+    1623025797433}]'
+- command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: arpnd show junos filter
+  output: '[{"namespace": "junos", "hostname": "firewall01", "ipAddress": "169.254.253.5",
+    "oif": "eth2.3", "macaddr": "02:05:86:71:27:0b", "state": "reachable", "remote":
+    false, "timestamp": 1623025795113}, {"namespace": "junos", "hostname": "firewall01",
+    "ipAddress": "169.254.253.9", "oif": "eth2.4", "macaddr": "02:05:86:71:27:0b",
+    "state": "reachable", "remote": false, "timestamp": 1623025795113}, {"namespace":
+    "junos", "hostname": "firewall01", "ipAddress": "169.254.253.1", "oif": "eth2.2",
+    "macaddr": "02:05:86:71:27:0b", "state": "reachable", "remote": false, "timestamp":
+    1623025795113}, {"namespace": "junos", "hostname": "leaf02", "ipAddress": "10.0.0.22",
+    "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:c6:07", "state": "reachable", "remote":
+    false, "timestamp": 1623025796778}, {"namespace": "junos", "hostname": "leaf02",
+    "ipAddress": "10.0.0.21", "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:2e:07",
+    "state": "reachable", "remote": false, "timestamp": 1623025796778}, {"namespace":
+    "junos", "hostname": "spine01", "ipAddress": "10.0.0.11", "oif": "xe-0/0/0.0",
+    "macaddr": "02:05:86:71:ad:03", "state": "reachable", "remote": false, "timestamp":
+    1623025796956}, {"namespace": "junos", "hostname": "spine02", "ipAddress": "10.0.0.32",
+    "oif": "xe-0/0/3.0", "macaddr": "02:05:86:71:27:07", "state": "reachable", "remote":
+    false, "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "spine02",
+    "ipAddress": "10.0.0.31", "oif": "xe-0/0/2.0", "macaddr": "02:05:86:71:74:07",
+    "state": "reachable", "remote": false, "timestamp": 1623025796956}, {"namespace":
+    "junos", "hostname": "spine02", "ipAddress": "10.0.0.12", "oif": "xe-0/0/1.0",
+    "macaddr": "02:05:86:71:55:07", "state": "reachable", "remote": false, "timestamp":
+    1623025796956}, {"namespace": "junos", "hostname": "exit01", "ipAddress": "10.0.0.21",
+    "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:2e:0b", "state": "reachable", "remote":
+    false, "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "exit01",
+    "ipAddress": "10.0.0.22", "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:c6:0b",
+    "state": "reachable", "remote": false, "timestamp": 1623025796956}, {"namespace":
+    "junos", "hostname": "spine02", "ipAddress": "10.0.0.11", "oif": "xe-0/0/0.0",
+    "macaddr": "02:05:86:71:ad:07", "state": "reachable", "remote": false, "timestamp":
+    1623025796956}, {"namespace": "junos", "hostname": "spine01", "ipAddress": "10.0.0.32",
+    "oif": "xe-0/0/3.0", "macaddr": "02:05:86:71:27:03", "state": "reachable", "remote":
+    false, "timestamp": 1623025796956}, {"namespace": "junos", "hostname": "spine01",
+    "ipAddress": "10.0.0.31", "oif": "xe-0/0/2.0", "macaddr": "02:05:86:71:74:03",
+    "state": "reachable", "remote": false, "timestamp": 1623025796956}, {"namespace":
+    "junos", "hostname": "spine01", "ipAddress": "10.0.0.12", "oif": "xe-0/0/1.0",
+    "macaddr": "02:05:86:71:55:03", "state": "reachable", "remote": false, "timestamp":
+    1623025796956}, {"namespace": "junos", "hostname": "leaf01", "ipAddress": "10.0.0.22",
+    "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:c6:03", "state": "reachable", "remote":
+    false, "timestamp": 1623025797193}, {"namespace": "junos", "hostname": "leaf01",
+    "ipAddress": "10.0.0.21", "oif": "xe-0/0/0.0", "macaddr": "02:05:86:71:2e:03",
+    "state": "reachable", "remote": false, "timestamp": 1623025797193}, {"namespace":
+    "junos", "hostname": "exit02", "ipAddress": "169.254.253.6", "oif": "xe-0/0/2.3",
+    "macaddr": "28:b7:ad:21:bd:53", "state": "reachable", "remote": false, "timestamp":
+    1623025797433}, {"namespace": "junos", "hostname": "exit02", "ipAddress": "169.254.253.2",
+    "oif": "xe-0/0/2.2", "macaddr": "28:b7:ad:21:bd:53", "state": "reachable", "remote":
+    false, "timestamp": 1623025797433}, {"namespace": "junos", "hostname": "exit02",
+    "ipAddress": "10.0.0.22", "oif": "xe-0/0/1.0", "macaddr": "02:05:86:71:c6:0f",
+    "state": "reachable", "remote": false, "timestamp": 1623025797433}, {"namespace":
+    "junos", "hostname": "exit02", "ipAddress": "10.0.0.21", "oif": "xe-0/0/0.0",
+    "macaddr": "02:05:86:71:2e:0f", "state": "reachable", "remote": false, "timestamp":
+    1623025797433}, {"namespace": "junos", "hostname": "exit02", "ipAddress": "169.254.253.10",
+    "oif": "xe-0/0/2.4", "macaddr": "28:b7:ad:21:bd:53", "state": "reachable", "remote":
+    false, "timestamp": 1623025797433}]'
+- command: arpnd show --prefix="169.254.253.0" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: arpnd show junos filter
 - command: arpnd summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: arpnd summarize junos

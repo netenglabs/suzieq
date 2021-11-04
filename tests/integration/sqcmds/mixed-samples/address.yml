@@ -909,3 +909,155 @@ tests:
   data-directory: tests/data/mixed/parquet-out
   marks: address unique mixed
   output: '[{"vrf": "default"}, {"vrf": "management"}]'
+- command: address show --address="5000.0009.0001" --format=json
+  data-directory: tests/data/mixed/parquet-out
+  marks: address show mixed filter
+  output: '[{"namespace": "mixed", "hostname": "leaf1-ios", "ifname": "GigabitEthernet0/1",
+    "ipAddressList": ["10.2.1.2/30"], "macaddr": "50:00:00:09:00:01", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1627395437160}]'
+- command: address show --address="invalidaddress" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  error:
+    error: '[{"error": "Invalid address specified"}]'
+  marks: address show mixed filter
+- command: address show --prefix="172.29.151.0/24" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: address show mixed filter
+  output: '[{"namespace": "mixed", "hostname": "leaf6-eos", "ifname": "Management1",
+    "ipAddressList": "172.29.151.8/24", "macaddr": "50:00:00:06:00:00", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1627395434695}, {"namespace":
+    "mixed", "hostname": "leaf5-eos", "ifname": "Management1", "ipAddressList": "172.29.151.7/24",
+    "macaddr": "50:00:00:07:00:00", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1627395434802}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "ifname": "mgmt0", "ipAddressList": "172.29.151.1/24", "macaddr": "50:00:00:0b:00:00",
+    "ip6AddressList": [], "state": "up", "vrf": "management", "timestamp": 1627395435116},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "ifname": "mgmt0", "ipAddressList":
+    "172.29.151.2/24", "macaddr": "50:00:00:0c:00:00", "ip6AddressList": [], "state":
+    "up", "vrf": "management", "timestamp": 1627395435425}, {"namespace": "mixed",
+    "hostname": "leaf3-qfx", "ifname": "em0.0", "ipAddressList": "172.29.151.5/24",
+    "macaddr": "50:00:00:05:00:00", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1627395435943}, {"namespace": "mixed", "hostname": "leaf4-qfx", "ifname":
+    "em0.0", "ipAddressList": "172.29.151.6/24", "macaddr": "50:00:00:03:00:00", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1627395436097}, {"namespace":
+    "mixed", "hostname": "leaf1-ios", "ifname": "GigabitEthernet0/7", "ipAddressList":
+    "172.29.151.3/24", "macaddr": "50:00:00:09:00:07", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1627395437160}, {"namespace": "mixed", "hostname":
+    "leaf2-ios", "ifname": "GigabitEthernet0/7", "ipAddressList": "172.29.151.4/24",
+    "macaddr": "50:00:00:0a:00:07", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1627395437566}]'
+- command: address show --prefix="2001:db8:0:1::/64" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: address show mixed filter
+  output: '[]'
+- command: address show --prefix="2001:db8:0:1::/64 172.29.151.0/24" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: address show mixed filter
+  output: '[{"namespace": "mixed", "hostname": "leaf6-eos", "ifname": "Management1",
+    "ipAddressList": "172.29.151.8/24", "macaddr": "50:00:00:06:00:00", "ip6AddressList":
+    "", "state": "up", "vrf": "default", "timestamp": 1627395434695}, {"namespace":
+    "mixed", "hostname": "leaf5-eos", "ifname": "Management1", "ipAddressList": "172.29.151.7/24",
+    "macaddr": "50:00:00:07:00:00", "ip6AddressList": "", "state": "up", "vrf": "default",
+    "timestamp": 1627395434802}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "ifname": "mgmt0", "ipAddressList": "172.29.151.1/24", "macaddr": "50:00:00:0b:00:00",
+    "ip6AddressList": "", "state": "up", "vrf": "management", "timestamp": 1627395435116},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "ifname": "mgmt0", "ipAddressList":
+    "172.29.151.2/24", "macaddr": "50:00:00:0c:00:00", "ip6AddressList": "", "state":
+    "up", "vrf": "management", "timestamp": 1627395435425}, {"namespace": "mixed",
+    "hostname": "leaf3-qfx", "ifname": "em0.0", "ipAddressList": "172.29.151.5/24",
+    "macaddr": "50:00:00:05:00:00", "ip6AddressList": "", "state": "up", "vrf": "default",
+    "timestamp": 1627395435943}, {"namespace": "mixed", "hostname": "leaf4-qfx", "ifname":
+    "em0.0", "ipAddressList": "172.29.151.6/24", "macaddr": "50:00:00:03:00:00", "ip6AddressList":
+    "", "state": "up", "vrf": "default", "timestamp": 1627395436097}, {"namespace":
+    "mixed", "hostname": "leaf1-ios", "ifname": "GigabitEthernet0/7", "ipAddressList":
+    "172.29.151.3/24", "macaddr": "50:00:00:09:00:07", "ip6AddressList": "", "state":
+    "up", "vrf": "default", "timestamp": 1627395437160}, {"namespace": "mixed", "hostname":
+    "leaf2-ios", "ifname": "GigabitEthernet0/7", "ipAddressList": "172.29.151.4/24",
+    "macaddr": "50:00:00:0a:00:07", "ip6AddressList": "", "state": "up", "vrf": "default",
+    "timestamp": 1627395437566}]'
+- command: address show --prefix="172.29.151.0/24 10.1.0.0/16" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: address show mixed filter
+  output: '[{"namespace": "mixed", "hostname": "leaf6-eos", "ifname": "Ethernet1",
+    "ipAddressList": "10.1.6.2/30", "macaddr": "50:00:00:ca:39:cc", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1627395434695}, {"namespace":
+    "mixed", "hostname": "leaf6-eos", "ifname": "Management1", "ipAddressList": "172.29.151.8/24",
+    "macaddr": "50:00:00:06:00:00", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1627395434695}, {"namespace": "mixed", "hostname": "leaf5-eos", "ifname":
+    "Management1", "ipAddressList": "172.29.151.7/24", "macaddr": "50:00:00:07:00:00",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1627395434802},
+    {"namespace": "mixed", "hostname": "leaf5-eos", "ifname": "Ethernet1", "ipAddressList":
+    "10.1.5.2/30", "macaddr": "50:00:00:e4:72:94", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1627395434802}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "ifname": "mgmt0", "ipAddressList": "172.29.151.1/24", "macaddr":
+    "50:00:00:0b:00:00", "ip6AddressList": [], "state": "up", "vrf": "management",
+    "timestamp": 1627395435116}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "ifname": "Ethernet1/1", "ipAddressList": "10.1.1.1/30", "macaddr": "50:0b:00:00:1b:08",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1627395435116},
+    {"namespace": "mixed", "hostname": "spine1-nxos", "ifname": "Ethernet1/2", "ipAddressList":
+    "10.1.2.1/30", "macaddr": "50:0b:00:00:1b:08", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1627395435116}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "ifname": "Ethernet1/3", "ipAddressList": "10.1.3.1/30", "macaddr":
+    "50:0b:00:00:1b:08", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1627395435116}, {"namespace": "mixed", "hostname": "spine1-nxos", "ifname": "Ethernet1/4",
+    "ipAddressList": "10.1.4.1/30", "macaddr": "50:0b:00:00:1b:08", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1627395435116}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "ifname": "Ethernet1/5", "ipAddressList":
+    "10.1.5.1/30", "macaddr": "50:0b:00:00:1b:08", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1627395435116}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "ifname": "Ethernet1/6", "ipAddressList": "10.1.6.1/30", "macaddr":
+    "50:0b:00:00:1b:08", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1627395435116}, {"namespace": "mixed", "hostname": "spine2-nxos", "ifname": "mgmt0",
+    "ipAddressList": "172.29.151.2/24", "macaddr": "50:00:00:0c:00:00", "ip6AddressList":
+    [], "state": "up", "vrf": "management", "timestamp": 1627395435425}, {"namespace":
+    "mixed", "hostname": "leaf3-qfx", "ifname": "xe-0/0/0.0", "ipAddressList": "10.1.3.2/30",
+    "macaddr": "02:05:86:71:13:03", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1627395435943}, {"namespace": "mixed", "hostname": "leaf3-qfx", "ifname":
+    "em0.0", "ipAddressList": "172.29.151.5/24", "macaddr": "50:00:00:05:00:00", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1627395435943}, {"namespace":
+    "mixed", "hostname": "leaf4-qfx", "ifname": "xe-0/0/0.0", "ipAddressList": "10.1.4.2/30",
+    "macaddr": "02:05:86:71:87:03", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1627395436097}, {"namespace": "mixed", "hostname": "leaf4-qfx", "ifname":
+    "em0.0", "ipAddressList": "172.29.151.6/24", "macaddr": "50:00:00:03:00:00", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1627395436097}, {"namespace":
+    "mixed", "hostname": "leaf1-ios", "ifname": "GigabitEthernet0/7", "ipAddressList":
+    "172.29.151.3/24", "macaddr": "50:00:00:09:00:07", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1627395437160}, {"namespace": "mixed", "hostname":
+    "leaf1-ios", "ifname": "GigabitEthernet0/0", "ipAddressList": "10.1.1.2/30", "macaddr":
+    "50:00:00:09:00:00", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1627395437160}, {"namespace": "mixed", "hostname": "leaf2-ios", "ifname": "GigabitEthernet0/0",
+    "ipAddressList": "10.1.2.2/30", "macaddr": "50:00:00:0a:00:00", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1627395437566}, {"namespace":
+    "mixed", "hostname": "leaf2-ios", "ifname": "GigabitEthernet0/7", "ipAddressList":
+    "172.29.151.4/24", "macaddr": "50:00:00:0a:00:07", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1627395437566}, {"namespace": "mixed", "hostname":
+    "leaf2-ios", "ifname": "GigabitEthernet0/5", "ipAddressList": "10.1.2.21/30",
+    "macaddr": "50:00:00:0a:00:05", "ip6AddressList": [], "state": "down", "vrf":
+    "default", "timestamp": 1627395437566}, {"namespace": "mixed", "hostname": "leaf2-ios",
+    "ifname": "GigabitEthernet0/4", "ipAddressList": "10.1.2.17/30", "macaddr": "50:00:00:0a:00:04",
+    "ip6AddressList": [], "state": "down", "vrf": "default", "timestamp": 1627395437566},
+    {"namespace": "mixed", "hostname": "leaf2-ios", "ifname": "GigabitEthernet0/3",
+    "ipAddressList": "10.1.2.13/30", "macaddr": "50:00:00:0a:00:03", "ip6AddressList":
+    [], "state": "down", "vrf": "default", "timestamp": 1627395437566}, {"namespace":
+    "mixed", "hostname": "leaf2-ios", "ifname": "GigabitEthernet0/2", "ipAddressList":
+    "10.1.2.9/30", "macaddr": "50:00:00:0a:00:02", "ip6AddressList": [], "state":
+    "down", "vrf": "default", "timestamp": 1627395437566}]'
+- command: address show --prefix="192.168.1.0" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: address show mixed filter
+- command: address show --prefix="44:38:39:00:00:23" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: address show mixed filter
+- command: address show --prefix="10.1.0.0/16" --address="192.168.1.2" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  error:
+    error: '[{"error": "Cannot specify address and prefix together"}]'
+  marks: address show mixed filter
+- command: address show --prefix="10.0.0.1/24" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: address show mixed filter

@@ -7,6 +7,7 @@ from suzieq.db import get_sqdb_engine
 from suzieq.exceptions import UserQueryError
 import dateparser
 from pandas.core.groupby import DataFrameGroupBy
+from ipaddress import ip_address, ip_network
 
 
 class SqPandasEngine(SqEngineObj):
@@ -74,6 +75,22 @@ class SqPandasEngine(SqEngineObj):
                 raise UserQueryError(ex)
 
         return df
+
+    def _is_in_subnet(self, addr: pd.Series, net: str) -> pd.Series:
+        """Check if the IP addresses in a Pandas dataframe
+        belongs to the given subnet
+
+        Args:
+            addr (PandasObject): the collection of ip addresses to check
+            net: (str): network id of the subnet
+
+        Returns:
+            PandasObject: A collection of bool reporting the result
+        """
+        network = ip_network(net)
+        return addr.apply(lambda a: (
+            False if not a else ip_address(a.split("/")[0]) in network)
+        )
 
     def get_valid_df(self, table: str, **kwargs) -> pd.DataFrame:
         """The heart of the engine: retrieving the data from the backing store

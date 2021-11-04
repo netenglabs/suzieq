@@ -15,6 +15,7 @@ from importlib.util import find_spec
 import errno
 from dateparser import parse
 from itertools import groupby
+from ipaddress import ip_network
 
 import pandas as pd
 import pyarrow as pa
@@ -586,6 +587,43 @@ def convert_macaddr_format_to_colon(macaddr: str) -> str:
             return macaddr.lower()
 
     return('00:00:00:00:00:00')
+
+
+def validate_network(network: str) -> bool:
+    """Validate network address
+
+    Args:
+        network: (str) the network id to validate
+
+    Returns:
+        bool: A boolean with the result of the validation
+
+    """
+    try:
+        if isinstance(network, str) and '/' in network:
+            ip_network(network)
+            return True
+        return False
+    except ValueError:
+        return False
+        
+
+def validate_macaddr(macaddr: str) -> bool:
+    """Validate mac address
+
+    Args:
+        macaddr: (str) the macaddr string to validate
+
+    Returns:
+        bool: A boolean with the result of the validation
+
+    """
+    if isinstance(macaddr, str):
+        if re.fullmatch(r'([0-9a-fA-F]{4}.){2}[0-9a-fA-F]{4}', macaddr) or \
+           re.fullmatch(r'([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}', macaddr):
+            return True
+
+    return False
 
 
 def convert_rangestring_to_list(rangestr: str) -> list:

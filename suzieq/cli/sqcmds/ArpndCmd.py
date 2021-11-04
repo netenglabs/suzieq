@@ -39,8 +39,12 @@ class ArpndCmd(SqCommand):
               description="IP address, in quotes, to qualify output")
     @argument("macaddr",
               description="MAC address, in quotes, to qualify output")
+    @argument("prefix",
+              description=("Show all the addresses in this "
+                           "subnet prefix (in quotes)"))
     @argument("oif", description="outgoing interface to qualify")
-    def show(self, address: str = "", macaddr: str = '', oif: str = ''):
+    def show(self, address: str = "", macaddr: str = "",
+             prefix: str = "", oif: str = ""):
         """Show ARP/ND info
         """
         if self.columns is None:
@@ -56,6 +60,7 @@ class ArpndCmd(SqCommand):
         df = self._invoke_sqobj(self.sqobj.get,
                                 hostname=self.hostname,
                                 ipAddress=address.split(),
+                                prefix=prefix.split(),
                                 oif=oif.split(),
                                 columns=self.columns,
                                 namespace=self.namespace,

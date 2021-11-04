@@ -36,11 +36,18 @@ class AddressCmd(SqCommand):
         )
 
     @command("show")
-    @argument("address", description="Address, in quotes, to show info for")
-    @argument("vrf", description="VRF to qualify the address")
-    @argument("ipvers", description="type of address, v4, v6 or l2",
+    @argument("address",
+              description="Address, in quotes, to show info for")
+    @argument("prefix",
+              description=("Show all the addresses in this "
+                           "subnet prefix (in quotes)"))
+    @argument("vrf",
+              description="VRF to qualify the address")
+    @argument("ipvers",
+              description="type of address, v4, v6 or l2",
               choices=["v4", "v6", "l2"])
-    def show(self, address: str = "", ipvers: str = "", vrf: str = ""):
+    def show(self, address: str = "", prefix: str = "",
+             ipvers: str = "", vrf: str = ""):
         """Show address info
         """
         # Get the default display field names
@@ -54,6 +61,7 @@ class AddressCmd(SqCommand):
                                 hostname=self.hostname,
                                 columns=self.columns,
                                 address=address.split(),
+                                prefix=prefix.split(),
                                 ipvers=ipvers,
                                 vrf=vrf,
                                 query_str=self.query_str,
