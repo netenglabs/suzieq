@@ -5,7 +5,6 @@ from typing import List
 import logging
 from pathlib import Path
 import pyarrow.dataset as ds
-from itertools import zip_longest
 from datetime import datetime, timedelta, timezone
 from contextlib import suppress
 from shutil import rmtree
@@ -374,7 +373,8 @@ class SqParquetDB(SqDB):
                                         state)
                 end = time()
                 self.logger.info(
-                    f'coalesced {state.wrfile_count} files/{state.wrrec_count} '
+                    f'coalesced {state.wrfile_count} '
+                    f'files/{state.wrrec_count} '
                     f'records of {entry}')
                 stats.append(SqCoalesceStats(entry, period, int(end-start),
                                              state.wrfile_count,
@@ -445,11 +445,13 @@ class SqParquetDB(SqDB):
                                             version="2.0", compression="ZSTD",
                                             row_group_size=100000)
                         self.logger.debug(
-                            f'Migrated {item} version {sqvers}->{current_vers}')
+                            f'Migrated {item} version {sqvers}->'
+                            f'{current_vers}')
                         os.remove(item)
 
-                    rmtree(f'{self._get_table_directory(table_name, True)}/sqvers={sqvers}',
-                           ignore_errors=True)
+                    rmtree(
+                        f'{self._get_table_directory(table_name, True)}/'
+                        f'sqvers={sqvers}', ignore_errors=True)
         return
 
     def _get_avail_sqvers(self, table_name: str, coalesced: bool) -> List[str]:
@@ -505,8 +507,8 @@ class SqParquetDB(SqDB):
         if start_time and end_time or (view == "all"):
             # Enforcing the logic we have: if both start_time & end_time
             # are given, return all files since the model is that the user is
-            # expecting to see all changes in the time window. Otherwise, the user
-            # is expecting to see only the latest before an end_time OR after a
+            # expecting to see all changes in the time window. Otherwise, user
+            # expecting to see only the latest before an end_time OR after a
             # start_time.
             all_files = True
         else:
@@ -530,7 +532,7 @@ class SqParquetDB(SqDB):
                     max_vers = vers
 
             dataset = ds.dataset(elem, format='parquet', partitioning='hive')
-            total_files = len(dataset.files)
+            # total_files = len(dataset.files)# used for a diff algorithm
 
             # 100 is an arbitrary number, trying to reduce file I/O
             if all_files:
@@ -614,27 +616,31 @@ class SqParquetDB(SqDB):
                 for ns in namespace or []:
                     if ns.startswith('!'):
                         ns = ns[1:]
-                        ns_filelist.extend([x for x in dataset.files
-                                            if not re.search(f'namespace={ns}/',
-                                                             x)])
+                        ns_filelist.extend(
+                            [x for x in dataset.files
+                             if not re.search(f'namespace={ns}/',
+                                              x)])
                     else:
                         if ns.startswith('~'):
                             ns = ns[1:]
-                        ns_filelist.extend([x for x in dataset.files
-                                            if re.search(f'namespace={ns}/', x)])
+                        ns_filelist.extend(
+                            [x for x in dataset.files
+                             if re.search(f'namespace={ns}/', x)])
                 filelist.extend(ns_filelist)
 
             host_filelist = []
             for hn in hostname or []:
                 if hn.startswith('!'):
                     hn = hn[1:]
-                    host_filelist.extend([x for x in filelist
-                                         if 'coalesced' in x or
-                                         (not re.search(f'hostname={hn}/', x))])
+                    host_filelist.extend(
+                        [x for x in filelist
+                         if 'coalesced' in x or
+                         (not re.search(f'hostname={hn}/', x))])
                 else:
-                    host_filelist.extend([x for x in filelist
-                                          if 'coalesced' in x or
-                                          re.search(f'hostname={hn}/', x)])
+                    host_filelist.extend(
+                        [x for x in filelist
+                         if 'coalesced' in x or
+                         re.search(f'hostname={hn}/', x)])
             if hostname:
                 filelist = host_filelist
 

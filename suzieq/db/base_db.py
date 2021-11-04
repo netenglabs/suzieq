@@ -62,8 +62,10 @@ class SqDB(ABC):
     def coalesce(self, tables: List[str] = None, period: str = '') -> None:
         """Coalesce the database files in specified folder.
 
-        :param tables: List[str], List of specific tables to coalesce, empty for all
-        : param period: str, period value to override what the configuration states
+        :param tables: List[str], List of specific tables to coalesce, empty
+                       for all
+        : param period: str, period value to override what the configuration
+                        states
         :returns: Nothing
 
         """
