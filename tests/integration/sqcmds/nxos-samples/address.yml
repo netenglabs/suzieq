@@ -1961,6 +1961,22 @@ tests:
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
+- command: address unique --columns=hostname --format=json --count=True
+  data-directory: tests/data/nxos/parquet-out/
+  marks: address unique nxos
+  output: '[{"hostname": "server101", "numRows": 5}, {"hostname": "server102", "numRows":
+    5}, {"hostname": "server301", "numRows": 5}, {"hostname": "server302", "numRows":
+    5}, {"hostname": "firewall01", "numRows": 10}, {"hostname": "dcedge01", "numRows":
+    58}, {"hostname": "spine01", "numRows": 70}, {"hostname": "spine02", "numRows":
+    70}, {"hostname": "exit01", "numRows": 77}, {"hostname": "exit02", "numRows":
+    77}, {"hostname": "leaf01", "numRows": 78}, {"hostname": "leaf02", "numRows":
+    78}, {"hostname": "leaf03", "numRows": 78}, {"hostname": "leaf04", "numRows":
+    78}]'
+- command: address unique --columns=vrf --format=json --count=True
+  data-directory: tests/data/nxos/parquet-out/
+  marks: address unique nxos
+  output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "management", "numRows":
+    8}, {"vrf": "evpn-vrf", "numRows": 10}, {"vrf": "default", "numRows": 65}]'
 - command: address show --address=10.0.0.11 --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: address show filter nxos

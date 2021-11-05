@@ -1985,3 +1985,8 @@ tests:
     "172.16.1.1/24", "numRows": 2}, {"ipAddressList": "172.16.2.1/24", "numRows":
     2}, {"ipAddressList": "172.16.3.1/24", "numRows": 2}, {"ipAddressList": "172.16.4.1/24",
     "numRows": 2}, {"ipAddressList": "127.0.0.1/8", "numRows": 8}]'
+- command: address unique --columns="vrf" --count=True --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address unique cumulus filter
+  output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "mgmt", "numRows": 8},
+    {"vrf": "default", "numRows": 84}]'
