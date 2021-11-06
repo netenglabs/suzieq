@@ -40,7 +40,8 @@ class InterfaceCmd(SqCommand):
     @argument("ifname", description="interface name to qualify")
     @argument("type", description="interface type to qualify")
     @argument("state", description="interface state to qualify show",
-              choices=["up", "down", "notConnected"])
+              choices=["up", "down", "notConnected", "!up", "!down",
+                       "!notConnected"])
     @argument("mtu", description="filter interfaces with MTU")
     @argument("vrf", description="filter interfaces matching VRFs")
     def show(self, ifname: str = "", state: str = "", type: str = "",

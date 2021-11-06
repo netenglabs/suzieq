@@ -31,7 +31,10 @@ class InterfacesObj(SqPandasEngine):
             return df
 
         if state:
-            df = df.query(f'state=="{state}"')
+            if state.startswith('!'):
+                df = df.query(f'state != "{state[1:]}"')
+            else:
+                df = df.query(f'state=="{state}"')
 
         if not (iftype or ifname) and 'type' in df.columns:
             return df.query('type != "internal"').reset_index(drop=True)
