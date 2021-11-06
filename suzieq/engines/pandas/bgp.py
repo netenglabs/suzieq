@@ -181,8 +181,7 @@ class BgpObj(SqPandasEngine):
     def aver(self, **kwargs) -> pd.DataFrame:
         """BGP Assert"""
 
-        def _check_if_arp_state(row, if_df, arp_df):
-            reason = 'Missing peer:'
+        def _check_if_state(row, if_df):
 
             if not if_df.empty:
                 thisif = if_df.query(f'namespace=="{row.namespace}" and '
@@ -190,17 +189,13 @@ class BgpObj(SqPandasEngine):
                                      f'ifname=="{row.ifname}"')
                 if not thisif.empty:
                     if thisif.adminState.unique()[0] != 'up':
-                        return [f'{reason} interface admin down']
-                    if thisif.state.unique()[0] != 'up':
-                        return [f'{reason} interface down']
+                        return ['interface admin down']
+                    elif thisif.state.unique()[0] != 'up':
+                        return ['interface down']
+                    else:
+                        return []
 
-            if (arp_df.empty or
-                arp_df.query(f'namespace == "{row.namespace}" and '
-                             f'hostname=="{row.hostname}" and '
-                             f'ipAddress=="{row.peerIP}"').empty):
-                return [f'{reason} no arp entry']
-
-            return [reason]
+            return []
 
         assert_cols = ["namespace", "hostname", "vrf", "peer", "peerHostname",
                        "afi", "safi", "asn", "state", "peerAsn", "bfdStatus",
@@ -243,21 +238,14 @@ class BgpObj(SqPandasEngine):
             columns=['namespace', 'hostname', 'ifname', 'state', 'adminState']
         )
 
-        arp_df = self._get_table_sqobj('arpnd').get(
-            namespace=failed_df.namespace.unique().tolist(),
-            hostname=failed_df.hostname.unique().tolist(),
-            ipAddress=failed_df.peerIP.unique().tolist(),
-            query_str='state != "failed"',
-        )
-
         failed_df['assertReason'] = [[] for _ in range(len(failed_df))]
         passed_df['assertReason'] = [[] for _ in range(len(passed_df))]
 
         if not failed_df.empty:
             # For not established entries, check if route/ARP entry exists
             failed_df['assertReason'] += failed_df.apply(
-                lambda x, ifdf, arpdf: _check_if_arp_state(x, ifdf, arpdf),
-                args=(if_df, arp_df,), axis=1)
+                lambda x, ifdf: _check_if_state(x, ifdf),
+                args=(if_df,), axis=1)
 
             failed_df['assertReason'] += failed_df.apply(
                 lambda x: ["asn mismatch"]
