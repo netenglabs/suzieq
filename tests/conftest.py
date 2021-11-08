@@ -72,11 +72,10 @@ def _get_table_data_cols(table: str, datadir: str, columns: List[str],
 
     cfgfile = create_dummy_config_file(datadir=datadir)
 
-    if columns is None:
-        # the test_parsing rouiines were written without needing to specify
-        # columns
-        columns = ['*']
-    df = get_sqobject(table)(config_file=cfgfile).get(columns=columns)
+    sqobj = get_sqobject(table)(config_file=cfgfile)
+    cols = sqobj.schema.get_display_fields(columns)
+
+    df = sqobj.get(columns=cols)
     if not add_os_col:
         return df
 
