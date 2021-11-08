@@ -11,16 +11,3 @@ class EvpnvniObj(SqObject):
         self._valid_arg_vals = {
             'status': ['all', 'pass', 'fail'],
         }
-
-    def aver(self, **kwargs):
-        """Assert that the BGP state is OK"""
-
-        if not self.ctxt.engine:
-            raise AttributeError('No analysis engine specified')
-        try:
-            self.validate_assert_input(**kwargs)
-        except Exception as error:
-            df = pd.DataFrame({'error': [f'{error}']})
-            return df
-
-        return self.engine.aver(**kwargs)

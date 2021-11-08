@@ -234,6 +234,9 @@ class SqObject(object):
         return self.engine.unique(**kwargs, columns=columns)
 
     def aver(self, **kwargs):
+        if self._valid_assert_args:
+            return self._assert_if_supported(**kwargs)
+
         raise NotImplementedError
 
     def top(self, what: str = '', count: int = 5, reverse: bool = False,
@@ -332,3 +335,43 @@ class SqObject(object):
             bool: True if the field exists, False otherwise
         """
         return table_schema.field(field)
+
+    def _assert_if_supported(self, **kwargs):
+        '''Common sqobj routine for a table that supports asserts
+
+           Do not call this routine directly
+        '''
+
+        if not self.ctxt.engine:
+            raise AttributeError('No analysis engine specified')
+        try:
+            self.validate_assert_input(**kwargs)
+        except Exception as error:
+            df = pd.DataFrame({'error': [f'{error}']})
+            return df
+
+        if self.columns in [['*'], ['default']]:
+            req_cols = None
+        else:
+            req_cols = self.schema.get_display_fields(self.columns)
+            if not req_cols:
+                # Till we add a schema object for assert columns,
+                # this will have to do
+                req_cols = self.columns
+
+        df = self.engine.aver(**kwargs)
+        if not df.empty and req_cols:
+
+            req_col_set = set(req_cols)
+            got_col_set = set(df.columns)
+            diff_cols = req_col_set - got_col_set
+            if diff_cols:
+                return pd.DataFrame(
+                    {'error': [f'columns {list(diff_cols)} not in dataframe']})
+
+            if 'assert' not in req_cols:
+                req_cols.append('assert')
+
+            df = df[req_cols]
+
+        return df

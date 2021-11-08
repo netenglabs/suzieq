@@ -14,19 +14,6 @@ class BgpObj(SqObject):
         }
         self._valid_assert_args = ['namespace', 'hostname', 'vrf', 'status']
 
-    def aver(self, **kwargs):
-        """Assert that the BGP state is OK"""
-
-        if not self.ctxt.engine:
-            raise AttributeError('No analysis engine specified')
-        try:
-            self.validate_assert_input(**kwargs)
-        except Exception as error:
-            df = pd.DataFrame({'error': [f'{error}']})
-            return df
-
-        return self.engine.aver(**kwargs)
-
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''
         if df.empty:

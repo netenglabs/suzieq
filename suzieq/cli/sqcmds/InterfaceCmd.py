@@ -1,6 +1,6 @@
 import time
+
 from nubia import command, argument
-import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.interfaces import IfObj
@@ -124,10 +124,6 @@ class InterfaceCmd(SqCommand):
              ignore_missing_peer: str = "False"):
         """Assert aspects about the interface
         """
-        if self.columns != ["default"]:
-            df = pd.DataFrame(
-                {'error': ['ERROR: You cannot specify columns with assert']})
-            return self._gen_output(df)
 
         now = time.time()
 
