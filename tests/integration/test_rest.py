@@ -7,6 +7,7 @@ from filelock import FileLock
 import inspect
 import warnings
 
+from _pytest.mark.structures import Mark, MarkDecorator
 from tests.conftest import cli_commands, create_dummy_config_file
 
 from suzieq.restServer.query import (app, get_configured_api_key,
@@ -92,7 +93,8 @@ FILTERS = ['',  # for vanilla commands without any filter
            'what=mtu',
            'what=numChanges',
            'what=uptime',
-           'what=prefixLen'
+           'what=prefixLen',
+           'columns=vrf',
            ]
 
 # Valid filters for commands should be present in this list
@@ -185,6 +187,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'what=numChanges': ['bgp/top', 'ospf/top', 'interface/top'],
     'what=uptime': ['device/top'],
     'what=prefixLen': ['route/top'],
+    'columns=vrf': ['address/unique', 'route/unique'],
 }
 
 GOOD_FILTER_EMPTY_RESULT_FILTER = [
@@ -227,7 +230,7 @@ MANDATORY_SERVICE_ARGS = {
 ####
 
 
-def _validate_hostname_output(json_out, service, verb):
+def _validate_hostname_output(json_out, service, verb, args):
     if verb == "summarize":
         return True
     if service in ['network']:
@@ -241,7 +244,7 @@ def _validate_hostname_output(json_out, service, verb):
                 == set(['leaf01', 'spine01']))
 
 
-def _validate_namespace_output(json_out, service, verb):
+def _validate_namespace_output(json_out, service, verb, args):
     if verb == "summarize":
         if service == "network":
             # network summarize has no namespace column
@@ -260,13 +263,19 @@ def _validate_namespace_output(json_out, service, verb):
                     == set(['ospf-ibgp', 'ospf-single']))
 
 
-def _validate_route_protocol(json_out, service, verb):
+def _validate_route_protocol(json_out, service, verb, args):
     assert (set([x['protocol'] for x in json_out]) == set(['ospf', 'bgp']))
 
 
-def _validate_macaddr_output(json_out, service, verb):
+def _validate_macaddr_output(json_out, service, verb, args):
     assert (set([x['macaddr'] for x in json_out])
             == set(['44:39:39:ff:00:13', '44:39:39:ff:00:24']))
+
+
+def _validate_columns_output(json_out, service, verb, args):
+    columns = args.split('=')[1]
+    assert (set([x[columns] for x in json_out])
+            != set())
 
 
 VALIDATE_OUTPUT_FILTER = {
@@ -275,6 +284,8 @@ VALIDATE_OUTPUT_FILTER = {
     'protocol=bgp&protocol=ospf': _validate_route_protocol,
     'macaddr=44:39:39:ff:00:13&macaddr=44:39:39:ff:00:24':
     _validate_macaddr_output,
+    'columns=namespace': _validate_columns_output,
+    'columns=vrf': _validate_columns_output,
 }
 
 ####
@@ -334,8 +345,10 @@ def get(endpoint, service, verb, args):
 
         if ((c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER) and
                 (c_all not in GOOD_FILTER_EMPTY_RESULT_FILTER)):
+
             if args in VALIDATE_OUTPUT_FILTER and validate_output:
-                VALIDATE_OUTPUT_FILTER[args](response.json(), service, verb)
+                VALIDATE_OUTPUT_FILTER[args](
+                    response.json(), service, verb, args)
             else:
                 df = pd.DataFrame(json.loads(response.content.decode('utf-8')))
                 assert(not df.empty)
@@ -347,10 +360,13 @@ def get(endpoint, service, verb, args):
 
 
 @ pytest.mark.rest
-@ pytest.mark.parametrize("service, verb, arg", [
-    (cmd, verb, filter) for cmd in cli_commands
-    for verb in VERBS for filter in FILTERS
-])
+@ pytest.mark.parametrize("service", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+@pytest.mark.parametrize("verb", [
+    pytest.param(verb, marks=MarkDecorator(Mark(verb, [], {})))
+    for verb in VERBS])
+@pytest.mark.parametrize("arg", [filter for filter in FILTERS])
 def test_rest_services(app_initialize, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
 
