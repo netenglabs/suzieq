@@ -1279,3 +1279,18 @@ tests:
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "server101"}, {"hostname": "server102"}, {"hostname": "server201"}, {"hostname":
     "server202"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
+- command: address unique --columns=hostname --format=json --count=True
+  data-directory: tests/data/junos/parquet-out/
+  marks: address unique junos
+  output: '[{"hostname": "server101", "numRows": 3}, {"hostname": "server102", "numRows":
+    3}, {"hostname": "server201", "numRows": 3}, {"hostname": "server202", "numRows":
+    3}, {"hostname": "firewall01", "numRows": 10}, {"hostname": "dcedge01", "numRows":
+    58}, {"hostname": "spine01", "numRows": 60}, {"hostname": "spine02", "numRows":
+    60}, {"hostname": "leaf01", "numRows": 63}, {"hostname": "leaf02", "numRows":
+    63}, {"hostname": "exit01", "numRows": 66}, {"hostname": "exit02", "numRows":
+    66}]'
+- command: address unique --columns=vrf --format=json --count=True
+  data-directory: tests/data/junos/parquet-out/
+  marks: address unique junos
+  output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "evpn-vrf", "numRows":
+    10}, {"vrf": "default", "numRows": 84}]'

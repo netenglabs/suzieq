@@ -128,17 +128,16 @@ class AddressObj(SqPandasEngine):
         return df.drop(columns=drop_cols)
 
     def unique(self, **kwargs) -> pd.DataFrame:
-        """Specific here only to rename vrf column to master"""
-        column = kwargs.pop("columns", None)
-        if column == ["vrf"]:
-            column = ["master"]
-        df = super().unique(columns=column, **kwargs)
-        if not df.empty:
-            if 'vrf' in column:
-                return df.query("master != 'bridge'") \
-                         .rename({'master': 'vrf'}, axis='columns') \
-                         .replace({'vrf': {'': 'default'}})
-        return df
+        """Specific here only if columns=vrf to filter out non-routed if"""
+        columns = kwargs.get('columns', None)
+        if columns == ['vrf']:
+            query_str = kwargs.get('query_str', None)
+            vrf_query_str = '(ipAddressList.str.len() != 0 or ip6AddressList.str.len() != 0)'
+            if query_str:
+                kwargs['query_str'] = f"{vrf_query_str} and {query_str}"
+            else:
+                kwargs['query_str'] = vrf_query_str
+        return super().unique(**kwargs)
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize address related info"""

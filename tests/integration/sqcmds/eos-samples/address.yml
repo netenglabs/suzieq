@@ -629,3 +629,8 @@ tests:
     18}, {"hostname": "leaf02", "numRows": 18}, {"hostname": "leaf03", "numRows":
     18}, {"hostname": "leaf04", "numRows": 18}, {"hostname": "dcedge01", "numRows":
     58}]'
+- command: address unique --columns=vrf --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: address unique eos
+  output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "evpn-vrf", "numRows":
+    16}, {"vrf": "default", "numRows": 75}]'
