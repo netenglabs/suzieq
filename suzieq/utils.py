@@ -362,10 +362,6 @@ class SchemaForTable(object):
         return self._all_schemas.sorted_display_fields_for_table(self._table,
                                                                  getall)
 
-    def sorted_fields_all(self, getall=True):
-        return self._all_schemas.sorted_display_fields_for_table(self._table,
-                                                                 getall)
-
     def field(self, field):
         return self._all_schemas.field_for_table(self._table, field)
 

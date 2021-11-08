@@ -94,14 +94,9 @@ class EvpnvniObj(SqPandasEngine):
                                          args=(macdf, ))
 
         df = df.drop(columns=drop_cols, errors='ignore')
-        if columns == ['default']:
-            col_list = [x for x in self.schema.sorted_display_fields()
-                        if x in df.columns]
-        elif columns == ['*']:
-            col_list = [x for x in self.schema.sorted_fields_all()
-                        if x in df.columns]
-        else:
-            col_list = [x for x in columns if x in df.columns]
+        col_list = [x for x in self.schema.get_display_fields(columns)
+                    if x in df.columns]
+
         return df[col_list]
 
     def _count_macs(self, x, df):
