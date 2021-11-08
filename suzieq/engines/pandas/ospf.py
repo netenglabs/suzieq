@@ -23,8 +23,9 @@ class OspfObj(SqPandasEngine):
         hostname = kwargs.pop('hostname', [])
 
         cols = self.schema.get_display_fields(columns)
-        if columns == ['default']:
-            cols.append('timestamp')
+
+        if columns == ['*']:
+            cols.remove('sqvers')
 
         ifschema = SchemaForTable('ospfIf', schema=self.all_schemas)
         nbrschema = SchemaForTable('ospfNbr', schema=self.all_schemas)
@@ -90,13 +91,13 @@ class OspfObj(SqPandasEngine):
         if columns == ['*']:
             df = df.drop(columns=['area_y', 'instance_y', 'vrf_y',
                                   'ipAddress_x', 'ipAddress_y', 'areaStub_y',
-                                  'timestamp_y'], errors='ignore') \
+                                  'sqvers_x', 'timestamp_y'],
+                         errors='ignore') \
                 .rename(columns={
                     'instance_x': 'instance', 'areaStub_x': 'areaStub',
                     'area_x': 'area', 'vrf_x': 'vrf',
                     'state_x': 'ifState', 'state_y': 'adjState',
-                    'sqvers_x': 'sqvers', 'active_x': 'active',
-                    'timestamp_x': 'timestamp'})
+                    'active_x': 'active', 'timestamp_x': 'timestamp'})
         else:
             df = df.rename(columns={'vrf_x': 'vrf', 'area_x': 'area',
                                     'state_x': 'ifState',

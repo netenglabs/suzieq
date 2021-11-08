@@ -200,7 +200,7 @@ class BgpObj(SqPandasEngine):
         assert_cols = ["namespace", "hostname", "vrf", "peer", "peerHostname",
                        "afi", "safi", "asn", "state", "peerAsn", "bfdStatus",
                        "reason", "notificnReason", "afisAdvOnly", 'ifname',
-                       "afisRcvOnly", "peerIP", "updateSource"]
+                       "afisRcvOnly", "peerIP", "updateSource", "timestamp"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
         status = kwargs.pop("status", 'all')

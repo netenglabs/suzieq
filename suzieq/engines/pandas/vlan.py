@@ -23,7 +23,7 @@ class VlanObj(SqPandasEngine):
                 addnl_fields.append('ifname')
                 dropcols.append('ifname')
 
-        df = super().get(addnl_fields=addnl_fields,
+        df = super().get(addnl_fields=addnl_fields, columns=columns,
                          merge_fields={'ifname': 'vlanName'},
                          **kwargs)
         if not df.empty:

@@ -57,23 +57,19 @@ class TopologyCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        try:
-            df = self.sqobj.get(
-                namespace=self.namespace,
-                ifname=ifname.split(),
-                via=via.split(),
-                polled=polled,
-                peerHostname=peerHostname.split(),
-                hostname=self.hostname,
-                query_str=self.query_str,
-            )
-        except Exception as e:
-            df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
+        df = self._invoke_sqobj(self.sqobj.get,
+                                namespace=self.namespace,
+                                ifname=ifname.split(),
+                                via=via.split(),
+                                polled=polled,
+                                peerHostname=peerHostname.split(),
+                                hostname=self.hostname,
+                                query_str=self.query_str,
+                                )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        cols = SchemaForTable('topology', self.schemas).sorted_display_fields()
-        cols = [x for x in cols if x in df.columns]
-        return self._gen_output(df[cols])
+
+        return self._gen_output(df)
 
     @command("summarize")
     @argument("via", description="filter the method by which topology is seen",
@@ -91,11 +87,11 @@ class TopologyCmd(SqCommand):
             self.ctxt.sort_fields = []
 
         try:
-            df = self.sqobj.summarize(
-                hostname=self.hostname,
-                namespace=self.namespace,
-                via=via.split(),
-            )
+            df = self._invoke_sqobj(self.sqobj.summarize,
+                                    hostname=self.hostname,
+                                    namespace=self.namespace,
+                                    via=via.split(),
+                                    )
         except Exception as e:
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
 

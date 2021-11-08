@@ -25,7 +25,7 @@ class NetworkObj(SqPandasEngine):
 
         drop_cols = []
         show_cols = self.schema.get_display_fields(columns)
-        if columns == '*' and 'sqvers' in show_cols:
+        if columns != '*' and 'sqvers' in show_cols:
             # Behavior in engineobj.py
             show_cols.remove('sqvers')
 

@@ -46,10 +46,11 @@ class NetworkCmd(SqCommand):
 
         now = time.time()
 
-        df = self.sqobj.get(namespace=self.namespace, os=os.split(),
-                            vendor=vendor.split(), model=model.split(),
-                            version=version,
-                            hostname=self.hostname)
+        df = self._invoke_sqobj(self.sqobj.get,
+                                namespace=self.namespace, os=os.split(),
+                                vendor=vendor.split(), model=model.split(),
+                                version=version,
+                                hostname=self.hostname)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
@@ -67,14 +68,14 @@ class NetworkCmd(SqCommand):
         """
         now = time.time()
 
-        df = self.sqobj.find(
-            namespace=self.namespace,
-            hostname=self.hostname,
-            address=address.split(),
-            vlan=vlan,
-            vrf=vrf,
-            query_str=self.query_str,
-        )
+        df = self._invoke_sqobj(self.sqobj.find,
+                                namespace=self.namespace,
+                                hostname=self.hostname,
+                                address=address.split(),
+                                vlan=vlan,
+                                vrf=vrf,
+                                query_str=self.query_str,
+                                )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 

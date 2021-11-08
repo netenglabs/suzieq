@@ -112,7 +112,8 @@ class SqPandasEngine(SqEngineObj):
 
         if 'active' not in fields+addnl_fields:
             addnl_fields.append('active')
-            drop_cols.append('active')
+            if view != 'all':
+                drop_cols.append('active')
 
         # Order matters. Don't put this before the missing key fields insert
         for f in aug_fields:
@@ -134,32 +135,32 @@ class SqPandasEngine(SqEngineObj):
                 start_time = int(dateparser.parse(
                     self.iobj.start_time.replace('last night', 'yesterday'))
                     .timestamp()*1000)
-            except Exception as e:
-                print(f"ERROR: invalid time {self.iobj.start_time}: {e}")
-                return pd.DataFrame()
+            except Exception:
+                raise ValueError(
+                    f"unable to parse start-time: {self.iobj.start_time}")
         else:
             start_time = ''
 
         if self.iobj.start_time and not start_time:
             # Something went wrong with our parsing
-            print(f"ERROR: unable to parse {self.iobj.start_time}")
-            return pd.DataFrame()
+            raise ValueError(
+                f"unable to parse start-time: {self.iobj.start_time}")
 
         if self.iobj.end_time:
             try:
                 end_time = int(dateparser.parse(
                     self.iobj.end_time.replace('last night', 'yesterday'))
                     .timestamp()*1000)
-            except Exception as e:
-                print(f"ERROR: invalid time {self.iobj.end_time}: {e}")
-                return pd.DataFrame()
+            except Exception:
+                raise ValueError(
+                    f"unable to parse end-time: {self.iobj.end_time}")
         else:
             end_time = ''
 
         if self.iobj.end_time and not end_time:
             # Something went wrong with our parsing
-            print(f"ERROR: Unable to parse {self.iobj.end_time}")
-            return pd.DataFrame()
+            raise ValueError(
+                f"unable to parse end-time: {self.iobj.end_time}")
 
         table_df = self._dbeng.read(
             phy_table,
@@ -345,9 +346,8 @@ class SqPandasEngine(SqEngineObj):
 
         columns = self.schema.get_display_fields(columns)
         if what not in columns:
-            columns.append(what)
-        if 'timestamp' not in columns:
-            columns.append('timestamp')
+            columns.insert(-1, what)
+
         df = self.get(addnl_fields=self.iobj._addnl_fields, columns=columns,
                       **kwargs)
         if df.empty or ('error' in df.columns):

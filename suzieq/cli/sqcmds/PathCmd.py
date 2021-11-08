@@ -105,6 +105,8 @@ class PathCmd(SqCommand):
         if not df.empty:
             return self._gen_output(df)
 
+    # We need unique in this place because of the values we need to pass to
+    # unique which is different from the usual set
     @command("unique")
     @argument("count", description="include count of times a value is seen",
               choices=['True'])
@@ -131,7 +133,7 @@ class PathCmd(SqCommand):
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:
-            return self._gen_output(df)
+            return self._gen_output(df, dont_strip_cols=True)
 
     @command("top", help="find the top n values for a field")
     @argument("count", description="number of rows to return")

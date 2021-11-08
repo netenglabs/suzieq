@@ -92,7 +92,17 @@ class EvpnvniObj(SqPandasEngine):
                     namespace=kwargs.get('namespace'))
                 df['numMacs'] = df.apply(self._count_macs, axis=1,
                                          args=(macdf, ))
-        return df.drop(columns=drop_cols, errors='ignore')
+
+        df = df.drop(columns=drop_cols, errors='ignore')
+        if columns == ['default']:
+            col_list = [x for x in self.schema.sorted_display_fields()
+                        if x in df.columns]
+        elif columns == ['*']:
+            col_list = [x for x in self.schema.sorted_fields_all()
+                        if x in df.columns]
+        else:
+            col_list = [x for x in columns if x in df.columns]
+        return df[col_list]
 
     def _count_macs(self, x, df):
         return df[(df.namespace == x['namespace']) & (df.vlan == x['vlan']) &
@@ -159,7 +169,7 @@ class EvpnvniObj(SqPandasEngine):
         assert_cols = ["namespace", "hostname", "vni", "vlan",
                        "remoteVtepList", "vrf", "mcastGroup", "type",
                        "priVtepIp", "state", "l2VniList", "ifname",
-                       "secVtepIp"]
+                       "secVtepIp", "timestamp"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
         status = kwargs.pop('status', 'all')

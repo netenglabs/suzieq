@@ -368,7 +368,9 @@ class SqCommand:
             print(df[cols].to_csv())
         elif self.format == 'markdown':
             print(df[cols].to_markdown())
-        elif self.format == 'devconfig' and self.sqobj.table == "devconfig":
+        elif (self.format == 'devconfig' and
+              self.sqobj.table == "devconfig" and
+              'error' not in df.columns):
             for row in df.itertuples():
                 self._pager_print(row.config)
         else:

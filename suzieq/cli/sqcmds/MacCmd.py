@@ -81,8 +81,6 @@ class MacCmd(SqCommand):
                                 moveCount=moveCount,
                                 query_str=self.query_str,
                                 )
-        if not df.empty and "mackey" in df.columns:
-            drop_cols.append('mackey')
 
         df.drop(columns=drop_cols, inplace=True)
 

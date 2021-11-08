@@ -19,6 +19,9 @@ class MacsObj(SqPandasEngine):
         user_query = kwargs.pop('query_str', '')
         vtep = kwargs.get('remoteVtepIp', [])
 
+        # Always remove mackey because it is an internal column
+        drop_cols = ['mackey']
+
         if vtep:
             if kwargs['remoteVtepIp'] == ['any']:
                 del kwargs['remoteVtepIp']
@@ -37,7 +40,7 @@ class MacsObj(SqPandasEngine):
             df = df.set_index('namespace hostname mackey macaddr'.split()) \
                    .sort_values(by=['timestamp'])
 
-            drop_cols = 'eoif neoif moved'.split()
+            drop_cols.extend('eoif neoif moved'.split())
 
             # enhanced OIF, capturing both OIF and remoteVtep to capture moves
             # across local and remote
@@ -49,8 +52,9 @@ class MacsObj(SqPandasEngine):
                 'eoif'].shift(1).fillna(value=df['eoif'])
             df['moved'] = df.apply(
                 lambda x: 1 if x.neoif != x.eoif else 0, axis=1)
-            df['moveCount'] = df.groupby(level=[0, 1, 2, 3])['moved'].cumsum()
-            df = df.drop(columns=drop_cols).reset_index()
+            df['moveCount'] = df.groupby(level=[0, 1, 2, 3])[
+                'moved'].cumsum()
+            df = df.reset_index()
 
             if 'moveCount' in columns:
                 df = df[columns]
@@ -58,15 +62,19 @@ class MacsObj(SqPandasEngine):
             if moveCount:
                 try:
                     moveCount = int(moveCount)
-                    df = df.query(f'moveCount == {moveCount}').reset_index()
+                    df = df.query(
+                        f'moveCount == {moveCount}').reset_index(drop=True)
                 except ValueError:
-                    df = df.query(f'moveCount {moveCount}').reset_index()
+                    df = df.query(
+                        f'moveCount {moveCount}').reset_index(drop=True)
 
         df = self._handle_user_query_str(df, user_query)
+        if drop_cols:
+            df = df.drop(columns=drop_cols).reset_index(drop=True)
         if remoteOnly:
-            return df.query("remoteVtepIp != ''")
+            df = df.query("remoteVtepIp != ''").reset_index(drop=True)
         elif localOnly:
-            return df.query("remoteVtepIp == ''")
+            df = df.query("remoteVtepIp == ''").reset_index(drop=True)
 
         return df
 

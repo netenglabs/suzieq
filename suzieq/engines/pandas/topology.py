@@ -7,9 +7,6 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from suzieq.exceptions import EmptyDataframeError
-
-
 # TODO:
 # topology for different VRFs?
 # iBGP vs eBGP?
@@ -41,7 +38,8 @@ class TopologyObj(SqPandasEngine):
                           'macaddr'])
 
         if self._if_df.empty:
-            raise EmptyDataframeError(f"No interface found for {namespaces}")
+            return pd.DataFrame()
+
         self._if_df['vrf'] = self._if_df.apply(
             lambda x: x['master'] if x['type'] not in ['bridge', 'bond_slave']
             else 'default', axis=1)
@@ -60,6 +58,14 @@ class TopologyObj(SqPandasEngine):
         self.nses = self._if_df['namespace'].unique()
 
     def get(self, **kwargs):
+
+        @dataclass(frozen=True)
+        class Services:
+            name: str
+            extra_args: dict
+            extra_cols: list
+            augment: any
+
         self._namespaces = kwargs.get("namespace", self.ctxt.namespace)
         hostname = kwargs.pop('hostname', [])
         user_query = kwargs.pop('query_str', '')
@@ -95,7 +101,7 @@ class TopologyObj(SqPandasEngine):
         key = 'peerHostname'
         for srv in self.services:
             if 'columns' not in srv.extra_args:
-                srv.extra_args['columns'] = columns
+                srv.extra_args['columns'] = ['default']
             df = self._get_table_sqobj(srv.name).get(
                 **kwargs,
                 **srv.extra_args
@@ -113,6 +119,8 @@ class TopologyObj(SqPandasEngine):
                     self.lsdb = df
                 else:
                     self.lsdb = self.lsdb.merge(df, how='outer')
+            else:
+                self.lsdb[srv.name] = False
 
         self._find_polled_neighbors(polled)
         if self.lsdb.empty:
@@ -156,9 +164,8 @@ class TopologyObj(SqPandasEngine):
             self.lsdb = self.lsdb.query(user_query)
 
         cols = self.lsdb.columns.tolist()
-        if 'timestamp' in self.lsdb.columns:
-            cols.remove('timestamp')
-            cols.append('timestamp')
+        cols = self.schema.sorted_display_fields(columns)
+        cols = [x for x in cols if x in self.lsdb.columns]
 
         return self.lsdb[cols].reset_index(drop=True)
 
@@ -383,11 +390,3 @@ class TopologyObj(SqPandasEngine):
                     .rename(columns={column: 'numRows',
                                      'index': column})
                     .sort_values(column))
-
-
-@dataclass(frozen=True)
-class Services:
-    name: str
-    extra_args: dict
-    extra_cols: list
-    augment: any
