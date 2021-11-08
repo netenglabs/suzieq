@@ -2,7 +2,6 @@ import time
 import pandas as pd
 from nubia import command, argument
 
-from suzieq.utils import SchemaForTable
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.topology import TopologyObj
 
