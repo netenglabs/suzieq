@@ -9,52 +9,45 @@
         "device",
         "evpnVni",
         "interfaces",
-        "lldp", 
+        "lldp",
         "macs",
         "ospf",
         "routes"
     ],
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "1.0"
-	},
-
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "namespace",
             "type": "string",
             "display": 1,
-            "description": "namespace within which path analysis is run",
+            "description": "Namespace associated with this record",
             "partition": 1
         },
         {
             "name": "hostname",
             "type": "string",
             "display": 2,
-            "description": "name of the host being queried",
+            "description": "Hostname associated with this record",
             "partition": 2
         },
         {
             "name": "peerHostname",
             "type": "string",
             "display": 4,
-            "description": "name of the other side of the connection"
+            "description": "Name of the other side of the connection"
         },
         {
             "name": "ifname",
             "type": "string",
             "display": 3,
-            "description": "interface that the host is connected on, discovered through lldp"
-
-        },
-        {
-            "name": "peerIP",
-            "type": "string",
-            "display": 5,
-            "description": "IP Address of peer, discovered through ARP"
-
+            "description": "Interface that the host is connected on, discovered through lldp"
         },
         {
             "name": "vrf",
@@ -66,31 +59,31 @@
             "name": "arpnd",
             "type": "bool",
             "display": 7,
-            "description": "is this connection discovered via ARP"
+            "description": "Is the peer connected via ARP"
         },
         {
             "name": "arpndBidir",
             "type": "bool",
             "display": 8,
-            "description": "is the ARP entry bidirecttonal"
+            "description": "Is the ARP peering bidirecttonal"
         },
         {
             "name": "bgp",
             "type": "bool",
             "display": 9,
-            "description": "is this connection discovered via BGP"
+            "description": "Is the peer connected via BGP"
         },
         {
             "name": "lldp",
             "type": "bool",
             "display": 10,
-            "description": "is this connection discovered via LLDP"
+            "description": "Is the peer connected via LLDP"
         },
         {
             "name": "ospf",
             "type": "bool",
             "display": 11,
-            "description": "is this connection discovered via OSPF"
+            "description": "Is the perr connected via OSPF"
         },
         {
             "name": "polled",

@@ -4,40 +4,42 @@
     "type": "record",
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "2.0",
-	    "suppress": true	    
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "peer",
             "type": "string",
             "key": 3,
             "display": 3,
-	    "description": "IP address or ifname of BGP peer"
+            "description": "IP address or ifname of BGP peer"
         },
         {
             "name": "origPeer",
             "type": "string",
-	    "suppress": true
+            "suppress": true,
+            "description": "internal field, not selectable"
         },
-	{
-	    "name": "afi",
-	    "type": "string",
-	    "key": 4,
-	    "display": 6,
-	    "description": "The AFI exchanged in this session"
-	},
-	{
-	    "name": "safi",
-	    "type": "string",
-	    "key": 5,
-	    "display": 7,
-	    "description": "The SAFI exchanged in this session"
-	},
-	{
-	    "name": "afisAdvOnly",
+        {
+            "name": "afi",
+            "type": "string",
+            "key": 4,
+            "display": 6,
+            "description": "The AFI exchanged in this session"
+        },
+        {
+            "name": "safi",
+            "type": "string",
+            "key": 5,
+            "display": 7,
+            "description": "The SAFI exchanged in this session"
+        },
+        {
+            "name": "afisAdvOnly",
             "type": {
                 "type": "array",
                 "items": {
@@ -45,10 +47,10 @@
                     "type": "string"
                 }
             },
-	    "description": "The list of AFIs only we advertised"
-	},
-	{
-	    "name": "afisRcvOnly",
+            "description": "The list of AFIs only we advertised"
+        },
+        {
+            "name": "afisRcvOnly",
             "type": {
                 "type": "array",
                 "items": {
@@ -56,71 +58,71 @@
                     "type": "string"
                 }
             },
-	    "description": "The list of AFIs only our peer advertised"
-	},
+            "description": "The list of AFIs only our peer advertised"
+        },
         {
             "name": "pfxRx",
             "type": "long",
             "display": 10,
-	    "description": "Count of prefixes rcvd for this AFI/SAFI from peer"
+            "description": "Number of prefixes rcvd for this AFI/SAFI from peer"
         },
         {
             "name": "pfxTx",
             "type": "long",
             "display": 11,
-	    "description": "Count of prefixes advertised for this AFI/SAFI from peer"
+            "description": "Number of prefixes advertised for this AFI/SAFI from peer"
         },
         {
             "name": "pfxBestRx",
             "type": "long",
-	    "description": "Count of prefixes rcvd that are bestpath for this AFI/SAFI from peer"
+            "description": "Number of prefixes rcvd that are bestpath for this AFI/SAFI from peer"
         },
         {
             "name": "pfxWithdrawnRx",
             "type": "long",
-	    "description": "Count of prefixes withdrawn for this AFI/SAFI from peer"
+            "description": "Number of prefixes withdrawn for this AFI/SAFI from peer"
         },
         {
             "name": "pfxSuppressRx",
             "type": "long",
-	    "description": "Count of prefixes suppressed for this AFI/SAFI from peer"
+            "description": "Number of prefixes suppressed for this AFI/SAFI from peer"
         },
         {
             "name": "pfxMaxRx",
             "type": "long",
-	    "description": "Max prefixes accepted for this AFI/SAFI from peer"
+            "description": "Max prefixes accepted for this AFI/SAFI from peer"
         },
         {
             "name": "pfxWarnPercent",
             "type": "long",
-	    "description": "% of max prefixes rcvd to trigger alert for this AFI/SAFI from peer"
+            "description": "% of max prefixes rcvd to trigger alert for this AFI/SAFI from peer"
         },
         {
             "name": "hopsMax",
             "type": "long",
-	    "description": "Maximum #hops this peer can be"
+            "description": "Maximum #hops this peer can be"
         },
         {
             "name": "advertiseAllVnis",
             "type": "boolean",
-	    "description": "True if FRR has advertiseAllVnis configured"
+            "description": "True if FRR has advertiseAllVnis configured"
         },
         {
             "name": "egressRmap",
             "type": "string",
-	    "description": "route map name associated with egress for AFI/SAFI"
+            "description": "Route map name associated with egress for AFI/SAFI"
         },
         {
             "name": "ingressRmap",
             "type": "string",
-	    "description": "route map name associated with ingress for AFI/SAFI"
+            "description": "Route map name associated with ingress for AFI/SAFI"
         },
         {
             "name": "softReconfig",
             "type": "boolean",
-	    "description": "True if soft reconfig inbound is enabled"
+            "description": "True if soft reconfig inbound is enabled"
         },
-	{
+        {
             "name": "communityTypes",
             "type": {
                 "type": "array",
@@ -129,188 +131,189 @@
                     "type": "string"
                 }
             },
-	    "description": "list of types of communities advertised for AFI/SAFI to peer"
-	},
+            "description": "List of types of communities advertised for AFI/SAFI to peer"
+        },
         {
             "name": "defOriginate",
             "type": "boolean",
-	    "description": "True if advertising default route for this AFI/SAFI to peer"
+            "description": "True if advertising default route for this AFI/SAFI to peer"
         },
         {
             "name": "keepaliveTime",
             "type": "long",
-	    "description": "BGP peer keepalive time in secs"
+            "description": "BGP peer keepalive time in secs"
         },
         {
             "name": "estdTime",
             "type": "timedelta64[s]",
             "display": 13,
-	    "description": "Session uptime"
+            "description": "Session uptime"
         },
         {
             "name": "updateSource",
             "type": "string",
-	    "description": "Interface whose IP is used as source IP of BGP peering"
+            "description": "Interface whose IP is used as source IP of BGP peering"
         },
         {
             "name": "holdTime",
             "type": "long",
-	    "description": "BGP hold time"
+            "description": "BGP hold time"
         },
         {
             "name": "updatesRx",
             "type": "long",
-	    "description": "number of BGP update messages received"
+            "description": "Number of BGP update messages received"
         },
         {
             "name": "updatesTx",
             "type": "long",
-	    "description": "number of BGP update messages transmitted"
+            "description": "Number of BGP update messages transmitted"
         },
         {
             "name": "peerHostname",
             "type": "string",
             "display": 4,
-	    "description": "Hostname of BGP peer"
+            "description": "Hostname of BGP peer"
         },
         {
             "name": "vrf",
             "type": "string",
             "key": 2,
             "display": 2,
-	    "description": "VRF associated with session"
+            "description": "VRF associated with session"
         },
         {
             "name": "numChanges",
             "type": "long",
             "display": 12,
-	    "description": "count of changes in BGP session state"
+            "description": "Count of changes in BGP session state"
         },
         {
             "name": "peerRouterId",
             "type": "string",
             "default": "0.0.0.0",
-	    "description": "peer router ID"
+            "description": "Peer router ID"
         },
         {
             "name": "routerId",
             "type": "string",
-	    "description": "This device's router ID"
+            "description": "This device's router ID"
         },
         {
             "name": "bfdStatus",
             "type": "string",
-	    "description": "BFD status"
+            "description": "BFD status"
         },
         {
             "name": "nhUnchanged",
             "type": "boolean",
-	    "description":  "True if set nexthop unchanged is configured for eBGP peer"
+            "description": "True if set nexthop unchanged is configured for eBGP peer"
         },
         {
             "name": "nhSelf",
             "type": "boolean",
-	    "description":  "True if set nexthop self is configured for iBGP peer"
+            "description": "True if set nexthop self is configured for iBGP peer"
         },
         {
             "name": "rrclient",
             "type": "string",
-	    "description": "'True' is peer is Route Reflector client"
+            "description": "'True' is peer is Route Reflector client"
         },
         {
             "name": "asn",
             "type": "long",
             "display": 8,
-	    "description": "This devices' ASN"
+            "description": "This devices' ASN"
         },
         {
             "name": "notificnReason",
             "type": "string",
-	    "description": "last BGP notification reason"
+            "description": "Last BGP notification reason"
         },
         {
             "name": "extnhAdvertised",
             "type": "boolean",
-	    "description": "Extended NextHop capability sent"
+            "description": "Extended NextHop capability sent"
         },
         {
             "name": "extnhReceived",
             "type": "boolean",
-	    "description": "Extended NextHop capability rcvd"
+            "description": "Extended NextHop capability rcvd"
         },
         {
             "name": "extnhEnabled",
             "type": "boolean",
-	    "description": "Extended NextHop capability enabled on session"
+            "description": "Extended NextHop capability enabled on session"
         },
         {
             "name": "peerAsn",
             "type": "long",
             "display": 9,
-	    "description": "Peer device's ASN"
+            "description": "Peer device's ASN"
         },
         {
             "name": "peerIP",
             "type": "string",
-	    "description": "Peering IP address, if any"
+            "description": "Peering IP address, if any"
         },
         {
             "name": "mrai",
             "type": "long",
-	    "description": "Min Route Adv Interval, in secs"
+            "description": "Min Route Adv Interval, in secs"
         },
         {
             "name": "state",
             "type": "string",
             "display": 5,
-	    "description": "State of BGP session, Established or NotEstd"
+            "description": "State of BGP session, Established or NotEstd"
         },
         {
             "name": "reason",
             "type": "string",
-	    "description": "Reason for BGP session being down"
+            "description": "Reason for BGP session being down"
         },
         {
             "name": "lastDownTime",
             "type": "timestamp",
-	    "description": "Unix epoch indicating when session was last down"
+            "description": "Unix epoch indicating when session was last down"
         },
         {
             "name": "ifname",
             "type": "string",
-	    "description": "interface name associated with session"
+            "description": "Interface name associated with session"
         },
-	{
-	    "name": "afiSafi",
-	    "type": "string",
-	    "description": "space separated concat of afi and safi fields",
-	    "depends": "afi safi"
-	},
+        {
+            "name": "afiSafi",
+            "type": "string",
+            "description": "Space separated concat of afi and safi fields",
+            "depends": "afi safi"
+        },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2,
-	    "description": "hostname associated with this hop"
+            "partition": 2,
+            "description": "Hostname associated with this record"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-	    "partition": 1,
-	    "description": "namespace within which path analysis is run"
+            "partition": 1,
+            "description": "Namespace associated with this record"
         },
         {
             "name": "timestamp",
             "type": "timestamp",
-	    "description": "Unix epach When this record was created, in ms"
+            "display": 14,
+            "description": "Unix epach When this record was created, in ms"
         },
         {
             "name": "active",
             "type": "boolean",
-	    "description": "If this entry is active or deleted"
+            "description": "If this entry is active or deleted"
         }
     ]
 }

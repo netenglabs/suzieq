@@ -13,7 +13,9 @@
             "name": "sqvers",
             "type": "string",
             "partition": 0,
-            "default": "1.0"
+            "default": "1.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
         },
         {
             "name": "pathid",
@@ -22,7 +24,7 @@
             "description": "identifies each unique path"
         },
         {
-            "name": "hopcout",
+            "name": "hopCount",
             "type": "long",
             "display": 2,
             "description": "unique hop within a path, can be L2 or L3 path"
@@ -121,7 +123,8 @@
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "display": 17
         }
     ]
 }

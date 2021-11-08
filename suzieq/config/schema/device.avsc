@@ -7,7 +7,9 @@
             "name": "sqvers",
             "type": "string",
             "partition": 0,
-            "default": "2.0"
+            "default": "2.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
         },
         {
             "name": "architecture",
@@ -17,12 +19,14 @@
         {
             "name": "status",
             "type": "string",
-            "display": 6
+            "display": 6,
+            "description": "Status of device: alive/dead/neverpoll"
         },
         {
             "name": "address",
             "type": "string",
-            "display": 7
+            "display": 7,
+            "description": "The IP address/hostname used for polling"
         },
         {
             "name": "model",
@@ -62,22 +66,26 @@
             "type": "string",
             "key": 1,
             "display": 1,
-            "partition": 2
+            "partition": 2,
+            "description": "Hostname associated with this record"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-            "partition": 1
+            "partition": 1,
+            "description": "Namespace associated with this record"
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "display": 10
         },
         {
             "name": "active",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
         }
     ]
 }

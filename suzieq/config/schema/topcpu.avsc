@@ -4,11 +4,13 @@
     "type": "record",
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "1.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "priority",
             "type": "long"
@@ -98,13 +100,13 @@
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2
+            "partition": 2
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
-	    "display": 0,
+            "display": 0,
             "partition": 1
         },
         {

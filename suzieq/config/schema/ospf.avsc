@@ -3,162 +3,196 @@
     "name": "ospf",
     "type": "derivedRecord",
     "depends": [
-           "ospfNbr",
-	   "ospfIf"
+        "ospfNbr",
+        "ospfIf"
     ],
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "1.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "lastDownTime",
-            "type": "timestamp"
+            "type": "timestamp",
+            "description": "The last time the peer was down, platform-specific"
         },
         {
             "name": "area",
             "type": "string",
-            "display": 5
+            "display": 5,
+            "description": "The OSPF area number"
         },
         {
             "name": "nbrPrio",
-            "type": "long"
+            "type": "long",
+            "description": "The OSPF neighbor priority"
         },
         {
             "name": "lastUpTime",
-            "type": "timestamp"
+            "type": "timestamp",
+            "description": "The last time the peer came up, platform-specific"
         },
         {
             "name": "instance",
-            "type": "string"
+            "type": "string",
+            "description": "The OSPF instance name"
         },
         {
             "name": "reason",
-            "type": "string"
+            "type": "string",
+            "description": "The reason the OSPF neighbor was down"
         },
         {
             "name": "areaStub",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the OSPF area is a stub area"
         },
         {
             "name": "adjState",
             "type": "string",
-            "display": 8
+            "display": 8,
+            "description": "The OSPF neighbor adjacency state"
         },
         {
             "name": "peerIP",
             "type": "string",
-            "display": 9
+            "display": 9,
+            "description": "The OSPF neighbor IP address"
         },
         {
             "name": "bfdStatus",
-            "type": "string"
+            "type": "string",
+            "description": "The OSPF neighbor BFD status"
         },
         {
             "name": "numChanges",
             "type": "long",
-            "display": 10
+            "display": 10,
+            "description": "The number of times the OSPF neighbor status has changed"
         },
         {
             "name": "lastChangeTime",
             "type": "timestamp",
-            "display": 11
+            "display": 11,
+            "description": "The last time the OSPF neighbor status changed"
         },
         {
             "name": "lsaRetxCnt",
-            "type": "long"
+            "type": "long",
+            "description": "LSA retransmission count for peer"
         },
         {
             "name": "ifname",
             "type": "string",
             "key": 3,
-            "display": 3
+            "display": 3,
+            "description": "The OSPF interface name"
         },
         {
             "name": "peerHostname",
             "type": "string",
             "display": 4,
-	    "depends": "hostname vrf peerIP ipAddress"
+            "depends": "hostname vrf peerIP ipAddress",
+            "description": "The OSPF neighbor hostname"
         },
         {
             "name": "vrf",
             "type": "string",
             "key": 2,
-            "display": 2
+            "display": 2,
+            "description": "The OSPF instance VRF"
         },
         {
             "name": "peerRouterId",
-            "type": "string"
+            "type": "string",
+            "description": "The OSPF neighbor router ID"
         },
         {
             "name": "cost",
-            "type": "long"
+            "type": "long",
+            "description": "The cost of neighbor, used in SPF"
         },
         {
             "name": "retxTime",
-            "type": "long"
+            "type": "long",
+            "description": "The OSPF neighbor retransmission period"
         },
         {
             "name": "deadTime",
-            "type": "long"
+            "type": "long",
+            "description": "The OSPF neighbor dead interval"
         },
         {
             "name": "helloTime",
-            "type": "long"
+            "type": "long",
+            "description": "The OSPF neighbor hello interval"
         },
         {
             "name": "networkType",
-            "type": "string"
+            "type": "string",
+            "description": "The OSPF interface network type: p2p, p2mp. nbma etc."
         },
         {
             "name": "nbrCount",
             "type": "long",
-            "display": 7
+            "display": 7,
+            "description": "The number of OSPF neighbors on this interface"
         },
         {
             "name": "maskLen",
-            "type": "long"
+            "type": "long",
+            "description": "The OSPF interface IP address mask length"
         },
         {
             "name": "isUnnumbered",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Whether the OSPF interface is unnumbered"
         },
         {
             "name": "ifState",
             "type": "string",
-            "display": 6
+            "display": 6,
+            "description": "The OSPF interface state"
         },
         {
             "name": "ipAddress",
-            "type": "string"
+            "type": "string",
+            "description": "The OSPF interface IP address"
         },
         {
             "name": "routerId",
-            "type": "string"
+            "type": "string",
+            "description": "The OSPF router ID"
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2
+            "partition": 2,
+            "description": "Hostname associated with this record"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-	    "partition": 1
+            "partition": 1,
+            "description": "Namespace associated with this record"
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "display": 12
         },
         {
             "name": "active",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
         }
     ]
 }

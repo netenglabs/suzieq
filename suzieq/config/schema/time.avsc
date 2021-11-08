@@ -4,11 +4,13 @@
     "type": "record",
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "2.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "ntpSync",
             "type": "string",
@@ -26,12 +28,12 @@
         {
             "name": "stratum",
             "type": "long",
-	    "display": 4
+            "display": 4
         },
         {
             "name": "offset",
             "type": "string",
-	    "display": 5
+            "display": 5
         },
         {
             "name": "timezone",
@@ -42,14 +44,14 @@
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2
+            "partition": 2
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-	    "partition": 1
+            "partition": 1
         },
         {
             "name": "timestamp",

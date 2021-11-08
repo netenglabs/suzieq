@@ -4,70 +4,84 @@
     "type": "record",
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "1.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "description",
             "type": "string",
-            "display": 5
+            "display": 5,
+            "description": "Description of peer interface, if advertised"
         },
         {
             "name": "peerIfname",
             "type": "string",
-            "display": 4
+            "display": 4,
+            "description": "Peer interface name, if advertised"
         },
         {
             "name": "peerIfindex",
-            "type": "long"
+            "type": "long",
+            "description": "Peer interface index, if advertised"
         },
         {
             "name": "peerMacaddr",
-            "type": "string"
+            "type": "string",
+            "description": "Peer Mac addr, if advertised"
         },
         {
             "name": "mgmtIP",
             "type": "string",
-            "display": 6
+            "display": 6,
+            "description": "Management IP address, if advertised"
         },
         {
             "name": "peerHostname",
             "type": "string",
-            "display": 3
+            "display": 3,
+            "description": "Peer hostname"
         },
         {
             "name": "subtype",
-            "type": "string"
+            "type": "string",
+            "description": "subtype indicating peer interface identifier, mac/name etc."
         },
         {
             "name": "ifname",
             "type": "string",
             "key": 2,
-            "display": 2
+            "display": 2,
+            "description": "Interface name associated with this entry"
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2
+            "partition": 2,
+            "description": "Hostname associated with this entry"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-	    "partition": 1
+            "partition": 1,
+            "description": "Namespace associated with this entry"
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "display": 7
         },
         {
             "name": "active",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
         }
     ]
 }
