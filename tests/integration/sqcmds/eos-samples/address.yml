@@ -634,3 +634,11 @@ tests:
   marks: address unique eos
   output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "evpn-vrf", "numRows":
     16}, {"vrf": "default", "numRows": 75}]'
+- command: address unique --columns="vrf"  --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: address unique eos filter
+  output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "internet-vrf"}]'
+- command: address unique --columns="vrf" --query-str='hostname == "spine01" ' --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: address unique eos filter
+  output: '[{"vrf": "default"}]'

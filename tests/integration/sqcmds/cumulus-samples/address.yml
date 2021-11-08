@@ -1990,3 +1990,13 @@ tests:
   marks: address unique cumulus filter
   output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "mgmt", "numRows": 8},
     {"vrf": "default", "numRows": 84}]'
+- command: address unique --columns="vrf" --namespace="dual-evpn" --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: address unique cumulus filter
+  output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "internet-vrf"}, {"vrf":
+    "mgmt"}]'
+- command: address unique --columns="vrf" --namespace="ospf-ibgp" --query-str='hostname
+    == "leaf01" ' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: address unique cumulus filter
+  output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "mgmt"}]'

@@ -1294,3 +1294,12 @@ tests:
   marks: address unique junos
   output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "evpn-vrf", "numRows":
     10}, {"vrf": "default", "numRows": 84}]'
+- command: address unique --columns="vrf"  --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: address unique junos filter
+  output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "internet-vrf"}]'
+- command: address unique --columns="vrf" --query-str='hostname.isin(["leaf01", "leaf02"])
+    ' --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: address unique junos filter
+  output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}]'

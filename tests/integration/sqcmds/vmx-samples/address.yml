@@ -748,5 +748,10 @@ tests:
     "numRows": 54}, {"hostname": "TOR4CRP-DGW-RT01", "numRows": 54}]'
 - command: address unique --columns=vrf --format=json
   data-directory: tests/data/vmx/parquet-out
-  marks: address unique vmx
+  marks: address unique vmx junos
   output: '[{"vrf": "default"}]'
+- command: address unique --columns="vrf"  --count=True --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: address unique junos vmx
+  output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "evpn-vrf", "numRows":
+    10}, {"vrf": "default", "numRows": 84}]'

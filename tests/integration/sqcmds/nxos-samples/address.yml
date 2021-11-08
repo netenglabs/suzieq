@@ -2040,3 +2040,14 @@ tests:
     "leaf03", "ifname": "Ethernet1/1", "ipAddressList": ["10.0.0.13/32"], "macaddr":
     "44:01:02:03:1b:08", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1619275258539}]'
+- command: address unique --columns="vrf"  --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: address unique nxos filter
+  output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "internet-vrf"}, {"vrf":
+    "management"}]'
+- command: address unique --columns="vrf" --query-str='hostname.isin(["exit01", "exit02"])
+    ' --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: address unique nxos filter
+  output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "internet-vrf"}, {"vrf":
+    "management"}]'
