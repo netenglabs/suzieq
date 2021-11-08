@@ -142,17 +142,6 @@ def test_bad_show_engine_filter(setup_nubia, cmd):
 bad_start_time_commands = commands[:]
 
 
-# TODO
-
-# this is the placeholder of the nubia bug about parsing 'start-time'
-@pytest.mark.filter
-@pytest.mark.xfail(reason='bug #12', raises=TypeError)
-@pytest.mark.parametrize("cmd", bad_start_time_commands)
-def test_show_start_time_filter(setup_nubia, cmd):
-    filter = {'start-time': 'unknown'}
-    _ = _test_bad_show_filter(cmd, filter)
-
-
 # this because I need to xfail these for this bug, I can't xfail individual
 # ones for the filenotfound
 # so I must remove those from the stack
@@ -164,7 +153,7 @@ bad_start_time_commands.pop(7)  # Ospfcmd
 @pytest.mark.parametrize("cmd", bad_start_time_commands)
 def test_bad_start_time_filter(setup_nubia, cmd):
     filter = {'start_time': 'unknown'}
-    _ = _test_bad_show_filter(cmd, filter)
+    _ = _test_bad_show_filter(cmd, filter, True)
 
 
 bad_namespace_commands = bad_hostname_commands[:]
@@ -189,7 +178,7 @@ def _test_bad_show_filter(cmd, filter, assert_error=False):
     return s
 
 
-good_filters = [{'hostname': 'leaf01'}]
+good_filters = [{'hostname': ['leaf01']}]
 
 
 # TODO?
@@ -218,7 +207,7 @@ def test_context_namespace_filtering(setup_nubia, cmd):
 @pytest.mark.filter
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_engine_filtering(setup_nubia, cmd):
-    s = _test_context_filtering(cmd, {'enginename': 'pandas'})
+    s = _test_context_filtering(cmd, {'engine': 'pandas'})
     assert s == 0
 
 
@@ -328,55 +317,69 @@ def _test_sqcmds(testvar, context_config):
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/cumulus-samples')))
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                      '/tests/integration/sqcmds/cumulus-samples')))
 def test_cumulus_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/nxos-samples')))
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/nxos-samples')))
 def test_nxos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/junos-samples')))
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/junos-samples')))
 def test_junos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/eos-samples')))
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/eos-samples')))
 def test_eos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/mixed-samples')))
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/mixed-samples')))
 def test_mixed_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/vmx-samples')))
-def test_mixed_sqcmds(testvar, create_context_config):
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/vmx-samples')))
+def test_vmx_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/common-samples')))
-def test_mixed_sqcmds(testvar, create_context_config):
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/common-samples')))
+def test_common_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
