@@ -20,7 +20,7 @@ class MacsObj(SqPandasEngine):
         vtep = kwargs.get('remoteVtepIp', [])
 
         # Always remove mackey because it is an internal column
-        drop_cols = ['mackey']
+        drop_cols = []
 
         if vtep:
             if kwargs['remoteVtepIp'] == ['any']:
@@ -33,6 +33,9 @@ class MacsObj(SqPandasEngine):
             compute_moves = True
         else:
             compute_moves = False
+
+        if columns in [['default'], ['*']] or 'mackey' not in columns:
+            drop_cols.append('mackey')
 
         df = self.get_valid_df(self.iobj._table, view=view, **kwargs)
 
@@ -70,7 +73,8 @@ class MacsObj(SqPandasEngine):
 
         df = self._handle_user_query_str(df, user_query)
         if drop_cols:
-            df = df.drop(columns=drop_cols).reset_index(drop=True)
+            df = df.drop(columns=drop_cols,
+                         errors='ignore').reset_index(drop=True)
         if remoteOnly:
             df = df.query("remoteVtepIp != ''").reset_index(drop=True)
         elif localOnly:
