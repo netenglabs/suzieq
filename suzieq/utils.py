@@ -342,6 +342,10 @@ class SchemaForTable(object):
     def fields(self):
         return self._all_schemas.fields_for_table(self._table)
 
+    @property
+    def array_fields(self):
+        return self._all_schemas.array_fields_for_table(self._table)
+
     def get_phy_table(self):
         return self._all_schemas.get_phy_table_for_table(self._table)
 
@@ -358,9 +362,9 @@ class SchemaForTable(object):
         return self._all_schemas.sorted_display_fields_for_table(self._table,
                                                                  getall)
 
-    @property
-    def array_fields(self):
-        return self._all_schemas.array_fields_for_table(self._table)
+    def sorted_fields_all(self, getall=True):
+        return self._all_schemas.sorted_display_fields_for_table(self._table,
+                                                                 getall)
 
     def field(self, field):
         return self._all_schemas.field_for_table(self._table, field)
