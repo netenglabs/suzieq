@@ -40,8 +40,11 @@ class TableCmd(SqCommand):
         """Show meta-information about various tables gathered by Suzieq
         """
         now = time.time()
-        df = self.sqobj.get(hostname=self.hostname, namespace=self.namespace,
-                            columns=self.columns)
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                columns=self.columns
+                                )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
