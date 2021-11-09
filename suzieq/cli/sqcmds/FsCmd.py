@@ -61,14 +61,14 @@ class FsCmd(SqCommand):
                     {'error': ['ERROR invalid used-percent operation']})
                 return self._gen_output(df)
 
-        df = self.sqobj.get(
-            hostname=self.hostname,
-            columns=self.columns,
-            namespace=self.namespace,
-            mountPoint=mountPoint.split(),
-            usedPercent=used_percent,
-            query_str=self.query_str,
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                columns=self.columns,
+                                namespace=self.namespace,
+                                mountPoint=mountPoint.split(),
+                                usedPercent=used_percent,
+                                query_str=self.query_str,
+                                )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
