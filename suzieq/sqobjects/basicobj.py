@@ -72,7 +72,7 @@ class SqObject(object):
             self.view = view or 'latest'
 
         self.columns = columns
-        self.default_columns = ['hostname']
+        self._unique_def_column = ['hostname']
 
         if engine_name and engine_name != '':
             self.engine = get_sqengine(engine_name,
@@ -224,9 +224,9 @@ class SqObject(object):
         columns = kwargs.pop('columns', self.columns)
 
         if columns is None or columns == ['default']:
-            columns = self.default_columns
+            columns = self._unique_def_column
 
-        if len(columns) > 1:
+        if len(columns) > 1 or columns == ['*']:
             raise ValueError('Specify a single column with unique')
 
         # This raises ValueError if it fails
