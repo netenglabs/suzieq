@@ -144,6 +144,12 @@ tests:
     {"default": 36}, "helloTime": {"10": 36}, "deadTime": {"40": 36}, "retxTime":
     {"5": 36}, "networkType": {"p2p": 24, "broadcast": 12}, "adjChangesStat": [6.0,
     7.0, 7.0], "upTimeStat": [106674000, 2348165000, 2348090500]}}'
+- command: ospf unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf unique eos
+- command: ospf unique --count=True --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf unique eos
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: ospf unique eos

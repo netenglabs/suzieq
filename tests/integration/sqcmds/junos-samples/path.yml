@@ -203,3 +203,10 @@ tests:
   marks: path summarize junos
   output: '[{"junos": 2}, {"junos": [2, 1]}, {"junos": 2}, {"junos": 2.0}, {"junos":
     4}, {"junos": 9200}, {"junos": false}, {"junos": false}]'
+- command: path unique --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=junos
+  data-directory: tests/data/junos/parquet-out/
+  marks: path unique junos
+- command: path unique --count=True --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=junos
+  data-directory: tests/data/junos/parquet-out/
+  marks: path unique junos
+

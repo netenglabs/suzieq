@@ -979,6 +979,12 @@ tests:
     40, "hostRoutesCnt": 136, "totalV4RoutesinNs": 274, "totalV6RoutesinNs": 2, "routingProtocolCnt":
     14, "nexthopCnt": 5, "routesPerHostStat": [6, 48, 16.0], "routesperVrfStat": [22,
     176, 78], "deviceWithNoDefRoute": true}}'
+- command: route unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route unique eos
+- command: route unique  --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: route unique eos
 - command: route unique --columns=hostname --format=json --count=True
   data-directory: tests/data/eos/parquet-out/
   marks: route unique eos

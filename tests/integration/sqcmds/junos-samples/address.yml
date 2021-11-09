@@ -1272,6 +1272,12 @@ tests:
     "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 175, "deviceWithv4AddressCnt": 12,
     "deviceWithv6AddressCnt": 0, "subnetsUsed": ["24", "2", "32", "30", "31"], "subnetTopCounts":
     [{"24": 41}, {"2": 35}, {"32": 27}]}}'
+- command: address unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: address unique junos
+- command: address unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: address unique junos
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: address unique junos

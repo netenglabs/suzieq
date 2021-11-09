@@ -96,6 +96,12 @@ tests:
     {"default": 22}, "helloTime": {"10": 22}, "deadTime": {"40": 22}, "retxTime":
     {"5": 22}, "networkType": {"p2p": 16, "broadcast": 6}, "adjChangesStat": [0.0,
     0.0, 0.0], "upTimeStat": [27056000, 27098000, 27082500]}}'
+- command: ospf unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: ospf unique junos
+- command: ospf unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: ospf unique junos
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: ospf unique junos

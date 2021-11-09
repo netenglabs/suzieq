@@ -383,8 +383,9 @@ tests:
     "updatesRxStat": [2, 26522, 4802], "updatesTxStat": [1, 26522, 4802]}}'
 - command: bgp unique --format=json
   data-directory: tests/data/eos/parquet-out/
-  error:
-    error: '[{"error": "ERROR: Must specify columns with unique"}]'
+  marks: bgp unique eos
+- command: bgp unique --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
   marks: bgp unique eos
 - command: bgp unique --columns=hostname --format=json --count=True
   data-directory: tests/data/eos/parquet-out/

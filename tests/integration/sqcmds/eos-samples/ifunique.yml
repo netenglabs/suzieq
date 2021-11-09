@@ -1,5 +1,11 @@
 description: Testing unique values for interfaces
 tests:
+- command: interface unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: interface unique eos
+- command: interface unique --count=True --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: interface unique eos
 - command: interface unique --count=True --format=json --columns=hostname
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos

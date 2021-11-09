@@ -2849,6 +2849,12 @@ tests:
   marks: sqpoller summarize
   output: '{"dual-evpn": {"deviceCnt": 14, "entriesCnt": 217, "service": 17, "status":
     {"0": 217}, "pollExcdPeriodStat": [0, 0, 0]}}'
+- command: sqpoller unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: sqpoller unique
+- command: sqpoller unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: sqpoller unique
 - command: sqpoller unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: sqpoller unique

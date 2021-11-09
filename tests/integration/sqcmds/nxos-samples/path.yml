@@ -566,3 +566,9 @@ tests:
   marks: path summarize nxos
   output: '[{"nxos": 2}, {"nxos": [2, 1]}, {"nxos": 2}, {"nxos": 2.0}, {"nxos": 4},
     {"nxos": 1500}, {"nxos": false}, {"nxos": false}]'
+- command: path unique --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=nxos
+  data-directory: tests/data/nxos/parquet-out/
+  marks: path show nxos
+- command: path unique --dest=172.16.3.202 --src=172.16.1.101 --format=json --count=True --namespace=nxos
+  data-directory: tests/data/nxos/parquet-out/
+  marks: path show nxos

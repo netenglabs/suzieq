@@ -500,6 +500,12 @@ tests:
   marks: mac summarize eos
   output: '{"eos": {"deviceCnt": 11, "totalMacsinNSCnt": 192, "uniqueMacCnt": 28,
     "uniqueVlanperHostStat": [1, 4, 4.0]}}'
+- command: mac unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: mac unique eos
+- command: mac unique --count=True --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: mac unique eos
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac unique eos

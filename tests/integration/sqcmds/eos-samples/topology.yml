@@ -708,3 +708,9 @@ tests:
     "spine02"]}, {"eos": "..."}, {"eos": true}, {"eos": 1}, {"eos": 16}, {"eos": 9},
     {"eos": []}, {"eos": ["spine01", "spine02"]}, {"eos": "..."}, {"eos": true}, {"eos":
     1}, {"eos": 12}, {"eos": 8}, {"eos": []}]'
+- command: topology unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: topology unique eos
+- command: topology unique --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: topology unique eos

@@ -285,8 +285,9 @@ tests:
     [3, 1197, 221], "updatesTxStat": [1, 1573, 225]}}'
 - command: bgp unique --format=json
   data-directory: tests/data/nxos/parquet-out/
-  error:
-    error: '[{"error": "ERROR: Must specify columns with unique"}]'
+  marks: bgp unique nxos
+- command: bgp unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
   marks: bgp unique nxos
 - command: bgp unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/

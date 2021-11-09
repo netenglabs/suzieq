@@ -236,6 +236,12 @@ tests:
   marks: mac summarize junos
   output: '{"junos": {"deviceCnt": 7, "totalMacsinNSCnt": 88, "uniqueMacCnt": 21,
     "uniqueVlanperHostStat": [2, 2, 2.0]}}'
+- command: mac unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: mac unique junos
+- command: mac unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: mac unique junos
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: mac unique junos

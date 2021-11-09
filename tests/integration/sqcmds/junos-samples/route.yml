@@ -810,6 +810,12 @@ tests:
     "ifRoutesCnt": 25, "hostRoutesCnt": 119, "totalV4RoutesinNs": 215, "totalV6RoutesinNs":
     20, "routingProtocolCnt": 11, "nexthopCnt": 4, "routesPerHostStat": [5, 51, 14.0],
     "routesperVrfStat": [26, 132, 38.5], "deviceWithNoDefRoute": true}}'
+- command: route unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route unique junos
+- command: route unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route unique junos
 - command: route unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route unique junos

@@ -891,6 +891,12 @@ tests:
     "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 228, "deviceWithv4AddressCnt": 8, "deviceWithv6AddressCnt":
     0, "subnetsUsed": ["30", "24", "2", "32"], "subnetTopCounts": [{"30": 28}, {"24":
     14}, {"2": 10}]}}'
+- command: address unique --format=json
+  data-directory: tests/data/mixed/parquet-out
+  marks: address unique mixed
+- command: address unique --count=True --format=json
+  data-directory: tests/data/mixed/parquet-out
+  marks: address unique mixed
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/mixed/parquet-out
   marks: address unique mixed

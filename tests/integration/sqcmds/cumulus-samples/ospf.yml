@@ -255,6 +255,12 @@ tests:
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
     "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
+- command: ospf unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: ospf unique
+- command: ospf unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: ospf unique
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: ospf unique

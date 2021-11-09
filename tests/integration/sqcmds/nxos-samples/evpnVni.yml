@@ -55,6 +55,12 @@ tests:
   output: '{"nxos": {"mode": "symmetric", "uniqueVtepCnt": 6, "uniqueVniCnt": 4, "uniqueL3VniCnt":
     1, "uniqueL2VniCnt": 3, "uniqueMulticastGroups": 0, "vnisUsingMulticast": 0, "vnisUsingIngressRepl":
     3, "remoteVtepsPerVtepStat": [3, 3, 3.0]}}'
+- command: evpnVni unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: evpnVni unique nxos
+- command: evpnVni unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: evpnVni unique nxos
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni unique nxos

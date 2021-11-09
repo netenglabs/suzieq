@@ -142,8 +142,9 @@ tests:
     [0, 1389, 9.5], "updatesTxStat": [0, 1388, 9]}}'
 - command: bgp unique --format=json
   data-directory: tests/data/junos/parquet-out/
-  error:
-    error: '[{"error": "ERROR: Must specify columns with unique"}]'
+  marks: bgp unique junos junos
+- command: bgp unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
   marks: bgp unique junos junos
 - command: bgp unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/

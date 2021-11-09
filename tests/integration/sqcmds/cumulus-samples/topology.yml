@@ -1308,3 +1308,9 @@ tests:
     1}, {"ospf-ibgp": 18}, {"ospf-ibgp": 10}, {"ospf-ibgp": []}, {"ospf-ibgp": ["spine02",
     "spine01"]}, {"ospf-ibgp": "..."}, {"ospf-ibgp": true}, {"ospf-ibgp": 1}, {"ospf-ibgp":
     12}, {"ospf-ibgp": 8}, {"ospf-ibgp": []}]'
+- command: topology unique --namespace='ospf-ibgp' --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: topology unique cumulus
+- command: topology unique --count=True --namespace='ospf-ibgp' --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: topology unique cumulus

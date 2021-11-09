@@ -583,6 +583,12 @@ tests:
     "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 67, "deviceWithv4AddressCnt": 14, "deviceWithv6AddressCnt":
     0, "subnetsUsed": ["32", "24", "0", "30", "31", "2"], "subnetTopCounts": [{"32":
     38}, {"24": 29}, {"0": 14}]}}'
+- command: address unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: address unique eos
+- command: address unique --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: address unique eos
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: address unique eos

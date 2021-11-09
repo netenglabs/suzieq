@@ -1077,3 +1077,9 @@ tests:
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": 0, "innerVlan":
     0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 1631009089864, "vni":
     0, "lacpBypass": false, "active": true}]'
+- command: interface unique --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: interface unique junos vmx
+- command: interface unique --count=True --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: interface unique junos vmx

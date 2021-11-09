@@ -1193,6 +1193,12 @@ tests:
     7, "uniqueMTUCnt": 8, "uniqueIfTypesCnt": 11, "speedCnt": 4, "ifChangesStat":
     [0, 0, 0], "ifPerDeviceStat": [3, 52, 45.0], "uniqueIPv4AddrCnt": 54, "uniqueIPv6AddrCnt":
     0}}'
+- command: interface unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: interface unique junos
+- command: interface unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: interface unique junos
 - command: interface unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
