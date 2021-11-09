@@ -17,6 +17,7 @@ class IfObj(SqObject):
                       '!notConnected', ''],
             'status': ['all', 'pass', 'fail'],
         }
+        self._unique_def_column = ['type']
 
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''

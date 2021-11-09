@@ -8,3 +8,4 @@ class TablesObj(SqObject):
         super().__init__(table='tables', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns',
                                 'query_str']
+        self._unique_def_column = ['table']

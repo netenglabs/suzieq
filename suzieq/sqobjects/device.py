@@ -9,6 +9,7 @@ class DeviceObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'os',
                                 'vendor', 'model', 'status', 'version',
                                 'query_str']
+        self._unique_def_column = ['model']
 
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''

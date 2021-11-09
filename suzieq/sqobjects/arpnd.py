@@ -11,3 +11,4 @@ class ArpndObj(SqObject):
         self._convert_args = {
             'macaddr': convert_macaddr_format_to_colon
         }
+        self._unique_def_column = ['ipAddress']

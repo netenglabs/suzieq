@@ -7,3 +7,4 @@ class AddressObj(SqObject):
         super().__init__(table='address', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'address',
                                 'columns', 'ipvers', 'vrf', 'query_str']
+        self._unique_def_column = ['ipAddress']

@@ -9,6 +9,7 @@ class RoutesObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'prefix',
                                 'vrf', 'protocol', 'prefixlen', 'ipvers',
                                 'add_filter', 'address', 'query_str']
+        self._unique_def_column = ['prefix']
 
     def lpm(self, **kwargs):
         '''Get the lpm for the given address'''
