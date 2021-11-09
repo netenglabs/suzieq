@@ -98,6 +98,18 @@
             "name": "active",
             "type": "boolean",
             "description": "If this entry is active or deleted"
+        },
+        {
+            "name": "ipAddress",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ipAddress"
+                }
+            },
+            "description": "List of interface IPv4 and IPv6 addresses",
+            "depends": "ipAddressList ip6AddressList"
         }
     ]
 }

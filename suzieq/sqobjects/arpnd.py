@@ -36,3 +36,4 @@ class ArpndObj(SqObject):
                     raise ValueError("Invalid mac address specified")
 
         super().validate_get_input(**kwargs)
+        self._unique_def_column = ['ipAddress']
