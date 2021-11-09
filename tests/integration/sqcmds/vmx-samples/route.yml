@@ -565,3 +565,9 @@ tests:
     "TOR1CRP-DGW-RT01", "nexthopIps": ["10.0.20.1"]}, {"hostname": "TOR1CRP-DGW-RT01",
     "nexthopIps": ["10.0.10.1"]}, {"hostname": "CRP-DIS-SW01", "nexthopIps": ["172.26.147.254"]},
     {"hostname": "TOR1BBN-PE-RT01", "nexthopIps": ["172.26.147.254"]}]'
+- command: route unique --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: route unique vmx
+- command: route unique --count=True --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: route unique vmx

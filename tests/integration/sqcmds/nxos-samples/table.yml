@@ -41,9 +41,6 @@ tests:
 - command: table show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: table show nxos
-  xfail:
-    error: '[]'
-    reason: uncaught exception
 - command: table show --namespace=dummy --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: table show nxos
@@ -138,3 +135,9 @@ tests:
     in database"}, {"name": "sqvers", "type": "string", "key": "", "display": "",
     "description": "Schema version, not selectable"}, {"name": "table", "type": "string",
     "key": "", "display": 1, "description": "Table name"}]'
+- command: table unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: table unique nxos
+- command: table unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: table unique nxos

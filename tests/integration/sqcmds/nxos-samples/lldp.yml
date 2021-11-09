@@ -135,6 +135,12 @@ tests:
   marks: lldp summarize nxos
   output: '{"nxos": {"deviceCnt": 9, "nbrCnt": 44, "peerHostnameCnt": 44, "uniquePeerMgmtIPCnt":
     9, "missingPeerInfoCnt": 10}}'
+- command: lldp unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: lldp unique nxos
+- command: lldp unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: lldp unique nxos
 - command: lldp unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: lldp unique nxos

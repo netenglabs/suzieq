@@ -3,25 +3,6 @@ tests:
 - command: address describe --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: address describe
-  output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
-    "If this entry is active or deleted"}, {"name": "hostname", "type": "string",
-    "key": 1, "display": 1, "description": "Hostname associated with this record"},
-    {"name": "ifname", "type": "string", "key": 2, "display": 2, "description": "Interface
-    name"}, {"name": "ip6AddressList", "type": {"type": "array", "items": {"type":
-    "string", "name": "ip6Address"}}, "key": "", "display": 5, "description": "List
-    of interface IPv6 addresses"}, {"name": "ipAddressList", "type": {"type": "array",
-    "items": {"type": "string", "name": "ipAddress"}}, "key": "", "display": 3, "description":
-    "List of interface IPv4 addresses"}, {"name": "macaddr", "type": "string", "key":
-    "", "display": 4, "description": "MAC address"}, {"name": "namespace", "type":
-    "string", "key": 0, "display": 0, "description": "Namespace associated with this
-    record"}, {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
-    "Schema version, not selectable"}, {"name": "state", "type": "string", "key":
-    "", "display": 6, "description": "Operational state of interface"}, {"name": "timestamp",
-    "type": "timestamp", "key": "", "display": 8, "description": "Unix epach When
-    this record was created, in ms"}, {"name": "type", "type": "string", "key": "",
-    "display": "", "description": "Type of interface"}, {"name": "vlan", "type": "long",
-    "key": "", "display": "", "description": ""}, {"name": "vrf", "type": "string",
-    "key": "", "display": 7, "description": ""}]'
 - command: arpnd describe --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: arpnd describe

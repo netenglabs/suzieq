@@ -108,6 +108,12 @@ tests:
   marks: lldp summarize eos
   output: '{"eos": {"deviceCnt": 9, "nbrCnt": 36, "peerHostnameCnt": 36, "uniquePeerMgmtIPCnt":
     9, "missingPeerInfoCnt": 2}}'
+- command: lldp unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: lldp unique eos
+- command: lldp unique --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: lldp unique eos
 - command: lldp unique --columns=hostname --format=json --count=True
   data-directory: tests/data/eos/parquet-out/
   marks: lldp unique eos

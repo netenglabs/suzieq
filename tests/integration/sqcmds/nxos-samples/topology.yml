@@ -802,3 +802,9 @@ tests:
     {"nxos": ["spine02", "spine01"]}, {"nxos": "..."}, {"nxos": true}, {"nxos": 1},
     {"nxos": 17}, {"nxos": 9}, {"nxos": []}, {"nxos": ["spine02", "spine01"]}, {"nxos":
     "..."}, {"nxos": true}, {"nxos": 1}, {"nxos": 12}, {"nxos": 8}, {"nxos": []}]'
+- command: topology unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology unique nxos
+- command: topology unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: topology unique nxos

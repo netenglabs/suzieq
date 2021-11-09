@@ -470,6 +470,12 @@ tests:
   marks: mac summarize nxos
   output: '{"nxos": {"deviceCnt": 13, "totalMacsinNSCnt": 208, "uniqueMacCnt": 31,
     "uniqueVlanperHostStat": [1, 3, 3.0]}}'
+- command: mac unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: mac unique nxos
+- command: mac unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: mac unique nxos
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mac unique nxos

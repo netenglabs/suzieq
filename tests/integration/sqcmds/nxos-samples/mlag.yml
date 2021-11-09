@@ -28,6 +28,12 @@ tests:
   output: '{"nxos": {"deviceCnt": 4, "uniqueSystemIdCnt": 2, "devicesWithfailedStateCnt":
     0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [2, 2, 2], "mlagNumSinglePortStat":
     [0, 0, 0], "mlagNumErrorPortStat": [0, 0, 0]}}'
+- command: mlag unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: mlag unique nxos
+- command: mlag unique count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: mlag unique nxos
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mlag unique nxos

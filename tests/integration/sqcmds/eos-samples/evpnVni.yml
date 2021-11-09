@@ -53,6 +53,12 @@ tests:
   output: '{"eos": {"mode": "symmetric", "uniqueVtepCnt": 4, "uniqueVniCnt": 4, "uniqueL3VniCnt":
     1, "uniqueL2VniCnt": 3, "uniqueMulticastGroups": 0, "vnisUsingMulticast": 0, "vnisUsingIngressRepl":
     3, "remoteVtepsPerVtepStat": [1, 1, 1.0]}}'
+- command: evpnVni unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: evpnVni unique eos
+- command: evpnVni unique --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: evpnVni unique eos
 - command: evpnVni unique --columns=vni --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: evpnVni unique eos

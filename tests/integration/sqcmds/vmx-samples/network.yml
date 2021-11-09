@@ -60,3 +60,9 @@ tests:
   output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [13, 13, 13.0], "nsWithMlagCnt":
     0, "nsWithBgpCnt": 1, "nsWithOspfCnt": 0, "nsWithVxlanCnt": 0, "nsWithErrsvcCnt":
     0}}'
+- command: network unique --namespace=vmx --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network unique junos vmx
+- command: network unique --count=True --namespace=vmx --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: network unique junos vmx

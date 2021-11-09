@@ -41,9 +41,6 @@ tests:
 - command: table show --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: table show
-  xfail:
-    error: '[]'
-    reason: uncaught exception
 - command: table show --namespace=dummy --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: table show
@@ -231,3 +228,9 @@ tests:
   error:
     error: '[{"error": "ERROR: incorrect table name floop"}]'
   marks: table describe
+- command: table unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: table unique
+- command: table unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: table unique

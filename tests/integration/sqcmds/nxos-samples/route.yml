@@ -5054,6 +5054,12 @@ tests:
     36, "hostRoutesCnt": 208, "totalV4RoutesinNs": 348, "totalV6RoutesinNs": 2, "routingProtocolCnt":
     11, "nexthopCnt": 4, "routesPerHostStat": [5, 60, 19.0], "routesperVrfStat": [24,
     204, 61], "deviceWithNoDefRoute": true}}'
+- command: route unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route unique nxos
+- command: route unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route unique nxos
 - command: route unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: route unique nxos

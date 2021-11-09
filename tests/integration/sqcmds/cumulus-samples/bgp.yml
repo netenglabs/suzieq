@@ -1836,8 +1836,9 @@ tests:
     17]}}'
 - command: bgp unique --format=json
   data-directory: tests/data/multidc/parquet-out/
-  error:
-    error: '[{"error": "ERROR: Must specify columns with unique"}]'
+  marks: bgp unique
+- command: bgp unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
   marks: bgp unique
 - command: bgp unique --columns=hostname --format=json --count=True
   data-directory: tests/data/multidc/parquet-out/

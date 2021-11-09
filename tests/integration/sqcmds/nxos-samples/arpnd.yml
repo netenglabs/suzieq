@@ -206,6 +206,12 @@ tests:
   output: '{"nxos": {"deviceCnt": 14, "arpNdEntriesCnt": 74, "macaddrCnt": 74, "oifCnt":
     74, "uniqueOifCnt": 25, "remoteEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
     0}}'
+- command: arpnd unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: arpnd unique nxos
+- command: arpnd unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: arpnd unique nxos
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: arpnd unique nxos

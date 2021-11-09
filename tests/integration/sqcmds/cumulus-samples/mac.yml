@@ -865,6 +865,12 @@ tests:
   marks: mac summarize
   output: '{"dual-evpn": {"deviceCnt": 7, "totalMacsinNSCnt": 181, "uniqueMacCnt":
     34, "uniqueVlanperHostStat": [2, 2, 2.0]}}'
+- command: mac unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: mac unique
+- command: mac unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: mac unique
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mac unique

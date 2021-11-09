@@ -358,6 +358,12 @@ tests:
   output: '{"junos": {"deviceCnt": 12, "arpNdEntriesCnt": 68, "macaddrCnt": 68, "oifCnt":
     68, "uniqueOifCnt": 20, "remoteEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
     0}}'
+- command: arpnd unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: arpnd unique junos
+- command: arpnd unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: arpnd unique junos
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: arpnd unique junos

@@ -1953,6 +1953,12 @@ tests:
     "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 535, "deviceWithv4AddressCnt": 14,
     "deviceWithv6AddressCnt": 0, "subnetsUsed": ["32", "24", "30", "2", "31"], "subnetTopCounts":
     [{"32": 44}, {"24": 29}, {"30": 12}]}}'
+- command: address unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: address unique nxos
+- command: address unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: address unique nxos
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: address unique nxos

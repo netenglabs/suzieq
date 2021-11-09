@@ -115,6 +115,12 @@ tests:
   output: '{"dual-evpn": {"mode": "symmetric", "uniqueVtepCnt": 5, "uniqueVniCnt":
     3, "uniqueL3VniCnt": 2, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast":
     0, "vnisUsingIngressRepl": 2, "remoteVtepsPerVtepStat": [3, 3, 3.0]}}'
+- command: evpnVni unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: evpnVni unique cumulus
+- command: evpnVni unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: evpnVni unique cumulus
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni unique cumulus

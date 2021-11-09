@@ -1457,6 +1457,12 @@ tests:
   output: '{"dual-evpn": {"deviceCnt": 14, "arpNdEntriesCnt": 196, "macaddrCnt": 196,
     "oifCnt": 196, "uniqueOifCnt": 21, "remoteEntriesCnt": 0, "staticEntriesCnt":
     36, "failedEntryCnt": 0}}'
+- command: arpnd unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: arpnd unique
+- command: arpnd unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: arpnd unique
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd unique

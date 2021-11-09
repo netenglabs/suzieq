@@ -1,5 +1,11 @@
 description: Testing unique values for interfaces
 tests:
+- command: interface unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: interface unique junos
+- command: interface unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: interface unique junos
 - command: interface unique --count=True --format=json --columns=hostname
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos

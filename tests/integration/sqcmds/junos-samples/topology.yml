@@ -572,3 +572,9 @@ tests:
     {"junos": [0, 0, 3, 2, 2]}, {"junos": true}, {"junos": 1}, {"junos": 10}, {"junos":
     7}, {"junos": []}, {"junos": ["spine01", "spine02"]}, {"junos": [0, 0, 4, 0, 2]},
     {"junos": true}, {"junos": 1}, {"junos": 8}, {"junos": 6}, {"junos": []}]'
+- command: topology unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: topology unique junos
+- command: topology unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: topology unique junos

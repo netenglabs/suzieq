@@ -97,6 +97,12 @@ tests:
   marks: lldp summarize junos
   output: '{"junos": {"deviceCnt": 7, "nbrCnt": 20, "peerHostnameCnt": 20, "uniquePeerMgmtIPCnt":
     1, "missingPeerInfoCnt": 20}}'
+- command: lldp unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: lldp unique junos
+- command: lldp unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: lldp unique junos
 - command: lldp unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: lldp unique junos
