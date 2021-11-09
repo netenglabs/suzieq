@@ -53,31 +53,15 @@ def create_context_config(datadir: str =
 
 @pytest.fixture()
 def get_table_data(table: str, datadir: str):
-
-    return _get_table_data_cols(table, datadir, ['*'], True)
-
-
-@pytest.fixture()
-def get_table_data_cols(table: str, datadir: str, columns: List[str]):
-    '''
-    Get the data for a table and return it as a DF.
-    '''
-    return _get_table_data_cols(table, datadir, columns, False)
-
-
-def _get_table_data_cols(table: str, datadir: str, columns: List[str],
-                         add_os_col: bool = False):
+    '''Get all fields including sqvers and any suppress field for DB check'''
     if table in ['path', 'ospfIf', 'ospfNbr']:
         return pd.DataFrame()
 
     cfgfile = create_dummy_config_file(datadir=datadir)
-
     sqobj = get_sqobject(table)(config_file=cfgfile)
-    cols = sqobj.schema.get_display_fields(columns)
+    cols = sqobj.schema.get_display_fields(['*'])
 
     df = sqobj.get(columns=cols)
-    if not add_os_col:
-        return df
 
     if not df.empty and (table not in ['device', 'tables', 'network']):
         device_df = get_sqobject('device')(config_file=cfgfile) \
@@ -89,6 +73,20 @@ def _get_table_data_cols(table: str, datadir: str, columns: List[str],
 
         if df.empty:
             pytest.fail('empty device table')
+
+    return df
+
+
+@pytest.fixture()
+def get_table_data_cols(table: str, datadir: str, columns: List[str]):
+    '''
+    For the table and columns specified, get data, used for schema validation
+    '''
+    if table in ['path', 'ospfIf', 'ospfNbr']:
+        return pd.DataFrame()
+
+    cfgfile = create_dummy_config_file(datadir=datadir)
+    df = get_sqobject(table)(config_file=cfgfile).get(columns=columns)
 
     return df
 
