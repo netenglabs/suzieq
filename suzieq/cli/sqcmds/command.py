@@ -166,11 +166,11 @@ class SqCommand:
             return df
 
         if not count:
-            return self._gen_output(df.sort_values(by=[self.columns[0]]),
+            return self._gen_output(df.sort_values(by=[df.columns[0]]),
                                     dont_strip_cols=True)
         else:
             return self._gen_output(
-                df.sort_values(by=['numRows', self.columns[0]]),
+                df.sort_values(by=['numRows', df.columns[0]]),
                 dont_strip_cols=True)
 
     @command("describe", help="describe the table and its fields")
