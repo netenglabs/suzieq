@@ -50,7 +50,7 @@ def validate_sq_config(cfg):
 
     if (not os.path.isdir(ddir) or not (os.access(ddir, os.R_OK | os.W_OK |
                                                   os.EX_OK))):
-        return f'FATAL: Data directory {ddir} is not an acceesible dir'
+        return f'FATAL: Data directory {ddir} is not an accessible dir'
 
     # Locate the service and schema directories
     svcdir = cfg.get('service-directory', None)
