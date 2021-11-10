@@ -3,6 +3,7 @@ import pandas as pd
 import numpy as np
 
 from .engineobj import SqPandasEngine
+from suzieq.utils import MISSING_SPEED
 
 
 class InterfacesObj(SqPandasEngine):
@@ -163,6 +164,33 @@ class InterfacesObj(SqPandasEngine):
                 return []
             return reason
 
+        def _check_speed(x, fld1, fld2, reason):
+            if x.skipIfCheck or x.indexPeer < 0:
+                return []
+            speed1 = x[fld1]
+            speed2 = x[fld2]
+
+            # Take the physical speed for Junos interfaces
+            if x['lifname'].endswith('.0'):
+                speed1 = x['pSpeed']
+            
+            if x['lifnamePeer'].endswith('.0'):
+                speed2 = x['pSpeedPeer']
+                
+            if speed1 == MISSING_SPEED or speed2 == MISSING_SPEED:
+                return [reason[1]] # Missing speed
+
+            if speed1 == 0 or speed2 == 0:
+                return [reason[2]] # Zero speed
+            
+            maxInt32 = np.iinfo(np.uint32).max
+            
+            # Ignore localhost interface
+            if speed1 == speed2 or speed1 == maxInt32 \
+                or speed2 == maxInt32:
+                return []
+            return [reason[0]] # Speed mismatch
+
         def _check_ipaddr(x, fld1, fld2, reason):
             # If we have no peer, don't check
             if x.skipIfCheck or x.indexPeer < 0:
@@ -209,15 +237,31 @@ class InterfacesObj(SqPandasEngine):
                                  if x['ifname'].endswith('.0') else '',
                                  axis=1) \
             .unique().tolist()
+        pSpeeds = dict()
+        for _, row in if_df.iterrows():
+            if row['ifname'] in del_iflist:
+                pSpeeds[row['ifname']] = row['speed']
+
+        if_df['pSpeed'] = if_df.apply(
+            lambda x: pSpeeds.get(x["pifname"],x['speed'])
+            if x['ifname'].endswith('.0')
+            else x['speed'],
+            axis=1
+        )
 
         if_df['type'] = if_df.apply(lambda x: 'ethernet'
                                     if x['ifname'].endswith('.0')
                                     else x['type'], axis=1)
 
         if_df = if_df.query(f'~ifname.isin({del_iflist})').reset_index()
+        if_df['lifname'] = if_df.apply(
+            lambda x: x['ifname'] if x['ifname'].endswith('.0')
+            else "", axis=1
+        )
         if_df['ifname'] = if_df.apply(
             lambda x: x['ifname'] if not x['ifname'].endswith('.0')
             else x['pifname'], axis=1)
+
 
         lldpobj = self._get_table_sqobj('lldp')
         vlanobj = self._get_table_sqobj('vlan')
@@ -317,7 +361,7 @@ class InterfacesObj(SqPandasEngine):
             return if_df
 
         combined_df = combined_df.fillna(
-            {'mtuPeer': 0, 'speedPeer': 0, 'typePeer': '',
+            {'mtuPeer': 0, 'speedPeer': MISSING_SPEED, 'typePeer': '',
              'peerHostname': '', 'peerIfname': '', 'indexPeer': -1})
         for fld in ['ipAddressListPeer', 'ip6AddressListPeer', 'vlanListPeer']:
             combined_df[fld] = combined_df[fld] \
@@ -359,8 +403,8 @@ class InterfacesObj(SqPandasEngine):
             axis=1)
 
         combined_df['assertReason'] += combined_df.apply(
-            lambda x: _check_field(
-                x, 'speed', 'speedPeer', ['Speed mismatch']),
+            lambda x: _check_speed(
+                x, 'speed', 'speedPeer', ['Speed mismatch','Missing speed','Zero speed']),
             axis=1)
 
         combined_df['assertReason'] += combined_df.apply(
