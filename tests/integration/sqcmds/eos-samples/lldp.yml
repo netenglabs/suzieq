@@ -122,3 +122,39 @@ tests:
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
     "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
+- command: lldp show --peerHostname=spine01 --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: lldp show eos
+  output: '[{"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet1", "peerHostname":
+    "spine01", "peerIfname": "Ethernet1", "description": "", "mgmtIP": "10.0.0.21",
+    "timestamp": 1623025176213}, {"namespace": "eos", "hostname": "leaf02", "ifname":
+    "Ethernet1", "peerHostname": "spine01", "peerIfname": "Ethernet2", "description":
+    "", "mgmtIP": "10.0.0.21", "timestamp": 1623025176214}, {"namespace": "eos", "hostname":
+    "leaf03", "ifname": "Ethernet1", "peerHostname": "spine01", "peerIfname": "Ethernet3",
+    "description": "", "mgmtIP": "10.0.0.21", "timestamp": 1623025176626}, {"namespace":
+    "eos", "hostname": "exit01", "ifname": "Ethernet1", "peerHostname": "spine01",
+    "peerIfname": "Ethernet5", "description": "", "mgmtIP": "10.0.0.21", "timestamp":
+    1623025176818}, {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet1",
+    "peerHostname": "spine01", "peerIfname": "Ethernet6", "description": "", "mgmtIP":
+    "10.0.0.21", "timestamp": 1623025176818}, {"namespace": "eos", "hostname": "leaf04",
+    "ifname": "Ethernet1", "peerHostname": "spine01", "peerIfname": "Ethernet4", "description":
+    "", "mgmtIP": "10.0.0.21", "timestamp": 1623025176904}]'
+- command: lldp show --peerHostname='leaf01 exit01' --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: lldp show eos
+  output: '[{"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet6", "peerHostname":
+    "leaf01", "peerIfname": "Ethernet6", "description": "", "mgmtIP": "10.0.0.11",
+    "timestamp": 1623025176214}, {"namespace": "eos", "hostname": "leaf02", "ifname":
+    "Ethernet5", "peerHostname": "leaf01", "peerIfname": "Ethernet5", "description":
+    "", "mgmtIP": "10.0.0.11", "timestamp": 1623025176214}, {"namespace": "eos", "hostname":
+    "spine01", "ifname": "Ethernet1", "peerHostname": "leaf01", "peerIfname": "Ethernet1",
+    "description": "", "mgmtIP": "10.0.0.11", "timestamp": 1623025176625}, {"namespace":
+    "eos", "hostname": "spine01", "ifname": "Ethernet5", "peerHostname": "exit01",
+    "peerIfname": "Ethernet1", "description": "", "mgmtIP": "10.0.0.31", "timestamp":
+    1623025176625}, {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet1",
+    "peerHostname": "leaf01", "peerIfname": "Ethernet2", "description": "", "mgmtIP":
+    "10.0.0.11", "timestamp": 1623025176817}, {"namespace": "eos", "hostname": "spine02",
+    "ifname": "Ethernet5", "peerHostname": "exit01", "peerIfname": "Ethernet2", "description":
+    "", "mgmtIP": "10.0.0.31", "timestamp": 1623025176817}, {"namespace": "eos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/0", "peerHostname": "exit01", "peerIfname": "Ethernet4",
+    "description": "", "mgmtIP": "10.0.0.31", "timestamp": 1623025179139}]'
