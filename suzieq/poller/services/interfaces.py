@@ -376,6 +376,9 @@ class InterfaceService(Service):
                     if afi == 'inet':
                         no_inet = False
                         addrlist = elem.get('interface-address', [])
+                    elif afi == 'inet6':
+                        no_inet = False
+                        addrlist = elem.get('interface-address', [])
                     if afi == "aenet":
                         master = elem.get("ae-bundle-name", [{}])[0] \
                             .get("data", "")
