@@ -45,7 +45,10 @@ class SqpollerObj(SqPandasEngine):
             fields.append('pollExcdPeriodCount')
             drop_cols.append('pollExcdPeriodCount')
 
-        df = super().get(add_filter=add_filter, **kwargs)
+        if columns == ['*']:
+            drop_cols.append('sqvers')
+
+        df = super().get(add_filter=add_filter, columns=fields, **kwargs)
         if not df.empty and add_filter:
             df = df.query(add_filter).reset_index(drop=True)
 
