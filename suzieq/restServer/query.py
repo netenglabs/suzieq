@@ -649,6 +649,7 @@ async def query_sqPoller(verb: CommonVerbs, request: Request,
                          service: str = None,
                          status: AssertStatusValues = Query(None),
                          query_str: str = None, what: str = None,
+                         pollExcdPeriodCount: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())

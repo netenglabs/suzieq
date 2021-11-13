@@ -379,7 +379,7 @@ def test_rest_arg_consistency(service, verb):
 
     if verb == "describe" and not service == "tables":
         return
-    if service in ['topcpu', 'topmem', 'sqPoller', 'ospfIf', 'ospfNbr', 'time', 'ifCounters']:
+    if service in ['topcpu', 'topmem', 'ospfIf', 'ospfNbr', 'time', 'ifCounters']:
         return
     # import all relevant functions from the rest code first
 
