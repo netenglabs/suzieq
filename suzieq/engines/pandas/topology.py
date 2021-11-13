@@ -7,6 +7,8 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
+from suzieq.utils import build_query_str
+
 # TODO:
 # topology for different VRFs?
 # iBGP vs eBGP?
@@ -152,13 +154,12 @@ class TopologyObj(SqPandasEngine):
 
         # Apply the appropriate filters
         if not self.lsdb.empty:
-            if hostname:
-                self.lsdb = self.lsdb.query(f'hostname.isin({hostname})')
-            if peerHostname:
-                self.lsdb = self.lsdb.query(
-                    f'peerHostname.isin({peerHostname})')
-            if ifname:
-                self.lsdb = self.lsdb.query(f'ifname.isin({ifname})')
+            query_str = build_query_str([], self.schema, ignore_regex=False,
+                                        hostname=hostname,
+                                        peerHostname=peerHostname,
+                                        ifname=ifname)
+            if query_str:
+                self.lsdb = self.lsdb.query(query_str)
 
         if user_query and not self.lsdb.empty:
             self.lsdb = self.lsdb.query(user_query)

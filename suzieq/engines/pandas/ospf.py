@@ -63,7 +63,8 @@ class OspfObj(SqPandasEngine):
             query_str = ''
             cond_prefix = ''
 
-        host_query_str = build_query_str([], ifschema, hostname=hostname)
+        host_query_str = build_query_str([], ifschema, ignore_regex=False,
+                                         hostname=hostname)
         if host_query_str:
             query_str += f'{cond_prefix}{host_query_str}'
 

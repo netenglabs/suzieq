@@ -96,7 +96,7 @@ class SqPandasEngine(SqEngineObj):
         addnl_fields = kwargs.pop('addnl_fields', [])
         view = kwargs.pop('view', self.iobj.view)
         active_only = kwargs.pop('active_only', True)
-        hostname = kwargs.get('hostname', [])
+        hostname = kwargs.pop('hostname', [])
 
         fields = sch.get_display_fields(columns)
         key_fields = sch.key_fields()
