@@ -6249,3 +6249,779 @@ tests:
   output: '[{"namespace": "junos", "deviceCnt": 12, "serviceCnt": 17, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
     1634534036232, "active": true}]'
+- command: sqPoller show --columns='*' --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: sqPoller show all junos
+  output: '[{"namespace": "junos", "hostname": "server201", "service": "vlan", "status":
+    0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [1.0, 1.0, 1.0], "svcQsize": [8.0,
+    8.0, 8.0], "wrQsize": [3.0, 3.0, 3.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
+    [220.0, 220.0, 220.0], "pollExcdPeriodCount": 0, "timestamp": 1634534033018, "version":
+    "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true}, {"namespace":
+    "junos", "hostname": "server202", "service": "vlan", "status": 0, "gatherTime":
+    [1.0, 1.0, 1.0], "totalTime": [1.0, 1.0, 1.0], "svcQsize": [10.0, 10.0, 10.0],
+    "wrQsize": [1.0, 1.0, 1.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes": [220.0, 220.0,
+    220.0], "pollExcdPeriodCount": 0, "timestamp": 1634534033018, "version": "0.15.3",
+    "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true}, {"namespace": "junos",
+    "hostname": "firewall01", "service": "vlan", "status": 0, "gatherTime": [1.0,
+    1.0, 1.0], "totalTime": [1.0, 1.0, 1.0], "svcQsize": [9.0, 9.0, 9.0], "wrQsize":
+    [2.0, 2.0, 2.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes": [221.0, 221.0, 221.0],
+    "pollExcdPeriodCount": 0, "timestamp": 1634534033018, "version": "0.15.3", "nodesPolledCnt":
+    1, "nodesFailedCnt": 0, "active": true}, {"namespace": "junos", "hostname": "server101",
+    "service": "vlan", "status": 0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [1.0,
+    1.0, 1.0], "svcQsize": [11.0, 11.0, 11.0], "wrQsize": [0.0, 0.0, 0.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [220.0, 220.0, 220.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534033018, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server102", "service": "vlan",
+    "status": 0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [1.0, 1.0, 1.0], "svcQsize":
+    [7.0, 7.0, 7.0], "wrQsize": [4.0, 4.0, 4.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
+    [221.0, 221.0, 221.0], "pollExcdPeriodCount": 0, "timestamp": 1634534033018, "version":
+    "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true}, {"namespace":
+    "junos", "hostname": "exit02", "service": "vlan", "status": 0, "gatherTime": [1.0,
+    1.0, 1.0], "totalTime": [2.0, 2.0, 2.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize":
+    [6.0, 6.0, 6.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes": [2615.0, 2615.0, 2615.0],
+    "pollExcdPeriodCount": 0, "timestamp": 1634534033019, "version": "0.15.3", "nodesPolledCnt":
+    1, "nodesFailedCnt": 0, "active": true}, {"namespace": "junos", "hostname": "spine02",
+    "service": "vlan", "status": 0, "gatherTime": [2.0, 2.0, 2.0], "totalTime": [3.0,
+    3.0, 3.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [8.0, 8.0, 8.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [2616.0, 2616.0, 2616.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033020, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "vlan", "status": 0, "gatherTime": [3.0, 3.0, 3.0], "totalTime": [3.0, 3.0, 3.0],
+    "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [10.0, 10.0, 10.0], "nodeQsize": [0.0,
+    0.0, 0.0], "rxBytes": [2617.0, 2617.0, 2617.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534033020, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "vlan",
+    "status": 0, "gatherTime": [4.0, 4.0, 4.0], "totalTime": [4.0, 4.0, 4.0], "svcQsize":
+    [2.0, 2.0, 2.0], "wrQsize": [14.0, 14.0, 14.0], "nodeQsize": [0.0, 0.0, 0.0],
+    "rxBytes": [2615.0, 2615.0, 2615.0], "pollExcdPeriodCount": 0, "timestamp": 1634534033021,
+    "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true},
+    {"namespace": "junos", "hostname": "spine01", "service": "vlan", "status": 0,
+    "gatherTime": [3.0, 3.0, 3.0], "totalTime": [4.0, 4.0, 4.0], "svcQsize": [3.0,
+    3.0, 3.0], "wrQsize": [12.0, 12.0, 12.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
+    [2616.0, 2616.0, 2616.0], "pollExcdPeriodCount": 0, "timestamp": 1634534033021,
+    "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true},
+    {"namespace": "junos", "hostname": "leaf01", "service": "vlan", "status": 0, "gatherTime":
+    [4.0, 4.0, 4.0], "totalTime": [5.0, 5.0, 5.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize":
+    [16.0, 16.0, 16.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes": [8704.0, 8704.0,
+    8704.0], "pollExcdPeriodCount": 0, "timestamp": 1634534033022, "version": "0.15.3",
+    "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true}, {"namespace": "junos",
+    "hostname": "leaf02", "service": "vlan", "status": 0, "gatherTime": [5.0, 5.0,
+    5.0], "totalTime": [6.0, 6.0, 6.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [18.0,
+    18.0, 18.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes": [8704.0, 8704.0, 8704.0],
+    "pollExcdPeriodCount": 0, "timestamp": 1634534033023, "version": "0.15.3", "nodesPolledCnt":
+    1, "nodesFailedCnt": 0, "active": true}, {"namespace": "junos", "hostname": "leaf01",
+    "service": "interfaces", "status": 0, "gatherTime": [6.0, 6.0, 6.0], "totalTime":
+    [27.0, 27.0, 27.0], "svcQsize": [11.0, 11.0, 11.0], "wrQsize": [20.0, 20.0, 20.0],
+    "nodeQsize": [1.0, 1.0, 1.0], "rxBytes": [275834.0, 275834.0, 275834.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033044, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "interfaces",
+    "status": 0, "gatherTime": [27.0, 27.0, 27.0], "totalTime": [46.0, 46.0, 46.0],
+    "svcQsize": [10.0, 10.0, 10.0], "wrQsize": [22.0, 22.0, 22.0], "nodeQsize": [1.0,
+    1.0, 1.0], "rxBytes": [252574.0, 252574.0, 252574.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033063, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "interfaces",
+    "status": 0, "gatherTime": [46.0, 46.0, 46.0], "totalTime": [64.0, 64.0, 64.0],
+    "svcQsize": [9.0, 9.0, 9.0], "wrQsize": [24.0, 24.0, 24.0], "nodeQsize": [1.0,
+    1.0, 1.0], "rxBytes": [275834.0, 275834.0, 275834.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033081, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "interfaces",
+    "status": 0, "gatherTime": [64.0, 64.0, 64.0], "totalTime": [86.0, 86.0, 86.0],
+    "svcQsize": [8.0, 8.0, 8.0], "wrQsize": [26.0, 26.0, 26.0], "nodeQsize": [1.0,
+    1.0, 1.0], "rxBytes": [280468.0, 280468.0, 280468.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033103, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "interfaces", "status": 0, "gatherTime": [86.0, 86.0, 86.0], "totalTime": [103.0,
+    103.0, 103.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [28.0, 28.0, 28.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [242094.0, 242094.0, 242094.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033120, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "interfaces",
+    "status": 0, "gatherTime": [103.0, 103.0, 103.0], "totalTime": [123.0, 123.0,
+    123.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [30.0, 30.0, 30.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [252582.0, 252582.0, 252582.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033140, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "interfaces",
+    "status": 0, "gatherTime": [123.0, 123.0, 123.0], "totalTime": [146.0, 146.0,
+    146.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [32.0, 32.0, 32.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [280468.0, 280468.0, 280468.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033163, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server101", "service":
+    "interfaces", "status": 0, "gatherTime": [146.0, 146.0, 146.0], "totalTime": [147.0,
+    147.0, 147.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [34.0, 34.0, 34.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [1413.0, 1413.0, 1413.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033164, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server202", "service":
+    "interfaces", "status": 0, "gatherTime": [147.0, 147.0, 147.0], "totalTime": [148.0,
+    148.0, 148.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [36.0, 36.0, 36.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [1413.0, 1413.0, 1413.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033165, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server102", "service":
+    "interfaces", "status": 0, "gatherTime": [148.0, 148.0, 148.0], "totalTime": [149.0,
+    149.0, 149.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [38.0, 38.0, 38.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [1415.0, 1415.0, 1415.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033166, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "interfaces", "status": 0, "gatherTime": [149.0, 149.0, 149.0], "totalTime": [151.0,
+    151.0, 151.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [40.0, 40.0, 40.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [3866.0, 3866.0, 3866.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033168, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server201", "service":
+    "interfaces", "status": 0, "gatherTime": [151.0, 151.0, 151.0], "totalTime": [152.0,
+    152.0, 152.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [42.0, 42.0, 42.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [1413.0, 1413.0, 1413.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033169, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "device", "status": 0, "gatherTime": [152.0, 152.0, 152.0], "totalTime": [152.0,
+    152.0, 152.0], "svcQsize": [11.0, 11.0, 11.0], "wrQsize": [44.0, 44.0, 44.0],
+    "nodeQsize": [3.0, 3.0, 3.0], "rxBytes": [563.0, 563.0, 563.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033169, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server102", "service":
+    "device", "status": 0, "gatherTime": [153.0, 153.0, 153.0], "totalTime": [153.0,
+    153.0, 153.0], "svcQsize": [8.0, 8.0, 8.0], "wrQsize": [50.0, 50.0, 50.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [562.0, 562.0, 562.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534033170, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server101", "service": "device",
+    "status": 0, "gatherTime": [152.0, 152.0, 152.0], "totalTime": [153.0, 153.0,
+    153.0], "svcQsize": [10.0, 10.0, 10.0], "wrQsize": [46.0, 46.0, 46.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [561.0, 561.0, 561.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534033170, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server202", "service": "device",
+    "status": 0, "gatherTime": [153.0, 153.0, 153.0], "totalTime": [153.0, 153.0,
+    153.0], "svcQsize": [9.0, 9.0, 9.0], "wrQsize": [48.0, 48.0, 48.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [561.0, 561.0, 561.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534033170, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "device",
+    "status": 0, "gatherTime": [154.0, 154.0, 154.0], "totalTime": [154.0, 154.0,
+    154.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [54.0, 54.0, 54.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [4950.0, 4950.0, 4950.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033171, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server201", "service":
+    "device", "status": 0, "gatherTime": [153.0, 153.0, 153.0], "totalTime": [154.0,
+    154.0, 154.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [52.0, 52.0, 52.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [561.0, 561.0, 561.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534033171, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "device",
+    "status": 0, "gatherTime": [155.0, 155.0, 155.0], "totalTime": [155.0, 155.0,
+    155.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [58.0, 58.0, 58.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [4949.0, 4949.0, 4949.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033172, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "device", "status": 0, "gatherTime": [154.0, 154.0, 154.0], "totalTime": [155.0,
+    155.0, 155.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [56.0, 56.0, 56.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [4957.0, 4957.0, 4957.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033172, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "device",
+    "status": 0, "gatherTime": [155.0, 155.0, 155.0], "totalTime": [156.0, 156.0,
+    156.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [60.0, 60.0, 60.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [4954.0, 4954.0, 4954.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033173, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "device",
+    "status": 0, "gatherTime": [156.0, 156.0, 156.0], "totalTime": [157.0, 157.0,
+    157.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [62.0, 62.0, 62.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [4951.0, 4951.0, 4951.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033174, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "device",
+    "status": 0, "gatherTime": [157.0, 157.0, 157.0], "totalTime": [182.0, 182.0,
+    182.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [64.0, 64.0, 64.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [4951.0, 4951.0, 4951.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033199, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "device",
+    "status": 0, "gatherTime": [182.0, 182.0, 182.0], "totalTime": [183.0, 183.0,
+    183.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [66.0, 66.0, 66.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [4954.0, 4954.0, 4954.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033200, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "bgp", "status": 0, "gatherTime": [183.0, 183.0, 183.0], "totalTime": [187.0,
+    187.0, 187.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [68.0, 68.0, 68.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [20165.0, 20165.0, 20165.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033204, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "bgp",
+    "status": 0, "gatherTime": [187.0, 187.0, 187.0], "totalTime": [193.0, 193.0,
+    193.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [70.0, 70.0, 70.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [54024.0, 54024.0, 54024.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033210, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "bgp",
+    "status": 0, "gatherTime": [193.0, 193.0, 193.0], "totalTime": [202.0, 202.0,
+    202.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [72.0, 72.0, 72.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [90380.0, 90380.0, 90380.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033219, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "bgp",
+    "status": 0, "gatherTime": [202.0, 202.0, 202.0], "totalTime": [211.0, 211.0,
+    211.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [74.0, 74.0, 74.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [89101.0, 89101.0, 89101.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033228, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "bgp", "status": 0, "gatherTime": [211.0, 211.0, 211.0], "totalTime": [214.0,
+    214.0, 214.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [76.0, 76.0, 76.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [27512.0, 27512.0, 27512.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033231, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "bgp",
+    "status": 0, "gatherTime": [214.0, 214.0, 214.0], "totalTime": [220.0, 220.0,
+    220.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [78.0, 78.0, 78.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [53523.0, 53523.0, 53523.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033237, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "bgp",
+    "status": 0, "gatherTime": [220.0, 220.0, 220.0], "totalTime": [224.0, 224.0,
+    224.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [80.0, 80.0, 80.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [39974.0, 39974.0, 39974.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033241, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "bgp",
+    "status": 0, "gatherTime": [224.0, 224.0, 224.0], "totalTime": [227.0, 227.0,
+    227.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [82.0, 82.0, 82.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [39486.0, 39486.0, 39486.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033244, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "routes", "status": 0, "gatherTime": [227.0, 227.0, 227.0], "totalTime": [230.0,
+    230.0, 230.0], "svcQsize": [11.0, 11.0, 11.0], "wrQsize": [84.0, 84.0, 84.0],
+    "nodeQsize": [5.0, 5.0, 5.0], "rxBytes": [3337.0, 3337.0, 3337.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033247, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server202", "service":
+    "routes", "status": 0, "gatherTime": [230.0, 230.0, 230.0], "totalTime": [231.0,
+    231.0, 231.0], "svcQsize": [10.0, 10.0, 10.0], "wrQsize": [86.0, 86.0, 86.0],
+    "nodeQsize": [5.0, 5.0, 5.0], "rxBytes": [1747.0, 1747.0, 1747.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033248, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server102", "service":
+    "routes", "status": 0, "gatherTime": [231.0, 231.0, 231.0], "totalTime": [233.0,
+    233.0, 233.0], "svcQsize": [9.0, 9.0, 9.0], "wrQsize": [88.0, 88.0, 88.0], "nodeQsize":
+    [5.0, 5.0, 5.0], "rxBytes": [1755.0, 1755.0, 1755.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033250, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server201", "service":
+    "routes", "status": 0, "gatherTime": [233.0, 233.0, 233.0], "totalTime": [234.0,
+    234.0, 234.0], "svcQsize": [8.0, 8.0, 8.0], "wrQsize": [90.0, 90.0, 90.0], "nodeQsize":
+    [5.0, 5.0, 5.0], "rxBytes": [1747.0, 1747.0, 1747.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033251, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server101", "service":
+    "routes", "status": 0, "gatherTime": [234.0, 234.0, 234.0], "totalTime": [236.0,
+    236.0, 236.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [92.0, 92.0, 92.0], "nodeQsize":
+    [5.0, 5.0, 5.0], "rxBytes": [1747.0, 1747.0, 1747.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534033253, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "routes",
+    "status": 0, "gatherTime": [236.0, 236.0, 236.0], "totalTime": [269.0, 269.0,
+    269.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [94.0, 94.0, 94.0], "nodeQsize":
+    [5.0, 5.0, 5.0], "rxBytes": [229881.0, 229881.0, 229881.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033286, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "routes",
+    "status": 0, "gatherTime": [269.0, 269.0, 269.0], "totalTime": [284.0, 284.0,
+    284.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [96.0, 96.0, 96.0], "nodeQsize":
+    [5.0, 5.0, 5.0], "rxBytes": [103178.0, 103178.0, 103178.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033301, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "routes",
+    "status": 0, "gatherTime": [284.0, 284.0, 284.0], "totalTime": [299.0, 299.0,
+    299.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [98.0, 98.0, 98.0], "nodeQsize":
+    [5.0, 5.0, 5.0], "rxBytes": [103182.0, 103182.0, 103182.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033316, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "routes",
+    "status": 0, "gatherTime": [299.0, 299.0, 299.0], "totalTime": [331.0, 331.0,
+    331.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [100.0, 100.0, 100.0], "nodeQsize":
+    [5.0, 5.0, 5.0], "rxBytes": [265130.0, 265130.0, 265130.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033348, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "routes", "status": 0, "gatherTime": [331.0, 331.0, 331.0], "totalTime": [338.0,
+    338.0, 338.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [102.0, 102.0, 102.0],
+    "nodeQsize": [5.0, 5.0, 5.0], "rxBytes": [35630.0, 35630.0, 35630.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033355, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "routes",
+    "status": 0, "gatherTime": [338.0, 338.0, 338.0], "totalTime": [355.0, 355.0,
+    355.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [104.0, 104.0, 104.0], "nodeQsize":
+    [5.0, 5.0, 5.0], "rxBytes": [110908.0, 110908.0, 110908.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033372, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "routes",
+    "status": 0, "gatherTime": [355.0, 355.0, 355.0], "totalTime": [385.0, 385.0,
+    385.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [106.0, 106.0, 106.0], "nodeQsize":
+    [5.0, 5.0, 5.0], "rxBytes": [265130.0, 265130.0, 265130.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033402, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "topcpu", "status": 0, "gatherTime": [385.0, 385.0, 385.0], "totalTime": [387.0,
+    387.0, 387.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [108.0, 108.0, 108.0],
+    "nodeQsize": [6.0, 6.0, 6.0], "rxBytes": [1439.0, 1439.0, 1439.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033404, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server202", "service":
+    "topcpu", "status": 0, "gatherTime": [387.0, 387.0, 387.0], "totalTime": [389.0,
+    389.0, 389.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [110.0, 110.0, 110.0],
+    "nodeQsize": [6.0, 6.0, 6.0], "rxBytes": [1439.0, 1439.0, 1439.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033406, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server101", "service":
+    "topcpu", "status": 0, "gatherTime": [389.0, 389.0, 389.0], "totalTime": [390.0,
+    390.0, 390.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [112.0, 112.0, 112.0],
+    "nodeQsize": [6.0, 6.0, 6.0], "rxBytes": [1442.0, 1442.0, 1442.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033407, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server102", "service":
+    "topcpu", "status": 0, "gatherTime": [390.0, 390.0, 390.0], "totalTime": [392.0,
+    392.0, 392.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [114.0, 114.0, 114.0],
+    "nodeQsize": [6.0, 6.0, 6.0], "rxBytes": [1439.0, 1439.0, 1439.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033409, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server201", "service":
+    "topcpu", "status": 0, "gatherTime": [392.0, 392.0, 392.0], "totalTime": [394.0,
+    394.0, 394.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [116.0, 116.0, 116.0],
+    "nodeQsize": [6.0, 6.0, 6.0], "rxBytes": [1432.0, 1432.0, 1432.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033411, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "devconfig",
+    "status": 0, "gatherTime": [394.0, 394.0, 394.0], "totalTime": [399.0, 399.0,
+    399.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [118.0, 118.0, 118.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [85212.0, 85212.0, 85212.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033416, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "devconfig",
+    "status": 0, "gatherTime": [399.0, 399.0, 399.0], "totalTime": [405.0, 405.0,
+    405.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [120.0, 120.0, 120.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [82300.0, 82300.0, 82300.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033422, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "devconfig", "status": 0, "gatherTime": [405.0, 405.0, 405.0], "totalTime": [411.0,
+    411.0, 411.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [122.0, 122.0, 122.0],
+    "nodeQsize": [8.0, 8.0, 8.0], "rxBytes": [81715.0, 81715.0, 81715.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033428, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "devconfig",
+    "status": 0, "gatherTime": [411.0, 411.0, 411.0], "totalTime": [416.0, 416.0,
+    416.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [124.0, 124.0, 124.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [83808.0, 83808.0, 83808.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033433, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "devconfig",
+    "status": 0, "gatherTime": [416.0, 416.0, 416.0], "totalTime": [422.0, 422.0,
+    422.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [126.0, 126.0, 126.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [83808.0, 83808.0, 83808.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033439, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "devconfig",
+    "status": 0, "gatherTime": [422.0, 422.0, 422.0], "totalTime": [427.0, 427.0,
+    427.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [128.0, 128.0, 128.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [85212.0, 85212.0, 85212.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033444, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server202", "service":
+    "time", "status": 0, "gatherTime": [433.0, 433.0, 433.0], "totalTime": [433.0,
+    433.0, 433.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [136.0, 136.0, 136.0],
+    "nodeQsize": [9.0, 9.0, 9.0], "rxBytes": [543.0, 543.0, 543.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033450, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "devconfig",
+    "status": 0, "gatherTime": [427.0, 427.0, 427.0], "totalTime": [433.0, 433.0,
+    433.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [130.0, 130.0, 130.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [82300.0, 82300.0, 82300.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033450, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server102", "service":
+    "time", "status": 0, "gatherTime": [433.0, 433.0, 433.0], "totalTime": [433.0,
+    433.0, 433.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [132.0, 132.0, 132.0],
+    "nodeQsize": [9.0, 9.0, 9.0], "rxBytes": [544.0, 544.0, 544.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033450, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "time", "status": 0, "gatherTime": [433.0, 433.0, 433.0], "totalTime": [433.0,
+    433.0, 433.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [134.0, 134.0, 134.0],
+    "nodeQsize": [9.0, 9.0, 9.0], "rxBytes": [544.0, 544.0, 544.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033450, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server101", "service":
+    "time", "status": 0, "gatherTime": [434.0, 434.0, 434.0], "totalTime": [434.0,
+    434.0, 434.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [140.0, 140.0, 140.0],
+    "nodeQsize": [9.0, 9.0, 9.0], "rxBytes": [543.0, 543.0, 543.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033451, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server201", "service":
+    "time", "status": 0, "gatherTime": [433.0, 433.0, 433.0], "totalTime": [434.0,
+    434.0, 434.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [138.0, 138.0, 138.0],
+    "nodeQsize": [9.0, 9.0, 9.0], "rxBytes": [543.0, 543.0, 543.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033451, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "ifCounters", "status": 0, "gatherTime": [434.0, 434.0, 434.0], "totalTime": [436.0,
+    436.0, 436.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [142.0, 142.0, 142.0],
+    "nodeQsize": [10.0, 10.0, 10.0], "rxBytes": [1640.0, 1640.0, 1640.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033453, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server201", "service":
+    "ifCounters", "status": 0, "gatherTime": [436.0, 436.0, 436.0], "totalTime": [436.0,
+    436.0, 436.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [144.0, 144.0, 144.0],
+    "nodeQsize": [10.0, 10.0, 10.0], "rxBytes": [771.0, 771.0, 771.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033453, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server202", "service":
+    "ifCounters", "status": 0, "gatherTime": [436.0, 436.0, 436.0], "totalTime": [437.0,
+    437.0, 437.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [146.0, 146.0, 146.0],
+    "nodeQsize": [10.0, 10.0, 10.0], "rxBytes": [771.0, 771.0, 771.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033454, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server101", "service":
+    "ifCounters", "status": 0, "gatherTime": [437.0, 437.0, 437.0], "totalTime": [438.0,
+    438.0, 438.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [148.0, 148.0, 148.0],
+    "nodeQsize": [10.0, 10.0, 10.0], "rxBytes": [771.0, 771.0, 771.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033455, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server102", "service":
+    "ifCounters", "status": 0, "gatherTime": [438.0, 438.0, 438.0], "totalTime": [439.0,
+    439.0, 439.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [150.0, 150.0, 150.0],
+    "nodeQsize": [10.0, 10.0, 10.0], "rxBytes": [772.0, 772.0, 772.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033456, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "evpnVni", "status": 0, "gatherTime": [439.0, 439.0, 439.0], "totalTime": [439.0,
+    439.0, 439.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [151.0, 151.0, 151.0],
+    "nodeQsize": [11.0, 11.0, 11.0], "rxBytes": [221.0, 221.0, 221.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033456, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "evpnVni",
+    "status": 0, "gatherTime": [439.0, 439.0, 439.0], "totalTime": [440.0, 440.0,
+    440.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [153.0, 153.0, 153.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [11257.0, 11257.0, 11257.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033457, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "evpnVni", "status": 0, "gatherTime": [440.0, 440.0, 440.0], "totalTime": [441.0,
+    441.0, 441.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [154.0, 154.0, 154.0],
+    "nodeQsize": [11.0, 11.0, 11.0], "rxBytes": [1176.0, 1176.0, 1176.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033458, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "evpnVni",
+    "status": 0, "gatherTime": [441.0, 441.0, 441.0], "totalTime": [443.0, 443.0,
+    443.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [156.0, 156.0, 156.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [24944.0, 24944.0, 24944.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033460, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "evpnVni",
+    "status": 0, "gatherTime": [443.0, 443.0, 443.0], "totalTime": [444.0, 444.0,
+    444.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [157.0, 157.0, 157.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [1173.0, 1173.0, 1173.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033461, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "evpnVni",
+    "status": 0, "gatherTime": [444.0, 444.0, 444.0], "totalTime": [445.0, 445.0,
+    445.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [159.0, 159.0, 159.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [11256.0, 11256.0, 11256.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033462, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "evpnVni",
+    "status": 0, "gatherTime": [445.0, 445.0, 445.0], "totalTime": [445.0, 445.0,
+    445.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [160.0, 160.0, 160.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [1173.0, 1173.0, 1173.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033462, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "evpnVni",
+    "status": 0, "gatherTime": [445.0, 445.0, 445.0], "totalTime": [447.0, 447.0,
+    447.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [162.0, 162.0, 162.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [24944.0, 24944.0, 24944.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033464, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "topmem", "status": 0, "gatherTime": [447.0, 447.0, 447.0], "totalTime": [449.0,
+    449.0, 449.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [164.0, 164.0, 164.0],
+    "nodeQsize": [12.0, 12.0, 12.0], "rxBytes": [1440.0, 1440.0, 1440.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033466, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server202", "service":
+    "topmem", "status": 0, "gatherTime": [449.0, 449.0, 449.0], "totalTime": [451.0,
+    451.0, 451.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [166.0, 166.0, 166.0],
+    "nodeQsize": [12.0, 12.0, 12.0], "rxBytes": [1445.0, 1445.0, 1445.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033468, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server101", "service":
+    "topmem", "status": 0, "gatherTime": [451.0, 451.0, 451.0], "totalTime": [453.0,
+    453.0, 453.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [168.0, 168.0, 168.0],
+    "nodeQsize": [12.0, 12.0, 12.0], "rxBytes": [1445.0, 1445.0, 1445.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033470, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server201", "service":
+    "topmem", "status": 0, "gatherTime": [453.0, 453.0, 453.0], "totalTime": [455.0,
+    455.0, 455.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [170.0, 170.0, 170.0],
+    "nodeQsize": [12.0, 12.0, 12.0], "rxBytes": [1445.0, 1445.0, 1445.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033472, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server102", "service":
+    "topmem", "status": 0, "gatherTime": [455.0, 455.0, 455.0], "totalTime": [457.0,
+    457.0, 457.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [172.0, 172.0, 172.0],
+    "nodeQsize": [12.0, 12.0, 12.0], "rxBytes": [1446.0, 1446.0, 1446.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033474, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "ospfIf", "status": 0, "gatherTime": [457.0, 457.0, 457.0], "totalTime": [457.0,
+    457.0, 457.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [173.0, 173.0, 173.0],
+    "nodeQsize": [13.0, 13.0, 13.0], "rxBytes": [226.0, 226.0, 226.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033474, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "ospfIf",
+    "status": 0, "gatherTime": [457.0, 457.0, 457.0], "totalTime": [460.0, 460.0,
+    460.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [175.0, 175.0, 175.0], "nodeQsize":
+    [13.0, 13.0, 13.0], "rxBytes": [16937.0, 16937.0, 16937.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033477, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "ospfIf",
+    "status": 0, "gatherTime": [460.0, 460.0, 460.0], "totalTime": [462.0, 462.0,
+    462.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [177.0, 177.0, 177.0], "nodeQsize":
+    [13.0, 13.0, 13.0], "rxBytes": [11761.0, 11761.0, 11761.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033479, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "ospfIf",
+    "status": 0, "gatherTime": [462.0, 462.0, 462.0], "totalTime": [464.0, 464.0,
+    464.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [179.0, 179.0, 179.0], "nodeQsize":
+    [13.0, 13.0, 13.0], "rxBytes": [11761.0, 11761.0, 11761.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033481, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "ospfIf", "status": 0, "gatherTime": [464.0, 464.0, 464.0], "totalTime": [465.0,
+    465.0, 465.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [180.0, 180.0, 180.0],
+    "nodeQsize": [13.0, 13.0, 13.0], "rxBytes": [636.0, 636.0, 636.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033482, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "ospfIf",
+    "status": 0, "gatherTime": [465.0, 465.0, 465.0], "totalTime": [467.0, 467.0,
+    467.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [182.0, 182.0, 182.0], "nodeQsize":
+    [13.0, 13.0, 13.0], "rxBytes": [11761.0, 11761.0, 11761.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033484, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "ospfIf",
+    "status": 0, "gatherTime": [467.0, 467.0, 467.0], "totalTime": [469.0, 469.0,
+    469.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [184.0, 184.0, 184.0], "nodeQsize":
+    [13.0, 13.0, 13.0], "rxBytes": [11761.0, 11761.0, 11761.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033486, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "ospfIf",
+    "status": 0, "gatherTime": [469.0, 469.0, 469.0], "totalTime": [471.0, 471.0,
+    471.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [186.0, 186.0, 186.0], "nodeQsize":
+    [13.0, 13.0, 13.0], "rxBytes": [16937.0, 16937.0, 16937.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534033488, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server202", "service":
+    "arpnd", "status": 0, "gatherTime": [3155.0, 3155.0, 3155.0], "totalTime": [3155.0,
+    3155.0, 3155.0], "svcQsize": [10.0, 10.0, 10.0], "wrQsize": [3.0, 3.0, 3.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [352.0, 352.0, 352.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036172, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server101", "service": "arpnd",
+    "status": 0, "gatherTime": [3154.0, 3154.0, 3154.0], "totalTime": [3155.0, 3155.0,
+    3155.0], "svcQsize": [11.0, 11.0, 11.0], "wrQsize": [1.0, 1.0, 1.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [298.0, 298.0, 298.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036172, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server102", "service": "arpnd",
+    "status": 0, "gatherTime": [3156.0, 3156.0, 3156.0], "totalTime": [3156.0, 3156.0,
+    3156.0], "svcQsize": [8.0, 8.0, 8.0], "wrQsize": [7.0, 7.0, 7.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [353.0, 353.0, 353.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036173, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "firewall01", "service": "arpnd",
+    "status": 0, "gatherTime": [3155.0, 3155.0, 3155.0], "totalTime": [3156.0, 3156.0,
+    3156.0], "svcQsize": [9.0, 9.0, 9.0], "wrQsize": [5.0, 5.0, 5.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [936.0, 936.0, 936.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036173, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server201", "service": "arpnd",
+    "status": 0, "gatherTime": [3156.0, 3156.0, 3156.0], "totalTime": [3157.0, 3157.0,
+    3157.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [9.0, 9.0, 9.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [298.0, 298.0, 298.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036174, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "arpnd",
+    "status": 0, "gatherTime": [3157.0, 3157.0, 3157.0], "totalTime": [3158.0, 3158.0,
+    3158.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [11.0, 11.0, 11.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [6224.0, 6224.0, 6224.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036175, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "arpnd", "status": 0, "gatherTime": [3158.0, 3158.0, 3158.0], "totalTime": [3159.0,
+    3159.0, 3159.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [13.0, 13.0, 13.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [3392.0, 3392.0, 3392.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036176, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "arpnd",
+    "status": 0, "gatherTime": [3159.0, 3159.0, 3159.0], "totalTime": [3160.0, 3160.0,
+    3160.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [15.0, 15.0, 15.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [5531.0, 5531.0, 5531.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036177, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "arpnd",
+    "status": 0, "gatherTime": [3160.0, 3160.0, 3160.0], "totalTime": [3161.0, 3161.0,
+    3161.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [17.0, 17.0, 17.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [6224.0, 6224.0, 6224.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036178, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "arpnd",
+    "status": 0, "gatherTime": [3161.0, 3161.0, 3161.0], "totalTime": [3162.0, 3162.0,
+    3162.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [19.0, 19.0, 19.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [4783.0, 4783.0, 4783.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036179, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "arpnd",
+    "status": 0, "gatherTime": [3162.0, 3162.0, 3162.0], "totalTime": [3163.0, 3163.0,
+    3163.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [21.0, 21.0, 21.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [4783.0, 4783.0, 4783.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036180, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "ospfNbr", "status": 0, "gatherTime": [3165.0, 3165.0, 3165.0], "totalTime": [3165.0,
+    3165.0, 3165.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [24.0, 24.0, 24.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [5108.0, 5108.0, 5108.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036182, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "arpnd",
+    "status": 0, "gatherTime": [3163.0, 3163.0, 3163.0], "totalTime": [3164.0, 3164.0,
+    3164.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [23.0, 23.0, 23.0], "nodeQsize":
+    [0.0, 0.0, 0.0], "rxBytes": [5531.0, 5531.0, 5531.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036182, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "ospfNbr",
+    "status": 0, "gatherTime": [3165.0, 3165.0, 3165.0], "totalTime": [3167.0, 3167.0,
+    3167.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [26.0, 26.0, 26.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [11005.0, 11005.0, 11005.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036184, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "ospfNbr",
+    "status": 0, "gatherTime": [3167.0, 3167.0, 3167.0], "totalTime": [3168.0, 3168.0,
+    3168.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [28.0, 28.0, 28.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [9051.0, 9051.0, 9051.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036185, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "ospfNbr",
+    "status": 0, "gatherTime": [3168.0, 3168.0, 3168.0], "totalTime": [3170.0, 3170.0,
+    3170.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [30.0, 30.0, 30.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [11005.0, 11005.0, 11005.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036187, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "ospfNbr",
+    "status": 0, "gatherTime": [3170.0, 3170.0, 3170.0], "totalTime": [3171.0, 3171.0,
+    3171.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [32.0, 32.0, 32.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [9051.0, 9051.0, 9051.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036188, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "ospfNbr",
+    "status": 0, "gatherTime": [3171.0, 3171.0, 3171.0], "totalTime": [3173.0, 3173.0,
+    3173.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [34.0, 34.0, 34.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [16607.0, 16607.0, 16607.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036190, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "ospfNbr", "status": 0, "gatherTime": [3175.0, 3175.0, 3175.0], "totalTime": [3175.0,
+    3175.0, 3175.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [37.0, 37.0, 37.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [457.0, 457.0, 457.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036192, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "ospfNbr",
+    "status": 0, "gatherTime": [3173.0, 3173.0, 3173.0], "totalTime": [3175.0, 3175.0,
+    3175.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [36.0, 36.0, 36.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [16607.0, 16607.0, 16607.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036192, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server101", "service":
+    "fs", "status": 0, "gatherTime": [3175.0, 3175.0, 3175.0], "totalTime": [3176.0,
+    3176.0, 3176.0], "svcQsize": [11.0, 11.0, 11.0], "wrQsize": [39.0, 39.0, 39.0],
+    "nodeQsize": [2.0, 2.0, 2.0], "rxBytes": [695.0, 695.0, 695.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036193, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "firewall01", "service":
+    "fs", "status": 0, "gatherTime": [3177.0, 3177.0, 3177.0], "totalTime": [3177.0,
+    3177.0, 3177.0], "svcQsize": [9.0, 9.0, 9.0], "wrQsize": [43.0, 43.0, 43.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [696.0, 696.0, 696.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036194, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server202", "service": "fs",
+    "status": 0, "gatherTime": [3176.0, 3176.0, 3176.0], "totalTime": [3177.0, 3177.0,
+    3177.0], "svcQsize": [10.0, 10.0, 10.0], "wrQsize": [41.0, 41.0, 41.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [695.0, 695.0, 695.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036194, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server102", "service": "fs",
+    "status": 0, "gatherTime": [3177.0, 3177.0, 3177.0], "totalTime": [3178.0, 3178.0,
+    3178.0], "svcQsize": [8.0, 8.0, 8.0], "wrQsize": [45.0, 45.0, 45.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [696.0, 696.0, 696.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036195, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server201", "service": "fs",
+    "status": 0, "gatherTime": [3178.0, 3178.0, 3178.0], "totalTime": [3179.0, 3179.0,
+    3179.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [47.0, 47.0, 47.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [695.0, 695.0, 695.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036196, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service": "fs",
+    "status": 0, "gatherTime": [3179.0, 3179.0, 3179.0], "totalTime": [3181.0, 3181.0,
+    3181.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [49.0, 49.0, 49.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [3239.0, 3239.0, 3239.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036198, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "fs",
+    "status": 0, "gatherTime": [3181.0, 3181.0, 3181.0], "totalTime": [3184.0, 3184.0,
+    3184.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [51.0, 51.0, 51.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [3237.0, 3237.0, 3237.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036201, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "fs",
+    "status": 0, "gatherTime": [3184.0, 3184.0, 3184.0], "totalTime": [3186.0, 3186.0,
+    3186.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [53.0, 53.0, 53.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [3237.0, 3237.0, 3237.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036203, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "fs",
+    "status": 0, "gatherTime": [3186.0, 3186.0, 3186.0], "totalTime": [3188.0, 3188.0,
+    3188.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [55.0, 55.0, 55.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [3238.0, 3238.0, 3238.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036205, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "fs",
+    "status": 0, "gatherTime": [3188.0, 3188.0, 3188.0], "totalTime": [3191.0, 3191.0,
+    3191.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [57.0, 57.0, 57.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [3237.0, 3237.0, 3237.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036208, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "fs",
+    "status": 0, "gatherTime": [3191.0, 3191.0, 3191.0], "totalTime": [3193.0, 3193.0,
+    3193.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [59.0, 59.0, 59.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [3237.0, 3237.0, 3237.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036210, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "fs",
+    "status": 0, "gatherTime": [3193.0, 3193.0, 3193.0], "totalTime": [3195.0, 3195.0,
+    3195.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [61.0, 61.0, 61.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [3238.0, 3238.0, 3238.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036212, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server202", "service":
+    "lldp", "status": 0, "gatherTime": [3195.0, 3195.0, 3195.0], "totalTime": [3195.0,
+    3195.0, 3195.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [66.0, 66.0, 66.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [244.0, 244.0, 244.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036213, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server201", "service": "lldp",
+    "status": 0, "gatherTime": [3195.0, 3195.0, 3195.0], "totalTime": [3195.0, 3195.0,
+    3195.0], "svcQsize": [10.0, 10.0, 10.0], "wrQsize": [63.0, 63.0, 63.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [244.0, 244.0, 244.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036213, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server101", "service": "lldp",
+    "status": 0, "gatherTime": [3195.0, 3195.0, 3195.0], "totalTime": [3195.0, 3195.0,
+    3195.0], "svcQsize": [8.0, 8.0, 8.0], "wrQsize": [65.0, 65.0, 65.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [244.0, 244.0, 244.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036213, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server102", "service": "lldp",
+    "status": 0, "gatherTime": [3195.0, 3195.0, 3195.0], "totalTime": [3195.0, 3195.0,
+    3195.0], "svcQsize": [9.0, 9.0, 9.0], "wrQsize": [64.0, 64.0, 64.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [245.0, 245.0, 245.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036213, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "firewall01", "service": "lldp",
+    "status": 0, "gatherTime": [3194.0, 3194.0, 3194.0], "totalTime": [3195.0, 3195.0,
+    3195.0], "svcQsize": [11.0, 11.0, 11.0], "wrQsize": [62.0, 62.0, 62.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [245.0, 245.0, 245.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036213, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "lldp",
+    "status": 0, "gatherTime": [3195.0, 3195.0, 3195.0], "totalTime": [3196.0, 3196.0,
+    3196.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [68.0, 68.0, 68.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [16694.0, 16694.0, 16694.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036214, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "lldp", "status": 0, "gatherTime": [3196.0, 3196.0, 3196.0], "totalTime": [3197.0,
+    3197.0, 3197.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [70.0, 70.0, 70.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [11297.0, 11297.0, 11297.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036215, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "lldp",
+    "status": 0, "gatherTime": [3197.0, 3197.0, 3197.0], "totalTime": [3198.0, 3198.0,
+    3198.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [72.0, 72.0, 72.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [11296.0, 11296.0, 11296.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036216, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "lldp",
+    "status": 0, "gatherTime": [3198.0, 3198.0, 3198.0], "totalTime": [3199.0, 3199.0,
+    3199.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [74.0, 74.0, 74.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [11296.0, 11296.0, 11296.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036217, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "lldp",
+    "status": 0, "gatherTime": [3199.0, 3199.0, 3199.0], "totalTime": [3200.0, 3200.0,
+    3200.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [76.0, 76.0, 76.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [22088.0, 22088.0, 22088.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036218, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "lldp",
+    "status": 0, "gatherTime": [3200.0, 3200.0, 3200.0], "totalTime": [3201.0, 3201.0,
+    3201.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [78.0, 78.0, 78.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [16693.0, 16693.0, 16693.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036219, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "lldp",
+    "status": 0, "gatherTime": [3201.0, 3201.0, 3201.0], "totalTime": [3202.0, 3202.0,
+    3202.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [80.0, 80.0, 80.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [22086.0, 22086.0, 22086.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036220, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "dcedge01", "service":
+    "macs", "status": 0, "gatherTime": [3202.0, 3202.0, 3202.0], "totalTime": [3202.0,
+    3202.0, 3202.0], "svcQsize": [10.0, 10.0, 10.0], "wrQsize": [82.0, 82.0, 82.0],
+    "nodeQsize": [4.0, 4.0, 4.0], "rxBytes": [297.0, 297.0, 297.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634534036220, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "exit02", "service": "macs",
+    "status": 0, "gatherTime": [3202.0, 3202.0, 3202.0], "totalTime": [3202.0, 3202.0,
+    3202.0], "svcQsize": [11.0, 11.0, 11.0], "wrQsize": [81.0, 81.0, 81.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [295.0, 295.0, 295.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036220, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "leaf01", "service": "macs",
+    "status": 0, "gatherTime": [3203.0, 3203.0, 3203.0], "totalTime": [3203.0, 3203.0,
+    3203.0], "svcQsize": [9.0, 9.0, 9.0], "wrQsize": [84.0, 84.0, 84.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [5389.0, 5389.0, 5389.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036221, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "spine02", "service": "macs",
+    "status": 0, "gatherTime": [3204.0, 3204.0, 3204.0], "totalTime": [3204.0, 3204.0,
+    3204.0], "svcQsize": [7.0, 7.0, 7.0], "wrQsize": [86.0, 86.0, 86.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [296.0, 296.0, 296.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036222, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "spine01", "service": "macs",
+    "status": 0, "gatherTime": [3204.0, 3204.0, 3204.0], "totalTime": [3204.0, 3204.0,
+    3204.0], "svcQsize": [6.0, 6.0, 6.0], "wrQsize": [87.0, 87.0, 87.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [296.0, 296.0, 296.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036222, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "exit01", "service": "macs",
+    "status": 0, "gatherTime": [3203.0, 3203.0, 3203.0], "totalTime": [3204.0, 3204.0,
+    3204.0], "svcQsize": [8.0, 8.0, 8.0], "wrQsize": [85.0, 85.0, 85.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [295.0, 295.0, 295.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036222, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "leaf02", "service": "macs",
+    "status": 0, "gatherTime": [3204.0, 3204.0, 3204.0], "totalTime": [3205.0, 3205.0,
+    3205.0], "svcQsize": [5.0, 5.0, 5.0], "wrQsize": [89.0, 89.0, 89.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [5389.0, 5389.0, 5389.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036223, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "junos", "hostname": "server201", "service":
+    "macs", "status": 0, "gatherTime": [3205.0, 3205.0, 3205.0], "totalTime": [3206.0,
+    3206.0, 3206.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [91.0, 91.0, 91.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [716.0, 716.0, 716.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036224, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server102", "service": "macs",
+    "status": 0, "gatherTime": [3206.0, 3206.0, 3206.0], "totalTime": [3208.0, 3208.0,
+    3208.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [93.0, 93.0, 93.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [717.0, 717.0, 717.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036226, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server101", "service": "macs",
+    "status": 0, "gatherTime": [3208.0, 3208.0, 3208.0], "totalTime": [3209.0, 3209.0,
+    3209.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [95.0, 95.0, 95.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [716.0, 716.0, 716.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036227, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "server202", "service": "macs",
+    "status": 0, "gatherTime": [3210.0, 3210.0, 3210.0], "totalTime": [3211.0, 3211.0,
+    3211.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [97.0, 97.0, 97.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [716.0, 716.0, 716.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634534036229, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "junos", "hostname": "firewall01", "service": "macs",
+    "status": 0, "gatherTime": [3211.0, 3211.0, 3211.0], "totalTime": [3214.0, 3214.0,
+    3214.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [99.0, 99.0, 99.0], "nodeQsize":
+    [4.0, 4.0, 4.0], "rxBytes": [1699.0, 1699.0, 1699.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634534036232, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}]'

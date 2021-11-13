@@ -2,7 +2,7 @@ description: 'Testing verbs for sqpoller: show summarize unique'
 tests:
 - command: sqpoller show --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller show
+  marks: sqpoller show cumulus
   output: '[{"namespace": "ospf-ibgp", "hostname": "spine02", "service": "evpnVni",
     "status": 0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [2.0, 2.0, 2.0], "svcQsize":
     [9.0, 9.0, 9.0], "wrQsize": [0.0, 0.0, 0.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
@@ -2643,7 +2643,7 @@ tests:
     0, "timestamp": 1634522254949}]'
 - command: sqpoller show --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller show
+  marks: sqpoller show cumulus
   output: '[{"hostname": "spine02"}, {"hostname": "leaf01"}, {"hostname": "exit02"},
     {"hostname": "leaf04"}, {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname":
     "internet"}, {"hostname": "spine01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
@@ -2838,7 +2838,7 @@ tests:
     {"hostname": "server102"}]'
 - command: sqpoller summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller summarize
+  marks: sqpoller summarize cumulus
   output: '{"ospf-ibgp": {"deviceCnt": 14, "entriesCnt": 226, "service": 18, "status":
     {"0": 226}, "pollExcdPeriodStat": [0, 0, 0]}, "dual-evpn": {"deviceCnt": 14, "entriesCnt":
     217, "service": 17, "status": {"0": 217}, "pollExcdPeriodStat": [0, 0, 0]}, "ospf-single":
@@ -2846,12 +2846,12 @@ tests:
     [0, 0, 0]}}'
 - command: sqpoller summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller summarize
+  marks: sqpoller summarize cumulus
   output: '{"dual-evpn": {"deviceCnt": 14, "entriesCnt": 217, "service": 17, "status":
     {"0": 217}, "pollExcdPeriodStat": [0, 0, 0]}}'
 - command: sqpoller unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller unique
+  marks: sqpoller unique cumulus
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
@@ -2859,7 +2859,7 @@ tests:
     {"hostname": "spine02"}]'
 - command: sqpoller show --status=pass --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[{"namespace": "ospf-ibgp", "hostname": "spine02", "service": "evpnVni",
     "status": 0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [2.0, 2.0, 2.0], "svcQsize":
     [9.0, 9.0, 9.0], "wrQsize": [0.0, 0.0, 0.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
@@ -5500,11 +5500,11 @@ tests:
     0, "timestamp": 1634522254949}]'
 - command: sqpoller show --status=fail --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[]'
 - command: sqpoller show --status=all --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[{"namespace": "ospf-ibgp", "hostname": "spine02", "service": "evpnVni",
     "status": 0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [2.0, 2.0, 2.0], "svcQsize":
     [9.0, 9.0, 9.0], "wrQsize": [0.0, 0.0, 0.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
@@ -8146,7 +8146,7 @@ tests:
 - command: sqpoller show --status=pass --format=json --columns='namespace hostname
     service status'
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[{"namespace": "ospf-ibgp", "hostname": "spine02", "service": "evpnVni",
     "status": 0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "evpnVni",
     "status": 0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "evpnVni",
@@ -8802,29 +8802,29 @@ tests:
     "service": "routes", "status": 0}]'
 - command: sqpoller show --status=fail --format=json --columns='hostname service status'
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[]'
 - command: sqpoller show --status=foobar --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[]'
 - command: sqpoller show --format=json --poll-period-exceeded=True
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[]'
 - command: sqpoller show --format=json --poll-period-exceeded=True --columns='hostname
     service status'
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[]'
 - command: sqpoller show --status=fail --format=json --poll-period-exceeded=True --columns='hostname
     service status'
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[]'
 - command: sqpoller show --format=json --poll-period-exceeded=False
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[{"namespace": "ospf-ibgp", "hostname": "spine02", "service": "evpnVni",
     "status": 0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [2.0, 2.0, 2.0], "svcQsize":
     [9.0, 9.0, 9.0], "wrQsize": [0.0, 0.0, 0.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
@@ -11465,5 +11465,697 @@ tests:
     0, "timestamp": 1634522254949}]'
 - command: sqpoller show --format=json --status=fail --poll-period-exceeded=False
   data-directory: tests/data/multidc/parquet-out/
-  marks: sqpoller status show
+  marks: sqpoller status show cumulus
   output: '[]'
+- command: sqpoller show --format=json --status=pass --columns='namespace hostname
+    service pollExcdPeriodCount'
+  data-directory: tests/data/multidc/parquet-out/
+  marks: sqpoller status show cumulus
+  output: '[{"namespace": "ospf-ibgp", "hostname": "spine02", "service": "evpnVni",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service":
+    "evpnVni", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "service": "evpnVni", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "service": "evpnVni", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp",
+    "hostname": "edge01", "service": "evpnVni", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server102", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server101", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server104", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server103", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server101", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server104", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server102", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server103", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server101", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server104", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server102", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server103", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server102", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server104", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server103", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server101", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server102", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server103", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server104", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server101", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "devconfig",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service":
+    "devconfig", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "service": "devconfig", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "service": "devconfig", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "service": "devconfig", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "devconfig", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "devconfig", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "devconfig",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service":
+    "devconfig", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname":
+    "internet", "service": "macs", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf04", "service": "macs", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-ibgp", "hostname": "server102", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server104", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server103", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server101", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "interfaces",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service":
+    "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-ibgp", "hostname": "internet", "service": "interfaces", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "interfaces",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service":
+    "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-ibgp", "hostname": "server102", "service": "interfaces", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "interfaces",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "server104",
+    "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp",
+    "hostname": "server103", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-ibgp", "hostname": "server101", "service": "interfaces", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server102", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server101", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server103", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server104", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server102", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server103", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server104", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server101", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server102", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server101", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server103", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server104", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server102", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server101", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server103", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "server104", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit02", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "exit01", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "internet", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "spine02", "service":
+    "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp",
+    "hostname": "server104", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-ibgp", "hostname": "server103", "service": "ifCounters", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "edge01", "service":
+    "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname":
+    "server102", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-ibgp", "hostname": "server101", "service": "ifCounters", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "spine01", "service":
+    "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "service": "ifCounters", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server101", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server102", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server101", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server102", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server101", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server102", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server101", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server102", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "bgp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server101", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server102", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server101", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server102", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "interfaces",
+    "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname": "server104",
+    "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn",
+    "hostname": "server101", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace":
+    "dual-evpn", "hostname": "server102", "service": "interfaces", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "interfaces",
+    "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service":
+    "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname":
+    "leaf01", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn",
+    "hostname": "internet", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace":
+    "dual-evpn", "hostname": "leaf04", "service": "interfaces", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "interfaces",
+    "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname": "exit01", "service":
+    "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname":
+    "leaf03", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn",
+    "hostname": "spine01", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace":
+    "dual-evpn", "hostname": "spine02", "service": "interfaces", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server101", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server102", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server101", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server102", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server101", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server102", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server101", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server102", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "internet", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server104", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname": "edge01", "service":
+    "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname":
+    "server101", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace":
+    "dual-evpn", "hostname": "exit01", "service": "ifCounters", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf02", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname": "internet",
+    "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn",
+    "hostname": "leaf04", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace":
+    "dual-evpn", "hostname": "leaf03", "service": "ifCounters", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname": "leaf01", "service":
+    "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname":
+    "server102", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace":
+    "dual-evpn", "hostname": "spine01", "service": "ifCounters", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "server103", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname": "exit02", "service":
+    "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn", "hostname":
+    "leaf02", "service": "evpnVni", "pollExcdPeriodCount": 0}, {"namespace": "dual-evpn",
+    "hostname": "internet", "service": "evpnVni", "pollExcdPeriodCount": 0}, {"namespace":
+    "dual-evpn", "hostname": "leaf01", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit01", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf03", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "leaf04", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine01", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "edge01", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "spine02", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "dual-evpn", "hostname": "exit02", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf03", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine02", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "internet", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server101", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server103", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "edge01", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server104", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server102", "service": "macs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "interfaces",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "leaf03",
+    "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "internet", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "leaf02", "service": "interfaces", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "interfaces",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "spine02",
+    "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "leaf04", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "exit02", "service": "interfaces", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "interfaces",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "edge01",
+    "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "server101", "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "server103", "service": "interfaces", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server104", "service": "interfaces",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "server102",
+    "service": "interfaces", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "edge01", "service": "lldp", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "server104", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server103", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server102", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server101", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf03", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine02", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "internet", "service": "lldp", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf03", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine02", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "internet", "service": "topmem",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "edge01",
+    "service": "topmem", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "server103", "service": "topmem", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "server104", "service": "topmem", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "server101", "service": "topmem", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server102", "service": "topmem",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "leaf03",
+    "service": "ospfNbr", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "internet", "service": "ospfNbr", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "leaf02", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "ospfNbr",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "spine02",
+    "service": "ospfNbr", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "leaf04", "service": "ospfNbr", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "exit02", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "edge01", "service": "ospfNbr", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf03", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "internet", "service": "topcpu",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "leaf01",
+    "service": "topcpu", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "leaf02", "service": "topcpu", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "spine01", "service": "topcpu", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "spine02", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "edge01", "service": "topcpu", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server104", "service": "topcpu",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "server103",
+    "service": "topcpu", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "server101", "service": "topcpu", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "server102", "service": "topcpu", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "leaf04", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine02", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "internet", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf03", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "mlag", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server101", "service": "device",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "edge01",
+    "service": "device", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "server104", "service": "device", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "server102", "service": "device", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "server103", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf03", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "internet", "service": "device",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "spine02",
+    "service": "device", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "exit02", "service": "device", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "leaf04", "service": "vlan", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "exit01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "device", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf03", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine02", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "internet", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server104", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server101", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "edge01", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server102", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server103", "service": "vlan", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "internet", "service": "ospfIf",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "leaf03",
+    "service": "ospfIf", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "leaf01", "service": "ospfIf", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "spine02", "service": "ospfIf", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "edge01", "service": "ospfIf", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "edge01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "internet", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server103", "service": "arpnd",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "server104",
+    "service": "arpnd", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "server101", "service": "arpnd", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "leaf03", "service": "arpnd", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "spine02", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "arpnd", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server102", "service": "arpnd",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "spine01",
+    "service": "arpnd", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "leaf04", "service": "fs", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "edge01", "service": "fs", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "internet", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server101", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server103", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server104", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf03", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine02", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server102", "service": "fs", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "edge01",
+    "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "exit02", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "internet", "service": "ifCounters", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server104", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "exit01",
+    "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "server101", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "leaf03", "service": "ifCounters", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server103", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "spine02",
+    "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "leaf02", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "leaf01", "service": "ifCounters", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "ifCounters",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "internet",
+    "service": "time", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "server102", "service": "ifCounters", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "leaf03", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine02", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server103", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "edge01", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server101", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server104", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server102", "service": "time", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine01", "service": "evpnVni",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "leaf02",
+    "service": "evpnVni", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "leaf03", "service": "evpnVni", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "exit01", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine02", "service": "evpnVni",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "internet",
+    "service": "evpnVni", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "exit02", "service": "evpnVni", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "edge01", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf01", "service": "evpnVni", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "spine02", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "internet", "service": "routes",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "leaf03",
+    "service": "routes", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "spine01", "service": "routes", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "exit01", "service": "routes", "pollExcdPeriodCount": 0}, {"namespace":
+    "ospf-single", "hostname": "leaf01", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "exit02", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf02", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "leaf04", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "edge01", "service": "routes", "pollExcdPeriodCount":
+    0}, {"namespace": "ospf-single", "hostname": "server103", "service": "routes",
+    "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname": "server104",
+    "service": "routes", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single", "hostname":
+    "server101", "service": "routes", "pollExcdPeriodCount": 0}, {"namespace": "ospf-single",
+    "hostname": "server102", "service": "routes", "pollExcdPeriodCount": 0}]'

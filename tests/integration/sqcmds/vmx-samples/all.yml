@@ -2684,3 +2684,322 @@ tests:
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1634522087740, "active": true}]'
+- command: sqPoller show --columns='*' --format=json
+  data-directory: tests/data/vmx/parquet-out
+  marks: sqPoller show all vmx junos
+  output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service": "macs",
+    "status": 0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [3.0, 3.0, 3.0], "svcQsize":
+    [4.0, 4.0, 4.0], "wrQsize": [1.0, 1.0, 1.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
+    [2226.0, 2226.0, 2226.0], "pollExcdPeriodCount": 0, "timestamp": 1634522086111,
+    "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service": "macs", "status":
+    0, "gatherTime": [3.0, 3.0, 3.0], "totalTime": [5.0, 5.0, 5.0], "svcQsize": [3.0,
+    3.0, 3.0], "wrQsize": [3.0, 3.0, 3.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
+    [4034.0, 4034.0, 4034.0], "pollExcdPeriodCount": 0, "timestamp": 1634522086113,
+    "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service": "macs", "status":
+    0, "gatherTime": [5.0, 5.0, 5.0], "totalTime": [8.0, 8.0, 8.0], "svcQsize": [2.0,
+    2.0, 2.0], "wrQsize": [5.0, 5.0, 5.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
+    [5948.0, 5948.0, 5948.0], "pollExcdPeriodCount": 0, "timestamp": 1634522086116,
+    "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true},
+    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service": "macs", "status":
+    0, "gatherTime": [8.0, 8.0, 8.0], "totalTime": [9.0, 9.0, 9.0], "svcQsize": [1.0,
+    1.0, 1.0], "wrQsize": [6.0, 6.0, 6.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes":
+    [283.0, 283.0, 283.0], "pollExcdPeriodCount": 0, "timestamp": 1634522086117, "version":
+    "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "service": "macs", "status": 0, "gatherTime":
+    [9.0, 9.0, 9.0], "totalTime": [10.0, 10.0, 10.0], "svcQsize": [0.0, 0.0, 0.0],
+    "wrQsize": [8.0, 8.0, 8.0], "nodeQsize": [0.0, 0.0, 0.0], "rxBytes": [2226.0,
+    2226.0, 2226.0], "pollExcdPeriodCount": 0, "timestamp": 1634522086118, "version":
+    "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "service": "interfaces", "status": 0, "gatherTime":
+    [10.0, 10.0, 10.0], "totalTime": [56.0, 56.0, 56.0], "svcQsize": [4.0, 4.0, 4.0],
+    "wrQsize": [10.0, 10.0, 10.0], "nodeQsize": [1.0, 1.0, 1.0], "rxBytes": [284518.0,
+    284518.0, 284518.0], "pollExcdPeriodCount": 0, "timestamp": 1634522086164, "version":
+    "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true}, {"namespace":
+    "vmx", "hostname": "CRP-ACC-SW01", "service": "interfaces", "status": 0, "gatherTime":
+    [56.0, 56.0, 56.0], "totalTime": [102.0, 102.0, 102.0], "svcQsize": [3.0, 3.0,
+    3.0], "wrQsize": [12.0, 12.0, 12.0], "nodeQsize": [1.0, 1.0, 1.0], "rxBytes":
+    [274036.0, 274036.0, 274036.0], "pollExcdPeriodCount": 0, "timestamp": 1634522086210,
+    "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0, "active": true},
+    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service": "interfaces", "status":
+    0, "gatherTime": [102.0, 102.0, 102.0], "totalTime": [142.0, 142.0, 142.0], "svcQsize":
+    [2.0, 2.0, 2.0], "wrQsize": [14.0, 14.0, 14.0], "nodeQsize": [1.0, 1.0, 1.0],
+    "rxBytes": [208588.0, 208588.0, 208588.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522086250, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service": "interfaces",
+    "status": 0, "gatherTime": [142.0, 142.0, 142.0], "totalTime": [179.0, 179.0,
+    179.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [16.0, 16.0, 16.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [271545.0, 271545.0, 271545.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522086287, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service":
+    "interfaces", "status": 0, "gatherTime": [179.0, 179.0, 179.0], "totalTime": [211.0,
+    211.0, 211.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [18.0, 18.0, 18.0], "nodeQsize":
+    [1.0, 1.0, 1.0], "rxBytes": [284627.0, 284627.0, 284627.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522086319, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service":
+    "lldp", "status": 0, "gatherTime": [211.0, 211.0, 211.0], "totalTime": [213.0,
+    213.0, 213.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [20.0, 20.0, 20.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [4147.0, 4147.0, 4147.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086321, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "lldp", "status": 0, "gatherTime": [213.0, 213.0, 213.0], "totalTime": [216.0,
+    216.0, 216.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [22.0, 22.0, 22.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [4135.0, 4135.0, 4135.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086324, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service":
+    "lldp", "status": 0, "gatherTime": [216.0, 216.0, 216.0], "totalTime": [218.0,
+    218.0, 218.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [24.0, 24.0, 24.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [4135.0, 4135.0, 4135.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086326, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "lldp", "status": 0, "gatherTime": [218.0, 218.0, 218.0], "totalTime": [219.0,
+    219.0, 219.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [26.0, 26.0, 26.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [1337.0, 1337.0, 1337.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086327, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service":
+    "lldp", "status": 0, "gatherTime": [219.0, 219.0, 219.0], "totalTime": [222.0,
+    222.0, 222.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [28.0, 28.0, 28.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [5090.0, 5090.0, 5090.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086330, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service":
+    "device", "status": 0, "gatherTime": [222.0, 222.0, 222.0], "totalTime": [223.0,
+    223.0, 223.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [30.0, 30.0, 30.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [3931.0, 3931.0, 3931.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086331, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service":
+    "device", "status": 0, "gatherTime": [223.0, 223.0, 223.0], "totalTime": [225.0,
+    225.0, 225.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [32.0, 32.0, 32.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [3931.0, 3931.0, 3931.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086333, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service":
+    "device", "status": 0, "gatherTime": [225.0, 225.0, 225.0], "totalTime": [227.0,
+    227.0, 227.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [34.0, 34.0, 34.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [3929.0, 3929.0, 3929.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086335, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "device", "status": 0, "gatherTime": [227.0, 227.0, 227.0], "totalTime": [228.0,
+    228.0, 228.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [36.0, 36.0, 36.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [3938.0, 3938.0, 3938.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086336, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "device", "status": 0, "gatherTime": [228.0, 228.0, 228.0], "totalTime": [230.0,
+    230.0, 230.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [38.0, 38.0, 38.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [3941.0, 3941.0, 3941.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086338, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "routes", "status": 0, "gatherTime": [230.0, 230.0, 230.0], "totalTime": [245.0,
+    245.0, 245.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [40.0, 40.0, 40.0], "nodeQsize":
+    [6.0, 6.0, 6.0], "rxBytes": [26895.0, 26895.0, 26895.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522086353, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service":
+    "routes", "status": 0, "gatherTime": [245.0, 245.0, 245.0], "totalTime": [267.0,
+    267.0, 267.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [42.0, 42.0, 42.0], "nodeQsize":
+    [6.0, 6.0, 6.0], "rxBytes": [41815.0, 41815.0, 41815.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522086375, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service":
+    "routes", "status": 0, "gatherTime": [267.0, 267.0, 267.0], "totalTime": [273.0,
+    273.0, 273.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [44.0, 44.0, 44.0], "nodeQsize":
+    [6.0, 6.0, 6.0], "rxBytes": [9155.0, 9155.0, 9155.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086382, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "routes", "status": 0, "gatherTime": [274.0, 274.0, 274.0], "totalTime": [296.0,
+    296.0, 296.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [46.0, 46.0, 46.0], "nodeQsize":
+    [6.0, 6.0, 6.0], "rxBytes": [41873.0, 41873.0, 41873.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522086404, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service":
+    "routes", "status": 0, "gatherTime": [296.0, 296.0, 296.0], "totalTime": [302.0,
+    302.0, 302.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [48.0, 48.0, 48.0], "nodeQsize":
+    [6.0, 6.0, 6.0], "rxBytes": [9155.0, 9155.0, 9155.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522086410, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service":
+    "devconfig", "status": 0, "gatherTime": [1582.0, 1582.0, 1582.0], "totalTime":
+    [1582.0, 1582.0, 1582.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [3.0, 3.0, 3.0],
+    "nodeQsize": [0.0, 0.0, 0.0], "rxBytes": [3641.0, 3641.0, 3641.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087691, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service":
+    "devconfig", "status": 0, "gatherTime": [1580.0, 1580.0, 1580.0], "totalTime":
+    [1581.0, 1581.0, 1581.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [1.0, 1.0, 1.0],
+    "nodeQsize": [0.0, 0.0, 0.0], "rxBytes": [3318.0, 3318.0, 3318.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087691, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "devconfig", "status": 0, "gatherTime": [1582.0, 1582.0, 1582.0], "totalTime":
+    [1583.0, 1583.0, 1583.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [5.0, 5.0, 5.0],
+    "nodeQsize": [0.0, 0.0, 0.0], "rxBytes": [1873.0, 1873.0, 1873.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087692, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "devconfig", "status": 0, "gatherTime": [1583.0, 1583.0, 1583.0], "totalTime":
+    [1583.0, 1583.0, 1583.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [7.0, 7.0, 7.0],
+    "nodeQsize": [0.0, 0.0, 0.0], "rxBytes": [4882.0, 4882.0, 4882.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087692, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service":
+    "vlan", "status": 0, "gatherTime": [1583.0, 1583.0, 1583.0], "totalTime": [1584.0,
+    1584.0, 1584.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [9.0, 9.0, 9.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [3380.0, 3380.0, 3380.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087693, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "vlan", "status": 0, "gatherTime": [1586.0, 1586.0, 1586.0], "totalTime": [1586.0,
+    1586.0, 1586.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [12.0, 12.0, 12.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [467.0, 467.0, 467.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087695, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service": "vlan",
+    "status": 0, "gatherTime": [1584.0, 1584.0, 1584.0], "totalTime": [1586.0, 1586.0,
+    1586.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [11.0, 11.0, 11.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [5982.0, 5982.0, 5982.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087695, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "vlan", "status": 0, "gatherTime": [1587.0, 1587.0, 1587.0], "totalTime": [1587.0,
+    1587.0, 1587.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [16.0, 16.0, 16.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [3112.0, 3112.0, 3112.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087696, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service":
+    "vlan", "status": 0, "gatherTime": [1586.0, 1586.0, 1586.0], "totalTime": [1587.0,
+    1587.0, 1587.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [14.0, 14.0, 14.0], "nodeQsize":
+    [2.0, 2.0, 2.0], "rxBytes": [3112.0, 3112.0, 3112.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087696, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service":
+    "ospfNbr", "status": 0, "gatherTime": [1588.0, 1588.0, 1588.0], "totalTime": [1589.0,
+    1589.0, 1589.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [17.0, 17.0, 17.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [1168.0, 1168.0, 1168.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087698, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service":
+    "ospfNbr", "status": 0, "gatherTime": [1589.0, 1589.0, 1589.0], "totalTime": [1590.0,
+    1590.0, 1590.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [18.0, 18.0, 18.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [1168.0, 1168.0, 1168.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087699, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "ospfNbr", "status": 0, "gatherTime": [1590.0, 1590.0, 1590.0], "totalTime": [1591.0,
+    1591.0, 1591.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [19.0, 19.0, 19.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [3053.0, 3053.0, 3053.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087700, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "ospfNbr", "status": 0, "gatherTime": [1591.0, 1591.0, 1591.0], "totalTime": [1592.0,
+    1592.0, 1592.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [20.0, 20.0, 20.0], "nodeQsize":
+    [3.0, 3.0, 3.0], "rxBytes": [9028.0, 9028.0, 9028.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087701, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service":
+    "inventory", "status": 0, "gatherTime": [1592.0, 1592.0, 1592.0], "totalTime":
+    [1593.0, 1593.0, 1593.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [22.0, 22.0,
+    22.0], "nodeQsize": [4.0, 4.0, 4.0], "rxBytes": [3760.0, 3760.0, 3760.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087702, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service":
+    "inventory", "status": 0, "gatherTime": [1594.0, 1594.0, 1594.0], "totalTime":
+    [1595.0, 1595.0, 1595.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [24.0, 24.0,
+    24.0], "nodeQsize": [4.0, 4.0, 4.0], "rxBytes": [3760.0, 3760.0, 3760.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087704, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "inventory", "status": 0, "gatherTime": [1595.0, 1595.0, 1595.0], "totalTime":
+    [1596.0, 1596.0, 1596.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [26.0, 26.0,
+    26.0], "nodeQsize": [4.0, 4.0, 4.0], "rxBytes": [3763.0, 3763.0, 3763.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087705, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service":
+    "inventory", "status": 0, "gatherTime": [1596.0, 1596.0, 1596.0], "totalTime":
+    [1597.0, 1597.0, 1597.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [28.0, 28.0,
+    28.0], "nodeQsize": [4.0, 4.0, 4.0], "rxBytes": [3764.0, 3764.0, 3764.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087706, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "inventory", "status": 0, "gatherTime": [1597.0, 1597.0, 1597.0], "totalTime":
+    [1598.0, 1598.0, 1598.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [30.0, 30.0,
+    30.0], "nodeQsize": [4.0, 4.0, 4.0], "rxBytes": [3764.0, 3764.0, 3764.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087707, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service":
+    "ospfIf", "status": 0, "gatherTime": [1599.0, 1599.0, 1599.0], "totalTime": [1599.0,
+    1599.0, 1599.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [33.0, 33.0, 33.0], "nodeQsize":
+    [7.0, 7.0, 7.0], "rxBytes": [650.0, 650.0, 650.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087708, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service": "ospfIf",
+    "status": 0, "gatherTime": [1598.0, 1598.0, 1598.0], "totalTime": [1599.0, 1599.0,
+    1599.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [31.0, 31.0, 31.0], "nodeQsize":
+    [7.0, 7.0, 7.0], "rxBytes": [642.0, 642.0, 642.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087708, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "ospfIf", "status": 0, "gatherTime": [1599.0, 1599.0, 1599.0], "totalTime": [1599.0,
+    1599.0, 1599.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [32.0, 32.0, 32.0], "nodeQsize":
+    [7.0, 7.0, 7.0], "rxBytes": [648.0, 648.0, 648.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087708, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service": "ospfIf",
+    "status": 0, "gatherTime": [1600.0, 1600.0, 1600.0], "totalTime": [1600.0, 1600.0,
+    1600.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [35.0, 35.0, 35.0], "nodeQsize":
+    [7.0, 7.0, 7.0], "rxBytes": [642.0, 642.0, 642.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087709, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "ospfIf", "status": 0, "gatherTime": [1599.0, 1599.0, 1599.0], "totalTime": [1600.0,
+    1600.0, 1600.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [34.0, 34.0, 34.0], "nodeQsize":
+    [7.0, 7.0, 7.0], "rxBytes": [650.0, 650.0, 650.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087709, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service": "arpnd",
+    "status": 0, "gatherTime": [1600.0, 1600.0, 1600.0], "totalTime": [1601.0, 1601.0,
+    1601.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [37.0, 37.0, 37.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [1762.0, 1762.0, 1762.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087710, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service":
+    "arpnd", "status": 0, "gatherTime": [1601.0, 1601.0, 1601.0], "totalTime": [1602.0,
+    1602.0, 1602.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [39.0, 39.0, 39.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [5316.0, 5316.0, 5316.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087711, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service":
+    "arpnd", "status": 0, "gatherTime": [1602.0, 1602.0, 1602.0], "totalTime": [1603.0,
+    1603.0, 1603.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [41.0, 41.0, 41.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [1762.0, 1762.0, 1762.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087712, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "arpnd", "status": 0, "gatherTime": [1603.0, 1603.0, 1603.0], "totalTime": [1604.0,
+    1604.0, 1604.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [43.0, 43.0, 43.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [2357.0, 2357.0, 2357.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087713, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "arpnd", "status": 0, "gatherTime": [1604.0, 1604.0, 1604.0], "totalTime": [1606.0,
+    1606.0, 1606.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [45.0, 45.0, 45.0], "nodeQsize":
+    [8.0, 8.0, 8.0], "rxBytes": [5316.0, 5316.0, 5316.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087715, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "fs", "status": 0, "gatherTime": [1607.0, 1607.0, 1607.0], "totalTime": [1607.0,
+    1607.0, 1607.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [49.0, 49.0, 49.0], "nodeQsize":
+    [9.0, 9.0, 9.0], "rxBytes": [509.0, 509.0, 509.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087716, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service": "fs",
+    "status": 0, "gatherTime": [1606.0, 1606.0, 1606.0], "totalTime": [1607.0, 1607.0,
+    1607.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [47.0, 47.0, 47.0], "nodeQsize":
+    [9.0, 9.0, 9.0], "rxBytes": [505.0, 505.0, 505.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087716, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "fs", "status": 0, "gatherTime": [1607.0, 1607.0, 1607.0], "totalTime": [1608.0,
+    1608.0, 1608.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [51.0, 51.0, 51.0], "nodeQsize":
+    [9.0, 9.0, 9.0], "rxBytes": [508.0, 508.0, 508.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087717, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service":
+    "fs", "status": 0, "gatherTime": [1608.0, 1608.0, 1608.0], "totalTime": [1609.0,
+    1609.0, 1609.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [53.0, 53.0, 53.0], "nodeQsize":
+    [9.0, 9.0, 9.0], "rxBytes": [509.0, 509.0, 509.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087718, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service": "fs",
+    "status": 0, "gatherTime": [1609.0, 1609.0, 1609.0], "totalTime": [1609.0, 1609.0,
+    1609.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [55.0, 55.0, 55.0], "nodeQsize":
+    [9.0, 9.0, 9.0], "rxBytes": [505.0, 505.0, 505.0], "pollExcdPeriodCount": 0, "timestamp":
+    1634522087718, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt": 0,
+    "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "service": "bgp",
+    "status": 0, "gatherTime": [1612.0, 1612.0, 1612.0], "totalTime": [1612.0, 1612.0,
+    1612.0], "svcQsize": [3.0, 3.0, 3.0], "wrQsize": [58.0, 58.0, 58.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [601.0, 601.0, 601.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087721, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service":
+    "bgp", "status": 0, "gatherTime": [1609.0, 1609.0, 1609.0], "totalTime": [1612.0,
+    1612.0, 1612.0], "svcQsize": [4.0, 4.0, 4.0], "wrQsize": [57.0, 57.0, 57.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [15769.0, 15769.0, 15769.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087721, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "service":
+    "bgp", "status": 0, "gatherTime": [1612.0, 1612.0, 1612.0], "totalTime": [1619.0,
+    1619.0, 1619.0], "svcQsize": [2.0, 2.0, 2.0], "wrQsize": [60.0, 60.0, 60.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [47480.0, 47480.0, 47480.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087728, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "service":
+    "bgp", "status": 0, "gatherTime": [1619.0, 1619.0, 1619.0], "totalTime": [1630.0,
+    1630.0, 1630.0], "svcQsize": [1.0, 1.0, 1.0], "wrQsize": [62.0, 62.0, 62.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [50378.0, 50378.0, 50378.0], "pollExcdPeriodCount":
+    0, "timestamp": 1634522087739, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "service":
+    "bgp", "status": 0, "gatherTime": [1631.0, 1631.0, 1631.0], "totalTime": [1631.0,
+    1631.0, 1631.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [63.0, 63.0, 63.0], "nodeQsize":
+    [11.0, 11.0, 11.0], "rxBytes": [601.0, 601.0, 601.0], "pollExcdPeriodCount": 0,
+    "timestamp": 1634522087740, "version": "0.15.3", "nodesPolledCnt": 1, "nodesFailedCnt":
+    0, "active": true}]'
