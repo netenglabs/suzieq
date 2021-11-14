@@ -1,3 +1,4 @@
+import re
 from suzieq.sqobjects.basicobj import SqObject
 import pandas as pd
 
@@ -9,6 +10,24 @@ class RoutesObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'prefix',
                                 'vrf', 'protocol', 'prefixlen', 'ipvers',
                                 'add_filter', 'address', 'query_str']
+
+    def validate_get_input(self, **kwargs):
+        if kwargs.get('prefixlen', ''):
+            p_match = re.fullmatch(r'([<>][=]?|[!])?[ ]?([0-9]+)',
+                                   kwargs['prefixlen'])
+            if p_match:
+                plen = int(p_match.group(2))
+                operator = str(p_match.group(1))
+            else:
+                raise ValueError("Invalid prefixlen query: it must be of the "
+                                 "form '[<|<=|>=|>|!] length' (i.e. '>= 24')")
+            if (not (0 <= plen <= 128) or
+               (plen == 128 and operator.startswith('>')) or
+               (not plen and operator.startswith('<'))):
+                raise ValueError("Invalid prefixlen: "
+                                 "value should be between 0 and 128")
+
+        return super().validate_get_input(**kwargs)
 
     def lpm(self, **kwargs):
         '''Get the lpm for the given address'''
