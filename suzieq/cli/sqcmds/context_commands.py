@@ -67,6 +67,8 @@ def set_ctxt(
 
     if pager == 'on':
         plugin_ctx.pager = True
+    elif pager == 'off':
+        plugin_ctx.pager = False
 
 
 @command("clear")
