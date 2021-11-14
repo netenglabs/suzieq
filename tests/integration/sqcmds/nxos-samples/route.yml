@@ -1216,6 +1216,33 @@ tests:
     "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
     "exit02"}, {"hostname": "exit02"}]'
+- command: route show --prefixlen=64 --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show filter prefixlen nxos
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show filter prefixlen nxos
+- command: route show --prefixlen="<=24" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show filter prefixlen nxos
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show filter prefixlen nxos
+- command: route show --prefixlen=">=24" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show filter prefixlen nxos
+- command: route show --prefixlen="!24" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show filter prefixlen nxos
+- command: route show --prefixlen=">128" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show filter prefixlen nxos
+- command: route show --prefixlen="<0" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show filter prefixlen nxos
+- command: route show --prefixlen=">24 and !32" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: route show filter prefixlen nxos
 - command: route summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: route summarize nxos

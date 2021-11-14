@@ -1244,6 +1244,33 @@ tests:
     "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs":
     ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "preference": 200,
     "ipvers": 4, "action": "forward", "timestamp": 1623025174546}]'
+- command: route show --prefixlen=64 --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route show filter prefixlen eos
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route show filter prefixlen eos
+- command: route show --prefixlen="<=24" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route show filter prefixlen eos
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route show filter prefixlen eos
+- command: route show --prefixlen=">=24" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route show filter prefixlen eos
+- command: route show --prefixlen="!24" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route show filter prefixlen eos
+- command: route show --prefixlen=">128" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route show filter prefixlen eos
+- command: route show --prefixlen="<0" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route show filter prefixlen eos
+- command: route show --prefixlen=">24 and !32" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route show filter prefixlen eos  
 - command: route unique --columns=prefixlen --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route unique eos

@@ -4574,7 +4574,7 @@ tests:
     6, "action": "forward", "timestamp": 1616638470426}]'
 - command: route show --prefixlen=64 --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out/
-  marks: route show
+  marks: route show filter prefixlen cumulus
   output: '[{"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "prefix":
     "2001:db8:0:2::/64", "nexthopIps": ["fe80::5054:ff:fe8c:5b4d"], "oifs": ["swp2"],
     "protocol": "bgp", "source": "", "preference": 20, "ipvers": 6, "action": "forward",
@@ -4645,6 +4645,30 @@ tests:
     "default", "prefix": "2001:db8:0:2::/64", "nexthopIps": ["fe80::5054:ff:fed6:9480",
     "fe80::5054:ff:fedb:b08e"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source":
     "", "preference": 20, "ipvers": 6, "action": "forward", "timestamp": 1616638470426}]'
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen cumulus
+- command: route show --prefixlen="<=24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen cumulus
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen cumulus
+- command: route show --prefixlen=">=24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen cumulus
+- command: route show --prefixlen="!24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen cumulus
+- command: route show --prefixlen=">128" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen cumulus
+- command: route show --prefixlen="<0" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen cumulus
+- command: route show --prefixlen=">24 and !32" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen cumulus  
 - command: route summarize --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out/
   marks: route summarize

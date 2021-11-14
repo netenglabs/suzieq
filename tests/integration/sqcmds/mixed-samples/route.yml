@@ -1,5 +1,32 @@
 description: 'Testing verbs for route: show summarize unique lpm'
 tests:
+- command: route show --prefixlen=64 --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: route show filter prefixlen mixed
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: route show filter prefixlen mixed
+- command: route show --prefixlen="<=24" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: route show filter prefixlen mixed
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: route show filter prefixlen mixed
+- command: route show --prefixlen=">=24" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: route show filter prefixlen mixed
+- command: route show --prefixlen="!24" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: route show filter prefixlen mixed
+- command: route show --prefixlen=">128" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: route show filter prefixlen mixed
+- command: route show --prefixlen="<0" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: route show filter prefixlen mixed
+- command: route show --prefixlen=">24 and !32" --format=json
+  data-directory: tests/data/mixed/parquet-out/
+  marks: route show filter prefixlen mixed  
 - command: route lpm --address='11.11.11.11' --columns='hostname nexthopIps' --format=json
   data-directory: tests/data/mixed/parquet-out/
   marks: route lpm mixed

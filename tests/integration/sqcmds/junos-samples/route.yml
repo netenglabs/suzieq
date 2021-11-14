@@ -803,6 +803,33 @@ tests:
     {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
     "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
     {"hostname": "exit01"}]'
+- command: route show --prefixlen=64 --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route show filter prefixlen junos
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route show filter prefixlen junos
+- command: route show --prefixlen="<=24" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route show filter prefixlen junos
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route show filter prefixlen junos
+- command: route show --prefixlen=">=24" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route show filter prefixlen junos
+- command: route show --prefixlen="!24" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route show filter prefixlen junos
+- command: route show --prefixlen=">128" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route show filter prefixlen junos
+- command: route show --prefixlen="<0" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route show filter prefixlen junos
+- command: route show --prefixlen=">24 and !32" --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: route show filter prefixlen junos  
 - command: route summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route summarize junos
