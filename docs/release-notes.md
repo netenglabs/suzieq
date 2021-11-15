@@ -1,5 +1,25 @@
 # Release Notes
 
+## 0.15.6 (Nov 14, 2021)
+
+Another bugfix release of the 0.15 release train, hopefully the last. Here's what's fixed/new in this release:
+
+* Help strings associated with every field in every table's schema. Look at bgp describe for example
+* Fix regex support for namespace and hostname
+* LLDP: Add support for filtering by peer MAC address or hostname, if MAC address is advertised
+* SqPoller: Add support to look for entries whose servicing exceeded the poll period
+* Junos: Fix interface parser to extract IPv6 address along with IPv4
+* Run flake8 (a python linter) on all files and fix errors/warnings reported by flake8
+* Fixed LLDP support for SONiC
+* BGP assert bug fixes
+* Fix address unique columns=vrf to return only VRFs
+* Handle inconsistencies in output across various tables for errors (show, assert, unique, etc)
+* Handle missing output in retrieving device config correctly (resulted in exception otherwise)
+* Bug fixes to the anonymizer
+* Security update to mkdocs (used to generate documentation, not used in code)
+* Add tons of tests to catch inconsistencies in schema vs show output, regex, sqpoller and so on
+
+
 ## 0.15.5 (Oct 25, 2021)
 
 Another bugfix release of the 0.15.5 release train. The main fix is the reworking of the network find algorithm.
