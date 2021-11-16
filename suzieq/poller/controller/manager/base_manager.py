@@ -1,0 +1,36 @@
+"""This module contains the base class for a PollerManager.
+
+Classes:
+    PollerManager: The duty of a pollerManager is to manage pollers data
+                   In some cases it can also monitor pollers
+"""
+from abc import abstractmethod
+from typing import Dict, List
+from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
+
+
+class Manager(ControllerPlugin):
+    """Manage and, in some cases, monitor pollers
+    """
+
+    @abstractmethod
+    async def apply(self, inventory_chunks: Dict):
+        """Apply the inventory chunks to the pollers
+
+        Args:
+            inventory_chunks (Dict): the portions of the global inventory
+                                     to be passed to the poller
+        """
+
+    @abstractmethod
+    def get_n_workers(self, inventory: List[Dict]) -> int:
+        """Given an inventory as input, return the required pollers to query
+        all the devices in it.
+
+        Args:
+            inventory (List[Dict]): the inventory to be splitted across the
+                                    poller instances
+
+        Returns:
+            int: number of desired workers
+        """
