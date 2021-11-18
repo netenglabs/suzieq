@@ -64,30 +64,23 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
             expected_df = expected_df.drop(
                 columns=ignore_cols, errors='ignore')
 
-    try:
-        if isinstance(got_df.index, pd.RangeIndex):
-            expected_df = expected_df \
-                .sort_values(by=expected_df.columns.tolist()) \
-                .reset_index(drop=True)
-        else:
-            expected_df = expected_df \
-                .sort_values(by=expected_df.columns.tolist())
+    # Detect which columns contain lists and convert lists to string
+    expected_df = expected_df.transform(_list_columns_to_str)
+    got_df = got_df.transform(_list_columns_to_str)
 
-        if isinstance(expected_df.index, pd.RangeIndex):
-            got_df = got_df.sort_values(by=got_df.columns.tolist()) \
-                           .reset_index(drop=True)
-        else:
-            got_df = got_df.sort_values(by=got_df.columns.tolist())
+    if isinstance(got_df.index, pd.RangeIndex):
+        expected_df = expected_df \
+            .sort_values(by=expected_df.columns.tolist()) \
+            .reset_index(drop=True)
+    else:
+        expected_df = expected_df \
+            .sort_values(by=expected_df.columns.tolist())
 
-    except Exception:
-        sortcols = [x
-                    for x in ['namespace', 'hostname', 'ifname', 'vrf',
-                              'peer', 'prefix', 'ipAddress', 'vlan', 'macaddr']
-                    if x in expected_df.columns]
-        if sortcols:
-            expected_df = expected_df.sort_values(by=sortcols) \
-                                     .reset_index(drop=True)
-            got_df = got_df.sort_values(by=sortcols).reset_index(drop=True)
+    if isinstance(expected_df.index, pd.RangeIndex):
+        got_df = got_df.sort_values(by=got_df.columns.tolist()) \
+                        .reset_index(drop=True)
+    else:
+        got_df = got_df.sort_values(by=got_df.columns.tolist())
 
     if got_df.shape != expected_df.shape:
         if 'count' in expected_df.columns and (
@@ -173,3 +166,23 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
         except (Exception, AssertionError, TypeError):
             assert(got_df.shape == expected_df.shape)
             assert('Unable to compare' == '')
+
+
+def _list_columns_to_str(col):
+    res = []
+    for el in col:
+        if isinstance(el, list):
+            str_el = []
+            # convert to string each element of the list
+            for d in el:
+                # dictionaries are handled separately
+                if isinstance(d, dict):
+                    str_el.append(str({key: val for key, val in sorted(
+                        d.items(), key=lambda x: x[0])}))
+                else:
+                    str_el.append(str(d))
+            res.append(" ".join(sorted(str_el)))
+        # if the element is not a list, convert to string the original value
+        else:
+            res.append(str(el))
+    return res
