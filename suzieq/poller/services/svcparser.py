@@ -464,6 +464,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         else:
                             value = loopdef_val
                     elif not value:
+                        if type(value) is int:
+                            continue
                         value = loopdef_val
 
             # Handle any operation on string
