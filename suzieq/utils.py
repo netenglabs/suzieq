@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 
 
 MAX_MTU = 9216
+MISSING_SPEED = -1
 
 
 def validate_sq_config(cfg):
