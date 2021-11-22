@@ -40,6 +40,8 @@ tests:
     "namespaces": 1, "deviceCnt": 14}]'
 - command: table show --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Invalid columns specified: [''hostname'']"}]'
   marks: table show eos
 - command: table show --namespace=dummy --format=json
   data-directory: tests/data/eos/parquet-out/
@@ -143,3 +145,8 @@ tests:
 - command: table unique --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: table unique eos
+  output: '[{"table": "TOTAL"}, {"table": "arpnd"}, {"table": "bgp"}, {"table": "devconfig"},
+    {"table": "device"}, {"table": "evpnVni"}, {"table": "fs"}, {"table": "ifCounters"},
+    {"table": "interfaces"}, {"table": "lldp"}, {"table": "macs"}, {"table": "mlag"},
+    {"table": "ospfIf"}, {"table": "ospfNbr"}, {"table": "routes"}, {"table": "sqPoller"},
+    {"table": "time"}, {"table": "topcpu"}, {"table": "topmem"}, {"table": "vlan"}]'

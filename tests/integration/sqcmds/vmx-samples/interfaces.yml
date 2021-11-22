@@ -1080,6 +1080,17 @@ tests:
 - command: interface unique --format=json
   data-directory: tests/data/vmx/parquet-out
   marks: interface unique junos vmx
+  output: '[{"type": "bond"}, {"type": "bond_slave"}, {"type": "ethernet"}, {"type":
+    "flexible-ethernet"}, {"type": "flexible-tunnel-interface"}, {"type": "loopback"},
+    {"type": "null"}, {"type": "pppoe"}, {"type": "remote-beb"}, {"type": "software-pseudo"},
+    {"type": "subinterface"}, {"type": "vlan"}, {"type": "vrf"}, {"type": "vtep"}]'
 - command: interface unique --count=True --format=json
   data-directory: tests/data/vmx/parquet-out
   marks: interface unique junos vmx
+  output: '[{"type": "flexible-ethernet", "numRows": 1}, {"type": "vlan", "numRows":
+    4}, {"type": "vrf", "numRows": 4}, {"type": "loopback", "numRows": 5}, {"type":
+    "null", "numRows": 5}, {"type": "pppoe", "numRows": 5}, {"type": "remote-beb",
+    "numRows": 5}, {"type": "software-pseudo", "numRows": 5}, {"type": "bond", "numRows":
+    8}, {"type": "vtep", "numRows": 10}, {"type": "bond_slave", "numRows": 16}, {"type":
+    "subinterface", "numRows": 31}, {"type": "ethernet", "numRows": 38}, {"type":
+    "flexible-tunnel-interface", "numRows": 40}]'

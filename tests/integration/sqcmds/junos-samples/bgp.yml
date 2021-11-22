@@ -143,9 +143,16 @@ tests:
 - command: bgp unique --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: bgp unique junos junos
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}]'
 - command: bgp unique --count=True --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: bgp unique junos junos
+  output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
+    2}, {"hostname": "leaf02", "numRows": 2}, {"hostname": "spine01", "numRows": 4},
+    {"hostname": "spine02", "numRows": 4}, {"hostname": "exit01", "numRows": 6}, {"hostname":
+    "exit02", "numRows": 6}, {"hostname": "firewall01", "numRows": 6}]'
 - command: bgp unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: bgp unique junos junos

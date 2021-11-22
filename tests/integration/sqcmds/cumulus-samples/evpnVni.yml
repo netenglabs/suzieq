@@ -118,9 +118,14 @@ tests:
 - command: evpnVni unique --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni unique cumulus
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}]'
 - command: evpnVni unique --count=True --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni unique cumulus
+  output: '[{"hostname": "exit01", "numRows": 4}, {"hostname": "exit02", "numRows":
+    4}, {"hostname": "leaf01", "numRows": 6}, {"hostname": "leaf02", "numRows": 6},
+    {"hostname": "leaf03", "numRows": 6}, {"hostname": "leaf04", "numRows": 6}]'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: evpnVni unique cumulus

@@ -503,9 +503,36 @@ tests:
 - command: mac unique --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac unique eos
+  output: '[{"macaddr": "01:00:5e:00:00:01"}, {"macaddr": "01:80:c2:00:00:00"}, {"macaddr":
+    "01:80:c2:00:00:02"}, {"macaddr": "01:80:c2:00:00:03"}, {"macaddr": "01:80:c2:00:00:0e"},
+    {"macaddr": "01:80:c2:00:00:21"}, {"macaddr": "33:33:00:00:00:01"}, {"macaddr":
+    "33:33:00:00:00:02"}, {"macaddr": "33:33:ff:00:00:00"}, {"macaddr": "33:33:ff:03:52:e7"},
+    {"macaddr": "33:33:ff:66:e7:e2"}, {"macaddr": "33:33:ff:6d:12:3e"}, {"macaddr":
+    "33:33:ff:95:20:c5"}, {"macaddr": "33:33:ff:a0:c7:37"}, {"macaddr": "33:33:ff:c3:49:72"},
+    {"macaddr": "33:33:ff:d4:d8:63"}, {"macaddr": "33:33:ff:e5:0c:e9"}, {"macaddr":
+    "33:33:ff:fa:e8:70"}, {"macaddr": "44:38:39:24:3f:16"}, {"macaddr": "44:38:39:33:d8:43"},
+    {"macaddr": "44:38:39:81:30:22"}, {"macaddr": "44:38:39:99:c7:9e"}, {"macaddr":
+    "44:38:39:c3:55:cb"}, {"macaddr": "44:38:39:e3:19:2e"}, {"macaddr": "5e:91:28:03:52:e7"},
+    {"macaddr": "66:49:0d:d4:d8:63"}, {"macaddr": "b2:8f:7e:c3:49:72"}, {"macaddr":
+    "d2:74:8c:66:e7:e2"}]'
 - command: mac unique --count=True --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac unique eos
+  output: '[{"macaddr": "33:33:ff:00:00:00", "numRows": 1}, {"macaddr": "33:33:ff:6d:12:3e",
+    "numRows": 1}, {"macaddr": "33:33:ff:95:20:c5", "numRows": 1}, {"macaddr": "33:33:ff:a0:c7:37",
+    "numRows": 1}, {"macaddr": "33:33:ff:e5:0c:e9", "numRows": 1}, {"macaddr": "33:33:ff:fa:e8:70",
+    "numRows": 1}, {"macaddr": "01:80:c2:00:00:21", "numRows": 2}, {"macaddr": "5e:91:28:03:52:e7",
+    "numRows": 2}, {"macaddr": "66:49:0d:d4:d8:63", "numRows": 2}, {"macaddr": "33:33:ff:03:52:e7",
+    "numRows": 3}, {"macaddr": "33:33:ff:66:e7:e2", "numRows": 3}, {"macaddr": "33:33:ff:c3:49:72",
+    "numRows": 3}, {"macaddr": "33:33:ff:d4:d8:63", "numRows": 3}, {"macaddr": "b2:8f:7e:c3:49:72",
+    "numRows": 4}, {"macaddr": "d2:74:8c:66:e7:e2", "numRows": 4}, {"macaddr": "44:38:39:33:d8:43",
+    "numRows": 5}, {"macaddr": "44:38:39:c3:55:cb", "numRows": 5}, {"macaddr": "01:80:c2:00:00:02",
+    "numRows": 8}, {"macaddr": "44:38:39:24:3f:16", "numRows": 8}, {"macaddr": "44:38:39:81:30:22",
+    "numRows": 8}, {"macaddr": "44:38:39:99:c7:9e", "numRows": 8}, {"macaddr": "44:38:39:e3:19:2e",
+    "numRows": 8}, {"macaddr": "33:33:00:00:00:02", "numRows": 9}, {"macaddr": "01:80:c2:00:00:00",
+    "numRows": 17}, {"macaddr": "01:80:c2:00:00:03", "numRows": 17}, {"macaddr": "01:80:c2:00:00:0e",
+    "numRows": 17}, {"macaddr": "01:00:5e:00:00:01", "numRows": 25}, {"macaddr": "33:33:00:00:00:01",
+    "numRows": 25}]'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: mac unique eos

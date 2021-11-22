@@ -73,9 +73,12 @@ tests:
 - command: device unique --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device unique nxos
+  output: '[{"model": "Nexus9000 C9300v Chassis"}, {"model": "vm"}, {"model": "vqfx-10000"}]'
 - command: device unique --count=True --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device unique nxos
+  output: '[{"model": "vqfx-10000", "numRows": 1}, {"model": "vm", "numRows": 5},
+    {"model": "Nexus9000 C9300v Chassis", "numRows": 8}]'
 - command: device unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: device unique nxos

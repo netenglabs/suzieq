@@ -40,6 +40,8 @@ tests:
     "namespaces": 1, "deviceCnt": 14}]'
 - command: table show --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '[{"error": "ERROR: Invalid columns specified: [''hostname'']"}]'
   marks: table show nxos
 - command: table show --namespace=dummy --format=json
   data-directory: tests/data/nxos/parquet-out/
@@ -138,6 +140,20 @@ tests:
 - command: table unique --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: table unique nxos
+  output: '[{"table": "TOTAL"}, {"table": "arpnd"}, {"table": "bgp"}, {"table": "devconfig"},
+    {"table": "device"}, {"table": "evpnVni"}, {"table": "fs"}, {"table": "ifCounters"},
+    {"table": "interfaces"}, {"table": "lldp"}, {"table": "macs"}, {"table": "mlag"},
+    {"table": "ospfIf"}, {"table": "ospfNbr"}, {"table": "routes"}, {"table": "sqPoller"},
+    {"table": "time"}, {"table": "topcpu"}, {"table": "topmem"}, {"table": "vlan"}]'
 - command: table unique --count=True --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: table unique nxos
+  output: '[{"table": "TOTAL", "numRows": 1}, {"table": "arpnd", "numRows": 1}, {"table":
+    "bgp", "numRows": 1}, {"table": "devconfig", "numRows": 1}, {"table": "device",
+    "numRows": 1}, {"table": "evpnVni", "numRows": 1}, {"table": "fs", "numRows":
+    1}, {"table": "ifCounters", "numRows": 1}, {"table": "interfaces", "numRows":
+    1}, {"table": "lldp", "numRows": 1}, {"table": "macs", "numRows": 1}, {"table":
+    "mlag", "numRows": 1}, {"table": "ospfIf", "numRows": 1}, {"table": "ospfNbr",
+    "numRows": 1}, {"table": "routes", "numRows": 1}, {"table": "sqPoller", "numRows":
+    1}, {"table": "time", "numRows": 1}, {"table": "topcpu", "numRows": 1}, {"table":
+    "topmem", "numRows": 1}, {"table": "vlan", "numRows": 1}]'

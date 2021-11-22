@@ -39,9 +39,13 @@ tests:
 - command: evpnVni unique --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni unique junos
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}]'
 - command: evpnVni unique --count=True --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni unique junos
+  output: '[{"hostname": "exit01", "numRows": 1}, {"hostname": "exit02", "numRows":
+    1}, {"hostname": "leaf01", "numRows": 3}, {"hostname": "leaf02", "numRows": 3}]'
 - command: evpnVni unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: evpnVni unique junos

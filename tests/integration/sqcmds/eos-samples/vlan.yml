@@ -77,9 +77,14 @@ tests:
 - command: vlan unique --format=json --count=True
   data-directory: tests/data/eos/parquet-out/
   marks: vlan unique eos
+  output: '[{"vlan": 10, "numRows": 2}, {"vlan": 20, "numRows": 2}, {"vlan": 30, "numRows":
+    4}, {"vlan": 1006, "numRows": 4}, {"vlan": 4094, "numRows": 6}, {"vlan": 1, "numRows":
+    9}]'
 - command: vlan unique --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: vlan unique eos
+  output: '[{"vlan": 1}, {"vlan": 10}, {"vlan": 20}, {"vlan": 30}, {"vlan": 1006},
+    {"vlan": 4094}]'
 - command: vlan unique --columns=hostname --format=json --count=True
   data-directory: tests/data/eos/parquet-out/
   marks: vlan unique eos

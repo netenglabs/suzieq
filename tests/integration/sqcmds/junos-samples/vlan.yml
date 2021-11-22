@@ -38,9 +38,12 @@ tests:
 - command: vlan unique --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan unique junos
+  output: '[{"vlan": 1}, {"vlan": 10}, {"vlan": 20}, {"vlan": 30}]'
 - command: vlan unique --count=True --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan unique junos
+  output: '[{"vlan": 10, "numRows": 1}, {"vlan": 20, "numRows": 1}, {"vlan": 30, "numRows":
+    2}, {"vlan": 1, "numRows": 7}]'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: vlan unique junos

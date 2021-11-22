@@ -239,9 +239,29 @@ tests:
 - command: mac unique --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: mac unique junos
+  output: '[{"macaddr": "01:00:5e:00:00:01"}, {"macaddr": "01:80:c2:00:00:00"}, {"macaddr":
+    "01:80:c2:00:00:03"}, {"macaddr": "01:80:c2:00:00:0e"}, {"macaddr": "01:80:c2:00:00:21"},
+    {"macaddr": "28:b7:ad:3c:81:d0"}, {"macaddr": "28:b7:ad:41:1f:16"}, {"macaddr":
+    "28:b7:ad:82:67:e5"}, {"macaddr": "28:b7:ad:88:ae:71"}, {"macaddr": "33:33:00:00:00:01"},
+    {"macaddr": "33:33:00:00:00:02"}, {"macaddr": "33:33:ff:00:00:00"}, {"macaddr":
+    "33:33:ff:1a:3d:eb"}, {"macaddr": "33:33:ff:1f:79:0c"}, {"macaddr": "33:33:ff:3c:81:d0"},
+    {"macaddr": "33:33:ff:41:1f:16"}, {"macaddr": "33:33:ff:48:10:1c"}, {"macaddr":
+    "33:33:ff:82:67:e5"}, {"macaddr": "33:33:ff:88:ae:71"}, {"macaddr": "33:33:ff:ad:22:41"},
+    {"macaddr": "33:33:ff:f9:71:ff"}]'
 - command: mac unique --count=True --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: mac unique junos
+  output: '[{"macaddr": "28:b7:ad:3c:81:d0", "numRows": 1}, {"macaddr": "28:b7:ad:41:1f:16",
+    "numRows": 1}, {"macaddr": "33:33:ff:00:00:00", "numRows": 1}, {"macaddr": "33:33:ff:1a:3d:eb",
+    "numRows": 1}, {"macaddr": "33:33:ff:1f:79:0c", "numRows": 1}, {"macaddr": "33:33:ff:3c:81:d0",
+    "numRows": 1}, {"macaddr": "33:33:ff:41:1f:16", "numRows": 1}, {"macaddr": "33:33:ff:48:10:1c",
+    "numRows": 1}, {"macaddr": "33:33:ff:82:67:e5", "numRows": 1}, {"macaddr": "33:33:ff:88:ae:71",
+    "numRows": 1}, {"macaddr": "33:33:ff:ad:22:41", "numRows": 1}, {"macaddr": "33:33:ff:f9:71:ff",
+    "numRows": 1}, {"macaddr": "01:80:c2:00:00:21", "numRows": 2}, {"macaddr": "28:b7:ad:82:67:e5",
+    "numRows": 2}, {"macaddr": "28:b7:ad:88:ae:71", "numRows": 2}, {"macaddr": "01:80:c2:00:00:00",
+    "numRows": 9}, {"macaddr": "01:80:c2:00:00:03", "numRows": 9}, {"macaddr": "01:80:c2:00:00:0e",
+    "numRows": 9}, {"macaddr": "33:33:00:00:00:02", "numRows": 9}, {"macaddr": "01:00:5e:00:00:01",
+    "numRows": 17}, {"macaddr": "33:33:00:00:00:01", "numRows": 17}]'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: mac unique junos

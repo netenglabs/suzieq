@@ -61,9 +61,11 @@ tests:
 - command: device unique --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device unique junos
+  output: '[{"model": "vm"}, {"model": "vqfx-10000"}]'
 - command: device unique --count=True --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device unique junos
+  output: '[{"model": "vm", "numRows": 5}, {"model": "vqfx-10000", "numRows": 7}]'
 - command: device unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: device unique junos

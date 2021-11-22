@@ -627,6 +627,10 @@ tests:
 - command: interface unique --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
+  output: '[{"type": "bond"}, {"type": "bond_slave"}, {"type": "ethernet"}, {"type":
+    "flexible-tunnel-interface"}, {"type": "gre"}, {"type": "loopback"}, {"type":
+    "mgmt-vlan"}, {"type": "null"}, {"type": "subinterface"}, {"type": "vlan"}, {"type":
+    "vrf"}, {"type": "vtep"}, {"type": "vxlan"}]'
 - command: interface unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos

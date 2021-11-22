@@ -3,9 +3,18 @@ tests:
 - command: interface unique --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
+  output: '[{"type": "ethernet"}, {"type": "flexible-ethernet"}, {"type": "flexible-tunnel-interface"},
+    {"type": "gre"}, {"type": "loopback"}, {"type": "mgmt-vlan"}, {"type": "null"},
+    {"type": "subinterface"}, {"type": "vlan"}, {"type": "vrf"}, {"type": "vtep"}]'
 - command: interface unique --count=True --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
+  output: '[{"type": "flexible-ethernet", "numRows": 2}, {"type": "vrf", "numRows":
+    6}, {"type": "flexible-tunnel-interface", "numRows": 7}, {"type": "gre", "numRows":
+    7}, {"type": "mgmt-vlan", "numRows": 7}, {"type": "null", "numRows": 7}, {"type":
+    "vlan", "numRows": 10}, {"type": "loopback", "numRows": 12}, {"type": "vtep",
+    "numRows": 14}, {"type": "ethernet", "numRows": 140}, {"type": "subinterface",
+    "numRows": 148}]'
 - command: interface unique --count=True --format=json --columns=hostname
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos

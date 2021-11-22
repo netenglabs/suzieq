@@ -3,6 +3,661 @@ tests:
 - command: address show --namespace=ospf-ibgp --format=json --columns='*'
   data-directory: tests/data/multidc/parquet-out/
   marks: address show all cumulus
+  output: '[{"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "lo", "ipAddressList":
+    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681581492, "vlan": 0, "type": "loopback", "active": true, "vrf": "default",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "bond0", "ipAddressList": ["172.16.1.101/24"], "macaddr": "52:54:00:c5:1d:06",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681581492, "vlan": 0, "type":
+    "bond", "active": true, "vrf": "default", "ipAddress": ["172.16.1.101/24"]}, {"namespace":
+    "ospf-ibgp", "hostname": "server101", "ifname": "eth2", "ipAddressList": [], "macaddr":
+    "52:54:00:c5:1d:06", "ip6AddressList": [], "state": "up", "timestamp": 1616681581492,
+    "vlan": 0, "type": "bond_slave", "active": true, "vrf": "bond0", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "eth1", "ipAddressList":
+    [], "macaddr": "52:54:00:c5:1d:06", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681581492, "vlan": 0, "type": "bond_slave", "active": true, "vrf": "bond0",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "eth0", "ipAddressList": ["192.168.123.184/24"], "macaddr": "52:54:00:e7:66:74",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681581492, "vlan": 0, "type":
+    "ethernet", "active": true, "vrf": "default", "ipAddress": ["192.168.123.184/24"]},
+    {"namespace": "ospf-ibgp", "hostname": "server103", "ifname": "bond0", "ipAddressList":
+    ["172.16.1.103/24"], "macaddr": "52:54:00:24:64:ca", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681581509, "vlan": 0, "type": "bond", "active": true, "vrf":
+    "default", "ipAddress": ["172.16.1.103/24"]}, {"namespace": "ospf-ibgp", "hostname":
+    "server103", "ifname": "eth2", "ipAddressList": [], "macaddr": "52:54:00:24:64:ca",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681581509, "vlan": 0, "type":
+    "bond_slave", "active": true, "vrf": "bond0", "ipAddress": []}, {"namespace":
+    "ospf-ibgp", "hostname": "server103", "ifname": "eth1", "ipAddressList": [], "macaddr":
+    "52:54:00:24:64:ca", "ip6AddressList": [], "state": "up", "timestamp": 1616681581509,
+    "vlan": 0, "type": "bond_slave", "active": true, "vrf": "bond0", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname": "eth0", "ipAddressList":
+    ["192.168.123.150/24"], "macaddr": "52:54:00:e9:05:af", "ip6AddressList": [],
+    "state": "up", "timestamp": 1616681581509, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["192.168.123.150/24"]}, {"namespace": "ospf-ibgp",
+    "hostname": "server103", "ifname": "lo", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681581509, "vlan": 0, "type":
+    "loopback", "active": true, "vrf": "default", "ipAddress": []}, {"namespace":
+    "ospf-ibgp", "hostname": "server104", "ifname": "bond0", "ipAddressList": ["172.16.2.104/24"],
+    "macaddr": "52:54:00:0d:8c:4f", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681581517, "vlan": 0, "type": "bond", "active": true, "vrf": "default", "ipAddress":
+    ["172.16.2.104/24"]}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "eth0", "ipAddressList": ["192.168.123.197/24"], "macaddr": "52:54:00:63:41:d0",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681581517, "vlan": 0, "type":
+    "ethernet", "active": true, "vrf": "default", "ipAddress": ["192.168.123.197/24"]},
+    {"namespace": "ospf-ibgp", "hostname": "server104", "ifname": "lo", "ipAddressList":
+    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681581517, "vlan": 0, "type": "loopback", "active": true, "vrf": "default",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "eth2", "ipAddressList": [], "macaddr": "52:54:00:0d:8c:4f", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681581517, "vlan": 0, "type": "bond_slave",
+    "active": true, "vrf": "bond0", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "ifname": "lo", "ipAddressList": ["10.0.0.100/32"], "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681581517, "vlan": 0, "type":
+    "loopback", "active": true, "vrf": "default", "ipAddress": ["10.0.0.100/32"]},
+    {"namespace": "ospf-ibgp", "hostname": "server104", "ifname": "eth1", "ipAddressList":
+    [], "macaddr": "52:54:00:0d:8c:4f", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681581517, "vlan": 0, "type": "bond_slave", "active": true, "vrf": "bond0",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth0",
+    "ipAddressList": ["192.168.123.180/24"], "macaddr": "52:54:00:db:bd:cf", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681581517, "vlan": 0, "type": "ethernet",
+    "active": true, "vrf": "default", "ipAddress": ["192.168.123.180/24"]}, {"namespace":
+    "ospf-ibgp", "hostname": "edge01", "ifname": "eth1", "ipAddressList": [], "macaddr":
+    "52:54:00:b6:e1:7a", "ip6AddressList": [], "state": "up", "timestamp": 1616681581517,
+    "vlan": 0, "type": "ethernet", "active": true, "vrf": "default", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth2", "ipAddressList":
+    [], "macaddr": "52:54:00:ba:e7:89", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681581517, "vlan": 0, "type": "ethernet", "active": true, "vrf": "default",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth1.2",
+    "ipAddressList": ["169.254.254.2/30"], "macaddr": "52:54:00:b6:e1:7a", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681581517, "vlan": 2, "type": "vlan", "active":
+    true, "vrf": "default", "ipAddress": ["169.254.254.2/30"]}, {"namespace": "ospf-ibgp",
+    "hostname": "edge01", "ifname": "eth2.2", "ipAddressList": ["169.254.253.2/30"],
+    "macaddr": "52:54:00:ba:e7:89", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681581517, "vlan": 2, "type": "vlan", "active": true, "vrf": "default", "ipAddress":
+    ["169.254.253.2/30"]}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname":
+    "eth2.3", "ipAddressList": ["169.254.253.6/30"], "macaddr": "52:54:00:ba:e7:89",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681581517, "vlan": 3, "type":
+    "vlan", "active": true, "vrf": "default", "ipAddress": ["169.254.253.6/30"]},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth1.3", "ipAddressList":
+    ["169.254.254.6/30"], "macaddr": "52:54:00:b6:e1:7a", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681581517, "vlan": 3, "type": "vlan", "active": true, "vrf":
+    "default", "ipAddress": ["169.254.254.6/30"]}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "ifname": "eth1.4", "ipAddressList": ["169.254.254.10/30"], "macaddr":
+    "52:54:00:b6:e1:7a", "ip6AddressList": [], "state": "up", "timestamp": 1616681581517,
+    "vlan": 4, "type": "vlan", "active": true, "vrf": "default", "ipAddress": ["169.254.254.10/30"]},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth2.4", "ipAddressList":
+    ["169.254.253.10/30"], "macaddr": "52:54:00:ba:e7:89", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681581517, "vlan": 4, "type": "vlan", "active": true, "vrf":
+    "default", "ipAddress": ["169.254.253.10/30"]}, {"namespace": "ospf-ibgp", "hostname":
+    "server102", "ifname": "bond0", "ipAddressList": ["172.16.2.102/24"], "macaddr":
+    "52:54:00:34:8e:2c", "ip6AddressList": [], "state": "up", "timestamp": 1616681581595,
+    "vlan": 0, "type": "bond", "active": true, "vrf": "default", "ipAddress": ["172.16.2.102/24"]},
+    {"namespace": "ospf-ibgp", "hostname": "server102", "ifname": "eth1", "ipAddressList":
+    [], "macaddr": "52:54:00:34:8e:2c", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681581595, "vlan": 0, "type": "bond_slave", "active": true, "vrf": "bond0",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "eth0", "ipAddressList": ["192.168.123.134/24"], "macaddr": "52:54:00:f4:f4:dd",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681581595, "vlan": 0, "type":
+    "ethernet", "active": true, "vrf": "default", "ipAddress": ["192.168.123.134/24"]},
+    {"namespace": "ospf-ibgp", "hostname": "server102", "ifname": "lo", "ipAddressList":
+    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681581595, "vlan": 0, "type": "loopback", "active": true, "vrf": "default",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "eth2", "ipAddressList": [], "macaddr": "52:54:00:34:8e:2c", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681581595, "vlan": 0, "type": "bond_slave",
+    "active": true, "vrf": "bond0", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "bridge", "ipAddressList": [], "macaddr": "92:0d:55:8d:b5:41",
+    "ip6AddressList": ["fe80::900d:55ff:fe8d:b541/64"], "state": "up", "timestamp":
+    1616681582085, "vlan": 0, "type": "bridge", "active": true, "vrf": "default",
+    "ipAddress": ["fe80::900d:55ff:fe8d:b541/64"]}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "swp5", "ipAddressList": [], "macaddr": "52:54:00:81:c1:54",
+    "ip6AddressList": ["fe80::5054:ff:fe81:c154/64"], "state": "up", "timestamp":
+    1616681582085, "vlan": 0, "type": "ethernet", "active": true, "vrf": "default",
+    "ipAddress": ["fe80::5054:ff:fe81:c154/64"]}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "swp5.2", "ipAddressList": ["169.254.254.1/30"], "macaddr":
+    "52:54:00:81:c1:54", "ip6AddressList": ["fe80::5054:ff:fe81:c154/64"], "state":
+    "up", "timestamp": 1616681582085, "vlan": 2, "type": "vlan", "active": true, "vrf":
+    "default", "ipAddress": ["169.254.254.1/30", "fe80::5054:ff:fe81:c154/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "ifname": "lo", "ipAddressList": ["10.0.0.101/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1616681582085, "vlan": 0, "type": "loopback", "active": true, "vrf":
+    "default", "ipAddress": ["10.0.0.101/32", "::1/128"]}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "ifname": "evpn-vrf", "ipAddressList": ["10.0.0.101/32"],
+    "macaddr": "be:4b:ee:4a:74:b7", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582085, "vlan": 0, "type": "vrf", "active": true, "vrf": "default", "ipAddress":
+    ["10.0.0.101/32"]}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname":
+    "swp5.3", "ipAddressList": ["169.254.254.5/30"], "macaddr": "52:54:00:81:c1:54",
+    "ip6AddressList": ["fe80::5054:ff:fe81:c154/64"], "state": "up", "timestamp":
+    1616681582085, "vlan": 3, "type": "vlan", "active": true, "vrf": "evpn-vrf", "ipAddress":
+    ["169.254.254.5/30", "fe80::5054:ff:fe81:c154/64"]}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "ifname": "vlan4001", "ipAddressList": [], "macaddr": "92:0d:55:8d:b5:41",
+    "ip6AddressList": ["fe80::900d:55ff:fe8d:b541/64"], "state": "up", "timestamp":
+    1616681582085, "vlan": 4001, "type": "vlan", "active": true, "vrf": "evpn-vrf",
+    "ipAddress": ["fe80::900d:55ff:fe8d:b541/64"]}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "internet-vrf", "ipAddressList": ["10.0.0.101/32"], "macaddr":
+    "ee:e6:be:cb:53:63", "ip6AddressList": [], "state": "up", "timestamp": 1616681582085,
+    "vlan": 0, "type": "vrf", "active": true, "vrf": "default", "ipAddress": ["10.0.0.101/32"]},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "vxlan4001", "ipAddressList":
+    [], "macaddr": "92:0d:55:8d:b5:41", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582085, "vlan": 4001, "type": "vxlan", "active": true, "vrf": "bridge",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp6",
+    "ipAddressList": ["169.254.127.1/31"], "macaddr": "52:54:00:cf:70:e0", "ip6AddressList":
+    ["fe80::5054:ff:fecf:70e0/64"], "state": "up", "timestamp": 1616681582085, "vlan":
+    0, "type": "ethernet", "active": true, "vrf": "internet-vrf", "ipAddress": ["169.254.127.1/31",
+    "fe80::5054:ff:fecf:70e0/64"]}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "ifname": "swp1", "ipAddressList": ["10.0.0.101/32"], "macaddr": "52:54:00:ff:73:be",
+    "ip6AddressList": ["fe80::5054:ff:feff:73be/64"], "state": "up", "timestamp":
+    1616681582085, "vlan": 0, "type": "ethernet", "active": true, "vrf": "default",
+    "ipAddress": ["10.0.0.101/32", "fe80::5054:ff:feff:73be/64"]}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "ifname": "swp5.4", "ipAddressList": ["169.254.254.9/30"],
+    "macaddr": "52:54:00:81:c1:54", "ip6AddressList": ["fe80::5054:ff:fe81:c154/64"],
+    "state": "up", "timestamp": 1616681582085, "vlan": 4, "type": "vlan", "active":
+    true, "vrf": "internet-vrf", "ipAddress": ["169.254.254.9/30", "fe80::5054:ff:fe81:c154/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "ipAddressList":
+    ["10.0.0.101/32"], "macaddr": "52:54:00:28:db:32", "ip6AddressList": ["fe80::5054:ff:fe28:db32/64"],
+    "state": "up", "timestamp": 1616681582085, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.101/32", "fe80::5054:ff:fe28:db32/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp4", "ipAddressList":
+    [], "macaddr": "52:54:00:8f:cd:2a", "ip6AddressList": [], "state": "down", "timestamp":
+    1616681582085, "vlan": 0, "type": "ethernet", "active": true, "vrf": "default",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "eth0",
+    "ipAddressList": ["192.168.123.188/24"], "macaddr": "52:54:00:a5:b8:1e", "ip6AddressList":
+    ["fe80::5054:ff:fea5:b81e/64"], "state": "up", "timestamp": 1616681582085, "vlan":
+    0, "type": "ethernet", "active": true, "vrf": "mgmt", "ipAddress": ["192.168.123.188/24",
+    "fe80::5054:ff:fea5:b81e/64"]}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "ifname": "swp3", "ipAddressList": [], "macaddr": "52:54:00:2a:7a:c0", "ip6AddressList":
+    [], "state": "down", "timestamp": 1616681582085, "vlan": 0, "type": "ethernet",
+    "active": true, "vrf": "default", "ipAddress": []}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"], "macaddr":
+    "62:1c:e6:95:04:f6", "ip6AddressList": [], "state": "up", "timestamp": 1616681582085,
+    "vlan": 0, "type": "vrf", "active": true, "vrf": "default", "ipAddress": ["127.0.0.1/8"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "mgmt", "ipAddressList":
+    ["127.0.0.1/8"], "macaddr": "96:bf:f9:88:28:41", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582129, "vlan": 0, "type": "vrf", "active": true, "vrf":
+    "default", "ipAddress": ["127.0.0.1/8"]}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "ifname": "eth0", "ipAddressList": ["192.168.123.135/24"], "macaddr":
+    "52:54:00:27:7b:e2", "ip6AddressList": ["fe80::5054:ff:fe27:7be2/64"], "state":
+    "up", "timestamp": 1616681582129, "vlan": 0, "type": "ethernet", "active": true,
+    "vrf": "mgmt", "ipAddress": ["192.168.123.135/24", "fe80::5054:ff:fe27:7be2/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "ipAddressList":
+    ["10.0.0.22/32"], "macaddr": "52:54:00:83:94:bc", "ip6AddressList": ["fe80::5054:ff:fe83:94bc/64"],
+    "state": "up", "timestamp": 1616681582129, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.22/32", "fe80::5054:ff:fe83:94bc/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp4", "ipAddressList":
+    ["10.0.0.22/32"], "macaddr": "52:54:00:7a:b0:02", "ip6AddressList": ["fe80::5054:ff:fe7a:b002/64"],
+    "state": "up", "timestamp": 1616681582129, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.22/32", "fe80::5054:ff:fe7a:b002/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "ipAddressList":
+    ["10.0.0.22/32"], "macaddr": "52:54:00:b0:35:59", "ip6AddressList": ["fe80::5054:ff:feb0:3559/64"],
+    "state": "up", "timestamp": 1616681582129, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.22/32", "fe80::5054:ff:feb0:3559/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "ipAddressList":
+    ["10.0.0.22/32"], "macaddr": "52:54:00:eb:d4:77", "ip6AddressList": ["fe80::5054:ff:feeb:d477/64"],
+    "state": "up", "timestamp": 1616681582129, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.22/32", "fe80::5054:ff:feeb:d477/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.22/32"], "macaddr": "52:54:00:51:eb:3d", "ip6AddressList": ["fe80::5054:ff:fe51:eb3d/64"],
+    "state": "up", "timestamp": 1616681582129, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.22/32", "fe80::5054:ff:fe51:eb3d/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "lo", "ipAddressList":
+    ["10.0.0.22/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"],
+    "state": "up", "timestamp": 1616681582129, "vlan": 0, "type": "loopback", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.22/32", "::1/128"]}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp5", "ipAddressList": ["10.0.0.22/32"],
+    "macaddr": "52:54:00:cf:3b:50", "ip6AddressList": ["fe80::5054:ff:fecf:3b50/64"],
+    "state": "up", "timestamp": 1616681582129, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.22/32", "fe80::5054:ff:fecf:3b50/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp6", "ipAddressList":
+    ["169.254.127.3/31"], "macaddr": "52:54:00:54:b4:1d", "ip6AddressList": ["fe80::5054:ff:fe54:b41d/64"],
+    "state": "up", "timestamp": 1616681582248, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "internet-vrf", "ipAddress": ["169.254.127.3/31", "fe80::5054:ff:fe54:b41d/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "eth0", "ipAddressList":
+    ["192.168.123.136/24"], "macaddr": "52:54:00:83:b0:c4", "ip6AddressList": ["fe80::5054:ff:fe83:b0c4/64"],
+    "state": "up", "timestamp": 1616681582248, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "mgmt", "ipAddress": ["192.168.123.136/24", "fe80::5054:ff:fe83:b0c4/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "bridge", "ipAddressList":
+    [], "macaddr": "ea:c9:a5:5f:c7:ca", "ip6AddressList": ["fe80::e8c9:a5ff:fe5f:c7ca/64"],
+    "state": "up", "timestamp": 1616681582248, "vlan": 0, "type": "bridge", "active":
+    true, "vrf": "default", "ipAddress": ["fe80::e8c9:a5ff:fe5f:c7ca/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ifname": "lo", "ipAddressList": ["10.0.0.102/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1616681582248, "vlan": 0, "type": "loopback", "active": true, "vrf":
+    "default", "ipAddress": ["10.0.0.102/32", "::1/128"]}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "ifname": "swp1", "ipAddressList": ["10.0.0.102/32"], "macaddr":
+    "52:54:00:93:9e:21", "ip6AddressList": ["fe80::5054:ff:fe93:9e21/64"], "state":
+    "up", "timestamp": 1616681582248, "vlan": 0, "type": "ethernet", "active": true,
+    "vrf": "default", "ipAddress": ["10.0.0.102/32", "fe80::5054:ff:fe93:9e21/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "mgmt", "ipAddressList":
+    ["127.0.0.1/8"], "macaddr": "a2:91:93:c7:5a:1e", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582248, "vlan": 0, "type": "vrf", "active": true, "vrf":
+    "default", "ipAddress": ["127.0.0.1/8"]}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "swp3", "ipAddressList": [], "macaddr": "52:54:00:35:5a:41",
+    "ip6AddressList": [], "state": "down", "timestamp": 1616681582248, "vlan": 0,
+    "type": "ethernet", "active": true, "vrf": "default", "ipAddress": []}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ifname": "swp4", "ipAddressList": [], "macaddr":
+    "52:54:00:df:03:05", "ip6AddressList": [], "state": "down", "timestamp": 1616681582248,
+    "vlan": 0, "type": "ethernet", "active": true, "vrf": "default", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "52:54:00:5d:5d:83", "ip6AddressList": ["fe80::5054:ff:fe5d:5d83/64"],
+    "state": "up", "timestamp": 1616681582248, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["fe80::5054:ff:fe5d:5d83/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ifname": "swp2", "ipAddressList": ["10.0.0.102/32"],
+    "macaddr": "52:54:00:5f:a0:b6", "ip6AddressList": ["fe80::5054:ff:fe5f:a0b6/64"],
+    "state": "up", "timestamp": 1616681582248, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.102/32", "fe80::5054:ff:fe5f:a0b6/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vxlan4001", "ipAddressList":
+    [], "macaddr": "ea:c9:a5:5f:c7:ca", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582248, "vlan": 4001, "type": "vxlan", "active": true, "vrf": "bridge",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "evpn-vrf",
+    "ipAddressList": ["10.0.0.102/32"], "macaddr": "aa:d0:e1:9c:89:81", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681582248, "vlan": 0, "type": "vrf", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.102/32"]}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "ifname": "swp5.3", "ipAddressList": ["169.254.253.5/30"],
+    "macaddr": "52:54:00:5d:5d:83", "ip6AddressList": ["fe80::5054:ff:fe5d:5d83/64"],
+    "state": "up", "timestamp": 1616681582248, "vlan": 3, "type": "vlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["169.254.253.5/30", "fe80::5054:ff:fe5d:5d83/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vlan4001", "ipAddressList":
+    [], "macaddr": "ea:c9:a5:5f:c7:ca", "ip6AddressList": ["fe80::e8c9:a5ff:fe5f:c7ca/64"],
+    "state": "up", "timestamp": 1616681582248, "vlan": 4001, "type": "vlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["fe80::e8c9:a5ff:fe5f:c7ca/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ifname": "internet-vrf", "ipAddressList":
+    ["10.0.0.102/32"], "macaddr": "0e:31:30:04:a7:7a", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582248, "vlan": 0, "type": "vrf", "active": true, "vrf":
+    "default", "ipAddress": ["10.0.0.102/32"]}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "swp5.4", "ipAddressList": ["169.254.253.9/30"], "macaddr":
+    "52:54:00:5d:5d:83", "ip6AddressList": ["fe80::5054:ff:fe5d:5d83/64"], "state":
+    "up", "timestamp": 1616681582248, "vlan": 4, "type": "vlan", "active": true, "vrf":
+    "internet-vrf", "ipAddress": ["169.254.253.9/30", "fe80::5054:ff:fe5d:5d83/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5.2", "ipAddressList":
+    ["169.254.253.1/30"], "macaddr": "52:54:00:5d:5d:83", "ip6AddressList": ["fe80::5054:ff:fe5d:5d83/64"],
+    "state": "up", "timestamp": 1616681582248, "vlan": 2, "type": "vlan", "active":
+    true, "vrf": "default", "ipAddress": ["169.254.253.1/30", "fe80::5054:ff:fe5d:5d83/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vxlan4001", "ipAddressList":
+    [], "macaddr": "2a:42:97:30:7e:46", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582325, "vlan": 4001, "type": "vxlan", "active": true, "vrf": "bridge",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "evpn-vrf",
+    "ipAddressList": [], "macaddr": "e6:93:b8:9f:30:b9", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582325, "vlan": 0, "type": "vrf", "active": true, "vrf":
+    "default", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
+    "ifname": "vlan13", "ipAddressList": ["172.16.1.12/24"], "macaddr": "52:54:00:33:b7:b8",
+    "ip6AddressList": ["fe80::5054:ff:fe33:b7b8/64"], "state": "up", "timestamp":
+    1616681582325, "vlan": 13, "type": "vlan", "active": true, "vrf": "evpn-vrf",
+    "ipAddress": ["172.16.1.12/24", "fe80::5054:ff:fe33:b7b8/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan24", "ipAddressList": ["172.16.2.12/24"],
+    "macaddr": "52:54:00:33:b7:b8", "ip6AddressList": ["fe80::5054:ff:fe33:b7b8/64"],
+    "state": "up", "timestamp": 1616681582325, "vlan": 24, "type": "vlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.2.12/24", "fe80::5054:ff:fe33:b7b8/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "eth0", "ipAddressList":
+    ["192.168.123.239/24"], "macaddr": "52:54:00:f5:60:b5", "ip6AddressList": ["fe80::5054:ff:fef5:60b5/64"],
+    "state": "up", "timestamp": 1616681582325, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "mgmt", "ipAddress": ["192.168.123.239/24", "fe80::5054:ff:fef5:60b5/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan4001", "ipAddressList":
+    [], "macaddr": "44:39:39:ff:40:94", "ip6AddressList": ["fe80::4639:39ff:feff:4094/64"],
+    "state": "up", "timestamp": 1616681582325, "vlan": 4001, "type": "vlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["fe80::4639:39ff:feff:4094/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "a6:71:a8:d4:06:b7", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582325, "vlan": 0, "type": "vrf", "active": true, "vrf": "default", "ipAddress":
+    ["127.0.0.1/8"]}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vni24",
+    "ipAddressList": [], "macaddr": "6a:07:60:93:71:05", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582325, "vlan": 24, "type": "vxlan", "active": true,
+    "vrf": "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
+    "ifname": "vlan24-v0", "ipAddressList": ["172.16.2.1/24"], "macaddr": "44:39:39:ff:00:24",
+    "ip6AddressList": ["fe80::4639:39ff:feff:24/64"], "state": "up", "timestamp":
+    1616681582325, "vlan": 0, "type": "macvlan", "active": true, "vrf": "evpn-vrf",
+    "ipAddress": ["172.16.2.1/24", "fe80::4639:39ff:feff:24/64"]}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "ifname": "vni13", "ipAddressList": [], "macaddr": "62:be:b1:1b:46:d5",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681582325, "vlan": 13, "type":
+    "vxlan", "active": true, "vrf": "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "ifname": "vlan13-v0", "ipAddressList": ["172.16.1.1/24"],
+    "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "state": "up", "timestamp": 1616681582325, "vlan": 0, "type": "macvlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.1.1/24", "fe80::4639:39ff:feff:13/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "52:54:00:33:b7:b8", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582325, "vlan": 0, "type": "bond_slave", "active": true, "vrf": "bond01",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "bond02",
+    "ipAddressList": [], "macaddr": "52:54:00:b8:3a:41", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582325, "vlan": 0, "type": "bond", "active": true, "vrf":
+    "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "bond01", "ipAddressList": [], "macaddr": "52:54:00:33:b7:b8", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681582325, "vlan": 0, "type": "bond", "active":
+    true, "vrf": "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ifname": "bridge", "ipAddressList": [], "macaddr": "52:54:00:33:b7:b8",
+    "ip6AddressList": ["fe80::5054:ff:fe33:b7b8/64"], "state": "up", "timestamp":
+    1616681582325, "vlan": 0, "type": "bridge", "active": true, "vrf": "default",
+    "ipAddress": ["fe80::5054:ff:fe33:b7b8/64"]}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ifname": "lo", "ipAddressList": ["10.0.0.12/32", "10.0.0.112/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1616681582325, "vlan": 0, "type": "loopback", "active": true, "vrf":
+    "default", "ipAddress": ["10.0.0.12/32", "10.0.0.112/32", "::1/128"]}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ifname": "peerlink", "ipAddressList": [],
+    "macaddr": "48:47:00:e9:d5:43", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582325, "vlan": 0, "type": "bond", "active": true, "vrf": "bridge", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp6", "ipAddressList":
+    [], "macaddr": "52:54:00:b8:3a:41", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582325, "vlan": 0, "type": "bond_slave", "active": true, "vrf": "bond02",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
+    "ipAddressList": ["10.0.0.12/32"], "macaddr": "52:54:00:d5:33:ac", "ip6AddressList":
+    ["fe80::5054:ff:fed5:33ac/64"], "state": "up", "timestamp": 1616681582325, "vlan":
+    0, "type": "ethernet", "active": true, "vrf": "default", "ipAddress": ["10.0.0.12/32",
+    "fe80::5054:ff:fed5:33ac/64"]}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
+    "ifname": "swp2", "ipAddressList": ["10.0.0.12/32"], "macaddr": "52:54:00:c7:a4:86",
+    "ip6AddressList": ["fe80::5054:ff:fec7:a486/64"], "state": "up", "timestamp":
+    1616681582325, "vlan": 0, "type": "ethernet", "active": true, "vrf": "default",
+    "ipAddress": ["10.0.0.12/32", "fe80::5054:ff:fec7:a486/64"]}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "ifname": "swp4", "ipAddressList": [], "macaddr": "48:47:00:e9:d5:43",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681582325, "vlan": 0, "type":
+    "bond_slave", "active": true, "vrf": "peerlink", "ipAddress": []}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ifname": "swp3", "ipAddressList": [], "macaddr":
+    "48:47:00:e9:d5:43", "ip6AddressList": [], "state": "up", "timestamp": 1616681582325,
+    "vlan": 0, "type": "bond_slave", "active": true, "vrf": "peerlink", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.2/30"], "macaddr": "48:47:00:e9:d5:43", "ip6AddressList":
+    ["fe80::4a47:ff:fee9:d543/64"], "state": "up", "timestamp": 1616681582325, "vlan":
+    4094, "type": "vlan", "active": true, "vrf": "default", "ipAddress": ["169.254.1.2/30",
+    "fe80::4a47:ff:fee9:d543/64"]}, {"namespace": "ospf-ibgp", "hostname": "internet",
+    "ifname": "eth0", "ipAddressList": ["192.168.123.237/24"], "macaddr": "52:54:00:98:9f:d5",
+    "ip6AddressList": ["fe80::5054:ff:fe98:9fd5/64"], "state": "up", "timestamp":
+    1616681582344, "vlan": 0, "type": "ethernet", "active": true, "vrf": "default",
+    "ipAddress": ["192.168.123.237/24", "fe80::5054:ff:fe98:9fd5/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "internet", "ifname": "swp2", "ipAddressList": ["169.254.127.2/31"],
+    "macaddr": "52:54:00:cd:78:c7", "ip6AddressList": ["fe80::5054:ff:fecd:78c7/64"],
+    "state": "up", "timestamp": 1616681582344, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["169.254.127.2/31", "fe80::5054:ff:fecd:78c7/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp1", "ipAddressList":
+    ["169.254.127.0/31"], "macaddr": "52:54:00:88:3d:81", "ip6AddressList": ["fe80::5054:ff:fe88:3d81/64"],
+    "state": "up", "timestamp": 1616681582344, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["169.254.127.0/31", "fe80::5054:ff:fe88:3d81/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "lo", "ipAddressList":
+    ["10.0.0.253/32", "172.16.253.1/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    ["::1/128"], "state": "up", "timestamp": 1616681582344, "vlan": 0, "type": "loopback",
+    "active": true, "vrf": "default", "ipAddress": ["10.0.0.253/32", "172.16.253.1/32",
+    "::1/128"]}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan13-v0",
+    "ipAddressList": ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13", "ip6AddressList":
+    ["fe80::4639:39ff:feff:13/64"], "state": "up", "timestamp": 1616681582391, "vlan":
+    0, "type": "macvlan", "active": true, "vrf": "evpn-vrf", "ipAddress": ["172.16.1.1/24",
+    "fe80::4639:39ff:feff:13/64"]}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "vlan24", "ipAddressList": ["172.16.2.13/24"], "macaddr": "52:54:00:30:f2:82",
+    "ip6AddressList": ["fe80::5054:ff:fe30:f282/64"], "state": "up", "timestamp":
+    1616681582391, "vlan": 24, "type": "vlan", "active": true, "vrf": "evpn-vrf",
+    "ipAddress": ["172.16.2.13/24", "fe80::5054:ff:fe30:f282/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "26:97:71:5b:22:60", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582391, "vlan": 0, "type": "vrf", "active": true, "vrf": "default", "ipAddress":
+    ["127.0.0.1/8"]}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan4001",
+    "ipAddressList": [], "macaddr": "44:39:39:ff:40:95", "ip6AddressList": ["fe80::4639:39ff:feff:4095/64"],
+    "state": "up", "timestamp": 1616681582391, "vlan": 4001, "type": "vlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["fe80::4639:39ff:feff:4095/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "eth0", "ipAddressList": ["192.168.123.248/24"],
+    "macaddr": "52:54:00:3c:a6:2d", "ip6AddressList": ["fe80::5054:ff:fe3c:a62d/64"],
+    "state": "up", "timestamp": 1616681582391, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "mgmt", "ipAddress": ["192.168.123.248/24", "fe80::5054:ff:fe3c:a62d/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "evpn-vrf", "ipAddressList":
+    [], "macaddr": "4a:8f:43:95:5a:c7", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582391, "vlan": 0, "type": "vrf", "active": true, "vrf": "default", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan24-v0", "ipAddressList":
+    ["172.16.2.1/24"], "macaddr": "44:39:39:ff:00:24", "ip6AddressList": ["fe80::4639:39ff:feff:24/64"],
+    "state": "up", "timestamp": 1616681582391, "vlan": 0, "type": "macvlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.2.1/24", "fe80::4639:39ff:feff:24/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vxlan4001", "ipAddressList":
+    [], "macaddr": "26:b2:b3:fe:d5:a5", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582391, "vlan": 4001, "type": "vxlan", "active": true, "vrf": "bridge",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan13",
+    "ipAddressList": ["172.16.1.13/24"], "macaddr": "52:54:00:30:f2:82", "ip6AddressList":
+    ["fe80::5054:ff:fe30:f282/64"], "state": "up", "timestamp": 1616681582391, "vlan":
+    13, "type": "vlan", "active": true, "vrf": "evpn-vrf", "ipAddress": ["172.16.1.13/24",
+    "fe80::5054:ff:fe30:f282/64"]}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "vni13", "ipAddressList": [], "macaddr": "d2:16:49:c4:d2:18", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681582391, "vlan": 13, "type": "vxlan", "active":
+    true, "vrf": "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "bond01", "ipAddressList": [], "macaddr": "52:54:00:30:f2:82",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681582391, "vlan": 0, "type":
+    "bond", "active": true, "vrf": "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ifname": "bond02", "ipAddressList": [], "macaddr": "52:54:00:c2:ec:96",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681582391, "vlan": 0, "type":
+    "bond", "active": true, "vrf": "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ifname": "lo", "ipAddressList": ["10.0.0.13/32", "10.0.0.134/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1616681582391, "vlan": 0, "type": "loopback", "active": true, "vrf":
+    "default", "ipAddress": ["10.0.0.13/32", "10.0.0.134/32", "::1/128"]}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink", "ipAddressList": [],
+    "macaddr": "48:47:00:e9:d5:45", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582391, "vlan": 0, "type": "bond", "active": true, "vrf": "bridge", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.1/30"], "macaddr": "48:47:00:e9:d5:45", "ip6AddressList":
+    ["fe80::4a47:ff:fee9:d545/64"], "state": "up", "timestamp": 1616681582391, "vlan":
+    4094, "type": "vlan", "active": true, "vrf": "default", "ipAddress": ["169.254.1.1/30",
+    "fe80::4a47:ff:fee9:d545/64"]}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "bridge", "ipAddressList": [], "macaddr": "52:54:00:30:f2:82", "ip6AddressList":
+    ["fe80::5054:ff:fe30:f282/64"], "state": "up", "timestamp": 1616681582391, "vlan":
+    0, "type": "bridge", "active": true, "vrf": "default", "ipAddress": ["fe80::5054:ff:fe30:f282/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "ipAddressList":
+    ["10.0.0.13/32"], "macaddr": "52:54:00:a1:a5:be", "ip6AddressList": ["fe80::5054:ff:fea1:a5be/64"],
+    "state": "up", "timestamp": 1616681582391, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.13/32", "fe80::5054:ff:fea1:a5be/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp3", "ipAddressList":
+    [], "macaddr": "48:47:00:e9:d5:45", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582391, "vlan": 0, "type": "bond_slave", "active": true, "vrf": "peerlink",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp4",
+    "ipAddressList": [], "macaddr": "48:47:00:e9:d5:45", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582391, "vlan": 0, "type": "bond_slave", "active": true,
+    "vrf": "peerlink", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "swp5", "ipAddressList": [], "macaddr": "52:54:00:30:f2:82", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681582391, "vlan": 0, "type": "bond_slave",
+    "active": true, "vrf": "bond01", "ipAddress": []}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ifname": "swp6", "ipAddressList": [], "macaddr": "52:54:00:c2:ec:96",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681582391, "vlan": 0, "type":
+    "bond_slave", "active": true, "vrf": "bond02", "ipAddress": []}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "ipAddressList": ["10.0.0.13/32"],
+    "macaddr": "52:54:00:db:08:ed", "ip6AddressList": ["fe80::5054:ff:fedb:8ed/64"],
+    "state": "up", "timestamp": 1616681582391, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.13/32", "fe80::5054:ff:fedb:8ed/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vni24", "ipAddressList":
+    [], "macaddr": "8a:82:b3:40:91:ea", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582391, "vlan": 24, "type": "vxlan", "active": true, "vrf": "bridge", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "evpn-vrf", "ipAddressList":
+    [], "macaddr": "b6:cf:26:da:6e:33", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582523, "vlan": 0, "type": "vrf", "active": true, "vrf": "default", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "mgmt", "ipAddressList":
+    ["127.0.0.1/8"], "macaddr": "1e:5a:9a:89:a9:b8", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582523, "vlan": 0, "type": "vrf", "active": true, "vrf":
+    "default", "ipAddress": ["127.0.0.1/8"]}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ifname": "eth0", "ipAddressList": ["192.168.123.202/24"], "macaddr":
+    "52:54:00:18:68:51", "ip6AddressList": ["fe80::5054:ff:fe18:6851/64"], "state":
+    "up", "timestamp": 1616681582523, "vlan": 0, "type": "ethernet", "active": true,
+    "vrf": "mgmt", "ipAddress": ["192.168.123.202/24", "fe80::5054:ff:fe18:6851/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan4001", "ipAddressList":
+    [], "macaddr": "44:39:39:ff:40:95", "ip6AddressList": ["fe80::4639:39ff:feff:4095/64"],
+    "state": "up", "timestamp": 1616681582523, "vlan": 4001, "type": "vlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["fe80::4639:39ff:feff:4095/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan24-v0", "ipAddressList": ["172.16.2.1/24"],
+    "macaddr": "44:39:39:ff:00:24", "ip6AddressList": ["fe80::4639:39ff:feff:24/64"],
+    "state": "up", "timestamp": 1616681582523, "vlan": 0, "type": "macvlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.2.1/24", "fe80::4639:39ff:feff:24/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan24", "ipAddressList":
+    ["172.16.2.14/24"], "macaddr": "48:47:00:e9:d5:41", "ip6AddressList": ["fe80::4a47:ff:fee9:d541/64"],
+    "state": "up", "timestamp": 1616681582523, "vlan": 24, "type": "vlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.2.14/24", "fe80::4a47:ff:fee9:d541/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan13-v0", "ipAddressList":
+    ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "state": "up", "timestamp": 1616681582523, "vlan": 0, "type": "macvlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.1.1/24", "fe80::4639:39ff:feff:13/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan13", "ipAddressList":
+    ["172.16.1.14/24"], "macaddr": "48:47:00:e9:d5:41", "ip6AddressList": ["fe80::4a47:ff:fee9:d541/64"],
+    "state": "up", "timestamp": 1616681582523, "vlan": 13, "type": "vlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.1.14/24", "fe80::4a47:ff:fee9:d541/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vni24", "ipAddressList":
+    [], "macaddr": "72:f0:17:6d:80:3f", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582523, "vlan": 24, "type": "vxlan", "active": true, "vrf": "bridge", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vni13", "ipAddressList":
+    [], "macaddr": "a2:af:79:49:71:28", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582523, "vlan": 13, "type": "vxlan", "active": true, "vrf": "bridge", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bond02", "ipAddressList":
+    [], "macaddr": "52:54:00:30:98:b3", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582523, "vlan": 0, "type": "bond", "active": true, "vrf": "bridge", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bond01", "ipAddressList":
+    [], "macaddr": "52:54:00:59:6c:f0", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582523, "vlan": 0, "type": "bond", "active": true, "vrf": "bridge", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bridge", "ipAddressList":
+    [], "macaddr": "48:47:00:e9:d5:41", "ip6AddressList": ["fe80::4a47:ff:fee9:d541/64"],
+    "state": "up", "timestamp": 1616681582523, "vlan": 0, "type": "bridge", "active":
+    true, "vrf": "default", "ipAddress": ["fe80::4a47:ff:fee9:d541/64"]}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "lo", "ipAddressList": ["10.0.0.14/32",
+    "10.0.0.134/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"],
+    "state": "up", "timestamp": 1616681582523, "vlan": 0, "type": "loopback", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.14/32", "10.0.0.134/32", "::1/128"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "peerlink", "ipAddressList":
+    [], "macaddr": "48:47:00:e9:d5:41", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582523, "vlan": 0, "type": "bond", "active": true, "vrf": "bridge", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.2/30"], "macaddr": "48:47:00:e9:d5:41", "ip6AddressList":
+    ["fe80::4a47:ff:fee9:d541/64"], "state": "up", "timestamp": 1616681582523, "vlan":
+    4094, "type": "vlan", "active": true, "vrf": "default", "ipAddress": ["169.254.1.2/30",
+    "fe80::4a47:ff:fee9:d541/64"]}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
+    "ifname": "vxlan4001", "ipAddressList": [], "macaddr": "f2:9f:12:1e:f8:1f", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681582523, "vlan": 4001, "type": "vxlan",
+    "active": true, "vrf": "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf04", "ifname": "swp2", "ipAddressList": ["10.0.0.14/32"], "macaddr":
+    "52:54:00:b5:4a:7b", "ip6AddressList": ["fe80::5054:ff:feb5:4a7b/64"], "state":
+    "up", "timestamp": 1616681582523, "vlan": 0, "type": "ethernet", "active": true,
+    "vrf": "default", "ipAddress": ["10.0.0.14/32", "fe80::5054:ff:feb5:4a7b/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp3", "ipAddressList":
+    [], "macaddr": "48:47:00:e9:d5:41", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582523, "vlan": 0, "type": "bond_slave", "active": true, "vrf": "peerlink",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp4",
+    "ipAddressList": [], "macaddr": "48:47:00:e9:d5:41", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582523, "vlan": 0, "type": "bond", "active": true, "vrf":
+    "peerlink", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
+    "ifname": "swp5", "ipAddressList": [], "macaddr": "52:54:00:59:6c:f0", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681582523, "vlan": 0, "type": "bond_slave",
+    "active": true, "vrf": "bond01", "ipAddress": []}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf04", "ifname": "swp6", "ipAddressList": [], "macaddr": "52:54:00:30:98:b3",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681582523, "vlan": 0, "type":
+    "bond_slave", "active": true, "vrf": "bond02", "ipAddress": []}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "ipAddressList": ["10.0.0.14/32"],
+    "macaddr": "52:54:00:13:2a:2c", "ip6AddressList": ["fe80::5054:ff:fe13:2a2c/64"],
+    "state": "up", "timestamp": 1616681582523, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.14/32", "fe80::5054:ff:fe13:2a2c/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp5", "ipAddressList":
+    ["10.0.0.21/32"], "macaddr": "52:54:00:e5:e3:d4", "ip6AddressList": ["fe80::5054:ff:fee5:e3d4/64"],
+    "state": "up", "timestamp": 1616681582843, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.21/32", "fe80::5054:ff:fee5:e3d4/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "ipAddressList":
+    ["10.0.0.21/32"], "macaddr": "52:54:00:a7:ba:2d", "ip6AddressList": ["fe80::5054:ff:fea7:ba2d/64"],
+    "state": "up", "timestamp": 1616681582843, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.21/32", "fe80::5054:ff:fea7:ba2d/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "ipAddressList":
+    ["10.0.0.21/32"], "macaddr": "52:54:00:25:b0:5b", "ip6AddressList": ["fe80::5054:ff:fe25:b05b/64"],
+    "state": "up", "timestamp": 1616681582843, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.21/32", "fe80::5054:ff:fe25:b05b/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "ipAddressList":
+    ["10.0.0.21/32"], "macaddr": "52:54:00:d1:00:da", "ip6AddressList": ["fe80::5054:ff:fed1:da/64"],
+    "state": "up", "timestamp": 1616681582843, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.21/32", "fe80::5054:ff:fed1:da/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "ipAddressList":
+    ["10.0.0.21/32"], "macaddr": "52:54:00:54:3d:39", "ip6AddressList": ["fe80::5054:ff:fe54:3d39/64"],
+    "state": "up", "timestamp": 1616681582843, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.21/32", "fe80::5054:ff:fe54:3d39/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "lo", "ipAddressList":
+    ["10.0.0.21/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"],
+    "state": "up", "timestamp": 1616681582843, "vlan": 0, "type": "loopback", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.21/32", "::1/128"]}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "eth0", "ipAddressList": ["192.168.123.16/24"],
+    "macaddr": "52:54:00:ad:db:52", "ip6AddressList": ["fe80::5054:ff:fead:db52/64"],
+    "state": "up", "timestamp": 1616681582843, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "mgmt", "ipAddress": ["192.168.123.16/24", "fe80::5054:ff:fead:db52/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp6", "ipAddressList":
+    ["10.0.0.21/32"], "macaddr": "52:54:00:5d:da:ac", "ip6AddressList": ["fe80::5054:ff:fe5d:daac/64"],
+    "state": "up", "timestamp": 1616681582843, "vlan": 0, "type": "ethernet", "active":
+    true, "vrf": "default", "ipAddress": ["10.0.0.21/32", "fe80::5054:ff:fe5d:daac/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "mgmt", "ipAddressList":
+    ["127.0.0.1/8"], "macaddr": "6a:de:f9:aa:d3:65", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582843, "vlan": 0, "type": "vrf", "active": true, "vrf":
+    "default", "ipAddress": ["127.0.0.1/8"]}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "swp4", "ipAddressList": [], "macaddr": "48:47:00:e9:d5:47",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681582844, "vlan": 0, "type":
+    "bond_slave", "active": true, "vrf": "peerlink", "ipAddress": []}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "mgmt", "ipAddressList": ["127.0.0.1/8"],
+    "macaddr": "56:6c:41:66:6e:c5", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582844, "vlan": 0, "type": "vrf", "active": true, "vrf": "default", "ipAddress":
+    ["127.0.0.1/8"]}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "eth0",
+    "ipAddressList": ["192.168.123.30/24"], "macaddr": "52:54:00:93:6d:43", "ip6AddressList":
+    ["fe80::5054:ff:fe93:6d43/64"], "state": "up", "timestamp": 1616681582844, "vlan":
+    0, "type": "ethernet", "active": true, "vrf": "mgmt", "ipAddress": ["192.168.123.30/24",
+    "fe80::5054:ff:fe93:6d43/64"]}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "vlan4001", "ipAddressList": [], "macaddr": "44:39:39:ff:40:94", "ip6AddressList":
+    ["fe80::4639:39ff:feff:4094/64"], "state": "up", "timestamp": 1616681582844, "vlan":
+    4001, "type": "vlan", "active": true, "vrf": "evpn-vrf", "ipAddress": ["fe80::4639:39ff:feff:4094/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan24-v0", "ipAddressList":
+    ["172.16.2.1/24"], "macaddr": "44:39:39:ff:00:24", "ip6AddressList": ["fe80::4639:39ff:feff:24/64"],
+    "state": "up", "timestamp": 1616681582844, "vlan": 0, "type": "macvlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.2.1/24", "fe80::4639:39ff:feff:24/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan24", "ipAddressList":
+    ["172.16.2.11/24"], "macaddr": "48:47:00:e9:d5:47", "ip6AddressList": ["fe80::4a47:ff:fee9:d547/64"],
+    "state": "up", "timestamp": 1616681582844, "vlan": 24, "type": "vlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.2.11/24", "fe80::4a47:ff:fee9:d547/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan13-v0", "ipAddressList":
+    ["172.16.1.1/24"], "macaddr": "44:39:39:ff:00:13", "ip6AddressList": ["fe80::4639:39ff:feff:13/64"],
+    "state": "up", "timestamp": 1616681582844, "vlan": 0, "type": "macvlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.1.1/24", "fe80::4639:39ff:feff:13/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan13", "ipAddressList":
+    ["172.16.1.11/24"], "macaddr": "48:47:00:e9:d5:47", "ip6AddressList": ["fe80::4a47:ff:fee9:d547/64"],
+    "state": "up", "timestamp": 1616681582844, "vlan": 13, "type": "vlan", "active":
+    true, "vrf": "evpn-vrf", "ipAddress": ["172.16.1.11/24", "fe80::4a47:ff:fee9:d547/64"]},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "evpn-vrf", "ipAddressList":
+    [], "macaddr": "96:90:87:3f:6e:e7", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582844, "vlan": 0, "type": "vrf", "active": true, "vrf": "default", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vxlan4001", "ipAddressList":
+    [], "macaddr": "b6:9f:4e:7d:59:06", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582844, "vlan": 4001, "type": "vxlan", "active": true, "vrf": "bridge",
+    "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp6",
+    "ipAddressList": [], "macaddr": "52:54:00:a9:0b:b7", "ip6AddressList": [], "state":
+    "up", "timestamp": 1616681582844, "vlan": 0, "type": "bond_slave", "active": true,
+    "vrf": "bond02", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "vni24", "ipAddressList": [], "macaddr": "fa:fc:63:55:97:6c", "ip6AddressList":
+    [], "state": "up", "timestamp": 1616681582844, "vlan": 24, "type": "vxlan", "active":
+    true, "vrf": "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "bond01", "ipAddressList": [], "macaddr": "52:54:00:13:d4:26",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681582844, "vlan": 0, "type":
+    "bond", "active": true, "vrf": "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "ifname": "bond02", "ipAddressList": [], "macaddr": "52:54:00:a9:0b:b7",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681582844, "vlan": 0, "type":
+    "bond", "active": true, "vrf": "bridge", "ipAddress": []}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "ifname": "bridge", "ipAddressList": [], "macaddr": "48:47:00:e9:d5:47",
+    "ip6AddressList": ["fe80::4a47:ff:fee9:d547/64"], "state": "up", "timestamp":
+    1616681582844, "vlan": 0, "type": "bridge", "active": true, "vrf": "default",
+    "ipAddress": ["fe80::4a47:ff:fee9:d547/64"]}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "lo", "ipAddressList": ["10.0.0.11/32", "10.0.0.112/32"],
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "timestamp": 1616681582844, "vlan": 0, "type": "loopback", "active": true, "vrf":
+    "default", "ipAddress": ["10.0.0.11/32", "10.0.0.112/32", "::1/128"]}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink", "ipAddressList": [],
+    "macaddr": "48:47:00:e9:d5:47", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582844, "vlan": 0, "type": "bond", "active": true, "vrf": "bridge", "ipAddress":
+    []}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink.4094",
+    "ipAddressList": ["169.254.1.1/30"], "macaddr": "48:47:00:e9:d5:47", "ip6AddressList":
+    ["fe80::4a47:ff:fee9:d547/64"], "state": "up", "timestamp": 1616681582844, "vlan":
+    4094, "type": "vlan", "active": true, "vrf": "default", "ipAddress": ["169.254.1.1/30",
+    "fe80::4a47:ff:fee9:d547/64"]}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "swp1", "ipAddressList": ["10.0.0.11/32"], "macaddr": "52:54:00:e6:0f:5c",
+    "ip6AddressList": ["fe80::5054:ff:fee6:f5c/64"], "state": "up", "timestamp": 1616681582844,
+    "vlan": 0, "type": "ethernet", "active": true, "vrf": "default", "ipAddress":
+    ["10.0.0.11/32", "fe80::5054:ff:fee6:f5c/64"]}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "swp2", "ipAddressList": ["10.0.0.11/32"], "macaddr": "52:54:00:e6:50:37",
+    "ip6AddressList": ["fe80::5054:ff:fee6:5037/64"], "state": "up", "timestamp":
+    1616681582844, "vlan": 0, "type": "ethernet", "active": true, "vrf": "default",
+    "ipAddress": ["10.0.0.11/32", "fe80::5054:ff:fee6:5037/64"]}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "ifname": "swp3", "ipAddressList": [], "macaddr": "48:47:00:e9:d5:47",
+    "ip6AddressList": [], "state": "up", "timestamp": 1616681582844, "vlan": 0, "type":
+    "bond_slave", "active": true, "vrf": "peerlink", "ipAddress": []}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "vni13", "ipAddressList": [], "macaddr":
+    "be:36:a9:16:eb:97", "ip6AddressList": [], "state": "up", "timestamp": 1616681582844,
+    "vlan": 13, "type": "vxlan", "active": true, "vrf": "bridge", "ipAddress": []},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp5", "ipAddressList":
+    [], "macaddr": "52:54:00:13:d4:26", "ip6AddressList": [], "state": "up", "timestamp":
+    1616681582844, "vlan": 0, "type": "bond_slave", "active": true, "vrf": "bond01",
+    "ipAddress": []}]'
 - command: arpnd show --columns='*' --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd show cumulus all

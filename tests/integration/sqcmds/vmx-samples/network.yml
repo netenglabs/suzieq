@@ -63,6 +63,8 @@ tests:
 - command: network unique --namespace=vmx --format=json
   data-directory: tests/data/vmx/parquet-out
   marks: network unique junos vmx
+  output: '[{"namespace": "vmx"}]'
 - command: network unique --count=True --namespace=vmx --format=json
   data-directory: tests/data/vmx/parquet-out
   marks: network unique junos vmx
+  output: '[{"namespace": "vmx", "numRows": 1}]'

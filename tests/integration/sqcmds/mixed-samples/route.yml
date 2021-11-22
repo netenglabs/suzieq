@@ -2601,6 +2601,53 @@ tests:
 - command: route unique  --format=json
   data-directory: tests/data/mixed/parquet-out/
   marks: route unique mixed
+  output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "1.1.1.1/32"}, {"prefix": "10.1.1.0/30"},
+    {"prefix": "10.1.1.1/32"}, {"prefix": "10.1.1.2/32"}, {"prefix": "10.1.2.0/30"},
+    {"prefix": "10.1.2.1/32"}, {"prefix": "10.1.2.2/32"}, {"prefix": "10.1.3.0/30"},
+    {"prefix": "10.1.3.1/32"}, {"prefix": "10.1.3.2/32"}, {"prefix": "10.1.4.0/30"},
+    {"prefix": "10.1.4.1/32"}, {"prefix": "10.1.4.2/32"}, {"prefix": "10.1.5.0/30"},
+    {"prefix": "10.1.5.1/32"}, {"prefix": "10.1.6.0/30"}, {"prefix": "10.1.6.1/32"},
+    {"prefix": "10.2.1.0/30"}, {"prefix": "10.2.1.1/32"}, {"prefix": "10.2.1.2/32"},
+    {"prefix": "10.2.2.0/30"}, {"prefix": "10.2.2.1/32"}, {"prefix": "10.2.2.2/32"},
+    {"prefix": "10.2.3.0/30"}, {"prefix": "10.2.3.1/32"}, {"prefix": "10.2.3.2/32"},
+    {"prefix": "10.2.4.0/30"}, {"prefix": "10.2.4.1/32"}, {"prefix": "10.2.4.2/32"},
+    {"prefix": "10.2.5.0/30"}, {"prefix": "10.2.5.1/32"}, {"prefix": "10.2.6.0/30"},
+    {"prefix": "10.2.6.1/32"}, {"prefix": "11.11.11.11/32"}, {"prefix": "169.254.0.0/24"},
+    {"prefix": "169.254.0.2/32"}, {"prefix": "172.29.151.0/24"}, {"prefix": "172.29.151.1/32"},
+    {"prefix": "172.29.151.2/32"}, {"prefix": "172.29.151.3/32"}, {"prefix": "172.29.151.4/32"},
+    {"prefix": "172.29.151.5/32"}, {"prefix": "172.29.151.6/32"}, {"prefix": "2.2.2.2/32"},
+    {"prefix": "22.22.22.22/32"}, {"prefix": "224.0.0.5/32"}, {"prefix": "3.3.3.3/32"},
+    {"prefix": "4.4.4.4/32"}, {"prefix": "5.5.5.5/32"}, {"prefix": "6.6.6.6/32"},
+    {"prefix": "fe80::205:860f:fc71:1300/128"}, {"prefix": "fe80::205:860f:fc71:8700/128"},
+    {"prefix": "ff02::2/128"}]'
 - command: route unique  --count=True --format=json
   data-directory: tests/data/mixed/parquet-out/
   marks: route unique mixed
+  output: '[{"prefix": "10.1.1.1/32", "numRows": 1}, {"prefix": "10.1.1.2/32", "numRows":
+    1}, {"prefix": "10.1.2.1/32", "numRows": 1}, {"prefix": "10.1.2.2/32", "numRows":
+    1}, {"prefix": "10.1.3.1/32", "numRows": 1}, {"prefix": "10.1.3.2/32", "numRows":
+    1}, {"prefix": "10.1.4.1/32", "numRows": 1}, {"prefix": "10.1.4.2/32", "numRows":
+    1}, {"prefix": "10.1.5.1/32", "numRows": 1}, {"prefix": "10.1.6.1/32", "numRows":
+    1}, {"prefix": "10.2.1.1/32", "numRows": 1}, {"prefix": "10.2.1.2/32", "numRows":
+    1}, {"prefix": "10.2.2.1/32", "numRows": 1}, {"prefix": "10.2.2.2/32", "numRows":
+    1}, {"prefix": "10.2.3.1/32", "numRows": 1}, {"prefix": "10.2.3.2/32", "numRows":
+    1}, {"prefix": "10.2.4.1/32", "numRows": 1}, {"prefix": "10.2.4.2/32", "numRows":
+    1}, {"prefix": "10.2.5.1/32", "numRows": 1}, {"prefix": "10.2.6.1/32", "numRows":
+    1}, {"prefix": "172.29.151.1/32", "numRows": 1}, {"prefix": "172.29.151.2/32",
+    "numRows": 1}, {"prefix": "172.29.151.3/32", "numRows": 1}, {"prefix": "172.29.151.4/32",
+    "numRows": 1}, {"prefix": "172.29.151.5/32", "numRows": 1}, {"prefix": "172.29.151.6/32",
+    "numRows": 1}, {"prefix": "fe80::205:860f:fc71:1300/128", "numRows": 1}, {"prefix":
+    "fe80::205:860f:fc71:8700/128", "numRows": 1}, {"prefix": "169.254.0.0/24", "numRows":
+    2}, {"prefix": "169.254.0.2/32", "numRows": 2}, {"prefix": "224.0.0.5/32", "numRows":
+    2}, {"prefix": "ff02::2/128", "numRows": 2}, {"prefix": "1.1.1.1/32", "numRows":
+    8}, {"prefix": "10.1.1.0/30", "numRows": 8}, {"prefix": "10.1.2.0/30", "numRows":
+    8}, {"prefix": "10.1.3.0/30", "numRows": 8}, {"prefix": "10.1.4.0/30", "numRows":
+    8}, {"prefix": "10.1.5.0/30", "numRows": 8}, {"prefix": "10.1.6.0/30", "numRows":
+    8}, {"prefix": "10.2.1.0/30", "numRows": 8}, {"prefix": "10.2.2.0/30", "numRows":
+    8}, {"prefix": "10.2.3.0/30", "numRows": 8}, {"prefix": "10.2.4.0/30", "numRows":
+    8}, {"prefix": "10.2.5.0/30", "numRows": 8}, {"prefix": "10.2.6.0/30", "numRows":
+    8}, {"prefix": "11.11.11.11/32", "numRows": 8}, {"prefix": "172.29.151.0/24",
+    "numRows": 8}, {"prefix": "2.2.2.2/32", "numRows": 8}, {"prefix": "22.22.22.22/32",
+    "numRows": 8}, {"prefix": "3.3.3.3/32", "numRows": 8}, {"prefix": "4.4.4.4/32",
+    "numRows": 8}, {"prefix": "5.5.5.5/32", "numRows": 8}, {"prefix": "6.6.6.6/32",
+    "numRows": 8}, {"prefix": "0.0.0.0/0", "numRows": 10}]'

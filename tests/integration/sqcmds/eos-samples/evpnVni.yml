@@ -56,9 +56,14 @@ tests:
 - command: evpnVni unique --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: evpnVni unique eos
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}]'
 - command: evpnVni unique --format=json --count=True
   data-directory: tests/data/eos/parquet-out/
   marks: evpnVni unique eos
+  output: '[{"hostname": "exit01", "numRows": 1}, {"hostname": "exit02", "numRows":
+    1}, {"hostname": "leaf01", "numRows": 3}, {"hostname": "leaf02", "numRows": 3},
+    {"hostname": "leaf03", "numRows": 3}, {"hostname": "leaf04", "numRows": 3}]'
 - command: evpnVni unique --columns=vni --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: evpnVni unique eos

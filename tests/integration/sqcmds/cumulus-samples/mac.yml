@@ -868,9 +868,77 @@ tests:
 - command: mac unique --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mac unique
+  output: '[{"macaddr": "00:00:00:00:00:00"}, {"macaddr": "00:03:00:11:11:01"}, {"macaddr":
+    "00:03:00:22:22:02"}, {"macaddr": "00:03:00:33:33:01"}, {"macaddr": "00:03:00:44:44:02"},
+    {"macaddr": "01:00:5e:00:00:01"}, {"macaddr": "06:4e:db:21:4f:7e"}, {"macaddr":
+    "0e:15:2b:30:f8:c9"}, {"macaddr": "1a:62:b3:39:3d:9c"}, {"macaddr": "26:75:f3:1b:fb:ca"},
+    {"macaddr": "26:b2:b3:fe:d5:a5"}, {"macaddr": "2a:42:97:30:7e:46"}, {"macaddr":
+    "33:33:00:00:00:01"}, {"macaddr": "33:33:00:00:00:02"}, {"macaddr": "36:98:6e:0c:42:ae"},
+    {"macaddr": "36:d9:a7:1c:c5:90"}, {"macaddr": "44:38:39:00:00:03"}, {"macaddr":
+    "44:38:39:00:00:0d"}, {"macaddr": "44:38:39:00:00:18"}, {"macaddr": "44:38:39:00:00:19"},
+    {"macaddr": "44:38:39:00:00:1d"}, {"macaddr": "44:38:39:00:00:1f"}, {"macaddr":
+    "44:38:39:00:00:2a"}, {"macaddr": "44:38:39:00:00:2c"}, {"macaddr": "44:38:39:00:00:33"},
+    {"macaddr": "44:38:39:00:00:34"}, {"macaddr": "44:38:39:00:00:41"}, {"macaddr":
+    "44:38:39:00:00:42"}, {"macaddr": "44:38:39:00:00:51"}, {"macaddr": "44:38:39:00:00:52"},
+    {"macaddr": "44:38:39:00:00:58"}, {"macaddr": "44:38:39:00:00:59"}, {"macaddr":
+    "44:39:39:ff:00:13"}, {"macaddr": "44:39:39:ff:00:24"}, {"macaddr": "44:39:39:ff:40:94"},
+    {"macaddr": "44:39:39:ff:40:95"}, {"macaddr": "48:47:00:e9:d5:41"}, {"macaddr":
+    "48:47:00:e9:d5:43"}, {"macaddr": "48:47:00:e9:d5:45"}, {"macaddr": "48:47:00:e9:d5:47"},
+    {"macaddr": "52:54:00:0d:8c:4f"}, {"macaddr": "52:54:00:13:d4:26"}, {"macaddr":
+    "52:54:00:24:64:ca"}, {"macaddr": "52:54:00:30:98:b3"}, {"macaddr": "52:54:00:30:f2:82"},
+    {"macaddr": "52:54:00:33:b7:b8"}, {"macaddr": "52:54:00:34:8e:2c"}, {"macaddr":
+    "52:54:00:40:cd:95"}, {"macaddr": "52:54:00:59:6c:f0"}, {"macaddr": "52:54:00:8d:77:fc"},
+    {"macaddr": "52:54:00:a0:c3:0b"}, {"macaddr": "52:54:00:a9:0b:b7"}, {"macaddr":
+    "52:54:00:b2:0d:bd"}, {"macaddr": "52:54:00:b8:3a:41"}, {"macaddr": "52:54:00:c2:ec:96"},
+    {"macaddr": "52:54:00:c5:1d:06"}, {"macaddr": "5a:4a:08:52:13:67"}, {"macaddr":
+    "62:be:b1:1b:46:d5"}, {"macaddr": "6a:07:60:93:71:05"}, {"macaddr": "72:f0:17:6d:80:3f"},
+    {"macaddr": "8a:82:b3:40:91:ea"}, {"macaddr": "8a:9e:d6:fe:05:fc"}, {"macaddr":
+    "92:0d:55:8d:b5:41"}, {"macaddr": "96:ab:ad:bf:2b:87"}, {"macaddr": "a2:41:7b:dd:6c:fc"},
+    {"macaddr": "a2:af:79:49:71:28"}, {"macaddr": "b6:5a:a4:4c:3d:dc"}, {"macaddr":
+    "b6:9f:4e:7d:59:06"}, {"macaddr": "be:36:a9:16:eb:97"}, {"macaddr": "d2:16:49:c4:d2:18"},
+    {"macaddr": "ea:80:a4:cb:5d:63"}, {"macaddr": "ea:c9:a5:5f:c7:ca"}, {"macaddr":
+    "f2:9f:12:1e:f8:1f"}, {"macaddr": "fa:fc:63:55:97:6c"}]'
 - command: mac unique --count=True --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mac unique
+  output: '[{"macaddr": "00:03:00:11:11:01", "numRows": 1}, {"macaddr": "00:03:00:22:22:02",
+    "numRows": 1}, {"macaddr": "00:03:00:33:33:01", "numRows": 1}, {"macaddr": "00:03:00:44:44:02",
+    "numRows": 1}, {"macaddr": "06:4e:db:21:4f:7e", "numRows": 1}, {"macaddr": "0e:15:2b:30:f8:c9",
+    "numRows": 1}, {"macaddr": "1a:62:b3:39:3d:9c", "numRows": 1}, {"macaddr": "26:b2:b3:fe:d5:a5",
+    "numRows": 1}, {"macaddr": "2a:42:97:30:7e:46", "numRows": 1}, {"macaddr": "36:d9:a7:1c:c5:90",
+    "numRows": 1}, {"macaddr": "44:38:39:00:00:0d", "numRows": 1}, {"macaddr": "44:38:39:00:00:19",
+    "numRows": 1}, {"macaddr": "44:38:39:00:00:1d", "numRows": 1}, {"macaddr": "44:38:39:00:00:2a",
+    "numRows": 1}, {"macaddr": "44:38:39:00:00:34", "numRows": 1}, {"macaddr": "44:38:39:00:00:42",
+    "numRows": 1}, {"macaddr": "44:38:39:00:00:52", "numRows": 1}, {"macaddr": "44:38:39:00:00:59",
+    "numRows": 1}, {"macaddr": "48:47:00:e9:d5:43", "numRows": 1}, {"macaddr": "48:47:00:e9:d5:45",
+    "numRows": 1}, {"macaddr": "52:54:00:13:d4:26", "numRows": 1}, {"macaddr": "52:54:00:30:98:b3",
+    "numRows": 1}, {"macaddr": "52:54:00:59:6c:f0", "numRows": 1}, {"macaddr": "52:54:00:a9:0b:b7",
+    "numRows": 1}, {"macaddr": "52:54:00:b8:3a:41", "numRows": 1}, {"macaddr": "52:54:00:c2:ec:96",
+    "numRows": 1}, {"macaddr": "5a:4a:08:52:13:67", "numRows": 1}, {"macaddr": "62:be:b1:1b:46:d5",
+    "numRows": 1}, {"macaddr": "6a:07:60:93:71:05", "numRows": 1}, {"macaddr": "72:f0:17:6d:80:3f",
+    "numRows": 1}, {"macaddr": "8a:82:b3:40:91:ea", "numRows": 1}, {"macaddr": "8a:9e:d6:fe:05:fc",
+    "numRows": 1}, {"macaddr": "96:ab:ad:bf:2b:87", "numRows": 1}, {"macaddr": "a2:41:7b:dd:6c:fc",
+    "numRows": 1}, {"macaddr": "a2:af:79:49:71:28", "numRows": 1}, {"macaddr": "b6:5a:a4:4c:3d:dc",
+    "numRows": 1}, {"macaddr": "b6:9f:4e:7d:59:06", "numRows": 1}, {"macaddr": "be:36:a9:16:eb:97",
+    "numRows": 1}, {"macaddr": "d2:16:49:c4:d2:18", "numRows": 1}, {"macaddr": "ea:80:a4:cb:5d:63",
+    "numRows": 1}, {"macaddr": "f2:9f:12:1e:f8:1f", "numRows": 1}, {"macaddr": "fa:fc:63:55:97:6c",
+    "numRows": 1}, {"macaddr": "44:38:39:00:00:03", "numRows": 2}, {"macaddr": "44:38:39:00:00:18",
+    "numRows": 2}, {"macaddr": "44:38:39:00:00:1f", "numRows": 2}, {"macaddr": "44:38:39:00:00:2c",
+    "numRows": 2}, {"macaddr": "52:54:00:0d:8c:4f", "numRows": 4}, {"macaddr": "52:54:00:24:64:ca",
+    "numRows": 4}, {"macaddr": "52:54:00:34:8e:2c", "numRows": 4}, {"macaddr": "52:54:00:c5:1d:06",
+    "numRows": 4}, {"macaddr": "01:00:5e:00:00:01", "numRows": 6}, {"macaddr": "33:33:00:00:00:01",
+    "numRows": 6}, {"macaddr": "33:33:00:00:00:02", "numRows": 6}, {"macaddr": "44:39:39:ff:40:94",
+    "numRows": 6}, {"macaddr": "44:39:39:ff:40:95", "numRows": 6}, {"macaddr": "52:54:00:40:cd:95",
+    "numRows": 6}, {"macaddr": "52:54:00:8d:77:fc", "numRows": 6}, {"macaddr": "52:54:00:a0:c3:0b",
+    "numRows": 6}, {"macaddr": "52:54:00:b2:0d:bd", "numRows": 6}, {"macaddr": "92:0d:55:8d:b5:41",
+    "numRows": 6}, {"macaddr": "ea:c9:a5:5f:c7:ca", "numRows": 6}, {"macaddr": "48:47:00:e9:d5:41",
+    "numRows": 10}, {"macaddr": "48:47:00:e9:d5:47", "numRows": 10}, {"macaddr": "52:54:00:30:f2:82",
+    "numRows": 10}, {"macaddr": "52:54:00:33:b7:b8", "numRows": 10}, {"macaddr": "26:75:f3:1b:fb:ca",
+    "numRows": 13}, {"macaddr": "36:98:6e:0c:42:ae", "numRows": 13}, {"macaddr": "44:38:39:00:00:33",
+    "numRows": 13}, {"macaddr": "44:38:39:00:00:41", "numRows": 13}, {"macaddr": "44:38:39:00:00:51",
+    "numRows": 13}, {"macaddr": "44:38:39:00:00:58", "numRows": 13}, {"macaddr": "44:39:39:ff:00:13",
+    "numRows": 16}, {"macaddr": "44:39:39:ff:00:24", "numRows": 16}, {"macaddr": "00:00:00:00:00:00",
+    "numRows": 44}]'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mac unique

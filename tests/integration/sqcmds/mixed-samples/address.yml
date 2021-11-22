@@ -894,9 +894,55 @@ tests:
 - command: address unique --format=json
   data-directory: tests/data/mixed/parquet-out
   marks: address unique mixed
+  output: '[{"ipAddress": "1.1.1.1/32"}, {"ipAddress": "10.1.1.1/30"}, {"ipAddress":
+    "10.1.1.2/30"}, {"ipAddress": "10.1.2.1/30"}, {"ipAddress": "10.1.2.13/30"}, {"ipAddress":
+    "10.1.2.17/30"}, {"ipAddress": "10.1.2.2/30"}, {"ipAddress": "10.1.2.21/30"},
+    {"ipAddress": "10.1.2.9/30"}, {"ipAddress": "10.1.3.1/30"}, {"ipAddress": "10.1.3.2/30"},
+    {"ipAddress": "10.1.4.1/30"}, {"ipAddress": "10.1.4.2/30"}, {"ipAddress": "10.1.5.1/30"},
+    {"ipAddress": "10.1.5.2/30"}, {"ipAddress": "10.1.6.1/30"}, {"ipAddress": "10.1.6.2/30"},
+    {"ipAddress": "10.2.1.1/30"}, {"ipAddress": "10.2.1.2/30"}, {"ipAddress": "10.2.2.1/30"},
+    {"ipAddress": "10.2.2.2/30"}, {"ipAddress": "10.2.3.1/30"}, {"ipAddress": "10.2.3.2/30"},
+    {"ipAddress": "10.2.4.1/30"}, {"ipAddress": "10.2.4.2/30"}, {"ipAddress": "10.2.5.1/30"},
+    {"ipAddress": "10.2.5.2/30"}, {"ipAddress": "10.2.6.1/30"}, {"ipAddress": "10.2.6.2/30"},
+    {"ipAddress": "11.11.11.11/32"}, {"ipAddress": "128.0.0.1/2"}, {"ipAddress": "128.0.0.127/2"},
+    {"ipAddress": "128.0.0.16/2"}, {"ipAddress": "128.0.0.4/2"}, {"ipAddress": "128.0.0.63/2"},
+    {"ipAddress": "169.254.0.2/24"}, {"ipAddress": "172.29.151.1/24"}, {"ipAddress":
+    "172.29.151.2/24"}, {"ipAddress": "172.29.151.3/24"}, {"ipAddress": "172.29.151.4/24"},
+    {"ipAddress": "172.29.151.5/24"}, {"ipAddress": "172.29.151.6/24"}, {"ipAddress":
+    "172.29.151.7/24"}, {"ipAddress": "172.29.151.8/24"}, {"ipAddress": "192.0.2.2/24"},
+    {"ipAddress": "192.168.1.2/24"}, {"ipAddress": "2.2.2.2/32"}, {"ipAddress": "22.22.22.22/32"},
+    {"ipAddress": "3.3.3.3/32"}, {"ipAddress": "4.4.4.4/32"}, {"ipAddress": "5.5.5.5/32"},
+    {"ipAddress": "6.6.6.6/32"}]'
 - command: address unique --count=True --format=json
   data-directory: tests/data/mixed/parquet-out
   marks: address unique mixed
+  output: '[{"ipAddress": "1.1.1.1/32", "numRows": 1}, {"ipAddress": "10.1.1.1/30",
+    "numRows": 1}, {"ipAddress": "10.1.1.2/30", "numRows": 1}, {"ipAddress": "10.1.2.1/30",
+    "numRows": 1}, {"ipAddress": "10.1.2.13/30", "numRows": 1}, {"ipAddress": "10.1.2.17/30",
+    "numRows": 1}, {"ipAddress": "10.1.2.2/30", "numRows": 1}, {"ipAddress": "10.1.2.21/30",
+    "numRows": 1}, {"ipAddress": "10.1.2.9/30", "numRows": 1}, {"ipAddress": "10.1.3.1/30",
+    "numRows": 1}, {"ipAddress": "10.1.3.2/30", "numRows": 1}, {"ipAddress": "10.1.4.1/30",
+    "numRows": 1}, {"ipAddress": "10.1.4.2/30", "numRows": 1}, {"ipAddress": "10.1.5.1/30",
+    "numRows": 1}, {"ipAddress": "10.1.5.2/30", "numRows": 1}, {"ipAddress": "10.1.6.1/30",
+    "numRows": 1}, {"ipAddress": "10.1.6.2/30", "numRows": 1}, {"ipAddress": "10.2.1.1/30",
+    "numRows": 1}, {"ipAddress": "10.2.1.2/30", "numRows": 1}, {"ipAddress": "10.2.2.1/30",
+    "numRows": 1}, {"ipAddress": "10.2.2.2/30", "numRows": 1}, {"ipAddress": "10.2.3.1/30",
+    "numRows": 1}, {"ipAddress": "10.2.3.2/30", "numRows": 1}, {"ipAddress": "10.2.4.1/30",
+    "numRows": 1}, {"ipAddress": "10.2.4.2/30", "numRows": 1}, {"ipAddress": "10.2.5.1/30",
+    "numRows": 1}, {"ipAddress": "10.2.5.2/30", "numRows": 1}, {"ipAddress": "10.2.6.1/30",
+    "numRows": 1}, {"ipAddress": "10.2.6.2/30", "numRows": 1}, {"ipAddress": "11.11.11.11/32",
+    "numRows": 1}, {"ipAddress": "172.29.151.1/24", "numRows": 1}, {"ipAddress": "172.29.151.2/24",
+    "numRows": 1}, {"ipAddress": "172.29.151.3/24", "numRows": 1}, {"ipAddress": "172.29.151.4/24",
+    "numRows": 1}, {"ipAddress": "172.29.151.5/24", "numRows": 1}, {"ipAddress": "172.29.151.6/24",
+    "numRows": 1}, {"ipAddress": "172.29.151.7/24", "numRows": 1}, {"ipAddress": "172.29.151.8/24",
+    "numRows": 1}, {"ipAddress": "2.2.2.2/32", "numRows": 1}, {"ipAddress": "22.22.22.22/32",
+    "numRows": 1}, {"ipAddress": "3.3.3.3/32", "numRows": 1}, {"ipAddress": "4.4.4.4/32",
+    "numRows": 1}, {"ipAddress": "5.5.5.5/32", "numRows": 1}, {"ipAddress": "6.6.6.6/32",
+    "numRows": 1}, {"ipAddress": "128.0.0.1/2", "numRows": 2}, {"ipAddress": "128.0.0.127/2",
+    "numRows": 2}, {"ipAddress": "128.0.0.16/2", "numRows": 2}, {"ipAddress": "128.0.0.4/2",
+    "numRows": 2}, {"ipAddress": "128.0.0.63/2", "numRows": 2}, {"ipAddress": "169.254.0.2/24",
+    "numRows": 2}, {"ipAddress": "192.0.2.2/24", "numRows": 2}, {"ipAddress": "192.168.1.2/24",
+    "numRows": 2}]'
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/mixed/parquet-out
   marks: address unique mixed

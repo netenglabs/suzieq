@@ -153,6 +153,10 @@ tests:
 - command: network unique --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: network unique
+  output: '[{"namespace": "dual-evpn"}, {"namespace": "ospf-ibgp"}, {"namespace":
+    "ospf-single"}]'
 - command: network unique --count=True --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: network unique
+  output: '[{"namespace": "dual-evpn", "numRows": 1}, {"namespace": "ospf-ibgp", "numRows":
+    1}, {"namespace": "ospf-single", "numRows": 1}]'

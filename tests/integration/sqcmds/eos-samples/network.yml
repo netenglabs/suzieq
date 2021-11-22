@@ -101,6 +101,8 @@ tests:
 - command: network unique --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network unique eos
+  output: '[{"namespace": "eos"}]'
 - command: network unique --count=True --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network unique eos
+  output: '[{"namespace": "eos", "numRows": 1}]'

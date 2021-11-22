@@ -3275,9 +3275,64 @@ tests:
 - command: route unique --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route unique junos
+  output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "10.0.0.101/32"}, {"prefix": "10.0.0.102/32"},
+    {"prefix": "10.0.0.11/32"}, {"prefix": "10.0.0.12/32"}, {"prefix": "10.0.0.121/32"},
+    {"prefix": "10.0.0.122/32"}, {"prefix": "10.0.0.21/32"}, {"prefix": "10.0.0.22/32"},
+    {"prefix": "10.0.0.31/32"}, {"prefix": "10.0.0.32/32"}, {"prefix": "10.0.0.41/32"},
+    {"prefix": "10.255.5.0/24"}, {"prefix": "10.255.5.1/32"}, {"prefix": "10.255.5.117/32"},
+    {"prefix": "10.255.5.118/32"}, {"prefix": "10.255.5.184/32"}, {"prefix": "10.255.5.185/32"},
+    {"prefix": "10.255.5.250/32"}, {"prefix": "10.255.5.251/32"}, {"prefix": "10.255.5.252/32"},
+    {"prefix": "169.254.0.0/24"}, {"prefix": "169.254.0.2/32"}, {"prefix": "169.254.127.0/31"},
+    {"prefix": "169.254.127.0/32"}, {"prefix": "169.254.127.1/32"}, {"prefix": "169.254.127.2/31"},
+    {"prefix": "169.254.127.2/32"}, {"prefix": "169.254.127.3/32"}, {"prefix": "169.254.253.0/30"},
+    {"prefix": "169.254.253.1/32"}, {"prefix": "169.254.253.4/30"}, {"prefix": "169.254.253.5/32"},
+    {"prefix": "169.254.253.8/30"}, {"prefix": "169.254.253.9/32"}, {"prefix": "169.254.254.0/30"},
+    {"prefix": "169.254.254.1/32"}, {"prefix": "169.254.254.4/30"}, {"prefix": "169.254.254.5/32"},
+    {"prefix": "169.254.254.8/30"}, {"prefix": "169.254.254.9/32"}, {"prefix": "172.16.0.0/16"},
+    {"prefix": "172.16.1.0/24"}, {"prefix": "172.16.1.101/32"}, {"prefix": "172.16.1.254/32"},
+    {"prefix": "172.16.2.0/24"}, {"prefix": "172.16.2.201/32"}, {"prefix": "172.16.2.254/32"},
+    {"prefix": "172.16.3.0/24"}, {"prefix": "172.16.3.102/32"}, {"prefix": "172.16.3.202/32"},
+    {"prefix": "172.16.3.254/32"}, {"prefix": "18"}, {"prefix": "224.0.0.5/32"}, {"prefix":
+    "fe80::205:860f:fc71:2700/128"}, {"prefix": "fe80::205:860f:fc71:2e00/128"}, {"prefix":
+    "fe80::205:860f:fc71:5500/128"}, {"prefix": "fe80::205:860f:fc71:7400/128"}, {"prefix":
+    "fe80::205:860f:fc71:ad00/128"}, {"prefix": "fe80::205:860f:fc71:c200/128"}, {"prefix":
+    "fe80::205:860f:fc71:c600/128"}, {"prefix": "ff02::2/128"}]'
 - command: route unique --count=True --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route unique junos
+  output: '[{"prefix": "10.255.5.117/32", "numRows": 1}, {"prefix": "10.255.5.118/32",
+    "numRows": 1}, {"prefix": "10.255.5.250/32", "numRows": 1}, {"prefix": "169.254.127.0/32",
+    "numRows": 1}, {"prefix": "169.254.127.1/32", "numRows": 1}, {"prefix": "169.254.127.2/32",
+    "numRows": 1}, {"prefix": "169.254.127.3/32", "numRows": 1}, {"prefix": "169.254.253.5/32",
+    "numRows": 1}, {"prefix": "169.254.253.9/32", "numRows": 1}, {"prefix": "169.254.254.5/32",
+    "numRows": 1}, {"prefix": "169.254.254.9/32", "numRows": 1}, {"prefix": "172.16.1.254/32",
+    "numRows": 1}, {"prefix": "172.16.2.254/32", "numRows": 1}, {"prefix": "fe80::205:860f:fc71:2700/128",
+    "numRows": 1}, {"prefix": "fe80::205:860f:fc71:2e00/128", "numRows": 1}, {"prefix":
+    "fe80::205:860f:fc71:5500/128", "numRows": 1}, {"prefix": "fe80::205:860f:fc71:7400/128",
+    "numRows": 1}, {"prefix": "fe80::205:860f:fc71:ad00/128", "numRows": 1}, {"prefix":
+    "fe80::205:860f:fc71:c200/128", "numRows": 1}, {"prefix": "fe80::205:860f:fc71:c600/128",
+    "numRows": 1}, {"prefix": "10.255.5.184/32", "numRows": 2}, {"prefix": "10.255.5.185/32",
+    "numRows": 2}, {"prefix": "10.255.5.251/32", "numRows": 2}, {"prefix": "10.255.5.252/32",
+    "numRows": 2}, {"prefix": "169.254.253.1/32", "numRows": 2}, {"prefix": "169.254.253.8/30",
+    "numRows": 2}, {"prefix": "169.254.254.1/32", "numRows": 2}, {"prefix": "169.254.254.8/30",
+    "numRows": 2}, {"prefix": "172.16.3.254/32", "numRows": 2}, {"prefix": "10.0.0.101/32",
+    "numRows": 3}, {"prefix": "10.0.0.102/32", "numRows": 3}, {"prefix": "10.0.0.121/32",
+    "numRows": 3}, {"prefix": "10.0.0.41/32", "numRows": 3}, {"prefix": "169.254.127.0/31",
+    "numRows": 3}, {"prefix": "169.254.127.2/31", "numRows": 3}, {"prefix": "169.254.253.0/30",
+    "numRows": 3}, {"prefix": "169.254.254.0/30", "numRows": 3}, {"prefix": "172.16.1.101/32",
+    "numRows": 3}, {"prefix": "172.16.2.201/32", "numRows": 3}, {"prefix": "172.16.3.102/32",
+    "numRows": 3}, {"prefix": "172.16.3.202/32", "numRows": 3}, {"prefix": "10.0.0.122/32",
+    "numRows": 4}, {"prefix": "169.254.254.4/30", "numRows": 4}, {"prefix": "172.16.0.0/16",
+    "numRows": 4}, {"prefix": "18", "numRows": 4}, {"prefix": "10.255.5.1/32", "numRows":
+    5}, {"prefix": "169.254.253.4/30", "numRows": 5}, {"prefix": "10.0.0.21/32", "numRows":
+    6}, {"prefix": "10.0.0.22/32", "numRows": 6}, {"prefix": "224.0.0.5/32", "numRows":
+    6}, {"prefix": "10.0.0.31/32", "numRows": 7}, {"prefix": "10.0.0.32/32", "numRows":
+    7}, {"prefix": "172.16.1.0/24", "numRows": 7}, {"prefix": "172.16.2.0/24", "numRows":
+    7}, {"prefix": "10.0.0.11/32", "numRows": 8}, {"prefix": "10.0.0.12/32", "numRows":
+    8}, {"prefix": "172.16.3.0/24", "numRows": 8}, {"prefix": "169.254.0.2/32", "numRows":
+    11}, {"prefix": "169.254.0.0/24", "numRows": 13}, {"prefix": "ff02::2/128", "numRows":
+    13}, {"prefix": "0.0.0.0/0", "numRows": 14}, {"prefix": "10.255.5.0/24", "numRows":
+    18}]'
 - command: route unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: route unique junos

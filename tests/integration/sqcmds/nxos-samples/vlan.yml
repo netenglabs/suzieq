@@ -165,9 +165,12 @@ tests:
 - command: vlan unique --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: vlan unique nxos
+  output: '[{"vlan": 1}, {"vlan": 10}, {"vlan": 20}, {"vlan": 30}, {"vlan": 999}]'
 - command: vlan unique --count=True --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: vlan unique nxos
+  output: '[{"vlan": 10, "numRows": 2}, {"vlan": 20, "numRows": 2}, {"vlan": 30, "numRows":
+    4}, {"vlan": 999, "numRows": 6}, {"vlan": 1, "numRows": 9}]'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: vlan unique nxos

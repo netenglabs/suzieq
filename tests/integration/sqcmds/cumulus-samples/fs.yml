@@ -1057,9 +1057,13 @@ tests:
 - command: fs unique --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: fs unique
+  output: '[{"fstype": "btrfs"}, {"fstype": "devtmpfs"}, {"fstype": "ext4"}, {"fstype":
+    "tmpfs"}]'
 - command: fs unique --count=True --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: fs unique
+  output: '[{"fstype": "devtmpfs", "numRows": 42}, {"fstype": "ext4", "numRows": 48},
+    {"fstype": "btrfs", "numRows": 144}, {"fstype": "tmpfs", "numRows": 201}]'
 - command: fs unique --columns="mountPoint" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: fs unique
