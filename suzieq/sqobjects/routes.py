@@ -9,10 +9,13 @@ class RoutesObj(SqObject):
         self._addnl_filter = 'metric != 4278198272'
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'prefix',
                                 'vrf', 'protocol', 'prefixlen', 'ipvers',
-                                'add_filter', 'address', 'query_str']
+                                'add_filter', 'address', 'query_str', 'origin']
         self._unique_def_column = ['prefix']
 
     def validate_get_input(self, **kwargs):
+        if kwargs.get('prefix', []) and kwargs.get('origin', []):
+            raise AttributeError("Cannot specify origin and prefix together")
+
         if kwargs.get('prefixlen', ''):
             p_match = re.fullmatch(r'([<>][=]?|[!])?[ ]?([0-9]+)',
                                    kwargs['prefixlen'])

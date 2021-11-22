@@ -57,11 +57,13 @@ class RouteCmd(SqCommand):
 
     @command("show")
     @argument("prefix", description="Prefix, in quotes, to filter show on")
+    @argument("origin",
+              description="Shows all devices which generated a route")
     @argument("vrf", description="VRF to qualify")
     @argument("protocol", description="routing protocol to qualify")
     @argument("prefixlen", description="must be of the form "
               "[<|<=|>=|>|!] length")
-    def show(self, prefix: str = "", vrf: str = '', protocol: str = "",
+    def show(self, prefix: str = "", origin: str = '', vrf: str = '', protocol: str = "",
              prefixlen: str = ""):
         """Show Routing table info
         """
@@ -80,6 +82,7 @@ class RouteCmd(SqCommand):
                                 hostname=self.hostname,
                                 prefix=prefix.split(),
                                 vrf=vrf.split(),
+                                origin=origin.split(),
                                 protocol=protocol.split(),
                                 columns=self.columns,
                                 namespace=self.namespace,

@@ -38,63 +38,73 @@ class RoutesObj(SqPandasEngine):
         ipvers = kwargs.pop('ipvers', '')
         addnl_fields = kwargs.pop('addnl_fields', [])
         user_query = kwargs.pop('query_str', '')
+        origin = kwargs.pop('origin', '')
 
         columns = kwargs.get('columns', ['default'])
         addnl_fields, drop_cols = self._cons_addnl_fields(
             columns, addnl_fields)
 
-        if prefixlen and ('prefixlen' not in columns or columns != ['*']):
-            addnl_fields.append('prefixlen')
-            drop_cols.append('prefixlen')
-
-        # /32 routes are stored with the /32 prefix, so if user doesn't specify
-        # prefix as some folks do, assume /32
-        newpfx = []
-        for item in prefix:
-            ipvers = self._get_ipvers(item)
-
-            if item and '/' not in item:
-                if ipvers == 4:
-                    item += '/32'
-                else:
-                    item += '/128'
-
-            newpfx.append(item)
-
-        df = super().get(addnl_fields=addnl_fields, prefix=newpfx,
-                         ipvers=ipvers, **kwargs)
-
-        if not df.empty and 'prefix' in df.columns:
-            df = df.loc[df['prefix'] != "127.0.0.0/8"]
-            df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
-
-            if prefixlen or 'prefixlen' in columns or (columns == ['*']):
-                # This convoluted logic to handle the issue of invalid entries
-                # for prefix in JUNOS routing table
-                df['prefixlen'] = df['prefix'].str.split('/')
-                df = df[df.prefixlen.str.len() == 2]
-                df['prefixlen'] = df['prefixlen'].str[1].astype('int')
-
-            if prefixlen:
-                if any(map(prefixlen.startswith, ['<', '>'])):
-                    query_str = f'prefixlen {prefixlen}'
-                elif prefixlen.startswith('!'):
-                    query_str = f'prefixlen != {prefixlen[1:]}'
-                else:
-                    query_str = f'prefixlen == {prefixlen}'
-
-                # drop in reset_index to not add an additional index col
-                df = df.query(query_str).reset_index(drop=True)
-
-            if columns != ['*'] and 'prefixlen' not in columns:
+        if origin:
+            # steps:
+            # 1. retrieve all "namespace, hostname" with an interface in
+            #    "origin"
+            # 2. retrieve bgp and ospf device which match the previous
+            #    "namespace, hostname" list
+            # 3. filter the routes with this "namespace, hostname"
+            pass
+        else:
+            if prefixlen and ('prefixlen' not in columns or columns != ['*']):
+                addnl_fields.append('prefixlen')
                 drop_cols.append('prefixlen')
 
-        if not df.empty and ('numNexthops' in columns or (columns == ['*'])):
-            srs_oif = df['oifs'].str.len()
-            srs_hops = df['nexthopIps'].str.len()
-            srs = np.array(list(zip(srs_oif, srs_hops)))
-            srs_max = np.amax(srs, 1)
-            df.insert(len(df.columns)-1, 'numNexthops', srs_max)
+            # /32 routes are stored with the /32 prefix, so if user doesn't specify
+            # prefix as some folks do, assume /32
+            newpfx = []
+            for item in prefix:
+                ipvers = self._get_ipvers(item)
+
+                if item and '/' not in item:
+                    if ipvers == 4:
+                        item += '/32'
+                    else:
+                        item += '/128'
+
+                newpfx.append(item)
+
+            df = super().get(addnl_fields=addnl_fields, prefix=newpfx,
+                            ipvers=ipvers, **kwargs)
+
+            if not df.empty and 'prefix' in df.columns:
+                df = df.loc[df['prefix'] != "127.0.0.0/8"]
+                df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
+
+                if prefixlen or 'prefixlen' in columns or (columns == ['*']):
+                    # This convoluted logic to handle the issue of invalid entries
+                    # for prefix in JUNOS routing table
+                    df['prefixlen'] = df['prefix'].str.split('/')
+                    df = df[df.prefixlen.str.len() == 2]
+                    df['prefixlen'] = df['prefixlen'].str[1].astype('int')
+
+                if prefixlen:
+                    if any(map(prefixlen.startswith, ['<', '>'])):
+                        query_str = f'prefixlen {prefixlen}'
+                    elif prefixlen.startswith('!'):
+                        query_str = f'prefixlen != {prefixlen[1:]}'
+                    else:
+                        query_str = f'prefixlen == {prefixlen}'
+
+                    # drop in reset_index to not add an additional index col
+                    df = df.query(query_str).reset_index(drop=True)
+
+                if columns != ['*'] and 'prefixlen' not in columns:
+                    drop_cols.append('prefixlen')
+
+            if not df.empty and ('numNexthops' in columns or (columns == ['*'])):
+                srs_oif = df['oifs'].str.len()
+                srs_hops = df['nexthopIps'].str.len()
+                srs = np.array(list(zip(srs_oif, srs_hops)))
+                srs_max = np.amax(srs, 1)
+                df.insert(len(df.columns)-1, 'numNexthops', srs_max)
 
         if user_query:
             df = df.query(user_query).reset_index(drop=True)
