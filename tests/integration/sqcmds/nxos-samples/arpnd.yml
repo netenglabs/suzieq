@@ -512,3 +512,144 @@ tests:
     "nxos", "hostname": "spine01", "ipAddress": "10.0.0.31", "oif": "Ethernet1/5",
     "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote": false, "timestamp":
     1619275263663}]'
+- command: arpnd show --address="169.254.253.1" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: arpnd show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
+    "oif": "eth2.2", "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275256617}]'
+- command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: arpnd show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
+    "oif": "eth2.2", "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275256617}, {"namespace": "nxos", "hostname": "exit02",
+    "ipAddress": "169.254.253.2", "oif": "Ethernet1/3.2", "macaddr": "52:54:00:86:df:51",
+    "state": "reachable", "remote": false, "timestamp": 1619275264340}]'
+- command: arpnd show --address="invalidaddress" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '[{"error": "Invalid IP address specified"}]'
+  marks: arpnd show nxos filter
+- command: arpnd show --macaddr="44:01:03:01:1B:08 0205.8671.3c03" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: arpnd show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.254.9",
+    "oif": "eth1.4", "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275256617}, {"namespace": "nxos", "hostname": "firewall01",
+    "ipAddress": "169.254.254.5", "oif": "eth1.3", "macaddr": "44:01:03:01:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275256617}, {"namespace":
+    "nxos", "hostname": "firewall01", "ipAddress": "169.254.254.1", "oif": "eth1.2",
+    "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275256617}, {"namespace": "nxos", "hostname": "dcedge01", "ipAddress": "169.254.127.1",
+    "oif": "xe-0/0/0.0", "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275261428}, {"namespace": "nxos", "hostname": "spine02",
+    "ipAddress": "10.0.0.31", "oif": "Ethernet1/5", "macaddr": "44:01:03:01:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275262853}, {"namespace":
+    "nxos", "hostname": "spine01", "ipAddress": "10.0.0.31", "oif": "Ethernet1/5",
+    "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275263663}, {"namespace": "nxos", "hostname": "exit01", "ipAddress": "169.254.127.0",
+    "oif": "Ethernet1/4", "macaddr": "02:05:86:71:3c:03", "state": "reachable", "remote":
+    false, "timestamp": 1619275264358}]'
+- command: arpnd show --macaddr="invalidaddress" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '[{"error": "Invalid mac address specified"}]'
+  marks: arpnd show nxos filter
+- command: arpnd show --prefix="169.254.253.0/24" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: arpnd show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.253.5",
+    "oif": "eth2.3", "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275256617}, {"namespace": "nxos", "hostname": "firewall01",
+    "ipAddress": "169.254.253.9", "oif": "eth2.4", "macaddr": "44:01:03:02:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275256617}, {"namespace":
+    "nxos", "hostname": "firewall01", "ipAddress": "169.254.253.1", "oif": "eth2.2",
+    "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275256617}, {"namespace": "nxos", "hostname": "exit02", "ipAddress": "169.254.253.6",
+    "oif": "Ethernet1/3.3", "macaddr": "52:54:00:86:df:51", "state": "reachable",
+    "remote": false, "timestamp": 1619275264340}, {"namespace": "nxos", "hostname":
+    "exit02", "ipAddress": "169.254.253.2", "oif": "Ethernet1/3.2", "macaddr": "52:54:00:86:df:51",
+    "state": "reachable", "remote": false, "timestamp": 1619275264340}, {"namespace":
+    "nxos", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "Ethernet1/3.4",
+    "macaddr": "52:54:00:86:df:51", "state": "reachable", "remote": false, "timestamp":
+    1619275264340}]'
+- command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: arpnd show nxos filter
+  output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.253.5",
+    "oif": "eth2.3", "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275256617}, {"namespace": "nxos", "hostname": "firewall01",
+    "ipAddress": "169.254.253.9", "oif": "eth2.4", "macaddr": "44:01:03:02:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275256617}, {"namespace":
+    "nxos", "hostname": "firewall01", "ipAddress": "169.254.253.1", "oif": "eth2.2",
+    "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275256617}, {"namespace": "nxos", "hostname": "spine02", "ipAddress": "10.0.0.11",
+    "oif": "Ethernet1/1", "macaddr": "44:01:02:01:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275262853}, {"namespace": "nxos", "hostname": "spine02",
+    "ipAddress": "10.0.0.12", "oif": "Ethernet1/2", "macaddr": "44:01:02:02:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275262853}, {"namespace":
+    "nxos", "hostname": "spine02", "ipAddress": "10.0.0.13", "oif": "Ethernet1/3",
+    "macaddr": "44:01:02:03:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275262853}, {"namespace": "nxos", "hostname": "spine02", "ipAddress": "10.0.0.14",
+    "oif": "Ethernet1/4", "macaddr": "44:01:02:04:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275262853}, {"namespace": "nxos", "hostname": "spine02",
+    "ipAddress": "10.0.0.31", "oif": "Ethernet1/5", "macaddr": "44:01:03:01:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275262853}, {"namespace":
+    "nxos", "hostname": "spine02", "ipAddress": "10.0.0.32", "oif": "Ethernet1/6",
+    "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275262853}, {"namespace": "nxos", "hostname": "leaf03", "ipAddress": "10.0.0.22",
+    "oif": "Ethernet1/2", "macaddr": "44:01:01:02:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275263495}, {"namespace": "nxos", "hostname": "leaf03",
+    "ipAddress": "10.0.0.21", "oif": "Ethernet1/1", "macaddr": "44:01:01:01:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275263495}, {"namespace":
+    "nxos", "hostname": "spine01", "ipAddress": "10.0.0.11", "oif": "Ethernet1/1",
+    "macaddr": "44:01:02:01:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275263663}, {"namespace": "nxos", "hostname": "spine01", "ipAddress": "10.0.0.13",
+    "oif": "Ethernet1/3", "macaddr": "44:01:02:03:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275263663}, {"namespace": "nxos", "hostname": "spine01",
+    "ipAddress": "10.0.0.14", "oif": "Ethernet1/4", "macaddr": "44:01:02:04:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275263663}, {"namespace":
+    "nxos", "hostname": "spine01", "ipAddress": "10.0.0.32", "oif": "Ethernet1/6",
+    "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275263663}, {"namespace": "nxos", "hostname": "spine01", "ipAddress": "10.0.0.31",
+    "oif": "Ethernet1/5", "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275263663}, {"namespace": "nxos", "hostname": "spine01",
+    "ipAddress": "10.0.0.12", "oif": "Ethernet1/2", "macaddr": "44:01:02:02:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275263663}, {"namespace":
+    "nxos", "hostname": "exit02", "ipAddress": "10.0.0.21", "oif": "Ethernet1/1",
+    "macaddr": "44:01:01:01:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275264340}, {"namespace": "nxos", "hostname": "exit02", "ipAddress": "169.254.253.6",
+    "oif": "Ethernet1/3.3", "macaddr": "52:54:00:86:df:51", "state": "reachable",
+    "remote": false, "timestamp": 1619275264340}, {"namespace": "nxos", "hostname":
+    "exit02", "ipAddress": "169.254.253.2", "oif": "Ethernet1/3.2", "macaddr": "52:54:00:86:df:51",
+    "state": "reachable", "remote": false, "timestamp": 1619275264340}, {"namespace":
+    "nxos", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "Ethernet1/3.4",
+    "macaddr": "52:54:00:86:df:51", "state": "reachable", "remote": false, "timestamp":
+    1619275264340}, {"namespace": "nxos", "hostname": "exit02", "ipAddress": "10.0.0.22",
+    "oif": "Ethernet1/2", "macaddr": "44:01:01:02:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275264340}, {"namespace": "nxos", "hostname": "exit01",
+    "ipAddress": "10.0.0.22", "oif": "Ethernet1/2", "macaddr": "44:01:01:02:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275264358}, {"namespace":
+    "nxos", "hostname": "exit01", "ipAddress": "10.0.0.21", "oif": "Ethernet1/1",
+    "macaddr": "44:01:01:01:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275264358}, {"namespace": "nxos", "hostname": "leaf02", "ipAddress": "10.0.0.21",
+    "oif": "Ethernet1/1", "macaddr": "44:01:01:01:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275264428}, {"namespace": "nxos", "hostname": "leaf02",
+    "ipAddress": "10.0.0.22", "oif": "Ethernet1/2", "macaddr": "44:01:01:02:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275264428}, {"namespace":
+    "nxos", "hostname": "leaf01", "ipAddress": "10.0.0.21", "oif": "Ethernet1/1",
+    "macaddr": "44:01:01:01:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275264429}, {"namespace": "nxos", "hostname": "leaf01", "ipAddress": "10.0.0.22",
+    "oif": "Ethernet1/2", "macaddr": "44:01:01:02:1b:08", "state": "reachable", "remote":
+    false, "timestamp": 1619275264429}, {"namespace": "nxos", "hostname": "leaf04",
+    "ipAddress": "10.0.0.21", "oif": "Ethernet1/1", "macaddr": "44:01:01:01:1b:08",
+    "state": "reachable", "remote": false, "timestamp": 1619275264853}, {"namespace":
+    "nxos", "hostname": "leaf04", "ipAddress": "10.0.0.22", "oif": "Ethernet1/2",
+    "macaddr": "44:01:01:02:1b:08", "state": "reachable", "remote": false, "timestamp":
+    1619275264853}]'
+- command: arpnd show --prefix="169.254.253.0" --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: arpnd show nxos filter

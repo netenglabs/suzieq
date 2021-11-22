@@ -257,10 +257,10 @@ class NetworkObj(SqPandasEngine):
 
         if any(x in addr for x in ['::', '.']):
             arpdf = self._get_table_sqobj('arpnd').get(
-                ipAddress=addr, **kwargs)
+                ipAddress=addr.split(), **kwargs)
         else:
             arpdf = self._get_table_sqobj('arpnd').get(
-                macaddr=addr, **kwargs)
+                macaddr=addr.split(), **kwargs)
 
         result = []
         for row in arpdf.itertuples():

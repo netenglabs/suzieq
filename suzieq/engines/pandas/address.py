@@ -26,9 +26,11 @@ class AddressObj(SqPandasEngine):
         """Retrieve the dataframe that matches a given IPv4/v6/MAC address"""
 
         addr = kwargs.pop("address", [])
+        prefix = kwargs.pop("prefix", [])
         columns = kwargs.get("columns", [])
         ipvers = kwargs.pop("ipvers", "")
-        user_query = kwargs.pop('query_str', '')
+        user_query = kwargs.pop("query_str", "")
+
         if user_query:
             if user_query.startswith('"') and user_query.endswith('"'):
                 user_query = user_query[1:-1]
@@ -37,14 +39,13 @@ class AddressObj(SqPandasEngine):
         addnl_fields = ['master']
         drop_cols = []
 
-        v4addr = []
-        v6addr = []
-        macaddr = []
-        try:
+        if prefix:
+            addr_types = self.addr_type(prefix)
+        else:
             addr_types = self.addr_type(addr)
-        except ValueError:
-            return pd.DataFrame({'error': ['Invalid address specified']})
 
+        # Always include ip or mac addresses in the dataframe
+        # if there is a filter on them
         if columns != ['default'] and columns != ['*']:
             if ((4 in addr_types or ipvers == "v4") and
                     'ipAddressList' not in columns):
@@ -58,21 +59,6 @@ class AddressObj(SqPandasEngine):
                     'macaddr' not in columns):
                 addnl_fields.append('macaddr')
                 drop_cols.append('macaddr')
-
-        for i, a in enumerate(addr):
-            if addr_types[i] == 0:
-                # convert the macaddr format to internal format
-                if '.' in a:
-                    a = convert_macaddr_format_to_colon(a)
-                macaddr.append(a.lower())
-            elif addr_types[i] == 4:
-                if '/' not in a:
-                    a += '/'
-                v4addr.append(a)
-            elif addr_types[i] == 6:
-                if '/' not in a:
-                    a += '/'
-                v6addr.append(a)
 
         if vrf == "default":
             master = ''
@@ -96,22 +82,64 @@ class AddressObj(SqPandasEngine):
         if 6 in addr_types:
             df = df.explode('ip6AddressList').fillna({'ip6AddressList': ''})
 
+        v4addr = []
+        v6addr = []
         query_str = ''
-        prefix = ''
-        # IMPORTANT: Don't mess with this order of query. Some bug in pandas
-        # prevents it from working if macaddr isn't first and your query
-        # contains both a macaddr and an IP address.
-        if macaddr:
-            query_str += f'{prefix} macaddr.isin({macaddr}) '
-            prefix = 'or'
-        if v4addr:
-            for a in v4addr:
-                query_str += f'{prefix} ipAddressList.str.startswith("{a}") '
-                prefix = 'or'
-        if v6addr:
-            for a in v6addr:
-                query_str += f'{prefix} ip6AddressList.str.startswith("{a}") '
-                prefix = 'or'
+        filter_prefix = ''
+
+        # Address and prefix filtering are mutual exclusive
+        if addr:
+            macaddr = []
+            for i, a in enumerate(addr):
+                if addr_types[i] == 0:
+                    # convert the macaddr format to internal format
+                    if '.' in a:
+                        a = convert_macaddr_format_to_colon(a)
+                    macaddr.append(a.lower())
+                elif addr_types[i] == 4:
+                    if '/' not in a:
+                        a += '/'
+                    v4addr.append(a)
+                elif addr_types[i] == 6:
+                    if '/' not in a:
+                        a += '/'
+                    v6addr.append(a)
+
+            # IMPORTANT: Don't mess with this order of query.
+            # Some bug in pandas prevents it from working if
+            # macaddr isn't first and your query
+            # contains both a macaddr and an IP address.
+            if macaddr:
+                query_str += f'{filter_prefix} macaddr.isin({macaddr}) '
+                filter_prefix = 'or'
+            if v4addr:
+                for a in v4addr:
+                    query_str += (f'{filter_prefix} '
+                                  f'ipAddressList.str.startswith("{a}") ')
+                    filter_prefix = 'or'
+            if v6addr:
+                for a in v6addr:
+                    query_str += (f'{filter_prefix} '
+                                  f'ip6AddressList.str.startswith("{a}") ')
+                    filter_prefix = 'or'
+
+        elif prefix:
+            for i, a in enumerate(prefix):
+                if addr_types[i] == 4:
+                    v4addr.append(a)
+                elif addr_types[i] == 6:
+                    v6addr.append(a)
+
+            if v4addr:
+                for a in v4addr:
+                    query_str += (f'{filter_prefix} '
+                                  f'@self._is_in_subnet(ipAddressList,"{a}")')
+                    filter_prefix = 'or'
+            if v6addr:
+                for a in v6addr:
+                    query_str += (f'{filter_prefix} '
+                                  f'@self._is_in_subnet(ip6AddressList,"{a}")')
+                    filter_prefix = 'or'
 
         if not query_str:
             if ipvers == "v4":
@@ -132,7 +160,8 @@ class AddressObj(SqPandasEngine):
         columns = kwargs.get('columns', None)
         if columns == ['vrf']:
             query_str = kwargs.get('query_str', None)
-            vrf_query_str = '(ipAddressList.str.len() != 0 or ip6AddressList.str.len() != 0)'
+            vrf_query_str = ('(ipAddressList.str.len() != 0 or '
+                             'ip6AddressList.str.len() != 0)')
             if query_str:
                 kwargs['query_str'] = f"{vrf_query_str} and {query_str}"
             else:

@@ -1,0 +1,222 @@
+description: 'Testing verbs for arpnd: show summarize unique'
+tests:
+- command: arpnd show --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd show vmx
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "128.0.0.16",
+    "oif": "em1.0", "macaddr": "50:06:00:0e:00:01", "state": "reachable", "remote":
+    false, "timestamp": 1631009089243}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089243}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "172.16.20.11", "oif": "irb.200",
+    "macaddr": "00:50:79:66:68:07", "state": "reachable", "remote": false, "timestamp":
+    1631009089243}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress":
+    "172.16.10.11", "oif": "irb.100", "macaddr": "00:50:79:66:68:06", "state": "reachable",
+    "remote": false, "timestamp": 1631009089243}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ipAddress": "10.0.10.1", "oif": "ae1.10", "macaddr": "50:06:00:02:00:01",
+    "state": "reachable", "remote": false, "timestamp": 1631009089243}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "10.0.10.3", "oif": "ae1.10",
+    "macaddr": "2c:6b:f5:7d:f6:c1", "state": "reachable", "remote": false, "timestamp":
+    1631009089243}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress":
+    "10.0.20.1", "oif": "ae1.20", "macaddr": "50:06:00:02:00:01", "state": "reachable",
+    "remote": false, "timestamp": 1631009089243}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ipAddress": "10.0.20.3", "oif": "ae1.20", "macaddr": "2c:6b:f5:7d:f6:c1",
+    "state": "reachable", "remote": false, "timestamp": 1631009089243}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ipAddress": "10.0.100.1", "oif": "ge-0/0/2.0",
+    "macaddr": "50:06:00:02:00:03", "state": "reachable", "remote": false, "timestamp":
+    1631009089291}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ipAddress":
+    "128.0.0.16", "oif": "em1.0", "macaddr": "50:06:00:0c:00:01", "state": "reachable",
+    "remote": false, "timestamp": 1631009089291}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr":
+    "28:c0:da:2c:7f:81", "state": "reachable", "remote": false, "timestamp": 1631009089291},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ipAddress": "128.0.0.16", "oif":
+    "em1.0", "macaddr": "50:06:00:0a:00:01", "state": "reachable", "remote": false,
+    "timestamp": 1631009089387}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089387}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress": "10.0.10.1", "oif": "ae1.10",
+    "macaddr": "50:06:00:02:00:01", "state": "reachable", "remote": false, "timestamp":
+    1631009089424}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress":
+    "10.0.10.2", "oif": "ae1.10", "macaddr": "2c:6b:f5:b6:ce:c1", "state": "reachable",
+    "remote": false, "timestamp": 1631009089424}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ipAddress": "10.0.20.1", "oif": "ae1.20", "macaddr": "50:06:00:02:00:01",
+    "state": "reachable", "remote": false, "timestamp": 1631009089424}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress": "10.0.20.2", "oif": "ae1.20",
+    "macaddr": "2c:6b:f5:b6:ce:c1", "state": "reachable", "remote": false, "timestamp":
+    1631009089424}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress":
+    "128.0.0.16", "oif": "em1.0", "macaddr": "50:06:00:10:00:01", "state": "reachable",
+    "remote": false, "timestamp": 1631009089424}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ipAddress": "172.16.11.11", "oif": "irb.101", "macaddr":
+    "00:50:79:66:68:08", "state": "reachable", "remote": false, "timestamp": 1631009089424},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress": "172.16.21.11",
+    "oif": "irb.201", "macaddr": "00:50:79:66:68:09", "state": "reachable", "remote":
+    false, "timestamp": 1631009089424}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089424}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ipAddress": "172.26.147.254", "oif": "fxp0.0",
+    "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote": false, "timestamp":
+    1631009089696}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ipAddress":
+    "128.0.0.16", "oif": "em1.0", "macaddr": "50:06:00:04:00:01", "state": "reachable",
+    "remote": false, "timestamp": 1631009089696}]'
+- command: arpnd show --columns=hostname --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd show vmx
+  output: '[{"hostname": "TOR1CRP-DGW-RT01"}, {"hostname": "TOR1CRP-DGW-RT01"}, {"hostname":
+    "TOR1CRP-DGW-RT01"}, {"hostname": "TOR1CRP-DGW-RT01"}, {"hostname": "TOR1CRP-DGW-RT01"},
+    {"hostname": "TOR1CRP-DGW-RT01"}, {"hostname": "TOR1CRP-DGW-RT01"}, {"hostname":
+    "TOR1CRP-DGW-RT01"}, {"hostname": "TOR1BBN-PE-RT01"}, {"hostname": "TOR1BBN-PE-RT01"},
+    {"hostname": "TOR1BBN-PE-RT01"}, {"hostname": "CRP-ACC-SW01"}, {"hostname": "CRP-ACC-SW01"},
+    {"hostname": "TOR4CRP-DGW-RT01"}, {"hostname": "TOR4CRP-DGW-RT01"}, {"hostname":
+    "TOR4CRP-DGW-RT01"}, {"hostname": "TOR4CRP-DGW-RT01"}, {"hostname": "TOR4CRP-DGW-RT01"},
+    {"hostname": "TOR4CRP-DGW-RT01"}, {"hostname": "TOR4CRP-DGW-RT01"}, {"hostname":
+    "TOR4CRP-DGW-RT01"}, {"hostname": "CRP-DIS-SW01"}, {"hostname": "CRP-DIS-SW01"}]'
+- command: arpnd show --address="172.26.147.254" --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd show vmx filter
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "172.26.147.254",
+    "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote":
+    false, "timestamp": 1631009089243}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089291}, {"namespace":
+    "vmx", "hostname": "CRP-ACC-SW01", "ipAddress": "172.26.147.254", "oif": "fxp0.0",
+    "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote": false, "timestamp":
+    1631009089387}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress":
+    "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable",
+    "remote": false, "timestamp": 1631009089424}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089696}]'
+- command: arpnd show --address="172.26.147.254 10.0.10.1" --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd show vmx filter
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "10.0.10.1",
+    "oif": "ae1.10", "macaddr": "50:06:00:02:00:01", "state": "reachable", "remote":
+    false, "timestamp": 1631009089243}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089243}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ipAddress": "172.26.147.254", "oif": "fxp0.0",
+    "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote": false, "timestamp":
+    1631009089291}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ipAddress":
+    "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable",
+    "remote": false, "timestamp": 1631009089387}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ipAddress": "10.0.10.1", "oif": "ae1.10", "macaddr": "50:06:00:02:00:01",
+    "state": "reachable", "remote": false, "timestamp": 1631009089424}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress": "172.26.147.254", "oif": "fxp0.0",
+    "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote": false, "timestamp":
+    1631009089424}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ipAddress":
+    "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable",
+    "remote": false, "timestamp": 1631009089696}]'
+- command: arpnd show --address="invalidaddress" --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  error:
+    error: '[{"error": "Invalid IP address specified"}]'
+  marks: arpnd show vmx filter
+- command: arpnd show --macaddr="28:c0:da:2c:7f:81" --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd show vmx filter
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "172.26.147.254",
+    "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote":
+    false, "timestamp": 1631009089243}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089291}, {"namespace":
+    "vmx", "hostname": "CRP-ACC-SW01", "ipAddress": "172.26.147.254", "oif": "fxp0.0",
+    "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote": false, "timestamp":
+    1631009089387}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress":
+    "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable",
+    "remote": false, "timestamp": 1631009089424}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089696}]'
+- command: arpnd show --macaddr="28:c0:da:2c:7f:81 00:50:79:66:68:06" --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd show vmx filter
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "172.16.10.11",
+    "oif": "irb.100", "macaddr": "00:50:79:66:68:06", "state": "reachable", "remote":
+    false, "timestamp": 1631009089243}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089243}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ipAddress": "172.26.147.254", "oif": "fxp0.0",
+    "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote": false, "timestamp":
+    1631009089291}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ipAddress":
+    "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable",
+    "remote": false, "timestamp": 1631009089387}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr":
+    "28:c0:da:2c:7f:81", "state": "reachable", "remote": false, "timestamp": 1631009089424},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ipAddress": "172.26.147.254",
+    "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote":
+    false, "timestamp": 1631009089696}]'
+- command: arpnd show --macaddr="invalidaddress" --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  error:
+    error: '[{"error": "Invalid mac address specified"}]'
+  marks: arpnd show vmx filter
+- command: arpnd show --prefix="172.26.147.0/24" --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd show vmx filter
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "172.26.147.254",
+    "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote":
+    false, "timestamp": 1631009089243}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089291}, {"namespace":
+    "vmx", "hostname": "CRP-ACC-SW01", "ipAddress": "172.26.147.254", "oif": "fxp0.0",
+    "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote": false, "timestamp":
+    1631009089387}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress":
+    "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable",
+    "remote": false, "timestamp": 1631009089424}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089696}]'
+- command: arpnd show --prefix="172.26.147.0/24 10.0.0.0/16" --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd show vmx filter
+  output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "172.26.147.254",
+    "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable", "remote":
+    false, "timestamp": 1631009089243}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ipAddress": "10.0.10.1", "oif": "ae1.10", "macaddr": "50:06:00:02:00:01", "state":
+    "reachable", "remote": false, "timestamp": 1631009089243}, {"namespace": "vmx",
+    "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "10.0.10.3", "oif": "ae1.10", "macaddr":
+    "2c:6b:f5:7d:f6:c1", "state": "reachable", "remote": false, "timestamp": 1631009089243},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "10.0.20.1",
+    "oif": "ae1.20", "macaddr": "50:06:00:02:00:01", "state": "reachable", "remote":
+    false, "timestamp": 1631009089243}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ipAddress": "10.0.20.3", "oif": "ae1.20", "macaddr": "2c:6b:f5:7d:f6:c1", "state":
+    "reachable", "remote": false, "timestamp": 1631009089243}, {"namespace": "vmx",
+    "hostname": "TOR1BBN-PE-RT01", "ipAddress": "10.0.100.1", "oif": "ge-0/0/2.0",
+    "macaddr": "50:06:00:02:00:03", "state": "reachable", "remote": false, "timestamp":
+    1631009089291}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ipAddress":
+    "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable",
+    "remote": false, "timestamp": 1631009089291}, {"namespace": "vmx", "hostname":
+    "CRP-ACC-SW01", "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089387}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress": "10.0.10.1", "oif": "ae1.10",
+    "macaddr": "50:06:00:02:00:01", "state": "reachable", "remote": false, "timestamp":
+    1631009089424}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress":
+    "10.0.10.2", "oif": "ae1.10", "macaddr": "2c:6b:f5:b6:ce:c1", "state": "reachable",
+    "remote": false, "timestamp": 1631009089424}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ipAddress": "10.0.20.1", "oif": "ae1.20", "macaddr": "50:06:00:02:00:01",
+    "state": "reachable", "remote": false, "timestamp": 1631009089424}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress": "10.0.20.2", "oif": "ae1.20",
+    "macaddr": "2c:6b:f5:b6:ce:c1", "state": "reachable", "remote": false, "timestamp":
+    1631009089424}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ipAddress":
+    "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81", "state": "reachable",
+    "remote": false, "timestamp": 1631009089424}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ipAddress": "172.26.147.254", "oif": "fxp0.0", "macaddr": "28:c0:da:2c:7f:81",
+    "state": "reachable", "remote": false, "timestamp": 1631009089696}]'
+- command: arpnd show --prefix="172.26.147.0" --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: arpnd show vmx filter
+- command: arpnd summarize --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd summarize vmx
+  output: '{"vmx": {"deviceCnt": 5, "arpNdEntriesCnt": 23, "macaddrCnt": 23, "oifCnt":
+    23, "uniqueOifCnt": 9, "remoteEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
+    0}}'
+- command: arpnd summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd summarize vmx
+  output: '{"namespace": {}, "hostname": {}, "ipAddress": {}, "oif": {}, "macaddr":
+    {}, "state": {}, "remote": {}, "timestamp": {}, "active": {}}'
+- command: arpnd unique --columns=hostname --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: arpnd unique vmx
+  output: '[{"hostname": "CRP-ACC-SW01"}, {"hostname": "CRP-DIS-SW01"}, {"hostname":
+    "TOR1BBN-PE-RT01"}, {"hostname": "TOR1CRP-DGW-RT01"}, {"hostname": "TOR4CRP-DGW-RT01"}]'
