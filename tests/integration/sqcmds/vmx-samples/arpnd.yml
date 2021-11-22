@@ -207,14 +207,9 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/vmx/parquet-out/
   marks: arpnd summarize vmx
-  output: '{"vmx": {"deviceCnt": 5, "arpNdEntriesCnt": 23, "macaddrCnt": 23, "oifCnt":
-    23, "uniqueOifCnt": 9, "remoteEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
-    0}}'
 - command: arpnd summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/vmx/parquet-out/
   marks: arpnd summarize vmx
-  output: '{"namespace": {}, "hostname": {}, "ipAddress": {}, "oif": {}, "macaddr":
-    {}, "state": {}, "remote": {}, "timestamp": {}, "active": {}}'
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/vmx/parquet-out/
   marks: arpnd unique vmx

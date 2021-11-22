@@ -1444,19 +1444,9 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd summarize
-  output: '{"ospf-single": {"deviceCnt": 14, "arpNdEntriesCnt": 55, "macaddrCnt":
-    55, "oifCnt": 55, "uniqueOifCnt": 9, "remoteEntriesCnt": 0, "staticEntriesCnt":
-    0, "failedEntryCnt": 0}, "dual-evpn": {"deviceCnt": 14, "arpNdEntriesCnt": 196,
-    "macaddrCnt": 196, "oifCnt": 196, "uniqueOifCnt": 21, "remoteEntriesCnt": 0, "staticEntriesCnt":
-    36, "failedEntryCnt": 0}, "ospf-ibgp": {"deviceCnt": 14, "arpNdEntriesCnt": 186,
-    "macaddrCnt": 186, "oifCnt": 186, "uniqueOifCnt": 23, "remoteEntriesCnt": 0, "staticEntriesCnt":
-    44, "failedEntryCnt": 0}}'
 - command: arpnd summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd summarize
-  output: '{"dual-evpn": {"deviceCnt": 14, "arpNdEntriesCnt": 196, "macaddrCnt": 196,
-    "oifCnt": 196, "uniqueOifCnt": 21, "remoteEntriesCnt": 0, "staticEntriesCnt":
-    36, "failedEntryCnt": 0}}'
 - command: arpnd unique --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd unique
@@ -1487,6 +1477,3 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
   marks: arpnd summarize
-  output: '{"dual-bgp": {"deviceCnt": 14, "arpNdEntriesCnt": 138, "macaddrCnt": 138,
-    "oifCnt": 138, "uniqueOifCnt": 17, "remoteEntriesCnt": 0, "staticEntriesCnt":
-    52, "failedEntryCnt": 0}}'
