@@ -355,6 +355,11 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: arpnd summarize junos
+  output: '{"junos": {"deviceCnt": 12, "macaddrCnt": 68, "oifCnt": 68, "uniqueOifCnt":
+    20, "arpNdEntriesCnt": 68, "arpNdV4EntriesCnt": 63, "arpNdV6EntriesCnt": 5, "arpNdV6GlobalEntriesCnt":
+    5, "arpNdV6LLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0,
+    "failedV4EntryCnt": 0, "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 0, "failedV6EntryCnt":
+    0}}'
 - command: arpnd unique --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: arpnd unique junos

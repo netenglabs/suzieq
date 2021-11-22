@@ -366,6 +366,11 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: arpnd summarize eos
+  output: '{"eos": {"deviceCnt": 14, "macaddrCnt": 82, "oifCnt": 82, "uniqueOifCnt":
+    26, "arpNdEntriesCnt": 82, "arpNdV4EntriesCnt": 77, "arpNdV6EntriesCnt": 5, "arpNdV6GlobalEntriesCnt":
+    5, "arpNdV6LLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0,
+    "failedV4EntryCnt": 0, "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 0, "failedV6EntryCnt":
+    0}}'
 - command: arpnd unique --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: arpnd unique eos

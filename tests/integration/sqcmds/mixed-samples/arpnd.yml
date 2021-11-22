@@ -293,9 +293,16 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/mixed/parquet-out/
   marks: arpnd summarize mixed
+  output: '{"mixed": {"deviceCnt": 8, "macaddrCnt": 34, "oifCnt": 34, "uniqueOifCnt":
+    17, "arpNdEntriesCnt": 34, "arpNdV4EntriesCnt": 34, "arpNdV6EntriesCnt": 0, "arpNdV6GlobalEntriesCnt":
+    0, "arpNdV6LLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0,
+    "failedV4EntryCnt": 0, "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 0, "failedV6EntryCnt":
+    0}}'
 - command: arpnd summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/mixed/parquet-out/
   marks: arpnd summarize mixed
+  output: '{"namespace": {}, "hostname": {}, "ipAddress": {}, "oif": {}, "macaddr":
+    {}, "state": {}, "remote": {}, "timestamp": {}, "active": {}}'
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/mixed/parquet-out/
   marks: arpnd unique mixed
