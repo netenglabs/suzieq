@@ -8,7 +8,7 @@ from copy import copy
 import numpy as np
 import pandas as pd
 
-from suzieq.exceptions import EmptyDataframeError, PathLoopError
+from suzieq.exceptions import EmptyDataframeError
 from .engineobj import SqPandasEngine
 from suzieq.utils import expand_nxos_ifname, MAX_MTU
 
@@ -306,7 +306,8 @@ class PathObj(SqPandasEngine):
                 # Check that we have a host route at this point
                 ipvers = 6 if ':' in dest else 4
                 if ((ipvers == 4 and rslt.iloc[0].prefix == f'{dest}/32') or
-                        (ipvers == 6 and rslt.iloc[0].prefix == f'{dest}/128')):
+                        (ipvers == 6 and
+                         rslt.iloc[0].prefix == f'{dest}/128')):
                     overlay = rslt.iloc[0].nexthopIps[0]
                     if not overlay:
                         raise AttributeError('missing overlay')
@@ -348,7 +349,8 @@ class PathObj(SqPandasEngine):
         return []
 
     def _get_underlay_nexthop(self, hostname: str, vtep_list: list,
-                              vrf_list: list, is_overlay: bool) -> pd.DataFrame:
+                              vrf_list: list,
+                              is_overlay: bool) -> pd.DataFrame:
         """Return the underlay nexthop given the Vtep and VRF"""
 
         # WARNING: This function is incomplete right now
@@ -379,8 +381,9 @@ class PathObj(SqPandasEngine):
                                  repeat(rslt.timestamp.iloc[0])
                                  )
                 elif rslt.protocol.iloc[0] == 'direct':
-                    intres = zip([vtep], [rslt.oifs.iloc[0][0]], [False], [False],
-                                 [rslt.protocol.iloc[0]], [rslt.timestamp.iloc[0]])
+                    intres = zip([vtep], [rslt.oifs.iloc[0][0]], [False],
+                                 [False], [rslt.protocol.iloc[0]],
+                                 [rslt.timestamp.iloc[0]])
 
                 else:
                     intres = zip(rslt.nexthopIps.iloc[0].tolist(),
@@ -411,7 +414,7 @@ class PathObj(SqPandasEngine):
         # The following condition is checking that we have a pure L3 nexthop or
         # the start of an underlay route. if its a pure L3 route, the nexthopIp
         # is not empty OR the protocol is not hmm--NXOS' host mobility
-        # protocol--which also puts a final subnet route with EVPN also as an L3
+        # protocol--which also puts a final subnet route with EVPN as an L3
         # route.
         if not rslt.empty and (len(rslt.nexthopIps.iloc[0]) != 0 and
                                rslt.nexthopIps.iloc[0][0] != '') and (
@@ -510,7 +513,8 @@ class PathObj(SqPandasEngine):
                 if not macdf.empty and macdf.remoteVtepIp.all():
                     overlay = macdf.iloc[0].remoteVtepIp
 
-                # you don't always have an overlay if the network is transitioning
+                # you don't always have an overlay if the network is
+                # transitioning
                 if overlay:
                     underlay_nh = self._get_underlay_nexthop(device, [overlay],
                                                              ['default'], True)
@@ -735,7 +739,7 @@ class PathObj(SqPandasEngine):
         on_src_node = True
 
         # The logic is to loop through the nexthops till you reach the dest
-        # device The topmost while is this looping. The next loop within handles
+        # node The topmost while is this looping. The next loop within handles
         # one nexthop at a time.The paths are constructed as a list of lists,
         # where each element of the outermost loop is one complete path and
         # each inner list represents one hop in that path. Each hop is the
@@ -793,7 +797,8 @@ class PathObj(SqPandasEngine):
                         copy_dest['is_l2'] = is_l2
                         if not is_l2:
                             copy_dest['nhip'] = dest
-                        copy_dest['mtuMatch'] = devices_iifs[devkey]['mtuMatch']
+                        copy_dest['mtuMatch'] = \
+                            devices_iifs[devkey]['mtuMatch']
                         z = x + [OrderedDict(
                             {destdevkey: copy_dest})]
                         if z not in final_paths:
@@ -819,12 +824,13 @@ class PathObj(SqPandasEngine):
                         copy_dest['is_l2'] = is_l2
                         if not is_l2:
                             copy_dest['nhip'] = dest
-                        copy_dest['mtuMatch'] = devices_iifs[devkey]['mtuMatch']
+                        copy_dest['mtuMatch'] = \
+                            devices_iifs[devkey]['mtuMatch']
 
                         paths = [[OrderedDict({destdevkey: copy_dest})]]
                     continue
 
-                newdevices_iifs = {}  # NHs from this NH to add to the next round
+                newdevices_iifs = {}  # NHs from this NH added to next round
                 end_overlay = True
                 if is_l2 or ioverlay:
                     if ioverlay:
@@ -909,8 +915,10 @@ class PathObj(SqPandasEngine):
                     rslt = self._rdf.query('hostname == "{}" and vrf == "{}"'
                                            .format(device, ivrf))
                     if not rslt.empty:
-                        devices_iifs[devkey]['timestamp'] = rslt.timestamp.iloc[0]
-                        devices_iifs[devkey]['protocol'] = rslt.protocol.iloc[0]
+                        devices_iifs[devkey]['timestamp'] = \
+                            rslt.timestamp.iloc[0]
+                        devices_iifs[devkey]['protocol'] = \
+                            rslt.protocol.iloc[0]
                         devices_iifs[devkey]['lookup'] = rslt.prefix.iloc[0]
 
                         rev_df = self._rpf_df.query(
@@ -1034,7 +1042,8 @@ class PathObj(SqPandasEngine):
                 # Taking advantage of python's shallow copy, that this
                 # also changes what's in df_plist
                 prev_hop['oif'] = self._dest_df.iloc[0]['ifname']
-                if isinstance(prev_hop['outMtu'], str) and '/' in prev_hop['outMtu']:
+                if (isinstance(prev_hop['outMtu'], str) and
+                        '/' in prev_hop['outMtu']):
                     prev_hop['outMtu'] = int(prev_hop['outMtu'].split('/')[1])
                 prev_hop['isL2'] = False
                 prev_hop['nexthopIp'] = ''
@@ -1094,7 +1103,8 @@ class PathObj(SqPandasEngine):
             # Taking advantage of python's shallow copy, that this
             # also changes what's in df_plist
             prev_hop['oif'] = self._dest_df.iloc[0]['ifname']
-            if isinstance(prev_hop['outMtu'], str) and '/' in prev_hop['outMtu']:
+            if (isinstance(prev_hop['outMtu'], str) and
+                    '/' in prev_hop['outMtu']):
                 prev_hop['outMtu'] = int(prev_hop['outMtu'].split('/')[1])
             prev_hop['isL2'] = False
             prev_hop['nexthopIp'] = ''
@@ -1133,8 +1143,9 @@ class PathObj(SqPandasEngine):
         ns[namespace]['uniqueDevices'] = path_df['hostname'].nunique()
         ns[namespace]['mtuMismatch'] = not all(path_df['mtuMatch'])
         ns[namespace]['usesOverlay'] = any(path_df['overlay'])
-        ns[namespace]['pathMtu'] = min(path_df.query('iif != "lo"')['inMtu'].min(),
-                                       path_df.query('iif != "lo"')['outMtu'].min())
+        ns[namespace]['pathMtu'] = min(
+            path_df.query('iif != "lo"')['inMtu'].min(),
+            path_df.query('iif != "lo"')['outMtu'].min())
 
         summary_fields = ['totalPaths', 'perHopEcmp', 'maxPathLength',
                           'avgPathLength', 'uniqueDevices', 'pathMtu',

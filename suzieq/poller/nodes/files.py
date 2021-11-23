@@ -49,7 +49,7 @@ class FileNode(object):
 
     async def _load_single_file_data(self, file: str):
         """Load gathered data from specified file
-        Each entry loaded from the file is a list entry of the following format:
+        Each entry loaded from the file is a list entry with the format:
         [{'status':...
          'timestamp': ...
          'cmd': ....
@@ -60,24 +60,24 @@ class FileNode(object):
          'version': ...
          'data': ...}]
 
-        If the service consisted of multiple commands, then the format is a list,
-        where each entry in the list is of the above format.
+        If the service consisted of multiple commands, then the format is a
+        list, where each entry in the list is of the above format.
 
         We return a dictionary keyed on the command of the format:
         {cmd1: {curpos: 0, 'entry': <list of entries>},
          cmd2: {curpos: 0, 'entry': <list of entries>,
          ...
         } where each entry in the list is of the individual entry of the input
-        format. The basic idea is that when input is requested for a given command,
-        we return the entry at curpos and increment curpos. When curpos exceeds the
-        length of the entries, we reset it back to 0.
+        format. The basic idea is that when input is requested for a given cmd,
+        we return the entry at curpos and increment curpos. When curpos
+        exceeds the length of the entries, we reset it back to 0.
         """
         async with aiofiles.open(file, 'r') as f:
             data = await f.read()
 
         required_keys = ['status', 'timestamp', 'cmd', 'devtype', 'namespace',
                          'hostname', 'address', 'version', 'data']
-        entries = re.split(r'\]\n*\[', data)
+        entries = re.split(r'\]\n*\[\n', data)
         entlen = len(entries)
 
         for i, elem in enumerate(entries):

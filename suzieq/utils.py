@@ -1,8 +1,7 @@
 import os
 import re
 import sys
-from typing import Tuple, List
-from pathlib import Path
+from typing import List
 import logging
 from logging.handlers import RotatingFileHandler
 import json
@@ -16,6 +15,7 @@ from importlib.util import find_spec
 import errno
 from dateparser import parse
 from itertools import groupby
+from ipaddress import ip_network
 
 import pandas as pd
 import pyarrow as pa
@@ -25,6 +25,7 @@ logger = logging.getLogger(__name__)
 
 
 MAX_MTU = 9216
+MISSING_SPEED = -1
 
 
 def validate_sq_config(cfg):
@@ -140,8 +141,8 @@ def load_sq_config(validate=True, config_file=None):
                 sys.exit(1)
 
     if not cfg:
-        print(f"suzieq requires a configuration file either in ./suzieq-cfg.yml "
-              "or ~/suzieq/suzieq-cfg.yml")
+        print("suzieq requires a configuration file either in "
+              "./suzieq-cfg.yml or ~/suzieq/suzieq-cfg.yml")
         sys.exit(1)
 
     return cfg
@@ -213,7 +214,8 @@ class Schema(object):
         return self._types[table]
 
     def key_fields_for_table(self, table):
-        # return [f['name'] for f in self._schema[table] if f.get('key', None) is not None]
+        # return [f['name'] for f in self._schema[table]
+        # if f.get('key', None) is not None]
         return self._sort_fields_for_table(table, 'key')
 
     def augmented_fields_for_table(self, table):
@@ -240,7 +242,8 @@ class Schema(object):
         arrays = []
         for f_name in fields:
             field = self.field_for_table(table, f_name)
-            if isinstance(field['type'], dict) and field['type'].get('type', None) == 'array':
+            if (isinstance(field['type'], dict) and
+                    field['type'].get('type', None) == 'array'):
                 arrays.append(f_name)
         return arrays
 
@@ -255,7 +258,7 @@ class Schema(object):
             return self._sort_fields_for_table(table, 'partition')
 
     def get_arrow_schema(self, table):
-        """Convert the internal AVRO schema into the equivalent PyArrow schema"""
+        """Convert internal AVRO schema into PyArrow schema"""
 
         avro_sch = self._schema.get(table, None)
         if not avro_sch:
@@ -341,6 +344,10 @@ class SchemaForTable(object):
     def fields(self):
         return self._all_schemas.fields_for_table(self._table)
 
+    @property
+    def array_fields(self):
+        return self._all_schemas.array_fields_for_table(self._table)
+
     def get_phy_table(self):
         return self._all_schemas.get_phy_table_for_table(self._table)
 
@@ -356,10 +363,6 @@ class SchemaForTable(object):
     def sorted_display_fields(self, getall=False):
         return self._all_schemas.sorted_display_fields_for_table(self._table,
                                                                  getall)
-
-    @property
-    def array_fields(self):
-        return self._all_schemas.array_fields_for_table(self._table)
 
     def field(self, field):
         return self._all_schemas.field_for_table(self._table, field)
@@ -587,6 +590,43 @@ def convert_macaddr_format_to_colon(macaddr: str) -> str:
     return('00:00:00:00:00:00')
 
 
+def validate_network(network: str) -> bool:
+    """Validate network address
+
+    Args:
+        network: (str) the network id to validate
+
+    Returns:
+        bool: A boolean with the result of the validation
+
+    """
+    try:
+        if isinstance(network, str) and '/' in network:
+            ip_network(network)
+            return True
+        return False
+    except ValueError:
+        return False
+        
+
+def validate_macaddr(macaddr: str) -> bool:
+    """Validate mac address
+
+    Args:
+        macaddr: (str) the macaddr string to validate
+
+    Returns:
+        bool: A boolean with the result of the validation
+
+    """
+    if isinstance(macaddr, str):
+        if re.fullmatch(r'([0-9a-fA-F]{4}.){2}[0-9a-fA-F]{4}', macaddr) or \
+           re.fullmatch(r'([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}', macaddr):
+            return True
+
+    return False
+
+
 def convert_rangestring_to_list(rangestr: str) -> list:
     """Convert a range list such as '1, 2-5, 10, 12-20' to list
     """
@@ -692,11 +732,11 @@ def get_log_params(prog: str, cfg: dict, def_logfile: str) -> tuple:
     within the hierarchy of the config dictionary. Thus, the poller log file
     will be {'poller': {'logfile': '/tmp/sq-poller.log'}}, for example.
 
-    :param prog: str, The name of the program. Valid values are poller, 
+    :param prog: str, The name of the program. Valid values are poller,
                       coaelscer, and rest.
     :param cfg: dict, The config dictionary
     :param def_logfile: str, The default log file to return
-    :returns: log file name, log level, log size, and 
+    :returns: log file name, log level, log size, and
               True/False for logging to stdout
     :rtype: str, str and int
 
@@ -730,7 +770,8 @@ def init_logger(logname: str,
     """
 
     fh = sh = None
-    # this needs to be suzieq.poller, so that it is the root of all the other pollers
+    # this needs to be suzieq.poller, so that it is the root of all the
+    # other pollers
     logger = logging.getLogger(logname)
     logger.setLevel(loglevel.upper())
     if logfile:

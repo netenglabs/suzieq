@@ -1,6 +1,5 @@
 from typing import List
 import pandas as pd
-import numpy as np
 from .engineobj import SqPandasEngine
 from suzieq.utils import convert_macaddr_format_to_colon
 
@@ -14,9 +13,9 @@ class NetworkObj(SqPandasEngine):
     def get(self, **kwargs):
         """Get the information requested"""
 
-        view = kwargs.get('view', self.iobj.view)
+        kwargs.get('view', self.iobj.view)
         columns = kwargs.pop('columns', ['default'])
-        addnl_fields = kwargs.pop('addnl_fields', [])
+        kwargs.pop('addnl_fields', [])
         user_query = kwargs.pop('query_str', '')
         os = kwargs.pop('os', [])
         model = kwargs.pop('model', [])
@@ -25,6 +24,10 @@ class NetworkObj(SqPandasEngine):
         namespace = kwargs.pop('namespace', [])
 
         drop_cols = []
+        show_cols = self.schema.get_display_fields(columns)
+        if columns != '*' and 'sqvers' in show_cols:
+            # Behavior in engineobj.py
+            show_cols.remove('sqvers')
 
         if os or model or vendor or os_version:
             df = self._get_table_sqobj('device').get(
@@ -50,7 +53,8 @@ class NetworkObj(SqPandasEngine):
 
         # Get list of namespaces we're polling
         pollerdf = self._get_table_sqobj('sqPoller') \
-            .get(columns=['namespace', 'hostname', 'service', 'status', 'timestamp'],
+            .get(columns=['namespace', 'hostname', 'service', 'status',
+                          'timestamp'],
                  namespace=namespace, hostname=hosts)
 
         if pollerdf.empty:
@@ -87,23 +91,26 @@ class NetworkObj(SqPandasEngine):
                 lambda x, y: True if x.namespace in y else False,
                 axis=1, args=(gotns,))
 
+        if 'sqvers' in show_cols:
+            newdf['sqvers'] = self.schema.version
+        newdf['active'] = True
         newdf = self._handle_user_query_str(newdf, user_query)
 
         # Look for the rest of info only in selected namepaces
         newdf['lastUpdate'] = nsgrp['timestamp'].max() \
             .reset_index()['timestamp']
 
-        return newdf.drop(columns=drop_cols)
+        return newdf.drop(columns=drop_cols)[show_cols]
 
     def find(self, **kwargs):
         '''Find the information requsted:
 
-        address: given a MAC or IP address, find the first hop switch its 
+        address: given a MAC or IP address, find the first hop switch its
                  connected to
         '''
 
         addrlist = kwargs.pop('address', [])
-        columns = kwargs.pop('columns', ['default'])
+        kwargs.pop('columns', ['default'])
         query_str = kwargs.pop('query_str', '')
 
         dflist = []
@@ -180,9 +187,6 @@ class NetworkObj(SqPandasEngine):
             pd.DataFrame: Dataframe with the relevant information
         """
 
-        cols = ['namespace', 'hostname', 'ifname',
-                'vrf', 'ipAddress', 'vlan', 'macaddr', 'how', 'timestamp']
-
         vlan = kwargs.pop('vlan', '')
         vrf = kwargs.pop('vrf', '')
 
@@ -251,15 +255,12 @@ class NetworkObj(SqPandasEngine):
             pd.DataFrame: Dataframe with the relevant information
         """
 
-        cols = ['namespace', 'hostname', 'ifname',
-                'vrf', 'ipAddress', 'macaddr', 'timestamp']
-
         if any(x in addr for x in ['::', '.']):
             arpdf = self._get_table_sqobj('arpnd').get(
-                ipAddress=addr, **kwargs)
+                ipAddress=addr.split(), **kwargs)
         else:
             arpdf = self._get_table_sqobj('arpnd').get(
-                macaddr=addr, **kwargs)
+                macaddr=addr.split(), **kwargs)
 
         result = []
         for row in arpdf.itertuples():
@@ -336,7 +337,6 @@ class NetworkObj(SqPandasEngine):
 
         result = []
         for row in l2_addr_df.itertuples():
-            do_continue = True
             match_ifname = row.ifname.split('.')[0]
             match_hostname = row.hostname
             match_namespace = row.namespace
@@ -359,7 +359,8 @@ class NetworkObj(SqPandasEngine):
                     row.timestamp.timestamp())
 
                 lldp_df = lldpobj.get(namespace=[row.namespace],
-                                      hostname=[row.hostname], ifname=mbr_ports)
+                                      hostname=[row.hostname],
+                                      ifname=mbr_ports)
 
                 if not lldp_df.empty:
                     peer_host = lldp_df.peerHostname.unique().tolist()[0]
@@ -372,7 +373,8 @@ class NetworkObj(SqPandasEngine):
                         # Need to get VRF for the interface
                         ifdf = self._get_table_sqobj('interfaces') \
                             .get(namespace=[match_namespace],
-                                 hostname=[match_hostname], ifname=[match_ifname])
+                                 hostname=[match_hostname],
+                                 ifname=[match_ifname])
                         if not ifdf.empty:
                             match_vrf = ifdf.master.unique().tolist()[
                                 0] or 'default'
@@ -383,8 +385,8 @@ class NetworkObj(SqPandasEngine):
                                        hostname=[peer_host],
                                        macaddr=row.macaddr,
                                        vlan=str(row.vlan),
-                                       columns=['namespace', 'hostname', 'vlan',
-                                                'macaddr', 'oif'])
+                                       columns=['namespace', 'hostname',
+                                                'vlan', 'macaddr', 'oif'])
                     if not macdf.empty:
                         match_hostname = peer_host
                         match_ifname = macdf.oif.unique().tolist()[0]

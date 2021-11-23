@@ -38,7 +38,8 @@ class MacCmd(SqCommand):
     @argument("vlan", description="VLAN(s) to qualify output")
     @argument("macaddr",
               description="MAC address(es), in quotes, to qualify output")
-    @argument("remoteVtepIp", description="only with this remoteVtepIp; use any for all")
+    @argument("remoteVtepIp",
+              description="only with this remoteVtepIp; use any for all")
     @argument("bd", description="filter entries with this bridging domain")
     @argument("local", description="filter entries with no remoteVtep")
     @argument("moveCount", description="num of times this MAC has moved")
@@ -80,8 +81,6 @@ class MacCmd(SqCommand):
                                 moveCount=moveCount,
                                 query_str=self.query_str,
                                 )
-        if not df.empty and "mackey" in df.columns:
-            drop_cols.append('mackey')
 
         df.drop(columns=drop_cols, inplace=True)
 

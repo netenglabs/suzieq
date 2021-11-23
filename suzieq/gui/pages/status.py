@@ -15,12 +15,12 @@ class StatusSessionState:
     namespace: str = ''
 
 
-def draw_sidebar_status(state, sqobjs):
+def draw_sidebar_status(state):
     '''Draw appropriate sidebar for the page'''
 
     do_refresh = st.sidebar.button('Refresh')
 
-    devdf = gui_get_df(sqobjs['device'], columns=['namespace', 'hostname'])
+    devdf = gui_get_df('device', columns=['namespace', 'hostname'])
     if devdf.empty:
         st.error('Unable to retrieve any namespace info')
         st.stop()
@@ -40,11 +40,16 @@ def draw_sidebar_status(state, sqobjs):
         '''This page provides an overview of the overall network status
 
 Select one of the following pages from the Page menu to investigate further.
-* __Xplore__: Look at all the data, look at summaries, run asserts, queries and more
+* __Xplore__: Look at all the data, look at summaries, run asserts, queries
+              and more
 * __Path__: Trace the paths between destinations in a given namespace
-* __Search__: Search for addresses in various tables. Just type in any address you want to search. You can specify multiple addresses, space separated. See the search page for more help.
+* __Search__: Search for addresses in various tables. Just type in any address
+              you want to search. You can specify multiple addresses, space
+               separated. See the search page for more help.
 
-__Caching is enabled by default for 90 secs on all pages__. You can clear the cache by hitting the refresh button on this page or selecting "Clear Cache" option from the drop down menu on the top right hand corner
+__Caching is enabled by default for 90 secs on all pages__. You can clear the
+ cache by hitting the refresh button on this page or selecting "Clear Cache"
+ option from the drop down menu on the top right hand corner
 ''')
 
     if namespace != state.namespace:
@@ -58,7 +63,7 @@ def page_work(state_container):
         state_container['statusSessionState'] = StatusSessionState()
 
     state = state_container.statusSessionState
-    draw_sidebar_status(state, state_container.sqobjs)
+    draw_sidebar_status(state)
 
     col1, mid, col2 = st.columns([2, 1, 2])
     with col1:
@@ -76,7 +81,7 @@ def page_work(state_container):
         ns = [state.namespace]
     else:
         ns = []
-    dev_df = gui_get_df(state_container.sqobjs['device'], namespace=ns,
+    dev_df = gui_get_df('device', namespace=ns,
                         columns=['*'])
     if not dev_df.empty:
         dev_status = dev_df.groupby(by=['namespace', 'status'])['hostname'] \
@@ -89,14 +94,15 @@ def page_work(state_container):
                        .encode(y='status', x='count:Q', row='namespace',
                                color=alt.Color(
                                    'status',
-                                   scale=alt.Scale(domain=['alive', 'dead', 'neverpoll'],
-                                                   range=['green', 'red', 'darkred']))
+                                   scale=alt.Scale(
+                                       domain=['alive', 'dead', 'neverpoll'],
+                                       range=['green', 'red', 'darkred']))
                                )
         dev_gr.altair_chart(dev_chart)
     else:
         dev_gr.info('No device info found')
 
-    if_df = gui_get_df(state_container.sqobjs['interfaces'],
+    if_df = gui_get_df('interfaces',
                        namespace=ns, columns=['*'])
     if not if_df.empty:
         if_df['state'] = np.where((if_df.state == "down") & (
@@ -121,7 +127,7 @@ def page_work(state_container):
     else:
         if_gr.info('No Interface info found')
 
-    bgp_df = gui_get_df(state_container.sqobjs['bgp'], namespace=ns,
+    bgp_df = gui_get_df('bgp', namespace=ns,
                         columns=['*'])
 
     if not bgp_df.empty and ('error' not in bgp_df):
@@ -142,7 +148,7 @@ def page_work(state_container):
                                )
         bgp_gr.altair_chart(bgp_chart)
 
-    ospf_df = gui_get_df(state_container.sqobjs['ospf'],
+    ospf_df = gui_get_df('ospf',
                          namespace=ns, columns=['*'])
     if not ospf_df.empty:
         ospf_df['state'] = np.where(ospf_df.ifState == "adminDown",
@@ -161,11 +167,12 @@ def page_work(state_container):
                                     scale=alt.Scale(
                                         domain=['full', 'fail',
                                                 'adminDown', 'passive'],
-                                        range=['green', 'red', 'orange', 'peach']))
+                                        range=['green', 'red', 'orange',
+                                               'peach']))
                                 )
         ospf_gr.altair_chart(ospf_chart)
 
-    sqdf = gui_get_df(state_container.sqobjs['sqPoller'],
+    sqdf = gui_get_df('sqPoller',
                       columns=['namespace', 'hostname', 'timestamp'],
                       service='device', namespace=ns)
     if not sqdf.empty:

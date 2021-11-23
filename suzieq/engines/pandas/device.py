@@ -95,7 +95,8 @@ class DeviceObj(SqPandasEngine):
             if 'uptime' in columns or columns == ['*']:
                 uptime_cols = (df['timestamp'] -
                                humanize_timestamp(df['bootupTimestamp']*1000,
-                               self.cfg.get('analyzer', {}).get('timezone', None)))
+                               self.cfg.get('analyzer', {}).get('timezone',
+                                                                None)))
                 uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
                 df.insert(len(df.columns)-1, 'uptime', uptime_cols)
 
@@ -122,7 +123,8 @@ class DeviceObj(SqPandasEngine):
                     break
 
             df = df.loc[df.version.apply(
-                lambda x: op(version.LegacyVersion(x), version.LegacyVersion(os_version)))]
+                lambda x: op(version.LegacyVersion(x),
+                             version.LegacyVersion(os_version)))]
 
         df = self._handle_user_query_str(df, user_query)
 

@@ -1,4 +1,4 @@
-from suzieq.gui.guiutils import display_help_icon, display_title
+from suzieq.gui.guiutils import display_help_icon
 from suzieq.gui.guiutils import (gui_get_df, get_base_url, get_session_id,
                                  SuzieqMainPages)
 from suzieq.sqobjects.path import PathObj
@@ -20,7 +20,8 @@ def make_fields_failed_df():
 
     return [
         {'name': 'device', 'df': pd.DataFrame(), 'query': 'status == "dead"'},
-        {'name': 'interfaces', 'df': pd.DataFrame(), 'query': 'state == "down"'},
+        {'name': 'interfaces', 'df': pd.DataFrame(),
+         'query': 'state == "down"'},
         {'name': 'mlag', 'df': pd.DataFrame(),
          'query': 'mlagSinglePortsCnt != 0 or mlagErrorPortsCnt != 0'},
         {'name': 'ospf', 'df': pd.DataFrame(), 'query': 'adjState == "other"'},
@@ -77,8 +78,9 @@ def gui_path_summarize(path_df: pd.DataFrame) -> pd.DataFrame:
     ns[namespace]['uniqueDevices'] = path_df['hostname'].nunique()
     ns[namespace]['mtuMismatch'] = not all(path_df['mtuMatch'])
     ns[namespace]['usesOverlay'] = any(path_df['overlay'])
-    ns[namespace]['pathMtu'] = min(path_df.query('iif != "lo"')['inMtu'].min(),
-                                   path_df.query('iif != "lo"')['outMtu'].min())
+    ns[namespace]['pathMtu'] = min(
+        path_df.query('iif != "lo"')['inMtu'].min(),
+        path_df.query('iif != "lo"')['outMtu'].min())
 
     summary_fields = ['totalPaths', 'perHopEcmp', 'maxPathLength',
                       'avgPathLength', 'uniqueDevices', 'pathMtu',
@@ -90,7 +92,7 @@ def gui_path_summarize(path_df: pd.DataFrame) -> pd.DataFrame:
 def highlight_erroneous_rows(row):
     '''Highlight rows with error in them'''
     if getattr(row, 'error', '') != '':
-        return [f"background-color: red; color: white"]*len(row)
+        return ["background-color: red; color: white"]*len(row)
     else:
         return [""]*len(row)
 
@@ -118,7 +120,7 @@ def get_failed_data(namespace: str, pgbar, sqobjs) -> FailedDFs:
 
     progress = 40
     for i, entry in enumerate(faileddfs.dfs):
-        entry['df'] = gui_get_df(sqobjs[entry['name']],
+        entry['df'] = gui_get_df(entry['name'],
                                  namespace=[namespace])
         if not entry['df'].empty and (entry.get('query', '')):
             entry['df'] = entry['df'].query(entry['query'])
@@ -128,10 +130,10 @@ def get_failed_data(namespace: str, pgbar, sqobjs) -> FailedDFs:
     return faileddfs
 
 
-def path_sidebar(state, sqobjs):
+def path_sidebar(state):
     """Configure sidebar"""
 
-    devdf = gui_get_df(sqobjs['device'], columns=['namespace'])
+    devdf = gui_get_df('device', columns=['namespace'])
     if devdf.empty:
         st.error('Unable to retrieve any namespace info')
         st.stop()
@@ -143,7 +145,7 @@ def path_sidebar(state, sqobjs):
         nsidx = 0
 
     url = '&amp;'.join([
-        f'{get_base_url()}?page=_Help_',
+        f'{get_base_url()}?page=_Help_&session={get_session_id()}',
         'help=yes',
         'help_on=Path',
     ])
@@ -152,7 +154,8 @@ def path_sidebar(state, sqobjs):
         with st.form(key='trace'):
 
             state.namespace = st.selectbox('Namespace',
-                                           namespaces, key='path_namespace', index=nsidx)
+                                           namespaces, key='path_namespace',
+                                           index=nsidx)
             src_ph = st.empty()
             dst_ph = st.empty()
             state.source = src_ph.text_input('Source IP', key='path_source')
@@ -167,13 +170,13 @@ def path_sidebar(state, sqobjs):
                                            value=state.end_time,
                                            key='path_end_time')
 
-            submit = st.form_submit_button('Trace', on_click=path_sync_state)
+            _ = st.form_submit_button('Trace', on_click=path_sync_state)
 
         state.show_ifnames = st.checkbox('Show in/out interface names',
                                          value=state.show_ifnames,
                                          key='path_show_ifnames',
                                          on_change=path_sync_state)
-        swap_src_dest = st.button(
+        _ = st.button(
             'Source <-> Dest', key='path_swap', on_click=path_sync_state)
 
     return
@@ -338,7 +341,6 @@ def path_sync_state():
 def path_run():
 
     state = st.session_state.pathSessionState
-    sqobjs = st.session_state.sqobjs
 
     if not all(x for x in [state.source, state.dest, state.namespace]):
         return
@@ -444,5 +446,5 @@ def page_work(state_container):
         state = PathSessionState()
         state_container.pathSessionState = state
 
-    path_sidebar(state, state_container.sqobjs)
+    path_sidebar(state)
     path_run()

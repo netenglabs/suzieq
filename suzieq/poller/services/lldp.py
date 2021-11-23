@@ -1,4 +1,3 @@
-from numpy.lib.shape_base import take_along_axis
 from suzieq.poller.services.service import Service
 from suzieq.utils import convert_macaddr_format_to_colon, expand_ios_ifname
 import re
@@ -50,10 +49,16 @@ class LldpService(Service):
             entry['peerIfindex'] = 0
             entry['subtype'] = 'mac address'
         elif subtype.startswith(('locally', '1')):
-            entry['peerIfindex'] = entry['peerIfname']
-            entry['peerIfname'] = '-'
-            entry['peerMacaddr'] = '00:00:00:00:00:00'
-            entry['subtype'] = 'locally assigned'
+            if not entry['peerIfname'].isnumeric():
+                # lldpd assigns ifname, but calls it locally assigned
+                entry['subtype'] = 'interface name'
+                entry['peerIfindex'] = 0
+                entry['peerMacaddr'] = '00:00:00:00:00:00'
+            else:
+                entry['peerIfindex'] = entry['peerIfname']
+                entry['peerIfname'] = '-'
+                entry['peerMacaddr'] = '00:00:00:00:00:00'
+                entry['subtype'] = 'locally assigned'
 
     def _clean_nxos_data(self, processed_data, raw_data):
 
@@ -64,7 +69,7 @@ class LldpService(Service):
             entry['peerHostname'] = re.sub(r'\(.*\)', '',
                                            entry['peerHostname'])
             entry['ifname'] = re.sub(
-                r'^Eth?(\d)', 'Ethernet\g<1>', entry['ifname'])
+                r'^Eth?(\d)', r'Ethernet\g<1>', entry['ifname'])
 
             if entry['ifname'] in entries:
                 # Description is sometimes filled in with CDP, but not LLDP
@@ -151,6 +156,9 @@ class LldpService(Service):
         for i, entry in enumerate(processed_data):
             if not entry['ifname']:
                 drop_indices.append(i)
+                continue
+            entry['ifname'] = entry['ifname'].replace(' ', '')
+            entry['peerIfname'] = entry['peerIfname'].replace(' ', '')
             subtype = entry.get('subtype', '')
             if subtype == 'ifname':
                 entry['subtype'] = 'interface name'

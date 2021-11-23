@@ -1,13 +1,17 @@
+from _pytest.mark.structures import Mark, MarkDecorator
 import pytest
-from suzieq.cli.sqcmds import *
+from suzieq.cli.sqcmds import *  # noqa
 from nubia import context
 import os
-from tests.conftest import commands, load_up_the_tests, tables
+from tests.conftest import (commands, load_up_the_tests, tables, DATADIR,
+                            create_dummy_config_file)
 import json
 from tests.conftest import setup_sqcmds
 import pandas as pd
 
 from .utils import assert_df_equal
+
+from suzieq.sqobjects import get_sqobject, get_tables
 
 
 basic_verbs = ['show', 'summarize']
@@ -142,17 +146,6 @@ def test_bad_show_engine_filter(setup_nubia, cmd):
 bad_start_time_commands = commands[:]
 
 
-# TODO
-
-# this is the placeholder of the nubia bug about parsing 'start-time'
-@pytest.mark.filter
-@pytest.mark.xfail(reason='bug #12', raises=TypeError)
-@pytest.mark.parametrize("cmd", bad_start_time_commands)
-def test_show_start_time_filter(setup_nubia, cmd):
-    filter = {'start-time': 'unknown'}
-    _ = _test_bad_show_filter(cmd, filter)
-
-
 # this because I need to xfail these for this bug, I can't xfail individual
 # ones for the filenotfound
 # so I must remove those from the stack
@@ -164,7 +157,7 @@ bad_start_time_commands.pop(7)  # Ospfcmd
 @pytest.mark.parametrize("cmd", bad_start_time_commands)
 def test_bad_start_time_filter(setup_nubia, cmd):
     filter = {'start_time': 'unknown'}
-    _ = _test_bad_show_filter(cmd, filter)
+    _ = _test_bad_show_filter(cmd, filter, True)
 
 
 bad_namespace_commands = bad_hostname_commands[:]
@@ -189,7 +182,7 @@ def _test_bad_show_filter(cmd, filter, assert_error=False):
     return s
 
 
-good_filters = [{'hostname': 'leaf01'}]
+good_filters = [{'hostname': ['leaf01']}]
 
 
 # TODO?
@@ -218,7 +211,7 @@ def test_context_namespace_filtering(setup_nubia, cmd):
 @pytest.mark.filter
 @pytest.mark.parametrize('cmd', good_commands)
 def test_context_engine_filtering(setup_nubia, cmd):
-    s = _test_context_filtering(cmd, {'enginename': 'pandas'})
+    s = _test_context_filtering(cmd, {'engine': 'pandas'})
     assert s == 0
 
 
@@ -234,6 +227,91 @@ def test_context_start_time_filtering(setup_nubia, cmd):
 def test_table_describe(setup_nubia, table):
     out = _test_command('TableCmd', 'describe', {"table": table})
     assert out == 0
+
+
+@ pytest.mark.parametrize('table',
+                          [pytest.param(
+                              x,
+                              marks=MarkDecorator(Mark(x, [], {})))
+                           for x in get_tables()
+                           if x not in ['path', 'topmem', 'topcpu',
+                                        'topmem', 'time', 'ifCounters',
+                                        'network', 'inventory']
+                           ])
+@ pytest.mark.parametrize('datadir', DATADIR)
+def test_sqcmds_regex_hostname(table, datadir):
+
+    cfgfile = create_dummy_config_file(datadir=datadir)
+
+    df = get_sqobject(table)(config_file=cfgfile).get(
+        hostname=['~leaf.*', '~exit.*'])
+
+    if table == 'tables':
+        if 'junos' in datadir:
+            assert df[df.table == 'device']['deviceCnt'].tolist() == [4]
+        elif not any(x in datadir for x in ['vmx', 'mixed']):
+            # The hostnames for these output don't match the hostname regex
+            assert df[df.table == 'device']['deviceCnt'].tolist() == [6]
+        return
+
+    if not any(x in datadir for x in ['vmx', 'mixed', 'junos']):
+        assert not df.empty
+        if table not in ['mlag']:
+            assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
+                                                     'leaf03', 'leaf04',
+                                                     'exit01', 'exit02'])
+        else:
+            assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
+                                                     'leaf03', 'leaf04'])
+    elif 'junos' in datadir:
+        if table == 'mlag':
+            # Our current Junos tests don't have MLAG
+            return
+        assert not df.empty
+        if table == 'macs':
+            assert set(df.hostname.unique()) == set(['leaf01', 'leaf02'])
+        else:
+            assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
+                                                     'exit01', 'exit02'])
+
+
+@ pytest.mark.parametrize('table',
+                          [pytest.param(
+                              x,
+                              marks=MarkDecorator(Mark(x, [], {})))
+                           for x in get_tables()
+                           if x not in ['path', 'inventory']
+                           ])
+@ pytest.mark.parametrize('datadir', ['tests/data/multidc/parquet-out/'])
+def test_sqcmds_regex_namespace(table, datadir):
+
+    cfgfile = create_dummy_config_file(datadir=datadir)
+
+    df = get_sqobject(table)(config_file=cfgfile).get(
+        hostname=['~leaf.*', '~exit.*'], namespace=['~ospf.*'])
+
+    assert not df.empty
+    if table == 'tables':
+        assert df[df.table == 'device']['namespaces'].tolist() == [2]
+        return
+
+    if table in ['mlag', 'evpnVni', 'devconfig', 'bgp']:
+        # why devconfig is empty for ospf-single needs investigation
+        assert set(df.namespace.unique()) == set(['ospf-ibgp'])
+    else:
+        assert set(df.namespace.unique()) == set(['ospf-ibgp', 'ospf-single'])
+
+    if table in ['network']:
+        # network show has no hostname
+        return
+
+    if table not in ['mlag']:
+        assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
+                                                 'leaf03', 'leaf04',
+                                                 'exit01', 'exit02'])
+    else:
+        assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
+                                                 'leaf03', 'leaf04'])
 
 
 def _test_context_filtering(cmd, filter):
@@ -288,7 +366,7 @@ def _test_sqcmds(testvar, context_config):
         # to decode. This is true in the case of NXOS' LLDP description which
         # contains a URL causing read_json to abort with weird error messages.
         expected_df = pd.read_json(
-            testvar['output'].strip().replace('/', '\/'))
+            testvar['output'].strip().replace('/', r'\/'))
 
         try:
             got_df = pd.read_json(output.decode('utf8').strip())
@@ -328,55 +406,69 @@ def _test_sqcmds(testvar, context_config):
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/cumulus-samples')))
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                      '/tests/integration/sqcmds/cumulus-samples')))
 def test_cumulus_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/nxos-samples')))
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/nxos-samples')))
 def test_nxos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/junos-samples')))
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/junos-samples')))
 def test_junos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/eos-samples')))
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/eos-samples')))
 def test_eos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/mixed-samples')))
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/mixed-samples')))
 def test_mixed_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/vmx-samples')))
-def test_mixed_sqcmds(testvar, create_context_config):
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/vmx-samples')))
+def test_vmx_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
 @ pytest.mark.smoke
 @ pytest.mark.sqcmds
-@ pytest.mark.parametrize("testvar", load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
-                                                                  '/tests/integration/sqcmds/common-samples')))
-def test_mixed_sqcmds(testvar, create_context_config):
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/common-samples')))
+def test_common_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)

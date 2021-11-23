@@ -4,7 +4,6 @@ from nubia import eventbus
 import sys
 
 from suzieq.utils import load_sq_config, Schema
-from suzieq.engines import get_sqengine
 
 
 class NubiaSuzieqContext(context.Context):

@@ -7,57 +7,71 @@
             "name": "sqvers",
             "type": "string",
             "partition": 0,
-            "default": "3.0"
+            "default": "3.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
         },
         {
             "name": "ifindex",
-            "type": "long"
+            "type": "long",
+            "description": "ifIndex of interface"
         },
         {
             "name": "reason",
-            "type": "string"
+            "type": "string",
+            "description": "Reason for interface being down"
         },
         {
             "name": "routeDistinguisher",
-            "type": "string"
+            "type": "string",
+            "description": "Route distinguisher of interface, if VRF"
         },
         {
             "name": "macaddr",
-            "type": "string"
+            "type": "string",
+            "description": "MAC address of interface, not burned in"
         },
         {
             "name": "interfaceMac",
-            "type": "string"
+            "type": "string",
+            "description": "MAC address of interface, burned in"
         },
         {
             "name": "type",
             "type": "string",
-            "display": 5
+            "display": 5,
+            "description": "Interface type, such as loopback, bond, etc"
         },
         {
             "name": "description",
-            "type": "string"
+            "type": "string",
+            "description": "Operator assigned interface description, if any"
         },
         {
             "name": "numChanges",
-            "type": "long"
+            "type": "long",
+            "description": "Number of interface state changes"
         },
         {
             "name": "speed",
-            "type": "long"
+            "type": "long",
+            "description": "Interface speed in Mbps"
         },
         {
             "name": "vlan",
             "type": "int",
-            "display": 7
+            "display": 7,
+            "description": "VLAN ID of interface, if any"
         },
         {
             "name": "innerVlan",
-            "type": "int"
+            "type": "int",
+            "description": "inner VLAN ID if Q-in-Q interface"
         },
         {
             "name": "vlanName",
-            "type": "string"
+            "type": "string",
+            "description": "VLAN name if assigned"
         },
         {
             "name": "ipAddressList",
@@ -68,26 +82,30 @@
                     "name": "ipAddress"
                 }
             },
-            "display": 9
+            "display": 9,
+            "description": "IPv4 addresses on this interface"
         },
         {
             "name": "srcVtepIp",
-            "type": "string"
+            "type": "string",
+            "description": "Some NOS provide the Src VTEP IP associated with interface"
         },
         {
             "name": "state",
             "type": "string",
-            "display": 3
+            "display": 3,
+            "description": "Operational state of interface"
         },
         {
             "name": "adminState",
             "type": "string",
-	    "display": 4
+            "display": 4
         },
         {
             "name": "master",
             "type": "string",
-            "display": 8
+            "display": 8,
+            "description": "Container for this interface such as port channel, VRF, etc"
         },
         {
             "name": "ifname",
@@ -101,7 +119,8 @@
         },
         {
             "name": "vni",
-            "type": "int"
+            "type": "int",
+            "description": "Virtual Network ID, if provided"
         },
         {
             "name": "ip6AddressList",
@@ -112,7 +131,8 @@
                     "name": "ip6Address"
                 }
             },
-            "display": 10
+            "display": 10,
+            "description": "IPv6 addresses on this interface"
         },
         {
             "name": "lacpBypass",
@@ -128,22 +148,26 @@
             "type": "string",
             "key": 1,
             "display": 1,
-            "partition": 2
+            "partition": 2,
+            "description": "Hostname associated with this record"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-            "partition": 1
+            "partition": 1,
+            "description": "Namespace associated with this record"
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "display": 11
         },
         {
             "name": "active",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
         }
     ]
 }

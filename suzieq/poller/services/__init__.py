@@ -17,14 +17,16 @@ logger = logging.getLogger(__name__)
 
 def parse_nos_version(svc_dir, filename, svc_def, elem, val):
 
-    if (("command" not in val) or
-                ((isinstance(val['command'], list) and not
-                  all('textfsm' in x or 'normalize' in x
-                      for x in val['command'])) or
-                 (not isinstance(val['command'], list) and (
-                     "normalize" not in val
-                     and "textfsm" not in val)))
-            ):
+    if ("command" not in val) or (
+        (
+            isinstance(val["command"], list)
+            and not all("textfsm" in x or "normalize" in x for x in val["command"])
+        )
+        or (
+            not isinstance(val["command"], list)
+            and ("normalize" not in val and "textfsm" not in val)
+        )
+    ):
         logger.error(
             "Ignoring invalid service file "
             'definition. Need both "command" and '

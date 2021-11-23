@@ -1,12 +1,14 @@
 import argparse
-from suzieq.cli.sqcmds import *
+from importlib import import_module
+
+from nubia import PluginInterface, CompletionDataSource
+from nubia.internal.blackcmd import CommandBlacklist
+from nubia.internal.cmdbase import AutoCommand
+
 from suzieq.cli.sqcmds import context_commands
 from suzieq.cli.sqcmds import sqcmds_all
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 from suzieq.cli.sq_nubia_statusbar import NubiaSuzieqStatusBar
-from nubia import PluginInterface, CompletionDataSource
-from nubia.internal.blackcmd import CommandBlacklist
-from nubia.internal.cmdbase import AutoCommand
 
 
 class NubiaSuzieqPlugin(PluginInterface):
@@ -35,8 +37,11 @@ class NubiaSuzieqPlugin(PluginInterface):
         pass
 
     def get_commands(self):
-        cmds = [AutoCommand(getattr(globals()[x], x))
-                for x in sqcmds_all if not x.startswith(('_', 'ArgHelpClass'))]
+
+        cmds = [AutoCommand(
+            getattr(import_module(f'suzieq.cli.sqcmds.{x}'), x))
+            for x in sqcmds_all
+            if not x.startswith(('_', 'ArgHelpClass'))]
         cmds.append(AutoCommand(context_commands.set_ctxt))
         cmds.append(AutoCommand(context_commands.clear_ctxt))
         cmds.append(context_commands.SqHelpCommand())
@@ -72,7 +77,8 @@ class NubiaSuzieqPlugin(PluginInterface):
         )
         # we only support pandas now, so we don't want this option
         # opts_parser.add_argument(
-        #    "--use-engine", "-e", help="Which analysis engine to use", default="pandas"
+        #    "--use-engine", "-e", help="Which analysis engine to use",
+        #     default="pandas"
         # )
         return opts_parser
 

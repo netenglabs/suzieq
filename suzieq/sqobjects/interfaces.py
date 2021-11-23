@@ -13,19 +13,11 @@ class IfObj(SqObject):
         self._valid_assert_args = ['namespace', 'hostname', 'ifname', 'what',
                                    'matchval', 'status', 'ignore_missing_peer']
         self._valid_arg_vals = {
-            'state': ['up', 'down', 'notConnected', ''],
+            'state': ['up', 'down', 'notConnected', '!up', '!down',
+                      '!notConnected', ''],
             'status': ['all', 'pass', 'fail'],
         }
-
-    def aver(self, what='', **kwargs) -> pd.DataFrame:
-        """Assert that interfaces are in good state"""
-        try:
-            self.validate_assert_input(**kwargs)
-        except Exception as error:
-            df = pd.DataFrame({'error': [f'{error}']})
-            return df
-
-        return self.engine.aver(what=what, **kwargs)
+        self._unique_def_column = ['type']
 
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''

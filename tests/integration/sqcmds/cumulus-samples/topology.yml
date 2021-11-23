@@ -1308,3 +1308,21 @@ tests:
     1}, {"ospf-ibgp": 18}, {"ospf-ibgp": 10}, {"ospf-ibgp": []}, {"ospf-ibgp": ["spine02",
     "spine01"]}, {"ospf-ibgp": "..."}, {"ospf-ibgp": true}, {"ospf-ibgp": 1}, {"ospf-ibgp":
     12}, {"ospf-ibgp": 8}, {"ospf-ibgp": []}]'
+- command: topology unique --namespace='ospf-ibgp' --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: topology unique cumulus
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: topology unique --count=True --namespace='ospf-ibgp' --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: topology unique cumulus
+  output: '[{"hostname": "internet", "numRows": 7}, {"hostname": "server101", "numRows":
+    8}, {"hostname": "server102", "numRows": 8}, {"hostname": "server103", "numRows":
+    8}, {"hostname": "server104", "numRows": 8}, {"hostname": "edge01", "numRows":
+    9}, {"hostname": "exit02", "numRows": 17}, {"hostname": "exit01", "numRows": 18},
+    {"hostname": "spine02", "numRows": 18}, {"hostname": "spine01", "numRows": 19},
+    {"hostname": "leaf02", "numRows": 21}, {"hostname": "leaf03", "numRows": 21},
+    {"hostname": "leaf01", "numRows": 23}, {"hostname": "leaf04", "numRows": 23}]'

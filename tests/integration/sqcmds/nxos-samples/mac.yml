@@ -470,6 +470,41 @@ tests:
   marks: mac summarize nxos
   output: '{"nxos": {"deviceCnt": 13, "totalMacsinNSCnt": 208, "uniqueMacCnt": 31,
     "uniqueVlanperHostStat": [1, 3, 3.0]}}'
+- command: mac unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: mac unique nxos
+  output: '[{"macaddr": "00:00:00:11:12:10"}, {"macaddr": "01:00:5e:00:00:01"}, {"macaddr":
+    "01:80:c2:00:00:00"}, {"macaddr": "01:80:c2:00:00:02"}, {"macaddr": "01:80:c2:00:00:03"},
+    {"macaddr": "01:80:c2:00:00:0e"}, {"macaddr": "01:80:c2:00:00:21"}, {"macaddr":
+    "06:a8:f1:19:b8:b3"}, {"macaddr": "0a:b5:b6:22:53:72"}, {"macaddr": "32:bb:c5:b5:3a:20"},
+    {"macaddr": "33:33:00:00:00:01"}, {"macaddr": "33:33:00:00:00:02"}, {"macaddr":
+    "33:33:ff:00:00:00"}, {"macaddr": "33:33:ff:19:b8:b3"}, {"macaddr": "33:33:ff:22:53:72"},
+    {"macaddr": "33:33:ff:2b:da:d5"}, {"macaddr": "33:33:ff:6d:18:e7"}, {"macaddr":
+    "33:33:ff:6e:32:d5"}, {"macaddr": "33:33:ff:72:2c:3b"}, {"macaddr": "33:33:ff:b5:3a:20"},
+    {"macaddr": "33:33:ff:c6:2f:0a"}, {"macaddr": "33:33:ff:de:d8:99"}, {"macaddr":
+    "44:01:01:01:1b:08"}, {"macaddr": "44:01:01:02:1b:08"}, {"macaddr": "44:01:02:01:1b:08"},
+    {"macaddr": "44:01:02:02:1b:08"}, {"macaddr": "44:01:02:03:1b:08"}, {"macaddr":
+    "44:01:02:04:1b:08"}, {"macaddr": "44:01:03:01:1b:08"}, {"macaddr": "44:01:03:02:1b:08"},
+    {"macaddr": "da:bf:63:c6:2f:0a"}]'
+- command: mac unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: mac unique nxos
+  output: '[{"macaddr": "33:33:ff:00:00:00", "numRows": 1}, {"macaddr": "33:33:ff:2b:da:d5",
+    "numRows": 1}, {"macaddr": "33:33:ff:6d:18:e7", "numRows": 1}, {"macaddr": "33:33:ff:6e:32:d5",
+    "numRows": 1}, {"macaddr": "33:33:ff:72:2c:3b", "numRows": 1}, {"macaddr": "33:33:ff:de:d8:99",
+    "numRows": 1}, {"macaddr": "44:01:01:01:1b:08", "numRows": 1}, {"macaddr": "44:01:01:02:1b:08",
+    "numRows": 1}, {"macaddr": "01:80:c2:00:00:21", "numRows": 2}, {"macaddr": "06:a8:f1:19:b8:b3",
+    "numRows": 2}, {"macaddr": "32:bb:c5:b5:3a:20", "numRows": 2}, {"macaddr": "33:33:ff:19:b8:b3",
+    "numRows": 3}, {"macaddr": "33:33:ff:22:53:72", "numRows": 3}, {"macaddr": "33:33:ff:b5:3a:20",
+    "numRows": 3}, {"macaddr": "33:33:ff:c6:2f:0a", "numRows": 3}, {"macaddr": "0a:b5:b6:22:53:72",
+    "numRows": 4}, {"macaddr": "da:bf:63:c6:2f:0a", "numRows": 4}, {"macaddr": "00:00:00:11:12:10",
+    "numRows": 6}, {"macaddr": "44:01:02:01:1b:08", "numRows": 7}, {"macaddr": "44:01:02:04:1b:08",
+    "numRows": 7}, {"macaddr": "44:01:03:01:1b:08", "numRows": 7}, {"macaddr": "44:01:03:02:1b:08",
+    "numRows": 7}, {"macaddr": "01:80:c2:00:00:02", "numRows": 8}, {"macaddr": "33:33:00:00:00:02",
+    "numRows": 9}, {"macaddr": "44:01:02:02:1b:08", "numRows": 11}, {"macaddr": "44:01:02:03:1b:08",
+    "numRows": 11}, {"macaddr": "01:80:c2:00:00:00", "numRows": 17}, {"macaddr": "01:80:c2:00:00:03",
+    "numRows": 17}, {"macaddr": "01:80:c2:00:00:0e", "numRows": 17}, {"macaddr": "01:00:5e:00:00:01",
+    "numRows": 25}, {"macaddr": "33:33:00:00:00:01", "numRows": 25}]'
 - command: mac unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: mac unique nxos

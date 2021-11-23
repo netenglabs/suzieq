@@ -1,5 +1,5 @@
 import os
-from typing import List, Union, Dict
+from typing import List, Dict
 import asyncio
 from datetime import datetime, timezone
 import time
@@ -119,8 +119,9 @@ class Service(object):
         does not include queue or schema"""
 
         r = {}
-        for field in 'name defn ignore_fields keys period stype partition_cols'.split(' '):
-            r[field] = getattr(self, field)
+        for fld in ('name defn ignore_fields keys period stype '
+                    'partition_cols').split(' '):
+            r[field] = getattr(self, fld)
         # textFSM objects can't be jsoned, so changing it
         for device in r['defn']:
             if 'textfsm' in r['defn'][device]:
@@ -226,7 +227,7 @@ class Service(object):
         return records
 
     async def post_results(self, result, token) -> None:
-        """The callback that nodes use to post the results back to the service"""
+        """Callback fn used to post the results back to the service"""
         if self.result_queue:
             self.result_queue.put_nowait((token, result))
         else:
@@ -418,7 +419,7 @@ class Service(object):
         return self.clean_data(result, data)
 
     def get_key_flds(self):
-        """Get the key fields associated with this service. 
+        """Get the key fields associated with this service.
         Its a function because we want to override it.
         """
         return list(filter(lambda x: x not in ['namespace', 'hostname'],
@@ -500,9 +501,9 @@ class Service(object):
             pa.bool_(): bool,
         }
 
-        for field in self.schema:
-            default = def_vals[field.type]
-            schema_rec.update({field.name: default})
+        for fld in self.schema:
+            default = def_vals[fld.type]
+            schema_rec.update({fld.name: default})
 
         if isinstance(raw_data, list):
             read_from = raw_data[0]
@@ -559,7 +560,8 @@ class Service(object):
                         entry.update({"active": False})
                         entry.update(
                             {"timestamp":
-                             int(datetime.now(tz=timezone.utc).timestamp() * 1000)}
+                             int(datetime.now(tz=timezone.utc).timestamp()
+                                 * 1000)}
                         )
                         records.append(entry)
 
@@ -748,8 +750,9 @@ class Service(object):
                 pernode_stats[statskey] = stats
                 if write_poller_stat:
                     poller_stat = [
-                        {"hostname": output[0]["hostname"] or output[0]['address'],
-                         "sqvers": self.poller_schema_version,
+                        {"hostname": (output[0]["hostname"] or
+                                      output[0]['address']),
+                            "sqvers": self.poller_schema_version,
                          "namespace": output[0]["namespace"],
                          "active": True,
                          "service": self.name,

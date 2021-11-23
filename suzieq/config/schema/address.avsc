@@ -12,6 +12,7 @@
             "type": "string",
             "partition": 0,
             "default": "1.0",
+            "suppress": true,
             "description": "Schema version, not selectable"
         },
         {
@@ -63,11 +64,13 @@
         },
         {
             "name": "vrf",
-            "type": "long"
+            "type": "string",
+            "display": 7
         },
         {
             "name": "type",
-            "type": "string"
+            "type": "string",
+            "description": "Type of interface"
         },
         {
             "name": "hostname",
@@ -75,7 +78,7 @@
             "key": 1,
             "display": 1,
             "partition": 2,
-            "description": "hostname associated with this hop"
+            "description": "Hostname associated with this record"
         },
         {
             "name": "namespace",
@@ -83,17 +86,30 @@
             "key": 0,
             "display": 0,
             "partition": 1,
-            "description": "namespace within which path analysis is run"
+            "description": "Namespace associated with this record"
         },
         {
             "name": "timestamp",
             "type": "timestamp",
+            "display": 8,
             "description": "Unix epach When this record was created, in ms"
         },
         {
             "name": "active",
             "type": "boolean",
             "description": "If this entry is active or deleted"
+        },
+        {
+            "name": "ipAddress",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "string",
+                    "name": "ipAddress"
+                }
+            },
+            "description": "List of interface IPv4 and IPv6 addresses",
+            "depends": "ipAddressList ip6AddressList"
         }
     ]
 }

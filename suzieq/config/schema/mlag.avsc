@@ -4,11 +4,13 @@
     "type": "record",
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "1.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "portsErrDisabled",
             "type": "string"
@@ -21,7 +23,8 @@
                     "type": "string",
                     "name": "mlagDualPort"
                 }
-            }
+            },
+            "description": "List of dual-attached ports"
         },
         {
             "name": "mlagSinglePortsList",
@@ -31,7 +34,8 @@
                     "type": "string",
                     "name": "mlagSinglePort"
                 }
-            }
+            },
+            "description": "List of single-attached ports"
         },
         {
             "name": "mlagErrorPortsList",
@@ -41,109 +45,132 @@
                     "type": "string",
                     "name": "mlagErrorPort"
                 }
-            }
+            },
+            "description": "List of ports in error"
         },
         {
             "name": "vtepIP",
-            "type": "string"
+            "type": "string",
+            "description": "Anycast VTEP IP address, if appropriate"
         },
         {
             "name": "peerRole",
-            "type": "string"
+            "type": "string",
+            "description": "MLAG peer role"
         },
         {
             "name": "backupActive",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True if MLAG backup is configured and active"
         },
         {
             "name": "mlagSinglePortsCnt",
             "type": "long",
-            "display": 8
+            "display": 8,
+            "description": "Number of single-attached ports"
         },
         {
             "name": "role",
             "type": "string",
-            "display": 5
+            "display": 5,
+            "description": "MLAG role of this device"
         },
         {
             "name": "usesLinkLocal",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "True if this device uses link-local address to peer"
         },
         {
             "name": "mlagDualPortsCnt",
             "type": "long",
-            "display": 7
+            "display": 7,
+            "description": "Number of dual-attached ports"
         },
         {
             "name": "state",
             "type": "string",
-            "display": 3
+            "display": 3,
+            "description": "MLAG state of this device"
         },
         {
             "name": "peerMacAddress",
-            "type": "string"
+            "type": "string",
+            "description": "MLAG peer MAC address"
         },
         {
             "name": "mlagErrorPortsCnt",
             "type": "long",
-            "display": 9
+            "display": 9,
+            "description": "Number of ports in error"
         },
         {
             "name": "peerLink",
             "type": "string",
-            "display": 6
+            "display": 6,
+            "description": "Interface name used as peer link"
         },
         {
             "name": "configSanity",
-            "type": "string"
+            "type": "string",
+            "description": "Configuration sanity status, if platform provides it"
         },
         {
             "name": "backupReason",
-            "type": "string"
+            "type": "string",
+            "description": "Reason if MLAG backup is down"
         },
         {
             "name": "systemId",
             "type": "string",
-            "display": 2
+            "display": 2,
+            "description": "MLAG SystemID, platform-specific"
         },
         {
             "name": "backupIP",
-            "type": "string"
+            "type": "string",
+            "description": "Backup IP address to test if peer is alive, platform-specific"
         },
         {
             "name": "peerAddress",
             "type": "string",
-            "display": 4
+            "display": 4,
+            "description": "MLAG peer IP address"
         },
         {
             "name": "peerLinkStatus",
-            "type": "string"
+            "type": "string",
+            "description": "Status of peer link"
         },
         {
             "name": "domainId",
-            "type": "string"
+            "type": "string",
+            "description": "MLAG domain ID, platform-specific"
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2
+            "partition": 2,
+            "description": "Hostname associated with this record"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-	    "partition": 1
+            "partition": 1,
+            "description": "Namespace associated with this record"
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "display": 10
         },
         {
             "name": "active",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
         }
     ]
 }

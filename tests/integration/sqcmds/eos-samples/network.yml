@@ -12,6 +12,20 @@ tests:
   output: '[{"namespace": "eos", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
     1634522087560}]'
+- command: network show --columns='namespace' --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network show eos
+  output: '[{"namespace": "eos"}]'
+- command: network show --columns='hasOspf hasBgp' --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network show eos
+  output: '[{"hasOspf": true, "hasBgp": true}]'
+- command: network show --columns='*' --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network show eos
+  output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522087571, "active": true}]'
 - command: network find --address="172.16.1.101" --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network find eos
@@ -84,3 +98,11 @@ tests:
   output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "default", "ipAddress":
     "10.0.0.32", "vlan": "0", "macaddr": "44:38:39:c3:55:cb", "ifname": "Ethernet1",
     "bondMembers": "", "type": "routed", "timestamp": 1623025177202}]'
+- command: network unique --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network unique eos
+  output: '[{"namespace": "eos"}]'
+- command: network unique --count=True --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network unique eos
+  output: '[{"namespace": "eos", "numRows": 1}]'

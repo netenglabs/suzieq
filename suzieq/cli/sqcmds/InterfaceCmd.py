@@ -1,6 +1,6 @@
 import time
+
 from nubia import command, argument
-import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.interfaces import IfObj
@@ -40,7 +40,8 @@ class InterfaceCmd(SqCommand):
     @argument("ifname", description="interface name to qualify")
     @argument("type", description="interface type to qualify")
     @argument("state", description="interface state to qualify show",
-              choices=["up", "down", "notConnected"])
+              choices=["up", "down", "notConnected", "!up", "!down",
+                       "!notConnected"])
     @argument("mtu", description="filter interfaces with MTU")
     @argument("vrf", description="filter interfaces matching VRFs")
     def show(self, ifname: str = "", state: str = "", type: str = "",
@@ -98,11 +99,11 @@ class InterfaceCmd(SqCommand):
             return self._gen_output(df)
 
         if not count or df.empty:
-            return self._gen_output(df.sort_values(by=[self.columns[0]]),
+            return self._gen_output(df.sort_values(by=[df.columns[0]]),
                                     dont_strip_cols=True)
         else:
             return self._gen_output(
-                df.sort_values(by=['numRows', self.columns[0]]),
+                df.sort_values(by=['numRows', df.columns[0]]),
                 dont_strip_cols=True)
 
     @command("assert")
@@ -123,10 +124,6 @@ class InterfaceCmd(SqCommand):
              ignore_missing_peer: str = "False"):
         """Assert aspects about the interface
         """
-        if self.columns != ["default"]:
-            df = pd.DataFrame(
-                {'error': ['ERROR: You cannot specify columns with assert']})
-            return self._gen_output(df)
 
         now = time.time()
 

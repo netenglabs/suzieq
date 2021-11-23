@@ -4,10 +4,10 @@ from suzieq.utils import SchemaForTable, humanize_timestamp, Schema
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects import get_sqobject
 from suzieq.db import get_sqdb_engine
-from suzieq.exceptions import DBReadError, UserQueryError
+from suzieq.exceptions import UserQueryError
 import dateparser
-from datetime import datetime
 from pandas.core.groupby import DataFrameGroupBy
+from ipaddress import ip_address, ip_network
 
 
 class SqPandasEngine(SqEngineObj):
@@ -76,6 +76,22 @@ class SqPandasEngine(SqEngineObj):
 
         return df
 
+    def _is_in_subnet(self, addr: pd.Series, net: str) -> pd.Series:
+        """Check if the IP addresses in a Pandas dataframe
+        belongs to the given subnet
+
+        Args:
+            addr (PandasObject): the collection of ip addresses to check
+            net: (str): network id of the subnet
+
+        Returns:
+            PandasObject: A collection of bool reporting the result
+        """
+        network = ip_network(net)
+        return addr.apply(lambda a: (
+            False if not a else ip_address(a.split("/")[0]) in network)
+        )
+
     def get_valid_df(self, table: str, **kwargs) -> pd.DataFrame:
         """The heart of the engine: retrieving the data from the backing store
 
@@ -97,7 +113,7 @@ class SqPandasEngine(SqEngineObj):
         addnl_fields = kwargs.pop('addnl_fields', [])
         view = kwargs.pop('view', self.iobj.view)
         active_only = kwargs.pop('active_only', True)
-        hostname = kwargs.get('hostname', [])
+        hostname = kwargs.pop('hostname', [])
 
         fields = sch.get_display_fields(columns)
         key_fields = sch.key_fields()
@@ -113,7 +129,8 @@ class SqPandasEngine(SqEngineObj):
 
         if 'active' not in fields+addnl_fields:
             addnl_fields.append('active')
-            drop_cols.append('active')
+            if view != 'all':
+                drop_cols.append('active')
 
         # Order matters. Don't put this before the missing key fields insert
         for f in aug_fields:
@@ -135,32 +152,32 @@ class SqPandasEngine(SqEngineObj):
                 start_time = int(dateparser.parse(
                     self.iobj.start_time.replace('last night', 'yesterday'))
                     .timestamp()*1000)
-            except Exception as e:
-                print(f"ERROR: invalid time {self.iobj.start_time}: {e}")
-                return pd.DataFrame()
+            except Exception:
+                raise ValueError(
+                    f"unable to parse start-time: {self.iobj.start_time}")
         else:
             start_time = ''
 
         if self.iobj.start_time and not start_time:
             # Something went wrong with our parsing
-            print(f"ERROR: unable to parse {self.iobj.start_time}")
-            return pd.DataFrame()
+            raise ValueError(
+                f"unable to parse start-time: {self.iobj.start_time}")
 
         if self.iobj.end_time:
             try:
                 end_time = int(dateparser.parse(
                     self.iobj.end_time.replace('last night', 'yesterday'))
                     .timestamp()*1000)
-            except Exception as e:
-                print(f"ERROR: invalid time {self.iobj.end_time}: {e}")
-                return pd.DataFrame()
+            except Exception:
+                raise ValueError(
+                    f"unable to parse end-time: {self.iobj.end_time}")
         else:
             end_time = ''
 
         if self.iobj.end_time and not end_time:
             # Something went wrong with our parsing
-            print(f"ERROR: Unable to parse {self.iobj.end_time}")
-            return pd.DataFrame()
+            raise ValueError(
+                f"unable to parse end-time: {self.iobj.end_time}")
 
         table_df = self._dbeng.read(
             phy_table,
@@ -178,6 +195,8 @@ class SqPandasEngine(SqEngineObj):
             if hostname:
                 hdf_list = []
                 for hn in hostname:
+                    if hn.startswith('~'):
+                        hn = hn[1:]
                     df1 = table_df.query(f"hostname.str.match('{hn}')")
                     if not df1.empty:
                         hdf_list.append(df1)
@@ -242,45 +261,14 @@ class SqPandasEngine(SqEngineObj):
                'latestTime': all_time_df.timestamp.max(),
                'intervals': len(times),
                'allRows': len(all_time_df),
-               'namespaces': self._unique_or_zero(all_time_df, 'namespace'),
-               'deviceCnt': self._unique_or_zero(all_time_df, 'hostname')}
-
+               'namespaces': all_time_df.get('namespace',
+                                             pd.Series(dtype='category'))
+               .nunique(),
+               'deviceCnt': all_time_df.get('hostname',
+                                            pd.Series(dtype='category'))
+               .nunique(),
+               }
         return ret
-
-    def _get_table_sqobj(self, table: str, start_time: str = None,
-                         end_time: str = None, view=None):
-        """Normalize pulling data from other tables into this one function
-
-        Typically pulling data involves calling get_sqobject with a bunch of
-        parameters that need to be passed to it, that a caller can forget to 
-        pass. A classic example is passing the view, start-time and end-time 
-        which is often forgotten. This function fixes this issue.
-
-        Args:
-            table (str): The table to retrieve the info from
-            verb (str): The verb to use in the get_sqobject call
-        """
-
-        return get_sqobject(table)(
-            context=self.ctxt,
-            start_time=start_time or self.iobj.start_time,
-            end_time=end_time or self.iobj.end_time,
-            view=view or self.iobj.view)
-
-    def _unique_or_zero(self, df: pd.DataFrame, col: str) -> int:
-        """Returns the unique count of a column in a dataframe or 0
-
-        Args:
-            df (pd.DataFrame): The dataframe to use
-            col (str): The column name to use
-
-        Returns:
-            int: Count of unique values
-        """
-        if col in df.columns:
-            return df[col].nunique()
-        else:
-            return 0
 
     def summarize(self, **kwargs):
         """Summarize the info about this resource/service.
@@ -299,7 +287,8 @@ class SqPandasEngine(SqEngineObj):
         at the end of te summarize
         return pd.DataFrame(self.ns).convert_dtypes()
 
-        If you don't override this, then you get a default summary of all columns
+        If you don't override this, then you get a default summary of all
+        columns
         """
         self._init_summarize(self.iobj._table, **kwargs)
         if self.summary_df.empty:
@@ -367,11 +356,17 @@ class SqPandasEngine(SqEngineObj):
         what = kwargs.pop("what", None)
         reverse = kwargs.pop("reverse", False)
         sqTopCount = kwargs.pop("count", 5)
+        columns = kwargs.pop("columns", ['default'])
 
         if not what:
             return pd.DataFrame()
 
-        df = self.get(addnl_fields=self.iobj._addnl_fields, **kwargs)
+        columns = self.schema.get_display_fields(columns)
+        if what not in columns:
+            columns.insert(-1, what)
+
+        df = self.get(addnl_fields=self.iobj._addnl_fields, columns=columns,
+                      **kwargs)
         if df.empty or ('error' in df.columns):
             return df
 
@@ -381,6 +376,26 @@ class SqPandasEngine(SqEngineObj):
         else:
             return df.nlargest(sqTopCount, columns=what, keep="all") \
                      .head(sqTopCount)
+
+    def _get_table_sqobj(self, table: str, start_time: str = None,
+                         end_time: str = None, view=None):
+        """Normalize pulling data from other tables into this one function
+
+        Typically pulling data involves calling get_sqobject with a bunch of
+        parameters that need to be passed to it, that a caller can forget to
+        pass. A classic example is passing the view, start-time and end-time
+        which is often forgotten. This function fixes this issue.
+
+        Args:
+            table (str): The table to retrieve the info from
+            verb (str): The verb to use in the get_sqobject call
+        """
+
+        return get_sqobject(table)(
+            context=self.ctxt,
+            start_time=start_time or self.iobj.start_time,
+            end_time=end_time or self.iobj.end_time,
+            view=view or self.iobj.view)
 
     def _init_summarize(self, table: str, **kwargs) -> None:
         """Initialize the data structures for use with generating summary
@@ -473,7 +488,7 @@ class SqPandasEngine(SqEngineObj):
 
         Args:
             check_empty_col (str, optional): column name to check to remove
-                                             namespace that's empty. 
+                                             namespace that's empty.
                                              Defaults to 'deviceCnt'.
         """
         # this is needed in the case that there is a namespace that has no
@@ -507,7 +522,7 @@ class SqPandasEngine(SqEngineObj):
         Args:
             field (str): Column name to add in the summary dataframe
             method (str, optional): pandas method name. Defaults to 'nunique'.
-            field_name (str, optional): column name to compute on. Defaults to None.
+            field_name (str, optional): column to compute on. Defaults to None.
         """
         if not field_name:
             field_name = field
@@ -517,7 +532,7 @@ class SqPandasEngine(SqEngineObj):
 
     def _add_list_or_count_to_summary(self, field: str,
                                       field_name: str = None) -> None:
-        """if there are less than 3 unique things, add as a list, otherwise return the count"""
+        """add as a list if < 3 things, otherwise return the count"""
         if not field_name:
             field_name = field
 
@@ -525,10 +540,12 @@ class SqPandasEngine(SqEngineObj):
 
         for n in self.ns.keys():
             if 3 >= count_per_ns[n] > 0:
-                # can't do a value_counts on all groups, incase one of the groups other groups doesn't have data
+                # can't do a value_counts on all groups, incase one of the
+                # groups other groups doesn't have data
                 unique_for_ns = self.nsgrp.get_group(n)[field].value_counts()
                 value = unique_for_ns.to_dict()
-                # Filter numm entries if category because of how pandas behaves here
+                # Filter numm entries if category because of how pandas
+                # behaves here
                 if self.nsgrp[field].dtype[n].name == 'category':
                     value = dict(filter(lambda x: x[1] != 0, value.items()))
 

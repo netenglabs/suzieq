@@ -1,5 +1,37 @@
 # Release Notes
 
+## 0.15.6 (Nov 14, 2021)
+
+Another bugfix release of the 0.15 release train, hopefully the last. Here's what's fixed/new in this release:
+
+* Help strings associated with every field in every table's schema. Look at bgp describe for example
+* Fix regex support for namespace and hostname
+* LLDP: Add support for filtering by peer MAC address or hostname, if MAC address is advertised
+* SqPoller: Add support to look for entries whose servicing exceeded the poll period
+* Junos: Fix interface parser to extract IPv6 address along with IPv4
+* Run flake8 (a python linter) on all files and fix errors/warnings reported by flake8
+* Fixed LLDP support for SONiC
+* BGP assert bug fixes
+* Fix address unique columns=vrf to return only VRFs
+* Handle inconsistencies in output across various tables for errors (show, assert, unique, etc)
+* Handle missing output in retrieving device config correctly (resulted in exception otherwise)
+* Bug fixes to the anonymizer
+* Security update to mkdocs (used to generate documentation, not used in code)
+* Add tons of tests to catch inconsistencies in schema vs show output, regex, sqpoller and so on
+
+
+## 0.15.5 (Oct 25, 2021)
+
+Another bugfix release of the 0.15.5 release train. The main fix is the reworking of the network find algorithm.
+
+* __network find__: (BREAKING CHANGE) The network find algorithm has been rewritten to work correctly when time is specified. We also got rid of the resolve-bond keyword and now always display the members of the port channel if outgoing interface is a port channel. We got rid of the "how" column, and added "type" column that indicates if the given address is connected as a bridge or a routed port. The members of a port channel if present are displayed in the "bondMembers" column.
+* Improved BGP assert: To display a possible reason in case of a BGP session that's not established, and has a missing peer.
+* Fix #312: We display the timestamp in the interface assert output, to make it consistent with the other assert outputs.
+* Handle the case of a hostname or namespace specification not selecting any data correctly. Before this fix, a hostname that doesn't exist would result in displaying all hosts.
+* Added more tests, and updated tests and data to match the poller updates from the earlier versions of this release.
+
+__NOTE__: If you're installing Suzieq as a pip package, you'll have to install version 0.15.5.1 because of how pip dragged in an incompotible version of the pyparsing library resulting in random parsing errors. 
+
 ## 0.15.4 (Oct 18, 2021)
 
 This is a largely a bug fix release of the 0.15.0 release. However, it does add one important foundational feature: support for parsers/commands based on NOS version.

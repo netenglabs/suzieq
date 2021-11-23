@@ -1,6 +1,4 @@
 from suzieq.sqobjects.basicobj import SqObject
-import pandas as pd
-from suzieq.utils import humanize_timestamp
 
 
 class DevconfigObj(SqObject):

@@ -4,66 +4,79 @@
     "type": "record",
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "1.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "availSize",
-            "type": "string"
+            "type": "string",
+            "description": "Available space on partition"
         },
         {
             "name": "fstype",
-            "type": "string"
+            "type": "string",
+            "description": "Filesystem type"
         },
         {
             "name": "totalSize",
             "type": "string",
-            "display": 3
+            "display": 3,
+            "description": "Size of partition"
         },
         {
             "name": "usedSize",
             "type": "string",
-            "display": 4
+            "display": 4,
+            "description": "Used space on partition"
         },
         {
             "name": "mountPoint",
             "type": "string",
             "key": 2,
-            "display": 2
+            "display": 2,
+            "description": "Filesystem name where partition is mounted"
         },
         {
             "name": "device",
             "type": "string",
-            "display": 6
+            "display": 6,
+            "description": "Name of partition"
         },
         {
             "name": "usedPercent",
             "type": "long",
-            "display": 5
+            "display": 5,
+            "description": "Percentage of used space"
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2
+            "partition": 2,
+            "description": "Hostname associated with this record"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-	    "partition": 1
+            "partition": 1,
+            "description": "Namespace associated with this record"
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "display": 7
         },
         {
             "name": "active",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
         }
     ]
 }

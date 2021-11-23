@@ -3,14 +3,14 @@ import json
 import pytest
 import pandas as pd
 from fastapi.testclient import TestClient
-from filelock import FileLock
 import inspect
 import warnings
 
+from _pytest.mark.structures import Mark, MarkDecorator
 from tests.conftest import cli_commands, create_dummy_config_file
 
 from suzieq.restServer.query import (app, get_configured_api_key,
-                                     API_KEY_NAME, rest_main)
+                                     API_KEY_NAME)
 from suzieq.sqobjects import get_tables, get_sqobject
 from suzieq.restServer import query
 
@@ -92,7 +92,10 @@ FILTERS = ['',  # for vanilla commands without any filter
            'what=mtu',
            'what=numChanges',
            'what=uptime',
-           'what=prefixLen'
+           'what=prefixLen',
+           'columns=vrf',
+           'pollExcdPeriodCount=!0',
+           'pollExcdPeriodCount=0',
            ]
 
 # Valid filters for commands should be present in this list
@@ -113,7 +116,8 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'hostname=leaf01&hostname=spine01': NOT_UNIQUE,
     'hostname=leaf01&hostname=spine01&columns=hostname': ['all/unique'],
     'namespace=ospf-ibgp&namespace=ospf-single': NOT_UNIQUE,
-    'namespace=ospf-ibgp&namespace=ospf-single&columns=namespace': ['all/unique'],
+    'namespace=ospf-ibgp&namespace=ospf-single&columns=namespace':
+    ['all/unique'],
     'namespace=ospf-ibgp': NOT_UNIQUE,
     'namespace=ospf-ibgp&columns=namespace': ['all/unique'],
     'view=latest': ['all'],
@@ -169,9 +173,8 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'status=neverpoll': ['device/show'],
     'vlanName=vlan13': ['vlan/show'],
     'state=active': ['vlan/show'],
-    'query_str=hostname%20==%20"leaf01"': ['all/show'],
-    'query_str=hostname%20==%20"leaf01"': ['all/summarize'],
-    'query_str=hostname%20==%20"leaf01"': ['all/unique'],
+    'query_str=hostname%20==%20"leaf01"': ['all/show', 'all/summarize',
+                                           'all/unique'],
     'via=arpnd': ['topology/show'],
     'via=lldp&via=arpnd': ['topology/show'],
     'macaddr=44:39:39:ff:00:13&macaddr=44:39:39:ff:00:24': ['mac/show'],
@@ -185,6 +188,9 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'what=numChanges': ['bgp/top', 'ospf/top', 'interface/top'],
     'what=uptime': ['device/top'],
     'what=prefixLen': ['route/top'],
+    'columns=vrf': ['address/unique', 'route/unique'],
+    'pollExcdPeriodCount=!0': ['sqPoller/show'],
+    'pollExcdPeriodCount=0': ['sqPoller/show'],
 }
 
 GOOD_FILTER_EMPTY_RESULT_FILTER = [
@@ -197,6 +203,7 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'device/show?status=dead',
     'inventory/all',
     'vlan/unique?state=notConnected',
+    'sqPoller/show?pollExcdPeriodCount=!0',
 ]
 
 GOOD_SERVICE_VERBS = {
@@ -227,7 +234,7 @@ MANDATORY_SERVICE_ARGS = {
 ####
 
 
-def _validate_hostname_output(json_out, service, verb):
+def _validate_hostname_output(json_out, service, verb, args):
     if verb == "summarize":
         return True
     if service in ['network']:
@@ -241,7 +248,7 @@ def _validate_hostname_output(json_out, service, verb):
                 == set(['leaf01', 'spine01']))
 
 
-def _validate_namespace_output(json_out, service, verb):
+def _validate_namespace_output(json_out, service, verb, args):
     if verb == "summarize":
         if service == "network":
             # network summarize has no namespace column
@@ -260,13 +267,19 @@ def _validate_namespace_output(json_out, service, verb):
                     == set(['ospf-ibgp', 'ospf-single']))
 
 
-def _validate_route_protocol(json_out, service, verb):
+def _validate_route_protocol(json_out, service, verb, args):
     assert (set([x['protocol'] for x in json_out]) == set(['ospf', 'bgp']))
 
 
-def _validate_macaddr_output(json_out, service, verb):
+def _validate_macaddr_output(json_out, service, verb, args):
     assert (set([x['macaddr'] for x in json_out])
             == set(['44:39:39:ff:00:13', '44:39:39:ff:00:24']))
+
+
+def _validate_columns_output(json_out, service, verb, args):
+    columns = args.split('=')[1]
+    assert (set([x[columns] for x in json_out])
+            != set())
 
 
 VALIDATE_OUTPUT_FILTER = {
@@ -275,6 +288,8 @@ VALIDATE_OUTPUT_FILTER = {
     'protocol=bgp&protocol=ospf': _validate_route_protocol,
     'macaddr=44:39:39:ff:00:13&macaddr=44:39:39:ff:00:24':
     _validate_macaddr_output,
+    'columns=namespace': _validate_columns_output,
+    'columns=vrf': _validate_columns_output,
 }
 
 ####
@@ -302,11 +317,10 @@ def get(endpoint, service, verb, args):
 
     c_v = f"{service}/{verb}"
     c_v_f = f"{c_v}?{args}"
-    v_f = f"{verb}?{args}"
     c_all = f"{service}/all"
 
     verb_use = GOOD_SERVICE_VERBS.get(verb, [])
-    if not 'all' in verb_use and not service in verb_use:
+    if 'all' not in verb_use and service not in verb_use:
         return
 
     argval = GOOD_FILTERS_FOR_SERVICE_VERB.get(args, [])
@@ -330,12 +344,15 @@ def get(endpoint, service, verb, args):
                 if f'{service}/{verb}' in GOOD_FILTERS_FOR_SERVICE_VERB:
                     validate_output = True
                     match_verb = argval[0].split('/')[1]
-                    assert match_verb == verb, f"Unable to match good result for {c_v_f}"
+                    assert match_verb == verb, \
+                        f"Unable to match good result for {c_v_f}"
 
         if ((c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER) and
                 (c_all not in GOOD_FILTER_EMPTY_RESULT_FILTER)):
+
             if args in VALIDATE_OUTPUT_FILTER and validate_output:
-                VALIDATE_OUTPUT_FILTER[args](response.json(), service, verb)
+                VALIDATE_OUTPUT_FILTER[args](
+                    response.json(), service, verb, args)
             else:
                 df = pd.DataFrame(json.loads(response.content.decode('utf-8')))
                 assert(not df.empty)
@@ -347,10 +364,13 @@ def get(endpoint, service, verb, args):
 
 
 @ pytest.mark.rest
-@ pytest.mark.parametrize("service, verb, arg", [
-    (cmd, verb, filter) for cmd in cli_commands
-    for verb in VERBS for filter in FILTERS
-])
+@ pytest.mark.parametrize("service", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+@pytest.mark.parametrize("verb", [
+    pytest.param(verb, marks=MarkDecorator(Mark(verb, [], {})))
+    for verb in VERBS])
+@pytest.mark.parametrize("arg", [filter for filter in FILTERS])
 def test_rest_services(app_initialize, service, verb, arg):
     get(ENDPOINT, service, verb, arg)
 
@@ -363,7 +383,8 @@ def test_rest_arg_consistency(service, verb):
 
     if verb == "describe" and not service == "tables":
         return
-    if service in ['topcpu', 'topmem', 'sqPoller', 'ospfIf', 'ospfNbr', 'time', 'ifCounters']:
+    if service in ['topcpu', 'topmem', 'ospfIf', 'ospfNbr', 'time',
+                   'ifCounters']:
         return
     # import all relevant functions from the rest code first
 
@@ -392,9 +413,11 @@ def test_rest_arg_consistency(service, verb):
                      if i not in
                      ['verb', 'token', 'request']]
         sqobj = get_sqobject(service)()
-        supported_verbs = {x[0].replace('aver', 'assert').replace('get', 'show')
+        supported_verbs = {x[0].replace('aver', 'assert')
+                           .replace('get', 'show')
                            for x in inspect.getmembers(sqobj)
-                           if inspect.ismethod(x[1]) and not x[0].startswith('_')}
+                           if inspect.ismethod(x[1]) and
+                           not x[0].startswith('_')}
 
         if verb not in supported_verbs:
             continue
@@ -402,11 +425,11 @@ def test_rest_arg_consistency(service, verb):
         arglist = getattr(sqobj, f'_valid_{verb}_args', None)
         if not arglist:
             if verb == "show":
-                arglist = getattr(sqobj, f'_valid_get_args', None)
+                arglist = getattr(sqobj, '_valid_get_args', None)
             else:
                 warnings.warn(
-                    f'Skipping arg check for {verb} in {service} due to missing '
-                    'valid_args list', category=ImportWarning)
+                    f'Skipping arg check for {verb} in {service} due to '
+                    f'missing valid_args list', category=ImportWarning)
                 return
 
         arglist.extend(['namespace', 'hostname', 'start_time', 'end_time',
@@ -418,13 +441,15 @@ def test_rest_arg_consistency(service, verb):
         # {service}_{verb} REST function, which prevents us from picking the
         # correct set of args.
         for arg in valid_args:
-            assert arg in rest_args, f"{arg} missing from {fn} arguments for verb {verb}"
+            assert arg in rest_args, \
+                f"{arg} missing from {fn} arguments for verb {verb}"
 
         for arg in rest_args:
             if arg not in valid_args and arg != "status":
                 # status is usually part of assert keyword and so ignore
                 if found_service_rest_fn:
-                    assert False, f"{arg} not in {service} sqobj {verb} arguments"
+                    assert False, \
+                        f"{arg} not in {service} sqobj {verb} arguments"
                 else:
                     warnings.warn(
                         f"{arg} not in {service} sqobj {verb} arguments",
@@ -456,7 +481,8 @@ def test_rest_server():
         datadir='./tests/data/multidc/parquet-out')
 
     server = subprocess.Popen(
-        f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} --no-https'.split())
+        f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} --no-https'
+        .split())
     sleep(5)
     assert(server.pid)
     assert(requests.get('http://localhost:8000/api/docs'))

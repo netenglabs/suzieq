@@ -4,11 +4,13 @@
     "type": "record",
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "2.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "weights",
             "type": {
@@ -17,58 +19,27 @@
                     "name": "weight",
                     "type": "long"
                 }
-            }
+            },
+            "description": "List of weights associated with nexthop"
         },
         {
             "name": "prefix",
             "type": "string",
             "key": 3,
-            "display": 3
+            "display": 3,
+            "description": "IP route prefix"
         },
         {
             "name": "prefixlen",
             "type": "long",
-	    "depends": "prefix"
+            "depends": "prefix",
+            "description": "IP route prefix length"
         },
         {
             "name": "numNexthops",
             "type": "long",
-	    "depends": "oifs nexthopIps"
-        },
-        {
-            "name": "source",
-            "type": "string",
-            "display": 7
-        },
-        {
-            "name": "action",
-            "type": "string",
-            "display": 10
-        },
-        {
-            "name": "routeTag",
-            "type": "string"
-        },
-        {
-            "name": "nexthopIps",
-            "type": {
-                "type": "array",
-                "items": {
-                    "name": "nexthop",
-                    "type": "string"
-                }
-            },
-            "display": 4
-        },
-        {
-            "name": "asPathList",
-            "type": {
-                "type": "array",
-                "items": {
-                    "name": "asPath",
-                    "type": "string"
-                }
-            }
+            "depends": "oifs nexthopIps",
+            "description": "Number of nexthops"
         },
         {
             "name": "oifs",
@@ -79,67 +50,119 @@
                     "type": "string"
                 }
             },
-            "display": 5
+            "display": 5,
+            "description": "List of outgoing interfaces"
+        },
+        {
+            "name": "nexthopIps",
+            "type": {
+                "type": "array",
+                "items": {
+                    "name": "nexthopIp",
+                    "type": "string"
+                }
+            },
+            "display": 4,
+            "description": "List of nexthop IPs"
+        },
+        {
+            "name": "source",
+            "type": "string",
+            "display": 7,
+            "description": "Source IP address used if this route is picked, platform-specific"
+        },
+        {
+            "name": "action",
+            "type": "string",
+            "display": 10,
+            "description": "Action taken on this route: forward, blackhole etc"
+        },
+        {
+            "name": "routeTag",
+            "type": "string",
+            "description": "Tags associated with this route, platform-specific"
+        },
+        {
+            "name": "asPathList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "name": "asPath",
+                    "type": "string"
+                }
+            },
+            "description": "List of AS paths, platform-specific"
         },
         {
             "name": "vrf",
             "type": "string",
             "key": 2,
-            "display": 2
+            "display": 2,
+            "description": "VRF associated with this route"
         },
         {
             "name": "validState",
-            "type": "string"
+            "type": "string",
+            "description": "Valid state of route, platform-specific"
         },
         {
             "name": "ipvers",
             "type": "long",
-            "display": 9
+            "display": 9,
+            "description": "IP version of route"
         },
         {
             "name": "protocol",
             "type": "string",
-            "display": 6
+            "display": 6,
+            "description": "Protocol that created for this route"
         },
         {
             "name": "hardwareProgrammed",
-            "type": "string"
+            "type": "string",
+            "description": "Hardware programmed state of route, platform-specific"
         },
         {
             "name": "metric",
-            "type": "long"
+            "type": "long",
+            "description": "Metric associated with route, platform-specific"
         },
-	{
+        {
             "name": "statusChangeTimestamp",
             "type": "timestamp",
-	    "description": "The last time this route changed"
-	},
+            "description": "The last time this route changed"
+        },
         {
             "name": "preference",
             "type": "long",
-            "display": 8
+            "display": 8,
+            "description": "Preference associated with route, platform-specific"
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2
+            "partition": 2,
+            "description": "Hostname associated with this record"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-	    "partition": 1
+            "partition": 1,
+            "description": "Namespace associated with this record"
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "display": 11
         },
         {
             "name": "active",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
         }
     ]
 }

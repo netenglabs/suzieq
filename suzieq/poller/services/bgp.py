@@ -212,15 +212,16 @@ class BgpService(Service):
                         vrf = "default"
                     elif vrf == "bgp.evpn.0":
                         vrf = "default"
-                    elif vrf.startswith(('__default_evpn__.', 'default-switch.')):
+                    elif vrf.startswith(('__default_evpn__.',
+                                         'default-switch.')):
                         continue
                     else:
                         vrf = vrf.split('.')[0]
                     new_entry['vrf'] = vrf
                     new_entry['pfxRx'] += int(pfxrx_list.get(table, 0) or 0)
                     new_entry['pfxTx'] += int(pfxtx_list.get(table, 0) or 0)
-                    new_entry['pfxSuppressRx'] += int(pfxsupp_list.get(table, 0)
-                                                      or 0)
+                    new_entry['pfxSuppressRx'] += int(pfxsupp_list.get(table,
+                                                                       0) or 0)
                     new_entry['pfxBestRx'] += int(
                         pfxbest_list.get(table, 0) or 0)
                 new_entry['communityTypes'] = ['standard', 'extended']
@@ -272,7 +273,7 @@ class BgpService(Service):
 
             if not entry['peer']:
                 if not entry.get('_dynPeer', None):
-                    drop_indices.append(i)
+                    drop_indices.append(j)
                     continue
                 entry['peer'] = entry['_dynPeer'].replace('/', '-')
                 entry['origPeer'] = entry['_dynPeer']
@@ -473,7 +474,8 @@ class BgpService(Service):
                 new_entry['egressRmap'] = \
                     subent.get('routeMapForOutgoingAdvertisements', '')
                 new_entry['defOriginate'] = 'defaultSent' in subent or False
-                new_entry['advertiseAllVnis'] = 'advertiseAllVnis' in subent or False
+                new_entry['advertiseAllVnis'] = ('advertiseAllVnis' in subent
+                                                 or False)
                 new_entry['nhUnchanged'] = \
                     'unchangedNextHopPropogatedToNbr' in subent or False
 
@@ -502,13 +504,16 @@ class BgpService(Service):
                 # Find the matching entry in the already processed data
                 if check_peer_key in vrf_peer_dict:
                     # loop to add Router ID and ASN in all the registries
-                    for index, item in enumerate(vrf_peer_dict[check_peer_key]):
+                    for index, item in enumerate(
+                            vrf_peer_dict[check_peer_key]):
                         old_entry = vrf_peer_dict[check_peer_key]
                         old_entry[index]['routerId'] = entry['routerId']
                         old_entry[index]['asn'] = entry['asn']
                         # add the prefix only in matching AFI-SAFI
-                        if entry['afi'].lower() == old_entry[index]['afi'] and \
-                                entry['safi'].lower() == old_entry[index]['safi']:
+                        if entry['afi'].lower() == (
+                            old_entry[index]['afi'] and
+                            entry['safi'].lower() == old_entry[index]['safi']
+                        ):
                             old_entry[index]['pfxRx'] = entry['statePfx']
                 continue
             else:
@@ -542,7 +547,8 @@ class BgpService(Service):
             if estdTime:
                 if re.match(r'^\d{2}:\d{2}:\d{2}$', estdTime):
                     estdTime = estdTime.split(':')
-                    estdTime = f'{estdTime[0]} hour {estdTime[1]}:{estdTime[2]} mins ago'
+                    estdTime = (f'{estdTime[0]} hour '
+                                '{estdTime[1]}:{estdTime[2]} mins ago')
                 estdTime = parse(
                     estdTime,
                     settings={'RELATIVE_BASE':

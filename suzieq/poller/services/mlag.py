@@ -15,7 +15,8 @@ class MlagService(Service):
                 if len(lines) > 3:
                     data['data'] = '\n'.join(lines[2:])
                 else:
-                    data['data'] = '{\n"TABLE_orphan_ports": \n{\n"ROW_orphan_ports": [\n]\n}\n}\n\n'
+                    data['data'] = ('{\n"TABLE_orphan_ports": \n{\n'
+                                    '"ROW_orphan_ports": [\n]\n}\n}\n\n')
                 return data['data']
 
     def _clean_cumulus_data(self, processed_data, raw_data):
@@ -97,7 +98,8 @@ class MlagService(Service):
             entry['mlagSinglePortsCnt'] = len(mlagSinglePorts)
             entry['mlagErrorPortsList'] = mlagErrorPorts
             entry['mlagErrorPortsCnt'] = len(mlagErrorPorts)
-            entry['state'] = 'active' if entry['state'] == 'peer-ok' else 'dead'
+            entry['state'] = 'active' if entry['state'] == 'peer-ok' \
+                else 'dead'
             if entry['configSanity'] != 'consistent':
                 entry['configSanity'] = entry['_reason']
 

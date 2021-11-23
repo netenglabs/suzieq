@@ -9,9 +9,9 @@ name = "sqobjects"
 def get_tables():
     fspec = find_spec('suzieq.sqobjects')
     tables = [x.split('.')[0] for x in fspec.loader.contents()
-              if not x.startswith('_') and x != "basicobj.py"]
-    tables.extend(['tables'])
-    return tables
+              if not x.startswith('_') and x not in ["basicobj.py",
+              "ospfIf.py", "ospfNbr.py"]]
+    return sorted(tables)
 
 
 def get_sqobject(table_name: str):

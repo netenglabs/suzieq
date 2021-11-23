@@ -2,7 +2,6 @@ from ipaddress import ip_network
 import pandas as pd
 import numpy as np
 
-from suzieq.exceptions import NoLLdpError
 from .engineobj import SqPandasEngine
 
 
@@ -32,7 +31,10 @@ class InterfacesObj(SqPandasEngine):
             return df
 
         if state:
-            df = df.query(f'state=="{state}"')
+            if state.startswith('!'):
+                df = df.query(f'state != "{state[1:]}"')
+            else:
+                df = df.query(f'state=="{state}"')
 
         if not (iftype or ifname) and 'type' in df.columns:
             return df.query('type != "internal"').reset_index(drop=True)
@@ -151,8 +153,6 @@ class InterfacesObj(SqPandasEngine):
         """Workhorse routine that validates MTU match for specified input"""
         columns = kwargs.pop('columns', [])
         status = kwargs.pop('status', 'all')
-        stime = kwargs.pop('start_time', '')
-        etime = kwargs.pop('end_time', '')
         ignore_missing_peer = kwargs.pop('ignore_missing_peer', False)
 
         def _check_field(x, fld1, fld2, reason):
@@ -203,8 +203,8 @@ class InterfacesObj(SqPandasEngine):
             if (x.type == 'subinterface') or (x.type == 'vlan')
             else x['ifname'], axis=1)
 
-        # Thanks for Junos, remove all the useless parent interfaces if we have a
-        # .0 interface since thats the real deal
+        # Thanks for Junos, remove all the useless parent interfaces
+        # if we have a .0 interface since thats the real deal
         del_iflist = if_df.apply(lambda x: x.pifname
                                  if x['ifname'].endswith('.0') else '',
                                  axis=1) \
@@ -233,7 +233,8 @@ class InterfacesObj(SqPandasEngine):
         mlag_df = mlagobj.get(namespace=namespace, hostname=hostname)
         if not mlag_df.empty:
             mlag_peerlinks = set(mlag_df
-                                 .groupby(by=['namespace', 'hostname', 'peerLink'])
+                                 .groupby(by=['namespace', 'hostname',
+                                              'peerLink'])
                                  .groups.keys())
         else:
             mlag_peerlinks = set()
@@ -330,8 +331,8 @@ class InterfacesObj(SqPandasEngine):
 
         known_hosts = set(combined_df.groupby(by=['namespace', 'hostname'])
                           .groups.keys())
-        # Mark interfaces that can be skippedfrom checking because you cannot find a
-        # peer
+        # Mark interfaces that can be skippedfrom checking because you cannot
+        # find a peer
         combined_df['skipIfCheck'] = combined_df.apply(
             lambda x:
             True if ((x.master == 'bridge') or
@@ -391,7 +392,8 @@ class InterfacesObj(SqPandasEngine):
             if ((x.indexPeer > 0 and
                 ((x.namespace, x.hostname, x.master) not in mlag_peerlinks) and
                  (set(x['vlanList']) == set(x['vlanListPeer']))) or
-                ((x.indexPeer < 0) or ((x.namespace, x.hostname, x.master) in mlag_peerlinks)))
+                ((x.indexPeer < 0) or
+                ((x.namespace, x.hostname, x.master) in mlag_peerlinks)))
             else ['VLAN set mismatch'], args=(mlag_peerlinks,), axis=1)
 
         if ignore_missing_peer:

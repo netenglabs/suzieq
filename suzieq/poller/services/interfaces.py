@@ -7,7 +7,7 @@ import numpy as np
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_junos_time
 from suzieq.utils import convert_macaddr_format_to_colon
-
+from suzieq.utils import MISSING_SPEED
 
 class InterfaceService(Service):
     """Service class for interfaces. Cleanup of data is specific"""
@@ -32,6 +32,20 @@ class InterfaceService(Service):
                     else:
                         entry_dict[intf] = {'vrf': entry['ifname']}
 
+    def _speed_field_check(self, entry, missing_speed_indicator):
+        """Return MISSING_SPEED if the speed value is invalid, the interface speed otherwise"""
+        if entry.get('speed',missing_speed_indicator) == missing_speed_indicator:
+            return MISSING_SPEED
+        return entry['speed']
+
+    def _common_speed_field_value(self, entry):
+        """Return speed value or a missing value for common retrieved data"""
+        return self._speed_field_check(entry,-1)
+
+    def _textfsm_valid_speed_value(self, entry):
+        """Return speed value or a missing value for textfsm retrieved data"""
+        return self._speed_field_check(entry,'')
+
     def _clean_eos_data(self, processed_data, raw_data):
         """Clean up EOS interfaces output"""
 
@@ -40,6 +54,11 @@ class InterfaceService(Service):
         vlan_entries = {}       # Needed to fix the anycast MAC entries
 
         for i, entry in enumerate(processed_data):
+
+            speed = self._common_speed_field_value(entry)
+            if speed != MISSING_SPEED:
+                speed = int(speed / 1000000)
+            entry['speed'] = speed
 
             if entry['type'] == 'vrf':
                 if entry['ifname'] == 'default':
@@ -78,7 +97,6 @@ class InterfaceService(Service):
                 entry['master'] = entry_dict[entry['ifname']]['vrf']
                 entry_dict[entry['ifname']] = entry
 
-            entry["speed"] = int(entry["speed"] / 1000000)
             ts = entry["statusChangeTimestamp"]
             if ts:
                 entry["statusChangeTimestamp"] = int(float(ts) * 1000)
@@ -95,7 +113,7 @@ class InterfaceService(Service):
                 if words[-1].strip().startswith("Port-Channel"):
                     entry["type"] = "bond_slave"
                     entry["master"] = words[-1].strip()
-            entry["lacpBypass"] = (entry["lacpBypass"] == True)
+            entry["lacpBypass"] = (entry["lacpBypass"] is True)
             if entry["forwardingModel"] == "bridged":
                 entry["master"] = "bridge"  # Convert it for Linux model
                 del entry["forwardingModel"]
@@ -231,8 +249,7 @@ class InterfaceService(Service):
                 first_entry.update({"type": entry["type"]})
                 first_entry.update({"master": entry["master"]})
 
-            if entry.get('type', '') == "vxlan":
-                entry['speed'] = 0
+            entry['speed'] = self._textfsm_valid_speed_value(entry)
 
         processed_data = []
         for _, v in new_data_dict.items():
@@ -242,6 +259,16 @@ class InterfaceService(Service):
 
     def _clean_junos_data(self, processed_data, raw_data):
         """Cleanup IP addresses and such"""
+
+        def fix_junos_speed(entry):
+            speed = str(self._common_speed_field_value(entry))
+            if speed.endswith('mbps'):
+                speed = int(speed.split('mb')[0])
+            elif speed.endswith('Gbps'):
+                speed = int(speed.split('Gb')[0])*1000
+            elif speed == 'Unlimited':
+                speed = MISSING_SPEED
+            return speed
 
         entry_dict = defaultdict(dict)
         drop_indices = []
@@ -253,6 +280,9 @@ class InterfaceService(Service):
             if not entry.get('macaddr', ''):
                 entry['macaddr'] = '00:00:00:00:00:00'
 
+            if entry['type']:
+                entry['type'] = entry['type'].lower()
+
             if entry['type'] in ['vrf', 'virtual-router']:
                 self._assign_vrf(entry, entry_dict)
                 entry['state'] = entry['adminState'] = 'up'
@@ -261,9 +291,6 @@ class InterfaceService(Service):
                     drop_indices.append(i)
                 entry['type'] = 'vrf'  # VMX uses virtual-router for VRF
                 continue
-
-            if entry['type']:
-                entry['type'] = entry['type'].lower()
 
             if entry.get('description', '') == 'None':
                 entry['description'] = ''
@@ -284,6 +311,7 @@ class InterfaceService(Service):
             if entry['type'] is None:
                 entry['type'] = 'internal'
                 entry['mtu'] = 65536
+                entry['speed'] = fix_junos_speed(entry)
                 continue
 
             if entry['type'] == 'virtual-switch':
@@ -306,16 +334,9 @@ class InterfaceService(Service):
 
             if 'statusChangeTimestamp' in entry:
                 ts = get_timestamp_from_junos_time(
-                    entry['statusChangeTimestamp'], raw_data[0]['timestamp']/1000)
+                    entry['statusChangeTimestamp'],
+                    raw_data[0]['timestamp']/1000)
                 entry['statusChangeTimestamp'] = int(ts)
-
-            if entry.get('speed', ''):
-                if entry['speed'].endswith('mbps'):
-                    entry['speed'] = int(entry['speed'].split('mb')[0])
-                elif entry['speed'].endswith('Gbps'):
-                    entry['speed'] = int(entry['speed'].split('Gb')[0])*1000
-                elif entry['speed'] == 'Unlimited':
-                    entry['speed'] = 0
 
             if entry.get('master', '') == 'Ethernet-Bridge':
                 entry['master'] = 'bridge'
@@ -336,6 +357,7 @@ class InterfaceService(Service):
                     vlan = 0
 
                 entry['vlan'] = int(vlan)
+            entry['speed'] = fix_junos_speed(entry)
 
             # Process the logical interfaces which are too deep to be parsed
             # efficiently by the parser right now
@@ -343,7 +365,6 @@ class InterfaceService(Service):
                 lifname = lentry.get('name', [{}])[0].get('data', '')
                 if not lifname:
                     continue
-
                 if '.' in lifname:
                     _, vlan = lifname.split('.')
                     if ifname == "irb":
@@ -354,6 +375,8 @@ class InterfaceService(Service):
                 else:
                     vlan = 0
                     iftype = entry['type']
+
+                speed = self._common_speed_field_value(lentry)
 
                 afis = lentry.get('address-family', []) or []
                 no_inet = True
@@ -375,6 +398,9 @@ class InterfaceService(Service):
                     if afi == 'inet':
                         no_inet = False
                         addrlist = elem.get('interface-address', [])
+                    elif afi == 'inet6':
+                        no_inet = False
+                        addrlist = elem.get('interface-address', [])
                     if afi == "aenet":
                         master = elem.get("ae-bundle-name", [{}])[0] \
                             .get("data", "")
@@ -393,7 +419,7 @@ class InterfaceService(Service):
                 new_entry = {'ifname': lifname,
                              'mtu': afi_mtu,
                              'type': iftype,
-                             'speed': entry['speed'],
+                             'speed': speed,
                              'vlan': vlan,
                              'master': vrf,
                              'macaddr': macaddr,
@@ -437,7 +463,7 @@ class InterfaceService(Service):
                 new_entry['ip6AddressList'] = v6addresses
                 new_entry['ipAddressList'] = v4addresses
 
-            entry.pop('_logIf')
+            entry.pop('_logIf', [])
 
         if drop_indices:
             processed_data = np.delete(processed_data, drop_indices).tolist()
@@ -450,11 +476,12 @@ class InterfaceService(Service):
     def _clean_nxos_data(self, processed_data, raw_data):
         """Complex cleanup of NXOS interface data"""
 
-        def fix_nxos_speed(speed: str):
+        def fix_nxos_speed(entry):
+            speed = str(self._common_speed_field_value(entry))
             if isinstance(speed, str):
                 speed = speed.strip()
                 if speed.startswith("unknown enum") or (speed == "auto"):
-                    speed = '0'
+                    speed = str(MISSING_SPEED)
                 elif speed.startswith('a-'):
                     speed = speed[2:]
 
@@ -462,10 +489,8 @@ class InterfaceService(Service):
                     speed = int(speed[:-1])*1000
                 elif speed.endswith('Kbit'):
                     speed = int(speed.split()[0])/1000
-                elif speed:
-                    speed = int(speed)
                 else:
-                    speed = 0
+                    speed = int(speed)
 
             return speed
 
@@ -497,7 +522,7 @@ class InterfaceService(Service):
 
                     old_entry['numChanges'] = entry['numChanges'] or 0
                     if entry.get('speed', ''):
-                        old_entry['speed'] = fix_nxos_speed(entry.get('speed'))
+                        old_entry['speed'] = fix_nxos_speed(entry)
 
                     lastChange = entry.get('statusChangeTimestamp', '')
                     if lastChange:
@@ -526,6 +551,8 @@ class InterfaceService(Service):
 
             if entry.get('vrf', ''):
                 entry['master'] = entry['vrf']
+
+            entry['speed'] = fix_nxos_speed(entry)
 
             if 'routeDistinguisher' in entry:
                 # This is a VRF entry
@@ -600,10 +627,6 @@ class InterfaceService(Service):
             if entry.get('_child_intf', []):
                 unnum_intf[entry['ifname']] = [pri_ipaddr]
 
-            speed = entry.get('speed', '')
-            if speed:
-                entry['speed'] = fix_nxos_speed(speed)
-
             entry['type'] = entry.get('type', '').lower()
             if entry['type'] == 'eth':
                 entry['type'] = 'ethernet'
@@ -656,6 +679,8 @@ class InterfaceService(Service):
                 entry['adminState'] = 'up'
             else:
                 entry['adminState'] = 'down'
+            
+            entry['speed'] = self._textfsm_valid_speed_value(entry)
 
             # Linux interface output has no status change timestamp
 
@@ -666,7 +691,13 @@ class InterfaceService(Service):
         entry_dict = {}
         devtype = raw_data[0].get('devtype', 'iosxr')
 
-        for i, entry in enumerate(processed_data):
+        for _, entry in enumerate(processed_data):
+
+            speed = self._textfsm_valid_speed_value(entry)
+            if speed != MISSING_SPEED:
+                speed = int(speed)/1000  # is in Kbps
+            entry['speed'] = speed
+
             if entry.get('_entryType', '') == 'vrf':
                 entry['master'] = ''
                 entry['type'] = 'vrf'
@@ -674,11 +705,6 @@ class InterfaceService(Service):
                 entry['state'] = entry['adminState'] = 'up'
                 entry['macaddr'] = "00:00:00:00:00:00"
                 continue
-
-            speed = entry.get('speed', '')
-            if speed == '':
-                speed = 0
-            entry['speed'] = int(speed)/1000  # is in Kbps
 
             state = entry.get('state', '')
             if 'up' in state:

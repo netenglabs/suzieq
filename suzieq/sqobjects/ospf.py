@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 
 from suzieq.sqobjects.basicobj import SqObject
-from suzieq.utils import SchemaForTable, humanize_timestamp
+from suzieq.utils import humanize_timestamp
 
 
 class OspfObj(SqObject):
@@ -17,20 +17,6 @@ class OspfObj(SqObject):
             'state': ['full', 'other', 'passive', ''],
             'status': ['all', 'pass', 'fail'],
         }
-
-    def aver(self, **kwargs):
-        """Assert that the OSPF state is OK"""
-
-        if not self.ctxt.engine:
-            raise AttributeError('No analysis engine specified')
-
-        try:
-            self.validate_assert_input(**kwargs)
-        except Exception as error:
-            df = pd.DataFrame({'error': [f'{error}']})
-            return df
-
-        return self.engine.aver(**kwargs)
 
     def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''

@@ -22,7 +22,8 @@ class PathObj(SqObject):
         """
         if self.columns != ["default"]:
             self.summarize_df = DataFrame(
-                {'error': ['ERROR: You cannot specify columns with summarize']})
+                {'error':
+                 ['ERROR: You cannot specify columns with summarize']})
             return self.summarize_df
         if not self._table:
             raise NotImplementedError

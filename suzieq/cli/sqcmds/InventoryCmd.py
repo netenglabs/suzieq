@@ -37,7 +37,8 @@ class InventoryCmd(SqCommand):
 
     @command("show")
     @argument("type", description="Filter by type",
-              choices=["fan", "power", "xcvr", "supervisor", "port-adapter", "linecard", "fabric", "midplane", "mx-cb"])
+              choices=["fan", "power", "xcvr", "supervisor", "port-adapter",
+                       "linecard", "fabric", "midplane", "mx-cb"])
     @argument("status", description="Filter by status",
               choices=['present', 'absent'])
     @argument("model", description="Filter by model")

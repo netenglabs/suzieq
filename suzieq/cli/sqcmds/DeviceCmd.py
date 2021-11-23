@@ -1,7 +1,6 @@
 import time
 import re
 from nubia import command, argument
-import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.device import DeviceObj

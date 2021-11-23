@@ -64,7 +64,8 @@ class SqAnonymizer(object):
 
         # Courtesy of Stackoverflow
         # (https://stackoverflow.com/questions/1418423/the-hostname-regex)
-        self.hname_re = r'([a-zA-Z0-9](?:(?:[_a-zA-Z0-9-]*|(?<!-)\.(?![-.]))*[_a-zA-Z0-9]+)?)'
+        self.hname_re = (r'([a-zA-Z0-9](?:(?:[_a-zA-Z0-9-]*|'
+                         r'(?<!-)\.(?![-.]))*[_a-zA-Z0-9]+)?)')
 
         # This regex will not catch the macaddr in this format:
         # "This is a macaddr:00:01:02:FF:cf:9b"
@@ -79,10 +80,12 @@ class SqAnonymizer(object):
         self.preset_hostname_jpaths = [
             ['TABLE_nbor.ROW_nbor[*].chassis_id'],  # NXOS LLDP
             # NXOS CDP
-            ['TABLE_cdp_neighbor_brief_info.ROW_cdp_neighbor_brief_info[*].device_id'],
+            ['TABLE_cdp_neighbor_brief_info.ROW_cdp_neighbor_brief_info[*]'
+             '.device_id'],
             ['lldpNeighbors.*.lldpNeighborInfo[*].systemName'],  # EOS
             ['lldp[*].interface[*].chassis[*].name[*].value'],  # lldpd
-            ['lldp-neighbors-information.[0].lldp-neighbor-information[*].lldp-remote-system-name.[0].data'],  # JunOS
+            ['lldp-neighbors-information.[0].lldp-neighbor-information[*].'
+             'lldp-remote-system-name.[0].data'],  # JunOS
             ['*.*.neighborCapabilities[*].hostName.advHostName'],  # FRR BGP
             ['*.*.neighborCapabilities[*].hostName.rcvHostName'],  # FRR BGP
             ['*.*.neighborCapabilities[*].hostName.advDomainName'],  # FRR BGP
@@ -153,8 +156,7 @@ class SqAnonymizer(object):
             newelem = elem.replace('\n', '').strip()
             try:
                 jelem = json.loads(newelem)
-                new_entries.append(jelem)
-            except Exception as e:
+            except Exception:
                 if i == 0:
                     newelem = newelem + ']'
                 elif i == entlen - 1:
@@ -167,6 +169,12 @@ class SqAnonymizer(object):
             except Exception as e:
                 print(f"JSON load of {i} item failed with error {str(e)}")
                 jelem = []
+
+            if not isinstance(jelem, list):
+                jelem = [jelem]
+
+            if jelem:
+                new_entries.append(jelem)
 
             for item in jelem:
                 # Populate the host name anonymizer as much as possible
@@ -377,7 +385,8 @@ def anonymizer_main():
         "-ph",
         "--host-prefix",
         nargs="+", action='append',
-        help="Keywords preceding hostname to anonymize hostname (non-JSON output)",
+        help=("Keywords preceding hostname to anonymize hostname"
+              "(for non-JSON output)"),
     )
     parser.add_argument(
         "-PH",

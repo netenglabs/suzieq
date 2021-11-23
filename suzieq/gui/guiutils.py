@@ -5,9 +5,10 @@ from enum import Enum
 
 import streamlit as st
 import pandas as pd
-from streamlit.elements.select_slider import SelectSliderMixin
 from streamlit.server.server import Server
 from streamlit.report_thread import get_report_ctx
+
+from suzieq.sqobjects import get_sqobject
 
 
 class SuzieqMainPages(str, Enum):
@@ -19,13 +20,13 @@ class SuzieqMainPages(str, Enum):
 
 @st.cache(ttl=90, allow_output_mutation=True, show_spinner=False,
           max_entries=20)
-def gui_get_df(sqobject, verb: str = 'get', **kwargs) -> pd.DataFrame:
+def gui_get_df(table: str, verb: str = 'get', **kwargs) -> pd.DataFrame:
     """Get the cached value of the table provided
 
     The only verbs supported are get and find.
 
     Args:
-        sqobject ([type]): The sqobject for which to get the data
+        table ([str]): The table for which to get the data
         verb (str, optional): . Defaults to 'get'.
 
     Returns:
@@ -34,25 +35,23 @@ def gui_get_df(sqobject, verb: str = 'get', **kwargs) -> pd.DataFrame:
     Raises:
         ValueError: If the verb is not supported
     """
-    table = kwargs.pop('_table', '')
     view = kwargs.pop('view', 'latest')
     columns = kwargs.pop('columns', ['default'])
     stime = kwargs.pop('start_time', '')
     etime = kwargs.pop('end_time', '')
 
+    sqobject = get_sqobject(table)(view=view, start_time=stime, end_time=etime)
     if columns == ['all']:
         columns = ['*']
     if verb == 'get':
-        df = sqobject(view=view, start_time=stime, end_time=etime) \
-            .get(columns=columns, **kwargs)
+        df = sqobject.get(columns=columns, **kwargs)
     elif verb == 'find':
-        df = sqobject(view=view, start_time=stime, end_time=etime) \
-            .find(**kwargs)
+        df = sqobject.find(**kwargs)
     else:
         raise ValueError(f'Unsupported verb {verb}')
 
     if not df.empty:
-        df = sqobject().humanize_fields(df)
+        df = sqobject.humanize_fields(df)
         if table == 'address':
             if 'ipAddressList' in df.columns:
                 df = df.explode('ipAddressList').fillna('')
@@ -110,8 +109,11 @@ def get_image_dir():
 def display_help_icon(url: str):
     '''Display Help Icon with click to take you to appropriate page'''
     help_img = f'{get_image_dir()}/helps.png'
-    st.sidebar.markdown(f'<a target="_help" href="{url}"><img class="help-img" src="data:image/png;base64,{base64.b64encode(open(help_img, "rb").read()).decode()}"></a>',
-                        unsafe_allow_html=True)
+    st.sidebar.markdown(
+        f'<a target="_help" href="{url}"><img class="help-img" '
+        f'src="data:image/png;base64,'
+        f'{base64.b64encode(open(help_img, "rb").read()).decode()}"></a>',
+        unsafe_allow_html=True)
 
 
 def maximize_browser_window():
@@ -132,7 +134,8 @@ def maximize_browser_window():
 
 def horizontal_radio():
     '''Make the radio buttons horizontal'''
-    st.write('<style>div.row-widget.stRadio > div{flex-direction:row;}</style>',
+    st.write('<style>div.row-widget.stRadio > '
+             'div{flex-direction:row;}</style>',
              unsafe_allow_html=True)
 
 
@@ -173,10 +176,13 @@ def color_element_red(value, **kwargs):
 def ifstate_red(row):
     '''Color interface state red if admin state is up, but not oper state'''
     llen = len(row.index.tolist())
-    if row.adminState == "up" and row.state == "down":
-        return ["background-color: red; color: white;"]*llen
-    else:
-        return ["background-color: white; color: black;"]*llen
+    if row.adminState == "up":
+        if row.state == "down":
+            return ["background-color: red; color: white;"]*llen
+        elif row.state != "up":
+            return ["color:  gray;"]*llen
+
+    return ["background-color: white; color: black;"]*llen
 
 
 def sq_gui_style(df, table, is_assert=False):
@@ -217,9 +223,11 @@ def sq_gui_style(df, table, is_assert=False):
 def get_color_styles(color: str) -> str:
     """Compile some hacky CSS to override the theme color."""
     # fmt: off
-    color_selectors = ["a", "a:hover", "*:not(textarea).st-ex:hover", ".st-en:hover"]
+    color_selectors = ["a", "a:hover", "*:not(textarea).st-ex:hover",
+                       ".st-en:hover"]
     bg_selectors = [".st-da", "*:not(button).st-en:hover"]
-    border_selectors = [".st-ft", ".st-fs", ".st-fr", ".st-fq", ".st-ex:hover", ".st-en:hover"]
+    border_selectors = [".st-ft", ".st-fs", ".st-fr", ".st-fq", ".st-ex:hover",
+                        ".st-en:hover"]
     # fmt: on
     css_root = "#root { --primary: %s }" % color
     css_color = ", ".join(color_selectors) + "{ color: %s !important }" % color
@@ -266,7 +274,8 @@ def display_title(page: str):
         st.markdown(
             f"""
             <div class="container">
-                <img class="logo-img" src="data:image/png;base64,{base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
+                <img class="logo-img" src="data:image/png;base64,
+                {base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
                 <h1 style='color:purple;'>Suzieq</h1>
             </div>
             """,
@@ -287,7 +296,10 @@ def display_title(page: str):
         # The empty writes are for aligning the pages link with the logo
         st.text(' ')
         srch_holder = st.empty()
-        pageidx = sel_pagelist.index(page or 'Status')
+        if page in sel_pagelist:
+            pageidx = sel_pagelist.index(page)
+        else:
+            pageidx = sel_pagelist.index('Status')
         if 'sq_page' not in state:
             page = srch_holder.selectbox('Page', sel_pagelist, index=pageidx,
                                          key='sq_page',

@@ -144,6 +144,19 @@ tests:
     {"default": 36}, "helloTime": {"10": 36}, "deadTime": {"40": 36}, "retxTime":
     {"5": 36}, "networkType": {"p2p": 24, "broadcast": 12}, "adjChangesStat": [6.0,
     7.0, 7.0], "upTimeStat": [106674000, 2348165000, 2348090500]}}'
+- command: ospf unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf unique eos
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}]'
+- command: ospf unique --count=True --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: ospf unique eos
+  output: '[{"hostname": "exit01", "numRows": 3}, {"hostname": "exit02", "numRows":
+    3}, {"hostname": "leaf01", "numRows": 4}, {"hostname": "leaf02", "numRows": 4},
+    {"hostname": "leaf03", "numRows": 4}, {"hostname": "leaf04", "numRows": 4}, {"hostname":
+    "spine01", "numRows": 7}, {"hostname": "spine02", "numRows": 7}]'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: ospf unique eos

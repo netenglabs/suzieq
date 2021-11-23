@@ -22,6 +22,32 @@ tests:
   output: '[{"namespace": "nxos", "deviceCnt": 1, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1634522092851}]'
+- command: network show --columns='namespace' --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network show nxos
+  output: '[{"namespace": "nxos"}]'
+- command: network show --columns='hasOspf hasBgp' --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network show nxos
+  output: '[{"hasOspf": true, "hasBgp": true}]'
+- command: network show --columns='*' --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522092858, "active": true}]'
+- command: network show --columns='*' --os=nxos --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 8, "serviceCnt": 15, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1634522092858, "active": true}]'
+- command: network show --columns='*' --vendor=Juniper --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 1, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1634522092851, "active": true}]'
 - command: network find --address="172.16.1.101" --format=json
   data-directory: tests/data/nxos/parquet-out
   marks: network find nxos
@@ -65,3 +91,11 @@ tests:
   data-directory: tests/data/nxos/parquet-out
   marks: network find nxos
   output: '[]'
+- command: network unique --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network unique nxos
+  output: '[{"namespace": "nxos"}]'
+- command: network unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network unique nxos
+  output: '[{"namespace": "nxos", "numRows": 1}]'

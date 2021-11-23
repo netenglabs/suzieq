@@ -1,9 +1,7 @@
 import pytest
 
-
 import pandas as pd
 from tests.conftest import DATADIR, validate_host_shape
-from suzieq.utils import known_devtypes
 
 
 def validate_device_tbl(df: pd.DataFrame):

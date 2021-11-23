@@ -2,19 +2,41 @@ description: Testing network table for Mixed
 tests:
 - command: network show --format=json
   data-directory: tests/data/mixed/parquet-out
-  marks: network show all  mixed
+  marks: network show mixed
   output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1634522095162}]'
 - command: network show --format=json --os=nxos
   data-directory: tests/data/mixed/parquet-out
-  marks: network show all  mixed
-  output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt":
+  marks: network show mixed
+  output: '[{"namespace": "mixed", "deviceCnt": 2, "serviceCnt": 10, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1634522095162}]'
+    1634522095151}]'
 - command: network show --format=json --os='nxos eos'
   data-directory: tests/data/mixed/parquet-out
-  marks: network show all  mixed
+  marks: network show mixed
+  output: '[{"namespace": "mixed", "deviceCnt": 4, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1634522095161}]'
+- command: network show --columns='namespace' --format=json
+  data-directory: tests/data/mixed/parquet-out
+  marks: network show mixed
+  output: '[{"namespace": "mixed"}]'
+- command: network show --columns='hasOspf hasBgp' --os='nxos' --format=json
+  data-directory: tests/data/mixed/parquet-out
+  marks: network show mixed
+  output: '[{"hasOspf": true, "hasBgp": false}]'
+- command: network show --columns='*' --format=json
+  data-directory: tests/data/mixed/parquet-out
+  marks: network show mixed
   output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1634522095162}]'
+    1634522095162, "active": true}]'
+- command: network unique --format=json
+  data-directory: tests/data/mixed/parquet-out
+  marks: network unique mixed
+  output: '[{"namespace": "mixed"}]'
+- command: network unique --count=True --format=json
+  data-directory: tests/data/mixed/parquet-out
+  marks: network unique mixed
+  output: '[{"namespace": "mixed", "numRows": 1}]'

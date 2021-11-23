@@ -1,8 +1,6 @@
 from collections import deque
 from dataclasses import dataclass, asdict, field
-from typing import List
 
-import pandas as pd
 from ipaddress import ip_address
 import streamlit as st
 from suzieq.utils import convert_macaddr_format_to_colon
@@ -158,10 +156,10 @@ def build_query(state, search_text: str) -> str:
     return query_str, unique_query, columns
 
 
-def search_sidebar(state, sqobjs):
+def search_sidebar(state):
     '''Draw the sidebar'''
 
-    devdf = gui_get_df(sqobjs['device'], columns=['namespace', 'hostname'])
+    devdf = gui_get_df('device', columns=['namespace', 'hostname'])
     if devdf.empty:
         st.error('Unable to retrieve any namespace info')
         st.stop()
@@ -178,15 +176,36 @@ def search_sidebar(state, sqobjs):
     st.sidebar.markdown(
         """Displays last 5 search results.
 
-You can use search to find specific objects. You can qualify what you're searching for by qualifying the search term with the type. We support:
-- __addresses__: You can qualify a specific table to look for the address. The search string can start with one of the following keywords: __route, mac, arpnd__, to specify which table you want the search to be performed in . If you don't specify a table name, we assume ```network find``` to search for the network attach point for the address. For example, ```arpnd 172.16.1.101``` searches for entries with 172.16.1.101 in the IP address column of the arpnd table. Similarly, ```10.0.0.21``` searches for where in the network that IP address is attached to.
-- __ASN__: Start the search with the string ```asn``` followed by the ASN number. Typing ```asns``` will show you the list of unique ASNs across the specified namespaces.
-- __VTEP__: Start the search with the string ```vtep``` followed by the VTEP IP address. Typing ```vteps``` will show you the list of unique VTEPs across the specified namespaces.
-- __VNI__: Start the search with the string ```vni``` followed by the VNI number. Typing ```vnis``` will show you the list of unique VNIs across the specified namespaces.
-- __VLAN__: Start the search with the string ```vlan``` followed by the VLAN number. Typing ```vlans``` will show you the list of unique VLANs across the specified namespaces.
-- __MTU__: Start the search with the string ```mtus``` followed by the MTU number. Typing ```mtus``` will show you the list of unique MTUs across the specified namespaces.
+You can use search to find specific objects. You can qualify what you're
+searching for by qualifying the search term with the type. We support:
+- __addresses__: You can qualify a specific table to look for the address.
+                 The search string can start with one of the following
+                  keywords: __route, mac, arpnd__, to specify which table you
+                  want the search to be performed in . If you don't specify a
+                   table name, we assume ```network find``` to search for the
+                    network attach point for the address. For example,
+                    ```arpnd 172.16.1.101``` searches for entries with
+                    172.16.1.101 in the IP address column of the arpnd table.
+                    Similarly, ```10.0.0.21``` searches for where in the
+                    network that IP address is attached to.
+- __ASN__: Start the search with the string ```asn``` followed by the ASN
+           number. Typing ```asns``` will show you the list of unique ASNs
+           across the specified namespaces.
+- __VTEP__: Start the search with the string ```vtep``` followed by the VTEP
+            IP address. Typing ```vteps``` will show you the list of unique
+            VTEPs across the specified namespaces.
+- __VNI__: Start the search with the string ```vni``` followed by the VNI
+            number.
+    Typing ```mtus``` will show you the list of unique MTUs across the
+    specified namespaces.
 
-When specifying a table, you can specify multiple addresses to look for by providing the addresses as a space separated values such as ```172.16.1.101 10.0.0.11``` or ```mac 00:01:02:03:04:05 00:21:22:23:24:25``` and so on. A combination of mac and IP address can also be specified with the address table. Support for more sophisticated search will be added in the next few releases.
+When specifying a table, you can specify multiple addresses to look for by
+ providing the addresses as a space separated values such as
+ ```"172.16.1.101 10.0.0.11"``` or
+  ```mac "00:01:02:03:04:05 00:21:22:23:24:25"```
+  and so on. A combination of mac and IP address can also be specified with
+   the address table. Support for more sophisticated search will be added in
+    the next few releases.
 """)
 
     if namespace != state.namespace:
@@ -203,7 +222,7 @@ def page_work(state_container):
 
     state = state_container.searchSessionState
 
-    namespace = search_sidebar(state, state_container.sqobjs)
+    namespace = search_sidebar(state)
 
     query_str, uniq_dict, columns = build_query(state,
                                                 state_container.search_text)
@@ -213,13 +232,13 @@ def page_work(state_container):
         query_ns = []
     if query_str:
         if state.table == "network":
-            df = gui_get_df(state_container.sqobjs[state.table],
+            df = gui_get_df(state.table,
                             verb='find',
                             namespace=query_ns,
                             view="latest", columns=columns,
                             address=query_str)
         else:
-            df = gui_get_df(state_container.sqobjs[state.table],
+            df = gui_get_df(state.table,
                             namespace=query_ns, query_str=query_str,
                             view="latest", columns=columns)
             if not df.empty:
@@ -236,7 +255,7 @@ def page_work(state_container):
                 st.info('No matching result found')
     elif uniq_dict:
         columns = ['namespace'] + uniq_dict['column']
-        df = gui_get_df(state_container.sqobjs[uniq_dict['table']],
+        df = gui_get_df(uniq_dict['table'],
                         namespace=query_ns, view='latest', columns=columns)
         if not df.empty:
             df = df.groupby(by=columns).first().reset_index()

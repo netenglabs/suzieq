@@ -1,4 +1,5 @@
 import time
+import ast
 import pandas as pd
 from nubia import command, argument
 
@@ -81,7 +82,7 @@ class PathCmd(SqCommand):
 
     @command("summarize")
     def summarize(self):
-        """Summarize paths between specified from source to target ip addresses"""
+        """Summarize paths between specified source and target ip address"""
         # Get the default display field names
         if self.columns is None:
             return
@@ -104,6 +105,8 @@ class PathCmd(SqCommand):
         if not df.empty:
             return self._gen_output(df)
 
+    # We need unique in this place because of the values we need to pass to
+    # unique which is different from the usual set
     @command("unique")
     @argument("count", description="include count of times a value is seen",
               choices=['True'])
@@ -130,7 +133,7 @@ class PathCmd(SqCommand):
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         if not df.empty:
-            return self._gen_output(df)
+            return self._gen_output(df, dont_strip_cols=True)
 
     @command("top", help="find the top n values for a field")
     @argument("count", description="number of rows to return")
@@ -142,7 +145,7 @@ class PathCmd(SqCommand):
         """Return the top n values for a field in path trace output
 
         Args:
-            count (int, optional): The number of entries to return. Defaults to 5
+            count (int, optional): Number of entries to return. Defaults to 5
             what (str, optional): Field name to use for largest/smallest val
             reverse (bool, optional): Reverse and return n smallest
 
@@ -153,7 +156,8 @@ class PathCmd(SqCommand):
 
         df = self.sqobj.top(hostname=self.hostname,
                             namespace=self.namespace,
-                            what=what, count=count, reverse=eval(reverse),
+                            what=what, count=count,
+                            reverse=ast.literal_eval(reverse),
                             source=self.src, dest=self.dest, vrf=self.vrf,
                             )
 

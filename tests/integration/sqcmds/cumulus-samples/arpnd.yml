@@ -1164,6 +1164,283 @@ tests:
     {"hostname": "internet"}, {"hostname": "server102"}, {"hostname": "internet"},
     {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
     {"hostname": "internet"}, {"hostname": "server102"}]'
+- command: arpnd show --address="169.254.253.1" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: arpnd show cumulus filter
+  output: '[{"namespace": "dual-evpn", "hostname": "edge01", "ipAddress": "169.254.253.1",
+    "oif": "eth2.2", "macaddr": "52:54:00:4c:dd:5a", "state": "reachable", "remote":
+    false, "timestamp": 1616644821714}, {"namespace": "ospf-ibgp", "hostname": "edge01",
+    "ipAddress": "169.254.253.1", "oif": "eth2.2", "macaddr": "52:54:00:5d:5d:83",
+    "state": "reachable", "remote": false, "timestamp": 1616681581180}]'
+- command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: arpnd show cumulus filter
+  output: '[{"namespace": "dual-evpn", "hostname": "exit02", "ipAddress": "169.254.253.2",
+    "oif": "swp5.2", "macaddr": "52:54:00:76:61:4f", "state": "reachable", "remote":
+    false, "timestamp": 1616644821712}, {"namespace": "dual-evpn", "hostname": "edge01",
+    "ipAddress": "169.254.253.1", "oif": "eth2.2", "macaddr": "52:54:00:4c:dd:5a",
+    "state": "reachable", "remote": false, "timestamp": 1616644821714}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ipAddress": "169.254.253.2", "oif": "swp5.2",
+    "macaddr": "52:54:00:ba:e7:89", "state": "reachable", "remote": false, "timestamp":
+    1616681581179}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ipAddress":
+    "169.254.253.1", "oif": "eth2.2", "macaddr": "52:54:00:5d:5d:83", "state": "reachable",
+    "remote": false, "timestamp": 1616681581180}]'
+- command: arpnd show --address="invalidaddress" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"error": "Invalid IP address specified"}]'
+  marks: arpnd show cumulus filter
+- command: arpnd show --macaddr="52:54:00:4c:dd:5a" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: arpnd show cumulus filter
+  output: '[{"namespace": "dual-evpn", "hostname": "edge01", "ipAddress": "169.254.253.5",
+    "oif": "eth2.3", "macaddr": "52:54:00:4c:dd:5a", "state": "reachable", "remote":
+    false, "timestamp": 1616644821714}, {"namespace": "dual-evpn", "hostname": "edge01",
+    "ipAddress": "169.254.253.1", "oif": "eth2.2", "macaddr": "52:54:00:4c:dd:5a",
+    "state": "reachable", "remote": false, "timestamp": 1616644821714}, {"namespace":
+    "dual-evpn", "hostname": "edge01", "ipAddress": "169.254.253.9", "oif": "eth2.4",
+    "macaddr": "52:54:00:4c:dd:5a", "state": "reachable", "remote": false, "timestamp":
+    1616644821714}]'
+- command: arpnd show --macaddr="52:54:00:4c:dd:5a 52:54:00:76:61:4f" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: arpnd show cumulus filter
+  output: '[{"namespace": "dual-evpn", "hostname": "exit02", "ipAddress": "169.254.253.10",
+    "oif": "swp5.4", "macaddr": "52:54:00:76:61:4f", "state": "reachable", "remote":
+    false, "timestamp": 1616644821712}, {"namespace": "dual-evpn", "hostname": "exit02",
+    "ipAddress": "169.254.253.2", "oif": "swp5.2", "macaddr": "52:54:00:76:61:4f",
+    "state": "reachable", "remote": false, "timestamp": 1616644821712}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ipAddress": "169.254.253.6", "oif": "swp5.3",
+    "macaddr": "52:54:00:76:61:4f", "state": "reachable", "remote": false, "timestamp":
+    1616644821712}, {"namespace": "dual-evpn", "hostname": "edge01", "ipAddress":
+    "169.254.253.5", "oif": "eth2.3", "macaddr": "52:54:00:4c:dd:5a", "state": "reachable",
+    "remote": false, "timestamp": 1616644821714}, {"namespace": "dual-evpn", "hostname":
+    "edge01", "ipAddress": "169.254.253.1", "oif": "eth2.2", "macaddr": "52:54:00:4c:dd:5a",
+    "state": "reachable", "remote": false, "timestamp": 1616644821714}, {"namespace":
+    "dual-evpn", "hostname": "edge01", "ipAddress": "169.254.253.9", "oif": "eth2.4",
+    "macaddr": "52:54:00:4c:dd:5a", "state": "reachable", "remote": false, "timestamp":
+    1616644821714}]'
+- command: arpnd show --macaddr="invalidaddress" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"error": "Invalid mac address specified"}]'
+  marks: arpnd show cumulus filter
+- command: arpnd show --prefix="169.254.253.0/24" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: arpnd show cumulus filter
+  output: '[{"namespace": "dual-evpn", "hostname": "exit02", "ipAddress": "169.254.253.6",
+    "oif": "swp5.3", "macaddr": "52:54:00:76:61:4f", "state": "reachable", "remote":
+    false, "timestamp": 1616644821712}, {"namespace": "dual-evpn", "hostname": "exit02",
+    "ipAddress": "169.254.253.2", "oif": "swp5.2", "macaddr": "52:54:00:76:61:4f",
+    "state": "reachable", "remote": false, "timestamp": 1616644821712}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "swp5.4",
+    "macaddr": "52:54:00:76:61:4f", "state": "reachable", "remote": false, "timestamp":
+    1616644821712}, {"namespace": "dual-evpn", "hostname": "edge01", "ipAddress":
+    "169.254.253.5", "oif": "eth2.3", "macaddr": "52:54:00:4c:dd:5a", "state": "reachable",
+    "remote": false, "timestamp": 1616644821714}, {"namespace": "dual-evpn", "hostname":
+    "edge01", "ipAddress": "169.254.253.9", "oif": "eth2.4", "macaddr": "52:54:00:4c:dd:5a",
+    "state": "reachable", "remote": false, "timestamp": 1616644821714}, {"namespace":
+    "dual-evpn", "hostname": "edge01", "ipAddress": "169.254.253.1", "oif": "eth2.2",
+    "macaddr": "52:54:00:4c:dd:5a", "state": "reachable", "remote": false, "timestamp":
+    1616644821714}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ipAddress":
+    "169.254.253.2", "oif": "swp5.2", "macaddr": "52:54:00:ba:e7:89", "state": "reachable",
+    "remote": false, "timestamp": 1616681581179}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ipAddress": "169.254.253.6", "oif": "swp5.3", "macaddr": "52:54:00:ba:e7:89",
+    "state": "reachable", "remote": false, "timestamp": 1616681581179}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "swp5.4",
+    "macaddr": "52:54:00:ba:e7:89", "state": "reachable", "remote": false, "timestamp":
+    1616681581179}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ipAddress":
+    "169.254.253.1", "oif": "eth2.2", "macaddr": "52:54:00:5d:5d:83", "state": "reachable",
+    "remote": false, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "ipAddress": "169.254.253.5", "oif": "eth2.3", "macaddr": "52:54:00:5d:5d:83",
+    "state": "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "edge01", "ipAddress": "169.254.253.9", "oif": "eth2.4",
+    "macaddr": "52:54:00:5d:5d:83", "state": "reachable", "remote": false, "timestamp":
+    1616681581180}]'
+- command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: arpnd show cumulus filter
+  output: '[{"namespace": "ospf-single", "hostname": "spine01", "ipAddress": "10.0.0.11",
+    "oif": "swp1", "macaddr": "44:38:39:00:00:53", "state": "reachable", "remote":
+    false, "timestamp": 1616352402449}, {"namespace": "ospf-single", "hostname": "spine01",
+    "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr": "44:38:39:00:00:28", "state":
+    "reachable", "remote": false, "timestamp": 1616352402449}, {"namespace": "ospf-single",
+    "hostname": "spine01", "ipAddress": "10.0.0.102", "oif": "swp5", "macaddr": "44:38:39:00:00:21",
+    "state": "reachable", "remote": false, "timestamp": 1616352402449}, {"namespace":
+    "ospf-single", "hostname": "spine01", "ipAddress": "10.0.0.14", "oif": "swp4",
+    "macaddr": "44:38:39:00:00:3b", "state": "reachable", "remote": false, "timestamp":
+    1616352402449}, {"namespace": "ospf-single", "hostname": "spine01", "ipAddress":
+    "10.0.0.13", "oif": "swp3", "macaddr": "44:38:39:00:00:4f", "state": "reachable",
+    "remote": false, "timestamp": 1616352402449}, {"namespace": "ospf-single", "hostname":
+    "spine01", "ipAddress": "10.0.0.101", "oif": "swp6", "macaddr": "44:38:39:00:00:09",
+    "state": "reachable", "remote": false, "timestamp": 1616352402449}, {"namespace":
+    "ospf-single", "hostname": "leaf01", "ipAddress": "10.0.0.21", "oif": "swp1",
+    "macaddr": "44:38:39:00:00:54", "state": "reachable", "remote": false, "timestamp":
+    1616352402479}, {"namespace": "ospf-single", "hostname": "leaf01", "ipAddress":
+    "10.0.0.22", "oif": "swp2", "macaddr": "44:38:39:00:00:25", "state": "reachable",
+    "remote": false, "timestamp": 1616352402479}, {"namespace": "ospf-single", "hostname":
+    "spine02", "ipAddress": "10.0.0.102", "oif": "swp5", "macaddr": "44:38:39:00:00:55",
+    "state": "reachable", "remote": false, "timestamp": 1616352402479}, {"namespace":
+    "ospf-single", "hostname": "spine02", "ipAddress": "10.0.0.14", "oif": "swp4",
+    "macaddr": "44:38:39:00:00:46", "state": "reachable", "remote": false, "timestamp":
+    1616352402479}, {"namespace": "ospf-single", "hostname": "leaf02", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "44:38:39:00:00:29", "state": "reachable",
+    "remote": false, "timestamp": 1616352402479}, {"namespace": "ospf-single", "hostname":
+    "leaf02", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "44:38:39:00:00:5e",
+    "state": "reachable", "remote": false, "timestamp": 1616352402479}, {"namespace":
+    "ospf-single", "hostname": "leaf03", "ipAddress": "10.0.0.22", "oif": "swp2",
+    "macaddr": "44:38:39:00:00:1c", "state": "reachable", "remote": false, "timestamp":
+    1616352402479}, {"namespace": "ospf-single", "hostname": "leaf03", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "44:38:39:00:00:50", "state": "reachable",
+    "remote": false, "timestamp": 1616352402479}, {"namespace": "ospf-single", "hostname":
+    "spine02", "ipAddress": "10.0.0.11", "oif": "swp1", "macaddr": "44:38:39:00:00:24",
+    "state": "reachable", "remote": false, "timestamp": 1616352402479}, {"namespace":
+    "ospf-single", "hostname": "spine02", "ipAddress": "10.0.0.13", "oif": "swp3",
+    "macaddr": "44:38:39:00:00:1b", "state": "reachable", "remote": false, "timestamp":
+    1616352402479}, {"namespace": "ospf-single", "hostname": "spine02", "ipAddress":
+    "10.0.0.12", "oif": "swp2", "macaddr": "44:38:39:00:00:5d", "state": "reachable",
+    "remote": false, "timestamp": 1616352402479}, {"namespace": "ospf-single", "hostname":
+    "spine02", "ipAddress": "10.0.0.101", "oif": "swp6", "macaddr": "44:38:39:00:00:5a",
+    "state": "reachable", "remote": false, "timestamp": 1616352402479}, {"namespace":
+    "ospf-single", "hostname": "exit01", "ipAddress": "10.0.0.21", "oif": "swp1",
+    "macaddr": "44:38:39:00:00:0a", "state": "reachable", "remote": false, "timestamp":
+    1616352402491}, {"namespace": "ospf-single", "hostname": "exit01", "ipAddress":
+    "10.0.0.22", "oif": "swp2", "macaddr": "44:38:39:00:00:5b", "state": "reachable",
+    "remote": false, "timestamp": 1616352402491}, {"namespace": "ospf-single", "hostname":
+    "exit02", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr": "44:38:39:00:00:22",
+    "state": "reachable", "remote": false, "timestamp": 1616352402526}, {"namespace":
+    "ospf-single", "hostname": "exit02", "ipAddress": "10.0.0.22", "oif": "swp2",
+    "macaddr": "44:38:39:00:00:56", "state": "reachable", "remote": false, "timestamp":
+    1616352402526}, {"namespace": "ospf-single", "hostname": "leaf04", "ipAddress":
+    "10.0.0.22", "oif": "swp2", "macaddr": "44:38:39:00:00:47", "state": "reachable",
+    "remote": false, "timestamp": 1616352402659}, {"namespace": "ospf-single", "hostname":
+    "leaf04", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr": "44:38:39:00:00:3c",
+    "state": "reachable", "remote": false, "timestamp": 1616352402659}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ipAddress": "169.254.253.6", "oif": "swp5.3",
+    "macaddr": "52:54:00:76:61:4f", "state": "reachable", "remote": false, "timestamp":
+    1616644821712}, {"namespace": "dual-evpn", "hostname": "exit02", "ipAddress":
+    "169.254.253.2", "oif": "swp5.2", "macaddr": "52:54:00:76:61:4f", "state": "reachable",
+    "remote": false, "timestamp": 1616644821712}, {"namespace": "dual-evpn", "hostname":
+    "exit02", "ipAddress": "169.254.253.10", "oif": "swp5.4", "macaddr": "52:54:00:76:61:4f",
+    "state": "reachable", "remote": false, "timestamp": 1616644821712}, {"namespace":
+    "dual-evpn", "hostname": "edge01", "ipAddress": "169.254.253.5", "oif": "eth2.3",
+    "macaddr": "52:54:00:4c:dd:5a", "state": "reachable", "remote": false, "timestamp":
+    1616644821714}, {"namespace": "dual-evpn", "hostname": "edge01", "ipAddress":
+    "169.254.253.9", "oif": "eth2.4", "macaddr": "52:54:00:4c:dd:5a", "state": "reachable",
+    "remote": false, "timestamp": 1616644821714}, {"namespace": "dual-evpn", "hostname":
+    "edge01", "ipAddress": "169.254.253.1", "oif": "eth2.2", "macaddr": "52:54:00:4c:dd:5a",
+    "state": "reachable", "remote": false, "timestamp": 1616644821714}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ipAddress": "10.0.0.112", "oif": "vlan4001",
+    "macaddr": "44:39:39:ff:40:94", "state": "reachable", "remote": true, "timestamp":
+    1616681581179}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ipAddress":
+    "169.254.253.2", "oif": "swp5.2", "macaddr": "52:54:00:ba:e7:89", "state": "reachable",
+    "remote": false, "timestamp": 1616681581179}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ipAddress": "169.254.253.6", "oif": "swp5.3", "macaddr": "52:54:00:ba:e7:89",
+    "state": "reachable", "remote": false, "timestamp": 1616681581179}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ipAddress": "10.0.0.134", "oif": "vlan4001",
+    "macaddr": "44:39:39:ff:40:95", "state": "reachable", "remote": true, "timestamp":
+    1616681581179}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ipAddress":
+    "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:e5:e3:d4", "state": "reachable",
+    "remote": false, "timestamp": 1616681581179}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:cf:3b:50",
+    "state": "reachable", "remote": false, "timestamp": 1616681581179}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "swp5.4",
+    "macaddr": "52:54:00:ba:e7:89", "state": "reachable", "remote": false, "timestamp":
+    1616681581179}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ipAddress":
+    "10.0.0.14", "oif": "swp4", "macaddr": "52:54:00:b5:4a:7b", "state": "reachable",
+    "remote": false, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "ipAddress": "10.0.0.102", "oif": "swp5", "macaddr": "52:54:00:5f:a0:b6",
+    "state": "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ipAddress": "10.0.0.13", "oif": "swp3", "macaddr":
+    "52:54:00:a1:a5:be", "state": "reachable", "remote": false, "timestamp": 1616681581180},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ipAddress": "10.0.0.12", "oif":
+    "swp2", "macaddr": "52:54:00:c7:a4:86", "state": "reachable", "remote": false,
+    "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ipAddress": "10.0.0.101", "oif": "swp6", "macaddr": "52:54:00:28:db:32", "state":
+    "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "ipAddress": "10.0.0.101", "oif": "swp6", "macaddr": "52:54:00:ff:73:be",
+    "state": "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ipAddress": "10.0.0.14", "oif": "swp4", "macaddr":
+    "52:54:00:13:2a:2c", "state": "reachable", "remote": false, "timestamp": 1616681581180},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ipAddress": "10.0.0.102", "oif":
+    "swp5", "macaddr": "52:54:00:93:9e:21", "state": "reachable", "remote": false,
+    "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ipAddress": "10.0.0.11", "oif": "swp1", "macaddr": "52:54:00:e6:0f:5c", "state":
+    "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "ipAddress": "10.0.0.13", "oif": "swp3", "macaddr": "52:54:00:db:08:ed",
+    "state": "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr":
+    "52:54:00:d5:33:ac", "state": "reachable", "remote": false, "timestamp": 1616681581180},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ipAddress": "10.0.0.11", "oif":
+    "swp1", "macaddr": "52:54:00:e6:50:37", "state": "reachable", "remote": false,
+    "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:83:94:bc", "state":
+    "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "ipAddress": "10.0.0.112", "oif": "vlan4001", "macaddr":
+    "44:39:39:ff:40:94", "state": "reachable", "remote": true, "timestamp": 1616681581180},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "ipAddress": "169.254.253.1",
+    "oif": "eth2.2", "macaddr": "52:54:00:5d:5d:83", "state": "reachable", "remote":
+    false, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname": "edge01",
+    "ipAddress": "169.254.253.5", "oif": "eth2.3", "macaddr": "52:54:00:5d:5d:83",
+    "state": "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "edge01", "ipAddress": "169.254.253.9", "oif": "eth2.4",
+    "macaddr": "52:54:00:5d:5d:83", "state": "reachable", "remote": false, "timestamp":
+    1616681581180}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ipAddress":
+    "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:5d:da:ac", "state": "reachable",
+    "remote": false, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ipAddress": "10.0.0.134", "oif": "vlan4001", "macaddr": "44:39:39:ff:40:95",
+    "state": "reachable", "remote": true, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ipAddress": "10.0.0.134", "oif": "vlan4001",
+    "macaddr": "44:39:39:ff:40:95", "state": "reachable", "remote": true, "timestamp":
+    1616681581180}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "10.0.0.102", "oif": "vlan4001", "macaddr": "ea:c9:a5:5f:c7:ca", "state": "reachable",
+    "remote": true, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ipAddress": "10.0.0.101", "oif": "vlan4001", "macaddr": "92:0d:55:8d:b5:41",
+    "state": "reachable", "remote": true, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ipAddress": "10.0.0.101", "oif": "vlan4001",
+    "macaddr": "92:0d:55:8d:b5:41", "state": "reachable", "remote": true, "timestamp":
+    1616681581180}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:54:3d:39", "state": "reachable",
+    "remote": false, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:b0:35:59",
+    "state": "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ipAddress": "10.0.0.102", "oif": "vlan4001",
+    "macaddr": "ea:c9:a5:5f:c7:ca", "state": "reachable", "remote": true, "timestamp":
+    1616681581180}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ipAddress":
+    "10.0.0.112", "oif": "vlan4001", "macaddr": "44:39:39:ff:40:94", "state": "reachable",
+    "remote": true, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ipAddress": "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:25:b0:5b",
+    "state": "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf04", "ipAddress": "10.0.0.112", "oif": "vlan4001",
+    "macaddr": "44:39:39:ff:40:94", "state": "reachable", "remote": true, "timestamp":
+    1616681581180}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ipAddress":
+    "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:51:eb:3d", "state": "reachable",
+    "remote": false, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ipAddress": "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:7a:b0:02",
+    "state": "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ipAddress": "10.0.0.101", "oif": "vlan4001",
+    "macaddr": "92:0d:55:8d:b5:41", "state": "reachable", "remote": true, "timestamp":
+    1616681581180}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ipAddress":
+    "10.0.0.102", "oif": "vlan4001", "macaddr": "ea:c9:a5:5f:c7:ca", "state": "reachable",
+    "remote": true, "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ipAddress": "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:a7:ba:2d",
+    "state": "reachable", "remote": false, "timestamp": 1616681581180}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ipAddress": "10.0.0.101", "oif": "vlan4001",
+    "macaddr": "92:0d:55:8d:b5:41", "state": "reachable", "remote": true, "timestamp":
+    1616681581182}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "10.0.0.102", "oif": "vlan4001", "macaddr": "ea:c9:a5:5f:c7:ca", "state": "reachable",
+    "remote": true, "timestamp": 1616681581182}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ipAddress": "10.0.0.21", "oif": "swp2", "macaddr": "52:54:00:d1:00:da",
+    "state": "reachable", "remote": false, "timestamp": 1616681581182}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ipAddress": "10.0.0.134", "oif": "vlan4001",
+    "macaddr": "44:39:39:ff:40:95", "state": "reachable", "remote": true, "timestamp":
+    1616681581182}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ipAddress":
+    "10.0.0.22", "oif": "swp1", "macaddr": "52:54:00:eb:d4:77", "state": "reachable",
+    "remote": false, "timestamp": 1616681581182}]'
+- command: arpnd show --prefix="169.254.253.0" --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: arpnd show cumulus filter
 - command: arpnd summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd summarize
@@ -1180,6 +1457,25 @@ tests:
   output: '{"dual-evpn": {"deviceCnt": 14, "arpNdEntriesCnt": 196, "macaddrCnt": 196,
     "oifCnt": 196, "uniqueOifCnt": 21, "remoteEntriesCnt": 0, "staticEntriesCnt":
     36, "failedEntryCnt": 0}}'
+- command: arpnd unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: arpnd unique
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: arpnd unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: arpnd unique
+  output: '[{"hostname": "server102", "numRows": 11}, {"hostname": "server104", "numRows":
+    11}, {"hostname": "server101", "numRows": 12}, {"hostname": "server103", "numRows":
+    12}, {"hostname": "edge01", "numRows": 15}, {"hostname": "internet", "numRows":
+    24}, {"hostname": "exit02", "numRows": 38}, {"hostname": "spine02", "numRows":
+    38}, {"hostname": "exit01", "numRows": 39}, {"hostname": "spine01", "numRows":
+    39}, {"hostname": "leaf02", "numRows": 49}, {"hostname": "leaf03", "numRows":
+    49}, {"hostname": "leaf01", "numRows": 50}, {"hostname": "leaf04", "numRows":
+    50}]'
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd unique

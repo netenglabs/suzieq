@@ -7,7 +7,9 @@
             "name": "sqvers",
             "type": "string",
             "partition": 0,
-            "default": "1.0"
+            "default": "1.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
         },
         {
             "name": "routerMac",
@@ -16,12 +18,15 @@
         {
             "name": "secVtepIp",
             "type": "string",
-            "display": 8
+            "display": 9,
+            "description": "Secondary VTEP IP, some NOS--such as NXOS--require this"
         },
         {
             "name": "remoteVtepCnt",
             "type": "int",
-            "depends": "namespace hostname remoteVtepList"
+            "depends": "namespace hostname remoteVtepList",
+            "display": 7,
+            "description": "Augmented column, count of how many peers are seen for VNI"
         },
         {
             "name": "vrf",
@@ -52,7 +57,8 @@
         },
         {
             "name": "replicationType",
-            "type": "string"
+            "type": "string",
+            "description": "How is BUM traffic handled"
         },
         {
             "name": "type",
@@ -61,7 +67,8 @@
         },
         {
             "name": "numArpNd",
-            "type": "long"
+            "type": "long",
+            "description": "Number of ARP/ND entries associated with this VNI"
         },
         {
             "name": "remoteVtepList",
@@ -71,8 +78,7 @@
                     "type": "string",
                     "name": "remoteVtep"
                 }
-            },
-            "display": 7
+            }
         },
         {
             "name": "vniFilter",
@@ -96,34 +102,40 @@
         },
         {
             "name": "numMacs",
-            "type": "long"
+            "type": "long",
+            "description": "Number of MACs associated with this VNI"
         },
         {
             "name": "priVtepIp",
             "type": "string",
-            "display": 7
+            "display": 8,
+            "description": "Primary VTEP IP"
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
             "display": 1,
-            "partition": 2
+            "partition": 2,
+            "description": "Hostname associated with this record"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-            "partition": 1
+            "partition": 1,
+            "description": "Namespace associated with this record"
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "display": 10
         },
         {
             "name": "active",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
         }
     ]
 }

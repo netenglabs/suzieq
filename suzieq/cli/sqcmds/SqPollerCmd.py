@@ -18,6 +18,7 @@ class SqPollerCmd(SqCommand):
         view: str = "",
         namespace: str = "",
         format: str = "",
+        query_str: str = "",
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -29,6 +30,7 @@ class SqPollerCmd(SqCommand):
             namespace=namespace,
             columns=columns,
             format=format,
+            query_str=query_str,
             sqobj=SqPollerObj,
         )
 
@@ -36,7 +38,11 @@ class SqPollerCmd(SqCommand):
     @argument("service", description="name of service to match")
     @argument("status", description="status of service to match",
               choices=["all", "pass", "fail"])
-    def show(self, service: str = "", status: str = "all"):
+    @argument('poll_period_exceeded',
+              description="filter if poll period exceeded",
+              choices=['True', 'False'])
+    def show(self, service: str = "", status: str = "all",
+             poll_period_exceeded: str = "") -> None:
         """Show Suzieq poller info such as status of polled commands etc.
         """
         if self.columns is None:
@@ -49,13 +55,21 @@ class SqPollerCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname,
-            columns=self.columns,
-            service=service,
-            status=status,
-            namespace=self.namespace,
-        )
+        if poll_period_exceeded == "True":
+            pollExcdPeriodCount = "!0"
+        elif poll_period_exceeded == "False":
+            pollExcdPeriodCount = "0"
+        else:
+            pollExcdPeriodCount = ''
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                columns=self.columns,
+                                service=service,
+                                status=status,
+                                namespace=self.namespace,
+                                pollExcdPeriodCount=pollExcdPeriodCount,
+                                query_str=self.query_str,
+                                )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

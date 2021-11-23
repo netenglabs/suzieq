@@ -1,5 +1,4 @@
 from itertools import zip_longest
-from typing import Collection
 
 import pandas as pd
 import streamlit as st
@@ -88,8 +87,8 @@ def handle_edge_url(url_params: dict, pathSession):
                 s = if_df.ipAddressList.str \
                                        .startswith(f'{nhip}/') \
                                        .dropna()
-                s = s.loc[s == True]
-                st.dataframe(data=engobj._if_df.iloc[s.loc[s == True].index])
+                s = s.loc[s is True]
+                st.dataframe(data=engobj._if_df.iloc[s.loc[s is True].index])
             else:
                 st.info(f'Interfaces {label}')
                 st.dataframe(data=if_df)
@@ -197,14 +196,14 @@ def handle_hop_url(url_params, pathSession):
                     s = if_df.ip6AddressList \
                              .explode() \
                              .str.startswith(f'{nhop}/').dropna()
-                    s = s.loc[s == True]
-                    if_df = if_df.iloc[s.loc[s == True].index]
+                    s = s.loc[s is True]
+                    if_df = if_df.iloc[s.loc[s is True].index]
                 elif nhop != '169.254.0.1':
                     s = if_df.ipAddressList \
                              .explode() \
                              .str.startswith(f'{nhop}/').dropna()
-                    s = s.loc[s == True]
-                    if_df = if_df.iloc[s.loc[s == True].index]
+                    s = s.loc[s is True]
+                    if_df = if_df.iloc[s.loc[s is True].index]
                 with ifcol:
                     st.info(f'Interfaces {label}')
                     st.dataframe(data=if_df, height=600)

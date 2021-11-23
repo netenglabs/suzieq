@@ -1,3 +1,4 @@
+from typing import List
 from filelock import FileLock
 from subprocess import check_output, CalledProcessError
 import shlex
@@ -8,7 +9,6 @@ from suzieq.poller.services import init_services
 from suzieq.utils import load_sq_config, Schema
 from suzieq.sqobjects import get_sqobject, get_tables
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
-import asyncio
 import sys
 import os
 from _pytest.mark.structures import Mark, MarkDecorator
@@ -46,17 +46,24 @@ def setup_nubia():
 
 
 @pytest.fixture()
-def create_context_config(datadir: str = './tests/data/basic_dual_bgp/parquet-out'):
+def create_context_config(datadir: str =
+                          './tests/data/basic_dual_bgp/parquet-out'):
     return
 
 
 @pytest.fixture()
 def get_table_data(table: str, datadir: str):
+    '''Get all fields including sqvers and any suppress field for DB check'''
+    if table in ['path', 'ospfIf', 'ospfNbr']:
+        return pd.DataFrame()
 
     cfgfile = create_dummy_config_file(datadir=datadir)
+    sqobj = get_sqobject(table)(config_file=cfgfile)
+    cols = sqobj.schema.get_display_fields(['*'])
 
-    df = get_sqobject(table)(config_file=cfgfile).get(columns=['*'])
-    if not df.empty and (table != 'device'):
+    df = sqobj.get(columns=cols)
+
+    if not df.empty and (table not in ['device', 'tables', 'network']):
         device_df = get_sqobject('device')(config_file=cfgfile) \
             .get(columns=['namespace', 'hostname', 'os'])
 
@@ -70,8 +77,22 @@ def get_table_data(table: str, datadir: str):
     return df
 
 
-@pytest.fixture
-@pytest.mark.asyncio
+@pytest.fixture()
+def get_table_data_cols(table: str, datadir: str, columns: List[str]):
+    '''
+    For the table and columns specified, get data, used for schema validation
+    '''
+    if table in ['path', 'ospfIf', 'ospfNbr']:
+        return pd.DataFrame()
+
+    cfgfile = create_dummy_config_file(datadir=datadir)
+    df = get_sqobject(table)(config_file=cfgfile).get(columns=columns)
+
+    return df
+
+
+@ pytest.fixture
+@ pytest.mark.asyncio
 def init_services_default(event_loop):
     configs = os.path.abspath(os.curdir) + '/config/'
     schema = configs + 'schema/'
@@ -81,7 +102,7 @@ def init_services_default(event_loop):
     return services
 
 
-@pytest.fixture
+@ pytest.fixture
 def run_sequential(tmpdir):
     """Uses a file lock to run tests using this fixture, sequentially
 
@@ -98,7 +119,7 @@ def _setup_nubia():
     plugin.create_context = create_context
 
     # this is just so that context can be created
-    shell = Nubia(name='test', plugin=plugin)
+    _ = Nubia(name='test', plugin=plugin)
 
 
 def create_context():

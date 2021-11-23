@@ -572,3 +572,19 @@ tests:
     {"junos": [0, 0, 3, 2, 2]}, {"junos": true}, {"junos": 1}, {"junos": 10}, {"junos":
     7}, {"junos": []}, {"junos": ["spine01", "spine02"]}, {"junos": [0, 0, 4, 0, 2]},
     {"junos": true}, {"junos": 1}, {"junos": 8}, {"junos": 6}, {"junos": []}]'
+- command: topology unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: topology unique junos
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "server101"}, {"hostname": "server102"}, {"hostname": "server201"}, {"hostname":
+    "server202"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
+- command: topology unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: topology unique junos
+  output: '[{"hostname": "server101", "numRows": 2}, {"hostname": "server201", "numRows":
+    2}, {"hostname": "server102", "numRows": 4}, {"hostname": "server202", "numRows":
+    4}, {"hostname": "dcedge01", "numRows": 6}, {"hostname": "leaf01", "numRows":
+    9}, {"hostname": "leaf02", "numRows": 9}, {"hostname": "spine01", "numRows": 10},
+    {"hostname": "spine02", "numRows": 10}, {"hostname": "exit01", "numRows": 11},
+    {"hostname": "exit02", "numRows": 11}, {"hostname": "firewall01", "numRows": 12}]'

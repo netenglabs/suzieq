@@ -4,60 +4,70 @@
     "type": "record",
     "fields": [
         {
-	    "name": "sqvers",
-	    "type": "string",
-	    "partition": 0,
-	    "default": "2.0"
-	},
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
         {
             "name": "interfaces",
             "type": {
-	        "type": "array",
-		"items": {
-		    "name": "vid",
-		     "type": "string"
-		}
-	    },
-            "display": 5
+                "type": "array",
+                "items": {
+                    "name": "vid",
+                    "type": "string"
+                }
+            },
+            "display": 5,
+            "description": "List of interfaces carrying this VLAN"
         },
         {
             "name": "vlan",
             "type": "long",
-            "display": 6
+            "display": 6,
+            "description": "VLAN ID"
         },
         {
             "name": "vlanName",
             "type": "string",
             "key": 2,
-            "display": 3
+            "display": 3,
+            "description": "VLAN name"
         },
         {
             "name": "state",
             "type": "string",
             "key": 2,
-            "display": 4
+            "display": 4,
+            "description": "VLAN state: active or suspended"
         },
         {
             "name": "hostname",
             "type": "string",
             "key": 1,
             "display": 1,
-	    "partition": 2
+            "partition": 2,
+            "description": "Hostname associated with record"
         },
         {
             "name": "namespace",
             "type": "string",
             "key": 0,
             "display": 0,
-	    "partition": 1
+            "partition": 1,
+            "description": "Namespace associated with record"
         },
         {
             "name": "timestamp",
-            "type": "timestamp"
+            "type": "timestamp",
+            "display": 7
         },
         {
             "name": "active",
-            "type": "boolean"
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
         }
     ]
 }

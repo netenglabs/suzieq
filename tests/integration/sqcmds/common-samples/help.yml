@@ -21,8 +21,9 @@ tests:
     \ use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n - hostname:\
     \ \e[36mSpace separated list of hostnames to qualify\e[0m\n - ipvers: \e[36mtype\
     \ of address, v4, v6 or l2\e[0m\n - namespace: \e[36mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36mStart of time\
+    \ to qualify\e[0m\n - prefix: \e[36mShow all the addresses in this subnet prefix\
+    \ (in quotes)\e[0m\n - query_str: \e[36m('Trailing blank terminated pandas query\
+    \ format to further filter the output',)\e[0m\n - start_time: \e[36mStart of time\
     \ window, try natural language spec\e[0m\n - view: \e[36mView all records or just\
     \ the latest\e[0m\n - vrf: \e[36mVRF to qualify the address\e[0m\n"
 - command: address help --command=summarize
@@ -35,10 +36,10 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: address help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -50,8 +51,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: address help --command=top
   data-directory: tests/data/eos/parquet-out/
@@ -64,11 +65,11 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
-    [0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n - what: \e[36minteger field to get top\
+    \ values for\e[0m\n"
 - command: arpnd help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -91,8 +92,9 @@ tests:
     \ \e[36mSpace separated list of hostnames to qualify\e[0m\n - macaddr: \e[36mMAC\
     \ address, in quotes, to qualify output\e[0m\n - namespace: \e[36mSpace separated\
     \ list of namespaces to qualify\e[0m\n - oif: \e[36moutgoing interface to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - prefix: \e[36mShow all the addresses in this subnet prefix (in quotes)\e\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: arpnd help --command=summarize
   data-directory: tests/data/eos/parquet-out/
@@ -104,10 +106,10 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: arpnd help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -119,8 +121,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: arpnd help --command=top
   data-directory: tests/data/eos/parquet-out/
@@ -132,11 +134,12 @@ tests:
     \ of time window, try natural language spec \e[0m\n - engine: \e[36mWhich analytical\
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36mView all records or just the\
-    \ latest\e[0m\n - what: \e[36minteger field to get top values for\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of\
+    \ time window, try natural language spec\e[0m\n - view: \e[36mView all records\
+    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
+    [0m\n"
 - command: bgp help --command=assert
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -147,11 +150,11 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
-    \ - status: \e[36mShow only assert that matches this value\e[0m\n - view: \e[36mView\
-    \ all records or just the latest\e[0m\n - vrf: \e[36mOnly assert BGP state in\
-    \ this VRF\e[0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - start_time: \e[36mStart of time window, try natural language\
+    \ spec\e[0m\n - status: \e[36mShow only assert that matches this value\e[0m\n\
+    \ - view: \e[36mView all records or just the latest\e[0m\n - vrf: \e[36mOnly assert\
+    \ BGP state in this VRF\e[0m\n"
 - command: bgp help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -163,8 +166,8 @@ tests:
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
     \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - peer: \e[36mIP\
     \ address, in quotes, or the interface name, of peer to qualify output\e[0m\n\
-    \ - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    \ - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - state: \e[36mstatus of the session to match\e[0m\n -\
     \ view: \e[36mView all records or just the latest\e[0m\n - vrf: \e[36mvrf name\
     \ to qualify\e[0m\n"
@@ -178,9 +181,9 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
-    \ - view: \e[36mView all records or just the latest\e[0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - start_time: \e[36mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: bgp help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -192,8 +195,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: bgp help --command=top
   data-directory: tests/data/eos/parquet-out/
@@ -205,11 +208,12 @@ tests:
     \ of time window, try natural language spec \e[0m\n - engine: \e[36mWhich analytical\
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36mView all records or just the\
-    \ latest\e[0m\n - what: \e[36minteger field to get top values for\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of\
+    \ time window, try natural language spec\e[0m\n - view: \e[36mView all records\
+    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
+    [0m\n"
 - command: devconfig help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -240,12 +244,12 @@ tests:
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - model:\
     \ \e[36mfilter by model\e[0m\n - namespace: \e[36mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - os: \e[36mfilter by NOS\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36mStart of time window, try natural language spec\e[0m\n - status: \e[36mfilter\
-    \ by polling status\e[0m\n - vendor: \e[36mfilter by vendor\e[0m\n - version:\
-    \ \e[36mfilter by version\e[0m\n - view: \e[36mView all records or just the latest\e\
-    [0m\n"
+    \ to qualify\e[0m\n - os: \e[36mfilter by NOS\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - start_time: \e[36mStart of time window, try natural language spec\e[0m\n -\
+    \ status: \e[36mfilter by polling status\e[0m\n - vendor: \e[36mfilter by vendor\e\
+    [0m\n - version: \e[36mfilter by version\e[0m\n - view: \e[36mView all records\
+    \ or just the latest\e[0m\n"
 - command: device help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -256,10 +260,10 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: device help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -271,8 +275,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: device help --command=top
   data-directory: tests/data/eos/parquet-out/
@@ -285,11 +289,11 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
-    [0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n - what: \e[36minteger field to get top\
+    \ values for\e[0m\n"
 - command: evpnVni help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -311,10 +315,10 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - priVtepIp:\
-    \ \e[36mPrimary VTEP IP to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n - vni: \e[36mVNI ID to qualify\e[0m\n"
+    \ \e[36mPrimary VTEP IP to qualify\e[0m\n - query_str: \e[36m('Trailing blank\
+    \ terminated pandas query format to further filter the output',)\e[0m\n - start_time:\
+    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n - vni: \e[36mVNI ID to qualify\e[0m\n"
 - command: evpnVni help --command=assert
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -325,11 +329,11 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - status: \e[36mShow only assert\
-    \ that matches this value\e[0m\n - view: \e[36mView all records or just the latest\e\
-    [0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - status: \e[36mShow\
+    \ only assert that matches this value\e[0m\n - view: \e[36mView all records or\
+    \ just the latest\e[0m\n"
 - command: evpnVni help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -340,10 +344,10 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: evpnVni help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -355,8 +359,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: evpnVni help --command=top
   data-directory: tests/data/eos/parquet-out/
@@ -369,11 +373,11 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
-    [0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n - what: \e[36minteger field to get top\
+    \ values for\e[0m\n"
 - command: fs help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -407,12 +411,12 @@ tests:
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - ifname: \e[36minterface name to qualify\e[0m\n - ignore_missing_peer:\
     \ \e[36mTreat missing peer as passing assert check\e[0m\n - namespace: \e[36mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank\
-    \ terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36mStart of time window, try natural language spec\e[0m\n - status: \e[36mShow\
-    \ only assert that matches this value\e[0m\n - value: \e[36mValue to match against\e\
-    [0m\n - view: \e[36mView all records or just the latest\e[0m\n - what: \e[36mWhat\
-    \ do you want to assert\e[0m\n"
+    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - start_time: \e[36mStart of time window, try natural language spec\e[0m\n -\
+    \ status: \e[36mShow only assert that matches this value\e[0m\n - value: \e[36mValue\
+    \ to match against\e[0m\n - view: \e[36mView all records or just the latest\e\
+    [0m\n - what: \e[36mWhat do you want to assert\e[0m\n"
 - command: interface help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -423,8 +427,8 @@ tests:
     \ - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: interface help --command=show
   data-directory: tests/data/eos/parquet-out/
@@ -437,8 +441,8 @@ tests:
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ ifname: \e[36minterface name to qualify\e[0m\n - mtu: \e[36mfilter interfaces\
     \ with MTU\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - state: \e[36minterface state to qualify show\e[0m\n -\
     \ type: \e[36minterface type to qualify\e[0m\n - view: \e[36mView all records\
     \ or just the latest\e[0m\n - vrf: \e[36mfilter interfaces matching VRFs\e[0m\n"
@@ -452,10 +456,10 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: interface help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -467,8 +471,8 @@ tests:
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - ifname:\
     \ \e[36mInterface name to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - reverse: \e[36mTrue\
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - reverse: \e[36mTrue\
     \ see Bottom n\e[0m\n - start_time: \e[36mStart of time window, try natural language\
     \ spec\e[0m\n - type: \e[36minterface type to qualify\e[0m\n - view: \e[36mView\
     \ all records or just the latest\e[0m\n - what: \e[36mField you want to see top\
@@ -484,8 +488,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - type: \e[36minclude type of ports to include\e[0m\n -\
     \ view: \e[36mView all records or just the latest\e[0m\n"
 - command: inventory help
@@ -519,9 +523,9 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
-    \ - view: \e[36mView all records or just the latest\e[0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - start_time: \e[36mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: lldp help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -532,10 +536,11 @@ tests:
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - ifname:\
     \ \e[36minterface name to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - peerHostname: \e[36mpeer hostname to filter\
+    \ results\e[0m\n - peerMacaddr: \e[36mpeer MAC address to filter results\e[0m\n\
+    \ - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: lldp help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -546,10 +551,10 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: lldp help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -560,11 +565,12 @@ tests:
     \ of time window, try natural language spec \e[0m\n - engine: \e[36mWhich analytical\
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36mView all records or just the\
-    \ latest\e[0m\n - what: \e[36minteger field to get top values for\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of\
+    \ time window, try natural language spec\e[0m\n - view: \e[36mView all records\
+    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
+    [0m\n"
 - command: lldp help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -576,8 +582,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: mac help
   data-directory: tests/data/eos/parquet-out/
@@ -599,9 +605,9 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
-    \ - view: \e[36mView all records or just the latest\e[0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - start_time: \e[36mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: mac help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -615,8 +621,8 @@ tests:
     \ entries with no remoteVtep\e[0m\n - macaddr: \e[36mMAC address(es), in quotes,\
     \ to qualify output\e[0m\n - moveCount: \e[36mnum of times this MAC has moved\e\
     [0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n\
-    \ - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - remoteVtepIp: \e[36monly with this remoteVtepIp;\
+    \ - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - remoteVtepIp: \e[36monly with this remoteVtepIp;\
     \ use any for all\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n\
     \ - vlan: \e[36mVLAN(s) to qualify output\e[0m\n"
@@ -630,10 +636,10 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: mac help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -644,11 +650,12 @@ tests:
     \ of time window, try natural language spec \e[0m\n - engine: \e[36mWhich analytical\
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36mView all records or just the\
-    \ latest\e[0m\n - what: \e[36minteger field to get top values for\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of\
+    \ time window, try natural language spec\e[0m\n - view: \e[36mView all records\
+    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
+    [0m\n"
 - command: mac help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -660,8 +667,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: mlag help
   data-directory: tests/data/eos/parquet-out/
@@ -683,10 +690,10 @@ tests:
     \ of time window, try natural language spec \e[0m\n - engine: \e[36mWhich analytical\
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
-    \ all records or just the latest\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - start_time: \e[36mStart of time window, try natural language spec\e[0m\n -\
+    \ view: \e[36mView all records or just the latest\e[0m\n"
 - command: mlag help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -697,9 +704,9 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
-    \ - view: \e[36mView all records or just the latest\e[0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - start_time: \e[36mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: mlag help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -710,10 +717,10 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: mlag help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -724,11 +731,12 @@ tests:
     \ of time window, try natural language spec \e[0m\n - engine: \e[36mWhich analytical\
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36mView all records or just the\
-    \ latest\e[0m\n - what: \e[36minteger field to get top values for\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of\
+    \ time window, try natural language spec\e[0m\n - view: \e[36mView all records\
+    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
+    [0m\n"
 - command: mlag help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -740,8 +748,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: network help
   data-directory: tests/data/eos/parquet-out/
@@ -764,8 +772,8 @@ tests:
     \ - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: network help --command=show
   data-directory: tests/data/eos/parquet-out/
@@ -778,11 +786,11 @@ tests:
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ model: \e[36mmodels to filter with\e[0m\n - namespace: \e[36mSpace separated\
     \ list of namespaces to qualify\e[0m\n - os: \e[36mNOS to filter with\e[0m\n -\
-    \ query_str: \e[36mTrailing blank terminated pandas query format to further filter\
-    \ the output\e[0m\n - start_time: \e[36mStart of time window, try natural language\
-    \ spec\e[0m\n - vendor: \e[36mvendor to filter with\e[0m\n - version: \e[36mNOS\
-    \ version to filter with\e[0m\n - view: \e[36mView all records or just the latest\e\
-    [0m\n"
+    \ query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    \ language spec\e[0m\n - vendor: \e[36mvendor to filter with\e[0m\n - version:\
+    \ \e[36mNOS version to filter with\e[0m\n - view: \e[36mView all records or just\
+    \ the latest\e[0m\n"
 - command: network help --command=find
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -794,8 +802,8 @@ tests:
     \ \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect the pformat\
     \ of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames to\
     \ qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n\
     \ - vlan: \e[36mFind MAC within this VLAN\e[0m\n - vrf: \e[36mFind within this\
     \ VRF, used for IP addr\e[0m\n"
@@ -809,10 +817,10 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: network help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -824,11 +832,11 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
-    [0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n - what: \e[36minteger field to get top\
+    \ values for\e[0m\n"
 - command: network help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -840,8 +848,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: path help
   data-directory: tests/data/eos/parquet-out/
@@ -851,9 +859,9 @@ tests:
     \nSupported verbs are: \n - describe: \e[36mDisplay the schema of the table\e\
     [0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow paths between\
     \ specified from source to target ip addresses\e[0m\n - summarize: \e[36mSummarize\
-    \ paths between specified from source to target ip addresses\e[0m\n - top: \e\
-    [36mReturn the top n values for a field in path trace output\e[0m\n - unique:\
-    \ \e[36mDisplay unique values (and counts) for specified field of a path\e[0m\n"
+    \ paths between specified source and target ip address\e[0m\n - top: \e[36mReturn\
+    \ the top n values for a field in path trace output\e[0m\n - unique: \e[36mDisplay\
+    \ unique values (and counts) for specified field of a path\e[0m\n"
 - command: path help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -864,11 +872,11 @@ tests:
     \ window, try natural language spec \e[0m\n - engine: \e[36mWhich analytical engine\
     \ to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n - hostname:\
     \ \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank\
-    \ terminated pandas query format to further filter the output\e[0m\n - src: \e\
-    [36mSource IP address, in quotes\e[0m\n - start_time: \e[36mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36mView all records or just the\
-    \ latest\e[0m\n - vrf: \e[36mVRF to trace path in\e[0m\n"
+    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - src: \e[36mSource IP address, in quotes\e[0m\n - start_time: \e[36mStart of\
+    \ time window, try natural language spec\e[0m\n - view: \e[36mView all records\
+    \ or just the latest\e[0m\n - vrf: \e[36mVRF to trace path in\e[0m\n"
 - command: path help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -880,27 +888,27 @@ tests:
     \ - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - src: \e[36mSource IP address, in quotes\e[0m\n -\
-    \ start_time: \e[36mStart of time window, try natural language spec\e[0m\n - view:\
-    \ \e[36mView all records or just the latest\e[0m\n - vrf: \e[36mVRF to trace path\
-    \ in\e[0m\n"
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - src: \e[36mSource IP address, in quotes\e[0m\n\
+    \ - start_time: \e[36mStart of time window, try natural language spec\e[0m\n -\
+    \ view: \e[36mView all records or just the latest\e[0m\n - vrf: \e[36mVRF to trace\
+    \ path in\e[0m\n"
 - command: path help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: path help command
-  output: "path summarize: \e[36mSummarize paths between specified from source to\
-    \ target ip addresses\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace separated\
+  output: "path summarize: \e[36mSummarize paths between specified source and target\
+    \ ip address\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace separated\
     \ list of columns, * for all\e[0m\n - dest: \e[36mDestination IP address, in quotes\e\
     [0m\n - end_time: \e[36mEnd of time window, try natural language spec \e[0m\n\
     \ - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - src: \e[36mSource IP address, in quotes\e[0m\n -\
-    \ start_time: \e[36mStart of time window, try natural language spec\e[0m\n - view:\
-    \ \e[36mView all records or just the latest\e[0m\n - vrf: \e[36mVRF to trace path\
-    \ in\e[0m\n"
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - src: \e[36mSource IP address, in quotes\e[0m\n\
+    \ - start_time: \e[36mStart of time window, try natural language spec\e[0m\n -\
+    \ view: \e[36mView all records or just the latest\e[0m\n - vrf: \e[36mVRF to trace\
+    \ path in\e[0m\n"
 - command: path help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -912,8 +920,8 @@ tests:
     \ language spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n\
     \ - format: \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace\
     \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - reverse: \e[36mreturn\
+    \ list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - reverse: \e[36mreturn\
     \ bottom n values\e[0m\n - src: \e[36mSource IP address, in quotes\e[0m\n - start_time:\
     \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
     \ all records or just the latest\e[0m\n - vrf: \e[36mVRF to trace path in\e[0m\n\
@@ -930,10 +938,10 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - src: \e[36mSource IP address, in quotes\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n - vrf: \e[36mVRF to trace path in\e[0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - src: \e[36mSource IP address, in quotes\e[0m\n - start_time:\
+    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n - vrf: \e[36mVRF to trace path in\e[0m\n"
 - command: ospf help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -955,9 +963,9 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
-    \ - view: \e[36mView all records or just the latest\e[0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - start_time: \e[36mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: ospf help --command=assert
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -968,8 +976,8 @@ tests:
     \ - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - status: \e[36mShow only assert that matches this value\e\
     [0m\n - view: \e[36mView all records or just the latest\e[0m\n - vrf: \e[36mVRF\
     \ to assert OSPF state in\e[0m\n"
@@ -983,11 +991,12 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ ifname: \e[36mSpace separated list of interface names to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36mStart of time window, try natural language spec\e[0m\n - state: \e[36mSelect\
-    \ view based on status\e[0m\n - view: \e[36mView all records or just the latest\e\
-    [0m\n - vrf: \e[36mSpace separated list of VRFs to qualify\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - start_time: \e[36mStart of time window, try natural language spec\e[0m\n -\
+    \ state: \e[36mSelect view based on status\e[0m\n - view: \e[36mView all records\
+    \ or just the latest\e[0m\n - vrf: \e[36mSpace separated list of VRFs to qualify\e\
+    [0m\n"
 - command: ospf help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -999,12 +1008,12 @@ tests:
     [0m\n - groupby: \e[36mSpace separated list of fields to summarize on\e[0m\n -\
     \ hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - ifname:\
     \ \e[36mSpace separated list of interface names to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36mStart of time window, try natural language spec\e[0m\n - state: \e[36mBGP\
-    \ neighbor state to qualify\e[0m\n - type: \e[36mType of OSPF information to show\e\
-    [0m\n - view: \e[36mView all records or just the latest\e[0m\n - vrf: \e[36mSpace\
-    \ separated list of VRFs to qualify\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - start_time: \e[36mStart of time window, try natural language spec\e[0m\n -\
+    \ state: \e[36mOSPF neighbor state to qualify\e[0m\n - type: \e[36mType of OSPF\
+    \ information to show\e[0m\n - view: \e[36mView all records or just the latest\e\
+    [0m\n - vrf: \e[36mSpace separated list of VRFs to qualify\e[0m\n"
 - command: ospf help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1015,11 +1024,12 @@ tests:
     \ of time window, try natural language spec \e[0m\n - engine: \e[36mWhich analytical\
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36mView all records or just the\
-    \ latest\e[0m\n - what: \e[36minteger field to get top values for\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of\
+    \ time window, try natural language spec\e[0m\n - view: \e[36mView all records\
+    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
+    [0m\n"
 - command: ospf help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1031,8 +1041,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: route help
   data-directory: tests/data/eos/parquet-out/
@@ -1055,9 +1065,9 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
-    \ - view: \e[36mView all records or just the latest\e[0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - start_time: \e[36mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: route help --command=lpm
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1069,8 +1079,8 @@ tests:
     [0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n\
     \ - vrf: \e[36mspecific VRF to qualify\e[0m\n"
 - command: route help --command=show
@@ -1085,8 +1095,8 @@ tests:
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - prefix:\
     \ \e[36mPrefix, in quotes, to filter show on\e[0m\n - prefixlen: \e[36mmust be\
     \ of the form [<|<=|>=|>|!] length\e[0m\n - protocol: \e[36mrouting protocol to\
-    \ qualify\e[0m\n - query_str: \e[36mTrailing blank terminated pandas query format\
-    \ to further filter the output\e[0m\n - start_time: \e[36mStart of time window,\
+    \ qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated pandas query format\
+    \ to further filter the output',)\e[0m\n - start_time: \e[36mStart of time window,\
     \ try natural language spec\e[0m\n - view: \e[36mView all records or just the\
     \ latest\e[0m\n - vrf: \e[36mVRF to qualify\e[0m\n"
 - command: route help --command=summarize
@@ -1099,8 +1109,8 @@ tests:
     \ - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n\
     \ - vrf: \e[36mVRF to qualify\e[0m\n"
 - command: route help --command=top
@@ -1114,11 +1124,11 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
-    [0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n - what: \e[36minteger field to get top\
+    \ values for\e[0m\n"
 - command: route help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1130,8 +1140,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: topology help
   data-directory: tests/data/eos/parquet-out/
@@ -1154,8 +1164,8 @@ tests:
     \ - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: topology help --command=show
   data-directory: tests/data/eos/parquet-out/
@@ -1169,11 +1179,11 @@ tests:
     \ to qualify\e[0m\n - ifname: \e[36minterface name to qualify\e[0m\n - namespace:\
     \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - peerHostname: \e\
     [36mfilter the result by specified peerHostname\e[0m\n - polled: \e[36mIs the\
-    \ device polled by Suzieq\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - via: \e[36mfilter the method\
-    \ by which topology is seen\e[0m\n - view: \e[36mView all records or just the\
-    \ latest\e[0m\n"
+    \ device polled by Suzieq\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - via: \e[36mfilter\
+    \ the method by which topology is seen\e[0m\n - view: \e[36mView all records or\
+    \ just the latest\e[0m\n"
 - command: topology help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1184,8 +1194,8 @@ tests:
     \ - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - via: \e[36mfilter the method by which topology is seen\e\
     [0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: topology help --command=top
@@ -1199,11 +1209,11 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
-    [0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - reverse: \e[36mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n - what: \e[36minteger field to get top\
+    \ values for\e[0m\n"
 - command: topology help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1215,8 +1225,8 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: vlan help
   data-directory: tests/data/eos/parquet-out/
@@ -1239,9 +1249,9 @@ tests:
     \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
     [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
     \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36mStart of time window, try natural language spec\e[0m\n\
-    \ - view: \e[36mView all records or just the latest\e[0m\n"
+    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
+    \ output',)\e[0m\n - start_time: \e[36mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: vlan help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1251,12 +1261,12 @@ tests:
     \ of time window, try natural language spec \e[0m\n - engine: \e[36mWhich analytical\
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36mStart of time window, try natural language spec\e[0m\n - state: \e[36mState\
-    \ of VLAN to query\e[0m\n - view: \e[36mView all records or just the latest\e\
-    [0m\n - vlan: \e[36mSpace separated list of vlan IDs to show\e[0m\n - vlanName:\
-    \ \e[36mSpace separated list of VLAN names to show\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - start_time: \e[36mStart of time window, try natural language spec\e[0m\n -\
+    \ state: \e[36mState of VLAN to query\e[0m\n - view: \e[36mView all records or\
+    \ just the latest\e[0m\n - vlan: \e[36mSpace separated list of vlan IDs to show\e\
+    [0m\n - vlanName: \e[36mSpace separated list of VLAN names to show\e[0m\n"
 - command: vlan help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1267,10 +1277,10 @@ tests:
     \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
     \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
     \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36mView all records\
-    \ or just the latest\e[0m\n"
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: vlan help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1281,11 +1291,12 @@ tests:
     \ of time window, try natural language spec \e[0m\n - engine: \e[36mWhich analytical\
     \ engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e[0m\n\
     \ - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36mView all records or just the\
-    \ latest\e[0m\n - what: \e[36minteger field to get top values for\e[0m\n"
+    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
+    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
+    \ - reverse: \e[36mreturn bottom n values\e[0m\n - start_time: \e[36mStart of\
+    \ time window, try natural language spec\e[0m\n - view: \e[36mView all records\
+    \ or just the latest\e[0m\n - what: \e[36minteger field to get top values for\e\
+    [0m\n"
 - command: vlan help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1297,6 +1308,6 @@ tests:
     \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
     \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
     \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"

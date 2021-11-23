@@ -583,6 +583,69 @@ tests:
     "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 67, "deviceWithv4AddressCnt": 14, "deviceWithv6AddressCnt":
     0, "subnetsUsed": ["32", "24", "0", "30", "31", "2"], "subnetTopCounts": [{"32":
     38}, {"24": 29}, {"0": 14}]}}'
+- command: address unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: address unique eos
+  output: '[{"ipAddress": "0.0.0.0/0"}, {"ipAddress": "10.0.0.11/32"}, {"ipAddress":
+    "10.0.0.112/32"}, {"ipAddress": "10.0.0.12/32"}, {"ipAddress": "10.0.0.13/32"},
+    {"ipAddress": "10.0.0.134/32"}, {"ipAddress": "10.0.0.14/32"}, {"ipAddress": "10.0.0.200/32"},
+    {"ipAddress": "10.0.0.21/32"}, {"ipAddress": "10.0.0.22/32"}, {"ipAddress": "10.0.0.31/32"},
+    {"ipAddress": "10.0.0.32/32"}, {"ipAddress": "10.0.0.41/32"}, {"ipAddress": "10.255.2.117/24"},
+    {"ipAddress": "10.255.2.118/24"}, {"ipAddress": "10.255.2.137/24"}, {"ipAddress":
+    "10.255.2.151/24"}, {"ipAddress": "10.255.2.184/24"}, {"ipAddress": "10.255.2.185/24"},
+    {"ipAddress": "10.255.2.186/24"}, {"ipAddress": "10.255.2.187/24"}, {"ipAddress":
+    "10.255.2.189/24"}, {"ipAddress": "10.255.2.230/24"}, {"ipAddress": "10.255.2.250/24"},
+    {"ipAddress": "10.255.2.251/24"}, {"ipAddress": "10.255.2.253/24"}, {"ipAddress":
+    "10.255.2.57/24"}, {"ipAddress": "128.0.0.1/2"}, {"ipAddress": "128.0.0.127/2"},
+    {"ipAddress": "128.0.0.16/2"}, {"ipAddress": "128.0.0.4/2"}, {"ipAddress": "128.0.0.63/2"},
+    {"ipAddress": "169.254.0.2/24"}, {"ipAddress": "169.254.1.0/31"}, {"ipAddress":
+    "169.254.1.1/31"}, {"ipAddress": "169.254.127.0/31"}, {"ipAddress": "169.254.127.1/31"},
+    {"ipAddress": "169.254.127.2/31"}, {"ipAddress": "169.254.127.3/31"}, {"ipAddress":
+    "169.254.253.1/30"}, {"ipAddress": "169.254.253.10/30"}, {"ipAddress": "169.254.253.2/30"},
+    {"ipAddress": "169.254.253.5/30"}, {"ipAddress": "169.254.253.6/30"}, {"ipAddress":
+    "169.254.253.9/30"}, {"ipAddress": "169.254.254.1/30"}, {"ipAddress": "169.254.254.10/30"},
+    {"ipAddress": "169.254.254.2/30"}, {"ipAddress": "169.254.254.5/30"}, {"ipAddress":
+    "169.254.254.6/30"}, {"ipAddress": "169.254.254.9/30"}, {"ipAddress": "172.16.1.101/24"},
+    {"ipAddress": "172.16.1.254/24"}, {"ipAddress": "172.16.2.201/24"}, {"ipAddress":
+    "172.16.2.254/24"}, {"ipAddress": "172.16.3.102/24"}, {"ipAddress": "172.16.3.202/24"},
+    {"ipAddress": "172.16.3.254/24"}, {"ipAddress": "192.0.2.2/24"}, {"ipAddress":
+    "192.168.1.2/24"}]'
+- command: address unique --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: address unique eos
+  output: '[{"ipAddress": "10.0.0.200/32", "numRows": 1}, {"ipAddress": "10.0.0.41/32",
+    "numRows": 1}, {"ipAddress": "10.255.2.117/24", "numRows": 1}, {"ipAddress": "10.255.2.118/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.137/24", "numRows": 1}, {"ipAddress": "10.255.2.151/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.184/24", "numRows": 1}, {"ipAddress": "10.255.2.185/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.186/24", "numRows": 1}, {"ipAddress": "10.255.2.187/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.189/24", "numRows": 1}, {"ipAddress": "10.255.2.230/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.250/24", "numRows": 1}, {"ipAddress": "10.255.2.251/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.253/24", "numRows": 1}, {"ipAddress": "10.255.2.57/24",
+    "numRows": 1}, {"ipAddress": "128.0.0.1/2", "numRows": 1}, {"ipAddress": "128.0.0.127/2",
+    "numRows": 1}, {"ipAddress": "128.0.0.16/2", "numRows": 1}, {"ipAddress": "128.0.0.4/2",
+    "numRows": 1}, {"ipAddress": "128.0.0.63/2", "numRows": 1}, {"ipAddress": "169.254.0.2/24",
+    "numRows": 1}, {"ipAddress": "169.254.127.0/31", "numRows": 1}, {"ipAddress":
+    "169.254.127.1/31", "numRows": 1}, {"ipAddress": "169.254.127.2/31", "numRows":
+    1}, {"ipAddress": "169.254.127.3/31", "numRows": 1}, {"ipAddress": "169.254.253.1/30",
+    "numRows": 1}, {"ipAddress": "169.254.253.10/30", "numRows": 1}, {"ipAddress":
+    "169.254.253.2/30", "numRows": 1}, {"ipAddress": "169.254.253.5/30", "numRows":
+    1}, {"ipAddress": "169.254.253.6/30", "numRows": 1}, {"ipAddress": "169.254.253.9/30",
+    "numRows": 1}, {"ipAddress": "169.254.254.1/30", "numRows": 1}, {"ipAddress":
+    "169.254.254.10/30", "numRows": 1}, {"ipAddress": "169.254.254.2/30", "numRows":
+    1}, {"ipAddress": "169.254.254.5/30", "numRows": 1}, {"ipAddress": "169.254.254.6/30",
+    "numRows": 1}, {"ipAddress": "169.254.254.9/30", "numRows": 1}, {"ipAddress":
+    "172.16.1.101/24", "numRows": 1}, {"ipAddress": "172.16.2.201/24", "numRows":
+    1}, {"ipAddress": "172.16.3.102/24", "numRows": 1}, {"ipAddress": "172.16.3.202/24",
+    "numRows": 1}, {"ipAddress": "192.0.2.2/24", "numRows": 1}, {"ipAddress": "192.168.1.2/24",
+    "numRows": 1}, {"ipAddress": "10.0.0.112/32", "numRows": 2}, {"ipAddress": "10.0.0.134/32",
+    "numRows": 2}, {"ipAddress": "169.254.1.0/31", "numRows": 2}, {"ipAddress": "169.254.1.1/31",
+    "numRows": 2}, {"ipAddress": "172.16.1.254/24", "numRows": 2}, {"ipAddress": "172.16.2.254/24",
+    "numRows": 2}, {"ipAddress": "10.0.0.11/32", "numRows": 3}, {"ipAddress": "10.0.0.12/32",
+    "numRows": 3}, {"ipAddress": "10.0.0.13/32", "numRows": 3}, {"ipAddress": "10.0.0.14/32",
+    "numRows": 3}, {"ipAddress": "10.0.0.31/32", "numRows": 3}, {"ipAddress": "10.0.0.32/32",
+    "numRows": 3}, {"ipAddress": "172.16.3.254/24", "numRows": 4}, {"ipAddress": "10.0.0.21/32",
+    "numRows": 7}, {"ipAddress": "10.0.0.22/32", "numRows": 7}, {"ipAddress": "0.0.0.0/0",
+    "numRows": 14}]'
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: address unique eos
@@ -629,3 +692,177 @@ tests:
     18}, {"hostname": "leaf02", "numRows": 18}, {"hostname": "leaf03", "numRows":
     18}, {"hostname": "leaf04", "numRows": 18}, {"hostname": "dcedge01", "numRows":
     58}]'
+- command: address unique --columns=vrf --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: address unique eos
+  output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "evpn-vrf", "numRows":
+    16}, {"vrf": "default", "numRows": 75}]'
+- command: address unique --columns="vrf"  --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: address unique eos filter
+  output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "internet-vrf"}]'
+- command: address unique --columns="vrf" --query-str='hostname == "spine01" ' --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: address unique eos filter
+  output: '[{"vrf": "default"}]'
+- command: address show --address="0205.8671.f003" --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: address show eos filter
+  output: '[{"namespace": "eos", "hostname": "dcedge01", "ifname": "xe-0/0/0", "ipAddressList":
+    [], "macaddr": "02:05:86:71:f0:03", "ip6AddressList": [], "state": "up", "vrf":
+    "default", "timestamp": 1623025179345}, {"namespace": "eos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/0.0", "ipAddressList": ["169.254.127.0/31"], "macaddr": "02:05:86:71:f0:03",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025179345}]'
+- command: address show --address="invalidaddress" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"error": "Invalid address specified"}]'
+  marks: address show eos filter
+- command: address show --prefix="169.254.253.0/30" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: address show eos filter
+  output: '[{"namespace": "eos", "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList":
+    "169.254.253.2/30", "macaddr": "52:54:00:ec:1d:36", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025175583}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Ethernet3.2", "ipAddressList": "169.254.253.1/30", "macaddr":
+    "44:38:39:c3:55:cb", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1623025176020}]'
+- command: address show --prefix="2001:db8:0:1::/64" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: address show eos filter
+  output: '[]'
+- command: address show --prefix="2001:db8:0:1::/64 169.254.253.0/30" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: address show eos filter
+  output: '[{"namespace": "eos", "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList":
+    "169.254.253.2/30", "macaddr": "52:54:00:ec:1d:36", "ip6AddressList": "", "state":
+    "up", "vrf": "default", "timestamp": 1623025175583}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Ethernet3.2", "ipAddressList": "169.254.253.1/30", "macaddr":
+    "44:38:39:c3:55:cb", "ip6AddressList": "", "state": "up", "vrf": "default", "timestamp":
+    1623025176020}]'
+- command: address show --prefix="169.254.253.0/30 10.0.0.0/24" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: address show eos filter
+  output: '[{"namespace": "eos", "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList":
+    "169.254.253.2/30", "macaddr": "52:54:00:ec:1d:36", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025175583}, {"namespace": "eos", "hostname":
+    "firewall01", "ifname": "lo", "ipAddressList": "10.0.0.200/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025175583},
+    {"namespace": "eos", "hostname": "leaf02", "ifname": "Loopback0", "ipAddressList":
+    "10.0.0.12/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025175798}, {"namespace": "eos", "hostname":
+    "leaf02", "ifname": "Loopback1", "ipAddressList": "10.0.0.112/32", "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1623025175798}, {"namespace": "eos", "hostname": "leaf02", "ifname": "Ethernet2",
+    "ipAddressList": "10.0.0.12/32", "macaddr": "44:38:39:99:c7:9e", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1623025175798}, {"namespace":
+    "eos", "hostname": "leaf02", "ifname": "Ethernet1", "ipAddressList": "10.0.0.12/32",
+    "macaddr": "44:38:39:99:c7:9e", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1623025175798}, {"namespace": "eos", "hostname": "leaf04", "ifname":
+    "Ethernet1", "ipAddressList": "10.0.0.14/32", "macaddr": "44:38:39:81:30:22",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025176018},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Loopback1", "ipAddressList":
+    "10.0.0.134/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025176018}, {"namespace": "eos", "hostname":
+    "leaf04", "ifname": "Loopback0", "ipAddressList": "10.0.0.14/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025176018},
+    {"namespace": "eos", "hostname": "leaf04", "ifname": "Ethernet2", "ipAddressList":
+    "10.0.0.14/32", "macaddr": "44:38:39:81:30:22", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025176018}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Ethernet1", "ipAddressList": "10.0.0.32/32", "macaddr": "44:38:39:c3:55:cb",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025176020},
+    {"namespace": "eos", "hostname": "exit02", "ifname": "Loopback0", "ipAddressList":
+    "10.0.0.32/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025176020}, {"namespace": "eos", "hostname":
+    "exit02", "ifname": "Ethernet3.2", "ipAddressList": "169.254.253.1/30", "macaddr":
+    "44:38:39:c3:55:cb", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1623025176020}, {"namespace": "eos", "hostname": "exit02", "ifname": "Ethernet2",
+    "ipAddressList": "10.0.0.32/32", "macaddr": "44:38:39:c3:55:cb", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1623025176020}, {"namespace":
+    "eos", "hostname": "exit01", "ifname": "Ethernet1", "ipAddressList": "10.0.0.31/32",
+    "macaddr": "44:38:39:33:d8:43", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1623025176020}, {"namespace": "eos", "hostname": "exit01", "ifname":
+    "Ethernet2", "ipAddressList": "10.0.0.31/32", "macaddr": "44:38:39:33:d8:43",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025176020},
+    {"namespace": "eos", "hostname": "exit01", "ifname": "Loopback0", "ipAddressList":
+    "10.0.0.31/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025176020}, {"namespace": "eos", "hostname":
+    "spine01", "ifname": "Ethernet4", "ipAddressList": "10.0.0.21/32", "macaddr":
+    "44:38:39:ba:d2:34", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1623025176022}, {"namespace": "eos", "hostname": "spine01", "ifname": "Loopback0",
+    "ipAddressList": "10.0.0.21/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1623025176022}, {"namespace":
+    "eos", "hostname": "spine01", "ifname": "Ethernet2", "ipAddressList": "10.0.0.21/32",
+    "macaddr": "44:38:39:ba:d2:34", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1623025176022}, {"namespace": "eos", "hostname": "spine01", "ifname":
+    "Ethernet3", "ipAddressList": "10.0.0.21/32", "macaddr": "44:38:39:ba:d2:34",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025176022},
+    {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet1", "ipAddressList":
+    "10.0.0.21/32", "macaddr": "44:38:39:ba:d2:34", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025176022}, {"namespace": "eos", "hostname":
+    "spine01", "ifname": "Ethernet5", "ipAddressList": "10.0.0.21/32", "macaddr":
+    "44:38:39:ba:d2:34", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1623025176022}, {"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet6",
+    "ipAddressList": "10.0.0.21/32", "macaddr": "44:38:39:ba:d2:34", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1623025176022}, {"namespace":
+    "eos", "hostname": "spine02", "ifname": "Ethernet6", "ipAddressList": "10.0.0.22/32",
+    "macaddr": "44:38:39:fa:78:46", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1623025176023}, {"namespace": "eos", "hostname": "spine02", "ifname":
+    "Loopback0", "ipAddressList": "10.0.0.22/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025176023},
+    {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet2", "ipAddressList":
+    "10.0.0.22/32", "macaddr": "44:38:39:fa:78:46", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025176023}, {"namespace": "eos", "hostname":
+    "spine02", "ifname": "Ethernet3", "ipAddressList": "10.0.0.22/32", "macaddr":
+    "44:38:39:fa:78:46", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1623025176023}, {"namespace": "eos", "hostname": "spine02", "ifname": "Ethernet1",
+    "ipAddressList": "10.0.0.22/32", "macaddr": "44:38:39:fa:78:46", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1623025176023}, {"namespace":
+    "eos", "hostname": "spine02", "ifname": "Ethernet4", "ipAddressList": "10.0.0.22/32",
+    "macaddr": "44:38:39:fa:78:46", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1623025176023}, {"namespace": "eos", "hostname": "leaf03", "ifname":
+    "Ethernet1", "ipAddressList": "10.0.0.13/32", "macaddr": "44:38:39:24:3f:16",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025176023},
+    {"namespace": "eos", "hostname": "leaf03", "ifname": "Loopback1", "ipAddressList":
+    "10.0.0.134/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025176023}, {"namespace": "eos", "hostname":
+    "leaf03", "ifname": "Loopback0", "ipAddressList": "10.0.0.13/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025176023},
+    {"namespace": "eos", "hostname": "leaf03", "ifname": "Ethernet2", "ipAddressList":
+    "10.0.0.13/32", "macaddr": "44:38:39:24:3f:16", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025176023}, {"namespace": "eos", "hostname":
+    "spine02", "ifname": "Ethernet5", "ipAddressList": "10.0.0.22/32", "macaddr":
+    "44:38:39:fa:78:46", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1623025176023}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet2",
+    "ipAddressList": "10.0.0.11/32", "macaddr": "44:38:39:e3:19:2e", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1623025176024}, {"namespace":
+    "eos", "hostname": "leaf01", "ifname": "Loopback0", "ipAddressList": "10.0.0.11/32",
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1623025176024}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+    "Loopback1", "ipAddressList": "10.0.0.112/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025176024},
+    {"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet1", "ipAddressList":
+    "10.0.0.11/32", "macaddr": "44:38:39:e3:19:2e", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1623025176024}, {"namespace": "eos", "hostname":
+    "dcedge01", "ifname": "lo0.0", "ipAddressList": "10.0.0.41/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025179345}]'
+- command: address show --prefix="192.168.1.0" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: address show eos filter
+- command: address show --prefix="44:38:39:00:00:23" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: address show eos filter
+- command: address show --prefix="10.0.0.0/24" --address="192.168.1.2" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"error": "Cannot specify address and prefix together"}]'
+  marks: address show eos filter
+- command: address show --prefix="10.0.0.1/24" --format=json
+  data-directory: tests/data/eos/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: address show eos filter

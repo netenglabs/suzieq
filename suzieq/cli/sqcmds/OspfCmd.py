@@ -1,5 +1,4 @@
 import time
-from datetime import timedelta
 from nubia import command, argument
 import pandas as pd
 
@@ -38,7 +37,8 @@ class OspfCmd(SqCommand):
 
     @command("show")
     @argument(
-        "ifname", description="Space separated list of interface names to qualify"
+        "ifname",
+        description="Space separated list of interface names to qualify"
     )
     @argument("state", description="Select view based on status",
               choices=["full", "other", "passive"])
@@ -73,16 +73,19 @@ class OspfCmd(SqCommand):
 
     @command("summarize")
     @argument(
-        "ifname", description="Space separated list of interface names to qualify"
+        "ifname",
+        description="Space separated list of interface names to qualify"
     )
     @argument("vrf", description="Space separated list of VRFs to qualify")
-    @argument("state", description="BGP neighbor state to qualify", choices=["full"])
+    @argument("state", description="OSPF neighbor state to qualify",
+              choices=["full"])
     @argument(
         "type",
         description="Type of OSPF information to show",
         choices=["neighbor", "interface"],
     )
-    @argument("groupby", description="Space separated list of fields to summarize on")
+    @argument("groupby",
+              description="Space separated list of fields to summarize on")
     def summarize(
         self,
         ifname: str = "",

@@ -1,15 +1,18 @@
 
 import time
-import pandas as pd
+import ast
 from dataclasses import dataclass
+import inspect
+
+import pandas as pd
 from nubia import command, argument, context
 from io import StringIO
 import shutil
 from prompt_toolkit import prompt
-from suzieq.exceptions import UserQueryError
 from natsort import natsort_keygen
-import inspect
 from colorama import Fore, Style
+
+from suzieq.exceptions import UserQueryError
 
 
 @dataclass
@@ -29,7 +32,8 @@ class ArgHelpClass(object):
 @argument(
     "namespace", description="Space separated list of namespaces to qualify"
 )
-@argument("hostname", description="Space separated list of hostnames to qualify")
+@argument("hostname",
+          description="Space separated list of hostnames to qualify")
 @argument(
     "start_time", description="Start of time window, try natural language spec"
 )
@@ -49,7 +53,8 @@ class ArgHelpClass(object):
 )
 @argument(
     "query_str",
-    description="Trailing blank terminated pandas query format to further filter the output",
+    description=("Trailing blank terminated pandas query format to "
+                 "further filter the output",)
 )
 class SqCommand:
     """Base Command Class for use with all verbs"""
@@ -161,11 +166,11 @@ class SqCommand:
             return df
 
         if not count:
-            return self._gen_output(df.sort_values(by=[self.columns[0]]),
+            return self._gen_output(df.sort_values(by=[df.columns[0]]),
                                     dont_strip_cols=True)
         else:
             return self._gen_output(
-                df.sort_values(by=['numRows', self.columns[0]]),
+                df.sort_values(by=['numRows', df.columns[0]]),
                 dont_strip_cols=True)
 
     @command("describe", help="describe the table and its fields")
@@ -196,7 +201,7 @@ class SqCommand:
         """Return the top n values for a field in a table
 
         Args:
-            count (int, optional): The number of entries to return. Defaults to 5
+            count (int, optional): Number of entries to return. Defaults to 5
             what (str, optional): Field name to use for largest/smallest val
             reverse (bool, optional): Reverse and return n smallest
 
@@ -210,7 +215,7 @@ class SqCommand:
                                 namespace=self.namespace,
                                 query_str=self.query_str,
                                 what=what, count=count,
-                                reverse=eval(reverse),
+                                reverse=ast.literal_eval(reverse),
                                 )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
@@ -232,7 +237,7 @@ class SqCommand:
         """Show help for a command
 
         Args:
-            command (str, optional): the name of the command. Defaults to 'show'.
+            command (str, optional): Name of the command. Defaults to 'show'.
         """
         if any(x for x in [self.namespace, self.hostname, self.view,
                            self.start_time, self.end_time, self.query_str]):
@@ -363,7 +368,9 @@ class SqCommand:
             print(df[cols].to_csv())
         elif self.format == 'markdown':
             print(df[cols].to_markdown())
-        elif self.format == 'devconfig' and self.sqobj.table == "devconfig":
+        elif (self.format == 'devconfig' and
+              self.sqobj.table == "devconfig" and
+              'error' not in df.columns):
             for row in df.itertuples():
                 self._pager_print(row.config)
         else:

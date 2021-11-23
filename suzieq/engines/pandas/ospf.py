@@ -23,8 +23,9 @@ class OspfObj(SqPandasEngine):
         hostname = kwargs.pop('hostname', [])
 
         cols = self.schema.get_display_fields(columns)
-        if columns == ['default']:
-            cols.append('timestamp')
+
+        if columns == ['*']:
+            cols.remove('sqvers')
 
         ifschema = SchemaForTable('ospfIf', schema=self.all_schemas)
         nbrschema = SchemaForTable('ospfNbr', schema=self.all_schemas)
@@ -62,7 +63,8 @@ class OspfObj(SqPandasEngine):
             query_str = ''
             cond_prefix = ''
 
-        host_query_str = build_query_str([], ifschema, hostname=hostname)
+        host_query_str = build_query_str([], ifschema, ignore_regex=False,
+                                         hostname=hostname)
         if host_query_str:
             query_str += f'{cond_prefix}{host_query_str}'
 
@@ -90,13 +92,13 @@ class OspfObj(SqPandasEngine):
         if columns == ['*']:
             df = df.drop(columns=['area_y', 'instance_y', 'vrf_y',
                                   'ipAddress_x', 'ipAddress_y', 'areaStub_y',
-                                  'timestamp_y'], errors='ignore') \
+                                  'sqvers_x', 'timestamp_y'],
+                         errors='ignore') \
                 .rename(columns={
                     'instance_x': 'instance', 'areaStub_x': 'areaStub',
                     'area_x': 'area', 'vrf_x': 'vrf',
                     'state_x': 'ifState', 'state_y': 'adjState',
-                    'sqvers_x': 'sqvers', 'active_x': 'active',
-                    'timestamp_x': 'timestamp'})
+                    'active_x': 'active', 'timestamp_x': 'timestamp'})
         else:
             df = df.rename(columns={'vrf_x': 'vrf', 'area_x': 'area',
                                     'state_x': 'ifState',
@@ -268,7 +270,8 @@ class OspfObj(SqPandasEngine):
                 ospf_df.merge(df, on=["routerId"], how="outer")
                 .apply(lambda x: ["duplicate routerId {}".format(
                     x["hostname_y"])]
-                    if x["hostname_y"] is not np.nan and len(x['hostname_y']) != 1 else [], axis=1))
+                    if (x["hostname_y"] is not np.nan and
+                        len(x['hostname_y']) != 1) else [], axis=1))
 
         # Now  peering match
         lldp_df = self._get_table_sqobj('lldp').get(
@@ -312,7 +315,7 @@ class OspfObj(SqPandasEngine):
             .dropna(how="any")
 
         if int_df.empty:
-            # Weed out the loopback and SVI interfaces as they have no LLDP peers
+            # Weed out the loopback, SVI interfaces as they have no LLDP peers
             if status == "pass":
                 ospf_df = ospf_df[(ospf_df.ifname.str.contains('loopback') |
                                    ospf_df.ifname.str.contains('Vlan'))]

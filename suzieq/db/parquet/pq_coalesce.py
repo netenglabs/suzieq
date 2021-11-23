@@ -135,20 +135,22 @@ def find_broken_files(parent_dir: str) -> List[str]:
     broken_files = []
     ro, pa = os.path.split(parent_dir)
     for root, dirs, files in os.walk(parent_dir):
-        if not '_archived' in root and not '.sq-coalescer.pid' in files and len(files) > 0:
+        if ('_archived' not in root and '.sq-coalescer.pid' not in files
+                and len(files) > 0):
             path = root.replace(ro, '')
             all_files.extend(list(map(lambda x: f"{path}/{x}", files)))
     for file in all_files:
         try:
             pq.ParquetFile(f"{ro}/{file}")
-        except pq.lib.ArrowInvalid as e:
+        except pq.lib.ArrowInvalid:
             broken_files.append(file)
 
     return broken_files
 
 
-def move_broken_files(parent_dir: str, state: SqCoalesceState, out_dir: str = '_broken', ) -> None:
-    """ based on the parent_directory, move any files that cannot be read by pyarrow
+def move_broken_files(parent_dir: str, state: SqCoalesceState,
+                      out_dir: str = '_broken', ) -> None:
+    """ move any files that cannot be read by pyarrow in parent dir
         to a safe directory to be investigated later
     :param parent_dir: str, the parent directory to investigate
     :param state: SqCoalesceState, needed for the logger
@@ -315,7 +317,7 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     try:
         dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
                              ignore_prefixes=state.ign_pfx)
-    except OSError as e:
+    except OSError:
         move_broken_files(infolder, state=state)
         dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
                              ignore_prefixes=state.ign_pfx)
@@ -328,7 +330,7 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
             return
 
     # this is no longer true if we are skipping files that aren't readable
-    #assert(len(dataset.files) == fdf.shape[0])
+    # assert(len(dataset.files) == fdf.shape[0])
     polled_periods = sorted(state.poller_periods)
     if fdf.empty:
         state.logger.info(f'No updates for {table} to coalesce')

@@ -1334,6 +1334,265 @@ tests:
     56, "uniqueV6AddressCnt": 1, "uniqueIfMacCnt": 93, "deviceWithv4AddressCnt": 14,
     "deviceWithv6AddressCnt": 9, "subnetsUsed": ["24", "32", "30", "8", "31"], "subnetTopCounts":
     [{"24": 26}, {"32": 19}, {"30": 16}]}}'
+- command: address unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: address unique
+  output: '[{"ipAddress": "10.0.0.100/32"}, {"ipAddress": "10.0.0.101/32"}, {"ipAddress":
+    "10.0.0.102/32"}, {"ipAddress": "10.0.0.11/32"}, {"ipAddress": "10.0.0.112/32"},
+    {"ipAddress": "10.0.0.12/32"}, {"ipAddress": "10.0.0.13/32"}, {"ipAddress": "10.0.0.134/32"},
+    {"ipAddress": "10.0.0.14/32"}, {"ipAddress": "10.0.0.21/32"}, {"ipAddress": "10.0.0.22/32"},
+    {"ipAddress": "10.0.0.253/32"}, {"ipAddress": "10.255.2.10/24"}, {"ipAddress":
+    "10.255.2.109/24"}, {"ipAddress": "10.255.2.182/24"}, {"ipAddress": "10.255.2.203/24"},
+    {"ipAddress": "10.255.2.217/24"}, {"ipAddress": "10.255.2.219/24"}, {"ipAddress":
+    "10.255.2.23/24"}, {"ipAddress": "10.255.2.239/24"}, {"ipAddress": "10.255.2.254/24"},
+    {"ipAddress": "10.255.2.41/24"}, {"ipAddress": "10.255.2.60/24"}, {"ipAddress":
+    "10.255.2.68/24"}, {"ipAddress": "10.255.2.78/24"}, {"ipAddress": "10.255.2.88/24"},
+    {"ipAddress": "127.0.0.1/8"}, {"ipAddress": "169.254.1.1/30"}, {"ipAddress": "169.254.1.2/30"},
+    {"ipAddress": "169.254.127.0/31"}, {"ipAddress": "169.254.127.1/31"}, {"ipAddress":
+    "169.254.127.2/31"}, {"ipAddress": "169.254.127.3/31"}, {"ipAddress": "169.254.253.1/30"},
+    {"ipAddress": "169.254.253.10/30"}, {"ipAddress": "169.254.253.2/30"}, {"ipAddress":
+    "169.254.253.5/30"}, {"ipAddress": "169.254.253.6/30"}, {"ipAddress": "169.254.253.9/30"},
+    {"ipAddress": "169.254.254.1/30"}, {"ipAddress": "169.254.254.10/30"}, {"ipAddress":
+    "169.254.254.2/30"}, {"ipAddress": "169.254.254.5/30"}, {"ipAddress": "169.254.254.6/30"},
+    {"ipAddress": "169.254.254.9/30"}, {"ipAddress": "172.16.1.1/24"}, {"ipAddress":
+    "172.16.1.101/24"}, {"ipAddress": "172.16.1.103/24"}, {"ipAddress": "172.16.1.11/24"},
+    {"ipAddress": "172.16.1.12/24"}, {"ipAddress": "172.16.1.13/24"}, {"ipAddress":
+    "172.16.1.14/24"}, {"ipAddress": "172.16.2.1/24"}, {"ipAddress": "172.16.2.102/24"},
+    {"ipAddress": "172.16.2.104/24"}, {"ipAddress": "172.16.2.11/24"}, {"ipAddress":
+    "172.16.2.12/24"}, {"ipAddress": "172.16.2.13/24"}, {"ipAddress": "172.16.2.14/24"},
+    {"ipAddress": "172.16.253.1/32"}, {"ipAddress": "172.16.3.1/24"}, {"ipAddress":
+    "172.16.3.103/24"}, {"ipAddress": "172.16.4.1/24"}, {"ipAddress": "172.16.4.104/24"},
+    {"ipAddress": "192.168.121.110/24"}, {"ipAddress": "192.168.121.114/24"}, {"ipAddress":
+    "192.168.121.126/24"}, {"ipAddress": "192.168.121.13/24"}, {"ipAddress": "192.168.121.136/24"},
+    {"ipAddress": "192.168.121.150/24"}, {"ipAddress": "192.168.121.152/24"}, {"ipAddress":
+    "192.168.121.154/24"}, {"ipAddress": "192.168.121.157/24"}, {"ipAddress": "192.168.121.253/24"},
+    {"ipAddress": "192.168.121.34/24"}, {"ipAddress": "192.168.121.38/24"}, {"ipAddress":
+    "192.168.121.42/24"}, {"ipAddress": "192.168.121.88/24"}, {"ipAddress": "192.168.123.134/24"},
+    {"ipAddress": "192.168.123.135/24"}, {"ipAddress": "192.168.123.136/24"}, {"ipAddress":
+    "192.168.123.150/24"}, {"ipAddress": "192.168.123.16/24"}, {"ipAddress": "192.168.123.180/24"},
+    {"ipAddress": "192.168.123.184/24"}, {"ipAddress": "192.168.123.188/24"}, {"ipAddress":
+    "192.168.123.197/24"}, {"ipAddress": "192.168.123.202/24"}, {"ipAddress": "192.168.123.237/24"},
+    {"ipAddress": "192.168.123.239/24"}, {"ipAddress": "192.168.123.248/24"}, {"ipAddress":
+    "192.168.123.30/24"}, {"ipAddress": "::1/128"}, {"ipAddress": "fe80::2475:f3ff:fe1b:fbca/64"},
+    {"ipAddress": "fe80::3498:6eff:fe0c:42ae/64"}, {"ipAddress": "fe80::4638:39ff:fe00:14/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:15/64"}, {"ipAddress": "fe80::4638:39ff:fe00:18/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:19/64"}, {"ipAddress": "fe80::4638:39ff:fe00:1b/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:1c/64"}, {"ipAddress": "fe80::4638:39ff:fe00:1d/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:1f/64"}, {"ipAddress": "fe80::4638:39ff:fe00:21/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:22/64"}, {"ipAddress": "fe80::4638:39ff:fe00:23/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:24/64"}, {"ipAddress": "fe80::4638:39ff:fe00:25/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:28/64"}, {"ipAddress": "fe80::4638:39ff:fe00:29/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:2a/64"}, {"ipAddress": "fe80::4638:39ff:fe00:2c/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:3/64"}, {"ipAddress": "fe80::4638:39ff:fe00:30/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:31/64"}, {"ipAddress": "fe80::4638:39ff:fe00:33/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:3b/64"}, {"ipAddress": "fe80::4638:39ff:fe00:3c/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:3f/64"}, {"ipAddress": "fe80::4638:39ff:fe00:41/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:44/64"}, {"ipAddress": "fe80::4638:39ff:fe00:45/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:46/64"}, {"ipAddress": "fe80::4638:39ff:fe00:47/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:4b/64"}, {"ipAddress": "fe80::4638:39ff:fe00:4f/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:50/64"}, {"ipAddress": "fe80::4638:39ff:fe00:51/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:53/64"}, {"ipAddress": "fe80::4638:39ff:fe00:54/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:55/64"}, {"ipAddress": "fe80::4638:39ff:fe00:56/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:58/64"}, {"ipAddress": "fe80::4638:39ff:fe00:5a/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:5b/64"}, {"ipAddress": "fe80::4638:39ff:fe00:5c/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:5d/64"}, {"ipAddress": "fe80::4638:39ff:fe00:5e/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:8/64"}, {"ipAddress": "fe80::4638:39ff:fe00:9/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:a/64"}, {"ipAddress": "fe80::4638:39ff:fe00:c/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:d/64"}, {"ipAddress": "fe80::4639:39ff:fe00:1/64"},
+    {"ipAddress": "fe80::4639:39ff:feff:13/64"}, {"ipAddress": "fe80::4639:39ff:feff:24/64"},
+    {"ipAddress": "fe80::4639:39ff:feff:4094/64"}, {"ipAddress": "fe80::4639:39ff:feff:4095/64"},
+    {"ipAddress": "fe80::4a47:ff:fee9:d541/64"}, {"ipAddress": "fe80::4a47:ff:fee9:d543/64"},
+    {"ipAddress": "fe80::4a47:ff:fee9:d545/64"}, {"ipAddress": "fe80::4a47:ff:fee9:d547/64"},
+    {"ipAddress": "fe80::5054:ff:fe04:101b/64"}, {"ipAddress": "fe80::5054:ff:fe05:3cc9/64"},
+    {"ipAddress": "fe80::5054:ff:fe06:b23b/64"}, {"ipAddress": "fe80::5054:ff:fe10:4e5b/64"},
+    {"ipAddress": "fe80::5054:ff:fe13:2a2c/64"}, {"ipAddress": "fe80::5054:ff:fe16:5f76/64"},
+    {"ipAddress": "fe80::5054:ff:fe18:6851/64"}, {"ipAddress": "fe80::5054:ff:fe25:b05b/64"},
+    {"ipAddress": "fe80::5054:ff:fe27:7be2/64"}, {"ipAddress": "fe80::5054:ff:fe28:db32/64"},
+    {"ipAddress": "fe80::5054:ff:fe30:f282/64"}, {"ipAddress": "fe80::5054:ff:fe33:b7b8/64"},
+    {"ipAddress": "fe80::5054:ff:fe37:41a3/64"}, {"ipAddress": "fe80::5054:ff:fe3c:a62d/64"},
+    {"ipAddress": "fe80::5054:ff:fe3d:424d/64"}, {"ipAddress": "fe80::5054:ff:fe4c:dd5a/64"},
+    {"ipAddress": "fe80::5054:ff:fe4f:3fa3/64"}, {"ipAddress": "fe80::5054:ff:fe51:7c4f/64"},
+    {"ipAddress": "fe80::5054:ff:fe51:eb3d/64"}, {"ipAddress": "fe80::5054:ff:fe54:3d39/64"},
+    {"ipAddress": "fe80::5054:ff:fe54:b41d/64"}, {"ipAddress": "fe80::5054:ff:fe5a:ee0b/64"},
+    {"ipAddress": "fe80::5054:ff:fe5d:5d83/64"}, {"ipAddress": "fe80::5054:ff:fe5d:daac/64"},
+    {"ipAddress": "fe80::5054:ff:fe5f:a0b6/64"}, {"ipAddress": "fe80::5054:ff:fe69:1c7c/64"},
+    {"ipAddress": "fe80::5054:ff:fe6d:8402/64"}, {"ipAddress": "fe80::5054:ff:fe71:c94/64"},
+    {"ipAddress": "fe80::5054:ff:fe76:adfa/64"}, {"ipAddress": "fe80::5054:ff:fe7a:4d60/64"},
+    {"ipAddress": "fe80::5054:ff:fe7a:b002/64"}, {"ipAddress": "fe80::5054:ff:fe81:c154/64"},
+    {"ipAddress": "fe80::5054:ff:fe83:94bc/64"}, {"ipAddress": "fe80::5054:ff:fe83:b0c4/64"},
+    {"ipAddress": "fe80::5054:ff:fe88:3d81/64"}, {"ipAddress": "fe80::5054:ff:fe8a:e04c/64"},
+    {"ipAddress": "fe80::5054:ff:fe8c:ae6b/64"}, {"ipAddress": "fe80::5054:ff:fe93:6d43/64"},
+    {"ipAddress": "fe80::5054:ff:fe93:9e21/64"}, {"ipAddress": "fe80::5054:ff:fe98:11d3/64"},
+    {"ipAddress": "fe80::5054:ff:fe98:9fd5/64"}, {"ipAddress": "fe80::5054:ff:fe9b:fd47/64"},
+    {"ipAddress": "fe80::5054:ff:fe9e:982d/64"}, {"ipAddress": "fe80::5054:ff:fea0:1af4/64"},
+    {"ipAddress": "fe80::5054:ff:fea1:a5be/64"}, {"ipAddress": "fe80::5054:ff:fea5:b81e/64"},
+    {"ipAddress": "fe80::5054:ff:fea7:ba2d/64"}, {"ipAddress": "fe80::5054:ff:fead:87c3/64"},
+    {"ipAddress": "fe80::5054:ff:fead:db52/64"}, {"ipAddress": "fe80::5054:ff:feae:3dc/64"},
+    {"ipAddress": "fe80::5054:ff:feb0:3559/64"}, {"ipAddress": "fe80::5054:ff:feb5:4a7b/64"},
+    {"ipAddress": "fe80::5054:ff:feb5:b49/64"}, {"ipAddress": "fe80::5054:ff:feb6:af3d/64"},
+    {"ipAddress": "fe80::5054:ff:feb8:61c3/64"}, {"ipAddress": "fe80::5054:ff:feba:e37b/64"},
+    {"ipAddress": "fe80::5054:ff:febf:1332/64"}, {"ipAddress": "fe80::5054:ff:fec7:5866/64"},
+    {"ipAddress": "fe80::5054:ff:fec7:a486/64"}, {"ipAddress": "fe80::5054:ff:fec8:3398/64"},
+    {"ipAddress": "fe80::5054:ff:fec9:a92a/64"}, {"ipAddress": "fe80::5054:ff:fecb:bbee/64"},
+    {"ipAddress": "fe80::5054:ff:fecd:78c7/64"}, {"ipAddress": "fe80::5054:ff:fecf:3b50/64"},
+    {"ipAddress": "fe80::5054:ff:fecf:70e0/64"}, {"ipAddress": "fe80::5054:ff:fed1:da/64"},
+    {"ipAddress": "fe80::5054:ff:fed5:33ac/64"}, {"ipAddress": "fe80::5054:ff:fed8:4863/64"},
+    {"ipAddress": "fe80::5054:ff:fedb:8ed/64"}, {"ipAddress": "fe80::5054:ff:fee4:b274/64"},
+    {"ipAddress": "fe80::5054:ff:fee5:e3d4/64"}, {"ipAddress": "fe80::5054:ff:fee6:5037/64"},
+    {"ipAddress": "fe80::5054:ff:fee6:f5c/64"}, {"ipAddress": "fe80::5054:ff:feeb:d477/64"},
+    {"ipAddress": "fe80::5054:ff:feeb:ee99/64"}, {"ipAddress": "fe80::5054:ff:fef0:314f/64"},
+    {"ipAddress": "fe80::5054:ff:fef5:60b5/64"}, {"ipAddress": "fe80::5054:ff:fefa:949/64"},
+    {"ipAddress": "fe80::5054:ff:fefc:26d8/64"}, {"ipAddress": "fe80::5054:ff:feff:73be/64"},
+    {"ipAddress": "fe80::900d:55ff:fe8d:b541/64"}, {"ipAddress": "fe80::e8c9:a5ff:fe5f:c7ca/64"}]'
+- command: address unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: address unique
+  output: '[{"ipAddress": "10.255.2.10/24", "numRows": 1}, {"ipAddress": "10.255.2.109/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.182/24", "numRows": 1}, {"ipAddress": "10.255.2.203/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.217/24", "numRows": 1}, {"ipAddress": "10.255.2.219/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.23/24", "numRows": 1}, {"ipAddress": "10.255.2.239/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.254/24", "numRows": 1}, {"ipAddress": "10.255.2.41/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.60/24", "numRows": 1}, {"ipAddress": "10.255.2.68/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.78/24", "numRows": 1}, {"ipAddress": "10.255.2.88/24",
+    "numRows": 1}, {"ipAddress": "172.16.1.13/24", "numRows": 1}, {"ipAddress": "172.16.1.14/24",
+    "numRows": 1}, {"ipAddress": "172.16.2.13/24", "numRows": 1}, {"ipAddress": "172.16.2.14/24",
+    "numRows": 1}, {"ipAddress": "172.16.3.1/24", "numRows": 1}, {"ipAddress": "172.16.3.103/24",
+    "numRows": 1}, {"ipAddress": "172.16.4.1/24", "numRows": 1}, {"ipAddress": "172.16.4.104/24",
+    "numRows": 1}, {"ipAddress": "192.168.121.110/24", "numRows": 1}, {"ipAddress":
+    "192.168.121.114/24", "numRows": 1}, {"ipAddress": "192.168.121.126/24", "numRows":
+    1}, {"ipAddress": "192.168.121.13/24", "numRows": 1}, {"ipAddress": "192.168.121.136/24",
+    "numRows": 1}, {"ipAddress": "192.168.121.150/24", "numRows": 1}, {"ipAddress":
+    "192.168.121.152/24", "numRows": 1}, {"ipAddress": "192.168.121.154/24", "numRows":
+    1}, {"ipAddress": "192.168.121.157/24", "numRows": 1}, {"ipAddress": "192.168.121.253/24",
+    "numRows": 1}, {"ipAddress": "192.168.121.34/24", "numRows": 1}, {"ipAddress":
+    "192.168.121.38/24", "numRows": 1}, {"ipAddress": "192.168.121.42/24", "numRows":
+    1}, {"ipAddress": "192.168.121.88/24", "numRows": 1}, {"ipAddress": "192.168.123.134/24",
+    "numRows": 1}, {"ipAddress": "192.168.123.135/24", "numRows": 1}, {"ipAddress":
+    "192.168.123.136/24", "numRows": 1}, {"ipAddress": "192.168.123.150/24", "numRows":
+    1}, {"ipAddress": "192.168.123.16/24", "numRows": 1}, {"ipAddress": "192.168.123.180/24",
+    "numRows": 1}, {"ipAddress": "192.168.123.184/24", "numRows": 1}, {"ipAddress":
+    "192.168.123.188/24", "numRows": 1}, {"ipAddress": "192.168.123.197/24", "numRows":
+    1}, {"ipAddress": "192.168.123.202/24", "numRows": 1}, {"ipAddress": "192.168.123.237/24",
+    "numRows": 1}, {"ipAddress": "192.168.123.239/24", "numRows": 1}, {"ipAddress":
+    "192.168.123.248/24", "numRows": 1}, {"ipAddress": "192.168.123.30/24", "numRows":
+    1}, {"ipAddress": "fe80::4638:39ff:fe00:14/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:15/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:19/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:1b/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:1c/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:1d/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:21/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:22/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:23/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:24/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:25/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:28/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:29/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:2a/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:30/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:31/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:3b/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:3c/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:3f/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:44/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:45/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:46/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:47/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:4b/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:4f/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:50/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:53/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:54/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:55/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:56/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:5a/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:5b/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:5c/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:5d/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:5e/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:8/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:9/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:a/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:c/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:d/64", "numRows": 1}, {"ipAddress": "fe80::4639:39ff:fe00:1/64",
+    "numRows": 1}, {"ipAddress": "fe80::4a47:ff:fee9:d543/64", "numRows": 1}, {"ipAddress":
+    "fe80::4a47:ff:fee9:d545/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe04:101b/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe05:3cc9/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe06:b23b/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe10:4e5b/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe13:2a2c/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe16:5f76/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe18:6851/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe25:b05b/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe27:7be2/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe28:db32/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe37:41a3/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe3c:a62d/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe3d:424d/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe4f:3fa3/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe51:eb3d/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe54:3d39/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe54:b41d/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe5a:ee0b/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe5d:daac/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe5f:a0b6/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe69:1c7c/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe6d:8402/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe71:c94/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe76:adfa/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe7a:4d60/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe7a:b002/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe83:94bc/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe83:b0c4/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe88:3d81/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe8a:e04c/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe8c:ae6b/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe93:6d43/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe93:9e21/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe98:11d3/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe98:9fd5/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe9b:fd47/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe9e:982d/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fea0:1af4/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fea1:a5be/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fea5:b81e/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fea7:ba2d/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fead:87c3/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fead:db52/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:feae:3dc/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:feb0:3559/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:feb5:4a7b/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:feb5:b49/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:feb6:af3d/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:feb8:61c3/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:feba:e37b/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:febf:1332/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fec7:5866/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fec7:a486/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fec8:3398/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fec9:a92a/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fecb:bbee/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fecd:78c7/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fecf:3b50/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fecf:70e0/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fed1:da/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fed5:33ac/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fed8:4863/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fedb:8ed/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fee4:b274/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fee5:e3d4/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fee6:5037/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fee6:f5c/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:feeb:d477/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:feeb:ee99/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fef0:314f/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fef5:60b5/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fefa:949/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fefc:26d8/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:feff:73be/64", "numRows": 1}, {"ipAddress":
+    "10.0.0.100/32", "numRows": 2}, {"ipAddress": "10.0.0.253/32", "numRows": 2},
+    {"ipAddress": "169.254.127.0/31", "numRows": 2}, {"ipAddress": "169.254.127.1/31",
+    "numRows": 2}, {"ipAddress": "169.254.127.2/31", "numRows": 2}, {"ipAddress":
+    "169.254.127.3/31", "numRows": 2}, {"ipAddress": "169.254.253.1/30", "numRows":
+    2}, {"ipAddress": "169.254.253.10/30", "numRows": 2}, {"ipAddress": "169.254.253.2/30",
+    "numRows": 2}, {"ipAddress": "169.254.253.5/30", "numRows": 2}, {"ipAddress":
+    "169.254.253.6/30", "numRows": 2}, {"ipAddress": "169.254.253.9/30", "numRows":
+    2}, {"ipAddress": "169.254.254.1/30", "numRows": 2}, {"ipAddress": "169.254.254.10/30",
+    "numRows": 2}, {"ipAddress": "169.254.254.2/30", "numRows": 2}, {"ipAddress":
+    "169.254.254.5/30", "numRows": 2}, {"ipAddress": "169.254.254.6/30", "numRows":
+    2}, {"ipAddress": "169.254.254.9/30", "numRows": 2}, {"ipAddress": "172.16.1.103/24",
+    "numRows": 2}, {"ipAddress": "172.16.1.11/24", "numRows": 2}, {"ipAddress": "172.16.1.12/24",
+    "numRows": 2}, {"ipAddress": "172.16.2.104/24", "numRows": 2}, {"ipAddress": "172.16.2.11/24",
+    "numRows": 2}, {"ipAddress": "172.16.2.12/24", "numRows": 2}, {"ipAddress": "172.16.253.1/32",
+    "numRows": 2}, {"ipAddress": "fe80::4639:39ff:feff:4094/64", "numRows": 2}, {"ipAddress":
+    "fe80::4639:39ff:feff:4095/64", "numRows": 2}, {"ipAddress": "fe80::900d:55ff:fe8d:b541/64",
+    "numRows": 2}, {"ipAddress": "fe80::e8c9:a5ff:fe5f:c7ca/64", "numRows": 2}, {"ipAddress":
+    "172.16.1.101/24", "numRows": 3}, {"ipAddress": "172.16.2.102/24", "numRows":
+    3}, {"ipAddress": "fe80::2475:f3ff:fe1b:fbca/64", "numRows": 3}, {"ipAddress":
+    "fe80::3498:6eff:fe0c:42ae/64", "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:18/64",
+    "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:1f/64", "numRows": 3}, {"ipAddress":
+    "fe80::4638:39ff:fe00:2c/64", "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:3/64",
+    "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:33/64", "numRows": 3}, {"ipAddress":
+    "fe80::4638:39ff:fe00:41/64", "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:51/64",
+    "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:58/64", "numRows": 3}, {"ipAddress":
+    "fe80::5054:ff:fe30:f282/64", "numRows": 3}, {"ipAddress": "fe80::5054:ff:fe33:b7b8/64",
+    "numRows": 3}, {"ipAddress": "10.0.0.112/32", "numRows": 4}, {"ipAddress": "10.0.0.134/32",
+    "numRows": 4}, {"ipAddress": "169.254.1.1/30", "numRows": 4}, {"ipAddress": "169.254.1.2/30",
+    "numRows": 4}, {"ipAddress": "fe80::4a47:ff:fee9:d541/64", "numRows": 4}, {"ipAddress":
+    "fe80::4a47:ff:fee9:d547/64", "numRows": 4}, {"ipAddress": "fe80::5054:ff:fe4c:dd5a/64",
+    "numRows": 4}, {"ipAddress": "fe80::5054:ff:fe51:7c4f/64", "numRows": 4}, {"ipAddress":
+    "fe80::5054:ff:fe5d:5d83/64", "numRows": 4}, {"ipAddress": "fe80::5054:ff:fe81:c154/64",
+    "numRows": 4}, {"ipAddress": "fe80::4639:39ff:feff:13/64", "numRows": 6}, {"ipAddress":
+    "fe80::4639:39ff:feff:24/64", "numRows": 6}, {"ipAddress": "10.0.0.11/32", "numRows":
+    7}, {"ipAddress": "10.0.0.12/32", "numRows": 7}, {"ipAddress": "10.0.0.13/32",
+    "numRows": 7}, {"ipAddress": "10.0.0.14/32", "numRows": 7}, {"ipAddress": "172.16.1.1/24",
+    "numRows": 7}, {"ipAddress": "172.16.2.1/24", "numRows": 7}, {"ipAddress": "10.0.0.101/32",
+    "numRows": 11}, {"ipAddress": "10.0.0.102/32", "numRows": 11}, {"ipAddress": "10.0.0.21/32",
+    "numRows": 15}, {"ipAddress": "10.0.0.22/32", "numRows": 15}, {"ipAddress": "127.0.0.1/8",
+    "numRows": 26}, {"ipAddress": "::1/128", "numRows": 28}]'
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: address unique
@@ -1805,6 +2064,21 @@ tests:
   output: '[{"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "swp1", "ipAddressList":
     [], "macaddr": "44:38:39:00:00:23", "ip6AddressList": ["fe80::4638:39ff:fe00:23/64"],
     "state": "up", "vrf": "default", "timestamp": 1616644822941}]'
+- command: address show --address="5254.004c.dd5a" --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-evpn", "hostname": "exit02", "ifname": "swp5.4", "ipAddressList":
+    ["169.254.253.9/30"], "macaddr": "52:54:00:4c:dd:5a", "ip6AddressList": ["fe80::5054:ff:fe4c:dd5a/64"],
+    "state": "up", "vrf": "internet-vrf", "timestamp": 1616644822983}, {"namespace":
+    "dual-evpn", "hostname": "exit02", "ifname": "swp5", "ipAddressList": [], "macaddr":
+    "52:54:00:4c:dd:5a", "ip6AddressList": ["fe80::5054:ff:fe4c:dd5a/64"], "state":
+    "up", "vrf": "default", "timestamp": 1616644822983}, {"namespace": "dual-evpn",
+    "hostname": "exit02", "ifname": "swp5.2", "ipAddressList": ["169.254.253.1/30"],
+    "macaddr": "52:54:00:4c:dd:5a", "ip6AddressList": ["fe80::5054:ff:fe4c:dd5a/64"],
+    "state": "up", "vrf": "default", "timestamp": 1616644822983}, {"namespace": "dual-evpn",
+    "hostname": "exit02", "ifname": "swp5.3", "ipAddressList": ["169.254.253.5/30"],
+    "macaddr": "52:54:00:4c:dd:5a", "ip6AddressList": ["fe80::5054:ff:fe4c:dd5a/64"],
+    "state": "up", "vrf": "evpn-vrf", "timestamp": 1616644822983}]'
 - command: address show --address="2001:db8::21/128"  --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
   marks: address show cumulus filter
@@ -1911,6 +2185,214 @@ tests:
   data-directory: tests/data/basic_dual_bgp/parquet-out
   marks: address show cumulus filter
   output: '[{"ifname": "bond0", "macaddr": "52:54:00:d6:66:41"}]'
+- command: address show --address="invalidaddress" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  error:
+    error: '[{"error": "Invalid address specified"}]'
+  marks: address show cumulus filter
+- command: address show --prefix="192.168.121.0/24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "server103", "ifname": "eth0", "ipAddressList":
+    "192.168.121.222/24", "macaddr": "52:54:00:d0:d4:9f", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1616638470002}, {"namespace": "dual-bgp",
+    "hostname": "server104", "ifname": "eth0", "ipAddressList": "192.168.121.180/24",
+    "macaddr": "52:54:00:8f:82:c0", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1616638470002}, {"namespace": "dual-bgp", "hostname": "edge01", "ifname":
+    "eth0", "ipAddressList": "192.168.121.103/24", "macaddr": "52:54:00:96:94:6e",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1616638470002},
+    {"namespace": "dual-bgp", "hostname": "server101", "ifname": "eth0", "ipAddressList":
+    "192.168.121.233/24", "macaddr": "52:54:00:5a:70:0e", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1616638470198}, {"namespace": "dual-bgp",
+    "hostname": "server102", "ifname": "eth0", "ipAddressList": "192.168.121.254/24",
+    "macaddr": "52:54:00:f8:25:80", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1616638470218}, {"namespace": "dual-bgp", "hostname": "spine02",
+    "ifname": "eth0", "ipAddressList": "192.168.121.186/24", "macaddr": "52:54:00:5e:ec:b7",
+    "ip6AddressList": ["fe80::5054:ff:fe5e:ecb7/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638470639}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname":
+    "eth0", "ipAddressList": "192.168.121.94/24", "macaddr": "52:54:00:a5:d3:9f",
+    "ip6AddressList": ["fe80::5054:ff:fea5:d39f/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname":
+    "eth0", "ipAddressList": "192.168.121.164/24", "macaddr": "52:54:00:7f:7a:90",
+    "ip6AddressList": ["fe80::5054:ff:fe7f:7a90/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "eth0", "ipAddressList": "192.168.121.51/24", "macaddr": "52:54:00:83:72:c9",
+    "ip6AddressList": ["fe80::5054:ff:fe83:72c9/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname":
+    "eth0", "ipAddressList": "192.168.121.132/24", "macaddr": "52:54:00:1c:0e:57",
+    "ip6AddressList": ["fe80::5054:ff:fe1c:e57/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471115}, {"namespace": "dual-bgp", "hostname": "internet",
+    "ifname": "eth0", "ipAddressList": "192.168.121.141/24", "macaddr": "52:54:00:46:fe:70",
+    "ip6AddressList": ["fe80::5054:ff:fe46:fe70/64"], "state": "up", "vrf": "default",
+    "timestamp": 1616638471115}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname":
+    "eth0", "ipAddressList": "192.168.121.181/24", "macaddr": "52:54:00:cf:36:be",
+    "ip6AddressList": ["fe80::5054:ff:fecf:36be/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471115}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname":
+    "eth0", "ipAddressList": "192.168.121.119/24", "macaddr": "52:54:00:11:7d:b8",
+    "ip6AddressList": ["fe80::5054:ff:fe11:7db8/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471143}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname":
+    "eth0", "ipAddressList": "192.168.121.33/24", "macaddr": "52:54:00:7c:35:15",
+    "ip6AddressList": ["fe80::5054:ff:fe7c:3515/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471859}]'
+- command: address show --prefix="2001:db8:0:1::/64" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "server101", "ifname": "bond0",
+    "ipAddressList": ["172.16.1.101/24"], "macaddr": "52:54:00:d6:66:41", "ip6AddressList":
+    "2001:db8:0:1::101/64", "state": "up", "vrf": "default", "timestamp": 1616638470198},
+    {"namespace": "dual-bgp", "hostname": "leaf02", "ifname": "vlan13", "ipAddressList":
+    ["172.16.1.1/24"], "macaddr": "52:54:00:61:91:8e", "ip6AddressList": "2001:db8:0:1::1/64",
+    "state": "up", "vrf": "default", "timestamp": 1616638471112}, {"namespace": "dual-bgp",
+    "hostname": "leaf01", "ifname": "vlan13", "ipAddressList": ["172.16.1.1/24"],
+    "macaddr": "52:54:00:76:91:c0", "ip6AddressList": "2001:db8:0:1::1/64", "state":
+    "up", "vrf": "default", "timestamp": 1616638471143}]'
+- command: address show --prefix="2001:db8:0:1::/64 192.168.121.0/24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "server103", "ifname": "eth0", "ipAddressList":
+    "192.168.121.222/24", "macaddr": "52:54:00:d0:d4:9f", "ip6AddressList": "", "state":
+    "up", "vrf": "default", "timestamp": 1616638470002}, {"namespace": "dual-bgp",
+    "hostname": "server104", "ifname": "eth0", "ipAddressList": "192.168.121.180/24",
+    "macaddr": "52:54:00:8f:82:c0", "ip6AddressList": "", "state": "up", "vrf": "default",
+    "timestamp": 1616638470002}, {"namespace": "dual-bgp", "hostname": "edge01", "ifname":
+    "eth0", "ipAddressList": "192.168.121.103/24", "macaddr": "52:54:00:96:94:6e",
+    "ip6AddressList": "", "state": "up", "vrf": "default", "timestamp": 1616638470002},
+    {"namespace": "dual-bgp", "hostname": "server101", "ifname": "bond0", "ipAddressList":
+    "172.16.1.101/24", "macaddr": "52:54:00:d6:66:41", "ip6AddressList": "2001:db8:0:1::101/64",
+    "state": "up", "vrf": "default", "timestamp": 1616638470198}, {"namespace": "dual-bgp",
+    "hostname": "server101", "ifname": "eth0", "ipAddressList": "192.168.121.233/24",
+    "macaddr": "52:54:00:5a:70:0e", "ip6AddressList": "", "state": "up", "vrf": "default",
+    "timestamp": 1616638470198}, {"namespace": "dual-bgp", "hostname": "server102",
+    "ifname": "eth0", "ipAddressList": "192.168.121.254/24", "macaddr": "52:54:00:f8:25:80",
+    "ip6AddressList": "", "state": "up", "vrf": "default", "timestamp": 1616638470218},
+    {"namespace": "dual-bgp", "hostname": "spine02", "ifname": "eth0", "ipAddressList":
+    "192.168.121.186/24", "macaddr": "52:54:00:5e:ec:b7", "ip6AddressList": "fe80::5054:ff:fe5e:ecb7/64",
+    "state": "up", "vrf": "mgmt", "timestamp": 1616638470639}, {"namespace": "dual-bgp",
+    "hostname": "leaf02", "ifname": "vlan13", "ipAddressList": "172.16.1.1/24", "macaddr":
+    "52:54:00:61:91:8e", "ip6AddressList": "2001:db8:0:1::1/64", "state": "up", "vrf":
+    "default", "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname":
+    "leaf02", "ifname": "eth0", "ipAddressList": "192.168.121.94/24", "macaddr": "52:54:00:a5:d3:9f",
+    "ip6AddressList": "fe80::5054:ff:fea5:d39f/64", "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname":
+    "eth0", "ipAddressList": "192.168.121.164/24", "macaddr": "52:54:00:7f:7a:90",
+    "ip6AddressList": "fe80::5054:ff:fe7f:7a90/64", "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "eth0", "ipAddressList": "192.168.121.51/24", "macaddr": "52:54:00:83:72:c9",
+    "ip6AddressList": "fe80::5054:ff:fe83:72c9/64", "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname":
+    "eth0", "ipAddressList": "192.168.121.132/24", "macaddr": "52:54:00:1c:0e:57",
+    "ip6AddressList": "fe80::5054:ff:fe1c:e57/64", "state": "up", "vrf": "mgmt", "timestamp":
+    1616638471115}, {"namespace": "dual-bgp", "hostname": "internet", "ifname": "eth0",
+    "ipAddressList": "192.168.121.141/24", "macaddr": "52:54:00:46:fe:70", "ip6AddressList":
+    "fe80::5054:ff:fe46:fe70/64", "state": "up", "vrf": "default", "timestamp": 1616638471115},
+    {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "eth0", "ipAddressList":
+    "192.168.121.181/24", "macaddr": "52:54:00:cf:36:be", "ip6AddressList": "fe80::5054:ff:fecf:36be/64",
+    "state": "up", "vrf": "mgmt", "timestamp": 1616638471115}, {"namespace": "dual-bgp",
+    "hostname": "leaf01", "ifname": "vlan13", "ipAddressList": "172.16.1.1/24", "macaddr":
+    "52:54:00:76:91:c0", "ip6AddressList": "2001:db8:0:1::1/64", "state": "up", "vrf":
+    "default", "timestamp": 1616638471143}, {"namespace": "dual-bgp", "hostname":
+    "leaf01", "ifname": "eth0", "ipAddressList": "192.168.121.119/24", "macaddr":
+    "52:54:00:11:7d:b8", "ip6AddressList": "fe80::5054:ff:fe11:7db8/64", "state":
+    "up", "vrf": "mgmt", "timestamp": 1616638471143}, {"namespace": "dual-bgp", "hostname":
+    "leaf03", "ifname": "eth0", "ipAddressList": "192.168.121.33/24", "macaddr": "52:54:00:7c:35:15",
+    "ip6AddressList": "fe80::5054:ff:fe7c:3515/64", "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471859}]'
+- command: address show --prefix="192.168.121.0/24 10.0.0.0/24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show cumulus filter
+  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "ifname": "lo", "ipAddressList":
+    "10.0.0.100/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1616638470002}, {"namespace": "dual-bgp",
+    "hostname": "server103", "ifname": "eth0", "ipAddressList": "192.168.121.222/24",
+    "macaddr": "52:54:00:d0:d4:9f", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1616638470002}, {"namespace": "dual-bgp", "hostname": "server104",
+    "ifname": "eth0", "ipAddressList": "192.168.121.180/24", "macaddr": "52:54:00:8f:82:c0",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1616638470002},
+    {"namespace": "dual-bgp", "hostname": "edge01", "ifname": "eth0", "ipAddressList":
+    "192.168.121.103/24", "macaddr": "52:54:00:96:94:6e", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1616638470002}, {"namespace": "dual-bgp",
+    "hostname": "server101", "ifname": "eth0", "ipAddressList": "192.168.121.233/24",
+    "macaddr": "52:54:00:5a:70:0e", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1616638470198}, {"namespace": "dual-bgp", "hostname": "server102",
+    "ifname": "eth0", "ipAddressList": "192.168.121.254/24", "macaddr": "52:54:00:f8:25:80",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1616638470218},
+    {"namespace": "dual-bgp", "hostname": "spine02", "ifname": "lo", "ipAddressList":
+    "10.0.0.22/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["2001:db8::22/128",
+    "::1/128"], "state": "up", "vrf": "default", "timestamp": 1616638470639}, {"namespace":
+    "dual-bgp", "hostname": "spine02", "ifname": "eth0", "ipAddressList": "192.168.121.186/24",
+    "macaddr": "52:54:00:5e:ec:b7", "ip6AddressList": ["fe80::5054:ff:fe5e:ecb7/64"],
+    "state": "up", "vrf": "mgmt", "timestamp": 1616638470639}, {"namespace": "dual-bgp",
+    "hostname": "exit01", "ifname": "internet-vrf", "ipAddressList": "10.0.0.101/32",
+    "macaddr": "d6:f4:51:5f:6b:77", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "leaf02", "ifname":
+    "eth0", "ipAddressList": "192.168.121.94/24", "macaddr": "52:54:00:a5:d3:9f",
+    "ip6AddressList": ["fe80::5054:ff:fea5:d39f/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "spine01",
+    "ifname": "lo", "ipAddressList": "10.0.0.21/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["2001:db8::21/128", "::1/128"], "state": "up", "vrf": "default",
+    "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname":
+    "eth0", "ipAddressList": "192.168.121.164/24", "macaddr": "52:54:00:7f:7a:90",
+    "ip6AddressList": ["fe80::5054:ff:fe7f:7a90/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "exit01", "ifname":
+    "lo", "ipAddressList": "10.0.0.101/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    ["::1/128"], "state": "up", "vrf": "default", "timestamp": 1616638471112}, {"namespace":
+    "dual-bgp", "hostname": "leaf02", "ifname": "lo", "ipAddressList": "10.0.0.12/32",
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["2001:db8::12/128", "::1/128"],
+    "state": "up", "vrf": "default", "timestamp": 1616638471112}, {"namespace": "dual-bgp",
+    "hostname": "spine01", "ifname": "eth0", "ipAddressList": "192.168.121.51/24",
+    "macaddr": "52:54:00:83:72:c9", "ip6AddressList": ["fe80::5054:ff:fe83:72c9/64"],
+    "state": "up", "vrf": "mgmt", "timestamp": 1616638471112}, {"namespace": "dual-bgp",
+    "hostname": "leaf04", "ifname": "eth0", "ipAddressList": "192.168.121.132/24",
+    "macaddr": "52:54:00:1c:0e:57", "ip6AddressList": ["fe80::5054:ff:fe1c:e57/64"],
+    "state": "up", "vrf": "mgmt", "timestamp": 1616638471115}, {"namespace": "dual-bgp",
+    "hostname": "internet", "ifname": "lo", "ipAddressList": "10.0.0.253/32", "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up", "vrf": "default",
+    "timestamp": 1616638471115}, {"namespace": "dual-bgp", "hostname": "internet",
+    "ifname": "eth0", "ipAddressList": "192.168.121.141/24", "macaddr": "52:54:00:46:fe:70",
+    "ip6AddressList": ["fe80::5054:ff:fe46:fe70/64"], "state": "up", "vrf": "default",
+    "timestamp": 1616638471115}, {"namespace": "dual-bgp", "hostname": "leaf04", "ifname":
+    "lo", "ipAddressList": "10.0.0.14/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    ["2001:db8::12/128", "::1/128"], "state": "up", "vrf": "default", "timestamp":
+    1616638471115}, {"namespace": "dual-bgp", "hostname": "exit02", "ifname": "internet-vrf",
+    "ipAddressList": "10.0.0.102/32", "macaddr": "ae:ce:d3:71:a6:c9", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1616638471115}, {"namespace":
+    "dual-bgp", "hostname": "exit02", "ifname": "lo", "ipAddressList": "10.0.0.102/32",
+    "macaddr": "00:00:00:00:00:00", "ip6AddressList": ["::1/128"], "state": "up",
+    "vrf": "default", "timestamp": 1616638471115}, {"namespace": "dual-bgp", "hostname":
+    "exit02", "ifname": "eth0", "ipAddressList": "192.168.121.181/24", "macaddr":
+    "52:54:00:cf:36:be", "ip6AddressList": ["fe80::5054:ff:fecf:36be/64"], "state":
+    "up", "vrf": "mgmt", "timestamp": 1616638471115}, {"namespace": "dual-bgp", "hostname":
+    "leaf01", "ifname": "lo", "ipAddressList": "10.0.0.11/32", "macaddr": "00:00:00:00:00:00",
+    "ip6AddressList": ["2001:db8::11/128", "::1/128"], "state": "up", "vrf": "default",
+    "timestamp": 1616638471143}, {"namespace": "dual-bgp", "hostname": "leaf01", "ifname":
+    "eth0", "ipAddressList": "192.168.121.119/24", "macaddr": "52:54:00:11:7d:b8",
+    "ip6AddressList": ["fe80::5054:ff:fe11:7db8/64"], "state": "up", "vrf": "mgmt",
+    "timestamp": 1616638471143}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname":
+    "lo", "ipAddressList": "10.0.0.13/32", "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    ["2001:db8::12/128", "::1/128"], "state": "up", "vrf": "default", "timestamp":
+    1616638471859}, {"namespace": "dual-bgp", "hostname": "leaf03", "ifname": "eth0",
+    "ipAddressList": "192.168.121.33/24", "macaddr": "52:54:00:7c:35:15", "ip6AddressList":
+    ["fe80::5054:ff:fe7c:3515/64"], "state": "up", "vrf": "mgmt", "timestamp": 1616638471859}]'
+- command: address show --prefix="192.168.1.0" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: address show cumulus filter
+- command: address show --prefix="44:38:39:00:00:23" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: address show cumulus filter
+- command: address show --prefix="10.0.0.0/24" --address="192.168.1.2" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  error:
+    error: '[{"error": "Cannot specify address and prefix together"}]'
+  marks: address show cumulus filter
+- command: address show --prefix="10.0.0.1/24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
+  marks: address show cumulus filter
 - command: address unique --columns="macaddr" --count=True --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
   marks: address unique cumulus filter
@@ -1985,3 +2467,18 @@ tests:
     "172.16.1.1/24", "numRows": 2}, {"ipAddressList": "172.16.2.1/24", "numRows":
     2}, {"ipAddressList": "172.16.3.1/24", "numRows": 2}, {"ipAddressList": "172.16.4.1/24",
     "numRows": 2}, {"ipAddressList": "127.0.0.1/8", "numRows": 8}]'
+- command: address unique --columns="vrf" --count=True --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address unique cumulus filter
+  output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "mgmt", "numRows": 8},
+    {"vrf": "default", "numRows": 84}]'
+- command: address unique --columns="vrf" --namespace="dual-evpn" --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: address unique cumulus filter
+  output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "internet-vrf"}, {"vrf":
+    "mgmt"}]'
+- command: address unique --columns="vrf" --namespace="ospf-ibgp" --query-str='hostname
+    == "leaf01" ' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: address unique cumulus filter
+  output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "mgmt"}]'

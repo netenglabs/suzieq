@@ -255,6 +255,19 @@ tests:
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
     "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
+- command: ospf unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: ospf unique
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}]'
+- command: ospf unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: ospf unique
+  output: '[{"hostname": "exit01", "numRows": 6}, {"hostname": "exit02", "numRows":
+    6}, {"hostname": "leaf01", "numRows": 7}, {"hostname": "leaf02", "numRows": 7},
+    {"hostname": "leaf03", "numRows": 7}, {"hostname": "leaf04", "numRows": 7}, {"hostname":
+    "spine01", "numRows": 14}, {"hostname": "spine02", "numRows": 14}]'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: ospf unique

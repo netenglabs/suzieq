@@ -708,3 +708,21 @@ tests:
     "spine02"]}, {"eos": "..."}, {"eos": true}, {"eos": 1}, {"eos": 16}, {"eos": 9},
     {"eos": []}, {"eos": ["spine01", "spine02"]}, {"eos": "..."}, {"eos": true}, {"eos":
     1}, {"eos": 12}, {"eos": 8}, {"eos": []}]'
+- command: topology unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: topology unique eos
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: topology unique --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: topology unique eos
+  output: '[{"hostname": "server101", "numRows": 5}, {"hostname": "server301", "numRows":
+    5}, {"hostname": "dcedge01", "numRows": 6}, {"hostname": "server102", "numRows":
+    6}, {"hostname": "server302", "numRows": 6}, {"hostname": "exit01", "numRows":
+    7}, {"hostname": "exit02", "numRows": 7}, {"hostname": "spine01", "numRows": 7},
+    {"hostname": "spine02", "numRows": 7}, {"hostname": "leaf01", "numRows": 9}, {"hostname":
+    "leaf02", "numRows": 9}, {"hostname": "leaf03", "numRows": 9}, {"hostname": "leaf04",
+    "numRows": 9}, {"hostname": "firewall01", "numRows": 12}]'

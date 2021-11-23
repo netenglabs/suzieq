@@ -109,6 +109,15 @@ tests:
   output: '{"dual-evpn": {"deviceCnt": 6, "uniqueVlanCnt": 3, "activeVlanCnt": 3,
     "suspendedVlanCnt": 0, "vlanPerDeviceStat": [2, 3, 3.0], "ifPerVlanStat": [4,
     6, 6.0]}}'
+- command: vlan unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan unique
+  output: '[{"vlan": 1}, {"vlan": 10}, {"vlan": 13}, {"vlan": 24}, {"vlan": 4001}]'
+- command: vlan unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: vlan unique
+  output: '[{"vlan": 10, "numRows": 4}, {"vlan": 4001, "numRows": 6}, {"vlan": 1,
+    "numRows": 8}, {"vlan": 13, "numRows": 10}, {"vlan": 24, "numRows": 10}]'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: vlan unique

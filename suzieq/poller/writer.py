@@ -80,7 +80,7 @@ async def run_output_worker(queue, output_workers, logger):
         try:
             data = await queue.get()
         except asyncio.CancelledError:
-            logger.error(f"Writer thread received task cancel")
+            logger.error("Writer thread received task cancel")
             return
 
         if not output_workers:

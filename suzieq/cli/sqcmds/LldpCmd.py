@@ -36,7 +36,9 @@ class LldpCmd(SqCommand):
 
     @command("show")
     @argument("ifname", description="interface name to qualify")
-    def show(self, ifname: str = ""):
+    @argument("peerHostname", description="peer hostname to filter results")
+    @argument("peerMacaddr", description="peer MAC address to filter results")
+    def show(self, ifname: str = "", peerHostname: str = "", peerMacaddr: str = ""):
         """Show LLDP info
         """
         if self.columns is None:
@@ -55,6 +57,8 @@ class LldpCmd(SqCommand):
                                 columns=self.columns,
                                 query_str=self.query_str,
                                 namespace=self.namespace,
+                                peerMacaddr=peerMacaddr.split(),
+                                peerHostname=peerHostname.split()
                                 )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

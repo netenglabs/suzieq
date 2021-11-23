@@ -9,7 +9,6 @@ import logging
 from pathlib import Path
 from collections import defaultdict
 import getpass
-from importlib.util import find_spec
 import fcntl
 import signal
 import errno
@@ -38,7 +37,8 @@ def validate_parquet_args(cfg, output_args, logger):
     if not cfg.get("data-directory", None):
         output_dir = "/tmp/suzieq/parquet-out/"
         logger.warning(
-            "No output directory for parquet specified, using" "/tmp/suzieq/parquet-out"
+            "No output directory for parquet specified, using "
+            "/tmp/suzieq/parquet-out"
         )
     else:
         output_dir = cfg["data-directory"]
@@ -177,7 +177,8 @@ async def start_poller(userargs, cfg):
     if userargs.ssh_config_file:
         ssh_config_file = os.path.expanduser(userargs.ssh_config_file)
         if (os.stat(
-                os.path.dirname(ssh_config_file)).st_mode | 0o40700 != 0o40700):
+                os.path.dirname(
+                    ssh_config_file)).st_mode | 0o40700 != 0o40700):
             logger.error('ssh directory has wrong permissions, must be 0700')
             print('ERROR: ssh directory has wrong permissions, must be 0700')
             sys.exit(1)
@@ -205,19 +206,36 @@ async def start_poller(userargs, cfg):
 
     ignore_known_hosts = userargs.ignore_known_hosts or None
 
+    # Retrieve the services to start
+    svcs = list(Path(cfg["service-directory"]).glob('*.yml'))
+    allsvcs = [os.path.basename(x).split('.')[0] for x in svcs]
+    svclist = None
+
     if userargs.service_only:
         svclist = userargs.service_only.split()
+
+        # Check if all the given services are valid
+        notvalid = [s for s in svclist if s not in allsvcs]
+        if notvalid:
+            print(f'Invalid sevices specified: {notvalid}. '
+                  f'Should have been one of {allsvcs}')
+            exit(1)
     else:
-        svcs = list(Path(cfg["service-directory"]).glob('*.yml'))
-        svclist = [os.path.basename(x).split('.')[0] for x in svcs]
+        svclist = allsvcs
 
     if userargs.exclude_services:
-        svclist = list(filter(lambda x: x not in userargs.exclude_services,
+        excluded_services = userargs.exclude_services.split()
+        # Check if all the excluded services are valid
+        notvalid = [e for e in excluded_services if e not in allsvcs]
+        if notvalid:
+            print(f'Services {notvalid} excluded, but they '
+                  'are not valid services')
+            exit(1)
+        svclist = list(filter(lambda x: x not in excluded_services,
                               svclist))
 
     if not svclist:
-        print(
-            f"No correct services specified. Should have been one of {[svc.name for svc in svcs]}")
+        print("The list of services to execute is empty")
         sys.exit(1)
 
     connect_timeout = cfg.get('poller', {}).get('connect-timeout', 15)
@@ -245,7 +263,7 @@ async def start_poller(userargs, cfg):
 
     if not nodes or not svcs:
         # Logging should've been done by init_nodes/services for details
-        print('Termminating because no nodes or services found')
+        print('Terminating because no nodes or services found')
         sys.exit(0)
 
     node_callq = defaultdict(lambda: defaultdict(dict))
@@ -395,7 +413,7 @@ def poller_main() -> None:
         "--jump-host",
         default="",
         type=str,
-        help="Jump Host via which to access the devices, IP addr or DNS hostname"
+        help="Jump Host via which to access the devices, IP addr/DNS hostname"
     )
 
     parser.add_argument(
@@ -418,7 +436,7 @@ def poller_main() -> None:
         "--ssh-config-file",
         type=str,
         default=None,
-        help="Path to ssh config file to use. If not set, config file is not used"
+        help="Path to ssh config file, that you want to use"
     )
 
     parser.add_argument(
@@ -446,7 +464,8 @@ def poller_main() -> None:
         passwd = os.getenv(userargs.envpass, '')
         if not passwd:
             print(
-                f'ERROR: No password in environment variable {userargs.envpass}')
+                f'ERROR: No password in environment '
+                f'variable {userargs.envpass}')
             sys.exit(1)
         userargs.ask_pass = passwd
 

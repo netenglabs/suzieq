@@ -1,5 +1,5 @@
 import time
-from nubia import command, argument
+from nubia import command
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.topmem import TopmemObj
@@ -44,9 +44,10 @@ class TopmemCmd(SqCommand):
         else:
             self.ctxt.sort_fields = []
 
-        df = self.sqobj.get(
-            hostname=self.hostname, columns=self.columns,
-            namespace=self.namespace
-        )
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                columns=self.columns,
+                                namespace=self.namespace
+                                )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

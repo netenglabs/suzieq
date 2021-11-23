@@ -149,7 +149,8 @@ class EvpnVniService(Service):
                     if secIP == '0.0.0.0':
                         secIP = ''
                     vni_dict[vni]['secVtepIp'] = secIP
-                    vni_dict[vni]['routerMac'] = convert_macaddr_format_to_colon(
+                    vni_dict[vni]['routerMac'] = \
+                        convert_macaddr_format_to_colon(
                         entry.get('routerMac', '00:00:00:00:00:00'))
 
                 drop_indices.append(i)

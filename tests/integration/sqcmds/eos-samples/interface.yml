@@ -624,6 +624,13 @@ tests:
     6, "ifDownCnt": 1, "ifAdminDownCnt": 0, "ifWithMultipleIPCnt": 9, "uniqueMTUCnt":
     9, "uniqueIfTypesCnt": 13, "speedCnt": 4, "ifChangesStat": [0, 0, 0], "ifPerDeviceStat":
     [5, 44, 11.5], "uniqueIPv4AddrCnt": 60, "uniqueIPv6AddrCnt": 0}}'
+- command: interface unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: interface unique eos
+  output: '[{"type": "bond"}, {"type": "bond_slave"}, {"type": "ethernet"}, {"type":
+    "flexible-tunnel-interface"}, {"type": "gre"}, {"type": "loopback"}, {"type":
+    "mgmt-vlan"}, {"type": "null"}, {"type": "subinterface"}, {"type": "vlan"}, {"type":
+    "vrf"}, {"type": "vtep"}, {"type": "vxlan"}]'
 - command: interface unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: interface unique eos
