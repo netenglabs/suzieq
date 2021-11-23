@@ -5,7 +5,6 @@ import pyarrow.parquet as pq
 import pyarrow as pa
 from suzieq.utils import Schema, SchemaForTable
 import logging
-import argparse
 import pandas as pd
 from pathlib import Path
 

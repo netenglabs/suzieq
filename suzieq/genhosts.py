@@ -37,7 +37,7 @@ def process_ansible_inventory(filename, namespace='default'):
 
                 if v == '127.0.0.1':
                     host = v
-                    port = 0
+                    port = 0  # noqa
                     continue
                 else:
                     hostline = ('    - url: {}://vagrant@{} {}'

@@ -17,7 +17,7 @@ def validate_arpnd_tbl(df: pd.DataFrame):
     assert pass_df.macaddr.apply(
         lambda x: re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$",
                            x) is not None).all()
-    assert (pass_df.oif.isin(["", "None"]) == False).all()
+    assert (pass_df.oif.isin(["", "None"]) == False).all()  # noqa
     assert (pass_df.remote.isin([True, False])).all()
 
 

@@ -8,7 +8,6 @@ import argparse
 from subprocess import check_output, CalledProcessError
 import logging
 from tests import conftest
-import tempfile
 from suzieq.utils import load_sq_config
 
 
@@ -122,7 +121,10 @@ if __name__ == '__main__':
 
                 if result and (output or error or xfail):
                     assert globals()[result], \
-                        f"result is different type than exepcted: result {result}, output: {output}, error: {error}, xfail: {xfail}"
+                        (
+                            "result is different type than exepcted: "
+                            f"result {result}, output: {output}, error: {error}, xfail: {xfail}"
+                        )
                     if xfail:
                         assert result == 'xfail', \
                             f"expected xfail ({test[result]}), but got {result} ({globals()[result]}) "

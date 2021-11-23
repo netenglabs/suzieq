@@ -28,7 +28,7 @@ def validate_mlag_tbl(df: pd.DataFrame):
     noncl_df = df.query('os != "cumulus"')
     assert (noncl_df.configSanity.isin(['consistent', 'inconsistent'])).all()
     assert (noncl_df.domainId != '').all()
-    assert (noncl_df.usesLinkLocal == False).all()
+    assert (noncl_df.usesLinkLocal == False).all()  # noqa
     assert (noncl_df.peerLinkStatus.isin(['up', 'down'])).all()
 
 
