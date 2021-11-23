@@ -1,5 +1,4 @@
 from suzieq.sqobjects.basicobj import SqObject
-import pandas as pd
 
 
 class EvpnvniObj(SqObject):

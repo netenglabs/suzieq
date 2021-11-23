@@ -7,7 +7,7 @@ import json
 from subprocess import check_output, check_call, CalledProcessError, STDOUT
 import time
 import pytest
-from suzieq.cli.sqcmds import *
+from suzieq.cli.sqcmds import *  # noqa
 from suzieq.utils import load_sq_config
 from tests import conftest
 import logging
@@ -83,14 +83,14 @@ def run_sqpoller_gather(name, ansible_dir, suzieq_dir, input_path):
     sqcmd = sqcmd_path + ['-a', ansible_dir + ansible_file, '-n', name,
                           '--run-once', 'gather', '--output-dir', f'{input_path}/suzieq-input']
     out, code, _ = run_cmd(sqcmd)
-    assert code is 0 or code is None
+    assert code == 0 or code is None
 
 
 def run_sqpoller_process(files_dir, suzieq_dir, cfg_file):
     sqcmd_path = [sys.executable, f"{suzieq_dir}/suzieq/poller/sq_poller.py"]
     sqcmd = sqcmd_path + ['-i', files_dir, '-c', cfg_file]
     out, code, _ = run_cmd(sqcmd)
-    assert code is 0 or code is None
+    assert code == 0 or code is None
 
 
 def run_scenario(scenario):
@@ -113,7 +113,7 @@ def check_suzieq_data(suzieq_dir, name, cfg_file, threshold='14'):
     for cmd in ['bgp', 'interface', 'ospf', 'evpnVni']:
         sqcmd = sqcmd_path + [cmd, 'assert', f'--namespace={name}']
         out, code, err = run_cmd(sqcmd)
-        assert code is None or code is 1 or code is 255
+        assert code is None or code == 1 or code == 255
 
 
 def gather_data(topology, proto, scenario, name, suzieq_dir, input_path):
@@ -129,7 +129,7 @@ def gather_data(topology, proto, scenario, name, suzieq_dir, input_path):
     dir = os.getcwd() + '/..'
     run_sqpoller_gather(name, dir, suzieq_dir, input_path)
     vagrant_down()
-    #sleep_time = random.random() * 30
+    # sleep_time = random.random() * 30
     time.sleep(120)
     os.chdir('../..')
 
@@ -170,7 +170,7 @@ def git_del_dir(dir):
     if os.path.isdir(dir):
         try:
             check_call(['git', 'rm', '-rf', dir])
-        except CalledProcessError as e:
+        except CalledProcessError:
             shutil.rmtree(dir)
 
 
@@ -355,7 +355,7 @@ def _test_sqcmds(context_config, testvar):
             assert True
     elif 'error' in testvar and 'error' in testvar['error']:
         assert error, \
-            f"expected error, but got: output: {output}, error: {error}, xfail: {xfail}"
+            f"expected error, but got: output: {output}, error: {error}, xfail: {xfail}"  # noqa
     else:
         raise Exception(f"either xfail or output requried {error}")
 
@@ -413,7 +413,7 @@ class TestDualAttach:
                         reason='Not updating data')
     @pytest.mark.parametrize("proto, scenario", tests)
     def test_gather_dual_data(self, proto, scenario, tmp_path, vagrant_setup):
-        _gather_cndcn_data(topology, proto, scenario, tmp_path)
+        _gather_cndcn_data(topology, proto, scenario, tmp_path)  # noqa
 
     @pytest.mark.update_dual_attach
     @pytest.mark.skipif('SUZIEQ_POLLER' not in os.environ,

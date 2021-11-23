@@ -1,5 +1,5 @@
 import time
-from nubia import command, argument
+from nubia import command
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.topcpu import TopcpuObj

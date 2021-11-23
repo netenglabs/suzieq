@@ -69,7 +69,7 @@ class LldpService(Service):
             entry['peerHostname'] = re.sub(r'\(.*\)', '',
                                            entry['peerHostname'])
             entry['ifname'] = re.sub(
-                r'^Eth?(\d)', 'Ethernet\g<1>', entry['ifname'])
+                r'^Eth?(\d)', r'Ethernet\g<1>', entry['ifname'])
 
             if entry['ifname'] in entries:
                 # Description is sometimes filled in with CDP, but not LLDP

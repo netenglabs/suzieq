@@ -1,6 +1,6 @@
 from _pytest.mark.structures import Mark, MarkDecorator
 import pytest
-from suzieq.cli.sqcmds import *
+from suzieq.cli.sqcmds import *  # noqa
 from nubia import context
 import os
 from tests.conftest import (commands, load_up_the_tests, tables, DATADIR,
@@ -366,7 +366,7 @@ def _test_sqcmds(testvar, context_config):
         # to decode. This is true in the case of NXOS' LLDP description which
         # contains a URL causing read_json to abort with weird error messages.
         expected_df = pd.read_json(
-            testvar['output'].strip().replace('/', '\/'))
+            testvar['output'].strip().replace('/', r'\/'))
 
         try:
             got_df = pd.read_json(output.decode('utf8').strip())

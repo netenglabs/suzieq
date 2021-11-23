@@ -65,7 +65,7 @@ class SqAnonymizer(object):
         # Courtesy of Stackoverflow
         # (https://stackoverflow.com/questions/1418423/the-hostname-regex)
         self.hname_re = (r'([a-zA-Z0-9](?:(?:[_a-zA-Z0-9-]*|'
-                         '(?<!-)\.(?![-.]))*[_a-zA-Z0-9]+)?)')
+                         r'(?<!-)\.(?![-.]))*[_a-zA-Z0-9]+)?)')
 
         # This regex will not catch the macaddr in this format:
         # "This is a macaddr:00:01:02:FF:cf:9b"

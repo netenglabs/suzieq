@@ -1,6 +1,5 @@
 import pytest
 
-import re
 import pandas as pd
 from tests.conftest import DATADIR, validate_host_shape
 
@@ -23,7 +22,7 @@ def validate_evpnVni(df: pd.DataFrame):
     assert (df.vrf != '').all()
 
     assert (df.query('replicationType == "multicast"').mcastGroup.isin(
-        ['', '0.0.0.0']) == False).all()
+        ['', '0.0.0.0']) == False).all()  # noqa
     assert (df.query('os == "nxos"').routerMac != '').all()
 
 
