@@ -1,29 +1,29 @@
-# List of Exceptions specific to Suzieq, across all the modules
+"""List of Exceptions specific to Suzieq, across all the modules."""
 
 
 class NoLLdpError(Exception):
-    pass
+    """No LLDP error."""
 
 
 class EmptyDataframeError(Exception):
-    pass
+    """Empty dataframe error."""
 
 
 class PathLoopError(Exception):
-    pass
+    """Path loop error."""
 
 
 class DBReadError(Exception):
-    pass
+    """Database read error."""
 
 
 class DBNotFoundError(Exception):
-    pass
+    """Database not found error."""
 
 
 class UserQueryError(Exception):
-    pass
+    """User query error."""
 
 
 class UnknownDevtypeError(Exception):
-    pass
+    """Unknown dev type error."""

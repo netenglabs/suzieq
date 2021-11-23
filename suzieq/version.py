@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+"""Store the Suzieq version string."""
 
 
 SUZIEQ_VERSION = "0.16.0"
