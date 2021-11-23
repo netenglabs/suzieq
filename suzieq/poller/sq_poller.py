@@ -206,20 +206,36 @@ async def start_poller(userargs, cfg):
 
     ignore_known_hosts = userargs.ignore_known_hosts or None
 
+    # Retrieve the services to start
+    svcs = list(Path(cfg["service-directory"]).glob('*.yml'))
+    allsvcs = [os.path.basename(x).split('.')[0] for x in svcs]
+    svclist = None
+
     if userargs.service_only:
         svclist = userargs.service_only.split()
+
+        # Check if all the given services are valid
+        notvalid = [s for s in svclist if s not in allsvcs]
+        if notvalid:
+            print(f'Invalid sevices specified: {notvalid}. '
+                  f'Should have been one of {allsvcs}')
+            exit(1)
     else:
-        svcs = list(Path(cfg["service-directory"]).glob('*.yml'))
-        svclist = [os.path.basename(x).split('.')[0] for x in svcs]
+        svclist = allsvcs
 
     if userargs.exclude_services:
-        svclist = list(filter(lambda x: x not in userargs.exclude_services,
+        excluded_services = userargs.exclude_services.split()
+        # Check if all the excluded services are valid
+        notvalid = [e for e in excluded_services if e not in allsvcs]
+        if notvalid:
+            print(f'Services {notvalid} excluded, but they '
+                  'are not valid services')
+            exit(1)
+        svclist = list(filter(lambda x: x not in excluded_services,
                               svclist))
 
     if not svclist:
-        print(
-            f"No correct services specified. Should have been "
-            f"one of {[svc.name for svc in svcs]}")
+        print("The list of services to execute is empty")
         sys.exit(1)
 
     connect_timeout = cfg.get('poller', {}).get('connect-timeout', 15)
@@ -247,7 +263,7 @@ async def start_poller(userargs, cfg):
 
     if not nodes or not svcs:
         # Logging should've been done by init_nodes/services for details
-        print('Termminating because no nodes or services found')
+        print('Terminating because no nodes or services found')
         sys.exit(0)
 
     node_callq = defaultdict(lambda: defaultdict(dict))
