@@ -43,7 +43,7 @@ class InterfaceService(Service):
 
     def _speed_field_check(self, entry, missing_speed_indicator):
         """
-        Return MISSING_SPEED if the speed value is invalid,
+        Return a missing-speed value if the speed is invalid,
         the interface speed otherwise
 
         MUST be called after the type's been fixed correctly
