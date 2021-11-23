@@ -565,3 +565,30 @@ tests:
     "TOR1CRP-DGW-RT01", "nexthopIps": ["10.0.20.1"]}, {"hostname": "TOR1CRP-DGW-RT01",
     "nexthopIps": ["10.0.10.1"]}, {"hostname": "CRP-DIS-SW01", "nexthopIps": ["172.26.147.254"]},
     {"hostname": "TOR1BBN-PE-RT01", "nexthopIps": ["172.26.147.254"]}]'
+- command: route unique --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: route unique vmx
+  output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "10.0.10.0/29"}, {"prefix": "10.0.10.2/32"},
+    {"prefix": "10.0.10.3/32"}, {"prefix": "10.0.100.0/31"}, {"prefix": "10.0.100.0/32"},
+    {"prefix": "10.0.20.0/29"}, {"prefix": "10.0.20.2/32"}, {"prefix": "10.0.20.3/32"},
+    {"prefix": "172.16.10.0/24"}, {"prefix": "172.16.10.254/32"}, {"prefix": "172.16.11.0/24"},
+    {"prefix": "172.16.11.254/32"}, {"prefix": "172.16.20.0/24"}, {"prefix": "172.16.20.254/32"},
+    {"prefix": "172.16.21.0/24"}, {"prefix": "172.16.21.254/32"}, {"prefix": "172.26.144.0/22"},
+    {"prefix": "172.26.145.151/32"}, {"prefix": "172.26.145.152/32"}, {"prefix": "172.26.145.153/32"},
+    {"prefix": "172.26.145.154/32"}, {"prefix": "172.26.145.155/32"}, {"prefix": "ff02::2/128"}]'
+- command: route unique --count=True --format=json
+  data-directory: tests/data/vmx/parquet-out/
+  marks: route unique vmx
+  output: '[{"prefix": "10.0.10.2/32", "numRows": 1}, {"prefix": "10.0.10.3/32", "numRows":
+    1}, {"prefix": "10.0.100.0/31", "numRows": 1}, {"prefix": "10.0.100.0/32", "numRows":
+    1}, {"prefix": "10.0.20.2/32", "numRows": 1}, {"prefix": "10.0.20.3/32", "numRows":
+    1}, {"prefix": "172.16.10.254/32", "numRows": 1}, {"prefix": "172.16.11.254/32",
+    "numRows": 1}, {"prefix": "172.16.20.254/32", "numRows": 1}, {"prefix": "172.16.21.254/32",
+    "numRows": 1}, {"prefix": "172.26.145.151/32", "numRows": 1}, {"prefix": "172.26.145.152/32",
+    "numRows": 1}, {"prefix": "172.26.145.153/32", "numRows": 1}, {"prefix": "172.26.145.154/32",
+    "numRows": 1}, {"prefix": "172.26.145.155/32", "numRows": 1}, {"prefix": "10.0.10.0/29",
+    "numRows": 3}, {"prefix": "10.0.20.0/29", "numRows": 3}, {"prefix": "172.16.10.0/24",
+    "numRows": 3}, {"prefix": "172.16.11.0/24", "numRows": 3}, {"prefix": "172.16.20.0/24",
+    "numRows": 3}, {"prefix": "172.16.21.0/24", "numRows": 3}, {"prefix": "172.26.144.0/22",
+    "numRows": 5}, {"prefix": "0.0.0.0/0", "numRows": 9}, {"prefix": "ff02::2/128",
+    "numRows": 9}]'

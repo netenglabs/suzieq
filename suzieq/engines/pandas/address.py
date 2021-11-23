@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from ipaddress import ip_interface
 
 from .engineobj import SqPandasEngine
@@ -81,6 +82,12 @@ class AddressObj(SqPandasEngine):
 
         if 6 in addr_types:
             df = df.explode('ip6AddressList').fillna({'ip6AddressList': ''})
+
+        if 'ipAddress' in columns or columns == ['*']:
+            ndf = pd.DataFrame(df[['ipAddressList', 'ip6AddressList']].agg(
+                self._merge_address_cols, axis=1),
+                columns=['ipAddress'])
+            df = pd.concat([df, ndf], axis=1)
 
         v4addr = []
         v6addr = []
@@ -245,3 +252,7 @@ class AddressObj(SqPandasEngine):
                                   'subnetTopCounts']
         self._post_summarize(check_empty_col='addressCnt')
         return self.ns_df.convert_dtypes()
+
+    def _merge_address_cols(self, df: pd.DataFrame) -> np.array:
+        res = np.append(np.array([]), df.values[0])
+        return np.append(res, df.values[1])

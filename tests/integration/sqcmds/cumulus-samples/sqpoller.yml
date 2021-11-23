@@ -2849,6 +2849,25 @@ tests:
   marks: sqpoller summarize cumulus
   output: '{"dual-evpn": {"deviceCnt": 14, "entriesCnt": 217, "service": 17, "status":
     {"0": 217}, "pollExcdPeriodStat": [0, 0, 0]}}'
+- command: sqpoller unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: sqpoller unique
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: sqpoller unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: sqpoller unique
+  output: '[{"hostname": "server101", "numRows": 36}, {"hostname": "server102", "numRows":
+    36}, {"hostname": "server103", "numRows": 36}, {"hostname": "server104", "numRows":
+    36}, {"hostname": "edge01", "numRows": 47}, {"hostname": "exit01", "numRows":
+    51}, {"hostname": "exit02", "numRows": 51}, {"hostname": "internet", "numRows":
+    51}, {"hostname": "leaf01", "numRows": 51}, {"hostname": "leaf02", "numRows":
+    51}, {"hostname": "leaf03", "numRows": 51}, {"hostname": "leaf04", "numRows":
+    51}, {"hostname": "spine01", "numRows": 51}, {"hostname": "spine02", "numRows":
+    51}]'
 - command: sqpoller unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: sqpoller unique cumulus

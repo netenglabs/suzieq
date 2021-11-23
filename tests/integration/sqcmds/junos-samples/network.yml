@@ -76,3 +76,11 @@ tests:
   data-directory: tests/data/junos/parquet-out
   marks: network find junos
   output: '[]'
+- command: network unique --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: network unique junos
+  output: '[{"namespace": "junos"}]'
+- command: network unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out
+  marks: network unique junos
+  output: '[{"namespace": "junos", "numRows": 1}]'

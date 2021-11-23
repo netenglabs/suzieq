@@ -7,3 +7,4 @@ class InventoryObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'type',
                                 'serial', 'vendor', 'status', 'model',
                                 'query_str']
+        self._unique_def_column = ['vendor']

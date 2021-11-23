@@ -91,3 +91,11 @@ tests:
   data-directory: tests/data/nxos/parquet-out
   marks: network find nxos
   output: '[]'
+- command: network unique --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network unique nxos
+  output: '[{"namespace": "nxos"}]'
+- command: network unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out
+  marks: network unique nxos
+  output: '[{"namespace": "nxos", "numRows": 1}]'

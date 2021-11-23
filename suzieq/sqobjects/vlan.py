@@ -7,3 +7,4 @@ class VlanObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'vlan',
                                 'state', 'vlanName', 'query_str']
         self._valid_arg_vals = {'state': ['active', 'suspended', '']}
+        self._unique_def_column = ['vlan']

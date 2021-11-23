@@ -979,6 +979,48 @@ tests:
     40, "hostRoutesCnt": 136, "totalV4RoutesinNs": 274, "totalV6RoutesinNs": 2, "routingProtocolCnt":
     14, "nexthopCnt": 5, "routesPerHostStat": [6, 48, 16.0], "routesperVrfStat": [22,
     176, 78], "deviceWithNoDefRoute": true}}'
+- command: route unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: route unique eos
+  output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "10.0.0.0/24"}, {"prefix": "10.0.0.11/32"},
+    {"prefix": "10.0.0.112/32"}, {"prefix": "10.0.0.12/32"}, {"prefix": "10.0.0.13/32"},
+    {"prefix": "10.0.0.134/32"}, {"prefix": "10.0.0.14/32"}, {"prefix": "10.0.0.200/32"},
+    {"prefix": "10.0.0.21/32"}, {"prefix": "10.0.0.22/32"}, {"prefix": "10.0.0.31/32"},
+    {"prefix": "10.0.0.32/32"}, {"prefix": "10.0.0.41/32"}, {"prefix": "10.255.2.0/24"},
+    {"prefix": "10.255.2.1/32"}, {"prefix": "10.255.2.250/32"}, {"prefix": "169.254.0.0/24"},
+    {"prefix": "169.254.0.2/32"}, {"prefix": "169.254.1.0/31"}, {"prefix": "169.254.127.0/31"},
+    {"prefix": "169.254.127.0/32"}, {"prefix": "169.254.127.2/31"}, {"prefix": "169.254.127.2/32"},
+    {"prefix": "169.254.253.0/30"}, {"prefix": "169.254.253.4/30"}, {"prefix": "169.254.253.8/30"},
+    {"prefix": "169.254.254.0/30"}, {"prefix": "169.254.254.4/30"}, {"prefix": "169.254.254.8/30"},
+    {"prefix": "172.16.0.0/16"}, {"prefix": "172.16.1.0/24"}, {"prefix": "172.16.1.101/32"},
+    {"prefix": "172.16.2.0/24"}, {"prefix": "172.16.2.201/32"}, {"prefix": "172.16.3.0/24"},
+    {"prefix": "172.16.3.102/32"}, {"prefix": "172.16.3.202/32"}, {"prefix": "192.168.0.179/32"},
+    {"prefix": "fe80::205:860f:fc71:f000/128"}, {"prefix": "ff02::2/128"}]'
+- command: route unique  --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: route unique eos
+  output: '[{"prefix": "10.255.2.250/32", "numRows": 1}, {"prefix": "169.254.0.2/32",
+    "numRows": 1}, {"prefix": "169.254.127.0/32", "numRows": 1}, {"prefix": "169.254.127.2/32",
+    "numRows": 1}, {"prefix": "fe80::205:860f:fc71:f000/128", "numRows": 1}, {"prefix":
+    "ff02::2/128", "numRows": 1}, {"prefix": "169.254.253.0/30", "numRows": 2}, {"prefix":
+    "169.254.253.4/30", "numRows": 2}, {"prefix": "169.254.253.8/30", "numRows": 2},
+    {"prefix": "169.254.254.0/30", "numRows": 2}, {"prefix": "169.254.254.4/30", "numRows":
+    2}, {"prefix": "169.254.254.8/30", "numRows": 2}, {"prefix": "10.0.0.0/24", "numRows":
+    4}, {"prefix": "169.254.1.0/31", "numRows": 4}, {"prefix": "172.16.0.0/16", "numRows":
+    4}, {"prefix": "172.16.1.101/32", "numRows": 4}, {"prefix": "172.16.2.201/32",
+    "numRows": 4}, {"prefix": "172.16.3.102/32", "numRows": 4}, {"prefix": "172.16.3.202/32",
+    "numRows": 4}, {"prefix": "10.255.2.1/32", "numRows": 5}, {"prefix": "10.0.0.11/32",
+    "numRows": 8}, {"prefix": "10.0.0.112/32", "numRows": 8}, {"prefix": "10.0.0.12/32",
+    "numRows": 8}, {"prefix": "10.0.0.13/32", "numRows": 8}, {"prefix": "10.0.0.134/32",
+    "numRows": 8}, {"prefix": "10.0.0.14/32", "numRows": 8}, {"prefix": "10.0.0.21/32",
+    "numRows": 8}, {"prefix": "10.0.0.22/32", "numRows": 8}, {"prefix": "10.0.0.31/32",
+    "numRows": 8}, {"prefix": "10.0.0.32/32", "numRows": 8}, {"prefix": "192.168.0.179/32",
+    "numRows": 8}, {"prefix": "10.0.0.200/32", "numRows": 11}, {"prefix": "10.0.0.41/32",
+    "numRows": 12}, {"prefix": "169.254.0.0/24", "numRows": 12}, {"prefix": "169.254.127.0/31",
+    "numRows": 12}, {"prefix": "169.254.127.2/31", "numRows": 12}, {"prefix": "172.16.1.0/24",
+    "numRows": 13}, {"prefix": "172.16.2.0/24", "numRows": 13}, {"prefix": "172.16.3.0/24",
+    "numRows": 14}, {"prefix": "0.0.0.0/0", "numRows": 16}, {"prefix": "10.255.2.0/24",
+    "numRows": 22}]'
 - command: route unique --columns=hostname --format=json --count=True
   data-directory: tests/data/eos/parquet-out/
   marks: route unique eos

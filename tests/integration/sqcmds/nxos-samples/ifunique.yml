@@ -1,5 +1,21 @@
 description: Testing unique values for interfaces
 tests:
+- command: interface unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"type": "bond"}, {"type": "bond_slave"}, {"type": "ethernet"}, {"type":
+    "flexible-tunnel-interface"}, {"type": "gre"}, {"type": "loopback"}, {"type":
+    "mgmt-vlan"}, {"type": "null"}, {"type": "subinterface"}, {"type": "vlan"}, {"type":
+    "vrf"}, {"type": "vtep"}, {"type": "vxlan"}]'
+- command: interface unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: interface unique nxos
+  output: '[{"type": "flexible-tunnel-interface", "numRows": 1}, {"type": "gre", "numRows":
+    1}, {"type": "mgmt-vlan", "numRows": 1}, {"type": "null", "numRows": 1}, {"type":
+    "vtep", "numRows": 2}, {"type": "vxlan", "numRows": 6}, {"type": "bond", "numRows":
+    16}, {"type": "subinterface", "numRows": 20}, {"type": "loopback", "numRows":
+    22}, {"type": "bond_slave", "numRows": 24}, {"type": "vrf", "numRows": 24}, {"type":
+    "vlan", "numRows": 28}, {"type": "ethernet", "numRows": 534}]'
 - command: interface unique --count=True --format=json --columns=hostname
   data-directory: tests/data/nxos/parquet-out/
   marks: interface unique nxos

@@ -159,6 +159,19 @@ tests:
     {"default": 40}, "helloTime": {"10": 40}, "deadTime": {"40": 40}, "retxTime":
     {"5": 40}, "networkType": {"p2p": 24, "loopback": 16}, "adjChangesStat": [4.0,
     7.0, 4.0], "upTimeStat": [230194000, 260822000, 260814000]}}'
+- command: ospf unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: ospf unique nxos
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}]'
+- command: ospf unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: ospf unique nxos
+  output: '[{"hostname": "exit01", "numRows": 4}, {"hostname": "exit02", "numRows":
+    4}, {"hostname": "leaf01", "numRows": 4}, {"hostname": "leaf02", "numRows": 4},
+    {"hostname": "leaf03", "numRows": 4}, {"hostname": "leaf04", "numRows": 4}, {"hostname":
+    "spine01", "numRows": 8}, {"hostname": "spine02", "numRows": 8}]'
 - command: ospf unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: ospf unique nxos

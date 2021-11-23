@@ -655,3 +655,9 @@ tests:
   marks: path summarize eos
   output: '[{"eos": 2}, {"eos": [2, 1]}, {"eos": 2}, {"eos": 2.0}, {"eos": 4}, {"eos":
     1500}, {"eos": false}, {"eos": false}]'
+- command: path unique --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=eos
+  data-directory: tests/data/eos/parquet-out/
+  marks: path unique eos
+  output: '[{"hostname": "leaf01", "numRows": 2}, {"hostname": "leaf04", "numRows":
+    2}, {"hostname": "spine01", "numRows": 1}, {"hostname": "spine02", "numRows":
+    1}]'

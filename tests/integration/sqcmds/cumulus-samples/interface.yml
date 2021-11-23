@@ -1522,6 +1522,19 @@ tests:
     5, "uniqueMTUCnt": 4, "uniqueIfTypesCnt": 9, "speedCnt": 4, "ifChangesStat": [0,
     7, 0], "ifPerDeviceStat": [4, 21, 9.5], "uniqueIPv4AddrCnt": 56, "uniqueIPv6AddrCnt":
     1}}'
+- command: interface unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: interface unique
+  output: '[{"type": "bond"}, {"type": "bond_slave"}, {"type": "bridge"}, {"type":
+    "ethernet"}, {"type": "loopback"}, {"type": "macvlan"}, {"type": "vlan"}, {"type":
+    "vrf"}, {"type": "vxlan"}]'
+- command: interface unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: interface unique
+  output: '[{"type": "macvlan", "numRows": 12}, {"type": "bridge", "numRows": 16},
+    {"type": "vxlan", "numRows": 26}, {"type": "bond", "numRows": 33}, {"type": "vrf",
+    "numRows": 37}, {"type": "loopback", "numRows": 42}, {"type": "bond_slave", "numRows":
+    47}, {"type": "vlan", "numRows": 62}, {"type": "ethernet", "numRows": 166}]'
 - command: interface unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface unique

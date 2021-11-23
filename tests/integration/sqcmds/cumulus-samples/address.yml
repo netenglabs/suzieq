@@ -1334,6 +1334,265 @@ tests:
     56, "uniqueV6AddressCnt": 1, "uniqueIfMacCnt": 93, "deviceWithv4AddressCnt": 14,
     "deviceWithv6AddressCnt": 9, "subnetsUsed": ["24", "32", "30", "8", "31"], "subnetTopCounts":
     [{"24": 26}, {"32": 19}, {"30": 16}]}}'
+- command: address unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: address unique
+  output: '[{"ipAddress": "10.0.0.100/32"}, {"ipAddress": "10.0.0.101/32"}, {"ipAddress":
+    "10.0.0.102/32"}, {"ipAddress": "10.0.0.11/32"}, {"ipAddress": "10.0.0.112/32"},
+    {"ipAddress": "10.0.0.12/32"}, {"ipAddress": "10.0.0.13/32"}, {"ipAddress": "10.0.0.134/32"},
+    {"ipAddress": "10.0.0.14/32"}, {"ipAddress": "10.0.0.21/32"}, {"ipAddress": "10.0.0.22/32"},
+    {"ipAddress": "10.0.0.253/32"}, {"ipAddress": "10.255.2.10/24"}, {"ipAddress":
+    "10.255.2.109/24"}, {"ipAddress": "10.255.2.182/24"}, {"ipAddress": "10.255.2.203/24"},
+    {"ipAddress": "10.255.2.217/24"}, {"ipAddress": "10.255.2.219/24"}, {"ipAddress":
+    "10.255.2.23/24"}, {"ipAddress": "10.255.2.239/24"}, {"ipAddress": "10.255.2.254/24"},
+    {"ipAddress": "10.255.2.41/24"}, {"ipAddress": "10.255.2.60/24"}, {"ipAddress":
+    "10.255.2.68/24"}, {"ipAddress": "10.255.2.78/24"}, {"ipAddress": "10.255.2.88/24"},
+    {"ipAddress": "127.0.0.1/8"}, {"ipAddress": "169.254.1.1/30"}, {"ipAddress": "169.254.1.2/30"},
+    {"ipAddress": "169.254.127.0/31"}, {"ipAddress": "169.254.127.1/31"}, {"ipAddress":
+    "169.254.127.2/31"}, {"ipAddress": "169.254.127.3/31"}, {"ipAddress": "169.254.253.1/30"},
+    {"ipAddress": "169.254.253.10/30"}, {"ipAddress": "169.254.253.2/30"}, {"ipAddress":
+    "169.254.253.5/30"}, {"ipAddress": "169.254.253.6/30"}, {"ipAddress": "169.254.253.9/30"},
+    {"ipAddress": "169.254.254.1/30"}, {"ipAddress": "169.254.254.10/30"}, {"ipAddress":
+    "169.254.254.2/30"}, {"ipAddress": "169.254.254.5/30"}, {"ipAddress": "169.254.254.6/30"},
+    {"ipAddress": "169.254.254.9/30"}, {"ipAddress": "172.16.1.1/24"}, {"ipAddress":
+    "172.16.1.101/24"}, {"ipAddress": "172.16.1.103/24"}, {"ipAddress": "172.16.1.11/24"},
+    {"ipAddress": "172.16.1.12/24"}, {"ipAddress": "172.16.1.13/24"}, {"ipAddress":
+    "172.16.1.14/24"}, {"ipAddress": "172.16.2.1/24"}, {"ipAddress": "172.16.2.102/24"},
+    {"ipAddress": "172.16.2.104/24"}, {"ipAddress": "172.16.2.11/24"}, {"ipAddress":
+    "172.16.2.12/24"}, {"ipAddress": "172.16.2.13/24"}, {"ipAddress": "172.16.2.14/24"},
+    {"ipAddress": "172.16.253.1/32"}, {"ipAddress": "172.16.3.1/24"}, {"ipAddress":
+    "172.16.3.103/24"}, {"ipAddress": "172.16.4.1/24"}, {"ipAddress": "172.16.4.104/24"},
+    {"ipAddress": "192.168.121.110/24"}, {"ipAddress": "192.168.121.114/24"}, {"ipAddress":
+    "192.168.121.126/24"}, {"ipAddress": "192.168.121.13/24"}, {"ipAddress": "192.168.121.136/24"},
+    {"ipAddress": "192.168.121.150/24"}, {"ipAddress": "192.168.121.152/24"}, {"ipAddress":
+    "192.168.121.154/24"}, {"ipAddress": "192.168.121.157/24"}, {"ipAddress": "192.168.121.253/24"},
+    {"ipAddress": "192.168.121.34/24"}, {"ipAddress": "192.168.121.38/24"}, {"ipAddress":
+    "192.168.121.42/24"}, {"ipAddress": "192.168.121.88/24"}, {"ipAddress": "192.168.123.134/24"},
+    {"ipAddress": "192.168.123.135/24"}, {"ipAddress": "192.168.123.136/24"}, {"ipAddress":
+    "192.168.123.150/24"}, {"ipAddress": "192.168.123.16/24"}, {"ipAddress": "192.168.123.180/24"},
+    {"ipAddress": "192.168.123.184/24"}, {"ipAddress": "192.168.123.188/24"}, {"ipAddress":
+    "192.168.123.197/24"}, {"ipAddress": "192.168.123.202/24"}, {"ipAddress": "192.168.123.237/24"},
+    {"ipAddress": "192.168.123.239/24"}, {"ipAddress": "192.168.123.248/24"}, {"ipAddress":
+    "192.168.123.30/24"}, {"ipAddress": "::1/128"}, {"ipAddress": "fe80::2475:f3ff:fe1b:fbca/64"},
+    {"ipAddress": "fe80::3498:6eff:fe0c:42ae/64"}, {"ipAddress": "fe80::4638:39ff:fe00:14/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:15/64"}, {"ipAddress": "fe80::4638:39ff:fe00:18/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:19/64"}, {"ipAddress": "fe80::4638:39ff:fe00:1b/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:1c/64"}, {"ipAddress": "fe80::4638:39ff:fe00:1d/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:1f/64"}, {"ipAddress": "fe80::4638:39ff:fe00:21/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:22/64"}, {"ipAddress": "fe80::4638:39ff:fe00:23/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:24/64"}, {"ipAddress": "fe80::4638:39ff:fe00:25/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:28/64"}, {"ipAddress": "fe80::4638:39ff:fe00:29/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:2a/64"}, {"ipAddress": "fe80::4638:39ff:fe00:2c/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:3/64"}, {"ipAddress": "fe80::4638:39ff:fe00:30/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:31/64"}, {"ipAddress": "fe80::4638:39ff:fe00:33/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:3b/64"}, {"ipAddress": "fe80::4638:39ff:fe00:3c/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:3f/64"}, {"ipAddress": "fe80::4638:39ff:fe00:41/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:44/64"}, {"ipAddress": "fe80::4638:39ff:fe00:45/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:46/64"}, {"ipAddress": "fe80::4638:39ff:fe00:47/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:4b/64"}, {"ipAddress": "fe80::4638:39ff:fe00:4f/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:50/64"}, {"ipAddress": "fe80::4638:39ff:fe00:51/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:53/64"}, {"ipAddress": "fe80::4638:39ff:fe00:54/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:55/64"}, {"ipAddress": "fe80::4638:39ff:fe00:56/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:58/64"}, {"ipAddress": "fe80::4638:39ff:fe00:5a/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:5b/64"}, {"ipAddress": "fe80::4638:39ff:fe00:5c/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:5d/64"}, {"ipAddress": "fe80::4638:39ff:fe00:5e/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:8/64"}, {"ipAddress": "fe80::4638:39ff:fe00:9/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:a/64"}, {"ipAddress": "fe80::4638:39ff:fe00:c/64"},
+    {"ipAddress": "fe80::4638:39ff:fe00:d/64"}, {"ipAddress": "fe80::4639:39ff:fe00:1/64"},
+    {"ipAddress": "fe80::4639:39ff:feff:13/64"}, {"ipAddress": "fe80::4639:39ff:feff:24/64"},
+    {"ipAddress": "fe80::4639:39ff:feff:4094/64"}, {"ipAddress": "fe80::4639:39ff:feff:4095/64"},
+    {"ipAddress": "fe80::4a47:ff:fee9:d541/64"}, {"ipAddress": "fe80::4a47:ff:fee9:d543/64"},
+    {"ipAddress": "fe80::4a47:ff:fee9:d545/64"}, {"ipAddress": "fe80::4a47:ff:fee9:d547/64"},
+    {"ipAddress": "fe80::5054:ff:fe04:101b/64"}, {"ipAddress": "fe80::5054:ff:fe05:3cc9/64"},
+    {"ipAddress": "fe80::5054:ff:fe06:b23b/64"}, {"ipAddress": "fe80::5054:ff:fe10:4e5b/64"},
+    {"ipAddress": "fe80::5054:ff:fe13:2a2c/64"}, {"ipAddress": "fe80::5054:ff:fe16:5f76/64"},
+    {"ipAddress": "fe80::5054:ff:fe18:6851/64"}, {"ipAddress": "fe80::5054:ff:fe25:b05b/64"},
+    {"ipAddress": "fe80::5054:ff:fe27:7be2/64"}, {"ipAddress": "fe80::5054:ff:fe28:db32/64"},
+    {"ipAddress": "fe80::5054:ff:fe30:f282/64"}, {"ipAddress": "fe80::5054:ff:fe33:b7b8/64"},
+    {"ipAddress": "fe80::5054:ff:fe37:41a3/64"}, {"ipAddress": "fe80::5054:ff:fe3c:a62d/64"},
+    {"ipAddress": "fe80::5054:ff:fe3d:424d/64"}, {"ipAddress": "fe80::5054:ff:fe4c:dd5a/64"},
+    {"ipAddress": "fe80::5054:ff:fe4f:3fa3/64"}, {"ipAddress": "fe80::5054:ff:fe51:7c4f/64"},
+    {"ipAddress": "fe80::5054:ff:fe51:eb3d/64"}, {"ipAddress": "fe80::5054:ff:fe54:3d39/64"},
+    {"ipAddress": "fe80::5054:ff:fe54:b41d/64"}, {"ipAddress": "fe80::5054:ff:fe5a:ee0b/64"},
+    {"ipAddress": "fe80::5054:ff:fe5d:5d83/64"}, {"ipAddress": "fe80::5054:ff:fe5d:daac/64"},
+    {"ipAddress": "fe80::5054:ff:fe5f:a0b6/64"}, {"ipAddress": "fe80::5054:ff:fe69:1c7c/64"},
+    {"ipAddress": "fe80::5054:ff:fe6d:8402/64"}, {"ipAddress": "fe80::5054:ff:fe71:c94/64"},
+    {"ipAddress": "fe80::5054:ff:fe76:adfa/64"}, {"ipAddress": "fe80::5054:ff:fe7a:4d60/64"},
+    {"ipAddress": "fe80::5054:ff:fe7a:b002/64"}, {"ipAddress": "fe80::5054:ff:fe81:c154/64"},
+    {"ipAddress": "fe80::5054:ff:fe83:94bc/64"}, {"ipAddress": "fe80::5054:ff:fe83:b0c4/64"},
+    {"ipAddress": "fe80::5054:ff:fe88:3d81/64"}, {"ipAddress": "fe80::5054:ff:fe8a:e04c/64"},
+    {"ipAddress": "fe80::5054:ff:fe8c:ae6b/64"}, {"ipAddress": "fe80::5054:ff:fe93:6d43/64"},
+    {"ipAddress": "fe80::5054:ff:fe93:9e21/64"}, {"ipAddress": "fe80::5054:ff:fe98:11d3/64"},
+    {"ipAddress": "fe80::5054:ff:fe98:9fd5/64"}, {"ipAddress": "fe80::5054:ff:fe9b:fd47/64"},
+    {"ipAddress": "fe80::5054:ff:fe9e:982d/64"}, {"ipAddress": "fe80::5054:ff:fea0:1af4/64"},
+    {"ipAddress": "fe80::5054:ff:fea1:a5be/64"}, {"ipAddress": "fe80::5054:ff:fea5:b81e/64"},
+    {"ipAddress": "fe80::5054:ff:fea7:ba2d/64"}, {"ipAddress": "fe80::5054:ff:fead:87c3/64"},
+    {"ipAddress": "fe80::5054:ff:fead:db52/64"}, {"ipAddress": "fe80::5054:ff:feae:3dc/64"},
+    {"ipAddress": "fe80::5054:ff:feb0:3559/64"}, {"ipAddress": "fe80::5054:ff:feb5:4a7b/64"},
+    {"ipAddress": "fe80::5054:ff:feb5:b49/64"}, {"ipAddress": "fe80::5054:ff:feb6:af3d/64"},
+    {"ipAddress": "fe80::5054:ff:feb8:61c3/64"}, {"ipAddress": "fe80::5054:ff:feba:e37b/64"},
+    {"ipAddress": "fe80::5054:ff:febf:1332/64"}, {"ipAddress": "fe80::5054:ff:fec7:5866/64"},
+    {"ipAddress": "fe80::5054:ff:fec7:a486/64"}, {"ipAddress": "fe80::5054:ff:fec8:3398/64"},
+    {"ipAddress": "fe80::5054:ff:fec9:a92a/64"}, {"ipAddress": "fe80::5054:ff:fecb:bbee/64"},
+    {"ipAddress": "fe80::5054:ff:fecd:78c7/64"}, {"ipAddress": "fe80::5054:ff:fecf:3b50/64"},
+    {"ipAddress": "fe80::5054:ff:fecf:70e0/64"}, {"ipAddress": "fe80::5054:ff:fed1:da/64"},
+    {"ipAddress": "fe80::5054:ff:fed5:33ac/64"}, {"ipAddress": "fe80::5054:ff:fed8:4863/64"},
+    {"ipAddress": "fe80::5054:ff:fedb:8ed/64"}, {"ipAddress": "fe80::5054:ff:fee4:b274/64"},
+    {"ipAddress": "fe80::5054:ff:fee5:e3d4/64"}, {"ipAddress": "fe80::5054:ff:fee6:5037/64"},
+    {"ipAddress": "fe80::5054:ff:fee6:f5c/64"}, {"ipAddress": "fe80::5054:ff:feeb:d477/64"},
+    {"ipAddress": "fe80::5054:ff:feeb:ee99/64"}, {"ipAddress": "fe80::5054:ff:fef0:314f/64"},
+    {"ipAddress": "fe80::5054:ff:fef5:60b5/64"}, {"ipAddress": "fe80::5054:ff:fefa:949/64"},
+    {"ipAddress": "fe80::5054:ff:fefc:26d8/64"}, {"ipAddress": "fe80::5054:ff:feff:73be/64"},
+    {"ipAddress": "fe80::900d:55ff:fe8d:b541/64"}, {"ipAddress": "fe80::e8c9:a5ff:fe5f:c7ca/64"}]'
+- command: address unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: address unique
+  output: '[{"ipAddress": "10.255.2.10/24", "numRows": 1}, {"ipAddress": "10.255.2.109/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.182/24", "numRows": 1}, {"ipAddress": "10.255.2.203/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.217/24", "numRows": 1}, {"ipAddress": "10.255.2.219/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.23/24", "numRows": 1}, {"ipAddress": "10.255.2.239/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.254/24", "numRows": 1}, {"ipAddress": "10.255.2.41/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.60/24", "numRows": 1}, {"ipAddress": "10.255.2.68/24",
+    "numRows": 1}, {"ipAddress": "10.255.2.78/24", "numRows": 1}, {"ipAddress": "10.255.2.88/24",
+    "numRows": 1}, {"ipAddress": "172.16.1.13/24", "numRows": 1}, {"ipAddress": "172.16.1.14/24",
+    "numRows": 1}, {"ipAddress": "172.16.2.13/24", "numRows": 1}, {"ipAddress": "172.16.2.14/24",
+    "numRows": 1}, {"ipAddress": "172.16.3.1/24", "numRows": 1}, {"ipAddress": "172.16.3.103/24",
+    "numRows": 1}, {"ipAddress": "172.16.4.1/24", "numRows": 1}, {"ipAddress": "172.16.4.104/24",
+    "numRows": 1}, {"ipAddress": "192.168.121.110/24", "numRows": 1}, {"ipAddress":
+    "192.168.121.114/24", "numRows": 1}, {"ipAddress": "192.168.121.126/24", "numRows":
+    1}, {"ipAddress": "192.168.121.13/24", "numRows": 1}, {"ipAddress": "192.168.121.136/24",
+    "numRows": 1}, {"ipAddress": "192.168.121.150/24", "numRows": 1}, {"ipAddress":
+    "192.168.121.152/24", "numRows": 1}, {"ipAddress": "192.168.121.154/24", "numRows":
+    1}, {"ipAddress": "192.168.121.157/24", "numRows": 1}, {"ipAddress": "192.168.121.253/24",
+    "numRows": 1}, {"ipAddress": "192.168.121.34/24", "numRows": 1}, {"ipAddress":
+    "192.168.121.38/24", "numRows": 1}, {"ipAddress": "192.168.121.42/24", "numRows":
+    1}, {"ipAddress": "192.168.121.88/24", "numRows": 1}, {"ipAddress": "192.168.123.134/24",
+    "numRows": 1}, {"ipAddress": "192.168.123.135/24", "numRows": 1}, {"ipAddress":
+    "192.168.123.136/24", "numRows": 1}, {"ipAddress": "192.168.123.150/24", "numRows":
+    1}, {"ipAddress": "192.168.123.16/24", "numRows": 1}, {"ipAddress": "192.168.123.180/24",
+    "numRows": 1}, {"ipAddress": "192.168.123.184/24", "numRows": 1}, {"ipAddress":
+    "192.168.123.188/24", "numRows": 1}, {"ipAddress": "192.168.123.197/24", "numRows":
+    1}, {"ipAddress": "192.168.123.202/24", "numRows": 1}, {"ipAddress": "192.168.123.237/24",
+    "numRows": 1}, {"ipAddress": "192.168.123.239/24", "numRows": 1}, {"ipAddress":
+    "192.168.123.248/24", "numRows": 1}, {"ipAddress": "192.168.123.30/24", "numRows":
+    1}, {"ipAddress": "fe80::4638:39ff:fe00:14/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:15/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:19/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:1b/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:1c/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:1d/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:21/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:22/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:23/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:24/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:25/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:28/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:29/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:2a/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:30/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:31/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:3b/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:3c/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:3f/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:44/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:45/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:46/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:47/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:4b/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:4f/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:50/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:53/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:54/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:55/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:56/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:5a/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:5b/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:5c/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:5d/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:5e/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:8/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:9/64", "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:a/64",
+    "numRows": 1}, {"ipAddress": "fe80::4638:39ff:fe00:c/64", "numRows": 1}, {"ipAddress":
+    "fe80::4638:39ff:fe00:d/64", "numRows": 1}, {"ipAddress": "fe80::4639:39ff:fe00:1/64",
+    "numRows": 1}, {"ipAddress": "fe80::4a47:ff:fee9:d543/64", "numRows": 1}, {"ipAddress":
+    "fe80::4a47:ff:fee9:d545/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe04:101b/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe05:3cc9/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe06:b23b/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe10:4e5b/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe13:2a2c/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe16:5f76/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe18:6851/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe25:b05b/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe27:7be2/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe28:db32/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe37:41a3/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe3c:a62d/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe3d:424d/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe4f:3fa3/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe51:eb3d/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe54:3d39/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe54:b41d/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe5a:ee0b/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe5d:daac/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe5f:a0b6/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe69:1c7c/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe6d:8402/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe71:c94/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe76:adfa/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe7a:4d60/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe7a:b002/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe83:94bc/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe83:b0c4/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe88:3d81/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe8a:e04c/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe8c:ae6b/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe93:6d43/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe93:9e21/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe98:11d3/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe98:9fd5/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fe9b:fd47/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fe9e:982d/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fea0:1af4/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fea1:a5be/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fea5:b81e/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fea7:ba2d/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fead:87c3/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fead:db52/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:feae:3dc/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:feb0:3559/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:feb5:4a7b/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:feb5:b49/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:feb6:af3d/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:feb8:61c3/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:feba:e37b/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:febf:1332/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fec7:5866/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fec7:a486/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fec8:3398/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fec9:a92a/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fecb:bbee/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fecd:78c7/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fecf:3b50/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fecf:70e0/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fed1:da/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fed5:33ac/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fed8:4863/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fedb:8ed/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fee4:b274/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fee5:e3d4/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fee6:5037/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fee6:f5c/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:feeb:d477/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:feeb:ee99/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fef0:314f/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:fef5:60b5/64", "numRows": 1}, {"ipAddress":
+    "fe80::5054:ff:fefa:949/64", "numRows": 1}, {"ipAddress": "fe80::5054:ff:fefc:26d8/64",
+    "numRows": 1}, {"ipAddress": "fe80::5054:ff:feff:73be/64", "numRows": 1}, {"ipAddress":
+    "10.0.0.100/32", "numRows": 2}, {"ipAddress": "10.0.0.253/32", "numRows": 2},
+    {"ipAddress": "169.254.127.0/31", "numRows": 2}, {"ipAddress": "169.254.127.1/31",
+    "numRows": 2}, {"ipAddress": "169.254.127.2/31", "numRows": 2}, {"ipAddress":
+    "169.254.127.3/31", "numRows": 2}, {"ipAddress": "169.254.253.1/30", "numRows":
+    2}, {"ipAddress": "169.254.253.10/30", "numRows": 2}, {"ipAddress": "169.254.253.2/30",
+    "numRows": 2}, {"ipAddress": "169.254.253.5/30", "numRows": 2}, {"ipAddress":
+    "169.254.253.6/30", "numRows": 2}, {"ipAddress": "169.254.253.9/30", "numRows":
+    2}, {"ipAddress": "169.254.254.1/30", "numRows": 2}, {"ipAddress": "169.254.254.10/30",
+    "numRows": 2}, {"ipAddress": "169.254.254.2/30", "numRows": 2}, {"ipAddress":
+    "169.254.254.5/30", "numRows": 2}, {"ipAddress": "169.254.254.6/30", "numRows":
+    2}, {"ipAddress": "169.254.254.9/30", "numRows": 2}, {"ipAddress": "172.16.1.103/24",
+    "numRows": 2}, {"ipAddress": "172.16.1.11/24", "numRows": 2}, {"ipAddress": "172.16.1.12/24",
+    "numRows": 2}, {"ipAddress": "172.16.2.104/24", "numRows": 2}, {"ipAddress": "172.16.2.11/24",
+    "numRows": 2}, {"ipAddress": "172.16.2.12/24", "numRows": 2}, {"ipAddress": "172.16.253.1/32",
+    "numRows": 2}, {"ipAddress": "fe80::4639:39ff:feff:4094/64", "numRows": 2}, {"ipAddress":
+    "fe80::4639:39ff:feff:4095/64", "numRows": 2}, {"ipAddress": "fe80::900d:55ff:fe8d:b541/64",
+    "numRows": 2}, {"ipAddress": "fe80::e8c9:a5ff:fe5f:c7ca/64", "numRows": 2}, {"ipAddress":
+    "172.16.1.101/24", "numRows": 3}, {"ipAddress": "172.16.2.102/24", "numRows":
+    3}, {"ipAddress": "fe80::2475:f3ff:fe1b:fbca/64", "numRows": 3}, {"ipAddress":
+    "fe80::3498:6eff:fe0c:42ae/64", "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:18/64",
+    "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:1f/64", "numRows": 3}, {"ipAddress":
+    "fe80::4638:39ff:fe00:2c/64", "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:3/64",
+    "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:33/64", "numRows": 3}, {"ipAddress":
+    "fe80::4638:39ff:fe00:41/64", "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:51/64",
+    "numRows": 3}, {"ipAddress": "fe80::4638:39ff:fe00:58/64", "numRows": 3}, {"ipAddress":
+    "fe80::5054:ff:fe30:f282/64", "numRows": 3}, {"ipAddress": "fe80::5054:ff:fe33:b7b8/64",
+    "numRows": 3}, {"ipAddress": "10.0.0.112/32", "numRows": 4}, {"ipAddress": "10.0.0.134/32",
+    "numRows": 4}, {"ipAddress": "169.254.1.1/30", "numRows": 4}, {"ipAddress": "169.254.1.2/30",
+    "numRows": 4}, {"ipAddress": "fe80::4a47:ff:fee9:d541/64", "numRows": 4}, {"ipAddress":
+    "fe80::4a47:ff:fee9:d547/64", "numRows": 4}, {"ipAddress": "fe80::5054:ff:fe4c:dd5a/64",
+    "numRows": 4}, {"ipAddress": "fe80::5054:ff:fe51:7c4f/64", "numRows": 4}, {"ipAddress":
+    "fe80::5054:ff:fe5d:5d83/64", "numRows": 4}, {"ipAddress": "fe80::5054:ff:fe81:c154/64",
+    "numRows": 4}, {"ipAddress": "fe80::4639:39ff:feff:13/64", "numRows": 6}, {"ipAddress":
+    "fe80::4639:39ff:feff:24/64", "numRows": 6}, {"ipAddress": "10.0.0.11/32", "numRows":
+    7}, {"ipAddress": "10.0.0.12/32", "numRows": 7}, {"ipAddress": "10.0.0.13/32",
+    "numRows": 7}, {"ipAddress": "10.0.0.14/32", "numRows": 7}, {"ipAddress": "172.16.1.1/24",
+    "numRows": 7}, {"ipAddress": "172.16.2.1/24", "numRows": 7}, {"ipAddress": "10.0.0.101/32",
+    "numRows": 11}, {"ipAddress": "10.0.0.102/32", "numRows": 11}, {"ipAddress": "10.0.0.21/32",
+    "numRows": 15}, {"ipAddress": "10.0.0.22/32", "numRows": 15}, {"ipAddress": "127.0.0.1/8",
+    "numRows": 26}, {"ipAddress": "::1/128", "numRows": 28}]'
 - command: address unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: address unique

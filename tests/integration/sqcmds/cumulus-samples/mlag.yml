@@ -51,6 +51,16 @@ tests:
   output: '{"dual-evpn": {"deviceCnt": 4, "uniqueSystemIdCnt": 1, "devicesWithfailedStateCnt":
     0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [4, 4, 4], "mlagNumSinglePortStat":
     [0, 0, 0], "mlagNumErrorPortStat": [0, 0, 0]}}'
+- command: mlag unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: mlag unique
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}]'
+- command: mlag unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: mlag unique
+  output: '[{"hostname": "leaf01", "numRows": 2}, {"hostname": "leaf02", "numRows":
+    2}, {"hostname": "leaf03", "numRows": 2}, {"hostname": "leaf04", "numRows": 2}]'
 - command: mlag unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: mlag unique

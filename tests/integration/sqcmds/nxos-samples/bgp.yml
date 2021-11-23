@@ -285,9 +285,18 @@ tests:
     [3, 1197, 221], "updatesTxStat": [1, 1573, 225]}}'
 - command: bgp unique --format=json
   data-directory: tests/data/nxos/parquet-out/
-  error:
-    error: '[{"error": "ERROR: Must specify columns with unique"}]'
   marks: bgp unique nxos
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
+- command: bgp unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: bgp unique nxos
+  output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
+    4}, {"hostname": "leaf02", "numRows": 4}, {"hostname": "leaf03", "numRows": 4},
+    {"hostname": "leaf04", "numRows": 4}, {"hostname": "firewall01", "numRows": 6},
+    {"hostname": "exit01", "numRows": 8}, {"hostname": "exit02", "numRows": 8}, {"hostname":
+    "spine01", "numRows": 12}, {"hostname": "spine02", "numRows": 12}]'
 - command: bgp unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: bgp unique nxos

@@ -98,3 +98,11 @@ tests:
   output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "default", "ipAddress":
     "10.0.0.32", "vlan": "0", "macaddr": "44:38:39:c3:55:cb", "ifname": "Ethernet1",
     "bondMembers": "", "type": "routed", "timestamp": 1623025177202}]'
+- command: network unique --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network unique eos
+  output: '[{"namespace": "eos"}]'
+- command: network unique --count=True --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network unique eos
+  output: '[{"namespace": "eos", "numRows": 1}]'

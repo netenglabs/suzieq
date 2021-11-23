@@ -369,6 +369,24 @@ tests:
   output: '{"eos": {"deviceCnt": 14, "arpNdEntriesCnt": 82, "macaddrCnt": 82, "oifCnt":
     82, "uniqueOifCnt": 26, "remoteEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
     0}}'
+- command: arpnd unique --format=json
+  data-directory: tests/data/eos/parquet-out/
+  marks: arpnd unique eos
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: arpnd unique --format=json --count=True
+  data-directory: tests/data/eos/parquet-out/
+  marks: arpnd unique eos
+  output: '[{"hostname": "server101", "numRows": 2}, {"hostname": "server301", "numRows":
+    2}, {"hostname": "server102", "numRows": 3}, {"hostname": "server302", "numRows":
+    3}, {"hostname": "dcedge01", "numRows": 4}, {"hostname": "exit01", "numRows":
+    7}, {"hostname": "exit02", "numRows": 7}, {"hostname": "leaf01", "numRows": 7},
+    {"hostname": "leaf02", "numRows": 7}, {"hostname": "leaf03", "numRows": 7}, {"hostname":
+    "leaf04", "numRows": 7}, {"hostname": "spine01", "numRows": 7}, {"hostname": "spine02",
+    "numRows": 7}, {"hostname": "firewall01", "numRows": 12}]'
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: arpnd unique eos

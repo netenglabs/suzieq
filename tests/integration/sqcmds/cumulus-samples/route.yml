@@ -2173,6 +2173,43 @@ tests:
     4, "ifRoutesCnt": 20, "hostRoutesCnt": 161, "totalV4RoutesinNs": 257, "totalV6RoutesinNs":
     0, "routingProtocolCnt": 4, "nexthopCnt": {"1": 156, "2": 100, "3": 1}, "routesPerHostStat":
     [4, 51, 17.0], "routesperVrfStat": [16, 175, 33], "deviceWithNoDefRoute": true}}'
+- command: route unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: route unique
+  output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "10.0.0.0/8"}, {"prefix": "10.0.0.100/32"},
+    {"prefix": "10.0.0.101/32"}, {"prefix": "10.0.0.102/32"}, {"prefix": "10.0.0.11/32"},
+    {"prefix": "10.0.0.112/32"}, {"prefix": "10.0.0.12/32"}, {"prefix": "10.0.0.13/32"},
+    {"prefix": "10.0.0.134/32"}, {"prefix": "10.0.0.14/32"}, {"prefix": "10.0.0.21/32"},
+    {"prefix": "10.0.0.22/32"}, {"prefix": "10.0.0.253/32"}, {"prefix": "10.255.2.0/24"},
+    {"prefix": "169.254.1.0/30"}, {"prefix": "169.254.127.0/31"}, {"prefix": "169.254.127.2/31"},
+    {"prefix": "169.254.253.0/30"}, {"prefix": "169.254.253.4/30"}, {"prefix": "169.254.253.8/30"},
+    {"prefix": "169.254.254.0/30"}, {"prefix": "169.254.254.4/30"}, {"prefix": "169.254.254.8/30"},
+    {"prefix": "172.16.0.0/16"}, {"prefix": "172.16.1.0/24"}, {"prefix": "172.16.1.101/32"},
+    {"prefix": "172.16.1.103/32"}, {"prefix": "172.16.2.0/24"}, {"prefix": "172.16.2.102/32"},
+    {"prefix": "172.16.2.104/32"}, {"prefix": "172.16.253.1/32"}, {"prefix": "172.16.3.0/24"},
+    {"prefix": "172.16.4.0/24"}, {"prefix": "192.168.121.0/24"}, {"prefix": "192.168.123.0/24"}]'
+- command: route unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: route unique
+  output: '[{"prefix": "10.0.0.0/8", "numRows": 4}, {"prefix": "169.254.127.0/31",
+    "numRows": 4}, {"prefix": "169.254.127.2/31", "numRows": 4}, {"prefix": "169.254.253.0/30",
+    "numRows": 4}, {"prefix": "169.254.253.4/30", "numRows": 4}, {"prefix": "169.254.253.8/30",
+    "numRows": 4}, {"prefix": "169.254.254.0/30", "numRows": 4}, {"prefix": "169.254.254.4/30",
+    "numRows": 4}, {"prefix": "169.254.254.8/30", "numRows": 4}, {"prefix": "172.16.1.101/32",
+    "numRows": 4}, {"prefix": "172.16.1.103/32", "numRows": 4}, {"prefix": "172.16.2.102/32",
+    "numRows": 4}, {"prefix": "172.16.2.104/32", "numRows": 4}, {"prefix": "169.254.1.0/30",
+    "numRows": 8}, {"prefix": "172.16.3.0/24", "numRows": 9}, {"prefix": "172.16.4.0/24",
+    "numRows": 9}, {"prefix": "172.16.0.0/16", "numRows": 12}, {"prefix": "10.255.2.0/24",
+    "numRows": 14}, {"prefix": "192.168.121.0/24", "numRows": 14}, {"prefix": "192.168.123.0/24",
+    "numRows": 14}, {"prefix": "10.0.0.112/32", "numRows": 22}, {"prefix": "10.0.0.134/32",
+    "numRows": 22}, {"prefix": "10.0.0.100/32", "numRows": 26}, {"prefix": "10.0.0.253/32",
+    "numRows": 26}, {"prefix": "172.16.253.1/32", "numRows": 26}, {"prefix": "10.0.0.101/32",
+    "numRows": 28}, {"prefix": "10.0.0.102/32", "numRows": 28}, {"prefix": "10.0.0.21/32",
+    "numRows": 30}, {"prefix": "10.0.0.22/32", "numRows": 30}, {"prefix": "10.0.0.11/32",
+    "numRows": 31}, {"prefix": "10.0.0.12/32", "numRows": 31}, {"prefix": "10.0.0.13/32",
+    "numRows": 31}, {"prefix": "10.0.0.14/32", "numRows": 31}, {"prefix": "172.16.1.0/24",
+    "numRows": 35}, {"prefix": "172.16.2.0/24", "numRows": 35}, {"prefix": "0.0.0.0/0",
+    "numRows": 66}]'
 - command: route unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: route unique

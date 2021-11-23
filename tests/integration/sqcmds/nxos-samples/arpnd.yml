@@ -206,6 +206,24 @@ tests:
   output: '{"nxos": {"deviceCnt": 14, "arpNdEntriesCnt": 74, "macaddrCnt": 74, "oifCnt":
     74, "uniqueOifCnt": 25, "remoteEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
     0}}'
+- command: arpnd unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: arpnd unique nxos
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
+- command: arpnd unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: arpnd unique nxos
+  output: '[{"hostname": "server101", "numRows": 2}, {"hostname": "server301", "numRows":
+    2}, {"hostname": "server102", "numRows": 3}, {"hostname": "server302", "numRows":
+    3}, {"hostname": "dcedge01", "numRows": 4}, {"hostname": "leaf01", "numRows":
+    6}, {"hostname": "leaf02", "numRows": 6}, {"hostname": "leaf03", "numRows": 6},
+    {"hostname": "leaf04", "numRows": 6}, {"hostname": "exit01", "numRows": 7}, {"hostname":
+    "exit02", "numRows": 7}, {"hostname": "spine01", "numRows": 7}, {"hostname": "spine02",
+    "numRows": 7}, {"hostname": "firewall01", "numRows": 8}]'
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: arpnd unique nxos

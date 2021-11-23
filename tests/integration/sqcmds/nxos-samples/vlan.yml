@@ -162,6 +162,15 @@ tests:
   marks: vlan summarize nxos
   output: '{"nxos": {"deviceCnt": 9, "uniqueVlanCnt": 5, "activeVlanCnt": 5, "suspendedVlanCnt":
     0, "vlanPerDeviceStat": [1, 4, 2.0], "ifPerVlanStat": [2, 9, 4.0]}}'
+- command: vlan unique --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: vlan unique nxos
+  output: '[{"vlan": 1}, {"vlan": 10}, {"vlan": 20}, {"vlan": 30}, {"vlan": 999}]'
+- command: vlan unique --count=True --format=json
+  data-directory: tests/data/nxos/parquet-out/
+  marks: vlan unique nxos
+  output: '[{"vlan": 10, "numRows": 2}, {"vlan": 20, "numRows": 2}, {"vlan": 30, "numRows":
+    4}, {"vlan": 999, "numRows": 6}, {"vlan": 1, "numRows": 9}]'
 - command: vlan unique --columns=hostname --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: vlan unique nxos

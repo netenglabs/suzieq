@@ -12,6 +12,7 @@ class MacsObj(SqObject):
         self._convert_args = {
             'macaddr': convert_macaddr_format_to_colon
         }
+        self._unique_def_column = ['macaddr']
 
     def validate_get_input(self, **kwargs):
         for key in kwargs:

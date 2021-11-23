@@ -358,6 +358,22 @@ tests:
   output: '{"junos": {"deviceCnt": 12, "arpNdEntriesCnt": 68, "macaddrCnt": 68, "oifCnt":
     68, "uniqueOifCnt": 20, "remoteEntriesCnt": 0, "staticEntriesCnt": 0, "failedEntryCnt":
     0}}'
+- command: arpnd unique --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: arpnd unique junos
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "server101"}, {"hostname": "server102"}, {"hostname": "server201"}, {"hostname":
+    "server202"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
+- command: arpnd unique --count=True --format=json
+  data-directory: tests/data/junos/parquet-out/
+  marks: arpnd unique junos
+  output: '[{"hostname": "server101", "numRows": 2}, {"hostname": "server201", "numRows":
+    2}, {"hostname": "server102", "numRows": 3}, {"hostname": "server202", "numRows":
+    3}, {"hostname": "dcedge01", "numRows": 4}, {"hostname": "spine01", "numRows":
+    6}, {"hostname": "spine02", "numRows": 6}, {"hostname": "leaf01", "numRows": 7},
+    {"hostname": "leaf02", "numRows": 7}, {"hostname": "exit01", "numRows": 8}, {"hostname":
+    "exit02", "numRows": 8}, {"hostname": "firewall01", "numRows": 12}]'
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: arpnd unique junos
