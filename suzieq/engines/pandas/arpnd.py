@@ -57,14 +57,14 @@ class ArpndObj(SqPandasEngine):
             ('arpNdEntriesCnt', 'ipAddress', 'count')]
 
         self._summarize_on_add_with_query = [
-            ('arpNdV4EntriesCnt', '@self._check_ipvers(ipAddress, 4)',
+            ('arpEntriesCnt', '@self._check_ipvers(ipAddress, 4)',
                 'ipAddress'),
-            ('arpNdV6EntriesCnt', '@self._check_ipvers(ipAddress, 6)',
+            ('v6NDEntriesCnt', '@self._check_ipvers(ipAddress, 6)',
                 'ipAddress'),
-            ('arpNdV6GlobalEntriesCnt',
+            ('v6NDGlobalEntriesCnt',
                 '@self._check_ipvers(ipAddress, 6) and'
                 '@self._is_in_subnet(ipAddress, "fe80::/10")', 'ipAddress'),
-            ('arpNdV6LLAEntriesCnt',
+            ('v6NDLLAEntriesCnt',
                 '@self._check_ipvers(ipAddress, 6) and not '
                 '@self._is_in_subnet(ipAddress, "fe80::/10")',
                 'ipAddress'),
