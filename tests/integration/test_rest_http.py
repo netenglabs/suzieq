@@ -46,7 +46,8 @@ def test_server_exec():
     proc.kill()
 
     # Now test without https
-    server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile} --no-https'.split()
+    server_cmd_args = (
+        f'{suzieq_rest_server_path} -c {cfgfile} --no-https'.split())
     proc = subprocess.Popen(server_cmd_args)
 
     # Try a request from the server

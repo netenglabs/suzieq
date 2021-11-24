@@ -20,7 +20,8 @@ def parse_nos_version(svc_dir, filename, svc_def, elem, val):
     if ("command" not in val) or (
         (
             isinstance(val["command"], list)
-            and not all("textfsm" in x or "normalize" in x for x in val["command"])
+            and not all("textfsm" in x or "normalize" in x
+                        for x in val["command"])
         )
         or (
             not isinstance(val["command"], list)

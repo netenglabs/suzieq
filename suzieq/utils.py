@@ -607,7 +607,7 @@ def validate_network(network: str) -> bool:
         return False
     except ValueError:
         return False
-        
+
 
 def validate_macaddr(macaddr: str) -> bool:
     """Validate mac address

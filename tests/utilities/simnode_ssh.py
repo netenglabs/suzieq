@@ -46,11 +46,11 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             'show interface':
             f'{self.sample_data_dir}/{self.device}/show_interfaces{fmt}',
             'show ethernet-switching table detail':
-            f'{self.sample_data_dir}/{self.device}/show_ethernet_switching_table{fmt}',
+            f'{self.sample_data_dir}/{self.device}/show_ethernet_switching_table{fmt}',  # noqa
             'show system uptime':
             f'{self.sample_data_dir}/{self.device}/show_system_uptime{fmt}',
             'show mac-address table':
-            f'{self.sample_data_dir}/{self.device}/show_mac_address_table{fmt}',
+            f'{self.sample_data_dir}/{self.device}/show_mac_address_table{fmt}',  # noqa
             'show ip arp':
             f'{self.sample_data_dir}/{self.device}/show_ip_arp{fmt}',
             'show ipv6 neighbors':
@@ -60,7 +60,7 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             'show ipv6 route vrf *':
             f'{self.sample_data_dir}/{self.device}/show_ipv6_route{fmt}',
             'show bgp all neighbors':
-            f'{self.sample_data_dir}/{self.device}/show_bgp_all_neighbors{fmt}',
+            f'{self.sample_data_dir}/{self.device}/show_bgp_all_neighbors{fmt}',  # noqa
             'show bgp all summary':
             f'{self.sample_data_dir}/{self.device}/show_bgp_all_summary{fmt}',
             'show inventory':
@@ -74,15 +74,15 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             'show chassis hardware':
             f'{self.sample_data_dir}/{self.device}/show_chassis_hardware{fmt}',
             'show interface trasnsceiver':
-            f'{self.sample_data_dir}/{self.device}/show_interface_transceiver{fmt}',
+            f'{self.sample_data_dir}/{self.device}/show_interface_transceiver{fmt}',  # noqa
             'show configuration routing-instances':
-            f'{self.sample_data_dir}/{self.device}/show_configuration_routing_instances{fmt}',
+            f'{self.sample_data_dir}/{self.device}/show_configuration_routing_instances{fmt}',  # noqa
             'show bridge mac-table':
             f'{self.sample_data_dir}/{self.device}/show_bridge_mac_table{fmt}',
             'cat /proc/uptime; hostnamectl; show version':
             f'{self.sample_data_dir}/{self.device}/device.txt',
             'ip route show table all':
-            f'{self.sample_data_dir}/{self.device}/ip_route_show_table_all.txt',
+            f'{self.sample_data_dir}/{self.device}/ip_route_show_table_all.txt',  # noqa
         }
 
         return self.cmd_data.get(command, '')
@@ -216,8 +216,9 @@ async def start_server(device='iosxr'):
         'srx': SRXServer,
         'sonic': SoNICServer,
     }
-    await asyncssh.listen('', 10000, server_factory=factory[device],
-                          server_host_keys=['/home/ddutt/work/suzieq/play/ssh_host_key'])
+    await asyncssh.listen(
+        '', 10000, server_factory=factory[device],
+        server_host_keys=['/home/ddutt/work/suzieq/play/ssh_host_key'])
 
 if __name__ == '__main__':
     loop = asyncio.get_event_loop()

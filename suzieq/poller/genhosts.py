@@ -103,7 +103,8 @@ def convert_ansible_inventory(filename: str, namespace: str = 'default'):
         else:
             print("ERROR: Invalid Ansible inventory, "
                   "missing keys: _meta and / or hostvars\n"
-                  "\tUse 'ansible-inventory --list' to create the correct file")
+                  "\tUse 'ansible-inventory --list' to create "
+                  "the correct file")
         sys.exit(1)
 
     in_hosts = inventory['_meta']['hostvars']
@@ -144,7 +145,8 @@ def convert_ansible_inventory(filename: str, namespace: str = 'default'):
 
 if __name__ == '__main__':
     if len(sys.argv) < 4:
-        print('Usage: genhosts <Ansible inventory file> <output file> <DC name>')
+        print(
+            'Usage: genhosts <Ansible inventory file> <output file> <DC name>')
         sys.exit(1)
 
     hostsdata = convert_ansible_inventory(sys.argv[1], sys.argv[3])

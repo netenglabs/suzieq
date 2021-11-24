@@ -35,10 +35,10 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
     order could change as a consequence of coalescing or some other change.
 
     We work our way from the simplest and fastest attempts to compare equality
-    to slower ways to compare equality. Trying to ignore the sort is the hardest
+    to slower ways to compare equality. Ignoring the sort is the hardest
     part. First we attempt to sort the two and reset the index to avoid index
     mismatches. When one of the columns is a list in which case we resort to
-    deriving tuples of the expected and obtained dataframes, stripping the Index
+    deriving tuples of the expected & obtained dataframes, stripping the Index
     column (should be a range Index only), and then verifying that a row is
     present in the other dataframe. We even use sets to attempt a quicker tuple
     comparison which can again fail due to the presence of a list.
@@ -78,7 +78,7 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
 
     if isinstance(expected_df.index, pd.RangeIndex):
         got_df = got_df.sort_values(by=got_df.columns.tolist()) \
-                        .reset_index(drop=True)
+            .reset_index(drop=True)
     else:
         got_df = got_df.sort_values(by=got_df.columns.tolist())
 
@@ -92,11 +92,11 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
 
                 assert got_df.shape == expected_df.shape, \
                     f'expected/{expected_df.shape} != got/{got_df.shape}\n' \
-                    f'{expected_df.namespace.value_counts()} \nVS\n{got_df.namespace.value_counts()}'
+                    f'{expected_df.namespace.value_counts()} \nVS\n{got_df.namespace.value_counts()}'  # noqa
             elif 'hostname' in expected_df.columns:
                 assert got_df.shape == expected_df.shape, \
                     f'expected/{expected_df.shape} != got/{got_df.shape}\n' \
-                    f'{expected_df.hostname.value_counts()} \nVS\n{got_df.hostname.value_counts()}'
+                    f'{expected_df.hostname.value_counts()} \nVS\n{got_df.hostname.value_counts()}'  # noqa
             else:
                 assert got_df.shape == expected_df.shape, \
                     f'expected/{expected_df.shape} != got/{got_df.shape}'
@@ -108,8 +108,8 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
     try:
         rslt_df = expected_df.compare(got_df, keep_equal=True)
         if not rslt_df.empty:
-            # Check if its just the timestamps that are different, as would be the
-            # case if we had a new capture
+            # Check if its just the timestamps that are different, as would be
+            # the case if we had a new capture
             maincols = [x[0] for x in rslt_df.columns.tolist()]
             if all(x in ['timestamp', 'lastChangeTime', 'bootupTimestamp']
                    for x in maincols):
