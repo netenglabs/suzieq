@@ -22,6 +22,3 @@ You can join the conversation via [slack](https://netenglabs.slack.com). Send em
 We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform 
 for observing all aspects of networking. Please read the [collaboration document](https://github.com/netenglabs/suzieq/blob/master/CONTRIBUTING.md) for
 ideas on how you can help.
-
-
-

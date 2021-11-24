@@ -108,4 +108,3 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * Suggesting items that you care about but are missing from this list. The best way to do this is to open an issue. Please do add some color about how you intend to use Suzieq with that feature.
 * Writing some tests and/or documentation
 * Funding us to do the work :)
-

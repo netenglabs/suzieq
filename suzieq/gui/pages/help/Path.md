@@ -41,5 +41,3 @@ The main portion of the window has the following pieces of information:
 * Graphical view of the path from source to destination
 * Tables for each of the failed resources (devices, interfaces, protocols)
 * Path in tabular format
-
-
