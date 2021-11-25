@@ -7,7 +7,8 @@ from suzieq.sqobjects import get_tables, get_sqobject
 
 @ pytest.mark.schema
 @ pytest.mark.parametrize('table',
-                          [pytest.param(x, marks=MarkDecorator(Mark(x, [], {})))
+                          [pytest.param(x,
+                                        marks=MarkDecorator(Mark(x, [], {})))
                            for x in get_tables()])
 @ pytest.mark.parametrize('datadir', DATADIR)
 @pytest.mark.parametrize('columns', [['*'], ['default']])
