@@ -14,7 +14,8 @@ def validate_routes(df: pd.DataFrame):
     assert (df.prefix != '').all()
     assert (df.action.isin(
         ['multirecv', 'local', 'forward', 'drop', 'reject'])).all()
-    # For all forward action, there has to be an outgoimg interface or nexthop OP
+    # For all forward action, there has to be an outgoimg interface
+    # or nexthop OP
     assert (df.ipvers.isin([4, 6])).all()
 
     for row in df.itertuples():
@@ -22,20 +23,23 @@ def validate_routes(df: pd.DataFrame):
         assert ((row != "forward") or ((row.action == "forward") and
                                        ((row.nexthopIps != []).all() or
                                         (row.oifs != []).all())))
-        assert ((row.os in ["linux", "sonic"]) or ((row.os == "cumulus" and
-                                                    row.hostname == "internet" and
-                                                    row.prefix == "0.0.0.0/0")) or
+        assert ((row.os in ["linux", "sonic"]) or
+                ((row.os == "cumulus" and
+                  row.hostname == "internet" and
+                  row.prefix == "0.0.0.0/0")) or
                 ((row.os != "linux") and (row.protocol != "")))
         if row.nexthopIps.any():
             assert ([ip_address(x) for x in row.nexthopIps])
 
     noncl_data = df.query(
-        'os != "linux" and os != "cumulus" and not protocol.isin(["direct", "local", "connected"])')
+        'os != "linux" and os != "cumulus" and not '
+        'protocol.isin(["direct", "local", "connected"])')
     assert (noncl_data.query(
-        'nexthopIps.str.len() != 0 and protocol != "hsrp"').preference != 0).all()
+        'nexthopIps.str.len() != 0 and protocol != "hsrp"')
+        .preference != 0).all()
 
     # The OS that supply route uptime
-    upt_df = df.query('not os.isin(["linux", "sonic", "cumulus", "EOS", "eos"]) and '
+    upt_df = df.query('not os.isin(["linux", "sonic", "cumulus", "eos"]) and '
                       'not protocol.isin(["local", "connected", "static"])')
     assert (upt_df.statusChangeTimestamp != 0).all()
 
