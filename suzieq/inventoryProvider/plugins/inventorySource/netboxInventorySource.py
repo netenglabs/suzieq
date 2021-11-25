@@ -34,7 +34,7 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
             "port",
             DEFAULT_PORTS.get(self._protocol, None)
         )
-        self._tag = netbox_config.get("tag", "suzieq")
+        self._tag = netbox_config.get("tag", "null")
         self._ip_address = netbox_config.get("ip_address", None)
         self._namespace = netbox_config.get("namespace", "site.name")
         self._period = netbox_config.get("period", 3600)
@@ -78,17 +78,26 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
             self._session = None
         self._init_session(headers)
 
-    def retrieve_REST_data(self) -> Dict:
+    def retrieve_REST_data(self, url) -> Dict:
         headers = self._token_auth_header()
-        url = "{}://{}:{}/api/dcim/devices/?tag={}".format(
-            self._protocol, self._ip_address, self._port, self._tag
-        )
         if not self._session:
             self._init_session(headers)
 
         r = self._session.get(url, headers=headers)
         if int(r.status_code) == 200:
-            return r.json()
+            res = r.json()
+
+            data = res.get("results", [])
+
+            if res.get("next", None):
+                next_data = self.retrieve_REST_data(res["next"])
+                data.extend(next_data.get("results", []))
+
+            res["results"] = data
+            res["next"] = None
+
+            return res
+
         else:
             raise RuntimeError("Unable to connect to netbox:", r.json())
 
@@ -179,7 +188,10 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
                     self._generate_token()
 
                 # Retrieve data using REST
-                raw_inventory = self.retrieve_REST_data()
+                url = "{}://{}:{}/api/dcim/devices/?tag={}".format(
+                    self._protocol, self._ip_address, self._port, self._tag
+                )
+                raw_inventory = self.retrieve_REST_data(url)
                 self._tmp_inventory = self._parse_inventory(raw_inventory)
 
                 if not self._device_credentials.get("skip", False):
