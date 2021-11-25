@@ -378,6 +378,8 @@ class BgpService(Service):
             bfd_status = entry.get('bfdStatus', 'disabled').lower()
             if not bfd_status or (bfd_status == "unknown"):
                 bfd_status = "disabled"
+            elif bfd_status == "initializing":
+                bfd_status = "down"
             entry['bfdStatus'] = bfd_status
 
             if entry.get('state', '') != 'Established':
