@@ -152,8 +152,8 @@ def coalescer_main():
         print(f'Invalid Suzieq config file {userargs.config}')
         sys.exit(1)
 
-    logfile, loglevel, logsize, log_stdout = get_log_params('coalescer', cfg,
-                                                            '/tmp/sq-coalescer.log')
+    logfile, loglevel, logsize, log_stdout = get_log_params(
+        'coalescer', cfg, '/tmp/sq-coalescer.log')
     logger = init_logger('suzieq.coalescer', logfile,
                          loglevel, logsize, log_stdout)
 

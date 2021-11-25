@@ -6,7 +6,8 @@ import argparse
 
 basic_verbs = ['show', 'summarize', 'unique']
 
-# a list of [cmd, [list of verbs for the command], [list of for each verb filters]]
+# a list of [cmd, [list of verbs for the command],
+# [list of for each verb filters]]
 command_table = [
     [
         "address",
@@ -21,7 +22,8 @@ command_table = [
     [
         "bgp",
         basic_verbs + ["assert"],
-        [[None, "--columns=hostname"], None, [None, "--columns=hostname"], None],
+        [[None, "--columns=hostname"], None,
+         [None, "--columns=hostname"], None],
     ],
     [
         "device",
@@ -44,7 +46,8 @@ command_table = [
     [
         "interface",
         basic_verbs + ["assert", "top"],
-        [[None, "--columns=hostname"], [None], "--columns=hostname", None, None, None],
+        [[None, "--columns=hostname"], [None],
+            "--columns=hostname", None, None, None],
     ],
     [
         "lldp",
@@ -57,12 +60,15 @@ command_table = [
             "--columns=hostname",
         ],
     ],
-    ["mac", basic_verbs, [[None, "--columns=hostname"], [None], "--columns=hostname"]],
-    ["mlag", basic_verbs, [[None, "--columns=hostname"], [None], "--columns=hostname"]],
+    ["mac", basic_verbs, [[None, "--columns=hostname"],
+                          [None], "--columns=hostname"]],
+    ["mlag", basic_verbs, [[None, "--columns=hostname"],
+                           [None], "--columns=hostname"]],
     [
         "ospf",
         basic_verbs + ["assert", "top"],
-        [[None, "--columns=hostname"], [None], "--columns=hostname", None, None],
+        [[None, "--columns=hostname"], [None], "--columns=hostname", None,
+         None],
     ],
     [
         "path",
@@ -97,7 +103,8 @@ command_table = [
                 "--address=10.0.0.1",
                 '--address="10.0.0.12"',
                 '--address="10.0.0.12" --hostname="server101 server103"',
-                '--address="10.0.0.12" --vrf=evpn-vrf',  # TODO: have to do something about suplying vpn
+                # TODO: have to do something about suplying vpn
+                '--address="10.0.0.12" --vrf=evpn-vrf',
                 '--address="10.0.0.11" --vrf=evpn-vrf',
             ],
         ],
@@ -127,7 +134,8 @@ command_table = [
     #     [[None, '--columns=hostname'],
     #      [None],
     #      '--columns=hostname']],
-    ["vlan", basic_verbs, [[None, "--columns=hostname"], [None], "--columns=hostname"]],
+    ["vlan", basic_verbs, [[None, "--columns=hostname"],
+                           [None], "--columns=hostname"]],
 ]
 
 

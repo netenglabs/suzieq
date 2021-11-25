@@ -24,8 +24,9 @@ class MacsService(Service):
         4. The remaining regular entries where VLAN disambiguates a MAC.
         """
         # Make VLAN int first
-        if entry.get('vlan', ''):
-            entry['vlan'] = int(entry['vlan'])
+        vlan = entry.get('vlan', '')
+        if vlan and vlan != "none":
+            entry['vlan'] = int(vlan)
 
         if entry.get('bd', ""):
             if not entry.get('vlan', 0):

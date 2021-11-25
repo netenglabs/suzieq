@@ -156,6 +156,9 @@ class RoutesService(Service):
                 entry['nexthopIps'] = ['']
 
             entry['action'] = entry.get('action', '').lower()
+            if not entry['action']:
+                entry['action'] = 'forward'
+
             if entry['action'] == "discard":
                 entry['action'] = 'drop'
             entry.pop('_localif')

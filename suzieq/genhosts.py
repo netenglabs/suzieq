@@ -48,7 +48,8 @@ def process_ansible_inventory(filename, namespace='default'):
                     hostline = (
                         '    - url: ssh://vagrant@{}:{}'.format(host, v))
 
-            if elem.startswith('ansible_ssh_private_key_file') and transport == 'ssh':
+            if (elem.startswith('ansible_ssh_private_key_file') and
+                    transport == 'ssh'):
                 k, v = elem.split('=')
                 if hostline:
                     hostline += ' keyfile={}'.format(v.strip())
@@ -65,7 +66,8 @@ def process_ansible_inventory(filename, namespace='default'):
 
 if __name__ == '__main__':
     if len(sys.argv) < 4:
-        print('Usage: genhosts <Ansible inventory file> <output file> <DC name>')
+        print(
+            'Usage: genhosts <Ansible inventory file> <output file> <DC name>')
         sys.exit(1)
 
     hostsdata = process_ansible_inventory(sys.argv[1], sys.argv[3])

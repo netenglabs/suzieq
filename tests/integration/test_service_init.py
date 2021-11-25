@@ -6,7 +6,8 @@ import yaml
 
 @pytest.mark.service
 def _test_init_with_default_config(init_services_default):
-    with open(os.path.abspath(os.curdir) + '/tests/integration/services/samples/init.yml', 'r') as file:
+    with open(os.path.abspath(os.curdir) +
+              '/tests/integration/services/samples/init.yml', 'r') as file:
         prev_results = yaml.load(file)
 
     assert isinstance(init_services_default, list)
@@ -18,10 +19,13 @@ def _test_init_with_default_config(init_services_default):
 
 @pytest.mark.service
 def _test_produce_current_json(tmp_path, init_services_default):
-    """used strictly to produce the output that needs to be checked. this should only be necessary
-    if you have on purpose changed configs and need to produce the output
+    """used strictly to produce the output that needs to be checked.
 
-    to use this, put a _ in front of each current test and remove the _ in front of this function
+    this should only be necessary if you have on purpose changed configs
+    and need to produce the output
+
+    to use this, put a _ in front of each current test and remove the _ in
+    front of this function
     pytest -mservice -s -n0
     """
 

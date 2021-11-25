@@ -10,6 +10,7 @@ from suzieq.utils import convert_macaddr_format_to_colon
 from suzieq.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
 
+
 class InterfaceService(Service):
     """Service class for interfaces. Cleanup of data is specific"""
 
@@ -338,6 +339,10 @@ class InterfaceService(Service):
 
             if entry.get('_minLinksBond', None) is not None:
                 entry['type'] = 'bond'
+
+            if entry.get('type', '') == 'vpls':
+                entry['state'] = 'up'
+                entry['adminState'] = 'up'
 
             if not entry_dict[ifname]:
                 entry_dict[ifname] = entry
@@ -694,6 +699,7 @@ class InterfaceService(Service):
                 entry['adminState'] = 'up'
             else:
                 entry['adminState'] = 'down'
+
             entry['speed'] = self._textfsm_valid_speed_value(entry)
 
             # Linux interface output has no status change timestamp
@@ -734,6 +740,8 @@ class InterfaceService(Service):
                 iftype = 'ethernet'
             elif iftype.endswith('ge'):
                 # Is this safe, assuming just ge ending means GigE?
+                iftype = 'ethernet'
+            elif iftype.endswith('ethernet'):
                 iftype = 'ethernet'
             entry['type'] = iftype
 

@@ -29,7 +29,7 @@ def get_field_set(svc_def, textfsm_dir):
                         re.match(r'\s*(?:add\(|div\(|mul\(|sub\()*(\w+)',
                                  fld.split(':')[1]).group(1)
                         for fld in nfn_fld_list if type(fld) is str
-                        ]
+                    ]
                     field_set.update(nfn_flds)
                 except (ValueError, SyntaxError):
                     words = elem.split(':')
@@ -123,11 +123,13 @@ def write_avro_schema(name, fldset, keys, show_fields, type, output_dir):
 
         for fld in oldflds.keys():
             if fld in newflds:
-                schema['fields'][newflds[fld]]['type'] = old_schema['fields'][oldflds[fld]]['type']
+                schema['fields'][newflds[fld]]['type'] = \
+                    old_schema['fields'][oldflds[fld]]['type']
                 if (old_schema['fields'][oldflds[fld]].get('default', None)
                     and not schema['fields'][newflds[fld]].get('default',
                                                                None)):
-                    schema['fields'][newflds[fld]]['default'] = old_schema['fields'][oldflds[fld]]['default']
+                    schema['fields'][newflds[fld]]['default'] = \
+                        old_schema['fields'][oldflds[fld]]['default']
 
     with open(filename, 'w') as f:
         f.write(json.dumps(schema, indent=4))
