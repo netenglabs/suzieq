@@ -9,6 +9,7 @@ from suzieq.utils import get_timestamp_from_junos_time
 from suzieq.utils import convert_macaddr_format_to_colon
 from suzieq.utils import MISSING_SPEED
 
+
 class InterfaceService(Service):
     """Service class for interfaces. Cleanup of data is specific"""
 
@@ -34,17 +35,17 @@ class InterfaceService(Service):
 
     def _speed_field_check(self, entry, missing_speed_indicator):
         """Return MISSING_SPEED if the speed value is invalid, the interface speed otherwise"""
-        if entry.get('speed',missing_speed_indicator) == missing_speed_indicator:
+        if entry.get('speed', missing_speed_indicator) == missing_speed_indicator:
             return MISSING_SPEED
         return entry['speed']
 
     def _common_speed_field_value(self, entry):
         """Return speed value or a missing value for common retrieved data"""
-        return self._speed_field_check(entry,-1)
+        return self._speed_field_check(entry, -1)
 
     def _textfsm_valid_speed_value(self, entry):
         """Return speed value or a missing value for textfsm retrieved data"""
-        return self._speed_field_check(entry,'')
+        return self._speed_field_check(entry, '')
 
     def _clean_eos_data(self, processed_data, raw_data):
         """Clean up EOS interfaces output"""
@@ -323,6 +324,10 @@ class InterfaceService(Service):
 
             if entry.get('_minLinksBond', None) is not None:
                 entry['type'] = 'bond'
+
+            if entry.get('type', '') == 'vpls':
+                entry['state'] = 'up'
+                entry['adminState'] = 'up'
 
             if not entry_dict[ifname]:
                 entry_dict[ifname] = entry
@@ -679,7 +684,7 @@ class InterfaceService(Service):
                 entry['adminState'] = 'up'
             else:
                 entry['adminState'] = 'down'
-            
+
             entry['speed'] = self._textfsm_valid_speed_value(entry)
 
             # Linux interface output has no status change timestamp
@@ -720,6 +725,8 @@ class InterfaceService(Service):
                 iftype = 'ethernet'
             elif iftype.endswith('ge'):
                 # Is this safe, assuming just ge ending means GigE?
+                iftype = 'ethernet'
+            elif iftype.endswith('ethernet'):
                 iftype = 'ethernet'
             entry['type'] = iftype
 
