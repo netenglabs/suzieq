@@ -5,6 +5,7 @@ import signal
 from collections import defaultdict
 from pathlib import Path
 
+from suzieq.poller.coalescer import start_and_monitor_coalescer
 from suzieq.poller.nodes import init_files, init_hosts
 from suzieq.poller.services import init_services
 
@@ -123,7 +124,7 @@ class Poller:
             tasks += svc_tasks
 
             if not self.userargs.no_coalescer:
-                tasks += [start_and_monitor_coalescer(userargs.config, self.cfg,
+                tasks += [start_and_monitor_coalescer(self.userargs.config, self.cfg,
                                                       logger)]
             while tasks:
                 try:
