@@ -1,20 +1,13 @@
 import yaml
-from suzieq.inventoryProvider.utils import get_class_by_path
-from os.path import dirname, abspath
-from inspect import getfile
+from suzieq.inventoryProvider.utils \
+    import INVENTORY_PROVIDER_PATH, get_class_by_path, get_classname_from_type
+from os.path import join
 import threading
 import argparse
 
 
-def get_classname_from_ptype(plugin_type: str):
-    """
-    Return the name of a class starting from its type
-
-    example:
-    plugin_type = chunker -> class = Chunker
-    """
-    if len(plugin_type) > 1:
-        return plugin_type[0].upper() + plugin_type[1:]
+PLUGIN_PATH = join(INVENTORY_PROVIDER_PATH, "plugins")
+BASE_PLUGIN_PATH = join(PLUGIN_PATH, "basePlugins")
 
 
 class InventoryProvider:
@@ -27,11 +20,6 @@ class InventoryProvider:
 
         # contains the Plugin objects divided by type
         self._plugin_objects = dict()
-
-        # constant with the path to the inventoryProvider directory
-        self._INVENTORY_PROVIDER_PATH = abspath(
-            dirname(getfile(InventoryProvider))
-        )
 
     def load(self, config_data):
         self._provider_config = config_data.get("provider_config", {})
@@ -46,17 +34,11 @@ class InventoryProvider:
             raise RuntimeError("No plugin configuration provided")
 
         # configure paths to reach the inventory plugins directories
-        pmodule = f"suzieq.inventoryProvider.plugins.{plugin_type}"
-        base_class_module = (
-            f"suzieq.inventoryProvider.plugins.basePlugins.{plugin_type}"
-        )
-        base_class_name = get_classname_from_ptype(plugin_type)
-        ppath = "{}/plugins/{}"\
-                .format(self._INVENTORY_PROVIDER_PATH, plugin_type)
-        # plugin_classes contains all the plugins in "pclass_path"
-        # of type "class_type_name"
+        base_class_name = get_classname_from_type(plugin_type)
+        ppath = join(PLUGIN_PATH, plugin_type)
+        # Seach all the subclass of "base_class_name" inside "ppath"
         plugin_classes = get_class_by_path(
-            pmodule, ppath, base_class_module, base_class_name
+            ppath, BASE_PLUGIN_PATH, base_class_name
         )
 
         for pc in plugin_confs:

@@ -1,12 +1,36 @@
 import importlib
 from pkgutil import walk_packages
 from inspect import getmembers, isclass
+from os.path import dirname, abspath
+
+INVENTORY_PROVIDER_PATH = abspath(dirname(__file__))
+
+
+def get_classname_from_type(type: str):
+    """
+    Return the name of a class starting from its type
+
+    example:
+    plugin_type = chunker -> class = Chunker
+    """
+    if len(type) > 1:
+        return type[0].upper() + type[1:]
+
+
+def obtain_module_path(abs_path: str):
+    abs_path = abs_path.replace("//", "/")
+    if "suzieq/suzieq" not in abs_path:
+        raise ValueError("You must pass the absolute path to obtain "
+                         "the module path")
+    abs_path = abs_path[
+        abs_path.find("suzieq")+7:
+    ]
+    return abs_path.replace("/", ".")
 
 
 def get_class_by_path(
-    module: str,
-    module_path: str,
-    base_class_module: str,
+    search_path: str,
+    base_class_path: str,
     base_class_name: str = ""
 ):
     """
@@ -19,12 +43,16 @@ def get_class_by_path(
 
     classes = {}
     base_class = {}
-    for bmbr in getmembers(
-        importlib.import_module(base_class_module), isclass
-    ):
-        if bmbr[0] == base_class_name:
-            base_class = bmbr[1]
-            break
+
+    base_class_module = obtain_module_path(base_class_path)
+
+    for m in walk_packages([base_class_path]):
+        for bmbr in getmembers(
+            importlib.import_module(f"{base_class_module}.{m.name}"), isclass
+        ):
+            if bmbr[0] == base_class_name:
+                base_class = bmbr[1]
+                break
 
     if not base_class:
         raise RuntimeError(
@@ -32,14 +60,11 @@ def get_class_by_path(
             .format(base_class_name, base_class_module)
         )
 
-    for i in walk_packages([module_path]):
+    search_class_module = obtain_module_path(search_path)
+    for m in walk_packages([search_path]):
         for mbr in getmembers(
-            importlib.import_module("{}.{}".format(module, i.name)), isclass
+            importlib.import_module(f"{search_class_module}.{m.name}"), isclass
         ):
-            if not isclass(mbr[1]):
-                continue
-
             if issubclass(mbr[1], base_class):
                 classes[mbr[0].lower()] = mbr[1]
-
     return classes

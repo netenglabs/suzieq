@@ -5,7 +5,7 @@ from suzieq.inventoryProvider.plugins.inventorySource.credentialLoader\
     .credentialLoader import CredentialLoader
 from suzieq.inventoryProvider.utils import get_class_by_path
 from inspect import getfile
-from posixpath import abspath, dirname
+from os.path import abspath, dirname
 
 
 class InventorySource:
@@ -87,14 +87,10 @@ class InventorySource:
         self._inv_semaphore.release()
 
     def _get_loader_class(self, ltype):
-        module = "suzieq.inventoryProvider.plugins.inventorySource"\
-                 ".credentialLoader"
-        base_class_module = "suzieq.inventoryProvider.plugins.inventorySource"\
-                            ".credentialLoader.credentialLoader"
         base_class_name = CredentialLoader.__name__
         module_path = abspath(dirname(getfile(CredentialLoader)))
         l_classes = get_class_by_path(
-            module, module_path, base_class_module, base_class_name
+            module_path, module_path, base_class_name
         )
 
         if l_classes:
