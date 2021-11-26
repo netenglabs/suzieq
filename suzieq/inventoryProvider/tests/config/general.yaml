@@ -1,0 +1,47 @@
+seed: 1111
+generators:
+  inventorySource:
+    - name: netbox1
+      type: netboxGenerator
+      data:
+        devices:
+          out_path: "api/dcim/devices"
+          out_format: "json"
+          count: 10
+          name: net1Device
+          site_count: 2
+          ip:
+            prob:
+              "4": 0.1
+              "6": 0.9
+          tag: 
+            value: suzieq
+            prob: 0.5
+        tokens:
+          list:
+            - "0123456789123456789"
+            - "akjasdpksdjcnaspkdjnfa"
+          out_path: "api/users/tokens/provision"
+          out_format: "json"
+    - name: netbox2
+      type: netboxGenerator
+      data:
+        devices:
+          out_path: "api/dcim/devices"
+          out_format: "json"
+          count: 10
+          name: net1Device
+          site_count: 2
+          ip:
+            prob:
+              "4": 0.1
+              "6": 0.9
+          tag: 
+            value: suzieq
+            prob: 0.5
+        tokens:
+          list:
+            - "0123456789123456789"
+            - "akjasdpksdjcnaspkdjnfa"
+          out_path: "api/users/tokens/provision"
+          out_format: "json"
