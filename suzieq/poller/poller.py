@@ -5,6 +5,9 @@ import signal
 from collections import defaultdict
 from pathlib import Path
 
+from suzieq.poller.nodes import init_files, init_hosts
+from suzieq.poller.services import init_services
+
 logger = logging.getLogger(__name__)
 
 
@@ -83,7 +86,7 @@ class Poller:
 
         self.nodes, self.services = await asyncio.gather(*tasks)
 
-        if not self.nodes or not self.svcs:
+        if not self.nodes or not self.services:
             # Logging should've been done by init_nodes/services for details
             raise AttributeError('Terminating because no nodes'
                                  'or services found')
@@ -102,9 +105,7 @@ class Poller:
         for svc in self.services:
             svc.set_nodes(node_callq)
 
-        logger.setLevel(logging.INFO)
         logger.info('Suzieq Started')
-        logger.setLevel(loglevel.upper())
 
         loop = asyncio.get_event_loop()
         for s in [signal.SIGTERM, signal.SIGINT]:
