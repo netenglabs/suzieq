@@ -8,6 +8,7 @@ from pathlib import Path
 from suzieq.poller.coalescer import start_and_monitor_coalescer
 from suzieq.poller.nodes import init_files, init_hosts
 from suzieq.poller.services import init_services
+from suzieq.poller.writers.outputWorkerManager import OutputWorkerManager
 
 logger = logging.getLogger(__name__)
 
@@ -37,19 +38,21 @@ class Poller:
             userargs.no_coalescer = True
 
         # Setup poller writers
-        self.output_args = {}
-        self.output_queue = asyncio.Queue()
-        self.output_workers = []
 
-        # TODO: move to the Parquet writer class        
-        if 'parquet' in userargs.outputs:
-            validate_parquet_args(cfg, self.output_args, logger)
+        # TODO: At the moment:
+        # output_dir: is the directory used by the gather method
+        # data_dir: is the directory used by parquet
+        # we need a way to define the settings 
+        # for each type of output worker
+        self.output_args = {
+            'output_dir': userargs.output_dir,
+            'data_dir': cfg.get('data-directory')
+        }
 
         if userargs.run_once:
             userargs.outputs = ['gather']
-            self.output_args['output_dir'] = userargs.output_dir
-
-        self.output_workers = init_output_workers(userargs.outputs, self.output_args)
+        self.output_manager = OutputWorkerManager(userargs.outputs, self.output_args)
+        self.output_queue = self.output_manager.output_queue
 
         # Prepare the list of services to run
         self.services_list = self._evaluate_service_list()
@@ -120,7 +123,7 @@ class Poller:
             # instead of SSH
             svc_tasks = [svc.run() for svc in self.services]
             tasks = [self.nodes[node].run() for node in self.nodes]
-            tasks += [run_output_worker(self.output_queue, self.output_workers, logger)]
+            tasks += [self.output_manager.run_output_workers()]
             tasks += svc_tasks
 
             if not self.userargs.no_coalescer:
