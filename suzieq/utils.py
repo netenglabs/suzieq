@@ -25,7 +25,15 @@ logger = logging.getLogger(__name__)
 
 
 MAX_MTU = 9216
+# MISSING_SPEED: the interface doesn't provide a speed and I have to complain
+# NO_SPEED: the interface doesn't provide a speed but I don't care
+#           (for example virtual interfaces)
+# MISSING_SPEED_IF_TYPES: list of interface-types that will have MISSING_SPEED
+#                         if the speed is invalid.
+#                         Types which are not in this list will have NO_SPEED
 MISSING_SPEED = -1
+NO_SPEED = 0
+MISSING_SPEED_IF_TYPES = ['ethernet', 'bond', 'bond_slave']
 
 
 def validate_sq_config(cfg):
