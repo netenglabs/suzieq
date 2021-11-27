@@ -13,12 +13,12 @@ def build_pa_filters(start_tm: str, end_tm: str,
     if start_tm and not end_tm:
         timeset = pd.date_range(pd.to_datetime(
             start_tm, infer_datetime_format=True), periods=2,
-                                freq='15min')
+            freq='15min')
         filters = [[('timestamp', '>=', timeset[0].timestamp()*1000)]]
     elif end_tm and not start_tm:
         timeset = pd.date_range(pd.to_datetime(
             end_tm, infer_datetime_format=True), periods=2,
-                                freq='15min')
+            freq='15min')
         filters = [[('timestamp', '<=', timeset[-1].timestamp()*1000)]]
     elif start_tm and end_tm:
         timeset = [pd.to_datetime(start_tm, infer_datetime_format=True),
@@ -40,7 +40,8 @@ def build_pa_filters(start_tm: str, end_tm: str,
                         kwdor.append([tuple(('{}'.format(k), '==',
                                              '{}'.format(e)))])
                     else:
-                        if len(filters) == 1 and not isinstance(filters[0], list):
+                        if len(filters) == 1 and not isinstance(filters[0],
+                                                                list):
                             foo = deepcopy(filters)
                             foo.append(tuple(('{}'.format(k), '==',
                                               '{}'.format(e))))
@@ -132,7 +133,8 @@ if __name__ == '__main__':
                 check_filters(filters)
                 print(filters)
 
-                filters = build_pa_filters('2019-05-02 01:28:14', '05/02/19 02:10:10',
+                filters = build_pa_filters('2019-05-02 01:28:14',
+                                           '05/02/19 02:10:10',
                                            key_fields, namespace=dc,
                                            hostname=host, ifname=ifn)
                 check_filters(filters)

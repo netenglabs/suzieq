@@ -10,7 +10,6 @@ from suzieq.utils import convert_macaddr_format_to_colon
 from suzieq.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
 
-
 class InterfaceService(Service):
     """Service class for interfaces. Cleanup of data is specific"""
 

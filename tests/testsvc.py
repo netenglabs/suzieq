@@ -18,7 +18,8 @@ if __name__ == '__main__':
     parser.add_argument('--service', '-s', type=str, required=True,
                         help='Name of service to test')
     parser.add_argument('--service-dir', '-S', type=str, default='./config',
-                        help='Directory where service file definition is stored')
+                        help=('Directory where service file definition'
+                              ' is stored'))
     parser.add_argument('--device-type', '-d', type=str,
                         help='Device type to test', default='cumulus')
 
@@ -29,7 +30,8 @@ if __name__ == '__main__':
             userargs.sample_dir))
         sys.exit(1)
 
-    if not os.path.exists('{}/{}.yml'.format(userargs.sample_dir, userargs.service)):
+    if not os.path.exists('{}/{}.yml'.format(userargs.sample_dir,
+                                             userargs.service)):
         print('No sample output found for service {} in {}'.format(
             userargs.service, userargs.sample_dir))
         sys.exit(1)
@@ -39,15 +41,18 @@ if __name__ == '__main__':
             userargs.service_dir))
         sys.exit(1)
 
-    if not os.path.exists('{}/{}.yml'.format(userargs.service_dir, userargs.service)):
+    if not os.path.exists('{}/{}.yml'.format(userargs.service_dir,
+                                             userargs.service)):
         print('No service definition found for service {} in {}'.format(
             userargs.service, userargs.service_dir))
         sys.exit(1)
 
-    with open('{}/{}.yml'.format(userargs.service_dir, userargs.service), 'r') as f:
+    with open('{}/{}.yml'.format(userargs.service_dir,
+                                 userargs.service), 'r') as f:
         svcdef = yaml.safe_load(f.read())
 
-    with open('{}/{}.yml'.format(userargs.sample_dir, userargs.service), 'r') as f:
+    with open('{}/{}.yml'.format(userargs.sample_dir,
+                                 userargs.service), 'r') as f:
         yml_inp = yaml.safe_load(f.read())
 
     # Extract the appropriate svc definition
@@ -76,8 +81,10 @@ if __name__ == '__main__':
         svcstr = cmd.get('normalize', '')
 
         if not svcstr:
-            print('No normalization service string found for {} in {}/{}'.format(
-                userargs.device_type, userargs.service_dir, userargs.service))
+            print(
+                'No normalization service string found for {} in {}/{}'.format(
+                    userargs.device_type, userargs.service_dir,
+                    userargs.service))
             sys.exit(1)
 
         if isList:
