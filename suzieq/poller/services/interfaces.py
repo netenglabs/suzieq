@@ -7,7 +7,8 @@ import numpy as np
 from suzieq.poller.services.service import Service
 from suzieq.utils import get_timestamp_from_junos_time
 from suzieq.utils import convert_macaddr_format_to_colon
-from suzieq.utils import MISSING_SPEED
+from suzieq.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
+
 
 
 class InterfaceService(Service):
@@ -33,15 +34,29 @@ class InterfaceService(Service):
                     else:
                         entry_dict[intf] = {'vrf': entry['ifname']}
 
+    def _get_missing_speed_value(self, entry):
+        '''
+        Return the correct value for an interface without a valid speed
+        '''
+        if entry['type'] not in MISSING_SPEED_IF_TYPES:
+            return NO_SPEED
+        return MISSING_SPEED
+
     def _speed_field_check(self, entry, missing_speed_indicator):
-        """Return MISSING_SPEED if the speed value is invalid, the interface speed otherwise"""
-        if entry.get('speed', missing_speed_indicator) == missing_speed_indicator:
-            return MISSING_SPEED
+        """
+        Return a missing-speed value if the speed is invalid,
+        the interface speed otherwise
+
+        MUST be called after the type's been fixed correctly
+        """
+        if entry.get('speed', missing_speed_indicator) \
+           == missing_speed_indicator:
+            return self._get_missing_speed_value(entry)
         return entry['speed']
 
     def _common_speed_field_value(self, entry):
         """Return speed value or a missing value for common retrieved data"""
-        return self._speed_field_check(entry, -1)
+        return self._speed_field_check(entry, 0)
 
     def _textfsm_valid_speed_value(self, entry):
         """Return speed value or a missing value for textfsm retrieved data"""
@@ -268,7 +283,7 @@ class InterfaceService(Service):
             elif speed.endswith('Gbps'):
                 speed = int(speed.split('Gb')[0])*1000
             elif speed == 'Unlimited':
-                speed = MISSING_SPEED
+                speed = self._get_missing_speed_value(entry)
             return speed
 
         entry_dict = defaultdict(dict)
@@ -486,7 +501,7 @@ class InterfaceService(Service):
             if isinstance(speed, str):
                 speed = speed.strip()
                 if speed.startswith("unknown enum") or (speed == "auto"):
-                    speed = str(MISSING_SPEED)
+                    speed = str(self._get_missing_speed_value(entry))
                 elif speed.startswith('a-'):
                     speed = speed[2:]
 
