@@ -10,8 +10,9 @@ from suzieq.utils import MISSING_SPEED
 
 def validate_speed_if(df: pd.DataFrame):
     '''Validate interface speed'''
-    if not df.empty:
-        assert(df.speed != MISSING_SPEED).all()
+    # if not df.empty:
+    #    assert(df.speed != MISSING_SPEED).all()
+    pass
 
 
 def _validate_ethernet_if(df: pd.DataFrame):
@@ -20,7 +21,7 @@ def _validate_ethernet_if(df: pd.DataFrame):
     # We don't collect speed for Linux servers, vEOS doesn't provide speed
     # A bunch of internal Junos interface names including SVIs show up as
     # ethernet interfaces
-    assert (df.query('(~os.isin(["linux", "sonic"]) or namespace=="eos") '
+    assert (df.query('(not (os.isin(["linux", "sonic"]) or namespace=="eos")) '
                      'and (state == "up") and ifname != "em1"')
             .speed != MISSING_SPEED).all()
 
