@@ -8,12 +8,6 @@ class ArpndObj(SqPandasEngine):
     def table_name():
         return 'arpnd'
 
-    def _check_ipvers(self,  addr: pd.Series, version: int) -> list:
-
-        return addr.apply(lambda a: (
-            True if self._get_ipvers(a) == version else False)
-            )
-
     def get(self, **kwargs) -> pd.DataFrame:
         """Retrieve the arpnd table info providing address prefix filtering"""
 

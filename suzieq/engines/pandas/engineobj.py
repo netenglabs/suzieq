@@ -92,6 +92,22 @@ class SqPandasEngine(SqEngineObj):
             False if not a else ip_address(a.split("/")[0]) in network)
         )
 
+    def _check_ipvers(self,  addr: pd.Series, version: int) -> pd.Series:
+        """Check if the IP version of addresses in a Pandas dataframe
+        correspond to the given version
+
+        Args:
+            addr (PandasObject): the collection of ip addresses to check
+            version: (int): IP version (4 or 6)
+
+        Returns:
+            PandasObject: A collection of bool reporting the result
+        """
+
+        return addr.apply(lambda a: (
+            True if self._get_ipvers(a) == version else False)
+            )
+
     def get_valid_df(self, table: str, **kwargs) -> pd.DataFrame:
         """The heart of the engine: retrieving the data from the backing store
 
