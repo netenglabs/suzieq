@@ -1444,19 +1444,27 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd summarize
-  output: '{"ospf-single": {"deviceCnt": 14, "arpNdEntriesCnt": 55, "macaddrCnt":
-    55, "oifCnt": 55, "uniqueOifCnt": 9, "remoteEntriesCnt": 0, "staticEntriesCnt":
-    0, "failedEntryCnt": 0}, "dual-evpn": {"deviceCnt": 14, "arpNdEntriesCnt": 196,
-    "macaddrCnt": 196, "oifCnt": 196, "uniqueOifCnt": 21, "remoteEntriesCnt": 0, "staticEntriesCnt":
-    36, "failedEntryCnt": 0}, "ospf-ibgp": {"deviceCnt": 14, "arpNdEntriesCnt": 186,
-    "macaddrCnt": 186, "oifCnt": 186, "uniqueOifCnt": 23, "remoteEntriesCnt": 0, "staticEntriesCnt":
-    44, "failedEntryCnt": 0}}'
+  output: '{"ospf-single": {"deviceCnt": 14, "macaddrCnt": 55, "oifCnt": 55, "uniqueOifCnt":
+    9, "arpNdEntriesCnt": 55, "arpNdV4EntriesCnt": 46, "arpNdV6EntriesCnt": 9, "arpNdV6GlobalEntriesCnt":
+    9, "arpNdV6LLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0,
+    "failedV4EntryCnt": 0, "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 0, "failedV6EntryCnt":
+    0}, "dual-evpn": {"deviceCnt": 14, "macaddrCnt": 196, "oifCnt": 196, "uniqueOifCnt":
+    21, "arpNdEntriesCnt": 196, "arpNdV4EntriesCnt": 132, "arpNdV6EntriesCnt": 64,
+    "arpNdV6GlobalEntriesCnt": 64, "arpNdV6LLAEntriesCnt": 0, "remoteV4EntriesCnt":
+    0, "staticV4EntriesCnt": 28, "failedV4EntryCnt": 0, "remoteV6EntriesCnt": 0, "staticV6EntriesCnt":
+    8, "failedV6EntryCnt": 0}, "ospf-ibgp": {"deviceCnt": 14, "macaddrCnt": 186, "oifCnt":
+    186, "uniqueOifCnt": 23, "arpNdEntriesCnt": 186, "arpNdV4EntriesCnt": 148, "arpNdV6EntriesCnt":
+    38, "arpNdV6GlobalEntriesCnt": 38, "arpNdV6LLAEntriesCnt": 0, "remoteV4EntriesCnt":
+    0, "staticV4EntriesCnt": 34, "failedV4EntryCnt": 0, "remoteV6EntriesCnt": 0, "staticV6EntriesCnt":
+    10, "failedV6EntryCnt": 0}}'
 - command: arpnd summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd summarize
-  output: '{"dual-evpn": {"deviceCnt": 14, "arpNdEntriesCnt": 196, "macaddrCnt": 196,
-    "oifCnt": 196, "uniqueOifCnt": 21, "remoteEntriesCnt": 0, "staticEntriesCnt":
-    36, "failedEntryCnt": 0}}'
+  output: '{"dual-evpn": {"deviceCnt": 14, "macaddrCnt": 196, "oifCnt": 196, "uniqueOifCnt":
+    21, "arpNdEntriesCnt": 196, "arpNdV4EntriesCnt": 132, "arpNdV6EntriesCnt": 64,
+    "arpNdV6GlobalEntriesCnt": 64, "arpNdV6LLAEntriesCnt": 0, "remoteV4EntriesCnt":
+    0, "staticV4EntriesCnt": 28, "failedV4EntryCnt": 0, "remoteV6EntriesCnt": 0, "staticV6EntriesCnt":
+    8, "failedV6EntryCnt": 0}}'
 - command: arpnd unique --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: arpnd unique
@@ -1487,6 +1495,8 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
   marks: arpnd summarize
-  output: '{"dual-bgp": {"deviceCnt": 14, "arpNdEntriesCnt": 138, "macaddrCnt": 138,
-    "oifCnt": 138, "uniqueOifCnt": 17, "remoteEntriesCnt": 0, "staticEntriesCnt":
-    52, "failedEntryCnt": 0}}'
+  output: '{"dual-bgp": {"deviceCnt": 14, "macaddrCnt": 138, "oifCnt": 138, "uniqueOifCnt":
+    17, "arpNdEntriesCnt": 138, "arpNdV4EntriesCnt": 78, "arpNdV6EntriesCnt": 60,
+    "arpNdV6GlobalEntriesCnt": 52, "arpNdV6LLAEntriesCnt": 8, "remoteV4EntriesCnt":
+    0, "staticV4EntriesCnt": 36, "failedV4EntryCnt": 0, "remoteV6EntriesCnt": 0, "staticV6EntriesCnt":
+    16, "failedV6EntryCnt": 0}}'

@@ -45,15 +45,40 @@ class ArpndObj(SqPandasEngine):
         """Summarize ARPND info across namespace"""
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
-            ('arpNdEntriesCnt', 'ipAddress', 'count'),
             ('macaddrCnt', 'macaddr', 'count'),
             ('oifCnt', 'oif', 'count'),
-            ('uniqueOifCnt', 'oif', 'nunique')]
+            ('uniqueOifCnt', 'oif', 'nunique'),
+            ('arpNdEntriesCnt', 'ipAddress', 'count')]
 
         self._summarize_on_add_with_query = [
-            ('remoteEntriesCnt', 'state == "remote"', 'ipAddress'),
-            ('staticEntriesCnt', 'state == "permanent"', 'ipAddress'),
-            ('failedEntryCnt', 'state == "failed"', 'ipAddress')]
+            ('arpEntriesCnt', '@self._check_ipvers(ipAddress, 4)',
+                'ipAddress'),
+            ('v6NDEntriesCnt', '@self._check_ipvers(ipAddress, 6)',
+                'ipAddress'),
+            ('v6NDGlobalEntriesCnt',
+                '@self._check_ipvers(ipAddress, 6) and'
+                '@self._is_in_subnet(ipAddress, "fe80::/10")', 'ipAddress'),
+            ('v6NDLLAEntriesCnt',
+                '@self._check_ipvers(ipAddress, 6) and not '
+                '@self._is_in_subnet(ipAddress, "fe80::/10")',
+                'ipAddress'),
+            ('remoteV4EntriesCnt',
+                'state == "remote" and @self._check_ipvers(ipAddress, 4)',
+                'ipAddress'),
+            ('staticV4EntriesCnt', 'state == "permanent" and '
+                '@self._check_ipvers(ipAddress, 4)', 'ipAddress'),
+            ('failedV4EntryCnt',
+                'state == "failed" and @self._check_ipvers(ipAddress, 4)',
+                'ipAddress'),
+            ('remoteV6EntriesCnt',
+                'state == "remote" and @self._check_ipvers(ipAddress, 6)',
+                'ipAddress'),
+            ('staticV6EntriesCnt',
+                'state == "permanent" and @self._check_ipvers(ipAddress, 6)',
+                'ipAddress'),
+            ('failedV6EntryCnt',
+                'state == "failed" and @self._check_ipvers(ipAddress, 6)',
+                'ipAddress')]
 
         self._check_empty_col = 'arpNdEntriesCnt'
         return super().summarize(**kwargs)
