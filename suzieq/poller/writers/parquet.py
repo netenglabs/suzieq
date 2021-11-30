@@ -1,16 +1,22 @@
 import logging
 import os
+from typing import Dict
 
 import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
-from suzieq.poller.writers.outputWorker import OutputWorker
+
+from suzieq.poller.writers.output_worker import OutputWorker
 
 logger = logging.getLogger(__name__)
 
+
 class ParquetOutputWorker(OutputWorker):
+    """ParquetOutputWorker writes the data retrived by
+    the poller in a parquet output directory
+    """
+
     def __init__(self, **kwargs):
-        """Validate user arguments for parquet output"""
         data_directory = kwargs.get("data_dir")
 
         if not data_directory:
@@ -32,7 +38,12 @@ class ParquetOutputWorker(OutputWorker):
         logger.info("Parquet outputs will be under {}".format(output_dir))
         self.root_output_dir = output_dir
 
-    def write_data(self, data):
+    def write_data(self, data: Dict):
+        """Write the data into the Parquet output directory"
+
+        Args:
+            data (Dict): dictionary containing the data to store.
+        """
         cdir = "{}/{}/".format(self.root_output_dir, data["topic"])
         if not os.path.isdir(cdir):
             os.makedirs(cdir)

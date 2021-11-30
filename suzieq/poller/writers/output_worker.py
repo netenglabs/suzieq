@@ -5,6 +5,7 @@ of the Suzieq poller output workers
 import abc
 import logging
 import os
+from typing import Dict
 
 from suzieq.shared.sq_plugin import SqPlugin
 
@@ -29,6 +30,10 @@ class OutputWorker(SqPlugin):
             raise ValueError
 
     @abc.abstractmethod
-    def write_data(self, data):
-        """Write the data into the ouput source"""
+    def write_data(self, data: Dict):
+        """Write the data into the ouput source"
+
+        Args:
+            data (Dict): dictionary containing the data to store.
+        """
         raise NotImplementedError

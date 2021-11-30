@@ -1,8 +1,10 @@
-from suzieq.poller.writers.outputWorker import OutputWorker
+from suzieq.poller.writers.output_worker import OutputWorker
 
 
 class GatherOutputWorker(OutputWorker):
-    """This is used to write output for the run-once data gather mode"""
+    """GatherOutputWorker is used to write poller output
+    in the case of the run-once data gather mode
+    """
 
     def write_data(self, data):
         file = f"{self.root_output_dir}/{data['topic']}.output"
