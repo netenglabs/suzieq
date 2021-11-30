@@ -45,10 +45,9 @@ class ArpndObj(SqPandasEngine):
         """Summarize ARPND info across namespace"""
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
-            ('macaddrCnt', 'macaddr', 'count'),
-            ('oifCnt', 'oif', 'count'),
-            ('uniqueOifCnt', 'oif', 'nunique'),
-            ('arpNdEntriesCnt', 'ipAddress', 'count')]
+            ('arpNdEntriesCnt', 'ipAddress', 'count'),
+            ('uniqueArpEntriesCnt', 'ipAddress', 'nunique'),
+            ('uniqueOifCnt', 'oif', 'nunique')]
 
         self._summarize_on_add_with_query = [
             ('arpEntriesCnt', '@self._check_ipvers(ipAddress, 4)',
@@ -67,16 +66,17 @@ class ArpndObj(SqPandasEngine):
                 'ipAddress'),
             ('staticV4EntriesCnt', 'state == "permanent" and '
                 '@self._check_ipvers(ipAddress, 4)', 'ipAddress'),
-            ('failedV4EntryCnt',
-                'state == "failed" and @self._check_ipvers(ipAddress, 4)',
-                'ipAddress'),
             ('remoteV6EntriesCnt',
                 'state == "remote" and @self._check_ipvers(ipAddress, 6)',
                 'ipAddress'),
             ('staticV6EntriesCnt',
                 'state == "permanent" and @self._check_ipvers(ipAddress, 6)',
                 'ipAddress'),
-            ('failedV6EntryCnt',
+            ('failedEntriesCnt', 'state == "failed"', 'ipAddress'),
+            ('failedV4EntriesCnt',
+                'state == "failed" and @self._check_ipvers(ipAddress, 4)',
+                'ipAddress'),
+            ('failedV6EntriesCnt',
                 'state == "failed" and @self._check_ipvers(ipAddress, 6)',
                 'ipAddress')]
 
