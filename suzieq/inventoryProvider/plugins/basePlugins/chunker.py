@@ -18,5 +18,5 @@ class Chunker:
             glob_inv ([type]): global inventory to split
             n_pollers ([type]): number of chunks
             addl_parameters ([type]): custom parameters that each Chunker
-                                      can define
+                                      plugin can define
         """
