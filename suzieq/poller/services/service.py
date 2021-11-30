@@ -1,20 +1,20 @@
-import os
-from typing import List, Dict
 import asyncio
-from datetime import datetime, timezone
-import time
 import copy
-import logging
 import json
-import yaml
-from tempfile import mkstemp
-from dataclasses import dataclass, field
-from http import HTTPStatus
-from collections import defaultdict
+import logging
 import operator
-from packaging import version as version_parse
+import os
+import time
+from collections import defaultdict
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from http import HTTPStatus
+from tempfile import mkstemp
+from typing import Dict, List
 
 import pyarrow as pa
+import yaml
+from packaging import version as version_parse
 
 from suzieq.poller.services.svcparser import cons_recs_from_json_template
 from suzieq.shared.utils import known_devtypes
@@ -129,7 +129,7 @@ class Service(object):
                     r['defn'][device]['textfsm'])
         return r
 
-    def set_nodes(self, node_call_list):
+    async def set_nodes(self, node_call_list):
         """New node list for this service"""
         if self.node_postcall_list:
             self.new_node_postcall_list = node_call_list

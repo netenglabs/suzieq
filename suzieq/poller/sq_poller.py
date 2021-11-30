@@ -18,7 +18,7 @@ async def start_poller(userargs, cfg):
         'poller', cfg, '/tmp/sq-poller.log')
     logger = init_logger('suzieq.poller', logfile,
                          loglevel, logsize, log_stdout)
-    
+
     poller = None
     try:
         poller = Poller(userargs, cfg)
