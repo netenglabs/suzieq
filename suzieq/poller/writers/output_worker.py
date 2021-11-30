@@ -1,12 +1,18 @@
+"""
+This module contains all the common logic
+of the Suzieq poller output workers
+"""
 import abc
 import logging
 import os
 
-import pyarrow.parquet as pq
+from suzieq.shared.sq_plugin import SqPlugin
 
 
-class OutputWorker(object):
-
+class OutputWorker(SqPlugin):
+    """OutputWorker is the base class for all the objects
+    implementing the logic to persist the output of the polling
+    """
     def __init__(self, **kwargs):
         self.type = kwargs.get("type", None)
         self.logger = logging.getLogger(__name__)
@@ -24,9 +30,5 @@ class OutputWorker(object):
 
     @abc.abstractmethod
     def write_data(self, data):
+        """Write the data into the ouput source"""
         raise NotImplementedError
-
-
-
-
-
