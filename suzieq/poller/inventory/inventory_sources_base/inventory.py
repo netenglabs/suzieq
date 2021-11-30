@@ -53,7 +53,38 @@ class Inventory(SqPlugin):
         Returns:
             List[Node]: a list containing all the nodes in the inventory
         """
-        pass
+
+        inventory_list = self._get_device_list()
+        if not inventory_list:
+            raise AttributeError('The inventory source returned an empty list')
+
+        # Initialize the nodes in the inventory
+        init_tasks = []
+        for host in inventory_list:
+            new_node = Node()
+            init_tasks += [new_node._init(
+                **host,
+                passphrase=self.passphrase,
+                ssh_config_file=self.ssh_config_file,
+                jump_host=self.jump_host,
+                jump_host_key_file=self.jump_host_key_file,
+                connect_timeout=self.connect_timeout,
+                ignore_known_hosts=self.ignore_known_hosts,
+            )]
+
+        for n in asyncio.as_completed(init_tasks):
+            newnode = await n
+            if newnode.devtype is None:
+                logger.error(
+                    "Unable to determine device type for {}:{}"
+                    .format(newnode.address, newnode.port))
+            else:
+                logger.info(f"Added node {newnode.hostname}:{newnode.port}")
+
+            self._nodes.update(
+                {"{}.{}".format(newnode.nsname, newnode.hostname): newnode})
+
+        return self._nodes
 
     def get_node_callq(self) -> Dict[str, Dict]:
         """Get the dictionary allowing to send command query
@@ -64,7 +95,13 @@ class Inventory(SqPlugin):
                 the node hostname and the function allowing to call
                 a query on the node.
         """
-        pass
+        node_callq = defaultdict(lambda: defaultdict(dict))
+
+        node_callq.update({x: {'hostname': self._nodes[x].hostname,
+                               'postq':    self._nodes[x].post_commands}
+                           for x in self._nodes})
+
+        return node_callq
 
     async def schedule_nodes_run(self):
         """Schedule the nodes tasks, so that they can
@@ -73,7 +110,10 @@ class Inventory(SqPlugin):
         This function should be called only once, if called more
         than once, it won't have any effect.
         """
-        pass
+        if not self._node_tasks:
+            self._node_tasks = {node: self._nodes[node].run()
+                                for node in self._nodes}
+            await self.add_task_fn(self._node_tasks.values())
 
     @abc.abstractmethod
     def _get_device_list(self):
