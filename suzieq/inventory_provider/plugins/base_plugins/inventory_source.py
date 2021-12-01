@@ -1,14 +1,11 @@
 from abc import abstractmethod
 from copy import copy
 from threading import Semaphore
-from suzieq.inventoryProvider.plugins.inventorySource.credentialLoader\
-    .credentialLoader import CredentialLoader
-from suzieq.inventoryProvider.utils import get_class_by_path
-from inspect import getfile
-from os.path import abspath, dirname
+from suzieq.inventory_provider.plugins.inventory_source.credential_loader.credential_loader import CredentialLoader
+from suzieq.shared.sq_plugin import SqPlugin
 
 
-class InventorySource:
+class InventorySource(SqPlugin):
     def __init__(self, input_data) -> None:
         """
         - Saves inside a data structure the raw content of <input>
@@ -88,11 +85,9 @@ class InventorySource:
         self._inv_semaphore.release()
 
     def _get_loader_class(self, ltype):
-        base_class_name = CredentialLoader.__name__
-        module_path = abspath(dirname(getfile(CredentialLoader)))
-        l_classes = get_class_by_path(
-            module_path, module_path, base_class_name
-        )
+        cred_loader_pkg = "suzieq.inventory_provider.plugins.inventory_source"\
+            ".credential_loader"
+        l_classes = CredentialLoader.get_plugins(cred_loader_pkg)
 
         if l_classes:
             return l_classes.get(ltype, None)

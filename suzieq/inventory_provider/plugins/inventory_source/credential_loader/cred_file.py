@@ -1,5 +1,4 @@
-from suzieq.inventoryProvider.plugins.inventorySource.credentialLoader \
-    .credentialLoader import CredentialLoader
+from suzieq.inventory_provider.plugins.inventory_source.credential_loader.credential_loader import CredentialLoader
 from os import path
 import yaml
 

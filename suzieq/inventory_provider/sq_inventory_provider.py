@@ -6,25 +6,18 @@ Classes:
 Functions:
     sq_main(): this function coordinates all the plugins initializing
                 and starting each one of them. The plugins are divided
-                in types. The supported types are:
-                - basePlugins.InventorySource
-                - basePlugins.Chunker
-                - basePlugins.PollerManager
+                in types. The supported types are save into
+                suzieq.inventory_provider.plugins.base_plugins
 """
-from os.path import join, isfile
+from os.path import isfile
 from typing import Type, List
+from time import sleep
 import threading
 import argparse
 import yaml
-from time import sleep
-from suzieq.inventoryProvider.utils \
-    import INVENTORY_PROVIDER_PATH, get_class_by_path, get_classname_from_type
-from suzieq.inventoryProvider.plugins.basePlugins.inventoryAsyncPlugin \
+from suzieq.inventory_provider.plugins.base_plugins.inventory_async_plugin \
     import InventoryAsyncPlugin
-
-
-PLUGIN_PATH = join(INVENTORY_PROVIDER_PATH, "plugins")
-BASE_PLUGIN_PATH = join(PLUGIN_PATH, "basePlugins")
+from suzieq.shared.sq_plugin import SqPlugin
 
 
 class InventoryProvider:
@@ -42,6 +35,10 @@ class InventoryProvider:
         self._plugin_objects = dict()
 
         self.sleep_period = 0
+
+        # collect basePlugin classes
+        base_plugin_pkg = "suzieq.inventory_provider.plugins.base_plugins"
+        self._base_plugin_classes = SqPlugin.get_plugins(base_plugin_pkg)
 
     def load(self, config_data: dict):
         """Loads the provider configuration and the plugins configurations
@@ -82,16 +79,23 @@ class InventoryProvider:
             raise RuntimeError("No plugin configuration provided for "
                                f"{plugin_type}")
 
-        # configure paths to reach the inventory plugins directories
-        base_class_name = get_classname_from_type(plugin_type)
-        ppath = join(PLUGIN_PATH, plugin_type)
-        # Seach all the subclass of "base_class_name" inside "ppath"
-        plugin_classes = get_class_by_path(
-            ppath, BASE_PLUGIN_PATH, base_class_name
-        )
+        # # configure paths to reach the inventory plugins directories
+        # base_class_name = get_classname_from_type(plugin_type)
+        # ppath = join(PLUGIN_PATH, plugin_type)
+        # # Seach all the subclass of "base_class_name" inside "ppath"
+        # plugin_classes = get_class_by_path(
+        #     ppath, BASE_PLUGIN_PATH, base_class_name
+        # )
+
+        base_plugin_class = self._base_plugin_classes.get(plugin_type, None)
+        if not base_plugin_class:
+            raise AttributeError(f"Unknown plugin type {plugin_type}")
+
+        plugins_pkg = "suzieq.inventory_provider.plugins"
+        plugin_classes = base_plugin_class.get_plugins(plugins_pkg)
 
         for plug_conf in plugin_confs:
-            pname = plug_conf.get("plugin_name", "").lower()
+            pname = plug_conf.get("plugin_name", "")
             if not pname:
                 raise AttributeError("Missing field <plugin_name>")
             if pname not in plugin_classes:
@@ -152,9 +156,9 @@ def sq_prov_main():
     inv_prov.load(config_data.get("inventory_provider", {}))
 
     # initialize inventorySources
-    inv_prov.init_plugins("inventorySource")
+    inv_prov.init_plugins("inventory_source")
 
-    inv_source_plugins = inv_prov.get_plugins("inventorySource")
+    inv_source_plugins = inv_prov.get_plugins("inventory_source")
     if not inv_source_plugins:
         raise RuntimeError(
             "No inventorySource plugin in the configuration file"
@@ -179,10 +183,10 @@ def sq_prov_main():
     chunker = chunkers[0]
 
     # initialize pollerManager
-    inv_prov.init_plugins("pollerManager")
-    poller_managers = inv_prov.get_plugins("pollerManager")
+    inv_prov.init_plugins("poller_manager")
+    poller_managers = inv_prov.get_plugins("poller_manager")
     if len(poller_managers) > 1:
-        raise RuntimeError("Only 1 PollerManager at a time is supported")
+        raise RuntimeError("Only 1 poller_manager at a time is supported")
     poller_manager = poller_managers[0]
     pm_thread = None
     if issubclass(type(poller_manager), InventoryAsyncPlugin):

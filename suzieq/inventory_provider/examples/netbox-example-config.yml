@@ -1,0 +1,48 @@
+inventory_provider:
+  plugin_type:
+    inventory_source:
+    - local-netbox:
+      plugin_name: netbox
+      args:
+        credentials:
+          # token: "0123456789123456789"
+          username: admin
+          password: admin
+        ip_address: "127.0.0.1"
+        use_https: false
+        port: "8000"
+        namespace: "local"
+        tag: "suzieq"
+        period: 60
+        device_credentials:
+          # skip: true
+          type: cred_file
+          file_path: "/home/luca/stardust/suzieq/suzieq/inventory_provider/plugins/inventory_source/examples/local-netbox-devices-credentials.yaml"
+    # - remote-netbox-demo:
+    #   plugin_name: netbox
+    #   args:
+    #     credentials:
+    #       username: "admin"
+    #       password: "admin"
+    #     ip_address: "demo.netbox.dev"
+    #     use_https: true
+    #     port: "443"
+    #     tag: "test-tag"
+    #     device_credentials:
+    #       skip: true
+          # file_path: "./remote-netbox-demo-devices-credentials.yaml"
+    poller_manager:
+      - poller0:
+        plugin_name: static_poller_manager
+        args:
+          pollers_count: 3
+          output_path: /home/luca/stardust/suzieq/suzieq/inventoryProvider/plugins/pollerManager
+          inventory_file_name: static_inv
+    chunker:
+      - chunker0:
+        plugin_name: static_chunker
+        args:
+          split_pol: namespace
+  provider_config:
+    period: 10
+    

@@ -9,7 +9,7 @@ Classes:
 """
 from typing import Dict, List
 import numpy as np
-from suzieq.inventoryProvider.plugins.basePlugins.chunker \
+from suzieq.inventory_provider.plugins.base_plugins.chunker \
     import Chunker
 
 

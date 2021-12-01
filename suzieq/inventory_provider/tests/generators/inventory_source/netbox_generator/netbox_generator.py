@@ -1,6 +1,5 @@
 from faker import Faker
-from suzieq.inventoryProvider.tests.generator.sourceGenerator \
-    import SourceGenerator
+from suzieq.inventory_provider.tests.generators.base_generators.inventory_source import InventorySourceGenerator
 from copy import deepcopy
 from os.path import dirname, join, isfile, isdir
 import json
@@ -11,7 +10,7 @@ _BASIC_TOKEN_DATA_PATH = join(_CUR_FILE_PATH, "common/base_token.json")
 _VALID_OUTPUT_FORMATS = ["json"]
 
 
-class NetboxGenerator(SourceGenerator):
+class NetboxGenerator(InventorySourceGenerator):
     def __init__(self, name: str, fake: Faker, config_data: dict) -> None:
         '''
         Initialize the FakeSource
@@ -162,7 +161,7 @@ class NetboxGenerator(SourceGenerator):
             if format == "json":
                 f.write(json.dumps(output))
 
-    def generate(self):
+    def _generate_data(self):
         '''
         Generate the list of devices and tokens with random values
 
@@ -230,3 +229,6 @@ class NetboxGenerator(SourceGenerator):
         )
 
         self.writeData(self._tokens, token_out_path, self._token_out_format)
+
+    def _generate_credentials(self):
+        pass

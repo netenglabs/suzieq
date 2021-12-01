@@ -4,7 +4,7 @@
     inventory chunks on different files for the pollers
 """
 from typing import List, Dict
-from suzieq.inventoryProvider.plugins.basePlugins.poller_manager \
+from suzieq.inventory_provider.plugins.base_plugins.poller_manager \
     import PollerManager
 
 

@@ -1,11 +1,9 @@
 from faker import Faker
 import argparse
 import yaml
-from suzieq.inventoryProvider.tests.generator.sourceGenerator \
-    import SourceGenerator
+from suzieq.inventory_provider.tests.generators.base_generators \
+    .source_generator import SourceGenerator
 from os.path import isfile, join, dirname, abspath
-from suzieq.inventoryProvider.utils \
-    import get_class_by_path
 
 DATA_GENERATOR_DIRECTORY = dirname(abspath(__file__))
 SOURCE_GENERATOR_DIRECTORY = join(DATA_GENERATOR_DIRECTORY, "generator")
@@ -24,10 +22,13 @@ def main():
     config_file = args.config
 
     if not isfile(config_file):
-        raise ValueError("File {} doesn't exists".format(config_file))
+        raise ValueError(f"File {config_file} doesn't exists")
 
     with open(config_file, "r") as f:
         config_data = yaml.safe_load(f.read())
+
+    base_gen_pkg = "suzieq.inventory_provider.tests.generators.base_generators"
+    base_gen_classes = SourceGenerator.get_plugins(base_gen_pkg)
 
     fake = Faker()
     seed = config_data.get("seed", None)
@@ -36,8 +37,6 @@ def main():
 
     for macro_gen_type, generators in \
             config_data.get("generators", {}).items():
-        base_gen_type_name = SourceGenerator.__name__
-        gen_dir = join(DATA_GENERATOR_DIRECTORY, macro_gen_type)
 
         gen_names = []
 
@@ -51,15 +50,17 @@ def main():
             if gen_name in gen_names:
                 raise RuntimeError("generator names must be unique")
             gen_names.append(gen_name)
-            gen_path = join(gen_dir, gen_type)
-            gen_classes = get_class_by_path(
-                gen_path,
-                SOURCE_GENERATOR_DIRECTORY,
-                base_gen_type_name
-            )
-            gen_type = gen_type.lower()
+
+            base_gen_class = base_gen_classes.get(macro_gen_type, None)
+            if not base_gen_class:
+                raise AttributeError(
+                    f"Unknown generator type {macro_gen_type}")
+
+            gens_pkg = f"suzieq.inventory_provider.tests.generators.{macro_gen_type}"
+            gen_classes = base_gen_class.get_plugins(gens_pkg)
 
             gen_class = gen_classes.get(gen_type, None)
+
             if not gen_class:
                 raise RuntimeError("Unable to find a generator "
                                    "class called {}".format(gen_type))

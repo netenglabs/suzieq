@@ -12,9 +12,9 @@ import json
 from threading import Semaphore
 from time import sleep
 import requests
-from suzieq.inventoryProvider.plugins.basePlugins.inventorySource \
+from suzieq.inventory_provider.plugins.base_plugins.inventory_source \
     import InventorySource
-from suzieq.inventoryProvider.plugins.basePlugins.inventoryAsyncPlugin \
+from suzieq.inventory_provider.plugins.base_plugins.inventory_async_plugin \
     import InventoryAsyncPlugin
 
 DEFAULT_PORTS = {"http": 80, "https": 443}

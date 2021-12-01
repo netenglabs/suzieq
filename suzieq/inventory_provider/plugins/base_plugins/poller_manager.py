@@ -5,9 +5,10 @@ Classes:
                    In some cases it can also monitor pollers
 """
 from abc import abstractmethod
+from suzieq.shared.sq_plugin import SqPlugin
 
 
-class PollerManager:
+class PollerManager(SqPlugin):
     """Manage and, in some cases, monitor pollers
     """
 
