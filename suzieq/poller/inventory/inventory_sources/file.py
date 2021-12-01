@@ -107,8 +107,8 @@ class sqNativeInventory(Inventory):
                         'password': password,
                         'transport': transport,
                         'devtype': devtype,
-                        'nsname': nsname,
-                        'keyfile': keyfile
+                        'namespace': nsname,
+                        'ssh_keyfile': keyfile
                     })
                 else:
                     logger.error(f'Ignoring invalid host spec.: {entry}')
