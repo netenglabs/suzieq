@@ -21,8 +21,9 @@ class StaticChunker(Chunker):
     - namespace: splits the global inventory without splitting namespaces
     """
 
-    def __init__(self):
-        self._split_policies_list = set(["random", "namespace"])
+    def __init__(self, config_data: dict = None):
+
+        self._split_policies_list = ["random", "namespace"]
         self._split_policies_fn = {}
 
         for pol_name in self._split_policies_list:
@@ -31,6 +32,11 @@ class StaticChunker(Chunker):
                 raise RuntimeError(f"No split function for {pol_name}"
                                    " split policy")
             self._split_policies_fn[pol_name] = fun
+        if config_data:
+            self._split_pol = config_data \
+                .get("split_pol", self._split_policies_list[0])
+        else:
+            self._split_pol = self._split_policies_list[0]
 
     def chunk(
         self,
@@ -39,7 +45,7 @@ class StaticChunker(Chunker):
         **addl_params
     ) -> List[Dict]:
 
-        split_pol = addl_params.pop("split_pol", "random")
+        split_pol = addl_params.pop("split_pol", self._split_pol)
 
         if addl_params:
             raise RuntimeError(f"Unused parameters {addl_params}")

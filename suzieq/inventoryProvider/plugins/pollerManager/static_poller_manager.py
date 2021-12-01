@@ -19,7 +19,7 @@ class StaticPollerManager(PollerManager):
         if not config_data:
             raise ValueError("No configuration provided")
 
-        self._poller_count = config_data.get("poller_count", 1)
+        self._pollers_count = config_data.get("pollers_count", 1)
         self._inventory_path = config_data.get("inventory_path", "")
         self._inventory_file_name = config_data \
             .get("inventory_file_name", "inventory")
@@ -46,4 +46,4 @@ class StaticPollerManager(PollerManager):
             int: number of desired pollers configured in the configuration
                  file
         """
-        return self._poller_count
+        return self._pollers_count

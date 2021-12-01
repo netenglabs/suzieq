@@ -16,8 +16,11 @@ from typing import Type, List
 import threading
 import argparse
 import yaml
+from time import sleep
 from suzieq.inventoryProvider.utils \
     import INVENTORY_PROVIDER_PATH, get_class_by_path, get_classname_from_type
+from suzieq.inventoryProvider.plugins.basePlugins.inventoryAsyncPlugin \
+    import InventoryAsyncPlugin
 
 
 PLUGIN_PATH = join(INVENTORY_PROVIDER_PATH, "plugins")
@@ -27,6 +30,7 @@ BASE_PLUGIN_PATH = join(PLUGIN_PATH, "basePlugins")
 class InventoryProvider:
     """This class manages all the plugins set on the configuration files
     """
+
     def __init__(self) -> None:
         self._provider_config = dict()
 
@@ -37,6 +41,8 @@ class InventoryProvider:
         # contains the Plugin objects divided by type
         self._plugin_objects = dict()
 
+        self.sleep_period = 0
+
     def load(self, config_data: dict):
         """Loads the provider configuration and the plugins configurations
 
@@ -44,8 +50,10 @@ class InventoryProvider:
             config_data ([dict]): a dictionary which contains provider and
                                   plugins configurations
         """
-        self._provider_config = config_data.get("provider_config", {})
         self._plugins_config = config_data.get("plugin_type", {})
+
+        self._provider_config = config_data.get("provider_config", {})
+        self.sleep_period = self._provider_config.get("period", 3600)
 
     def get_plugins(self, plugin_type: str) -> List[Type]:
         """Returns the list of plugins of type <plugin_type>
@@ -66,12 +74,13 @@ class InventoryProvider:
 
         Raises:
             RuntimeError: No plugin configuration
-            RuntimeError: Invalid configuration
+            AttributeError: Invalid configuration
             RuntimeError: Unknown plugin
         """
         plugin_confs = self._plugins_config.get(plugin_type, {})
         if not plugin_confs:
-            raise RuntimeError("No plugin configuration provided")
+            raise RuntimeError("No plugin configuration provided for "
+                               f"{plugin_type}")
 
         # configure paths to reach the inventory plugins directories
         base_class_name = get_classname_from_type(plugin_type)
@@ -82,15 +91,15 @@ class InventoryProvider:
         )
 
         for plug_conf in plugin_confs:
-            pname = plug_conf.get("plugin_name", "")
+            pname = plug_conf.get("plugin_name", "").lower()
             if not pname:
-                raise RuntimeError("Missing field <plugin_name>")
+                raise AttributeError("Missing field <plugin_name>")
             if pname not in plugin_classes:
                 raise RuntimeError(
                     f"Unknown plugin called {pname} with type {plugin_type}"
                 )
 
-            plugin = plugin_classes[pname](plug_conf.get("args", {}))
+            plugin = plugin_classes[pname](plug_conf.get("args", None))
             if not self._plugin_objects.get(plugin_type, None):
                 self._plugin_objects[plugin_type] = []
             self._plugin_objects[plugin_type].append(plugin)
@@ -103,6 +112,7 @@ def sq_prov_main():
     coordinates all the different plugins
 
     Raises:
+        RuntimeError: Invalid configuration file passed as parameter
         RuntimeError: Cannot find the configuration file
         RuntimeError: Missing inventorySource plugins in the configuration
     """
@@ -127,40 +137,85 @@ def sq_prov_main():
     config_file = args.config
     run_once = args.run_once
 
-    if config_file:
-        if not isfile(config_file):
-            raise RuntimeError(f"No configuration file at {config_file}")
-        config_data = {}
-        with open(
-            config_file,
-            "r",
-            encoding="utf-8"
-        ) as file:
-            config_data = yaml.safe_load(file.read())
+    if not config_file:
+        raise RuntimeError("Invalid -c/--config parameter value")
 
-        inv_prov = InventoryProvider()
-        inv_prov.load(config_data.get("inventory_provider", {}))
+    if not isfile(config_file):
+        raise RuntimeError(f"No configuration file at {config_file}")
+    config_data = {}
+    with open(
+        config_file, "r", encoding="utf-8"
+    ) as file:
+        config_data = yaml.safe_load(file.read())
 
-        inv_prov.init_plugins("inventorySource")
+    inv_prov = InventoryProvider()
+    inv_prov.load(config_data.get("inventory_provider", {}))
 
-        inv_source_plugins = inv_prov.get_plugins("inventorySource")
-        if not inv_source_plugins:
-            raise RuntimeError(
-                "No inventorySource plugin in the configuration file"
-            )
+    # initialize inventorySources
+    inv_prov.init_plugins("inventorySource")
 
-        inv_source_threads = list()
+    inv_source_plugins = inv_prov.get_plugins("inventorySource")
+    if not inv_source_plugins:
+        raise RuntimeError(
+            "No inventorySource plugin in the configuration file"
+        )
 
-        for is_plugin in inv_source_plugins:
-            thead = threading.Thread(
-                target=is_plugin.run,
+    inv_source_threads = []
+    # start inventorySources if needed
+    for inv_src_plugin in inv_source_plugins:
+        if issubclass(type(inv_src_plugin), InventoryAsyncPlugin):
+            thread = threading.Thread(
+                target=inv_src_plugin.run,
                 kwargs={"run_once": run_once}
             )
-            inv_source_threads.append(thead)
-            thead.start()
+            inv_source_threads.append(thread)
+            thread.start()
 
-        for is_plugin in inv_source_plugins:
-            print(is_plugin.get_inventory())
+    # initialize chunker
+    inv_prov.init_plugins("chunker")
+    chunkers = inv_prov.get_plugins("chunker")
+    if len(chunkers) > 1:
+        raise RuntimeError("Only 1 Chunker at a time is supported")
+    chunker = chunkers[0]
+
+    # initialize pollerManager
+    inv_prov.init_plugins("pollerManager")
+    poller_managers = inv_prov.get_plugins("pollerManager")
+    if len(poller_managers) > 1:
+        raise RuntimeError("Only 1 PollerManager at a time is supported")
+    poller_manager = poller_managers[0]
+    pm_thread = None
+    if issubclass(type(poller_manager), InventoryAsyncPlugin):
+        pm_thread = threading.Thread(
+            target=poller_manager.run,
+            kwargs={"run_once": run_once}
+        )
+        pm_thread.start()
+
+    while True:
+        global_inventory = {}
+        for inv_src_plugin in inv_source_plugins:
+            cur_inv = inv_src_plugin.get_inventory()
+            if cur_inv:
+                for dev_name, device in cur_inv.items():
+                    dev_ns = device.get("namespace", None)
+                    if dev_ns is None:
+                        raise AttributeError("namespace not found in device"
+                                             " inventory")
+                    global_inventory[f"{dev_ns}.{dev_name}"] = device
+
+        n_pollers = poller_manager.get_pollers_number()
+
+        inv_chunks = chunker.chunk(global_inventory, n_pollers)
+        [print(ic, end="\n----\n") for ic in inv_chunks]
+
+        poller_manager.apply(inv_chunks)
+
+        if run_once:
+            break
+
+        print("sleeping for", inv_prov.sleep_period)
+        sleep(inv_prov.sleep_period)
 
 
 if __name__ == "__main__":

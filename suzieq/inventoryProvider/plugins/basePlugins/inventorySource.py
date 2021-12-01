@@ -46,19 +46,20 @@ class InventorySource:
         """
 
         if timeout < 0:
-            return None, ValueError(
+            raise ValueError(
                 "timeout value must be positive, found {}".format(timeout)
                 )
 
         ok = self._inv_is_set_sem.acquire(timeout=timeout)
         if not ok:
-            return None, TimeoutError(
-                "Unable to acquire the lock before the timeout expiration"
+            raise TimeoutError(
+                "1: Unable to acquire the lock before the timeout expiration"
             )
+        self._inv_is_set_sem.release()
         ok = self._inv_semaphore.acquire(timeout=timeout)
         if not ok:
-            return None, TimeoutError(
-                "Unable to acquire the lock before the timeout expiration"
+            raise TimeoutError(
+                "2: Unable to acquire the lock before the timeout expiration"
             )
 
         if callable(getattr(self._inventory, "copy", None)):

@@ -18,7 +18,12 @@ from suzieq.inventoryProvider.plugins.basePlugins.inventoryAsyncPlugin \
     import InventoryAsyncPlugin
 
 DEFAULT_PORTS = {"http": 80, "https": 443}
-RELEVANT_FIELDS = ["primary_ip6.address", "primary_ip4.address", "site.name"]
+RELEVANT_FIELDS = [
+    "name",
+    "primary_ip6.address",
+    "primary_ip4.address",
+    "site.name"
+]
 
 
 class Netbox(InventorySource, InventoryAsyncPlugin):
