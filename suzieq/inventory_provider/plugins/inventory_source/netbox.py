@@ -17,8 +17,8 @@ from suzieq.inventory_provider.plugins.base_plugins.inventory_source \
 from suzieq.inventory_provider.plugins.base_plugins.inventory_async_plugin \
     import InventoryAsyncPlugin
 
-DEFAULT_PORTS = {"http": 80, "https": 443}
-RELEVANT_FIELDS = [
+_DEFAULT_PORTS = {"http": 80, "https": 443}
+_RELEVANT_FIELDS = [
     "name",
     "primary_ip6.address",
     "primary_ip4.address",
@@ -44,6 +44,7 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
         self._token = ""
         self._password = ""
         self._username = ""
+
         super().__init__(config_data)
 
     def _load(self, input_data: dict):
@@ -56,6 +57,7 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
             ValueError: This exception is called if the netbox configuration
                         is empty
         """
+
         if not input_data:
             # error
             raise ValueError("no netbox_config provided")
@@ -67,7 +69,7 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
             self._protocol = "http"
         self._port = input_data.get(
             "port",
-            DEFAULT_PORTS.get(self._protocol, None)
+            _DEFAULT_PORTS.get(self._protocol, None)
         )
         self._tag = input_data.get("tag", "null")
         self._ip_address = input_data.get("ip_address", None)
@@ -102,6 +104,18 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
         if not self._device_credentials:
             errors.append("No device credentials provided")
         return errors
+
+    def _update_inventory_format(self, input_inv_format: dict = None):
+        netbox_inv_format = {
+            "hostname": "name",
+            "namespace": "namespace",
+            "ipv4": "primary_ip4.address",
+            "ipv6": "primary_ip6.address",
+            "credentials": "credentials"
+        }
+        super()._update_inventory_format(
+            input_inv_format=netbox_inv_format
+        )
 
     def _init_session(self, headers: dict):
         """Initialize the session property
@@ -230,11 +244,11 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
         # the device name must be unique in Netbox
         for device in inventory_list:
             inventory[device["name"]] = dict()
-            for rel_field in RELEVANT_FIELDS:
+            for rel_field in _RELEVANT_FIELDS:
                 inventory[device["name"]][rel_field] = \
                     get_field_value(device, rel_field)
             if self._namespace == "site.name"\
-                    and "site.name" in RELEVANT_FIELDS:
+                    and "site.name" in _RELEVANT_FIELDS:
                 inventory[device["name"]]["namespace"] = \
                     inventory[device["name"]].get("site.name", "")
             else:
