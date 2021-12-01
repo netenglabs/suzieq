@@ -21,7 +21,7 @@ class SqPlugin:
 
     @classmethod
     def get_plugins(cls,
-                    search_pkg: str,
+                    search_pkg: str = None,
                     transitive=False) -> Dict[str, Type]:
         """Discover all the plugins in the search_pkg package, inheriting
         the current base class.
@@ -43,6 +43,8 @@ class SqPlugin:
         """
         classes = {}
 
+        if not search_pkg:
+            search_pkg = '.'.join(cls.__module__.split('.')[:-1])
         # Collect the list of packages where to search
         search_path = search_pkg.replace('.', '/')
         packages = [f'{search_pkg}.{m.name}'
@@ -50,15 +52,23 @@ class SqPlugin:
                     if m.ispkg]
         if not packages:
             packages.append(search_pkg)
+            use_pkg_name = False
+        else:
+            use_pkg_name = True
 
         for pkg in packages:
+            if use_pkg_name:
+                use_name = pkg.split('.')[-1]
             pspec = find_spec(pkg)
             if pspec and pspec.loader:
                 mfound = [x.split('.')[0] for x in pspec.loader.contents()
                           if not x.startswith('_')]
                 for minfo in mfound:
-                    use_name = minfo.split('.')[0]
-                    mname = f'{pkg}.{use_name}'
+                    if not use_pkg_name:
+                        use_name = minfo.split('.')[0]
+                        mname = f'{pkg}.{use_name}'
+                    else:
+                        mname = f'{pkg}.{minfo}'
                     mod = import_module(mname)
                     for mbr in getmembers(mod, isclass):
                         if (mbr[1].__module__ == mname
