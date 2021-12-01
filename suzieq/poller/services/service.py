@@ -17,7 +17,7 @@ from packaging import version as version_parse
 import pyarrow as pa
 
 from suzieq.poller.services.svcparser import cons_recs_from_json_template
-from suzieq.utils import known_devtypes
+from suzieq.shared.utils import known_devtypes
 from suzieq.version import SUZIEQ_VERSION
 
 HOLD_TIME_IN_MSECS = 60000  # How long b4 declaring node dead

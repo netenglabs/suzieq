@@ -19,8 +19,8 @@ from suzieq.poller.nodes import init_hosts, init_files
 from suzieq.poller.services import init_services
 
 from suzieq.poller.writer import init_output_workers, run_output_worker
-from suzieq.utils import (load_sq_config, init_logger, ensure_single_instance,
-                          get_sq_install_dir, get_log_params)
+from suzieq.shared.utils import (load_sq_config, init_logger, ensure_single_instance,
+                                 get_sq_install_dir, get_log_params)
 
 
 async def process_signal(signum, loop):

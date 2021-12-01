@@ -8,7 +8,7 @@ from subprocess import check_output, check_call, CalledProcessError, STDOUT
 import time
 import pytest
 from suzieq.cli.sqcmds import *  # noqa
-from suzieq.utils import load_sq_config
+from suzieq.shared.utils import load_sq_config
 from tests import conftest
 import logging
 

@@ -1,6 +1,6 @@
 from ipaddress import ip_interface
 from suzieq.sqobjects.basicobj import SqObject
-from suzieq.utils import validate_macaddr, validate_network
+from suzieq.shared.utils import validate_macaddr, validate_network
 
 
 class AddressObj(SqObject):

@@ -3,7 +3,7 @@ from datetime import timedelta
 from nubia import command, argument
 import pandas as pd
 
-from suzieq.utils import humanize_timestamp
+from suzieq.shared.utils import humanize_timestamp
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.bgp import BgpObj
 

@@ -5,7 +5,7 @@ import pandas as pd
 from ipaddress import ip_interface
 
 from tests.conftest import DATADIR, validate_host_shape
-from suzieq.utils import MISSING_SPEED
+from suzieq.shared.utils import MISSING_SPEED
 
 
 def validate_speed_if(df: pd.DataFrame):

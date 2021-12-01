@@ -1,6 +1,6 @@
 from suzieq.sqobjects.basicobj import SqObject
 import pandas as pd
-from suzieq.utils import humanize_timestamp
+from suzieq.shared.utils import humanize_timestamp
 
 
 class DeviceObj(SqObject):

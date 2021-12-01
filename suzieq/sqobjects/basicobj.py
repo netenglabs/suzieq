@@ -1,7 +1,8 @@
 import typing
 import pandas as pd
 
-from suzieq.utils import load_sq_config, Schema, SchemaForTable
+from suzieq.shared.utils import load_sq_config
+from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines import get_sqengine
 
 

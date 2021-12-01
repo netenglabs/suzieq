@@ -1,8 +1,8 @@
 from suzieq.poller.services.service import Service
 import re
-from suzieq.utils import convert_macaddr_format_to_colon
-from suzieq.utils import (expand_nxos_ifname, expand_eos_ifname,
-                          expand_ios_ifname)
+from suzieq.shared.utils import convert_macaddr_format_to_colon
+from suzieq.shared.utils import (expand_nxos_ifname, expand_eos_ifname,
+                                 expand_ios_ifname)
 import numpy as np
 
 

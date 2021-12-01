@@ -3,7 +3,7 @@ import numpy as np
 from ipaddress import ip_interface
 
 from .engineobj import SqPandasEngine
-from suzieq.utils import convert_macaddr_format_to_colon
+from suzieq.shared.utils import convert_macaddr_format_to_colon
 
 
 class AddressObj(SqPandasEngine):

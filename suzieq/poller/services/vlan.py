@@ -1,5 +1,5 @@
 import numpy as np
-from suzieq.utils import expand_ios_ifname
+from suzieq.shared.utils import expand_ios_ifname
 from suzieq.poller.services.service import Service
 
 

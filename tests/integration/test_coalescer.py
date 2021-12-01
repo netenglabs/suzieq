@@ -11,11 +11,13 @@ import pandas as pd
 import numpy as np
 from importlib.util import find_spec
 from subprocess import check_output
+from typing import Union
 
 from .utils import Yaml2Class, assert_df_equal
 from suzieq.sqobjects import get_sqobject
-from suzieq.utils import humanize_timestamp, Schema, SchemaForTable
-from suzieq.utils import load_sq_config
+from suzieq.shared.utils import humanize_timestamp
+from suzieq.shared.schema import Schema, SchemaForTable
+from suzieq.shared.utils import load_sq_config
 from suzieq.db import get_sqdb_engine, do_coalesce
 
 
@@ -54,7 +56,8 @@ def _verify_coalescing(datadir):
     assert(len(coalesced_files))
 
 
-def _coalescer_init(pq_dir: str) -> (TemporaryDirectory, NamedTemporaryFile):
+def _coalescer_init(pq_dir: str) -> Union(TemporaryDirectory |
+                                          NamedTemporaryFile):
     """Basic Coalescer test
 
     :param pq_dir: the input parquet dir to be copied, this is the root of the

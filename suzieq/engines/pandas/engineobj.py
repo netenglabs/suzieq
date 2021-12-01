@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
-from suzieq.utils import SchemaForTable, humanize_timestamp, Schema
+from suzieq.shared.utils import humanize_timestamp
+from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects import get_sqobject
 from suzieq.db import get_sqdb_engine
@@ -106,7 +107,7 @@ class SqPandasEngine(SqEngineObj):
 
         return addr.apply(lambda a: (
             True if self._get_ipvers(a) == version else False)
-            )
+        )
 
     def get_valid_df(self, table: str, **kwargs) -> pd.DataFrame:
         """The heart of the engine: retrieving the data from the backing store

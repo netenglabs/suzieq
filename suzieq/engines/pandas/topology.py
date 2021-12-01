@@ -7,7 +7,7 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 
-from suzieq.utils import build_query_str
+from suzieq.shared.utils import build_query_str
 
 # TODO:
 # topology for different VRFs?

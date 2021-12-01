@@ -1,6 +1,6 @@
 import re
 from suzieq.sqobjects.basicobj import SqObject
-from suzieq.utils import convert_macaddr_format_to_colon
+from suzieq.shared.utils import convert_macaddr_format_to_colon
 
 
 class MacsObj(SqObject):

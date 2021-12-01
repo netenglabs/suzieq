@@ -14,8 +14,8 @@ import logging
 import uvicorn
 
 from suzieq.sqobjects import get_sqobject
-from suzieq.utils import (load_sq_config, get_sq_install_dir, get_log_params,
-                          sq_get_config_file)
+from suzieq.shared.utils import (load_sq_config, get_sq_install_dir, get_log_params,
+                                 sq_get_config_file)
 
 API_KEY_NAME = 'access_token'
 
