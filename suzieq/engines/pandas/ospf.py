@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 
 from .engineobj import SqPandasEngine
-from suzieq.utils import SchemaForTable, build_query_str, humanize_timestamp
+from suzieq.shared.utils import build_query_str, humanize_timestamp
+from suzieq.shared.schema import SchemaForTable
 
 
 class OspfObj(SqPandasEngine):

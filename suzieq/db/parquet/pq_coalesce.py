@@ -8,7 +8,8 @@ from typing import List
 import tarfile
 from itertools import repeat
 
-from suzieq.utils import humanize_timestamp, SchemaForTable
+from suzieq.shared.utils import humanize_timestamp
+from suzieq.shared.schema import SchemaForTable
 from .migratedb import get_migrate_fn
 
 

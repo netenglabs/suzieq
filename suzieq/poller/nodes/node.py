@@ -23,8 +23,8 @@ from concurrent.futures._base import TimeoutError
 
 from suzieq.poller.services.service import RsltToken
 from suzieq.poller.genhosts import convert_ansible_inventory
-from suzieq.utils import get_timestamp_from_junos_time, known_devtypes
-from suzieq.exceptions import UnknownDevtypeError
+from suzieq.shared.utils import get_timestamp_from_junos_time, known_devtypes
+from suzieq.shared.exceptions import UnknownDevtypeError
 
 logger = logging.getLogger(__name__)
 

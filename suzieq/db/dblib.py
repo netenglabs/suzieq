@@ -3,7 +3,7 @@ from typing import List
 from importlib import import_module
 import inspect
 
-from suzieq.exceptions import DBNotFoundError
+from suzieq.shared.exceptions import DBNotFoundError
 
 
 def get_sqdb_engine(cfg: dict, table_name: str, dbname: str,

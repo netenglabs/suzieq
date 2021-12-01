@@ -3,7 +3,7 @@ import numpy as np
 import operator
 from packaging import version
 from .engineobj import SqPandasEngine
-from suzieq.utils import humanize_timestamp
+from suzieq.shared.utils import humanize_timestamp
 
 
 class DeviceObj(SqPandasEngine):

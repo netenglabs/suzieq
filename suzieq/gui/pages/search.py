@@ -3,7 +3,7 @@ from dataclasses import dataclass, asdict, field
 
 from ipaddress import ip_address
 import streamlit as st
-from suzieq.utils import convert_macaddr_format_to_colon
+from suzieq.shared.utils import convert_macaddr_format_to_colon
 from suzieq.gui.guiutils import gui_get_df, SuzieqMainPages
 
 

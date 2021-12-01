@@ -1,7 +1,7 @@
 import pytest
 from tests.conftest import create_dummy_config_file, suzieq_rest_server_path
 import os
-from suzieq.utils import load_sq_config
+from suzieq.shared.utils import load_sq_config
 from random import randint
 from time import sleep
 import subprocess

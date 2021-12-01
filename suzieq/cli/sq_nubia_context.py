@@ -3,7 +3,8 @@ from nubia import exceptions
 from nubia import eventbus
 import sys
 
-from suzieq.utils import load_sq_config, Schema
+from suzieq.shared.utils import load_sq_config
+from suzieq.shared.schema import Schema
 
 
 class NubiaSuzieqContext(context.Context):

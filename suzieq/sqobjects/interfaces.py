@@ -1,7 +1,7 @@
 import pandas as pd
 
 from suzieq.sqobjects.basicobj import SqObject
-from suzieq.utils import humanize_timestamp
+from suzieq.shared.utils import humanize_timestamp
 
 
 class IfObj(SqObject):

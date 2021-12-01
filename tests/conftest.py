@@ -6,7 +6,8 @@ from tempfile import mkstemp
 import yaml
 from unittest.mock import Mock
 from suzieq.poller.services import init_services
-from suzieq.utils import load_sq_config, Schema
+from suzieq.shared.utils import load_sq_config
+from suzieq.shared.schema import Schema
 from suzieq.sqobjects import get_sqobject, get_tables
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 import sys

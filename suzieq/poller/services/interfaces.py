@@ -5,9 +5,9 @@ import re
 
 import numpy as np
 from suzieq.poller.services.service import Service
-from suzieq.utils import get_timestamp_from_junos_time
-from suzieq.utils import convert_macaddr_format_to_colon
-from suzieq.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
+from suzieq.shared.utils import get_timestamp_from_junos_time
+from suzieq.shared.utils import convert_macaddr_format_to_colon
+from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
 
 class InterfaceService(Service):

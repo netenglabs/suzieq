@@ -4,8 +4,8 @@ from dateparser import parse
 import numpy as np
 
 from suzieq.poller.services.service import Service
-from suzieq.utils import get_timestamp_from_cisco_time
-from suzieq.utils import get_timestamp_from_junos_time
+from suzieq.shared.utils import get_timestamp_from_cisco_time
+from suzieq.shared.utils import get_timestamp_from_junos_time
 
 
 class OspfNbrService(Service):

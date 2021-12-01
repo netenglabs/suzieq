@@ -8,7 +8,7 @@ import argparse
 from subprocess import check_output, CalledProcessError
 import logging
 from tests import conftest
-from suzieq.utils import load_sq_config
+from suzieq.shared.utils import load_sq_config
 
 
 def create_config(testvar):
