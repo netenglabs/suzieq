@@ -5,6 +5,7 @@ from collections import defaultdict
 from typing import Callable, Dict, List
 
 from suzieq.poller.nodes.node import Node
+from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.shared.sq_plugin import SqPlugin
 
 logger = logging.getLogger(__name__)
@@ -48,7 +49,7 @@ class Inventory(SqPlugin):
         all the Nodes objects in the retrieved inventory.
 
         Raises:
-            AttributeError: in case of wrong inventory configuration
+            SqPollerConfError: in case of wrong inventory configuration
 
         Returns:
             List[Node]: a list containing all the nodes in the inventory
@@ -56,7 +57,7 @@ class Inventory(SqPlugin):
 
         inventory_list = self._get_device_list()
         if not inventory_list:
-            raise AttributeError('The inventory source returned an empty list')
+            raise SqPollerConfError('The inventory source returned no hosts')
 
         # Initialize the nodes in the inventory
         init_tasks = []

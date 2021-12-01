@@ -9,6 +9,7 @@ import sys
 import uvloop
 
 from suzieq.poller.poller import Poller
+from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
 from suzieq.shared.utils import get_log_params, init_logger, load_sq_config
 
 
@@ -24,7 +25,7 @@ async def start_poller(userargs, cfg):
         poller = Poller(userargs, cfg)
         await poller.init_poller()
         await poller.run()
-    except AttributeError as error:
+    except (SqPollerConfError, InventorySourceError) as error:
         logger.error(error)
         print(f'ERROR: {error}')
         sys.exit(1)

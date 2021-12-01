@@ -5,6 +5,7 @@ from urllib.parse import urlparse
 import yaml
 
 from suzieq.poller.inventory.inventory_sources_base.inventory import Inventory
+from suzieq.shared.exceptions import InventorySourceError
 
 logger = logging.getLogger(__name__)
 
@@ -19,36 +20,38 @@ class sqNativeInventory(Inventory):
         """Read the suzieq devices file and return the data from the file"""
 
         if not os.path.isfile(hosts_file):
-            raise AttributeError(f'Suzieq inventory {hosts_file}'
-                                 'must be a file')
+            raise InventorySourceError(f'Suzieq inventory {hosts_file}'
+                                       'must be a file')
 
         if not os.access(hosts_file, os.R_OK):
-            raise AttributeError('Suzieq inventory file is '
-                                 f'not readeable {hosts_file}')
+            raise InventorySourceError('Suzieq inventory file is '
+                                       f'not readeable {hosts_file}')
 
         with open(hosts_file, 'r') as f:
             try:
                 data = f.read()
                 hostsconf = yaml.safe_load(data)
             except Exception as e:
-                raise AttributeError(f'Invalid Suzieq inventory file: {e}')
+                raise InventorySourceError('Invalid Suzieq inventory '
+                                           f'file: {e}')
 
         if not hostsconf or isinstance(hostsconf, str):
-            raise AttributeError(f'Invalid Suzieq inventory file:{hosts_file}')
+            raise InventorySourceError('Invalid Suzieq inventory '
+                                       f'file:{hosts_file}')
 
         if not isinstance(hostsconf, list):
             if '_meta' in hostsconf.keys():
-                raise AttributeError('Invalid Suzieq inventory format, '
-                                     'Ansible format?? Use -a instead '
-                                     'of -D with inventory')
+                raise InventorySourceError('Invalid Suzieq inventory format, '
+                                           'Ansible format?? Use -a instead '
+                                           'of -D with inventory')
             else:
-                raise AttributeError(
+                raise InventorySourceError(
                     f'Invalid Suzieq inventory file:{hosts_file}')
 
         for conf in hostsconf:
             if any(x not in conf.keys() for x in ['namespace', 'hosts']):
-                raise AttributeError(f'Invalid inventory:{hosts_file}, '
-                                     'no namespace/hosts sections')
+                raise InventorySourceError(f'Invalid inventory:{hosts_file}, '
+                                           'no namespace/hosts sections')
 
         return hostsconf
 

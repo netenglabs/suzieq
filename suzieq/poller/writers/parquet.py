@@ -6,6 +6,7 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
+from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.poller.writers.output_worker import OutputWorker
 
 logger = logging.getLogger(__name__)
@@ -32,7 +33,7 @@ class ParquetOutputWorker(OutputWorker):
             os.makedirs(output_dir)
 
         if not os.path.isdir(output_dir):
-            raise AttributeError(
+            raise SqPollerConfError(
                 "Output directory {} is not a directory".format(output_dir))
 
         logger.info("Parquet outputs will be under {}".format(output_dir))

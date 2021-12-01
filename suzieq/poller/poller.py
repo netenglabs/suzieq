@@ -7,10 +7,12 @@ import logging
 import os
 import signal
 from pathlib import Path
+from typing import Dict
 
 from suzieq.poller.coalescer import start_and_monitor_coalescer
 from suzieq.poller.inventory.inventory_sources_base.inventory import Inventory
 from suzieq.poller.services import init_services
+from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.poller.writers.output_worker_manager import OutputWorkerManager
 
 logger = logging.getLogger(__name__)
@@ -87,8 +89,8 @@ class Poller:
 
         if not nodes or not self.services:
             # Logging should've been done by init_nodes/services for details
-            raise AttributeError('Terminating because no nodes'
-                                 'or services found')
+            raise SqPollerConfError('Terminating because no nodes'
+                                    'or services found')
 
     async def run(self):
         """Start polling the devices.
@@ -177,8 +179,8 @@ class Poller:
             # Check if all the given services are valid
             notvalid = [s for s in svclist if s not in allsvcs]
             if notvalid:
-                raise AttributeError(f'Invalid sevices specified: {notvalid}. '
-                                     f'Should have been one of {allsvcs}')
+                raise SqPollerConfError(f'Invalid svcs specified: {notvalid}. '
+                                        f'Should have been one of {allsvcs}')
         else:
             svclist = allsvcs
 
@@ -187,13 +189,13 @@ class Poller:
             # Check if all the excluded services are valid
             notvalid = [e for e in excluded_services if e not in allsvcs]
             if notvalid:
-                raise AttributeError(f'Services {notvalid} excluded, but they '
-                                     'are not valid services')
+                raise SqPollerConfError(f'Services {notvalid} excluded, but '
+                                        'they are not valid.')
             svclist = list(filter(lambda x: x not in excluded_services,
                                   svclist))
 
         if not svclist:
-            raise AttributeError('The list of services to execute is empty')
+            raise SqPollerConfError('The list of services to execute is empty')
         return svclist
 
     def _init_inventory(self):
@@ -271,36 +273,44 @@ class Poller:
         for task in tasks:
             task.cancel()
 
-    def _validate_poller_args(self, userargs, cfg):
+    def _validate_poller_args(self, userargs: Dict, cfg: Dict):
         """Validate the arguments and the configuration passed to the poller.
-        The function produces a AttributeError exception if there is something
-        wrong in the configuration.
+        The function produces a SqPollerConfError exception if there is
+        something wrong in the configuration.
+
+        Args:
+            userargs (Dict): Dictionary containing the arguments passed to the
+                poller
+            cfg (Dict): The content of the Suzieq configuration file
+
+        Raises:
+            SqPollerConfError: raise when the configuration is not valid
         """
         if userargs.devices_file and userargs.namespace:
-            raise AttributeError('Cannot specify both -D and -n options')
+            raise SqPollerConfError('Cannot specify both -D and -n options')
         if not os.path.isdir(cfg['service-directory']):
-            raise AttributeError(
+            raise SqPollerConfError(
                 f"Service directory {cfg['service-directory']} "
                 "is not a directory"
             )
         if userargs.jump_host and not userargs.jump_host.startswith('//'):
-            raise AttributeError(
+            raise SqPollerConfError(
                 'Jump host format is //<username>@<jumphost>:<port>'
             )
 
         if userargs.jump_host_key_file:
             if not userargs.jump_host:
-                raise AttributeError(
+                raise SqPollerConfError(
                     'Jump host key specified without a jump host'
                 )
             else:
                 if not os.access(userargs.jump_host_key_file, os.F_OK):
-                    raise AttributeError(
+                    raise SqPollerConfError(
                         f'Jump host key file {userargs.jump_host_key_file}'
                         'does not exist'
                     )
                 if not os.access(userargs.jump_host_key_file, os.R_OK):
-                    raise AttributeError(
+                    raise SqPollerConfError(
                         f'Jump host key file {userargs.jump_host_key_file} '
                         'not readable'
                     )
@@ -310,5 +320,5 @@ class Poller:
             if (os.stat(
                     os.path.dirname(
                         ssh_config_file)).st_mode | 0o40700 != 0o40700):
-                raise AttributeError(
+                raise SqPollerConfError(
                     'ssh directory has wrong permissions, must be 0700')
