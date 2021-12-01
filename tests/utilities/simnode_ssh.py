@@ -138,6 +138,7 @@ class MySSHServer(asyncssh.SSHServer):
 
 async def start_server(
             port=10000, nos='iosxr', version="default", hostname="default"):
+    """Run sim ssh server for the given nos, version and hostname"""
 
     await asyncssh.listen(
         '', port, server_factory=lambda: MySSHServer(nos, version, hostname),
@@ -147,7 +148,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-n", "--nos", type=str, default="iosxr",
-        help="NOS name (default: iosxr)")
+        help="NOS name", required=True)
     parser.add_argument(
         "-v", "--nos-version", type=str, help="NOS version",
         default="default")

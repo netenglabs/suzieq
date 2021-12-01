@@ -5,27 +5,33 @@ import ssl
 import logging
 
 
-def get_filename_from_cmd(dictionary):
+def get_filename_from_cmd(cmd_dict: dict) -> str:
+    """Build filename from an xml command"""
 
     keys = []
 
-    def recursive_items(dictionary):
-        for key, value in dictionary.items():
+    def recursive_items(cmd_dict: dict):
+        for key, value in cmd_dict.items():
             if isinstance(value, dict):
-                keys.append(key)
+                # do not use list entry for filename
+                if key != "entry":
+                    keys.append(key)
                 recursive_items(value)
             elif value:
-                keys.append(key)
+                # do not use property names for filename
+                if not key.startswith("@"):
+                    keys.append(key)
                 keys.append(value)
             else:
                 keys.append(key)
 
-    recursive_items(dictionary)
+    recursive_items(cmd_dict)
 
     return "_".join(keys).replace("-", "_")
 
 
 def run_server(nos="panos", version="default", hostname="default", port=443):
+    """Run sim rest server for the given nos, version and hostname"""
 
     nossim = f"tests/integration/nossim/{nos}/{version}/{hostname}"
 
@@ -81,7 +87,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-n", "--nos", type=str, default="panos",
-        help="NOS name (default: iosxr)")
+        help="NOS name", required=True)
     parser.add_argument(
         "-v", "--nos-version", type=str,
         default="default", help="NOS version")
