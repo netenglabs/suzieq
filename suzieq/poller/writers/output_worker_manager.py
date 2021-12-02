@@ -7,8 +7,8 @@ import asyncio
 import logging
 from typing import Dict, List
 
-from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.poller.writers.output_worker import OutputWorker
+from suzieq.shared.exceptions import SqPollerConfError
 
 logger = logging.getLogger(__name__)
 
@@ -65,7 +65,7 @@ class OutputWorkerManager:
         poller output.
         """
         # Load the available output workers
-        worker_types = OutputWorker.get_plugins("suzieq.poller.writers")
+        worker_types = OutputWorker.get_plugins()
         for otype in self.output_types:
             if otype not in worker_types:
                 raise SqPollerConfError(f'{otype} is not a valid output '

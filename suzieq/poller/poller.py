@@ -215,8 +215,7 @@ class Poller:
 
         # Retrieve the specific inventory source to use
         inv_types = Inventory.get_plugins(
-            "suzieq.poller.inventory.inventory_sources",
-            transitive=True
+            search_pkg="suzieq.poller.inventory.inventory_sources"
         )
         # TODO: define a generic way to specify the source of the inventory
         inventory_class = None
