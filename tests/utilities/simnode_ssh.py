@@ -4,17 +4,20 @@ import sys
 import os
 import crypt
 from importlib.util import find_spec
+import argparse
 
 
 class MySSHServerSession(asyncssh.SSHServerSession):
-    def __init__(self, device='iosxr'):
+    def __init__(self, nos='iosxr', version='default', hostname='default'):
         self._input = ''
         self._data = None
-        self.device = device
+        self.nos = nos
+        self.nos_version = version
+        self.hostname = hostname
         self.run_as_shell = False
         self.prompt = '# '
         self.vendor = 'cisco'
-        self.sample_data_dir = './tests/integration/nossim/'
+        self.sample_data_dir = './tests/integration/nossim'
         self._status = 0
 
     def get_testinput_dir(self):
@@ -30,62 +33,24 @@ class MySSHServerSession(asyncssh.SSHServerSession):
         return True
 
     def eof_received(self):
-        return False
+        self._chan.write('Goodbye!\n')
+        self._chan.exit(0)
 
     def get_cmd_file(self, command: str, fmt: str = '.txt') -> str:
 
-        self.cmd_data = {
-            'show version':
-            f'{self.sample_data_dir}/{self.device}/show_version{fmt}',
-            'show run hostname':
-            f'{self.sample_data_dir}/{self.device}/show_run_hostname{fmt}',
-            'show hostname':
-            f'{self.sample_data_dir}/{self.device}/show_hostname{fmt}',
-            'show interfaces':
-            f'{self.sample_data_dir}/{self.device}/show_interfaces{fmt}',
-            'show interface':
-            f'{self.sample_data_dir}/{self.device}/show_interfaces{fmt}',
-            'show ethernet-switching table detail':
-            f'{self.sample_data_dir}/{self.device}/show_ethernet_switching_table{fmt}',  # noqa
-            'show system uptime':
-            f'{self.sample_data_dir}/{self.device}/show_system_uptime{fmt}',
-            'show mac-address table':
-            f'{self.sample_data_dir}/{self.device}/show_mac_address_table{fmt}',  # noqa
-            'show ip arp':
-            f'{self.sample_data_dir}/{self.device}/show_ip_arp{fmt}',
-            'show ipv6 neighbors':
-            f'{self.sample_data_dir}/{self.device}/show_ipv6_neighbors{fmt}',
-            'show ip route vrf *':
-            f'{self.sample_data_dir}/{self.device}/show_ip_route{fmt}',
-            'show ipv6 route vrf *':
-            f'{self.sample_data_dir}/{self.device}/show_ipv6_route{fmt}',
-            'show bgp all neighbors':
-            f'{self.sample_data_dir}/{self.device}/show_bgp_all_neighbors{fmt}',  # noqa
-            'show bgp all summary':
-            f'{self.sample_data_dir}/{self.device}/show_bgp_all_summary{fmt}',
-            'show inventory':
-            f'{self.sample_data_dir}/{self.device}/show_inventory{fmt}',
-            'show ip interfaces':
-            f'{self.sample_data_dir}/{self.device}/show_ip_interfaces{fmt}',
-            'show ipv6 interfaces':
-            f'{self.sample_data_dir}/{self.device}/show_ipv6_interfaces{fmt}',
-            'show vrf detail':
-            f'{self.sample_data_dir}/{self.device}/show_vrf_detail{fmt}',
-            'show chassis hardware':
-            f'{self.sample_data_dir}/{self.device}/show_chassis_hardware{fmt}',
-            'show interface trasnsceiver':
-            f'{self.sample_data_dir}/{self.device}/show_interface_transceiver{fmt}',  # noqa
-            'show configuration routing-instances':
-            f'{self.sample_data_dir}/{self.device}/show_configuration_routing_instances{fmt}',  # noqa
-            'show bridge mac-table':
-            f'{self.sample_data_dir}/{self.device}/show_bridge_mac_table{fmt}',
-            'cat /proc/uptime; hostnamectl; show version':
-            f'{self.sample_data_dir}/{self.device}/device.txt',
-            'ip route show table all':
-            f'{self.sample_data_dir}/{self.device}/ip_route_show_table_all.txt',  # noqa
-        }
+        if command:
+            if command == 'cat /proc/uptime; hostnamectl; show version':
+                return f'{self.sample_data_dir}/{self.nos}' \
+                    f'/{self.nos_version}/{self.hostname}/nos.txt'
 
-        return self.cmd_data.get(command, '')
+            cmdfile = command.replace("*", "all").replace(" ", "_") \
+                .replace("-", "_")
+
+            filepath = f'{self.sample_data_dir}/{self.nos}/' \
+                f'{self.nos_version}/{self.hostname}/{cmdfile}{fmt}'
+
+            if os.path.exists(filepath):
+                return filepath
 
     def _exec_cmd(self, command):
         '''The routine to execute command and return data'''
@@ -105,7 +70,6 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             self._status = 0
         else:
             self._status = -1
-
         return data
 
     def exec_requested(self, command):
@@ -126,8 +90,12 @@ class MySSHServerSession(asyncssh.SSHServerSession):
 
     def session_started(self):
         if self._status == 0:
-            self._chan.write(self._data)
-            self._chan.exit(0)
+            if self._data is not None:
+                self._chan.write(self._data)
+            else:
+                self._chan.write(f'{self.prompt}')
+            if not self.run_as_shell:
+                self._chan.exit(0)
         elif not self.run_as_shell:
             self._chan.exit(1)
         elif self.run_as_shell:
@@ -136,9 +104,11 @@ class MySSHServerSession(asyncssh.SSHServerSession):
 
 
 class MySSHServer(asyncssh.SSHServer):
-    def __init__(self, device='iosxr'):
+    def __init__(self, nos='iosxr', version="default", hostname="default"):
         self.passwords = {'vagrant': 'vaqRzE48Dulhs'}   # password of 'vagrant'
-        self.device = device
+        self.nos = nos
+        self.version = version
+        self.hostname = hostname
 
     def connection_made(self, conn):
         print('SSH connection received from %s.' %
@@ -162,69 +132,43 @@ class MySSHServer(asyncssh.SSHServer):
         return crypt.crypt(password, pw) == pw
 
     def session_requested(self):
-        return MySSHServerSession(device=self.device)
+        return MySSHServerSession(
+            nos=self.nos, version=self.version, hostname=self.hostname)
 
 
-class IOSXRServer(MySSHServer):
-    def __init__(self):
-        super().__init__(device='iosxr')
+async def start_server(
+            port=10000, nos='iosxr', version="default", hostname="default"):
+    """Run sim ssh server for the given nos, version and hostname"""
 
-
-class IOSXEServer(MySSHServer):
-    def __init__(self):
-        super().__init__(device='iosxe')
-
-
-class NXOSServer(MySSHServer):
-    def __init__(self):
-        super().__init__(device='nxos')
-
-
-class EOSServer(MySSHServer):
-    def __init__(self):
-        super().__init__(device='eos')
-
-
-class QFXServer(MySSHServer):
-    def __init__(self):
-        super().__init__(device='qfx')
-
-
-class MXServer(MySSHServer):
-    def __init__(self):
-        super().__init__(device='mx')
-
-
-class SRXServer(MySSHServer):
-    def __init__(self):
-        super().__init__(device='srx')
-
-
-class SoNICServer(MySSHServer):
-    def __init__(self):
-        super().__init__(device='sonic')
-
-
-async def start_server(device='iosxr'):
-    factory = {
-        'iosxr': IOSXRServer,
-        'nxos': NXOSServer,
-        'eos': EOSServer,
-        'iosxe': IOSXEServer,
-        'qfx': QFXServer,
-        'mx': MXServer,
-        'srx': SRXServer,
-        'sonic': SoNICServer,
-    }
     await asyncssh.listen(
-        '', 10000, server_factory=factory[device],
-        server_host_keys=['/home/ddutt/work/suzieq/play/ssh_host_key'])
+        '', port, server_factory=lambda: MySSHServer(nos, version, hostname),
+        server_host_keys=['tests/integration/nossim/ssh_insecure_key'])
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "-n", "--nos", type=str, default="iosxr",
+        help="NOS name", required=True)
+    parser.add_argument(
+        "-v", "--nos-version", type=str, help="NOS version",
+        default="default")
+    parser.add_argument(
+        "-H", "--hostname", type=str, help="Hostname of the device",
+        default="default")
+    parser.add_argument(
+        "-p", "--listening-port", type=int, default=10000,
+        help="Listening port of the ssh server (default: 10000)")
+    args = parser.parse_args()
+
     loop = asyncio.get_event_loop()
 
     try:
-        loop.run_until_complete(start_server(sys.argv[1]))
+        loop.run_until_complete(start_server(
+            port=args.listening_port,
+            nos=args.nos,
+            version=args.nos_version,
+            hostname=args.hostname)
+            )
     except (OSError, asyncssh.Error) as exc:
         sys.exit('Error starting server: ' + str(exc))
 
