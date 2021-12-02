@@ -6,19 +6,22 @@ import asyncio
 import logging
 import os
 import signal
-from pathlib import Path
 from typing import Dict
 
 from suzieq.poller.coalescer import start_and_monitor_coalescer
 from suzieq.poller.inventory.inventory_sources_base.inventory import Inventory
-from suzieq.poller.services import init_services
-from suzieq.shared.exceptions import SqPollerConfError
+from suzieq.poller.services.service_manager import ServiceManager
 from suzieq.poller.writers.output_worker_manager import OutputWorkerManager
+from suzieq.shared.exceptions import SqPollerConfError
 
 logger = logging.getLogger(__name__)
 
 
 class Poller:
+    """Poller is the object in charge of coordinating services, nodes and
+    output worker tasks, in order to pull the data from the devices configured
+    in the device inventory.
+    """
     def __init__(self, userargs, cfg):
         self._validate_poller_args(userargs, cfg)
 
@@ -28,22 +31,9 @@ class Poller:
 
         self.waiting_tasks = []
         self.waiting_tasks_lock = asyncio.Lock()
-        self.services = []
-        self.running_svcs = []
+
         # Init the node inventory object
         self.inventory = self._init_inventory()
-
-        # Prepare the services to run
-        self.services_list = self._evaluate_service_list()
-        self.default_svc_period = self.cfg.get('poller', {}).get('period', 15)
-        self.run_mode = self.userargs.run_once or 'forever'
-
-        # Set the service schemas directory
-        self.service_dir = cfg['service-directory']
-        self.svc_schema_dir = cfg.get('schema-directory', None)
-        if not self.svc_schema_dir:
-            self.svc_schema_dir = '{}/{}'.format(self.service_dir, 'schema')
-        # TODO: check schema dir validity
 
         # Disable coalescer in specific, unusual cases
         # in case of input_dir, we also seem to leave a coalescer
@@ -69,6 +59,23 @@ class Poller:
                                                   self.output_args)
         self.output_queue = self.output_manager.output_queue
 
+        # Initialize service manager
+        service_dir = cfg['service-directory']
+        svc_schema_dir = cfg.get('schema-directory', None)
+        default_svc_period = cfg.get('poller', {}).get('period', 15)
+        run_mode = userargs.run_once or 'forever'
+        svc_manager_args = {
+            'service_only': userargs.service_only,
+            'exclude_services': userargs.exclude_services
+        }
+        self.service_manager = ServiceManager(self._add_poller_task,
+                                              service_dir,
+                                              svc_schema_dir,
+                                              self.output_queue,
+                                              run_mode,
+                                              default_svc_period,
+                                              **svc_manager_args)
+
     async def init_poller(self):
         """Initialize the poller, instantiating the services and setting up
         the connection with the nodes. This function should be called only
@@ -79,15 +86,11 @@ class Poller:
 
         init_tasks = []
         init_tasks.append(self.inventory.build_inventory())
+        init_tasks.append(self.service_manager.init_services())
 
-        init_tasks.append(init_services(self.service_dir, self.svc_schema_dir,
-                          self.output_queue, self.services_list,
-                          self.default_svc_period,
-                          self.run_mode))
+        nodes, services = await asyncio.gather(*init_tasks)
 
-        nodes, self.services = await asyncio.gather(*init_tasks)
-
-        if not nodes or not self.services:
+        if not nodes or not services:
             # Logging should've been done by init_nodes/services for details
             raise SqPollerConfError('Terminating because no nodes'
                                     'or services found')
@@ -98,7 +101,7 @@ class Poller:
         """
 
         # Add the node list in the services
-        await self.update_node_list()
+        await self.service_manager.set_nodes(self.inventory.get_node_callq())
 
         logger.info('Suzieq Started')
 
@@ -112,7 +115,7 @@ class Poller:
 
         # Schedule the tasks to run
         await self.inventory.schedule_nodes_run()
-        await self._schedule_services_run()
+        await self.service_manager.schedule_services_run()
         await self._add_poller_task([self.output_manager.run_output_workers()])
         if not self.userargs.no_coalescer:
             await self._add_poller_task(
@@ -131,7 +134,7 @@ class Poller:
                     _, pending = await asyncio.wait(
                         tasks, return_when=asyncio.FIRST_COMPLETED)
                     tasks = list(pending)
-                    if tasks and any(i._coro in self.running_svcs
+                    if tasks and any(i._coro in self.service_manager.running_services
                                      for i in tasks):
                         continue
                     else:
@@ -142,61 +145,12 @@ class Poller:
             logger.warning('sq-poller: Received terminate signal. Terminating')
             loop.stop()
 
-    async def update_node_list(self):
-        """Update the list of nodes queried by the services according to the
-        the nodes in the inventory.
-        """
-        node_callq = self.inventory.get_node_callq()
-        for svc in self.services:
-            await svc.set_nodes(node_callq)
-
     async def _add_poller_task(self, tasks):
         """Add new tasks to be executed in the poller run loop."""
 
         await self.waiting_tasks_lock.acquire()
         self.waiting_tasks += tasks
         self.waiting_tasks_lock.release()
-
-    async def _schedule_services_run(self):
-        # TODO: Add check if services are already running
-        self.running_svcs = [svc.run() for svc in self.services]
-        await self._add_poller_task(self.running_svcs)
-
-    def _evaluate_service_list(self):
-        """Constuct the list of the name of the services to be started
-        in the poller, according to the arguments passed by the user.
-        Returns a InvalidAttribute exception if any of the passed service
-        is invalid.
-        """
-
-        svcs = list(Path(self.cfg['service-directory']).glob('*.yml'))
-        allsvcs = [os.path.basename(x).split('.')[0] for x in svcs]
-        svclist = None
-
-        if self.userargs.service_only:
-            svclist = self.userargs.service_only.split()
-
-            # Check if all the given services are valid
-            notvalid = [s for s in svclist if s not in allsvcs]
-            if notvalid:
-                raise SqPollerConfError(f'Invalid svcs specified: {notvalid}. '
-                                        f'Should have been one of {allsvcs}')
-        else:
-            svclist = allsvcs
-
-        if self.userargs.exclude_services:
-            excluded_services = self.userargs.exclude_services.split()
-            # Check if all the excluded services are valid
-            notvalid = [e for e in excluded_services if e not in allsvcs]
-            if notvalid:
-                raise SqPollerConfError(f'Services {notvalid} excluded, but '
-                                        'they are not valid.')
-            svclist = list(filter(lambda x: x not in excluded_services,
-                                  svclist))
-
-        if not svclist:
-            raise SqPollerConfError('The list of services to execute is empty')
-        return svclist
 
     def _init_inventory(self):
 
@@ -242,10 +196,6 @@ class Poller:
                                **source_args,
                                **inventory_args)
 
-    async def _init_services(self):
-        """Instantiate the services to run in the poller"""
-        pass
-
     async def _pop_waiting_poller_tasks(self):
         """Empty the list of tasks to be added in the run loop
         and return its content.
@@ -287,11 +237,7 @@ class Poller:
         """
         if userargs.devices_file and userargs.namespace:
             raise SqPollerConfError('Cannot specify both -D and -n options')
-        if not os.path.isdir(cfg['service-directory']):
-            raise SqPollerConfError(
-                f"Service directory {cfg['service-directory']} "
-                "is not a directory"
-            )
+
         if userargs.jump_host and not userargs.jump_host.startswith('//'):
             raise SqPollerConfError(
                 'Jump host format is //<username>@<jumphost>:<port>'
