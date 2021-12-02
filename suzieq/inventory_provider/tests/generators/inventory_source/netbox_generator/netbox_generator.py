@@ -109,40 +109,40 @@ class NetboxGenerator(InventorySourceGenerator):
         ip_key = "primary_ip{}".format(version)
         ip_dict = self.devices[index].get(ip_key, None)
         if ip_dict is None:
-            raise RuntimeError("Unknown key {}".format(ip_key))
+            raise AttributeError("Unknown key {}".format(ip_key))
         ip_dict["address"] = ip_addr
         ip_dict["display"] = ip_addr
         ip_dict["family"] = version
 
         self.setDevAttr(index, ip_key, ip_dict)
 
-    def setTag(self, index, tag: str):
+    def setTag(self, index: int, tag: str):
         '''
         Set the values regarding to the tag
         '''
         tag_list = self.devices[index].get("tags", None)
         if tag_list is None:
-            raise RuntimeError("Unknown key {}".format("tags"))
+            raise AttributeError("Unknown key tags")
         tag_list[0]["name"] = tag
         tag_list[0]["display"] = tag
         tag_list[0]["slug"] = tag.lower()
 
         self.setDevAttr(index, "tags", tag_list)
 
-    def setSite(self, index, site_name: str):
+    def setSite(self, index: int, site_name: str):
         '''
         Set the values regarding the site
         '''
         site_dict = self.devices[index].get("site", None)
         if site_dict is None:
-            raise RuntimeError("Unknown key {}".format("site"))
+            raise AttributeError("Unknown key site")
         site_dict["name"] = site_name
         site_dict["display"] = site_name
         site_dict["slug"] = site_name.lower()
 
         self.setDevAttr(index, "site", site_dict)
 
-    def setDevName(self, index, dev_name: str):
+    def setDevName(self, index: int, dev_name: str):
         '''
         Set the values regarding the device name
         '''
