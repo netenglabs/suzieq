@@ -1,3 +1,7 @@
+"""
+This module contains all the common logic of the
+Suzieq poller inventory sources
+"""
 import abc
 import asyncio
 import logging
@@ -22,7 +26,7 @@ class Inventory(SqPlugin):
 
         Args:
             add_task_fn (Callable): the function to call to schedule
-                a node task
+                a task in the poller.
         """
         self._nodes = {}
         self._node_tasks = {}
@@ -44,7 +48,7 @@ class Inventory(SqPlugin):
     def running_nodes(self):
         return self._node_tasks
 
-    async def build_inventory(self) -> List[Node]:
+    async def build_inventory(self) -> Dict[str, Node]:
         """Retrieve the list of nodes to poll and instantiate
         all the Nodes objects in the retrieved inventory.
 
@@ -52,7 +56,7 @@ class Inventory(SqPlugin):
             SqPollerConfError: in case of wrong inventory configuration
 
         Returns:
-            List[Node]: a list containing all the nodes in the inventory
+            Dict[str, Node]: a list containing all the nodes in the inventory
         """
 
         inventory_list = self._get_device_list()
@@ -92,7 +96,7 @@ class Inventory(SqPlugin):
         on the nodes
 
         Returns:
-            Dict[str, Dict]: a dictionary having, for each namespace.hostname,
+            Dict[str, Dict]: a dictionary having, for each 'namespace.hostname'
                 the node hostname and the function allowing to call
                 a query on the node.
         """
@@ -105,7 +109,7 @@ class Inventory(SqPlugin):
         return node_callq
 
     async def schedule_nodes_run(self):
-        """Schedule the nodes tasks, so that they can
+        """Schedule the nodes tasks in the poller, so that they can
         start processing the command query passed to the nodes.
 
         This function should be called only once, if called more
@@ -117,7 +121,12 @@ class Inventory(SqPlugin):
             await self.add_task_fn(self._node_tasks.values())
 
     @abc.abstractmethod
-    def _get_device_list(self):
-        """Retrieve the devices list from the inventory source.
+    def _get_device_list(self) -> List[Dict]:
+        """Retrieve the devices credentials from the inventory
+        source
+
+        Returns:
+            List[Dict]: the list of the credentials of the devices
+                in the Suzieq native inventory file.
         """
         pass

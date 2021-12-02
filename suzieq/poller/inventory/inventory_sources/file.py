@@ -1,5 +1,11 @@
+"""
+This module contains the logic of the plugin
+in charge of importing an inventory from a
+Suzieq inventory file.
+"""
 import logging
 import os
+from typing import Dict, List
 from urllib.parse import urlparse
 
 import yaml
@@ -10,14 +16,28 @@ from suzieq.shared.exceptions import InventorySourceError
 logger = logging.getLogger(__name__)
 
 
-class sqNativeInventory(Inventory):
+class SqNativeInventory(Inventory):
+    """The SqNativeInventory is a class allowing to import
+    a native Suzieq inventory file in the poller.
+    """
 
     def __init__(self, add_task_fn, **kwargs) -> None:
         self.inventory_source = kwargs.pop('inventory', None)
         super().__init__(add_task_fn, **kwargs)
 
-    def _get_hostsdata_from_hostsfile(self, hosts_file) -> dict:
-        """Read the suzieq devices file and return the data from the file"""
+    def _get_hostsdata_from_hostsfile(self, hosts_file: str) -> Dict:
+        """Read the suzieq devices file and return the data from the file
+        and produce a dictionary containing its data.
+
+        Args:
+            hosts_file (str): the path where the file is located
+
+        Raises:
+            InventorySourceError: raised if the file is not valid.
+
+        Returns:
+            Dict: a dictionary containing the data in the inventory file
+        """
 
         if not os.path.isfile(hosts_file):
             raise InventorySourceError(f'Suzieq inventory {hosts_file}'
@@ -55,7 +75,15 @@ class sqNativeInventory(Inventory):
 
         return hostsconf
 
-    def _get_device_list(self):
+    def _get_device_list(self) -> List[Dict]:
+        """Extract the data from the Suzieq inventory file
+        and produce a List with the list of devices and their
+        credentials
+
+        Returns:
+            List[Dict]: the list of the credentials of the devices
+                in the Suzieq native inventory file.
+        """
         inventory = []
         hostsconf = self._get_hostsdata_from_hostsfile(self.inventory_source)
         for namespace in hostsconf:
