@@ -10,7 +10,6 @@ from pkgutil import iter_modules
 from typing import Dict, Type
 
 
-# pylint: disable=too-few-public-methods
 class SqPlugin:
     """SqPlugin is the base common class inherited by all the
     Suzieq plugins
@@ -21,20 +20,18 @@ class SqPlugin:
 
     @classmethod
     def get_plugins(cls,
-                    search_pkg: str,
-                    transitive=False) -> Dict[str, Type]:
+                    plugin_name: str = None,
+                    search_pkg: str = None) -> Dict[str, Type]:
         """Discover all the plugins in the search_pkg package, inheriting
         the current base class.
 
         Args:
+            plugin_name (str): The name of a specific plugin to extract
             search_pkg (str): The package where to look for the plugins.
                 Note that if the specified package contains other packages,
                 the function will scan only their content, without accessing
                 to other nested packages and ignoring all the files inside
                 search_pkg.
-            transitive (bool, optional): If False returns a plugin only if
-                it is a direct descendant of the base class.
-                Defaults to False.
 
         Returns:
             Dict[str, Type]: a dictionary containing all
@@ -43,6 +40,9 @@ class SqPlugin:
         """
         classes = {}
 
+        if not search_pkg:
+            search_pkg = '.'.join(cls.__module__.split('.')[:-1])
+
         # Collect the list of packages where to search
         search_path = search_pkg.replace('.', '/')
         packages = [f'{search_pkg}.{m.name}'
@@ -50,21 +50,38 @@ class SqPlugin:
                     if m.ispkg]
         if not packages:
             packages.append(search_pkg)
+            use_pkg_name = False
+        else:
+            use_pkg_name = True
 
         for pkg in packages:
+            found_plugin = False
+            if use_pkg_name:
+                use_name = pkg.split('.')[-1]
             pspec = find_spec(pkg)
             if pspec and pspec.loader:
-                mfound = [x.split('.')[0] for x in pspec.loader.contents()
-                          if not x.startswith('_')]
+                try:
+                    mfound = [x.split('.')[0] for x in pspec.loader.contents()
+                              if not x.startswith('_') and x.endswith(".py")]
+                except Exception:
+                    mfound = []
                 for minfo in mfound:
-                    use_name = minfo.split('.')[0]
-                    mname = f'{pkg}.{use_name}'
+                    if not use_pkg_name:
+                        use_name = minfo.split('.')[0]
+                        mname = f'{pkg}.{use_name}'
+                    else:
+                        mname = f'{pkg}.{minfo}'
+                    if plugin_name and plugin_name != use_name:
+                        continue
                     mod = import_module(mname)
                     for mbr in getmembers(mod, isclass):
                         if (mbr[1].__module__ == mname
-                           and (transitive or getmro(mbr[1])[1] == cls)
+                           and getmro(mbr[1])[1] == cls
                            and issubclass(mbr[1], cls)
                            and mbr[1] != cls):
                             classes[use_name] = mbr[1]
+                            found_plugin = True
+            if plugin_name and found_plugin:
+                break
 
         return classes

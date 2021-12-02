@@ -4,9 +4,12 @@ from typing import List
 from dataclasses import dataclass
 
 import pandas as pd
+import pyarrow as pa
+
+from suzieq.shared.sq_plugin import SqPlugin
 
 
-class SqDB(ABC):
+class SqDB(SqPlugin, ABC):
     def __init__(self, cfg: dict, logger: logging.Logger):
         """Initialize the database
 
@@ -43,7 +46,8 @@ class SqDB(ABC):
 
     @abstractmethod
     def write(self, table_name: str, data_format: str,
-              data, **kwargs) -> int:
+              data, coalesced: bool, schema: pa.lib.Schema,
+              filename_cb, **kwargs) -> int:
         """Write the data supplied as a dataframe in the appropriate format
 
         :param cfg: Suzieq configuration
@@ -59,7 +63,8 @@ class SqDB(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def coalesce(self, tables: List[str] = None, period: str = '') -> None:
+    def coalesce(self, tables: List[str] = None, period: str = '',
+                 ign_sqpoller: bool = False) -> None:
         """Coalesce the database files in specified folder.
 
         :param tables: List[str], List of specific tables to coalesce, empty

@@ -3,6 +3,7 @@ import pandas as pd
 
 from suzieq.utils import load_sq_config, Schema, SchemaForTable
 from suzieq.engines import get_sqengine
+from suzieq.shared.sq_plugin import SqPlugin
 
 
 class SqContext(object):
@@ -22,13 +23,13 @@ class SqContext(object):
         self.sort_fields = []
 
 
-class SqObject(object):
+class SqObject(SqPlugin):
 
     def __init__(self, engine_name: str = 'pandas',
-                 hostname: typing.List[str] = [],
+                 hostname: typing.List[str] = None,
                  start_time: str = '', end_time: str = '',
-                 view: str = '', namespace: typing.List[str] = [],
-                 columns: typing.List[str] = ['default'],
+                 view: str = '', namespace: typing.List[str] = None,
+                 columns: typing.List[str] = None,
                  context=None, table: str = '', config_file=None) -> None:
 
         if context is None:
@@ -47,11 +48,11 @@ class SqObject(object):
         if not namespace and self.ctxt.namespace:
             self.namespace = self.ctxt.namespace
         else:
-            self.namespace = namespace
+            self.namespace = namespace or []
         if not hostname and self.ctxt.hostname:
             self.hostname = self.ctxt.hostname
         else:
-            self.hostname = hostname
+            self.hostname = hostname or []
 
         if not start_time and self.ctxt.start_time:
             self.start_time = self.ctxt.start_time
@@ -71,15 +72,13 @@ class SqObject(object):
         else:
             self.view = view or 'latest'
 
-        self.columns = columns
+        self.columns = columns or ['default']
         self._unique_def_column = ['hostname']
 
         if engine_name and engine_name != '':
-            self.engine = get_sqengine(engine_name,
-                                       self._table)(self._table, self)
+            self.engine = get_sqengine(engine_name, self._table)(self)
         elif self.ctxt.engine:
-            self.engine = get_sqengine(self.ctxt.engine,
-                                       self._table)(self._table, self)
+            self.engine = get_sqengine(self.ctxt.engine, self._table)(self)
 
         if not self.engine:
             raise ValueError('Unknown analysis engine')
@@ -114,7 +113,7 @@ class SqObject(object):
         # add standard args that are always
         good_arg_list = good_arg_list + (['namespace', 'addnl_fields'])
 
-        for arg in kwargs.keys():
+        for arg in kwargs:
             if arg not in good_arg_list:
                 raise AttributeError(
                     f"argument {arg} not supported for this command")
@@ -125,7 +124,7 @@ class SqObject(object):
         if not good_arg_val_list:
             return
 
-        for arg in kwargs.keys():
+        for arg in kwargs:
             if arg in good_arg_val_list:
                 if kwargs[arg] not in good_arg_val_list[arg]:
                     raise AttributeError(
@@ -198,7 +197,7 @@ class SqObject(object):
 
         return self.engine.get(**kwargs)
 
-    def summarize(self, namespace=[], hostname=[],
+    def summarize(self, namespace=None, hostname=None,
                   query_str='') -> pd.DataFrame:
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
@@ -211,7 +210,8 @@ class SqObject(object):
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine.summarize(namespace=namespace, hostname=hostname,
+        return self.engine.summarize(namespace=namespace or [],
+                                     hostname=hostname or [],
                                      query_str=query_str)
 
     def unique(self, **kwargs) -> pd.DataFrame:

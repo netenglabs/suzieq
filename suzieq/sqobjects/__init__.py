@@ -1,17 +1,15 @@
-from importlib.util import find_spec
-from importlib import import_module
-import inspect
+from typing import List
+from suzieq.sqobjects.basicobj import SqObject
 
 
-name = "sqobjects"
+def get_tables() -> List[str]:
+    """Return a list of all supported tables/services
 
-
-def get_tables():
-    fspec = find_spec('suzieq.sqobjects')
-    tables = [x.split('.')[0] for x in fspec.loader.contents()
-              if not x.startswith('_') and x not in ["basicobj.py",
-              "ospfIf.py", "ospfNbr.py"]]
-    return sorted(tables)
+    Returns:
+        List[str]: sorted list of all supported tables/services
+    """
+    tables = SqObject.get_plugins()
+    return sorted(tables.keys())
 
 
 def get_sqobject(table_name: str):
@@ -23,23 +21,17 @@ def get_sqobject(table_name: str):
             or raises ModuleNotFoundError if the table is not found
 
     '''
-    # Handle singular/plural conversion
-    if table_name in ['interface', 'route', 'mac', 'table']:
-        table_name += 's'
-    if table_name in ['paths', 'devices']:
-        table_name = table_name[:-1]
-    try:
-        mod = import_module(f'suzieq.sqobjects.{table_name}')
-        for mbr in inspect.getmembers(mod):
-            if inspect.isclass(mbr[1]):
-                if getattr(mbr[1], '__bases__')[0].__name__ == 'SqObject':
-                    return mbr[1]
-    except ModuleNotFoundError:
-        return None
 
-    raise ModuleNotFoundError(f'{table_name} not found')
+    tables = SqObject.get_plugins()
+    if table_name not in tables:
+        if table_name in ['interface', 'route', 'mac', 'table']:
+            # Handle singular/plural conversion
+            table_name += 's'
+
+    if table_name not in tables:
+        raise ModuleNotFoundError(f'Table {table_name} not found')
+
+    return tables[table_name]
 
 
 __all__ = get_tables() + ['get_sqobject']
-
-sqobjs_all = __all__
