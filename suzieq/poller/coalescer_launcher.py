@@ -15,6 +15,7 @@ from suzieq.shared.utils import ensure_single_instance, get_sq_install_dir
 
 logger = logging.getLogger(__name__)
 
+
 class CoalescerLauncher:
     """CoalescerLauncher is the component in charge of start and monitor the
     running coalescer
@@ -46,8 +47,8 @@ class CoalescerLauncher:
                 config_file (str): the Suzieq configuration file to pass
                     to the coalescer
                 cfg (dict): the Suzieq config dictionary
-                coalescer_bin (str, optional): optional path to coalescer binary.
-                    Defaults to None.
+                coalescer_bin (str, optional): optional path to coalescer
+                    binary. Defaults to None.
         """
         fd = 0
         process = None
@@ -69,7 +70,7 @@ class CoalescerLauncher:
             await asyncio.sleep(10)
             coalesce_dir = self.cfg.get('coalescer', {})\
                 .get('coalesce-directory',
-                    f'{self.cfg.get("data-directory")}/coalesced')
+                     f'{self.cfg.get("data-directory")}/coalesced')
 
             fd = ensure_single_instance(f'{coalesce_dir}/.sq-coalescer.pid',
                                         False)

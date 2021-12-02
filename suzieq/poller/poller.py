@@ -122,7 +122,7 @@ class Poller:
             await self._add_poller_task(
                 [self.coalescer_launcher.start_and_monitor_coalescer()]
             )
-        
+
         try:
             # The logic below of handling the writer worker task separately
             # is to ensure we can terminate properly when all the other
@@ -134,7 +134,8 @@ class Poller:
                     _, pending = await asyncio.wait(
                         tasks, return_when=asyncio.FIRST_COMPLETED)
                     tasks = list(pending)
-                    if tasks and any(i._coro in self.service_manager.running_services
+                    running_svcs = self.service_manager.running_services
+                    if tasks and any(i._coro in running_svcs
                                      for i in tasks):
                         continue
                     else:

@@ -10,7 +10,7 @@ from suzieq.shared.inventories_parsing import parse_ansible_inventory
 
 
 class AnsibleInventory(Inventory):
-    """The AnsibleInventory is a class allowing to import the output 
+    """The AnsibleInventory is a class allowing to import the output
     of 'ansible-inventory command' as input of the poller.
     """
 

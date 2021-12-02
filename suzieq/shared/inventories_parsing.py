@@ -12,6 +12,7 @@ from suzieq.shared.exceptions import InventorySourceError
 
 logger = logging.getLogger(__name__)
 
+
 def get_hostsdata_from_hostsfile(hosts_file: str) -> Dict:
     """Read the suzieq devices file and return the data from the file
     and produce a dictionary containing its content.
@@ -28,11 +29,11 @@ def get_hostsdata_from_hostsfile(hosts_file: str) -> Dict:
 
     if not os.path.isfile(hosts_file):
         raise InventorySourceError(f'Suzieq inventory {hosts_file}'
-                                    'must be a file')
+                                   'must be a file')
 
     if not os.access(hosts_file, os.R_OK):
         raise InventorySourceError('Suzieq inventory file is '
-                                    f'not readeable {hosts_file}')
+                                   f'not readeable {hosts_file}')
 
     with open(hosts_file, 'r') as f:
         try:
@@ -40,17 +41,17 @@ def get_hostsdata_from_hostsfile(hosts_file: str) -> Dict:
             hostsconf = yaml.safe_load(data)
         except Exception as e:
             raise InventorySourceError('Invalid Suzieq inventory '
-                                        f'file: {e}')
+                                       f'file: {e}')
 
     if not hostsconf or isinstance(hostsconf, str):
         raise InventorySourceError('Invalid Suzieq inventory '
-                                    f'file:{hosts_file}')
+                                   f'file:{hosts_file}')
 
     if not isinstance(hostsconf, list):
         if '_meta' in hostsconf.keys():
             raise InventorySourceError('Invalid Suzieq inventory format, '
-                                        'Ansible format?? Use -a instead '
-                                        'of -D with inventory')
+                                       'Ansible format?? Use -a instead '
+                                       'of -D with inventory')
         else:
             raise InventorySourceError(
                 f'Invalid Suzieq inventory file:{hosts_file}')
@@ -58,12 +59,12 @@ def get_hostsdata_from_hostsfile(hosts_file: str) -> Dict:
     for conf in hostsconf:
         if any(x not in conf.keys() for x in ['namespace', 'hosts']):
             raise InventorySourceError(f'Invalid inventory:{hosts_file}, '
-                                        'no namespace/hosts sections')
+                                       'no namespace/hosts sections')
 
     return hostsconf
 
 
-def parse_ansible_inventory(filename: str, 
+def parse_ansible_inventory(filename: str,
                             namespace: str = 'default') -> List[Dict]:
     """Parse the output of ansible-inventory command for processing.
 
@@ -101,7 +102,7 @@ def parse_ansible_inventory(filename: str,
             )
         else:
             raise InventorySourceError(
-                'Invalid Ansible inventory, missing keys: _meta and / or' 
+                'Invalid Ansible inventory, missing keys: _meta and / or'
                 "hostvars\n \tUse 'ansible-inventory --list' to create "
                 'the correct file'
             )
