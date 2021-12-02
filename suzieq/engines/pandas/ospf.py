@@ -2,7 +2,7 @@ from ipaddress import IPv4Network
 import pandas as pd
 import numpy as np
 
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.utils import SchemaForTable, build_query_str, humanize_timestamp
 
 
@@ -18,7 +18,8 @@ class OspfObj(SqPandasEngine):
         columns = kwargs.pop('columns', ['default'])
         state = kwargs.pop('state', '')
         addnl_fields = kwargs.pop('addnl_fields', self.iobj._addnl_fields)
-        addnl_nbr_fields = self.iobj._addnl_nbr_fields
+        addnl_nbr_fields = getattr(
+            self.iobj, '._addnl_nbr_fields', ['state'])
         user_query = kwargs.pop('query_str', '')
         hostname = kwargs.pop('hostname', [])
 
@@ -395,7 +396,7 @@ class OspfObj(SqPandasEngine):
 
         # Fill up a single assert column now indicating pass/fail
         ospf_df['assert'] = ospf_df.apply(lambda x: 'pass'
-                                          if not len(x['assertReason'])
+                                          if len(x['assertReason'] == 0)
                                           else 'fail', axis=1)
 
         result = (

@@ -38,7 +38,7 @@ def get_hostsdata_from_hostsfile(hosts_file) -> dict:
         sys.exit(1)
 
     if not os.access(hosts_file, os.R_OK):
-        logger.error("Suzieq inventory file is not readable: {}", hosts_file)
+        logger.error(f"Suzieq inventory file is not readable: {hosts_file}")
         print("ERROR: hosts Suzieq inventory file is not readable: {}",
               hosts_file)
         sys.exit(1)
@@ -48,7 +48,7 @@ def get_hostsdata_from_hostsfile(hosts_file) -> dict:
             data = f.read()
             hostsconf = yaml.safe_load(data)
         except Exception as e:
-            logger.error("Invalid Suzieq inventory file:{}", e)
+            logger.error(f"Invalid Suzieq inventory file:{e}")
             print("Invalid Suzieq inventory file:{}", e)
             sys.exit(1)
 
@@ -557,7 +557,7 @@ class Node(object):
                 self.logger.error(
                     f'Cannot parse version from {self.address}:{self.port}')
 
-    async def _parse_device_type_hostname(self, output, cb_token) -> None:
+    async def _parse_device_type_hostname(self, output, _) -> None:
         devtype = ""
         hostname = None
 
@@ -646,7 +646,7 @@ class Node(object):
             self.set_hostname(hostname)
             self.current_exception = None
 
-    async def _parse_boottime_hostname(self, output, cb_token) -> None:
+    async def _parse_boottime_hostname(self, output, _) -> None:
         """Parse the uptime command output"""
 
         if self.sigend:
@@ -767,7 +767,7 @@ class Node(object):
                 await self._terminate()
                 return
 
-            while (len(tasks) < self.batch_size):
+            while len(tasks) < self.batch_size:
                 try:
                     request = await self._service_queue.get()
                 except asyncio.CancelledError:
@@ -783,7 +783,7 @@ class Node(object):
                     break
 
             if tasks:
-                done, pending = await asyncio.wait(
+                _, pending = await asyncio.wait(
                     tasks, return_when=asyncio.FIRST_COMPLETED)
 
                 tasks = list(pending)
@@ -967,7 +967,7 @@ class Node(object):
             return result
 
         oformat = use.get('format', 'json')
-        if type(cmd) is not list:
+        if not isinstance(cmd, list):
             if use.get('textfsm'):
                 oformat = 'text'
             cmdlist = [cmd]
