@@ -11,16 +11,6 @@ from suzieq.poller.services.service import RsltToken
 from datetime import datetime, timezone
 
 
-async def init_files(gather_datadir: str):
-    """Given a data directory, return an initialized filenode object"""
-    node = FileNode()
-    tasks = [node._init(gather_datadir)]
-
-    await asyncio.gather(*tasks)
-
-    return ({node.hostname: node})
-
-
 class FileNode(object):
 
     async def _init(self, datadir: str):
