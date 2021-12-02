@@ -1,7 +1,7 @@
 from typing import List
 import pandas as pd
 from suzieq.engines.pandas.engineobj import SqPandasEngine
-from suzieq.utils import convert_macaddr_format_to_colon
+from suzieq.shared.utils import convert_macaddr_format_to_colon
 
 
 class NetworkObj(SqPandasEngine):

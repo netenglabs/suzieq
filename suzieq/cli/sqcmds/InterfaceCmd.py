@@ -4,7 +4,7 @@ from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.interfaces import IfObj
-from suzieq.utils import humanize_timestamp
+from suzieq.shared.utils import humanize_timestamp
 
 
 @command("interface", help="Act on Interface data", aliases=['interfaces'])

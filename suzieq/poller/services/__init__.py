@@ -8,7 +8,7 @@ import importlib
 from collections import defaultdict
 from pathlib import Path
 
-from suzieq.utils import Schema, SchemaForTable
+from suzieq.shared.schema import Schema, SchemaForTable
 from .service import Service
 
 

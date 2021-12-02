@@ -1,5 +1,5 @@
 from suzieq.poller.services.service import Service
-from suzieq.utils import expand_nxos_ifname
+from suzieq.shared.utils import expand_nxos_ifname
 
 
 class MlagService(Service):

@@ -3,7 +3,7 @@
 import sys
 import pyarrow.parquet as pq
 import pyarrow as pa
-from suzieq.utils import Schema, SchemaForTable
+from suzieq.shared.schema import Schema, SchemaForTable
 import logging
 import pandas as pd
 from pathlib import Path

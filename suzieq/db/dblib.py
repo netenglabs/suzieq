@@ -1,7 +1,7 @@
 import logging
 from typing import List
 
-from suzieq.exceptions import DBNotFoundError
+from suzieq.shared.exceptions import DBNotFoundError
 from suzieq.db.base_db import SqDB
 
 

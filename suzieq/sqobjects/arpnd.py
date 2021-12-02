@@ -1,7 +1,8 @@
 from suzieq.sqobjects.basicobj import SqObject
-from suzieq.utils import convert_macaddr_format_to_colon, validate_macaddr
+from suzieq.shared.utils import (convert_macaddr_format_to_colon,
+                                 validate_macaddr)
 from ipaddress import ip_interface
-from suzieq.utils import validate_network
+from suzieq.shared.utils import validate_network
 
 
 class ArpndObj(SqObject):

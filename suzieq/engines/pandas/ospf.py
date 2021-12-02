@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 
 from suzieq.engines.pandas.engineobj import SqPandasEngine
-from suzieq.utils import SchemaForTable, build_query_str, humanize_timestamp
+from suzieq.shared.utils import build_query_str, humanize_timestamp
+from suzieq.shared.schema import SchemaForTable
 
 
 class OspfObj(SqPandasEngine):
@@ -396,7 +397,7 @@ class OspfObj(SqPandasEngine):
 
         # Fill up a single assert column now indicating pass/fail
         ospf_df['assert'] = ospf_df.apply(lambda x: 'pass'
-                                          if len(x['assertReason'] == 0)
+                                          if len(x['assertReason']) == 0
                                           else 'fail', axis=1)
 
         result = (

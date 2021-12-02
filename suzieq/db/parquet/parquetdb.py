@@ -16,7 +16,7 @@ import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 
 from suzieq.db.base_db import SqDB, SqCoalesceStats
-from suzieq.utils import Schema, SchemaForTable
+from suzieq.shared.schema import Schema, SchemaForTable
 
 from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
                                            coalesce_resource_table)

@@ -8,9 +8,9 @@ from copy import copy
 import numpy as np
 import pandas as pd
 
-from suzieq.exceptions import EmptyDataframeError
+from suzieq.shared.exceptions import EmptyDataframeError
 from .engineobj import SqPandasEngine
-from suzieq.utils import expand_nxos_ifname, MAX_MTU
+from suzieq.shared.utils import expand_nxos_ifname, MAX_MTU
 
 # TODO: What timestamp to use (arpND, mac, interface, route..)
 

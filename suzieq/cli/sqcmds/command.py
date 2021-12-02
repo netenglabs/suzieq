@@ -13,8 +13,8 @@ from prompt_toolkit import prompt
 from natsort import natsort_keygen
 from colorama import Fore, Style
 
-from suzieq.exceptions import UserQueryError
 from suzieq.shared.sq_plugin import SqPlugin
+from suzieq.shared.exceptions import UserQueryError
 
 
 @dataclass

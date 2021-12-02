@@ -14,9 +14,10 @@ from dataclasses import asdict
 
 import pandas as pd
 
-from suzieq.utils import (load_sq_config, Schema, init_logger,
-                          SchemaForTable, ensure_single_instance,
-                          get_log_params, get_sleep_time)
+from suzieq.shared.utils import (load_sq_config, init_logger,
+                                 SchemaForTable, ensure_single_instance,
+                                 get_log_params, get_sleep_time)
+from suzieq.shared.schema import Schema
 from suzieq.db import do_coalesce, get_sqdb_engine
 from suzieq.version import SUZIEQ_VERSION
 

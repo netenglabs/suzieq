@@ -2,8 +2,8 @@ import re
 import numpy as np
 
 from suzieq.poller.services.service import Service
-from suzieq.utils import (convert_rangestring_to_list,
-                          convert_macaddr_format_to_colon)
+from suzieq.shared.utils import (convert_rangestring_to_list,
+                                 convert_macaddr_format_to_colon)
 
 
 class EvpnVniService(Service):
