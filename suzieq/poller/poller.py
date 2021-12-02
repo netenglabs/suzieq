@@ -25,24 +25,21 @@ class Poller:
     def __init__(self, userargs, cfg):
         self._validate_poller_args(userargs, cfg)
 
-        # Set configuration parameters
-        self.userargs = userargs
-        self.cfg = cfg
-
+        # Setup poller tasks list
         self.waiting_tasks = []
         self.waiting_tasks_lock = asyncio.Lock()
 
         # Init the node inventory object
-        self.inventory = self._init_inventory()
+        self.inventory = self._init_inventory(userargs, cfg)
 
         # Disable coalescer in specific, unusual cases
         # in case of input_dir, we also seem to leave a coalescer
         # instance running
+        self.no_coalescer = False
         if userargs.run_once or userargs.input_dir:
-            userargs.no_coalescer = True
+            self.no_coalescer = True
         else:
-            self.coalescer_launcher = CoalescerLauncher(self.userargs.config,
-                                                        cfg)
+            self.coalescer_launcher = CoalescerLauncher(userargs.config, cfg)
 
         # Setup poller writers
 
@@ -121,7 +118,7 @@ class Poller:
         await self.service_manager.schedule_services_run()
         await self._add_poller_task([self.output_manager.run_output_workers()])
         # Schedule the coalescer if needed
-        if not self.userargs.no_coalescer:
+        if not self.no_coalescer:
             await self._add_poller_task(
                 [self.coalescer_launcher.start_and_monitor_coalescer()]
             )
@@ -155,19 +152,19 @@ class Poller:
         self.waiting_tasks += tasks
         self.waiting_tasks_lock.release()
 
-    def _init_inventory(self):
+    def _init_inventory(self, userargs, cfg):
 
         # Define the dictionary with the settings
         # for any kind of inventory source
-        connect_timeout = self.cfg.get('poller', {}).get('connect-timeout', 15)
+        connect_timeout = cfg.get('poller', {}).get('connect-timeout', 15)
         inventory_args = {
-            'passphrase': self.userargs.passphrase,
-            'jump_host': self.userargs.jump_host,
-            'jump_host_key_file': self.userargs.jump_host_key_file,
-            'password': self.userargs.ask_pass,
+            'passphrase': userargs.passphrase,
+            'jump_host': userargs.jump_host,
+            'jump_host_key_file': userargs.jump_host_key_file,
+            'password': userargs.ask_pass,
             'connect_timeout': connect_timeout,
-            'ssh_config_file': self.userargs.ssh_config_file,
-            'ignore_known_hosts': self.userargs.ignore_known_hosts
+            'ssh_config_file': userargs.ssh_config_file,
+            'ignore_known_hosts': userargs.ignore_known_hosts
         }
 
         # Retrieve the specific inventory source to use
@@ -178,21 +175,21 @@ class Poller:
         inventory_class = None
         source_args = {}
 
-        if self.userargs.input_dir:
+        if userargs.input_dir:
             # 'dir' is not a real inventory source
             # we need to override the Inventory class
             # in order to simulate nodes providing the data
             # inside the specified input directory.
             inventory_class = inv_types['dir']
-            source_args = {'input_dir': self.userargs.input_dir}
-        elif self.userargs.devices_file:
+            source_args = {'input_dir': userargs.input_dir}
+        elif userargs.devices_file:
             inventory_class = inv_types['file']
-            source_args = {'inventory': self.userargs.devices_file}
+            source_args = {'inventory': userargs.devices_file}
         else:
             inventory_class = inv_types['ansible']
             source_args = {
-                'ansible_file': self.userargs.ansible_file,
-                'default_namespace': self.userargs.namespace
+                'ansible_file': userargs.ansible_file,
+                'default_namespace': userargs.namespace
             }
 
         return inventory_class(self._add_poller_task,
