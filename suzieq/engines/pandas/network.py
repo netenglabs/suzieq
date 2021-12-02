@@ -1,6 +1,6 @@
 from typing import List
 import pandas as pd
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.utils import convert_macaddr_format_to_colon
 
 

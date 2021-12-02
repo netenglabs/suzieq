@@ -1,9 +1,8 @@
 import logging
 from typing import List
-from importlib import import_module
-import inspect
 
 from suzieq.shared.exceptions import DBNotFoundError
+from suzieq.db.base_db import SqDB
 
 
 def get_sqdb_engine(cfg: dict, table_name: str, dbname: str,
@@ -21,31 +20,21 @@ def get_sqdb_engine(cfg: dict, table_name: str, dbname: str,
     :returns: the class that is the reader for this object
     :rtype:
     """
-    # Load the available engines
-    avail_db = ['parquet']
-
-    use_db = None
+    use_db = 'parquet'
     if table_name and table_name in cfg.get('db', {}):
         use_db = cfg['db'][table_name]
-    elif dbname and dbname in avail_db:
+    elif dbname:
         use_db = dbname
-    else:
-        use_db = 'parquet'      # The default
 
     if not use_db:
         logger.error(f'Unable to find a DB for {table_name}/{dbname}')
         return None
 
-    try:
-        eng_mod = import_module(f'suzieq.db.{use_db}')
-    except ModuleNotFoundError:
-        return None
+    eng_mod = SqDB.get_plugins(use_db)
+    if not eng_mod:
+        raise DBNotFoundError('DB {use_db} not found')
 
-    for mbr in inspect.getmembers(eng_mod):
-        if mbr[0] == 'get_sqdb' and inspect.isfunction(mbr[1]):
-            return mbr[1](cfg, logger)
-
-    return None
+    return eng_mod[use_db](cfg, logger)
 
 
 def do_coalesce(cfg: dict, tables: List[str], period: str = '1h',

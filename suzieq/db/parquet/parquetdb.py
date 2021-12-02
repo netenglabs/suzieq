@@ -4,7 +4,6 @@ from time import time
 from typing import List
 import logging
 from pathlib import Path
-import pyarrow.dataset as ds
 from datetime import datetime, timedelta, timezone
 from contextlib import suppress
 from shutil import rmtree
@@ -13,13 +12,15 @@ from collections import defaultdict
 import pandas as pd
 import numpy as np
 import pyarrow as pa
+import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 
 from suzieq.db.base_db import SqDB, SqCoalesceStats
 from suzieq.shared.schema import Schema, SchemaForTable
 
-from .pq_coalesce import SqCoalesceState, coalesce_resource_table
-from .migratedb import get_migrate_fn
+from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
+                                           coalesce_resource_table)
+from suzieq.db.parquet.migratedb import get_migrate_fn
 
 
 class SqParquetDB(SqDB):
@@ -746,16 +747,16 @@ class SqParquetDB(SqDB):
 
         """
         if coalesced:
-            dir = self.cfg.get('coalescer', {})\
+            folder = self.cfg.get('coalescer', {})\
                 .get('coalesce-directory',
                      f'{self.cfg.get("data-directory")}/coalesced')
         else:
-            dir = f'{self.cfg.get("data-directory")}'
+            folder = f'{self.cfg.get("data-directory")}'
 
         if table_name:
-            return f'{dir}/{table_name}'
+            return f'{folder}/{table_name}'
         else:
-            return dir
+            return folder
 
     def _get_default_vals(self) -> dict:
         return({

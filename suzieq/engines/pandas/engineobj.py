@@ -1,14 +1,18 @@
+from ipaddress import ip_address, ip_network
+
 import pandas as pd
 import numpy as np
+from ipaddress import ip_address, ip_network
+
+import dateparser
+from pandas.core.groupby import DataFrameGroupBy
+
 from suzieq.shared.utils import humanize_timestamp
 from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects import get_sqobject
 from suzieq.db import get_sqdb_engine
 from suzieq.shared.exceptions import UserQueryError
-import dateparser
-from pandas.core.groupby import DataFrameGroupBy
-from ipaddress import ip_address, ip_network
 
 
 class SqPandasEngine(SqEngineObj):
@@ -21,6 +25,7 @@ class SqPandasEngine(SqEngineObj):
         self._summarize_on_add_list_or_count = []
         self._summarize_on_add_stat = []
         self._summarize_on_perdevice_stat = []
+        self._check_empty_col = 'namespace'
         self._dbeng = get_sqdb_engine(baseobj.ctxt.cfg, baseobj.table, '',
                                       None)
 

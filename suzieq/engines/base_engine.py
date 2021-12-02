@@ -1,7 +1,8 @@
 from abc import ABC, abstractmethod
+from suzieq.shared.sq_plugin import SqPlugin
 
 
-class SqEngineObj(ABC):
+class SqEngineObj(SqPlugin, ABC):
     '''Interface class for adding analyzer engine to Suzieq'''
 
     def __init__(self):

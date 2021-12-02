@@ -3,15 +3,17 @@ import time
 import ast
 from dataclasses import dataclass
 import inspect
+from io import StringIO
+import shutil
 
 import pandas as pd
 from nubia import command, argument, context
-from io import StringIO
-import shutil
+
 from prompt_toolkit import prompt
 from natsort import natsort_keygen
 from colorama import Fore, Style
 
+from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.exceptions import UserQueryError
 
 
@@ -56,7 +58,7 @@ class ArgHelpClass(object):
     description=("Trailing blank terminated pandas query format to "
                  "further filter the output",)
 )
-class SqCommand:
+class SqCommand(SqPlugin):
     """Base Command Class for use with all verbs"""
 
     def __init__(
@@ -253,6 +255,7 @@ class SqCommand:
                      if inspect.ismethod(x[1]) and not x[0].startswith('_')}
             print(f"{self.sqobj.table}: " + Fore.CYAN + f"{self.__doc__}" +
                   Style.RESET_ALL)
+            verbs = {x: verbs[x] for x in verbs if x != 'get_plugins'}
             print("\nSupported verbs are: ")
             for verb in verbs:
                 docstr = inspect.getdoc(verbs[verb])
