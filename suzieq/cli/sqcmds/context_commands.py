@@ -29,7 +29,7 @@ from termcolor import cprint, colored
     description="Set the data directory for the command"
 )
 def set_ctxt(
-        pager: str = 'on',
+        pager: str = "",
         hostname: typing.List[str] = [],
         start_time: str = "",
         end_time: str = "",
