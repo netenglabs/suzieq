@@ -34,11 +34,25 @@ class InventoryProvider:
         # contains the Plugin objects divided by type
         self._plugin_objects = dict()
 
-        self.sleep_period = 0
+        self._period = 0
 
         # collect basePlugin classes
         base_plugin_pkg = "suzieq.inventory_provider.plugins.base_plugins"
         self._base_plugin_classes = SqPlugin.get_plugins(base_plugin_pkg)
+
+    @property
+    def period(self) -> int:
+        """Defines how much time elapses before updating the global
+        inventory
+
+        Returns:
+            [int]: sleep period
+        """
+        return self._period
+
+    @period.setter
+    def period(self, val: int):
+        self._period = val
 
     def load(self, config_data: dict):
         """Loads the provider configuration and the plugins configurations
@@ -50,7 +64,7 @@ class InventoryProvider:
         self._plugins_config = config_data.get("plugin_type", {})
 
         self._provider_config = config_data.get("provider_config", {})
-        self.sleep_period = self._provider_config.get("period", 3600)
+        self.period = self._provider_config.get("period", 3600)
 
     def get_plugins(self, plugin_type: str) -> List[Type]:
         """Returns the list of plugins of type <plugin_type>
@@ -211,15 +225,16 @@ def sq_prov_main():
         n_pollers = poller_manager.get_pollers_number()
 
         inv_chunks = chunker.chunk(global_inventory, n_pollers)
-        [print(ic, end="\n----\n") for ic in inv_chunks]
+        for ic in inv_chunks:
+            print(ic, end="\n----\n")
 
         poller_manager.apply(inv_chunks)
 
         if run_once:
             break
 
-        print("sleeping for", inv_prov.sleep_period)
-        sleep(inv_prov.sleep_period)
+        print("sleeping for", inv_prov.period)
+        sleep(inv_prov.period)
 
 
 if __name__ == "__main__":

@@ -1,9 +1,14 @@
-from suzieq.inventory_provider.plugins.inventory_source.credential_loader.credential_loader import CredentialLoader
+"""This module contains the class to import device credentials using files
+"""
 from os import path
 import yaml
+from suzieq.inventory_provider.plugins.inventory_source.credential_loader \
+    .credential_loader import CredentialLoader
 
 
 class CredFile(CredentialLoader):
+    """Reads devices credentials from a file and write them on the inventory
+    """
     def init(self, init_data: dict):
         if not init_data:
             raise RuntimeError(
@@ -16,10 +21,10 @@ class CredFile(CredentialLoader):
         with open(dev_cred_file, "r") as f:
             self._raw_credentials = yaml.safe_load(f.read())
 
-    def load(self, cur_inventory: dict):
+    def load(self, inventory: dict):
 
-        if not cur_inventory or type(cur_inventory) is not dict:
-            raise RuntimeError("Wrongly formatted inventory")
+        if not inventory:
+            raise RuntimeError("Empty inventory")
 
         if not self._raw_credentials.get("namespace", None):
             raise RuntimeError(
@@ -42,29 +47,28 @@ class CredFile(CredentialLoader):
                 if not dev_name:
                     raise RuntimeError("Devices must have a name")
 
-                if dev_name not in cur_inventory:
+                if dev_name not in inventory:
                     raise RuntimeError("Unknown device called {}"
                                        .format(dev_name))
 
-                if namespace != cur_inventory.get(dev_name, {})\
-                                             .get("namespace", ""):
+                if namespace != inventory.get(dev_name, {})\
+                        .get("namespace", ""):
                     raise RuntimeError(
-                        "The device {} does not belong the namespace {}",
-                        dev_name,
-                        namespace,
+                        "The device {} does not belong the namespace {}"
+                        .format(dev_name, namespace)
                     )
 
                 dev_cred = dev_info.get("credentials", None)
                 if not dev_cred:
                     raise RuntimeError("Device must contains credentials")
 
-                cur_inventory[dev_name]["credentials"] = dev_cred
-                cur_inventory[dev_name]["credentials"]["options"] = dev_info\
+                inventory[dev_name]["credentials"] = dev_cred
+                inventory[dev_name]["credentials"]["options"] = dev_info\
                     .get("options", {})
 
         # check if all devices has credentials
         no_cred_devs = [
-            k for (k, d) in cur_inventory.items()
+            k for (k, d) in inventory.items()
             if not d.get("credentials", None)
         ]
         if len(no_cred_devs) != 0:

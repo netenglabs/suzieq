@@ -198,9 +198,10 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
         }
         url = f"{self._protocol}://{self._ip_address}:{self._port}"\
             "/api/users/tokens/provision/"
-        data = dict()
-        data["username"] = self._username
-        data["password"] = self._password
+        data = {
+            "username": self._username,
+            "password": self._password
+        }
         data = json.dumps(data, indent=4)
 
         if not self._session:
@@ -238,12 +239,12 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
             return cur_field
 
         inventory_list = raw_inventory.get("results", [])
-        inventory = dict()
+        inventory = {}
 
         # i can set the key as "name" rather than "id" because
         # the device name must be unique in Netbox
         for device in inventory_list:
-            inventory[device["name"]] = dict()
+            inventory[device["name"]] = {}
             for rel_field in _RELEVANT_FIELDS:
                 inventory[device["name"]][rel_field] = \
                     get_field_value(device, rel_field)
