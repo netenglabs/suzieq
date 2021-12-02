@@ -8,7 +8,7 @@ import os
 import signal
 from typing import Dict
 
-from suzieq.poller.coalescer import start_and_monitor_coalescer
+from suzieq.poller.coalescer_launcher import CoalescerLauncher
 from suzieq.poller.inventory.inventory_sources_base.inventory import Inventory
 from suzieq.poller.services.service_manager import ServiceManager
 from suzieq.poller.writers.output_worker_manager import OutputWorkerManager
@@ -40,6 +40,9 @@ class Poller:
         # instance running
         if userargs.run_once or userargs.input_dir:
             userargs.no_coalescer = True
+        else:
+            self.coalescer_launcher = CoalescerLauncher(self.userargs.config,
+                                                        cfg)
 
         # Setup poller writers
 
@@ -117,12 +120,12 @@ class Poller:
         await self.inventory.schedule_nodes_run()
         await self.service_manager.schedule_services_run()
         await self._add_poller_task([self.output_manager.run_output_workers()])
+        # Schedule the coalescer if needed
         if not self.userargs.no_coalescer:
             await self._add_poller_task(
-                [start_and_monitor_coalescer(self.userargs.config,
-                                             self.cfg,
-                                             logger)]
+                [self.coalescer_launcher.start_and_monitor_coalescer()]
             )
+        
         try:
             # The logic below of handling the writer worker task separately
             # is to ensure we can terminate properly when all the other
