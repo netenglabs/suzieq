@@ -5,7 +5,7 @@ import shlex
 from tempfile import mkstemp
 import yaml
 from unittest.mock import Mock
-from suzieq.poller.services import init_services
+from suzieq.poller.services.service_manager import ServiceManager
 from suzieq.shared.utils import load_sq_config
 from suzieq.shared.schema import Schema
 from suzieq.sqobjects import get_sqobject, get_tables
@@ -95,11 +95,12 @@ def get_table_data_cols(table: str, datadir: str, columns: List[str]):
 @ pytest.fixture
 @ pytest.mark.asyncio
 def init_services_default(event_loop):
-    configs = os.path.abspath(os.curdir) + '/config/'
+    configs = os.path.abspath(os.curdir) + '/suzieq/config/'
     schema = configs + 'schema/'
     mock_queue = Mock()
-    services = event_loop.run_until_complete(
-        init_services(configs, schema, mock_queue, True))
+    service_manager = ServiceManager(None, configs, schema,
+                                     mock_queue, 'forever')
+    services = event_loop.run_until_complete(service_manager.init_services())
     return services
 
 
