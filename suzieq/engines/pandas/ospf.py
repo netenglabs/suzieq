@@ -397,7 +397,7 @@ class OspfObj(SqPandasEngine):
 
         # Fill up a single assert column now indicating pass/fail
         ospf_df['assert'] = ospf_df.apply(lambda x: 'pass'
-                                          if len(x['assertReason'] == 0)
+                                          if len(x['assertReason']) == 0
                                           else 'fail', axis=1)
 
         result = (
