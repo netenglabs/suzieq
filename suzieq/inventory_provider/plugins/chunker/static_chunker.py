@@ -23,7 +23,7 @@ class StaticChunker(Chunker):
 
     def __init__(self, config_data: dict = None):
 
-        self._split_policies_list = ["random", "namespace"]
+        self._split_policies_list = ["sequential", "namespace"]
         self._split_policies_fn = {}
 
         for pol_name in self._split_policies_list:
@@ -56,7 +56,7 @@ class StaticChunker(Chunker):
 
         return split_fun(glob_inv, n_pollers)
 
-    def split_random(self, glob_inv: dict, n_pollers: int) -> List[Dict]:
+    def split_sequential(self, glob_inv: dict, n_pollers: int) -> List[Dict]:
         """This function splits the global inventory following the
            same order of the global inventory. This function simply divides
            the global inventory as is "n_pollers" chunks without caring

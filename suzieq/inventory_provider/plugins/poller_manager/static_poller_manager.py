@@ -38,8 +38,8 @@ class StaticPollerManager(PollerManager):
             inventory_chunks (List[Dict]): input inventory chunks
         """
         for i, inventory in enumerate(inventory_chunks):
-            
-            namespaces = {}
+
+            cur_inventory = {}
             for device in inventory.values():
                 hostname = device.get("hostname", "")
 
@@ -48,6 +48,12 @@ class StaticPollerManager(PollerManager):
                 if not (ipv4_address or ipv6_address):
                     raise RuntimeError(f"device {hostname} has no "
                                        "ip addresses")
+                if ipv4_address:
+                    ipv4_address = ipv4_address.split("/")[0]
+
+                if ipv6_address:
+                    ipv6_address = ipv6_address.split("/")[0]
+
 
                 transport = device.get("method", "ssh")
 
@@ -73,27 +79,34 @@ class StaticPollerManager(PollerManager):
                     raise RuntimeError(f"device {hostname} has invalid "
                                        "options")
 
-                hostline = f'{transport}://{username}@{ipv4_address or ipv6_address}'
+                hostline = f'{transport}://{username}@' \
+                    f'{ipv4_address or ipv6_address}'
+
+                if transport == "ssh":
+                    hostline += f':{device.get("port",22)}'
+                else:
+                    hostline += f':{device.get("port",443)}'
+
                 if password:
                     hostline += f' password={password}'
                 else:
                     hostline += f' keyfile={key_path}'
 
-                if cur_ns not in namespaces:
-                    namespaces[cur_ns] = {
+                if cur_ns not in cur_inventory:
+                    cur_inventory[cur_ns] = {
                         "namespace": cur_ns,
                         "hosts": []
                     }
-                namespaces[cur_ns]["hosts"].append({"url": hostline})
+                cur_inventory[cur_ns]["hosts"].append({"url": hostline})
 
-            if namespaces:
+            if cur_inventory:
                 out_file_path = join(
                     self._inventory_path,
                     f"{self._inventory_file_name}{i}.yaml"
                 )
 
                 with open(out_file_path, "w") as file:
-                    file.write(yaml.safe_dump(list(namespaces.values())))
+                    file.write(yaml.safe_dump(list(cur_inventory.values())))
 
     def get_pollers_number(self, inventory: dict = None) -> int:
         """returns the content of self._poller_count statically loaded from

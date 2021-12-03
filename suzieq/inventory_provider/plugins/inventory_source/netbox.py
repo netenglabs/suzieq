@@ -105,18 +105,6 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
             errors.append("No device credentials provided")
         return errors
 
-    def _update_inventory_format(self, input_inv_format: dict = None):
-        netbox_inv_format = {
-            "hostname": "name",
-            "namespace": "namespace",
-            "ipv4": "primary_ip4.address",
-            "ipv6": "primary_ip6.address",
-            "credentials": "credentials"
-        }
-        super()._update_inventory_format(
-            input_inv_format=netbox_inv_format
-        )
-
     def _init_session(self, headers: dict):
         """Initialize the session property
 
@@ -246,8 +234,16 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
         for device in inventory_list:
             inventory[device["name"]] = {}
             for rel_field in _RELEVANT_FIELDS:
-                inventory[device["name"]][rel_field] = \
+                if rel_field == "name":
+                    inventory[device["name"]]["hostname"] = \
                     get_field_value(device, rel_field)
+                elif rel_field == "primary_ip6.address":
+                    inventory[device["name"]]["ipv6"] = \
+                    get_field_value(device, rel_field)
+                elif rel_field == "primary_ip4.address":
+                    inventory[device["name"]]["ipv4"] = \
+                    get_field_value(device, rel_field)
+
             if self._namespace == "site.name"\
                     and "site.name" in _RELEVANT_FIELDS:
                 inventory[device["name"]]["namespace"] = \
@@ -314,7 +310,7 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
                     loader.load(tmp_inventory)
 
                 # Write the inventory and remove the tmp one
-                self.set_inventory(tmp_inventory)
+                self.set_inventory(list(tmp_inventory.values()))
                 tmp_inventory.clear()
 
                 if self._get_status() == "stopping":

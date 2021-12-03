@@ -35,6 +35,7 @@ class InventoryProvider:
         self._plugin_objects = dict()
 
         self._period = 0
+        self._inv_get_timeout = 0
 
         # collect basePlugin classes
         base_plugin_pkg = "suzieq.inventory_provider.plugins.base_plugins"
@@ -54,6 +55,19 @@ class InventoryProvider:
     def period(self, val: int):
         self._period = val
 
+    @property
+    def inv_get_timeout(self) -> int:
+        """Maximum time to wait on a InventorySource.get_inventor()
+
+        Returns:
+            int: inventory get timeot
+        """
+        return self._inv_get_timeout
+
+    @inv_get_timeout.setter
+    def inv_get_timeout(self, val: int):
+        self._inv_get_timeout = val
+
     def load(self, config_data: dict):
         """Loads the provider configuration and the plugins configurations
 
@@ -65,6 +79,9 @@ class InventoryProvider:
 
         self._provider_config = config_data.get("provider_config", {})
         self.period = self._provider_config.get("period", 3600)
+        self._inv_get_timeout = self._provider_config.get(
+            "inventory_get_timeout", 10
+        )
 
     def get_plugins(self, plugin_type: str) -> List[Type]:
         """Returns the list of plugins of type <plugin_type>
@@ -162,7 +179,7 @@ def sq_prov_main():
         raise RuntimeError(f"No configuration file at {config_file}")
     config_data = {}
     with open(
-        config_file, "r", encoding="utf-8"
+        config_file, "r"
     ) as file:
         config_data = yaml.safe_load(file.read())
 
@@ -213,13 +230,12 @@ def sq_prov_main():
     while True:
         global_inventory = {}
         for inv_src_plugin in inv_source_plugins:
-            cur_inv = inv_src_plugin.get_inventory()
+            cur_inv = inv_src_plugin.get_inventory(timeout=inv_prov.inv_get_timeout)
+            print(cur_inv)
             if cur_inv:
-                for dev_name, device in cur_inv.items():
-                    dev_ns = device.get("namespace", None)
-                    if dev_ns is None:
-                        raise AttributeError("namespace not found in device"
-                                             " inventory")
+                for device in cur_inv:
+                    dev_name = device.get("hostname")
+                    dev_ns = device.get("namespace")
                     global_inventory[f"{dev_ns}.{dev_name}"] = device
 
         n_pollers = poller_manager.get_pollers_number()

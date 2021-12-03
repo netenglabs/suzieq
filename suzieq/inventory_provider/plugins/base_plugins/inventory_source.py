@@ -3,7 +3,7 @@
 from abc import abstractmethod
 from copy import copy
 from threading import Semaphore
-from typing import Dict, Type
+from typing import Dict, Type, List
 from suzieq.inventory_provider.plugins.inventory_source.credential_loader\
     .credential_loader import CredentialLoader
 from suzieq.shared.sq_plugin import SqPlugin
@@ -16,26 +16,24 @@ class InventorySource(SqPlugin):
         super().__init__()
 
         self._inv_semaphore = Semaphore()
-        self._inventory = {}
+        self._inventory = []
         self._inv_is_set = False
         self._inv_is_set_sem = Semaphore()
         self._inv_is_set_sem.acquire()
 
-        self._inv_formatter = {
-            "hostname": "hostname",
-            "namespace": "namespace",
-            "ipv4": "ipv4",
-            "ipv6": "ipv6",
-            "credentials": "credentials"
-        }
+        self._inv_format = [
+            "hostname",
+            "namespace",
+            "ipv4",
+            "ipv6",
+            "credentials"
+        ]
 
         self._load(input_data)
         errors = self._validate_config()
         if errors:
             raise RuntimeError("Inventory validation failed: {}"
                                .format(errors))
-
-        self._update_inventory_format()
 
     @abstractmethod
     def _load(self, input_data):
@@ -45,7 +43,7 @@ class InventorySource(SqPlugin):
     def _validate_config(self):
         """Checks if the loaded data is valid or not"""
 
-    def get_inventory(self, timeout: int = 10) -> Dict[str, Dict]:
+    def get_inventory(self, timeout: int = 10) -> List[Dict]:
         """Retrieve the inventory in a thread safe way
 
         If the result was not yet produced, the function will wait until the
@@ -65,7 +63,7 @@ class InventorySource(SqPlugin):
             expires
 
         Returns:
-            Dict[str, Dict]: the inventory
+            List[Dict]: inventory devices
         """
 
         if timeout < 0:
@@ -85,23 +83,21 @@ class InventorySource(SqPlugin):
                 "Unable to acquire the lock before the timeout expiration"
             )
 
-        if callable(getattr(self._inventory, "copy", None)):
-            inventory_snapshot = self._inventory.copy()
-        else:
-            inventory_snapshot = copy(self._inventory)
+        inventory_snapshot = copy(self._inventory)
         self._inv_semaphore.release()
         return inventory_snapshot
 
-    def set_inventory(self, new_inventory: dict, timeout: int = 10):
+    def set_inventory(self, new_inventory: List[Dict], timeout: int = 10):
         """Set the inventory in a thread safe way
 
         The function will try to set the inventory until the timeout
         expires.
 
-        Before setting the new inventory, it calls the formatter
+        Before setting the new inventory, it calls the validator.
+        If the new_inventory is not int the format 
 
         Args:
-            new_inventory ([dict]): new inventory to set
+            new_inventory ([List[Dict]]): new inventory to set
             timeout (int, optional): maximum amount of time to wait.
             Defaults to 10.
 
@@ -109,17 +105,16 @@ class InventorySource(SqPlugin):
             TimeoutError: unable to acquire the lock before the timeout
             expires
         """
-        formatted_inventory = self._format_inventory(new_inventory)
+        missing_keys = self._is_invalid_inventory(new_inventory)
+        if missing_keys:
+            raise ValueError(f"Invalid inventory: missing keys {missing_keys}")
         ok = self._inv_semaphore.acquire(timeout=timeout)
         if not ok:
             raise TimeoutError(
                 "Unable to acquire the lock before the timeout expiration"
             )
 
-        if callable(getattr(self._inventory, "copy", None)):
-            new_inventory_copy = formatted_inventory.copy()
-        else:
-            new_inventory_copy = copy(formatted_inventory)
+        new_inventory_copy = copy(new_inventory)
         self._inventory = new_inventory_copy
         if not self._inv_is_set:
             # the inventory has been set for the first time
@@ -144,49 +139,25 @@ class InventorySource(SqPlugin):
             return l_classes.get(ltype, None)
         return None
 
-    def _update_inventory_format(self, input_inv_format: dict = None):
-        """update the inventory format
+    def _is_invalid_inventory(self, inventory: List[Dict]) -> List[str]:
+        """Validate the inventory
 
-        The inventory format is used to specify how to adjust the data
-        retrieved from the source and produce an output common to all
-        sources.
+        The goal of this function is to check that all the devices has all
+        the values in self._inv_format
 
-        This function must be overrided if the data format is different from
-        the default one.
-
-        Raises:
-            AttributeError: Invalid key for the formatter
+        This function is called inside the set_inventory
 
         Args:
-            input_inv_format (dict, optional): new format to apply. If
-            the dictionary is empty or not provided the function is skipped.
-            Default to None.
-        """
-        if input_inv_format:
-            for input_key, input_value in input_inv_format.items():
-                if input_key in self._inv_formatter:
-                    self._inv_formatter[input_key] = input_value
-                else:
-                    raise AttributeError(f"Invalid key {input_key} for "
-                                         "formatter")
-
-    def _format_inventory(self, inventory: Dict[str, Dict]) -> Dict[str, Dict]:
-        """this function formats the inventory following the inventory
-        formatter
-
-        Args:
-            inventory (Dict[str, Dict]): inventory to format
-
-        Raises:
-            AttributeError: Invaid formatter
+            inventory (List[Dict]): inventory to validate
 
         Returns:
-            Dict[str,Dict]: formatted inventory
+            List[str]: list of missing fields
         """
-        out_inventory = {}
-        for dev_name, device in inventory.items():
-            out_inventory[dev_name] = {}
-            for out_key, dev_key in self._inv_formatter.items():
-                out_inventory[dev_name][out_key] = device.get(dev_key, None)
-
-        return out_inventory
+        for device in inventory:
+            device_keys = set(self._inv_format)
+            for key in device.keys():
+                if key in device_keys:
+                    device_keys.remove(key)
+            if device_keys:
+                return list(device_keys)
+        return []
