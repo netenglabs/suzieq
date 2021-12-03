@@ -22,6 +22,7 @@ class Poller:
     output worker tasks, in order to pull the data from the devices configured
     in the device inventory.
     """
+
     def __init__(self, userargs, cfg):
         self._validate_poller_args(userargs, cfg)
 
@@ -111,7 +112,7 @@ class Poller:
         loop = asyncio.get_event_loop()
         for s in [signal.SIGTERM, signal.SIGINT]:
             loop.add_signal_handler(
-                s, lambda s=s: asyncio.create_task(self._stop(s)))
+                s, lambda s=s: asyncio.create_task(self._stop()))
 
         # Schedule the tasks to run
         await self.inventory.schedule_nodes_run()
