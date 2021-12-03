@@ -129,4 +129,4 @@ class Inventory(SqPlugin):
             List[Dict]: the list of the credentials of the devices
                 in the Suzieq native inventory file.
         """
-        pass
+        raise NotImplementedError
