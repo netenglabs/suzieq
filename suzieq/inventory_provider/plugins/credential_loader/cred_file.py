@@ -62,9 +62,13 @@ class CredFile(CredentialLoader):
                 if not dev_cred:
                     raise RuntimeError("Device must contains credentials")
 
-                inventory[dev_name]["credentials"] = dev_cred
-                inventory[dev_name]["credentials"]["options"] = dev_info\
-                    .get("options", {})
+                dev_cred["options"] = dev_info.get("options", {})
+
+                self.write_credentials(inventory[dev_name], dev_cred)
+
+                # inventory[dev_name]["credentials"] = dev_cred
+                # inventory[dev_name]["credentials"]["options"] = dev_info\
+                #     .get("options", {})
 
         # check if all devices has credentials
         no_cred_devs = [

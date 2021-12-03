@@ -94,7 +94,6 @@ class InventorySource(SqPlugin):
         expires.
 
         Before setting the new inventory, it calls the validator.
-        If the new_inventory is not int the format 
 
         Args:
             new_inventory ([List[Dict]]): new inventory to set
@@ -102,6 +101,7 @@ class InventorySource(SqPlugin):
             Defaults to 10.
 
         Raises:
+            ValueError: invalid inventory file
             TimeoutError: unable to acquire the lock before the timeout
             expires
         """

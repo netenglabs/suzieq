@@ -1,5 +1,6 @@
 from faker import Faker
-from suzieq.inventory_provider.tests.generators.base_generators.inventory_source import InventorySourceGenerator
+from suzieq.inventory_provider.tests.generators.inventory_source\
+    .inventory_source import InventorySourceGenerator
 from copy import deepcopy
 from os.path import dirname, join, isfile, isdir
 import json

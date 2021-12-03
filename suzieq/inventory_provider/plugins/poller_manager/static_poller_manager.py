@@ -4,9 +4,9 @@
     inventory chunks on different files for the pollers
 """
 from os.path import isdir, join
-import yaml
 from typing import List, Dict
-from suzieq.inventory_provider.plugins.base_plugins.poller_manager \
+import yaml
+from suzieq.inventory_provider.plugins.poller_manager.poller_manager \
     import PollerManager
 
 
@@ -54,7 +54,6 @@ class StaticPollerManager(PollerManager):
                 if ipv6_address:
                     ipv6_address = ipv6_address.split("/")[0]
 
-
                 transport = device.get("method", "ssh")
 
                 cur_ns = device.get("namespace", None)
@@ -69,7 +68,7 @@ class StaticPollerManager(PollerManager):
 
                 username = credentials.get("username", None)
                 password = credentials.get("password", None)
-                key_path = credentials.get("key_file_path", None)
+                key_path = credentials.get("key_path", None)
                 if not (username and (password or key_path)):
                     raise RuntimeError(f"device {hostname} has invalid "
                                        "credentials")

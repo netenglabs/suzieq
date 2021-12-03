@@ -6,8 +6,7 @@ Classes:
 Functions:
     sq_main(): this function coordinates all the plugins initializing
                 and starting each one of them. The plugins are divided
-                in types. The supported types are save into
-                suzieq.inventory_provider.plugins.base_plugins
+                in types.
 """
 from os.path import isfile
 from typing import Type, List
@@ -15,7 +14,7 @@ from time import sleep
 import threading
 import argparse
 import yaml
-from suzieq.inventory_provider.plugins.base_plugins.inventory_async_plugin \
+from suzieq.inventory_provider.plugins.inventory_async_plugin \
     import InventoryAsyncPlugin
 from suzieq.shared.sq_plugin import SqPlugin
 
@@ -38,8 +37,9 @@ class InventoryProvider:
         self._inv_get_timeout = 0
 
         # collect basePlugin classes
-        base_plugin_pkg = "suzieq.inventory_provider.plugins.base_plugins"
-        self._base_plugin_classes = SqPlugin.get_plugins(search_pkg=base_plugin_pkg)
+        base_plugin_pkg = "suzieq.inventory_provider.plugins"
+        self._base_plugin_classes = SqPlugin.get_plugins(
+            search_pkg=base_plugin_pkg)
 
     @property
     def period(self) -> int:
@@ -230,7 +230,8 @@ def sq_prov_main():
     while True:
         global_inventory = {}
         for inv_src_plugin in inv_source_plugins:
-            cur_inv = inv_src_plugin.get_inventory(timeout=inv_prov.inv_get_timeout)
+            cur_inv = inv_src_plugin.get_inventory(
+                timeout=inv_prov.inv_get_timeout)
             print(cur_inv)
             if cur_inv:
                 for device in cur_inv:

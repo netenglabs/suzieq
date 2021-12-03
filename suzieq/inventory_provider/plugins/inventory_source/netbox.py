@@ -12,9 +12,9 @@ import json
 from threading import Semaphore
 from time import sleep
 import requests
-from suzieq.inventory_provider.plugins.base_plugins.inventory_source \
+from suzieq.inventory_provider.plugins.inventory_source.inventory_source \
     import InventorySource
-from suzieq.inventory_provider.plugins.base_plugins.inventory_async_plugin \
+from suzieq.inventory_provider.plugins.inventory_async_plugin \
     import InventoryAsyncPlugin
 
 _DEFAULT_PORTS = {"http": 80, "https": 443}
@@ -236,13 +236,13 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
             for rel_field in _RELEVANT_FIELDS:
                 if rel_field == "name":
                     inventory[device["name"]]["hostname"] = \
-                    get_field_value(device, rel_field)
+                        get_field_value(device, rel_field)
                 elif rel_field == "primary_ip6.address":
                     inventory[device["name"]]["ipv6"] = \
-                    get_field_value(device, rel_field)
+                        get_field_value(device, rel_field)
                 elif rel_field == "primary_ip4.address":
                     inventory[device["name"]]["ipv4"] = \
-                    get_field_value(device, rel_field)
+                        get_field_value(device, rel_field)
 
             if self._namespace == "site.name"\
                     and "site.name" in _RELEVANT_FIELDS:

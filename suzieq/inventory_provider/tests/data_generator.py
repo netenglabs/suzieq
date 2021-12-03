@@ -1,8 +1,7 @@
 from faker import Faker
 import argparse
 import yaml
-from suzieq.inventory_provider.tests.generators.base_generators \
-    .source_generator import SourceGenerator
+from suzieq.inventory_provider.tests.generators.source_generator import SourceGenerator
 from os.path import isfile, join, dirname, abspath
 
 DATA_GENERATOR_DIRECTORY = dirname(abspath(__file__))
@@ -27,8 +26,8 @@ def main():
     with open(config_file, "r") as f:
         config_data = yaml.safe_load(f.read())
 
-    base_gen_pkg = "suzieq.inventory_provider.tests.generators.base_generators"
-    base_gen_classes = SourceGenerator.get_plugins(base_gen_pkg)
+    base_gen_pkg = "suzieq.inventory_provider.tests.generators"
+    base_gen_classes = SourceGenerator.get_plugins(search_pkg=base_gen_pkg)
 
     fake = Faker()
     seed = config_data.get("seed", None)
@@ -56,8 +55,8 @@ def main():
                 raise AttributeError(
                     f"Unknown generator type {macro_gen_type}")
 
-            gens_pkg = f"suzieq.inventory_provider.tests.generators.{macro_gen_type}"
-            gen_classes = base_gen_class.get_plugins(gens_pkg)
+            # gens_pkg = f"suzieq.inventory_provider.tests.generators.{macro_gen_type}.{gen_type}"
+            gen_classes = base_gen_class.get_plugins()
 
             gen_class = gen_classes.get(gen_type, None)
 

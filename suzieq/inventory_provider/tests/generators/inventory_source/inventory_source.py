@@ -1,7 +1,7 @@
 """This module contains the base class for inventorySource generators
 """
 from abc import abstractmethod
-from suzieq.inventory_provider.tests.generators.base_generators.source_generator \
+from suzieq.inventory_provider.tests.generators.source_generator \
     import SourceGenerator
 
 
