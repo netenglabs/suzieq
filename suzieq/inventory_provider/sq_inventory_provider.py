@@ -39,7 +39,7 @@ class InventoryProvider:
 
         # collect basePlugin classes
         base_plugin_pkg = "suzieq.inventory_provider.plugins.base_plugins"
-        self._base_plugin_classes = SqPlugin.get_plugins(base_plugin_pkg)
+        self._base_plugin_classes = SqPlugin.get_plugins(search_pkg=base_plugin_pkg)
 
     @property
     def period(self) -> int:
@@ -83,7 +83,7 @@ class InventoryProvider:
             "inventory_get_timeout", 10
         )
 
-    def get_plugins(self, plugin_type: str) -> List[Type]:
+    def get_plugins_from_type(self, plugin_type: str) -> List[Type]:
         """Returns the list of plugins of type <plugin_type>
 
         Args:
@@ -122,8 +122,8 @@ class InventoryProvider:
         if not base_plugin_class:
             raise AttributeError(f"Unknown plugin type {plugin_type}")
 
-        plugins_pkg = "suzieq.inventory_provider.plugins"
-        plugin_classes = base_plugin_class.get_plugins(plugins_pkg)
+        plugins_pkg = f"suzieq.inventory_provider.plugins.{plugin_type}"
+        plugin_classes = base_plugin_class.get_plugins(search_pkg=plugins_pkg)
 
         for plug_conf in plugin_confs:
             pname = plug_conf.get("plugin_name", "")
@@ -189,7 +189,7 @@ def sq_prov_main():
     # initialize inventorySources
     inv_prov.init_plugins("inventory_source")
 
-    inv_source_plugins = inv_prov.get_plugins("inventory_source")
+    inv_source_plugins = inv_prov.get_plugins_from_type("inventory_source")
     if not inv_source_plugins:
         raise RuntimeError(
             "No inventorySource plugin in the configuration file"
@@ -208,14 +208,14 @@ def sq_prov_main():
 
     # initialize chunker
     inv_prov.init_plugins("chunker")
-    chunkers = inv_prov.get_plugins("chunker")
+    chunkers = inv_prov.get_plugins_from_type("chunker")
     if len(chunkers) > 1:
         raise RuntimeError("Only 1 Chunker at a time is supported")
     chunker = chunkers[0]
 
     # initialize pollerManager
     inv_prov.init_plugins("poller_manager")
-    poller_managers = inv_prov.get_plugins("poller_manager")
+    poller_managers = inv_prov.get_plugins_from_type("poller_manager")
     if len(poller_managers) > 1:
         raise RuntimeError("Only 1 poller_manager at a time is supported")
     poller_manager = poller_managers[0]

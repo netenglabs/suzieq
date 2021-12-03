@@ -2,7 +2,7 @@
 """
 from os import path
 import yaml
-from suzieq.inventory_provider.plugins.inventory_source.credential_loader \
+from suzieq.inventory_provider.plugins.credential_loader \
     .credential_loader import CredentialLoader
 
 

@@ -4,7 +4,7 @@ from abc import abstractmethod
 from copy import copy
 from threading import Semaphore
 from typing import Dict, Type, List
-from suzieq.inventory_provider.plugins.inventory_source.credential_loader\
+from suzieq.inventory_provider.plugins.credential_loader\
     .credential_loader import CredentialLoader
 from suzieq.shared.sq_plugin import SqPlugin
 
@@ -131,9 +131,8 @@ class InventorySource(SqPlugin):
         Returns:
             Type: credential loader class
         """
-        cred_loader_pkg = "suzieq.inventory_provider.plugins.inventory_source"\
-            ".credential_loader"
-        l_classes = CredentialLoader.get_plugins(cred_loader_pkg)
+        cred_loader_pkg = "suzieq.inventory_provider.plugins.credential_loader"
+        l_classes = CredentialLoader.get_plugins(search_pkg=cred_loader_pkg)
 
         if l_classes:
             return l_classes.get(ltype, None)
