@@ -31,6 +31,7 @@ MAX_MTU = 9216
 MISSING_SPEED = -1
 NO_SPEED = 0
 MISSING_SPEED_IF_TYPES = ['ethernet', 'bond', 'bond_slave']
+SUPPORTED_POLLER_TRANSPORTS = ['ssh', 'https']
 
 
 def validate_sq_config(cfg):
