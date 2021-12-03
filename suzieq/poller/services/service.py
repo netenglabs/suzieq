@@ -17,6 +17,7 @@ import yaml
 from packaging import version as version_parse
 
 from suzieq.poller.services.svcparser import cons_recs_from_json_template
+from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.utils import known_devtypes
 from suzieq.version import SUZIEQ_VERSION
 
@@ -46,7 +47,7 @@ class ServiceStats:
     next_update_time: int = 0   # When results will be logged
 
 
-class Service(object):
+class Service(SqPlugin):
 
     def get_poller_schema(self):
         return self._poller_schema
