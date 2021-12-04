@@ -15,10 +15,11 @@ from colorama import Fore, Style
 
 from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.exceptions import UserQueryError
+from suzieq.shared.utils import SUPPORTED_ENGINES
 
 
 @dataclass
-class ArgHelpClass(object):
+class ArgHelpClass:
     '''Class holding description and other params to display help
     This class exists to simplify displaying help for vars that we
     cannot access via the classargspec var
@@ -29,7 +30,7 @@ class ArgHelpClass(object):
 @argument(
     "engine",
     description="Which analytical engine to use",
-    choices=["rest", "pandas"],
+    choices=SUPPORTED_ENGINES,
 )
 @argument(
     "namespace", description="Space separated list of namespaces to qualify"
@@ -63,7 +64,7 @@ class SqCommand(SqPlugin):
 
     def __init__(
             self,
-            engine: str = "pandas",
+            engine: str = "",
             hostname: str = "",
             start_time: str = "",
             end_time: str = "",
@@ -74,7 +75,7 @@ class SqCommand(SqPlugin):
             query_str: str = " ",
             sqobj=None,
     ) -> None:
-        self.ctxt = context.get_context()
+        self.ctxt = context.get_context().ctxt
         self._cfg = self.ctxt.cfg
         self._schemas = self.ctxt.schemas
         self.format = format or "text"
@@ -123,6 +124,7 @@ class SqCommand(SqPlugin):
             raise AttributeError('mandatory parameter sqobj missing')
 
         self.sqobj = sqobj(context=self.ctxt,
+                           engine_name=engine,
                            hostname=self.hostname,
                            start_time=self.start_time,
                            end_time=self.end_time,
@@ -132,19 +134,26 @@ class SqCommand(SqPlugin):
 
     @property
     def cfg(self):
+        '''Return the config'''
         return self._cfg
 
     @property
     def schemas(self):
+        '''Return the schemas'''
         return self._schemas
 
     @command("summarize", help='produce a summarize of the data')
-    def summarize(self):
+    def summarize(self, **kwargs):
         """Summarize relevant information about the table"""
-        if not self._init_summarize():
-            return self._gen_output(self.summarize_df)
+        now = time.time()
 
-        return self._post_summarize()
+        summarize_df = self._invoke_sqobj(
+            self.sqobj.summarize, namespace=self.namespace,
+            hostname=self.hostname, query_str=self.query_str,
+            **kwargs
+        )
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        return self._gen_output(summarize_df, json_orient='columns')
 
     @command("unique", help="find the list of unique items in a column")
     @argument("count", description="include count of times a value is seen",
@@ -158,6 +167,7 @@ class SqCommand(SqPlugin):
                                 namespace=self.namespace,
                                 query_str=self.query_str,
                                 count=count,
+                                **kwargs,
                                 )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
@@ -218,6 +228,7 @@ class SqCommand(SqPlugin):
                                 query_str=self.query_str,
                                 what=what, count=count,
                                 reverse=ast.literal_eval(reverse),
+                                **kwargs,
                                 )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
@@ -239,14 +250,14 @@ class SqCommand(SqPlugin):
         """Show help for a command
 
         Args:
-            command (str, optional): Name of the command. Defaults to 'show'.
+            command (str, optional): Name of the cmd. Defaults to 'show'.
         """
         if any(x for x in [self.namespace, self.hostname, self.view,
                            self.start_time, self.end_time, self.query_str]):
             print(Fore.RED + "Error: Only accepeted options is command")
             return
         if (self.columns != ["default"]) or (self.format != "text"):
-            print(Fore.RED + "Error: Only accepeted options is command")
+            print(Fore.RED + "Error: Only accepted options is command")
             return
 
         if not command:
@@ -338,8 +349,6 @@ class SqCommand(SqPlugin):
         else:
             print(df)
 
-        return
-
     def _gen_output(self, df: pd.DataFrame, json_orient: str = "records",
                     dont_strip_cols: bool = False, sort: bool = True):
 
@@ -351,7 +360,7 @@ class SqCommand(SqPlugin):
         else:
             max_colwidth = self.ctxt.col_width
             retcode = 0
-            if self.columns != ['default'] and self.columns != ['*']:
+            if self.columns not in [['default'], ['*']]:
                 cols = self.columns
             else:
                 cols = df.columns
@@ -428,16 +437,3 @@ class SqCommand(SqPlugin):
                 df = pd.DataFrame({'error': [f'ERROR: {ex}']})
 
         return df
-
-    def _init_summarize(self):
-        self.now = time.time()
-
-        self.summarize_df = self._invoke_sqobj(
-            self.sqobj.summarize, namespace=self.namespace,
-            hostname=self.hostname, query_str=self.query_str
-        )
-        return 'error' not in self.summarize_df
-
-    def _post_summarize(self):
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - self.now)
-        return self._gen_output(self.summarize_df, json_orient='columns')

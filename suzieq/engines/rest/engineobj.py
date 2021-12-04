@@ -1,6 +1,7 @@
 from typing import Type, Dict
 import urllib
 import requests
+import urllib3
 
 import pandas as pd
 
@@ -43,7 +44,7 @@ class SqRestEngine(SqEngineObj):
         return self._get_response('unique', **kwargs)
 
     def aver(self, **kwargs):
-        return self._get_response('aver', **kwargs)
+        return self._get_response('assert', **kwargs)
 
     def top(self, **kwargs):
         return self._get_response('top', **kwargs)
@@ -65,7 +66,8 @@ class SqRestEngine(SqEngineObj):
 
         # Suppress warning since most folks will deploy this without
         # verifiable certificates
-        requests.packages.urllib3.disable_warnings(InsecureRequestWarning)
+        urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
         query_params = (
             f'{query_params}&access_token={self.ctxt.rest_api_key}'
         )

@@ -5,26 +5,11 @@ from suzieq.shared.utils import load_sq_config
 from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines import get_sqengine
 from suzieq.shared.sq_plugin import SqPlugin
-
-
-class SqContext(object):
-
-    def __init__(self, engine, config_file=None):
-        self.cfg = load_sq_config(config_file=config_file)
-
-        self.schemas = Schema(self.cfg['schema-directory'])
-
-        self.namespace = ''
-        self.hostname = ''
-        self.start_time = ''
-        self.end_time = ''
-        self.exec_time = ''
-        self.engine = engine
-        self.view = ''
-        self.sort_fields = []
+from suzieq.shared.context import SqContext
 
 
 class SqObject(SqPlugin):
+    '''The base class for accessing the backend independent of the engine'''
 
     def __init__(self, engine_name: str = '',
                  hostname: typing.List[str] = None,
@@ -33,12 +18,19 @@ class SqObject(SqPlugin):
                  columns: typing.List[str] = None,
                  context=None, table: str = '', config_file=None) -> None:
 
-        if context is None:
-            self.ctxt = SqContext(engine_name, config_file)
+        if not context:
+            self.ctxt = SqContext(cfg=load_sq_config(validate=True,
+                                                     config_file=config_file),
+                                  engine=engine_name)
+            self.ctxt.schemas = Schema(self.ctxt.cfg["schema-directory"])
         else:
             self.ctxt = context
-            if not self.ctxt:
-                self.ctxt = SqContext(engine_name)
+            if not self.ctxt.cfg:
+                self.ctxt.cfg = load_sq_config(validate=True,
+                                               config_file=config_file)
+                self.ctxt.schemas = Schema(self.ctxt.cfg["schema-directory"])
+            if not self.ctxt.engine:
+                self.ctxt.engine = engine_name
 
         self._cfg = self.ctxt.cfg
         self._schema = SchemaForTable(table, self.ctxt.schemas)
@@ -93,21 +85,26 @@ class SqObject(SqPlugin):
 
     @property
     def all_schemas(self):
+        '''Return the set of all schemas of tables supported'''
         return self.ctxt.schemas
 
     @property
     def schema(self):
+        '''Return table-specific schema'''
         return self._schema
 
     @property
     def cfg(self):
+        '''Return general suzieq config'''
         return self._cfg
 
     @property
     def table(self):
+        '''Return the table served by this object'''
         return self._table
 
     def _check_input_for_valid_args(self, good_arg_list, **kwargs,):
+        '''Check that the provided set of kwargs is valid for the table'''
         if not good_arg_list:
             return
 
@@ -125,18 +122,20 @@ class SqObject(SqPlugin):
         if not good_arg_val_list:
             return
 
-        for arg in kwargs:
+        for arg, val in kwargs.items():
             if arg in good_arg_val_list:
-                if kwargs[arg] not in good_arg_val_list[arg]:
+                if val not in good_arg_val_list[arg]:
                     raise AttributeError(
-                        f"invalid value {kwargs[arg]} for argument {arg}")
+                        f"invalid value {val} for argument {arg}")
 
     def validate_get_input(self, **kwargs):
+        '''Validate the values of the get function'''
         self._check_input_for_valid_args(
             self._valid_get_args + ['columns'], **kwargs)
         self._check_input_for_valid_vals(self._valid_arg_vals, **kwargs)
 
     def validate_assert_input(self, **kwargs):
+        '''Validate the values of the assert function'''
         self._check_input_for_valid_args(self._valid_assert_args, **kwargs)
 
     def validate_columns(self, columns: typing.List[str]) -> bool:
@@ -151,16 +150,17 @@ class SqObject(SqPlugin):
             ValueError: if columns are invalid
         """
 
-        if columns == ['default'] or columns == ['*']:
+        if columns in [['default'], ['*']]:
             return True
 
         table_schema = SchemaForTable(self._table, self.all_schemas)
         invalid_columns = [x for x in columns if x not in table_schema.fields]
         if invalid_columns:
             raise ValueError(f"Invalid columns specified: {invalid_columns}")
+        return True
 
     def get(self, **kwargs) -> pd.DataFrame:
-
+        '''Return the data for this table given a set of attributes'''
         if not self._table:
             raise NotImplementedError
 
@@ -183,8 +183,7 @@ class SqObject(SqPlugin):
         # This raises ValueError if it fails
         self.validate_columns(kwargs.get('columns', []))
 
-        for k in self._convert_args:
-            v = kwargs.get(k, None)
+        for k, v in self._convert_args.items():
             if v:
                 val = kwargs[k]
                 newval = []
@@ -200,6 +199,7 @@ class SqObject(SqPlugin):
 
     def summarize(self, namespace=None, hostname=None,
                   query_str='') -> pd.DataFrame:
+        '''Summarize the data from specific table'''
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
                 {'error':
@@ -216,6 +216,7 @@ class SqObject(SqPlugin):
                                      query_str=query_str)
 
     def unique(self, **kwargs) -> pd.DataFrame:
+        '''Identify unique values and value counts for a column in table'''
         if not self._table:
             raise NotImplementedError
 
@@ -236,6 +237,7 @@ class SqObject(SqPlugin):
         return self.engine.unique(**kwargs, columns=columns)
 
     def aver(self, **kwargs):
+        '''Assert one or more checks on table'''
         if self._valid_assert_args:
             return self._assert_if_supported(**kwargs)
 
