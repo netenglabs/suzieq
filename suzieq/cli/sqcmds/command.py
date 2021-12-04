@@ -29,7 +29,7 @@ class ArgHelpClass(object):
 @argument(
     "engine",
     description="Which analytical engine to use",
-    choices=["pandas"],
+    choices=["rest", "pandas"],
 )
 @argument(
     "namespace", description="Space separated list of namespaces to qualify"

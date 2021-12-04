@@ -26,7 +26,7 @@ class SqContext(object):
 
 class SqObject(SqPlugin):
 
-    def __init__(self, engine_name: str = 'pandas',
+    def __init__(self, engine_name: str = '',
                  hostname: typing.List[str] = None,
                  start_time: str = '', end_time: str = '',
                  view: str = '', namespace: typing.List[str] = None,

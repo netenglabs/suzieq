@@ -21,7 +21,7 @@ from termcolor import cprint, colored
 @argument('col_width', description='Max Width of each column in table display')
 @argument(
     "engine",
-    choices=["pandas"],
+    choices=["rest", "pandas"],
     description="Use Pandas for non-SQL commands",
 )
 @argument(
