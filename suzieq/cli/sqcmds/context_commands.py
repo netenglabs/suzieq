@@ -6,6 +6,8 @@ from nubia.internal.cmdbase import Command
 from prompt_toolkit.completion import Completion
 from termcolor import cprint, colored
 
+from suzieq.shared.utils import SUPPORTED_ENGINES
+
 
 @command("set")
 @argument("namespace", description="namespace to qualify selection")
@@ -21,54 +23,86 @@ from termcolor import cprint, colored
 @argument('col_width', description='Max Width of each column in table display')
 @argument(
     "engine",
-    choices=["pandas"],
-    description="Use Pandas for non-SQL commands",
+    choices=SUPPORTED_ENGINES,
+    description="What backend analyzer engine to use",
 )
 @argument(
     "datadir",
     description="Set the data directory for the command"
 )
+@argument(
+    'rest_server_ip', description='IP address of the REST server'
+)
+@argument(
+    'rest_server_port', description='Port of the REST server'
+)
+@argument(
+    'rest_api_key', description='API key for the REST server'
+)
+@argument(
+    'rest_use_https', description='Use HTTPS for the REST server',
+    choices=['True', 'False']
+)
 def set_ctxt(
         pager: str = "",
-        hostname: typing.List[str] = [],
+        hostname: typing.List[str] = None,
         start_time: str = "",
         end_time: str = "",
-        namespace: typing.List[str] = [],
+        namespace: typing.List[str] = None,
         engine: str = "",
         datadir: str = "",
         col_width: int = 50,
+        rest_server_ip: str = "",
+        rest_server_port: str = "",
+        rest_api_key: str = "",
+        rest_use_https: str = ""
 ):
     """set certain contexts for subsequent commands. Cmd is additive"""
     plugin_ctx = context.get_context()
+    ctxt = plugin_ctx.ctxt
 
     if namespace:
-        plugin_ctx.namespace = namespace
+        ctxt.namespace = namespace
 
     if hostname:
-        plugin_ctx.hostname = hostname
+        ctxt.hostname = hostname
 
     if start_time:
-        plugin_ctx.start_time = start_time
+        ctxt.start_time = start_time
 
     if end_time:
-        plugin_ctx.end_time = end_time
+        ctxt.end_time = end_time
 
     if engine:
         plugin_ctx.change_engine(engine)
 
     if datadir:
         if os.path.isdir(datadir):
-            plugin_ctx.cfg['data-directory'] = datadir
+            ctxt.cfg['data-directory'] = datadir
         else:
             print(f'{datadir} is not a valid directory')
 
     if col_width:
-        plugin_ctx.col_width = int(col_width)
+        ctxt.col_width = int(col_width)
 
     if pager == 'on':
-        plugin_ctx.pager = True
+        ctxt.pager = True
     elif pager == 'off':
-        plugin_ctx.pager = False
+        ctxt.pager = False
+
+    if rest_server_ip:
+        ctxt.rest_server_ip = rest_server_ip
+
+    if rest_server_port:
+        ctxt.rest_server_port = rest_server_port
+
+    if rest_api_key:
+        ctxt.rest_api_key = rest_api_key
+
+    if rest_use_https == 'True':
+        ctxt.rest_transport = 'https'
+    elif rest_use_https == 'False':
+        ctxt.rest_transport = 'http'
 
 
 @command("clear")
@@ -91,24 +125,26 @@ def clear_ctxt(
 ):
     """clear certain contexts for subsequent commands. Cmd is additive"""
     plugin_ctx = context.get_context()
+    ctxt = plugin_ctx.ctxt
 
     if namespace:
-        plugin_ctx.namespace = []
+        ctxt.namespace = []
 
     if hostname:
-        plugin_ctx.hostname = []
+        ctxt.hostname = []
 
     if start_time:
-        plugin_ctx.start_time = ""
+        ctxt.start_time = ""
 
     if end_time:
-        plugin_ctx.end_time = ""
+        ctxt.end_time = ""
 
     if pager:
-        plugin_ctx.pager = False
+        ctxt.pager = False
 
 
 class SqHelpCommand (Command):
+    '''Class to handle processing CLI help'''
     HELP = 'Get help on a command'
     thiscmd = ["help", "?"]
 

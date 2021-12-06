@@ -71,35 +71,6 @@ class OspfCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @command("summarize")
-    @argument(
-        "ifname",
-        description="Space separated list of interface names to qualify"
-    )
-    @argument("vrf", description="Space separated list of VRFs to qualify")
-    @argument("state", description="OSPF neighbor state to qualify",
-              choices=["full"])
-    @argument(
-        "type",
-        description="Type of OSPF information to show",
-        choices=["neighbor", "interface"],
-    )
-    @argument("groupby",
-              description="Space separated list of fields to summarize on")
-    def summarize(
-        self,
-        ifname: str = "",
-        vrf: str = "",
-        state: str = "",
-        type: str = "neighbor",
-        groupby: str = "",
-    ):
-        """
-        Summarize OSPF data
-        """
-        self._init_summarize()
-        return self._post_summarize()
-
     @command("assert")
     @argument("vrf", description="VRF to assert OSPF state in")
     @argument("status", description="Show only assert that matches this value",

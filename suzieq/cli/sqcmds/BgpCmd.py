@@ -94,13 +94,6 @@ class BgpCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @command("summarize", help="Provide summary info about BGP per namespace")
-    def summarize(self):
-        """Summarize bgp info
-        """
-        self._init_summarize()
-        return self._post_summarize()
-
     @command("assert")
     @argument("vrf", description="Only assert BGP state in this VRF")
     @argument("status", description="Show only assert that matches this value",

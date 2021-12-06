@@ -4,18 +4,19 @@ import sys
 from typing import List
 import logging
 from logging.handlers import RotatingFileHandler
+from datetime import datetime
+import fcntl
+from importlib.util import find_spec
+from itertools import groupby
+from ipaddress import ip_network
+import errno
+
 import json
 import yaml
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
 from tzlocal import get_localzone
 from pytz import all_timezones
-import fcntl
-from importlib.util import find_spec
-import errno
 from dateparser import parse
-from itertools import groupby
-from ipaddress import ip_network
 
 import pandas as pd
 
@@ -32,6 +33,7 @@ MISSING_SPEED = -1
 NO_SPEED = 0
 MISSING_SPEED_IF_TYPES = ['ethernet', 'bond', 'bond_slave']
 SUPPORTED_POLLER_TRANSPORTS = ['ssh', 'https']
+SUPPORTED_ENGINES = ['pandas', 'rest']
 
 
 def validate_sq_config(cfg):
@@ -169,6 +171,7 @@ def sq_get_config_file(config_file):
 
 
 def get_latest_files(folder, start="", end="", view="latest") -> list:
+    '''Get list of relevant parquet files from folder'''
     lsd = []
 
     if start:
@@ -202,6 +205,7 @@ def get_latest_files(folder, start="", end="", view="latest") -> list:
 
 
 def get_latest_ts_dirs(dirs, ssecs, esecs, view):
+    '''Get latest timestamp directories in a folder'''
     newdirs = None
 
     if not ssecs and not esecs:
@@ -232,7 +236,7 @@ def get_latest_ts_dirs(dirs, ssecs, esecs, view):
 
 
 def get_latest_pq_files(files, root, ssecs, esecs, view):
-
+    '''Get the latest parquet files given a fileset/start & end times & view'''
     newfiles = None
 
     if not ssecs and not esecs:
@@ -280,18 +284,18 @@ def calc_avg(oldval, newval):
     return float((oldval+newval)/2)
 
 
-def get_timestamp_from_cisco_time(input, timestamp):
+def get_timestamp_from_cisco_time(in_data, timestamp):
     """Get timestamp in ms from the Cisco-specific timestamp string
     Examples of Cisco timestamp str are P2DT14H45M16S, P1M17DT4H49M50S etc.
     """
-    if not input.startswith('P'):
+    if not in_data.startswith('P'):
         return 0
     months = days = hours = mins = secs = 0
 
-    if 'T' in input:
-        day, timestr = input[1:].split('T')
+    if 'T' in in_data:
+        day, timestr = in_data[1:].split('T')
     else:
-        day = input[1:]
+        day = in_data[1:]
         timestr = ''
 
     if 'Y' in day:
@@ -319,7 +323,7 @@ def get_timestamp_from_cisco_time(input, timestamp):
     return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
 
 
-def get_timestamp_from_junos_time(input, timestamp: int):
+def get_timestamp_from_junos_time(in_data, timestamp: int):
     """Get timestamp in ms from the Junos-specific timestamp string
     The expected input looks like: "attributes" : {"junos:seconds" : "0"}.
     We don't check for format because we're assuming the input would be blank
@@ -327,18 +331,18 @@ def get_timestamp_from_junos_time(input, timestamp: int):
     JSON string.
     """
 
-    if not input:
+    if not in_data:
         # Happens for logical interfaces such as gr-0/0/0
         secs = 0
     else:
         try:
-            if isinstance(input, str):
-                data = json.loads(input)
+            if isinstance(in_data, str):
+                data = json.loads(in_data)
             else:
-                data = input
+                data = in_data
             secs = int(data.get('junos:seconds', 0))
         except Exception:
-            logger.warning(f'Unable to convert junos secs from {input}')
+            logger.warning(f'Unable to convert junos secs from {in_data}')
             secs = 0
 
     delta = relativedelta(seconds=int(secs))
@@ -360,7 +364,7 @@ def convert_macaddr_format_to_colon(macaddr: str) -> str:
         else:
             return macaddr.lower()
 
-    return('00:00:00:00:00:00')
+    return '00:00:00:00:00:00'
 
 
 def validate_network(network: str) -> bool:
@@ -454,17 +458,17 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
     def _build_query_str(fld, val, fldtype) -> str:
         """Builds the string from the provided user input"""
 
-        if ((fldtype == "long" or fldtype == "float") and not
+        if ((fldtype in ["long", "float"]) and not
                 isinstance(val, str)):
             result = f'{fld} == {val}'
 
         elif val.startswith('!'):
             val = val[1:]
-            if fldtype == "long" or fldtype == "float":
+            if fldtype in ["long", "float"]:
                 result = f'{fld} != {val}'
             else:
                 result = f'{fld} != "{val}"'
-        elif val.startswith('<') or val.startswith('>'):
+        elif val.startswith(('<', '>')):
             result = val
         elif val.startswith('~'):
             val = val[1:]
@@ -477,7 +481,7 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
     for f, v in kwargs.items():
         if not v or f in skip_fields or f in ["groupby"]:
             continue
-        type = schema.field(f).get('type', 'string')
+        stype = schema.field(f).get('type', 'string')
         if isinstance(v, list) and len(v):
             subq = ''
             subcond = ''
@@ -487,12 +491,12 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
                 continue
 
             for elem in v:
-                subq += f'{subcond} {_build_query_str(f, elem, type)} '
+                subq += f'{subcond} {_build_query_str(f, elem, stype)} '
                 subcond = 'or'
             query_str += '{} ({})'.format(prefix, subq)
             prefix = "and"
         else:
-            query_str += f'{prefix} {_build_query_str(f, v, type)} '
+            query_str += f'{prefix} {_build_query_str(f, v, stype)} '
             prefix = "and"
 
     return query_str
@@ -700,9 +704,9 @@ def get_sq_install_dir() -> str:
     '''Return the absolute path of the suzieq installation dir'''
     spec = find_spec('suzieq')
     if spec:
-        return(os.path.dirname(spec.loader.path))
+        return os.path.dirname(spec.loader.path)
     else:
-        return(os.path.abspath('./'))
+        return os.path.abspath('./')
 
 
 def get_sleep_time(period: str) -> int:
@@ -715,7 +719,7 @@ def get_sleep_time(period: str) -> int:
     :returns: duration to sleep in seconds
     :rtype: int
     """
-    tm, unit, _ = re.split(r'(\D)', period)
+    _, unit, _ = re.split(r'(\D)', period)
     now = datetime.now()
     nextrun = parse(period, settings={'PREFER_DATES_FROM': 'future'})
     if unit == 'm':
