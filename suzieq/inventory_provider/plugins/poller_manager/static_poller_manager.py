@@ -4,6 +4,7 @@
     inventory chunks on different files for the pollers
 """
 from os.path import isdir, join
+from subprocess import Popen
 from typing import List, Dict
 import yaml
 from suzieq.inventory_provider.plugins.poller_manager.poller_manager \
@@ -30,6 +31,8 @@ class StaticPollerManager(PollerManager):
 
         self._inventory_file_name = config_data \
             .get("inventory_file_name", "inventory")
+
+        self._start_pollers = config_data.get("start_pollers", True)
 
     def apply(self, inventory_chunks: List[Dict]):
         """Write inventory chunks on files
@@ -106,6 +109,10 @@ class StaticPollerManager(PollerManager):
 
                 with open(out_file_path, "w") as file:
                     file.write(yaml.safe_dump(list(cur_inventory.values())))
+
+                if self._start_pollers:
+                    Popen(["sq-poller", "-D", out_file_path, "-c",
+                           "suzieq/config/etc/suzieq-cfg.yml"])
 
     def get_pollers_number(self, inventory: dict = None) -> int:
         """returns the content of self._poller_count statically loaded from

@@ -8,7 +8,7 @@ Classes:
 """
 import threading
 from typing import Dict
-import json
+from urllib.parse import urlparse
 from threading import Semaphore
 from time import sleep
 import requests
@@ -62,28 +62,29 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
             # error
             raise ValueError("no netbox_config provided")
 
-        use_https = input_data.get("use_https", False)
-        if use_https:
-            self._protocol = "https"
-        else:
-            self._protocol = "http"
-        self._port = input_data.get(
-            "port",
-            _DEFAULT_PORTS.get(self._protocol, None)
-        )
+        url = input_data.get("url", "")
+        url_data = urlparse(url)
+        self._protocol = url_data.scheme or "http"
+        if url_data.netloc:
+            if ":" in url_data.netloc:
+                self._ip_address, self._port = url_data.netloc.split(":")
+            else:
+                self._ip_address = url_data.netloc
+                self._port = _DEFAULT_PORTS.get(self._protocol, None)
+        elif url_data.path:
+            if ":" in url_data.path:
+                self._ip_address, self._port = url_data.path.split(":")
+            else:
+                self._ip_address = url_data.path
+                self._port = _DEFAULT_PORTS.get(self._protocol, None)
+
         self._tag = input_data.get("tag", "null")
-        self._ip_address = input_data.get("ip_address", None)
         self._namespace = input_data.get("namespace", "site.name")
         self._period = input_data.get("period", 3600)
         self._run_once = input_data.get("run_once", False)
-        self._token = None
-        self._password = None
-        self._username = None
-        credentials = input_data.get("credentials", None)
-        if credentials:
-            self._token = credentials.get("token", None)
-            self._username = credentials.get("username", None)
-            self._password = credentials.get("password", None)
+        self._token = input_data.get("token", None)
+        self._username = input_data.get("username", None)
+        self._password = input_data.get("password", None)
         self._device_credentials = input_data.get(
             "device_credentials", None
         )
@@ -169,40 +170,40 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
         else:
             raise RuntimeError("Unable to connect to netbox:", response.json())
 
-    def _generate_token(self) -> str:
-        """Contact Netobox and ask to generate a token if only username and
-           password were provided in the configuration.
+    # def _generate_token(self) -> str:
+    #     """Contact Netobox and ask to generate a token if only username and
+    #        password were provided in the configuration.
 
-        Raises:
-            RuntimeError: Unable to parse the token
-            RuntimeError: The server response has an invalid status code
+    #     Raises:
+    #         RuntimeError: Unable to parse the token
+    #         RuntimeError: The server response has an invalid status code
 
-        Returns:
-            str: a string containing the generated token
-        """
-        headers = {
-            "Content-Type": "application/json",
-            "Accept": "application/json; indent=4",
-        }
-        url = f"{self._protocol}://{self._ip_address}:{self._port}"\
-            "/api/users/tokens/provision/"
-        data = {
-            "username": self._username,
-            "password": self._password
-        }
-        data = json.dumps(data, indent=4)
+    #     Returns:
+    #         str: a string containing the generated token
+    #     """
+    #     headers = {
+    #         "Content-Type": "application/json",
+    #         "Accept": "application/json; indent=4",
+    #     }
+    #     url = f"{self._protocol}://{self._ip_address}:{self._port}"\
+    #         "/api/users/tokens/provision/"
+    #     data = {
+    #         "username": self._username,
+    #         "password": self._password
+    #     }
+    #     data = json.dumps(data, indent=4)
 
-        if not self._session:
-            self._init_session(headers)
+    #     if not self._session:
+    #         self._init_session(headers)
 
-        response = self._session.post(url, data=data.encode("UTF-8"))
-        if int(response.status_code) == 201:
-            self._token = response.json().get("key", None)
-            if self._token is None:
-                raise RuntimeError("Unable to parse the new token")
-        else:
-            raise RuntimeError("Error in token generation")
-        self._update_session(self._token_auth_header())
+    #     response = self._session.post(url, data=data.encode("UTF-8"))
+    #     if int(response.status_code) == 201:
+    #         self._token = response.json().get("key", None)
+    #         if self._token is None:
+    #             raise RuntimeError("Unable to parse the new token")
+    #     else:
+    #         raise RuntimeError("Error in token generation")
+    #     self._update_session(self._token_auth_header())
 
     def _parse_inventory(self, raw_inventory: dict) -> Dict:
         """parse the raw inventory collected from the server and generates
@@ -281,9 +282,9 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
                     break
                 self._set_status("running")
 
-                # Generate a token if not passed in the configuration file
-                if self._token is None:
-                    self._generate_token()
+                # # Generate a token if not passed in the configuration file
+                # if self._token is None:
+                #     self._generate_token()
 
                 # Retrieve data using REST
                 url = f"{self._protocol}://{self._ip_address}:{self._port}"\

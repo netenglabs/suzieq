@@ -110,14 +110,6 @@ class InventoryProvider:
             raise RuntimeError("No plugin configuration provided for "
                                f"{plugin_type}")
 
-        # # configure paths to reach the inventory plugins directories
-        # base_class_name = get_classname_from_type(plugin_type)
-        # ppath = join(PLUGIN_PATH, plugin_type)
-        # # Seach all the subclass of "base_class_name" inside "ppath"
-        # plugin_classes = get_class_by_path(
-        #     ppath, BASE_PLUGIN_PATH, base_class_name
-        # )
-
         base_plugin_class = self._base_plugin_classes.get(plugin_type, None)
         if not base_plugin_class:
             raise AttributeError(f"Unknown plugin type {plugin_type}")
@@ -126,18 +118,35 @@ class InventoryProvider:
         plugin_classes = base_plugin_class.get_plugins(search_pkg=plugins_pkg)
 
         for plug_conf in plugin_confs:
-            pname = plug_conf.get("plugin_name", "")
-            if not pname:
-                raise AttributeError("Missing field <plugin_name>")
-            if pname not in plugin_classes:
+            # load configuration from another file
+            plugin_source_path = plug_conf.get("source_path")
+            if plugin_source_path:
+                plugin_confs.extend(
+                    self._load_plugins_from_path(plugin_source_path))
+                continue
+
+            ptype = plug_conf.get("type", "")
+            if not ptype:
+                raise AttributeError("Missing field <type>")
+            if ptype not in plugin_classes:
                 raise RuntimeError(
-                    f"Unknown plugin called {pname} with type {plugin_type}"
+                    f"Unknown plugin called {ptype} with type {plugin_type}"
                 )
 
-            plugin = plugin_classes[pname](plug_conf.get("args", None))
+            plugin = plugin_classes[ptype](plug_conf)
             if not self._plugin_objects.get(plugin_type, None):
                 self._plugin_objects[plugin_type] = []
             self._plugin_objects[plugin_type].append(plugin)
+
+    def _load_plugins_from_path(self, source_path: str):
+        if not isfile(source_path):
+            raise RuntimeError(f"File {source_path} doesn't exists")
+
+        plugins_data = []
+        with open(source_path, "r") as fp:
+            plugins_data = yaml.safe_load(fp.read())
+
+        return plugins_data
 
 
 def sq_prov_main():
