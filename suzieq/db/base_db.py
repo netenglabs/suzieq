@@ -10,6 +10,8 @@ from suzieq.shared.sq_plugin import SqPlugin
 
 
 class SqDB(SqPlugin, ABC):
+    '''Base ABC Class for exposing backend DB for storing Suzieq data'''
+
     def __init__(self, cfg: dict, logger: logging.Logger):
         """Initialize the database
 
@@ -79,6 +81,7 @@ class SqDB(SqPlugin, ABC):
 
 @dataclass
 class SqCoalesceStats:
+    '''Dataclass for storing coalescer stats'''
     service: str
     period: str                 # Coalescing period
     execTime: float            # execution time in secs
