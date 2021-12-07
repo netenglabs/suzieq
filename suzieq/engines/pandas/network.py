@@ -1,13 +1,17 @@
 from typing import List
-import pandas as pd
+
 from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.utils import convert_macaddr_format_to_colon
 
+import pandas as pd
+
 
 class NetworkObj(SqPandasEngine):
+    '''Backend class to handle ops on virtual table, network, with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'network'
 
     def get(self, **kwargs):
@@ -88,7 +92,7 @@ class NetworkObj(SqPandasEngine):
 
             gotns = df.namespace.unique().tolist()
             newdf[fld] = newdf.apply(
-                lambda x, y: True if x.namespace in y else False,
+                lambda x, y: x.namespace in y,
                 axis=1, args=(gotns,))
 
         if 'sqvers' in show_cols:

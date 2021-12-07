@@ -1,13 +1,11 @@
-from .engineobj import SqPandasEngine
 from dataclasses import dataclass
-import os
 
-import pandas as pd
-import numpy as np
-import networkx as nx
-import matplotlib.pyplot as plt
-
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.utils import build_query_str
+
+import networkx as nx
+import numpy as np
+import pandas as pd
 
 # TODO:
 # topology for different VRFs?
@@ -21,15 +19,16 @@ from suzieq.shared.utils import build_query_str
 #   for good picture
 # how could we add state of connection (like Established) per protocol
 
-graph_output_dir = '/tmp/suzieq-graphs'
-
 
 class TopologyObj(SqPandasEngine):
+    '''Backend class to operate on virtual table, topology, with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'topology'
 
+    # pylint: disable=attribute-defined-outside-init
     def _init_dfs(self, namespaces):
         """Initialize the dataframes used"""
 
@@ -40,7 +39,7 @@ class TopologyObj(SqPandasEngine):
                           'macaddr'])
 
         if self._if_df.empty:
-            return pd.DataFrame()
+            return
 
         self._if_df['vrf'] = self._if_df.apply(
             lambda x: x['master'] if x['type'] not in ['bridge', 'bond_slave']
@@ -59,10 +58,13 @@ class TopologyObj(SqPandasEngine):
 
         self.nses = self._if_df['namespace'].unique()
 
+    # pylint: disable=too-many-statements
     def get(self, **kwargs):
+        '''DIsplay the topology info'''
 
         @dataclass(frozen=True)
         class Services:
+            '''minor class for use below. Could have been a named tuple'''
             name: str
             extra_args: dict
             extra_cols: list
@@ -263,23 +265,26 @@ class TopologyObj(SqPandasEngine):
                 df['oif'].isnull(), df['ifname'], df['oif'])
 
             df['arpndBidir'] = df.apply(
-                lambda x, y: True
-                if not y.query(f'namespace=="{x.namespace}" and '
-                               f'hostname=="{x.peerHostname}" and '
-                               f'peerHostname=="{x.hostname}"').empty
-                else False, args=(df,), axis=1)
+                lambda x, y:
+                not y.query(f'namespace=="{x.namespace}" and '
+                            f'hostname=="{x.peerHostname}" and '
+                            f'peerHostname=="{x.hostname}"').empty,
+                args=(df,), axis=1)
 
         self._arpnd_df = df
         return self._arpnd_df
 
     @property
-    def address_df(self):
+    def address_df(self) -> pd.DataFrame():
+        '''Return pandas dataframe of the address table'''
+
         if self._a_df.empty:
             self._a_df = self._if_df
         return self._a_df
 
     @property
     def ip_table(self):
+        '''Return a dataframe of '''
         if self._ip_table.empty:
             addr = self.address_df
             if not addr.empty:
@@ -298,6 +303,7 @@ class TopologyObj(SqPandasEngine):
         return self._ip_table
 
     def summarize(self, **kwargs):
+        '''Summarize the topology info'''
         self.get(**kwargs)
         if self.lsdb.empty:
             return self.lsdb
@@ -349,30 +355,6 @@ class TopologyObj(SqPandasEngine):
                               f'{name}_number_of_nodes',
                               f'{name}_number_of_edges']:
                         self.ns[ns][k] = None
-
-    def _make_images(self):
-        if not os.path.exists(graph_output_dir):
-            os.makedirs(graph_output_dir)
-        for ns in self.nses:
-            pos = nx.spring_layout(self.graphs[ns])
-            for name in [srv.name for srv in self.services if
-                         nx.get_edge_attributes(self.graphs[ns], srv.name)]:
-                edges = [(u, v)
-                         for u, v, d in self.graphs[ns].edges(data=True)
-                         if d[name] is True]
-                if len(edges) > 1:
-
-                    nx.draw_networkx_nodes(
-                        self.graphs[ns], pos=pos, node_size=25)
-                    if len(self.graphs[ns].nodes) < 20:
-                        nx.draw_networkx_labels(
-                            self.graphs[ns], pos=pos, font_size=8)
-
-                    nx.draw_networkx_edges(
-                        self.graphs[ns], edgelist=edges, pos=pos)
-                    plt.savefig(f"{graph_output_dir}/{ns}_{name}.png")
-                    print(f"created {graph_output_dir}/{ns}_{name}.png")
-                    plt.close()
 
     def unique(self, **kwargs):
         '''Unique values for topology'''

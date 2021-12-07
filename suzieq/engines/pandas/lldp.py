@@ -1,11 +1,14 @@
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+
 import numpy as np
-from .engineobj import SqPandasEngine
 
 
 class LldpObj(SqPandasEngine):
+    '''Backend class to handle manipulating LLDP table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'lldp'
 
     def get(self, **kwargs):
@@ -77,6 +80,7 @@ class LldpObj(SqPandasEngine):
         return df.drop(columns=dropcols, errors='ignore')
 
     def summarize(self, **kwargs):
+        '''Summarize LLDP info'''
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
             ('nbrCnt', 'hostname', 'count'),

@@ -1,24 +1,28 @@
 from ipaddress import IPv4Network
-import pandas as pd
-import numpy as np
 
 from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.utils import build_query_str, humanize_timestamp
 from suzieq.shared.schema import SchemaForTable
 
+import numpy as np
+import pandas as pd
+
 
 class OspfObj(SqPandasEngine):
+    '''Backend class to handle manipulating OSPF table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'ospf'
 
+    # pylint: disable=too-many-statements
     def _get_combined_df(self, **kwargs):
         """OSPF has info divided across multiple tables. Get a single one"""
 
         columns = kwargs.pop('columns', ['default'])
         state = kwargs.pop('state', '')
-        addnl_fields = kwargs.pop('addnl_fields', self.iobj._addnl_fields)
+        addnl_fields = kwargs.pop('addnl_fields', self.iobj.addnl_fields)
         addnl_nbr_fields = getattr(
             self.iobj, '._addnl_nbr_fields', ['state'])
         user_query = kwargs.pop('query_str', '')
@@ -32,7 +36,7 @@ class OspfObj(SqPandasEngine):
         ifschema = SchemaForTable('ospfIf', schema=self.all_schemas)
         nbrschema = SchemaForTable('ospfNbr', schema=self.all_schemas)
 
-        if (columns != ['default']) and (columns != ['*']):
+        if columns not in [['default'], ['*']]:
             ifkeys = ifschema.key_fields()
             nbrkeys = nbrschema.key_fields()
             if_flds = ifschema.fields
@@ -175,7 +179,7 @@ class OspfObj(SqPandasEngine):
         kwargs.pop('columns', None)
 
         # 'ospfIf' is ignored
-        self._init_summarize('ospfIf', **kwargs)
+        self._init_summarize(**kwargs)
         if self.summary_df.empty:
             return self.summary_df
 

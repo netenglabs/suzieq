@@ -1,11 +1,10 @@
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class DevconfigObj(SqPandasEngine):
-
-    def __init__(self, baseobj):
-        super().__init__(baseobj)
+    '''Backend class to handle manipulating device config table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'devconfig'

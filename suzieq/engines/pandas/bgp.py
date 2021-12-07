@@ -1,14 +1,16 @@
-import pandas as pd
-import numpy as np
-
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.utils import build_query_str, humanize_timestamp
+
+import numpy as np
+import pandas as pd
 
 
 class BgpObj(SqPandasEngine):
+    '''Backend class to handle manipulating BGP table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'bgp'
 
     def get(self, **kwargs):
@@ -72,7 +74,7 @@ class BgpObj(SqPandasEngine):
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize key information about BGP"""
 
-        self._init_summarize(self.iobj._table, **kwargs)
+        self._init_summarize(**kwargs)
         if self.summary_df.empty or ('error' in self.summary_df.columns):
             return self.summary_df
 
@@ -108,6 +110,7 @@ class BgpObj(SqPandasEngine):
 
         self._gen_summarize_data()
 
+        # pylint: disable=expression-not-assigned
         {self.ns[i].update({'activeAfiSafiCnt': afi_safi_count[i]})
          for i in self.ns.keys()}
         self.summary_row_order.append('activeAfiSafiCnt')
@@ -245,8 +248,7 @@ class BgpObj(SqPandasEngine):
         if not failed_df.empty:
             # For not established entries, check if route/ARP entry exists
             failed_df['assertReason'] += failed_df.apply(
-                lambda x, ifdf: _check_if_state(x, ifdf),
-                args=(if_df,), axis=1)
+                _check_if_state, args=(if_df,), axis=1)
 
             failed_df['assertReason'] += failed_df.apply(
                 lambda x: ["asn mismatch"]
@@ -271,7 +273,7 @@ class BgpObj(SqPandasEngine):
         df = pd.concat([failed_df, passed_df])
 
         df['assert'] = df.apply(lambda x: 'pass'
-                                if not len(x.assertReason) else 'fail',
+                                if len(x.assertReason) == 0 else 'fail',
                                 axis=1)
 
         result = df[['namespace', 'hostname', 'vrf', 'peer', 'asn',

@@ -1,10 +1,12 @@
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class MlagObj(SqPandasEngine):
+    '''Backend class to handle manipulating MLAG table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'mlag'
 
     def summarize(self, **kwargs):

@@ -1,13 +1,16 @@
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class SqpollerObj(SqPandasEngine):
+    '''Backend class to handle manipulating sqpoller table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'sqPoller'
 
     def get(self, **kwargs):
+        '''Retrieve sqpoller data for the given filters'''
 
         status = kwargs.pop('status', '')
         poll_period_exceeded = kwargs.pop('pollExcdPeriodCount', '')
@@ -58,6 +61,7 @@ class SqpollerObj(SqPandasEngine):
         return df
 
     def summarize(self, **kwargs):
+        '''Summarize poller operational state data'''
         self._summarize_on_add_field = [
             ('deviceCnt', 'hostname', 'nunique'),
             ('entriesCnt', 'hostname', 'count')

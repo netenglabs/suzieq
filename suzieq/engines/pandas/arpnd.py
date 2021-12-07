@@ -1,11 +1,13 @@
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 import pandas as pd
-from .engineobj import SqPandasEngine
 
 
 class ArpndObj(SqPandasEngine):
+    '''Backend pandas engine class to support manipulating ARP/ND table'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'arpnd'
 
     def get(self, **kwargs) -> pd.DataFrame:

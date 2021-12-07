@@ -1,13 +1,14 @@
 import ipaddress
 
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+
 import numpy as np
 import pandas as pd
 
-from suzieq.engines.pandas.engineobj import SqPandasEngine
-
 
 class EvpnvniObj(SqPandasEngine):
-    '''The pandas analysis engine for evpnVni table'''
+    '''Backend class to handle manipulating evpnVni table with pandas'''
+
     @staticmethod
     def table_name():
         '''Table name'''
@@ -47,8 +48,8 @@ class EvpnvniObj(SqPandasEngine):
         if 'vlan' not in df.columns and 'vrf' not in df.columns:
             return df.drop(columns=drop_cols, errors='ignore')
 
-        iflist = list(set([x for x in df[df.vlan == 0]['ifname'].to_list()
-                           if x and x != 'None']))
+        iflist = [x for x in df[df.vlan == 0]['ifname'].to_list()
+                  if x and x != 'None']
         if iflist:
             ifdf = self._get_table_sqobj('interfaces').get(
                 namespace=kwargs.get('namespace', []), ifname=iflist,
@@ -116,7 +117,7 @@ class EvpnvniObj(SqPandasEngine):
                   (df.hostname == x['hostname'])].count()
 
     def summarize(self, **kwargs):
-        self._init_summarize(self.iobj.table, **kwargs)
+        self._init_summarize(**kwargs)
         if self.summary_df.empty:
             return self.summary_df
 
@@ -212,11 +213,9 @@ class EvpnvniObj(SqPandasEngine):
                 namespace=kwargs.get('namespace'), vrf='default')
             if not rdf.empty:
                 rdf['prefixlen'] = rdf['prefix'].str.split('/') \
-                    .str[1].astype('int')
-            self._routes_df = rdf
-
+                                                    .str[1].astype('int')
             her_df["assertReason"] += her_df.apply(
-                self._is_vtep_reachable, axis=1)
+                self._is_vtep_reachable, args=(rdf,), axis=1)
 
         mcast_df = df.query('mcastGroup != "0.0.0.0"')
         if not mcast_df.empty:
@@ -300,7 +299,7 @@ class EvpnvniObj(SqPandasEngine):
 
         return ['some remote VTEPs missing']
 
-    def _is_vtep_reachable(self, row):
+    def _is_vtep_reachable(self, row, rdf):
         reason = []
         defrt = ipaddress.IPv4Network("0.0.0.0/0")
         for vtep in row['remoteVtepList'].tolist():
@@ -311,7 +310,7 @@ class EvpnvniObj(SqPandasEngine):
             # data repeatedly. The time for asserting the state of 500 VNIs
             # came down from 194s to 4s with the below piece of code instead
             # of invoking route's lpm to accomplish the task.
-            cached_df = self._routes_df \
+            cached_df = rdf \
                 .query(f'namespace=="{row.namespace}" and '
                        f'hostname=="{row.hostname}"')
             route = self._get_table_sqobj('routes').lpm(vrf='default',
