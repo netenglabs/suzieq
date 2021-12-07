@@ -11,9 +11,12 @@ from suzieq.shared.exceptions import InventorySourceError
 
 logger = logging.getLogger(__name__)
 
+_DEFAULT_PORTS = {"http": 80, "https": 443, "ssh": 22}
+
 
 class SqNativeFile(Source):
-
+    """Source class used to load Suzieq native inventory files
+    """
     def __init__(self, input_data) -> None:
         self.inventory_source = ""
         self._cur_inventory = []
@@ -61,9 +64,9 @@ class SqNativeFile(Source):
                 password = (decoded_url.password or
                             # self.user_password or #I can't get this info here
                             None)
-                port = decoded_url.port
-                host = decoded_url.hostname
                 transport = decoded_url.scheme
+                port = decoded_url.port or _DEFAULT_PORTS.get(transport)
+                host = decoded_url.hostname
                 devtype = None
                 keyfile = None
 

@@ -58,17 +58,15 @@ class CredFile(CredentialLoader):
                         .format(dev_name, namespace)
                     )
 
-                dev_cred = dev_info.get("credentials", None)
+                dev_cred = dev_info.get("credentials", {})
                 if not dev_cred:
                     raise RuntimeError("Device must contains credentials")
+                dev_cred["ssh_keyfile"] = dev_cred["keyfile"]
+                dev_cred.pop("keyfile")
 
-                dev_cred["options"] = dev_info.get("options", {})
+                dev_cred["options"] = dev_info.get("options") or {}
 
                 self.write_credentials(inventory[dev_name], dev_cred)
-
-                # inventory[dev_name]["credentials"] = dev_cred
-                # inventory[dev_name]["credentials"]["options"] = dev_info\
-                #     .get("options", {})
 
         # check if all devices has credentials
         no_cred_devs = [

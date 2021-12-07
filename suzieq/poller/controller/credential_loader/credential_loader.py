@@ -49,16 +49,12 @@ class CredentialLoader(SqPlugin):
             ValueError: Invalid credentials
         """
         device.update(credentials)
-        # device["credentials"] = credentials
         missing_keys = self._validate_credentials(device)
         if missing_keys:
             raise ValueError(
                 f"Invalid credentials: missing keys {missing_keys}")
 
     def _validate_credentials(self, device: Dict) -> List[str]:
-        # credentials = device.get("credentials", {})
-        # if not credentials:
-        #     return ["credentials"]
 
         cred_keys = set(self._cred_format)
         for key in device.keys():
@@ -66,7 +62,7 @@ class CredentialLoader(SqPlugin):
                 cred_keys.remove(key)
 
         # One between password or ssh_keyfile must be defines
-        if "password" in cred_keys and "ssh_keyfile" in cred_keys:
+        if "password" in cred_keys and "keyfile" in cred_keys:
             cred_keys.remove("password")
             cred_keys.remove("ssh_keyfile")
             ret = list(cred_keys)

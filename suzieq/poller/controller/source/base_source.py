@@ -165,7 +165,9 @@ class Source(SqPlugin):
             if "password" in device_keys and "ssh_keyfile" in device_keys:
                 device_keys.remove("password")
                 device_keys.remove("ssh_keyfile")
-                device_keys.update("password or ssh_keyfile")
+                ret = list(device_keys)
+                ret.append("password or ssh_keyfile")
+                return ret
 
             if "password" in device_keys:
                 device_keys.remove("password")

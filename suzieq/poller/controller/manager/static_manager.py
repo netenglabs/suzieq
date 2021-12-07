@@ -52,7 +52,7 @@ class StaticManager(BaseManager):
                 if address.find("/") != -1:
                     address = address.split("/")[0]
 
-                transport = device.get("method", "ssh")
+                transport = device.get("transport", "ssh")
 
                 cur_ns = device.get("namespace", None)
                 if cur_ns is None:
@@ -62,7 +62,8 @@ class StaticManager(BaseManager):
                 username = device.get("username", None)
                 password = device.get("password", None)
                 ssh_keyfile = device.get("ssh_keyfile", None)
-                if not (username and (password or ssh_keyfile)):
+                if transport == "ssh" and \
+                        not (username and (password or ssh_keyfile)):
                     raise RuntimeError(f"device {address} has invalid "
                                        "credentials")
 
@@ -70,6 +71,10 @@ class StaticManager(BaseManager):
                 if not isinstance(options, dict):
                     raise RuntimeError(f"device {address} has invalid "
                                        "options")
+
+                port = device.get("port")
+                if not port:
+                    raise RuntimeError(f"device {address} unknow port")
 
                 hostline = f'{transport}://{username}@' \
                     f'{address}'
@@ -81,7 +86,7 @@ class StaticManager(BaseManager):
 
                 if password:
                     hostline += f' password={password}'
-                else:
+                elif ssh_keyfile:
                     hostline += f' keyfile={ssh_keyfile}'
 
                 if cur_ns not in cur_inventory:
