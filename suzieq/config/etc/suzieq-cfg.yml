@@ -54,3 +54,19 @@ analyzer:
   # in a different timezone than the local time. The timestamp stored in
   # the database is always in UTC.
 #  timezone: America/Los_Angeles
+
+controller:
+  plugin_type:
+    source:
+      - source_path: "suzieq/sq-inventory.yml"
+    manager:
+      - type: static_manager
+        pollers_count: 1
+        inventory_path: suzieq
+        inventory_file_name: static_inv
+    chunker:
+      - type: static_chunker
+        split_pol: namespace
+  controller_config:
+    run_once: True
+  
