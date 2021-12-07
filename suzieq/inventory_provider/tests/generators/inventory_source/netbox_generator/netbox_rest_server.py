@@ -1,4 +1,3 @@
-from suzieq.engines.pandas import routes
 import uvicorn
 from typing import Optional
 from fastapi import FastAPI, Query, Request, HTTPException
@@ -165,9 +164,6 @@ class NetboxRestApp:
 
 
 def rest_main():
-
-    global _file_name
-    global _valid_tokens
 
     parser = argparse.ArgumentParser()
 

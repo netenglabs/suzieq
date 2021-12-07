@@ -6,7 +6,6 @@ and retrieve the devices inventory
 Classes:
     Netbox: this class dinamically retrieve the inventory from Netbox
 """
-import threading
 from typing import Dict
 from urllib.parse import urlparse
 from threading import Semaphore
@@ -274,7 +273,6 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
         if kwargs:
             raise ValueError(f"Passed unused arguments: {kwargs}")
 
-        print(threading.current_thread())
         try:
             while True:
                 if self._get_status() == "stopping":
@@ -321,7 +319,6 @@ class Netbox(InventorySource, InventoryAsyncPlugin):
 
                 if self._run_once or run_once:
                     break
-                print(threading.current_thread(), "starting to sleep")
                 sleep(self._period)
 
         except Exception as exc:

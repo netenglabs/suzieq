@@ -39,6 +39,15 @@ class CredentialLoader(SqPlugin):
         """
 
     def write_credentials(self, device: Dict, credentials: Dict[str, Dict]):
+        """write and validate input credentials for a device
+
+        Args:
+            device (Dict): device to add credentials
+            credentials (Dict[str, Dict]): device's credentials
+
+        Raises:
+            ValueError: Invalid credentials
+        """
         device["credentials"] = credentials
         missing_keys = self._validate_credentials(device)
         if missing_keys:

@@ -138,7 +138,18 @@ class InventoryProvider:
                 self._plugin_objects[plugin_type] = []
             self._plugin_objects[plugin_type].append(plugin)
 
-    def _load_plugins_from_path(self, source_path: str):
+    def _load_plugins_from_path(self, source_path: str) -> Type:
+        """Load the plugin from another file
+
+        Args:
+            source_path (str): file which contains plugin configuration
+
+        Raises:
+            RuntimeError: file doesn't exists
+
+        Returns:
+            [Type]: plugin configuration
+        """
         if not isfile(source_path):
             raise RuntimeError(f"File {source_path} doesn't exists")
 
@@ -147,6 +158,15 @@ class InventoryProvider:
             plugins_data = yaml.safe_load(fp.read())
 
         return plugins_data
+
+    def add_plugins_to_conf(self, plugin_type: str, plugin_data):
+        """Add or override the content of plugins configuration with type <plugin_typ>
+
+        Args:
+            plugin_type (str): type of plugin to update
+            plugin_data ([type]): data for plugin
+        """
+        self._plugins_config[plugin_type] = plugin_data
 
 
 def sq_prov_main():
@@ -166,6 +186,7 @@ def sq_prov_main():
         "-c",
         "--config",
         help="InventoryProvider configuration file",
+        default="suzieq/inventory_provider/example-config.yml",
         required=True
     )
 
@@ -176,10 +197,17 @@ def sq_prov_main():
         help="Run inventory sources only once"
     )
 
+    parser.add_argument(
+        "-I",
+        "--inventory",
+        help="Input inventory file"
+    )
+
     args = parser.parse_args()
 
     config_file = args.config
     run_once = args.run_once
+    inventory_file = args.inventory
 
     if not config_file:
         raise RuntimeError("Invalid -c/--config parameter value")
@@ -195,6 +223,14 @@ def sq_prov_main():
     inv_prov = InventoryProvider()
     inv_prov.load(config_data.get("inventory_provider", {}))
 
+    if inventory_file:
+        if not isfile(inventory_file):
+            raise RuntimeError(f"Inventory file not found at {inventory_file}")
+        inventory_confs = []
+        with open(inventory_file, "r") as file:
+            inventory_confs = yaml.safe_load(file.read())
+        inv_prov.add_plugins_to_conf("inventory_source", inventory_confs)
+
     # initialize inventorySources
     inv_prov.init_plugins("inventory_source")
 
@@ -203,17 +239,6 @@ def sq_prov_main():
         raise RuntimeError(
             "No inventorySource plugin in the configuration file"
         )
-
-    inv_source_threads = []
-    # start inventorySources if needed
-    for inv_src_plugin in inv_source_plugins:
-        if issubclass(type(inv_src_plugin), InventoryAsyncPlugin):
-            thread = threading.Thread(
-                target=inv_src_plugin.run,
-                kwargs={"run_once": run_once}
-            )
-            inv_source_threads.append(thread)
-            thread.start()
 
     # initialize chunker
     inv_prov.init_plugins("chunker")
@@ -228,7 +253,38 @@ def sq_prov_main():
     if len(poller_managers) > 1:
         raise RuntimeError("Only 1 poller_manager at a time is supported")
     poller_manager = poller_managers[0]
-    pm_thread = None
+
+    start_polling(inv_prov,
+                  chunker=chunker,
+                  poller_manager=poller_manager,
+                  inv_source_plugins=inv_source_plugins,
+                  run_once=run_once
+                  )
+
+
+def start_polling(inv_prov: InventoryProvider, **kwargs):
+    """start the polling phase.
+
+    In the kwargs are passed all the components that must be started
+
+    Args:
+        inv_prov (InventoryProvider): contains the informations for controller
+        and workers
+    """
+    chunker = kwargs.pop("chunker")
+    poller_manager = kwargs.pop("poller_manager")
+    inv_source_plugins = kwargs.pop("inv_source_plugins")
+    run_once = kwargs.pop("run_once")
+
+    # start inventorySources if needed
+    for inv_src_plugin in inv_source_plugins:
+        if issubclass(type(inv_src_plugin), InventoryAsyncPlugin):
+            thread = threading.Thread(
+                target=inv_src_plugin.run,
+                kwargs={"run_once": run_once}
+            )
+            thread.start()
+
     if issubclass(type(poller_manager), InventoryAsyncPlugin):
         pm_thread = threading.Thread(
             target=poller_manager.run,
@@ -241,7 +297,6 @@ def sq_prov_main():
         for inv_src_plugin in inv_source_plugins:
             cur_inv = inv_src_plugin.get_inventory(
                 timeout=inv_prov.inv_get_timeout)
-            print(cur_inv)
             if cur_inv:
                 for device in cur_inv:
                     dev_name = device.get("hostname")
@@ -251,15 +306,11 @@ def sq_prov_main():
         n_pollers = poller_manager.get_pollers_number()
 
         inv_chunks = chunker.chunk(global_inventory, n_pollers)
-        for ic in inv_chunks:
-            print(ic, end="\n----\n")
-
         poller_manager.apply(inv_chunks)
 
         if run_once:
             break
 
-        print("sleeping for", inv_prov.period)
         sleep(inv_prov.period)
 
 
