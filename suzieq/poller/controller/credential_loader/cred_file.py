@@ -1,6 +1,7 @@
 """This module contains the class to import device credentials using files
 """
 from os import path
+from typing import Dict, List
 import yaml
 from suzieq.poller.controller.credential_loader \
     .credential_loader import CredentialLoader
@@ -21,19 +22,19 @@ class CredFile(CredentialLoader):
         with open(dev_cred_file, "r") as f:
             self._raw_credentials = yaml.safe_load(f.read())
 
-    def load(self, inventory: dict):
+    def load(self, inventory: List[Dict]):
 
         if not inventory:
             raise RuntimeError("Empty inventory")
 
-        if not self._raw_credentials.get("namespace", None):
+        if not isinstance(self._raw_credentials, list):
             raise RuntimeError(
                 "The credentials file must contain all device \
                 credential divided in namespaces"
             )
 
-        for ns_credentials in self._raw_credentials["namespace"]:
-            namespace = ns_credentials.get("name", "")
+        for ns_credentials in self._raw_credentials:
+            namespace = ns_credentials.get("namespace", "")
             if not namespace:
                 raise RuntimeError("All namespaces must have a name")
 
@@ -43,19 +44,20 @@ class CredFile(CredentialLoader):
                                    .format(namespace))
 
             for dev_info in ns_devices:
-                dev_name = dev_info.get("name", "")
-                if not dev_name:
+                dev_id = dev_info.get("name", "")
+                if not dev_id:
                     raise RuntimeError("Devices must have a name")
 
-                if dev_name not in inventory:
+                device = [x for x in inventory if x.get("id") == dev_id]
+                if not device:
                     raise RuntimeError("Unknown device called {}"
-                                       .format(dev_name))
+                                       .format(dev_id))
+                device = device[0]
 
-                if namespace != inventory.get(dev_name, {})\
-                        .get("namespace", ""):
+                if namespace != device.get("namespace", ""):
                     raise RuntimeError(
                         "The device {} does not belong the namespace {}"
-                        .format(dev_name, namespace)
+                        .format(dev_id, namespace)
                     )
 
                 dev_cred = dev_info.get("credentials", {})
@@ -66,11 +68,11 @@ class CredFile(CredentialLoader):
 
                 dev_cred["options"] = dev_info.get("options") or {}
 
-                self.write_credentials(inventory[dev_name], dev_cred)
+                self.write_credentials(device, dev_cred)
 
         # check if all devices has credentials
         no_cred_devs = [
-            k for (k, d) in inventory.items()
+            d.get("id") for d in inventory
             if not d.get("username", None)
         ]
         if len(no_cred_devs) != 0:

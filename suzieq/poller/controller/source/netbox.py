@@ -6,7 +6,7 @@ and retrieve the devices inventory
 Classes:
     Netbox: this class dinamically retrieve the inventory from Netbox
 """
-from typing import Dict
+from typing import Dict, List
 from urllib.parse import urlparse
 from threading import Semaphore
 from time import sleep
@@ -198,7 +198,7 @@ class Netbox(Source, InventoryAsyncPlugin):
     #         raise RuntimeError("Error in token generation")
     #     self._update_session(self._token_auth_header())
 
-    def _parse_inventory(self, raw_inventory: dict) -> Dict:
+    def _parse_inventory(self, raw_inventory: dict) -> List[Dict]:
         """parse the raw inventory collected from the server and generates
            a new inventory with only the required informations
 
@@ -206,7 +206,7 @@ class Netbox(Source, InventoryAsyncPlugin):
             raw_inventory (dict): raw inventory received from the server
 
         Returns:
-            Dict: a dictionary containing the inventory
+            List[Dict]: a list containing the inventory
         """
         def get_field_value(entry, fields_str):
             fields = fields_str.split(".")
@@ -259,7 +259,7 @@ class Netbox(Source, InventoryAsyncPlugin):
             else:
                 inventory[device["name"]]["namespace"] = self._namespace
 
-        return inventory
+        return list(inventory.values())
 
     def _set_status(self, new_status: str):
         self._sem_status.acquire()
@@ -297,7 +297,6 @@ class Netbox(Source, InventoryAsyncPlugin):
                     f"/api/dcim/devices/?tag={self._tag}"
                 raw_inventory = self.retrieve_rest_data(url)
                 tmp_inventory = self._parse_inventory(raw_inventory)
-
                 if not self._device_credentials.get("skip", False):
                     # Read device credentials
                     cred_load_type = self._device_credentials.get("type", None)
@@ -317,7 +316,7 @@ class Netbox(Source, InventoryAsyncPlugin):
                     loader.load(tmp_inventory)
 
                 # Write the inventory and remove the tmp one
-                self.set_inventory(list(tmp_inventory.values()))
+                self.set_inventory(tmp_inventory)
                 tmp_inventory.clear()
 
                 if self._get_status() == "stopping":

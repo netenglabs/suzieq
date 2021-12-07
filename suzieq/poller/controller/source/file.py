@@ -64,7 +64,7 @@ class SqNativeFile(Source):
                 password = (decoded_url.password or
                             # self.user_password or #I can't get this info here
                             None)
-                transport = decoded_url.scheme
+                transport = decoded_url.scheme or "http"
                 port = decoded_url.port or _DEFAULT_PORTS.get(transport)
                 host = decoded_url.hostname
                 devtype = None
