@@ -18,7 +18,7 @@ class AddressCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         columns: str = "default",
         query_str: str = ' ',
     ) -> None:

@@ -17,7 +17,7 @@ class TopcpuCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -36,9 +36,6 @@ class TopcpuCmd(SqCommand):
     def show(self):
         """Show topcpu info
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:

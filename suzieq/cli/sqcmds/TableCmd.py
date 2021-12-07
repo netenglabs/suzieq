@@ -20,7 +20,7 @@ class TableCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -36,7 +36,7 @@ class TableCmd(SqCommand):
         )
 
     @command("show")
-    def show(self, **kwargs):
+    def show(self):
         """Show meta-information about various tables gathered by Suzieq
         """
         now = time.time()
@@ -50,7 +50,8 @@ class TableCmd(SqCommand):
 
     @ command("describe")
     @ argument("table", description="interface name to qualify")
-    def describe(self, table: str = "tables", **kwargs):
+    # pylint: disable=arguments-differ
+    def describe(self, table: str = "tables"):
         """
         Describe fields in table
         """

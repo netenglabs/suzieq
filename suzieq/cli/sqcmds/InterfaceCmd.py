@@ -1,9 +1,10 @@
 import time
+import pandas as pd
 
 from nubia import command, argument
 
+from suzieq.sqobjects import get_sqobject
 from suzieq.cli.sqcmds.command import SqCommand
-from suzieq.sqobjects.interfaces import IfObj
 from suzieq.shared.utils import humanize_timestamp
 
 
@@ -19,7 +20,7 @@ class InterfaceCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         columns: str = "default",
         query_str: str = ' ',
     ) -> None:
@@ -33,7 +34,7 @@ class InterfaceCmd(SqCommand):
             columns=columns,
             format=format,
             query_str=query_str,
-            sqobj=IfObj
+            sqobj=get_sqobject('interfaces')
         )
 
     @command("show")
@@ -44,13 +45,11 @@ class InterfaceCmd(SqCommand):
                        "!notConnected"])
     @argument("mtu", description="filter interfaces with MTU")
     @argument("vrf", description="filter interfaces matching VRFs")
+    # pylint: disable=redefined-builtin
     def show(self, ifname: str = "", state: str = "", type: str = "",
              mtu: str = "", vrf: str = "") -> None:
         """Show interface info
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -81,6 +80,7 @@ class InterfaceCmd(SqCommand):
     @argument("count", description="include count of times a value is seen",
               choices=['True'])
     @argument("type", description="include type of ports to include")
+    # pylint: disable=arguments-differ, redefined-builtin
     def unique(self, count: str = '', type: str = '', **kwargs):
         """Get unique values (and counts) associated with requested field"""
         now = time.time()
@@ -119,7 +119,7 @@ class InterfaceCmd(SqCommand):
     @argument("ignore_missing_peer",
               description="Treat missing peer as passing assert check",
               choices=["True", "False"])
-    def aver(self, ifname: str = "", state: str = "", what: str = "",
+    def aver(self, ifname: str = "", what: str = "",
              value: str = '', status: str = 'all',
              ignore_missing_peer: str = "False"):
         """Assert aspects about the interface
@@ -128,8 +128,11 @@ class InterfaceCmd(SqCommand):
         now = time.time()
 
         if what == "mtu-value" and value == '':
-            print("Provide value to match MTU against")
-            return
+            df = pd.DataFrame(
+                {'error': ["Provide value to match MTU against"]}
+            )
+            return self._gen_output(df)
+
         elif not what:
             value = ''
 
@@ -155,13 +158,11 @@ class InterfaceCmd(SqCommand):
               choices=["True", "False"])
     @argument("type", description="interface type to qualify")
     @argument('ifname', description="Interface name to qualify")
+    # pylint: disable=arguments-differ, redefined-builtin
     def top(self, what: str = "", count: int = 5, reverse: str = "False",
-            ifname: str = '', type: str = 'ethernet'):
+            ifname: str = '', type: str = 'ethernet', **kwargs):
         """Show top n entries based on specific field
         """
-        if self.columns is None:
-            return
-
         now = time.time()
 
         df = self._invoke_sqobj(self.sqobj.top,

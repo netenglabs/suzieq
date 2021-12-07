@@ -18,7 +18,7 @@ class InventoryCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         query_str: str = ' ',
         columns: str = "default",
     ) -> None:
@@ -44,13 +44,11 @@ class InventoryCmd(SqCommand):
     @argument("model", description="Filter by model")
     @argument("serial", description="Filter by serial number")
     @argument("vendor", description="Filter by vendor name")
+    # pylint: disable=redefined-builtin
     def show(self, type: str = "", status: str = "", model: str = "",
              serial: str = "", vendor: str = "") -> None:
         """Show Device inventory info
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:

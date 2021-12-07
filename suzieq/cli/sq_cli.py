@@ -6,6 +6,7 @@ from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
 
 
 def cli_main():
+    '''Kicks off the CLI run'''
     plugin = NubiaSuzieqPlugin()
     shell = Nubia(name="suzieq", plugin=plugin,
                   options=Options(persistent_history=True))

@@ -3,7 +3,6 @@ from datetime import timedelta
 from nubia import command, argument
 import pandas as pd
 
-from suzieq.shared.utils import humanize_timestamp
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.bgp import BgpObj
 
@@ -20,7 +19,7 @@ class BgpCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         columns: str = "default",
         query_str: str = ' ',
     ) -> None:
@@ -62,8 +61,6 @@ class BgpCmd(SqCommand):
     def show(self, state: str = "", vrf: str = '', peer: str = ''):
         """Show BGP info
         """
-        if self.columns is None:
-            return
 
         # Get the default display field names
         now = time.time()

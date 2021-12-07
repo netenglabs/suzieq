@@ -18,7 +18,7 @@ class FsCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         query_str: str = " ",
         columns: str = "default",
     ) -> None:
@@ -42,9 +42,6 @@ class FsCmd(SqCommand):
     def show(self, mountPoint: str = '', used_percent: str = ''):
         """Show File System info
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
@@ -73,7 +70,7 @@ class FsCmd(SqCommand):
         return self._gen_output(df)
 
     @command("summarize")
-    def summarize(self):
+    def summarize(self, **kwargs):
         """
         Summarize the filesystem/storage info
         """

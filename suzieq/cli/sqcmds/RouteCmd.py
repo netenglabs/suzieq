@@ -1,5 +1,7 @@
 import time
 import ipaddress
+import pandas as pd
+
 from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqCommand
@@ -18,7 +20,7 @@ class RouteCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         query_str: str = ' ',
         columns: str = "default",
     ) -> None:
@@ -35,13 +37,13 @@ class RouteCmd(SqCommand):
             sqobj=RoutesObj,
         )
 
-    def _json_print_handler(self, input):
+    def _json_print_handler(self, in_data):  # pylint: disable=method-hidden
         """This handler calls the code to print the IPNetwork as a string"""
-        if isinstance(input, ipaddress.IPv4Network):
-            return ipaddress.IPv4Network.__str__(input)
-        elif isinstance(input, ipaddress.IPv6Network):
-            return ipaddress.IPv6Network.__str__(input)
-        return input
+        if isinstance(in_data, ipaddress.IPv4Network):
+            return ipaddress.IPv4Network.__str__(in_data)
+        elif isinstance(in_data, ipaddress.IPv6Network):
+            return ipaddress.IPv6Network.__str__(in_data)
+        return in_data
 
     def _get_ipvers(self, value: str) -> int:
         """Return the IP version in use"""
@@ -65,9 +67,6 @@ class RouteCmd(SqCommand):
              prefixlen: str = ""):
         """Show Routing table info
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
 
@@ -92,7 +91,8 @@ class RouteCmd(SqCommand):
 
     @command("summarize")
     @argument("vrf", description="VRF to qualify")
-    def summarize(self, vrf: str = ''):
+    # pylint: disable=arguments-differ
+    def summarize(self, vrf: str = '', **kwargs):
         """Summarize key routing table info
         """
         # Get the default display field names
@@ -114,9 +114,6 @@ class RouteCmd(SqCommand):
     def lpm(self, address: str = '', vrf: str = ''):
         """Show the Longest Prefix Match(LPM) on a given prefix, vrf
         """
-        if self.columns is None:
-            return
-
         now = time.time()
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
@@ -124,8 +121,8 @@ class RouteCmd(SqCommand):
             self.ctxt.sort_fields = []
 
         if not address:
-            print('address is mandatory parameter')
-            return
+            df = pd.DataFrame({'error': ['Must specify address for lpm']})
+            return self._gen_output(df)
 
         df = self._invoke_sqobj(self.sqobj.lpm,
                                 hostname=self.hostname,

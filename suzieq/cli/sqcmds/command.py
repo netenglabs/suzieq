@@ -70,7 +70,7 @@ class SqCommand(SqPlugin):
             end_time: str = "",
             view: str = "",
             namespace: str = "",
-            format: str = "",
+            format: str = "",  # pylint: disable=redefined-builtin
             columns: str = "default",
             query_str: str = " ",
             sqobj=None,
@@ -246,6 +246,7 @@ class SqCommand(SqPlugin):
     @argument("command", description="command to show help for",
               choices=['show', 'unique', 'summarize', 'assert', 'describe',
                        'top', "find", "lpm"])
+    # pylint: disable=redefined-outer-name
     def help(self, command: str = ''):
         """Show help for a command
 
@@ -255,10 +256,10 @@ class SqCommand(SqPlugin):
         if any(x for x in [self.namespace, self.hostname, self.view,
                            self.start_time, self.end_time, self.query_str]):
             print(Fore.RED + "Error: Only accepeted options is command")
-            return
+            return 1
         if (self.columns != ["default"]) or (self.format != "text"):
             print(Fore.RED + "Error: Only accepted options is command")
-            return
+            return 1
 
         if not command:
             mbrs = inspect.getmembers(self)
@@ -398,7 +399,7 @@ class SqCommand(SqPlugin):
                     if is_error:
                         print(df[cols])
                     else:
-                        sort_fields = [x for x in self.sqobj._sort_fields
+                        sort_fields = [x for x in self.sqobj.sort_fields
                                        if x in df.columns and x in cols]
                         if sort_fields:
                             self._pager_print(
@@ -433,7 +434,7 @@ class SqCommand(SqPlugin):
 
         try:
             df = fn(**kwargs)
-        except Exception as ex:
+        except Exception as ex:  # pylint: disable=broad-except
             if isinstance(ex, UserQueryError):
                 df = pd.DataFrame({'error': [f'ERROR: UserQueryError: {ex}']})
             else:

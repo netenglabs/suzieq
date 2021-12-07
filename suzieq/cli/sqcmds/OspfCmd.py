@@ -18,7 +18,7 @@ class OspfCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         query_str: str = ' ',
         columns: str = "default",
     ) -> None:
@@ -46,9 +46,6 @@ class OspfCmd(SqCommand):
     def show(self, ifname: str = "", state: str = "", vrf: str = ""):
         """Show OSPF interface and neighbor info
         """
-        if self.columns is None:
-            return
-
         now = time.time()
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None

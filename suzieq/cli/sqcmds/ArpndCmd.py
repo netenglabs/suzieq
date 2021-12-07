@@ -17,7 +17,7 @@ class ArpndCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         columns: str = "default",
         query_str: str = ' ',
     ) -> None:
@@ -47,9 +47,6 @@ class ArpndCmd(SqCommand):
              prefix: str = "", oif: str = ""):
         """Show ARP/ND info
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:
