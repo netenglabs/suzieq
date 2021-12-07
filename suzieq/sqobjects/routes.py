@@ -1,9 +1,12 @@
 import re
-from suzieq.sqobjects.basicobj import SqObject
 import pandas as pd
+
+from suzieq.sqobjects.basicobj import SqObject
 
 
 class RoutesObj(SqObject):
+    '''The object providing access to the routes table'''
+
     def __init__(self, **kwargs):
         super().__init__(table='routes', **kwargs)
         self._addnl_filter = 'metric != 4278198272'
@@ -11,8 +14,10 @@ class RoutesObj(SqObject):
                                 'vrf', 'protocol', 'prefixlen', 'ipvers',
                                 'add_filter', 'address', 'query_str']
         self._unique_def_column = ['prefix']
+        self._valid_summarize_args += ['vrf']
 
     def validate_get_input(self, **kwargs):
+        '''Validate input to show'''
         if kwargs.get('prefixlen', ''):
             p_match = re.fullmatch(r'([<>][=]?|[!])?[ ]?([0-9]+)',
                                    kwargs['prefixlen'])
@@ -30,7 +35,7 @@ class RoutesObj(SqObject):
 
         return super().validate_get_input(**kwargs)
 
-    def lpm(self, **kwargs):
+    def lpm(self, **kwargs) -> pd.DataFrame:
         '''Get the lpm for the given address'''
         if not kwargs.get("address", None):
             raise AttributeError('ip address is mandatory parameter')
@@ -39,14 +44,3 @@ class RoutesObj(SqObject):
                 raise AttributeError('Just one address at a time')
             kwargs['address'] = kwargs['address'][0]
         return self.engine.lpm(**kwargs)
-
-    def summarize(self, namespace=[], vrf=[], hostname=[], query_str=''):
-        """Summarize routing info for one or more namespaces"""
-        if self.columns != ["default"]:
-            self.summarize_df = pd.DataFrame(
-                {'error':
-                 ['ERROR: You cannot specify columns with summarize']})
-            return self.summarize_df
-        return self.engine.summarize(namespace=namespace, vrf=vrf,
-                                     query_str=query_str,
-                                     hostname=hostname)

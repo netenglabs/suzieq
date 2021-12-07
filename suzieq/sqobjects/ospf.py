@@ -6,6 +6,8 @@ from suzieq.shared.utils import humanize_timestamp
 
 
 class OspfObj(SqObject):
+    '''The object providing access to the ospf table'''
+
     def __init__(self, **kwargs):
         super().__init__(table='ospf', **kwargs)
         self._addnl_fields = ['passive', 'area', 'state']
@@ -18,7 +20,7 @@ class OspfObj(SqObject):
             'status': ['all', 'pass', 'fail'],
         }
 
-    def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
+    def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''
         if df.empty:
             return df

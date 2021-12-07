@@ -1,4 +1,3 @@
-from pandas import DataFrame
 from suzieq.sqobjects.basicobj import SqObject
 from suzieq.shared.utils import humanize_timestamp
 
@@ -6,6 +5,8 @@ import pandas as pd
 
 
 class NetworkObj(SqObject):
+    '''The object providing access to the virtual table: network'''
+
     def __init__(self, **kwargs):
         super().__init__(table='network', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'version', 'os',
@@ -14,7 +15,8 @@ class NetworkObj(SqObject):
                                  'address', 'query_str']
         self._unique_def_column = ['namespace']
 
-    def find(self, **kwargs):
+    def find(self, **kwargs) -> pd.DataFrame():
+        '''Find network attach point for a given address'''
 
         addr = kwargs.get('address', '')
         asn = kwargs.get('asn', '')
@@ -27,13 +29,13 @@ class NetworkObj(SqObject):
 
         try:
             self._check_input_for_valid_args(self._valid_find_args, **kwargs)
-        except Exception as error:
-            df = DataFrame({'error': [f'{error}']})
+        except (ValueError, AttributeError) as error:
+            df = pd.DataFrame({'error': [f'{error}']})
             return df
 
         return self.engine.find(**kwargs)
 
-    def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
+    def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the timestamp fields'''
         if df.empty:
             return df

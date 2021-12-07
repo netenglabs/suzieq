@@ -1,11 +1,13 @@
+from ipaddress import ip_interface
+
 from suzieq.sqobjects.basicobj import SqObject
 from suzieq.shared.utils import (convert_macaddr_format_to_colon,
                                  validate_macaddr)
-from ipaddress import ip_interface
 from suzieq.shared.utils import validate_network
 
 
 class ArpndObj(SqObject):
+    '''The object providing access to the arp/nd table'''
 
     def __init__(self, **kwargs):
         super().__init__(table='arpnd', **kwargs)

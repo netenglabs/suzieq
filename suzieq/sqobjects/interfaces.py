@@ -4,7 +4,9 @@ from suzieq.sqobjects.basicobj import SqObject
 from suzieq.shared.utils import humanize_timestamp
 
 
-class IfObj(SqObject):
+class InterfacesObj(SqObject):
+    '''The object providing access to the interfaces table'''
+
     def __init__(self, **kwargs):
         super().__init__(table='interfaces', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'ifname', 'columns',
@@ -19,7 +21,7 @@ class IfObj(SqObject):
         }
         self._unique_def_column = ['type']
 
-    def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
+    def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''
         if df.empty:
             return df
