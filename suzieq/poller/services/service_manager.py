@@ -133,6 +133,11 @@ class ServiceManager:
         for filename in svc_desc_files:
             with open(filename, 'r') as f:
                 svc_def = yaml.safe_load(f.read())
+
+            if not svc_def:
+                logger.warning(f'Skip empty service file: {filename}')
+                continue
+
             if svc_def.get('service') not in self.svcs_list:
                 logger.warning(
                     f"Ignoring unspecified service {svc_def.get('service')}"
