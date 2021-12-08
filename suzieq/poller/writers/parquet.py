@@ -18,13 +18,13 @@ class ParquetOutputWorker(OutputWorker):
     """
 
     def __init__(self, **kwargs):
-        data_directory = kwargs.get("data_dir")
+        data_directory = kwargs.get('data_dir')
 
         if not data_directory:
-            output_dir = "/tmp/suzieq/parquet-out/"
+            output_dir = '/tmp/suzieq/parquet-out/'
             logger.warning(
-                "No output directory for parquet specified, using "
-                "/tmp/suzieq/parquet-out"
+                'No output directory for parquet specified, using '
+                '/tmp/suzieq/parquet-out'
             )
         else:
             output_dir = data_directory
@@ -34,9 +34,10 @@ class ParquetOutputWorker(OutputWorker):
 
         if not os.path.isdir(output_dir):
             raise SqPollerConfError(
-                "Output directory {} is not a directory".format(output_dir))
+                f'Output directory {output_dir} is not a directory'
+            )
 
-        logger.info("Parquet outputs will be under %s", output_dir)
+        logger.info(f'Parquet outputs will be under {output_dir}')
         self.root_output_dir = output_dir
 
     def write_data(self, data: Dict):
@@ -45,7 +46,7 @@ class ParquetOutputWorker(OutputWorker):
         Args:
             data (Dict): dictionary containing the data to store.
         """
-        cdir = "{}/{}/".format(self.root_output_dir, data["topic"])
+        cdir = f"{self.root_output_dir}/{data['topic']}/"
         if not os.path.isdir(cdir):
             os.makedirs(cdir)
 
@@ -54,7 +55,7 @@ class ParquetOutputWorker(OutputWorker):
         #           else data['schema'].field(x).type.to_pandas_dtype()
         #           for x in data['schema'].names}
 
-        df = pd.DataFrame.from_dict(data["records"])
+        df = pd.DataFrame.from_dict(data['records'])
         # df.to_parquet(
         #     path=cdir,
         #     partition_cols=data['partition_cols'],
@@ -65,14 +66,14 @@ class ParquetOutputWorker(OutputWorker):
         #     version='2.0',
         #     coerce_timestamps='us')
 
-        table = pa.Table.from_pandas(df, schema=data["schema"],
+        table = pa.Table.from_pandas(df, schema=data['schema'],
                                      preserve_index=False)
 
         pq.write_to_dataset(
             table,
             root_path=cdir,
             partition_cols=data['partition_cols'],
-            version="2.0",
+            version='2.0',
             compression='ZSTD',
             row_group_size=100000,
         )
