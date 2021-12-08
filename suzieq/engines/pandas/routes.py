@@ -32,6 +32,24 @@ class RoutesObj(SqPandasEngine):
         return addnl_fields, drop_cols
 
     def get(self, **kwargs):
+        def get_if_df_filtered(df: pd.DataFrame, ip_list: list, ip_vers: int) \
+                -> pd.DataFrame:
+            if ip_vers == 4:
+                vers_to_drop = "ip6AddressList"
+                vers_to_search = "ipAddressList"
+            else:
+                vers_to_drop = "ipAddressList"
+                vers_to_search = "ip6AddressList"
+
+            if_df = df.drop(columns=[vers_to_drop, "timestamp"]) \
+                .explode(vers_to_search) \
+                .fillna({vers_to_search: ''}) \
+                .drop_duplicates() \
+                .reset_index(drop=True)
+            if_df[vers_to_search] = if_df[vers_to_search].apply(
+                lambda x: x.split("/")[0])
+            return if_df.loc[if_df[vers_to_search].isin(ip_list)] \
+                .drop(columns=vers_to_search).reset_index(drop=True)
 
         prefixlen = kwargs.pop('prefixlen', '')
         prefix = kwargs.pop('prefix', [])
@@ -45,13 +63,52 @@ class RoutesObj(SqPandasEngine):
             columns, addnl_fields)
 
         if origin:
-            # steps:
-            # 1. retrieve all "namespace, hostname" with an interface in
-            #    "origin"
-            # 2. retrieve bgp and ospf device which match the previous
-            #    "namespace, hostname" list
-            # 3. filter the routes with this "namespace, hostname"
-            pass
+            # retrieve all routes originated from ip addresses in field
+            # "origin"
+            df = super().get(addnl_fields=addnl_fields,
+                             ipvers=ipvers, **kwargs)
+
+            ipv4_list = [o for o in origin if self._get_ipvers(o) == 4]
+            ipv6_list = [o for o in origin if self._get_ipvers(o) == 6]
+
+            if_df = self._get_table_sqobj('interfaces').get(
+                columns=['namespace', 'hostname',
+                         'ipAddressList', 'ip6AddressList']
+            )
+
+            if4_df = get_if_df_filtered(if_df, ipv4_list, 4)
+            if6_df = get_if_df_filtered(if_df, ipv6_list, 6)
+
+            filtered_ifs_df = if4_df.merge(
+                if6_df, on=["hostname", "namespace"], how='outer')
+
+            # Select only pairs <namespace, hostname> which are present inside
+            # 'bpg' and/or 'ospf' tables
+
+            bgp_df = self._get_table_sqobj('bgp').get(
+                columns=['namespace', 'hostname']
+            ).drop(columns="timestamp").drop_duplicates() \
+                .reset_index(drop=True)
+
+            ospf_df = self._get_table_sqobj('ospf').get(
+                columns=['namespace', 'hostname']
+            ).drop_duplicates().reset_index(drop=True)
+
+            bgp_df = bgp_df.merge(
+                filtered_ifs_df[["hostname", "namespace"]],
+                on=["hostname", "namespace"], how='right')
+
+            ospf_df = ospf_df.merge(
+                filtered_ifs_df[["hostname", "namespace"]],
+                on=["hostname", "namespace"], how='right')
+
+            filter_df = bgp_df.merge(
+                ospf_df, on=["hostname", "namespace"],
+                how='outer'
+            )
+
+            df = df.merge(filter_df, on=[
+                "hostname", "namespace"], how="right")
         else:
             if prefixlen and ('prefixlen' not in columns or columns != ['*']):
                 addnl_fields.append('prefixlen')
@@ -72,7 +129,7 @@ class RoutesObj(SqPandasEngine):
                 newpfx.append(item)
 
             df = super().get(addnl_fields=addnl_fields, prefix=newpfx,
-                            ipvers=ipvers, **kwargs)
+                             ipvers=ipvers, **kwargs)
 
             if not df.empty and 'prefix' in df.columns:
                 df = df.loc[df['prefix'] != "127.0.0.0/8"]

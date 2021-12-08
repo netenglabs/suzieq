@@ -27,7 +27,7 @@ class BgpObj(SqPandasEngine):
         fields = sch.get_display_fields(columns)
 
         for col in ['peerIP', 'updateSource', 'state', 'namespace', 'vrf',
-                    'peer', 'hostname']:
+                    'peer', 'hostname', 'afi', 'safi']:
             if col not in fields:
                 addnl_fields.append(col)
                 drop_cols.append(col)

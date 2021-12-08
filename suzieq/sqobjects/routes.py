@@ -31,6 +31,12 @@ class RoutesObj(SqObject):
                 raise ValueError("Invalid prefixlen: "
                                  "value should be between 0 and 128")
 
+        if kwargs.get('origin', []):
+            for item in kwargs['origin']:
+                if "/" in item:
+                    raise ValueError("Invalid origin addresses: accepts only "
+                                     "IPs without network")
+
         return super().validate_get_input(**kwargs)
 
     def lpm(self, **kwargs):
