@@ -4,7 +4,7 @@ import os
 
 
 def gui_main():
-
+    '''Kicks things off'''
     spec = find_spec('suzieq.gui')
     if spec:
         thisprog = f'{os.path.dirname(spec.loader.path)}/suzieq-gui.py'

@@ -6,16 +6,24 @@ import streamlit as st
 
 def get_title():
     # suzieq_gui.py has hardcoded this name.
+    '''Page title
+
+    Mandatory function if you want to display a page.
+    Pages whose name start with _ are not listed in main menu
+    '''
     return '_Path_Debug_'
 
 
-def path_debug_sidebar(state):
+def path_debug_sidebar():
     '''Draw the sidebar'''
 
     st.sidebar.markdown(
         """Displays information from the various tables used to build path""")
 
+# pylint: disable=protected-access
 
+
+# pylint: disable=too-many-statements
 def handle_edge_url(url_params: dict, pathSession):
     '''Display tables associated with a link'''
 
@@ -99,6 +107,7 @@ def handle_edge_url(url_params: dict, pathSession):
                 namespace=namespace, hostname=hostname, macaddr=macaddr))
 
 
+# pylint: disable=protected-access, too-many-statements
 def handle_hop_url(url_params, pathSession):
     '''Handle table display associated with hop'''
 
@@ -139,6 +148,7 @@ def handle_hop_url(url_params, pathSession):
                          f'{row.hopCount}', expanded=True):
             if row.macaddr:
                 st.info(f'MAC Table on {hostname}, MAC addr {row.macaddr}')
+                # pylint: disable=protected-access
                 st.dataframe(data=engobj._macsobj.get(namespace=namespace,
                                                       hostname=hostname,
                                                       macaddr=row.macaddr))
@@ -146,11 +156,13 @@ def handle_hop_url(url_params, pathSession):
 
             if (row.ipLookup != row.vtepLookup):
                 st.info(f'Route Lookup on {hostname}')
+                # pylint: disable=protected-access
                 st.dataframe(data=engobj._rdf.query(
                     f'hostname=="{hostname}" and vrf=="{row.vrf}"'))
 
             if row.vtepLookup:
                 st.info(f'Underlay Lookup on {hostname} for {row.vtepLookup}')
+                # pylint: disable=protected-access
                 vtepdf = engobj._underlay_dfs.get(row.vtepLookup,
                                                   pd.DataFrame())
                 if not vtepdf.empty:
@@ -161,8 +173,8 @@ def handle_hop_url(url_params, pathSession):
             nhops = row.nexthopIp.tolist()
             prev_nhop = ''
             for oif, nhop in zip_longest(oifs, nhops):
-                blank1, arpcol = st.columns([1, 40])
-                blank2, ifcol = st.columns([2, 40])
+                _, arpcol = st.columns([1, 40])
+                _, ifcol = st.columns([2, 40])
                 # this logic because I don't know what fn to use with agg above
                 # to not remove non-unique nhop.
                 if not nhop and prev_nhop:
@@ -225,7 +237,7 @@ def page_work(state_container):
         st.error('No saved path object found.')
         st.stop()
 
-    path_debug_sidebar(pathSession)
+    path_debug_sidebar()
 
     url_params = st.experimental_get_query_params()
     if url_params.get('lookupType', 'hop') == ['hop']:

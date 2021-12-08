@@ -8,15 +8,20 @@ import streamlit as st
 
 @dataclass
 class HelpSessionState:
+    '''Help page session state'''
     help_on: str = ''
 
 
 def get_title():
     # suzieq_gui.py has hardcoded this name.
+    '''Page title
+
+    Mandatory function if you want to display a page
+    '''
     return '_Help_'
 
 
-def help_sidebar(state: HelpSessionState, helpdir: str):
+def help_sidebar(_: HelpSessionState, helpdir: str):
     '''Sidebar page for help'''
 
     filelist = Path(helpdir).glob('*.md')

@@ -8,12 +8,17 @@ from suzieq.gui.guiutils import gui_get_df, SuzieqMainPages
 
 
 def get_title():
+    '''Page title
+
+    Mandatory function if you want to display a page
+    '''
     # suzieq_gui.py has hardcoded this name.
     return 'Search'
 
 
 @dataclass
 class SearchSessionState:
+    '''Session state for Search page'''
     page: str = SuzieqMainPages.SEARCH
     search_text: str = ''
     past_df = None
@@ -24,6 +29,7 @@ class SearchSessionState:
     prev_results = deque(maxlen=5)
 
 
+# pylint: disable=too-many-statements
 def build_query(state, search_text: str) -> str:
     '''Build the appropriate query for the search'''
 
@@ -268,7 +274,7 @@ def page_work(state_container):
             else:
                 st.info('No matching result found')
 
-    for count, prev_res in enumerate(reversed(state.prev_results)):
+    for prev_res in reversed(state.prev_results):
         psrch, prev_df = prev_res
         if psrch == state_container.search_text:
             continue
@@ -288,6 +294,7 @@ def page_work(state_container):
 
 
 def search_sync_state():
+    '''Sync widget state with session state for search'''
     wsstate = st.session_state
     state = wsstate.searchSessionState
 

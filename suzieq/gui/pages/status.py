@@ -7,11 +7,16 @@ import numpy as np
 
 
 def get_title():
+    '''Page title
+
+    Mandatory function if you want to display a page
+    '''
     return 'Status'
 
 
 @dataclass
 class StatusSessionState:
+    '''Session state for status page'''
     namespace: str = ''
 
 
@@ -34,7 +39,7 @@ def draw_sidebar_status(state):
                                      namespaces, index=nsidx)
 
     if do_refresh:
-        st.caching.clear_cache()
+        st.caching.clear_memo_cache()
 
     st.sidebar.markdown(
         '''This page provides an overview of the overall network status
@@ -56,6 +61,7 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the
         state.namespace = namespace
 
 
+# pylint: disable=too-many-statements
 def page_work(state_container):
     '''The main workhorse routine for the XNA page'''
 
@@ -65,12 +71,12 @@ def page_work(state_container):
     state = state_container.statusSessionState
     draw_sidebar_status(state)
 
-    col1, mid, col2 = st.columns([2, 1, 2])
+    col1, _, col2 = st.columns([2, 1, 2])
     with col1:
         dev_gr = st.empty()
     with col2:
         if_gr = st.empty()
-    col3, mid, col4 = st.columns([2, 1, 2])
+    col3, _, col4 = st.columns([2, 1, 2])
     with col3:
         bgp_gr = st.empty()
     with col4:
