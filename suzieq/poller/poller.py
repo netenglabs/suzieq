@@ -264,9 +264,14 @@ class Poller:
                 )
 
         if userargs.ssh_config_file:
+            if not os.access(userargs.ssh_config_file, os.F_OK):
+                raise SqPollerConfError(
+                    f'Unable to read ssh config in {userargs.ssh_config_file}'
+                )
             ssh_config_file = os.path.expanduser(userargs.ssh_config_file)
             if (os.stat(
                     os.path.dirname(
                         ssh_config_file)).st_mode | 0o40700 != 0o40700):
                 raise SqPollerConfError(
-                    'ssh directory has wrong permissions, must be 0700')
+                    'ssh directory has wrong permissions, must be 0700'
+                )
