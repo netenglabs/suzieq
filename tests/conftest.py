@@ -1,27 +1,30 @@
-import sys
+import asyncio
 import os
-from typing import List, Dict
-from filelock import FileLock
-from subprocess import check_output, CalledProcessError
+import pickle
 import shlex
+import sys
+from subprocess import CalledProcessError, check_output
 from tempfile import mkstemp
-import yaml
-from unittest.mock import Mock
-
-import pytest
-from _pytest.mark.structures import Mark, MarkDecorator
-
-from suzieq.poller.worker.services.service_manager import ServiceManager
-from suzieq.shared.utils import load_sq_config
-from suzieq.shared.schema import Schema
-from suzieq.sqobjects import get_sqobject, get_tables
-from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
-from suzieq.cli.sqcmds.command import SqCommand
+from typing import Dict, List
+from unittest.mock import MagicMock, Mock
 
 import pandas as pd
+import pytest
+import yaml
+from _pytest.mark.structures import Mark, MarkDecorator
+from filelock import FileLock
+from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.poller.worker.services.service_manager import ServiceManager
+from suzieq.shared.schema import Schema
+from suzieq.shared.utils import load_sq_config
+from suzieq.sqobjects import get_sqobject, get_tables
 
 suzieq_cli_path = './suzieq/cli/sq_cli.py'
 suzieq_rest_server_path = './suzieq/restServer/sq_rest_server.py'
+suzieq_test_svc_dir = 'tests/unit/poller/service_dir_test'
+
+DATA_TO_STORE_FILE = 'tests/unit/poller/utils/data_to_store.pickle'
 
 DATADIR = ['tests/data/multidc/parquet-out/',
            'tests/data/basic_dual_bgp/parquet-out/',
@@ -120,9 +123,25 @@ def run_sequential(tmpdir):
         yield()
 
 
+@pytest.fixture
+def data_to_write():
+    """Retrieve a data structure to pass to an OuputWorker
+    """
+    return pickle.load(open(DATA_TO_STORE_FILE, 'rb'))
+
+
+def _get_async_task_mock():
+    """Mock for the add tasks method in the Poller class
+    """
+    fn_res = asyncio.Future()
+    fn_res.set_result(None)
+    return MagicMock(return_value=fn_res)
+
+
 def _setup_nubia():
-    from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
     from nubia import Nubia
+    from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
+
     # monkey patching -- there might be a better way
     plugin = NubiaSuzieqPlugin()
     plugin.create_context = create_context
