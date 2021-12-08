@@ -247,7 +247,7 @@ def sq_controller_main():
     run_once = args.run_once
     inventory_file = args.inventory
 
-    config_data = load_sq_config(args.config)
+    config_data = load_sq_config(config_file=args.config)
 
     controller = Controller()
     controller.load(config_data.get("controller", {}))
