@@ -34,6 +34,7 @@ class CoalescerLauncher:
             coalescer_bin (str, optional): optional path to coalescer binary.
                 Defaults to None.
         """
+        self.coalescer_pid = None
 
         self.config_file = config_file
         self.cfg = cfg
@@ -62,6 +63,7 @@ class CoalescerLauncher:
 
             # Try to start the coalescer process
             process = await self._start_coalescer()
+            self.coalescer_pid = process.pid
 
             if not process:
                 os.kill(os.getpid(), signal.SIGTERM)
