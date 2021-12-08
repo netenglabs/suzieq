@@ -37,7 +37,7 @@ class Inventory(SqPlugin):
         self.jump_host = kwargs.pop('jump_host', None)
         self.jump_host_key_file = kwargs.pop('jump_host_key_file', None)
         self.ignore_known_hosts = kwargs.pop('ignore_known_hosts', False)
-        self.user_password = kwargs.pop('password', None)
+        self.user_password = kwargs.pop('user_password', None)
         self.connect_timeout = kwargs.pop('connect_timeout', 15)
 
     @property

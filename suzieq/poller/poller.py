@@ -164,7 +164,7 @@ class Poller:
             'passphrase': userargs.passphrase,
             'jump_host': userargs.jump_host,
             'jump_host_key_file': userargs.jump_host_key_file,
-            'password': userargs.ask_pass,
+            'user_password': userargs.ask_pass,
             'connect_timeout': connect_timeout,
             'ssh_config_file': userargs.ssh_config_file,
             'ignore_known_hosts': userargs.ignore_known_hosts
