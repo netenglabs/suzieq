@@ -7,7 +7,7 @@ import shutil
 
 import pandas as pd
 import pytest
-from suzieq.poller.writers.parquet import ParquetOutputWorker
+from suzieq.poller.worker.writers.parquet import ParquetOutputWorker
 from suzieq.shared.exceptions import SqPollerConfError
 from tests.integration.utils import assert_df_equal
 

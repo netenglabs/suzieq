@@ -6,7 +6,7 @@ import random
 import shutil
 
 import pytest
-from suzieq.poller.writers.gather import GatherOutputWorker
+from suzieq.poller.worker.writers.gather import GatherOutputWorker
 from suzieq.shared.exceptions import SqPollerConfError
 
 WRITER_OUTPUT_DIR = 'tests/unit/poller/writers/poller_output/gather'
