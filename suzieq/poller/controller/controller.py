@@ -18,6 +18,7 @@ from suzieq.poller.controller.inventory_async_plugin \
     import InventoryAsyncPlugin
 from suzieq.shared.exceptions import InventorySourceError
 from suzieq.shared.sq_plugin import SqPlugin
+from suzieq.shared.utils import load_sq_config
 
 
 class Controller:
@@ -224,8 +225,7 @@ def sq_controller_main():
         "-c",
         "--config",
         help="Controller configuration file",
-        default="suzieq/inventory_provider/example-config.yml",
-        required=True
+        type=str
     )
 
     parser.add_argument(
@@ -238,25 +238,16 @@ def sq_controller_main():
     parser.add_argument(
         "-I",
         "--inventory",
-        help="Input inventory file"
+        help="Input inventory file",
+        type=str
     )
 
     args = parser.parse_args()
 
-    config_file = args.config
     run_once = args.run_once
     inventory_file = args.inventory
 
-    if not config_file:
-        raise RuntimeError("Invalid -c/--config parameter value")
-
-    if not isfile(config_file):
-        raise RuntimeError(f"No configuration file at {config_file}")
-    config_data = {}
-    with open(
-        config_file, "r"
-    ) as file:
-        config_data = yaml.safe_load(file.read())
+    config_data = load_sq_config(args.config)
 
     controller = Controller()
     controller.load(config_data.get("controller", {}))

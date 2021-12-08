@@ -49,7 +49,7 @@ class SqNativeFile(Source):
         hostlist = self.inventory_source.get('hosts', [])
         if not hostlist:
             logger.error(f'No hosts in namespace {nsname}')
-            return
+            return []
 
         for host in hostlist:
             if not isinstance(host, dict):
