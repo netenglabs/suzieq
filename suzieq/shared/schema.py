@@ -5,10 +5,12 @@
 import os
 import logging
 import json
+from typing import List, Dict, Optional
 import pyarrow as pa
 
 
-class Schema(object):
+class Schema:
+    '''Schema class holding schemas of all tables and providing ops on them'''
 
     def __init__(self, schema_dir):
 
@@ -26,7 +28,7 @@ class Schema(object):
         logger = logging.getLogger(__name__)
         if not (schema_dir and os.path.exists(schema_dir)):
             logger.error(
-                "Schema directory {} does not exist".format(schema_dir))
+                "Schema directory %s does not exist", schema_dir)
             raise Exception(f"Schema directory {schema_dir} does not exist")
 
         for root, _, files in os.walk(schema_dir):
@@ -45,36 +47,48 @@ class Schema(object):
         self._phy_tables = phy_tables
         self._types = types
 
-    def tables(self):
-        return self._schema.keys()
+    def tables(self) -> List[str]:
+        '''Returns list of tables for which we have schemas'''
+        return list(self._schema.keys())
 
-    def fields_for_table(self, table):
+    def fields_for_table(self, table: str) -> List[str]:
+        '''Returns list of fields in given table'''
         return [f['name'] for f in self._schema[table]]
 
-    def get_raw_schema(self, table):
+    def get_raw_schema(self, table: str) -> Dict:
+        '''Raw schema for given table, JSON'''
         return self._schema[table]
 
-    def field_for_table(self, table, field):
+    def field_for_table(self, table: str, field: str) -> Optional[str]:
+        '''Returns info about field in table if present'''
         for f in self._schema[table]:
             if f['name'] == field:
                 return f
+        return None
 
-    def type_for_table(self, table):
+    def type_for_table(self, table: str) -> str:
+        '''Return table type: counter, record, derived etc.'''
         return self._types[table]
 
-    def key_fields_for_table(self, table):
+    def key_fields_for_table(self, table: str) -> List[str]:
+        '''Return key fields for given table'''
         # return [f['name'] for f in self._schema[table]
         # if f.get('key', None) is not None]
         return self._sort_fields_for_table(table, 'key')
 
-    def augmented_fields_for_table(self, table):
+    def augmented_fields_for_table(self, table: str) -> List[str]:
+        '''Returns list of augmented fields in table'''
         return [x['name'] for x in self._schema.get(table, [])
                 if 'depends' in x]
 
-    def sorted_display_fields_for_table(self, table, getall=False):
+    def sorted_display_fields_for_table(self, table: str,
+                                        getall: bool = False) -> List[str]:
+        '''Returns sorted list of default display fields'''
         return self._sort_fields_for_table(table, 'display', getall)
 
-    def _sort_fields_for_table(self, table, tag, getall=False):
+    def _sort_fields_for_table(self, table: str, tag: str,
+                               getall: bool = False) -> List[str]:
+        '''Returns sorted list of fields in table with given tag'''
         fields = self.fields_for_table(table)
         field_weights = {}
         for f_name in fields:
@@ -83,10 +97,11 @@ class Schema(object):
                 field_weights[f_name] = field.get(tag, 1000)
             elif getall:
                 field_weights[f_name] = 1000
-        return [k for k in sorted(field_weights.keys(),
-                                  key=lambda x: field_weights[x])]
+        return list(sorted(field_weights.keys(),
+                           key=lambda x: field_weights[x]))
 
-    def array_fields_for_table(self, table):
+    def array_fields_for_table(self, table: str) -> List[str]:
+        '''Returns list of fields which are lists in table'''
         fields = self.fields_for_table(table)
         arrays = []
         for f_name in fields:
@@ -96,17 +111,19 @@ class Schema(object):
                 arrays.append(f_name)
         return arrays
 
-    def get_phy_table_for_table(self, table):
+    def get_phy_table_for_table(self, table: str) -> Optional[str]:
         """Return the name of the underlying physical table"""
         if self._phy_tables:
             return self._phy_tables.get(table, table)
+        return None
 
-    def get_partition_columns_for_table(self, table):
+    def get_partition_columns_for_table(self, table: str) -> List[str]:
         """Return the list of partition columns for table"""
         if self._phy_tables:
             return self._sort_fields_for_table(table, 'partition')
+        return []
 
-    def get_arrow_schema(self, table):
+    def get_arrow_schema(self, table: str) -> pa.schema:
         """Convert internal AVRO schema into PyArrow schema"""
 
         avro_sch = self._schema.get(table, None)
@@ -153,7 +170,8 @@ class Schema(object):
 
         return pa.schema(arsc_fields)
 
-    def get_parent_fields(self, table, field):
+    def get_parent_fields(self, table: str, field: str) -> List[str]:
+        '''Get list of fields this augmented field depends upon'''
         avro_sch = self._schema.get(table, None)
         if not avro_sch:
             raise AttributeError(f"No schema found for {table}")
@@ -167,7 +185,9 @@ class Schema(object):
         return []
 
 
-class SchemaForTable(object):
+class SchemaForTable:
+    '''Class supporting operations on the schema for a given table'''
+
     def __init__(self, table, schema: Schema = None, schema_dir=None):
         if schema:
             if isinstance(schema, Schema):
@@ -182,38 +202,48 @@ class SchemaForTable(object):
 
     @property
     def type(self):
+        '''Type of table'''
         return self._all_schemas.type_for_table(self._table)
 
     @property
     def version(self):
+        '''DB version for table'''
         return self._all_schemas.field_for_table(self._table,
                                                  'sqvers')['default']
 
     @property
     def fields(self):
+        '''Returns list of fields for table'''
         return self._all_schemas.fields_for_table(self._table)
 
     @property
     def array_fields(self):
+        '''Return list of array fields in table'''
         return self._all_schemas.array_fields_for_table(self._table)
 
     def get_phy_table(self):
+        '''Get the name of the physical table backing this table'''
         return self._all_schemas.get_phy_table_for_table(self._table)
 
     def get_partition_columns(self):
+        '''Get the Parquet partitioning columns'''
         return self._all_schemas.get_partition_columns_for_table(self._table)
 
-    def key_fields(self):
+    def key_fields(self) -> List[str]:
+        '''Returns list of key fields for table'''
         return self._all_schemas.key_fields_for_table(self._table)
 
-    def get_augmented_fields(self):
+    def get_augmented_fields(self) -> List[str]:
+        '''Returns list of augmented fields in table'''
         return self._all_schemas.augmented_fields_for_table(self._table)
 
-    def sorted_display_fields(self, getall=False):
+    def sorted_display_fields(self, getall: bool = False) -> List[str]:
+        '''Returns sorted list of default display fields'''
         return self._all_schemas.sorted_display_fields_for_table(self._table,
                                                                  getall)
 
     def field(self, field):
+        '''Returns info about the specified field in table'''
         return self._all_schemas.field_for_table(self._table, field)
 
     def get_display_fields(self, columns: list) -> list:
@@ -234,11 +264,14 @@ class SchemaForTable(object):
         """Return the underlying physical table for this logical table"""
         return self._all_schemas.get_phy_table_for_table(self._table)
 
-    def get_raw_schema(self):
+    def get_raw_schema(self) -> Dict:
+        '''Return the raw schema of table'''
         return self._all_schemas.get_raw_schema(self._table)
 
-    def get_arrow_schema(self):
+    def get_arrow_schema(self) -> pa.Schema:
+        '''Get Pyarrow schema of table'''
         return self._all_schemas.get_arrow_schema(self._table)
 
-    def get_parent_fields(self, field):
+    def get_parent_fields(self, field) -> List[str]:
+        '''Get dependent fields for a given augmented field in table'''
         return self._all_schemas.get_parent_fields(self._table, field)

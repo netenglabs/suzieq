@@ -133,7 +133,7 @@ def load_sq_config(validate=True, config_file=None):
         try:
             with open(cfgfile, "r") as f:
                 cfg = yaml.safe_load(f.read())
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             print(f'ERROR: Unable to open config file {cfgfile}: {e.args[1]}')
             sys.exit(1)
 
@@ -278,6 +278,8 @@ def get_latest_pq_files(files, root, ssecs, esecs, view):
 
 
 def calc_avg(oldval, newval):
+    '''Calculate average of old and new'''
+
     if not oldval:
         return newval
 
@@ -341,7 +343,7 @@ def get_timestamp_from_junos_time(in_data, timestamp: int):
             else:
                 data = in_data
             secs = int(data.get('junos:seconds', 0))
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             logger.warning(f'Unable to convert junos secs from {in_data}')
             secs = 0
 
@@ -421,7 +423,7 @@ def convert_rangestring_to_list(rangestr: str) -> list:
                     tmplst.extend(intrange)
                 else:
                     tmplst.append(int(x[0]))
-    except Exception:
+    except Exception:  # pylint: disable=broad-except
         logger.error(f"Range string parsing failed for {rangestr}")
         return []
     return tmplst
@@ -437,7 +439,7 @@ def convert_numlist_to_ranges(numList: List[int]) -> str:
         str: Range string such as '1-5, 10, 12-20'
     """
     result = ''
-    for a, b in groupby(enumerate(sorted(numList)),
+    for _, b in groupby(enumerate(sorted(numList)),
                         lambda pair: pair[1] - pair[0]):
         b = list(b)
         if len(b) > 1:
@@ -549,8 +551,8 @@ def init_logger(logname: str,
     fh = sh = None
     # this needs to be suzieq.poller, so that it is the root of all the
     # other pollers
-    logger = logging.getLogger(logname)
-    logger.setLevel(loglevel.upper())
+    log = logging.getLogger(logname)
+    log.setLevel(loglevel.upper())
     if logfile:
         fh = RotatingFileHandler(logfile, maxBytes=logsize, backupCount=2)
     if use_stdout:
@@ -573,9 +575,9 @@ def init_logger(logname: str,
     if sh:
         root.addHandler(sh)
 
-    logger.warning(f"log level {logging.getLevelName(logger.level)}")
+    log.warning(f"log level {logging.getLevelName(log.level)}")
 
-    return logger
+    return log
 
 
 def known_devtypes() -> list:

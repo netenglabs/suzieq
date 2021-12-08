@@ -52,9 +52,8 @@ def get_hostsdata_from_hostsfile(hosts_file: str) -> Dict:
             raise InventorySourceError('Invalid Suzieq inventory format, '
                                        'Ansible format?? Use -a instead '
                                        'of -D with inventory')
-        else:
-            raise InventorySourceError(
-                f'Invalid Suzieq inventory file:{hosts_file}')
+        raise InventorySourceError(
+            f'Invalid Suzieq inventory file:{hosts_file}')
 
     for conf in hostsconf:
         if any(x not in conf.keys() for x in ['namespace', 'hosts']):
@@ -100,12 +99,11 @@ def parse_ansible_inventory(filename: str,
             raise InventorySourceError(
                 'Invalid Ansible inventory, found Suzieq inventory'
             )
-        else:
-            raise InventorySourceError(
-                'Invalid Ansible inventory, missing keys: _meta and / or'
-                "hostvars\n \tUse 'ansible-inventory --list' to create "
-                'the correct file'
-            )
+        raise InventorySourceError(
+            'Invalid Ansible inventory, missing keys: _meta and / or'
+            "hostvars\n \tUse 'ansible-inventory --list' to create "
+            'the correct file'
+        )
 
     in_hosts = inventory['_meta']['hostvars']
     out_hosts = []
