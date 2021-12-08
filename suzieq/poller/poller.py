@@ -36,7 +36,7 @@ class Poller:
         # Disable coalescer in specific, unusual cases
         # in case of input_dir, we also seem to leave a coalescer
         # instance running
-        self.no_coalescer = False
+        self.no_coalescer = userargs.no_coalescer
         if userargs.run_once or userargs.input_dir:
             self.no_coalescer = True
         else:
