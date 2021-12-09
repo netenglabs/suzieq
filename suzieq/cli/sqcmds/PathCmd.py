@@ -166,7 +166,6 @@ class PathCmd(SqCommand):
             return self._gen_output(df)
 
         if not df.empty:
-            df = self.sqobj.humanize_fields(df)
             return self._gen_output(df.sort_values(by=[what], ascending=False),
                                     dont_strip_cols=True, sort=False)
         else:

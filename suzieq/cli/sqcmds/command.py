@@ -389,6 +389,7 @@ class SqCommand(SqPlugin):
             with pd.option_context('precision', 3,
                                    'display.max_colwidth', max_colwidth,
                                    'display.max_rows', 256):
+                df = self.sqobj.humanize_fields(df)
                 if df.empty:
                     print(df)
                 elif sort:

@@ -65,8 +65,6 @@ class OspfCmd(SqCommand):
                                 namespace=self.namespace,
                                 )
 
-        df = self.sqobj.humanize_fields(df)
-
         # Transform the lastChangeTime into human terms
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)

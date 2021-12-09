@@ -21,4 +21,5 @@ class DeviceObj(SqObject):
             df['bootupTimestamp'] = humanize_timestamp(
                 df['bootupTimestamp']*1000,
                 self.cfg.get('analyzer', {}).get('timezone', None))
-        return df
+
+        return super().humanize_fields(df)

@@ -33,4 +33,4 @@ class OspfObj(SqObject):
                                                 pd.Timestamp(0),
                                                 df.lastChangeTime)
 
-        return df
+        return super().humanize_fields(df)

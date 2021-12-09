@@ -1,7 +1,7 @@
 import typing
 import pandas as pd
 
-from suzieq.shared.utils import load_sq_config
+from suzieq.shared.utils import load_sq_config, humanize_timestamp
 from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines import get_sqengine
 from suzieq.shared.sq_plugin import SqPlugin
@@ -184,7 +184,7 @@ class SqObject(SqPlugin):
         self.validate_columns(kwargs.get('columns', []))
 
         for k, v in self._convert_args.items():
-            if v:
+            if v and k in kwargs:
                 val = kwargs[k]
                 newval = []
                 if isinstance(val, list):
@@ -326,6 +326,11 @@ class SqObject(SqPlugin):
         Individual classes will implement the right transofmations. This
         routine is just a placeholder for all those with nothing to modify.
         '''
+        if 'timestamp' in df.columns and not df.empty:
+            df['timestamp'] = humanize_timestamp(df.timestamp,
+                                                 self.cfg.get('analyzer', {})
+                                                 .get('timezone', None))
+
         return df
 
     def _field_exists(self, table_schema: SchemaForTable, field: str) -> bool:

@@ -1,5 +1,8 @@
 from pandas import DataFrame
 from suzieq.sqobjects.basicobj import SqObject
+from suzieq.shared.utils import humanize_timestamp
+
+import pandas as pd
 
 
 class NetworkObj(SqObject):
@@ -29,3 +32,15 @@ class NetworkObj(SqObject):
             return df
 
         return self.engine.find(**kwargs)
+
+    def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
+        '''Humanize the timestamp fields'''
+        if df.empty:
+            return df
+
+        if 'lastUpdate' in df.columns:
+            df['lastUpdate'] = humanize_timestamp(df.lastUpdate,
+                                                  self.cfg.get('analyzer', {})
+                                                  .get('timezone', None))
+
+        return super().humanize_fields(df)
