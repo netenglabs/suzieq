@@ -1,10 +1,18 @@
-- namespace: "testing"
-  type: netbox
-  token: "af8717c89ec0ff420c19d89e6c20646ad05dd54e"
-  url: "http://127.0.0.1:8000"
-  transport: ssh
-  tag: "suzieq-demo"
-  period: 60
-  device_credentials:
-    type: <crendential_loader_typ>
-    # credential_loader_parameters
+- namespace: "testing"                                  # devices namespace   
+  type: netbox                                          # 'type' indicates to the sq-poller
+                                                        # that it must connect to netbox
+  
+  token: "af8717c89ec0ff420c19d89e6c20646ad05dd54e"     # REST token
+  url: "http://127.0.0.1:8000"                          # netbox host
+  transport: ssh                                        # devices transport protocol (optional)
+                                                        # Default:'ssh'
+  
+  tag: "suzieq-demo"                                    # tag to search in netbox (optional)
+                                                        # Default: 'suzieq'
+  
+  device_credentials:                                   # contains the method to retrieve devices credentials
+    type: cred_file                                     # 'type' indicates to the sq-poller
+                                                        # that it must read from file
+    
+    file_path: /path/to/credentials.yaml                # file with devices credentials
+
