@@ -1,14 +1,16 @@
-import numpy as np
-import pandas as pd
 import ipaddress
 
-from .engineobj import SqPandasEngine
+import numpy as np
+import pandas as pd
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class EvpnvniObj(SqPandasEngine):
-
+    '''The pandas analysis engine for evpnVni table'''
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'evpnVni'
 
     def get(self, **kwargs) -> pd.DataFrame:
@@ -56,7 +58,8 @@ class EvpnvniObj(SqPandasEngine):
             if not ifdf.empty:
                 df = df.merge(ifdf, on=['namespace', 'hostname', 'ifname'],
                               how='left', suffixes=('', '_y')) \
-                    .drop(columns=['timestamp_y', 'state_y', 'vni_y'])
+                    .drop(columns=['timestamp_y', 'state_y', 'vni_y'],
+                          errors='ignore')
 
                 df['vlan'] = np.where(
                     df['vlan_y'].notnull(), df['vlan_y'], df['vlan'])
@@ -90,8 +93,17 @@ class EvpnvniObj(SqPandasEngine):
             if 'numMacs' in df.columns:
                 macdf = self._get_table_sqobj('macs').get(
                     namespace=kwargs.get('namespace'))
-                df['numMacs'] = df.apply(self._count_macs, axis=1,
-                                         args=(macdf, ))
+                if not macdf.empty:
+                    mac_count_df = macdf \
+                        .query('flags.isin(["dynamic", "remote"])') \
+                        .groupby(['namespace', 'hostname', 'vlan']) \
+                        .macaddr.count().reset_index()
+                    df = df.merge(mac_count_df,
+                                  on=['namespace', 'hostname', 'vlan'],
+                                  suffixes=['', '_y'], how='left') \
+                        .drop(columns=['numMacs'], errors='ignore') \
+                        .rename(columns={'macaddr': 'numMacs'}) \
+                        .fillna({'numMacs': 0})
 
         df = df.drop(columns=drop_cols, errors='ignore')
         col_list = [x for x in self.schema.get_display_fields(columns)
@@ -104,7 +116,7 @@ class EvpnvniObj(SqPandasEngine):
                   (df.hostname == x['hostname'])].count()
 
     def summarize(self, **kwargs):
-        self._init_summarize(self.iobj._table, **kwargs)
+        self._init_summarize(self.iobj.table, **kwargs)
         if self.summary_df.empty:
             return self.summary_df
 
@@ -114,7 +126,7 @@ class EvpnvniObj(SqPandasEngine):
         ]
 
         l3vni_count = self.summary_df.query('type == "L3" and vni != 0') \
-                                     .groupby(by=['namespace'])['vni'].count()
+            .groupby(by=['namespace'])['vni'].count()
         for ns in self.ns.keys():
             if l3vni_count.get(ns, 0):
                 self.ns[ns]['mode'] = 'symmetric'
@@ -200,7 +212,7 @@ class EvpnvniObj(SqPandasEngine):
                 namespace=kwargs.get('namespace'), vrf='default')
             if not rdf.empty:
                 rdf['prefixlen'] = rdf['prefix'].str.split('/') \
-                                                    .str[1].astype('int')
+                    .str[1].astype('int')
             self._routes_df = rdf
 
             her_df["assertReason"] += her_df.apply(
@@ -262,7 +274,7 @@ class EvpnvniObj(SqPandasEngine):
 
         # Fill out the assert column
         df['assert'] = df.apply(lambda x: 'pass'
-                                if not len(x.assertReason) else 'fail',
+                                if len(x.assertReason) == 0 else 'fail',
                                 axis=1)
 
         if status == 'fail':
@@ -286,7 +298,7 @@ class EvpnvniObj(SqPandasEngine):
                 (row['type'] == "L3" and row['remoteVtepList'] == ["-"])):
             return []
 
-        return (['some remote VTEPs missing'])
+        return ['some remote VTEPs missing']
 
     def _is_vtep_reachable(self, row):
         reason = []
@@ -300,8 +312,8 @@ class EvpnvniObj(SqPandasEngine):
             # came down from 194s to 4s with the below piece of code instead
             # of invoking route's lpm to accomplish the task.
             cached_df = self._routes_df \
-                            .query(f'namespace=="{row.namespace}" and '
-                                   f'hostname=="{row.hostname}"')
+                .query(f'namespace=="{row.namespace}" and '
+                       f'hostname=="{row.hostname}"')
             route = self._get_table_sqobj('routes').lpm(vrf='default',
                                                         address=vtep,
                                                         cached_df=cached_df)
