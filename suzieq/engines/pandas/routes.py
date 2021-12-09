@@ -31,25 +31,25 @@ class RoutesObj(SqPandasEngine):
 
         return addnl_fields, drop_cols
 
-    def get(self, **kwargs):
-        def get_if_df_filtered(df: pd.DataFrame, ip_list: list, ip_vers: int) \
-                -> pd.DataFrame:
-            if ip_vers == 4:
-                vers_to_drop = "ip6AddressList"
-                vers_to_search = "ipAddressList"
-            else:
-                vers_to_drop = "ipAddressList"
-                vers_to_search = "ip6AddressList"
+    def _get_if_df_filtered(self, df: pd.DataFrame, network: str, ipvers: int) \
+            -> pd.DataFrame:
+        if ipvers == 4:
+            vers_to_drop = "ip6AddressList"
+            vers_to_search = "ipAddressList"
+        else:
+            vers_to_drop = "ipAddressList"
+            vers_to_search = "ip6AddressList"
 
-            if_df = df.drop(columns=[vers_to_drop, "timestamp"]) \
-                .explode(vers_to_search) \
-                .fillna({vers_to_search: ''}) \
-                .drop_duplicates() \
-                .reset_index(drop=True)
-            if_df[vers_to_search] = if_df[vers_to_search].apply(
-                lambda x: x.split("/")[0])
-            return if_df.loc[if_df[vers_to_search].isin(ip_list)] \
-                .drop(columns=vers_to_search).reset_index(drop=True)
+        return df.drop(columns=[vers_to_drop, "timestamp"]) \
+            .explode(vers_to_search) \
+            .fillna({vers_to_search: ''}) \
+            .query(f"@self._is_in_subnet({vers_to_search},'{network}')") \
+            .drop(columns=vers_to_search) \
+            .drop_duplicates() \
+            .reset_index(drop=True)
+
+
+    def get(self, **kwargs):
 
         prefixlen = kwargs.pop('prefixlen', '')
         prefix = kwargs.pop('prefix', [])
@@ -68,19 +68,32 @@ class RoutesObj(SqPandasEngine):
             df = super().get(addnl_fields=addnl_fields,
                              ipvers=ipvers, **kwargs)
 
-            ipv4_list = [o for o in origin if self._get_ipvers(o) == 4]
-            ipv6_list = [o for o in origin if self._get_ipvers(o) == 6]
-
             if_df = self._get_table_sqobj('interfaces').get(
                 columns=['namespace', 'hostname',
                          'ipAddressList', 'ip6AddressList']
             )
 
-            if4_df = get_if_df_filtered(if_df, ipv4_list, 4)
-            if6_df = get_if_df_filtered(if_df, ipv6_list, 6)
+            filtered_ifs_df = pd.DataFrame()
 
-            filtered_ifs_df = if4_df.merge(
-                if6_df, on=["hostname", "namespace"], how='outer')
+            for net in origin:
+                ipvers = self._get_ipvers(net)
+
+                if net and '/' not in net:
+                    if ipvers == 4:
+                        net += '/32'
+                    else:
+                        net += '/128'
+
+                if filtered_ifs_df.empty:
+                    filtered_ifs_df = self._get_if_df_filtered(
+                        if_df, net, ipvers)
+                else:
+                    tmp = self._get_if_df_filtered(if_df, net, ipvers)
+                    filtered_ifs_df = filtered_ifs_df.merge(
+                        tmp,
+                        on=["hostname", "namespace"],
+                        how="outer"
+                    )
 
             # Select only pairs <namespace, hostname> which are present inside
             # 'bpg' and/or 'ospf' tables
@@ -108,8 +121,10 @@ class RoutesObj(SqPandasEngine):
             )
 
             df = df.merge(filter_df, on=[
-                "hostname", "namespace"], how="right")
-        else:
+                "hostname", "namespace"])
+
+            # Next step: feed this df to prefix
+        elif prefix:
             if prefixlen and ('prefixlen' not in columns or columns != ['*']):
                 addnl_fields.append('prefixlen')
                 drop_cols.append('prefixlen')
@@ -117,16 +132,16 @@ class RoutesObj(SqPandasEngine):
             # /32 routes are stored with the /32 prefix, so if user doesn't specify
             # prefix as some folks do, assume /32
             newpfx = []
-            for item in prefix:
-                ipvers = self._get_ipvers(item)
+            for net in prefix:
+                ipvers = self._get_ipvers(net)
 
-                if item and '/' not in item:
+                if net and '/' not in net:
                     if ipvers == 4:
-                        item += '/32'
+                        net += '/32'
                     else:
-                        item += '/128'
+                        net += '/128'
 
-                newpfx.append(item)
+                newpfx.append(net)
 
             df = super().get(addnl_fields=addnl_fields, prefix=newpfx,
                              ipvers=ipvers, **kwargs)
