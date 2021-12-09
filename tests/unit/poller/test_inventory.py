@@ -1,6 +1,8 @@
 """
 Test the Inventory component functionalities
 """
+# pylint: disable=redefined-outer-name
+
 import asyncio
 from typing import Callable, Dict, List
 from unittest.mock import patch

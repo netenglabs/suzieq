@@ -1,6 +1,8 @@
 """
 Test the OutputWorkerManager component
 """
+# pylint: disable=protected-access
+
 import asyncio
 from unittest.mock import patch
 

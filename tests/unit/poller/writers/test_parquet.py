@@ -1,6 +1,9 @@
 """
 Test the ParquetOutputWorker
 """
+# pylint: disable=redefined-outer-name
+# pylint: disable=unused-argument
+
 import os
 import random
 import shutil

@@ -1,6 +1,7 @@
 """
 Test the CoalescerLauncher component
 """
+# pylint: disable=redefined-outer-name
 
 import asyncio
 import os
@@ -83,7 +84,7 @@ async def test_coalescer_start(coalescer_cfg):
                             'but the coalescer is still running.')
     except ConnectionRefusedError:
         pytest.fail('Unable to connect to the coalescer mock')
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         pytest.fail(str(e))
     finally:
         task.cancel()
