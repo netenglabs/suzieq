@@ -1,3 +1,8 @@
+"""
+This module contains the logic of the writer for the 'gather' mode
+"""
+import os
+
 from suzieq.poller.writers.output_worker import OutputWorker
 
 
@@ -7,7 +12,12 @@ class GatherOutputWorker(OutputWorker):
     """
 
     def write_data(self, data):
-        file = f"{self.root_output_dir}/{data['topic']}.output"
+        """Write the output of the commands into a plain file
+
+        Args:
+            data (Dict): dictionary containing the data to store.
+        """
+        file = os.path.join(self.root_output_dir, f"{data['topic']}.output")
         with open(file, 'a') as f:
             # Even though we use JSON dump, the output is not valid JSON
             f.write(data['records'])

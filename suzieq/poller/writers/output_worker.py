@@ -28,8 +28,6 @@ class OutputWorker(SqPlugin):
                 raise SqPollerConfError(f'Output directory {output_dir}'
                                         'is not a directory')
         else:
-            # TBD: The right error to raise here since this is a required
-            # keyword
             raise SqPollerConfError('Need mandatory keyword arg: output_dir')
 
     @abc.abstractmethod

@@ -1,3 +1,6 @@
+"""
+This module contains the logic of the writer for the 'parquet' mode
+"""
 import logging
 import os
 from typing import Dict
@@ -41,12 +44,12 @@ class ParquetOutputWorker(OutputWorker):
         self.root_output_dir = output_dir
 
     def write_data(self, data: Dict):
-        """Write the data into the Parquet output directory"
+        """Write the data into the Parquet output directory
 
         Args:
             data (Dict): dictionary containing the data to store.
         """
-        cdir = f"{self.root_output_dir}/{data['topic']}/"
+        cdir = os.path.join(self.root_output_dir, data['topic'])
         if not os.path.isdir(cdir):
             os.makedirs(cdir)
 
