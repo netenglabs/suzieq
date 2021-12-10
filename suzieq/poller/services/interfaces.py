@@ -84,7 +84,7 @@ class InterfaceService(Service):
                 entry['state'] = 'up'
                 entry['adminState'] = 'up'
                 entry['mtu'] = 1500
-                entry['speed'] = 0
+                entry['speed'] = NO_SPEED
                 continue
 
             if entry['type'] == 'varp':
@@ -217,6 +217,8 @@ class InterfaceService(Service):
 
             if entry['type'] == 'ether':
                 entry['type'] = 'ethernet'
+            if entry.get('type', '') == 'vxlan':
+                entry['speed'] = NO_SPEED
             if ifname not in new_data_dict:
 
                 if not entry['linkUpCnt']:
@@ -308,7 +310,7 @@ class InterfaceService(Service):
                 if ifname == 'default':
                     drop_indices.append(i)
                 entry['type'] = 'vrf'  # VMX uses virtual-router for VRF
-                entry['speed'] = 0
+                entry['speed'] = NO_SPEED
                 continue
 
             if entry.get('description', '') == 'None':
@@ -399,8 +401,14 @@ class InterfaceService(Service):
                     vlan = 0
                     iftype = entry['type']
 
-                speed = lentry.get('logical-interface-bandwidth', [{}])[0] \
-                    .get('data', 0)
+                if iftype == 'subinterface':
+                    speed = lentry \
+                        .get('logical-interface-bandwidth', [{}])[0] \
+                        .get('data', entry.get('speed', MISSING_SPEED))
+                else:
+                    speed = lentry \
+                        .get('logical-interface-bandwidth', [{}])[0] \
+                        .get('data', NO_SPEED)
 
                 if not entry_dict[lifname]:
                     entry_dict[lifname] = {
@@ -428,6 +436,7 @@ class InterfaceService(Service):
                 if not macaddr:
                     macaddr = entry.get('macaddr', '00:00:00:00:00:00')
 
+                addrlist = []
                 for elem in afis:
                     afi_mtu = elem.get('mtu', [{}])[0].get(
                         'data', entry['mtu'])
@@ -435,10 +444,10 @@ class InterfaceService(Service):
                         .get('data', '')
                     if afi == 'inet':
                         no_inet = False
-                        addrlist = elem.get('interface-address', [])
+                        addrlist += elem.get('interface-address', [])
                     elif afi == 'inet6':
                         no_inet = False
-                        addrlist = elem.get('interface-address', [])
+                        addrlist += elem.get('interface-address', [])
                     if afi == "aenet":
                         master = elem.get("ae-bundle-name", [{}])[0] \
                             .get("data", "")
@@ -471,7 +480,6 @@ class InterfaceService(Service):
                              }
 
                 new_entry['speed'] = fix_junos_speed(new_entry)
-                new_entries.append(new_entry)
                 entry_dict[new_entry['ifname']] = new_entry
 
                 flags = lentry.get('if-config-flags',
@@ -486,14 +494,18 @@ class InterfaceService(Service):
                 else:
                     new_entry['mtu'] = int(new_entry['mtu'])
 
-                for x in addrlist or []:
-                    address = (x.get("ifa-local")[0]["data"] + '/' +
-                               x.get("ifa-destination", [{"data": "0/32"}])[0]
-                               ["data"].split("/")[1])
-                    if ':' in address:
-                        v6addresses.append(address)
+                for elem in addrlist or []:
+                    laddr = elem.get("ifa-local")[0]["data"]
+                    if ':' in laddr:
+                        plen = (elem.get("ifa-destination",
+                                         [{"data": "0/128"}])[0]
+                                ["data"].split("/")[1])
+                        v6addresses.append(f'{laddr}/{plen}')
                     else:
-                        v4addresses.append(address)
+                        plen = (elem.get("ifa-destination",
+                                         [{"data": "0/32"}])[0]
+                                ["data"].split("/")[1])
+                        v4addresses.append(f'{laddr}/{plen}')
                 vlanName = lentry.get('irb-domain', [{}])[0] \
                     .get('irb-bridge', [{}])[0] \
                     .get('data', '')
@@ -504,6 +516,7 @@ class InterfaceService(Service):
                 new_entry['ip6AddressList'] = v6addresses
                 new_entry['ipAddressList'] = v4addresses
 
+                new_entries.append(new_entry)
             entry.pop('_logIf', [])
 
         if drop_indices:
@@ -738,7 +751,7 @@ class InterfaceService(Service):
                 entry['mtu'] = -1
                 entry['state'] = entry['adminState'] = 'up'
                 entry['macaddr'] = "00:00:00:00:00:00"
-                entry['speed'] = 0
+                entry['speed'] = NO_SPEED
                 continue
 
             state = entry.get('state', '')
