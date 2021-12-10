@@ -138,6 +138,7 @@ class Controller:
 
             # Set the plugin_confs to load a the default configuration
             # of the plugin
+            # Defualt plugins don't need any configuration
             plugin_confs = [{"type": self._DEFAULT_PLUGINS[plugin_type]}]
 
         if not isinstance(plugin_confs, list):
@@ -361,7 +362,7 @@ def start_polling(controller: Controller, **kwargs):
                     dev_ns = device.get("namespace")
                     global_inventory[f"{dev_ns}.{dev_name}"] = device
 
-        n_pollers = manager.get_pollers_number()
+        n_pollers = manager.get_n_workers()
 
         inv_chunks = chunker.chunk(global_inventory, n_pollers)
         # TODO: handle manager thread errors

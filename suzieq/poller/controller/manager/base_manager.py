@@ -8,7 +8,7 @@ from abc import abstractmethod
 from suzieq.shared.sq_plugin import SqPlugin
 
 
-class BaseManager(SqPlugin):
+class Manager(SqPlugin):
     """Manage and, in some cases, monitor pollers
     """
 
@@ -22,13 +22,13 @@ class BaseManager(SqPlugin):
         """
 
     @abstractmethod
-    def get_pollers_number(self, inventory) -> int:
-        """Get the number of pollers needed given the inventory
+    def get_n_workers(self, inventory) -> int:
+        """Get the number of workers needed given the inventory
 
         Args:
             inventory ([type]): the inventory to be splitted across the poller
                                 instances
 
         Returns:
-            int: number of desired pollers
+            int: number of desired workers
         """

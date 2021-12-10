@@ -23,6 +23,7 @@ class CredentialLoader(SqPlugin):
 
         self.init(init_data)
 
+    @abstractmethod
     def init(self, init_data: Type):
         """Initialize the object
 
@@ -48,11 +49,11 @@ class CredentialLoader(SqPlugin):
         Raises:
             ValueError: Invalid credentials
         """
-        device.update(credentials)
-        missing_keys = self._validate_credentials(device)
+        missing_keys = self._validate_credentials(credentials)
         if missing_keys:
             raise ValueError(
                 f"Invalid credentials: missing keys {missing_keys}")
+        device.update(credentials)
 
     def _validate_credentials(self, device: Dict) -> List[str]:
 

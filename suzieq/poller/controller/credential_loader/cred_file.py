@@ -3,8 +3,8 @@
 from os import path
 from typing import Dict, List
 import yaml
-from suzieq.poller.controller.credential_loader \
-    .credential_loader import CredentialLoader
+from suzieq.poller.controller.credential_loader.base_credential_loader \
+    import CredentialLoader
 
 
 class CredFile(CredentialLoader):

@@ -4,8 +4,8 @@ from abc import abstractmethod
 from copy import copy
 from threading import Semaphore
 from typing import Dict, Type, List
-from suzieq.poller.controller.credential_loader\
-    .credential_loader import CredentialLoader
+from suzieq.poller.controller.credential_loader.base_credential_loader \
+    import CredentialLoader
 from suzieq.shared.exceptions import InventorySourceError
 from suzieq.shared.sq_plugin import SqPlugin
 

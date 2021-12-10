@@ -41,7 +41,7 @@ class StaticChunker(Chunker):
     def chunk(
         self,
         glob_inv: dict,
-        n_pollers: int,
+        n_chunks: int,
         **addl_params
     ) -> List[Dict]:
 
@@ -54,9 +54,9 @@ class StaticChunker(Chunker):
         if not split_fun:
             raise AttributeError(f"Unknown split policy {split_pol}")
 
-        return split_fun(glob_inv, n_pollers)
+        return split_fun(glob_inv, n_chunks)
 
-    def split_sequential(self, glob_inv: dict, n_pollers: int) -> List[Dict]:
+    def split_sequential(self, glob_inv: dict, n_chunks: int) -> List[Dict]:
         """This function splits the global inventory following the
            same order of the global inventory. This function simply divides
            the global inventory as is "n_pollers" chunks without caring
@@ -70,7 +70,7 @@ class StaticChunker(Chunker):
         Returns:
             List[Dict]: list of global_inventory chunks
         """
-        chunk_len = int(len(glob_inv)/n_pollers)
+        chunk_len = int(len(glob_inv)/n_chunks)
 
         # leftovers: if the number of devices in the inventory is not divisible
         #            by "n_pollers" and the inventory is splitted in
@@ -80,10 +80,10 @@ class StaticChunker(Chunker):
         #            The "leftovoer" variable is used to distribute these
         #            additional devices to all the inventories
 
-        leftovers = len(glob_inv) % n_pollers
+        leftovers = len(glob_inv) % n_chunks
         inv_chunks = []
         chunk_start = 0
-        for _ in range(n_pollers):
+        for _ in range(n_chunks):
             if leftovers > 0:
                 # leftovers must be divided between pollers
                 inv_chunks.append(

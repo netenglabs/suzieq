@@ -1,17 +1,18 @@
 """StaticPollerManager module
 
-    This module contains a simple PollerManager which only writes
+    This module contains a simple Manager which only writes
     inventory chunks on different files for the pollers
+    and start them up
 """
 from os.path import isdir, join
 from subprocess import Popen
 from typing import List, Dict
 import yaml
 from suzieq.poller.controller.manager.base_manager \
-    import BaseManager
+    import Manager
 
 
-class StaticManager(BaseManager):
+class StaticManager(Manager):
     """The StaticPollerManager writes the inventory chunks on files
 
     The number of pollers is defined in the configuration file with
@@ -20,7 +21,7 @@ class StaticManager(BaseManager):
 
     def __init__(self, config_data: dict = None):
 
-        self._pollers_count = config_data.get("pollers_count", 1)
+        self._workers_count = config_data.get("workers_count", 1)
         self._inventory_path = config_data.get(
             "inventory_path", "suzieq/.poller/intentory/static_inventory")
         if not self._inventory_path or not isdir(self._inventory_path):
@@ -30,7 +31,7 @@ class StaticManager(BaseManager):
         self._inventory_file_name = config_data \
             .get("inventory_file_name", "static_inv")
 
-        self._start_pollers = config_data.get("start_pollers", True)
+        self._start_workers = config_data.get("start_workers", True)
 
     def apply(self, inventory_chunks: List[Dict]):
         """Write inventory chunks on files
@@ -103,14 +104,14 @@ class StaticManager(BaseManager):
                 with open(out_file_path, "w") as file:
                     file.write(yaml.safe_dump(list(cur_inventory.values())))
 
-                if self._start_pollers:
+                if self._start_workers:
                     Popen(["sq-poller", "-D", out_file_path, "-c",
                            "suzieq/config/etc/suzieq-cfg.yml"])
                     # Avoid the poller to start again
-                    self._start_pollers = False
+                    self._start_workers = False
 
-    def get_pollers_number(self, inventory: dict = None) -> int:
-        """returns the content of self._poller_count statically loaded from
+    def get_n_workers(self, inventory: dict = None) -> int:
+        """returns the content of self._workers_count statically loaded from
            the configuration file
 
         Attention: This function doesn't use the inventory
@@ -119,7 +120,7 @@ class StaticManager(BaseManager):
             inventory (dict, optional): The global inventory.
 
         Returns:
-            int: number of desired pollers configured in the configuration
+            int: number of desired workers configured in the configuration
                  file
         """
-        return self._pollers_count
+        return self._workers_count
