@@ -18,19 +18,17 @@ class StaticManager(BaseManager):
     the path for inventory files
     """
 
-    def __init__(self, config_data):
-
-        if not config_data:
-            raise ValueError("No configuration provided")
+    def __init__(self, config_data: dict = None):
 
         self._pollers_count = config_data.get("pollers_count", 1)
-        self._inventory_path = config_data.get("inventory_path", None)
+        self._inventory_path = config_data.get(
+            "inventory_path", "suzieq/.poller/intentory/static_inventory")
         if not self._inventory_path or not isdir(self._inventory_path):
             raise RuntimeError(
                 f"Invalid inventory path: {self._inventory_path}")
 
         self._inventory_file_name = config_data \
-            .get("inventory_file_name", "inventory")
+            .get("inventory_file_name", "static_inv")
 
         self._start_pollers = config_data.get("start_pollers", True)
 

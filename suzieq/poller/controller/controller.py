@@ -132,8 +132,13 @@ class Controller:
         """
         plugin_confs = self._plugins_config.get(plugin_type, {})
         if not plugin_confs:
-            raise RuntimeError("No plugin configuration provided for "
-                               f"{plugin_type}")
+            if plugin_type not in self._DEFAULT_PLUGINS:
+                raise RuntimeError("No plugin configuration provided for "
+                                   f"{plugin_type}")
+
+            # Set the plugin_confs to load a the default configuration
+            # of the plugin
+            plugin_confs = [{"type": self._DEFAULT_PLUGINS[plugin_type]}]
 
         if not isinstance(plugin_confs, list):
             raise RuntimeError("Invalid plugin configurations for "
