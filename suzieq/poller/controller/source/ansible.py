@@ -2,14 +2,16 @@
 This module contains the logic of the plugin in charge of importing an
 inventory from an Ansible inventory file.
 """
-import yaml
-import logging
 from os.path import isfile, exists
 from typing import Dict, List
+import logging
+import yaml
 from suzieq.poller.controller.source.base_source import Source
 from suzieq.shared.exceptions import InventorySourceError
 
 logger = logging.getLogger(__name__)
+
+
 class AnsibleInventory(Source):
     """The AnsibleInventory is a class allowing to import the output
     of 'ansible-inventory command' as input of the poller.
@@ -39,11 +41,11 @@ class AnsibleInventory(Source):
     def _get_device_list(self) -> List[Dict]:
         """Parse the output of ansible-inventory command for processing.
 
-        Ansible pulls together the inventory information from multiple files. The
-        information relevant to sq-poller maybe present in different files as
-        different vars. ansible-inventory command luckily handles this for us. This
-        function takes the JSON output of that command and gathers the data needed
-        to start polling.
+        Ansible pulls together the inventory information from multiple files.
+        The information relevant to sq-poller maybe present in different files
+        as different vars. ansible-inventory command luckily handles this for
+        us. This function takes the JSON output of that command and gathers
+        the data needed to start polling.
 
         Raises:
             InventorySourceError: raised if the file is not valid or cannot

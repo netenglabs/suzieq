@@ -213,6 +213,20 @@ class Controller:
         self._plugins_config[plugin_type] = plugin_data
 
 
+class ControllerPluginThread(threading.Thread):
+    """Custom thread class to handle thread exceptions
+    """
+
+    def run(self):
+        # pylint: disable=attribute-defined-outside-init
+        self.exc = None
+        try:
+            super().run()
+        # pylint: disable=broad-except
+        except Exception as e:
+            self.exc = e
+
+
 def sq_controller_main():
     """Controller main function
 
@@ -304,41 +318,54 @@ def start_polling(controller: Controller, **kwargs):
         and workers
     """
     chunker = kwargs.pop("chunker")
-    poller_manager = kwargs.pop("manager")
+    manager = kwargs.pop("manager")
     inv_sources = kwargs.pop("inv_sources")
     run_once = kwargs.pop("run_once")
 
     # start inventorySources if needed
     for inv_src in inv_sources:
         if issubclass(type(inv_src), InventoryAsyncPlugin):
-            thread = threading.Thread(
+            thread = ControllerPluginThread(
                 target=inv_src.run,
                 kwargs={"run_once": run_once}
             )
             thread.start()
+            inv_src.set_running_thread(thread)
 
-    if issubclass(type(poller_manager), InventoryAsyncPlugin):
-        pm_thread = threading.Thread(
-            target=poller_manager.run,
+    if issubclass(type(manager), InventoryAsyncPlugin):
+        thread = ControllerPluginThread(
+            target=manager.run,
             kwargs={"run_once": run_once}
         )
-        pm_thread.start()
+        thread.start()
+        manager.set_running_thread(thread)
 
     while True:
         global_inventory = {}
         for inv_src in inv_sources:
-            cur_inv = inv_src.get_inventory(
-                timeout=controller.timeout)
+            try:
+                cur_inv = inv_src.get_inventory(
+                    timeout=controller.timeout)
+            except TimeoutError as e:
+                exc_str = str(e)
+                if issubclass(type(inv_src), InventoryAsyncPlugin):
+                    thread: ControllerPluginThread = \
+                        inv_src.get_running_thread()
+                    if thread and thread.exc:
+                        exc_str += f"\n\nSource: {thread.exc}"
+                raise RuntimeError(exc_str)
+
             if cur_inv:
                 for device in cur_inv:
                     dev_name = device.get("id")
                     dev_ns = device.get("namespace")
                     global_inventory[f"{dev_ns}.{dev_name}"] = device
 
-        n_pollers = poller_manager.get_pollers_number()
+        n_pollers = manager.get_pollers_number()
 
         inv_chunks = chunker.chunk(global_inventory, n_pollers)
-        poller_manager.apply(inv_chunks)
+        # TODO: handle manager thread errors
+        manager.apply(inv_chunks)
 
         if run_once:
             break
