@@ -36,5 +36,5 @@ class InputDirInventory(Inventory):
 
         return self._nodes
 
-    def _parse_device_list(self) -> List[Dict]:
+    def _get_device_list(self) -> List[Dict]:
         return []
