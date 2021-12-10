@@ -6,6 +6,7 @@ from threading import Semaphore
 from typing import Dict, Type, List
 from suzieq.poller.controller.credential_loader\
     .credential_loader import CredentialLoader
+from suzieq.shared.exceptions import InventorySourceError
 from suzieq.shared.sq_plugin import SqPlugin
 
 
@@ -32,20 +33,21 @@ class Source(SqPlugin):
             "ssh_keyfile",
             "devtype"
         ]
-
-        self._load(input_data)
-        errors = self._validate_config()
+        errors = self._validate_config(input_data)
         if errors:
-            raise RuntimeError("Inventory validation failed: {}"
-                               .format(errors))
+            raise InventorySourceError("Inventory validation failed: {}"
+                                       .format(errors))
+        self._load(input_data)
 
     @abstractmethod
     def _load(self, input_data):
         """Store informations from raw data"""
+        raise NotImplementedError
 
     @abstractmethod
-    def _validate_config(self):
+    def _validate_config(self, input_data: dict):
         """Checks if the loaded data is valid or not"""
+        raise NotImplementedError
 
     def get_inventory(self, timeout: int = 10) -> List[Dict]:
         """Retrieve the inventory in a thread safe way

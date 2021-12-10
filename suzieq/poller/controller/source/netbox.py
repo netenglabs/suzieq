@@ -15,6 +15,7 @@ from suzieq.poller.controller.source.base_source \
     import Source
 from suzieq.poller.controller.inventory_async_plugin \
     import InventoryAsyncPlugin
+from suzieq.shared.exceptions import InventorySourceError
 
 _DEFAULT_PORTS = {"http": 80, "https": 443}
 _RELEVANT_FIELDS = [
@@ -71,6 +72,9 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._port = url_data.port or _DEFAULT_PORTS.get(self._protocol, None)
         self._host = url_data.hostname
 
+        if not self._protocol or not self._port or not self._host:
+            raise InventorySourceError("netbox: invalid url provided")
+
         self._tag = input_data.get("tag", "null")
         self._namespace = input_data.get("namespace", "site.name")
         self._period = input_data.get("period", 3600)
@@ -82,20 +86,19 @@ class Netbox(Source, InventoryAsyncPlugin):
             "device_credentials", None
         )
 
-    def _validate_config(self) -> list:
+    def _validate_config(self, input_data) -> list:
         """Validates the loaded configuration
 
         Returns:
             list: the list of errors
         """
         errors = []
-        if not self._token and (not self._username or not self._password):
+        if not input_data.get("token") and (not input_data.get("username")
+                                            or not input_data.get("password")):
             errors.append("No auth methods provided")
-        if not self._host:
-            errors.append("No host provided")
-        if not self._protocol:
-            errors.append("Unknown protocol")
-        if not self._device_credentials:
+        if not input_data.get("url"):
+            errors.append("No url provided")
+        if not input_data.get("device_credentials"):
             errors.append("No device credentials provided")
         return errors
 

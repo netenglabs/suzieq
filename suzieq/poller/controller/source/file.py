@@ -17,21 +17,22 @@ _DEFAULT_PORTS = {"http": 80, "https": 443, "ssh": 22}
 class SqNativeFile(Source):
     """Source class used to load Suzieq native inventory files
     """
+
     def __init__(self, input_data) -> None:
         self.inventory_source = ""
         self._cur_inventory = []
         super().__init__(input_data)
 
-    def _validate_config(self):
-        pass
-
-    def _load(self, input_data):
-        self.inventory_source = input_data
-
-        if any(x not in self.inventory_source.keys()
+    def _validate_config(self, input_data: dict):
+        if any(x not in input_data.keys()
                for x in ['namespace', 'hosts']):
             raise InventorySourceError('Invalid file inventory: '
                                        'no namespace/hosts sections')
+        if not isinstance(input_data.get("hosts"), list):
+            raise InventorySourceError('Hosts must be a list')
+
+    def _load(self, input_data):
+        self.inventory_source = input_data
         self._cur_inventory = self._get_device_list()
         self.set_inventory(self._cur_inventory)
 
