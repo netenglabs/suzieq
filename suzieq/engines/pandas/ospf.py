@@ -314,6 +314,7 @@ class OspfObj(SqPandasEngine):
             left_on=["namespace", "hostname", "lldpIfname"],
             right_on=['namespace', 'hostname', "ifname"],
             suffixes=("", "_y")) \
+            .drop(columns=['timestamp_y', 'ifname_y'], errors='ignore') \
             .dropna(how="any")
 
         if int_df.empty:
