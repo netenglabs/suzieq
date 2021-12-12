@@ -288,6 +288,12 @@ class SqObject(SqPlugin):
 
         table = kwargs.get('table', self.table)
 
+        cols = kwargs.get('columns', ['default'])
+        if cols not in [['default'], ['*']]:
+            df = pd.DataFrame(
+                {'error': ['ERROR: cannot specify column names for describe']})
+            return df
+
         try:
             sch = SchemaForTable(table, self.all_schemas)
         except ValueError:

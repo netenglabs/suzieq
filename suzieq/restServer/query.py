@@ -841,7 +841,8 @@ def run_command_verb(command, verb, command_args, verb_args,
             405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
 
     if columns != ['default'] and columns != ['*'] and columns is not None:
-        df = df[columns]
+        if all(x in df.columns for x in columns):
+            df = df[columns]
 
     if format == 'markdown':
         # have to return a Reponse so that it won't turn the markdown into JSON

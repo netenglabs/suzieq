@@ -280,6 +280,8 @@ class SqCommand(SqPlugin):
         else:
             self._do_help(self.sqobj.table, command)
 
+        return 0
+
     def _do_help(self, table: str, verb: str = 'show'):
         """Show help for a command
 
