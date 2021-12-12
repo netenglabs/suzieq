@@ -5,7 +5,7 @@ tests:
   marks: network show nxos
   output: '[{"namespace": "nxos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1634522092858}]'
+    1639161231216}]'
 - command: network show --format=json --model=vmx
   data-directory: tests/data/nxos/parquet-out
   marks: network show nxos
@@ -15,13 +15,13 @@ tests:
   marks: network show nxos
   output: '[{"namespace": "nxos", "deviceCnt": 8, "serviceCnt": 15, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1634522092858}]'
+    1639161231211}]'
 - command: network show --format=json --vendor=Juniper
   data-directory: tests/data/nxos/parquet-out
   marks: network show nxos
   output: '[{"namespace": "nxos", "deviceCnt": 1, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1634522092851}]'
+    1639161231216}]'
 - command: network show --columns='namespace' --format=json
   data-directory: tests/data/nxos/parquet-out
   marks: network show nxos
@@ -35,19 +35,19 @@ tests:
   marks: network show nxos
   output: '[{"namespace": "nxos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1634522092858, "active": true}]'
+    1639161231216, "active": true}]'
 - command: network show --columns='*' --os=nxos --format=json
   data-directory: tests/data/nxos/parquet-out
   marks: network show nxos
   output: '[{"namespace": "nxos", "deviceCnt": 8, "serviceCnt": 15, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1634522092858, "active": true}]'
+    1639161231211, "active": true}]'
 - command: network show --columns='*' --vendor=Juniper --format=json
   data-directory: tests/data/nxos/parquet-out
   marks: network show nxos
   output: '[{"namespace": "nxos", "deviceCnt": 1, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1634522092851, "active": true}]'
+    1639161231216, "active": true}]'
 - command: network find --address="172.16.1.101" --format=json
   data-directory: tests/data/nxos/parquet-out
   marks: network find nxos

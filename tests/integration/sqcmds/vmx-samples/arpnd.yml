@@ -207,10 +207,10 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/vmx/parquet-out/
   marks: arpnd summarize vmx
-  output: '{"vmx": {"deviceCnt": 5, "macaddrCnt": 23, "oifCnt": 23, "uniqueOifCnt":
-    9, "arpNdEntriesCnt": 23, "arpNdV4EntriesCnt": 23, "arpNdV6EntriesCnt": 0, "arpNdV6GlobalEntriesCnt":
-    0, "arpNdV6LLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0,
-    "failedV4EntryCnt": 0, "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 0, "failedV6EntryCnt":
+  output: '{"vmx": {"deviceCnt": 5, "arpNdEntriesCnt": 23, "uniqueArpEntriesCnt":
+    13, "uniqueOifCnt": 9, "arpEntriesCnt": 23, "v6NDEntriesCnt": 0, "v6NDGlobalEntriesCnt":
+    0, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0, "remoteV6EntriesCnt":
+    0, "staticV6EntriesCnt": 0, "failedEntriesCnt": 0, "failedV4EntriesCnt": 0, "failedV6EntriesCnt":
     0}}'
 - command: arpnd summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/vmx/parquet-out/

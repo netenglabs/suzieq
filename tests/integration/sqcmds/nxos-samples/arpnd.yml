@@ -203,10 +203,10 @@ tests:
 - command: arpnd summarize --format=json
   data-directory: tests/data/nxos/parquet-out/
   marks: arpnd summarize nxos
-  output: '{"nxos": {"deviceCnt": 14, "macaddrCnt": 74, "oifCnt": 74, "uniqueOifCnt":
-    25, "arpNdEntriesCnt": 74, "arpNdV4EntriesCnt": 73, "arpNdV6EntriesCnt": 1, "arpNdV6GlobalEntriesCnt":
-    1, "arpNdV6LLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0,
-    "failedV4EntryCnt": 0, "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 0, "failedV6EntryCnt":
+  output: '{"nxos": {"deviceCnt": 14, "arpNdEntriesCnt": 74, "uniqueArpEntriesCnt":
+    38, "uniqueOifCnt": 25, "arpEntriesCnt": 73, "v6NDEntriesCnt": 1, "v6NDGlobalEntriesCnt":
+    1, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0, "remoteV6EntriesCnt":
+    0, "staticV6EntriesCnt": 0, "failedEntriesCnt": 0, "failedV4EntriesCnt": 0, "failedV6EntriesCnt":
     0}}'
 - command: arpnd unique --format=json
   data-directory: tests/data/nxos/parquet-out/

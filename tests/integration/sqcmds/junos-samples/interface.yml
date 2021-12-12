@@ -151,18 +151,18 @@ tests:
     "evpn-vrf", "ipAddressList": ["10.0.0.121/32"], "ip6AddressList": [], "timestamp":
     1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname": "lo0.0",
     "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
-    0, "master": "", "ipAddressList": ["10.0.0.31/32"], "ip6AddressList": [], "timestamp":
-    1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname": "jsrv.1",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan":
-    1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList": [], "timestamp":
-    1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname": "em4.32768",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
-    32768, "master": "", "ipAddressList": ["192.0.2.2/24"], "ip6AddressList": [],
+    0, "master": "", "ipAddressList": ["10.0.0.31/32"], "ip6AddressList": ["fe80::205:860f:fc71:7400/128"],
     "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "em2.32768", "state": "up", "adminState": "up", "type": "subinterface", "mtu":
-    1500, "vlan": 32768, "master": "", "ipAddressList": ["192.168.1.2/24"], "ip6AddressList":
+    "jsrv.1", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514,
+    "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
     [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01",
-    "ifname": "em1.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "ifname": "em4.32768", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 32768, "master": "", "ipAddressList": ["192.0.2.2/24"], "ip6AddressList":
+    [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "em2.32768", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 32768, "master": "", "ipAddressList": ["192.168.1.2/24"],
+    "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
+    "exit01", "ifname": "em1.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.0.2/24"], "ip6AddressList":
     [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01",
     "ifname": "em0.0", "state": "up", "adminState": "up", "type": "subinterface",
@@ -220,66 +220,66 @@ tests:
     ["169.254.254.5/30"], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace":
     "junos", "hostname": "leaf02", "ifname": "lo0.0", "state": "up", "adminState":
     "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    ["10.0.0.12/32"], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace":
-    "junos", "hostname": "leaf02", "ifname": "lo0.999", "state": "up", "adminState":
-    "up", "type": "subinterface", "mtu": 65536, "vlan": 999, "master": "evpn-vrf",
-    "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": [], "timestamp": 1623025801371},
-    {"namespace": "junos", "hostname": "leaf02", "ifname": "lo0.16385", "state": "up",
-    "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 16385, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace":
-    "junos", "hostname": "leaf02", "ifname": "lsi.0", "state": "up", "adminState":
-    "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "xe-0/0/9", "state": "up", "adminState": "up",
-    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
-    "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
-    "leaf02", "ifname": "xe-0/0/10", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "jsrv.1", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514,
-    "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
+    ["10.0.0.12/32"], "ip6AddressList": ["fe80::205:860f:fc71:5500/128"], "timestamp":
+    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "lo0.999",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
+    999, "master": "evpn-vrf", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList":
     [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
-    "ifname": "fti0", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "lsi.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
-    "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
-    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "em6",
+    "ifname": "xe-0/0/9", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/10",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
     "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
-    {"namespace": "junos", "hostname": "leaf02", "ifname": "em5", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "jsrv.1", "state": "up",
+    "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan": 1, "master":
+    "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList": [], "timestamp": 1623025801371},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "fti0", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "esi", "state": "up", "adminState":
+    "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "em4", "state": "up", "adminState": "up", "type":
+    "hostname": "leaf02", "ifname": "em6", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
-    "ifname": "em2", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    "ifname": "em5", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
     1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "em1",
+    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "em4",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
     "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
-    {"namespace": "junos", "hostname": "leaf02", "ifname": "em0", "state": "up", "adminState":
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "em2", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "dsc", "state": "up", "adminState": "up", "type":
-    "null", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    "hostname": "leaf02", "ifname": "em1", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
-    "ifname": "xe-0/0/11", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "gr-0/0/0", "state": "up", "adminState": "up", "type": "gre", "mtu": 65536, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
-    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/0", "state": "up",
-    "adminState": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "",
+    "ifname": "em0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "dsc",
+    "state": "up", "adminState": "up", "type": "null", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace":
+    "junos", "hostname": "leaf02", "ifname": "xe-0/0/11", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "gr-0/0/0", "state": "up", "adminState": "up",
+    "type": "gre", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "xe-0/0/0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    9214, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/1",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9214, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/2", "state": "up",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace":
-    "junos", "hostname": "leaf02", "ifname": "xe-0/0/1", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "xe-0/0/2", "state": "up", "adminState": "up",
-    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "bridge", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "xe-0/0/3", "state": "up", "adminState": "up",
-    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "bridge", "ipAddressList":
+    "junos", "hostname": "leaf02", "ifname": "xe-0/0/3", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
     "hostname": "leaf02", "ifname": "xe-0/0/4", "state": "up", "adminState": "up",
     "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
@@ -402,12 +402,12 @@ tests:
     [], "timestamp": 1623025801614}, {"namespace": "junos", "hostname": "exit02",
     "ifname": "lo0.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.32/32"], "ip6AddressList":
-    [], "timestamp": 1623025801614}, {"namespace": "junos", "hostname": "exit02",
-    "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025801614}, {"namespace": "junos", "hostname": "exit02",
-    "ifname": "lsi.0", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    ["fe80::205:860f:fc71:2700/128"], "timestamp": 1623025801614}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "lo0.16385", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801614}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "lsi.0", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801614}, {"namespace": "junos", "hostname": "exit02",
     "ifname": "xe-0/0/4.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
@@ -604,77 +604,77 @@ tests:
     "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
     "spine02", "ifname": "lo0.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList":
-    [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "spine02",
-    "ifname": "xe-0/0/9", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/10",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643},
-    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/11", "state":
-    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
+    ["fe80::205:860f:fc71:c600/128"], "timestamp": 1623025801643}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "xe-0/0/9", "state": "up", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
+    "spine02", "ifname": "xe-0/0/10", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname":
+    "xe-0/0/11", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "dsc",
+    "state": "up", "adminState": "up", "type": "null", "mtu": 65536, "vlan": 0, "master":
     "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "dsc", "state": "up", "adminState":
-    "up", "type": "null", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "em0", "state": "up", "adminState": "up", "type":
-    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "spine02",
-    "ifname": "em1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "em2",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643},
-    {"namespace": "junos", "hostname": "spine02", "ifname": "em3", "state": "up",
-    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "em4", "state": "up", "adminState":
+    "junos", "hostname": "spine02", "ifname": "em0", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "em5", "state": "up", "adminState": "up", "type":
+    "hostname": "spine02", "ifname": "em1", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "spine02",
-    "ifname": "em6", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    "ifname": "em2", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
     1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "esi",
-    "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "fti0", "state": "up", "adminState":
-    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "lo0.16385", "state": "up", "adminState":
-    "up", "type": "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList":
+    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "em3",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "em4", "state": "up",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace":
+    "junos", "hostname": "spine02", "ifname": "em5", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "gr-0/0/0", "state": "up", "adminState": "up",
-    "type": "gre", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    "hostname": "spine02", "ifname": "em6", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "spine02",
+    "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "fti0",
+    "state": "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "lo0.16385",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
+    16385, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "gr-0/0/0", "state":
+    "up", "adminState": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
+    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/6.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "vme", "state": "down", "adminState": "up",
+    "type": "mgmt-vlan", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname":
+    "dcedge01", "ifname": "vtep", "state": "up", "adminState": "up", "type": "vtep",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "xe-0/0/6.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "ifname": "xe-0/0/0.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.127.0/31"], "ip6AddressList":
+    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/1.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.127.2/31"], "ip6AddressList":
+    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/2.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
     "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname":
-    "vme", "state": "down", "adminState": "up", "type": "mgmt-vlan", "mtu": 1514,
-    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "vtep",
-    "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master":
+    "xe-0/0/3.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/4.0",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/5.0", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
     "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
-    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/0.0", "state": "up", "adminState":
+    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/7.0", "state": "up", "adminState":
     "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["169.254.127.0/31"], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
-    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/1.0", "state": "up", "adminState":
-    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["169.254.127.2/31"], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
-    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/2.0", "state": "up", "adminState":
-    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/3.0", "state": "up", "adminState": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/4.0", "state": "up", "adminState": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/5.0", "state": "up", "adminState": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/7.0", "state": "up", "adminState": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
     "hostname": "dcedge01", "ifname": "xe-0/0/8.0", "state": "up", "adminState": "up",
     "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
@@ -709,109 +709,109 @@ tests:
     [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
     "ifname": "lo0.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.41/32"], "ip6AddressList":
-    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "lo0", "state": "up", "adminState": "up", "type": "loopback", "mtu":
-    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/0",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
-    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/1", "state":
-    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
-    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/2", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    ["fe80::205:860f:fc71:c200/128"], "timestamp": 1623025802054}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "lo0.16385", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/3", "state": "up", "adminState": "up",
-    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
-    "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/4", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname":
-    "xe-0/0/6", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
-    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/7",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
-    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/8", "state":
-    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
-    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/9", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/10", "state": "up", "adminState": "up",
-    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
-    "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/5", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname":
-    "xe-0/0/11", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
-    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "fti0",
-    "state": "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu":
-    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "esi",
-    "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
-    "junos", "hostname": "dcedge01", "ifname": "em3", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "em4", "state": "up", "adminState": "up", "type":
-    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    "hostname": "dcedge01", "ifname": "lo0", "state": "up", "adminState": "up", "type":
+    "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "em1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    "ifname": "xe-0/0/0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
     1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "em0",
+    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/1",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
     "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
-    {"namespace": "junos", "hostname": "dcedge01", "ifname": "dsc", "state": "up",
-    "adminState": "up", "type": "null", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/2", "state":
+    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
+    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/3", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "em2", "state": "up", "adminState": "up", "type":
-    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "spine01",
-    "ifname": "xe-0/0/4.0", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01", "ifname":
-    "xe-0/0/0.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu":
-    9200, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
-    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01",
-    "ifname": "xe-0/0/3.0", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 9200, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
-    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01",
-    "ifname": "xe-0/0/2.0", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 9200, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
-    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01",
-    "ifname": "xe-0/0/1.0", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 9200, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
-    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01",
-    "ifname": "vtep", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "hostname": "dcedge01", "ifname": "xe-0/0/4", "state": "up", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/6", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname":
+    "xe-0/0/7", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
     "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025803099}, {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/5.0",
+    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/8",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/9", "state":
+    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
+    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/10", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/5", "state": "up", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname":
+    "dcedge01", "ifname": "xe-0/0/11", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "fti0", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "em3",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "em4", "state": "up",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
+    "junos", "hostname": "dcedge01", "ifname": "em1", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "em0", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "dsc", "state": "up", "adminState": "up", "type": "null", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "em2",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/4.0", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "xe-0/0/0.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 9200, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.21/32"], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "xe-0/0/3.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 9200, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.21/32"], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "xe-0/0/2.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 9200, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.21/32"], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "xe-0/0/1.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 9200, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.21/32"], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "vtep", "state": "up", "adminState":
+    "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "xe-0/0/5.0", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "vme", "state": "down", "adminState": "up", "type":
+    "mgmt-vlan", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01",
+    "ifname": "xe-0/0/6.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname":
+    "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface", "mtu":
+    65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01", "ifname":
+    "xe-0/0/8.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu":
+    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025803099}, {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/9.0",
     "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
     0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
-    {"namespace": "junos", "hostname": "spine01", "ifname": "vme", "state": "down",
-    "adminState": "up", "type": "mgmt-vlan", "mtu": 1514, "vlan": 0, "master": "",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
-    "junos", "hostname": "spine01", "ifname": "xe-0/0/6.0", "state": "up", "adminState":
+    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/10.0", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "xe-0/0/11.0", "state": "up", "adminState":
     "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "lo0.16385", "state": "up", "adminState": "up",
-    "type": "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
-    "hostname": "spine01", "ifname": "xe-0/0/8.0", "state": "up", "adminState": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
-    "hostname": "spine01", "ifname": "xe-0/0/9.0", "state": "up", "adminState": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
-    "hostname": "spine01", "ifname": "xe-0/0/10.0", "state": "up", "adminState": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
-    "hostname": "spine01", "ifname": "xe-0/0/11.0", "state": "up", "adminState": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
     "hostname": "spine01", "ifname": "bme0.0", "state": "up", "adminState": "up",
     "type": "subinterface", "mtu": 1986, "vlan": 0, "master": "", "ipAddressList":
@@ -834,25 +834,25 @@ tests:
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01",
     "ifname": "lo0.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
+    ["fe80::205:860f:fc71:2e00/128"], "timestamp": 1623025803099}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "lo0.16385", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "gr-0/0/0", "state": "up", "adminState": "up",
+    "type": "gre", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01",
-    "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "gr-0/0/0", "state": "up", "adminState": "up", "type": "gre", "mtu":
+    "ifname": "lo0", "state": "up", "adminState": "up", "type": "loopback", "mtu":
     65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025803099}, {"namespace": "junos", "hostname": "spine01", "ifname": "lo0",
-    "state": "up", "adminState": "up", "type": "loopback", "mtu": 65536, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
-    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/7.0", "state":
-    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
-    "junos", "hostname": "leaf01", "ifname": "lo0", "state": "up", "adminState": "up",
-    "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [],
-    "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "vme", "state": "down", "adminState": "up", "type": "mgmt-vlan",
-    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname":
-    "fti0", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    1623025803099}, {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/7.0",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "lo0", "state": "up", "adminState":
+    "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "vme", "state": "down", "adminState": "up", "type":
+    "mgmt-vlan", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "fti0", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
     "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
@@ -888,12 +888,12 @@ tests:
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
     "ifname": "lo0.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList":
-    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "jsrv.1", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 1514, "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
-    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "irb.30", "state": "up", "adminState": "up", "type": "vlan", "mtu":
-    1500, "vlan": 30, "master": "evpn-vrf", "ipAddressList": ["172.16.3.254/24"],
+    ["fe80::205:860f:fc71:ad00/128"], "timestamp": 1623025803099}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "jsrv.1", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 1514, "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"],
+    "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
+    "leaf01", "ifname": "irb.30", "state": "up", "adminState": "up", "type": "vlan",
+    "mtu": 1500, "vlan": 30, "master": "evpn-vrf", "ipAddressList": ["172.16.3.254/24"],
     "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
     "leaf01", "ifname": "irb.10", "state": "up", "adminState": "up", "type": "vlan",
     "mtu": 1500, "vlan": 10, "master": "evpn-vrf", "ipAddressList": ["172.16.1.254/24"],
@@ -1190,8 +1190,8 @@ tests:
   marks: interface summarize junos
   output: '{"junos": {"deviceCnt": 12, "interfaceCnt": 360, "devicesWithL2Cnt": 2,
     "devicesWithVxlanCnt": 0, "ifDownCnt": 7, "ifAdminDownCnt": 0, "ifWithMultipleIPCnt":
-    7, "uniqueMTUCnt": 8, "uniqueIfTypesCnt": 11, "speedCnt": 4, "ifChangesStat":
-    [0, 0, 0], "ifPerDeviceStat": [3, 52, 45.0], "uniqueIPv4AddrCnt": 54, "uniqueIPv6AddrCnt":
+    7, "uniqueMTUCnt": 8, "uniqueIfTypesCnt": 11, "speedCnt": 5, "ifChangesStat":
+    [0, 0, 0.0], "ifPerDeviceStat": [3, 52, 45.0], "uniqueIPv4AddrCnt": 54, "uniqueIPv6AddrCnt":
     0}}'
 - command: interface unique --format=json
   data-directory: tests/data/junos/parquet-out/
@@ -1970,74 +1970,75 @@ tests:
     "ipAddressList": ["10.0.0.121/32"], "ip6AddressList": [], "timestamp": 1623025801370},
     {"namespace": "junos", "hostname": "exit01", "ifname": "lo0.0", "state": "up",
     "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master":
-    "", "ipAddressList": ["10.0.0.31/32"], "ip6AddressList": [], "timestamp": 1623025801370},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "jsrv.1", "state": "up",
-    "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan": 1, "master":
-    "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList": [], "timestamp": 1623025801370},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "em4.32768", "state": "up",
-    "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 32768, "master":
-    "", "ipAddressList": ["192.0.2.2/24"], "ip6AddressList": [], "timestamp": 1623025801370},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "em2.32768", "state": "up",
-    "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 32768, "master":
-    "", "ipAddressList": ["192.168.1.2/24"], "ip6AddressList": [], "timestamp": 1623025801370},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "em1.0", "state": "up",
-    "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["169.254.0.2/24"], "ip6AddressList": [], "timestamp": 1623025801370},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "em0.0", "state": "up",
-    "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.255.5.251/24"], "ip6AddressList": [], "timestamp": 1623025801370},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "bme0.0", "state": "up",
-    "adminState": "up", "type": "subinterface", "mtu": 1986, "vlan": 0, "master":
-    "", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2", "128.0.0.16/2", "128.0.0.63/2"],
-    "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
-    "exit01", "ifname": "tap", "state": "up", "adminState": "up", "type": "internal",
-    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01",
-    "ifname": "xe-0/0/10.0", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "", "ipAddressList": ["10.0.0.31/32"], "ip6AddressList": ["fe80::205:860f:fc71:7400/128"],
     "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "xe-0/0/9.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/11.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801370},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/7.0", "state":
-    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace":
-    "junos", "hostname": "exit01", "ifname": "vtep", "state": "up", "adminState":
-    "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    "jsrv.1", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514,
+    "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
+    [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "em4.32768", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 32768, "master": "", "ipAddressList": ["192.0.2.2/24"], "ip6AddressList":
+    [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "em2.32768", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 32768, "master": "", "ipAddressList": ["192.168.1.2/24"],
+    "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
+    "exit01", "ifname": "em1.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["169.254.0.2/24"], "ip6AddressList":
+    [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "em0.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.5.251/24"], "ip6AddressList":
+    [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01",
+    "ifname": "bme0.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1986, "vlan": 0, "master": "", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2",
+    "128.0.0.16/2", "128.0.0.63/2"], "ip6AddressList": [], "timestamp": 1623025801370},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "tap", "state": "up", "adminState":
+    "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos",
-    "hostname": "exit01", "ifname": "evpn-vrf", "state": "up", "adminState": "up",
-    "type": "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    "hostname": "exit01", "ifname": "xe-0/0/10.0", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/9.0", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/11.0", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/7.0", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "vtep", "state": "up", "adminState": "up", "type":
+    "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01",
-    "ifname": "internet-vrf", "state": "up", "adminState": "up", "type": "vrf", "mtu":
+    "ifname": "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf", "mtu":
     1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/8.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801370},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/1.0", "state":
-    "up", "adminState": "up", "type": "subinterface", "mtu": 9200, "vlan": 0, "master":
-    "", "ipAddressList": ["10.0.0.31/32"], "ip6AddressList": [], "timestamp": 1623025801370},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/2.2", "state":
-    "up", "adminState": "up", "type": "subinterface", "mtu": 9194, "vlan": 2, "master":
-    "", "ipAddressList": ["169.254.254.1/30"], "ip6AddressList": [], "timestamp":
-    1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/0.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 9200, "vlan":
-    0, "master": "", "ipAddressList": ["10.0.0.31/32"], "ip6AddressList": [], "timestamp":
-    1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/2.4",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 9194, "vlan":
-    4, "master": "internet-vrf", "ipAddressList": ["169.254.254.9/30"], "ip6AddressList":
-    [], "timestamp": 1623025801370}, {"namespace": "junos", "hostname": "exit01",
-    "ifname": "mtun", "state": "up", "adminState": "up", "type": "internal", "mtu":
-    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/4.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801370},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/5.0", "state":
-    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
+    1623025801370}, {"namespace": "junos", "hostname": "exit01", "ifname": "internet-vrf",
+    "state": "up", "adminState": "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master":
     "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace":
-    "junos", "hostname": "exit01", "ifname": "xe-0/0/6.0", "state": "up", "adminState":
+    "junos", "hostname": "exit01", "ifname": "xe-0/0/8.0", "state": "up", "adminState":
     "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/1.0", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 9200, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.31/32"], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace":
+    "junos", "hostname": "exit01", "ifname": "xe-0/0/2.2", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 9194, "vlan": 2, "master": "", "ipAddressList":
+    ["169.254.254.1/30"], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace":
+    "junos", "hostname": "exit01", "ifname": "xe-0/0/0.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 9200, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.31/32"], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace":
+    "junos", "hostname": "exit01", "ifname": "xe-0/0/2.4", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 9194, "vlan": 4, "master": "internet-vrf",
+    "ipAddressList": ["169.254.254.9/30"], "ip6AddressList": [], "timestamp": 1623025801370},
+    {"namespace": "junos", "hostname": "exit01", "ifname": "mtun", "state": "up",
+    "adminState": "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace":
+    "junos", "hostname": "exit01", "ifname": "xe-0/0/4.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/5.0", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/6.0", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos",
     "hostname": "exit01", "ifname": "xe-0/0/2.3", "state": "up", "adminState": "up",
     "type": "subinterface", "mtu": 9194, "vlan": 3, "master": "evpn-vrf", "ipAddressList":
@@ -2047,68 +2048,68 @@ tests:
     [], "ip6AddressList": [], "timestamp": 1623025801370}, {"namespace": "junos",
     "hostname": "leaf02", "ifname": "lo0.0", "state": "up", "adminState": "up", "type":
     "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.12/32"],
-    "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
-    "leaf02", "ifname": "lo0.999", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 999, "master": "evpn-vrf", "ipAddressList": ["10.0.0.102/32"],
-    "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
-    "leaf02", "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
-    "ifname": "lsi.0", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
-    "ifname": "xe-0/0/9", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/10",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
-    {"namespace": "junos", "hostname": "leaf02", "ifname": "jsrv.1", "state": "up",
-    "adminState": "up", "type": "subinterface", "mtu": 1514, "vlan": 1, "master":
-    "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList": [], "timestamp": 1623025801371},
-    {"namespace": "junos", "hostname": "leaf02", "ifname": "gre", "state": "up", "adminState":
-    "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "fti0", "state": "up", "adminState": "up", "type":
-    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "esi", "state": "up", "adminState": "up", "type":
-    "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
-    "ifname": "em6", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "em5",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
-    {"namespace": "junos", "hostname": "leaf02", "ifname": "em4", "state": "up", "adminState":
+    "ip6AddressList": ["fe80::205:860f:fc71:5500/128"], "timestamp": 1623025801371},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "lo0.999", "state": "up",
+    "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 999, "master":
+    "evpn-vrf", "ipAddressList": ["10.0.0.102/32"], "ip6AddressList": [], "timestamp":
+    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "lo0.16385",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
+    16385, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "lsi.0", "state": "up",
+    "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace":
+    "junos", "hostname": "leaf02", "ifname": "xe-0/0/9", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "em2", "state": "up", "adminState": "up", "type":
+    "hostname": "leaf02", "ifname": "xe-0/0/10", "state": "up", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
+    "leaf02", "ifname": "jsrv.1", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1514, "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
+    [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
+    "ifname": "gre", "state": "up", "adminState": "up", "type": "internal", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "fti0",
+    "state": "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "esi",
+    "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace":
+    "junos", "hostname": "leaf02", "ifname": "em6", "state": "up", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
+    "leaf02", "ifname": "em5", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname":
+    "em4", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "em2", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "em1", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
-    "ifname": "em1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    "ifname": "em0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
     1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "em0",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
-    {"namespace": "junos", "hostname": "leaf02", "ifname": "dsc", "state": "up", "adminState":
-    "up", "type": "null", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "dsc",
+    "state": "up", "adminState": "up", "type": "null", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace":
+    "junos", "hostname": "leaf02", "ifname": "cbp0", "state": "up", "adminState":
+    "up", "type": "internal", "mtu": 9192, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "cbp0", "state": "up", "adminState": "up", "type":
-    "internal", "mtu": 9192, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    "hostname": "leaf02", "ifname": "bme0", "state": "up", "adminState": "up", "type":
+    "internal", "mtu": 2000, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
-    "ifname": "bme0", "state": "up", "adminState": "up", "type": "internal", "mtu":
-    2000, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/11",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
-    {"namespace": "junos", "hostname": "leaf02", "ifname": "gr-0/0/0", "state": "up",
-    "adminState": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "pfe-0/0/0", "state": "up", "adminState": "up",
-    "type": "internal", "mtu": 65536, "vlan": 0, "master": "ENET2", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "pfh-0/0/0", "state": "up", "adminState": "up",
-    "type": "internal", "mtu": 65536, "vlan": 0, "master": "ENET2", "ipAddressList":
+    "ifname": "xe-0/0/11", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname":
+    "gr-0/0/0", "state": "up", "adminState": "up", "type": "gre", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
+    {"namespace": "junos", "hostname": "leaf02", "ifname": "pfe-0/0/0", "state": "up",
+    "adminState": "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "ENET2",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace":
+    "junos", "hostname": "leaf02", "ifname": "pfh-0/0/0", "state": "up", "adminState":
+    "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "ENET2", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
     "hostname": "leaf02", "ifname": "xe-0/0/0", "state": "up", "adminState": "up",
     "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "", "ipAddressList": [],
@@ -2267,12 +2268,12 @@ tests:
     [], "timestamp": 1623025801614}, {"namespace": "junos", "hostname": "exit02",
     "ifname": "lo0.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.32/32"], "ip6AddressList":
-    [], "timestamp": 1623025801614}, {"namespace": "junos", "hostname": "exit02",
-    "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025801614}, {"namespace": "junos", "hostname": "exit02",
-    "ifname": "lsi.0", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    ["fe80::205:860f:fc71:2700/128"], "timestamp": 1623025801614}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "lo0.16385", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801614}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "lsi.0", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801614}, {"namespace": "junos", "hostname": "exit02",
     "ifname": "xe-0/0/4.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
@@ -2539,79 +2540,79 @@ tests:
     [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
     "hostname": "spine02", "ifname": "lo0.0", "state": "up", "adminState": "up", "type":
     "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"],
-    "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
-    "spine02", "ifname": "xe-0/0/9", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
-    "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "xe-0/0/10", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
-    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/11",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643},
-    {"namespace": "junos", "hostname": "spine02", "ifname": "bme0", "state": "up",
-    "adminState": "up", "type": "internal", "mtu": 2000, "vlan": 0, "master": "",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "cbp0", "state": "up", "adminState":
-    "up", "type": "internal", "mtu": 9192, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "dsc", "state": "up", "adminState": "up", "type":
-    "null", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "spine02",
-    "ifname": "em0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "em1",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643},
-    {"namespace": "junos", "hostname": "spine02", "ifname": "em2", "state": "up",
+    "ip6AddressList": ["fe80::205:860f:fc71:c600/128"], "timestamp": 1623025801643},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/9", "state": "up",
     "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "em3", "state": "up", "adminState":
+    "junos", "hostname": "spine02", "ifname": "xe-0/0/10", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "em4", "state": "up", "adminState": "up", "type":
+    "hostname": "spine02", "ifname": "xe-0/0/11", "state": "up", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
+    "spine02", "ifname": "bme0", "state": "up", "adminState": "up", "type": "internal",
+    "mtu": 2000, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname":
+    "cbp0", "state": "up", "adminState": "up", "type": "internal", "mtu": 9192, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643},
+    {"namespace": "junos", "hostname": "spine02", "ifname": "dsc", "state": "up",
+    "adminState": "up", "type": "null", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "em0", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "spine02",
-    "ifname": "em5", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    "ifname": "em1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
     1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "em6",
+    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "em2",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
     "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643},
-    {"namespace": "junos", "hostname": "spine02", "ifname": "esi", "state": "up",
-    "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    {"namespace": "junos", "hostname": "spine02", "ifname": "em3", "state": "up",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace":
+    "junos", "hostname": "spine02", "ifname": "em4", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "fti0", "state": "up", "adminState": "up", "type":
-    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "ipip", "state": "up", "adminState": "up", "type":
-    "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    "hostname": "spine02", "ifname": "em5", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "spine02",
-    "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025801643}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "gr-0/0/0", "state": "up", "adminState": "up", "type": "gre", "mtu":
-    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/6.0",
-    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
+    "ifname": "em6", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025801643}, {"namespace": "junos", "hostname": "spine02", "ifname": "esi",
+    "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace":
+    "junos", "hostname": "spine02", "ifname": "fti0", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace":
+    "junos", "hostname": "spine02", "ifname": "ipip", "state": "up", "adminState":
+    "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "lo0.16385", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025801643}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "gr-0/0/0", "state": "up", "adminState": "up",
+    "type": "gre", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "xe-0/0/6.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname":
+    "mtun", "state": "up", "adminState": "up", "type": "internal", "mtu": 65536, "vlan":
     0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
-    {"namespace": "junos", "hostname": "dcedge01", "ifname": "mtun", "state": "up",
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "pimd", "state": "up",
     "adminState": "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
-    "junos", "hostname": "dcedge01", "ifname": "pimd", "state": "up", "adminState":
+    "junos", "hostname": "dcedge01", "ifname": "pime", "state": "up", "adminState":
     "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "pime", "state": "up", "adminState": "up", "type":
-    "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    "hostname": "dcedge01", "ifname": "pip0", "state": "up", "adminState": "up", "type":
+    "internal", "mtu": 9192, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "pip0", "state": "up", "adminState": "up", "type": "internal", "mtu":
-    9192, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "vme",
-    "state": "down", "adminState": "up", "type": "mgmt-vlan", "mtu": 1514, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
-    {"namespace": "junos", "hostname": "dcedge01", "ifname": "vtep", "state": "up",
-    "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/0.0", "state": "up", "adminState": "up",
-    "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    "ifname": "vme", "state": "down", "adminState": "up", "type": "mgmt-vlan", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "vtep",
+    "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
+    "junos", "hostname": "dcedge01", "ifname": "xe-0/0/0.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["169.254.127.0/31"], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
     "junos", "hostname": "dcedge01", "ifname": "xe-0/0/1.0", "state": "up", "adminState":
     "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
@@ -2664,23 +2665,23 @@ tests:
     [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
     "ifname": "lo0.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.41/32"], "ip6AddressList":
-    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "lsi", "state": "up", "adminState": "up", "type": "internal", "mtu":
-    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "lo0",
-    "state": "up", "adminState": "up", "type": "loopback", "mtu": 65536, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
-    {"namespace": "junos", "hostname": "dcedge01", "ifname": "tap", "state": "up",
-    "adminState": "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
-    "junos", "hostname": "dcedge01", "ifname": "irb", "state": "up", "adminState":
-    "up", "type": "internal", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    ["fe80::205:860f:fc71:c200/128"], "timestamp": 1623025802054}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "lo0.16385", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "pfe-0/0/0", "state": "up", "adminState": "up",
-    "type": "internal", "mtu": 65536, "vlan": 0, "master": "ENET2", "ipAddressList":
+    "hostname": "dcedge01", "ifname": "lsi", "state": "up", "adminState": "up", "type":
+    "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025802054}, {"namespace": "junos", "hostname": "dcedge01",
+    "ifname": "lo0", "state": "up", "adminState": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025802054}, {"namespace": "junos", "hostname": "dcedge01", "ifname": "tap",
+    "state": "up", "adminState": "up", "type": "internal", "mtu": 65536, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054},
+    {"namespace": "junos", "hostname": "dcedge01", "ifname": "irb", "state": "up",
+    "adminState": "up", "type": "internal", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace":
+    "junos", "hostname": "dcedge01", "ifname": "pfe-0/0/0", "state": "up", "adminState":
+    "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "ENET2", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025802054}, {"namespace": "junos",
     "hostname": "dcedge01", "ifname": "pfh-0/0/0", "state": "up", "adminState": "up",
     "type": "internal", "mtu": 65536, "vlan": 0, "master": "ENET2", "ipAddressList":
@@ -2834,96 +2835,97 @@ tests:
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01",
     "ifname": "lo0.0", "state": "up", "adminState": "up", "type": "subinterface",
     "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
+    ["fe80::205:860f:fc71:2e00/128"], "timestamp": 1623025803099}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "lo0.16385", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "gr-0/0/0", "state": "up", "adminState": "up",
+    "type": "gre", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01",
-    "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "gr-0/0/0", "state": "up", "adminState": "up", "type": "gre", "mtu":
+    "ifname": "lo0", "state": "up", "adminState": "up", "type": "loopback", "mtu":
     65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025803099}, {"namespace": "junos", "hostname": "spine01", "ifname": "lo0",
-    "state": "up", "adminState": "up", "type": "loopback", "mtu": 65536, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
-    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/7.0", "state":
-    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
-    "junos", "hostname": "spine01", "ifname": "jsrv", "state": "up", "adminState":
+    1623025803099}, {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/7.0",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
+    {"namespace": "junos", "hostname": "spine01", "ifname": "jsrv", "state": "up",
+    "adminState": "up", "type": "internal", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "irb", "state": "up", "adminState":
     "up", "type": "internal", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
-    "hostname": "spine01", "ifname": "irb", "state": "up", "adminState": "up", "type":
-    "internal", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01",
-    "ifname": "ipip", "state": "up", "adminState": "up", "type": "internal", "mtu":
-    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "tap",
-    "state": "up", "adminState": "up", "type": "internal", "mtu": 65536, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
-    {"namespace": "junos", "hostname": "leaf01", "ifname": "pip0", "state": "up",
-    "adminState": "up", "type": "internal", "mtu": 9192, "vlan": 0, "master": "",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
-    "junos", "hostname": "leaf01", "ifname": "pime", "state": "up", "adminState":
-    "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "pimd", "state": "up", "adminState": "up", "type":
+    "hostname": "spine01", "ifname": "ipip", "state": "up", "adminState": "up", "type":
     "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "mtun", "state": "up", "adminState": "up", "type": "internal", "mtu":
+    "ifname": "tap", "state": "up", "adminState": "up", "type": "internal", "mtu":
     65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "lsi",
-    "state": "up", "adminState": "up", "type": "internal", "mtu": 65536, "vlan": 0,
+    1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "pip0",
+    "state": "up", "adminState": "up", "type": "internal", "mtu": 9192, "vlan": 0,
     "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
-    {"namespace": "junos", "hostname": "leaf01", "ifname": "lo0", "state": "up", "adminState":
-    "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "pime", "state": "up",
+    "adminState": "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "leaf01", "ifname": "pimd", "state": "up", "adminState":
+    "up", "type": "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "jsrv", "state": "up", "adminState": "up", "type":
+    "hostname": "leaf01", "ifname": "mtun", "state": "up", "adminState": "up", "type":
+    "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
+    "ifname": "lsi", "state": "up", "adminState": "up", "type": "internal", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "lo0",
+    "state": "up", "adminState": "up", "type": "loopback", "mtu": 65536, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "jsrv", "state": "up",
+    "adminState": "up", "type": "internal", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "leaf01", "ifname": "vme", "state": "down", "adminState":
+    "up", "type": "mgmt-vlan", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "irb", "state": "up", "adminState": "up", "type":
     "internal", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "vme", "state": "down", "adminState": "up", "type": "mgmt-vlan", "mtu":
-    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "irb",
-    "state": "up", "adminState": "up", "type": "internal", "mtu": 1514, "vlan": 0,
-    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
-    {"namespace": "junos", "hostname": "leaf01", "ifname": "fti0", "state": "up",
-    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
-    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
-    {"namespace": "junos", "hostname": "leaf01", "ifname": "esi", "state": "up", "adminState":
-    "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "em6", "state": "up", "adminState": "up", "type":
-    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    "ifname": "fti0", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "em5", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "em4",
+    "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "em6",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
     "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
-    {"namespace": "junos", "hostname": "leaf01", "ifname": "em3", "state": "up", "adminState":
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "em5", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "em2", "state": "up", "adminState": "up", "type":
+    "hostname": "leaf01", "ifname": "em4", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "em1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    "ifname": "em3", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
     1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "gre",
-    "state": "up", "adminState": "up", "type": "internal", "mtu": 65536, "vlan": 0,
+    1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "em2",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
     "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
-    {"namespace": "junos", "hostname": "leaf01", "ifname": "vtep", "state": "up",
-    "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
-    "junos", "hostname": "leaf01", "ifname": "evpn-vrf", "state": "up", "adminState":
-    "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [],
-    "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "xe-0/0/0.0", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 9200, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList":
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "em1", "state": "up", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "gre", "state": "up", "adminState": "up", "type":
+    "internal", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "lo0.999", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 999, "master": "evpn-vrf", "ipAddressList": ["10.0.0.101/32"],
-    "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "lo0.0", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList":
-    [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "jsrv.1", "state": "up", "adminState": "up", "type": "subinterface",
-    "mtu": 1514, "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
+    "ifname": "vtep", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "evpn-vrf",
+    "state": "up", "adminState": "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "leaf01", "ifname": "xe-0/0/0.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 9200, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.11/32"], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "leaf01", "ifname": "lo0.999", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 65536, "vlan": 999, "master": "evpn-vrf",
+    "ipAddressList": ["10.0.0.101/32"], "ip6AddressList": [], "timestamp": 1623025803099},
+    {"namespace": "junos", "hostname": "leaf01", "ifname": "lo0.0", "state": "up",
+    "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": ["fe80::205:860f:fc71:ad00/128"],
+    "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname":
+    "jsrv.1", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514,
+    "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
     "ifname": "irb.30", "state": "up", "adminState": "up", "type": "vlan", "mtu":
     1500, "vlan": 30, "master": "evpn-vrf", "ipAddressList": ["172.16.3.254/24"],

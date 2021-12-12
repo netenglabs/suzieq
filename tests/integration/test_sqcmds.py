@@ -1,56 +1,49 @@
-from _pytest.mark.structures import Mark, MarkDecorator
-import pytest
-from suzieq.cli.sqcmds import *  # noqa
-from nubia import context
 import os
-from tests.conftest import (commands, load_up_the_tests, tables, DATADIR,
-                            create_dummy_config_file)
 import json
-from tests.conftest import setup_sqcmds
+
+import pytest
+from _pytest.mark.structures import Mark, MarkDecorator
+
+from tests.conftest import (commands, load_up_the_tests, tables, DATADIR,
+                            setup_sqcmds, cli_commands,
+                            create_dummy_config_file)
+from suzieq.sqobjects import get_sqobject, get_tables
+from suzieq.cli.sqcmds import *  # noqa
+
+from nubia import context
 import pandas as pd
 
 from .utils import assert_df_equal
 
-from suzieq.sqobjects import get_sqobject, get_tables
+verbs = ['show', 'summarize', 'describe', 'help']
 
 
-basic_verbs = ['show', 'summarize']
-
-
-# TODO
-# columns length, column names?
-#  specific data?
 @pytest.mark.slow
-@pytest.mark.parametrize("command, verbs, args", [
-    ('AddressCmd', basic_verbs, [None, None]),
-    ('EvpnVniCmd', basic_verbs + ['aver'], [None, None, None]),
-    ('InterfaceCmd', basic_verbs + ['top', 'aver'],
-     [None, None, None]),
-    ('LldpCmd', basic_verbs, [None, None]),
-    ('MacCmd', basic_verbs, [None, None]),
-    ('MlagCmd', basic_verbs, [None, None, None]),
-    ('OspfCmd', basic_verbs + ['aver'], [None, None, None, None]),
-    ('RouteCmd', basic_verbs + ['lpm'],
-     [None, None, {'address': '10.0.0.1'}]),
-    ('DevconfigCmd', basic_verbs, [None, None]),
-    ('TopologyCmd', basic_verbs, [None, None]),
-    ('TableCmd', ['show', 'describe'], [None, {'table': 'device'}]),
-    #    ('TopcpuCmd', basic_verbs, [None, None]),
-    #    ('TopmemCmd', basic_verbs, [None, None]),
-    ('VlanCmd', basic_verbs, [None, None])
-])
-def test_commands(setup_nubia, command, verbs, args):
+@pytest.mark.parametrize("command",  [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+@pytest.mark.parametrize("verb", [
+    pytest.param(verb, marks=MarkDecorator(Mark(verb, [], {})))
+    for verb in verbs])
+def test_commands(setup_nubia, get_cmd_object_dict, command, verb):
     """ runs through all of the commands for each of the sqcmds
     command: one of the sqcmds
     verbs: for each command, the list of verbs
     args: arguments
     """
-    for v, arg in zip(verbs, args):
-        _test_command(command, v, arg)
+
+    _test_command(get_cmd_object_dict[command], verb, None)
 
 
 def _test_command(cmd, verb, arg, filter=None):
 
+    if ((cmd == 'PathCmd') and (verb != "help") and
+            (not filter or not all(x in filter for x in ['src', 'dest']))):
+        if not filter:
+            filter = {}
+        filter.update({'namespace': 'dual-bgp',
+                       'src': '10.0.0.11',
+                       'dest': '10.0.0.14'})
     s = execute_cmd(cmd, verb, arg, filter)
     assert isinstance(s, int)
     return s
@@ -63,113 +56,113 @@ def test_summary_exception(setup_nubia):
     assert s is None
 
 
-good_commands = commands[:]
-
-column_commands = good_commands[:]
-
-
-@pytest.mark.parametrize("cmd", column_commands)
-def test_all_columns(setup_nubia, cmd):
-    s = _test_command(cmd, 'show', None, filter={'columns': '*'})
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_all_columns(setup_nubia, get_cmd_object_dict, cmd):
+    s = _test_command(get_cmd_object_dict[cmd], 'show', None,
+                      filter={'columns': '*'})
     assert s == 0
 
 
 @pytest.mark.filter
-@pytest.mark.parametrize("cmd", good_commands)
-def test_hostname_show_filter(setup_nubia, cmd):
-    s = _test_command(cmd, 'show', None, {'hostname': 'leaf01'})
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_hostname_show_filter(setup_nubia, get_cmd_object_dict, cmd):
+    if cmd != "table":
+        s = _test_command(get_cmd_object_dict[cmd], 'show', None,
+                          {'hostname': 'leaf01'})
+        assert s == 0
+
+
+@pytest.mark.filter
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_engine_show_filter(setup_nubia, get_cmd_object_dict, cmd):
+    s = _test_command(get_cmd_object_dict[cmd], 'show', None,
+                      {'engine': 'pandas'})
     assert s == 0
 
 
 @pytest.mark.filter
-@pytest.mark.parametrize("cmd", good_commands)
-def test_engine_show_filter(setup_nubia, cmd):
-    s = _test_command(cmd, 'show', None, {'engine': 'pandas'})
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_namespace_show_filter(setup_nubia, get_cmd_object_dict, cmd):
+    s = _test_command(get_cmd_object_dict[cmd], 'show', None,
+                      {'namespace': 'dual-bgp'})
     assert s == 0
 
 
 @pytest.mark.filter
-@pytest.mark.parametrize("cmd", good_commands)
-def test_namespace_show_filter(setup_nubia, cmd):
-    s = _test_command(cmd, 'show', None, {'namespace': 'dual-bgp'})
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_view_show_filter(setup_nubia, get_cmd_object_dict, cmd):
+    s = _test_command(get_cmd_object_dict[cmd], 'show', None, {'view': 'all'})
     assert s == 0
 
 
 @pytest.mark.filter
-@pytest.mark.parametrize("cmd", good_commands)
-def test_view_show_filter(setup_nubia, cmd):
-    s = _test_command(cmd, 'show', None, {'view': 'all'})
-    assert s == 0
-
-
-@pytest.mark.filter
-@pytest.mark.parametrize("cmd", good_commands)
-def test_start_time_show_filter(setup_nubia, cmd):
-    s = _test_command(cmd, 'show', None, {
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_start_time_show_filter(setup_nubia, get_cmd_object_dict, cmd):
+    s = _test_command(get_cmd_object_dict[cmd], 'show', None, {
                       'start_time': '2020-01-01 21:43:30.048'})
     assert s == 0
 
 
-show_columns_commands = good_commands[:]
-
-
 @pytest.mark.filter
 @pytest.mark.fast
-@pytest.mark.parametrize("cmd", show_columns_commands)
-def test_columns_show_filter(setup_nubia, cmd):
-    s = _test_command(cmd, 'show', None, {'columns': 'namespace'})
-    assert s == 0
-
-
-bad_hostname_commands = commands[:]
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_columns_show_filter(setup_nubia, get_cmd_object_dict, cmd):
+    if cmd != "table":
+        s = _test_command(get_cmd_object_dict[cmd], 'show', None,
+                          {'columns': 'namespace'})
+        assert s == 0
 
 
 @pytest.mark.filter
-@pytest.mark.parametrize("cmd", bad_hostname_commands)
-def test_bad_show_hostname_filter(setup_nubia, cmd):
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_bad_show_hostname_filter(setup_nubia, get_cmd_object_dict, cmd):
     filter = {'hostname': 'unknown'}
-    _ = _test_bad_show_filter(cmd, filter)
-
-
-bad_engine_commands = commands[:]
-bad_engine_commands.pop(4)  # EvpnVniCmd
-bad_engine_commands.pop(8)  # Ospfcmd
+    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], filter)
 
 
 @pytest.mark.filter
-@pytest.mark.parametrize("cmd", bad_engine_commands)
-def test_bad_show_engine_filter(setup_nubia, cmd):
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_bad_show_engine_filter(setup_nubia, get_cmd_object_dict, cmd):
     filter = {'engine': 'unknown'}
-    _ = _test_bad_show_filter(cmd, filter)
-
-
-bad_start_time_commands = commands[:]
-
-
-# this because I need to xfail these for this bug, I can't xfail individual
-# ones for the filenotfound
-# so I must remove those from the stack
-bad_start_time_commands.pop(3)  # EvpnVniCmd
-bad_start_time_commands.pop(7)  # Ospfcmd
+    _ = _test_bad_show_filter_w_assert(get_cmd_object_dict[cmd], filter)
 
 
 @pytest.mark.filter
-@pytest.mark.parametrize("cmd", bad_start_time_commands)
-def test_bad_start_time_filter(setup_nubia, cmd):
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_bad_start_time_filter(setup_nubia, get_cmd_object_dict, cmd):
     filter = {'start_time': 'unknown'}
-    _ = _test_bad_show_filter(cmd, filter, True)
-
-
-bad_namespace_commands = bad_hostname_commands[:]
+    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], filter, True)
 
 
 # TODO
 # this is just like hostname filtering
 @pytest.mark.filter
-@pytest.mark.parametrize("cmd", bad_namespace_commands)
-def test_bad_show_namespace_filter(setup_nubia, cmd):
+@pytest.mark.parametrize("cmd", [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_bad_show_namespace_filter(setup_nubia, get_cmd_object_dict, cmd):
     filter = {'namespace': 'unknown'}
-    _ = _test_bad_show_filter(cmd, filter)
+    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], filter)
 
 
 def _test_bad_show_filter(cmd, filter, assert_error=False):
@@ -182,6 +175,16 @@ def _test_bad_show_filter(cmd, filter, assert_error=False):
     return s
 
 
+def _test_bad_show_filter_w_assert(cmd, filter):
+    assert len(filter) == 1
+    try:
+        _test_command(cmd, 'show', None, filter=filter)
+        assert False
+    except ModuleNotFoundError:
+        assert True
+    return 0
+
+
 good_filters = [{'hostname': ['leaf01']}]
 
 
@@ -189,37 +192,44 @@ good_filters = [{'hostname': ['leaf01']}]
 #  these only check good cases, I'm assuming the bad cases work the same
 #  as the rest of the filtering, and that is too messy to duplicate right now
 @pytest.mark.filter
-@pytest.mark.parametrize('cmd', good_commands)
-def test_context_filtering(setup_nubia, cmd):
+@pytest.mark.parametrize('cmd', [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_context_filtering(setup_nubia, get_cmd_object_dict, cmd):
     for filter in good_filters:
-        s = _test_context_filtering(cmd, filter)
+        s = _test_context_filtering(get_cmd_object_dict[cmd], filter)
         assert s == 0
 
 
-context_namespace_commands = commands[:]
-
-
 @pytest.mark.filter
-@pytest.mark.parametrize('cmd', context_namespace_commands)
-def test_context_namespace_filtering(setup_nubia, cmd):
-    s = _test_context_filtering(cmd, {'namespace': ['dual-bgp']})
+@pytest.mark.parametrize('cmd', [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_context_namespace_filtering(setup_nubia, get_cmd_object_dict, cmd):
+    s = _test_context_filtering(get_cmd_object_dict[cmd],
+                                {'namespace': ['dual-bgp']})
     # this has to be list or it will fail, different from any other filtering,
     # namespace is special because it's part of the directory structure
     assert s == 0
 
 
 @pytest.mark.filter
-@pytest.mark.parametrize('cmd', good_commands)
-def test_context_engine_filtering(setup_nubia, cmd):
-    s = _test_context_filtering(cmd, {'engine': 'pandas'})
+@pytest.mark.parametrize('cmd', [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_context_engine_filtering(setup_nubia, get_cmd_object_dict, cmd):
+    s = _test_context_filtering(get_cmd_object_dict[cmd], {'engine': 'pandas'})
     assert s == 0
 
 
 @pytest.mark.fast
-@pytest.mark.parametrize('cmd', good_commands)
-def test_context_start_time_filtering(setup_nubia, cmd):
+@pytest.mark.parametrize('cmd', [
+    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    for cmd in cli_commands])
+def test_context_start_time_filtering(setup_nubia, get_cmd_object_dict, cmd):
     # before the latest data, so might be more data than the default
-    s = _test_context_filtering(cmd, {'start_time': '2020-01-20 0:0:0'})
+    s = _test_context_filtering(get_cmd_object_dict[cmd],
+                                {'start_time': '2020-01-20 0:0:0'})
     assert s == 0
 
 
@@ -236,6 +246,7 @@ def test_table_describe(setup_nubia, table):
                            for x in get_tables()
                            if x not in ['path', 'topmem', 'topcpu',
                                         'topmem', 'time', 'ifCounters',
+                                        'ospfIf', 'ospfNbr',
                                         'network', 'inventory']
                            ])
 @ pytest.mark.parametrize('datadir', DATADIR)
@@ -253,13 +264,20 @@ def test_sqcmds_regex_hostname(table, datadir):
             # The hostnames for these output don't match the hostname regex
             assert df[df.table == 'device']['deviceCnt'].tolist() == [6]
         return
+    if 'basic_dual_bgp' in datadir and table in ['ospf', 'evpnVni', 'devconfig']:
+        return
 
     if not any(x in datadir for x in ['vmx', 'mixed', 'junos']):
         assert not df.empty
-        if table not in ['mlag']:
+
+        if table in ['macs', 'vlan'] and 'basic_dual_bgp' in datadir:
+            assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
+                                                     'leaf03', 'leaf04'])
+        elif table not in ['mlag']:
             assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
                                                      'leaf03', 'leaf04',
                                                      'exit01', 'exit02'])
+
         else:
             assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
                                                      'leaf03', 'leaf04'])

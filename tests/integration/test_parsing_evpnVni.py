@@ -33,6 +33,10 @@ def validate_evpnVni(df: pd.DataFrame):
 def test_evpnVni_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for EVPN VNI table'''
 
+    if 'basic_dual_bgp' in datadir:
+        # No EVPN info in this one
+        return
+
     df = get_table_data
 
     ns_dict = {

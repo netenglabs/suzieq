@@ -5,19 +5,19 @@ tests:
   marks: network show mixed
   output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1634522095162}]'
+    1639161233280}]'
 - command: network show --format=json --os=nxos
   data-directory: tests/data/mixed/parquet-out
   marks: network show mixed
   output: '[{"namespace": "mixed", "deviceCnt": 2, "serviceCnt": 10, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1634522095151}]'
+    1639161233279}]'
 - command: network show --format=json --os='nxos eos'
   data-directory: tests/data/mixed/parquet-out
   marks: network show mixed
   output: '[{"namespace": "mixed", "deviceCnt": 4, "serviceCnt": 18, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1634522095161}]'
+    1639161233280}]'
 - command: network show --columns='namespace' --format=json
   data-directory: tests/data/mixed/parquet-out
   marks: network show mixed
@@ -31,7 +31,7 @@ tests:
   marks: network show mixed
   output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1634522095162, "active": true}]'
+    1639161233280, "active": true}]'
 - command: network unique --format=json
   data-directory: tests/data/mixed/parquet-out
   marks: network unique mixed

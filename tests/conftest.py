@@ -1,44 +1,51 @@
-from typing import List
+import sys
+import os
+from typing import List, Dict
 from filelock import FileLock
 from subprocess import check_output, CalledProcessError
 import shlex
 from tempfile import mkstemp
 import yaml
 from unittest.mock import Mock
+
+import pytest
+from _pytest.mark.structures import Mark, MarkDecorator
+
 from suzieq.poller.services.service_manager import ServiceManager
 from suzieq.shared.utils import load_sq_config
 from suzieq.shared.schema import Schema
 from suzieq.sqobjects import get_sqobject, get_tables
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
-import sys
-import os
-from _pytest.mark.structures import Mark, MarkDecorator
-import pytest
+from suzieq.cli.sqcmds.command import SqCommand
+
 import pandas as pd
 
 suzieq_cli_path = './suzieq/cli/sq_cli.py'
 suzieq_rest_server_path = './suzieq/restServer/sq_rest_server.py'
 
 DATADIR = ['tests/data/multidc/parquet-out/',
+           'tests/data/basic_dual_bgp/parquet-out/',
            'tests/data/eos/parquet-out',
            'tests/data/nxos/parquet-out',
            'tests/data/junos/parquet-out',
            'tests/data/mixed/parquet-out',
            'tests/data/vmx/parquet-out']
 
-commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
-            ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'),
-            ('InventoryCmd'), ('LldpCmd'),
-            ('MacCmd'), ('MlagCmd'), ('NetworkCmd'), ('OspfCmd'),
-            ('SqPollerCmd'), ('RouteCmd'), ('TopologyCmd'), ('VlanCmd')]
+commands = [(x) for x in SqCommand.get_plugins()
+            if x not in ['TopmemCmd', 'TopcpuCmd']]
 
-cli_commands = [('arpnd'), ('address'), ('bgp'), ('device'), ('devconfig'),
-                ('evpnVni'), ('fs'), ('interface'), ('inventory'), ('lldp'),
-                ('mac'), ('mlag'), ('network'), ('ospf'), ('path'), ('route'),
-                ('sqPoller'), ('topology'), ('vlan')]
-
+cli_commands = [(v.__command['name'])
+                for k, v in SqCommand.get_plugins().items()
+                if k not in ['TopmemCmd', 'TopcpuCmd']]
 
 tables = get_tables()
+
+
+@pytest.fixture(scope='session')
+def get_cmd_object_dict() -> Dict:
+    return {v.__command['name']: k
+            for k, v in SqCommand.get_plugins().items()
+            if k not in ['TopmemCmd', 'TopcpuCmd']}
 
 
 @pytest.fixture(scope='function')
@@ -127,8 +134,8 @@ def _setup_nubia():
 def create_context():
     config = load_sq_config(config_file=create_dummy_config_file())
     context = NubiaSuzieqContext()
-    context.cfg = config
-    context.schemas = Schema(config["schema-directory"])
+    context.ctxt.cfg = config
+    context.ctxt.schemas = Schema(config["schema-directory"])
     return context
 
 

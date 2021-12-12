@@ -970,30 +970,28 @@ tests:
 - command: fs show --hostname="edge01" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: fs show
-  output: '[{"namespace": "ospf-single", "hostname": "edge01", "mountPoint": "/run/user/1000",
-    "totalSize": "74M", "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp":
-    1616352402601}, {"namespace": "ospf-single", "hostname": "edge01", "mountPoint":
-    "/sys/fs/cgroup", "totalSize": "370M", "usedSize": "0", "usedPercent": 0, "device":
-    "tmpfs", "timestamp": 1616352402601}, {"namespace": "ospf-single", "hostname":
-    "edge01", "mountPoint": "/run/lock", "totalSize": "5.0M", "usedSize": "0", "usedPercent":
-    0, "device": "tmpfs", "timestamp": 1616352402601}, {"namespace": "ospf-single",
-    "hostname": "edge01", "mountPoint": "/dev/shm", "totalSize": "370M", "usedSize":
-    "0", "usedPercent": 0, "device": "tmpfs", "timestamp": 1616352402601}, {"namespace":
-    "ospf-single", "hostname": "edge01", "mountPoint": "/", "totalSize": "30G", "usedSize":
-    "2.1G", "usedPercent": 8, "device": "/dev/sda3", "timestamp": 1616352402601},
-    {"namespace": "ospf-single", "hostname": "edge01", "mountPoint": "/run", "totalSize":
-    "74M", "usedSize": "4.8M", "usedPercent": 7, "device": "tmpfs", "timestamp": 1616352402601},
-    {"namespace": "ospf-single", "hostname": "edge01", "mountPoint": "/dev", "totalSize":
-    "349M", "usedSize": "0", "usedPercent": 0, "device": "udev", "timestamp": 1616352402601},
-    {"namespace": "ospf-single", "hostname": "edge01", "mountPoint": "/boot", "totalSize":
-    "464M", "usedSize": "111M", "usedPercent": 26, "device": "/dev/sda1", "timestamp":
-    1616352402601}, {"namespace": "dual-evpn", "hostname": "edge01", "mountPoint":
-    "/dev", "totalSize": "349M", "usedSize": "0", "usedPercent": 0, "device": "udev",
-    "timestamp": 1616644821714}, {"namespace": "dual-evpn", "hostname": "edge01",
+  output: '[{"namespace": "ospf-single", "hostname": "edge01", "mountPoint": "/boot",
+    "totalSize": "464M", "usedSize": "111M", "usedPercent": 26, "device": "/dev/sda1",
+    "timestamp": 1616352402601}, {"namespace": "ospf-single", "hostname": "edge01",
     "mountPoint": "/run/user/1000", "totalSize": "74M", "usedSize": "0", "usedPercent":
-    0, "device": "tmpfs", "timestamp": 1616644821714}, {"namespace": "dual-evpn",
-    "hostname": "edge01", "mountPoint": "/boot", "totalSize": "464M", "usedSize":
-    "111M", "usedPercent": 26, "device": "/dev/sda1", "timestamp": 1616644821714},
+    0, "device": "tmpfs", "timestamp": 1616352402601}, {"namespace": "ospf-single",
+    "hostname": "edge01", "mountPoint": "/sys/fs/cgroup", "totalSize": "370M", "usedSize":
+    "0", "usedPercent": 0, "device": "tmpfs", "timestamp": 1616352402601}, {"namespace":
+    "ospf-single", "hostname": "edge01", "mountPoint": "/run/lock", "totalSize": "5.0M",
+    "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp": 1616352402601},
+    {"namespace": "ospf-single", "hostname": "edge01", "mountPoint": "/dev/shm", "totalSize":
+    "370M", "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp": 1616352402601},
+    {"namespace": "ospf-single", "hostname": "edge01", "mountPoint": "/", "totalSize":
+    "30G", "usedSize": "2.1G", "usedPercent": 8, "device": "/dev/sda3", "timestamp":
+    1616352402601}, {"namespace": "ospf-single", "hostname": "edge01", "mountPoint":
+    "/run", "totalSize": "74M", "usedSize": "4.8M", "usedPercent": 7, "device": "tmpfs",
+    "timestamp": 1616352402601}, {"namespace": "ospf-single", "hostname": "edge01",
+    "mountPoint": "/dev", "totalSize": "349M", "usedSize": "0", "usedPercent": 0,
+    "device": "udev", "timestamp": 1616352402601}, {"namespace": "dual-evpn", "hostname":
+    "edge01", "mountPoint": "/run/user/1000", "totalSize": "74M", "usedSize": "0",
+    "usedPercent": 0, "device": "tmpfs", "timestamp": 1616644821714}, {"namespace":
+    "dual-evpn", "hostname": "edge01", "mountPoint": "/boot", "totalSize": "464M",
+    "usedSize": "111M", "usedPercent": 26, "device": "/dev/sda1", "timestamp": 1616644821714},
     {"namespace": "dual-evpn", "hostname": "edge01", "mountPoint": "/sys/fs/cgroup",
     "totalSize": "370M", "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp":
     1616644821714}, {"namespace": "dual-evpn", "hostname": "edge01", "mountPoint":
@@ -1005,23 +1003,26 @@ tests:
     "usedPercent": 8, "device": "/dev/sda3", "timestamp": 1616644821714}, {"namespace":
     "dual-evpn", "hostname": "edge01", "mountPoint": "/run", "totalSize": "74M", "usedSize":
     "4.9M", "usedPercent": 7, "device": "tmpfs", "timestamp": 1616644821714}, {"namespace":
-    "ospf-ibgp", "hostname": "edge01", "mountPoint": "/run", "totalSize": "74M", "usedSize":
-    "4.8M", "usedPercent": 7, "device": "tmpfs", "timestamp": 1616681581180}, {"namespace":
-    "ospf-ibgp", "hostname": "edge01", "mountPoint": "/", "totalSize": "124G", "usedSize":
-    "2.1G", "usedPercent": 2, "device": "/dev/vda3", "timestamp": 1616681581180},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "mountPoint": "/run/lock", "totalSize":
-    "5.0M", "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp": 1616681581180},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "mountPoint": "/sys/fs/cgroup",
-    "totalSize": "370M", "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp":
+    "dual-evpn", "hostname": "edge01", "mountPoint": "/dev", "totalSize": "349M",
+    "usedSize": "0", "usedPercent": 0, "device": "udev", "timestamp": 1616644821714},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "mountPoint": "/run", "totalSize":
+    "74M", "usedSize": "4.8M", "usedPercent": 7, "device": "tmpfs", "timestamp": 1616681581180},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "mountPoint": "/run/user/1000",
+    "totalSize": "74M", "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp":
     1616681581180}, {"namespace": "ospf-ibgp", "hostname": "edge01", "mountPoint":
     "/boot", "totalSize": "464M", "usedSize": "110M", "usedPercent": 26, "device":
     "/dev/vda1", "timestamp": 1616681581180}, {"namespace": "ospf-ibgp", "hostname":
-    "edge01", "mountPoint": "/run/user/1000", "totalSize": "74M", "usedSize": "0",
+    "edge01", "mountPoint": "/sys/fs/cgroup", "totalSize": "370M", "usedSize": "0",
     "usedPercent": 0, "device": "tmpfs", "timestamp": 1616681581180}, {"namespace":
-    "ospf-ibgp", "hostname": "edge01", "mountPoint": "/dev", "totalSize": "349M",
-    "usedSize": "0", "usedPercent": 0, "device": "udev", "timestamp": 1616681581180},
+    "ospf-ibgp", "hostname": "edge01", "mountPoint": "/run/lock", "totalSize": "5.0M",
+    "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp": 1616681581180},
     {"namespace": "ospf-ibgp", "hostname": "edge01", "mountPoint": "/dev/shm", "totalSize":
-    "370M", "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp": 1616681581180}]'
+    "370M", "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp": 1616681581180},
+    {"namespace": "ospf-ibgp", "hostname": "edge01", "mountPoint": "/", "totalSize":
+    "124G", "usedSize": "2.1G", "usedPercent": 2, "device": "/dev/vda3", "timestamp":
+    1616681581180}, {"namespace": "ospf-ibgp", "hostname": "edge01", "mountPoint":
+    "/dev", "totalSize": "349M", "usedSize": "0", "usedPercent": 0, "device": "udev",
+    "timestamp": 1616681581180}]'
 - command: fs show --namespace="dual-evpn" --mountPoint="/dev" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: fs show

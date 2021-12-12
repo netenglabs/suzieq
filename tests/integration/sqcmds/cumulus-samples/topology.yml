@@ -3,270 +3,157 @@ tests:
 - command: topology show --namespace='ospf-ibgp' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: topology show cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp1", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet",
-    "ifname": "swp1", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "internet", "ifname": "swp1", "peerHostname": "exit01",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet",
-    "ifname": "swp2", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "internet", "ifname": "swp2", "peerHostname": "exit02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet",
-    "ifname": "swp2", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "internet", "ifname": "eth0", "peerHostname": "192.168.123.1",
-    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "swp4", "peerHostname": "leaf02", "vrf": "default", "arpnd": false,
-    "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp3", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "ifname": "peerlink.4094", "peerHostname": "leaf02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2",
-    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true,
-    "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true,
-    "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink", "peerHostname":
-    "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "ifname": "peerlink", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
-    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink",
-    "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+  output: '[{"namespace": "ospf-ibgp", "hostname": "server103", "ifname": "bond0",
+    "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true,
     "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf01", "ifname": "bridge", "peerHostname": "leaf02", "vrf": "evpn-vrf",
+    "hostname": "server103", "ifname": "bond0", "peerHostname": "leaf03", "vrf": "default",
     "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan13",
-    "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf01", "ifname": "bond01", "peerHostname": "server101", "vrf":
-    "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf":
-    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
-    "vlan4001", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
     true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan4001", "peerHostname": "exit02",
-    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "vlan4001", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true,
+    "ospf-ibgp", "hostname": "server103", "ifname": "bond0", "peerHostname": "leaf04",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103",
+    "ifname": "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true,
     "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan4001", "peerHostname":
-    "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "ifname": "bridge", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
-    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "bond02", "peerHostname":
-    "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "ifname": "vlan24", "peerHostname": "server104", "vrf": "evpn-vrf",
+    {"namespace": "ospf-ibgp", "hostname": "server103", "ifname": "bond0", "peerHostname":
+    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "server103", "ifname": "bond0", "peerHostname": "server101", "vrf": "default",
     "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "eth0",
-    "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "ifname": "swp5", "peerHostname": "exit02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": true, "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp5", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "peerHostname": "leaf01",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "peerHostname": "leaf03",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "peerHostname": "leaf04",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "peerHostname": "leaf04",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit01",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "ifname": "eth0", "peerHostname": "192.168.123.1",
-    "vrf": "mgmt", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02",
-    "ifname": "swp6", "peerHostname": "internet", "vrf": "internet-vrf", "arpnd":
-    true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp6", "peerHostname":
-    "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "ifname": "swp6", "peerHostname": "internet", "vrf": "internet-vrf",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5", "peerHostname":
-    "edge01", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "ifname": "swp5.2", "peerHostname": "edge01", "vrf": "default", "arpnd":
-    true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false,
-    "lldp": true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd":
-    true, "arpndBidir": true, "bgp": false, "lldp": true, "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02",
-    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true,
-    "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02",
-    "ifname": "swp5.3", "peerHostname": "edge01", "vrf": "evpn-vrf", "arpnd": true,
-    "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5.4", "peerHostname":
-    "edge01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "server101", "ifname": "bond0", "peerHostname": "leaf02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101",
+    "ifname": "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "bond0", "peerHostname":
+    "server103", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false,
     "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "ifname": "vlan4001", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    "server101", "ifname": "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd":
     true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vlan4001",
-    "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "bond0",
+    "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true,
     "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "exit02", "ifname": "vlan4001", "peerHostname": "leaf03", "vrf": "evpn-vrf",
+    "hostname": "server101", "ifname": "bond0", "peerHostname": "leaf03", "vrf": "default",
     "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vlan4001",
-    "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "exit02", "ifname": "eth0", "peerHostname": "192.168.123.1", "vrf":
-    "mgmt", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf":
-    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
-    "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "peerHostname": "leaf03",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp4", "peerHostname": "leaf04",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp4", "peerHostname": "leaf04",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp5", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp5", "peerHostname": "exit02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp5", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "peerHostname": "exit01",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "peerHostname": "exit01",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "peerHostname": "leaf01",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true,
-    "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp4", "peerHostname":
-    "leaf04", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "ifname": "swp3", "peerHostname": "leaf04", "vrf": "default", "arpnd":
-    false, "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink",
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "server101", "ifname": "eth0", "peerHostname": "192.168.123.1",
+    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104",
+    "ifname": "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "server104", "ifname": "bond0", "peerHostname":
+    "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "server104", "ifname": "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname": "bond0",
     "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true,
     "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf03", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "hostname": "server104", "ifname": "bond0", "peerHostname": "leaf04", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "server104", "ifname": "bond0", "peerHostname": "server102",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104",
+    "ifname": "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd":
+    true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth1", "peerHostname":
+    "exit01", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "ifname": "eth1.3", "peerHostname": "exit01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth1.4", "peerHostname":
+    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "ifname": "eth1.2", "peerHostname": "exit01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth2", "peerHostname":
+    "exit02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "ifname": "eth2.3", "peerHostname": "exit02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth2.2", "peerHostname":
+    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "edge01", "ifname": "eth2.4", "peerHostname": "exit02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth0", "peerHostname":
+    "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp":
+    false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "server102", "ifname": "bond0", "peerHostname": "leaf02", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "server102", "ifname": "bond0", "peerHostname": "leaf03",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102",
+    "ifname": "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "server102", "ifname": "bond0", "peerHostname":
+    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "server102", "ifname": "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname": "bond0",
+    "peerHostname": "server104", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "server102", "ifname": "eth0", "peerHostname": "192.168.123.1", "vrf":
+    "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "ifname": "swp1", "peerHostname": "spine01",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
     "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true,
     "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "peerHostname":
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "peerHostname":
     "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
     "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true,
     "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "peerHostname":
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "peerHostname":
     "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
-    "ifname": "peerlink", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true,
-    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink", "peerHostname":
-    "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "ifname": "peerlink", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
-    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "eth0", "peerHostname":
-    "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "ifname": "vlan4001", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd":
-    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan4001",
+    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "ifname": "swp5", "peerHostname": "edge01", "vrf": "default", "arpnd": false,
+    "arpndBidir": false, "bgp": true, "lldp": true, "ospf": false, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp5.2", "peerHostname":
+    "edge01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "swp6", "peerHostname": "internet", "vrf": "internet-vrf",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp6", "peerHostname":
+    "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "bgp": true,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "ifname": "swp6", "peerHostname": "internet", "vrf": "internet-vrf",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "vlan4001",
+    "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "ifname": "vlan4001", "peerHostname": "leaf04", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "vlan4001",
     "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
     "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf03", "ifname": "vlan4001", "peerHostname": "leaf01", "vrf": "evpn-vrf",
+    "hostname": "exit01", "ifname": "vlan4001", "peerHostname": "leaf01", "vrf": "evpn-vrf",
     "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan4001",
-    "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf03", "ifname": "bond02", "peerHostname": "server104", "vrf":
-    "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf":
-    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
-    "vlan24", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
-    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan13", "peerHostname": "server101",
-    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
-    "ifname": "bond01", "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true,
-    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp5.4",
+    "peerHostname": "edge01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "ifname": "swp5.3", "peerHostname": "edge01",
+    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "ifname": "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true,
+    "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled": true},
     {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp3", "peerHostname":
     "leaf01", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false,
     "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
@@ -378,218 +265,275 @@ tests:
     false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
     "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir":
     false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "edge01", "ifname": "eth1", "peerHostname": "exit01",
-    "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true, "lldp": true,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "edge01",
-    "ifname": "eth1.3", "peerHostname": "exit01", "vrf": "default", "arpnd": true,
-    "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth1.4", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "edge01", "ifname": "eth1.2", "peerHostname": "exit01", "vrf": "default", "arpnd":
-    true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth2", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "edge01", "ifname": "eth2.3", "peerHostname": "exit02", "vrf": "default", "arpnd":
-    true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth2.2", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "edge01", "ifname": "eth2.4", "peerHostname": "exit02", "vrf": "default", "arpnd":
-    true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth0", "peerHostname":
-    "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp":
-    false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "exit01", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
-    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true,
-    "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
-    "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true,
-    "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
-    "ifname": "swp5", "peerHostname": "edge01", "vrf": "default", "arpnd": false,
-    "arpndBidir": false, "bgp": true, "lldp": true, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp5.2", "peerHostname":
-    "edge01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "ifname": "swp6", "peerHostname": "internet", "vrf": "internet-vrf",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp6", "peerHostname":
-    "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "ifname": "swp6", "peerHostname": "internet", "vrf": "internet-vrf",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "vlan4001",
-    "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "exit01", "ifname": "vlan4001", "peerHostname": "leaf04", "vrf": "evpn-vrf",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "vlan4001",
-    "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "exit01", "ifname": "vlan4001", "peerHostname": "leaf01", "vrf": "evpn-vrf",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp5.4",
-    "peerHostname": "edge01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "exit01", "ifname": "swp5.3", "peerHostname": "edge01",
-    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
-    "ifname": "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true,
-    "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "server102", "ifname": "bond0", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "server102", "ifname": "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd":
-    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname": "bond0",
-    "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "server102", "ifname": "bond0", "peerHostname": "leaf04", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
-    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "server102", "ifname": "bond0", "peerHostname": "leaf01",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102",
-    "ifname": "bond0", "peerHostname": "server104", "vrf": "default", "arpnd": true,
-    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "server102", "ifname": "eth0", "peerHostname":
-    "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp":
-    false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "server104", "ifname": "bond0", "peerHostname": "leaf02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
-    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "server104", "ifname": "bond0", "peerHostname": "leaf03",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104",
-    "ifname": "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true,
-    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "server104", "ifname": "bond0", "peerHostname":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp4", "peerHostname": "leaf04",
+    "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false, "lldp": true,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "swp3", "peerHostname": "leaf04", "vrf": "default", "arpnd": false,
+    "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink", "peerHostname":
     "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
     false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "server104", "ifname": "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd":
-    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname": "bond0",
-    "peerHostname": "server102", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "server104", "ifname": "eth0", "peerHostname": "192.168.123.1", "vrf":
-    "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf":
-    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "server101", "ifname": "bond0", "peerHostname": "leaf02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101",
-    "ifname": "bond0", "peerHostname": "server103", "vrf": "default", "arpnd": true,
+    "leaf03", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "peerlink", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true,
     "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "bond0", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "server101", "ifname": "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd":
+    {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink", "peerHostname":
+    "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "peerlink", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
     true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "bond0",
-    "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "server101", "ifname": "bond0", "peerHostname": "leaf04", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "server103", "ifname": "bond0", "peerHostname": "leaf02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103",
-    "ifname": "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true,
-    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "server103", "ifname": "bond0", "peerHostname":
-    "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "server103", "ifname": "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "eth0", "peerHostname":
+    "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "vlan4001", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd":
     true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname": "bond0",
-    "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan4001",
+    "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
     "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "server103", "ifname": "bond0", "peerHostname": "leaf01", "vrf": "default",
+    "hostname": "leaf03", "ifname": "vlan4001", "peerHostname": "leaf01", "vrf": "evpn-vrf",
     "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
-    "bond0", "peerHostname": "server101", "vrf": "default", "arpnd": true, "arpndBidir":
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan4001",
+    "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ifname": "bond02", "peerHostname": "server104", "vrf":
+    "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "vlan24", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
     true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "server103", "ifname": "eth0", "peerHostname": "192.168.123.1",
-    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}]'
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan13", "peerHostname": "server101",
+    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "bond01", "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "peerHostname":
+    "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "peerHostname": "leaf03",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp4", "peerHostname": "leaf04",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp5", "peerHostname": "exit02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp5", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp5", "peerHostname": "exit02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "peerHostname": "exit01",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "peerHostname": "leaf01",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "peerHostname": "leaf01",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "ifname": "eth0", "peerHostname": "192.168.123.1",
+    "vrf": "mgmt", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "ifname": "swp6", "peerHostname": "internet", "vrf": "internet-vrf", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp6", "peerHostname":
+    "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "bgp": true,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "swp6", "peerHostname": "internet", "vrf": "internet-vrf",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5", "peerHostname":
+    "edge01", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "swp5.2", "peerHostname": "edge01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false,
+    "lldp": true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "bgp": false, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "ifname": "swp5.3", "peerHostname": "edge01", "vrf": "evpn-vrf", "arpnd": true,
+    "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5.4", "peerHostname":
+    "edge01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "bgp": true,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "vlan4001", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vlan4001",
+    "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "ifname": "vlan4001", "peerHostname": "leaf03", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vlan4001",
+    "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "ifname": "eth0", "peerHostname": "192.168.123.1", "vrf":
+    "mgmt", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp5", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": false, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp5", "peerHostname": "exit02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "peerHostname": "leaf01",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "peerHostname": "leaf03",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "peerHostname": "leaf04",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "peerHostname": "leaf04",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit01",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "ifname": "eth0", "peerHostname": "192.168.123.1",
+    "vrf": "mgmt", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "swp4", "peerHostname": "leaf02", "vrf": "default", "arpnd": false,
+    "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp3", "peerHostname":
+    "leaf02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false,
+    "lldp": true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "peerlink.4094", "peerHostname": "leaf02", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2",
+    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "bgp": true, "lldp": true, "ospf": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink", "peerHostname":
+    "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "peerlink", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink",
+    "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "ifname": "bridge", "peerHostname": "leaf02", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan13",
+    "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "ifname": "bond01", "peerHostname": "server101", "vrf":
+    "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "vlan4001", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan4001", "peerHostname": "exit02",
+    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "vlan4001", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true,
+    "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan4001", "peerHostname":
+    "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "bridge", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "bond02", "peerHostname":
+    "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
+    "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "ifname": "vlan24", "peerHostname": "server104", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "eth0",
+    "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "internet", "ifname": "swp1", "peerHostname": "exit01", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true, "ospf": false, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp1", "peerHostname":
+    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
+    true, "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet",
+    "ifname": "swp1", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "internet", "ifname": "swp2", "peerHostname": "exit02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet",
+    "ifname": "swp2", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "internet", "ifname": "swp2", "peerHostname": "exit02",
+    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": true,
+    "ospf": false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet",
+    "ifname": "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd":
+    true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled":
+    true}]'
 - command: topology show --via=lldp --namespace='ospf-ibgp' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: topology show cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp1", "peerHostname":
-    "exit01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "internet", "ifname": "swp2", "peerHostname": "exit02", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "swp4", "peerHostname": "leaf02", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp3", "peerHostname":
-    "leaf02", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp5", "peerHostname":
-    "exit02", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "peerHostname":
-    "leaf03", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "ifname": "swp6", "peerHostname": "exit01", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp6", "peerHostname":
-    "internet", "vrf": "internet-vrf", "lldp": true, "polled": true}, {"namespace":
-    "ospf-ibgp", "hostname": "exit02", "ifname": "swp5", "peerHostname": "edge01",
-    "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "lldp":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
-    "swp1", "peerHostname": "spine01", "vrf": "default", "lldp": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "peerHostname":
-    "leaf03", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "spine01", "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp5", "peerHostname": "exit02", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "peerHostname":
-    "exit01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "spine01", "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp4", "peerHostname":
-    "leaf04", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf03", "ifname": "swp3", "peerHostname": "leaf04", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
-    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf02", "ifname": "swp3", "peerHostname": "leaf01", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
-    "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf02", "ifname": "swp4", "peerHostname": "leaf01", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
-    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp3", "peerHostname":
-    "leaf03", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf04", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
-    "ifname": "swp4", "peerHostname": "leaf03", "vrf": "peerlink", "lldp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth1", "peerHostname":
+  output: '[{"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth1", "peerHostname":
     "exit01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
     "hostname": "edge01", "ifname": "eth2", "peerHostname": "exit02", "vrf": "default",
     "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
@@ -599,7 +543,64 @@ tests:
     "hostname": "exit01", "ifname": "swp5", "peerHostname": "edge01", "vrf": "default",
     "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
     "ifname": "swp6", "peerHostname": "internet", "vrf": "internet-vrf", "lldp": true,
-    "polled": true}]'
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp3",
+    "peerHostname": "leaf01", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf02", "ifname": "swp2", "peerHostname": "spine02",
+    "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "lldp":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "swp4", "peerHostname": "leaf01", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf04", "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
+    "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp4", "peerHostname":
+    "leaf03", "vrf": "peerlink", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "swp3", "peerHostname": "leaf04", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp4", "peerHostname":
+    "leaf04", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "ifname": "swp5", "peerHostname": "exit02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "ifname": "swp6", "peerHostname": "exit01", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "peerHostname":
+    "leaf01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "ifname": "swp6", "peerHostname": "internet", "vrf": "internet-vrf", "lldp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5",
+    "peerHostname": "edge01", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "ifname": "swp2", "peerHostname": "spine02",
+    "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "lldp":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp5", "peerHostname": "exit02", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "peerHostname":
+    "leaf01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "peerHostname":
+    "leaf04", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit01", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "swp4", "peerHostname": "leaf02", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp3", "peerHostname":
+    "leaf02", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp1", "peerHostname":
+    "exit01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "internet", "ifname": "swp2", "peerHostname": "exit02", "vrf": "default",
+    "lldp": true, "polled": true}]'
 - command: topology show --via='lldp bgp' --namespace='ospf-ibgp' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: topology show cumulus
@@ -607,46 +608,7 @@ tests:
 - command: topology show --via=lldp --via=bgp --namespace='ospf-ibgp' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: topology show cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "internet", "peerHostname": "exit02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "internet", "peerHostname": "exit01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname": "exit01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname": "leaf02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "peerHostname": "leaf03", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname": "leaf04",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "peerHostname": "internet", "vrf": "internet-vrf", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname": "spine01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "peerHostname": "edge01", "vrf": "evpn-vrf", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname": "edge01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "peerHostname": "edge01", "vrf": "internet-vrf", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "exit01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf03",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "peerHostname": "leaf04", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "peerHostname": "exit01",
+  output: '[{"namespace": "ospf-ibgp", "hostname": "edge01", "peerHostname": "exit01",
     "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
     "edge01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled": true},
     {"namespace": "ospf-ibgp", "hostname": "exit01", "peerHostname": "internet", "vrf":
@@ -658,50 +620,50 @@ tests:
     {"namespace": "ospf-ibgp", "hostname": "exit01", "peerHostname": "spine02", "vrf":
     "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
     "exit01", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}]'
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "exit01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf03",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "peerHostname": "leaf04", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname": "internet",
+    "vrf": "internet-vrf", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "peerHostname": "spine01", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname":
+    "edge01", "vrf": "evpn-vrf", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "peerHostname": "edge01", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname":
+    "edge01", "vrf": "internet-vrf", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "peerHostname": "exit01", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname":
+    "leaf01", "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "peerHostname": "leaf02", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname":
+    "leaf03", "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "peerHostname": "leaf04", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "peerHostname":
+    "spine02", "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "peerHostname": "spine01", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet", "peerHostname":
+    "exit02", "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "internet", "peerHostname": "exit01", "vrf": "default", "bgp": true,
+    "polled": true}]'
 - command: topology show --via=bgp --namespace='ospf-ibgp' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: topology show cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "internet", "peerHostname": "exit02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "internet", "peerHostname": "exit01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname": "exit01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname": "leaf02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "peerHostname": "leaf03", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname": "leaf04",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "peerHostname": "internet", "vrf": "internet-vrf", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname": "spine01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "peerHostname": "edge01", "vrf": "evpn-vrf", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname": "edge01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "peerHostname": "edge01", "vrf": "internet-vrf", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "exit01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf03",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "peerHostname": "leaf04", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "peerHostname": "exit01",
+  output: '[{"namespace": "ospf-ibgp", "hostname": "edge01", "peerHostname": "exit01",
     "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
     "edge01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled": true},
     {"namespace": "ospf-ibgp", "hostname": "exit01", "peerHostname": "internet", "vrf":
@@ -713,336 +675,143 @@ tests:
     {"namespace": "ospf-ibgp", "hostname": "exit01", "peerHostname": "spine02", "vrf":
     "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
     "exit01", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}]'
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "peerHostname": "spine02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "exit01",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf03",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "peerHostname": "leaf04", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf02",
+    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname": "internet",
+    "vrf": "internet-vrf", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "peerHostname": "spine01", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname":
+    "edge01", "vrf": "evpn-vrf", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "peerHostname": "edge01", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname":
+    "edge01", "vrf": "internet-vrf", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "peerHostname": "exit01", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname":
+    "leaf01", "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "peerHostname": "leaf02", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname":
+    "leaf03", "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "peerHostname": "leaf04", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "peerHostname":
+    "spine02", "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "peerHostname": "spine01", "vrf": "default", "bgp": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet", "peerHostname":
+    "exit02", "vrf": "default", "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "internet", "peerHostname": "exit01", "vrf": "default", "bgp": true,
+    "polled": true}]'
 - command: topology show --via=ospf --namespace='ospf-ibgp' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: topology show cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "peerHostname":
+  output: '[{"namespace": "ospf-ibgp", "hostname": "exit01", "ifname": "swp2", "peerHostname":
     "spine02", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf01", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default",
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "hostname": "exit01", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default",
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
+    "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "ospf": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf04", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
+    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "ospf": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf03", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default",
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
     "ifname": "swp5", "peerHostname": "exit02", "vrf": "default", "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "peerHostname":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp4", "peerHostname":
     "leaf04", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default",
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "hostname": "spine01", "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default",
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
     "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default", "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "peerHostname":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "peerHostname":
     "leaf01", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit01", "vrf": "default",
+    "hostname": "spine01", "ifname": "swp6", "peerHostname": "exit01", "vrf": "default",
     "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02",
     "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "ospf": true, "polled":
     true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1", "peerHostname":
     "spine01", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "spine01", "ifname": "swp5", "peerHostname": "exit02", "vrf": "default",
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "hostname": "spine02", "ifname": "swp5", "peerHostname": "exit02", "vrf": "default",
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
     "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default", "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "peerHostname":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "peerHostname":
     "leaf03", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default",
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "hostname": "spine02", "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default",
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02",
     "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default", "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "peerHostname":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp6", "peerHostname":
     "exit01", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf03", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
-    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "leaf02", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default",
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
-    "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "ospf": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "ospf-ibgp",
-    "hostname": "exit01", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
-    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
+    "ospf": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
     "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "ospf": true, "polled":
     true}]'
 - command: topology show --via=arpnd --namespace='ospf-ibgp' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: topology show cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "eth0", "peerHostname":
-    "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp1", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp1", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp1", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp2", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp2", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "internet", "ifname": "swp2", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink.4094", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink", "peerHostname":
-    "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink", "peerHostname":
-    "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "peerlink", "peerHostname":
-    "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan13", "peerHostname":
-    "server103", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "bond01", "peerHostname":
-    "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan4001", "peerHostname":
-    "exit01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan4001", "peerHostname":
-    "exit02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan4001", "peerHostname":
-    "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan4001", "peerHostname":
-    "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "bridge", "peerHostname":
-    "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "bridge", "peerHostname":
-    "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "bond02", "peerHostname":
-    "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "vlan24", "peerHostname":
-    "server104", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "eth0", "peerHostname":
-    "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "peerHostname":
-    "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "peerHostname":
-    "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp3", "peerHostname":
-    "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp6", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp6", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp6", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp2", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "eth0", "peerHostname":
-    "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "peerHostname":
-    "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "peerHostname":
-    "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp4", "peerHostname":
-    "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp5", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname": "swp5", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5.3", "peerHostname":
-    "edge01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5.4", "peerHostname":
-    "edge01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp5.2", "peerHostname":
-    "edge01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vlan4001", "peerHostname":
-    "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vlan4001", "peerHostname":
-    "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vlan4001", "peerHostname":
-    "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "vlan4001", "peerHostname":
-    "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp6", "peerHostname":
-    "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp6", "peerHostname":
-    "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp6", "peerHostname":
-    "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp1", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "swp2", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname": "eth0", "peerHostname":
-    "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp2", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp5", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp5", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp5", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp6", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "peerHostname":
-    "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "peerHostname":
-    "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp3", "peerHostname":
-    "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp4", "peerHostname":
-    "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp4", "peerHostname":
-    "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "swp4", "peerHostname":
-    "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname": "eth0", "peerHostname":
-    "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false, "polled":
-    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink",
-    "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink",
-    "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink",
-    "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "peerlink",
-    "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1",
-    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1",
-    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp1",
-    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "eth0",
-    "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan4001",
-    "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan4001",
-    "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan4001",
-    "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan4001",
-    "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "bond02",
-    "peerHostname": "server104", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan24",
-    "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "vlan13",
-    "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "bond01",
-    "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2",
-    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2",
-    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp2",
-    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "peerlink",
-    "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "peerlink",
-    "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "peerlink",
-    "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "peerlink",
-    "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "bond01",
-    "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan13",
-    "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan4001",
-    "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan4001",
-    "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan4001",
-    "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan4001",
-    "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
-    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
-    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp1",
-    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp2",
-    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp2",
-    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "swp2",
-    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "vlan24",
-    "peerHostname": "server104", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "bond02",
-    "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname": "eth0",
-    "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bond01",
-    "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "peerlink",
-    "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "peerlink",
-    "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "peerlink",
-    "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan13",
-    "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1",
-    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1",
-    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1",
-    "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2",
-    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2",
-    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "swp2",
-    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bridge",
-    "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bridge",
-    "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan4001",
-    "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan4001",
-    "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan4001",
-    "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan4001",
-    "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "vlan24",
-    "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bond02",
-    "peerHostname": "server104", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "eth0",
-    "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "peerlink.4094",
-    "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth0",
-    "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
+  output: '[{"namespace": "ospf-ibgp", "hostname": "server103", "ifname": "bond0",
+    "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
+    "bond0", "peerHostname": "server101", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "server103", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "bond0", "peerHostname": "server102", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
     false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname":
     "eth2.3", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
     true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname":
@@ -1055,7 +824,23 @@ tests:
     "eth1.4", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
     true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname":
     "eth1.2", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "server104", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname":
     "swp6", "peerHostname": "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
     true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname":
     "swp6", "peerHostname": "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
@@ -1089,71 +874,287 @@ tests:
     "swp5.2", "peerHostname": "edge01", "vrf": "default", "arpnd": true, "arpndBidir":
     true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit01", "ifname":
     "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
-    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
-    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
-    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
-    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
-    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
-    "bond0", "peerHostname": "server104", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
-    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server102", "ifname":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "peerlink", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "peerlink", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "peerlink", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "peerlink", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "bond01", "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "vlan13", "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "vlan4001", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "vlan4001", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "vlan4001", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "vlan4001", "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "vlan24", "peerHostname": "server104", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "bond02", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "bond01", "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "peerlink", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "peerlink", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "peerlink", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "vlan13", "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "bridge", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "bridge", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "vlan4001", "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "vlan4001", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "vlan4001", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "vlan4001", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "vlan24", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "bond02", "peerHostname": "server104", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname":
+    "peerlink.4094", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "peerlink", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "peerlink", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "peerlink", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "peerlink", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "vlan4001", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "vlan4001", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "vlan4001", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "vlan4001", "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "bond02", "peerHostname": "server104", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "vlan24", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "vlan13", "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "bond01", "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp5", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp5", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp5", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp5.3", "peerHostname": "edge01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp5.4", "peerHostname": "edge01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp5.2", "peerHostname": "edge01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "vlan4001", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "vlan4001", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "vlan4001", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "vlan4001", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp6", "peerHostname": "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp6", "peerHostname": "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp6", "peerHostname": "internet", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "exit02", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp6", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp5", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "ifname":
+    "swp5", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "peerlink.4094", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "peerlink", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "peerlink", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "peerlink", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "vlan13", "peerHostname": "server103", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "bond01", "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "vlan4001", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "vlan4001", "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "vlan4001", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "vlan4001", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "bridge", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "bridge", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "bond02", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "vlan24", "peerHostname": "server104", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "eth0", "peerHostname": "192.168.123.1", "vrf": "mgmt", "arpnd": true, "arpndBidir":
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname":
     "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
-    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
-    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
-    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
-    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
-    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
-    "bond0", "peerHostname": "server102", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
-    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server104", "ifname":
-    "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "bond0", "peerHostname": "server103", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server101", "ifname":
-    "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
-    "bond0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
-    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
-    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
-    "bond0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
-    "bond0", "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
-    "bond0", "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
-    "bond0", "peerHostname": "server101", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "ifname":
-    "eth0", "peerHostname": "192.168.123.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}]'
+    false, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname":
+    "swp1", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname":
+    "swp1", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname":
+    "swp1", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname":
+    "swp2", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname":
+    "swp2", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "internet", "ifname":
+    "swp2", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}]'
 - command: topology show --hostname=leaf01 --namespace='ospf-ibgp' --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: topology show cumulus
@@ -1301,8 +1302,8 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   marks: topology summarize cumulus
   output: '[{"ospf-ibgp": ["192.168.123.1"]}, {"ospf-ibgp": "..."}, {"ospf-ibgp":
-    true}, {"ospf-ibgp": 1}, {"ospf-ibgp": 64}, {"ospf-ibgp": 15}, {"ospf-ibgp": ["leaf01",
-    "leaf04"]}, {"ospf-ibgp": ["spine01"]}, {"ospf-ibgp": "..."}, {"ospf-ibgp": true},
+    true}, {"ospf-ibgp": 1}, {"ospf-ibgp": 64}, {"ospf-ibgp": 15}, {"ospf-ibgp": ["leaf04",
+    "leaf01"]}, {"ospf-ibgp": ["spine01"]}, {"ospf-ibgp": "..."}, {"ospf-ibgp": true},
     {"ospf-ibgp": 1}, {"ospf-ibgp": 15}, {"ospf-ibgp": 10}, {"ospf-ibgp": []}, {"ospf-ibgp":
     ["spine02", "spine01"]}, {"ospf-ibgp": "..."}, {"ospf-ibgp": true}, {"ospf-ibgp":
     1}, {"ospf-ibgp": 18}, {"ospf-ibgp": 10}, {"ospf-ibgp": []}, {"ospf-ibgp": ["spine02",

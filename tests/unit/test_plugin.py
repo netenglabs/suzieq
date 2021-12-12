@@ -5,7 +5,7 @@ from suzieq.sqobjects.vlan import VlanObj
 from suzieq.sqobjects import get_tables, get_sqobject
 from suzieq.engines import get_sqengine
 from suzieq.db import get_sqdb_engine
-from suzieq.exceptions import DBNotFoundError
+from suzieq.shared.exceptions import DBNotFoundError
 
 
 @pytest.mark.plugin

@@ -2157,22 +2157,22 @@ tests:
     2, "ifRoutesCnt": 0, "hostRoutesCnt": 56, "totalV4RoutesinNs": 128, "totalV6RoutesinNs":
     0, "routingProtocolCnt": {"ospf": 84, "": 22, "kernel": 22}, "nexthopCnt": {"1":
     76, "2": 50, "6": 2}, "routesPerHostStat": [2, 13, 13.0], "routesperVrfStat":
-    [18, 110, 64], "deviceWithNoDefRoute": true}, "dual-evpn": {"deviceCnt": 14, "uniquePrefixCnt":
-    27, "uniqueVrfsCnt": 4, "ifRoutesCnt": 20, "hostRoutesCnt": 161, "totalV4RoutesinNs":
-    257, "totalV6RoutesinNs": 0, "routingProtocolCnt": 4, "nexthopCnt": {"1": 156,
-    "2": 100, "3": 1}, "routesPerHostStat": [4, 51, 17.0], "routesperVrfStat": [16,
-    175, 33], "deviceWithNoDefRoute": true}, "ospf-ibgp": {"deviceCnt": 14, "uniquePrefixCnt":
-    31, "uniqueVrfsCnt": 4, "ifRoutesCnt": 20, "hostRoutesCnt": 161, "totalV4RoutesinNs":
-    245, "totalV6RoutesinNs": 0, "routingProtocolCnt": 5, "nexthopCnt": {"1": 156,
-    "2": 87, "6": 2}, "routesPerHostStat": [4, 42, 18.0], "routesperVrfStat": [16,
-    145, 42], "deviceWithNoDefRoute": true}}'
+    [18, 110, 64.0], "deviceWithNoDefRoute": true}, "dual-evpn": {"deviceCnt": 14,
+    "uniquePrefixCnt": 27, "uniqueVrfsCnt": 4, "ifRoutesCnt": 20, "hostRoutesCnt":
+    161, "totalV4RoutesinNs": 257, "totalV6RoutesinNs": 0, "routingProtocolCnt": 4,
+    "nexthopCnt": {"1": 156, "2": 100, "3": 1}, "routesPerHostStat": [4, 51, 17.0],
+    "routesperVrfStat": [16, 175, 33.0], "deviceWithNoDefRoute": true}, "ospf-ibgp":
+    {"deviceCnt": 14, "uniquePrefixCnt": 31, "uniqueVrfsCnt": 4, "ifRoutesCnt": 20,
+    "hostRoutesCnt": 161, "totalV4RoutesinNs": 245, "totalV6RoutesinNs": 0, "routingProtocolCnt":
+    5, "nexthopCnt": {"1": 156, "2": 87, "6": 2}, "routesPerHostStat": [4, 42, 18.0],
+    "routesperVrfStat": [16, 145, 42.0], "deviceWithNoDefRoute": true}}'
 - command: route summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: route summarize
   output: '{"dual-evpn": {"deviceCnt": 14, "uniquePrefixCnt": 27, "uniqueVrfsCnt":
     4, "ifRoutesCnt": 20, "hostRoutesCnt": 161, "totalV4RoutesinNs": 257, "totalV6RoutesinNs":
     0, "routingProtocolCnt": 4, "nexthopCnt": {"1": 156, "2": 100, "3": 1}, "routesPerHostStat":
-    [4, 51, 17.0], "routesperVrfStat": [16, 175, 33], "deviceWithNoDefRoute": true}}'
+    [4, 51, 17.0], "routesperVrfStat": [16, 175, 33.0], "deviceWithNoDefRoute": true}}'
 - command: route unique --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: route unique
@@ -7545,7 +7545,7 @@ tests:
   output: '{"dual-bgp": {"deviceCnt": 14, "uniquePrefixCnt": 35, "uniqueVrfsCnt":
     3, "ifRoutesCnt": 16, "hostRoutesCnt": 119, "totalV4RoutesinNs": 228, "totalV6RoutesinNs":
     40, "routingProtocolCnt": 4, "nexthopCnt": {"1": 153, "2": 113, "3": 2}, "routesPerHostStat":
-    [6, 35, 22.0], "routesperVrfStat": [16, 218, 34], "deviceWithNoDefRoute": true}}'
+    [6, 35, 22.0], "routesperVrfStat": [16, 218, 34.0], "deviceWithNoDefRoute": true}}'
 - command: route lpm --address 2001:db8::11 --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out/
   marks: route lpm
