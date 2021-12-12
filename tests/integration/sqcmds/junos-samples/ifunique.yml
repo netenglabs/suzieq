@@ -59,8 +59,9 @@ tests:
 - command: interface unique --count=True --format=json --columns=speed
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos
-  output: '[{"speed": 800, "numRows": 7}, {"speed": 1000, "numRows": 75}, {"speed":
-    0, "numRows": 110}, {"speed": 10000, "numRows": 168}]'
+  output: '[{"speed": 800, "numRows": 7}, {"speed": -1, "numRows": 11}, {"speed":
+    1000, "numRows": 86}, {"speed": 0, "numRows": 88}, {"speed": 10000, "numRows":
+    168}]'
 - command: interface unique --count=True --format=json --columns=master
   data-directory: tests/data/junos/parquet-out/
   marks: interface unique junos

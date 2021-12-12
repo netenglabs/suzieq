@@ -49,8 +49,6 @@ class DeviceCmd(SqCommand):
                                 **kwargs,
                                 )
 
-        df = self.sqobj.humanize_fields(df)
-
         return df
 
     @command("show", help="Show device information")

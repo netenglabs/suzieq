@@ -28,9 +28,10 @@ def test_schema_data_consistency(table, datadir, columns, get_table_data_cols):
     # We have to get rid of false assertions. A bunch of data sets don't
     # have valid values for one or more tables.
     skip_table_data = {'bgp': ['mixed'],
-                       'ospf': ['vmx'],
-                       'evpnVni': ['vmx', 'mixed'],
+                       'ospf': ['vmx', 'basic_dual_bgp'],
+                       'evpnVni': ['vmx', 'mixed', 'basic_dual_bgp'],
                        'mlag': ['vmx', 'junos', 'mixed'],
+                       'devconfig': ['basic_dual_bgp'],
                        }
     if df.empty:
         if table in skip_table_data:

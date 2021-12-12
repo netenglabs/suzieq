@@ -107,6 +107,7 @@ NOT_SUMMARIZE = ['all/top', 'all/unique', 'all/show',
                  'route/lpm', 'all/assert', 'network/find']
 NOT_UNIQUE = ['all/top', 'all/summarize', 'all/show',
               'route/lpm', 'all/assert', 'network/find']
+NOT_SUMMARIZE_OR_DESCRIBE = ['all/describe'] + NOT_SUMMARIZE
 GOOD_FILTERS_FOR_SERVICE_VERB = {
     '': ['all'],  # this is for all non-filtered requests
     'address=10.0.0.11': ['route/lpm'],
@@ -121,7 +122,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'namespace=ospf-ibgp': NOT_UNIQUE,
     'namespace=ospf-ibgp&columns=namespace': ['all/unique'],
     'view=latest': ['all'],
-    'columns=namespace': NOT_SUMMARIZE,
+    'columns=namespace': NOT_SUMMARIZE_OR_DESCRIBE,
     'hostname=leaf01': NOT_UNIQUE,
     'hostname=leaf01&columns=hostname': ['all/unique'],
     'dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp':

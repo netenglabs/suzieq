@@ -56,8 +56,7 @@ def _verify_coalescing(datadir):
     assert(len(coalesced_files))
 
 
-def _coalescer_init(pq_dir: str) -> Union(TemporaryDirectory |
-                                          NamedTemporaryFile):
+def _coalescer_init(pq_dir: str):
     """Basic Coalescer test
 
     :param pq_dir: the input parquet dir to be copied, this is the root of the

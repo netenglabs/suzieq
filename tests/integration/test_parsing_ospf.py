@@ -58,6 +58,10 @@ def _validate_common_ospf_data(df: pd.DataFrame):
 def test_ospf_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for OSPF'''
 
+    if 'basic_dual_bgp' in datadir:
+        # No OSPF in this datadir
+        return
+
     df = get_table_data
 
     ns_dict = {

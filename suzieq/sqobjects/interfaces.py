@@ -29,4 +29,4 @@ class IfObj(SqObject):
                 df.statusChangeTimestamp,
                 self.cfg.get('analyzer', {}).get('timezone', None))
 
-        return df
+        return super().humanize_fields(df)

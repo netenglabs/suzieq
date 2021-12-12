@@ -5,13 +5,13 @@ tests:
   marks: network show eos
   output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1634522087571}]'
+    1639161231163}]'
 - command: network show --format=json --os=eos
   data-directory: tests/data/eos/parquet-out
   marks: network show  eos
   output: '[{"namespace": "eos", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1634522087560}]'
+    1639161231158}]'
 - command: network show --columns='namespace' --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network show eos
@@ -25,7 +25,7 @@ tests:
   marks: network show eos
   output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1634522087571, "active": true}]'
+    1639161231163, "active": true}]'
 - command: network find --address="172.16.1.101" --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network find eos

@@ -592,6 +592,10 @@ def humanize_timestamp(field: pd.Series, tz=None) -> pd.Series:
     if field.empty:
         return field
 
+    if pd.core.dtypes.common.is_datetime_or_timedelta_dtype(field):
+        return field
+    if pd.core.dtypes.common.is_datetime64_any_dtype(field):
+        return field
     tz = tz or get_localzone().zone
     return field.apply(lambda x: datetime.utcfromtimestamp((int(x)/1000))) \
                 .dt.tz_localize('UTC').dt.tz_convert(tz)

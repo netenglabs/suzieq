@@ -21,8 +21,10 @@ def _validate_ethernet_if(df: pd.DataFrame):
     # We don't collect speed for Linux servers, vEOS doesn't provide speed
     # A bunch of internal Junos interface names including SVIs show up as
     # ethernet interfaces
-    assert (df.query('(not (os.isin(["linux", "sonic"]) or namespace=="eos")) '
-                     'and (state == "up") and ifname != "em1"')
+    assert (df.query('(not (os.isin(["linux", "sonic"]) or '
+                     'namespace == "eos" or '
+                     'hostname.isin(["leaf6-eos", "leaf5-eos"]))) and '
+                     '(state == "up") and ifname != "em1"')
             .speed != MISSING_SPEED).all()
 
 

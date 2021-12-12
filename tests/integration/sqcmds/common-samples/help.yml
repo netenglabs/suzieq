@@ -175,15 +175,15 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help command
-  output: "bgp summarize: \e[36mSummarize bgp info\e[0m\n\e[33m\nArguments:\e[0m\n\
-    \ - columns: \e[36mSpace separated list of columns, * for all\e[0m\n - end_time:\
-    \ \e[36mEnd of time window, try natural language spec \e[0m\n - engine: \e[36mWhich\
-    \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n -\
-    \ namespace: \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36m('Trailing blank terminated pandas query format to further filter the\
-    \ output',)\e[0m\n - start_time: \e[36mStart of time window, try natural language\
-    \ spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
+  output: "bgp summarize: \e[36mSummarize relevant information about the table\e[0m\n\
+    \e[33m\nArguments:\e[0m\n - columns: \e[36mSpace separated list of columns, *\
+    \ for all\e[0m\n - end_time: \e[36mEnd of time window, try natural language spec\
+    \ \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format: \e[36mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36mSpace separated list of hostnames\
+    \ to qualify\e[0m\n - namespace: \e[36mSpace separated list of namespaces to qualify\e\
+    [0m\n - query_str: \e[36m('Trailing blank terminated pandas query format to further\
+    \ filter the output',)\e[0m\n - start_time: \e[36mStart of time window, try natural\
+    \ language spec\e[0m\n - view: \e[36mView all records or just the latest\e[0m\n"
 - command: bgp help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -950,9 +950,9 @@ tests:
     \ - assert: \e[36mTest OSPF runtime state is without errors\e[0m\n - describe:\
     \ \e[36mDisplay the schema of the table\e[0m\n - help: \e[36mShow help for a command\e\
     [0m\n - show: \e[36mShow OSPF interface and neighbor info\e[0m\n - summarize:\
-    \ \e[36mSummarize OSPF data\e[0m\n - top: \e[36mReturn the top n values for a\
-    \ field in a table\e[0m\n - unique: \e[36mGet unique values (and counts) associated\
-    \ with requested field\e[0m\n"
+    \ \e[36mSummarize relevant information about the table\e[0m\n - top: \e[36mReturn\
+    \ the top n values for a field in a table\e[0m\n - unique: \e[36mGet unique values\
+    \ (and counts) associated with requested field\e[0m\n"
 - command: ospf help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1001,19 +1001,16 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: ospf help command
-  output: "ospf summarize: \e[36mSummarize OSPF data\e[0m\n\e[33m\nArguments:\e[0m\n\
-    \ - columns: \e[36mSpace separated list of columns, * for all\e[0m\n - end_time:\
-    \ \e[36mEnd of time window, try natural language spec \e[0m\n - engine: \e[36mWhich\
-    \ analytical engine to use\e[0m\n - format: \e[36mSelect the pformat of the output\e\
-    [0m\n - groupby: \e[36mSpace separated list of fields to summarize on\e[0m\n -\
-    \ hostname: \e[36mSpace separated list of hostnames to qualify\e[0m\n - ifname:\
-    \ \e[36mSpace separated list of interface names to qualify\e[0m\n - namespace:\
-    \ \e[36mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing\
-    \ blank terminated pandas query format to further filter the output',)\e[0m\n\
-    \ - start_time: \e[36mStart of time window, try natural language spec\e[0m\n -\
-    \ state: \e[36mOSPF neighbor state to qualify\e[0m\n - type: \e[36mType of OSPF\
-    \ information to show\e[0m\n - view: \e[36mView all records or just the latest\e\
-    [0m\n - vrf: \e[36mSpace separated list of VRFs to qualify\e[0m\n"
+  output: "ospf summarize: \e[36mSummarize relevant information about the table\e\
+    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36mSpace separated list of columns,\
+    \ * for all\e[0m\n - end_time: \e[36mEnd of time window, try natural language\
+    \ spec \e[0m\n - engine: \e[36mWhich analytical engine to use\e[0m\n - format:\
+    \ \e[36mSelect the pformat of the output\e[0m\n - hostname: \e[36mSpace separated\
+    \ list of hostnames to qualify\e[0m\n - namespace: \e[36mSpace separated list\
+    \ of namespaces to qualify\e[0m\n - query_str: \e[36m('Trailing blank terminated\
+    \ pandas query format to further filter the output',)\e[0m\n - start_time: \e\
+    [36mStart of time window, try natural language spec\e[0m\n - view: \e[36mView\
+    \ all records or just the latest\e[0m\n"
 - command: ospf help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text

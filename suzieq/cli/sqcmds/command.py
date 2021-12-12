@@ -280,6 +280,8 @@ class SqCommand(SqPlugin):
         else:
             self._do_help(self.sqobj.table, command)
 
+        return 0
+
     def _do_help(self, table: str, verb: str = 'show'):
         """Show help for a command
 
@@ -382,13 +384,14 @@ class SqCommand(SqPlugin):
             print(df[cols].to_markdown())
         elif (self.format == 'devconfig' and
               self.sqobj.table == "devconfig" and
-              'error' not in df.columns):
+              ('config' in df.columns)):
             for row in df.itertuples():
                 self._pager_print(row.config)
         else:
             with pd.option_context('precision', 3,
                                    'display.max_colwidth', max_colwidth,
                                    'display.max_rows', 256):
+                df = self.sqobj.humanize_fields(df)
                 if df.empty:
                     print(df)
                 elif sort:
