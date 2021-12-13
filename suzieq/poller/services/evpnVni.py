@@ -25,8 +25,9 @@ class EvpnVniService(Service):
                 if data['data'].startswith('%'):
                     data['data'] = '{}'
                     return data['data']
+        return data['data']
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
         new_entries = []
 
         if not processed_data:
@@ -71,7 +72,7 @@ class EvpnVniService(Service):
         processed_data = new_entries
         return processed_data
 
-    def _clean_cumulus_data(self, processed_data, raw_data):
+    def _clean_cumulus_data(self, processed_data, _):
         """Clean out null entries among other cleanup"""
 
         del_indices = []
@@ -94,7 +95,7 @@ class EvpnVniService(Service):
 
         return processed_data
 
-    def _clean_nxos_data(self, processed_data, raw_data):
+    def _clean_nxos_data(self, processed_data, _):
         """Merge peer records with VNI records to yield VNI-based records"""
 
         vni_dict = {}
@@ -106,10 +107,10 @@ class EvpnVniService(Service):
                 continue
 
             if entry['_entryType'] == 'VNI':
-                type, vrf = entry['type'].split()
-                if type == 'L3':
+                etype, vrf = entry['type'].split()
+                if etype == 'L3':
                     entry['vrf'] = vrf[1:-1]  # strip off '[' and ']'
-                entry['type'] = type
+                entry['type'] = etype
                 if 'sviState' in entry:
                     entry['state'] = entry['sviState'].split()[0].lower()
                 if re.search(r'[0-9.]+', entry.get('replicationType', '')):
@@ -141,15 +142,15 @@ class EvpnVniService(Service):
                 if entry.get('encapType', '') != "VXLAN":
                     continue
 
-                for vni in vni_dict:
-                    if vni_dict[vni]['ifname'] != entry['ifname']:
+                for vni, val in vni_dict.items():
+                    if val['ifname'] != entry['ifname']:
                         continue
-                    vni_dict[vni]['priVtepIp'] = entry.get('priVtepIp', '')
+                    val['priVtepIp'] = entry.get('priVtepIp', '')
                     secIP = entry.get('secVtepIp', '')
                     if secIP == '0.0.0.0':
                         secIP = ''
-                    vni_dict[vni]['secVtepIp'] = secIP
-                    vni_dict[vni]['routerMac'] = \
+                    val['secVtepIp'] = secIP
+                    val['routerMac'] = \
                         convert_macaddr_format_to_colon(
                         entry.get('routerMac', '00:00:00:00:00:00'))
 
@@ -159,7 +160,7 @@ class EvpnVniService(Service):
 
         return processed_data
 
-    def _clean_junos_data(self, processed_data, raw_data):
+    def _clean_junos_data(self, processed_data, _):
 
         newntries = {}
 
@@ -217,8 +218,8 @@ class EvpnVniService(Service):
                     'os': 'junos'
                 }
                 # Add the primary VTEP IP into the L2 entries as well
-                for l2vni in newntries:
-                    newntries[l2vni]['priVtepIp'] = priVtepIp
+                for _, val in newntries.items():
+                    val['priVtepIp'] = priVtepIp
 
                 newntries[vni] = vni_entry
                 continue

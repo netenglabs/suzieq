@@ -1,12 +1,16 @@
 import re
-import numpy as np
-from dateparser import parse
 from datetime import datetime
 from copy import deepcopy
+
+from dateparser import parse
 
 from suzieq.poller.services.service import Service
 from suzieq.shared.utils import get_timestamp_from_cisco_time
 from suzieq.shared.utils import get_timestamp_from_junos_time
+
+import numpy as np
+
+# pylint: disable=too-many-statements
 
 
 class BgpService(Service):
@@ -192,7 +196,7 @@ class BgpService(Service):
             pfxbest_list = dict(
                 zip(entry['_pfxType'], entry['_pfxBestRxList']))
 
-            for orig_elem in table_afi_map:
+            for orig_elem, val in table_afi_map.items():
                 # Junos names its VRFs thus: VRFA.inet.0
                 # and we want to strip off the .inet.0 part (Bug #404)
                 new_entry = deepcopy(entry)
@@ -204,7 +208,7 @@ class BgpService(Service):
                 new_entry['pfxTx'] = 0
                 new_entry['pfxBestRx'] = 0
                 new_entry['pfxSuppressRx'] = 0
-                for table in table_afi_map[orig_elem]:
+                for table in val:
                     vrf = table
                     if vrf == "inet.0":
                         vrf = "default"
@@ -416,7 +420,7 @@ class BgpService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
-    def _clean_cumulus_data(self, processed_data, raw_data):
+    def _clean_cumulus_data(self, processed_data, _):
 
         new_entries = []
         drop_indices = []
@@ -506,7 +510,7 @@ class BgpService(Service):
                 # Find the matching entry in the already processed data
                 if check_peer_key in vrf_peer_dict:
                     # loop to add Router ID and ASN in all the registries
-                    for index, item in enumerate(
+                    for index, _ in enumerate(
                             vrf_peer_dict[check_peer_key]):
                         old_entry = vrf_peer_dict[check_peer_key]
                         old_entry[index]['routerId'] = entry['routerId']
@@ -518,11 +522,11 @@ class BgpService(Service):
                         ):
                             old_entry[index]['pfxRx'] = entry['statePfx']
                 continue
+
+            if check_peer_key not in vrf_peer_dict:
+                vrf_peer_dict[check_peer_key] = [entry]
             else:
-                if check_peer_key not in vrf_peer_dict:
-                    vrf_peer_dict[check_peer_key] = [entry]
-                else:
-                    vrf_peer_dict[check_peer_key].append(entry)
+                vrf_peer_dict[check_peer_key].append(entry)
 
             bfd_status = entry.get('bfdStatus', 'disabled').lower()
             if not bfd_status or (bfd_status == "unknown"):

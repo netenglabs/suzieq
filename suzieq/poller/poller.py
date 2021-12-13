@@ -136,11 +136,12 @@ class Poller:
                         tasks, return_when=asyncio.FIRST_COMPLETED)
                     tasks = list(pending)
                     running_svcs = self.service_manager.running_services
+                    # pylint: disable=protected-access
                     if tasks and any(i._coro in running_svcs
                                      for i in tasks):
                         continue
-                    else:
-                        break
+
+                    break
                 except asyncio.CancelledError:
                     break
         finally:
@@ -224,7 +225,7 @@ class Poller:
         for task in tasks:
             task.cancel()
 
-    def _validate_poller_args(self, userargs: Dict, cfg: Dict):
+    def _validate_poller_args(self, userargs: Dict, _):
         """Validate the arguments and the configuration passed to the poller.
         The function produces a SqPollerConfError exception if there is
         something wrong in the configuration.
@@ -250,17 +251,17 @@ class Poller:
                 raise SqPollerConfError(
                     'Jump host key specified without a jump host'
                 )
-            else:
-                if not os.access(userargs.jump_host_key_file, os.F_OK):
-                    raise SqPollerConfError(
-                        f'Jump host key file {userargs.jump_host_key_file}'
-                        'does not exist'
-                    )
-                if not os.access(userargs.jump_host_key_file, os.R_OK):
-                    raise SqPollerConfError(
-                        f'Jump host key file {userargs.jump_host_key_file} '
-                        'not readable'
-                    )
+
+            if not os.access(userargs.jump_host_key_file, os.F_OK):
+                raise SqPollerConfError(
+                    f'Jump host key file {userargs.jump_host_key_file}'
+                    'does not exist'
+                )
+            if not os.access(userargs.jump_host_key_file, os.R_OK):
+                raise SqPollerConfError(
+                    f'Jump host key file {userargs.jump_host_key_file} '
+                    'not readable'
+                )
 
         if userargs.ssh_config_file:
             ssh_config_file = os.path.expanduser(userargs.ssh_config_file)

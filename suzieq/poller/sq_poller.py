@@ -5,6 +5,7 @@ import asyncio
 import getpass
 import os
 import sys
+import traceback
 
 import uvloop
 
@@ -14,6 +15,7 @@ from suzieq.shared.utils import get_log_params, init_logger, load_sq_config
 
 
 async def start_poller(userargs, cfg):
+    '''Start the poller'''
     # Init logger of the poller
     logfile, loglevel, logsize, log_stdout = get_log_params(
         'poller', cfg, '/tmp/sq-poller.log')
@@ -32,7 +34,7 @@ async def start_poller(userargs, cfg):
 
 
 def poller_main() -> None:
-
+    '''The routine that kicks things off including arg parsing'''
     supported_outputs = ["parquet"]
 
     parser = argparse.ArgumentParser()
@@ -197,8 +199,7 @@ def poller_main() -> None:
         asyncio.run(start_poller(userargs, cfg))
     except (KeyboardInterrupt, RuntimeError):
         pass
-    except Exception:
-        import traceback
+    except Exception:  # pylint: disable=broad-except
         traceback.print_exc()
 
     sys.exit(0)

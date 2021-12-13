@@ -3,6 +3,8 @@ import ast
 import logging
 import operator as op
 
+# pylint: disable=too-many-nested-blocks, too-many-statements
+
 
 def _stepdown_rest(entry) -> list:
     '''move the elements one level down into the existing JSON hierarchy.
@@ -24,6 +26,7 @@ def _stepdown_rest(entry) -> list:
 
 
 def parse_subtree(subflds, tmpval, maybe_list, defval):
+    '''Parse a nested subtree'''
 
     value = []
     useval = False
@@ -55,7 +58,7 @@ def parse_subtree(subflds, tmpval, maybe_list, defval):
                         value.append(subele)
                     useval = True
             break
-        elif subfld.startswith('['):
+        if subfld.startswith('['):
             # handle specific array index or dict key
             # This additional handling of * is because of JUNOS
             # interface address which is many levels deep and mixes
@@ -64,7 +67,7 @@ def parse_subtree(subflds, tmpval, maybe_list, defval):
             if subfld.endswith('?'):
                 # This was added thanks to NXOS which provides
                 # nexthops as a list if ECMP, else a dictionary
-                if type(tmpval) != list:
+                if not isinstance(tmpval, list):
                     continue
                 subfld = subfld[:-1]  # lose the final "?" char
             if subfld == '[*]':
@@ -78,7 +81,7 @@ def parse_subtree(subflds, tmpval, maybe_list, defval):
                             value.append(newval)
                 useval = True
                 break
-            elif tmpval:
+            if tmpval:
                 tmpval = tmpval[eval_expr(subfld)]
         elif isinstance(tmpval, dict):
             tmpval = tmpval.get(subfld, None)
@@ -156,7 +159,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
 
         if ":" not in xstr:
             if not result:
-                if xstr != '*' and xstr != '*?':
+                if xstr not in ['*', '*?']:
                     if not data or not data.get(xstr, None):
                         # Some outputs contain just the main key with a null
                         # body such as ospfNbr from EOS: {'vrfs': {}}.
@@ -173,7 +176,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                     else:
                         result = [{"rest": data}]
             else:
-                if xstr != "*" and xstr != '*?':
+                if xstr not in ["*", '*?']:
                     # Handle xstr being a specific array index or dict key
                     if xstr.startswith('['):
                         if len(result[0]['rest']):
@@ -310,11 +313,11 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                             intres = [{rval: x.get(lval[1], ''), "rest": x}
                                       for x in ele["rest"]]
 
-                for oldkey in ele.keys():
+                for oldkey, val in ele.items():
                     if oldkey == "rest":
                         continue
                     for newele in intres:
-                        newele.update({oldkey: ele[oldkey]})
+                        newele.update({oldkey: val})
                 tmpres += intres
             result = tmpres
         else:
@@ -349,8 +352,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
     # vrfName. If at this point, you have nn element in result with rest
     # that is not a list or a dict, remove it
 
-    result = list(filter(lambda x: isinstance(x["rest"], list) or
-                         isinstance(x["rest"], dict),
+    result = list(filter(lambda x: isinstance(x["rest"], (dict, list)),
                          result))
 
     # At this point, we're expecting result to contain a list where each
@@ -363,8 +365,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
         entry = result[0]
         elekeys = entry.keys() - set(['rest'])
         for elem in entry['rest']:
-            newentry = {}
-            [newentry.update({x: entry[x]}) for x in elekeys]
+            newentry = {x: entry[x] for x in elekeys}
             newentry['rest'] = elem
             tmpres.append(newentry)
         result = tmpres
@@ -391,7 +392,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
 
         # Process default value processing of the form <key>?|<def_val> or
         # <key>?<expected_val>|<def_val>
-        op = None
+        op = None  # pylint: disable=redefined-outer-name
         if "?" in rval:
             rval, op = rval.split("?")
             exp_val, def_val = op.split("|")
@@ -426,10 +427,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
 
             loopdef_val = def_val
             if per_entry_defval and def_val is not None:
-                if def_val in x:
-                    loopdef_val = x[def_val]
-                else:
-                    loopdef_val = ''  # this shouldn't happen
+                loopdef_val = x.get(def_val, '')
 
             if "/" in lval:
                 subflds = lval.split("/")
@@ -493,6 +491,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
 
 
 def cleanup_and_return(result):
+    '''What it says: cleanup the result and return it'''
     for entry in result:
         # To handle entries like EOS' ospfNbr, we had saved the multiple keys
         # extracted from the initial part of the JSON string and saved it in
@@ -512,6 +511,7 @@ def eval_expr(expr):
 
 
 def num_eval(node):
+    '''Numerical eval'''
     # supported arithmetic operators
     operators = {ast.Add: op.add, ast.Sub: op.sub, ast.Mult: op.mul,
                  ast.Div: op.truediv, ast.Pow: op.pow}

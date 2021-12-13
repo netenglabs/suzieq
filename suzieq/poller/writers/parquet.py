@@ -36,7 +36,7 @@ class ParquetOutputWorker(OutputWorker):
             raise SqPollerConfError(
                 "Output directory {} is not a directory".format(output_dir))
 
-        logger.info("Parquet outputs will be under {}".format(output_dir))
+        logger.info("Parquet outputs will be under %s", output_dir)
         self.root_output_dir = output_dir
 
     def write_data(self, data: Dict):

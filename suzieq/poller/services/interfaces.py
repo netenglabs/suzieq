@@ -1,14 +1,17 @@
+import re
 from datetime import datetime
 from collections import defaultdict
-from dateparser import parse
-import re
 
+from dateparser import parse
 import numpy as np
+
 from suzieq.poller.services.service import Service
 from suzieq.shared.utils import get_timestamp_from_junos_time
 from suzieq.shared.utils import convert_macaddr_format_to_colon
 from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
+
+# pylint: disable=too-many-statements
 
 class InterfaceService(Service):
     """Service class for interfaces. Cleanup of data is specific"""
@@ -37,12 +40,9 @@ class InterfaceService(Service):
         '''
         Return the correct value for an interface without a valid speed
         '''
-        try:
-            if entry['type'] not in MISSING_SPEED_IF_TYPES:
-                return NO_SPEED
-            return MISSING_SPEED
-        except KeyError:
-            breakpoint()
+        if entry['type'] not in MISSING_SPEED_IF_TYPES:
+            return NO_SPEED
+        return MISSING_SPEED
 
     def _speed_field_check(self, entry, missing_speed_indicator):
         """
@@ -64,13 +64,14 @@ class InterfaceService(Service):
         """Return speed value or a missing value for textfsm retrieved data"""
         return self._speed_field_check(entry, '')
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
         """Clean up EOS interfaces output"""
 
         entry_dict = defaultdict(dict)
         drop_indices = []
         vlan_entries = {}       # Needed to fix the anycast MAC entries
 
+        # pylint: disable=too-many-nested-blocks
         for i, entry in enumerate(processed_data):
 
             if entry['type'] == 'vrf':
@@ -88,8 +89,8 @@ class InterfaceService(Service):
                 continue
 
             if entry['type'] == 'varp':
-                for elem in vlan_entries:
-                    ventry = vlan_entries[elem]
+                for elem, val in vlan_entries.items():
+                    ventry = val
                     amac = ventry.get('_anycastMac', '')
                     if amac:
                         ventry['interfaceMac'] = ventry['macaddr']
@@ -202,7 +203,7 @@ class InterfaceService(Service):
 
         return processed_data
 
-    def _clean_cumulus_data(self, processed_data, raw_data):
+    def _clean_cumulus_data(self, processed_data, _):
         """We have to merge the appropriate outputs of two separate commands"""
 
         new_data_dict = {}
@@ -473,10 +474,8 @@ class InterfaceService(Service):
                              'adminState': 'up',
                              'description': entry['description'],
                              'state': 'up',
-                             'adminState': 'up',
                              'statusChangeTimestamp':
                              entry['statusChangeTimestamp'],
-                             'speed': speed,
                              }
 
                 new_entry['speed'] = fix_junos_speed(new_entry)
@@ -630,7 +629,7 @@ class InterfaceService(Service):
             else:
                 entry['adminState'] = 'up'
             portmode = entry.get('_portmode', '')
-            if portmode == 'access' or portmode == 'trunk':
+            if portmode in ['access', 'trunk']:
                 entry['master'] = 'bridge'
 
             portchan = entry.get('_portchannel', 0)
@@ -719,7 +718,7 @@ class InterfaceService(Service):
 
         return processed_data
 
-    def _clean_linux_data(self, processed_data, raw_data):
+    def _clean_linux_data(self, processed_data, _):
         """Pluck admin state from flags"""
         for entry in processed_data:
             if entry['type'] == 'ether':
@@ -858,7 +857,7 @@ class InterfaceService(Service):
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_cumulus_data(processed_data, raw_data)
 
-    def _common_data_cleaner(self, processed_data, raw_data):
+    def _common_data_cleaner(self, processed_data, _):
         for entry in processed_data:
             entry['state'] = entry['state'].lower()
 

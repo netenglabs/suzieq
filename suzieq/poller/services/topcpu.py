@@ -2,8 +2,9 @@ from suzieq.poller.services.service import Service
 
 
 class TopCpuService(Service):
+    '''TopCpu service class'''
 
-    def _common_data_cleaner(self, processed_data, raw_data):
+    def _common_data_cleaner(self, processed_data, _):
 
         for entry in processed_data:
             for i in ["virtualMem", "residentMem", "cacheMem", "usedMem",

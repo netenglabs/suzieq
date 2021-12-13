@@ -1,13 +1,14 @@
-import numpy as np
+from ipaddress import ip_address, IPv4Interface
 
 from suzieq.poller.services.service import Service
-from ipaddress import ip_address, IPv4Interface
+
+import numpy as np
 
 
 class OspfIfService(Service):
     """OSPF Interface service. Output needs to be munged"""
 
-    def _clean_linux_data(self, processed_data, raw_data):
+    def _clean_linux_data(self, processed_data, _):
         for entry in processed_data:
             entry["vrf"] = "default"
             entry["networkType"] = entry["networkType"].lower()
@@ -24,7 +25,7 @@ class OspfIfService(Service):
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
 
         vrf_loip = {}
         vrf_rtrid = {}
@@ -64,7 +65,7 @@ class OspfIfService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
-    def _clean_junos_data(self, processed_data, raw_data):
+    def _clean_junos_data(self, processed_data, _):
 
         drop_indices = []
 
@@ -95,7 +96,7 @@ class OspfIfService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data[1:]
 
-    def _clean_nxos_data(self, processed_data, raw_data):
+    def _clean_nxos_data(self, processed_data, _):
         areas = {}              # Need to come back to fixup entries
         drop_indices = []
 
@@ -133,7 +134,7 @@ class OspfIfService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
-    def _clean_ios_data(self, processed_data, raw_data):
+    def _clean_ios_data(self, processed_data, _):
 
         drop_indices = []
 

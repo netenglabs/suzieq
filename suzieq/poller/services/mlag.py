@@ -6,7 +6,7 @@ class MlagService(Service):
     """MLAG service. Different class because output needs to be munged"""
 
     def clean_json_input(self, data):
-        """FRR JSON data needs some work"""
+        """NXOS JSON data needs some work"""
 
         devtype = data.get("devtype", None)
         if devtype in ["nxos"]:
@@ -19,7 +19,9 @@ class MlagService(Service):
                                     '"ROW_orphan_ports": [\n]\n}\n}\n\n')
                 return data['data']
 
-    def _clean_cumulus_data(self, processed_data, raw_data):
+        return data['data']
+
+    def _clean_cumulus_data(self, processed_data, _):
         """Populate the different portlists and counts"""
 
         mlagDualPortsCnt = 0
@@ -58,7 +60,7 @@ class MlagService(Service):
 
         return processed_data
 
-    def _clean_nxos_data(self, processed_data, raw_data):
+    def _clean_nxos_data(self, processed_data, _):
         """NXOS VPC data massaging"""
 
         mlagDualPorts = []
@@ -105,7 +107,7 @@ class MlagService(Service):
 
         return processed_data
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
         '''EOS MLAG data massaging'''
 
         for entry in processed_data:

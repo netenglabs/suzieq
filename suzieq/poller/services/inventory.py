@@ -6,10 +6,10 @@ from suzieq.poller.services.service import Service
 class InventoryService(Service):
     """Inventory service"""
 
-    def _clean_data_common(self, processed_data, raw_data):
+    def _clean_data_common(self, processed_data, _):
         return processed_data
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
         new_data = []
         for entry in processed_data:
             # Because of the JSON structure of the data, we could not
@@ -95,7 +95,7 @@ class InventoryService(Service):
     def _clean_iosxr_data(self, processed_data, raw_data):
         pass
 
-    def _clean_nxos_data(self, processed_data, raw_data):
+    def _clean_nxos_data(self, processed_data, _):
 
         for entry in processed_data:
             name = entry.get('name', '')
@@ -122,10 +122,12 @@ class InventoryService(Service):
 
         return processed_data
 
-    def _clean_junos_data(self, processed_data, raw_data):
+    # pylint: disable=too-many-statements
+    def _clean_junos_data(self, processed_data, _):
         new_data = []
         drop_indices = []
 
+        # pylint: disable=too-many-nested-blocks
         for i, entry in enumerate(processed_data):
             if not entry['name']:
                 drop_indices.append(i)

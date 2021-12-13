@@ -120,10 +120,6 @@ class SqNativeInventory(Inventory):
                          f'host {entry["address"]}')
             return False
 
-        if entry['devtype'] == "panos" and not entry['apiKey']:
-            logger.error(f'Missing apiKey for panos host {entry["address"]}')
-            return False
-
         if re.match(r'^[0-9a-f:.]', entry['address']):
             try:
                 ip_address(entry['address'])

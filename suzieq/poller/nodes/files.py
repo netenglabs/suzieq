@@ -4,15 +4,18 @@ import asyncio
 import re
 import json
 import logging
-import aiofiles
 from pathlib import Path
 from http import HTTPStatus
-from suzieq.poller.services.service import RsltToken
 from datetime import datetime, timezone
+import aiofiles
+
+from suzieq.poller.services.service import RsltToken
 
 
-class FileNode(object):
+class FileNode:
+    '''Class using run-once=gather snapshot output as mock device input'''
 
+    # pylint: disable=attribute-defined-outside-init
     async def _init(self, datadir: str):
 
         self.logger = logging.getLogger(__name__)
@@ -108,11 +111,14 @@ class FileNode(object):
 
     def post_commands(self, service_callback, svc_defn: dict,
                       cb_token: RsltToken):
+        '''Post command outputs back to service that requested them'''
+
         if cb_token:
             cb_token.nodeQsize = self._service_queue.qsize()
         self._service_queue.put_nowait([service_callback, svc_defn, cb_token])
 
     async def run(self):
+        '''Main workhorse routine, serving data from files based on command'''
 
         while True:
             if self.sigend:
@@ -126,6 +132,8 @@ class FileNode(object):
                     return
 
     def _create_result(self, cmd, status, data) -> dict:
+        '''Create result object to be posted back to service object'''
+
         result = {
             "status": status,
             "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
@@ -140,7 +148,8 @@ class FileNode(object):
         return result
 
     async def exec_service(self, service_callback, svc_defn: dict,
-                           cb_token: RsltToken):
+                           cb_token: RsltToken) -> bool:
+        '''This looks up the command, returns the output if available'''
 
         def _add_cmd_to_cmdset(cmd: str, cmdset: set) -> None:
             """Add a command to the set of commands to be executed"""
@@ -170,7 +179,7 @@ class FileNode(object):
         nodata = True
         for cmd in cmdset:
             data_entry = self.data.get(cmd, {'entry': []})
-            for i in range(len(data_entry['entry'])):
+            for _ in range(len(data_entry['entry'])):
                 retdata = data_entry['entry'].pop()
                 await service_callback(retdata, cb_token)
                 nodata = False
