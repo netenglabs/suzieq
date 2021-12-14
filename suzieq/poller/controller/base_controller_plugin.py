@@ -10,8 +10,8 @@ class ControllerPlugin(SqPlugin):
     """
 
     @classmethod
-    def generate(cls, plugin_conf: dict) -> List[Dict]:
-        """Generate the list of plugins starting from the configuration
+    def init_plugins(cls, plugin_conf: dict) -> List[Dict]:
+        """Initialize the list of plugins starting from the configuration
 
         Args:
             plugin_conf (dict): plugin configuration

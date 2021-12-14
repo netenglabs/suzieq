@@ -3,7 +3,7 @@
 from abc import abstractmethod
 from copy import copy
 from threading import Semaphore
-from typing import Dict, Type, List
+from typing import Dict, List
 from os.path import isfile
 import yaml
 from suzieq.poller.controller.credential_loader.base_credential_loader \
@@ -130,22 +130,6 @@ class Source(ControllerPlugin):
             self._inv_is_set_sem.release()
         self._inv_semaphore.release()
 
-    def _get_loader_class(self, ltype: str) -> Type:
-        """Returns the credential loader class from the type
-
-        Args:
-            ltype ([str]): credential loader type
-
-        Returns:
-            Type: credential loader class
-        """
-        cred_loader_pkg = "suzieq.poller.controller.credential_loader"
-        l_classes = CredentialLoader.get_plugins(search_pkg=cred_loader_pkg)
-
-        if l_classes:
-            return l_classes.get(ltype, None)
-        return None
-
     def _is_invalid_inventory(self, inventory: List[Dict]) -> List[str]:
         """Validate the inventory
 
@@ -185,7 +169,7 @@ class Source(ControllerPlugin):
         return []
 
     @classmethod
-    def generate(cls, plugin_conf: dict) -> List[Dict]:
+    def init_plugins(cls, plugin_conf: dict) -> List[Dict]:
         """This method is overrided because sources is different from other
         plugins.
         From the fields 'path', this function is going to load more than
@@ -207,8 +191,9 @@ class Source(ControllerPlugin):
         src_plugins = []
         plugin_classes = cls.get_plugins()
         if not plugin_conf.get("path"):
-            raise InventorySourceError("No file provided for source")
-        src_confs = _load_plugins_from_path(plugin_conf["path"])
+            raise InventorySourceError(
+                "Parameter 'path' is mandatory for source")
+        src_confs = _load_inventory(plugin_conf["path"])
         for src_conf in src_confs:
             ptype = src_conf.get("type") or "file"
 
@@ -220,31 +205,78 @@ class Source(ControllerPlugin):
         return src_plugins
 
 
-def _load_plugins_from_path(source_path: str) -> Type:
-    """Load the plugin from another file
-
-    Args:
-        source_path (str): file which contains plugin configuration
-
-    Raises:
-        RuntimeError: file doesn't exists
-
-    Returns:
-        [Type]: plugin configuration
-    """
-    # TODO: right now the only supported format is yaml.
-    # We need to find a way to import also json
-
+def _load_inventory(source_path: str) -> List[dict]:
     if not isfile(source_path):
         raise RuntimeError(f"File {source_path} doesn't exists")
 
-    plugins_data = []
+    inventory = {
+        "sources": {},
+        "devices": {},
+        "auths": {}
+    }
+
+    inventory_data = {}
     with open(source_path, "r") as fp:
         file_content = fp.read()
         try:
-            plugins_data = yaml.safe_load(file_content)
+            inventory_data = yaml.safe_load(file_content)
         except Exception as e:
             raise InventorySourceError('Invalid Suzieq inventory '
                                        f'file: {e}')
 
-    return plugins_data
+    for k in inventory:
+        inventory[k] = _get_inventory_config(k, inventory_data)
+
+    ns_list = inventory_data.get("namespaces")
+    if not ns_list:
+        raise InventorySourceError("'namespaces' field not provided")
+
+    if not isinstance(ns_list, list):
+        raise InventorySourceError("'namespaces' field must be a list")
+
+    sources = []
+    for ns in ns_list:
+        source = None
+        namespace = ns.get("namespace")
+        if not namespace:
+            raise InventorySourceError(
+                "All namespaces must have 'namespace' field set")
+
+        source_name = ns.get("source")
+        if not source_name:
+            raise InventorySourceError(
+                "All namespaces must have 'source' field set"
+            )
+
+        source = inventory.get("sources").get(source_name)
+
+        if ns.get("auth"):
+            source["auth"] = CredentialLoader.init_plugins(
+                inventory.get("auths").get(ns["auth"]))[0]
+        else:
+            source["auth"] = None
+
+        source["device"] = inventory.get("devices").get(ns.get("device"))
+        source["namespace"] = namespace
+        sources.append(source)
+
+    return sources
+
+
+def _get_inventory_config(inv_type: str, inventory_data: dict) -> dict:
+    inv_configs = {}
+    inv_list = inventory_data.get(inv_type)
+    if not inv_list:
+        # No configuration specified
+        return {}
+    if not isinstance(inv_list, list):
+        raise InventorySourceError(f"{inv_type} must be a list")
+
+    for inv_obj in inv_list:
+        name = inv_obj.get("name")
+        if not name:
+            raise InventorySourceError("All inventory configurations must "
+                                       f"contain a 'name': {inv_obj}")
+        inv_configs[name] = inv_obj
+
+    return inv_configs

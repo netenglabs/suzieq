@@ -143,7 +143,7 @@ class Controller:
         if not base_plugin_class:
             raise AttributeError(f"Unknown plugin type {plugin_type}")
 
-        plugins = base_plugin_class.generate(plugin_conf)
+        plugins = base_plugin_class.init_plugins(plugin_conf)
         if not self._plugin_objects.get(plugin_type, None):
             self._plugin_objects[plugin_type] = []
         self._plugin_objects[plugin_type].extend(plugins)

@@ -42,8 +42,10 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._period = 3600
         self._run_once = ""
         self._token = ""
-        self._password = ""
-        self._username = ""
+        # Contains CredentialLoader object with device credentials
+        self._auth = None
+        # Contains a dictionary with devices specifications
+        self._device = None
 
         super().__init__(config_data)
 
@@ -80,11 +82,8 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._period = input_data.get("period", 3600)
         self._run_once = input_data.get("run_once", False)
         self._token = input_data.get("token", None)
-        self._username = input_data.get("username", None)
-        self._password = input_data.get("password", None)
-        self._device_credentials = input_data.get(
-            "device_credentials", None
-        )
+        self._auth = input_data.get("auth", None)
+        self._device = input_data.get("device", None)
 
     def _validate_config(self, input_data) -> list:
         """Validates the loaded configuration
@@ -93,13 +92,12 @@ class Netbox(Source, InventoryAsyncPlugin):
             list: the list of errors
         """
         errors = []
-        if not input_data.get("token") and (not input_data.get("username")
-                                            or not input_data.get("password")):
-            errors.append("No auth methods provided")
+        if not input_data.get("token"):
+            errors.append("No netbox token provided")
         if not input_data.get("url"):
-            errors.append("No url provided")
-        if not input_data.get("device_credentials"):
-            errors.append("No device credentials provided")
+            errors.append("No netbox url provided")
+        if not input_data.get("auth"):
+            errors.append("No device auth provided")
         return errors
 
     def _init_session(self, headers: dict):
@@ -119,18 +117,6 @@ class Netbox(Source, InventoryAsyncPlugin):
             dict: token authorization header
         """
         return {"Authorization": f"Token {self._token}"}
-
-    def _update_session(self, headers: dict):
-        """Update the session. If the session was already set up, this function
-           will close it and initialize it again
-
-        Args:
-            headers ([dict]): session headers
-        """
-        if self._session:
-            self._session.close()
-            self._session = None
-        self._init_session(headers)
 
     def retrieve_rest_data(self, url: str) -> Dict:
         """Perform an HTTP GET to the <url> parameter.
@@ -165,41 +151,6 @@ class Netbox(Source, InventoryAsyncPlugin):
 
         else:
             raise RuntimeError("Unable to connect to netbox:", response.json())
-
-    # def _generate_token(self) -> str:
-    #     """Contact Netobox and ask to generate a token if only username and
-    #        password were provided in the configuration.
-
-    #     Raises:
-    #         RuntimeError: Unable to parse the token
-    #         RuntimeError: The server response has an invalid status code
-
-    #     Returns:
-    #         str: a string containing the generated token
-    #     """
-    #     headers = {
-    #         "Content-Type": "application/json",
-    #         "Accept": "application/json; indent=4",
-    #     }
-    #     url = f"{self._protocol}://{self._ip_address}:{self._port}"\
-    #         "/api/users/tokens/provision/"
-    #     data = {
-    #         "username": self._username,
-    #         "password": self._password
-    #     }
-    #     data = json.dumps(data, indent=4)
-
-    #     if not self._session:
-    #         self._init_session(headers)
-
-    #     response = self._session.post(url, data=data.encode("UTF-8"))
-    #     if int(response.status_code) == 201:
-    #         self._token = response.json().get("key", None)
-    #         if self._token is None:
-    #             raise RuntimeError("Unable to parse the new token")
-    #     else:
-    #         raise RuntimeError("Error in token generation")
-    #     self._update_session(self._token_auth_header())
 
     def _parse_inventory(self, raw_inventory: dict) -> List[Dict]:
         """parse the raw inventory collected from the server and generates
@@ -248,11 +199,11 @@ class Netbox(Source, InventoryAsyncPlugin):
                 inventory[device["name"]
                           ]["address"] = inventory[device["name"]]["ipv6"]
 
-            # dev_type cannot be retrieved
-            inventory[device["name"]]["devtype"] = None
+            inventory[device["name"]]["devtype"] = self._device.get("devtype")
 
             # only ssh supported for now
-            inventory[device["name"]]["transport"] = "ssh"
+            inventory[device["name"]]["transport"] = self._device.get(
+                "transport") or "ssh"
             inventory[device["name"]]["port"] = 22
 
             if self._namespace == "site.name"\
@@ -300,23 +251,9 @@ class Netbox(Source, InventoryAsyncPlugin):
                     f"/api/dcim/devices/?tag={self._tag}"
                 raw_inventory = self.retrieve_rest_data(url)
                 tmp_inventory = self._parse_inventory(raw_inventory)
-                if not self._device_credentials.get("skip", False):
-                    # Read device credentials
-                    cred_load_type = self._device_credentials.get("type", None)
-                    if not cred_load_type:
-                        raise RuntimeError(
-                            "No device credential type provided"
-                        )
 
-                    class_cred_loader = self._get_loader_class(cred_load_type)
-                    if not class_cred_loader:
-                        raise RuntimeError(f"Unknown credential loader \
-                        {cred_load_type}")
-
-                    # Instanciate and update the inventory
-                    # with the device credentials
-                    loader = class_cred_loader(self._device_credentials)
-                    loader.load(tmp_inventory)
+                # load credentials into the inventory
+                self._auth.load(tmp_inventory)
 
                 # Write the inventory and remove the tmp one
                 self.set_inventory(tmp_inventory)

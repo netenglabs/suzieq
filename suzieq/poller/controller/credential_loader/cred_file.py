@@ -22,16 +22,16 @@ class CredFile(CredentialLoader):
         with open(dev_cred_file, "r") as f:
             self._raw_credentials = yaml.safe_load(f.read())
 
-    def load(self, inventory: List[Dict]):
-
-        if not inventory:
-            raise RuntimeError("Empty inventory")
-
         if not isinstance(self._raw_credentials, list):
             raise RuntimeError(
                 "The credentials file must contain all device \
                 credential divided in namespaces"
             )
+
+    def load(self, inventory: List[Dict]):
+
+        if not inventory:
+            raise RuntimeError("Empty inventory")
 
         for ns_credentials in self._raw_credentials:
             namespace = ns_credentials.get("namespace", "")

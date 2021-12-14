@@ -1,0 +1,27 @@
+sources:
+- name: netbox
+  type: netbox
+  token: "af8717c89ec0ff420c19d89e6c20646ad05dd54e"
+  url: "http://127.0.0.1:8000"
+  tag: "suzieq-demo"
+- name: ansible
+  type: ansible
+  file_path: /home/luca/stardust/random/ansible_poller
+
+devices:
+- name: dev0
+  transport: ssh
+
+auths:
+- name: file0
+  type: cred_file
+  file_path: /home/luca/stardust/random/ansible-to-netbox/devices_credentials.yaml
+
+namespaces:
+- namespace: testing
+  source: netbox
+  device: dev0
+  auth: file0
+
+- namespace: ansible
+  source: ansible
