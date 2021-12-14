@@ -10,7 +10,8 @@ class AddressObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='address', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'address', 'prefix',
-                                'columns', 'ipvers', 'vrf', 'query_str']
+                                'columns', 'ipvers', 'vrf', 'query_str',
+                                'type', 'ifname']
         self._unique_def_column = ['ipAddress']
 
     def validate_get_input(self, **kwargs):

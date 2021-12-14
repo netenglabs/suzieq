@@ -46,8 +46,12 @@ class AddressCmd(SqCommand):
     @argument("ipvers",
               description="type of address, v4, v6 or l2",
               choices=["v4", "v6", "l2"])
+    @argument("type", description="interface type to filter on")
+    @argument("ifname", description="interface name to filter on")
+    # pylint: disable=redefined-builtin
     def show(self, address: str = "", prefix: str = "",
-             ipvers: str = "", vrf: str = ""):
+             ipvers: str = "", vrf: str = "", type: str = "",
+             ifname: str = ""):
         """Show address info
         """
         # Get the default display field names
@@ -63,7 +67,9 @@ class AddressCmd(SqCommand):
                                 address=address.split(),
                                 prefix=prefix.split(),
                                 ipvers=ipvers,
-                                vrf=vrf,
+                                vrf=vrf.split(),
+                                type=type.split(),
+                                ifname=ifname.split(),
                                 query_str=self.query_str,
                                 namespace=self.namespace,
                                 )
