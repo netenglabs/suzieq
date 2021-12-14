@@ -13,11 +13,9 @@ from typing import Type, List
 from time import sleep
 import threading
 import argparse
-import yaml
 from suzieq.poller.controller.inventory_async_plugin \
     import InventoryAsyncPlugin
-from suzieq.shared.exceptions import InventorySourceError
-from suzieq.shared.sq_plugin import SqPlugin
+from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 from suzieq.shared.utils import load_sq_config
 
 
@@ -46,7 +44,7 @@ class Controller:
 
         # collect basePlugin classes
         base_plugin_pkg = "suzieq.poller.controller"
-        self._base_plugin_classes = SqPlugin.get_plugins(
+        self._base_plugin_classes = ControllerPlugin.get_plugins(
             search_pkg=base_plugin_pkg)
 
     @property
@@ -98,7 +96,7 @@ class Controller:
             config_data ([dict]): a dictionary which contains provider and
                                   plugins configurations
         """
-        self._plugins_config = config_data.get("plugin_type", {})
+        self._plugins_config = config_data
 
         self._controller_config = config_data.get("controller_config", {}) \
             or {}
@@ -130,8 +128,8 @@ class Controller:
             AttributeError: Invalid configuration
             RuntimeError: Unknown plugin
         """
-        plugin_confs = self._plugins_config.get(plugin_type, {})
-        if not plugin_confs:
+        plugin_conf = self._plugins_config.get(plugin_type) or {}
+        if not plugin_conf or not plugin_conf.get("type"):
             if plugin_type not in self._DEFAULT_PLUGINS:
                 raise RuntimeError("No plugin configuration provided for "
                                    f"{plugin_type}")
@@ -139,70 +137,16 @@ class Controller:
             # Set the plugin_confs to load a the default configuration
             # of the plugin
             # Defualt plugins don't need any configuration
-            plugin_confs = [{"type": self._DEFAULT_PLUGINS[plugin_type]}]
-
-        if not isinstance(plugin_confs, list):
-            raise RuntimeError("Invalid plugin configurations for "
-                               f"{plugin_type}: must be a list")
+            plugin_conf.update({"type": self._DEFAULT_PLUGINS[plugin_type]})
 
         base_plugin_class = self._base_plugin_classes.get(plugin_type, None)
         if not base_plugin_class:
             raise AttributeError(f"Unknown plugin type {plugin_type}")
 
-        plugins_pkg = f"suzieq.poller.controller.{plugin_type}"
-        plugin_classes = base_plugin_class.get_plugins(search_pkg=plugins_pkg)
-
-        for plug_conf in plugin_confs:
-            # load configuration from another file
-            plugin_source_path = plug_conf.get("source_path")
-            if plugin_source_path:
-                plugin_confs.extend(
-                    self._load_plugins_from_path(plugin_source_path))
-                continue
-
-            ptype = plug_conf.get(
-                "type", self._DEFAULT_PLUGINS.get(plugin_type, ""))
-            if not ptype:
-                raise AttributeError(
-                    "Missing field <type> and no default option")
-            if ptype not in plugin_classes:
-                raise RuntimeError(
-                    f"Unknown plugin called {ptype} with type {plugin_type}"
-                )
-
-            plugin = plugin_classes[ptype](plug_conf)
-            if not self._plugin_objects.get(plugin_type, None):
-                self._plugin_objects[plugin_type] = []
-            self._plugin_objects[plugin_type].append(plugin)
-
-    def _load_plugins_from_path(self, source_path: str) -> Type:
-        """Load the plugin from another file
-
-        Args:
-            source_path (str): file which contains plugin configuration
-
-        Raises:
-            RuntimeError: file doesn't exists
-
-        Returns:
-            [Type]: plugin configuration
-        """
-        # TODO: right now the only supported format is yaml.
-        # We need to find a way to import also json
-
-        if not isfile(source_path):
-            raise RuntimeError(f"File {source_path} doesn't exists")
-
-        plugins_data = []
-        with open(source_path, "r") as fp:
-            file_content = fp.read()
-            try:
-                plugins_data = yaml.safe_load(file_content)
-            except Exception as e:
-                raise InventorySourceError('Invalid Suzieq inventory '
-                                           f'file: {e}')
-
-        return plugins_data
+        plugins = base_plugin_class.generate(plugin_conf)
+        if not self._plugin_objects.get(plugin_type, None):
+            self._plugin_objects[plugin_type] = []
+        self._plugin_objects[plugin_type].extend(plugins)
 
     def add_plugins_to_conf(self, plugin_type: str, plugin_data):
         """Add or override the content of plugins configuration with type <plugin_typ>
@@ -270,13 +214,13 @@ def sq_controller_main():
     config_data = load_sq_config(config_file=args.config)
 
     controller = Controller()
-    controller.load(config_data.get("controller", {}))
+    controller.load(config_data.get("poller", {}))
 
     if inventory_file:
         if not isfile(inventory_file):
             raise RuntimeError(f"Inventory file not found at {inventory_file}")
         controller.add_plugins_to_conf(
-            "source", [{"source_path": inventory_file}])
+            "source", {"path": inventory_file})
 
     # initialize inventorySources
     controller.init_plugins("source")

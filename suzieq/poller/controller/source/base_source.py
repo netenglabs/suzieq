@@ -4,6 +4,8 @@ from abc import abstractmethod
 from copy import copy
 from threading import Semaphore
 from typing import Dict, Type, List
+from os.path import isfile
+import yaml
 from suzieq.poller.controller.credential_loader.base_credential_loader \
     import CredentialLoader
 from suzieq.shared.exceptions import InventorySourceError
@@ -181,3 +183,68 @@ class Source(ControllerPlugin):
                 return list(device_keys)
 
         return []
+
+    @classmethod
+    def generate(cls, plugin_conf: dict) -> List[Dict]:
+        """This method is overrided because sources is different from other
+        plugins.
+        From the fields 'path', this function is going to load more than
+        one source.
+        The generate function for all other plugin will simply read the
+        configuration and instance an object
+
+        Args:
+            plugin_conf (dict): source plugin configuration dictionary.
+            Must contain 'path' key with the inventory file as value.
+
+        Raises:
+            InventorySourceError: No 'path' key in plugin_conf
+            RuntimeError: Unknown plugin
+
+        Returns:
+            List[Dict]: [description]
+        """
+        src_plugins = []
+        plugin_classes = cls.get_plugins()
+        if not plugin_conf.get("path"):
+            raise InventorySourceError("No file provided for source")
+        src_confs = _load_plugins_from_path(plugin_conf["path"])
+        for src_conf in src_confs:
+            ptype = src_conf.get("type") or "file"
+
+            if ptype not in plugin_classes:
+                raise RuntimeError(
+                    f"Unknown plugin called {ptype}"
+                )
+            src_plugins.append(plugin_classes[ptype](src_conf))
+        return src_plugins
+
+
+def _load_plugins_from_path(source_path: str) -> Type:
+    """Load the plugin from another file
+
+    Args:
+        source_path (str): file which contains plugin configuration
+
+    Raises:
+        RuntimeError: file doesn't exists
+
+    Returns:
+        [Type]: plugin configuration
+    """
+    # TODO: right now the only supported format is yaml.
+    # We need to find a way to import also json
+
+    if not isfile(source_path):
+        raise RuntimeError(f"File {source_path} doesn't exists")
+
+    plugins_data = []
+    with open(source_path, "r") as fp:
+        file_content = fp.read()
+        try:
+            plugins_data = yaml.safe_load(file_content)
+        except Exception as e:
+            raise InventorySourceError('Invalid Suzieq inventory '
+                                       f'file: {e}')
+
+    return plugins_data

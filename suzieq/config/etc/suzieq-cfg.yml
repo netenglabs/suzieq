@@ -30,7 +30,17 @@ poller:
   # logsize is in bytes
   # logsize: 10000000
   # log-stdout: True
-#
+  source:
+    path: "suzieq/.poller/intentory/inventory.yaml"
+  manager:
+    type: static_manager
+    # workers_count: 1
+    # inventory_path: suzieq/.poller/intentory/static_inventory
+    # inventory_file_name: static_inv
+    start_workers: False
+  chunker:
+    type: static_chunker
+    split_pol: namespace
 
 coalescer:
   # valid suffixes are h for hour, d for day and w for week
@@ -54,19 +64,3 @@ analyzer:
   # in a different timezone than the local time. The timestamp stored in
   # the database is always in UTC.
 #  timezone: America/Los_Angeles
-
-controller:
-  plugin_type:
-    source:
-      - source_path: "suzieq/sq-inventory.yml"
-    # manager:
-    #   - type: static_manager
-    #     workers_count: 1
-    #     inventory_path: suzieq/.poller/intentory/static_inventory
-    #     inventory_file_name: static_inv
-    #     start_workers: False
-    # chunker:
-    #   - type: static_chunker
-    #     split_pol: namespace
-  controller_config:
-    run_once: True

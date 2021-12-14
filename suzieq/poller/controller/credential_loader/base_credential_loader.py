@@ -5,6 +5,7 @@ from abc import abstractmethod
 from typing import Dict, List, Type
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 
+
 class CredentialLoader(ControllerPlugin):
     """Base class used to import device credentials from different
     sources
