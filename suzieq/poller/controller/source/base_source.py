@@ -206,8 +206,20 @@ class Source(ControllerPlugin):
 
 
 def _load_inventory(source_path: str) -> List[dict]:
+    """Load inventory from a file
+
+    Args:
+        source_path (str): inventory file
+
+    Raises:
+        InventorySourceError: inventory file doesn't exists
+        or invalid
+
+    Returns:
+        List[dict]: list of sources
+    """
     if not isfile(source_path):
-        raise RuntimeError(f"File {source_path} doesn't exists")
+        raise InventorySourceError(f"File {source_path} doesn't exists")
 
     inventory = {
         "sources": {},
@@ -223,60 +235,137 @@ def _load_inventory(source_path: str) -> List[dict]:
         except Exception as e:
             raise InventorySourceError('Invalid Suzieq inventory '
                                        f'file: {e}')
+    _validate_raw_inventory(inventory_data)
 
     for k in inventory:
         inventory[k] = _get_inventory_config(k, inventory_data)
 
     ns_list = inventory_data.get("namespaces")
-    if not ns_list:
-        raise InventorySourceError("'namespaces' field not provided")
-
-    if not isinstance(ns_list, list):
-        raise InventorySourceError("'namespaces' field must be a list")
 
     sources = []
     for ns in ns_list:
         source = None
         namespace = ns.get("namespace")
-        if not namespace:
-            raise InventorySourceError(
-                "All namespaces must have 'namespace' field set")
 
         source_name = ns.get("source")
-        if not source_name:
-            raise InventorySourceError(
-                "All namespaces must have 'source' field set"
-            )
 
         source = inventory.get("sources").get(source_name)
 
         if ns.get("auth"):
-            source["auth"] = CredentialLoader.init_plugins(
-                inventory.get("auths").get(ns["auth"]))[0]
+            auth = inventory.get("auths", {}).get(ns["auth"])
+            source["auth"] = CredentialLoader.init_plugins(auth)[0]
         else:
             source["auth"] = None
 
-        source["device"] = inventory.get("devices").get(ns.get("device"))
+        if ns.get("device"):
+            device = inventory.get("devices", {}).get(ns["device"])
+            source["device"] = device
+        else:
+            source["device"] = None
+
         source["namespace"] = namespace
+
         sources.append(source)
 
     return sources
 
 
-def _get_inventory_config(inv_type: str, inventory_data: dict) -> dict:
-    inv_configs = {}
-    inv_list = inventory_data.get(inv_type)
-    if not inv_list:
+def _validate_raw_inventory(inventory: dict):
+    """Validate the inventory read from file
+
+    Args:
+        inventory (dict): inventory read from file
+
+    Raises:
+        InventorySourceError: invalid inventory
+    """
+    if not inventory:
+        raise InventorySourceError('The inventory is empty')
+
+    for f in ["sources", "namespaces"]:
+        if f not in inventory:
+            raise InventorySourceError(
+                "'sources' and 'namespaces' fields must be specified")
+
+    main_fields = {
+        "sources": [],
+        "devices": [],
+        "auths": [],
+    }
+    for mf in main_fields:
+        fields = inventory.get(mf)
+        if not fields:
+            # 'devices' and 'auths' can be omitted if not needed
+            continue
+        if not isinstance(fields, list):
+            raise InventorySourceError(f"{mf} content must be a list")
+        for value in fields:
+            name = value.get("name")
+            if not name:
+                raise InventorySourceError(
+                    f"{mf} items must have a 'name'")
+            if name in main_fields[mf]:
+                raise InventorySourceError(f"{mf}.{name} is not unique")
+            main_fields[mf].append(name)
+
+            if not isinstance(value, dict):
+                raise InventorySourceError(
+                    f"{mf}.{name} is not a dictionary")
+
+            if value.get("copy") and not value["copy"] in main_fields[mf]:
+                raise InventorySourceError(f"{mf}.{name} value must be a "
+                                           "'name' of an already defined "
+                                           f"{mf} item")
+    # validate 'namespaces'
+    for ns in inventory.get("namespaces"):
+        if not ns.get("source"):
+            raise InventorySourceError(
+                "all namespaces need 'source' field")
+
+        if ns.get("source") not in main_fields["sources"]:
+            raise InventorySourceError(
+                    f"No source called '{ns['source']}'")
+
+        if ns.get("device") and ns['device'] not in main_fields["devices"]:
+            raise InventorySourceError(
+                    f"No device called '{ns['device']}'")
+
+        if ns.get("auth") and ns['auth'] not in main_fields["auths"]:
+            raise InventorySourceError(
+                    f"No auth called '{ns['auth']}'")
+
+
+def _get_inventory_config(conf_type: str, inventory: dict) -> dict:
+    """Return the configuration for a the config type as input
+
+    The returned value will contain a dictionary with 'name' as key
+    and the config as value
+
+    Args:
+        conf_type (str): type of configuration to initialize
+        inventory (dict): inventory to read to collect configuration
+
+    Returns:
+        dict: configuration data
+    """
+    configs = {}
+    conf_list = inventory.get(conf_type)
+    if not conf_list:
         # No configuration specified
         return {}
-    if not isinstance(inv_list, list):
-        raise InventorySourceError(f"{inv_type} must be a list")
 
-    for inv_obj in inv_list:
-        name = inv_obj.get("name")
-        if not name:
-            raise InventorySourceError("All inventory configurations must "
-                                       f"contain a 'name': {inv_obj}")
-        inv_configs[name] = inv_obj
+    for conf_obj in conf_list:
+        name = conf_obj.get("name")
+        if name:
+            if conf_obj.get("copy"):
+                # copy the content of the other inventory
+                # into the current inventory and override
+                # values
+                configs[name] = configs[conf_obj["copy"]].copy()
+                for k, v in conf_obj.items():
+                    if k not in ["copy"]:
+                        configs[name][k] = v
+            else:
+                configs[name] = conf_obj
 
-    return inv_configs
+    return configs

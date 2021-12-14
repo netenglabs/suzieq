@@ -1,9 +1,14 @@
 sources:
 - name: netbox
   type: netbox
-  token: "af8717c89ec0ff420c19d89e6c20646ad05dd54e"
-  url: "http://127.0.0.1:8000"
-  tag: "suzieq-demo"
+  token: af8717c89ec0ff420c19d89e6c20646ad05dd54e
+  url: http://127.0.0.1:8000
+  tag: suzieq-demo
+
+- name: netbox-copy
+  copy: netbox
+  tag: suzieq
+
 - name: ansible
   type: ansible
   file_path: /home/luca/stardust/random/ansible_poller
