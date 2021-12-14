@@ -68,12 +68,11 @@ class AnsibleInventory(Source):
                 raise InventorySourceError(
                     'Invalid Ansible inventory, found Suzieq inventory'
                 )
-            else:
-                raise InventorySourceError(
-                    'Invalid Ansible inventory, missing keys: _meta and / or'
-                    "hostvars\n \tUse 'ansible-inventory --list' to create "
-                    'the correct file'
-                )
+            raise InventorySourceError(
+                'Invalid Ansible inventory, missing keys: _meta and / or'
+                "hostvars\n \tUse 'ansible-inventory --list' to create "
+                'the correct file'
+            )
 
         in_hosts = inventory['_meta']['hostvars']
         out_hosts = []

@@ -7,10 +7,10 @@ from typing import Dict, Type, List
 from suzieq.poller.controller.credential_loader.base_credential_loader \
     import CredentialLoader
 from suzieq.shared.exceptions import InventorySourceError
-from suzieq.shared.sq_plugin import SqPlugin
+from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 
 
-class Source(SqPlugin):
+class Source(ControllerPlugin):
     """Base class for plugins which reads inventories"""
 
     def __init__(self, input_data) -> None:

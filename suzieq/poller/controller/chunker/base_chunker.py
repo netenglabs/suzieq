@@ -5,10 +5,10 @@ Classes:
              in smaller chunks
 """
 from abc import abstractmethod
-from suzieq.shared.sq_plugin import SqPlugin
+from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 
 
-class Chunker(SqPlugin):
+class Chunker(ControllerPlugin):
     """Abstract class for a Chunker
     """
     @abstractmethod
