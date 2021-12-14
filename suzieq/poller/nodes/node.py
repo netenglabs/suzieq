@@ -106,7 +106,6 @@ class Node:
         self._service_queue = None
         self._conn = None
         self._tunnel = None
-        self._session = None  # for REST transport
         self._status = "init"
         self.svcs_proc = set()
         self.error_svcs_proc = set()
@@ -118,8 +117,8 @@ class Node:
 
         self.address = kwargs["address"]
         self.hostname = kwargs["address"]  # default till we get hostname
-        self.username = kwargs.get("username", "vagrant")
-        self.password = kwargs.get("password", "vagrant")
+        self.username = kwargs.get("username", "vagrant") or "vagrant"
+        self.password = kwargs.get("password", "vagrant") or "vagrant"
         self.transport = kwargs.get("transport", "ssh")
         self.nsname = kwargs.get("namespace", "default")
         self.port = kwargs.get("port", 0)
@@ -234,12 +233,9 @@ class Node:
         if self._tunnel:
             self._tunnel.close()
             await self._tunnel.wait_closed()
-        if self._session:
-            await self._session.close()
 
         self._conn = None
         self._tunnel = None
-        self._session = None
 
     async def _terminate(self):
         self.logger.warning(
@@ -874,12 +870,6 @@ class EosNode(Node):
 
     async def init_node(self):
         try:
-            auth = aiohttp.BasicAuth(self.username, password=self.password)
-            self._session = aiohttp.ClientSession(
-                auth=auth,
-                conn_timeout=self.connect_timeout,
-                connector=aiohttp.TCPConnector(ssl=False),
-            )
             await self.get_device_boottime_hostname()
         except Exception:
             if self.sigend:
@@ -957,6 +947,8 @@ class EosNode(Node):
         timeout = timeout or self.cmd_timeout
 
         now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
+        auth = aiohttp.BasicAuth(self.username,
+                                 password=self.password or 'vagrant')
         data = {
             "jsonrpc": "2.0",
             "method": "runCmds",
@@ -972,38 +964,45 @@ class EosNode(Node):
         output = []
         status = 200  # status OK
 
-        if not self._session:
-            await self.init_node()
-        if not self._session:
-            for cmd in cmd_list:
-                result.append(self._create_error(cmd))
-            await service_callback(result, cb_token)
-            return
-
         try:
-            async with self._session.post(url, json=data,
-                                          timeout=timeout,
-                                          headers=headers) as response:
-                status, json_out = response.status, await response.json()
-                if "result" in json_out:
-                    output.extend(json_out["result"])
-                else:
-                    output.extend(json_out["error"].get('data', []))
+            async with aiohttp.ClientSession(
+                    auth=auth, conn_timeout=self.connect_timeout,
+                    read_timeout=timeout,
+                    connector=aiohttp.TCPConnector(ssl=False)) as session:
+                async with session.post(url, json=data,
+                                        timeout=timeout,
+                                        headers=headers) as response:
+                    status = response.status
+                    if status == HTTPStatus.OK:
+                        json_out = await response.json()
+                        if "result" in json_out:
+                            output.extend(json_out["result"])
+                        else:
+                            output.extend(
+                                json_out["error"].get('data', []))
 
-            for i, cmd in enumerate(cmd_list):
-                result.append(
-                    {
-                        "status": status,
-                        "timestamp": now,
-                        "cmd": cmd,
-                        "devtype": self.devtype,
-                        "namespace": self.nsname,
-                        "hostname": self.hostname,
-                        "address": self.address,
-                        "data":
-                        output[i] if isinstance(output, list) else output,
-                    }
-                )
+                        for i, cmd in enumerate(cmd_list):
+                            result.append(
+                                {
+                                    "status": status,
+                                    "timestamp": now,
+                                    "cmd": cmd,
+                                    "devtype": self.devtype,
+                                    "namespace": self.nsname,
+                                    "hostname": self.hostname,
+                                    "address": self.address,
+                                    "data":
+                                    output[i]
+                                    if isinstance(output, list) else output,
+                                }
+                            )
+                    else:
+                        for cmd in cmd_list:
+                            result.append(self._create_error(cmd))
+                        self.logger.error(
+                            '(REST), Communication with %s:%s failed'
+                            ' due to %s', self.address, self.port,
+                            response.status)
         except Exception as e:
             if self.sigend:
                 await self._terminate()
