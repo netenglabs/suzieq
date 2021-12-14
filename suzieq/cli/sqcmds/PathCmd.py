@@ -22,7 +22,7 @@ class PathCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         columns: str = "default",
         src: str = "",
         dest: str = "",
@@ -52,9 +52,6 @@ class PathCmd(SqCommand):
     @command("show")
     def show(self):
         """Show paths between specified from source to target ip addresses"""
-        # Get the default display field names
-        if self.columns is None:
-            return
 
         now = time.time()
         if self.columns != ["default"]:
@@ -68,7 +65,7 @@ class PathCmd(SqCommand):
                 namespace=self.namespace, source=self.src, dest=self.dest,
                 vrf=self.vrf
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             if len(e.args) > 1:
                 df = e.args[1]  # The second arg if present is the path so far
                 df['error'] = str(e.args[0])
@@ -77,15 +74,11 @@ class PathCmd(SqCommand):
                     {'error': ['ERROR: {}'.format(str(e.args[0]))]})
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if not df.empty:
-            return self._gen_output(df, sort=False)
+        return self._gen_output(df, sort=False)
 
     @command("summarize")
-    def summarize(self):
+    def summarize(self, **kwargs):
         """Summarize paths between specified source and target ip address"""
-        # Get the default display field names
-        if self.columns is None:
-            return
 
         now = time.time()
         if self.columns != ["default"]:
@@ -98,23 +91,19 @@ class PathCmd(SqCommand):
                 hostname=self.hostname, namespace=self.namespace,
                 source=self.src, dest=self.dest, vrf=self.vrf
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if not df.empty:
-            return self._gen_output(df)
+        return self._gen_output(df)
 
     # We need unique in this place because of the values we need to pass to
     # unique which is different from the usual set
     @command("unique")
     @argument("count", description="include count of times a value is seen",
               choices=['True'])
-    def unique(self, count: str = 'False'):
+    def unique(self, count: str = 'False', **kwargs):
         """Display unique values (and counts) for specified field of a path"""
-        # Get the default display field names
-        if self.columns is None:
-            return
 
         now = time.time()
         if self.columns != ["default"]:
@@ -128,12 +117,11 @@ class PathCmd(SqCommand):
                 source=self.src, dest=self.dest, vrf=self.vrf,
                 count=count
             )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if not df.empty:
-            return self._gen_output(df, dont_strip_cols=True)
+        return self._gen_output(df, dont_strip_cols=True)
 
     @command("top", help="find the top n values for a field")
     @argument("count", description="number of rows to return")

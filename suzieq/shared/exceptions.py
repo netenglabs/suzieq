@@ -31,9 +31,7 @@ class UnknownDevtypeError(Exception):
 
 class SqPollerConfError(Exception):
     """Invalid poller configuration error."""
-    pass
 
 
 class InventorySourceError(Exception):
     """Unable to read or parse the inventory source."""
-    pass

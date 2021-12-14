@@ -1,28 +1,31 @@
-import pandas as pd
-import numpy as np
 from ipaddress import ip_interface
 
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.utils import convert_macaddr_format_to_colon
+
+import numpy as np
+import pandas as pd
 
 
 class AddressObj(SqPandasEngine):
+    '''Backend to process/analyze Address table data'''
 
     @staticmethod
     def table_name():
         return 'address'
 
     def addr_type(self, addr: list) -> list:
-
+        '''Return IP version of address, or 0 if MAC addr'''
         rslt = []
         for a in addr:
             try:
                 ipa = ip_interface(a)
-                rslt.append(ipa._version)
+                rslt.append(ipa._version)  # pylint: disable=protected-access
             except ValueError:
                 rslt.append(0)
         return rslt
 
+    # pylint: disable=too-many-statements
     def get(self, **kwargs) -> pd.DataFrame:
         """Retrieve the dataframe that matches a given IPv4/v6/MAC address"""
 
@@ -47,7 +50,7 @@ class AddressObj(SqPandasEngine):
 
         # Always include ip or mac addresses in the dataframe
         # if there is a filter on them
-        if columns != ['default'] and columns != ['*']:
+        if columns not in [['default'], ['*']]:
             if ((4 in addr_types or ipvers == "v4") and
                     'ipAddressList' not in columns):
                 addnl_fields.append('ipAddressList')
@@ -154,7 +157,7 @@ class AddressObj(SqPandasEngine):
             elif ipvers == "v6":
                 query_str = 'ip6AddressList.str.len() != 0'
             elif ipvers == "l2":
-                query_str == 'macaddr.str.len() != 0'
+                query_str = 'macaddr.str.len() != 0'
 
         if query_str:
             df = df.query(query_str)
@@ -178,7 +181,7 @@ class AddressObj(SqPandasEngine):
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize address related info"""
 
-        self._init_summarize(self.iobj._table, **kwargs)
+        self._init_summarize(**kwargs)
         if self.summary_df.empty:
             return self.summary_df
 

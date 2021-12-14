@@ -1,17 +1,22 @@
-import pandas as pd
-import numpy as np
 import operator
 from packaging import version
-from .engineobj import SqPandasEngine
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.utils import humanize_timestamp
+
+import numpy as np
+import pandas as pd
 
 
 class DeviceObj(SqPandasEngine):
+    '''Backend class to handle manipulating Device table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'device'
 
+    # pylint: disable=too-many-statements
     def get(self, **kwargs):
         """Get the information requested"""
         view = kwargs.get('view', self.iobj.view)
@@ -36,8 +41,7 @@ class DeviceObj(SqPandasEngine):
             drop_cols.append('os')
 
         for col in ['namespace', 'hostname', 'status', 'address']:
-            if (not ((columns == ['default']) or (columns == ['*'])) and
-                    col not in columns):
+            if columns not in [['default'], ['*']] and col not in columns:
                 addnl_fields.append(col)
                 drop_cols.append(col)
 
@@ -116,10 +120,10 @@ class DeviceObj(SqPandasEngine):
             opdict = {'>': operator.gt, '<': operator.lt, '>=': operator.ge,
                       '<=': operator.le, '=': operator.eq, '!=': operator.ne}
             op = operator.eq
-            for elem in opdict:
+            for elem, val in opdict.items():
                 if os_version.startswith(elem):
                     os_version = os_version.replace(elem, '')
-                    op = opdict[elem]
+                    op = val
                     break
 
             df = df.loc[df.version.apply(
@@ -139,7 +143,7 @@ class DeviceObj(SqPandasEngine):
     def summarize(self, **kwargs):
         """Summarize device information across namespace"""
 
-        self._init_summarize(self.iobj.table, **kwargs)
+        self._init_summarize(**kwargs)
         if self.summary_df.empty:
             return self.summary_df
 

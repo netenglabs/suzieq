@@ -1,14 +1,16 @@
+import re
+
 from suzieq.poller.services.service import Service
 from suzieq.shared.utils import (convert_macaddr_format_to_colon,
                                  expand_ios_ifname)
-import re
+
 import numpy as np
 
 
 class LldpService(Service):
     """LLDP service. Different class because of munging ifname"""
 
-    def _common_data_cleaner(self, processed_data, raw_data):
+    def _common_data_cleaner(self, processed_data, _):
 
         drop_indices = []
 
@@ -61,7 +63,7 @@ class LldpService(Service):
                 entry['peerMacaddr'] = '00:00:00:00:00:00'
                 entry['subtype'] = 'locally assigned'
 
-    def _clean_nxos_data(self, processed_data, raw_data):
+    def _clean_nxos_data(self, processed_data, _):
 
         drop_indices = []
         entries = {}
@@ -97,7 +99,7 @@ class LldpService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
-    def _clean_junos_data(self, processed_data, raw_data):
+    def _clean_junos_data(self, processed_data, _):
 
         drop_indices = []
         for i, entry in enumerate(processed_data):
@@ -110,7 +112,7 @@ class LldpService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
 
         drop_indices = []
 
@@ -133,7 +135,7 @@ class LldpService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
-    def _clean_cumulus_data(self, processed_data, raw_data):
+    def _clean_cumulus_data(self, processed_data, _):
 
         drop_indices = []
 
@@ -151,7 +153,7 @@ class LldpService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
-    def _clean_linux_data(self, processed_data, raw_data):
+    def _clean_linux_data(self, processed_data, _):
 
         drop_indices = []
         for i, entry in enumerate(processed_data):
@@ -172,7 +174,7 @@ class LldpService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
-    def _clean_iosxr_data(self, processed_data, raw_data):
+    def _clean_iosxr_data(self, processed_data, _):
 
         drop_indices = []
         for i, entry in enumerate(processed_data):
@@ -183,7 +185,7 @@ class LldpService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
-    def _clean_iosxe_data(self, processed_data, raw_data):
+    def _clean_iosxe_data(self, processed_data, _):
 
         drop_indices = []
         for i, entry in enumerate(processed_data):

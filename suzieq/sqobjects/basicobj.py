@@ -38,27 +38,12 @@ class SqObject(SqPlugin):
         self._sort_fields = self._schema.key_fields()
         self._convert_args = {}
 
-        if not namespace and self.ctxt.namespace:
-            self.namespace = self.ctxt.namespace
-        else:
-            self.namespace = namespace or []
-        if not hostname and self.ctxt.hostname:
-            self.hostname = self.ctxt.hostname
-        else:
-            self.hostname = hostname or []
+        self.namespace = namespace or self.ctxt.namespace or []
+        self.hostname = hostname or self.ctxt.hostname or []
+        self.start_time = start_time or self.ctxt.start_time
+        self.end_time = end_time or self.ctxt.end_time
 
-        if not start_time and self.ctxt.start_time:
-            self.start_time = self.ctxt.start_time
-        else:
-            self.start_time = start_time
-
-        if not end_time and self.ctxt.end_time:
-            self.end_time = self.ctxt.end_time
-        else:
-            self.end_time = end_time
-
-        if not view and self.ctxt.view:
-            view = self.ctxt.view
+        view = view or self.ctxt.view
 
         if self.start_time and self.end_time and not view:
             self.view = 'all'
@@ -76,12 +61,12 @@ class SqObject(SqPlugin):
         if not self.engine:
             raise ValueError('Unknown analysis engine')
 
-        self._addnl_filter = None
-        self._addnl_fields = []
-        self._valid_get_args = None
-        self._valid_assert_args = None
-        self._valid_arg_vals = None
-        self._valid_find_args = None
+        self.summarize_df = pd.DataFrame()
+
+        self._addnl_filter = self._addnl_fields = []
+        self._valid_get_args = self._valid_assert_args = []
+        self._valid_summarize_args = ['namespace', 'hostname', 'query_str']
+        self._valid_arg_vals = self._valid_find_args = []
 
     @property
     def all_schemas(self):
@@ -102,6 +87,16 @@ class SqObject(SqPlugin):
     def table(self):
         '''Return the table served by this object'''
         return self._table
+
+    @property
+    def addnl_fields(self):
+        '''Return the additional fields field'''
+        return self._addnl_fields
+
+    @property
+    def sort_fields(self):
+        '''Return default list of fields to sort by'''
+        return self._sort_fields
 
     def _check_input_for_valid_args(self, good_arg_list, **kwargs,):
         '''Check that the provided set of kwargs is valid for the table'''
@@ -125,7 +120,7 @@ class SqObject(SqPlugin):
         for arg, val in kwargs.items():
             if arg in good_arg_val_list:
                 if val not in good_arg_val_list[arg]:
-                    raise AttributeError(
+                    raise ValueError(
                         f"invalid value {val} for argument {arg}")
 
     def validate_get_input(self, **kwargs):
@@ -137,6 +132,10 @@ class SqObject(SqPlugin):
     def validate_assert_input(self, **kwargs):
         '''Validate the values of the assert function'''
         self._check_input_for_valid_args(self._valid_assert_args, **kwargs)
+
+    def validate_summarize_input(self, **kwargs):
+        '''Validate the values of the summarize function'''
+        self._check_input_for_valid_args(self._valid_summarize_args, **kwargs)
 
     def validate_columns(self, columns: typing.List[str]) -> bool:
         """Validate that the provided columns are valid for the table
@@ -173,7 +172,7 @@ class SqObject(SqPlugin):
         # This raises exceptions if it fails
         try:
             self.validate_get_input(**kwargs)
-        except Exception as error:
+        except (AttributeError, ValueError) as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
@@ -189,31 +188,31 @@ class SqObject(SqPlugin):
                 newval = []
                 if isinstance(val, list):
                     for ele in val:
-                        ele = self._convert_args[k](ele)
+                        ele = v(ele)
                         newval.append(ele)
                     kwargs[k] = newval
                 elif isinstance(val, str):
-                    kwargs[k] = self._convert_args[k](val)
+                    kwargs[k] = v(val)
 
         return self.engine.get(**kwargs)
 
-    def summarize(self, namespace=None, hostname=None,
-                  query_str='') -> pd.DataFrame:
+    def summarize(self, **kwargs) -> pd.DataFrame:
         '''Summarize the data from specific table'''
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
                 {'error':
                  ['ERROR: You cannot specify columns with summarize']})
             return self.summarize_df
+
         if not self._table:
             raise NotImplementedError
 
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine.summarize(namespace=namespace or [],
-                                     hostname=hostname or [],
-                                     query_str=query_str)
+        self.validate_summarize_input(**kwargs)
+
+        return self.engine.summarize(**kwargs)
 
     def unique(self, **kwargs) -> pd.DataFrame:
         '''Identify unique values and value counts for a column in table'''
@@ -258,7 +257,7 @@ class SqObject(SqPlugin):
         # This raises exceptions if it fails
         try:
             self.validate_get_input(**kwargs)
-        except Exception as error:
+        except (ValueError, AttributeError) as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
@@ -326,7 +325,7 @@ class SqObject(SqPlugin):
 
         return self.engine.get_table_info(table, **kwargs)
 
-    def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
+    def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the fields for human consumption.
 
         Individual classes will implement the right transofmations. This
@@ -361,7 +360,7 @@ class SqObject(SqPlugin):
             raise AttributeError('No analysis engine specified')
         try:
             self.validate_assert_input(**kwargs)
-        except Exception as error:
+        except AttributeError as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 

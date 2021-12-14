@@ -4,6 +4,8 @@ from suzieq.shared.utils import humanize_timestamp
 
 
 class BgpObj(SqObject):
+    '''The object providing access to the bgp table'''
+
     def __init__(self, **kwargs):
         super().__init__(table='bgp', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'state',
@@ -14,7 +16,7 @@ class BgpObj(SqObject):
         }
         self._valid_assert_args = ['namespace', 'hostname', 'vrf', 'status']
 
-    def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
+    def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''
         if df.empty:
             return df

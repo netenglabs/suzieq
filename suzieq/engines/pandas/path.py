@@ -5,22 +5,25 @@ from functools import lru_cache
 from collections import defaultdict
 from copy import copy
 
+from suzieq.shared.exceptions import EmptyDataframeError
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+from suzieq.shared.utils import expand_nxos_ifname, MAX_MTU
+
 import numpy as np
 import pandas as pd
-
-from suzieq.shared.exceptions import EmptyDataframeError
-from .engineobj import SqPandasEngine
-from suzieq.shared.utils import expand_nxos_ifname, MAX_MTU
 
 # TODO: What timestamp to use (arpND, mac, interface, route..)
 
 
 class PathObj(SqPandasEngine):
+    '''Backend class to handle manipulating virtual table, path, with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'path'
 
+    # pylint: disable=too-many-statements, attribute-defined-outside-init
     def _init_dfs(self, ns, source, dest):
         """Initialize the dataframes used in this path hunt"""
 
@@ -489,9 +492,9 @@ class PathObj(SqPandasEngine):
         new_nexthop_list = []
         # Convert each OIF into its actual physical list
         is_l2 = False
-        for nhip, iface, overlay, is_l2, protocol, timestamp in nexthop_list:
+        for nhip, iface, overlay, l2hop, protocol, timestamp in nexthop_list:
             if macaddr and is_l2 and not overlay:
-                new_nexthop_list.append((nhip, iface, overlay, is_l2,
+                new_nexthop_list.append((nhip, iface, overlay, l2hop,
                                          protocol, timestamp))
                 continue
 
@@ -520,15 +523,16 @@ class PathObj(SqPandasEngine):
                                                              ['default'], True)
                     new_nexthop_list.extend(underlay_nh)
             else:
-                new_nexthop_list.append((nhip, iface, overlay, is_l2,
+                new_nexthop_list.append((nhip, iface, overlay, l2hop,
                                          protocol, timestamp))
 
         on_src_node = device in self.src_device
-        for (nhip, iface, overlay, is_l2, protocol,
+        # pylint: disable=too-many-nested-blocks
+        for (nhip, iface, overlay, l2hop, protocol,
              timestamp) in new_nexthop_list:
             df = pd.DataFrame()
             errormsg = ''
-            if is_l2 and macaddr and not overlay:
+            if l2hop and macaddr and not overlay:
                 if (not nhip or nhip == 'None') and iface:
                     addr = dest + '/'
                 else:
@@ -576,7 +580,7 @@ class PathObj(SqPandasEngine):
                         (df.macaddr.unique().tolist() !=
                          nhip_df.macaddr.unique().tolist())):
                         errormsg = 'Possible anycast IP without anycast MAC'
-                        is_l2 = True
+                        l2hop = True
 
                 if df.empty:
                     continue
@@ -586,7 +590,7 @@ class PathObj(SqPandasEngine):
             # server. If so, find FHR to get the real connected dev
             if device in self.src_device:
                 check_fhr = self.source
-            elif is_l2 and (df.iloc[0].hostname in self.dest_device):
+            elif l2hop and (df.iloc[0].hostname in self.dest_device):
                 check_fhr = self.dest
             else:
                 check_fhr = None
@@ -603,7 +607,7 @@ class PathObj(SqPandasEngine):
                         if df.empty:
                             # The L3 nexthop is not the next L2 hop
                             df = fhr_df
-                            is_l2 = True
+                            l2hop = True
                             # But what we're going to be forwarding on when
                             # we hit the next L2 hop is the MAC addr from the
                             # ARP entry, and so set the macaddr to that for now
@@ -639,7 +643,7 @@ class PathObj(SqPandasEngine):
             df.apply(lambda x, nexthops:
                      nexthops.append((iface, x['hostname'],
                                       x['ifname'],  overlay,
-                                      is_l2, nhip,
+                                      l2hop, nhip,
                                       macaddr or x.macaddr, protocol, errormsg,
                                       timestamp))
                      if (x['namespace'] in self.namespace) else None,
@@ -675,6 +679,7 @@ class PathObj(SqPandasEngine):
         if not src or not dest:
             raise AttributeError("Must specify trace source and dest")
 
+        # pylint: disable=protected-access
         srcvers = ip_network(src, strict=False)._version
         dstvers = ip_network(dest, strict=False)._version
         if srcvers != dstvers:
@@ -747,6 +752,7 @@ class PathObj(SqPandasEngine):
         # ensuring that no device is visited twice in the same VRF. The VRF
         # qualification is required to ensure packets coming back from a
         # firewall or load balancer are not tagged as duplicates.
+        # pylint: disable=too-many-nested-blocks
         while devices_iifs:
             nextdevices_iifs = OrderedDict()
             newpaths = []
@@ -895,8 +901,8 @@ class PathObj(SqPandasEngine):
                             if z not in final_paths:
                                 final_paths.append(z)
                         continue
-                    else:
-                        l2_visited_devices.add(skey)
+
+                    l2_visited_devices.add(skey)
                 else:
                     if skey in l3_visited_devices:
                         devices_iifs[devkey]['error'].append("L3 loop")
@@ -906,8 +912,8 @@ class PathObj(SqPandasEngine):
                             if z not in final_paths:
                                 final_paths.append(z)
                         continue
-                    else:
-                        l3_visited_devices.add(skey)
+
+                    l3_visited_devices.add(skey)
 
                 devices_iifs[devkey]['vrf'] = ivrf
                 rt_ts = None
@@ -1018,9 +1024,9 @@ class PathObj(SqPandasEngine):
                     if z not in newpaths:
                         newpaths.append(z)
 
-                for x in newdevices_iifs:
-                    if x not in nextdevices_iifs:
-                        nextdevices_iifs[x] = newdevices_iifs[x]
+                for k, v in newdevices_iifs.items():
+                    if k not in nextdevices_iifs:
+                        nextdevices_iifs[k] = v
 
             if newpaths:
                 paths = newpaths
@@ -1051,10 +1057,7 @@ class PathObj(SqPandasEngine):
                 prev_hop = None
             for j, ele in enumerate(path):
                 item = list(ele)[0]
-                if ele[item]['overlay']:
-                    overlay = True
-                else:
-                    overlay = False
+                overlay = bool(ele[item]['overlay'])
                 lookup = ele[item].get("lookup", "")
 
                 hop = {

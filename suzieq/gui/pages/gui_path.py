@@ -1,17 +1,23 @@
+from copy import copy
+from urllib.parse import quote
+from typing import Tuple
+from dataclasses import dataclass, asdict, field
+
 from suzieq.gui.guiutils import display_help_icon
 from suzieq.gui.guiutils import (gui_get_df, get_base_url, get_session_id,
                                  SuzieqMainPages)
 from suzieq.sqobjects.path import PathObj
-from copy import copy
-from urllib.parse import quote
-from typing import Tuple
-import graphviz as graphviz
+
+import graphviz
 import pandas as pd
 import streamlit as st
-from dataclasses import dataclass, asdict, field
 
 
 def get_title():
+    '''Page title
+
+    Mandatory function if you want to display a page
+    '''
     return 'Path'
 
 
@@ -31,6 +37,7 @@ def make_fields_failed_df():
 
 @dataclass
 class PathSessionState:
+    '''Path page session state'''
     page: str = SuzieqMainPages.PATH
     namespace: str = ''
     source: str = ''
@@ -45,6 +52,7 @@ class PathSessionState:
 
 @dataclass
 class FailedDFs:
+    '''class holding dataframes of failed tables'''
     dfs: list = field(default_factory=make_fields_failed_df)
 
 
@@ -113,7 +121,7 @@ def path_get(state: PathSessionState, pathobj: PathObj,
 @st.cache(ttl=120, allow_output_mutation=True, show_spinner=False,
           hash_funcs={"streamlit.delta_generator.DeltaGenerator": lambda x: 1},
           max_entries=10)
-def get_failed_data(namespace: str, pgbar, sqobjs) -> FailedDFs:
+def get_failed_data(namespace: str, pgbar) -> FailedDFs:
     '''Get interface/mlag/routing protocol states that are failed'''
 
     faileddfs = FailedDFs()
@@ -179,8 +187,6 @@ def path_sidebar(state):
         _ = st.button(
             'Source <-> Dest', key='path_swap', on_click=path_sync_state)
 
-    return
-
 
 def get_node_tooltip_color(hostname: str, faileddfs: FailedDFs) -> str:
     '''Get tooltip and node color for node based on values in various tables'''
@@ -198,6 +204,7 @@ def get_node_tooltip_color(hostname: str, faileddfs: FailedDFs) -> str:
     return('\n'.join(tdf.T.to_string().split('\n')[1:]), color)
 
 
+# pylint: disable=too-many-statements
 @st.cache(max_entries=10, allow_output_mutation=True)
 def build_graphviz_obj(show_ifnames: bool, df: pd.DataFrame,
                        faileddfs: FailedDFs):
@@ -321,6 +328,7 @@ def build_graphviz_obj(show_ifnames: bool, df: pd.DataFrame,
 
 
 def path_sync_state():
+    '''Save the path page widget state into session state'''
     wsstate = st.session_state
     state = wsstate.pathSessionState
 
@@ -339,7 +347,7 @@ def path_sync_state():
 
 
 def path_run():
-
+    '''Execute the path and do all the work'''
     state = st.session_state.pathSessionState
 
     if not all(x for x in [state.source, state.dest, state.namespace]):
@@ -347,7 +355,7 @@ def path_run():
 
     pgbar = st.empty()
     summary = st.container()
-    summcol, mid, pathcol = summary.columns([3, 1, 10])
+    summcol, _, pathcol = summary.columns([3, 1, 10])
     with summary:
         with summcol:
             summ_ph = st.empty()
@@ -364,7 +372,7 @@ def path_run():
         if not rdf.empty:
             state.pathobj = pathobj
             state.path_df = df
-    except Exception as e:
+    except Exception as e:  # pylint: disable=broad-except
         st.error(f'Invalid Input: {str(e)}')
         st.stop()
     pgbar.progress(40)
@@ -374,11 +382,11 @@ def path_run():
         pgbar.progress(100)
         st.info(f'No path to trace between {state.source} and {state.dest}')
         st.experimental_set_query_params(**get_path_url_params(state))
-        st.stop
+        st.stop()
 
     if not df.empty:
-        faileddfs = get_failed_data(state.namespace, pgbar,
-                                    st.session_state.sqobjs)
+        faileddfs = get_failed_data(state.namespace, pgbar)
+
         g = build_graphviz_obj(state.show_ifnames, df, faileddfs)
         pgbar.progress(100)
         # if not rev_df.empty:

@@ -17,7 +17,7 @@ class NetworkCmd(SqCommand):
             end_time: str = "",
             view: str = "",
             namespace: str = "",
-            format: str = "",
+            format: str = "",  # pylint: disable=redefined-builtin
             query_str: str = " ",
             columns: str = "default",
     ) -> None:
@@ -62,7 +62,7 @@ class NetworkCmd(SqCommand):
               description="Find within this VRF, used for IP addr")
     @argument("vlan", type=str,
               description="Find MAC within this VLAN")
-    def find(self, address: str = '', asn: str = '', vrf: str = '',
+    def find(self, address: str = '', vrf: str = '',
              vlan: str = ''):
         """Find the network attach point of a given IP or MAC address.
         """

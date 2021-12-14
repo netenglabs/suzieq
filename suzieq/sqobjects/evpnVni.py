@@ -2,6 +2,8 @@ from suzieq.sqobjects.basicobj import SqObject
 
 
 class EvpnvniObj(SqObject):
+    '''The object providing access to the evpnVni table'''
+
     def __init__(self, **kwargs):
         super().__init__(table='evpnVni', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'vni',

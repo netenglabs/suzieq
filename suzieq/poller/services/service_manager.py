@@ -170,7 +170,7 @@ class ServiceManager:
 
             try:
                 schema = SchemaForTable(svc_def['service'], schema=schemas)
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 logger.error(f"No matching schema for {svc_def['service']}")
                 continue
 
@@ -274,6 +274,7 @@ class ServiceManager:
             raise SqPollerConfError('The list of services to execute is empty')
         return svclist
 
+    # pylint: disable=unused-argument
     def _parse_nos_version(self,
                            filename: str,
                            svc_def: Dict,
@@ -289,6 +290,7 @@ class ServiceManager:
             cmds_desc (Union[Dict, List]): the description fo the commands to
                 execute.
         """
+        # pylint: disable=too-many-boolean-expressions
         if ('command' not in cmds_desc) or (
                 (
                     isinstance(cmds_desc['command'], list)
@@ -351,7 +353,7 @@ class ServiceManager:
                         try:
                             tfsm_template = textfsm.TextFSM(f)
                             subelem['textfsm'] = tfsm_template
-                        except Exception:
+                        except Exception:  # pylint: disable=broad-except
                             logger.exception(
                                 'Unable to load TextFSM file '
                                 f'{tfsm_file} for service '

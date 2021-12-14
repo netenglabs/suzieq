@@ -1,5 +1,6 @@
-from suzieq.poller.services.service import Service
 import re
+
+from suzieq.poller.services.service import Service
 from suzieq.shared.utils import convert_macaddr_format_to_colon
 from suzieq.shared.utils import (expand_nxos_ifname, expand_eos_ifname,
                                  expand_ios_ifname)
@@ -50,7 +51,7 @@ class MacsService(Service):
                     else:
                         entry['mackey'] = '0'
 
-    def _clean_linux_data(self, processed_data, raw_data):
+    def _clean_linux_data(self, processed_data, _):
         drop_indices = []
         macentries = {}
         for i, entry in enumerate(processed_data):
@@ -86,7 +87,7 @@ class MacsService(Service):
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)
 
-    def _clean_junos_data(self, processed_data, raw_data):
+    def _clean_junos_data(self, processed_data, _):
         drop_indices = []
         new_entries = []
 
@@ -121,7 +122,7 @@ class MacsService(Service):
         processed_data.extend(new_entries)
         return processed_data
 
-    def _clean_nxos_data(self, processed_data, raw_data):
+    def _clean_nxos_data(self, processed_data, _):
 
         for entry in processed_data:
             entry['macaddr'] = convert_macaddr_format_to_colon(
@@ -147,7 +148,7 @@ class MacsService(Service):
 
         return processed_data
 
-    def _clean_iosxe_data(self, processed_data, raw_data):
+    def _clean_iosxe_data(self, processed_data, _):
 
         for entry in processed_data:
             entry['macaddr'] = convert_macaddr_format_to_colon(
@@ -165,7 +166,7 @@ class MacsService(Service):
     def _clean_ios_data(self, processed_data, raw_data):
         return self._clean_iosxe_data(processed_data, raw_data)
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
 
         drop_indices = []
 

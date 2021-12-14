@@ -1,9 +1,11 @@
 from ipaddress import ip_interface
+
 from suzieq.sqobjects.basicobj import SqObject
 from suzieq.shared.utils import validate_macaddr, validate_network
 
 
 class AddressObj(SqObject):
+    '''The object providing access to the address table'''
 
     def __init__(self, **kwargs):
         super().__init__(table='address', **kwargs)

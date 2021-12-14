@@ -63,7 +63,7 @@ class SqPlugin:
                 try:
                     mfound = [x.split('.')[0] for x in pspec.loader.contents()
                               if not x.startswith('_') and x.endswith(".py")]
-                except Exception:
+                except Exception:  # pylint: disable=broad-except
                     mfound = []
                 for minfo in mfound:
                     if not use_pkg_name:

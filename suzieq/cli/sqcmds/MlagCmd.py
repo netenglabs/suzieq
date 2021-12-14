@@ -15,6 +15,7 @@ class MlagCmd(SqCommand):
                  view: str = '', namespace: str = '',
                  query_str: str = ' ',
                  format: str = "", columns: str = 'default') -> None:
+        # pylint: disable=redefined-builtin
         super().__init__(engine=engine, hostname=hostname,
                          start_time=start_time, end_time=end_time,
                          view=view, namespace=namespace,
@@ -25,9 +26,6 @@ class MlagCmd(SqCommand):
     def show(self):
         """Show MLAG info
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
         if self.columns != ['default']:

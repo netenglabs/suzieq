@@ -17,7 +17,7 @@ class MacCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         query_str: str = ' ',
         columns: str = "default",
     ) -> None:
@@ -49,9 +49,6 @@ class MacCmd(SqCommand):
 
         The remoteVtepInfo is set to "-" to allow to fetch local entries only
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
         if self.columns != ["default"]:

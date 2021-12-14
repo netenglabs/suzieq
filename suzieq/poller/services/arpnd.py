@@ -1,14 +1,16 @@
-from suzieq.poller.services.service import Service
 import re
-import numpy as np
+
+from suzieq.poller.services.service import Service
 from suzieq.shared.utils import (
     convert_macaddr_format_to_colon, expand_ios_ifname)
+
+import numpy as np
 
 
 class ArpndService(Service):
     """arpnd service. Different class because minor munging of output"""
 
-    def _clean_linux_data(self, processed_data, raw_data):
+    def _clean_linux_data(self, processed_data, _):
         for entry in processed_data:
             entry["remote"] = entry["remote"] == "offload"
             entry["state"] = entry["state"].lower()
@@ -27,7 +29,7 @@ class ArpndService(Service):
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
         for entry in processed_data:
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
@@ -42,7 +44,7 @@ class ArpndService(Service):
 
         return processed_data
 
-    def _clean_junos_data(self, processed_data, raw_data):
+    def _clean_junos_data(self, processed_data, _):
         for entry in processed_data:
             if '[vtep.' in entry['oif']:
                 entry['remote'] = True
@@ -54,7 +56,7 @@ class ArpndService(Service):
 
         return processed_data
 
-    def _clean_nxos_data(self, processed_data, raw_data):
+    def _clean_nxos_data(self, processed_data, _):
 
         drop_indices = []
         for i, entry in enumerate(processed_data):
@@ -73,7 +75,7 @@ class ArpndService(Service):
                                    drop_indices).tolist()
         return processed_data
 
-    def _clean_common_ios_data(self, processed_data, raw_data):
+    def _clean_common_ios_data(self, processed_data, _):
         for entry in processed_data:
             if entry['macaddr'] is None:
                 entry['state'] = "failed"

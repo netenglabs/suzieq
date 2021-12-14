@@ -18,7 +18,7 @@ class TopologyCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         query_str: str = ' ',
         columns: str = "default",
     ) -> None:
@@ -47,9 +47,6 @@ class TopologyCmd(SqCommand):
              peerHostname: str = ''):
         """Show table of topology information"""
         # Get the default display field names
-        if self.columns is None:
-            return
-
         now = time.time()
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
@@ -73,12 +70,10 @@ class TopologyCmd(SqCommand):
     @command("summarize")
     @argument("via", description="filter the method by which topology is seen",
               choices=['arpnd', 'bgp', 'lldp', 'ospf'])
-    def summarize(self, via: str = ""):
+    # pylint: disable=arguments-differ
+    def summarize(self, via: str = "", **kwargs):
         """Summarize topology information"""
         # Get the default display field names
-        if self.columns is None:
-            return
-
         now = time.time()
         if self.columns != ["default"]:
             self.ctxt.sort_fields = None
@@ -91,9 +86,8 @@ class TopologyCmd(SqCommand):
                                     namespace=self.namespace,
                                     via=via.split(),
                                     )
-        except Exception as e:
+        except Exception as e:  # pylint: disable=broad-except
             df = pd.DataFrame({'error': ['ERROR: {}'.format(str(e))]})
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if not df.empty:
-            return self._gen_output(df)
+        return self._gen_output(df)

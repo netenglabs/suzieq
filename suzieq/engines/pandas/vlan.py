@@ -1,10 +1,12 @@
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class VlanObj(SqPandasEngine):
+    '''Backend class to handle manipulating VLAN table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'vlan'
 
     def get(self, **kwargs):
@@ -34,7 +36,7 @@ class VlanObj(SqPandasEngine):
     def summarize(self, **kwargs):
         """Describe the IP Address data"""
 
-        self._init_summarize(self.iobj.table, **kwargs)
+        self._init_summarize(**kwargs)
         if self.summary_df.empty:
             return self.summary_df
 

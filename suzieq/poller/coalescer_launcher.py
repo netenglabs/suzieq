@@ -20,6 +20,7 @@ class CoalescerLauncher:
     """CoalescerLauncher is the component in charge of start and monitor the
     running coalescer
     """
+
     def __init__(self,
                  config_file: str,
                  cfg: Dict,
@@ -121,7 +122,7 @@ class CoalescerLauncher:
             process = await asyncio.create_subprocess_exec(
                 *coalescer_args, stdout=asyncio.subprocess.PIPE,
                 stderr=asyncio.subprocess.PIPE)
-        except Exception as ex:
+        except Exception as ex:  # pylint: disable=broad-except
             logger.error(f'ABORTING. Unable to start coalescer: {ex}')
             process = None
 

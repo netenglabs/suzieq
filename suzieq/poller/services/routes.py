@@ -1,6 +1,7 @@
 import re
-from dateparser import parse
 from datetime import datetime
+
+from dateparser import parse
 
 from suzieq.poller.services.service import Service
 from suzieq.shared.utils import (expand_nxos_ifname,
@@ -22,19 +23,22 @@ class RoutesService(Service):
             data['data'] = data['data'].replace('}, \n    }\n', '} \n    }\n')
             return data['data']
 
+        return data['data']
+
     def _fix_ipvers(self, entry):
+        '''Fix IP version of entry'''
         if ':' in entry['prefix']:
             entry['ipvers'] = 6
         else:
             entry['ipvers'] = 4
 
-    def _common_data_cleaner(self, processed_data, raw_data):
+    def _common_data_cleaner(self, processed_data, _):
         for entry in processed_data:
             self._fix_ipvers(entry)
 
         return processed_data
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
         '''Massage EVPN routes'''
         for entry in processed_data:
             if entry['nexthopIps']:
@@ -54,7 +58,7 @@ class RoutesService(Service):
 
         return processed_data
 
-    def _clean_linux_data(self, processed_data, raw_data):
+    def _clean_linux_data(self, processed_data, _):
         """Clean Linux ip route data"""
 
         for entry in processed_data:
@@ -93,6 +97,7 @@ class RoutesService(Service):
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)
 
+    # pylint: disable=too-many-statements
     def _clean_junos_data(self, processed_data, raw_data):
         """Clean VRF name in JUNOS data"""
 

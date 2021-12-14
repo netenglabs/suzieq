@@ -12,6 +12,7 @@ from suzieq.sqobjects import get_sqobject, get_tables
 
 @dataclass
 class XploreSessionState:
+    '''Session state for Xplore page'''
     page: str = SuzieqMainPages.XPLORE
     namespace: str = ''
     hostname: str = ''
@@ -26,11 +27,16 @@ class XploreSessionState:
 
 
 def get_title():
+    '''Page title
+
+    Mandatory function if you want to display a page
+    '''
     return 'Xplore'
 
 
 @st.cache(ttl=90)
 def xplore_run_summarize(sqobject, **kwargs):
+    '''Get summarize dataframe for the object in question'''
     view = kwargs.pop('view', 'latest')
     stime = kwargs.pop('start_time', '')
     etime = kwargs.pop('end_time', '')
@@ -69,7 +75,8 @@ def xplore_run_unique(df: pd.DataFrame, **kwargs) -> pd.DataFrame:
 
 
 @st.cache(ttl=90)
-def xplore_run_assert(sqobject, **kwargs):
+def xplore_run_assert(sqobject, **kwargs) -> pd.DataFrame:
+    '''Execute assert in response to user request and return dataframe'''
     kwargs.pop('view', 'latest')
     stime = kwargs.pop('start_time', '')
     etime = kwargs.pop('end_time', '')
@@ -81,6 +88,7 @@ def xplore_run_assert(sqobject, **kwargs):
     return df
 
 
+# pylint: disable=too-many-statements
 def xplore_sidebar(state):
     '''Draw appropriate sidebar for the page'''
 
@@ -344,6 +352,7 @@ def xplore_create_layout(state):
 
 
 def xplore_run():
+    '''Main routine for this page'''
     wsstate = st.session_state
     state = wsstate.xploreSessionState
 
@@ -370,7 +379,7 @@ def xplore_run():
         try:
             show_df = df.query(state.query).reset_index(drop=True)
             query_str = state.query
-        except Exception:
+        except Exception:  # pylint: disable=broad-except
             st.warning('Query string throws an exception, ignoring')
             show_df = df
             query_str = ''

@@ -70,7 +70,7 @@ class OspfNbrService(Service):
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
         for entry in processed_data:
             entry["state"] = entry["state"].lower()
             entry["lastChangeTime"] = int(entry["lastChangeTime"] * 1000)
@@ -129,7 +129,7 @@ class OspfNbrService(Service):
                 entry["bfdStatus"] = entry['bfdStatus'].lower()
         return processed_data
 
-    def _clean_ios_data(self, processed_data, raw_data):
+    def _clean_ios_data(self, processed_data, _):
         for entry in processed_data:
             # make area the dotted model
             area = entry.get('area', '')

@@ -26,6 +26,7 @@ HOLD_TIME_IN_MSECS = 60000  # How long b4 declaring node dead
 
 @dataclass
 class RsltToken:
+    '''Cookie passed between service and node objects'''
     start_time: int    # When this cmd was first posted to node
     nodename: str      # Name of node, used to get poller cb again
     bootupTimestamp: int
@@ -36,6 +37,7 @@ class RsltToken:
 
 @dataclass
 class ServiceStats:
+    '''Capture useful stats about service'''
     total_time: List[float] = field(default_factory=list)
     gather_time: List[float] = field(default_factory=list)
     svcQsize: List[float] = field(default_factory=list)
@@ -48,11 +50,14 @@ class ServiceStats:
 
 
 class Service(SqPlugin):
+    '''Main class for handling various services/tables processing on devices'''
 
     def get_poller_schema(self):
+        '''Return the schema used by this service'''
         return self._poller_schema
 
     def set_poller_schema(self, value: dict):
+        '''Set the poller schema used by this service'''
         self._poller_schema = value
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
@@ -110,7 +115,8 @@ class Service(SqPlugin):
 
     @ staticmethod
     def is_status_ok(status: int) -> bool:
-        if status == 0 or status == HTTPStatus.OK:
+        '''Did the node return a successful command output'''
+        if status in [0, HTTPStatus.OK]:
             return True
         return False
 
@@ -139,6 +145,7 @@ class Service(SqPlugin):
             self.node_postcall_list = node_call_list
 
     def _get_default_vals(self) -> dict:
+        '''Get default values based on type'''
         return({
             pa.string(): "",
             pa.int32(): 0,
@@ -152,6 +159,7 @@ class Service(SqPlugin):
         })
 
     def get_empty_record(self):
+        '''Return an empty record matching schema'''
         map_defaults = self._get_default_vals()
 
         defaults = [map_defaults[x] for x in self.schema.types]
@@ -212,7 +220,7 @@ class Service(SqPlugin):
 
         return adds, dels
 
-    def textfsm_data(self, raw_input, fsm_template, entry_type, schema, data):
+    def textfsm_data(self, raw_input, fsm_template, entry_type, _1, _2):
         """Convert unstructured output to structured output"""
 
         records = []
@@ -245,7 +253,7 @@ class Service(SqPlugin):
         """Clean the JSON input data that is sometimes messed up
         Each service can implement its own version of the cleanup
         """
-        return None
+        return data.get('data', {})
 
     async def start_data_gather(self) -> None:
         """Start data gathering by calling the post command list
@@ -285,11 +293,11 @@ class Service(SqPlugin):
                       '=': operator.eq, '!=': operator.ne}
             op = operator.eq
 
-            for elem in opdict:
+            for elem, val in opdict.items():
                 if os_version.startswith(elem):
                     os_version = os_version.replace(
                         elem, '').strip()
-                    op = opdict[elem]
+                    op = val
                     break
 
             if op(version_parse.LegacyVersion(version),
@@ -298,6 +306,7 @@ class Service(SqPlugin):
 
         return None
 
+    # pylint: disable=too-many-statements
     def _process_each_output(self, elem_num, data):
         """Workhorse processing routine for each element in output"""
 
@@ -337,11 +346,10 @@ class Service(SqPlugin):
                             if not in_info:
                                 self.logger.error(
                                     "Received non-JSON output where "
-                                    "JSON was expected for {} on "
-                                    "node {}, {}".format(
-                                        data["cmd"], data["hostname"],
-                                        data["data"]
-                                    )
+                                    "JSON was expected for %s on "
+                                    "node %s, %s",
+                                    data["cmd"], data["hostname"],
+                                    data["data"]
                                 )
                                 return result
                             try:
@@ -349,11 +357,10 @@ class Service(SqPlugin):
                             except json.JSONDecodeError:
                                 self.logger.error(
                                     "Received non-JSON output where "
-                                    "JSON was expected for {} on "
-                                    "node {}, {}".format(
-                                        data["cmd"], data["hostname"],
-                                        data["data"]
-                                    )
+                                    "JSON was expected for %s on "
+                                    "node %s, %s",
+                                    data["cmd"], data["hostname"],
+                                    data["data"]
                                 )
                                 return result
                     else:
@@ -404,8 +411,8 @@ class Service(SqPlugin):
                     )
             else:
                 self.logger.error(
-                    "{}: No normalization/textfsm function for device {}"
-                    .format(self.name, data["hostname"]))
+                    "%s: No normalization/textfsm function for device %s",
+                    self.name, data["hostname"])
 
         return result
 
@@ -426,7 +433,9 @@ class Service(SqPlugin):
         return list(filter(lambda x: x not in ['namespace', 'hostname'],
                            self.keys))
 
-    def merge_results(self, result_list, data):
+    def merge_results(self, result_list, _):
+        '''Merge the results from multiple commands into a single result'''
+
         int_res = {}
         keyflds = self.get_key_flds()
 
@@ -462,11 +471,11 @@ class Service(SqPlugin):
 
         return(final_res)
 
-    def _get_devtype_from_input(self, input):
-        if isinstance(input, list):
-            return input[0].get('devtype', None)
+    def _get_devtype_from_input(self, input_data):
+        if isinstance(input_data, list):
+            return input_data[0].get('devtype', None)
         else:
-            return input.get('devtype', None)
+            return input_data.get('devtype', None)
 
     def clean_data(self, processed_data, raw_data):
         """Massage the extracted data to match record specified by schema"""
@@ -510,24 +519,26 @@ class Service(SqPlugin):
             read_from = raw_data[0]
         else:
             read_from = raw_data
+
+        # pylint: disable=too-many-nested-blocks
         for entry in processed_data or []:
             entry.update({"hostname": read_from["hostname"]})
             entry.update({"namespace": read_from["namespace"]})
             entry.update({"timestamp": read_from["timestamp"]})
             entry.update({"sqvers": self.version})
-            for fld in schema_rec:
+            for fld, val in schema_rec.items():
                 if fld not in entry:
                     if fld == "active":
                         entry.update({fld: True})
                     else:
-                        entry.update({fld: schema_rec[fld]})
+                        entry.update({fld: val})
                 else:
                     fld_type = self.schema.field(fld).type
                     if not isinstance(entry[fld], ptype_map[fld_type]):
                         try:
                             entry[fld] = ptype_map[fld_type](entry[fld])
                         except (ValueError, TypeError):
-                            entry[fld] = schema_rec[fld]
+                            entry[fld] = val
                     elif isinstance(entry[fld], list):
                         for i, ele in enumerate(entry[fld]):
                             if not isinstance(ele,
@@ -540,10 +551,10 @@ class Service(SqPlugin):
                                     else:
                                         raise ValueError
                                 except (ValueError, TypeError):
-                                    entry[fld][i] = schema_rec[fld]
+                                    entry[fld][i] = val
         return processed_data
 
-    async def commit_data(self, result, namespace, hostname):
+    async def commit_data(self, result, _, hostname):
         """Write the result data out"""
         records = []
         prev_res = self.previous_results.get(hostname, [])
@@ -629,6 +640,7 @@ class Service(SqPlugin):
 
         return write_stat
 
+    # pylint: disable=too-many-statements
     async def run(self):
         """Start the service"""
         self.logger.info(f"running service {self.name} ")
@@ -663,6 +675,7 @@ class Service(SqPlugin):
             if output:
                 ostatus = [x.get('status', -1) for x in output]
 
+                # pylint: disable=use-a-generator
                 write_poller_stat = not all([Service.is_status_ok(x)
                                              for x in ostatus])
                 status = ostatus[0]
@@ -693,7 +706,7 @@ class Service(SqPlugin):
 
                 try:
                     result = self.process_data(output)
-                except Exception:
+                except Exception:  # pylint: disable=broad-except
                     result = []
                     status = HTTPStatus.BAD_GATEWAY
                     write_poller_stat = True
@@ -730,7 +743,7 @@ class Service(SqPlugin):
                 await self.commit_data(result, output[0]["namespace"],
                                        hostname)
             else:
-                if self.run_once == "gather" or self.run_once == "process":
+                if self.run_once in ["gather", "process"]:
                     total_nodes -= 1
                     if total_nodes <= 0:
                         self.logger.info(
@@ -753,7 +766,7 @@ class Service(SqPlugin):
                     poller_stat = [
                         {"hostname": (output[0]["hostname"] or
                                       output[0]['address']),
-                            "sqvers": self.poller_schema_version,
+                         "sqvers": self.poller_schema_version,
                          "namespace": output[0]["namespace"],
                          "active": True,
                          "service": self.name,

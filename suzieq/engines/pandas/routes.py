@@ -1,15 +1,19 @@
-from collections import defaultdict
-from .engineobj import SqPandasEngine
-import pandas as pd
-import numpy as np
 from typing import Tuple
 from ipaddress import ip_address, ip_network
+from collections import defaultdict
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+
+import numpy as np
+import pandas as pd
 
 
 class RoutesObj(SqPandasEngine):
+    '''Backend class to handle manipulating routes table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'routes'
 
     def _cons_addnl_fields(self, columns: list,
@@ -32,6 +36,7 @@ class RoutesObj(SqPandasEngine):
         return addnl_fields, drop_cols
 
     def get(self, **kwargs):
+        '''Return the routes table for the given filters'''
 
         prefixlen = kwargs.pop('prefixlen', '')
         prefix = kwargs.pop('prefix', [])
@@ -104,8 +109,9 @@ class RoutesObj(SqPandasEngine):
         return df
 
     def summarize(self, **kwargs):
+        '''Summarize routing table info'''
 
-        self._init_summarize(self.iobj._table, **kwargs)
+        self._init_summarize(**kwargs)
         if self.summary_df.empty:
             return self.summary_df
 
@@ -147,6 +153,7 @@ class RoutesObj(SqPandasEngine):
         devices_per_vrfns = self.summary_df.groupby(by=["namespace", "vrf"])[
             "hostname"].nunique()
 
+        # pylint: disable=expression-not-assigned
         {self.ns[i[0]].update({
             "deviceWithNoDefRoute":
             device_with_defrt_per_vrfns[i] == devices_per_vrfns[i]})
@@ -157,19 +164,15 @@ class RoutesObj(SqPandasEngine):
         return self.ns_df.convert_dtypes()
 
     def lpm(self, **kwargs):
-        if not self.iobj._table:
-            raise NotImplementedError
+        '''Run longest prefix match on routing table for specified addr'''
 
         addr = kwargs.pop('address')
         kwargs.pop('ipvers', None)
         df = kwargs.pop('cached_df', pd.DataFrame())
         addnl_fields = kwargs.pop('addnl_fields', [])
 
-        try:
-            ipaddr = ip_address(addr)
-            ipvers = ipaddr._version
-        except ValueError as e:
-            raise ValueError(e)
+        ipaddr = ip_address(addr)
+        ipvers = ipaddr._version  # pylint: disable=protected-access
 
         usercols = kwargs.pop('columns', ['default'])
         if usercols == ['default']:
@@ -209,6 +212,7 @@ class RoutesObj(SqPandasEngine):
                                    16))
             netmask = df.prefixlen \
                 .map(lambda x: (0xffffffff << (32 - x)) & 0xffffffff)
+            # pylint: disable=protected-access
             match = (ipaddr._ip & netmask) == (intaddr & netmask)
             rslt = df.loc[match.loc[match].index] \
                 .sort_values('prefixlen', ascending=False) \
@@ -230,11 +234,3 @@ class RoutesObj(SqPandasEngine):
                 rslt = pd.DataFrame()
 
         return rslt[usercols]
-
-    def aver(self, **kwargs) -> pd.DataFrame:
-        """Verify that the routing table is consistent
-        The only check for now is to ensure every host has a default route/vrf'
-        """
-        df = self.get(**kwargs)
-        if df.empty:
-            return df

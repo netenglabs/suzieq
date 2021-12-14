@@ -6,7 +6,7 @@ from suzieq.poller.services.service import Service
 class VlanService(Service):
     """Vlan service. Different class because Vlan is not right type for EOS"""
 
-    def _clean_eos_data(self, processed_data, raw_data):
+    def _clean_eos_data(self, processed_data, _):
         '''Massage the interface output'''
 
         for entry in processed_data:
@@ -16,7 +16,7 @@ class VlanService(Service):
 
         return processed_data
 
-    def _clean_cumulus_data(self, processed_data, raw_data):
+    def _clean_cumulus_data(self, processed_data, _):
         '''Fix Linux VLAN output.
         Linux output is the transposed from the vlan output of all other NOS
         '''
@@ -57,7 +57,7 @@ class VlanService(Service):
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_cumulus_data(processed_data, raw_data)
 
-    def _clean_nxos_data(self, processed_data, raw_data):
+    def _clean_nxos_data(self, processed_data, _):
         '''Massage the interface output'''
 
         for entry in processed_data:
@@ -70,7 +70,7 @@ class VlanService(Service):
                 entry['interfaces'] = entry['interfaces'][0].split(',')
         return processed_data
 
-    def _clean_junos_data(self, processed_data, raw_data):
+    def _clean_junos_data(self, processed_data, _):
         '''Massage the default name and interface list'''
 
         drop_indices = []
@@ -97,7 +97,7 @@ class VlanService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
-    def _clean_ios_data(self, processed_data, raw_data):
+    def _clean_ios_data(self, processed_data, _):
         '''Massage the interface list'''
 
         for entry in processed_data:

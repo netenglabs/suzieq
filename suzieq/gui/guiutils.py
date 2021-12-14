@@ -12,6 +12,7 @@ from suzieq.sqobjects import get_sqobject
 
 
 class SuzieqMainPages(str, Enum):
+    '''Pages in Suzieq GUI'''
     STATUS = "Status"
     XPLORE = "Xplore"
     PATH = "Path"
@@ -57,7 +58,7 @@ def gui_get_df(table: str, verb: str = 'get', **kwargs) -> pd.DataFrame:
                 df = df.explode('ipAddressList').fillna('')
             if 'ip6AddressList' in df.columns:
                 df = df.explode('ip6AddressList').fillna('')
-    if not (columns == ['*'] or columns == ['default']):
+    if columns not in [['*'], ['default']]:
         return df[columns].reset_index(drop=True)
     return df.reset_index(drop=True)
 
@@ -69,6 +70,7 @@ def get_base_url():
     URL for use with links on various pages.
     '''
     session_id = get_report_ctx().session_id
+    # pylint: disable=protected-access
     session_info = Server.get_current()._get_session_info(session_id)
 
     if session_info:
@@ -93,6 +95,7 @@ def get_main_session_by_id(session_id):
     Returns:
         [type]: session state associated with session or None
     """
+    # pylint: disable=protected-access
     session = Server.get_current()._session_info_by_id.get(session_id, None)
     if session:
         return session.session.session_state
@@ -108,11 +111,15 @@ def get_image_dir():
 
 def display_help_icon(url: str):
     '''Display Help Icon with click to take you to appropriate page'''
+
     help_img = f'{get_image_dir()}/helps.png'
+    with open(help_img, "rb") as f:
+        img = base64.b64encode(f.read()).decode()
+
     st.sidebar.markdown(
         f'<a target="_help" href="{url}"><img class="help-img" '
         f'src="data:image/png;base64,'
-        f'{base64.b64encode(open(help_img, "rb").read()).decode()}"></a>',
+        f'{img}"></a>',
         unsafe_allow_html=True)
 
 
@@ -171,6 +178,8 @@ def color_element_red(value, **kwargs):
     fieldval = kwargs.pop("fieldval", "down")
     if value not in fieldval:
         return "background-color: red; color: white;"
+    # Assuming light theme here
+    return "background-color: white; color: black;"
 
 
 def ifstate_red(row):
@@ -269,13 +278,17 @@ def display_title(page: str):
         unsafe_allow_html=True
     )
 
-    title_col, mid, page_col, srch_col = st.columns([2, 1, 2, 2])
+    title_col, _, page_col, srch_col = st.columns([2, 1, 2, 2])
+
+    with open(LOGO_IMAGE, "rb") as f:
+        img = base64.b64encode(f.read()).decode()
+
     with title_col:
         st.markdown(
             f"""
             <div class="container">
                 <img class="logo-img" src="data:image/png;base64,
-                {base64.b64encode(open(LOGO_IMAGE, "rb").read()).decode()}">
+                {img}">
                 <h1 style='color:purple;'>Suzieq</h1>
             </div>
             """,
@@ -313,7 +326,7 @@ def display_title(page: str):
 
 
 def main_sync_state():
-
+    '''Sync search & page state on main Suzieq GUI page'''
     wsstate = st.session_state
 
     if wsstate.search_text != wsstate.search:
@@ -322,6 +335,6 @@ def main_sync_state():
 
     if wsstate.page != wsstate.sq_page:
         wsstate.page = wsstate.sq_page
-        st.experimental_set_query_params(**dict())
+        st.experimental_set_query_params(**{})
         if wsstate.page != 'Search':
             wsstate.search_text = ''

@@ -1,5 +1,5 @@
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class OspfifObj(SqPandasEngine):
-    pass
+    '''Ignore this class, dummy for various reasons'''

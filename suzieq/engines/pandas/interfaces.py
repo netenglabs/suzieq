@@ -1,14 +1,17 @@
 from ipaddress import ip_network
-import pandas as pd
-import numpy as np
 
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+
+import numpy as np
+import pandas as pd
 
 
 class InterfacesObj(SqPandasEngine):
+    '''Backend class to handle manipulating interfaces table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'interfaces'
 
     def get(self, **kwargs):
@@ -41,6 +44,7 @@ class InterfacesObj(SqPandasEngine):
         else:
             return df.reset_index(drop=True)
 
+    # pylint: disable=arguments-differ
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
 
@@ -52,7 +56,7 @@ class InterfacesObj(SqPandasEngine):
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize interface information"""
-        self._init_summarize(self.iobj._table, **kwargs)
+        self._init_summarize(**kwargs)
         if self.summary_df.empty:
             return self.summary_df
 
@@ -149,6 +153,7 @@ class InterfacesObj(SqPandasEngine):
         else:
             return result_df
 
+    # pylint: disable=too-many-statements
     def _assert_interfaces(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine that validates MTU match for specified input"""
         columns = kwargs.pop('columns', [])
@@ -200,7 +205,7 @@ class InterfacesObj(SqPandasEngine):
         # Map subinterface into parent interface
         if_df['pifname'] = if_df.apply(
             lambda x: x['ifname'].split('.')[0]
-            if (x.type == 'subinterface') or (x.type == 'vlan')
+            if x.type in ['subinterface', 'vlan']
             else x['ifname'], axis=1)
 
         # Thanks for Junos, remove all the useless parent interfaces
@@ -335,8 +340,7 @@ class InterfacesObj(SqPandasEngine):
         # find a peer
         combined_df['skipIfCheck'] = combined_df.apply(
             lambda x:
-            True if ((x.master == 'bridge') or
-                     (x.type in ['bond_slave', 'vlan'])) else False,
+            (x.master == 'bridge') or (x.type in ['bond_slave', 'vlan']),
             axis=1)
 
         combined_df['indexPeer'] = combined_df.apply(

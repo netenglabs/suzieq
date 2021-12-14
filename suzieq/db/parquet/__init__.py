@@ -1,5 +1,6 @@
-from .parquetdb import SqParquetDB
 import logging
+
+from suzieq.db.parquet.parquetdb import SqParquetDB
 
 
 def get_sqdb(cfg: dict, logger: logging.Logger) -> SqParquetDB:
@@ -14,4 +15,4 @@ def get_sqdb(cfg: dict, logger: logging.Logger) -> SqParquetDB:
     return SqParquetDB(cfg, logger)
 
 
-__all__ = [get_sqdb]
+__all__ = ['get_sqdb']

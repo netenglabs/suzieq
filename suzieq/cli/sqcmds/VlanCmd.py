@@ -10,6 +10,7 @@ from suzieq.sqobjects.vlan import VlanObj
 class VlanCmd(SqCommand):
     """Information about VLANs including interfaces belonging to a VLAN"""
 
+    # pylint: disable=redefined-builtin
     def __init__(self, engine: str = '', hostname: str = '',
                  start_time: str = '', end_time: str = '',
                  view: str = '', namespace: str = '',
@@ -29,9 +30,6 @@ class VlanCmd(SqCommand):
     def show(self, vlan: str = '', vlanName: str = '', state: str = ''):
         """Show VLAN info
         """
-        if self.columns is None:
-            return
-
         # Get the default display field names
         now = time.time()
         if self.columns != ['default']:

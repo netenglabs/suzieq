@@ -32,14 +32,17 @@ class OutputWorkerManager:
 
     @property
     def output_queue(self):
+        '''Queue between the poller and the writer'''
         return self._output_queue
 
     @property
     def output_types(self):
+        '''Supported output formats'''
         return self._output_types
 
     @property
     def output_args(self):
+        '''Args supplied on init'''
         return self._output_args
 
     async def run_output_workers(self):

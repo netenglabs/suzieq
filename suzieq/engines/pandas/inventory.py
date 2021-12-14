@@ -1,12 +1,15 @@
-import pandas as pd
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+
 import numpy as np
-from .engineobj import SqPandasEngine
+import pandas as pd
 
 
 class InventoryObj(SqPandasEngine):
+    '''Backend class to handle manipulating inventory table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'inventory'
 
     def _common_get_exit_fn(self, df: pd.DataFrame, **kwargs) -> pd.DataFrame:

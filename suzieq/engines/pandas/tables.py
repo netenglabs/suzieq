@@ -1,12 +1,14 @@
-import pandas as pd
-
 from suzieq.engines.pandas.engineobj import SqPandasEngine
+
+import pandas as pd
 
 
 class TableObj(SqPandasEngine):
+    '''Backend class for virtual table, tables, with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'tables'
 
     def get(self, **kwargs):
@@ -28,7 +30,7 @@ class TableObj(SqPandasEngine):
                 # single table as in the case of ospf
                 unknown_tables.append(table)
                 table_inst = self._get_table_sqobj('tables')
-                table_inst._table = table
+                table_inst.table = table
             else:
                 table_inst = table_obj
 
@@ -55,6 +57,8 @@ class TableObj(SqPandasEngine):
         return df
 
     def summarize(self, **kwargs):
+        '''Summarize metainfo about the various DB tables'''
+
         df = self.get(**kwargs)
 
         if df.empty or ('error' in df.columns):
@@ -83,7 +87,7 @@ class TableObj(SqPandasEngine):
         if not what:
             return pd.DataFrame()
 
-        df = self.get(addnl_fields=self.iobj._addnl_fields, **kwargs)
+        df = self.get(addnl_fields=self.iobj.addnl_fields, **kwargs)
         if df.empty or ('error' in df.columns):
             return df
 

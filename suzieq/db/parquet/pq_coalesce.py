@@ -1,19 +1,20 @@
 import os
-import pandas as pd
-import pyarrow.parquet as pq
-import pyarrow.dataset as ds    # put this later due to some numpy dependency
 from datetime import datetime, timedelta, timezone
 import logging
 from typing import List
-import tarfile
 from itertools import repeat
+import tarfile
+
+import pandas as pd
+import pyarrow.parquet as pq
+import pyarrow.dataset as ds    # put this later due to some numpy dependency
 
 from suzieq.shared.utils import humanize_timestamp
 from suzieq.shared.schema import SchemaForTable
-from .migratedb import get_migrate_fn
+from suzieq.db.parquet.migratedb import get_migrate_fn
 
 
-class SqCoalesceState(object):
+class SqCoalesceState:
     '''Class that coalesces parquet files'''
 
     def __init__(self, logger: str, period: timedelta):
@@ -30,7 +31,7 @@ class SqCoalesceState(object):
         self.poller_periods = set()
         self.block_start = self.block_end = 0
 
-    def pq_file_name(self, *args):
+    def pq_file_name(self, *args):  # pylint: disable=unused-argument
         """Callback to create a filename that uses the timestamp of start
         of hour. This makes it easy for us to lookup data when we need to.
 
@@ -59,9 +60,12 @@ def archive_coalesced_files(filelist: List[str], outfolder: str,
             for file in filelist:
                 f.add(file)
     if dodel:
+        # pylint: disable=expression-not-assigned
         [os.remove(x) for x in filelist]
 
 
+# pylint: disable=unused-argument
+# Doing pylint override because I'm nervous about touching this fn
 def write_files(table: str, filelist: List[str], in_basedir: str,
                 outfolder: str, partition_cols: List[str],
                 state: SqCoalesceState, block_start, block_end) -> None:
@@ -134,8 +138,8 @@ def find_broken_files(parent_dir: str) -> List[str]:
 
     all_files = []
     broken_files = []
-    ro, pa = os.path.split(parent_dir)
-    for root, dirs, files in os.walk(parent_dir):
+    ro, _ = os.path.split(parent_dir)
+    for root, _, files in os.walk(parent_dir):
         if ('_archived' not in root and '.sq-coalescer.pid' not in files
                 and len(files) > 0):
             path = root.replace(ro, '')
@@ -161,7 +165,7 @@ def move_broken_files(parent_dir: str, state: SqCoalesceState,
     """
 
     broken_files = find_broken_files(parent_dir)
-    ro, pa = os.path.split(parent_dir)
+    ro, _ = os.path.split(parent_dir)
 
     for file in broken_files:
         src = f"{ro}/{file}"
@@ -271,6 +275,7 @@ def get_last_update_df(table_name: str, outfolder: str,
     return current_df
 
 
+# pylint: disable=too-many-statements
 def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
                             table: str, state: SqCoalesceState) -> None:
     """This routine coalesces all the parquet data in the folder provided
