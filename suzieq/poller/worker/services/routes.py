@@ -3,7 +3,7 @@ from datetime import datetime
 
 from dateparser import parse
 
-from suzieq.poller.services.service import Service
+from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (expand_nxos_ifname,
                                  get_timestamp_from_cisco_time,
                                  get_timestamp_from_junos_time)

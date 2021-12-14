@@ -9,7 +9,7 @@ from http import HTTPStatus
 from datetime import datetime, timezone
 import aiofiles
 
-from suzieq.poller.services.service import RsltToken
+from suzieq.poller.worker.services.service import RsltToken
 
 
 class FileNode:

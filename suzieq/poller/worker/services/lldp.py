@@ -1,6 +1,6 @@
 import re
 
-from suzieq.poller.services.service import Service
+from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (convert_macaddr_format_to_colon,
                                  expand_ios_ifname)
 

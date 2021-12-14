@@ -9,7 +9,7 @@ import traceback
 
 import uvloop
 
-from suzieq.poller.poller import Poller
+from suzieq.poller.worker.poller import Poller
 from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
 from suzieq.shared.utils import get_log_params, init_logger, load_sq_config
 
@@ -19,7 +19,7 @@ async def start_poller(userargs, cfg):
     # Init logger of the poller
     logfile, loglevel, logsize, log_stdout = get_log_params(
         'poller', cfg, '/tmp/sq-poller.log')
-    logger = init_logger('suzieq.poller', logfile,
+    logger = init_logger('suzieq.poller.worker', logfile,
                          loglevel, logsize, log_stdout)
 
     poller = None

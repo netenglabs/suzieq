@@ -6,8 +6,8 @@ the the data inside an input directory
 
 from typing import Dict, List
 
-from suzieq.poller.inventory.inventory_sources_base.inventory import Inventory
-from suzieq.poller.nodes.files import FileNode
+from suzieq.poller.worker.inventory.inventory_sources_base.inventory import Inventory
+from suzieq.poller.worker.nodes.files import FileNode
 
 
 class InputDirInventory(Inventory):

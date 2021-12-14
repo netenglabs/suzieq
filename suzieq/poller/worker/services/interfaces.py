@@ -5,7 +5,7 @@ from collections import defaultdict
 from dateparser import parse
 import numpy as np
 
-from suzieq.poller.services.service import Service
+from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import get_timestamp_from_junos_time
 from suzieq.shared.utils import convert_macaddr_format_to_colon
 from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES

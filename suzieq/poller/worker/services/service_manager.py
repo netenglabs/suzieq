@@ -12,7 +12,7 @@ import textfsm
 import yaml
 from genericpath import isfile
 
-from suzieq.poller.services.service import Service
+from suzieq.poller.worker.services.service import Service
 from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.shared.schema import Schema, SchemaForTable
 

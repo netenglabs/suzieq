@@ -3,7 +3,7 @@ This module contains the logic of the writer for the 'gather' mode
 """
 import os
 
-from suzieq.poller.writers.output_worker import OutputWorker
+from suzieq.poller.worker.writers.output_worker import OutputWorker
 
 
 class GatherOutputWorker(OutputWorker):

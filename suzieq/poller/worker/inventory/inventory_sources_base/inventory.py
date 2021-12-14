@@ -8,7 +8,7 @@ import logging
 from collections import defaultdict
 from typing import Callable, Dict, List
 
-from suzieq.poller.nodes.node import Node
+from suzieq.poller.worker.nodes.node import Node
 from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.shared.sq_plugin import SqPlugin
 

@@ -16,7 +16,8 @@ import pyarrow as pa
 import yaml
 from packaging import version as version_parse
 
-from suzieq.poller.services.svcparser import cons_recs_from_json_template
+from suzieq.poller.worker.services.svcparser \
+    import cons_recs_from_json_template
 from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.utils import known_devtypes
 from suzieq.version import SUZIEQ_VERSION

@@ -1,7 +1,7 @@
 import re
 import numpy as np
 
-from suzieq.poller.services.service import Service
+from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (convert_rangestring_to_list,
                                  convert_macaddr_format_to_colon)
 

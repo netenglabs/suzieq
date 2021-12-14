@@ -7,7 +7,7 @@ import asyncio
 import logging
 from typing import Dict, List
 
-from suzieq.poller.writers.output_worker import OutputWorker
+from suzieq.poller.worker.writers.output_worker import OutputWorker
 from suzieq.shared.exceptions import SqPollerConfError
 
 logger = logging.getLogger(__name__)

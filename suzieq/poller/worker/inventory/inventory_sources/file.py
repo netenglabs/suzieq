@@ -9,7 +9,7 @@ from typing import Dict, List
 from urllib.parse import urlparse
 from ipaddress import ip_address
 
-from suzieq.poller.inventory.inventory_sources_base.inventory import Inventory
+from suzieq.poller.worker.inventory.inventory_sources_base.inventory import Inventory
 from suzieq.shared.inventories_parsing import get_hostsdata_from_hostsfile
 from suzieq.shared.utils import SUPPORTED_POLLER_TRANSPORTS
 

@@ -5,7 +5,7 @@ inventory from an Ansible inventory file.
 
 from typing import Dict, List
 
-from suzieq.poller.inventory.inventory_sources_base.inventory import Inventory
+from suzieq.poller.worker.inventory.inventory_sources_base.inventory import Inventory
 from suzieq.shared.inventories_parsing import parse_ansible_inventory
 
 

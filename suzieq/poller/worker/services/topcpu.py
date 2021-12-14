@@ -1,4 +1,4 @@
-from suzieq.poller.services.service import Service
+from suzieq.poller.worker.services.service import Service
 
 
 class TopCpuService(Service):

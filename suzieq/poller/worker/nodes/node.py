@@ -22,7 +22,7 @@ import aiohttp
 from dateparser import parse
 
 
-from suzieq.poller.services.service import RsltToken
+from suzieq.poller.worker.services.service import RsltToken
 from suzieq.shared.utils import get_timestamp_from_junos_time, known_devtypes
 from suzieq.shared.exceptions import UnknownDevtypeError
 

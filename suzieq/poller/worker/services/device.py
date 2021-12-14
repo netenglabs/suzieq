@@ -1,6 +1,6 @@
 from datetime import timedelta, datetime
 
-from suzieq.poller.services.service import Service
+from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import get_timestamp_from_junos_time
 from dateparser import parse
 

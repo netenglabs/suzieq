@@ -8,10 +8,10 @@ import os
 import signal
 from typing import Dict
 
-from suzieq.poller.coalescer_launcher import CoalescerLauncher
-from suzieq.poller.inventory.inventory_sources_base.inventory import Inventory
-from suzieq.poller.services.service_manager import ServiceManager
-from suzieq.poller.writers.output_worker_manager import OutputWorkerManager
+from suzieq.poller.worker.coalescer_launcher import CoalescerLauncher
+from suzieq.poller.worker.inventory.inventory_sources_base.inventory import Inventory
+from suzieq.poller.worker.services.service_manager import ServiceManager
+from suzieq.poller.worker.writers.output_worker_manager import OutputWorkerManager
 from suzieq.shared.exceptions import SqPollerConfError
 
 logger = logging.getLogger(__name__)
@@ -172,7 +172,7 @@ class Poller:
 
         # Retrieve the specific inventory source to use
         inv_types = Inventory.get_plugins(
-            search_pkg="suzieq.poller.inventory.inventory_sources"
+            search_pkg="suzieq.poller.worker.inventory.inventory_sources"
         )
         # TODO: define a generic way to specify the source of the inventory
         inventory_class = None

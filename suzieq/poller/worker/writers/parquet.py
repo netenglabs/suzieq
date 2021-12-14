@@ -10,7 +10,7 @@ import pyarrow as pa
 import pyarrow.parquet as pq
 
 from suzieq.shared.exceptions import SqPollerConfError
-from suzieq.poller.writers.output_worker import OutputWorker
+from suzieq.poller.worker.writers.output_worker import OutputWorker
 
 logger = logging.getLogger(__name__)
 

@@ -1,6 +1,6 @@
 import numpy as np
 from suzieq.shared.utils import expand_ios_ifname
-from suzieq.poller.services.service import Service
+from suzieq.poller.worker.services.service import Service
 
 
 class VlanService(Service):

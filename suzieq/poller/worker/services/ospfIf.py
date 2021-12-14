@@ -1,6 +1,6 @@
 from ipaddress import ip_address, IPv4Interface
 
-from suzieq.poller.services.service import Service
+from suzieq.poller.worker.services.service import Service
 
 import numpy as np
 
