@@ -5,7 +5,7 @@ inventory from an Ansible inventory file.
 
 from typing import Dict, List
 
-from suzieq.poller.worker.inventory.inventory_sources_base.inventory import Inventory
+from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.shared.inventories_parsing import parse_ansible_inventory
 
 
@@ -19,7 +19,7 @@ class AnsibleInventory(Inventory):
         self.default_namespace = kwargs.pop('default_namespace', None)
         super().__init__(add_task_fn, **kwargs)
 
-    def _get_device_list(self) -> List[Dict]:
+    async def _get_device_list(self) -> List[Dict]:
         """Extract the data from the Ansible inventory file
 
         Returns:

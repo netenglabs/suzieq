@@ -6,7 +6,7 @@ the the data inside an input directory
 
 from typing import Dict, List
 
-from suzieq.poller.worker.inventory.inventory_sources_base.inventory import Inventory
+from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.poller.worker.nodes.files import FileNode
 
 
@@ -31,10 +31,11 @@ class InputDirInventory(Inventory):
         """
 
         node = FileNode()
+        # pylint: disable=protected-access
         await node._init(self.input_dir)
         self._nodes = {node.hostname: node}
 
         return self._nodes
 
-    def _get_device_list(self) -> List[Dict]:
+    async def _get_device_list(self) -> List[Dict]:
         return []

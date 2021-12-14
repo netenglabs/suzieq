@@ -9,7 +9,7 @@ from typing import Dict, List
 from urllib.parse import urlparse
 from ipaddress import ip_address
 
-from suzieq.poller.worker.inventory.inventory_sources_base.inventory import Inventory
+from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.shared.inventories_parsing import get_hostsdata_from_hostsfile
 from suzieq.shared.utils import SUPPORTED_POLLER_TRANSPORTS
 
@@ -25,7 +25,7 @@ class SqNativeInventory(Inventory):
         self.inventory_source = kwargs.pop('inventory', None)
         super().__init__(add_task_fn, **kwargs)
 
-    def _get_device_list(self) -> List[Dict]:
+    async def _get_device_list(self) -> List[Dict]:
         """Extract the data from the Suzieq inventory file
 
         Returns:

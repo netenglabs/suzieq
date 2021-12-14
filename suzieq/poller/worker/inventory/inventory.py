@@ -6,7 +6,7 @@ import abc
 import asyncio
 import logging
 from collections import defaultdict
-from typing import Callable, Dict, List
+from typing import Callable, Coroutine, Dict, List
 
 from suzieq.poller.worker.nodes.node import Node
 from suzieq.shared.exceptions import SqPollerConfError
@@ -37,15 +37,27 @@ class Inventory(SqPlugin):
         self.jump_host = kwargs.pop('jump_host', None)
         self.jump_host_key_file = kwargs.pop('jump_host_key_file', None)
         self.ignore_known_hosts = kwargs.pop('ignore_known_hosts', False)
-        self.user_password = kwargs.pop('user_password', None)
+        self.user_password = kwargs.pop('password', None)
         self.connect_timeout = kwargs.pop('connect_timeout', 15)
 
     @property
-    def nodes(self):
+    def nodes(self) -> Dict[str, Node]:
+        """Get the current list of nodes in the inventory
+
+        Returns:
+            Dict[str, Node]: get a dictionary with the nodes in the inventory
+                with format {namespace.hostname: Node}
+        """
         return self._nodes
 
     @property
-    def running_nodes(self):
+    def running_nodes(self) -> List[Coroutine]:
+        """Get the the couroutines of the running nodes
+
+        Returns:
+            List[Coroutine]: a list containing the coroutines of the running
+                nodes
+        """
         return self._node_tasks
 
     async def build_inventory(self) -> Dict[str, Node]:
@@ -54,41 +66,18 @@ class Inventory(SqPlugin):
 
         Raises:
             SqPollerConfError: in case of wrong inventory configuration
+            InventorySourceError: in case of error with the inventory source
 
         Returns:
             Dict[str, Node]: a list containing all the nodes in the inventory
         """
 
-        inventory_list = self._get_device_list()
+        inventory_list = await self._get_device_list()
         if not inventory_list:
             raise SqPollerConfError('The inventory source returned no hosts')
 
         # Initialize the nodes in the inventory
-        init_tasks = []
-        for host in inventory_list:
-            new_node = Node()
-            init_tasks += [new_node._init(
-                **host,
-                passphrase=self.passphrase,
-                ssh_config_file=self.ssh_config_file,
-                jump_host=self.jump_host,
-                jump_host_key_file=self.jump_host_key_file,
-                connect_timeout=self.connect_timeout,
-                ignore_known_hosts=self.ignore_known_hosts,
-            )]
-
-        for n in asyncio.as_completed(init_tasks):
-            newnode = await n
-            if newnode.devtype is None:
-                logger.error(
-                    "Unable to determine device type for {}:{}"
-                    .format(newnode.address, newnode.port))
-            else:
-                logger.info(f"Added node {newnode.hostname}:{newnode.port}")
-
-            self._nodes.update(
-                {"{}.{}".format(newnode.nsname, newnode.hostname): newnode})
-
+        self._nodes = await self._init_nodes(inventory_list)
         return self._nodes
 
     def get_node_callq(self) -> Dict[str, Dict]:
@@ -118,15 +107,68 @@ class Inventory(SqPlugin):
         if not self._node_tasks:
             self._node_tasks = {node: self._nodes[node].run()
                                 for node in self._nodes}
-            await self.add_task_fn(self._node_tasks.values())
+            await self.add_task_fn([t for t in self._node_tasks.values()])
+
+    async def _init_nodes(self, inventory_list: List[Dict]) -> Dict[str, Node]:
+        """Initialize the Node objects given the of credentials of the nodes.
+        After this function is called, a connection with the nodes in the list
+        is performed.
+
+        Returns:
+            Dict[str, Node]: a list containing the initialized Node objects
+        """
+        init_tasks = []
+        nodes_list = {}
+
+        for host in inventory_list:
+            new_node = Node()
+            # pylint: disable=protected-access
+            init_tasks += [new_node._init(
+                **host,
+                passphrase=self.passphrase,
+                ssh_config_file=self.ssh_config_file,
+                jump_host=self.jump_host,
+                jump_host_key_file=self.jump_host_key_file,
+                connect_timeout=self.connect_timeout,
+                ignore_known_hosts=self.ignore_known_hosts,
+            )]
+
+        for n in asyncio.as_completed(init_tasks):
+            newnode = await n
+            if newnode.devtype is None:
+                logger.error(
+                    f'Unable to determine device type for '
+                    f'{newnode.address}.{newnode.port}'
+                )
+            else:
+                logger.info(f"Added node {newnode.hostname}:{newnode.port}")
+
+            nodes_list.update({self.get_node_key(new_node): newnode})
+
+        return nodes_list
 
     @abc.abstractmethod
-    def _get_device_list(self) -> List[Dict]:
+    async def _get_device_list(self) -> List[Dict]:
         """Retrieve the devices credentials from the inventory
         source
+
+        Raises:
+            InventorySourceError: in case of error with the inventory source
 
         Returns:
             List[Dict]: the list of the credentials of the devices
                 in the Suzieq native inventory file.
         """
         raise NotImplementedError
+
+    @staticmethod
+    def get_node_key(node: Node) -> str:
+        """Given a node object it returns its ID key
+
+        Args:
+            node (Node): the node from which retrieving the key
+
+        Returns:
+            str: a string containing the ID key of the node
+        """
+        return f'{node.nsname}.{node.hostname}'
