@@ -114,3 +114,17 @@ apply:
     "TABLE_path/ROW_path/[*]?/type: _routeAction?|forward",
     "TABLE_path/ROW_path/[*]?/tag: routeTag?|",
     ]'
+
+  panos:
+    version: all
+    merge: False
+    command: <show><routing><route/></routing></show>
+    normalize: 'response/result/entry/*/[
+      "destination: prefix",
+      "interface: oifs?|",
+      "nexthop: nexthopIps",
+      "virtual-router: vrf",
+      "flags: _flags",
+      "age: _age?|0",
+      "metric: preference?|0",
+    ]'
