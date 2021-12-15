@@ -1,0 +1,50 @@
+description: Testing unique values for BGP
+tests:
+- command: bgp unique --count=True --format=json --columns=hostname
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=afiSafi
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=state
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=peer
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=softReconfig
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=communityTypes
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=defOriginate
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=keepaliveTime
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=holdTime
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=vrf
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=nhUnchanged
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=nhSelf
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=rrclient
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=asn
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=peerAsn
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json --columns=routerId
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos

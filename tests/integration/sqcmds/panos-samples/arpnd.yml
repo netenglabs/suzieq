@@ -1,0 +1,53 @@
+description: 'Testing verbs for arpnd: show summarize unique'
+tests:
+- command: arpnd show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show
+- command: arpnd show --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show
+- command: arpnd show --address="169.254.253.1" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show panos filter
+- command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show panos filter
+- command: arpnd show --address="invalidaddress" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show panos filter
+- command: arpnd show --macaddr="52:54:00:4c:dd:5a" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show panos filter
+- command: arpnd show --macaddr="52:54:00:4c:dd:5a 52:54:00:76:61:4f" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show panos filter
+- command: arpnd show --macaddr="invalidaddress" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show panos filter
+- command: arpnd show --prefix="169.254.253.0/24" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show panos filter
+- command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show panos filter
+- command: arpnd show --prefix="169.254.253.0" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd show panos filter
+- command: arpnd summarize --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd summarize
+- command: arpnd summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd summarize
+- command: arpnd unique --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd unique
+- command: arpnd unique --count=True --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd unique
+- command: arpnd unique --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: arpnd unique
+- command: arpnd summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: arpnd summarize

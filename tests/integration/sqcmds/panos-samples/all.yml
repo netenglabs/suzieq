@@ -1,0 +1,8 @@
+description: Testing all columns for all tables
+tests:
+- command: address show --namespace=panos --format=json --columns='*'
+  data-directory: tests/data/panos/parquet-out/
+  marks: address show all panos
+- command: sqPoller show --columns='*' --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: sqPoller show all panos

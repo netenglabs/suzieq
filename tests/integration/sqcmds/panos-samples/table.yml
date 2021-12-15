@@ -1,0 +1,35 @@
+description: 'Testing verbs for table: show describe'
+tests:
+- command: table show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table show
+- command: table show --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table show
+- command: table show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table show
+- command: table show --view=changes --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table show
+- command: table show --view=latest --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table show
+- command: table show --hostname=leaf01 --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table show
+- command: table show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table show filter
+- command: table describe --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table describe
+- command: table describe --table=floop --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table describe
+- command: table unique --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table unique
+- command: table unique --count=True --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: table unique

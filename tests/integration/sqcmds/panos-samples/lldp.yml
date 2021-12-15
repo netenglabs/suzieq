@@ -1,0 +1,29 @@
+description: 'Testing verbs for lldp: show summarize unique'
+tests:
+- command: lldp show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: lldp show
+- command: lldp show --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: lldp show
+- command: lldp summarize --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: lldp summarize
+- command: lldp unique --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: lldp unique
+- command: lldp unique --count=True --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: lldp unique
+- command: lldp unique --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: lldp unique
+- command: lldp unique --columns=hostname --format=json --count=True
+  data-directory: tests/data/panos/parquet-out/
+  marks: lldp unique
+- command: lldp show --peerHostname=spine01 --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: lldp show panos
+- command: lldp show --peerHostname='leaf01 exit01' --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: lldp show panos

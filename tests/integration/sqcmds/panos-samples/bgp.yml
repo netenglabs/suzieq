@@ -1,0 +1,50 @@
+description: 'Testing verbs for bgp: show summarize unique'
+tests:
+- command: bgp show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp show panos
+- command: bgp show --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp show filter panos
+- command: bgp show --columns='*' --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp show filter panos
+- command: bgp summarize --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp summarize panos
+- command: bgp unique --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --count=True --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp unique --columns=hostname --format=json --count=True
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos
+- command: bgp assert --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: bgp assert panos
+- command: bgp assert --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: bgp assert panos
+- command: bgp assert --status=pass --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: bgp assert panos
+- command: bgp assert --status=fail --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: bgp assert panos
+- command: bgp assert --status=all --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: bgp assert panos
+- command: bgp assert --status=whatever --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp assert panos
+- command: bgp assert --hostname=leaf01 --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp assert panos
+- command: bgp assert --hostname=leaf01 --namespace=ospf-ibgp --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp assert panos
+- command: bgp unique --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: bgp unique panos

@@ -1,0 +1,95 @@
+description: 'Testing verbs for route: show summarize unique lpm'
+tests:
+- command: route show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show
+- command: route show --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show
+- command: route summarize --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route summarize
+- command: route summarize --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route summarize
+- command: route unique --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route unique
+- command: route unique --count=True --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route unique
+- command: route unique --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route unique
+- command: route lpm --address=10.0.0.1 --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route lpm
+- command: route lpm --address="10.0.0.12" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route lpm
+- command: route lpm --address="10.0.0.12" --hostname="server101 server103" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route lpm
+- command: route lpm --address="10.0.0.12" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route lpm
+- command: route lpm --address="10.0.0.11" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route lpm
+- command: route show --prefix='10.0.0.134' --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefix
+- command: route show --prefix='10.0.0.134/32' --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefix
+- command: route show --prefix='10.0.0.134' --columns='nexthopIps' --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show filter prefix
+- command: route show --prefix='!10.0.0.134' --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefix negate
+- command: route show --prefix='2001:db8:0:1::/64' --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show
+- command: route show --prefixlen=64 --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen panos
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen panos
+- command: route show --prefixlen="<=24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen panos
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen panos
+- command: route show --prefixlen=">=24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen panos
+- command: route show --prefixlen="!24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen panos
+- command: route show --prefixlen=">128" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen panos
+- command: route show --prefixlen="<0" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen panos
+- command: route show --prefixlen=">24 and !32" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route show filter prefixlen panos
+- command: route summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route summarize
+- command: route lpm --address 2001:db8::11 --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route lpm
+- command: route lpm --address 2001:db:0:2::102 --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route lpm panos
+- command: route unique --columns=prefixlen --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: route unique panos
+- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route lpm panos

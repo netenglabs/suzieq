@@ -1,0 +1,38 @@
+description: 'Testing verbs for interface: show summarize unique assert top'
+tests:
+- command: interface show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface show panos
+- command: interface show --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface show panos
+- command: interface summarize --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface summarize panos
+- command: interface unique --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface unique panos
+- command: interface unique --count=True --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface unique panos
+- command: interface unique --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface unique panos
+- command: interface assert --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface assert panos
+- command: interface top --what='statusChangeTimestamp' --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface top panos
+- command: interface assert --status=pass --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface assert panos
+- command: interface assert --status=fail --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface assert panos
+- command: interface assert --status=all --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface assert panos
+- command: interface assert --status=whatever --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: interface assert panos

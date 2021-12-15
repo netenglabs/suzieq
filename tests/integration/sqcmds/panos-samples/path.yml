@@ -1,0 +1,19 @@
+description: 'Testing verbs for path: show summarize unique'
+tests:
+- command: path show --dest=172.16.2.201 --src=10.0.0.21 --format=json --namespace=panos
+  data-directory: tests/data/panos/parquet-out/
+  marks: path show panos
+- command: path show --dest=172.16.2.201 --src=172.16.2.201 --format=json --namespace=panos
+  data-directory: tests/data/panos/parquet-out/
+  marks: path show panos
+- command: path show --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=panos
+  data-directory: tests/data/panos/parquet-out/
+  marks: path show panos
+- command: path show --src=172.16.1.101 --dest=172.16.2.254 --format=json --namespace=panos
+  data-directory: tests/data/panos/parquet-out/
+  marks: path show panos
+- command: path summarize --dest=172.16.2.254 --src=172.16.1.101 --format=json --namespace=panos
+  data-directory: tests/data/panos/parquet-out/
+  marks: path summarize panos
+- command: path show --src=172.16.1.101 --dest=10.0.0.200 --format=json --namespace=panos
+  data-directory: tests/data/panos/parquet-out/

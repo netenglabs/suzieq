@@ -1,0 +1,47 @@
+description: 'Testing verbs for topology: show summarize'
+tests:
+- command: topology show  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --via=lldp  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --via='lldp bgp'  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --via=lldp --via=bgp  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --via=bgp  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --via=ospf  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --via=arpnd  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --hostname=leaf01  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --hostname=leaf01 --via=lldp  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --hostname=leaf01 --ifname=swp2 --via=lldp --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --hostname=leaf01 --polled=True  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology show --hostname=leaf01 --polled=False --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology show panos
+- command: topology summarize  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology summarize panos
+- command: topology unique  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology unique panos
+- command: topology unique --count=True  --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: topology unique panos

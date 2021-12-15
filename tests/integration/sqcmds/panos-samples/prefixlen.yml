@@ -1,0 +1,43 @@
+description: Testing prefixlen as filter for routes
+tests:
+- command: route show --prefixlen="32" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --prefixlen="< 32" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --prefixlen="> 16" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --prefixlen=">24" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --prefixlen="! 32" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --prefixlen="<= 16" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --hostname="leaf01" --prefixlen="<=16" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --prefix="172.16.253.1" --prefixlen="<=32" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --hostname="leaf01" --prefixlen="<=16" --columns="prefix nexthopIps"
+    --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --prefixlen="32" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --prefixlen="! 32" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --prefix="172.16.253.1" --prefixlen="<32" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen
+- command: route show --prefix="172.16.253.1" --prefixlen="<32" --columns="prefix
+    oifs" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: route show prefixlen

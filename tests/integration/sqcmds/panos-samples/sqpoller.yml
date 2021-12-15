@@ -1,0 +1,63 @@
+description: 'Testing verbs for sqpoller: show summarize unique'
+tests:
+- command: sqpoller show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller show panos
+- command: sqpoller show --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller show panos
+- command: sqpoller summarize --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller summarize panos
+- command: sqpoller summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller summarize panos
+- command: sqpoller unique --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller unique
+- command: sqpoller unique --count=True --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller unique
+- command: sqpoller unique --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller unique panos
+- command: sqpoller show --status=pass --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --status=fail --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --status=all --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --status=pass --format=json --columns='namespace hostname
+    service status'
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --status=fail --format=json --columns='hostname service status'
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --status=foobar --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --format=json --poll-period-exceeded=True
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --format=json --poll-period-exceeded=True --columns='hostname
+    service status'
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --status=fail --format=json --poll-period-exceeded=True --columns='hostname
+    service status'
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --format=json --poll-period-exceeded=False
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --format=json --status=fail --poll-period-exceeded=False
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos
+- command: sqpoller show --format=json --status=pass --columns='namespace hostname
+    service pollExcdPeriodCount'
+  data-directory: tests/data/panos/parquet-out/
+  marks: sqpoller status show panos

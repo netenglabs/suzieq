@@ -1,0 +1,56 @@
+description: Testing network table for panos
+tests:
+- command: network show --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network show panos
+- command: network show --format=json --os=panos
+  data-directory: tests/data/panos/parquet-out
+  marks: network show  panos
+- command: network show --columns='namespace' --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network show panos
+- command: network show --columns='hasOspf hasBgp' --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network show panos
+- command: network show --columns='*' --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network show panos
+- command: network find --address="172.16.1.101" --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network find panos
+- command: network find --namespace=dual-evpn --address="172.16.1.101" --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network find panos
+- command: network find --address="52:54:00:c5:1d:06" --namespace=ospf-ibgp --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network find panos
+- command: network find --address="72:f0:17:6d:80:3f" --namespace=ospf-ibgp --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network find  panos
+- command: network find --address="5254.00c5.1d06" --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network find panos
+- command: network summarize --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network summarize panos
+- command: network find --address="10.0.0.11" --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network find panos
+- command: network find --address="169.254.127.0" --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network find panos
+- command: network find --address="169.254.127.1" --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network find panos
+- command: network find --address="10.0.0.21" --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network find panos
+- command: network find --address="10.0.0.32" --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: network find panos
+- command: network unique --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: network unique
+- command: network unique --count=True --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: network unique

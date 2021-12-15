@@ -1,0 +1,32 @@
+description: 'Testing verbs for device: show summarize unique'
+tests:
+- command: device show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: device show panos
+- command: device show --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: device show panos
+- command: device summarize --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: device summarize panos
+- command: device summarize --namespace=dual-evpn --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: device summarize panos
+- command: device summarize --columns="namespace hostname" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: device summarize panos
+- command: device unique --count=True --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: device unique panos
+- command: device unique --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: device unique panos
+- command: device unique --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: device unique panos
+- command: device unique --columns="hostname namespace" --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: device unique panos
+- command: device unique --columns=badcolumn --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: device unique panos

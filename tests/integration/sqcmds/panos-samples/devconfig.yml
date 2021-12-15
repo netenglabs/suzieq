@@ -1,0 +1,24 @@
+description: 'Testing verbs for device config: show'
+tests:
+- command: devconfig show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: devconfig show panos
+- command: devconfig show --hostname=leaf01 --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: devconfig show panos
+- command: devconfig show --hostname='leaf01 spine01' --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: devconfig show panos
+- command: devconfig show --hostname='leaf01 spine01' --query-str='config.str.contains("10.0.0.21")'
+    --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: devconfig show panos
+- command: devconfig summarize --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: devconfig summarize panos
+- command: devconfig summarize --hostname='leaf01 spine01' --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: devconfig summarize panos
+- command: devconfig unique --columns=config --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: devconfig unique panos

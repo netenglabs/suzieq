@@ -1,0 +1,119 @@
+description: 'Testing verbs for address: show summarize unique'
+tests:
+- command: address show --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: address show panos
+- command: address show --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: address show panos
+- command: address summarize --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: address summarize panos
+- command: address unique --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: address unique
+- command: address unique --count=True --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: address unique
+- command: address unique --columns=hostname --format=json
+  data-directory: tests/data/panos/parquet-out/
+  marks: address unique
+- command: address summarize --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address summarize panos
+- command: address show --address="10.0.0.21" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="10.0.0.11/32" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="10.0.0.2" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="10.0.0.21 172.16.1.101"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="11.0.0.21 172.16.1.101"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address=""  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="44:38:39:00:00:34 44:39:39:ff:00:13"  --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: address show panos filter
+- command: address show --address="172.16.1.1/32 172.16.2.104 44:38:39:00:00:1d"  --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: address show panos filter
+- command: address show --address="44:38:39:00:00:23"  --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: address show panos filter
+- command: address show --address="5254.004c.dd5a" --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: address show panos filter
+- command: address show --address="2001:db8::21/128"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="2001:db9::21/128"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="2001:db8:0:1::101 2001:db8::12"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="2001:db8::12  2001:db8:0:1::101 10.0.0.101"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="2001:db8::12  2001:db8:0:1::101 10.0.0.101 52:54:00:76:91:c0
+    10.0.0.14"  --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="172.16.1.1/32 172.16.4.104 52:54:00:4e:04:fd" --columns='ifname
+    ip6AddressList' --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --ipvers=v4 --address="2001:db8:0:1::101" --columns="ifname
+    macaddr" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --address="invalidaddress" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --prefix="192.168.121.0/24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --prefix="2001:db8:0:1::/64" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --prefix="2001:db8:0:1::/64 192.168.121.0/24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --prefix="192.168.121.0/24 10.0.0.0/24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --prefix="192.168.1.0" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --prefix="44:38:39:00:00:23" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --prefix="10.0.0.0/24" --address="192.168.1.2" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address show panos filter
+- command: address show --prefix="10.0.0.1/24" --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  marks: address show panos filter
+- command: address unique --columns="macaddr" --count=True --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address unique panos filter
+- command: address unique --columns="ipAddressList" --count=True --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address unique panos filter
+- command: address unique --columns="vrf" --count=True --format=json
+  data-directory: tests/data/basic_dual_bgp/parquet-out
+  marks: address unique panos filter
+- command: address unique --columns="vrf" --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: address unique panos filter
+- command: address unique --columns="vrf" --query-str='hostname == "leaf01" ' --format=json
+  data-directory: tests/data/panos/parquet-out
+  marks: address unique panos filter
