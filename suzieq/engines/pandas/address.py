@@ -50,6 +50,7 @@ class AddressObj(SqPandasEngine):
 
         # Always include ip or mac addresses in the dataframe
         # if there is a filter on them
+
         if columns not in [['default'], ['*']]:
             if ((4 in addr_types or ipvers == "v4") and
                     'ipAddressList' not in columns):
@@ -80,14 +81,17 @@ class AddressObj(SqPandasEngine):
         df = df.rename({'master': 'vrf'}, axis=1) \
             .replace({'vrf': {'': 'default'}})
 
-        if 4 in addr_types:
-            df = df.explode('ipAddressList').fillna({'ipAddressList': ''})
+        addrcols = []
+        if 4 in addr_types or ipvers in ["v4", ""]:
+            # df = df.explode('ipAddressList').fillna({'ipAddressList': ''})
+            addrcols.append('ipAddressList')
 
-        if 6 in addr_types:
-            df = df.explode('ip6AddressList').fillna({'ip6AddressList': ''})
+        if 6 in addr_types or ipvers in ["v6", ""]:
+            # df = df.explode('ip6AddressList').fillna({'ip6AddressList': ''})
+            addrcols.append('ip6AddressList')
 
-        if 'ipAddress' in columns or columns == ['*']:
-            ndf = pd.DataFrame(df[['ipAddressList', 'ip6AddressList']].agg(
+        if ('ipAddress' in columns or (columns == ['*'])) and not ipvers:
+            ndf = pd.DataFrame(df[addrcols].agg(
                 self._merge_address_cols, axis=1),
                 columns=['ipAddress'])
             df = pd.concat([df, ndf], axis=1)
@@ -119,20 +123,21 @@ class AddressObj(SqPandasEngine):
             # Some bug in pandas prevents it from working if
             # macaddr isn't first and your query
             # contains both a macaddr and an IP address.
-            if macaddr:
-                query_str += f'{filter_prefix} macaddr.isin({macaddr}) '
-                filter_prefix = 'or'
-            if v4addr:
-                for a in v4addr:
-                    query_str += (f'{filter_prefix} '
-                                  f'ipAddressList.str.startswith("{a}") ')
-                    filter_prefix = 'or'
-            if v6addr:
-                for a in v6addr:
-                    query_str += (f'{filter_prefix} '
-                                  f'ip6AddressList.str.startswith("{a}") ')
-                    filter_prefix = 'or'
+            dfmac = dfv4 = dfv6 = pd.DataFrame()
 
+            if macaddr:
+                dfmac = df[df.macaddr.isin(macaddr)]
+
+            if v4addr:
+                dfv4 = df[df.ipAddressList.apply(
+                    lambda x, addrs: any(a.startswith(tuple(addrs))
+                                         for a in x), args=(v4addr,))]
+            if v6addr:
+                dfv6 = df[df.ip6AddressList.apply(
+                    lambda x, addrs: any(a.startswith(tuple(addrs))
+                                         for a in x), args=(v6addr,))]
+            if v4addr or v6addr or macaddr:
+                df = pd.concat([dfv4, dfv6, dfmac])
         elif prefix:
             for i, a in enumerate(prefix):
                 if addr_types[i] == 4:
@@ -163,20 +168,24 @@ class AddressObj(SqPandasEngine):
             df = df.query(query_str)
 
         df = self._handle_user_query_str(df, user_query)
-        return df.drop(columns=drop_cols)
+        return df.drop(columns=drop_cols, errors='ignore')
 
     def unique(self, **kwargs) -> pd.DataFrame:
         """Specific here only if columns=vrf to filter out non-routed if"""
-        columns = kwargs.get('columns', None)
+        columns = kwargs.pop('columns', [])
+        ipvers = kwargs.pop('ipvers', '')
+
+        if 'ipAddress' in columns:
+            if 'v4' in ipvers:
+                columns = ['ipAddressList']
+            elif 'v6' in ipvers:
+                columns = ['ip6AddressList']
+
         if columns == ['vrf']:
-            query_str = kwargs.get('query_str', None)
             vrf_query_str = ('(ipAddressList.str.len() != 0 or '
                              'ip6AddressList.str.len() != 0)')
-            if query_str:
-                kwargs['query_str'] = f"{vrf_query_str} and {query_str}"
-            else:
-                kwargs['query_str'] = vrf_query_str
-        return super().unique(**kwargs)
+            kwargs['get_query_str'] = vrf_query_str
+        return super().unique(ipvers=ipvers, columns=columns, **kwargs)
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize address related info"""
