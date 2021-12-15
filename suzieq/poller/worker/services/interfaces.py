@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 from collections import defaultdict
-
+from json import loads
 from dateparser import parse
 import numpy as np
 
@@ -861,4 +861,106 @@ class InterfaceService(Service):
         for entry in processed_data:
             entry['state'] = entry['state'].lower()
 
+        return processed_data
+
+    def _clean_panos_data(self, processed_data, _):
+        mtu_data = {}
+        interfaces = {}
+        for entry in processed_data:
+            _mtu_data = entry.get("_mtu_data")
+            iftype = entry.get("type")
+            master = entry.get("master")
+            speed = entry.get("speed")
+            state = entry.get("state")
+            ipAddressList = entry.get("ipAddressList", [])
+            ip6AddressList = entry.get("ip6AddressList", [])
+            _ip = entry.get("_ip", "")
+
+            # mtu values are collected separatly
+            if _mtu_data:
+                # fix json so that it can be parsed
+                d = _mtu_data.split(": ", 1)[1].replace("'", "\"")
+                d = re.sub(
+                    r"([a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5})", r'"\1"', d)
+                d = re.sub(r"(\"[\w0-9\.\/]+\": \{\s\},\s)", r"", d)
+                d = re.sub(r"(,\s\})", r" }", d)
+                j = loads(d)
+                for ifname, value in j.items():
+                    mtu_data[ifname] = value["mtu"]
+                continue
+
+            if entry["ifname"] in mtu_data:
+                entry["mtu"] = mtu_data[entry["ifname"]]
+            else:
+                entry["mtu"] = ""
+
+            # only hw if specify type value
+            if iftype:
+                if iftype == '0':
+                    entry["type"] = "ethernet"
+                elif iftype == '3':
+                    entry["type"] = "vlan"
+                elif iftype == '5':
+                    entry["type"] = "loopback"
+                elif iftype == '6':
+                    entry["type"] = "tunnel"
+                else:
+                    # not sure if it's better to put unknown
+                    entry["type"] = ""
+
+            if master:
+                if master != "N/A":
+                    entry["master"] = master.split(":")[1]
+                else:
+                    entry["master"] = "default"
+
+            # speed is not always provided
+            if speed and speed == "[n/a]":
+                # if it is a physical interface, it's not good
+                if entry["type"] == "ethernet":
+                    entry["speed"] = MISSING_SPEED
+                else:
+                    entry["speed"] = NO_SPEED
+
+            # this happens when there's only one entry
+            if isinstance(ipAddressList, str):
+                entry["ipAddressList"] = [ipAddressList]
+
+            if isinstance(ip6AddressList, str):
+                entry["ip6AddressList"] = [ip6AddressList]
+
+            if _ip and _ip != "N/A" and _ip != "unknown":
+                if ":" in _ip:
+                    entry["ip6AddressList"] = entry.get("ip6AddressList", []) \
+                        + [_ip]
+                else:
+                    entry["ipAddressList"] = entry.get("ipAddressList", []) \
+                        + [_ip]
+            if state and "/" in state:
+                # clear from [n/a] before splitting
+                entry['state'] = state.replace("[n/a]", "").split("/")[2]
+
+            if "management" in entry["ifname"].lower():
+                entry["state"] = "up"
+                entry["type"] = "ethernet"
+
+            if entry.get("type") == "ethernet":
+                # physical interface, save data to use with subinterfaces
+                interfaces[entry["ifname"]] = {}
+                interfaces[entry["ifname"]]["mtu"] = entry["mtu"]
+                interfaces[entry["ifname"]]["speed"] = entry["speed"]
+                interfaces[entry["ifname"]]["state"] = entry["state"]
+                interfaces[entry["ifname"]]["adminState"] = entry["adminState"]
+
+            if "." in entry["ifname"]:
+                parentIf, _ = entry["ifname"].split(".")
+                if parentIf in interfaces:
+                    entry["mtu"] = interfaces[parentIf]["mtu"]
+                    entry["state"] = interfaces[parentIf]["state"]
+                    entry["adminState"] = interfaces[parentIf]["adminState"]
+                    entry["speed"] = interfaces[parentIf]["speed"]
+                    entry["type"] = "subinterface"
+
+        # remove mtu data cmd
+        processed_data.pop(0)
         return processed_data
