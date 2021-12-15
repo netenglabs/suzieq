@@ -11,7 +11,7 @@ from suzieq.shared.exceptions import InventorySourceError
 
 logger = logging.getLogger(__name__)
 
-_DEFAULT_PORTS = {"http": 80, "https": 443, "ssh": 22}
+_DEFAULT_PORTS = {'http': 80, 'https': 443, 'ssh': 22}
 
 
 class SqNativeFile(Source):
@@ -100,10 +100,10 @@ class SqNativeFile(Source):
                     'transport': transport,
                     'devtype': devtype,
                     'namespace': nsname,
-                    'ssh_keyfile': keyfile
+                    'ssh_keyfile': keyfile,
+                    'hostname': None
                 }
                 if self._validate_inventory_entry(entry):
-                    entry["id"] = len(inventory)
                     # TODO: must add a credential_loader
                     inventory.append(entry)
             else:

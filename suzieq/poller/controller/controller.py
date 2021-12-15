@@ -16,6 +16,7 @@ import threading
 from suzieq.poller.controller.inventory_async_plugin \
     import InventoryAsyncPlugin
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
+from suzieq.shared.exceptions import InventorySourceError
 from suzieq.shared.utils import sq_get_config_file
 
 
@@ -25,9 +26,9 @@ class Controller:
 
     def __init__(self, args: argparse.Namespace, config_data: dict) -> None:
         self._DEFAULT_PLUGINS = {
-            "source": "file",
-            "chunker": "static_chunker",
-            "manager": "static_manager"
+            'source': 'file',
+            'chunker': 'static_chunker',
+            'manager': 'static_manager'
         }
 
         # containts the configuration data
@@ -41,7 +42,7 @@ class Controller:
         self._run_once = False
 
         # collect basePlugin classes
-        base_plugin_pkg = "suzieq.poller.controller"
+        base_plugin_pkg = 'suzieq.poller.controller'
         self._base_plugin_classes = ControllerPlugin.get_plugins(
             search_pkg=base_plugin_pkg)
 
@@ -105,21 +106,21 @@ class Controller:
         inventory_file = self._args.inventory
         self._run_once = self._args.run_once
 
-        manager_args.update({"run-once": self._run_once})
-        manager_args.update({"exclude-services": self._args.exclude_services})
-        manager_args.update({"no-colescer": self._args.no_coalescer})
-        manager_args.update({"outputs": self._args.outputs})
-        manager_args.update({"output-dir": self._args.output_dir})
-        manager_args.update({"service-only": self._args.service_only})
-        manager_args.update({"ssh-config-file": self._args.ssh_config_file})
+        manager_args.update({'run-once': self._run_once})
+        manager_args.update({'exclude-services': self._args.exclude_services})
+        manager_args.update({'no-colescer': self._args.no_coalescer})
+        manager_args.update({'outputs': self._args.outputs})
+        manager_args.update({'output-dir': self._args.output_dir})
+        manager_args.update({'service-only': self._args.service_only})
+        manager_args.update({'ssh-config-file': self._args.ssh_config_file})
         manager_args.update(
-            {"config-file": sq_get_config_file(self._args.config)})
+            {'config-file': sq_get_config_file(self._args.config)})
 
         if inventory_file:
             if not isfile(inventory_file):
                 raise RuntimeError(
-                    f"Inventory file not found at {inventory_file}")
-            source_args.update({"path": inventory_file})
+                    f'Inventory file not found at {inventory_file}')
+            source_args.update({'path': inventory_file})
 
         self._config = self.parse_poller_config(self._raw_config,
                                                 source=source_args,
@@ -129,30 +130,30 @@ class Controller:
                                                 )
 
         self.period = self._args.update_period or \
-            self._config.get("update-period", 3600)
-        self._timeout = self._config.get("timeout", 10)
+            self._config.get('update-period', 3600)
+        self._timeout = self._config.get('timeout', 10)
 
         # initialize inventorySources
-        self.init_plugins("source")
+        self.init_plugins('source')
 
-        self.sources = self.get_plugins_from_type("source")
+        self.sources = self.get_plugins_from_type('source')
         if not self.sources:
             raise RuntimeError(
-                "No inventorySource plugin in the configuration file"
+                'No inventorySource plugin in the configuration file'
             )
 
         # initialize chunker
-        self.init_plugins("chunker")
-        chunkers = self.get_plugins_from_type("chunker")
+        self.init_plugins('chunker')
+        chunkers = self.get_plugins_from_type('chunker')
         if len(chunkers) > 1:
-            raise RuntimeError("Only 1 Chunker at a time is supported")
+            raise RuntimeError('Only 1 Chunker at a time is supported')
         self.chunker = chunkers[0]
 
         # initialize pollerManager
-        self.init_plugins("manager")
-        managers = self.get_plugins_from_type("manager")
+        self.init_plugins('manager')
+        managers = self.get_plugins_from_type('manager')
         if len(managers) > 1:
-            raise RuntimeError("Only 1 poller_manager at a time is supported")
+            raise RuntimeError('Only 1 poller_manager at a time is supported')
         self.manager = managers[0]
 
     def parse_poller_config(self, config_data: dict, **kwargs) -> Dict:
@@ -165,8 +166,8 @@ class Controller:
             [Dict]: config data
         """
 
-        fields = ["source", "chunker", "manager"]
-        controller_config = config_data.get("poller", {}).copy()
+        fields = ['source', 'chunker', 'manager']
+        controller_config = config_data.get('poller', {}).copy()
 
         for key, value in kwargs.items():
             if key in fields:
@@ -204,19 +205,19 @@ class Controller:
             RuntimeError: Unknown plugin
         """
         plugin_conf = self._config.get(plugin_type) or {}
-        if not plugin_conf or not plugin_conf.get("type"):
+        if not plugin_conf or not plugin_conf.get('type'):
             if plugin_type not in self._DEFAULT_PLUGINS:
-                raise RuntimeError("No plugin configuration provided for "
-                                   f"{plugin_type}")
+                raise RuntimeError('No plugin configuration provided for '
+                                   f'{plugin_type}')
 
             # Set the plugin_confs to load a the default configuration
             # of the plugin
             # Defualt plugins don't need any configuration
-            plugin_conf.update({"type": self._DEFAULT_PLUGINS[plugin_type]})
+            plugin_conf.update({'type': self._DEFAULT_PLUGINS[plugin_type]})
 
         base_plugin_class = self._base_plugin_classes.get(plugin_type, None)
         if not base_plugin_class:
-            raise AttributeError(f"Unknown plugin type {plugin_type}")
+            raise AttributeError(f'Unknown plugin type {plugin_type}')
 
         plugins = base_plugin_class.init_plugins(plugin_conf)
         if not self._plugin_objects.get(plugin_type, None):
@@ -238,7 +239,7 @@ class Controller:
             if issubclass(type(inv_src), InventoryAsyncPlugin):
                 thread = ControllerPluginThread(
                     target=inv_src.run,
-                    kwargs={"run_once": self.run_once}
+                    kwargs={'run_once': self.run_once}
                 )
                 thread.start()
                 inv_src.set_running_thread(thread)
@@ -246,7 +247,7 @@ class Controller:
         if issubclass(type(self.manager), InventoryAsyncPlugin):
             thread = ControllerPluginThread(
                 target=self.manager.run,
-                kwargs={"run_once": self.run_once}
+                kwargs={'run_once': self.run_once}
             )
             thread.start()
             self.manager.set_running_thread(thread)
@@ -266,14 +267,18 @@ class Controller:
                     exc_str = str(e)
                     if issubclass(type(inv_src), InventoryAsyncPlugin):
                         if thread and thread.exc:
-                            exc_str += f"\n\nSource: {thread.exc}"
+                            exc_str += f'\n\nSource: {thread.exc}'
                     raise RuntimeError(exc_str)
 
                 if cur_inv:
                     for device in cur_inv:
-                        dev_name = device.get("id")
-                        dev_ns = device.get("namespace")
-                        global_inventory[f"{dev_ns}.{dev_name}"] = device
+                        dev_address = device.get('address')
+                        dev_ns = device.get('namespace')
+                        global_key = f'{dev_ns}.{dev_address}'
+                        if global_inventory.get(global_key):
+                            raise InventorySourceError(
+                                f'Duplicated inventory {global_key}')
+                        global_inventory[global_key] = device
 
             n_pollers = self.manager.get_n_workers()
 

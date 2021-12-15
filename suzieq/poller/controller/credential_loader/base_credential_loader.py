@@ -15,9 +15,9 @@ class CredentialLoader(ControllerPlugin):
         super().__init__()
 
         self._cred_format = [
-            "username",
-            "password",
-            "ssh_keyfile"
+            'username',
+            'password',
+            'ssh_keyfile'
         ]
 
         self.init(init_data)
@@ -51,7 +51,7 @@ class CredentialLoader(ControllerPlugin):
         missing_keys = self._validate_credentials(credentials)
         if missing_keys:
             raise ValueError(
-                f"Invalid credentials: missing keys {missing_keys}")
+                f'Invalid credentials: missing keys {missing_keys}')
         device.update(credentials)
 
     def _validate_credentials(self, device: Dict) -> List[str]:
@@ -60,19 +60,21 @@ class CredentialLoader(ControllerPlugin):
         for key in device.keys():
             if key in cred_keys:
                 cred_keys.remove(key)
+            else:
+                raise RuntimeError(f'Unexpected key {key} in credentials')
 
         # One between password or ssh_keyfile must be defines
-        if "password" in cred_keys and "keyfile" in cred_keys:
-            cred_keys.remove("password")
-            cred_keys.remove("ssh_keyfile")
+        if 'password' in cred_keys and 'keyfile' in cred_keys:
+            cred_keys.remove('password')
+            cred_keys.remove('ssh_keyfile')
             ret = list(cred_keys)
-            ret.append("password or ssh_keyfile")
+            ret.append('password or ssh_keyfile')
             return ret
 
-        if "password" in cred_keys:
-            cred_keys.remove("password")
+        if 'password' in cred_keys:
+            cred_keys.remove('password')
 
-        if "ssh_keyfile" in cred_keys:
-            cred_keys.remove("ssh_keyfile")
+        if 'ssh_keyfile' in cred_keys:
+            cred_keys.remove('ssh_keyfile')
 
         return list(cred_keys)

@@ -11,7 +11,7 @@ from suzieq.poller.controller.credential_loader.base_credential_loader \
 from suzieq.shared.exceptions import InventorySourceError
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 
-_DEFAULT_SOURCE_PATH = "suzieq/.poller/intentory/inventory.yaml"
+_DEFAULT_SOURCE_PATH = 'suzieq/.poller/intentory/inventory.yaml'
 
 
 class Source(ControllerPlugin):
@@ -28,19 +28,19 @@ class Source(ControllerPlugin):
         self._inv_is_set_sem.acquire()
 
         self._inv_format = [
-            "id",
-            "address",
-            "namespace",
-            "port",
-            "transport",
-            "username",
-            "password",
-            "ssh_keyfile",
-            "devtype"
+            'address',
+            'namespace',
+            'port',
+            'transport',
+            'username',
+            'password',
+            'ssh_keyfile',
+            'devtype',
+            'hostname'
         ]
         errors = self._validate_config(input_data)
         if errors:
-            raise InventorySourceError("Inventory validation failed: {}"
+            raise InventorySourceError('Inventory validation failed: {}'
                                        .format(errors))
         self._load(input_data)
 
@@ -79,20 +79,20 @@ class Source(ControllerPlugin):
 
         if timeout < 0:
             raise ValueError(
-                "timeout value must be positive, found {}".format(timeout)
+                'timeout value must be positive, found {}'.format(timeout)
             )
         # pylint: disable=consider-using-with
         ok = self._inv_is_set_sem.acquire(timeout=timeout)
         if not ok:
             raise TimeoutError(
-                "Unable to acquire the lock before the timeout expiration"
+                'Unable to acquire the lock before the timeout expiration'
             )
         self._inv_is_set_sem.release()
         # pylint: disable=consider-using-with
         ok = self._inv_semaphore.acquire(timeout=timeout)
         if not ok:
             raise TimeoutError(
-                "Unable to acquire the lock before the timeout expiration"
+                'Unable to acquire the lock before the timeout expiration'
             )
 
         inventory_snapshot = copy(self._inventory)
@@ -119,12 +119,12 @@ class Source(ControllerPlugin):
         """
         missing_keys = self._is_invalid_inventory(new_inventory)
         if missing_keys:
-            raise ValueError(f"Invalid inventory: missing keys {missing_keys}")
+            raise ValueError(f'Invalid inventory: missing keys {missing_keys}')
         # pylint: disable=consider-using-with
         ok = self._inv_semaphore.acquire(timeout=timeout)
         if not ok:
             raise TimeoutError(
-                "Unable to acquire the lock before the timeout expiration"
+                'Unable to acquire the lock before the timeout expiration'
             )
 
         new_inventory_copy = copy(new_inventory)
@@ -155,18 +155,18 @@ class Source(ControllerPlugin):
                 if key in device_keys:
                     device_keys.remove(key)
 
-            if "password" in device_keys and "ssh_keyfile" in device_keys:
-                device_keys.remove("password")
-                device_keys.remove("ssh_keyfile")
+            if 'password' in device_keys and 'ssh_keyfile' in device_keys:
+                device_keys.remove('password')
+                device_keys.remove('ssh_keyfile')
                 ret = list(device_keys)
-                ret.append("password or ssh_keyfile")
+                ret.append('password or ssh_keyfile')
                 return ret
 
-            if "password" in device_keys:
-                device_keys.remove("password")
+            if 'password' in device_keys:
+                device_keys.remove('password')
 
-            if "ssh_keyfile" in device_keys:
-                device_keys.remove("ssh_keyfile")
+            if 'ssh_keyfile' in device_keys:
+                device_keys.remove('ssh_keyfile')
 
             if device_keys:
                 return list(device_keys)
@@ -196,13 +196,13 @@ class Source(ControllerPlugin):
         src_plugins = []
         plugin_classes = cls.get_plugins()
         src_confs = _load_inventory(
-            plugin_conf.get("path", _DEFAULT_SOURCE_PATH))
+            plugin_conf.get('path', _DEFAULT_SOURCE_PATH))
         for src_conf in src_confs:
-            ptype = src_conf.get("type") or "file"
+            ptype = src_conf.get('type') or 'file'
 
             if ptype not in plugin_classes:
                 raise RuntimeError(
-                    f"Unknown plugin called {ptype}"
+                    f'Unknown plugin called {ptype}'
                 )
             src_plugins.append(plugin_classes[ptype](src_conf))
         return src_plugins
@@ -225,13 +225,13 @@ def _load_inventory(source_path: str) -> List[dict]:
         raise InventorySourceError(f"File {source_path} doesn't exists")
 
     inventory = {
-        "sources": {},
-        "devices": {},
-        "auths": {}
+        'sources': {},
+        'devices': {},
+        'auths': {}
     }
 
     inventory_data = {}
-    with open(source_path, "r") as fp:
+    with open(source_path, 'r') as fp:
         file_content = fp.read()
         try:
             inventory_data = yaml.safe_load(file_content)
@@ -243,30 +243,30 @@ def _load_inventory(source_path: str) -> List[dict]:
     for k in inventory:
         inventory[k] = _get_inventory_config(k, inventory_data)
 
-    ns_list = inventory_data.get("namespaces")
+    ns_list = inventory_data.get('namespaces')
 
     sources = []
     for ns in ns_list:
         source = None
-        namespace = ns.get("namespace")
+        namespace = ns.get('namespace')
 
-        source_name = ns.get("source")
+        source_name = ns.get('source')
 
-        source = inventory.get("sources").get(source_name)
+        source = inventory.get('sources').get(source_name)
 
-        if ns.get("auth"):
-            auth = inventory.get("auths", {}).get(ns["auth"])
-            source["auth"] = CredentialLoader.init_plugins(auth)[0]
+        if ns.get('auth'):
+            auth = inventory.get('auths', {}).get(ns['auth'])
+            source['auth'] = CredentialLoader.init_plugins(auth)[0]
         else:
-            source["auth"] = None
+            source['auth'] = None
 
-        if ns.get("device"):
-            device = inventory.get("devices", {}).get(ns["device"])
-            source["device"] = device
+        if ns.get('device'):
+            device = inventory.get('devices', {}).get(ns['device'])
+            source['device'] = device
         else:
-            source["device"] = None
+            source['device'] = None
 
-        source["namespace"] = namespace
+        source['namespace'] = namespace
 
         sources.append(source)
 
@@ -285,15 +285,15 @@ def _validate_raw_inventory(inventory: dict):
     if not inventory:
         raise InventorySourceError('The inventory is empty')
 
-    for f in ["sources", "namespaces"]:
+    for f in ['sources', 'namespaces']:
         if f not in inventory:
             raise InventorySourceError(
                 "'sources' and 'namespaces' fields must be specified")
 
     main_fields = {
-        "sources": [],
-        "devices": [],
-        "auths": [],
+        'sources': [],
+        'devices': [],
+        'auths': [],
     }
     for mf, mf_list in main_fields.items():
         fields = inventory.get(mf)
@@ -301,39 +301,39 @@ def _validate_raw_inventory(inventory: dict):
             # 'devices' and 'auths' can be omitted if not needed
             continue
         if not isinstance(fields, list):
-            raise InventorySourceError(f"{mf} content must be a list")
+            raise InventorySourceError(f'{mf} content must be a list')
         for value in fields:
-            name = value.get("name")
+            name = value.get('name')
             if not name:
                 raise InventorySourceError(
                     f"{mf} items must have a 'name'")
             if name in mf_list:
-                raise InventorySourceError(f"{mf}.{name} is not unique")
+                raise InventorySourceError(f'{mf}.{name} is not unique')
             mf_list.append(name)
 
             if not isinstance(value, dict):
                 raise InventorySourceError(
                     f"{mf}.{name} is not a dictionary")
 
-            if value.get("copy") and not value["copy"] in mf_list:
-                raise InventorySourceError(f"{mf}.{name} value must be a "
+            if value.get('copy') and not value['copy'] in mf_list:
+                raise InventorySourceError(f'{mf}.{name} value must be a '
                                            "'name' of an already defined "
-                                           f"{mf} item")
+                                           f'{mf} item')
     # validate 'namespaces'
-    for ns in inventory.get("namespaces"):
-        if not ns.get("source"):
+    for ns in inventory.get('namespaces'):
+        if not ns.get('source'):
             raise InventorySourceError(
                 "all namespaces need 'source' field")
 
-        if ns.get("source") not in main_fields["sources"]:
+        if ns.get('source') not in main_fields['sources']:
             raise InventorySourceError(
                 f"No source called '{ns['source']}'")
 
-        if ns.get("device") and ns['device'] not in main_fields["devices"]:
+        if ns.get('device') and ns['device'] not in main_fields['devices']:
             raise InventorySourceError(
                 f"No device called '{ns['device']}'")
 
-        if ns.get("auth") and ns['auth'] not in main_fields["auths"]:
+        if ns.get('auth') and ns['auth'] not in main_fields['auths']:
             raise InventorySourceError(
                 f"No auth called '{ns['auth']}'")
 
@@ -358,15 +358,15 @@ def _get_inventory_config(conf_type: str, inventory: dict) -> dict:
         return {}
 
     for conf_obj in conf_list:
-        name = conf_obj.get("name")
+        name = conf_obj.get('name')
         if name:
-            if conf_obj.get("copy"):
+            if conf_obj.get('copy'):
                 # copy the content of the other inventory
                 # into the current inventory and override
                 # values
-                configs[name] = configs[conf_obj["copy"]].copy()
+                configs[name] = configs[conf_obj['copy']].copy()
                 for k, v in conf_obj.items():
-                    if k not in ["copy"]:
+                    if k not in ['copy']:
                         configs[name][k] = v
             else:
                 configs[name] = conf_obj

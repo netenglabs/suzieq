@@ -63,7 +63,7 @@ class AnsibleInventory(Source):
                 f'Unable to process Ansible inventory: {str(error)}'
             )
 
-        if '_meta' not in inventory or "hostvars" not in inventory['_meta']:
+        if '_meta' not in inventory or 'hostvars' not in inventory['_meta']:
             if isinstance(inventory, list) and 'namespace' in inventory[0]:
                 raise InventorySourceError(
                     'Invalid Ansible inventory, found Suzieq inventory'
@@ -76,13 +76,13 @@ class AnsibleInventory(Source):
 
         in_hosts = inventory['_meta']['hostvars']
         out_hosts = []
-        for i, host in enumerate(in_hosts):
+        for host in in_hosts:
             entry = in_hosts[host]
 
             # Get password if any
             password = ''
             if 'ansible_password' in entry:
-                password = entry["ansible_password"]
+                password = entry['ansible_password']
 
             # Retrieve password information
             devtype = None
@@ -92,7 +92,7 @@ class AnsibleInventory(Source):
                 port = 443
             else:
                 transport = 'ssh'
-                port = entry.get("ansible_port", 22)
+                port = entry.get('ansible_port', 22)
 
             # Get keyfile
             keyfile = entry.get('ansible_ssh_private_key_file', '')
@@ -112,7 +112,7 @@ class AnsibleInventory(Source):
                 'devtype': devtype,
                 'namespace': self.namespace,
                 'ssh_keyfile': keyfile,
-                'id': str(i)
+                'hostname': None
             }
             out_hosts.append(host)
 

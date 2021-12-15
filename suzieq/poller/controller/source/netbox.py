@@ -16,12 +16,12 @@ from suzieq.poller.controller.inventory_async_plugin \
     import InventoryAsyncPlugin
 from suzieq.shared.exceptions import InventorySourceError
 
-_DEFAULT_PORTS = {"http": 80, "https": 443}
+_DEFAULT_PORTS = {'http': 80, 'https': 443}
 _RELEVANT_FIELDS = [
-    "name",
-    "primary_ip6.address",
-    "primary_ip4.address",
-    "site.name"
+    'name',
+    'primary_ip6.address',
+    'primary_ip4.address',
+    'site.name'
 ]
 
 
@@ -32,15 +32,15 @@ class Netbox(Source, InventoryAsyncPlugin):
     """
 
     def __init__(self, config_data: dict) -> None:
-        self._status = "init"
+        self._status = 'init'
         self._sem_status = Semaphore()
         self._session: requests.Session = None
-        self._tag = ""
-        self._host = ""
-        self._namespace = ""
+        self._tag = ''
+        self._host = ''
+        self._namespace = ''
         self._period = 3600
-        self._run_once = ""
-        self._token = ""
+        self._run_once = ''
+        self._token = ''
         # Contains CredentialLoader object with device credentials
         self._auth = None
         # Contains a dictionary with devices specifications
@@ -66,27 +66,27 @@ class Netbox(Source, InventoryAsyncPlugin):
 
         if not input_data:
             # error
-            raise ValueError("no netbox_config provided")
+            raise ValueError('no netbox_config provided')
 
-        url = input_data.get("url", "")
+        url = input_data.get('url', '')
         if not url:
-            raise ValueError("netbox url not provided")
+            raise ValueError('netbox url not provided')
 
         url_data = urlparse(url)
-        self._protocol = url_data.scheme or "http"
+        self._protocol = url_data.scheme or 'http'
         self._port = url_data.port or _DEFAULT_PORTS.get(self._protocol, None)
         self._host = url_data.hostname
 
         if not self._protocol or not self._port or not self._host:
-            raise InventorySourceError("netbox: invalid url provided")
+            raise InventorySourceError('netbox: invalid url provided')
 
-        self._tag = input_data.get("tag", "null")
-        self._namespace = input_data.get("namespace", "site.name")
-        self._period = input_data.get("period", 3600)
-        self._run_once = input_data.get("run_once", False)
-        self._token = input_data.get("token", None)
-        self._auth = input_data.get("auth", None)
-        self._device = input_data.get("device", None)
+        self._tag = input_data.get('tag', 'null')
+        self._namespace = input_data.get('namespace', 'site.name')
+        self._period = input_data.get('period', 3600)
+        self._run_once = input_data.get('run_once', False)
+        self._token = input_data.get('token', None)
+        self._auth = input_data.get('auth', None)
+        self._device = input_data.get('device', None)
 
     def _validate_config(self, input_data) -> list:
         """Validates the loaded configuration
@@ -95,12 +95,12 @@ class Netbox(Source, InventoryAsyncPlugin):
             list: the list of errors
         """
         errors = []
-        if not input_data.get("token"):
-            errors.append("No netbox token provided")
-        if not input_data.get("url"):
-            errors.append("No netbox url provided")
-        if not input_data.get("auth"):
-            errors.append("No device auth provided")
+        if not input_data.get('token'):
+            errors.append('No netbox token provided')
+        if not input_data.get('url'):
+            errors.append('No netbox url provided')
+        if not input_data.get('auth'):
+            errors.append('No device auth provided')
         return errors
 
     def _init_session(self, headers: dict):
@@ -119,7 +119,7 @@ class Netbox(Source, InventoryAsyncPlugin):
         Returns:
             dict: token authorization header
         """
-        return {"Authorization": f"Token {self._token}"}
+        return {'Authorization': f'Token {self._token}'}
 
     def retrieve_rest_data(self, url: str) -> Dict:
         """Perform an HTTP GET to the <url> parameter.
@@ -141,19 +141,19 @@ class Netbox(Source, InventoryAsyncPlugin):
         if int(response.status_code) == 200:
             res = response.json()
 
-            data = res.get("results", [])
+            data = res.get('results', [])
 
-            if res.get("next", None):
-                next_data = self.retrieve_rest_data(res["next"])
-                data.extend(next_data.get("results", []))
+            if res.get('next', None):
+                next_data = self.retrieve_rest_data(res['next'])
+                data.extend(next_data.get('results', []))
 
-            res["results"] = data
-            res["next"] = None
+            res['results'] = data
+            res['next'] = None
 
             return res
 
         else:
-            raise RuntimeError("Unable to connect to netbox:", response.json())
+            raise RuntimeError('Unable to connect to netbox:', response.json())
 
     def _parse_inventory(self, raw_inventory: dict) -> List[Dict]:
         """parse the raw inventory collected from the server and generates
@@ -166,7 +166,7 @@ class Netbox(Source, InventoryAsyncPlugin):
             List[Dict]: a list containing the inventory
         """
         def get_field_value(entry, fields_str):
-            fields = fields_str.split(".")
+            fields = fields_str.split('.')
             cur_field = None
             for i, field in enumerate(fields):
                 if i == 0:
@@ -177,44 +177,42 @@ class Netbox(Source, InventoryAsyncPlugin):
                     return None
             return cur_field
 
-        inventory_list = raw_inventory.get("results", [])
+        inventory_list = raw_inventory.get('results', [])
         inventory = {}
 
-        # i can set the key as "name" rather than "id" because
-        # the device name must be unique in Netbox
         for device in inventory_list:
-            inventory[device["name"]] = {}
+            inventory[device['name']] = {}
             for rel_field in _RELEVANT_FIELDS:
-                if rel_field == "name":
-                    inventory[device["name"]]["id"] = \
+                if rel_field == 'name':
+                    inventory[device['name']]['hostname'] = \
                         get_field_value(device, rel_field)
-                elif rel_field == "primary_ip6.address":
-                    inventory[device["name"]]["ipv6"] = \
+                elif rel_field == 'primary_ip6.address':
+                    inventory[device['name']]['ipv6'] = \
                         get_field_value(device, rel_field)
-                elif rel_field == "primary_ip4.address":
-                    inventory[device["name"]]["ipv4"] = \
+                elif rel_field == 'primary_ip4.address':
+                    inventory[device['name']]['ipv4'] = \
                         get_field_value(device, rel_field)
 
-            if inventory[device["name"]]["ipv4"]:
-                inventory[device["name"]
-                          ]["address"] = inventory[device["name"]]["ipv4"]
-            elif inventory[device["name"]]["ipv6"]:
-                inventory[device["name"]
-                          ]["address"] = inventory[device["name"]]["ipv6"]
+            if inventory[device['name']]['ipv4']:
+                inventory[device['name']
+                          ]['address'] = inventory[device['name']]['ipv4']
+            elif inventory[device['name']]['ipv6']:
+                inventory[device['name']
+                          ]['address'] = inventory[device['name']]['ipv6']
 
-            inventory[device["name"]]["devtype"] = self._device.get("devtype")
+            inventory[device['name']]['devtype'] = self._device.get('devtype')
 
             # only ssh supported for now
-            inventory[device["name"]]["transport"] = self._device.get(
-                "transport") or "ssh"
-            inventory[device["name"]]["port"] = 22
+            inventory[device['name']]['transport'] = self._device.get(
+                'transport') or 'ssh'
+            inventory[device['name']]['port'] = 22
 
-            if self._namespace == "site.name"\
-                    and "site.name" in _RELEVANT_FIELDS:
-                inventory[device["name"]]["namespace"] = \
-                    inventory[device["name"]].get("site.name", "")
+            if self._namespace == 'site.name'\
+                    and 'site.name' in _RELEVANT_FIELDS:
+                inventory[device['name']]['namespace'] = \
+                    inventory[device['name']].get('site.name', '')
             else:
-                inventory[device["name"]]["namespace"] = self._namespace
+                inventory[device['name']]['namespace'] = self._namespace
 
         return list(inventory.values())
 
@@ -231,20 +229,20 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._session = session
 
     def run(self, **kwargs):
-        run_once = kwargs.pop("run_once", False)
+        run_once = kwargs.pop('run_once', False)
 
         if kwargs:
-            raise ValueError(f"Passed unused arguments: {kwargs}")
+            raise ValueError(f'Passed unused arguments: {kwargs}')
 
         try:
             while True:
-                if self._get_status() == "stop":
+                if self._get_status() == 'stop':
                     break
-                self._set_status("running")
+                self._set_status('running')
 
                 # Retrieve data using REST
-                url = f"{self._protocol}://{self._host}:{self._port}"\
-                    f"/api/dcim/devices/?tag={self._tag}"
+                url = f'{self._protocol}://{self._host}:{self._port}'\
+                    f'/api/dcim/devices/?tag={self._tag}'
                 raw_inventory = self.retrieve_rest_data(url)
                 tmp_inventory = self._parse_inventory(raw_inventory)
                 # load credentials into the inventory
@@ -255,7 +253,7 @@ class Netbox(Source, InventoryAsyncPlugin):
                 self.set_inventory(tmp_inventory)
                 tmp_inventory.clear()
 
-                if self._get_status() == "stop":
+                if self._get_status() == 'stop':
                     break
 
                 if self._run_once or run_once:
@@ -271,7 +269,7 @@ class Netbox(Source, InventoryAsyncPlugin):
                 self._session.close()
 
     def stop(self):
-        self._set_status("stop")
+        self._set_status('stop')
         if self._session:
             self._session.close()
         self._sleep_sem.release()
