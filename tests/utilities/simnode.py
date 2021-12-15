@@ -80,7 +80,8 @@ def run_simnodes(devices: list):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-D", "--devices-file", type=str, help="Device list file")
+        "-D", "--devices-file", type=str, help="Device list file",
+        required=True)
     args = parser.parse_args()
 
     devs = {}

@@ -17,6 +17,7 @@ from concurrent.futures._base import TimeoutError
 
 from packaging import version as version_parse
 import yaml
+import xmltodict
 import asyncssh
 import aiohttp
 from dateparser import parse
@@ -114,6 +115,7 @@ class Node:
         self._exception_timestamp = None
         self._current_exception = None
         self.sigend = False
+        self.api_key = None
 
         self.address = kwargs["address"]
         self.hostname = kwargs["address"]  # default till we get hostname
@@ -496,6 +498,12 @@ class Node:
             if output[2]['status'] == 0:
                 self._extract_nos_version(output[2].get('data', ''))
 
+        elif output[4]['status'] == 0:
+            data = output[0]["data"]
+            version_str = data
+            if "paloaltonetworks" in data:
+                devtype = "panos"
+
         if not devtype:
             if not self.current_exception:
                 self.logger.info(
@@ -597,6 +605,8 @@ class Node:
             self.__class__ = NxosNode
         elif self.devtype.startswith("sonic"):
             self.__class__ = SonicNode
+        elif self.devtype == "panos":
+            self.__class__ = PanosNode
 
         # Now invoke the class specific NOS version extraction
         if version_str:
@@ -1434,3 +1444,231 @@ class SonicNode(Node):
                           oformat="json", timeout=None):
         '''Gather data for service via device REST API'''
         raise NotImplementedError
+
+
+class PanosNode(Node):
+
+    def _init(self, **kwargs):
+        super()._init(**kwargs)
+        self.devtype = "panos"
+
+    async def init_node(self):
+        try:
+            res = []
+            # temporary hack to detect device info using ssh
+            async with asyncssh.connect(
+                    self.address, port=22, username=self.username,
+                    password=self.password, known_hosts=None) as conn:
+                async with conn.create_process() as process:
+                    process.stdin.write("show system info\n")
+                    recv_chars = False
+                    output = ""
+                    if not recv_chars:
+                        output += await process.stdout.read(1)
+                    try:
+                        await asyncio.wait_for(
+                            process.wait_closed(), timeout=0.01)
+                    except asyncio.TimeoutError:
+                        pass
+
+                    stdout, _ = process.collect_output()
+                    output += stdout
+                    res = [{
+                        "status": 0,
+                        "data": output}]
+                    await self._parse_boottime_hostname(res, None)
+            self._session = aiohttp.ClientSession(
+                conn_timeout=self.connect_timeout,
+                connector=aiohttp.TCPConnector(ssl=False),
+            )
+            if self.api_key is None:
+                await self.get_api_key()
+                # await self.init_boot_time()
+                self._status = "good"
+        except Exception:
+            if self.sigend:
+                await self._terminate()
+                return
+
+    async def ssh_gather(self, service_callback, cmd_list, cb_token, _,
+                         timeout):
+        """Run ssh for cmd in cmdlist and place output on service callback"""
+
+        result = []
+
+        if cmd_list is None:
+            await service_callback({}, cb_token)
+
+        if not self._conn:
+            await self._init_ssh()
+            if not self._conn:
+                for cmd in cmd_list:
+                    self.logger.error(
+                        f"Unable to connect to node {self.hostname} cmd {cmd}"
+                        )
+                    result.append(self._create_error(cmd))
+                await service_callback(result, cb_token)
+                return
+
+        if isinstance(cb_token, RsltToken):
+            cb_token.node_token = self.bootupTimestamp
+
+        timeout = timeout or self.cmd_timeout
+        for cmd in cmd_list:
+            try:
+                # panos does not send EOF at the end of output.
+                # This hack is just a workaround for that
+                async with self._conn.create_process() as process:
+                    process.stdin.write(f"{cmd}\n")
+                    recv_chars = False
+                    output = ""
+                    if not recv_chars:
+                        output += await process.stdout.read(1)
+                    try:
+                        await asyncio.wait_for(
+                            process.wait_closed(), timeout=0.01)
+                    except asyncio.TimeoutError:
+                        pass
+
+                    stdout, _ = process.collect_output()
+                    output += stdout
+                    if self.current_exception:
+                        self.logger.info(
+                            f"{self.hostname} recovered "
+                            "from previous exception")
+                        self.current_exception = None
+                    result.append(self._create_result(
+                        cmd, output.exit_status, output.stdout))
+            except Exception as e:
+                if self.sigend:
+                    await self._terminte()
+                    return
+                result.append(self._create_error(cmd))
+                self.current_exception = e
+                if not isinstance(e, asyncio.TimeoutError):
+                    self.logger.error(
+                        f"{cmd} output for {self.hostname} failed "
+                        f"due to {str(e)}")
+                    await self._close_connection()
+                else:
+                    self.logger.error(
+                        f"{cmd} output for {self.hostname} failed "
+                        "due to timeout")
+
+                break
+
+        await service_callback(result, cb_token)
+
+    async def get_api_key(self):
+        """Authenticate to get the api key needed in all cmd requests"""
+        url = f"https://{self.address}:443/api/?type=keygen&user=" \
+            f"{self.username}&password={self.password}"
+        async with self._session.get(url, timeout=self.connect_timeout) \
+                as response:
+            status, xml = response.status, await response.text()
+            if status == 200:
+                data = xmltodict.parse(xml)
+                self.api_key = data["response"]["result"]["key"]
+            # need to manage errors
+
+    async def init_boot_time(self):
+        """Fill in the boot time of the node by running requisite cmd"""
+        await self.exec_cmd(self._parse_boottime_hostname,
+                            ["show system info"], None, 'text')
+
+    async def _parse_boottime_hostname(self, output, cb_token) -> None:
+        """Parse the uptime command output"""
+        if output[0]["status"] == 0:
+            data = output[0]["data"]
+            # extract uptime
+            match = re.search(
+                r'uptime:\s+(\d+)\sdays,\s(\d+):(\d+):(\d+)', data)
+
+            if match:
+                days = match.group(1).strip()
+                hours = match.group(2).strip()
+                minutes = match.group(3).strip()
+                seconds = match.group(4).strip()
+                upsecs = 86400 * int(days) + 3600 * int(hours) + \
+                    60 * int(minutes) + int(seconds)
+                self.bootupTimestamp = int(
+                    int(time.time()*1000) - float(upsecs)*1000)
+            else:
+                self.logger.warning(
+                    f'Cannot parse uptime from {self.address}:{self.port}')
+
+            # extract hostname
+            hmatch = re.search(r'hostname:\s+(\S+)\n', data)
+            if hmatch:
+                self.hostname = hmatch.group(1).strip()
+            else:
+                self.logger.warning(
+                    f'Cannot parse hostname from {self.address}:{self.port}')
+
+            self._extract_nos_version(data)
+
+    def _extract_nos_version(self, data: str) -> None:
+        vmatch = re.search(r'sw-version:\s+(\S+)', data)
+        if vmatch:
+            self.version = vmatch.group(1).strip()
+        else:
+            self.logger.warning(
+                f'Cannot parse version from {self.address}:{self.port}')
+            self.version = "all"
+
+    async def rest_gather(self, service_callback, cmd_list, cb_token,
+                          oformat="json", timeout=None):
+
+        result = []
+        if not cmd_list:
+            return result
+
+        timeout = timeout or self.connect_timeout
+
+        now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
+
+        port = 443
+
+        url = f"https://{self.address}:{port}/api/"
+
+        status = 200  # status OK
+
+        if not self._session:
+            await self.init_node()
+        if not self._session:
+            for cmd in cmd_list:
+                result.append(self._create_error(cmd))
+            await service_callback(result, cb_token)
+            return
+
+        try:
+            for cmd in cmd_list:
+                url_cmd = f"{url}?type=op&cmd={cmd}&key={self.api_key}"
+                async with self._session.get(
+                        url_cmd, timeout=timeout) as response:
+                    status, xml = response.status, await response.text()
+                    json_out = json.dumps(
+                        xmltodict.parse(xml))
+
+                    result.append({
+                        "status": status,
+                        "timestamp": now,
+                        "cmd": cmd,
+                        "devtype": self.devtype,
+                        "namespace": self.nsname,
+                        "hostname": self.hostname,
+                        "address": self.address,
+                        "data": json_out,
+                    })
+        except Exception as e:
+            if self.sigend:
+                await self._terminate()
+                return
+            self.current_exception = e
+            for cmd in cmd_list:
+                result.append(self._create_error(cmd))
+            self._status = "init"  # Recheck everything
+            self.logger.error("ERROR: (REST) Unable to communicate with node "
+                              f"{self.address}:{self.port} due to {str(e)}")
+
+        await service_callback(result, cb_token)
