@@ -102,9 +102,16 @@ class SqPandasEngine(SqEngineObj):
             PandasObject: A collection of bool reporting the result
         """
         network = ip_network(net)
-        return addr.apply(lambda a: (
-            False if not a else ip_address(a.split("/")[0]) in network)
-        )
+        if isinstance(addr[0], np.ndarray):
+            return addr.apply(lambda x, network:
+                              False if not x.any()
+                              else any(ip_address(a.split("/")[0]) in network
+                                       for a in x),
+                              args=(network,))
+        else:
+            return addr.apply(lambda a: (
+                False if not a else ip_address(a.split("/")[0]) in network)
+            )
 
     def _check_ipvers(self,  addr: pd.Series, version: int) -> pd.Series:
         """Check if the IP version of addresses in a Pandas dataframe
@@ -341,18 +348,14 @@ class SqPandasEngine(SqEngineObj):
             pd.DataFrame: Pandas dataframe of unique values for given column
         """
         count = kwargs.pop("count", 0)
-        query_str = kwargs.get('query_str', '')
+        query_str = kwargs.pop('query_str', '')
+        get_query_str = kwargs.pop('get_query_str', '')
 
         columns = kwargs.pop("columns", None)
 
-        if query_str:
-            getcols = ['*']
-        else:
-            getcols = columns
-
         column = columns[0]
 
-        df = self.get(columns=getcols, **kwargs)
+        df = self.get(columns=columns, query_str=get_query_str, **kwargs)
         if df.empty:
             return df
 
@@ -360,15 +363,20 @@ class SqPandasEngine(SqEngineObj):
         if df.apply(lambda x: isinstance(x[column], np.ndarray), axis=1).all():
             df = df.explode(column).dropna(how='any')
 
-        if not count:
-            return (pd.DataFrame({f'{column}': df[column].unique()}))
-        else:
+        if count:
             r = df[column].value_counts()
-            return (pd.DataFrame({column: r})
-                    .reset_index()
-                    .rename(columns={column: 'numRows',
-                                     'index': column})
-                    .sort_values(column))
+            df = pd.DataFrame({column: r}) \
+                .reset_index() \
+                .rename(columns={column: 'numRows',
+                                 'index': column}) \
+                   .sort_values(column)
+        else:
+            df = pd.DataFrame({f'{column}': df[column].unique()})
+
+        if query_str:
+            df = df.query(query_str).reset_index(drop=True)
+
+        return df
 
     def aver(self, **kwargs):
         '''Assert'''
