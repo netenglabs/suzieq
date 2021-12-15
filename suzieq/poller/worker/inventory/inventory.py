@@ -143,7 +143,7 @@ class Inventory(SqPlugin):
             else:
                 logger.info(f"Added node {newnode.hostname}:{newnode.port}")
 
-            nodes_list.update({self.get_node_key(new_node): newnode})
+            nodes_list.update({self.get_node_key(newnode): newnode})
 
         return nodes_list
 

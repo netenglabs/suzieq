@@ -11,6 +11,8 @@ from suzieq.poller.controller.credential_loader.base_credential_loader \
 from suzieq.shared.exceptions import InventorySourceError
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 
+_DEFAULT_SOURCE_PATH = "suzieq/.poller/intentory/inventory.yaml"
+
 
 class Source(ControllerPlugin):
     """Base class for plugins which reads inventories"""
@@ -190,10 +192,8 @@ class Source(ControllerPlugin):
         """
         src_plugins = []
         plugin_classes = cls.get_plugins()
-        if not plugin_conf.get("path"):
-            raise InventorySourceError(
-                "Parameter 'path' is mandatory for source")
-        src_confs = _load_inventory(plugin_conf["path"])
+        src_confs = _load_inventory(
+            plugin_conf.get("path", _DEFAULT_SOURCE_PATH))
         for src_conf in src_confs:
             ptype = src_conf.get("type") or "file"
 
@@ -324,15 +324,15 @@ def _validate_raw_inventory(inventory: dict):
 
         if ns.get("source") not in main_fields["sources"]:
             raise InventorySourceError(
-                    f"No source called '{ns['source']}'")
+                f"No source called '{ns['source']}'")
 
         if ns.get("device") and ns['device'] not in main_fields["devices"]:
             raise InventorySourceError(
-                    f"No device called '{ns['device']}'")
+                f"No device called '{ns['device']}'")
 
         if ns.get("auth") and ns['auth'] not in main_fields["auths"]:
             raise InventorySourceError(
-                    f"No auth called '{ns['auth']}'")
+                f"No auth called '{ns['auth']}'")
 
 
 def _get_inventory_config(conf_type: str, inventory: dict) -> dict:

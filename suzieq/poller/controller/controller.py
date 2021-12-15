@@ -8,32 +8,30 @@ Functions:
                 and starting each one of them. The plugins are divided
                 in types.
 """
+import argparse
 from os.path import isfile
-from typing import Type, List
+from typing import Type, List, Dict
 from time import sleep
 import threading
-import argparse
 from suzieq.poller.controller.inventory_async_plugin \
     import InventoryAsyncPlugin
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
-from suzieq.shared.utils import load_sq_config
+from suzieq.shared.utils import sq_get_config_file
 
 
 class Controller:
     """This class manages all the plugins set on the configuration files
     """
 
-    def __init__(self) -> None:
+    def __init__(self, args: argparse.Namespace, config_data: dict) -> None:
         self._DEFAULT_PLUGINS = {
             "source": "file",
             "chunker": "static_chunker",
             "manager": "static_manager"
         }
-        self._controller_config = dict()
 
         # containts the configuration data
-        # for each plugin
-        self._plugins_config = dict()
+        self._config = dict()
 
         # contains the Plugin objects divided by type
         self._plugin_objects = dict()
@@ -46,6 +44,13 @@ class Controller:
         base_plugin_pkg = "suzieq.poller.controller"
         self._base_plugin_classes = ControllerPlugin.get_plugins(
             search_pkg=base_plugin_pkg)
+
+        self.sources = None
+        self.chunker = None
+        self.manager = None
+
+        self._args = args
+        self._raw_config = config_data
 
     @property
     def run_once(self) -> bool:
@@ -89,22 +94,91 @@ class Controller:
     def timeout(self, val: int):
         self._timeout = val
 
-    def load(self, config_data: dict):
+    def init(self):
         """Loads the provider configuration and the plugins configurations
+        and initialize all the plugins
+        """
+        source_args = {}
+        chunker_args = {}
+        manager_args = {}
+
+        inventory_file = self._args.inventory
+        self._run_once = self._args.run_once
+
+        manager_args.update({"run-once": self._run_once})
+        manager_args.update({"exclude-services": self._args.exclude_services})
+        manager_args.update({"no-colescer": self._args.no_coalescer})
+        manager_args.update({"outputs": self._args.outputs})
+        manager_args.update({"output-dir": self._args.output_dir})
+        manager_args.update({"service-only": self._args.service_only})
+        manager_args.update({"ssh-config-file": self._args.ssh_config_file})
+        manager_args.update(
+            {"config-file": sq_get_config_file(self._args.config)})
+
+        if inventory_file:
+            if not isfile(inventory_file):
+                raise RuntimeError(
+                    f"Inventory file not found at {inventory_file}")
+            source_args.update({"path": inventory_file})
+
+        self._config = self.parse_poller_config(self._raw_config,
+                                                source=source_args,
+                                                chunker=chunker_args,
+                                                manager=manager_args,
+                                                run_once=self._run_once
+                                                )
+
+        self.period = self._config.get("period", 3600)
+        self._timeout = self._config.get("timeout", 10)
+
+        # initialize inventorySources
+        self.init_plugins("source")
+
+        self.sources = self.get_plugins_from_type("source")
+        if not self.sources:
+            raise RuntimeError(
+                "No inventorySource plugin in the configuration file"
+            )
+
+        # initialize chunker
+        self.init_plugins("chunker")
+        chunkers = self.get_plugins_from_type("chunker")
+        if len(chunkers) > 1:
+            raise RuntimeError("Only 1 Chunker at a time is supported")
+        self.chunker = chunkers[0]
+
+        # initialize pollerManager
+        self.init_plugins("manager")
+        managers = self.get_plugins_from_type("manager")
+        if len(managers) > 1:
+            raise RuntimeError("Only 1 poller_manager at a time is supported")
+        self.manager = managers[0]
+
+    def parse_poller_config(self, config_data: dict, **kwargs) -> Dict:
+        """Parse the config_data and generate the config
 
         Args:
-            config_data ([dict]): a dictionary which contains provider and
-                                  plugins configurations
-        """
-        self._plugins_config = config_data
+            config_data (dict): raw config data
 
-        self._controller_config = config_data.get("controller_config", {}) \
-            or {}
-        self.period = self._controller_config.get("period", 3600)
-        self._timeout = self._controller_config.get(
-            "timeout", 10
-        )
-        self._run_once = self._controller_config.get("run_once", False)
+        Returns:
+            [Dict]: config data
+        """
+
+        fields = ["source", "chunker", "manager"]
+        controller_config = config_data.get("poller", {}).copy()
+
+        for key, value in kwargs.items():
+            if key in fields:
+                # plugins configuration
+                for k, v in value.items():
+                    if not controller_config.get(key):
+                        controller_config[key] = {}
+                    controller_config[key][k] = v
+            else:
+                # controller/worker configuration
+                controller_config[key] = value
+
+        return controller_config
 
     def get_plugins_from_type(self, plugin_type: str) -> List[Type]:
         """Returns the list of plugins of type <plugin_type>
@@ -128,7 +202,7 @@ class Controller:
             AttributeError: Invalid configuration
             RuntimeError: Unknown plugin
         """
-        plugin_conf = self._plugins_config.get(plugin_type) or {}
+        plugin_conf = self._config.get(plugin_type) or {}
         if not plugin_conf or not plugin_conf.get("type"):
             if plugin_type not in self._DEFAULT_PLUGINS:
                 raise RuntimeError("No plugin configuration provided for "
@@ -148,14 +222,65 @@ class Controller:
             self._plugin_objects[plugin_type] = []
         self._plugin_objects[plugin_type].extend(plugins)
 
-    def add_plugins_to_conf(self, plugin_type: str, plugin_data):
-        """Add or override the content of plugins configuration with type <plugin_typ>
+    def run(self):
+        """start the device polling phase.
+
+        In the kwargs are passed all the components that must be started
 
         Args:
-            plugin_type (str): type of plugin to update
-            plugin_data ([type]): data for plugin
+            controller (Controller): contains the informations for controller
+            and workers
         """
-        self._plugins_config[plugin_type] = plugin_data
+
+        # start inventorySources if needed
+        for inv_src in self.sources:
+            if issubclass(type(inv_src), InventoryAsyncPlugin):
+                thread = ControllerPluginThread(
+                    target=inv_src.run,
+                    kwargs={"run_once": self.run_once}
+                )
+                thread.start()
+                inv_src.set_running_thread(thread)
+
+        if issubclass(type(self.manager), InventoryAsyncPlugin):
+            thread = ControllerPluginThread(
+                target=self.manager.run,
+                kwargs={"run_once": self.run_once}
+            )
+            thread.start()
+            self.manager.set_running_thread(thread)
+
+        while True:
+            global_inventory = {}
+            for inv_src in self.sources:
+                try:
+                    cur_inv = inv_src.get_inventory(
+                        timeout=self.timeout)
+                except TimeoutError as e:
+                    exc_str = str(e)
+                    if issubclass(type(inv_src), InventoryAsyncPlugin):
+                        thread: ControllerPluginThread = \
+                            inv_src.get_running_thread()
+                        if thread and thread.exc:
+                            exc_str += f"\n\nSource: {thread.exc}"
+                    raise RuntimeError(exc_str)
+
+                if cur_inv:
+                    for device in cur_inv:
+                        dev_name = device.get("id")
+                        dev_ns = device.get("namespace")
+                        global_inventory[f"{dev_ns}.{dev_name}"] = device
+
+            n_pollers = self.manager.get_n_workers()
+
+            inv_chunks = self.chunker.chunk(global_inventory, n_pollers)
+            # TODO: handle manager thread errors
+            self.manager.apply(inv_chunks)
+
+            if self.run_once:
+                break
+
+            sleep(self.period)
 
 
 class ControllerPluginThread(threading.Thread):
@@ -170,153 +295,3 @@ class ControllerPluginThread(threading.Thread):
         # pylint: disable=broad-except
         except Exception as e:
             self.exc = e
-
-
-def sq_controller_main():
-    """Controller main function
-
-    This function loads all the plugins provided in the configuration file and
-    coordinates all the different plugins
-
-    Raises:
-        RuntimeError: Invalid configuration file passed as parameter
-        RuntimeError: Cannot find the configuration file
-        RuntimeError: Missing inventorySource plugins in the configuration
-    """
-    parser = argparse.ArgumentParser()
-
-    parser.add_argument(
-        "-c",
-        "--config",
-        help="Controller configuration file",
-        type=str
-    )
-
-    parser.add_argument(
-        "-r",
-        "--run-once",
-        action='store_true',
-        help="Run inventory sources only once"
-    )
-
-    parser.add_argument(
-        "-I",
-        "--inventory",
-        help="Input inventory file",
-        type=str
-    )
-
-    args = parser.parse_args()
-
-    run_once = args.run_once
-    inventory_file = args.inventory
-
-    config_data = load_sq_config(config_file=args.config)
-
-    controller = Controller()
-    controller.load(config_data.get("poller", {}))
-
-    if inventory_file:
-        if not isfile(inventory_file):
-            raise RuntimeError(f"Inventory file not found at {inventory_file}")
-        controller.add_plugins_to_conf(
-            "source", {"path": inventory_file})
-
-    # initialize inventorySources
-    controller.init_plugins("source")
-
-    inv_sources = controller.get_plugins_from_type("source")
-    if not inv_sources:
-        raise RuntimeError(
-            "No inventorySource plugin in the configuration file"
-        )
-
-    # initialize chunker
-    controller.init_plugins("chunker")
-    chunkers = controller.get_plugins_from_type("chunker")
-    if len(chunkers) > 1:
-        raise RuntimeError("Only 1 Chunker at a time is supported")
-    chunker = chunkers[0]
-
-    # initialize pollerManager
-    controller.init_plugins("manager")
-    managers = controller.get_plugins_from_type("manager")
-    if len(managers) > 1:
-        raise RuntimeError("Only 1 poller_manager at a time is supported")
-    manager = managers[0]
-
-    start_polling(controller,
-                  chunker=chunker,
-                  manager=manager,
-                  inv_sources=inv_sources,
-                  run_once=run_once or controller.run_once
-                  )
-
-
-def start_polling(controller: Controller, **kwargs):
-    """start the polling phase.
-
-    In the kwargs are passed all the components that must be started
-
-    Args:
-        controller (Controller): contains the informations for controller
-        and workers
-    """
-    chunker = kwargs.pop("chunker")
-    manager = kwargs.pop("manager")
-    inv_sources = kwargs.pop("inv_sources")
-    run_once = kwargs.pop("run_once")
-
-    # start inventorySources if needed
-    for inv_src in inv_sources:
-        if issubclass(type(inv_src), InventoryAsyncPlugin):
-            thread = ControllerPluginThread(
-                target=inv_src.run,
-                kwargs={"run_once": run_once}
-            )
-            thread.start()
-            inv_src.set_running_thread(thread)
-
-    if issubclass(type(manager), InventoryAsyncPlugin):
-        thread = ControllerPluginThread(
-            target=manager.run,
-            kwargs={"run_once": run_once}
-        )
-        thread.start()
-        manager.set_running_thread(thread)
-
-    while True:
-        global_inventory = {}
-        for inv_src in inv_sources:
-            try:
-                cur_inv = inv_src.get_inventory(
-                    timeout=controller.timeout)
-            except TimeoutError as e:
-                exc_str = str(e)
-                if issubclass(type(inv_src), InventoryAsyncPlugin):
-                    thread: ControllerPluginThread = \
-                        inv_src.get_running_thread()
-                    if thread and thread.exc:
-                        exc_str += f"\n\nSource: {thread.exc}"
-                raise RuntimeError(exc_str)
-
-            if cur_inv:
-                for device in cur_inv:
-                    dev_name = device.get("id")
-                    dev_ns = device.get("namespace")
-                    global_inventory[f"{dev_ns}.{dev_name}"] = device
-
-        n_pollers = manager.get_n_workers()
-
-        inv_chunks = chunker.chunk(global_inventory, n_pollers)
-        # TODO: handle manager thread errors
-        manager.apply(inv_chunks)
-
-        if run_once:
-            break
-
-        sleep(controller.period)
-
-
-if __name__ == "__main__":
-    sq_controller_main()
