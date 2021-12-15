@@ -11,7 +11,7 @@ from unittest.mock import Mock
 import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
 
-from suzieq.poller.services.service_manager import ServiceManager
+from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.shared.utils import load_sq_config
 from suzieq.shared.schema import Schema
 from suzieq.sqobjects import get_sqobject, get_tables
