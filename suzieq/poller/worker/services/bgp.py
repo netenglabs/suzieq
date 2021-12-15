@@ -580,3 +580,75 @@ class BgpService(Service):
 
     def _clean_sonic_data(self, processed_data, raw_data):
         return self._clean_linux_data(processed_data, raw_data)
+
+    def _clean_panos_data(self, processed_data, raw_data):
+        routerId = ""
+        asn = 0
+        softReconfDict = {}
+        bfdDict = {}
+        drop_indices = []
+        ts = datetime.fromtimestamp((raw_data[0]['timestamp'])/1000)
+        for i, entry in enumerate(processed_data):
+            # router-id and asn are present only in the summary
+            if "routerId" in entry:
+                routerId = entry.get("routerId", "")
+                asn = int(entry.get("asn", ""))
+                drop_indices.append(i)
+                continue
+
+            if "softReconfig" in entry:
+                sr = True if entry["softReconfig"] == "yes" else False
+                softReconfDict[entry.get("_peerGroup")] = sr
+                drop_indices.append(i)
+                continue
+
+            if "_bfd_status" in entry:
+                bgpNeighbor = entry.get("_bgp_neighbor", "")
+                bfdDict[bgpNeighbor] = entry.get("_bfd_status")
+                drop_indices.append(i)
+                continue
+
+            peerGroup = entry.get("_peerGroup")
+            entry["softReconfig"] = softReconfDict.get(peerGroup)
+
+            entry["routerId"] = routerId
+            entry["asn"] = asn
+
+            if "peerIP" in entry:
+                peerIp = entry.get("peerIP", "").split(":")[0]
+                entry["peerIP"] = peerIp
+                entry["bfdStatus"] = bfdDict.get(peerIp, "")
+
+            if "updateSource" in entry:
+                entry["updateSource"] = entry.get(
+                    "updateSource", "").split(":")[0]
+
+            long_values = [
+                "estdTime", "updatesRx", "updatesTx", "peerAsn",
+                "holdTime", "keepaliveTime", "hopsMax"]
+
+            for key in long_values:
+                entry[key] = int(entry.get(key, ""))
+
+            entry["estdTime"] = int(ts.timestamp() - entry["estdTime"]) * 1000
+
+            if entry.get("rrclient", "") == "not-client":
+                entry["rrclient"] = "False"
+            else:
+                entry["rrclient"] = "True"
+
+            if entry.get("_afi_safi", ""):
+                afi, safi = entry["_afi_safi"].split("-")
+
+                if "ipv4" in afi.lower():
+                    entry["afi"] = "ipv4"
+                elif "ipv6" in afi.lower():
+                    entry["afi"] = "ipv6"
+
+                if safi:
+                    entry["safi"] = safi
+
+                entry["mrai"] = -1
+
+        processed_data = np.delete(processed_data, drop_indices).tolist()
+        return processed_data
