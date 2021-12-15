@@ -3,48 +3,93 @@ tests:
 - command: bgp unique --count=True --format=json --columns=hostname
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
+    2}, {"hostname": "leaf02", "numRows": 2}, {"hostname": "leaf03", "numRows": 2},
+    {"hostname": "leaf04", "numRows": 2}, {"hostname": "exit01", "numRows": 6}, {"hostname":
+    "exit02", "numRows": 6}, {"hostname": "firewall01", "numRows": 6}, {"hostname":
+    "spine01", "numRows": 6}, {"hostname": "spine02", "numRows": 6}]'
 - command: bgp unique --count=True --format=json --columns=afiSafi
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"afiSafi": "ipv4 unicast", "numRows": 16}, {"afiSafi": "l2vpn evpn",
+    "numRows": 24}]'
 - command: bgp unique --count=True --format=json --columns=state
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"state": "Established", "numRows": 40}]'
 - command: bgp unique --count=True --format=json --columns=peer
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"peer": "169.254.127.1", "numRows": 1}, {"peer": "169.254.127.3", "numRows":
+    1}, {"peer": "169.254.253.1", "numRows": 1}, {"peer": "169.254.253.5", "numRows":
+    1}, {"peer": "169.254.253.9", "numRows": 1}, {"peer": "169.254.254.1", "numRows":
+    1}, {"peer": "169.254.254.5", "numRows": 1}, {"peer": "169.254.254.9", "numRows":
+    1}, {"peer": "10.0.0.11", "numRows": 2}, {"peer": "10.0.0.12", "numRows": 2},
+    {"peer": "10.0.0.13", "numRows": 2}, {"peer": "10.0.0.14", "numRows": 2}, {"peer":
+    "10.0.0.31", "numRows": 2}, {"peer": "10.0.0.32", "numRows": 2}, {"peer": "swp3.2",
+    "numRows": 2}, {"peer": "swp3.3", "numRows": 2}, {"peer": "swp3.4", "numRows":
+    2}, {"peer": "swp4", "numRows": 2}, {"peer": "10.0.0.21", "numRows": 6}, {"peer":
+    "10.0.0.22", "numRows": 6}]'
 - command: bgp unique --count=True --format=json --columns=softReconfig
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"softReconfig": true, "numRows": 6}, {"softReconfig": false, "numRows":
+    34}]'
 - command: bgp unique --count=True --format=json --columns=communityTypes
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"communityTypes": "extended", "numRows": 34}, {"communityTypes": "standard",
+    "numRows": 34}]'
 - command: bgp unique --count=True --format=json --columns=defOriginate
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"defOriginate": true, "numRows": 2}, {"defOriginate": false, "numRows":
+    38}]'
 - command: bgp unique --count=True --format=json --columns=keepaliveTime
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"keepaliveTime": 3, "numRows": 40}]'
 - command: bgp unique --count=True --format=json --columns=holdTime
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"holdTime": 9, "numRows": 40}]'
 - command: bgp unique --count=True --format=json --columns=vrf
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"vrf": "evpn-vrf", "numRows": 2}, {"vrf": "internet-vrf", "numRows":
+    4}, {"vrf": "default", "numRows": 34}]'
 - command: bgp unique --count=True --format=json --columns=nhUnchanged
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"nhUnchanged": false, "numRows": 16}, {"nhUnchanged": true, "numRows":
+    24}]'
 - command: bgp unique --count=True --format=json --columns=nhSelf
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"nhSelf": false, "numRows": 40}]'
 - command: bgp unique --count=True --format=json --columns=rrclient
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"rrclient": "True", "numRows": 12}, {"rrclient": "False", "numRows":
+    28}]'
 - command: bgp unique --count=True --format=json --columns=asn
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"asn": 65520, "numRows": 2}, {"asn": 65521, "numRows": 2}, {"asn": 65534,
+    "numRows": 2}, {"asn": 65522, "numRows": 4}, {"asn": 65533, "numRows": 6}, {"asn":
+    64520, "numRows": 24}]'
 - command: bgp unique --count=True --format=json --columns=peerAsn
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"peerAsn": 65520, "numRows": 2}, {"peerAsn": 65521, "numRows": 2}, {"peerAsn":
+    65534, "numRows": 2}, {"peerAsn": 65522, "numRows": 4}, {"peerAsn": 65533, "numRows":
+    6}, {"peerAsn": 64520, "numRows": 24}]'
 - command: bgp unique --count=True --format=json --columns=routerId
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos
+  output: '[{"routerId": "10.0.0.11", "numRows": 2}, {"routerId": "10.0.0.12", "numRows":
+    2}, {"routerId": "10.0.0.13", "numRows": 2}, {"routerId": "10.0.0.14", "numRows":
+    2}, {"routerId": "10.0.0.41", "numRows": 2}, {"routerId": "10.0.0.200", "numRows":
+    6}, {"routerId": "10.0.0.21", "numRows": 6}, {"routerId": "10.0.0.22", "numRows":
+    6}, {"routerId": "10.0.0.31", "numRows": 6}, {"routerId": "10.0.0.32", "numRows":
+    6}]'

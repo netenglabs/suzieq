@@ -3,54 +3,90 @@ tests:
 - command: network show --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network show panos
+  output: '[{"namespace": "panos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1639498880095}]'
 - command: network show --format=json --os=panos
   data-directory: tests/data/panos/parquet-out
   marks: network show  panos
+  output: '[{"namespace": "panos", "deviceCnt": 1, "serviceCnt": 7, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1639498880046}]'
 - command: network show --columns='namespace' --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network show panos
+  output: '[{"namespace": "panos"}]'
 - command: network show --columns='hasOspf hasBgp' --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network show panos
+  output: '[{"hasOspf": true, "hasBgp": true}]'
 - command: network show --columns='*' --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network show panos
+  output: '[{"namespace": "panos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1639498880095, "active": true}]'
 - command: network find --address="172.16.1.101" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
+  output: '[]'
 - command: network find --namespace=dual-evpn --address="172.16.1.101" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
+  output: '[]'
 - command: network find --address="52:54:00:c5:1d:06" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
+  output: '[]'
 - command: network find --address="72:f0:17:6d:80:3f" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find  panos
+  output: '[]'
 - command: network find --address="5254.00c5.1d06" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
+  output: '[]'
 - command: network summarize --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network summarize panos
+  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [18, 18, 18.0], "nsWithMlagCnt":
+    1, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
+    0}}'
 - command: network find --address="10.0.0.11" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
+  output: '[{"namespace": "panos", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "10.0.0.11", "vlan": "0", "macaddr": "52:54:00:89:13:56", "ifname": "swp2", "bondMembers":
+    "", "type": "routed", "timestamp": 1639476254326}]'
 - command: network find --address="169.254.127.0" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
+  output: '[{"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "ipAddress":
+    "169.254.127.0", "vlan": "0", "macaddr": "52:54:00:89:e4:e1", "ifname": "swp1",
+    "bondMembers": "", "type": "routed", "timestamp": 1639476254367}]'
 - command: network find --address="169.254.127.1" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
+  output: '[{"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf", "ipAddress":
+    "169.254.127.1", "vlan": "0", "macaddr": "52:54:00:de:df:7d", "ifname": "swp4",
+    "bondMembers": "", "type": "routed", "timestamp": 1639476254136}]'
 - command: network find --address="10.0.0.21" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
+  output: '[{"namespace": "panos", "hostname": "spine01", "vrf": "default", "ipAddress":
+    "10.0.0.21", "vlan": "0", "macaddr": "52:54:00:c4:54:00", "ifname": "swp6", "bondMembers":
+    "", "type": "routed", "timestamp": 1639476254350}]'
 - command: network find --address="10.0.0.32" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
+  output: '[{"namespace": "panos", "hostname": "exit02", "vrf": "default", "ipAddress":
+    "10.0.0.32", "vlan": "0", "macaddr": "52:54:00:3c:63:f0", "ifname": "swp2", "bondMembers":
+    "", "type": "routed", "timestamp": 1639476254326}]'
 - command: network unique --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: network unique
+  output: '[{"namespace": "panos"}]'
 - command: network unique --count=True --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: network unique
+  output: '[{"namespace": "panos", "numRows": 1}]'

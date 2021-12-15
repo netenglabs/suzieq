@@ -3,51 +3,624 @@ tests:
 - command: arpnd show --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd show
+  output: '[{"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.254.1",
+    "oif": "ethernet1/1.2", "macaddr": "52:54:00:de:82:68", "state": "reachable",
+    "remote": false, "timestamp": 1639476253556}, {"namespace": "panos", "hostname":
+    "firewall01", "ipAddress": "169.254.254.9", "oif": "ethernet1/1.4", "macaddr":
+    "52:54:00:de:82:68", "state": "reachable", "remote": false, "timestamp": 1639476253556},
+    {"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
+    "oif": "ethernet1/2.2", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
+    "remote": false, "timestamp": 1639476253556}, {"namespace": "panos", "hostname":
+    "firewall01", "ipAddress": "169.254.253.5", "oif": "ethernet1/2.3", "macaddr":
+    "52:54:00:36:33:d9", "state": "reachable", "remote": false, "timestamp": 1639476253556},
+    {"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.9",
+    "oif": "ethernet1/2.4", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
+    "remote": false, "timestamp": 1639476253556}, {"namespace": "panos", "hostname":
+    "firewall01", "ipAddress": "fe80::5054:ff:fede:8268", "oif": "ethernet1/1.2",
+    "macaddr": "52:54:00:de:82:68", "state": "reachable", "remote": false, "timestamp":
+    1639476253556}, {"namespace": "panos", "hostname": "firewall01", "ipAddress":
+    "fe80::5054:ff:fe36:33d9", "oif": "ethernet1/2.2", "macaddr": "52:54:00:36:33:d9",
+    "state": "reachable", "remote": false, "timestamp": 1639476253556}, {"namespace":
+    "panos", "hostname": "firewall01", "ipAddress": "169.254.254.5", "oif": "ethernet1/1.3",
+    "macaddr": "52:54:00:de:82:68", "state": "reachable", "remote": false, "timestamp":
+    1639476253556}, {"namespace": "panos", "hostname": "server102", "ipAddress": "10.255.2.1",
+    "oif": "eth0", "macaddr": "52:54:00:9c:fe:48", "state": "reachable", "remote":
+    false, "timestamp": 1639476253615}, {"namespace": "panos", "hostname": "server102",
+    "ipAddress": "fe80::200:ff:fe11:1230", "oif": "bond0", "macaddr": "00:00:00:11:12:30",
+    "state": "router", "remote": false, "timestamp": 1639476253615}, {"namespace":
+    "panos", "hostname": "server301", "ipAddress": "10.255.2.1", "oif": "eth0", "macaddr":
+    "52:54:00:9c:fe:48", "state": "reachable", "remote": false, "timestamp": 1639476253626},
+    {"namespace": "panos", "hostname": "server301", "ipAddress": "fe80::200:ff:fe11:1220",
+    "oif": "bond0", "macaddr": "00:00:00:11:12:20", "state": "router", "remote": false,
+    "timestamp": 1639476253626}, {"namespace": "panos", "hostname": "server302", "ipAddress":
+    "10.255.2.1", "oif": "eth0", "macaddr": "52:54:00:9c:fe:48", "state": "reachable",
+    "remote": false, "timestamp": 1639476253642}, {"namespace": "panos", "hostname":
+    "server302", "ipAddress": "fe80::200:ff:fe11:1230", "oif": "bond0", "macaddr":
+    "00:00:00:11:12:30", "state": "router", "remote": false, "timestamp": 1639476253642},
+    {"namespace": "panos", "hostname": "server101", "ipAddress": "10.255.2.1", "oif":
+    "eth0", "macaddr": "52:54:00:9c:fe:48", "state": "reachable", "remote": false,
+    "timestamp": 1639476253679}, {"namespace": "panos", "hostname": "server101", "ipAddress":
+    "fe80::200:ff:fe11:1210", "oif": "bond0", "macaddr": "00:00:00:11:12:10", "state":
+    "router", "remote": false, "timestamp": 1639476253679}, {"namespace": "panos",
+    "hostname": "dcedge01", "ipAddress": "169.254.127.3", "oif": "swp2", "macaddr":
+    "52:54:00:e4:4d:a4", "state": "reachable", "remote": false, "timestamp": 1639476254136},
+    {"namespace": "panos", "hostname": "dcedge01", "ipAddress": "fe80::5054:ff:fe74:49da",
+    "oif": "eth0", "macaddr": "52:54:00:74:49:da", "state": "reachable", "remote":
+    false, "timestamp": 1639476254136}, {"namespace": "panos", "hostname": "dcedge01",
+    "ipAddress": "169.254.127.1", "oif": "swp1", "macaddr": "52:54:00:de:df:7d", "state":
+    "reachable", "remote": false, "timestamp": 1639476254136}, {"namespace": "panos",
+    "hostname": "dcedge01", "ipAddress": "10.255.2.1", "oif": "eth0", "macaddr": "52:54:00:9c:fe:48",
+    "state": "reachable", "remote": false, "timestamp": 1639476254136}, {"namespace":
+    "panos", "hostname": "dcedge01", "ipAddress": "fe80::5054:ff:fede:df7d", "oif":
+    "swp1", "macaddr": "52:54:00:de:df:7d", "state": "router", "remote": false, "timestamp":
+    1639476254136}, {"namespace": "panos", "hostname": "dcedge01", "ipAddress": "fe80::fc38:39ff:fe01:3fe",
+    "oif": "eth0", "macaddr": "fe:38:39:01:03:fe", "state": "reachable", "remote":
+    false, "timestamp": 1639476254136}, {"namespace": "panos", "hostname": "dcedge01",
+    "ipAddress": "fe80::5054:ff:fe9a:f9e3", "oif": "eth0", "macaddr": "52:54:00:9a:f9:e3",
+    "state": "reachable", "remote": false, "timestamp": 1639476254136}, {"namespace":
+    "panos", "hostname": "dcedge01", "ipAddress": "fe80::5054:ff:fee4:4da4", "oif":
+    "swp2", "macaddr": "52:54:00:e4:4d:a4", "state": "router", "remote": false, "timestamp":
+    1639476254136}, {"namespace": "panos", "hostname": "dcedge01", "ipAddress": "fe80::5054:ff:fe0f:138",
+    "oif": "eth0", "macaddr": "52:54:00:0f:01:38", "state": "reachable", "remote":
+    false, "timestamp": 1639476254136}, {"namespace": "panos", "hostname": "dcedge01",
+    "ipAddress": "fe80::5054:ff:fe2e:b2fa", "oif": "eth0", "macaddr": "52:54:00:2e:b2:fa",
+    "state": "reachable", "remote": false, "timestamp": 1639476254136}, {"namespace":
+    "panos", "hostname": "spine02", "ipAddress": "fe80::5054:ff:fe74:49da", "oif":
+    "eth0", "macaddr": "52:54:00:74:49:da", "state": "reachable", "remote": false,
+    "timestamp": 1639476254326}, {"namespace": "panos", "hostname": "spine02", "ipAddress":
+    "10.0.0.14", "oif": "swp4", "macaddr": "52:54:00:69:28:3b", "state": "reachable",
+    "remote": false, "timestamp": 1639476254326}, {"namespace": "panos", "hostname":
+    "spine02", "ipAddress": "fe80::fc38:39ff:fe01:102", "oif": "eth0", "macaddr":
+    "fe:38:39:01:01:02", "state": "reachable", "remote": false, "timestamp": 1639476254326},
+    {"namespace": "panos", "hostname": "spine02", "ipAddress": "fe80::5054:ff:fe9a:f9e3",
+    "oif": "eth0", "macaddr": "52:54:00:9a:f9:e3", "state": "reachable", "remote":
+    false, "timestamp": 1639476254326}, {"namespace": "panos", "hostname": "spine02",
+    "ipAddress": "fe80::5054:ff:fe2e:b2fa", "oif": "eth0", "macaddr": "52:54:00:2e:b2:fa",
+    "state": "reachable", "remote": false, "timestamp": 1639476254326}, {"namespace":
+    "panos", "hostname": "spine02", "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr":
+    "52:54:00:69:bc:26", "state": "reachable", "remote": false, "timestamp": 1639476254326},
+    {"namespace": "panos", "hostname": "spine02", "ipAddress": "10.255.2.1", "oif":
+    "eth0", "macaddr": "52:54:00:9c:fe:48", "state": "reachable", "remote": false,
+    "timestamp": 1639476254326}, {"namespace": "panos", "hostname": "spine02", "ipAddress":
+    "10.0.0.31", "oif": "swp5", "macaddr": "52:54:00:24:8c:0b", "state": "reachable",
+    "remote": false, "timestamp": 1639476254326}, {"namespace": "panos", "hostname":
+    "spine02", "ipAddress": "10.0.0.11", "oif": "swp1", "macaddr": "52:54:00:89:13:56",
+    "state": "reachable", "remote": false, "timestamp": 1639476254326}, {"namespace":
+    "panos", "hostname": "spine02", "ipAddress": "10.0.0.32", "oif": "swp6", "macaddr":
+    "52:54:00:3c:63:f0", "state": "reachable", "remote": false, "timestamp": 1639476254326},
+    {"namespace": "panos", "hostname": "spine02", "ipAddress": "10.0.0.13", "oif":
+    "swp3", "macaddr": "52:54:00:7b:cc:c3", "state": "reachable", "remote": false,
+    "timestamp": 1639476254326}, {"namespace": "panos", "hostname": "spine02", "ipAddress":
+    "fe80::5054:ff:fe0f:138", "oif": "eth0", "macaddr": "52:54:00:0f:01:38", "state":
+    "reachable", "remote": false, "timestamp": 1639476254326}, {"namespace": "panos",
+    "hostname": "exit02", "ipAddress": "fe80::fc38:39ff:fe01:302", "oif": "eth0",
+    "macaddr": "fe:38:39:01:03:02", "state": "reachable", "remote": false, "timestamp":
+    1639476254350}, {"namespace": "panos", "hostname": "exit02", "ipAddress": "10.0.0.22",
+    "oif": "swp2", "macaddr": "52:54:00:3d:45:07", "state": "reachable", "remote":
+    false, "timestamp": 1639476254350}, {"namespace": "panos", "hostname": "exit02",
+    "ipAddress": "10.0.0.134", "oif": "vlan999", "macaddr": "44:39:39:ff:40:96", "state":
+    "reachable", "remote": true, "timestamp": 1639476254350}, {"namespace": "panos",
+    "hostname": "exit02", "ipAddress": "169.254.253.6", "oif": "swp3.3", "macaddr":
+    "52:54:00:8e:ea:75", "state": "reachable", "remote": false, "timestamp": 1639476254350},
+    {"namespace": "panos", "hostname": "exit02", "ipAddress": "fe80::b8db:eeff:fefb:ad11",
+    "oif": "swp3.2", "macaddr": "52:54:00:8e:ea:75", "state": "router", "remote":
+    false, "timestamp": 1639476254350}, {"namespace": "panos", "hostname": "exit02",
+    "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr": "52:54:00:c4:54:00", "state":
+    "reachable", "remote": false, "timestamp": 1639476254350}, {"namespace": "panos",
+    "hostname": "exit02", "ipAddress": "10.0.0.112", "oif": "vlan999", "macaddr":
+    "44:39:39:ff:40:95", "state": "reachable", "remote": true, "timestamp": 1639476254350},
+    {"namespace": "panos", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif":
+    "swp3.4", "macaddr": "52:54:00:8e:ea:75", "state": "reachable", "remote": false,
+    "timestamp": 1639476254350}, {"namespace": "panos", "hostname": "exit02", "ipAddress":
+    "169.254.127.2", "oif": "swp4", "macaddr": "52:54:00:ba:b7:e0", "state": "reachable",
+    "remote": false, "timestamp": 1639476254350}, {"namespace": "panos", "hostname":
+    "exit02", "ipAddress": "169.254.0.1", "oif": "swp3.2", "macaddr": "ba:db:ee:fb:ad:11",
+    "state": "permanent", "remote": false, "timestamp": 1639476254350}, {"namespace":
+    "panos", "hostname": "exit02", "ipAddress": "10.255.2.1", "oif": "eth0", "macaddr":
+    "52:54:00:9c:fe:48", "state": "reachable", "remote": false, "timestamp": 1639476254350},
+    {"namespace": "panos", "hostname": "exit02", "ipAddress": "fe80::5054:ff:feba:b7e0",
+    "oif": "swp4", "macaddr": "52:54:00:ba:b7:e0", "state": "router", "remote": false,
+    "timestamp": 1639476254350}, {"namespace": "panos", "hostname": "exit02", "ipAddress":
+    "fe80::5054:ff:fe74:49da", "oif": "eth0", "macaddr": "52:54:00:74:49:da", "state":
+    "reachable", "remote": false, "timestamp": 1639476254350}, {"namespace": "panos",
+    "hostname": "exit02", "ipAddress": "fe80::5054:ff:fe0f:138", "oif": "eth0", "macaddr":
+    "52:54:00:0f:01:38", "state": "reachable", "remote": false, "timestamp": 1639476254350},
+    {"namespace": "panos", "hostname": "exit02", "ipAddress": "fe80::5054:ff:fe2e:b2fa",
+    "oif": "eth0", "macaddr": "52:54:00:2e:b2:fa", "state": "reachable", "remote":
+    false, "timestamp": 1639476254350}, {"namespace": "panos", "hostname": "exit02",
+    "ipAddress": "fe80::5054:ff:fe9a:f9e3", "oif": "eth0", "macaddr": "52:54:00:9a:f9:e3",
+    "state": "reachable", "remote": false, "timestamp": 1639476254350}, {"namespace":
+    "panos", "hostname": "exit02", "ipAddress": "169.254.253.2", "oif": "swp3.2",
+    "macaddr": "52:54:00:8e:ea:75", "state": "reachable", "remote": false, "timestamp":
+    1639476254350}, {"namespace": "panos", "hostname": "spine01", "ipAddress": "10.0.0.32",
+    "oif": "swp6", "macaddr": "52:54:00:d2:4a:6a", "state": "reachable", "remote":
+    false, "timestamp": 1639476254362}, {"namespace": "panos", "hostname": "spine01",
+    "ipAddress": "10.0.0.31", "oif": "swp5", "macaddr": "52:54:00:53:4c:f5", "state":
+    "reachable", "remote": false, "timestamp": 1639476254362}, {"namespace": "panos",
+    "hostname": "spine01", "ipAddress": "10.0.0.14", "oif": "swp4", "macaddr": "52:54:00:d8:ee:83",
+    "state": "reachable", "remote": false, "timestamp": 1639476254362}, {"namespace":
+    "panos", "hostname": "spine01", "ipAddress": "10.0.0.11", "oif": "swp1", "macaddr":
+    "52:54:00:c4:19:83", "state": "reachable", "remote": false, "timestamp": 1639476254362},
+    {"namespace": "panos", "hostname": "spine01", "ipAddress": "10.0.0.13", "oif":
+    "swp3", "macaddr": "52:54:00:dd:d1:18", "state": "reachable", "remote": false,
+    "timestamp": 1639476254362}, {"namespace": "panos", "hostname": "spine01", "ipAddress":
+    "fe80::fc38:39ff:fe01:101", "oif": "eth0", "macaddr": "fe:38:39:01:01:01", "state":
+    "reachable", "remote": false, "timestamp": 1639476254362}, {"namespace": "panos",
+    "hostname": "spine01", "ipAddress": "fe80::5054:ff:fe2e:b2fa", "oif": "eth0",
+    "macaddr": "52:54:00:2e:b2:fa", "state": "reachable", "remote": false, "timestamp":
+    1639476254362}, {"namespace": "panos", "hostname": "spine01", "ipAddress": "fe80::5054:ff:fe74:49da",
+    "oif": "eth0", "macaddr": "52:54:00:74:49:da", "state": "reachable", "remote":
+    false, "timestamp": 1639476254362}, {"namespace": "panos", "hostname": "spine01",
+    "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr": "52:54:00:6f:d5:11", "state":
+    "reachable", "remote": false, "timestamp": 1639476254362}, {"namespace": "panos",
+    "hostname": "spine01", "ipAddress": "fe80::5054:ff:fe9a:f9e3", "oif": "eth0",
+    "macaddr": "52:54:00:9a:f9:e3", "state": "reachable", "remote": false, "timestamp":
+    1639476254362}, {"namespace": "panos", "hostname": "spine01", "ipAddress": "10.255.2.1",
+    "oif": "eth0", "macaddr": "52:54:00:9c:fe:48", "state": "reachable", "remote":
+    false, "timestamp": 1639476254362}, {"namespace": "panos", "hostname": "spine01",
+    "ipAddress": "fe80::5054:ff:fe0f:138", "oif": "eth0", "macaddr": "52:54:00:0f:01:38",
+    "state": "reachable", "remote": false, "timestamp": 1639476254362}, {"namespace":
+    "panos", "hostname": "exit01", "ipAddress": "fe80::5054:ff:fe0f:138", "oif": "eth0",
+    "macaddr": "52:54:00:0f:01:38", "state": "reachable", "remote": false, "timestamp":
+    1639476254367}, {"namespace": "panos", "hostname": "exit01", "ipAddress": "fe80::5054:ff:fe89:e4e1",
+    "oif": "swp4", "macaddr": "52:54:00:89:e4:e1", "state": "router", "remote": false,
+    "timestamp": 1639476254367}, {"namespace": "panos", "hostname": "exit01", "ipAddress":
+    "fe80::5054:ff:fe9a:f9e3", "oif": "eth0", "macaddr": "52:54:00:9a:f9:e3", "state":
+    "reachable", "remote": false, "timestamp": 1639476254367}, {"namespace": "panos",
+    "hostname": "exit01", "ipAddress": "fe80::5054:ff:fe2e:b2fa", "oif": "eth0", "macaddr":
+    "52:54:00:2e:b2:fa", "state": "reachable", "remote": false, "timestamp": 1639476254367},
+    {"namespace": "panos", "hostname": "exit01", "ipAddress": "fe80::5054:ff:fe74:49da",
+    "oif": "eth0", "macaddr": "52:54:00:74:49:da", "state": "reachable", "remote":
+    false, "timestamp": 1639476254367}, {"namespace": "panos", "hostname": "exit01",
+    "ipAddress": "fe80::fc38:39ff:fe01:301", "oif": "eth0", "macaddr": "fe:38:39:01:03:01",
+    "state": "reachable", "remote": false, "timestamp": 1639476254367}, {"namespace":
+    "panos", "hostname": "exit01", "ipAddress": "fe80::b8db:eeff:fefb:ad10", "oif":
+    "swp3.2", "macaddr": "52:54:00:11:a4:14", "state": "router", "remote": false,
+    "timestamp": 1639476254367}, {"namespace": "panos", "hostname": "exit01", "ipAddress":
+    "10.255.2.1", "oif": "eth0", "macaddr": "52:54:00:9c:fe:48", "state": "reachable",
+    "remote": false, "timestamp": 1639476254367}, {"namespace": "panos", "hostname":
+    "exit01", "ipAddress": "169.254.254.10", "oif": "swp3.4", "macaddr": "52:54:00:11:a4:14",
+    "state": "reachable", "remote": false, "timestamp": 1639476254367}, {"namespace":
+    "panos", "hostname": "exit01", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr":
+    "52:54:00:88:51:93", "state": "reachable", "remote": false, "timestamp": 1639476254367},
+    {"namespace": "panos", "hostname": "exit01", "ipAddress": "10.0.0.112", "oif":
+    "vlan999", "macaddr": "44:39:39:ff:40:95", "state": "reachable", "remote": true,
+    "timestamp": 1639476254367}, {"namespace": "panos", "hostname": "exit01", "ipAddress":
+    "169.254.254.2", "oif": "swp3.2", "macaddr": "52:54:00:11:a4:14", "state": "reachable",
+    "remote": false, "timestamp": 1639476254367}, {"namespace": "panos", "hostname":
+    "exit01", "ipAddress": "169.254.254.6", "oif": "swp3.3", "macaddr": "52:54:00:11:a4:14",
+    "state": "reachable", "remote": false, "timestamp": 1639476254367}, {"namespace":
+    "panos", "hostname": "exit01", "ipAddress": "10.0.0.134", "oif": "vlan999", "macaddr":
+    "44:39:39:ff:40:96", "state": "reachable", "remote": true, "timestamp": 1639476254367},
+    {"namespace": "panos", "hostname": "exit01", "ipAddress": "169.254.127.0", "oif":
+    "swp4", "macaddr": "52:54:00:89:e4:e1", "state": "reachable", "remote": false,
+    "timestamp": 1639476254367}, {"namespace": "panos", "hostname": "exit01", "ipAddress":
+    "10.0.0.21", "oif": "swp1", "macaddr": "52:54:00:f5:f0:96", "state": "reachable",
+    "remote": false, "timestamp": 1639476254367}, {"namespace": "panos", "hostname":
+    "exit01", "ipAddress": "169.254.0.1", "oif": "swp3.2", "macaddr": "ba:db:ee:fb:ad:10",
+    "state": "permanent", "remote": false, "timestamp": 1639476254367}, {"namespace":
+    "panos", "hostname": "leaf02", "ipAddress": "fe80::5054:ff:fe9a:f9e3", "oif":
+    "eth0", "macaddr": "52:54:00:9a:f9:e3", "state": "reachable", "remote": false,
+    "timestamp": 1639476254402}, {"namespace": "panos", "hostname": "leaf02", "ipAddress":
+    "fe80::5054:ff:fe0f:138", "oif": "eth0", "macaddr": "52:54:00:0f:01:38", "state":
+    "reachable", "remote": false, "timestamp": 1639476254402}, {"namespace": "panos",
+    "hostname": "leaf02", "ipAddress": "fe80::fc38:39ff:fe01:202", "oif": "eth0",
+    "macaddr": "fe:38:39:01:02:02", "state": "reachable", "remote": false, "timestamp":
+    1639476254402}, {"namespace": "panos", "hostname": "leaf02", "ipAddress": "fe80::2476:20ff:fe42:e2c6",
+    "oif": "Vlan10", "macaddr": "26:76:20:42:e2:c6", "state": "reachable", "remote":
+    false, "timestamp": 1639476254402}, {"namespace": "panos", "hostname": "leaf02",
+    "ipAddress": "fe80::28b4:faff:fe73:2a0d", "oif": "Vlan30", "macaddr": "2a:b4:fa:73:2a:0d",
+    "state": "reachable", "remote": false, "timestamp": 1639476254402}, {"namespace":
+    "panos", "hostname": "leaf02", "ipAddress": "fe80::200:ff:fe11:1230", "oif": "Vlan30",
+    "macaddr": "00:00:00:11:12:30", "state": "permanent", "remote": false, "timestamp":
+    1639476254402}, {"namespace": "panos", "hostname": "leaf02", "ipAddress": "fe80::200:ff:fe11:1210",
+    "oif": "Vlan10", "macaddr": "00:00:00:11:12:10", "state": "permanent", "remote":
+    false, "timestamp": 1639476254402}, {"namespace": "panos", "hostname": "leaf02",
+    "ipAddress": "fe80::4639:39ff:feff:4095", "oif": "vlan999", "macaddr": "44:39:39:ff:40:95",
+    "state": "permanent", "remote": false, "timestamp": 1639476254402}, {"namespace":
+    "panos", "hostname": "leaf02", "ipAddress": "fe80::5054:ff:fe74:49da", "oif":
+    "eth0", "macaddr": "52:54:00:74:49:da", "state": "reachable", "remote": false,
+    "timestamp": 1639476254402}, {"namespace": "panos", "hostname": "leaf02", "ipAddress":
+    "fe80::4c01:f3ff:fe25:8c7a", "oif": "Vlan30", "macaddr": "4e:01:f3:25:8c:7a",
+    "state": "reachable", "remote": true, "timestamp": 1639476254402}, {"namespace":
+    "panos", "hostname": "leaf02", "ipAddress": "172.16.1.254", "oif": "Vlan10", "macaddr":
+    "00:00:00:11:12:10", "state": "permanent", "remote": false, "timestamp": 1639476254402},
+    {"namespace": "panos", "hostname": "leaf02", "ipAddress": "10.0.0.32", "oif":
+    "vlan999", "macaddr": "44:39:39:ff:41:96", "state": "reachable", "remote": true,
+    "timestamp": 1639476254402}, {"namespace": "panos", "hostname": "leaf02", "ipAddress":
+    "10.0.0.134", "oif": "vlan999", "macaddr": "44:39:39:ff:40:96", "state": "reachable",
+    "remote": true, "timestamp": 1639476254402}, {"namespace": "panos", "hostname":
+    "leaf02", "ipAddress": "10.255.2.1", "oif": "eth0", "macaddr": "52:54:00:9c:fe:48",
+    "state": "reachable", "remote": false, "timestamp": 1639476254402}, {"namespace":
+    "panos", "hostname": "leaf02", "ipAddress": "172.16.3.254", "oif": "Vlan30", "macaddr":
+    "00:00:00:11:12:30", "state": "permanent", "remote": false, "timestamp": 1639476254402},
+    {"namespace": "panos", "hostname": "leaf02", "ipAddress": "10.0.0.21", "oif":
+    "swp1", "macaddr": "52:54:00:41:6f:13", "state": "reachable", "remote": false,
+    "timestamp": 1639476254402}, {"namespace": "panos", "hostname": "leaf02", "ipAddress":
+    "10.0.0.22", "oif": "swp2", "macaddr": "52:54:00:56:b7:ac", "state": "reachable",
+    "remote": false, "timestamp": 1639476254402}, {"namespace": "panos", "hostname":
+    "leaf02", "ipAddress": "10.0.0.31", "oif": "vlan999", "macaddr": "44:39:39:ff:41:95",
+    "state": "reachable", "remote": true, "timestamp": 1639476254402}, {"namespace":
+    "panos", "hostname": "leaf02", "ipAddress": "fe80::5054:ff:fe2e:b2fa", "oif":
+    "eth0", "macaddr": "52:54:00:2e:b2:fa", "state": "reachable", "remote": false,
+    "timestamp": 1639476254402}, {"namespace": "panos", "hostname": "leaf02", "ipAddress":
+    "fe80::4a47:ff:fea1:2acc", "oif": "peerlink.4094", "macaddr": "48:47:00:a1:2a:cc",
+    "state": "router", "remote": false, "timestamp": 1639476254402}, {"namespace":
+    "panos", "hostname": "leaf03", "ipAddress": "fe80::5054:ff:fe9a:f9e3", "oif":
+    "eth0", "macaddr": "52:54:00:9a:f9:e3", "state": "reachable", "remote": false,
+    "timestamp": 1639476254419}, {"namespace": "panos", "hostname": "leaf03", "ipAddress":
+    "fe80::fc38:39ff:fe01:203", "oif": "eth0", "macaddr": "fe:38:39:01:02:03", "state":
+    "reachable", "remote": false, "timestamp": 1639476254419}, {"namespace": "panos",
+    "hostname": "leaf03", "ipAddress": "10.0.0.32", "oif": "vlan999", "macaddr": "44:39:39:ff:41:96",
+    "state": "reachable", "remote": true, "timestamp": 1639476254419}, {"namespace":
+    "panos", "hostname": "leaf03", "ipAddress": "fe80::5054:ff:fe0f:138", "oif": "eth0",
+    "macaddr": "52:54:00:0f:01:38", "state": "reachable", "remote": false, "timestamp":
+    1639476254419}, {"namespace": "panos", "hostname": "leaf03", "ipAddress": "10.0.0.112",
+    "oif": "vlan999", "macaddr": "44:39:39:ff:40:95", "state": "reachable", "remote":
+    true, "timestamp": 1639476254419}, {"namespace": "panos", "hostname": "leaf03",
+    "ipAddress": "fe80::28b4:faff:fe73:2a0d", "oif": "Vlan30", "macaddr": "2a:b4:fa:73:2a:0d",
+    "state": "reachable", "remote": true, "timestamp": 1639476254419}, {"namespace":
+    "panos", "hostname": "leaf03", "ipAddress": "fe80::5054:ff:fe2e:b2fa", "oif":
+    "eth0", "macaddr": "52:54:00:2e:b2:fa", "state": "reachable", "remote": false,
+    "timestamp": 1639476254419}, {"namespace": "panos", "hostname": "leaf03", "ipAddress":
+    "fe80::4c01:f3ff:fe25:8c7a", "oif": "Vlan30", "macaddr": "4e:01:f3:25:8c:7a",
+    "state": "reachable", "remote": false, "timestamp": 1639476254419}, {"namespace":
+    "panos", "hostname": "leaf03", "ipAddress": "fe80::9cf7:6fff:fe94:50c", "oif":
+    "Vlan20", "macaddr": "9e:f7:6f:94:05:0c", "state": "reachable", "remote": false,
+    "timestamp": 1639476254419}, {"namespace": "panos", "hostname": "leaf03", "ipAddress":
+    "fe80::5054:ff:fe74:49da", "oif": "eth0", "macaddr": "52:54:00:74:49:da", "state":
+    "reachable", "remote": false, "timestamp": 1639476254419}, {"namespace": "panos",
+    "hostname": "leaf03", "ipAddress": "fe80::4a47:ff:fe20:27cd", "oif": "peerlink.4094",
+    "macaddr": "48:47:00:20:27:cd", "state": "router", "remote": false, "timestamp":
+    1639476254419}, {"namespace": "panos", "hostname": "leaf03", "ipAddress": "10.0.0.22",
+    "oif": "swp2", "macaddr": "52:54:00:88:70:ac", "state": "reachable", "remote":
+    false, "timestamp": 1639476254419}, {"namespace": "panos", "hostname": "leaf03",
+    "ipAddress": "10.0.0.31", "oif": "vlan999", "macaddr": "44:39:39:ff:41:95", "state":
+    "reachable", "remote": true, "timestamp": 1639476254419}, {"namespace": "panos",
+    "hostname": "leaf03", "ipAddress": "10.255.2.1", "oif": "eth0", "macaddr": "52:54:00:9c:fe:48",
+    "state": "reachable", "remote": false, "timestamp": 1639476254419}, {"namespace":
+    "panos", "hostname": "leaf03", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr":
+    "52:54:00:d3:be:93", "state": "reachable", "remote": false, "timestamp": 1639476254419},
+    {"namespace": "panos", "hostname": "leaf01", "ipAddress": "fe80::5054:ff:fe9a:f9e3",
+    "oif": "eth0", "macaddr": "52:54:00:9a:f9:e3", "state": "reachable", "remote":
+    false, "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf01",
+    "ipAddress": "fe80::4c01:f3ff:fe25:8c7a", "oif": "Vlan30", "macaddr": "4e:01:f3:25:8c:7a",
+    "state": "reachable", "remote": true, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf01", "ipAddress": "fe80::2476:20ff:fe42:e2c6", "oif":
+    "Vlan10", "macaddr": "26:76:20:42:e2:c6", "state": "reachable", "remote": false,
+    "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf01", "ipAddress":
+    "fe80::5054:ff:fe0f:138", "oif": "eth0", "macaddr": "52:54:00:0f:01:38", "state":
+    "reachable", "remote": false, "timestamp": 1639476254425}, {"namespace": "panos",
+    "hostname": "leaf01", "ipAddress": "fe80::4a47:ff:fe98:3d08", "oif": "peerlink.4094",
+    "macaddr": "48:47:00:98:3d:08", "state": "router", "remote": false, "timestamp":
+    1639476254425}, {"namespace": "panos", "hostname": "leaf01", "ipAddress": "fe80::28b4:faff:fe73:2a0d",
+    "oif": "Vlan30", "macaddr": "2a:b4:fa:73:2a:0d", "state": "reachable", "remote":
+    false, "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf01",
+    "ipAddress": "fe80::5054:ff:fe2e:b2fa", "oif": "eth0", "macaddr": "52:54:00:2e:b2:fa",
+    "state": "reachable", "remote": false, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf01", "ipAddress": "10.255.2.1", "oif": "eth0", "macaddr":
+    "52:54:00:9c:fe:48", "state": "reachable", "remote": false, "timestamp": 1639476254425},
+    {"namespace": "panos", "hostname": "leaf01", "ipAddress": "10.0.0.21", "oif":
+    "swp1", "macaddr": "52:54:00:83:d9:77", "state": "reachable", "remote": false,
+    "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf01", "ipAddress":
+    "10.0.0.31", "oif": "vlan999", "macaddr": "44:39:39:ff:41:95", "state": "reachable",
+    "remote": true, "timestamp": 1639476254425}, {"namespace": "panos", "hostname":
+    "leaf01", "ipAddress": "10.0.0.32", "oif": "vlan999", "macaddr": "44:39:39:ff:41:96",
+    "state": "reachable", "remote": true, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf01", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr":
+    "52:54:00:eb:56:a6", "state": "reachable", "remote": false, "timestamp": 1639476254425},
+    {"namespace": "panos", "hostname": "leaf01", "ipAddress": "10.0.0.134", "oif":
+    "vlan999", "macaddr": "44:39:39:ff:40:96", "state": "reachable", "remote": true,
+    "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf01", "ipAddress":
+    "fe80::5054:ff:fe74:49da", "oif": "eth0", "macaddr": "52:54:00:74:49:da", "state":
+    "reachable", "remote": false, "timestamp": 1639476254425}, {"namespace": "panos",
+    "hostname": "leaf01", "ipAddress": "fe80::fc38:39ff:fe01:201", "oif": "eth0",
+    "macaddr": "fe:38:39:01:02:01", "state": "reachable", "remote": false, "timestamp":
+    1639476254425}, {"namespace": "panos", "hostname": "leaf04", "ipAddress": "172.16.2.254",
+    "oif": "Vlan20", "macaddr": "00:00:00:11:12:20", "state": "permanent", "remote":
+    false, "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf04",
+    "ipAddress": "10.0.0.32", "oif": "vlan999", "macaddr": "44:39:39:ff:41:96", "state":
+    "reachable", "remote": true, "timestamp": 1639476254425}, {"namespace": "panos",
+    "hostname": "leaf04", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "52:54:00:52:25:2e",
+    "state": "reachable", "remote": false, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf04", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr":
+    "52:54:00:a0:82:3d", "state": "reachable", "remote": false, "timestamp": 1639476254425},
+    {"namespace": "panos", "hostname": "leaf04", "ipAddress": "10.0.0.31", "oif":
+    "vlan999", "macaddr": "44:39:39:ff:41:95", "state": "reachable", "remote": true,
+    "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf04", "ipAddress":
+    "10.0.0.112", "oif": "vlan999", "macaddr": "44:39:39:ff:40:95", "state": "reachable",
+    "remote": true, "timestamp": 1639476254425}, {"namespace": "panos", "hostname":
+    "leaf04", "ipAddress": "fe80::4c01:f3ff:fe25:8c7a", "oif": "Vlan30", "macaddr":
+    "4e:01:f3:25:8c:7a", "state": "reachable", "remote": false, "timestamp": 1639476254425},
+    {"namespace": "panos", "hostname": "leaf04", "ipAddress": "fe80::5054:ff:fe0f:138",
+    "oif": "eth0", "macaddr": "52:54:00:0f:01:38", "state": "reachable", "remote":
+    false, "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf04",
+    "ipAddress": "fe80::28b4:faff:fe73:2a0d", "oif": "Vlan30", "macaddr": "2a:b4:fa:73:2a:0d",
+    "state": "reachable", "remote": true, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf04", "ipAddress": "10.255.2.1", "oif": "eth0", "macaddr":
+    "52:54:00:9c:fe:48", "state": "reachable", "remote": false, "timestamp": 1639476254425},
+    {"namespace": "panos", "hostname": "leaf04", "ipAddress": "fe80::5054:ff:fe2e:b2fa",
+    "oif": "eth0", "macaddr": "52:54:00:2e:b2:fa", "state": "reachable", "remote":
+    false, "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf04",
+    "ipAddress": "fe80::200:ff:fe11:1220", "oif": "Vlan20", "macaddr": "00:00:00:11:12:20",
+    "state": "permanent", "remote": false, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf04", "ipAddress": "fe80::5054:ff:fe9a:f9e3", "oif":
+    "eth0", "macaddr": "52:54:00:9a:f9:e3", "state": "reachable", "remote": false,
+    "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf04", "ipAddress":
+    "fe80::5054:ff:fe74:49da", "oif": "eth0", "macaddr": "52:54:00:74:49:da", "state":
+    "reachable", "remote": false, "timestamp": 1639476254425}, {"namespace": "panos",
+    "hostname": "leaf04", "ipAddress": "fe80::4639:39ff:feff:4096", "oif": "vlan999",
+    "macaddr": "44:39:39:ff:40:96", "state": "permanent", "remote": false, "timestamp":
+    1639476254425}, {"namespace": "panos", "hostname": "leaf04", "ipAddress": "172.16.3.254",
+    "oif": "Vlan30", "macaddr": "00:00:00:11:12:30", "state": "permanent", "remote":
+    false, "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf04",
+    "ipAddress": "fe80::200:ff:fe11:1230", "oif": "Vlan30", "macaddr": "00:00:00:11:12:30",
+    "state": "permanent", "remote": false, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf04", "ipAddress": "fe80::9cf7:6fff:fe94:50c", "oif":
+    "Vlan20", "macaddr": "9e:f7:6f:94:05:0c", "state": "reachable", "remote": false,
+    "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf04", "ipAddress":
+    "fe80::4a47:ff:fe36:b8ff", "oif": "peerlink.4094", "macaddr": "48:47:00:36:b8:ff",
+    "state": "router", "remote": false, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf04", "ipAddress": "fe80::fc38:39ff:fe01:204", "oif":
+    "eth0", "macaddr": "fe:38:39:01:02:04", "state": "reachable", "remote": false,
+    "timestamp": 1639476254425}]'
 - command: arpnd show --columns=hostname --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd show
+  output: '[{"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
+    {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "server102"},
+    {"hostname": "server102"}, {"hostname": "server301"}, {"hostname": "server301"},
+    {"hostname": "server302"}, {"hostname": "server302"}, {"hostname": "server101"},
+    {"hostname": "server101"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
+    {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
+    {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
+    {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
+    "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
+    {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
+    "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
+    {"hostname": "spine01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
+    {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
+    "exit01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
+    {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
+    {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
+    {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
+    "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
+    {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
+    "leaf04"}]'
 - command: arpnd show --address="169.254.253.1" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd show panos filter
+  output: '[{"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
+    "oif": "ethernet1/2.2", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
+    "remote": false, "timestamp": 1639476253556}]'
 - command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd show panos filter
+  output: '[{"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
+    "oif": "ethernet1/2.2", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
+    "remote": false, "timestamp": 1639476253556}, {"namespace": "panos", "hostname":
+    "exit02", "ipAddress": "169.254.253.2", "oif": "swp3.2", "macaddr": "52:54:00:8e:ea:75",
+    "state": "reachable", "remote": false, "timestamp": 1639476254350}]'
 - command: arpnd show --address="invalidaddress" --format=json
   data-directory: tests/data/panos/parquet-out/
+  error:
+    error: '[{"error": "Invalid IP address specified"}]'
   marks: arpnd show panos filter
 - command: arpnd show --macaddr="52:54:00:4c:dd:5a" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd show panos filter
+  output: '[]'
 - command: arpnd show --macaddr="52:54:00:4c:dd:5a 52:54:00:76:61:4f" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd show panos filter
+  output: '[]'
 - command: arpnd show --macaddr="invalidaddress" --format=json
   data-directory: tests/data/panos/parquet-out/
+  error:
+    error: '[{"error": "Invalid mac address specified"}]'
   marks: arpnd show panos filter
 - command: arpnd show --prefix="169.254.253.0/24" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd show panos filter
+  output: '[{"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
+    "oif": "ethernet1/2.2", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
+    "remote": false, "timestamp": 1639476253556}, {"namespace": "panos", "hostname":
+    "firewall01", "ipAddress": "169.254.253.5", "oif": "ethernet1/2.3", "macaddr":
+    "52:54:00:36:33:d9", "state": "reachable", "remote": false, "timestamp": 1639476253556},
+    {"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.9",
+    "oif": "ethernet1/2.4", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
+    "remote": false, "timestamp": 1639476253556}, {"namespace": "panos", "hostname":
+    "exit02", "ipAddress": "169.254.253.6", "oif": "swp3.3", "macaddr": "52:54:00:8e:ea:75",
+    "state": "reachable", "remote": false, "timestamp": 1639476254350}, {"namespace":
+    "panos", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "swp3.4",
+    "macaddr": "52:54:00:8e:ea:75", "state": "reachable", "remote": false, "timestamp":
+    1639476254350}, {"namespace": "panos", "hostname": "exit02", "ipAddress": "169.254.253.2",
+    "oif": "swp3.2", "macaddr": "52:54:00:8e:ea:75", "state": "reachable", "remote":
+    false, "timestamp": 1639476254350}]'
 - command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd show panos filter
+  output: '[{"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
+    "oif": "ethernet1/2.2", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
+    "remote": false, "timestamp": 1639476253556}, {"namespace": "panos", "hostname":
+    "firewall01", "ipAddress": "169.254.253.5", "oif": "ethernet1/2.3", "macaddr":
+    "52:54:00:36:33:d9", "state": "reachable", "remote": false, "timestamp": 1639476253556},
+    {"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.9",
+    "oif": "ethernet1/2.4", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
+    "remote": false, "timestamp": 1639476253556}, {"namespace": "panos", "hostname":
+    "spine02", "ipAddress": "10.0.0.14", "oif": "swp4", "macaddr": "52:54:00:69:28:3b",
+    "state": "reachable", "remote": false, "timestamp": 1639476254326}, {"namespace":
+    "panos", "hostname": "spine02", "ipAddress": "10.0.0.12", "oif": "swp2", "macaddr":
+    "52:54:00:69:bc:26", "state": "reachable", "remote": false, "timestamp": 1639476254326},
+    {"namespace": "panos", "hostname": "spine02", "ipAddress": "10.0.0.31", "oif":
+    "swp5", "macaddr": "52:54:00:24:8c:0b", "state": "reachable", "remote": false,
+    "timestamp": 1639476254326}, {"namespace": "panos", "hostname": "spine02", "ipAddress":
+    "10.0.0.11", "oif": "swp1", "macaddr": "52:54:00:89:13:56", "state": "reachable",
+    "remote": false, "timestamp": 1639476254326}, {"namespace": "panos", "hostname":
+    "spine02", "ipAddress": "10.0.0.32", "oif": "swp6", "macaddr": "52:54:00:3c:63:f0",
+    "state": "reachable", "remote": false, "timestamp": 1639476254326}, {"namespace":
+    "panos", "hostname": "spine02", "ipAddress": "10.0.0.13", "oif": "swp3", "macaddr":
+    "52:54:00:7b:cc:c3", "state": "reachable", "remote": false, "timestamp": 1639476254326},
+    {"namespace": "panos", "hostname": "exit02", "ipAddress": "10.0.0.22", "oif":
+    "swp2", "macaddr": "52:54:00:3d:45:07", "state": "reachable", "remote": false,
+    "timestamp": 1639476254350}, {"namespace": "panos", "hostname": "exit02", "ipAddress":
+    "10.0.0.134", "oif": "vlan999", "macaddr": "44:39:39:ff:40:96", "state": "reachable",
+    "remote": true, "timestamp": 1639476254350}, {"namespace": "panos", "hostname":
+    "exit02", "ipAddress": "169.254.253.6", "oif": "swp3.3", "macaddr": "52:54:00:8e:ea:75",
+    "state": "reachable", "remote": false, "timestamp": 1639476254350}, {"namespace":
+    "panos", "hostname": "exit02", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr":
+    "52:54:00:c4:54:00", "state": "reachable", "remote": false, "timestamp": 1639476254350},
+    {"namespace": "panos", "hostname": "exit02", "ipAddress": "10.0.0.112", "oif":
+    "vlan999", "macaddr": "44:39:39:ff:40:95", "state": "reachable", "remote": true,
+    "timestamp": 1639476254350}, {"namespace": "panos", "hostname": "exit02", "ipAddress":
+    "169.254.253.10", "oif": "swp3.4", "macaddr": "52:54:00:8e:ea:75", "state": "reachable",
+    "remote": false, "timestamp": 1639476254350}, {"namespace": "panos", "hostname":
+    "exit02", "ipAddress": "169.254.253.2", "oif": "swp3.2", "macaddr": "52:54:00:8e:ea:75",
+    "state": "reachable", "remote": false, "timestamp": 1639476254350}, {"namespace":
+    "panos", "hostname": "spine01", "ipAddress": "10.0.0.32", "oif": "swp6", "macaddr":
+    "52:54:00:d2:4a:6a", "state": "reachable", "remote": false, "timestamp": 1639476254362},
+    {"namespace": "panos", "hostname": "spine01", "ipAddress": "10.0.0.31", "oif":
+    "swp5", "macaddr": "52:54:00:53:4c:f5", "state": "reachable", "remote": false,
+    "timestamp": 1639476254362}, {"namespace": "panos", "hostname": "spine01", "ipAddress":
+    "10.0.0.14", "oif": "swp4", "macaddr": "52:54:00:d8:ee:83", "state": "reachable",
+    "remote": false, "timestamp": 1639476254362}, {"namespace": "panos", "hostname":
+    "spine01", "ipAddress": "10.0.0.11", "oif": "swp1", "macaddr": "52:54:00:c4:19:83",
+    "state": "reachable", "remote": false, "timestamp": 1639476254362}, {"namespace":
+    "panos", "hostname": "spine01", "ipAddress": "10.0.0.13", "oif": "swp3", "macaddr":
+    "52:54:00:dd:d1:18", "state": "reachable", "remote": false, "timestamp": 1639476254362},
+    {"namespace": "panos", "hostname": "spine01", "ipAddress": "10.0.0.12", "oif":
+    "swp2", "macaddr": "52:54:00:6f:d5:11", "state": "reachable", "remote": false,
+    "timestamp": 1639476254362}, {"namespace": "panos", "hostname": "exit01", "ipAddress":
+    "10.0.0.22", "oif": "swp2", "macaddr": "52:54:00:88:51:93", "state": "reachable",
+    "remote": false, "timestamp": 1639476254367}, {"namespace": "panos", "hostname":
+    "exit01", "ipAddress": "10.0.0.112", "oif": "vlan999", "macaddr": "44:39:39:ff:40:95",
+    "state": "reachable", "remote": true, "timestamp": 1639476254367}, {"namespace":
+    "panos", "hostname": "exit01", "ipAddress": "10.0.0.134", "oif": "vlan999", "macaddr":
+    "44:39:39:ff:40:96", "state": "reachable", "remote": true, "timestamp": 1639476254367},
+    {"namespace": "panos", "hostname": "exit01", "ipAddress": "10.0.0.21", "oif":
+    "swp1", "macaddr": "52:54:00:f5:f0:96", "state": "reachable", "remote": false,
+    "timestamp": 1639476254367}, {"namespace": "panos", "hostname": "leaf02", "ipAddress":
+    "10.0.0.32", "oif": "vlan999", "macaddr": "44:39:39:ff:41:96", "state": "reachable",
+    "remote": true, "timestamp": 1639476254402}, {"namespace": "panos", "hostname":
+    "leaf02", "ipAddress": "10.0.0.134", "oif": "vlan999", "macaddr": "44:39:39:ff:40:96",
+    "state": "reachable", "remote": true, "timestamp": 1639476254402}, {"namespace":
+    "panos", "hostname": "leaf02", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr":
+    "52:54:00:41:6f:13", "state": "reachable", "remote": false, "timestamp": 1639476254402},
+    {"namespace": "panos", "hostname": "leaf02", "ipAddress": "10.0.0.22", "oif":
+    "swp2", "macaddr": "52:54:00:56:b7:ac", "state": "reachable", "remote": false,
+    "timestamp": 1639476254402}, {"namespace": "panos", "hostname": "leaf02", "ipAddress":
+    "10.0.0.31", "oif": "vlan999", "macaddr": "44:39:39:ff:41:95", "state": "reachable",
+    "remote": true, "timestamp": 1639476254402}, {"namespace": "panos", "hostname":
+    "leaf03", "ipAddress": "10.0.0.32", "oif": "vlan999", "macaddr": "44:39:39:ff:41:96",
+    "state": "reachable", "remote": true, "timestamp": 1639476254419}, {"namespace":
+    "panos", "hostname": "leaf03", "ipAddress": "10.0.0.112", "oif": "vlan999", "macaddr":
+    "44:39:39:ff:40:95", "state": "reachable", "remote": true, "timestamp": 1639476254419},
+    {"namespace": "panos", "hostname": "leaf03", "ipAddress": "10.0.0.22", "oif":
+    "swp2", "macaddr": "52:54:00:88:70:ac", "state": "reachable", "remote": false,
+    "timestamp": 1639476254419}, {"namespace": "panos", "hostname": "leaf03", "ipAddress":
+    "10.0.0.31", "oif": "vlan999", "macaddr": "44:39:39:ff:41:95", "state": "reachable",
+    "remote": true, "timestamp": 1639476254419}, {"namespace": "panos", "hostname":
+    "leaf03", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr": "52:54:00:d3:be:93",
+    "state": "reachable", "remote": false, "timestamp": 1639476254419}, {"namespace":
+    "panos", "hostname": "leaf01", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr":
+    "52:54:00:83:d9:77", "state": "reachable", "remote": false, "timestamp": 1639476254425},
+    {"namespace": "panos", "hostname": "leaf01", "ipAddress": "10.0.0.31", "oif":
+    "vlan999", "macaddr": "44:39:39:ff:41:95", "state": "reachable", "remote": true,
+    "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf01", "ipAddress":
+    "10.0.0.32", "oif": "vlan999", "macaddr": "44:39:39:ff:41:96", "state": "reachable",
+    "remote": true, "timestamp": 1639476254425}, {"namespace": "panos", "hostname":
+    "leaf01", "ipAddress": "10.0.0.22", "oif": "swp2", "macaddr": "52:54:00:eb:56:a6",
+    "state": "reachable", "remote": false, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf01", "ipAddress": "10.0.0.134", "oif": "vlan999", "macaddr":
+    "44:39:39:ff:40:96", "state": "reachable", "remote": true, "timestamp": 1639476254425},
+    {"namespace": "panos", "hostname": "leaf04", "ipAddress": "10.0.0.32", "oif":
+    "vlan999", "macaddr": "44:39:39:ff:41:96", "state": "reachable", "remote": true,
+    "timestamp": 1639476254425}, {"namespace": "panos", "hostname": "leaf04", "ipAddress":
+    "10.0.0.22", "oif": "swp2", "macaddr": "52:54:00:52:25:2e", "state": "reachable",
+    "remote": false, "timestamp": 1639476254425}, {"namespace": "panos", "hostname":
+    "leaf04", "ipAddress": "10.0.0.21", "oif": "swp1", "macaddr": "52:54:00:a0:82:3d",
+    "state": "reachable", "remote": false, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf04", "ipAddress": "10.0.0.31", "oif": "vlan999", "macaddr":
+    "44:39:39:ff:41:95", "state": "reachable", "remote": true, "timestamp": 1639476254425},
+    {"namespace": "panos", "hostname": "leaf04", "ipAddress": "10.0.0.112", "oif":
+    "vlan999", "macaddr": "44:39:39:ff:40:95", "state": "reachable", "remote": true,
+    "timestamp": 1639476254425}]'
 - command: arpnd show --prefix="169.254.253.0" --format=json
   data-directory: tests/data/panos/parquet-out/
+  error:
+    error: '[{"error": "Invalid prefix specified"}]'
   marks: arpnd show panos filter
 - command: arpnd summarize --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd summarize
+  output: '{"panos": {"deviceCnt": 14, "arpNdEntriesCnt": 154, "uniqueArpEntriesCnt":
+    65, "uniqueOifCnt": 22, "arpEntriesCnt": 75, "v6NDEntriesCnt": 79, "v6NDGlobalEntriesCnt":
+    79, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 6,
+    "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 6, "failedEntriesCnt": 0, "failedV4EntriesCnt":
+    0, "failedV6EntriesCnt": 0}}'
 - command: arpnd summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd summarize
+  output: '{"namespace": {}, "hostname": {}, "ipAddress": {}, "oif": {}, "macaddr":
+    {}, "state": {}, "remote": {}, "timestamp": {}, "active": {}}'
 - command: arpnd unique --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd unique
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
 - command: arpnd unique --count=True --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd unique
+  output: '[{"hostname": "server101", "numRows": 2}, {"hostname": "server102", "numRows":
+    2}, {"hostname": "server301", "numRows": 2}, {"hostname": "server302", "numRows":
+    2}, {"hostname": "firewall01", "numRows": 8}, {"hostname": "dcedge01", "numRows":
+    10}, {"hostname": "spine01", "numRows": 12}, {"hostname": "spine02", "numRows":
+    12}, {"hostname": "leaf01", "numRows": 15}, {"hostname": "leaf03", "numRows":
+    15}, {"hostname": "exit01", "numRows": 17}, {"hostname": "exit02", "numRows":
+    17}, {"hostname": "leaf02", "numRows": 20}, {"hostname": "leaf04", "numRows":
+    20}]'
 - command: arpnd unique --columns=hostname --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd unique
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
+    {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
+    {"hostname": "spine02"}]'
 - command: arpnd summarize --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out
   marks: arpnd summarize
+  output: '{"dual-bgp": {"deviceCnt": 14, "arpNdEntriesCnt": 138, "uniqueArpEntriesCnt":
+    64, "uniqueOifCnt": 17, "arpEntriesCnt": 78, "v6NDEntriesCnt": 60, "v6NDGlobalEntriesCnt":
+    52, "v6NDLLAEntriesCnt": 8, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 36,
+    "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 16, "failedEntriesCnt": 0, "failedV4EntriesCnt":
+    0, "failedV6EntriesCnt": 0}}'

@@ -3,41 +3,2190 @@ tests:
 - command: route show --prefixlen="32" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[{"namespace": "panos", "hostname": "leaf03", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32",
+    "nexthopIps": ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999", "vlan999"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.22/32",
+    "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.21/32",
+    "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": ["10.0.0.11"], "oifs": ["swp1"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.12"], "oifs": ["swp2"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.13/32",
+    "nexthopIps": ["10.0.0.13"], "oifs": ["swp3"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.14"], "oifs": ["swp4"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.22/32",
+    "nexthopIps": ["10.0.0.11", "10.0.0.12", "10.0.0.13", "10.0.0.14", "10.0.0.31",
+    "10.0.0.32"], "oifs": ["swp1", "swp2", "swp3", "swp4", "swp5", "swp6"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.31"], "oifs": ["swp5"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.32"], "oifs": ["swp6"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.13", "10.0.0.14"],
+    "oifs": ["swp3", "swp4"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.11"], "oifs": ["swp1"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.12"], "oifs": ["swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.13"], "oifs": ["swp3"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["10.0.0.14"], "oifs": ["swp4"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["10.0.0.11", "10.0.0.12", "10.0.0.13", "10.0.0.14", "10.0.0.31", "10.0.0.32"],
+    "oifs": ["swp1", "swp2", "swp3", "swp4", "swp5", "swp6"], "protocol": "ospf",
+    "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.31"], "oifs": ["swp5"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.32"], "oifs": ["swp6"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["10.0.0.31", "10.0.0.32"],
+    "oifs": ["vlan999", "vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs":
+    ["swp1"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs":
+    ["swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.112/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "server302", "vrf": "default",
+    "prefix": "10.255.2.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp",
+    "source": "10.255.2.103", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps":
+    ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999", "vlan999"], "protocol": "bgp",
+    "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.254.2"],
+    "oifs": ["swp3.2"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.32/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.253.6"], "oifs": ["swp3.3"],
+    "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf":
+    "internet-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.254.10"], "oifs":
+    ["swp3.4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "internet-vrf", "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.127.0"],
+    "oifs": ["swp4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.254.6"],
+    "oifs": ["swp3.3"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "dcedge01", "vrf": "default", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.127.1",
+    "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.13", "10.0.0.14"], "oifs": ["swp3", "swp4"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.200/32",
+    "nexthopIps": ["169.254.253.2"], "oifs": ["swp3.2"], "protocol": "bgp", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.13/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.200/32", "nexthopIps": ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999",
+    "vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.127.2"], "oifs": ["swp4"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.253.10"], "oifs": ["swp3.4"],
+    "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf":
+    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "server102", "vrf": "default", "prefix": "10.255.2.1/32", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.76", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490}, {"namespace":
+    "panos", "hostname": "server301", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.241",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server101", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.9",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.6/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.10/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.10/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.2/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "10.0.0.200/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "10.0.0.41/32",
+    "nexthopIps": ["169.254.253.9", "169.254.254.9"], "oifs": [], "protocol": "bgp",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.253.6/32", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.254.2/32", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}]'
 - command: route show --prefixlen="< 32" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix":
+    "169.254.254.8/30", "nexthopIps": ["169.254.254.10"], "oifs": ["ethernet1/1.4"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": ["169.254.254.2"],
+    "oifs": ["ethernet1/1.2"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.4/30",
+    "nexthopIps": ["169.254.254.6"], "oifs": ["ethernet1/1.3"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.253.8/30", "nexthopIps": ["169.254.253.10"], "oifs": ["ethernet1/2.4"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.253.4/30", "nexthopIps": ["169.254.253.6"],
+    "oifs": ["ethernet1/2.3"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.0/30",
+    "nexthopIps": ["169.254.253.2"], "oifs": ["ethernet1/2.2"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "leaf03", "vrf": "evpn-vrf",
+    "prefix": "172.16.2.0/24", "nexthopIps": [""], "oifs": ["Vlan20"], "protocol":
+    "kernel", "source": "172.16.2.254", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf":
+    "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": [""], "oifs": ["Vlan30"],
+    "protocol": "kernel", "source": "172.16.3.254", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "dcedge01", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs":
+    ["eth0"], "protocol": "kernel", "source": "10.255.2.250", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.112"],
+    "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf03", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs":
+    ["eth0"], "protocol": "kernel", "source": "10.255.2.186", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": [""], "oifs":
+    ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan10"], "protocol": "kernel", "source": "172.16.1.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.118", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine01", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.117", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "server302", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.3.202",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.187",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24",
+    "nexthopIps": ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24",
+    "nexthopIps": [""], "oifs": ["Vlan20"], "protocol": "kernel", "source": "172.16.2.254",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.103",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.185",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.252",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "169.254.254.0/30",
+    "nexthopIps": [""], "oifs": ["swp3.2"], "protocol": "kernel", "source": "169.254.254.1",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "169.254.254.8/30", "nexthopIps": [""], "oifs": ["swp3.4"], "protocol": "kernel",
+    "source": "169.254.254.9", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf":
+    "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.0"], "oifs":
+    ["swp4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": ["10.0.0.112", "10.0.0.134"],
+    "oifs": ["vlan999", "vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30",
+    "nexthopIps": [""], "oifs": ["swp3.3"], "protocol": "kernel", "source": "169.254.254.5",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.251",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/31",
+    "nexthopIps": [""], "oifs": ["swp2"], "protocol": "kernel", "source": "169.254.127.2",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/31",
+    "nexthopIps": [""], "oifs": ["swp1"], "protocol": "kernel", "source": "169.254.127.0",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "169.254.127.0/31", "nexthopIps": [""], "oifs": ["swp4"], "protocol": "kernel",
+    "source": "169.254.127.1", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf":
+    "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": [""], "oifs": ["swp3.3"],
+    "protocol": "kernel", "source": "169.254.253.5", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit02", "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": [""],
+    "oifs": ["swp3.2"], "protocol": "kernel", "source": "169.254.253.1", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.184", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan10"], "protocol": "kernel", "source": "172.16.1.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "internet-vrf", "prefix": "169.254.253.8/30",
+    "nexthopIps": [""], "oifs": ["swp3.4"], "protocol": "kernel", "source": "169.254.253.9",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24",
+    "nexthopIps": ["10.0.0.112", "10.0.0.134"], "oifs": ["vlan999", "vlan999"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"], "oifs": ["swp4"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "169.254.127.2/31", "nexthopIps": [""], "oifs": ["swp4"], "protocol":
+    "kernel", "source": "169.254.127.3", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "10.0.0.0/24", "nexthopIps": ["172.16.1.254"], "oifs":
+    ["bond0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "10.255.2.9", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.254"], "oifs":
+    ["bond0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps": [""], "oifs": ["bond0"],
+    "protocol": "kernel", "source": "172.16.1.101", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname":
+    "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname":
+    "server102", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [""],
+    "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.76", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490}, {"namespace":
+    "panos", "hostname": "server102", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.3.102",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.2.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.241",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.2.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "172.16.2.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.2.201",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix": "172.16.1.0/24",
+    "nexthopIps": ["169.254.253.5", "169.254.254.5"], "oifs": ["ethernet1/2.3", "ethernet1/1.3"],
+    "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.253.5", "169.254.254.5"],
+    "oifs": ["ethernet1/2.3", "ethernet1/1.3"], "protocol": "bgp", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": ["169.254.253.5", "169.254.254.5"], "oifs": ["ethernet1/2.3", "ethernet1/1.3"],
+    "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.9", "169.254.254.9"],
+    "oifs": ["ethernet1/2.4", "ethernet1/1.4"], "protocol": "bgp", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}]'
 - command: route show --prefixlen="> 16" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix":
+    "169.254.254.8/30", "nexthopIps": ["169.254.254.10"], "oifs": ["ethernet1/1.4"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": ["169.254.254.2"],
+    "oifs": ["ethernet1/1.2"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "2001:1::/127",
+    "nexthopIps": ["2001:1::1"], "oifs": ["ethernet1/1.2"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 6, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "2001:2::/127", "nexthopIps": ["2001:2::1"], "oifs": ["ethernet1/2.2"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 6, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.4/30", "nexthopIps": ["169.254.254.6"],
+    "oifs": ["ethernet1/1.3"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.8/30",
+    "nexthopIps": ["169.254.253.10"], "oifs": ["ethernet1/2.4"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.253.4/30", "nexthopIps": ["169.254.253.6"], "oifs": ["ethernet1/2.3"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": ["169.254.253.2"],
+    "oifs": ["ethernet1/2.2"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan20"], "protocol": "kernel", "source": "172.16.2.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "dcedge01",
+    "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "10.255.2.250", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.112"],
+    "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf03", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["10.0.0.31",
+    "10.0.0.32"], "oifs": ["vlan999", "vlan999"], "protocol": "bgp", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf03", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.186",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.134/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.13/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": [""], "oifs": ["Vlan30"],
+    "protocol": "kernel", "source": "172.16.3.254", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf03", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"],
+    "oifs": ["swp1"], "protocol": "ospf", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": [""], "oifs":
+    ["Vlan10"], "protocol": "kernel", "source": "172.16.1.254", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": ["10.0.0.11"], "oifs": ["swp1"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.12"], "oifs": ["swp2"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.13/32",
+    "nexthopIps": ["10.0.0.13"], "oifs": ["swp3"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.14"], "oifs": ["swp4"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.22/32",
+    "nexthopIps": ["10.0.0.11", "10.0.0.12", "10.0.0.13", "10.0.0.14", "10.0.0.31",
+    "10.0.0.32"], "oifs": ["swp1", "swp2", "swp3", "swp4", "swp5", "swp6"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.31"], "oifs": ["swp5"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.32"], "oifs": ["swp6"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.13", "10.0.0.14"],
+    "oifs": ["swp3", "swp4"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.11"], "oifs": ["swp1"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.12"], "oifs": ["swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.13"], "oifs": ["swp3"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["10.0.0.14"], "oifs": ["swp4"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["10.0.0.11", "10.0.0.12", "10.0.0.13", "10.0.0.14", "10.0.0.31", "10.0.0.32"],
+    "oifs": ["swp1", "swp2", "swp3", "swp4", "swp5", "swp6"], "protocol": "ospf",
+    "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.31"], "oifs": ["swp5"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.32"], "oifs": ["swp6"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "mgmt", "prefix":
+    "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source":
+    "10.255.2.118", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine01", "vrf": "mgmt", "prefix":
+    "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source":
+    "10.255.2.117", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "server302", "vrf": "default",
+    "prefix": "172.16.3.0/24", "nexthopIps": [""], "oifs": ["bond0"], "protocol":
+    "kernel", "source": "172.16.3.202", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf04", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.187", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps":
+    ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999", "vlan999"], "protocol": "bgp",
+    "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf04", "vrf": "evpn-vrf",
+    "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.112"], "oifs": ["vlan999"],
+    "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04", "vrf":
+    "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": [""], "oifs": ["Vlan20"],
+    "protocol": "kernel", "source": "172.16.2.254", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": [""], "oifs":
+    ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs":
+    ["swp1"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs":
+    ["swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.112/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "server302", "vrf": "default",
+    "prefix": "10.0.0.0/24", "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol":
+    "", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "server302", "vrf": "default",
+    "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel",
+    "source": "10.255.2.103", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "server302", "vrf":
+    "default", "prefix": "10.255.2.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol":
+    "dhcp", "source": "10.255.2.103", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps":
+    ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999", "vlan999"], "protocol": "bgp",
+    "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf02", "vrf": "mgmt", "prefix":
+    "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source":
+    "10.255.2.185", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "10.255.2.252", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": [""],
+    "oifs": ["swp3.2"], "protocol": "kernel", "source": "169.254.254.1", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.200/32", "nexthopIps":
+    ["169.254.254.2"], "oifs": ["swp3.2"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.112/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs":
+    ["swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs":
+    ["swp1"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.253.6"],
+    "oifs": ["swp3.3"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "169.254.254.8/30", "nexthopIps": [""],
+    "oifs": ["swp3.4"], "protocol": "kernel", "source": "169.254.254.9", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.200/32",
+    "nexthopIps": ["169.254.254.10"], "oifs": ["swp3.4"], "protocol": "bgp", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "10.0.0.41/32", "nexthopIps": ["169.254.127.0"], "oifs": ["swp4"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "evpn-vrf",
+    "prefix": "172.16.3.0/24", "nexthopIps": ["10.0.0.112", "10.0.0.134"], "oifs":
+    ["vlan999", "vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.112"],
+    "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30", "nexthopIps": [""],
+    "oifs": ["swp3.3"], "protocol": "kernel", "source": "169.254.254.5", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps":
+    ["169.254.254.6"], "oifs": ["swp3.3"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.251", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/31",
+    "nexthopIps": [""], "oifs": ["swp2"], "protocol": "kernel", "source": "169.254.127.2",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/31",
+    "nexthopIps": [""], "oifs": ["swp1"], "protocol": "kernel", "source": "169.254.127.0",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "10.0.0.200/32",
+    "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf",
+    "prefix": "169.254.127.0/31", "nexthopIps": [""], "oifs": ["swp4"], "protocol":
+    "kernel", "source": "169.254.127.1", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": [""], "oifs": ["swp3.3"],
+    "protocol": "kernel", "source": "169.254.253.5", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.13",
+    "10.0.0.14"], "oifs": ["swp3", "swp4"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.21/32",
+    "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.22/32",
+    "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.31/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.200/32", "nexthopIps":
+    ["169.254.253.2"], "oifs": ["swp3.2"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "default", "prefix": "169.254.253.0/30",
+    "nexthopIps": [""], "oifs": ["swp3.2"], "protocol": "kernel", "source": "169.254.253.1",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf01", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.184",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.13/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.200/32", "nexthopIps": ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999",
+    "vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.134"], "oifs":
+    ["vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": [""], "oifs": ["Vlan30"],
+    "protocol": "kernel", "source": "172.16.3.254", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24",
+    "nexthopIps": [""], "oifs": ["Vlan10"], "protocol": "kernel", "source": "172.16.1.254",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24",
+    "nexthopIps": ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "169.254.253.8/30", "nexthopIps": [""], "oifs": ["swp3.4"], "protocol":
+    "kernel", "source": "169.254.253.9", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": ["10.0.0.112", "10.0.0.134"],
+    "oifs": ["vlan999", "vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "internet-vrf", "prefix": "10.0.0.41/32",
+    "nexthopIps": ["169.254.127.2"], "oifs": ["swp4"], "protocol": "bgp", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
+    "10.0.0.200/32", "nexthopIps": ["169.254.253.10"], "oifs": ["swp3.4"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "169.254.127.2/31", "nexthopIps": [""], "oifs": ["swp4"], "protocol":
+    "kernel", "source": "169.254.127.3", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "server101", "vrf": "default", "prefix": "10.0.0.0/24", "nexthopIps":
+    ["172.16.1.254"], "oifs": ["bond0"], "protocol": "", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490}, {"namespace":
+    "panos", "hostname": "server101", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.9",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server101", "vrf": "default", "prefix": "172.16.1.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.1.101",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.76",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.76",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.3.102",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.2.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.241",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.241",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "172.16.2.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.2.201",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server101", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.9",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix": "172.16.1.0/24",
+    "nexthopIps": ["169.254.253.5", "169.254.254.5"], "oifs": ["ethernet1/2.3", "ethernet1/1.3"],
+    "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.6/32", "nexthopIps": [], "oifs": [],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.10/32", "nexthopIps": [], "oifs": [],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.253.5", "169.254.254.5"],
+    "oifs": ["ethernet1/2.3", "ethernet1/1.3"], "protocol": "bgp", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": ["169.254.253.5", "169.254.254.5"], "oifs": ["ethernet1/2.3", "ethernet1/1.3"],
+    "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "2001:1::1/128", "nexthopIps": [], "oifs": [], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 6, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "2001:2::1/128", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 6, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.253.10/32", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.253.2/32", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "10.0.0.200/32", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.253.9", "169.254.254.9"], "oifs":
+    ["ethernet1/2.4", "ethernet1/1.4"], "protocol": "bgp", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.6/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.2/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}]'
 - command: route show --prefixlen=">24" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix":
+    "169.254.254.8/30", "nexthopIps": ["169.254.254.10"], "oifs": ["ethernet1/1.4"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": ["169.254.254.2"],
+    "oifs": ["ethernet1/1.2"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "2001:1::/127",
+    "nexthopIps": ["2001:1::1"], "oifs": ["ethernet1/1.2"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 6, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "2001:2::/127", "nexthopIps": ["2001:2::1"], "oifs": ["ethernet1/2.2"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 6, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.4/30", "nexthopIps": ["169.254.254.6"],
+    "oifs": ["ethernet1/1.3"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.8/30",
+    "nexthopIps": ["169.254.253.10"], "oifs": ["ethernet1/2.4"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.253.4/30", "nexthopIps": ["169.254.253.6"], "oifs": ["ethernet1/2.3"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": ["169.254.253.2"],
+    "oifs": ["ethernet1/2.2"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf03",
+    "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["10.0.0.31", "10.0.0.32"],
+    "oifs": ["vlan999", "vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.32/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs":
+    ["swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs":
+    ["swp1"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.11"], "oifs":
+    ["swp1"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs":
+    ["swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.13"], "oifs":
+    ["swp3"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.14"], "oifs":
+    ["swp4"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.11", "10.0.0.12",
+    "10.0.0.13", "10.0.0.14", "10.0.0.31", "10.0.0.32"], "oifs": ["swp1", "swp2",
+    "swp3", "swp4", "swp5", "swp6"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps":
+    ["10.0.0.31"], "oifs": ["swp5"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.32"], "oifs": ["swp6"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps":
+    ["10.0.0.11", "10.0.0.12"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.134/32",
+    "nexthopIps": ["10.0.0.13", "10.0.0.14"], "oifs": ["swp3", "swp4"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.11"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.13"], "oifs": ["swp3"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.14"], "oifs": ["swp4"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.11", "10.0.0.12", "10.0.0.13",
+    "10.0.0.14", "10.0.0.31", "10.0.0.32"], "oifs": ["swp1", "swp2", "swp3", "swp4",
+    "swp5", "swp6"], "protocol": "ospf", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.31"],
+    "oifs": ["swp5"], "protocol": "ospf", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.32"],
+    "oifs": ["swp6"], "protocol": "ospf", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "leaf03", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps":
+    ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999", "vlan999"], "protocol": "bgp",
+    "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.21/32",
+    "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.22/32",
+    "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.31/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "server302", "vrf": "default", "prefix": "10.255.2.1/32", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.103", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32",
+    "nexthopIps": ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999", "vlan999"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": [""], "oifs": ["swp3.2"],
+    "protocol": "kernel", "source": "169.254.254.1", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.254.2"],
+    "oifs": ["swp3.2"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.32/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.253.6"], "oifs": ["swp3.3"],
+    "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf":
+    "internet-vrf", "prefix": "169.254.254.8/30", "nexthopIps": [""], "oifs": ["swp3.4"],
+    "protocol": "kernel", "source": "169.254.254.9", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.254.10"],
+    "oifs": ["swp3.4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "internet-vrf", "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.127.0"],
+    "oifs": ["swp4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30", "nexthopIps": [""],
+    "oifs": ["swp3.3"], "protocol": "kernel", "source": "169.254.254.5", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps":
+    ["169.254.254.6"], "oifs": ["swp3.3"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/31",
+    "nexthopIps": [""], "oifs": ["swp2"], "protocol": "kernel", "source": "169.254.127.2",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/31",
+    "nexthopIps": [""], "oifs": ["swp1"], "protocol": "kernel", "source": "169.254.127.0",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "10.0.0.200/32",
+    "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf",
+    "prefix": "169.254.127.0/31", "nexthopIps": [""], "oifs": ["swp4"], "protocol":
+    "kernel", "source": "169.254.127.1", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": [""], "oifs": ["swp3.3"],
+    "protocol": "kernel", "source": "169.254.253.5", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.13",
+    "10.0.0.14"], "oifs": ["swp3", "swp4"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.21/32",
+    "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.22/32",
+    "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.31/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.200/32", "nexthopIps":
+    ["169.254.253.2"], "oifs": ["swp3.2"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "default", "prefix": "169.254.253.0/30",
+    "nexthopIps": [""], "oifs": ["swp3.2"], "protocol": "kernel", "source": "169.254.253.1",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.13/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.200/32", "nexthopIps": ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999",
+    "vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "169.254.253.8/30", "nexthopIps": [""], "oifs": ["swp3.4"], "protocol":
+    "kernel", "source": "169.254.253.9", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "internet-vrf", "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.127.2"],
+    "oifs": ["swp4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.253.10"],
+    "oifs": ["swp3.4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit02", "vrf": "internet-vrf", "prefix": "169.254.127.2/31", "nexthopIps": [""],
+    "oifs": ["swp4"], "protocol": "kernel", "source": "169.254.127.3", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.76",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.241",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server101", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.9",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.6/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.10/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "2001:1::1/128",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 6, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "2001:2::1/128",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 6, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.10/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.2/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "10.0.0.200/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "10.0.0.41/32",
+    "nexthopIps": ["169.254.253.9", "169.254.254.9"], "oifs": ["ethernet1/2.4", "ethernet1/1.4"],
+    "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.253.6/32", "nexthopIps": [], "oifs": [],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.2/32", "nexthopIps": [], "oifs": [],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}]'
 - command: route show --prefixlen="! 32" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix":
+    "169.254.254.8/30", "nexthopIps": ["169.254.254.10"], "oifs": ["ethernet1/1.4"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": ["169.254.254.2"],
+    "oifs": ["ethernet1/1.2"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "2001:1::/127",
+    "nexthopIps": ["2001:1::1"], "oifs": ["ethernet1/1.2"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 6, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "2001:2::/127", "nexthopIps": ["2001:2::1"], "oifs": ["ethernet1/2.2"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 6, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.4/30", "nexthopIps": ["169.254.254.6"],
+    "oifs": ["ethernet1/1.3"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.8/30",
+    "nexthopIps": ["169.254.253.10"], "oifs": ["ethernet1/2.4"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.253.4/30", "nexthopIps": ["169.254.253.6"], "oifs": ["ethernet1/2.3"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": ["169.254.253.2"],
+    "oifs": ["ethernet1/2.2"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan20"], "protocol": "kernel", "source": "172.16.2.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "dcedge01", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.250", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.186", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan10"], "protocol": "kernel", "source": "172.16.1.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.118", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine01", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.117", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "server302", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.3.202",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.187",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24",
+    "nexthopIps": ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24",
+    "nexthopIps": [""], "oifs": ["Vlan20"], "protocol": "kernel", "source": "172.16.2.254",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.103",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.185",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.252",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "169.254.254.0/30",
+    "nexthopIps": [""], "oifs": ["swp3.2"], "protocol": "kernel", "source": "169.254.254.1",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "169.254.254.8/30", "nexthopIps": [""], "oifs": ["swp3.4"], "protocol": "kernel",
+    "source": "169.254.254.9", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf":
+    "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.0"], "oifs":
+    ["swp4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": ["10.0.0.112", "10.0.0.134"],
+    "oifs": ["vlan999", "vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30",
+    "nexthopIps": [""], "oifs": ["swp3.3"], "protocol": "kernel", "source": "169.254.254.5",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.251",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/31",
+    "nexthopIps": [""], "oifs": ["swp2"], "protocol": "kernel", "source": "169.254.127.2",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/31",
+    "nexthopIps": [""], "oifs": ["swp1"], "protocol": "kernel", "source": "169.254.127.0",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "169.254.127.0/31", "nexthopIps": [""], "oifs": ["swp4"], "protocol": "kernel",
+    "source": "169.254.127.1", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf":
+    "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": [""], "oifs": ["swp3.3"],
+    "protocol": "kernel", "source": "169.254.253.5", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit02", "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": [""],
+    "oifs": ["swp3.2"], "protocol": "kernel", "source": "169.254.253.1", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.184", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan10"], "protocol": "kernel", "source": "172.16.1.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "internet-vrf", "prefix": "169.254.253.8/30",
+    "nexthopIps": [""], "oifs": ["swp3.4"], "protocol": "kernel", "source": "169.254.253.9",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24",
+    "nexthopIps": ["10.0.0.112", "10.0.0.134"], "oifs": ["vlan999", "vlan999"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"], "oifs": ["swp4"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "169.254.127.2/31", "nexthopIps": [""], "oifs": ["swp4"], "protocol":
+    "kernel", "source": "169.254.127.3", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "10.0.0.0/24", "nexthopIps": ["172.16.1.254"], "oifs":
+    ["bond0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "10.255.2.9", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.254"], "oifs":
+    ["bond0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps": [""], "oifs": ["bond0"],
+    "protocol": "kernel", "source": "172.16.1.101", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname":
+    "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname":
+    "server102", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [""],
+    "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.76", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490}, {"namespace":
+    "panos", "hostname": "server102", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.3.102",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.2.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.241",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.2.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "172.16.2.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.2.201",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix": "172.16.1.0/24",
+    "nexthopIps": ["169.254.253.5", "169.254.254.5"], "oifs": ["ethernet1/2.3", "ethernet1/1.3"],
+    "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.253.5", "169.254.254.5"],
+    "oifs": ["ethernet1/2.3", "ethernet1/1.3"], "protocol": "bgp", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": ["169.254.253.5", "169.254.254.5"], "oifs": ["ethernet1/2.3", "ethernet1/1.3"],
+    "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "2001:1::1/128", "nexthopIps": [], "oifs": [], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 6, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "2001:2::1/128", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 6, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.9", "169.254.254.9"], "oifs":
+    ["ethernet1/2.4", "ethernet1/1.4"], "protocol": "bgp", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}]'
 - command: route show --prefixlen="<= 16" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[{"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix":
+    "172.16.0.0/16", "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol":
+    "", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "server302", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol":
+    "", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.0"], "oifs": ["swp4"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"], "oifs": ["swp4"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "server101", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol":
+    "", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253490}, {"namespace": "panos", "hostname": "server101", "vrf": "default",
+    "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.254"], "oifs": ["bond0"],
+    "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server102", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"],
+    "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server102", "vrf":
+    "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.3.254"], "oifs":
+    ["bond0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server301",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server301",
+    "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.2.254"], "oifs":
+    ["bond0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.9", "169.254.254.9"],
+    "oifs": [], "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}]'
 - command: route show --hostname="leaf01" --prefixlen="<=16" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[]'
 - command: route show --prefix="172.16.253.1" --prefixlen="<=32" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[]'
 - command: route show --hostname="leaf01" --prefixlen="<=16" --columns="prefix nexthopIps"
     --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[]'
 - command: route show --prefixlen="32" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[{"namespace": "panos", "hostname": "leaf03", "vrf": "default", "prefix":
+    "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+    "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32",
+    "nexthopIps": ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999", "vlan999"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.22/32",
+    "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.21/32",
+    "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["10.0.0.21"], "oifs": ["swp1"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
+    ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": ["10.0.0.11"], "oifs": ["swp1"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.12"], "oifs": ["swp2"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.13/32",
+    "nexthopIps": ["10.0.0.13"], "oifs": ["swp3"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.14"], "oifs": ["swp4"], "protocol": "ospf", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.22/32",
+    "nexthopIps": ["10.0.0.11", "10.0.0.12", "10.0.0.13", "10.0.0.14", "10.0.0.31",
+    "10.0.0.32"], "oifs": ["swp1", "swp2", "swp3", "swp4", "swp5", "swp6"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.31"], "oifs": ["swp5"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.32"], "oifs": ["swp6"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.13", "10.0.0.14"],
+    "oifs": ["swp3", "swp4"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.11"], "oifs": ["swp1"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.12"], "oifs": ["swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.13"], "oifs": ["swp3"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.14/32", "nexthopIps":
+    ["10.0.0.14"], "oifs": ["swp4"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["10.0.0.11", "10.0.0.12", "10.0.0.13", "10.0.0.14", "10.0.0.31", "10.0.0.32"],
+    "oifs": ["swp1", "swp2", "swp3", "swp4", "swp5", "swp6"], "protocol": "ospf",
+    "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.31"], "oifs": ["swp5"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.32"], "oifs": ["swp6"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["10.0.0.31", "10.0.0.32"],
+    "oifs": ["vlan999", "vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf04", "vrf": "default",
+    "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs":
+    ["swp1"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs":
+    ["swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.112/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "server302", "vrf": "default",
+    "prefix": "10.255.2.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp",
+    "source": "10.255.2.103", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf03", "vrf":
+    "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps":
+    ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999", "vlan999"], "protocol": "bgp",
+    "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.254.2"],
+    "oifs": ["swp3.2"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps": ["10.0.0.21",
+    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.32/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+    "prefix": "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.11/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.253.6"], "oifs": ["swp3.3"],
+    "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf":
+    "internet-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.254.10"], "oifs":
+    ["swp3.4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "internet-vrf", "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.127.0"],
+    "oifs": ["swp4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.254.6"],
+    "oifs": ["swp3.3"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "dcedge01", "vrf": "default", "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.127.1",
+    "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.13", "10.0.0.14"], "oifs": ["swp3", "swp4"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.200/32",
+    "nexthopIps": ["169.254.253.2"], "oifs": ["swp3.2"], "protocol": "bgp", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.13/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.200/32", "nexthopIps": ["10.0.0.31", "10.0.0.32"], "oifs": ["vlan999",
+    "vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.14/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["swp1"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1",
+    "swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.12/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "10.0.0.41/32", "nexthopIps": ["169.254.127.2"], "oifs": ["swp4"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "10.0.0.200/32", "nexthopIps": ["169.254.253.10"], "oifs": ["swp3.4"],
+    "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf":
+    "default", "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos",
+    "hostname": "server102", "vrf": "default", "prefix": "10.255.2.1/32", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.76", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490}, {"namespace":
+    "panos", "hostname": "server301", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.241",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server101", "vrf": "default", "prefix": "10.255.2.1/32",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.9",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.6/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.10/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.10/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.2/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "10.0.0.200/32",
+    "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "10.0.0.41/32",
+    "nexthopIps": ["169.254.253.9", "169.254.254.9"], "oifs": [], "protocol": "bgp",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.253.6/32", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.254.2/32", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}]'
 - command: route show --prefixlen="! 32" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix":
+    "169.254.254.8/30", "nexthopIps": ["169.254.254.10"], "oifs": ["ethernet1/1.4"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps": ["169.254.254.2"],
+    "oifs": ["ethernet1/1.2"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "2001:1::/127",
+    "nexthopIps": ["2001:1::1"], "oifs": ["ethernet1/1.2"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 6, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "2001:2::/127", "nexthopIps": ["2001:2::1"], "oifs": ["ethernet1/2.2"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 6, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.254.4/30", "nexthopIps": ["169.254.254.6"],
+    "oifs": ["ethernet1/1.3"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.253.8/30",
+    "nexthopIps": ["169.254.253.10"], "oifs": ["ethernet1/2.4"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "169.254.253.4/30", "nexthopIps": ["169.254.253.6"], "oifs": ["ethernet1/2.3"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": ["169.254.253.2"],
+    "oifs": ["ethernet1/2.2"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan20"], "protocol": "kernel", "source": "172.16.2.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "dcedge01", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.250", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.186", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan10"], "protocol": "kernel", "source": "172.16.1.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.118", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "spine01", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.117", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "server302", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.3.202",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.187",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24",
+    "nexthopIps": ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source":
+    "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24",
+    "nexthopIps": [""], "oifs": ["Vlan20"], "protocol": "kernel", "source": "172.16.2.254",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.103",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.185",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.252",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "prefix": "169.254.254.0/30",
+    "nexthopIps": [""], "oifs": ["swp3.2"], "protocol": "kernel", "source": "169.254.254.1",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "169.254.254.8/30", "nexthopIps": [""], "oifs": ["swp3.4"], "protocol": "kernel",
+    "source": "169.254.254.9", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01", "vrf":
+    "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.0"], "oifs":
+    ["swp4"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": ["10.0.0.112", "10.0.0.134"],
+    "oifs": ["vlan999", "vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30",
+    "nexthopIps": [""], "oifs": ["swp3.3"], "protocol": "kernel", "source": "169.254.254.5",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "mgmt", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.251",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/31",
+    "nexthopIps": [""], "oifs": ["swp2"], "protocol": "kernel", "source": "169.254.127.2",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/31",
+    "nexthopIps": [""], "oifs": ["swp1"], "protocol": "kernel", "source": "169.254.127.0",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf", "prefix":
+    "169.254.127.0/31", "nexthopIps": [""], "oifs": ["swp4"], "protocol": "kernel",
+    "source": "169.254.127.1", "preference": 20, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf":
+    "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": [""], "oifs": ["swp3.3"],
+    "protocol": "kernel", "source": "169.254.253.5", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.134"],
+    "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
+    4, "action": "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname":
+    "exit02", "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps": [""],
+    "oifs": ["swp3.2"], "protocol": "kernel", "source": "169.254.253.1", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "mgmt", "prefix": "10.255.2.0/24", "nexthopIps":
+    [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.184", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    ["10.0.0.134"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan30"], "protocol": "kernel", "source": "172.16.3.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    [""], "oifs": ["Vlan10"], "protocol": "kernel", "source": "172.16.1.254", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps":
+    ["10.0.0.112"], "oifs": ["vlan999"], "protocol": "bgp", "source": "", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "internet-vrf", "prefix": "169.254.253.8/30",
+    "nexthopIps": [""], "oifs": ["swp3.4"], "protocol": "kernel", "source": "169.254.253.9",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253487},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24",
+    "nexthopIps": ["10.0.0.112", "10.0.0.134"], "oifs": ["vlan999", "vlan999"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"], "oifs": ["swp4"], "protocol":
+    "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
+    1639476253487}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "prefix": "169.254.127.2/31", "nexthopIps": [""], "oifs": ["swp4"], "protocol":
+    "kernel", "source": "169.254.127.3", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253487}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
+    ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "10.0.0.0/24", "nexthopIps": ["172.16.1.254"], "oifs":
+    ["bond0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"],
+    "protocol": "kernel", "source": "10.255.2.9", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.254"], "oifs":
+    ["bond0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4, "action":
+    "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname": "server101",
+    "vrf": "default", "prefix": "172.16.1.0/24", "nexthopIps": [""], "oifs": ["bond0"],
+    "protocol": "kernel", "source": "172.16.1.101", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname":
+    "server102", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"],
+    "oifs": ["eth0"], "protocol": "", "source": "", "preference": 20, "ipvers": 4,
+    "action": "forward", "timestamp": 1639476253490}, {"namespace": "panos", "hostname":
+    "server102", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps": [""],
+    "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.76", "preference":
+    20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490}, {"namespace":
+    "panos", "hostname": "server102", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.3.102",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.2.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "10.255.2.0/24",
+    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "10.255.2.241",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "172.16.0.0/16",
+    "nexthopIps": ["172.16.2.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server301", "vrf": "default", "prefix": "172.16.2.0/24",
+    "nexthopIps": [""], "oifs": ["bond0"], "protocol": "kernel", "source": "172.16.2.201",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "server102", "vrf": "default", "prefix": "10.0.0.0/24",
+    "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol": "", "source": "",
+    "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1639476253490},
+    {"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix": "172.16.1.0/24",
+    "nexthopIps": ["169.254.253.5", "169.254.254.5"], "oifs": ["ethernet1/2.3", "ethernet1/1.3"],
+    "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.253.5", "169.254.254.5"],
+    "oifs": ["ethernet1/2.3", "ethernet1/1.3"], "protocol": "bgp", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "prefix": "172.16.3.0/24",
+    "nexthopIps": ["169.254.253.5", "169.254.254.5"], "oifs": ["ethernet1/2.3", "ethernet1/1.3"],
+    "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1639476253357}, {"namespace": "panos", "hostname": "firewall01",
+    "vrf": "default", "prefix": "2001:1::1/128", "nexthopIps": [], "oifs": [], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 6, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "2001:2::1/128", "nexthopIps": [], "oifs": [], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 6, "action": "forward", "timestamp":
+    1639476253357}, {"namespace": "panos", "hostname": "firewall01", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.9", "169.254.254.9"], "oifs":
+    ["ethernet1/2.4", "ethernet1/1.4"], "protocol": "bgp", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}]'
 - command: route show --prefix="172.16.253.1" --prefixlen="<32" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[]'
 - command: route show --prefix="172.16.253.1" --prefixlen="<32" --columns="prefix
     oifs" --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: route show prefixlen
+  output: '[]'
