@@ -29,7 +29,6 @@ class CredFile(CredentialLoader):
             )
 
     def load(self, inventory: List[Dict]):
-
         if not inventory:
             raise RuntimeError("Empty inventory")
 
@@ -47,26 +46,23 @@ class CredFile(CredentialLoader):
                 dev_id = dev_info.get("name", "")
                 if not dev_id:
                     raise RuntimeError("Devices must have a name")
-
                 device = [x for x in inventory if x.get("id") == dev_id]
                 if not device:
                     raise RuntimeError("Unknown device called {}"
                                        .format(dev_id))
                 device = device[0]
-
                 if namespace != device.get("namespace", ""):
                     raise RuntimeError(
                         "The device {} does not belong the namespace {}"
                         .format(dev_id, namespace)
                     )
-
                 dev_cred = dev_info.get("credentials", {})
                 if not dev_cred:
                     raise RuntimeError("Device must contains credentials")
-                dev_cred["ssh_keyfile"] = dev_cred["keyfile"]
-                dev_cred.pop("keyfile")
 
-                dev_cred["options"] = dev_info.get("options") or {}
+                if not dev_cred.get("ssh_keyfile"):
+                    dev_cred["ssh_keyfile"] = dev_cred["keyfile"]
+                    dev_cred.pop("keyfile")
 
                 self.write_credentials(device, dev_cred)
 

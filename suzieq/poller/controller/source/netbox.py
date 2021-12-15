@@ -9,7 +9,6 @@ Classes:
 from typing import Dict, List
 from urllib.parse import urlparse
 from threading import Semaphore
-from time import sleep
 import requests
 from suzieq.poller.controller.source.base_source \
     import Source
@@ -46,6 +45,10 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._auth = None
         # Contains a dictionary with devices specifications
         self._device = None
+
+        self._sleep_sem = Semaphore()
+        # pylint: disable=consider-using-with
+        self._sleep_sem.acquire()
 
         super().__init__(config_data)
 
@@ -216,14 +219,12 @@ class Netbox(Source, InventoryAsyncPlugin):
         return list(inventory.values())
 
     def _set_status(self, new_status: str):
-        self._sem_status.acquire()
-        self._status = new_status
-        self._sem_status.release()
+        with self._sem_status:
+            self._status = new_status
 
     def _get_status(self) -> str:
-        self._sem_status.acquire()
-        status = self._status
-        self._sem_status.release()
+        with self._sem_status:
+            status = self._status
         return status
 
     def _set_session(self, session: requests.Session):
@@ -237,36 +238,31 @@ class Netbox(Source, InventoryAsyncPlugin):
 
         try:
             while True:
-                if self._get_status() == "stopping":
-                    self._set_status("stopped")
+                if self._get_status() == "stop":
                     break
                 self._set_status("running")
-
-                # # Generate a token if not passed in the configuration file
-                # if self._token is None:
-                #     self._generate_token()
 
                 # Retrieve data using REST
                 url = f"{self._protocol}://{self._host}:{self._port}"\
                     f"/api/dcim/devices/?tag={self._tag}"
                 raw_inventory = self.retrieve_rest_data(url)
                 tmp_inventory = self._parse_inventory(raw_inventory)
-
                 # load credentials into the inventory
                 self._auth.load(tmp_inventory)
 
                 # Write the inventory and remove the tmp one
+
                 self.set_inventory(tmp_inventory)
                 tmp_inventory.clear()
 
-                if self._get_status() == "stopping":
-                    self._set_status("stopped")
+                if self._get_status() == "stop":
                     break
-                self._set_status("sleeping")
 
                 if self._run_once or run_once:
                     break
-                sleep(self._period)
+
+                # pylint: disable=consider-using-with
+                self._sleep_sem.acquire(timeout=self._period)
 
         except Exception as exc:
             raise exc
@@ -275,6 +271,7 @@ class Netbox(Source, InventoryAsyncPlugin):
                 self._session.close()
 
     def stop(self):
-        self._set_status("stopping")
+        self._set_status("stop")
         if self._session:
             self._session.close()
+        self._sleep_sem.release()

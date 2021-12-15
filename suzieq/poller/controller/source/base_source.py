@@ -24,6 +24,7 @@ class Source(ControllerPlugin):
         self._inventory = []
         self._inv_is_set = False
         self._inv_is_set_sem = Semaphore()
+        # pylint: disable=consider-using-with
         self._inv_is_set_sem.acquire()
 
         self._inv_format = [
@@ -80,13 +81,14 @@ class Source(ControllerPlugin):
             raise ValueError(
                 "timeout value must be positive, found {}".format(timeout)
             )
-
+        # pylint: disable=consider-using-with
         ok = self._inv_is_set_sem.acquire(timeout=timeout)
         if not ok:
             raise TimeoutError(
                 "Unable to acquire the lock before the timeout expiration"
             )
         self._inv_is_set_sem.release()
+        # pylint: disable=consider-using-with
         ok = self._inv_semaphore.acquire(timeout=timeout)
         if not ok:
             raise TimeoutError(
@@ -118,6 +120,7 @@ class Source(ControllerPlugin):
         missing_keys = self._is_invalid_inventory(new_inventory)
         if missing_keys:
             raise ValueError(f"Invalid inventory: missing keys {missing_keys}")
+        # pylint: disable=consider-using-with
         ok = self._inv_semaphore.acquire(timeout=timeout)
         if not ok:
             raise TimeoutError(
@@ -292,7 +295,7 @@ def _validate_raw_inventory(inventory: dict):
         "devices": [],
         "auths": [],
     }
-    for mf in main_fields:
+    for mf, mf_list in main_fields.items():
         fields = inventory.get(mf)
         if not fields:
             # 'devices' and 'auths' can be omitted if not needed
@@ -304,15 +307,15 @@ def _validate_raw_inventory(inventory: dict):
             if not name:
                 raise InventorySourceError(
                     f"{mf} items must have a 'name'")
-            if name in main_fields[mf]:
+            if name in mf_list:
                 raise InventorySourceError(f"{mf}.{name} is not unique")
-            main_fields[mf].append(name)
+            mf_list.append(name)
 
             if not isinstance(value, dict):
                 raise InventorySourceError(
                     f"{mf}.{name} is not a dictionary")
 
-            if value.get("copy") and not value["copy"] in main_fields[mf]:
+            if value.get("copy") and not value["copy"] in mf_list:
                 raise InventorySourceError(f"{mf}.{name} value must be a "
                                            "'name' of an already defined "
                                            f"{mf} item")

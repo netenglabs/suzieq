@@ -17,8 +17,7 @@ class CredentialLoader(ControllerPlugin):
         self._cred_format = [
             "username",
             "password",
-            "ssh_keyfile",
-            "options"
+            "ssh_keyfile"
         ]
 
         self.init(init_data)

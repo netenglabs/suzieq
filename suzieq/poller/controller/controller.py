@@ -31,10 +31,10 @@ class Controller:
         }
 
         # containts the configuration data
-        self._config = dict()
+        self._config = {}
 
         # contains the Plugin objects divided by type
-        self._plugin_objects = dict()
+        self._plugin_objects = {}
 
         self._period = 0
         self._timeout = 0
@@ -128,7 +128,8 @@ class Controller:
                                                 run_once=self._run_once
                                                 )
 
-        self.period = self._config.get("period", 3600)
+        self.period = self._args.update_period or \
+            self._config.get("update-period", 3600)
         self._timeout = self._config.get("timeout", 10)
 
         # initialize inventorySources
@@ -253,14 +254,17 @@ class Controller:
         while True:
             global_inventory = {}
             for inv_src in self.sources:
+                if issubclass(type(inv_src), InventoryAsyncPlugin):
+                    thread: ControllerPlugin = \
+                        inv_src.get_running_thread()
+                    if thread.exc:
+                        raise RuntimeError(thread.exc)
                 try:
                     cur_inv = inv_src.get_inventory(
                         timeout=self.timeout)
                 except TimeoutError as e:
                     exc_str = str(e)
                     if issubclass(type(inv_src), InventoryAsyncPlugin):
-                        thread: ControllerPluginThread = \
-                            inv_src.get_running_thread()
                         if thread and thread.exc:
                             exc_str += f"\n\nSource: {thread.exc}"
                     raise RuntimeError(exc_str)
@@ -279,8 +283,20 @@ class Controller:
 
             if self.run_once:
                 break
-
             sleep(self.period)
+
+    def stop(self):
+        """Stop all running sources and the manager
+        """
+        if self.sources:
+            for inv_src in self.sources:
+                if issubclass(type(inv_src), InventoryAsyncPlugin):
+                    inv_src.stop()
+                    inv_src.get_running_thread().join()
+        if self.manager:
+            if issubclass(type(self.manager), InventoryAsyncPlugin):
+                self.manager.stop()
+                self.manager.get_running_thread().join()
 
 
 class ControllerPluginThread(threading.Thread):

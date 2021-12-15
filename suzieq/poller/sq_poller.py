@@ -27,13 +27,18 @@ def start_controller(args: argparse.Namespace, config_data: Dict):
         'poller', config_data, '/tmp/sq-poller-controller.log')
     logger = init_logger('suzieq.poller.controller', logfile,
                          loglevel, logsize, log_stdout)
+
+    exit_code = 0
     try:
         controller = Controller(args, config_data)
         controller.init()
         controller.run()
     except Exception as e:
         print(f"ERROR: {e}")
-        sys.exit(-1)
+        exit_code = -1
+    finally:
+        controller.stop()
+        sys.exit(exit_code)
 
 
 if __name__ == '__main__':
@@ -124,6 +129,12 @@ if __name__ == '__main__':
         type=str,
         default=None,
         help='Path to ssh config file, that you want to use'
+    )
+
+    parser.add_argument(
+        '--update-period',
+        help='Inventory update period',
+        type=int
     )
 
     args = parser.parse_args()
