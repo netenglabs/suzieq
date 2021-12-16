@@ -6,14 +6,15 @@ and retrieve the devices inventory
 Classes:
     Netbox: this class dinamically retrieve the inventory from Netbox
 """
+import asyncio
+import logging
 from typing import Dict, List
 from urllib.parse import urlparse
-from threading import Semaphore
-import requests
-from suzieq.poller.controller.source.base_source \
-    import Source
-from suzieq.poller.controller.inventory_async_plugin \
-    import InventoryAsyncPlugin
+
+import aiohttp
+from suzieq.poller.controller.inventory_async_plugin import \
+    InventoryAsyncPlugin
+from suzieq.poller.controller.source.base_source import Source
 from suzieq.shared.exceptions import InventorySourceError
 
 _DEFAULT_PORTS = {'http': 80, 'https': 443}
@@ -24,6 +25,8 @@ _RELEVANT_FIELDS = [
     'site.name'
 ]
 
+logger = logging.getLogger(__name__)
+
 
 class Netbox(Source, InventoryAsyncPlugin):
     """This class is used to dinamically retrieve the inventory from Netbox
@@ -33,8 +36,7 @@ class Netbox(Source, InventoryAsyncPlugin):
 
     def __init__(self, config_data: dict) -> None:
         self._status = 'init'
-        self._sem_status = Semaphore()
-        self._session: requests.Session = None
+        self._session: aiohttp.ClientSession = None
         self._tag = ''
         self._host = ''
         self._namespace = ''
@@ -45,10 +47,6 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._auth = None
         # Contains a dictionary with devices specifications
         self._device = None
-
-        self._sleep_sem = Semaphore()
-        # pylint: disable=consider-using-with
-        self._sleep_sem.acquire()
 
         super().__init__(config_data)
 
@@ -110,18 +108,19 @@ class Netbox(Source, InventoryAsyncPlugin):
             headers ([dict]): headers to initialize the session
         """
         if not self._session:
-            self._session = requests.Session()
-            self._session.headers.update(headers)
+            self._session = aiohttp.ClientSession(
+                headers=headers
+            )
 
-    def _token_auth_header(self) -> dict:
+    def _token_auth_header(self) -> Dict:
         """Generate the token authorization header
 
         Returns:
-            dict: token authorization header
+            Dict: token authorization header
         """
         return {'Authorization': f'Token {self._token}'}
 
-    def retrieve_rest_data(self, url: str) -> Dict:
+    async def retrieve_rest_data(self, url: str) -> Dict:
         """Perform an HTTP GET to the <url> parameter.
 
         Args:
@@ -137,25 +136,25 @@ class Netbox(Source, InventoryAsyncPlugin):
         if not self._session:
             self._init_session(headers)
 
-        response = self._session.get(url, headers=headers)
-        if int(response.status_code) == 200:
-            res = response.json()
+        # TODO: check if headers are needed also in .get
+        async with self._session.get(url, headers=headers) as response:
+            if int(response.status) == 200:
+                res = await response.json()
 
-            data = res.get('results', [])
+                data = res.get('results', [])
 
-            if res.get('next', None):
-                next_data = self.retrieve_rest_data(res['next'])
-                data.extend(next_data.get('results', []))
+                if res.get('next', None):
+                    next_data = self.retrieve_rest_data(res['next'])
+                    data.extend(next_data.get('results', []))
 
-            res['results'] = data
-            res['next'] = None
+                res['results'] = data
+                res['next'] = None
+                return res
+            else:
+                raise RuntimeError(
+                    'Unable to connect to netbox:', response.json())
 
-            return res
-
-        else:
-            raise RuntimeError('Unable to connect to netbox:', response.json())
-
-    def _parse_inventory(self, raw_inventory: dict) -> List[Dict]:
+    def parse_inventory(self, raw_inventory: dict) -> List[Dict]:
         """parse the raw inventory collected from the server and generates
            a new inventory with only the required informations
 
@@ -216,60 +215,26 @@ class Netbox(Source, InventoryAsyncPlugin):
 
         return list(inventory.values())
 
-    def _set_status(self, new_status: str):
-        with self._sem_status:
-            self._status = new_status
+    async def _execute(self):
+        while True:
+            # Retrieve data using REST
+            url = f'{self._protocol}://{self._host}:{self._port}'\
+                f'/api/dcim/devices/?tag={self._tag}'
+            raw_inventory = await self.retrieve_rest_data(url)
+            logger.debug(f"Received netbox inventory from {url}")
+            tmp_inventory = self.parse_inventory(raw_inventory)
+            # load credentials into the inventory
+            self._auth.load(tmp_inventory)
 
-    def _get_status(self) -> str:
-        with self._sem_status:
-            status = self._status
-        return status
+            # Write the inventory and remove the tmp one
 
-    def _set_session(self, session: requests.Session):
-        self._session = session
+            self.set_inventory(tmp_inventory)
 
-    def run(self, **kwargs):
-        run_once = kwargs.pop('run_once', False)
+            if self._run_once:
+                break
 
-        if kwargs:
-            raise ValueError(f'Passed unused arguments: {kwargs}')
+            await asyncio.sleep(self._period)
 
-        try:
-            while True:
-                if self._get_status() == 'stop':
-                    break
-                self._set_status('running')
-
-                # Retrieve data using REST
-                url = f'{self._protocol}://{self._host}:{self._port}'\
-                    f'/api/dcim/devices/?tag={self._tag}'
-                raw_inventory = self.retrieve_rest_data(url)
-                tmp_inventory = self._parse_inventory(raw_inventory)
-                # load credentials into the inventory
-                self._auth.load(tmp_inventory)
-
-                # Write the inventory and remove the tmp one
-
-                self.set_inventory(tmp_inventory)
-                tmp_inventory.clear()
-
-                if self._get_status() == 'stop':
-                    break
-
-                if self._run_once or run_once:
-                    break
-
-                # pylint: disable=consider-using-with
-                self._sleep_sem.acquire(timeout=self._period)
-
-        except Exception as exc:
-            raise exc
-        finally:
-            if self._session:
-                self._session.close()
-
-    def stop(self):
-        self._set_status('stop')
+    async def _stop(self):
         if self._session:
-            self._session.close()
-        self._sleep_sem.release()
+            await self._session.close()
