@@ -1,17 +1,21 @@
 """
 This module contains the logic needed to start the poller
 """
+import asyncio
 import argparse
 import os
 import sys
 from typing import Dict
+import uvloop
+import traceback
 
 from suzieq.poller.controller.controller import Controller
 from suzieq.poller.worker.writers.output_worker import OutputWorker
+from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
 from suzieq.shared.utils import get_log_params, init_logger, load_sq_config
 
 
-def start_controller(args: argparse.Namespace, config_data: Dict):
+async def start_controller(user_args: argparse.Namespace, config_data: Dict):
     """Controller starting function
 
     This function loads all the plugins provided in the configuration file and
@@ -28,17 +32,14 @@ def start_controller(args: argparse.Namespace, config_data: Dict):
     logger = init_logger('suzieq.poller.controller', logfile,
                          loglevel, logsize, log_stdout)
 
-    exit_code = 0
     try:
-        controller = Controller(args, config_data)
+        controller = Controller(user_args, config_data)
         controller.init()
-        controller.run()
-    except Exception as e:
-        print(f"ERROR: {e}")
-        exit_code = -1
-    finally:
-        controller.stop()
-        sys.exit(exit_code)
+        await controller.run()
+    except (SqPollerConfError, InventorySourceError, RuntimeError) as error:
+        print(f"ERROR: {error}")
+        logger.error(error)
+        sys.exit(-1)
 
 
 if __name__ == '__main__':
@@ -133,10 +134,20 @@ if __name__ == '__main__':
 
     parser.add_argument(
         '--update-period',
-        help='Inventory update period',
+        help='How frequently the inventory updates [DEFAULT=3600]',
         type=int
     )
 
     args = parser.parse_args()
+    uvloop.install()
     cfg = load_sq_config(config_file=args.config)
-    start_controller(args, cfg)
+    if not cfg:
+        print("Could not load config file, aborting")
+        sys.exit(1)
+
+    try:
+        asyncio.run(start_controller(args, cfg))
+    except (KeyboardInterrupt, RuntimeError):
+        pass
+    except Exception:  # pylint: disable=broad-except
+        traceback.print_exc()

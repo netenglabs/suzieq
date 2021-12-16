@@ -1,15 +1,16 @@
 """Module containing base class for inventorySource plugins
 """
+import asyncio
 from abc import abstractmethod
 from copy import copy
-from threading import Semaphore
-from typing import Dict, List
 from os.path import isfile
-import yaml
-from suzieq.poller.controller.credential_loader.base_credential_loader \
-    import CredentialLoader
-from suzieq.shared.exceptions import InventorySourceError
+from typing import Dict, List
+
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
+from suzieq.poller.controller.credential_loader.base_credential_loader import \
+    CredentialLoader
+from suzieq.poller.controller.utils.inventory_utils import read_inventory
+from suzieq.shared.exceptions import InventorySourceError
 
 _DEFAULT_SOURCE_PATH = 'suzieq/.poller/intentory/inventory.yaml'
 
@@ -20,12 +21,10 @@ class Source(ControllerPlugin):
     def __init__(self, input_data) -> None:
         super().__init__()
 
-        self._inv_semaphore = Semaphore()
         self._inventory = []
         self._inv_is_set = False
-        self._inv_is_set_sem = Semaphore()
-        # pylint: disable=consider-using-with
-        self._inv_is_set_sem.acquire()
+        self._inv_is_set_event = asyncio.Event()
+        self._name = input_data.get('name')
 
         self._inv_format = [
             'address',
@@ -44,6 +43,15 @@ class Source(ControllerPlugin):
                                        .format(errors))
         self._load(input_data)
 
+    @property
+    def name(self) -> str:
+        """Name of the source set in the inventory file
+
+        Returns:
+            str: name of the source
+        """
+        return self._name
+
     @abstractmethod
     def _load(self, input_data):
         """Store informations from raw data"""
@@ -54,52 +62,22 @@ class Source(ControllerPlugin):
         """Checks if the loaded data is valid or not"""
         raise NotImplementedError
 
-    def get_inventory(self, timeout: int = 10) -> List[Dict]:
-        """Retrieve the inventory in a thread safe way
-
-        If the result was not yet produced, the function will wait until the
-        timeout expires
-
-        If the result was produced but the inventory is not accessible because
-        the lock is kept by another thread, the function will wait until the
-        timeout expires
-
-        Args:
-            timeout (int, optional): maximum amount of time to wait.
-            Defaults to 10.
-
-        Raises:
-            ValueError: negative timeout argument
-            TimeoutError: unable to acquire the lock before the timeout
-            expires
+    async def get_inventory(self) -> List[Dict]:
+        """Retrieve the inventory from the source. If the inventory is not
+        ready the function will wait until it is.
 
         Returns:
-            List[Dict]: inventory devices
+            List[Dict]: the device inventory from the source
         """
-
-        if timeout < 0:
-            raise ValueError(
-                'timeout value must be positive, found {}'.format(timeout)
-            )
-        # pylint: disable=consider-using-with
-        ok = self._inv_is_set_sem.acquire(timeout=timeout)
-        if not ok:
-            raise TimeoutError(
-                'Unable to acquire the lock before the timeout expiration'
-            )
-        self._inv_is_set_sem.release()
-        # pylint: disable=consider-using-with
-        ok = self._inv_semaphore.acquire(timeout=timeout)
-        if not ok:
-            raise TimeoutError(
-                'Unable to acquire the lock before the timeout expiration'
-            )
+        # If the inventory is not ready wait until it is
+        if self._inv_is_set:
+            await self._inv_is_set_event.wait()
 
         inventory_snapshot = copy(self._inventory)
-        self._inv_semaphore.release()
+
         return inventory_snapshot
 
-    def set_inventory(self, new_inventory: List[Dict], timeout: int = 10):
+    def set_inventory(self, new_inventory: List[Dict]):
         """Set the inventory in a thread safe way
 
         The function will try to set the inventory until the timeout
@@ -108,32 +86,17 @@ class Source(ControllerPlugin):
         Before setting the new inventory, it calls the validator.
 
         Args:
-            new_inventory ([List[Dict]]): new inventory to set
-            timeout (int, optional): maximum amount of time to wait.
-            Defaults to 10.
-
-        Raises:
-            ValueError: invalid inventory file
-            TimeoutError: unable to acquire the lock before the timeout
-            expires
+            new_inventory ([List[Dict]]): the new inventory to set
         """
-        missing_keys = self._is_invalid_inventory(new_inventory)
-        if missing_keys:
-            raise ValueError(f'Invalid inventory: missing keys {missing_keys}')
-        # pylint: disable=consider-using-with
-        ok = self._inv_semaphore.acquire(timeout=timeout)
-        if not ok:
-            raise TimeoutError(
-                'Unable to acquire the lock before the timeout expiration'
-            )
 
-        new_inventory_copy = copy(new_inventory)
-        self._inventory = new_inventory_copy
+        self._inventory = new_inventory
+
+        # If the inventory has been set for the first time, we need to
+        # unlock who is waiting for it
         if not self._inv_is_set:
             # the inventory has been set for the first time
             self._inv_is_set = True
-            self._inv_is_set_sem.release()
-        self._inv_semaphore.release()
+            self._inv_is_set_event.set()
 
     def _is_invalid_inventory(self, inventory: List[Dict]) -> List[str]:
         """Validate the inventory
@@ -208,11 +171,11 @@ class Source(ControllerPlugin):
         return src_plugins
 
 
-def _load_inventory(source_path: str) -> List[dict]:
+def _load_inventory(source_file: str) -> List[dict]:
     """Load inventory from a file
 
     Args:
-        source_path (str): inventory file
+        source_file (str): inventory file
 
     Raises:
         InventorySourceError: inventory file doesn't exists
@@ -221,29 +184,12 @@ def _load_inventory(source_path: str) -> List[dict]:
     Returns:
         List[dict]: list of sources
     """
-    if not isfile(source_path):
-        raise InventorySourceError(f"File {source_path} doesn't exists")
+    if not isfile(source_file):
+        raise InventorySourceError(f"File {source_file} doesn't exists")
 
-    inventory = {
-        'sources': {},
-        'devices': {},
-        'auths': {}
-    }
+    inventory = read_inventory(source_file)
 
-    inventory_data = {}
-    with open(source_path, 'r') as fp:
-        file_content = fp.read()
-        try:
-            inventory_data = yaml.safe_load(file_content)
-        except Exception as e:
-            raise InventorySourceError('Invalid Suzieq inventory '
-                                       f'file: {e}')
-    _validate_raw_inventory(inventory_data)
-
-    for k in inventory:
-        inventory[k] = _get_inventory_config(k, inventory_data)
-
-    ns_list = inventory_data.get('namespaces')
+    ns_list = inventory.get('namespaces')
 
     sources = []
     for ns in ns_list:
@@ -271,104 +217,3 @@ def _load_inventory(source_path: str) -> List[dict]:
         sources.append(source)
 
     return sources
-
-
-def _validate_raw_inventory(inventory: dict):
-    """Validate the inventory read from file
-
-    Args:
-        inventory (dict): inventory read from file
-
-    Raises:
-        InventorySourceError: invalid inventory
-    """
-    if not inventory:
-        raise InventorySourceError('The inventory is empty')
-
-    for f in ['sources', 'namespaces']:
-        if f not in inventory:
-            raise InventorySourceError(
-                "'sources' and 'namespaces' fields must be specified")
-
-    main_fields = {
-        'sources': [],
-        'devices': [],
-        'auths': [],
-    }
-    for mf, mf_list in main_fields.items():
-        fields = inventory.get(mf)
-        if not fields:
-            # 'devices' and 'auths' can be omitted if not needed
-            continue
-        if not isinstance(fields, list):
-            raise InventorySourceError(f'{mf} content must be a list')
-        for value in fields:
-            name = value.get('name')
-            if not name:
-                raise InventorySourceError(
-                    f"{mf} items must have a 'name'")
-            if name in mf_list:
-                raise InventorySourceError(f'{mf}.{name} is not unique')
-            mf_list.append(name)
-
-            if not isinstance(value, dict):
-                raise InventorySourceError(
-                    f"{mf}.{name} is not a dictionary")
-
-            if value.get('copy') and not value['copy'] in mf_list:
-                raise InventorySourceError(f'{mf}.{name} value must be a '
-                                           "'name' of an already defined "
-                                           f'{mf} item')
-    # validate 'namespaces'
-    for ns in inventory.get('namespaces'):
-        if not ns.get('source'):
-            raise InventorySourceError(
-                "all namespaces need 'source' field")
-
-        if ns.get('source') not in main_fields['sources']:
-            raise InventorySourceError(
-                f"No source called '{ns['source']}'")
-
-        if ns.get('device') and ns['device'] not in main_fields['devices']:
-            raise InventorySourceError(
-                f"No device called '{ns['device']}'")
-
-        if ns.get('auth') and ns['auth'] not in main_fields['auths']:
-            raise InventorySourceError(
-                f"No auth called '{ns['auth']}'")
-
-
-def _get_inventory_config(conf_type: str, inventory: dict) -> dict:
-    """Return the configuration for a the config type as input
-
-    The returned value will contain a dictionary with 'name' as key
-    and the config as value
-
-    Args:
-        conf_type (str): type of configuration to initialize
-        inventory (dict): inventory to read to collect configuration
-
-    Returns:
-        dict: configuration data
-    """
-    configs = {}
-    conf_list = inventory.get(conf_type)
-    if not conf_list:
-        # No configuration specified
-        return {}
-
-    for conf_obj in conf_list:
-        name = conf_obj.get('name')
-        if name:
-            if conf_obj.get('copy'):
-                # copy the content of the other inventory
-                # into the current inventory and override
-                # values
-                configs[name] = configs[conf_obj['copy']].copy()
-                for k, v in conf_obj.items():
-                    if k not in ['copy']:
-                        configs[name][k] = v
-            else:
-                configs[name] = conf_obj
-
-    return configs

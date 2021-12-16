@@ -1,4 +1,5 @@
 from typing import Dict, List
+from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.shared.sq_plugin import SqPlugin
 
 
@@ -10,8 +11,9 @@ class ControllerPlugin(SqPlugin):
     """
 
     @classmethod
-    def init_plugins(cls, plugin_conf: dict) -> List[Dict]:
-        """Initialize the list of plugins starting from the configuration
+    def init_plugins(cls, plugin_conf: Dict) -> List[Dict]:
+        """Instantiate one or more instances of the current class according
+        to the given configuration
 
         Args:
             plugin_conf (dict): plugin configuration
@@ -20,16 +22,13 @@ class ControllerPlugin(SqPlugin):
             List[Dict]: list of generated plugins
         """
 
-        plugin_classes = cls.get_plugins()
-        ptype = plugin_conf.get(
-            "type")
+        ptype = plugin_conf.get("type")
         if not ptype:
-            raise ValueError(
-                "generate function espects the plugin type")
+            raise SqPollerConfError('No default type provided')
 
-        if ptype not in plugin_classes:
-            raise RuntimeError(
-                f"Unknown plugin called {ptype}"
-            )
+        controller_class = cls.get_plugins(plugin_name=ptype)
 
-        return [plugin_classes[ptype](plugin_conf)]
+        if not controller_class:
+            raise SqPollerConfError(f"Unknown plugin called {ptype}")
+
+        return [controller_class[ptype](plugin_conf)]

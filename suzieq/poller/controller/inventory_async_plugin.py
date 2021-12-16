@@ -1,41 +1,28 @@
 from abc import abstractmethod
-import threading
 from suzieq.shared.sq_plugin import SqPlugin
+import asyncio
 
 
 class InventoryAsyncPlugin(SqPlugin):
-    """Plugins which inherit this class will have methods 'run' and 'stop'
+    """Plugins which inherit this class will have methods 'run'
 
-    At the current version of suzieq, the controller if finds that a plugin
-    has the 'run' method, it will call that method in a separate thread
+    Once the controller check that the object inherit this class, it launches
+    a new task executing the run method.
     """
-    def __init__(self) -> None:
-        self._thread = None
-        super().__init__()
 
-    def set_running_thread(self, thread: threading.Thread):
-        """Set the thread on which the plugin is running
-
-        This function is not mandatory.
-        An InventoryAsyncPlugin can be used in a single thread environment
-
-        Args:
-            thread (threading.Thread): plugin's running thread
-        """
-        self._thread = thread
-
-    def get_running_thread(self) -> threading.Thread:
-        """Return the thread on which the plugin is running
-
-        Returns:
-            threading.Thread: plugin's running thread
-        """
-        return self._thread
+    async def run(self):
+        """Background task to launch in order to execute the plugin"""
+        try:
+            await self._execute()
+        finally:
+            await self._stop()
 
     @abstractmethod
-    def run(self, **kwargs):
-        """Task to be done after an initialization of a plugin"""
+    async def _execute(self):
+        """Launch the backuground task
+        """
 
-    @abstractmethod
-    def stop(self):
-        """Method to stop the 'run' method"""
+    async def _stop(self):
+        """Actions to execute before terminating the task
+        """
+        return
