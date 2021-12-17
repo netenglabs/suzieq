@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import Dict, List
+from typing import Dict
 from urllib.parse import urlparse
 from ipaddress import ip_address
 
@@ -20,7 +20,7 @@ class SqNativeFile(Source):
 
     def __init__(self, input_data) -> None:
         self.inventory_source = ""
-        self._cur_inventory = []
+        self._cur_inventory = {}
         super().__init__(input_data)
 
     def _validate_config(self, input_data: dict):
@@ -33,17 +33,16 @@ class SqNativeFile(Source):
 
     def _load(self, input_data):
         self.inventory_source = input_data
-        self._cur_inventory = self._get_device_list()
+        self._cur_inventory = self._get_inventory()
         self.set_inventory(self._cur_inventory)
 
-    def _get_device_list(self) -> List[Dict]:
-        """Extract the data from the Suzieq inventory file
+    def _get_inventory(self) -> Dict:
+        """Extract the data from ansible inventory file
 
         Returns:
-            List[Dict]: list with the data to connect to the devices in the
-                inventory
+            Dict: inventory dictionary
         """
-        inventory = []
+        inventory = {}
 
         nsname = self.inventory_source['namespace']
 
@@ -52,11 +51,11 @@ class SqNativeFile(Source):
             logger.error(f'No hosts in namespace {nsname}')
             return []
 
-        for host in hostlist:
-            if not isinstance(host, dict):
-                logger.error(f'Ignoring invalid host spec: {host}')
+        for address in hostlist:
+            if not isinstance(address, dict):
+                logger.error(f'Ignoring invalid host spec: {address}')
                 continue
-            entry = host.get('url', None)
+            entry = address.get('url', None)
             if entry:
                 words = entry.split()
                 decoded_url = urlparse(words[0])
@@ -67,7 +66,7 @@ class SqNativeFile(Source):
                             None)
                 transport = decoded_url.scheme or "http"
                 port = decoded_url.port or _DEFAULT_PORTS.get(transport)
-                host = decoded_url.hostname
+                address = decoded_url.hostname
                 devtype = None
                 keyfile = None
 
@@ -83,17 +82,17 @@ class SqNativeFile(Source):
                             password = words[i].split('=')[1]
                         else:
                             logger.error('Ignorning Unknown parameter: '
-                                         f'{words[i]} for {host}')
+                                         f'{words[i]} for {address}')
                 except IndexError:
                     if 'password' not in words[i]:
                         logger.error(f"Missing '=' in key {words[i]}")
                     else:
                         logger.error("Invalid password spec., missing '='")
-                    logger.error(f'Ignoring node {host}')
+                    logger.error(f'Ignoring node {address}')
                     continue
 
                 entry = {
-                    'address': host,
+                    'address': address,
                     'username': username,
                     'port': port,
                     'password': password,
@@ -101,11 +100,16 @@ class SqNativeFile(Source):
                     'devtype': devtype,
                     'namespace': nsname,
                     'ssh_keyfile': keyfile,
-                    'hostname': None
+                    'hostname': None,
+                    'jump_host': self._device.get('jump-host'),
+                    'jump_host_key_file':
+                    self._device.get('jump-host-key-file'),
+                    'ignore_known_hosts':
+                    self._device.get('ignore-known-hosts')
                 }
                 if self._validate_inventory_entry(entry):
                     # TODO: must add a credential_loader
-                    inventory.append(entry)
+                    inventory[f'{nsname}.{address}'] = entry
             else:
                 logger.error(f'Ignoring invalid host spec.: {entry}')
 

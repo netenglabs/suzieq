@@ -21,21 +21,23 @@ class Source(ControllerPlugin):
     def __init__(self, input_data) -> None:
         super().__init__()
 
-        self._inventory = []
+        self._inventory = {}
         self._inv_is_set = False
         self._inv_is_set_event = asyncio.Event()
         self._name = input_data.get('name')
+        self._auth = input_data.get('auth', {})
+        self._device = input_data.get('device', {})
 
         self._inv_format = [
             'address',
             'namespace',
             'port',
             'transport',
-            'username',
-            'password',
-            'ssh_keyfile',
             'devtype',
-            'hostname'
+            'hostname',
+            'jump_host',
+            'jump_host_key_file',
+            'ignore_known_hosts'
         ]
         errors = self._validate_config(input_data)
         if errors:
@@ -62,7 +64,7 @@ class Source(ControllerPlugin):
         """Checks if the loaded data is valid or not"""
         raise NotImplementedError
 
-    async def get_inventory(self) -> List[Dict]:
+    async def get_inventory(self) -> Dict:
         """Retrieve the inventory from the source. If the inventory is not
         ready the function will wait until it is.
 
@@ -70,14 +72,14 @@ class Source(ControllerPlugin):
             List[Dict]: the device inventory from the source
         """
         # If the inventory is not ready wait until it is
-        if self._inv_is_set:
+        if not self._inv_is_set:
             await self._inv_is_set_event.wait()
 
         inventory_snapshot = copy(self._inventory)
 
         return inventory_snapshot
 
-    def set_inventory(self, new_inventory: List[Dict]):
+    def set_inventory(self, new_inventory: Dict):
         """Set the inventory in a thread safe way
 
         The function will try to set the inventory until the timeout
@@ -98,7 +100,7 @@ class Source(ControllerPlugin):
             self._inv_is_set = True
             self._inv_is_set_event.set()
 
-    def _is_invalid_inventory(self, inventory: List[Dict]) -> List[str]:
+    def _is_invalid_inventory(self, inventory: Dict) -> List[str]:
         """Validate the inventory
 
         The goal of this function is to check that all the devices has all
@@ -107,12 +109,12 @@ class Source(ControllerPlugin):
         This function is called inside the set_inventory
 
         Args:
-            inventory (List[Dict]): inventory to validate
+            inventory (Dict): inventory to validate
 
         Returns:
             List[str]: list of missing fields
         """
-        for device in inventory:
+        for device in inventory.values():
             device_keys = set(self._inv_format)
             for key in device.keys():
                 if key in device_keys:
@@ -137,7 +139,7 @@ class Source(ControllerPlugin):
         return []
 
     @classmethod
-    def init_plugins(cls, plugin_conf: dict) -> List[Dict]:
+    def init_plugins(cls, plugin_conf: Dict) -> List[Dict]:
         """This method is overrided because sources is different from other
         plugins.
         From the fields 'path', this function is going to load more than
@@ -146,7 +148,7 @@ class Source(ControllerPlugin):
         configuration and instance an object
 
         Args:
-            plugin_conf (dict): source plugin configuration dictionary.
+            plugin_conf (Dict): source plugin configuration dictionary.
             Must contain 'path' key with the inventory file as value.
 
         Raises:
@@ -160,6 +162,7 @@ class Source(ControllerPlugin):
         plugin_classes = cls.get_plugins()
         src_confs = _load_inventory(
             plugin_conf.get('path', _DEFAULT_SOURCE_PATH))
+        run_once = plugin_conf.get('run-once', False)
         for src_conf in src_confs:
             ptype = src_conf.get('type') or 'file'
 
@@ -167,6 +170,7 @@ class Source(ControllerPlugin):
                 raise RuntimeError(
                     f'Unknown plugin called {ptype}'
                 )
+            src_conf.update({'run_once': run_once})
             src_plugins.append(plugin_classes[ptype](src_conf))
         return src_plugins
 
@@ -202,6 +206,7 @@ def _load_inventory(source_file: str) -> List[dict]:
 
         if ns.get('auth'):
             auth = inventory.get('auths', {}).get(ns['auth'])
+            auth['type'] = auth.get('type') or 'static_loader'
             source['auth'] = CredentialLoader.init_plugins(auth)[0]
         else:
             source['auth'] = None

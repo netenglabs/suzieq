@@ -3,7 +3,7 @@ This module contains the logic of the plugin in charge of importing an
 inventory from an Ansible inventory file.
 """
 from os.path import isfile, exists
-from typing import Dict, List
+from typing import Dict
 import logging
 import yaml
 from suzieq.poller.controller.source.base_source import Source
@@ -25,7 +25,7 @@ class AnsibleInventory(Source):
     def _load(self, input_data):
         self.ansible_file = input_data.pop('file_path', None)
         self.namespace = input_data.pop('namespace', None)
-        inventory = self._get_device_list()
+        inventory = self._get_inventory()
         self.set_inventory(inventory)
 
     def _validate_config(self, input_data: dict):
@@ -38,7 +38,7 @@ class AnsibleInventory(Source):
             raise InventorySourceError(
                 f"No file found at {input_data['file_path']}")
 
-    def _get_device_list(self) -> List[Dict]:
+    def _get_inventory(self) -> Dict:
         """Parse the output of ansible-inventory command for processing.
 
         Ansible pulls together the inventory information from multiple files.
@@ -52,7 +52,7 @@ class AnsibleInventory(Source):
                 be read.
 
         Returns:
-            List[Dict]: A list containing a dictionary of data with the data to
+            Dict: A list containing a dictionary of data with the data to
                 connect to the host.
         """
         try:
@@ -75,7 +75,7 @@ class AnsibleInventory(Source):
             )
 
         in_hosts = inventory['_meta']['hostvars']
-        out_hosts = []
+        out_inv = {}
         for host in in_hosts:
             entry = in_hosts[host]
 
@@ -112,8 +112,11 @@ class AnsibleInventory(Source):
                 'devtype': devtype,
                 'namespace': self.namespace,
                 'ssh_keyfile': keyfile,
-                'hostname': None
+                'hostname': None,
+                'jump_host': self._device.get('jump-host'),
+                'jump_host_key_file': self._device.get('jump-host-key-file'),
+                'ignore_known_hosts': self._device.get('ignore-known-hosts')
             }
-            out_hosts.append(host)
+            out_inv[f"{self.namespace}.{entry['ansible_host']}"] = host
 
-        return out_hosts
+        return out_inv

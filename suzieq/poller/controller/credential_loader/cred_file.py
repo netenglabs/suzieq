@@ -1,10 +1,11 @@
 """This module contains the class to import device credentials using files
 """
 from os import path
-from typing import Dict, List
+from typing import Dict
+
 import yaml
-from suzieq.poller.controller.credential_loader.base_credential_loader \
-    import CredentialLoader
+from suzieq.poller.controller.credential_loader.base_credential_loader import \
+    CredentialLoader
 
 
 class CredFile(CredentialLoader):
@@ -29,7 +30,7 @@ class CredFile(CredentialLoader):
                 credential divided in namespaces'
             )
 
-    def load(self, inventory: List[Dict]):
+    def load(self, inventory: Dict):
         if not inventory:
             raise RuntimeError('Empty inventory')
 
@@ -54,7 +55,8 @@ class CredFile(CredentialLoader):
                     raise RuntimeError(
                         'Devices must have a hostname or address')
 
-                device = [x for x in inventory if x.get(dev_key) == dev_id]
+                device = [x for x in inventory.values() if x.get(dev_key)
+                          == dev_id]
                 if not device:
                     raise RuntimeError('Unknown device called {}'
                                        .format(dev_id))
@@ -64,19 +66,37 @@ class CredFile(CredentialLoader):
                         'The device {} does not belong the namespace {}'
                         .format(dev_id, namespace)
                     )
+                if dev_info.get('keyfile'):
+                    # rename 'keyfile' into 'ssh_keyfile'
+                    dev_info['ssh_keyfile'] = dev_info.pop('keyfile')
+
+                if 'ssh_key_pass' not in dev_info:
+                    if dev_info.get('ssh-key-pass'):
+                        # rename 'ssh-key-pass' into 'ssh_key_pass'
+                        dev_info['ssh_key_pass'] = dev_info.pop('ssh-key-pass')
+                    else:
+                        # set it to None
+                        dev_info['ssh_key_pass'] = None
+
                 dev_cred = dev_info.copy()
 
                 dev_cred.pop(dev_key)
-                if dev_cred['keyfile']:
-                    # rename 'keyfile' into 'ssh_keyfile'
-                    dev_cred['ssh_keyfile'] = dev_cred['keyfile']
-                    dev_cred.pop('keyfile')
+
+                if not dev_cred.get('password') and \
+                        not dev_cred.get('ssh_keyfile'):
+                    # no configuration in device, use config ones
+                    dev_cred.update({
+                            'ssh_key_pass': self._conf_ssh_key_pass,
+                            'ssh_key_file': self._conf_keyfile,
+                            'password': self._conf_password
+                        })
 
                 self.write_credentials(device, dev_cred)
 
         # check if all devices has credentials
         no_cred_devs = [
-            f"{d.get('namespace')}.{d.get('address')}" for d in inventory
+            f"{d.get('namespace')}.{d.get('address')}"
+            for d in inventory.values()
             if not d.get('username', None)
         ]
         if len(no_cred_devs) != 0:

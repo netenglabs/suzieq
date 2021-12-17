@@ -263,14 +263,13 @@ class Controller:
                     )
 
                 if cur_inv:
-                    for device in cur_inv:
-                        dev_address = device.get('address')
-                        dev_ns = device.get('namespace')
-                        global_key = f'{dev_ns}.{dev_address}'
-                        if global_inventory.get(global_key):
-                            raise InventorySourceError(
-                                f'Duplicated inventory {global_key}')
-                        global_inventory[global_key] = device
+                    duplicated_devices = [x for x in cur_inv
+                                          if x in global_inventory]
+                    for dd in duplicated_devices:
+                        logger.warning(f'Ignoring duplicated device {dd}')
+                        cur_inv.pop(dd)
+
+                global_inventory.update(cur_inv)
 
             n_pollers = self.manager.get_n_workers()
 

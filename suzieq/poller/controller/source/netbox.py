@@ -8,7 +8,7 @@ Classes:
 """
 import asyncio
 import logging
-from typing import Dict, List
+from typing import Dict, List, Tuple
 from urllib.parse import urlparse
 
 import aiohttp
@@ -18,12 +18,6 @@ from suzieq.poller.controller.source.base_source import Source
 from suzieq.shared.exceptions import InventorySourceError
 
 _DEFAULT_PORTS = {'http': 80, 'https': 443}
-_RELEVANT_FIELDS = [
-    'name',
-    'primary_ip6.address',
-    'primary_ip4.address',
-    'site.name'
-]
 
 logger = logging.getLogger(__name__)
 
@@ -83,8 +77,8 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._period = input_data.get('period', 3600)
         self._run_once = input_data.get('run_once', False)
         self._token = input_data.get('token', None)
-        self._auth = input_data.get('auth', None)
-        self._device = input_data.get('device', None)
+
+        logger.debug(f"Source {self._name} load completed")
 
     def _validate_config(self, input_data) -> list:
         """Validates the loaded configuration
@@ -120,51 +114,63 @@ class Netbox(Source, InventoryAsyncPlugin):
         """
         return {'Authorization': f'Token {self._token}'}
 
-    async def retrieve_rest_data(self, url: str) -> Dict:
-        """Perform an HTTP GET to the <url> parameter.
-
-        Args:
-            url (str): HTTP GET target
+    async def get_inventory_list(self) -> List:
+        """Contact netbox to retrieve the inventory.
 
         Raises:
             RuntimeError: Unable to connect to the REST server
 
         Returns:
-            Dict: content of the HTTP GET
+            List: inventory list
         """
-        headers = self._token_auth_header()
+        url = f'{self._protocol}://{self._host}:{self._port}'\
+            f'/api/dcim/devices/?tag={self._tag}'
         if not self._session:
+            headers = self._token_auth_header()
             self._init_session(headers)
 
-        # TODO: check if headers are needed also in .get
-        async with self._session.get(url, headers=headers) as response:
+        devices, next_url = await self._get_devices(url)
+        while next_url:
+            cur_devices, next_url = await self._get_devices(next_url)
+            devices.extend(cur_devices)
+        return devices
+
+    async def _get_devices(self, url: str) -> Tuple[List, str]:
+        """Retrieve devices from netbox using an HTTP GET over <url>
+
+        Args:
+            url (str): devices url
+
+        Raises:
+            RuntimeError: Response error
+
+        Returns:
+            Tuple[List, str]: returns the list of devices and the url to get
+            the remaining devices
+        """
+        async with self._session.get(url) as response:
             if int(response.status) == 200:
                 res = await response.json()
-
-                data = res.get('results', [])
-
-                if res.get('next', None):
-                    next_data = self.retrieve_rest_data(res['next'])
-                    data.extend(next_data.get('results', []))
-
-                res['results'] = data
-                res['next'] = None
-                return res
+                return res.get('results', []), res.get('next')
             else:
                 raise RuntimeError(
                     'Unable to connect to netbox:', response.json())
 
-    def parse_inventory(self, raw_inventory: dict) -> List[Dict]:
+    def parse_inventory(self, inventory_list: list) -> Dict:
         """parse the raw inventory collected from the server and generates
            a new inventory with only the required informations
 
         Args:
-            raw_inventory (dict): raw inventory received from the server
+            raw_inventory (list): raw inventory received from the server
 
         Returns:
             List[Dict]: a list containing the inventory
         """
-        def get_field_value(entry, fields_str):
+        def get_field_value(entry: dict, fields_str: str):
+            # Fields_str is a string containing fields separated by dots
+            # Every dot means that the value is deeper in the dictionary
+            # Example: fields_str = 'site.name'
+            #          return entry[site][name]
             fields = fields_str.split('.')
             cur_field = None
             for i, field in enumerate(fields):
@@ -176,58 +182,53 @@ class Netbox(Source, InventoryAsyncPlugin):
                     return None
             return cur_field
 
-        inventory_list = raw_inventory.get('results', [])
         inventory = {}
 
         for device in inventory_list:
-            inventory[device['name']] = {}
-            for rel_field in _RELEVANT_FIELDS:
-                if rel_field == 'name':
-                    inventory[device['name']]['hostname'] = \
-                        get_field_value(device, rel_field)
-                elif rel_field == 'primary_ip6.address':
-                    inventory[device['name']]['ipv6'] = \
-                        get_field_value(device, rel_field)
-                elif rel_field == 'primary_ip4.address':
-                    inventory[device['name']]['ipv4'] = \
-                        get_field_value(device, rel_field)
-
-            if inventory[device['name']]['ipv4']:
-                inventory[device['name']
-                          ]['address'] = inventory[device['name']]['ipv4']
-            elif inventory[device['name']]['ipv6']:
-                inventory[device['name']
-                          ]['address'] = inventory[device['name']]['ipv6']
-
-            inventory[device['name']]['devtype'] = self._device.get('devtype')
-
-            # only ssh supported for now
-            inventory[device['name']]['transport'] = self._device.get(
-                'transport') or 'ssh'
-            inventory[device['name']]['port'] = 22
-
-            if self._namespace == 'site.name'\
-                    and 'site.name' in _RELEVANT_FIELDS:
-                inventory[device['name']]['namespace'] = \
-                    inventory[device['name']].get('site.name', '')
+            ipv4 = get_field_value(device, 'primary_ip4.address')
+            ipv6 = get_field_value(device, 'primary_ip6.address')
+            hostname = get_field_value(device, 'name')
+            site_name = get_field_value(device, 'site.name')
+            if self._namespace == 'site.name':
+                namespace = site_name
             else:
-                inventory[device['name']]['namespace'] = self._namespace
+                namespace = self._namespace
+            address = None
 
-        return list(inventory.values())
+            if ipv4:
+                address = ipv4
+            elif ipv6:
+                address = ipv6
+
+            if not address:
+                raise InventorySourceError(
+                    f"Device {hostname} doesn't have a management IP")
+
+            inventory[f'{namespace}.{address}'] = {
+                'address': address,
+                'port': self._device.get('port') or 22,
+                'transport': self._device.get(
+                    'transport') or 'ssh',
+                'devtype': self._device.get('devtype'),
+                'namespace': namespace,
+                'hostname': hostname,
+                'jump_host': self._device.get('jump-host'),
+                'jump_host_key_file': self._device.get('jump-host-key-file'),
+                'ignore_known_hosts': self._device.get('ignore-known-hosts')
+            }
+
+        return inventory
 
     async def _execute(self):
         while True:
-            # Retrieve data using REST
-            url = f'{self._protocol}://{self._host}:{self._port}'\
-                f'/api/dcim/devices/?tag={self._tag}'
-            raw_inventory = await self.retrieve_rest_data(url)
-            logger.debug(f"Received netbox inventory from {url}")
-            tmp_inventory = self.parse_inventory(raw_inventory)
+            inventory_list = await self.get_inventory_list()
+            logger.debug(
+                f"Received netbox inventory from {self._protocol}"
+                f"://{self._host}:{self._port}")
+            tmp_inventory = self.parse_inventory(inventory_list)
             # load credentials into the inventory
             self._auth.load(tmp_inventory)
-
             # Write the inventory and remove the tmp one
-
             self.set_inventory(tmp_inventory)
 
             if self._run_once:

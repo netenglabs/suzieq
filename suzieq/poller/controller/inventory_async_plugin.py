@@ -1,6 +1,5 @@
 from abc import abstractmethod
 from suzieq.shared.sq_plugin import SqPlugin
-import asyncio
 
 
 class InventoryAsyncPlugin(SqPlugin):
