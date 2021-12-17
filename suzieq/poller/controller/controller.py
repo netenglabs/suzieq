@@ -54,9 +54,14 @@ class Controller:
         # inventory_timeout: the maximum amount of time to wait for an
         #                    inventory from a source
         self._run_once = args.run_once
+        self._input_dir = args.input_dir
+        if self._input_dir:
+            self._run_once = 'input-dir'
+
         self._period = args.update_period or \
             self._config.get('update-period', 3600)
         self._inventory_timeout = self._config.get('inventory_timeout', 10)
+        self._n_workers = args.workers or self._config.get('workers', 1)
 
         # Validate the arguments
         self._validate_controller_args(args, config_data)
@@ -77,14 +82,17 @@ class Controller:
         source_args = {'run-once': self._run_once,
                        'path': inventory_file}
 
-        manager_args = {'run-once': self._run_once,
+        manager_args = {'config': sq_get_config_file(args.config),
+                        'input-dir': self._input_dir,
                         'exclude-services': args.exclude_services,
                         'no-colescer': args.no_coalescer,
-                        'outputs': args.outputs,
                         'output-dir': args.output_dir,
+                        'outputs': args.outputs,
+                        'run-once': self._run_once,
                         'service-only': args.service_only,
                         'ssh-config-file': args.ssh_config_file,
-                        'config-file': sq_get_config_file(args.config)}
+                        'workers': self._n_workers
+                        }
 
         # Update configuration with command arguments
         self._config['source'].update(source_args)
@@ -224,13 +232,15 @@ class Controller:
                  for t in (source_tasks + manager_tasks + controller_task)]
         try:
             while tasks:
-                # TODO: fix this
-                _, pending = await asyncio.wait(
+                done, pending = await asyncio.wait(
                     tasks,
                     return_when=asyncio.FIRST_COMPLETED
                 )
 
                 tasks = list(pending)
+                for task in done:
+                    if task.exception():
+                        raise task.exception()
                 # Ignore completed task if started with run_once
                 if self.run_once:
                     continue
@@ -250,6 +260,7 @@ class Controller:
     async def _inventory_sync(self):
         while True:
             global_inventory = {}
+
             for inv_src in self.sources:
                 try:
                     cur_inv = await asyncio.wait_for(
@@ -271,11 +282,11 @@ class Controller:
 
                 global_inventory.update(cur_inv)
 
-            n_pollers = self.manager.get_n_workers()
+            n_pollers = self.manager.get_n_workers(global_inventory)
 
-            inv_chunks = self.chunker.chunk(global_inventory, n_pollers)
+            inventory_chunks = self.chunker.chunk(global_inventory, n_pollers)
 
-            await self.manager.apply(inv_chunks)
+            await self.manager.apply(inventory_chunks)
 
             if self.run_once:
                 break
@@ -299,6 +310,11 @@ class Controller:
         if self._period < 1:
             raise SqPollerConfError(
                 'Invalid period: at least one second required'
+            )
+
+        if self._n_workers < 0:
+            raise SqPollerConfError(
+                'At least a worker is required'
             )
 
         # Check if service list is valid

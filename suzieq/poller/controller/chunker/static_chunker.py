@@ -24,31 +24,31 @@ class StaticChunker(Chunker):
 
     def __init__(self, config_data: dict = None):
 
-        self._split_policies_list = ["sequential", "namespace"]
+        self._split_policies_list = ['sequential', 'namespace']
         self._split_policies_fn = {}
 
         for pol_name in self._split_policies_list:
-            fun = getattr(self, f"split_{pol_name}", None)
+            fun = getattr(self, f'split_{pol_name}', None)
             if not fun or not callable(fun):
-                raise RuntimeError(f"No split function for {pol_name}"
-                                   " split policy")
+                raise RuntimeError(f'No split function for {pol_name}'
+                                   ' split policy')
             self._split_policies_fn[pol_name] = fun
         if config_data:
             self._split_pol = config_data \
-                .get("split_pol", self._split_policies_list[0])
+                .get('split_pol', self._split_policies_list[0])
         else:
             self._split_pol = self._split_policies_list[0]
 
     def chunk(self, glob_inv: dict, n_chunks: int, **kwargs) -> List[Dict]:
 
-        split_pol = kwargs.pop("split_pol", self._split_pol)
+        split_pol = kwargs.pop('split_pol', self._split_pol)
 
         split_fun = self._split_policies_fn.get(split_pol, None)
         if not split_fun:
-            raise SqPollerConfError(f"Unknown split policy {split_pol}")
+            raise SqPollerConfError(f'Unknown split policy {split_pol}')
 
         inv_chunks = [c for c in split_fun(glob_inv, n_chunks) if c]
-        if len(inv_chunks) > n_chunks:
+        if len(inv_chunks) < n_chunks:
             raise SqPollerConfError(
                 'Not enough devices to split the inventory'
                 f'into {n_chunks} chunks'
@@ -134,7 +134,7 @@ class StaticChunker(Chunker):
         inventory_namespaces = {}
 
         for dev_name, device in glob_inv.items():
-            namespace = device.get("namespace", None)
+            namespace = device.get('namespace', None)
             if namespace is None:
                 raise AttributeError(f"{dev_name} doesn't have namespace set")
             if not inventory_namespaces.get(namespace, None):

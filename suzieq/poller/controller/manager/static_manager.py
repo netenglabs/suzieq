@@ -17,7 +17,7 @@ import yaml
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
 from suzieq.poller.controller.manager.base_manager import Manager
-from suzieq.shared.exceptions import SqPollerConfError
+from suzieq.shared.exceptions import PollingError, SqPollerConfError
 from suzieq.shared.utils import get_sq_install_dir
 
 logger = logging.getLogger(__name__)
@@ -33,14 +33,24 @@ class StaticManager(Manager, InventoryAsyncPlugin):
     def __init__(self, config_data: Dict = None):
 
         self._workers_count = config_data.get("workers", 1)
-        self._running_pollers = defaultdict(None)     # Dict of the tasks watching the pollers
-        self._waiting_pollers = defaultdict(None)     # The pollers waiting to be scheduled
-        self._current_chunks = []      # The current applied inventory chunks
+
+        # Workers we are already monitoring
+        self._running_workers = defaultdict(None)
+
+        # Workers we do not monitor yet
+        self._waiting_workers = defaultdict(None)
+
+        # The currently applied chunks
+        self._active_chunks = []
         self._poller_tasks_ready = asyncio.Event()
+
+        # Get the running mode
+        self._input_dir = config_data.get('input-dir', None)
+        self._run_once = config_data.get('run-once', None)
 
         # Configure the output directory for the inventory files
         self._inventory_path = Path(
-            config_data.get('inventory_path',
+            config_data.get('inventory-path',
                             'suzieq/.poller/inventory/static_inventory')
         ).resolve()
 
@@ -52,7 +62,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             )
 
         self._inventory_file_name = config_data \
-            .get("inventory_file_name", "inv")
+            .get("inventory-file-name", "inv")
 
         # Define poller parameters
         allowed_args = ['run-once', 'exclude-services', 'no-colescer',
@@ -60,7 +70,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                         'ssh-config-file', 'config']
 
         sq_path = get_sq_install_dir()
-        self._args_to_pass = [f'{sq_path}/poller/worker/sq_poller.py']
+        self._args_to_pass = [f'{sq_path}/poller/worker/sq_worker.py']
         for arg, value in config_data.items():
             if arg in allowed_args and value:
                 val_list = value if isinstance(value, list) else [value]
@@ -83,15 +93,15 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         pollers_to_launch = []
         inventory_len = len(inventory_chunks)
         if inventory_len != self._workers_count:
-            raise RuntimeError(
+            raise PollingError(
                 'The number of chunks is different than the number of workers'
             )
 
-        if not self._current_chunks:
+        if not self._active_chunks:
             pollers_to_launch = [*range(inventory_len)]
         else:
             for i, chunk in enumerate(inventory_chunks):
-                if chunk != self._current_chunks[i]:
+                if chunk != self._active_chunks[i]:
                     pollers_to_launch.append(i)
 
         # Create the inventory chunks and stop the pollers
@@ -101,7 +111,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             logger.info(f'Writing inventory chunks {pollers_to_launch}')
             tasks = [self._write_chunk(i, inventory_chunks[i])
                      for i in pollers_to_launch]
-            if self._current_chunks:
+            if self._active_chunks:
                 tasks += [self._stop_poller(i) for i in pollers_to_launch]
 
             # Write the chunks and stop the pollers
@@ -115,7 +125,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                 if r is not None and isinstance(r, Exception):
                     raise r
 
-            self._current_chunks = copy.deepcopy(inventory_chunks)
+            self._active_chunks = copy.deepcopy(inventory_chunks)
             self._poller_tasks_ready.set()
 
     def get_n_workers(self, _) -> int:
@@ -137,13 +147,13 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         poller_wait_tasks = {}
         tasks = []
         await self._poller_tasks_ready.wait()
-        while True:
-            if self._waiting_pollers:
-                self._running_pollers.update(self._waiting_pollers)
+        while self._waiting_workers or self._running_workers:
+            if self._waiting_workers:
+                self._running_workers.update(self._waiting_workers)
                 new_ptasks = {i: asyncio.create_task(p.wait())
-                              for i, p in self._waiting_pollers.items()}
+                              for i, p in self._waiting_workers.items()}
                 poller_wait_tasks.update(new_ptasks)
-                self._waiting_pollers = {}
+                self._waiting_workers = {}
                 tasks += list(new_ptasks.values())
             # Wait for the tasks
             done, pending = await asyncio.wait(
@@ -161,19 +171,25 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                         poller_id = i
                         break
                 if poller_id >= 0:
-                    if poller_id not in self._waiting_pollers:
-                        # Unexpected poller died
-                        process = self._running_pollers[poller_id]
-                        pout = await process.communicate()
-                        errstr = ''
-                        for out in pout:
-                            if out:
-                                errstr += out.decode()
-                        raise RuntimeError(f'Unexpected poller died '
-                                           f'process returned: {errstr}')
+                    if poller_id not in self._waiting_workers:
+                        # Probably unexpected poller died
+                        process = self._running_workers[poller_id]
+
+                        if self._run_once and process.returncode == 0:
+                            # Worker natural death
+                            del self._running_workers[poller_id]
+                        else:
+                            # Unexpected worker death
+                            pout = await process.communicate()
+                            errstr = ''
+                            for out in pout:
+                                if out:
+                                    errstr += out.decode()
+                            raise PollingError(f'Unexpected worker death '
+                                               f'process returned: {errstr}')
                 else:
                     # Someone else died
-                    raise RuntimeError('Unexpected task died')
+                    raise PollingError('Unexpected task died')
 
             tasks = list(pending)
 
@@ -196,7 +212,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         Args:
             id (int): id of the running poller
         """
-        curr_args = [*self._args_to_pass, '--poller-id', str(poller_id)]
+        curr_args = [*self._args_to_pass, '--worker-id', str(poller_id)]
 
         # Launch the process
         process = await asyncio.create_subprocess_exec(
@@ -205,8 +221,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             stderr=asyncio.subprocess.PIPE
         )
         if not process:
-            raise RuntimeError('Unable to start the poller process')
-        self._waiting_pollers[poller_id] = process
+            raise PollingError('Unable to start the poller process')
+        self._waiting_workers[poller_id] = process
 
     async def _stop_poller(self, poller_id: int):
         """Kill the poller with the given id. The function first calls a
@@ -215,7 +231,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         Args:
             poller_id (int): the poller id
         """
-        current_poller = self._running_pollers[poller_id]
+        current_poller = self._running_workers[poller_id]
         await self._stop_process(current_poller)
 
     async def _stop_process(self, process: Process):
@@ -224,7 +240,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         Args:
             process (Process): the process to stop
         """
-        if not process.returncode:
+        if process.returncode is None:
             process.terminate()
             try:
                 await asyncio.wait_for(process.wait(), 5)
@@ -233,8 +249,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
 
     async def _stop(self):
         # Stop all the processes
-        running = list(self._running_pollers.values())
-        waiting = list(self._waiting_pollers.values())
+        running = list(self._running_workers.values())
+        waiting = list(self._waiting_workers.values())
         tasks = [self._stop_process(p)
                  for p in [*running, *waiting]]
         await asyncio.gather(*tasks)
