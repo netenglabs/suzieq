@@ -35,3 +35,7 @@ class SqPollerConfError(Exception):
 
 class InventorySourceError(Exception):
     """Unable to read or parse the inventory source."""
+
+
+class PollingError(Exception):
+    """Exception raised every time there is an error while polling"""

@@ -42,7 +42,7 @@ async def start_controller(user_args: argparse.Namespace, config_data: Dict):
         sys.exit(-1)
 
 
-if __name__ == '__main__':
+def controller_main():
     parser = argparse.ArgumentParser()
 
     # Get supported output, 'gather' cannot be manually selected
@@ -133,9 +133,17 @@ if __name__ == '__main__':
     )
 
     parser.add_argument(
+        '-p',
         '--update-period',
         help='How frequently the inventory updates [DEFAULT=3600]',
         type=int
+    )
+
+    parser.add_argument(
+        '-w',
+        '--workers',
+        type=int,
+        help='Maximum number of workers to execute',
     )
 
     args = parser.parse_args()
@@ -151,3 +159,7 @@ if __name__ == '__main__':
         pass
     except Exception:  # pylint: disable=broad-except
         traceback.print_exc()
+
+
+if __name__ == '__main__':
+    controller_main()

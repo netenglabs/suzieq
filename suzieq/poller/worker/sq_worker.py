@@ -18,7 +18,7 @@ async def start_poller(userargs, cfg):
     '''Start the poller'''
     # Init logger of the poller
     logfile, loglevel, logsize, log_stdout = get_log_params(
-        'poller', cfg, '/tmp/sq-poller.log')
+        'poller', cfg, f'/tmp/sq-poller-{userargs.worker_id}.log')
     logger = init_logger('suzieq.poller.worker', logfile,
                          loglevel, logsize, log_stdout)
 
@@ -38,20 +38,8 @@ def poller_main() -> None:
     supported_outputs = ["parquet"]
 
     parser = argparse.ArgumentParser()
-    requiredgrp = parser.add_mutually_exclusive_group(required=True)
-    requiredgrp.add_argument(
-        "-D",
-        "--devices-file",
-        type=str,
-        help="File with URL of devices to gather data from",
-    )
-    requiredgrp.add_argument(
-        "-a",
-        "--ansible-file",
-        type=str,
-        help="Ansible inventory file of devices to gather data from",
-    )
-    requiredgrp.add_argument(
+
+    parser.add_argument(
         "-i",
         "--input-dir",
         type=str,
@@ -163,6 +151,13 @@ def poller_main() -> None:
         "--no-coalescer",
         default=False,
         action='store_true',
+        help=argparse.SUPPRESS,
+    )
+
+    parser.add_argument(
+        "--worker-id",
+        type=str,
+        default='0',
         help=argparse.SUPPRESS,
     )
 

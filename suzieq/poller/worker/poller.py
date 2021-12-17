@@ -27,6 +27,9 @@ class Poller:
     def __init__(self, userargs, cfg):
         self._validate_poller_args(userargs, cfg)
 
+        # Set the worker id
+        self.worker_id = userargs.worker_id
+
         # Setup poller tasks list
         self.waiting_tasks = []
         self.waiting_tasks_lock = asyncio.Lock()
@@ -162,13 +165,7 @@ class Poller:
         # for any kind of inventory source
         connect_timeout = cfg.get('poller', {}).get('connect-timeout', 15)
         inventory_args = {
-            'passphrase': userargs.passphrase,
-            'jump_host': userargs.jump_host,
-            'jump_host_key_file': userargs.jump_host_key_file,
-            'user_password': userargs.ask_pass,
-            'connect_timeout': connect_timeout,
-            'ssh_config_file': userargs.ssh_config_file,
-            'ignore_known_hosts': userargs.ignore_known_hosts
+            'connect_timeout': connect_timeout
         }
 
         # Retrieve the specific inventory source to use
@@ -184,15 +181,14 @@ class Poller:
             # inside the specified input directory.
             inventory_class = inv_types['dir']
             source_args = {'input_dir': userargs.input_dir}
-        elif userargs.devices_file:
-            inventory_class = inv_types['file']
-            source_args = {'inventory': userargs.devices_file}
         else:
-            inventory_class = inv_types['ansible']
+            mgr_cfg = cfg.get('poller', {}).get('manager', {})
+            type_to_use = mgr_cfg.get('type', 'static_manager')
+            inventory_class = inv_types[type_to_use]
             source_args = {
-                'ansible_file': userargs.ansible_file,
-                'default_namespace': userargs.namespace
-            }
+                           **mgr_cfg,
+                           'worker-id': self.worker_id
+                          }
 
         return inventory_class(self._add_poller_task,
                                **source_args,
@@ -237,8 +233,6 @@ class Poller:
         Raises:
             SqPollerConfError: raise when the configuration is not valid
         """
-        if userargs.devices_file and userargs.namespace:
-            raise SqPollerConfError('Cannot specify both -D and -n options')
 
         if userargs.jump_host and not userargs.jump_host.startswith('//'):
             raise SqPollerConfError(
