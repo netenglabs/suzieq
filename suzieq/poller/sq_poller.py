@@ -133,9 +133,17 @@ if __name__ == '__main__':
     )
 
     parser.add_argument(
+        '-p',
         '--update-period',
         help='How frequently the inventory updates [DEFAULT=3600]',
         type=int
+    )
+
+    parser.add_argument(
+        '-w',
+        '--workers',
+        type=int,
+        help='Maximum number of workers to execute',
     )
 
     args = parser.parse_args()

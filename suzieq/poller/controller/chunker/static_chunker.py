@@ -11,6 +11,7 @@ from typing import Dict, List
 import numpy as np
 from suzieq.poller.controller.chunker.base_chunker \
     import Chunker
+from suzieq.shared.exceptions import SqPollerConfError
 
 
 class StaticChunker(Chunker):
@@ -38,23 +39,21 @@ class StaticChunker(Chunker):
         else:
             self._split_pol = self._split_policies_list[0]
 
-    def chunk(
-        self,
-        glob_inv: dict,
-        n_chunks: int,
-        **addl_params
-    ) -> List[Dict]:
+    def chunk(self, glob_inv: dict, n_chunks: int, **kwargs) -> List[Dict]:
 
-        split_pol = addl_params.pop("split_pol", self._split_pol)
-
-        if addl_params:
-            raise RuntimeError(f"Unused parameters {addl_params}")
+        split_pol = kwargs.pop("split_pol", self._split_pol)
 
         split_fun = self._split_policies_fn.get(split_pol, None)
         if not split_fun:
-            raise AttributeError(f"Unknown split policy {split_pol}")
+            raise SqPollerConfError(f"Unknown split policy {split_pol}")
 
-        return split_fun(glob_inv, n_chunks)
+        inv_chunks = [c for c in split_fun(glob_inv, n_chunks) if c]
+        if len(inv_chunks) > n_chunks:
+            raise SqPollerConfError(
+                'Not enough devices to split the inventory'
+                f'into {n_chunks} chunks'
+            )
+        return inv_chunks
 
     def split_sequential(self, glob_inv: dict, n_chunks: int) -> List[Dict]:
         """This function splits the global inventory following the
@@ -77,7 +76,7 @@ class StaticChunker(Chunker):
         #            "n_pollers" chunks of size "chunk_len", the result would
         #            be that the last inventory will contain more devices than
         #            the others.
-        #            The "leftovoer" variable is used to distribute these
+        #            The "leftover" variable is used to distribute these
         #            additional devices to all the inventories
 
         leftovers = len(glob_inv) % n_chunks

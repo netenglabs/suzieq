@@ -4,113 +4,121 @@
     inventory chunks on different files for the pollers
     and start them up
 """
-from os.path import isdir, join
-from subprocess import Popen
-from typing import List, Dict
+import asyncio
+import copy
+import logging
+from asyncio.subprocess import Process
+from collections import defaultdict
+from pathlib import Path
+from typing import Dict, List
+
+import aiofiles
 import yaml
-from suzieq.poller.controller.manager.base_manager \
-    import Manager
+from suzieq.poller.controller.inventory_async_plugin import \
+    InventoryAsyncPlugin
+from suzieq.poller.controller.manager.base_manager import Manager
+from suzieq.shared.exceptions import SqPollerConfError
+from suzieq.shared.utils import get_sq_install_dir
+
+logger = logging.getLogger(__name__)
 
 
-class StaticManager(Manager):
+class StaticManager(Manager, InventoryAsyncPlugin):
     """The StaticPollerManager writes the inventory chunks on files
 
     The number of pollers is defined in the configuration file with
     the path for inventory files
     """
 
-    def __init__(self, config_data: dict = None):
+    def __init__(self, config_data: Dict = None):
 
-        self._workers_count = config_data.get("workers_count", 1)
-        self._inventory_path = config_data.get(
-            "inventory_path", "suzieq/.poller/intentory/static_inventory")
-        if not self._inventory_path or not isdir(self._inventory_path):
-            raise RuntimeError(
-                f"Invalid inventory path: {self._inventory_path}")
+        self._workers_count = config_data.get("workers", 1)
+        self._running_pollers = defaultdict(None)     # Dict of the tasks watching the pollers
+        self._waiting_pollers = defaultdict(None)     # The pollers waiting to be scheduled
+        self._current_chunks = []      # The current applied inventory chunks
+        self._poller_tasks_ready = asyncio.Event()
+
+        # Configure the output directory for the inventory files
+        self._inventory_path = Path(
+            config_data.get('inventory_path',
+                            'suzieq/.poller/inventory/static_inventory')
+        ).resolve()
+
+        try:
+            self._inventory_path.mkdir(parents=True, exist_ok=True)
+        except FileExistsError:
+            raise SqPollerConfError(
+                f'The inventory dir is not a directory: {self._inventory_path}'
+            )
 
         self._inventory_file_name = config_data \
-            .get("inventory_file_name", "static_inv")
+            .get("inventory_file_name", "inv")
 
-        self._start_workers = config_data.get("start_workers", True)
+        # Define poller parameters
+        allowed_args = ['run-once', 'exclude-services', 'no-colescer',
+                        'outputs', 'output-dir', 'service-only',
+                        'ssh-config-file', 'config']
 
-    def apply(self, inventory_chunks: List[Dict]):
-        """Write inventory chunks on files
+        sq_path = get_sq_install_dir()
+        self._args_to_pass = [f'{sq_path}/poller/worker/sq_poller.py']
+        for arg, value in config_data.items():
+            if arg in allowed_args and value:
+                val_list = value if isinstance(value, list) else [value]
+                self._args_to_pass.append(f'--{arg}', )
+                # All the arguments should be string
+                self._args_to_pass += [str(v) for v in val_list]
+
+    async def apply(self, inventory_chunks: List[Dict]):
+        """Apply the inventory chyunks to the pollers
 
         Args:
             inventory_chunks (List[Dict]): input inventory chunks
         """
-        for i, inventory in enumerate(inventory_chunks):
 
-            cur_inventory = {}
-            for device in inventory.values():
+        tasks = []
+        # In order to prevent any duplicate devices across the pollers, we
+        # need to first stop all the pollers involved on the inventory change,
+        # and only after all terminated, it is possible to restart them with
+        # the new inventory
+        pollers_to_launch = []
+        inventory_len = len(inventory_chunks)
+        if inventory_len != self._workers_count:
+            raise RuntimeError(
+                'The number of chunks is different than the number of workers'
+            )
 
-                address = device.get("address", None)
-                if not address:
-                    raise RuntimeError("device has no "
-                                       "ip addresses")
-                if address.find("/") != -1:
-                    address = address.split("/")[0]
+        if not self._current_chunks:
+            pollers_to_launch = [*range(inventory_len)]
+        else:
+            for i, chunk in enumerate(inventory_chunks):
+                if chunk != self._current_chunks[i]:
+                    pollers_to_launch.append(i)
 
-                transport = device.get("transport", "ssh")
+        # Create the inventory chunks and stop the pollers
+        if pollers_to_launch:
+            self._poller_tasks_ready.clear()
 
-                cur_ns = device.get("namespace", None)
-                if cur_ns is None:
-                    raise RuntimeError(f"device {address} has no "
-                                       "namespace")
+            logger.info(f'Writing inventory chunks {pollers_to_launch}')
+            tasks = [self._write_chunk(i, inventory_chunks[i])
+                     for i in pollers_to_launch]
+            if self._current_chunks:
+                tasks += [self._stop_poller(i) for i in pollers_to_launch]
 
-                username = device.get("username", None)
-                password = device.get("password", None)
-                ssh_keyfile = device.get("ssh_keyfile", None)
-                if transport == "ssh" and \
-                        not (username and (password or ssh_keyfile)):
-                    raise RuntimeError(f"device {address} has invalid "
-                                       "credentials")
+            # Write the chunks and stop the pollers
+            await asyncio.gather(*tasks)
 
-                options = device.get("options", {})
-                if not isinstance(options, dict):
-                    raise RuntimeError(f"device {address} has invalid "
-                                       "options")
+            # Launch all the pollers we need to launch
+            launch_tasks = [self._launch_poller(i) for i in pollers_to_launch]
+            res = await asyncio.gather(*launch_tasks, return_exceptions=True)
+            # Check if there are exceptions
+            for r in res:
+                if r is not None and isinstance(r, Exception):
+                    raise r
 
-                port = device.get("port")
-                if not port:
-                    raise RuntimeError(f"device {address} unknow port")
+            self._current_chunks = copy.deepcopy(inventory_chunks)
+            self._poller_tasks_ready.set()
 
-                hostline = f'{transport}://{username}@' \
-                    f'{address}'
-
-                if transport == "ssh":
-                    hostline += f':{device.get("port",22)}'
-                else:
-                    hostline += f':{device.get("port",80)}'
-
-                if password:
-                    hostline += f' password={password}'
-                elif ssh_keyfile:
-                    hostline += f' keyfile={ssh_keyfile}'
-
-                if cur_ns not in cur_inventory:
-                    cur_inventory[cur_ns] = {
-                        "namespace": cur_ns,
-                        "hosts": []
-                    }
-                cur_inventory[cur_ns]["hosts"].append({"url": hostline})
-
-            if cur_inventory:
-                out_file_path = join(
-                    self._inventory_path,
-                    f"{self._inventory_file_name}{i}.yaml"
-                )
-
-                with open(out_file_path, "w") as file:
-                    file.write(yaml.safe_dump(list(cur_inventory.values())))
-
-                if self._start_workers:
-                    Popen(["sq-poller", "-D", out_file_path, "-c",
-                           "suzieq/config/etc/suzieq-cfg.yml"])
-                    # Avoid the poller to start again
-                    self._start_workers = False
-
-    def get_n_workers(self, inventory: dict = None) -> int:
+    def get_n_workers(self, _) -> int:
         """returns the content of self._workers_count statically loaded from
            the configuration file
 
@@ -124,3 +132,109 @@ class StaticManager(Manager):
                  file
         """
         return self._workers_count
+
+    async def _execute(self):
+        poller_wait_tasks = {}
+        tasks = []
+        await self._poller_tasks_ready.wait()
+        while True:
+            if self._waiting_pollers:
+                self._running_pollers.update(self._waiting_pollers)
+                new_ptasks = {i: asyncio.create_task(p.wait())
+                              for i, p in self._waiting_pollers.items()}
+                poller_wait_tasks.update(new_ptasks)
+                self._waiting_pollers = {}
+                tasks += list(new_ptasks.values())
+            # Wait for the tasks
+            done, pending = await asyncio.wait(
+                tasks,
+                return_when=asyncio.FIRST_COMPLETED
+            )
+            await self._poller_tasks_ready.wait()
+
+            # Check if someone died and investigate why
+            for d in done:
+                # Search for the poller who died
+                poller_id = -1
+                for i, p in poller_wait_tasks.items():
+                    if p == d:
+                        poller_id = i
+                        break
+                if poller_id >= 0:
+                    if poller_id not in self._waiting_pollers:
+                        # Unexpected poller died
+                        process = self._running_pollers[poller_id]
+                        pout = await process.communicate()
+                        errstr = ''
+                        for out in pout:
+                            if out:
+                                errstr += out.decode()
+                        raise RuntimeError(f'Unexpected poller died '
+                                           f'process returned: {errstr}')
+                else:
+                    # Someone else died
+                    raise RuntimeError('Unexpected task died')
+
+            tasks = list(pending)
+
+    async def _write_chunk(self, poller_id: int, chunk: Dict):
+        """Write the chunk into an output file
+
+        Args:
+            id (int): id of the inventory chunk
+            chunk (Dict): chunk of the inventory containing the dictionary
+        """
+        out_file_name = (f'{str(self._inventory_path)}/'
+                         f'{self._inventory_file_name}_{poller_id}.yml')
+        async with aiofiles.open(out_file_name, "w") as out_file:
+            await out_file.write(yaml.safe_dump(chunk))
+
+    async def _launch_poller(self, poller_id: int):
+        """Launch a poller with the provided id and chunk, if a poller with
+        the given id is already running, stop it and launch it again
+
+        Args:
+            id (int): id of the running poller
+        """
+        curr_args = [*self._args_to_pass, '--poller-id', str(poller_id)]
+
+        # Launch the process
+        process = await asyncio.create_subprocess_exec(
+            *curr_args,
+            stdout=asyncio.subprocess.PIPE,
+            stderr=asyncio.subprocess.PIPE
+        )
+        if not process:
+            raise RuntimeError('Unable to start the poller process')
+        self._waiting_pollers[poller_id] = process
+
+    async def _stop_poller(self, poller_id: int):
+        """Kill the poller with the given id. The function first calls a
+        SIGTERM, if the process do not exit after 5 seconds, a SIGKILL is sent.
+
+        Args:
+            poller_id (int): the poller id
+        """
+        current_poller = self._running_pollers[poller_id]
+        await self._stop_process(current_poller)
+
+    async def _stop_process(self, process: Process):
+        """Stop a process
+
+        Args:
+            process (Process): the process to stop
+        """
+        if not process.returncode:
+            process.terminate()
+            try:
+                await asyncio.wait_for(process.wait(), 5)
+            except asyncio.TimeoutError:
+                process.kill()
+
+    async def _stop(self):
+        # Stop all the processes
+        running = list(self._running_pollers.values())
+        waiting = list(self._waiting_pollers.values())
+        tasks = [self._stop_process(p)
+                 for p in [*running, *waiting]]
+        await asyncio.gather(*tasks)
