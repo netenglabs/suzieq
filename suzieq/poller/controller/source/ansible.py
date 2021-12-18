@@ -23,20 +23,22 @@ class AnsibleInventory(Source):
         super().__init__(input_data)
 
     def _load(self, input_data):
-        self.ansible_file = input_data.pop('file_path', None)
+        self.ansible_file = input_data.pop('path', None)
         self.namespace = input_data.pop('namespace', None)
         inventory = self._get_inventory()
+        if self._auth:
+            self._auth.load(inventory)
         self.set_inventory(inventory)
 
     def _validate_config(self, input_data: dict):
         if any(x not in input_data.keys()
-               for x in ['namespace', 'file_path']):
+               for x in ['namespace', 'path']):
             raise InventorySourceError('Invalid file inventory: '
-                                       'no namespace/file_path sections')
+                                       'no namespace/path sections')
 
-        if not isfile(input_data['file_path']):
+        if not isfile(input_data['path']):
             raise InventorySourceError(
-                f"No file found at {input_data['file_path']}")
+                f"No file found at {input_data['path']}")
 
     def _get_inventory(self) -> Dict:
         """Parse the output of ansible-inventory command for processing.

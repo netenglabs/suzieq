@@ -34,6 +34,8 @@ class SqNativeFile(Source):
     def _load(self, input_data):
         self.inventory_source = input_data
         self._cur_inventory = self._get_inventory()
+        if self._auth:
+            self._auth.load(self._cur_inventory)
         self.set_inventory(self._cur_inventory)
 
     def _get_inventory(self) -> Dict:
