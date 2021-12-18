@@ -25,14 +25,14 @@ class CredentialLoader(ControllerPlugin):
             'username',
             'password',
             'ssh_keyfile',
-            'ssh_key_pass'
+            'passphrase'
         ]
 
         # load auth parameters
 
         self._name = init_data.get('name')
         self._conf_password = None
-        self._conf_ssh_key_pass = None
+        self._conf_passphrase = None
         self._conf_keyfile = None
         self._conf_username = None
 
@@ -87,10 +87,10 @@ class CredentialLoader(ControllerPlugin):
         cred_keys = set(self._cred_format)
         for key, value in credentials.items():
             if key in cred_keys:
-                # 'ssh_key_pass' is valid also with None value
+                # 'passphrase' is valid also with None value
                 # Also 'password' and 'ssh_keyfile' with None value are valid
                 # but only if at least one of them has a not None value
-                if value or key == 'ssh_key_pass':
+                if value or key == 'passphrase':
                     cred_keys.remove(key)
             else:
                 raise RuntimeError(f'Unexpected key {key} in credentials')
@@ -128,45 +128,37 @@ class CredentialLoader(ControllerPlugin):
             self._conf_keyfile = init_data['keyfile']
 
         if init_data.get('password'):
-            if self._conf_keyfile:
-                logger.warning(
-                    f"{self._name} Keyfile already set, ignoring password")
-            else:
-                password = init_data['password']
-                if password.startswith('env:'):
-                    self._conf_password = getenv(password.split('env:')[1], '')
-                    if not self._conf_password:
-                        raise InventorySourceError(
-                            f'No password in environment '
-                            f'variable "{password.split("env:")[1]}"')
-                elif password.startswith('plain:'):
-                    self._conf_password = password.split("plain:")[1]
-                elif password.startswith('ask'):
-                    self._conf_password = getpass.getpass(
-                        f'{self._name} Password to login to device: ')
-                else:
+            password = init_data['password']
+            if password.startswith('env:'):
+                self._conf_password = getenv(password.split('env:')[1], '')
+                if not self._conf_password:
                     raise InventorySourceError(
-                        f'{self._name} unknown password method.'
-                        'Supported methods are ["ask", "plain:", "env:"]')
-
-        if init_data.get('ssh-key-pass'):
-            if not self._conf_keyfile:
-                logger.warning(f'{self._name} Keyfile not set, ignoring'
-                               'ssh-key-pass')
+                        f'No password in environment '
+                        f'variable "{password.split("env:")[1]}"')
+            elif password.startswith('plain:'):
+                self._conf_password = password.split("plain:")[1]
+            elif password.startswith('ask'):
+                self._conf_password = getpass.getpass(
+                    f'{self._name} Password to login to device: ')
             else:
-                ssh_key_pass = init_data['ssh-key-pass']
-                if ssh_key_pass.startswith('env:'):
-                    self._conf_ssh_key_pass = getenv(
-                        ssh_key_pass.split('env:')[1], '')
-                    if not self._conf_ssh_key_pass:
-                        raise InventorySourceError(
-                            f'No ssh_key_pass in environment '
-                            f'variable "{ssh_key_pass.split("env:")[1]}"')
-                elif ssh_key_pass.startswith('plain:'):
-                    self._conf_ssh_key_pass = ssh_key_pass.split("plain:")[1]
-                elif ssh_key_pass.startswith('ask'):
-                    self._conf_ssh_key_pass = getpass.getpass(
-                        f'{self._name} Passphrase to decode private key file: '
-                    )
+                raise InventorySourceError(
+                    f'{self._name} unknown password method.'
+                    'Supported methods are ["ask", "plain:", "env:"]')
 
-        logger.debug(f"Loaded {self._name} config credentials")
+        if init_data.get('ssh-passphrase'):
+            passphrase = init_data['ssh-passphrase']
+            if passphrase.startswith('env:'):
+                self._conf_passphrase = getenv(
+                    passphrase.split('env:')[1], '')
+                if not self._conf_passphrase:
+                    raise InventorySourceError(
+                        f'No passphrase in environment '
+                        f'variable "{passphrase.split("env:")[1]}"')
+            elif passphrase.startswith('plain:'):
+                self._conf_passphrase = passphrase.split("plain:")[1]
+            elif passphrase.startswith('ask'):
+                self._conf_passphrase = getpass.getpass(
+                    f'{self._name} Passphrase to decode private key file: '
+                )
+
+        logger.debug(f"Loaded {self._name} default config credentials")

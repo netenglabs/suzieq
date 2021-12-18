@@ -25,7 +25,7 @@ class Source(ControllerPlugin):
         self._inv_is_set = False
         self._inv_is_set_event = asyncio.Event()
         self._name = input_data.get('name')
-        self._auth = input_data.get('auth') or {}
+        self._auth = input_data.get('auth')
         self._device = input_data.get('device') or {}
 
         self._inv_format = [
@@ -164,7 +164,7 @@ class Source(ControllerPlugin):
             plugin_conf.get('path', _DEFAULT_SOURCE_PATH))
         run_once = plugin_conf.get('run-once', False)
         for src_conf in src_confs:
-            ptype = src_conf.get('type') or 'file'
+            ptype = src_conf.get('type') or 'native'
 
             if ptype not in plugin_classes:
                 raise RuntimeError(

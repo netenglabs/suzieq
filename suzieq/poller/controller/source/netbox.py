@@ -37,10 +37,6 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._period = 3600
         self._run_once = ''
         self._token = ''
-        # Contains CredentialLoader object with device credentials
-        self._auth = None
-        # Contains a dictionary with devices specifications
-        self._device = None
 
         super().__init__(config_data)
 
@@ -57,7 +53,6 @@ class Netbox(Source, InventoryAsyncPlugin):
         """
 
         if not input_data:
-            # error
             raise ValueError('no netbox_config provided')
 
         url = input_data.get('url', '')
@@ -87,6 +82,10 @@ class Netbox(Source, InventoryAsyncPlugin):
             list: the list of errors
         """
         errors = []
+
+        if not self._auth:
+            return ["Netbox must have an 'auth' set"]
+
         if not input_data.get('token'):
             errors.append('No netbox token provided')
         if not input_data.get('url'):
