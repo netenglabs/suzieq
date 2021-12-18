@@ -8,6 +8,7 @@ class StaticLoader(CredentialLoader):
 
     Loads the credentials inside all devices
     """
+
     def init(self, init_data: dict):
         pass
 
@@ -15,10 +16,10 @@ class StaticLoader(CredentialLoader):
 
         for device in inventory.values():
             dev_creds = {
-                'ssh_keyfile': self._conf_keyfile,
-                'password': self._conf_password,
-                'ssh_key_pass': self._conf_ssh_key_pass,
-                'username': self._conf_username
+                'ssh_keyfile': device.get('ssh_keyfile') or self._conf_keyfile,
+                'password': device.get('password') or self._conf_password,
+                'username': device.get('username') or self._conf_username,
+                'passphrase': device.get('passphrase') or self._conf_passphrase
             }
 
             self.write_credentials(device, dev_creds)

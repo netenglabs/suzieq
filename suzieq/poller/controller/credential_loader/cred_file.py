@@ -13,10 +13,10 @@ class CredFile(CredentialLoader):
     """
 
     def init(self, init_data: dict):
-        dev_cred_file = init_data.get('file_path', '')
+        dev_cred_file = init_data.get('path', '')
         if not dev_cred_file:
             raise RuntimeError(
-                'No field <file_path>\
+                'No field <path>\
                     for device credential provided'
             )
         if not dev_cred_file or not path.isfile(dev_cred_file):
@@ -70,13 +70,13 @@ class CredFile(CredentialLoader):
                     # rename 'keyfile' into 'ssh_keyfile'
                     dev_info['ssh_keyfile'] = dev_info.pop('keyfile')
 
-                if 'ssh_key_pass' not in dev_info:
+                if 'passphrase' not in dev_info:
                     if dev_info.get('ssh-key-pass'):
-                        # rename 'ssh-key-pass' into 'ssh_key_pass'
-                        dev_info['ssh_key_pass'] = dev_info.pop('ssh-key-pass')
+                        # rename 'ssh-key-pass' into 'passphrase'
+                        dev_info['passphrase'] = dev_info.pop('key-passphrase')
                     else:
                         # set it to None
-                        dev_info['ssh_key_pass'] = None
+                        dev_info['passphrase'] = None
 
                 dev_cred = dev_info.copy()
 
@@ -86,7 +86,7 @@ class CredFile(CredentialLoader):
                         not dev_cred.get('ssh_keyfile'):
                     # no configuration in device, use config ones
                     dev_cred.update({
-                            'ssh_key_pass': self._conf_ssh_key_pass,
+                            'passphrase': self._conf_passphrase,
                             'ssh_key_file': self._conf_keyfile,
                             'password': self._conf_password
                         })
