@@ -165,7 +165,8 @@ class Poller:
         # for any kind of inventory source
         connect_timeout = cfg.get('poller', {}).get('connect-timeout', 15)
         inventory_args = {
-            'connect_timeout': connect_timeout
+            'connect_timeout': connect_timeout,
+            'ssh_config_file': userargs.ssh_config_file,
         }
 
         # Retrieve the specific inventory source to use
