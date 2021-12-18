@@ -207,7 +207,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                             del self._running_workers[poller_id]
                         else:
                             # Unexpected worker death
-                            errstr = self._get_process_out(process)
+                            errstr = await self._get_process_out(process)
                             raise PollingError(f'Unexpected worker death '
                                                f'process returned: {errstr}')
                 else:

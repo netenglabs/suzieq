@@ -220,28 +220,6 @@ class Poller:
             SqPollerConfError: raise when the configuration is not valid
         """
 
-        if userargs.jump_host and not userargs.jump_host.startswith('//'):
-            raise SqPollerConfError(
-                'Jump host format is //<username>@<jumphost>:<port>'
-            )
-
-        if userargs.jump_host_key_file:
-            if not userargs.jump_host:
-                raise SqPollerConfError(
-                    'Jump host key specified without a jump host'
-                )
-
-            if not os.access(userargs.jump_host_key_file, os.F_OK):
-                raise SqPollerConfError(
-                    f'Jump host key file {userargs.jump_host_key_file}'
-                    'does not exist'
-                )
-            if not os.access(userargs.jump_host_key_file, os.R_OK):
-                raise SqPollerConfError(
-                    f'Jump host key file {userargs.jump_host_key_file} '
-                    'not readable'
-                )
-
         if userargs.ssh_config_file:
             if not os.access(userargs.ssh_config_file, os.F_OK):
                 raise SqPollerConfError(
