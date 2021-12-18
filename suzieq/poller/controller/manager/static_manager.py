@@ -17,6 +17,7 @@ import yaml
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
 from suzieq.poller.controller.manager.base_manager import Manager
+from suzieq.poller.worker.coalescer_launcher import CoalescerLauncher
 from suzieq.shared.exceptions import PollingError, SqPollerConfError
 from suzieq.shared.utils import get_sq_install_dir
 
@@ -47,6 +48,13 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         # Get the running mode
         self._input_dir = config_data.get('input-dir', None)
         self._run_once = config_data.get('run-once', None)
+        self._no_coalescer = config_data.get('no-coalescer', False)
+
+        if not self._no_coalescer:
+            self._coalescer_launcher = CoalescerLauncher(
+                config_data['config'],
+                config_data['config-dict']
+            )
 
         # Configure the output directory for the inventory files
         self._inventory_path = Path(
@@ -65,7 +73,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             .get("inventory-file-name", "inv")
 
         # Define poller parameters
-        allowed_args = ['run-once', 'exclude-services', 'no-colescer',
+        allowed_args = ['run-once', 'exclude-services',
                         'outputs', 'output-dir', 'service-only',
                         'ssh-config-file', 'config', 'input-dir']
 
@@ -153,7 +161,16 @@ class StaticManager(Manager, InventoryAsyncPlugin):
     async def _execute(self):
         poller_wait_tasks = {}
         tasks = []
+        coalescer_task = None
         await self._poller_tasks_ready.wait()
+
+        # Check if we need to start the coalescer
+        if not self._no_coalescer:
+            coalescer_task = asyncio.create_task(
+                self._coalescer_launcher.start_and_monitor_coalescer()
+            )
+            tasks.append(coalescer_task)
+
         while self._waiting_workers or self._running_workers:
             if self._waiting_workers:
                 self._running_workers.update(self._waiting_workers)
@@ -171,6 +188,9 @@ class StaticManager(Manager, InventoryAsyncPlugin):
 
             # Check if someone died and investigate why
             for d in done:
+                if not self._no_coalescer and d == coalescer_task:
+                    # Coalescer died
+                    raise PollingError('Unexpected coalescer death')
                 # Search for the poller who died
                 poller_id = -1
                 for i, p in poller_wait_tasks.items():
@@ -187,18 +207,30 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                             del self._running_workers[poller_id]
                         else:
                             # Unexpected worker death
-                            pout = await process.communicate()
-                            errstr = ''
-                            for out in pout:
-                                if out:
-                                    errstr += out.decode()
+                            errstr = self._get_process_out(process)
                             raise PollingError(f'Unexpected worker death '
                                                f'process returned: {errstr}')
                 else:
                     # Someone else died
-                    raise PollingError('Unexpected task died')
+                    raise PollingError('Unexpected task death')
 
             tasks = list(pending)
+
+    async def _get_process_out(self, process: Process) -> str:
+        """Get the stdout and the stderr ouput of a process
+
+        Args:
+            process (Process): the process from which retrieving the output
+
+        Returns:
+            str: content of the process output
+        """
+        pout = await process.communicate()
+        outstr = ''
+        for out in pout:
+            if out:
+                outstr += out.decode()
+        return outstr
 
     async def _write_chunk(self, poller_id: int, chunk: Dict):
         """Write the chunk into an output file

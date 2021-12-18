@@ -1,17 +1,18 @@
 """
 This module contains the logic needed to start the poller
 """
-import asyncio
 import argparse
+import asyncio
 import os
 import sys
-from typing import Dict
-import uvloop
 import traceback
+from typing import Dict
 
+import uvloop
 from suzieq.poller.controller.controller import Controller
 from suzieq.poller.worker.writers.output_worker import OutputWorker
-from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
+from suzieq.shared.exceptions import InventorySourceError, PollingError, \
+    SqPollerConfError
 from suzieq.shared.utils import get_log_params, init_logger, load_sq_config
 
 
@@ -36,13 +37,15 @@ async def start_controller(user_args: argparse.Namespace, config_data: Dict):
         controller = Controller(user_args, config_data)
         controller.init()
         await controller.run()
-    except (SqPollerConfError, InventorySourceError, RuntimeError) as error:
+    except (SqPollerConfError, InventorySourceError, PollingError) as error:
         print(f"ERROR: {error}")
         logger.error(error)
         sys.exit(-1)
 
 
 def controller_main():
+    """The routine that kicks things off including arg parsing
+    """
     parser = argparse.ArgumentParser()
 
     # Get supported output, 'gather' cannot be manually selected

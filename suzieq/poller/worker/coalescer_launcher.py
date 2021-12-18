@@ -8,7 +8,6 @@ import logging
 import os
 import signal
 from asyncio.subprocess import Process
-from time import sleep
 from typing import Dict
 
 from suzieq.shared.utils import ensure_single_instance, get_sq_install_dir
@@ -92,8 +91,10 @@ class CoalescerLauncher:
             except asyncio.CancelledError:
                 if process:
                     process.terminate()
-                    sleep(5)
-                    process.kill()
+                    try:
+                        await asyncio.wait_for(process.wait(), 5)
+                    except asyncio.TimeoutError:
+                        process.kill()
                 return
 
             if process.returncode and (process.returncode != errno.EBUSY):

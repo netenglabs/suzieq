@@ -8,7 +8,6 @@ import os
 import signal
 from typing import Dict
 
-from suzieq.poller.worker.coalescer_launcher import CoalescerLauncher
 from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.poller.worker.writers.output_worker_manager \
@@ -36,15 +35,6 @@ class Poller:
 
         # Init the node inventory object
         self.inventory = self._init_inventory(userargs, cfg)
-
-        # Disable coalescer in specific, unusual cases
-        # in case of input_dir, we also seem to leave a coalescer
-        # instance running
-        self.no_coalescer = userargs.no_coalescer
-        if userargs.run_once or userargs.input_dir:
-            self.no_coalescer = True
-        else:
-            self.coalescer_launcher = CoalescerLauncher(userargs.config, cfg)
 
         # Setup poller writers
 
@@ -122,11 +112,6 @@ class Poller:
         await self.inventory.schedule_nodes_run()
         await self.service_manager.schedule_services_run()
         await self._add_poller_task([self.output_manager.run_output_workers()])
-        # Schedule the coalescer if needed
-        if not self.no_coalescer:
-            await self._add_poller_task(
-                [self.coalescer_launcher.start_and_monitor_coalescer()]
-            )
 
         try:
             # The logic below of handling the writer worker task separately
@@ -170,7 +155,7 @@ class Poller:
 
         # Retrieve the specific inventory source to use
         inv_types = Inventory.get_plugins()
-        # TODO: define a generic way to specify the source of the inventory
+
         inventory_class = None
         source_args = {}
 
