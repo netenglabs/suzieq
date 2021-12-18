@@ -4,6 +4,7 @@
     inventory chunks on different files for the pollers
     and start them up
 """
+import os
 import asyncio
 import copy
 import logging
@@ -11,6 +12,7 @@ from asyncio.subprocess import Process
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List
+from cryptography.fernet import Fernet
 
 import aiofiles
 import yaml
@@ -55,6 +57,12 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                 config_data['config'],
                 config_data['config-dict']
             )
+
+        # Configure the encyrption of the credential file
+        cred_key = Fernet.generate_key()
+        self._encryptor = Fernet(cred_key)
+        # Save the key into an env. variable
+        os.environ['SQ_CONTROLLER_POLLER_CRED'] = cred_key.decode()
 
         # Configure the output directory for the inventory files
         self._inventory_path = Path(
@@ -239,10 +247,40 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             id (int): id of the inventory chunk
             chunk (Dict): chunk of the inventory containing the dictionary
         """
-        out_file_name = (f'{str(self._inventory_path)}/'
-                         f'{self._inventory_file_name}_{poller_id}.yml')
-        async with aiofiles.open(out_file_name, "w") as out_file:
-            await out_file.write(yaml.safe_dump(chunk))
+        confidential_data = ['password', 'passphrase', 'key']
+        out_name = {}
+        out_name['inv'] = (f'{str(self._inventory_path)}/'
+                           f'{self._inventory_file_name}_{poller_id}.yml')
+        out_name['cred'] = (f'{str(self._inventory_path)}/'
+                            f'cred_{poller_id}')
+
+        inventory_dict = {
+            i: {k: v[k] for k in v if k not in confidential_data}
+            for i, v in chunk.items()
+        }
+
+        inv_data = yaml.safe_dump(inventory_dict)
+        if inv_data is None:
+            raise PollingError(
+                f'Unable to generate inventory file for worker {poller_id}'
+            )
+        async with aiofiles.open(out_name['inv'], "w") as out_file:
+            await out_file.write(inv_data)
+
+        credential_dict = {
+            i: {k: v[k] for k in v if k in confidential_data}
+            for i, v in chunk.items()
+        }
+
+        cred_data = yaml.safe_dump(credential_dict)
+        if inv_data is None:
+            raise PollingError(
+                f'Unable to generate credential file for worker {poller_id}'
+            )
+        # Encrypt credential data
+        enc_cred_data = self._encryptor.encrypt(cred_data.encode('utf-8'))
+        async with aiofiles.open(out_name['cred'], "w") as out_file:
+            await out_file.write(enc_cred_data.decode())
 
     async def _launch_poller(self, poller_id: int):
         """Launch a poller with the provided id and chunk, if a poller with
