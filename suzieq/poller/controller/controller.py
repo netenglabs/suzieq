@@ -35,9 +35,7 @@ class Controller:
         self._plugin_objects = {}
 
         # collect basePlugin classes
-        base_plugin_pkg = 'suzieq.poller.controller'
-        self._base_plugin_classes = ControllerPlugin.get_plugins(
-            search_pkg=base_plugin_pkg)
+        self._base_plugin_classes = ControllerPlugin.get_plugins()
 
         self.sources = []
         self.chunker = None
@@ -51,12 +49,20 @@ class Controller:
         # run_once: ['gather', 'process'] tells the controller if the poller
         #           should query the devices and exit
         # period: the update timeout of the inventory
+        # input-dir: wether to use a directory with some data as input
+        # no-coalescer: wether to use the coalescer or not, the coalescer
+        #               is always disabled with run-once
         # inventory_timeout: the maximum amount of time to wait for an
         #                    inventory from a source
         self._run_once = args.run_once
+
         self._input_dir = args.input_dir
         if self._input_dir:
             self._run_once = 'input-dir'
+
+        self._no_coalescer = args.no_coalescer
+        if self._run_once:
+            self._no_coalescer = True
 
         self._period = args.update_period or \
             self._config.get('update-period', 3600)
@@ -84,9 +90,10 @@ class Controller:
                        'path': inventory_file}
 
         manager_args = {'config': sq_get_config_file(args.config),
+                        'config-dict': config_data,
                         'input-dir': self._input_dir,
                         'exclude-services': args.exclude_services,
-                        'no-colescer': args.no_coalescer,
+                        'no-coalescer': self._no_coalescer,
                         'output-dir': args.output_dir,
                         'outputs': args.outputs,
                         'run-once': args.run_once,
