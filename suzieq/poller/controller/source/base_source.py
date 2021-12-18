@@ -164,7 +164,7 @@ class Source(ControllerPlugin):
             plugin_conf.get('path', _DEFAULT_SOURCE_PATH))
         run_once = plugin_conf.get('run-once', False)
         for src_conf in src_confs:
-            ptype = src_conf.get('type') or 'file'
+            ptype = src_conf.get('type') or 'native'
 
             if ptype not in plugin_classes:
                 raise RuntimeError(
