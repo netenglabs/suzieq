@@ -1,6 +1,8 @@
+#!/usr/bin/env python3
 """
 This module contains the logic needed to start the poller
 """
+
 import argparse
 import asyncio
 import os
@@ -17,15 +19,12 @@ from suzieq.shared.utils import get_log_params, init_logger, load_sq_config
 
 
 async def start_controller(user_args: argparse.Namespace, config_data: Dict):
-    """Controller starting function
+    """Start the poller, this function launches the controller which
+    spawns the poller workers
 
-    This function loads all the plugins provided in the configuration file and
-    coordinates all the different plugins
-
-    Raises:
-        RuntimeError: Invalid configuration file passed as parameter
-        RuntimeError: Cannot find the configuration file
-        RuntimeError: Missing inventorySource plugins in the configuration
+    Args:
+        user_args (argparse.Namespace): the command line arguments
+        config_data (Dict): the content of the Suzieq configuration file
     """
     # Init logger of the poller
     logfile, loglevel, logsize, log_stdout = get_log_params(
