@@ -67,7 +67,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         # Define poller parameters
         allowed_args = ['run-once', 'exclude-services', 'no-colescer',
                         'outputs', 'output-dir', 'service-only',
-                        'ssh-config-file', 'config']
+                        'ssh-config-file', 'config', 'input-dir']
 
         sq_path = get_sq_install_dir()
         self._args_to_pass = [f'{sq_path}/poller/worker/sq_worker.py']
@@ -127,6 +127,13 @@ class StaticManager(Manager, InventoryAsyncPlugin):
 
             self._active_chunks = copy.deepcopy(inventory_chunks)
             self._poller_tasks_ready.set()
+
+    async def launch_with_dir(self):
+        """Launch a single poller writing the content of and input directory
+        produced with the run-once=gather mode
+        """
+        await self._launch_poller(0)
+        self._poller_tasks_ready.set()
 
     def get_n_workers(self, _) -> int:
         """returns the content of self._workers_count statically loaded from

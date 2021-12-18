@@ -39,7 +39,7 @@ class Controller:
         self._base_plugin_classes = ControllerPlugin.get_plugins(
             search_pkg=base_plugin_pkg)
 
-        self.sources = None
+        self.sources = []
         self.chunker = None
         self.manager = None
 
@@ -74,9 +74,10 @@ class Controller:
                 raise SqPollerConfError(
                     f'Inventory file not found at {inventory_file}'
                 )
-        else:
+        elif not self._input_dir:
             raise SqPollerConfError(
-                'No inventory file provided: use -I argument to provide it'
+                'No inventory file provided: use -I argument to provide it, '
+                'use -i to provide an input directory to simulate an input.'
             )
 
         source_args = {'run-once': self._run_once,
@@ -88,7 +89,7 @@ class Controller:
                         'no-colescer': args.no_coalescer,
                         'output-dir': args.output_dir,
                         'outputs': args.outputs,
-                        'run-once': self._run_once,
+                        'run-once': args.run_once,
                         'service-only': args.service_only,
                         'ssh-config-file': args.ssh_config_file,
                         'workers': self._n_workers
@@ -141,19 +142,26 @@ class Controller:
         # Initialize the controller modules
         logger.info('Initializing all the poller controller modules')
 
-        logger.debug('Inizialing sources')
+        # If the input is a directory sources and chunkers are not needed
+        # since there is no need to build and split the inventory
+        if not self._input_dir:
+            logger.debug('Inizialing sources')
 
-        self.sources = self.init_plugins('source')
-        if not self.sources:
-            raise SqPollerConfError('The inventory file has not any sources')
+            self.sources = self.init_plugins('source')
+            if not self.sources:
+                raise SqPollerConfError(
+                    'The inventory file has not any sources'
+                )
 
-        # Initialize chunker module
-        logger.debug('Initialize chunker module')
+            # Initialize chunker module
+            logger.debug('Initialize chunker module')
 
-        chunkers = self.init_plugins('chunker')
-        if len(chunkers) > 1:
-            raise SqPollerConfError('Only 1 Chunker at a time is supported')
-        self.chunker = chunkers[0]
+            chunkers = self.init_plugins('chunker')
+            if len(chunkers) > 1:
+                raise SqPollerConfError(
+                    'Only 1 Chunker at a time is supported'
+                )
+            self.chunker = chunkers[0]
 
         # initialize pollerManager
         logger.debug('Initialize manager module')
@@ -258,6 +266,11 @@ class Controller:
             task.cancel()
 
     async def _inventory_sync(self):
+        # With the input directory we do not launch the synchronization loop
+        if self._input_dir:
+            await self.manager.launch_with_dir()
+            return
+
         while True:
             global_inventory = {}
 
