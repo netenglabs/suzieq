@@ -23,6 +23,12 @@ class Manager(ControllerPlugin):
         """
 
     @abstractmethod
+    async def launch_with_dir(self):
+        """Launch a single poller writing the content of and input directory
+        produced with the run-once=gather mode
+        """
+
+    @abstractmethod
     def get_n_workers(self, inventory: List[Dict]) -> int:
         """Given an inventory as input, return the required pollers to query
         all the devices in it.
