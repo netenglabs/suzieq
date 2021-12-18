@@ -9,6 +9,8 @@ from inspect import getmembers, getmro, isclass
 from pkgutil import iter_modules
 from typing import Dict, Type
 
+from suzieq.shared.utils import get_sq_install_dir
+
 
 class SqPlugin:
     """SqPlugin is the base common class inherited by all the
@@ -44,7 +46,9 @@ class SqPlugin:
             search_pkg = '.'.join(cls.__module__.split('.')[:-1])
 
         # Collect the list of packages where to search
-        search_path = search_pkg.replace('.', '/')
+        sq_install_dir = '/'.join(get_sq_install_dir().split('/')[:-1])
+
+        search_path = (f"{sq_install_dir}/{search_pkg.replace('.', '/')}")
         packages = [f'{search_pkg}.{m.name}'
                     for m in iter_modules([search_path])
                     if m.ispkg]
