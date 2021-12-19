@@ -181,12 +181,18 @@ class StaticManager(Manager, InventoryAsyncPlugin):
 
         while self._waiting_workers or self._running_workers:
             if self._waiting_workers:
+                # The list of tasks might contain some already terminated
+                # workers, remove them before proceeding
+                dead_workers = [w for k, w in poller_wait_tasks.items()
+                                if k in self._waiting_workers]
+                tasks = [t for t in tasks if t not in dead_workers]
+
                 self._running_workers.update(self._waiting_workers)
                 new_ptasks = {i: asyncio.create_task(p.wait())
                               for i, p in self._waiting_workers.items()}
                 poller_wait_tasks.update(new_ptasks)
-                self._waiting_workers = {}
                 tasks += list(new_ptasks.values())
+                self._waiting_workers = {}
             # Wait for the tasks
             done, pending = await asyncio.wait(
                 tasks,
