@@ -1,6 +1,7 @@
 import typing
 import os
-from nubia import command, argument, context
+from nubia import command, context
+from suzieq.cli.nubia_patch import argument
 from nubia.internal.commands.help import HelpCommand
 from nubia.internal.cmdbase import Command
 from prompt_toolkit.completion import Completion

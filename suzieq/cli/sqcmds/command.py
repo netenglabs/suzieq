@@ -1,30 +1,28 @@
 
 import time
 import ast
-from dataclasses import dataclass
 import inspect
 from io import StringIO
 import shutil
 
 import pandas as pd
-from nubia import command, argument, context
+from nubia import command, context
+
 
 from prompt_toolkit import prompt
 from natsort import natsort_keygen
 from colorama import Fore, Style
 
+from suzieq.cli.nubia_patch import argument
 from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.exceptions import UserQueryError
 from suzieq.shared.utils import SUPPORTED_ENGINES
 
 
-@dataclass
-class ArgHelpClass:
-    '''Class holding description and other params to display help
-    This class exists to simplify displaying help for vars that we
-    cannot access via the classargspec var
-    '''
-    description: str = ''
+def colorize(x, color):
+    '''Colorize string with the color provided'''
+    return (f'{color}{Style.BRIGHT}{x}{Style.RESET_ALL}'
+            if color else x)
 
 
 @argument(
@@ -56,8 +54,8 @@ class ArgHelpClass:
 )
 @argument(
     "query_str",
-    description=("Trailing blank terminated pandas query format to "
-                 "further filter the output",)
+    description="Trailing blank terminated pandas query format to "
+    "further filter the output"
 )
 class SqCommand(SqPlugin):
     """Base Command Class for use with all verbs"""
@@ -119,6 +117,7 @@ class SqCommand(SqPlugin):
             self.end_time = end_time
 
         self.view = view
+        self.lvars = {}         # dict of var name and value for subclass
 
         if not sqobj:
             raise AttributeError('mandatory parameter sqobj missing')
@@ -150,10 +149,32 @@ class SqCommand(SqPlugin):
         summarize_df = self._invoke_sqobj(
             self.sqobj.summarize, namespace=self.namespace,
             hostname=self.hostname, query_str=self.query_str,
+            **self.lvars,
             **kwargs
         )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(summarize_df, json_orient='columns')
+
+    @command("show")
+    def show(self):
+        """Show address info
+        """
+        # Get the default display field names
+        now = time.time()
+        if self.columns != ["default"]:
+            self.ctxt.sort_fields = None
+        else:
+            self.ctxt.sort_fields = []
+
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                columns=self.columns,
+                                query_str=self.query_str,
+                                namespace=self.namespace,
+                                **self.lvars,
+                                )
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        return self._gen_output(df)
 
     @command("unique", help="find the list of unique items in a column")
     @argument("count", description="include count of times a value is seen",
@@ -167,6 +188,7 @@ class SqCommand(SqPlugin):
                                 namespace=self.namespace,
                                 query_str=self.query_str,
                                 count=count,
+                                **self.lvars,
                                 **kwargs,
                                 )
 
@@ -194,6 +216,18 @@ class SqCommand(SqPlugin):
         """
         now = time.time()
 
+        for x in list(filter(lambda x: not x.startswith('_') and
+                             x not in ['ctxt', 'sqobj', 'query_str',
+                                       'format', 'columns', 'lvars'],
+                             self.__dict__)):
+            if getattr(self, x):
+                print(Fore.RED + "Error: No arguments allowed for describe")
+                return 1
+
+        if any(x for x in self.lvars.values()):
+            print(Fore.RED + "Error: No arguments allowed for describe")
+            return 1
+
         df = self._invoke_sqobj(self.sqobj.describe,
                                 hostname=self.hostname,
                                 namespace=self.namespace,
@@ -203,11 +237,11 @@ class SqCommand(SqPlugin):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
 
-    @command("top", help="find the top n values for a field")
-    @argument("count", description="number of rows to return")
-    @argument("what", description="integer field to get top values for")
-    @argument("reverse", description="return bottom n values",
-              choices=['True', 'False'])
+    @ command("top", help="find the top n values for a field")
+    @ argument("count", description="number of rows to return")
+    @ argument("what", description="numeric field to get top values for")
+    @ argument("reverse", description="return bottom n values",
+               choices=['True', 'False'])
     def top(self, count: int = 5, what: str = '', reverse: str = 'False',
             **kwargs) -> int:
         """Return the top n values for a field in a table
@@ -228,6 +262,7 @@ class SqCommand(SqPlugin):
                                 query_str=self.query_str,
                                 what=what, count=count,
                                 reverse=ast.literal_eval(reverse),
+                                **self.lvars,
                                 **kwargs,
                                 )
 
@@ -291,41 +326,57 @@ class SqCommand(SqPlugin):
             verb (str, optional): the name of the command. Defaults to 'show'.
         """
 
-        mbrs = inspect.getmembers(self)
-        classargspec = [x[1] for x in mbrs
-                        if x[0] == '__arguments_decorator_specs']
-        if classargspec:
-            classargspec = classargspec[0]
-        verbs = [x[0] for x in mbrs
-                 if inspect.ismethod(x[1]) and not x[0].startswith('_')]
-        fnlist = {x[0]: x[1] for x in mbrs
-                  if x[0] in verbs}
-        newverb = verb.replace('assert', 'aver')
-        if newverb in fnlist:
-            fnargs = []
-
-            fnmbrs = inspect.getmembers(fnlist[newverb])
-            for elem in fnmbrs:
-                if elem[0] == "__arguments_decorator_specs":
-                    fnargs = elem[1]
-                    break
-
-            docstr = inspect.getdoc(fnlist[newverb])
-            if docstr:
-                docstr = docstr.splitlines()[0]
-            else:
-                docstr = ''
-            print(f"{table} {verb}: " + Fore.CYAN +
-                  f"{docstr}" + Style.RESET_ALL)
-            print(Fore.YELLOW + '\nArguments:' + Style.RESET_ALL)
-            if fnargs:
-                classargspec.update(fnargs)
-            classargspec.update(self._additional_help_vars)
-            for arg in sorted(classargspec):
-                print(f" - {arg}: " + Fore.CYAN +
-                      f"{classargspec[arg].description}" + Style.RESET_ALL)
-        else:
+        # Determine if the method is present
+        if verb == 'assert':
+            verb = 'aver'
+        fn = inspect.getattr_static(self, verb, None)
+        if not fn:
             print(f"No information about {table} {verb}")
+            return
+
+        help_dict = inspect.getattr_static(
+            self, '__arguments_decorator_specs', None)
+
+        args = list(filter(lambda x: not x.startswith('_') and
+                           x not in ['ctxt', 'sqobj', 'lvars'],
+                           self.__dict__))
+        if self.lvars:
+            args += list(self.lvars.keys())
+
+        fnargs = inspect.getfullargspec(fn)
+        if fnargs:
+            args += list(filter(lambda x: x != 'self', fnargs.args))
+            help_dict.update(inspect.getattr_static(
+                fn, '__arguments_decorator_specs', {}))
+
+        if not args:
+            print(f"No argument information about {table} {verb}")
+            return
+
+        helpstr = inspect.getattr_static(self, '__arguments_decorator_specs',
+                                         None)
+        # Function help string
+        docstr = inspect.getdoc(fn)
+        if docstr:
+            docstr = docstr.splitlines()[0]
+        else:
+            docstr = ''
+
+        print(f"{table} {verb}: " + Fore.CYAN +
+              f"{docstr}" + Style.RESET_ALL)
+        if not args:
+            print(f"No argument information about {table} {verb}")
+            return
+
+        print(Fore.YELLOW + '\nArguments:' + Style.RESET_ALL)
+
+        for arg in sorted(args):
+            if arg not in help_dict:
+                helpstr = 'No description'
+            else:
+                helpstr = help_dict[arg].description
+
+            print(f" - {arg}: " + colorize(helpstr, Fore.CYAN))
 
     def _pager_print(self, df: pd.DataFrame) -> None:
         '''To support paging'''
@@ -366,7 +417,7 @@ class SqCommand(SqPlugin):
             if self.columns not in [['default'], ['*']]:
                 cols = self.columns
             else:
-                cols = df.columns
+                cols = df.columns.tolist()
             is_error = False
 
         if dont_strip_cols or not all(item in df.columns for item in cols):
@@ -389,6 +440,10 @@ class SqCommand(SqPlugin):
             for row in df.itertuples():
                 self._pager_print(row.config)
         else:
+            if (not (self.start_time or self.end_time) and
+                'timestamp' not in self.columns and not dont_strip_cols and
+                    'timestamp' in df.columns and 'timestamp' in cols):
+                cols.remove('timestamp')
             with pd.option_context('precision', 3,
                                    'display.max_colwidth', max_colwidth,
                                    'display.max_rows', 256):
