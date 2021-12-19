@@ -1,5 +1,6 @@
 import time
-from nubia import command, argument
+from nubia import command
+from suzieq.cli.nubia_patch import argument
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.network import NetworkObj
@@ -39,6 +40,7 @@ class NetworkCmd(SqCommand):
     @argument("os", description='NOS to filter with')
     @argument('vendor', description='vendor to filter with')
     @argument('version', description='NOS version to filter with')
+    # pylint: disable=arguments-differ
     def show(self, os: str = "", vendor: str = "", model: str = "",
              version: str = "") -> int:
         """Show network info
