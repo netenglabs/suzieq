@@ -7,6 +7,6 @@ class PathObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='path', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns',
-                                'vrf', 'source', 'dest']
-        self._valid_summarize_args = ['namespace', 'hostname', 'source',
+                                'vrf', 'src', 'dest', 'query_str']
+        self._valid_summarize_args = ['namespace', 'hostname', 'src',
                                       'dest', 'vrf', 'query_str']

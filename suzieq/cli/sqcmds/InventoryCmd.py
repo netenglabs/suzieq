@@ -1,26 +1,39 @@
-import time
 import re
-from nubia import command, argument
+from nubia import command
+from suzieq.cli.nubia_patch import argument
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.inventory import InventoryObj
 
 
 @command("inventory", help="Act on inventory data")
+@argument("type", description="Filter by type",
+          choices=["fan", "power", "xcvr", "supervisor", "port-adapter",
+                   "linecard", "fabric", "midplane", "mx-cb"])
+@argument("status", description="Filter by status",
+          choices=['present', 'absent'])
+@argument("model", description="Filter by model")
+@argument("serial", description="Filter by serial number")
+@argument("vendor", description="Filter by vendor name")
 class InventoryCmd(SqCommand):
     """Device inventory information such as serial number, cable info etc"""
 
     def __init__(
-        self,
-        engine: str = "",
-        hostname: str = "",
-        start_time: str = "",
-        end_time: str = "",
-        view: str = "",
-        namespace: str = "",
-        format: str = "",  # pylint: disable=redefined-builtin
-        query_str: str = ' ',
-        columns: str = "default",
+            self,
+            engine: str = "",
+            hostname: str = "",
+            start_time: str = "",
+            end_time: str = "",
+            view: str = "",
+            namespace: str = "",
+            format: str = "",  # pylint: disable=redefined-builtin
+            query_str: str = ' ',
+            columns: str = "default",
+            type: str = '',     # pylint: disable=redefined-builtin
+            status: str = '',
+            model: str = '',
+            serial: str = '',
+            vendor: str = '',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -35,27 +48,6 @@ class InventoryCmd(SqCommand):
             sqobj=InventoryObj,
         )
 
-    @command("show")
-    @argument("type", description="Filter by type",
-              choices=["fan", "power", "xcvr", "supervisor", "port-adapter",
-                       "linecard", "fabric", "midplane", "mx-cb"])
-    @argument("status", description="Filter by status",
-              choices=['present', 'absent'])
-    @argument("model", description="Filter by model")
-    @argument("serial", description="Filter by serial number")
-    @argument("vendor", description="Filter by vendor name")
-    # pylint: disable=redefined-builtin
-    def show(self, type: str = "", status: str = "", model: str = "",
-             serial: str = "", vendor: str = "") -> None:
-        """Show Device inventory info
-        """
-        # Get the default display field names
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
         if vendor:
             vendor = re.split(r"\s+(?=[^']*(?:'))", vendor)
         else:
@@ -64,18 +56,12 @@ class InventoryCmd(SqCommand):
         if model:
             model = re.split(r"\s+(?=[^']*(?:'))", model)
         else:
-            model = []
+            vendor = []
 
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname,
-                                columns=self.columns,
-                                query_str=self.query_str,
-                                type=type.split(),
-                                status=status,
-                                model=model,
-                                vendor=vendor,
-                                serial=serial.split(),
-                                namespace=self.namespace,
-                                )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        self.lvars = {
+            'type': type.split(),
+            'status': status,
+            'model': model,
+            'vendor': vendor,
+            'serial': serial,
+        }

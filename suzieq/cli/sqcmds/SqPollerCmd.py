@@ -1,25 +1,34 @@
-import time
-from nubia import command, argument
+from nubia import command
+from suzieq.cli.nubia_patch import argument
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.sqPoller import SqPollerObj
 
 
 @command("sqPoller", help="Act on SqPoller data", aliases=['sqpoller'])
+@argument("service", description="name of service to match")
+@argument("status", description="status of service to match",
+          choices=["all", "pass", "fail"])
+@argument('poll_period_exceeded',
+          description="filter if poll period exceeded",
+          choices=['True', 'False'])
 class SqPollerCmd(SqCommand):
     """Information about the poller"""
 
     def __init__(
-        self,
-        engine: str = "",
-        hostname: str = "",
-        start_time: str = "",
-        end_time: str = "",
-        view: str = "",
-        namespace: str = "",
-        format: str = "",  # pylint: disable=redefined-builtin
-        query_str: str = "",
-        columns: str = "default",
+            self,
+            engine: str = "",
+            hostname: str = "",
+            start_time: str = "",
+            end_time: str = "",
+            view: str = "",
+            namespace: str = "",
+            format: str = "",  # pylint: disable=redefined-builtin
+            query_str: str = "",
+            columns: str = "default",
+            service: str = '',
+            status: str = 'all',
+            poll_period_exceeded: str = 'False',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -33,40 +42,12 @@ class SqPollerCmd(SqCommand):
             query_str=query_str,
             sqobj=SqPollerObj,
         )
-
-    @command("show")
-    @argument("service", description="name of service to match")
-    @argument("status", description="status of service to match",
-              choices=["all", "pass", "fail"])
-    @argument('poll_period_exceeded',
-              description="filter if poll period exceeded",
-              choices=['True', 'False'])
-    def show(self, service: str = "", status: str = "all",
-             poll_period_exceeded: str = "") -> None:
-        """Show Suzieq poller info such as status of polled commands etc.
-        """
-        # Get the default display field names
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
+        if not poll_period_exceeded or poll_period_exceeded == "False":
+            poll_period_exceeded = "0"
         else:
-            self.ctxt.sort_fields = []
-
-        if poll_period_exceeded == "True":
-            pollExcdPeriodCount = "!0"
-        elif poll_period_exceeded == "False":
-            pollExcdPeriodCount = "0"
-        else:
-            pollExcdPeriodCount = ''
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname,
-                                columns=self.columns,
-                                service=service,
-                                status=status,
-                                namespace=self.namespace,
-                                pollExcdPeriodCount=pollExcdPeriodCount,
-                                query_str=self.query_str,
-                                )
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+            poll_period_exceeded = "!0"
+        self.lvars = {
+            'service': service.split(),
+            'status': status,
+            'pollExcdPeriodCount': poll_period_exceeded,
+        }

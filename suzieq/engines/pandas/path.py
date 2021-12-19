@@ -239,7 +239,7 @@ class PathObj(SqPandasEngine):
             return fhr_df
 
         macdf = self._macsobj.get(namespace=[rslt_df.iloc[0].namespace],
-                                  macaddr=[uniq_mac[0]], localOnly=True)
+                                  macaddr=[uniq_mac[0]], local=True)
         if not macdf.empty:
             ign_ifs = ["bridge", "Vxlan1"]
             if device:
@@ -672,7 +672,7 @@ class PathObj(SqPandasEngine):
             raise AttributeError("Must specify namespace to run the trace in")
 
         self.namespace = namespaces[0]
-        src = kwargs.get("source", None)
+        src = kwargs.get("src", None)
         dest = kwargs.get("dest", None)
         dvrf = kwargs.get("vrf", "")
 

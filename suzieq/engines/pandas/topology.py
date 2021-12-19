@@ -254,7 +254,7 @@ class TopologyObj(SqPandasEngine):
 
             # Use MAC table entries to find the local port for a MAC on an SVI
             mac_df = self._get_table_sqobj('macs')\
-                         .get(namespace=self._namespaces, localOnly=True,
+                         .get(namespace=self._namespaces, local=True,
                               columns=['namespace', 'hostname', 'vlan',
                                        'macaddr', 'oif'])
             df = df.merge(mac_df,
