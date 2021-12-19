@@ -12,8 +12,8 @@ class InterfacesObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'ifname', 'columns',
                                 'state', 'type', 'mtu', 'master', 'ifindex',
                                 'vrf', 'query_str']
-        self._valid_assert_args = ['namespace', 'hostname', 'ifname', 'what',
-                                   'matchval', 'status', 'ignore_missing_peer']
+        self._valid_assert_args = self._valid_get_args + \
+            ['what', 'matchval', 'status', 'ignore_missing_peer']
         self._valid_arg_vals = {
             'state': ['up', 'down', 'notConnected', '!up', '!down',
                       '!notConnected', ''],

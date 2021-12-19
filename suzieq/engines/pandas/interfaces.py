@@ -25,8 +25,10 @@ class InterfacesObj(SqPandasEngine):
         if vrf:
             master.extend(vrf)
 
-        if iftype and iftype != ["all"]:
+        if not ifname and iftype and iftype != ["all"]:
             df = super().get(type=iftype, master=master, **kwargs)
+        elif not ifname and iftype != ['all']:
+            df = super().get(master=master, type=['!internal'], **kwargs)
         else:
             df = super().get(master=master, **kwargs)
 
@@ -159,6 +161,8 @@ class InterfacesObj(SqPandasEngine):
         columns = kwargs.pop('columns', [])
         status = kwargs.pop('status', 'all')
         ignore_missing_peer = kwargs.pop('ignore_missing_peer', False)
+        state = kwargs.pop('state', '')
+        iftype = kwargs.pop('type', [])
 
         def _check_field(x, fld1, fld2, reason):
             if x.skipIfCheck or x.indexPeer < 0:
@@ -190,11 +194,13 @@ class InterfacesObj(SqPandasEngine):
                    "vlan", "adminState", "ipAddressList", "ip6AddressList",
                    "speed", "master", "timestamp", "reason"]
 
-        if_df = self.get(columns=columns,
-                         type=['ethernet', 'bond_slave', 'subinterface',
-                               'vlan', 'bond'],
-                         state='up',
-                         **kwargs)
+        if not state:
+            state = 'up'
+
+        if not iftype:
+            iftype = ['ethernet', 'bond_slave', 'subinterface', 'vlan', 'bond']
+
+        if_df = self.get(columns=columns, type=iftype, state=state, **kwargs)
         if if_df.empty:
             if status != 'pass':
                 if_df['assert'] = 'fail'
