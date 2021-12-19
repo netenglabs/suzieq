@@ -213,7 +213,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
 
                                     tmpval.append(ele)
                             else:
-                                if xstr in ele['rest']:
+                                if xstr in (ele['rest'] or {}):
                                     ele["rest"] = ele["rest"][xstr]
 
                         if tmpval:

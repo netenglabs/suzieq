@@ -4,6 +4,8 @@ from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import get_timestamp_from_junos_time
 from dateparser import parse
 
+import re
+
 
 class DeviceService(Service):
     """Checks the uptime and OS/version of the node.
@@ -132,4 +134,25 @@ class DeviceService(Service):
                 entry['bootupTimestamp'] = int(
                     int(raw_data[0]["timestamp"])/1000 - upsecs)
 
+        return self._common_data_cleaner(processed_data, raw_data)
+
+    def _clean_panos_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            upsecs = None
+            match = re.search(
+                r'(\d+)\sdays,\s(\d+):(\d+):(\d+)',
+                entry.get('_uptime'))
+            if match:
+                days = match.group(1).strip()
+                hours = match.group(2).strip()
+                minutes = match.group(3).strip()
+                seconds = match.group(4).strip()
+                upsecs = 86400 * int(days) + 3600 * int(hours) + \
+                    60 * int(minutes) + int(seconds)
+            if upsecs:
+                entry['bootupTimestamp'] = int(
+                    int(raw_data[0]["timestamp"])/1000 - upsecs)
+            # defaults
+            entry["vendor"] = "Palo Alto"
+            entry["os"] = "panos"
         return self._common_data_cleaner(processed_data, raw_data)

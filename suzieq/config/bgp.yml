@@ -232,3 +232,53 @@ apply:
 
   junos-es:
     copy: junos-qfx
+
+  panos:
+    version: all
+    merge: False
+    command:
+      - command: <show><routing><protocol><bgp><summary/></bgp></protocol></routing></show>
+        normalize: 'response/result/entry/[
+          "router-id: routerId",
+          "local-as: asn",
+        ]'
+
+      - command: <show><routing><protocol><bgp><peer-group/></bgp></protocol></routing></show>
+        normalize: 'response/result/entry/[
+          "@peer-group: _peerGroup",
+          "soft-reset-support: softReconfig",
+          ]'
+
+      - command: <show><routing><bfd><summary/></bfd></routing></show>
+        normalize: 'response/result/entry/[
+          "neighbor-ip-address: _bgp_neighbor",
+          "state-local: _bfd_status",
+        ]'
+
+      - command: <show><routing><protocol><bgp><peer/></bgp></protocol></routing></show>
+        normalize: 'response/result/entry/*/[
+          "@vr: vrf",
+          "@peer: peer",
+          "peer-group: _peerGroup",
+          "peer-address: peerIP",
+          "peer-router-id: peerRouterId",
+          "remote-as: peerAsn",
+          "status: state",
+          "status-duration: estdTime",
+          "multi-hop-ttl: hopsMax",
+          "keepalive: keepaliveTime",
+          "holdtime: holdTime",
+          "reflector-client: rrclient",
+          "local-address: updateSource",
+          "msg-update-in: updatesRx",
+          "msg-update-out: updatesTx",
+          "prefix-counter/entry/@afi-safi: _afi_safi",
+          "netxhop-self: nhSelf",
+          "netxhop-third-party: nhUnchanged",
+          "status-flap-counts: numChanges",
+          "prefix-limit: pfxMaxRx",
+          "prefix-counter/entry/incoming-total: pfxRx",
+          "prefix-counter/entry/incoming-rejected: pfxSuppressRx",
+          "prefix-counter/entry/outgoing-total: pfxTx",
+          "last-error: reason?|",
+        ]'

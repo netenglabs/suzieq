@@ -126,3 +126,17 @@ apply:
         "port_id: peerIfname?|",
         "mgmt_addr: mgmtIP?|"
         ]'
+
+  panos:
+    version: all
+    command:
+      - command: <show><lldp><neighbors>all</neighbors></lldp></show>
+        normalize: 'response/result/entry/*/[
+      "@name: ifname",
+      "neighbors/entry/system-name: peerHostname?|",
+      "neighbors/entry/port-type: subtype?|",
+      "neighbors/entry/port-id: peerIfname?|",
+      "neighbors/entry/system-description: description?|",
+      "neighbors/entry/chassis-type: _chassisType?|",
+      "neighbors/entry/management-address/entry/[0]/@name: mgmtIP?|"
+      ]'

@@ -108,4 +108,22 @@ apply:
         "incomplete: state?|reachable",
         "mac: macaddr"
         ]'
-      
+
+  panos:
+    version: all
+    command:
+      - command: <show><arp><entry name='all'/></arp></show>
+        normalize: 'response/result/entries/entry/[
+          "status: state",
+          "mac: macaddr",
+          "interface: oif",
+          "ip: ipAddress",
+        ]'
+
+      - command: <show><neighbor><interface>all</interface></neighbor></show>
+        normalize: 'response/result/entries/entry/[
+          "status: state",
+          "mac: macaddr",
+          "interface: oif",
+          "ip: ipAddress",
+        ]'

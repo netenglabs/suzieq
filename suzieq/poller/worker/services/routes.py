@@ -326,3 +326,54 @@ class RoutesService(Service):
 
     def _clean_ios_data(self, processed_data, raw_data):
         return self._clean_iosxe_data(processed_data, raw_data)
+
+    def _clean_panos_data(self, processed_data, raw_data):
+        drop_indices = []
+
+        prefix_dict = {}
+
+        for i, entry in enumerate(processed_data):
+            entry["nexthopIps"] = [entry["nexthopIps"]]
+            entry["oifs"] = [entry["oifs"]] if entry["oifs"] else []
+
+            # process flags
+            flags = entry.get("_flags", [])
+            # status
+            if "A" in flags:
+                entry["action"] = "forward"
+            else:
+                drop_indices.append(i)
+                continue
+
+            # protocols
+            if "R" in flags:
+                entry["protocol"] = "rip"
+            if "B" in flags:
+                entry["protocol"] = "bgp"
+            if "O" in flags:
+                entry["protocol"] = "ospf"
+            if "H" in flags:
+                entry["protocol"] = "local"
+                # clear misleading entry for nexthop, panos puts 0.0.0.0
+                entry["nexthopIps"] = []
+            if 'C' in flags:
+                entry['protocol'] = 'connected'
+
+            self._fix_ipvers(entry)
+
+            if entry.get('_age', 0):
+                entry['statusChangeTimestamp'] = \
+                    (raw_data[0]['timestamp']/1000) - int(entry['_age'])
+            if 'E' in flags:
+                # ECMP, so attempt to merge with previous entries
+                old_entry = prefix_dict.get(entry['prefix'], None)
+                if old_entry is None:
+                    prefix_dict[entry['prefix']] = entry
+                else:
+                    old_entry['nexthopIps'] += entry['nexthopIps']
+                    old_entry['oifs'] += entry['oifs']
+                    drop_indices.append(i)
+
+        processed_data = np.delete(processed_data, drop_indices).tolist()
+
+        return processed_data

@@ -198,3 +198,41 @@ apply:
           "mtu: mtu?|1500",
           "vni: vni?|0",
         ]'
+
+  panos:
+    version: all
+    command: 
+      - command: <show><system><state><filter>sw.dev.interface.config</filter></state></system></show>
+        normalize: 'response/[result: _mtu_data]'
+      
+      - command: <show><interface>management</interface></show>
+        normalize: 'response/result/info/[
+          "name: ifname",
+          "state: adminState",
+          "ip: ipAddressList?|[]",
+          "ipv6ll: ip6AddressList?|[]",
+          "ipv6: _ip",
+          "speed: speed?|-1",
+          "hwaddr: macaddr",
+        ]'
+
+      - command: <show><interface>all</interface></show>
+        normalize: 'response/result/hw/entry/*/[
+          "name: ifname",
+          "id: ifindex",
+          "mac: macaddr",
+          "speed: speed?|-1",
+          "state: adminState",
+          "st: state",
+          "type: type",
+        ]'
+
+      - command: <show><interface>all</interface></show>
+        normalize: 'response/result/ifnet/entry/*/[
+          "name: ifname",
+          "id: ifindex",
+          "addr/member: ipAddressList?|[]",
+          "addr6/member: ip6AddressList?|[]",
+          "ip: _ip",
+          "fwd: master"
+        ]'

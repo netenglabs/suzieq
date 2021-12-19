@@ -208,8 +208,8 @@ class Service(SqPlugin):
             knewvals.update({tuple(str(vals)): i})
             knewkeys.append(kvals)
 
-        addlist = [v for k, v in knewvals.items() if k not in koldvals.keys()]
-        dellist = [v for k, v in koldvals.items() if k not in knewvals.keys()]
+        addlist = [v for k, v in knewvals.items() if k not in koldvals]
+        dellist = [v for k, v in koldvals.items() if k not in knewvals]
 
         adds = [new[v] for v in addlist]
         dels = [old[v] for v in dellist if koldkeys[v] not in knewkeys]
@@ -307,8 +307,29 @@ class Service(SqPlugin):
 
         return None
 
-    # pylint: disable=too-many-statements
-    def _process_each_output(self, elem_num, data):
+    def _get_device_normalizer(self, data: Dict) -> Dict:
+        '''Returns the normalizer string appropriate for the data
+
+        Every NOS/version has a normalizer string specified in the
+        service config file (under suzieq/config). This function
+        returns that string for the given data input
+        '''
+        nfn = self.defn.get(data.get("hostname"), None)
+        if not nfn:
+            nfn = self.defn.get(data.get("devtype"), None)
+        if nfn:
+            # If we're riding on the coattails of another device
+            # get that device's normalization function
+            if isinstance(nfn, dict):
+                copynfn = nfn.get("copy", None)
+                if copynfn:
+                    nfn = self.defn.get(copynfn, {})
+            if isinstance(nfn, list):
+                nfn = self._get_def_for_version(nfn, data.get("version"))
+
+        return nfn
+
+    def _process_each_output(self, elem_num, data, nfn):
         """Workhorse processing routine for each element in output"""
 
         result = []
@@ -317,19 +338,7 @@ class Service(SqPlugin):
                 return result
 
             # Check host-specific normalization if any
-            nfn = self.defn.get(data.get("hostname"), None)
-            if not nfn:
-                nfn = self.defn.get(data.get("devtype"), None)
             if nfn:
-                # If we're riding on the coattails of another device
-                # get that device's normalization function
-                if isinstance(nfn, dict):
-                    copynfn = nfn.get("copy", None)
-                    if copynfn:
-                        nfn = self.defn.get(copynfn, {})
-                if isinstance(nfn, list):
-                    nfn = self._get_def_for_version(nfn, data.get("version"))
-
                 norm_str = nfn.get("normalize", None)
                 if norm_str is None and isinstance(nfn.get('command', None),
                                                    list):
@@ -420,11 +429,17 @@ class Service(SqPlugin):
     def process_data(self, data):
         """Derive the data to be stored from the raw input"""
         result_list = []
+        do_merge = True
         for i, item in enumerate(data):
-            tmpres = self._process_each_output(i, item)
+            nfn = self._get_device_normalizer(item)
+            do_merge = do_merge and nfn.get('merge', True)
+            tmpres = self._process_each_output(i, item, nfn)
             result_list.append(tmpres)
 
-        result = self.merge_results(result_list, data)
+        if do_merge:
+            result = self.merge_results(result_list, data)
+        else:
+            result = [ele for sublist in result_list for ele in sublist]
         return self.clean_data(result, data)
 
     def get_key_flds(self):
@@ -676,7 +691,6 @@ class Service(SqPlugin):
             if output:
                 ostatus = [x.get('status', -1) for x in output]
 
-                # pylint: disable=use-a-generator
                 write_poller_stat = not all([Service.is_status_ok(x)
                                              for x in ostatus])
                 status = ostatus[0]
@@ -767,7 +781,7 @@ class Service(SqPlugin):
                     poller_stat = [
                         {"hostname": (output[0]["hostname"] or
                                       output[0]['address']),
-                         "sqvers": self.poller_schema_version,
+                         "sqvers": self.version,
                          "namespace": output[0]["namespace"],
                          "active": True,
                          "service": self.name,
