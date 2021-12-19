@@ -302,6 +302,9 @@ class Controller:
 
                 global_inventory.update(cur_inv)
 
+            if not global_inventory:
+                raise InventorySourceError('No devices to poll')
+
             n_pollers = self.manager.get_n_workers(global_inventory)
 
             inventory_chunks = self.chunker.chunk(global_inventory, n_pollers)
