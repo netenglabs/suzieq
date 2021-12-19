@@ -80,9 +80,6 @@ class SqPandasEngine(SqEngineObj):
             pd.DataFrame: dataframe post query
         """
         if query_str:
-            if query_str.startswith('"') and query_str.endswith('"'):
-                query_str = query_str[1:-1]
-
             try:
                 df = df.query(query_str).reset_index(drop=True)
             except Exception as ex:
