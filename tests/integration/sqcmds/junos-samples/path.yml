@@ -206,15 +206,21 @@ tests:
 - command: path unique --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
   marks: path unique junos
-  output: '[{"hostname": "leaf01", "numRows": 2}, {"hostname": "leaf02", "numRows":
-    2}, {"hostname": "server101", "numRows": 2}, {"hostname": "server202", "numRows":
-    2}, {"hostname": "spine01", "numRows": 1}, {"hostname": "spine02", "numRows":
-    1}]'
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "server101"},
+    {"hostname": "server202"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
 - command: path unique --count=True --dest=172.16.3.202 --src=172.16.1.101 --format=json
     --namespace=junos
   data-directory: tests/data/junos/parquet-out/
   marks: path unique junos
-  output: '[{"hostname": "leaf01", "numRows": 2}, {"hostname": "leaf02", "numRows":
-    2}, {"hostname": "server101", "numRows": 2}, {"hostname": "server202", "numRows":
-    2}, {"hostname": "spine01", "numRows": 1}, {"hostname": "spine02", "numRows":
-    1}]'
+  output: '[{"hostname": "spine01", "numRows": 1}, {"hostname": "spine02", "numRows":
+    1}, {"hostname": "leaf01", "numRows": 2}, {"hostname": "leaf02", "numRows": 2},
+    {"hostname": "server101", "numRows": 2}, {"hostname": "server202", "numRows":
+    2}]'
+- command: path unique --count=True --dest=172.16.3.202 --src=172.16.1.101 --count=True
+    --format=json --namespace=junos
+  data-directory: tests/data/junos/parquet-out/
+  marks: path unique junos
+  output: '[{"hostname": "spine01", "numRows": 1}, {"hostname": "spine02", "numRows":
+    1}, {"hostname": "leaf01", "numRows": 2}, {"hostname": "leaf02", "numRows": 2},
+    {"hostname": "server101", "numRows": 2}, {"hostname": "server202", "numRows":
+    2}]'

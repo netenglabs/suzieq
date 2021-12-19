@@ -810,15 +810,15 @@ tests:
   data-directory: tests/data/vmx/parquet-out/
   marks: address show vmx filter
   output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "irb.201",
-    "ipAddressList": "172.16.21.254/24", "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList":
+    "ipAddressList": ["172.16.21.254/24"], "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList":
     [], "state": "up", "vrf": "default", "timestamp": 1631009088901}, {"namespace":
-    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "irb.101", "ipAddressList": "172.16.11.254/24",
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "irb.101", "ipAddressList": ["172.16.11.254/24"],
     "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList": [], "state": "up", "vrf": "default",
     "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "irb.200", "ipAddressList": "172.16.20.254/24", "macaddr": "2c:6b:f5:b6:ce:f0",
+    "ifname": "irb.200", "ipAddressList": ["172.16.20.254/24"], "macaddr": "2c:6b:f5:b6:ce:f0",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009089864},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "irb.100", "ipAddressList":
-    "172.16.10.254/24", "macaddr": "2c:6b:f5:b6:ce:f0", "ip6AddressList": [], "state":
+    ["172.16.10.254/24"], "macaddr": "2c:6b:f5:b6:ce:f0", "ip6AddressList": [], "state":
     "up", "vrf": "default", "timestamp": 1631009089864}]'
 - command: address show --prefix="2001:db8:0:1::/64" --format=json
   data-directory: tests/data/vmx/parquet-out/
@@ -828,45 +828,48 @@ tests:
   data-directory: tests/data/vmx/parquet-out/
   marks: address show vmx filter
   output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "irb.201",
-    "ipAddressList": "172.16.21.254/24", "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList":
-    "", "state": "up", "vrf": "default", "timestamp": 1631009088901}, {"namespace":
-    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "irb.101", "ipAddressList": "172.16.11.254/24",
-    "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList": "", "state": "up", "vrf": "default",
+    "ipAddressList": ["172.16.21.254/24"], "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "irb.101", "ipAddressList": ["172.16.11.254/24"],
+    "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList": [], "state": "up", "vrf": "default",
     "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "irb.200", "ipAddressList": "172.16.20.254/24", "macaddr": "2c:6b:f5:b6:ce:f0",
-    "ip6AddressList": "", "state": "up", "vrf": "default", "timestamp": 1631009089864},
+    "ifname": "irb.200", "ipAddressList": ["172.16.20.254/24"], "macaddr": "2c:6b:f5:b6:ce:f0",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009089864},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "irb.100", "ipAddressList":
-    "172.16.10.254/24", "macaddr": "2c:6b:f5:b6:ce:f0", "ip6AddressList": "", "state":
+    ["172.16.10.254/24"], "macaddr": "2c:6b:f5:b6:ce:f0", "ip6AddressList": [], "state":
     "up", "vrf": "default", "timestamp": 1631009089864}]'
 - command: address show --prefix="172.16.0.0/16 10.0.0.0/24" --format=json
   data-directory: tests/data/vmx/parquet-out/
   marks: address show vmx filter
   output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "em1.0",
-    "ipAddressList": "10.0.0.4/8", "macaddr": "50:06:00:0f:00:01", "ip6AddressList":
-    ["fe80::5206:ff:fe0f:1/64", "fec0::a:0:0:4/64"], "state": "up", "vrf": "default",
+    "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "macaddr": "50:06:00:0f:00:01",
+    "ip6AddressList": ["fe80::5206:ff:fe0f:1/64", "fec0::a:0:0:4/64"], "state": "up",
+    "vrf": "default", "timestamp": 1631009088901}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ifname": "irb.201", "ipAddressList": ["172.16.21.254/24"],
+    "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList": [], "state": "up", "vrf": "default",
     "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "irb.201", "ipAddressList": "172.16.21.254/24", "macaddr": "2c:6b:f5:7d:f6:f0",
+    "ifname": "irb.101", "ipAddressList": ["172.16.11.254/24"], "macaddr": "2c:6b:f5:7d:f6:f0",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009088901},
-    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "irb.101", "ipAddressList":
-    "172.16.11.254/24", "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList": [], "state":
-    "up", "vrf": "default", "timestamp": 1631009088901}, {"namespace": "vmx", "hostname":
-    "CRP-DIS-SW01", "ifname": "em1.0", "ipAddressList": "10.0.0.4/8", "macaddr": "50:06:00:03:00:01",
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "em1.0", "ipAddressList":
+    ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "macaddr": "50:06:00:03:00:01",
     "ip6AddressList": ["fe80::5206:ff:fe03:1/64", "fec0::a:0:0:4/64"], "state": "up",
     "vrf": "default", "timestamp": 1631009089182}, {"namespace": "vmx", "hostname":
-    "CRP-ACC-SW01", "ifname": "em1.0", "ipAddressList": "10.0.0.4/8", "macaddr": "50:06:00:0b:00:01",
-    "ip6AddressList": ["fe80::5206:ff:fe0b:1/64", "fec0::a:0:0:4/64"], "state": "up",
-    "vrf": "default", "timestamp": 1631009089423}, {"namespace": "vmx", "hostname":
-    "TOR1BBN-PE-RT01", "ifname": "em1.0", "ipAddressList": "10.0.0.4/8", "macaddr":
-    "50:06:00:01:00:01", "ip6AddressList": ["fe80::5206:ff:fe01:1/64", "fec0::a:0:0:4/64"],
-    "state": "up", "vrf": "default", "timestamp": 1631009089434}, {"namespace": "vmx",
-    "hostname": "TOR1CRP-DGW-RT01", "ifname": "irb.200", "ipAddressList": "172.16.20.254/24",
+    "CRP-ACC-SW01", "ifname": "em1.0", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2",
+    "128.0.0.4/2"], "macaddr": "50:06:00:0b:00:01", "ip6AddressList": ["fe80::5206:ff:fe0b:1/64",
+    "fec0::a:0:0:4/64"], "state": "up", "vrf": "default", "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "em1.0", "ipAddressList":
+    ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "macaddr": "50:06:00:01:00:01",
+    "ip6AddressList": ["fe80::5206:ff:fe01:1/64", "fec0::a:0:0:4/64"], "state": "up",
+    "vrf": "default", "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "irb.200", "ipAddressList": ["172.16.20.254/24"],
     "macaddr": "2c:6b:f5:b6:ce:f0", "ip6AddressList": [], "state": "up", "vrf": "default",
     "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "irb.100", "ipAddressList": "172.16.10.254/24", "macaddr": "2c:6b:f5:b6:ce:f0",
+    "ifname": "irb.100", "ipAddressList": ["172.16.10.254/24"], "macaddr": "2c:6b:f5:b6:ce:f0",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009089864},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "em1.0", "ipAddressList":
-    "10.0.0.4/8", "macaddr": "50:06:00:0d:00:01", "ip6AddressList": ["fe80::5206:ff:fe0d:1/64",
-    "fec0::a:0:0:4/64"], "state": "up", "vrf": "default", "timestamp": 1631009089864}]'
+    ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "macaddr": "50:06:00:0d:00:01",
+    "ip6AddressList": ["fe80::5206:ff:fe0d:1/64", "fec0::a:0:0:4/64"], "state": "up",
+    "vrf": "default", "timestamp": 1631009089864}]'
 - command: address show --prefix="192.168.1.0" --format=json
   data-directory: tests/data/vmx/parquet-out/
   error:

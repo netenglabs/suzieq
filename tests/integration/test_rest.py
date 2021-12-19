@@ -200,11 +200,28 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'evpnVni/assert?status=fail',
     'interface/show?state=notConnected',
     'interface/show?vrf=default',
+    'interface/summarize?vrf=default',
     'device/show?status=neverpoll',
     'device/show?status=dead',
     'inventory/all',
     'vlan/unique?state=notConnected',
     'sqPoller/show?pollExcdPeriodCount=!0',
+    'arpnd/summarize?macaddr=44:39:39:FF:40:95',
+    'mac/summarize?macaddr=44:39:39:FF:40:95',
+    'arpnd/summarize?macaddr=4439.39FF.4095',
+    'mac/summarize?macaddr=4439.39FF.4095',
+    'arpnd/summarize?macaddr=4439.39ff.4095',
+    'mac/summarize?macaddr=4439.39ff.4095',
+    'sqPoller/summarize?status=fail',
+    'device/summarize?status=dead',
+    'device/summarize?status=neverpoll',
+    'vlan/summarize?state=up',
+    'vlan/summarize?state=down',
+    'vlan/summarize?state=pass',
+    'vlan/summarize?state=notConnected',
+    'interface/summarize?state=notConnected',
+    'sqPoller/summarize?pollExcdPeriodCount=!0',
+
 ]
 
 GOOD_SERVICE_VERBS = {
@@ -382,6 +399,8 @@ def test_rest_services(app_initialize, service, verb, arg):
 def test_rest_arg_consistency(service, verb):
     '''check that the arguments used in REST match whats in sqobjects'''
 
+    alias_args = {'path': {'source': 'src'}}
+
     if verb == "describe" and not service == "tables":
         return
     if service in ['topcpu', 'topmem', 'ospfIf', 'ospfNbr', 'time',
@@ -410,9 +429,15 @@ def test_rest_arg_consistency(service, verb):
         assert fnlist, f"No functions found for {service}/{verb}"
 
     for fn in fnlist:
-        rest_args = [i for i in inspect.getfullargspec(fn[1]).args
-                     if i not in
-                     ['verb', 'token', 'request']]
+        rest_args = []
+
+        for i in inspect.getfullargspec(fn[1]).args:
+            if i in ['verb', 'token', 'request']:
+                continue
+            aliases = alias_args.get(service, {})
+            val = i if i not in aliases else aliases[i]
+            rest_args.append(val)
+
         sqobj = get_sqobject(service)()
         supported_verbs = {x[0].replace('aver', 'assert')
                            .replace('get', 'show')
@@ -422,6 +447,8 @@ def test_rest_arg_consistency(service, verb):
 
         if verb not in supported_verbs:
             continue
+
+        aliases = alias_args.get(service, {})
 
         arglist = getattr(sqobj, f'_valid_{verb}_args', None)
         if not arglist:
