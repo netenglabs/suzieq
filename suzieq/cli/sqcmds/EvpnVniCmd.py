@@ -1,25 +1,30 @@
 import time
-from nubia import command, argument
+from nubia import command
+from suzieq.cli.nubia_patch import argument
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.evpnVni import EvpnvniObj
 
 
 @command("evpnVni", help="Act on EVPN VNI data")
+@argument("vni", description="VNI ID to qualify")
+@argument("priVtepIp", description="Primary VTEP IP to qualify")
 class EvpnVniCmd(SqCommand):
     """EVPN information such as VNI/VLAN mapping, VTEP IPs etc."""
 
     def __init__(
-        self,
-        engine: str = "",
-        hostname: str = "",
-        start_time: str = "",
-        end_time: str = "",
-        view: str = "",
-        namespace: str = "",
-        format: str = "",  # pylint: disable=redefined-builtin
-        query_str: str = " ",
-        columns: str = "default",
+            self,
+            engine: str = "",
+            hostname: str = "",
+            start_time: str = "",
+            end_time: str = "",
+            view: str = "",
+            namespace: str = "",
+            format: str = "",  # pylint: disable=redefined-builtin
+            query_str: str = " ",
+            columns: str = "default",
+            vni: str = '',
+            priVtepIp: str = '',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -33,30 +38,10 @@ class EvpnVniCmd(SqCommand):
             query_str=query_str,
             sqobj=EvpnvniObj,
         )
-
-    @command("show")
-    @argument("vni", description="VNI ID to qualify")
-    @argument("priVtepIp", description="Primary VTEP IP to qualify")
-    def show(self, vni: str = "", priVtepIp: str = ''):
-        """Show EVPN VNI info
-        """
-        # Get the default display field names
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname,
-                                vni=vni.split(),
-                                priVtepIp=priVtepIp.split(),
-                                columns=self.columns,
-                                query_str=self.query_str,
-                                namespace=self.namespace,
-                                )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        self.lvars = {
+            'vni': vni,
+            'priVtepIp': priVtepIp.split()
+        }
 
     @command("assert")
     @argument("status", description="Show only assert that matches this value",
@@ -70,6 +55,7 @@ class EvpnVniCmd(SqCommand):
                                 hostname=self.hostname,
                                 namespace=self.namespace,
                                 status=status,
+                                **self.lvars,
                                 )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
