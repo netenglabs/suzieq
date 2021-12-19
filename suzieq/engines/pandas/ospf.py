@@ -251,11 +251,12 @@ class OspfObj(SqPandasEngine):
         ]
 
         status = kwargs.pop('status', 'all')
+        kwargs.pop('state', '')
         # we have to not filter hostname at this point because we need to
         #   understand neighbor relationships
 
         ospf_df = self.get_valid_df("ospfIf", columns=columns,
-                                    state="!adminDown", **kwargs)
+                                    state='!adminDown', **kwargs)
         if ospf_df.empty:
             return pd.DataFrame(columns=columns)
 
