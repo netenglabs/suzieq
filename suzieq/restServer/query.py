@@ -184,6 +184,14 @@ class CommonVerbs(str, Enum):
     top = "top"
 
 
+class CommonExtraVerbs(str, Enum):
+    aver = "assert"
+    show = "show"
+    summarize = "summarize"
+    unique = "unique"
+    top = "top"
+
+
 class RouteVerbs(str, Enum):
     show = "show"
     summarize = "summarize"
@@ -288,25 +296,8 @@ async def query_arpnd(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/bgp/assert")
-async def query_bgp_assert(request: Request,
-                           token: str = Depends(get_api_key),
-                           format: str = None,
-                           hostname: List[str] = Query(None),
-                           start_time: str = "", end_time: str = "",
-                           view: ViewValues = "latest",
-                           namespace: List[str] = Query(None),
-                           columns: List[str] = Query(default=["default"]),
-                           vrf: List[str] = Query(None),
-                           status: AssertStatusValues = Query(None),
-                           query_str: str = None,
-                           ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, "assert", request, locals())
-
-
 @ app.get("/api/v2/bgp/{verb}")
-async def query_bgp(verb: CommonVerbs, request: Request,
+async def query_bgp(verb: CommonExtraVerbs, request: Request,
                     token: str = Depends(get_api_key),
                     format: str = None,
                     hostname: List[str] = Query(None),
@@ -362,24 +353,8 @@ async def query_devconfig(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/evpnVni/assert")
-async def query_evpnVni_assert(request: Request,
-                               token: str = Depends(get_api_key),
-                               format: str = None,
-                               hostname: List[str] = Query(None),
-                               start_time: str = "", end_time: str = "",
-                               view: ViewValues = "latest",
-                               namespace: List[str] = Query(None),
-                               columns: List[str] = Query(default=["default"]),
-                               status: AssertStatusValues = None,
-                               query_str: str = None,
-                               ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, "assert", request, locals())
-
-
 @ app.get("/api/v2/evpnVni/{verb}")
-async def query_evpnVni(verb: CommonVerbs, request: Request,
+async def query_evpnVni(verb: CommonExtraVerbs, request: Request,
                         token: str = Depends(get_api_key),
                         format: str = None,
                         hostname: List[str] = Query(None),
@@ -412,29 +387,8 @@ async def query_fs(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/interface/assert")
-async def query_interface_assert(
-    request: Request,
-    token: str = Depends(get_api_key),
-    format: str = None,
-    hostname: List[str] = Query(None),
-    start_time: str = "", end_time: str = "",
-    view: ViewValues = "latest",
-    namespace: List[str] = Query(None),
-    columns: List[str] = Query(default=["default"]),
-    ifname: List[str] = Query(None),
-    what: str = None,
-    matchval: int = Query(None, alias="value"),
-    status: AssertStatusValues = Query(None),
-    ignore_missing_peer: bool = Query(False),
-    query_str: str = None,
-):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, "assert", request, locals())
-
-
 @ app.get("/api/v2/interface/{verb}")
-async def query_interface(verb: CommonVerbs, request: Request,
+async def query_interface(verb: CommonExtraVerbs, request: Request,
                           token: str = Depends(get_api_key),
                           format: str = None,
                           hostname: List[str] = Query(None),
@@ -567,25 +521,8 @@ async def query_network(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/ospf/assert")
-async def query_ospf_assert(request: Request,
-                            token: str = Depends(get_api_key),
-                            format: str = None,
-                            hostname: List[str] = Query(None),
-                            start_time: str = "", end_time: str = "",
-                            view: ViewValues = "latest",
-                            namespace: List[str] = Query(None),
-                            columns: List[str] = Query(default=["default"]),
-                            vrf: List[str] = Query(None),
-                            status: AssertStatusValues = None,
-                            query_str: str = None,
-                            ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, "assert", request, locals())
-
-
 @ app.get("/api/v2/ospf/{verb}")
-async def query_ospf(verb: CommonVerbs, request: Request,
+async def query_ospf(verb: CommonExtraVerbs, request: Request,
                      token: str = Depends(get_api_key),
                      format: str = None,
                      hostname: List[str] = Query(None),
@@ -595,6 +532,7 @@ async def query_ospf(verb: CommonVerbs, request: Request,
                      columns: List[str] = Query(default=["default"]),
                      ifname: List[str] = Query(None),
                      state: OspfStateValues = Query(None),
+                     area: List[str] = Query(None),
                      vrf: List[str] = Query(None),
                      status: AssertStatusValues = None,
                      query_str: str = None, what: str = None,
@@ -612,9 +550,9 @@ async def query_path(verb: CommonVerbs, request: Request,
                      view: ViewValues = "latest",
                      namespace: List[str] = Query(None),
                      columns: List[str] = Query(default=["default"]),
-                     vrf: str = None,
-                     dest: str = None,
-                     source: str = Query(None, alias="src"),
+                     vrf: str = Query(None),
+                     dest: str = Query(None),
+                     source: str = Query(None, alias='src'),
                      query_str: str = None, what: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
@@ -769,7 +707,7 @@ def create_filters(function_name, command, request, local_vars):
                     verb_args[tryarg] = command_args[arg]
         else:
             if query_ks.get(arg) is not None:
-                verb_args[tryarg] = local_vars.get(tryarg, None)
+                verb_args[arg] = local_vars.get(tryarg, None)
 
     return command_args, verb_args
 
