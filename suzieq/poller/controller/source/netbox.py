@@ -125,11 +125,14 @@ class Netbox(Source, InventoryAsyncPlugin):
         if not self._session:
             headers = self._token_auth_header()
             self._init_session(headers)
-
-        devices, next_url = await self._get_devices(url)
-        while next_url:
-            cur_devices, next_url = await self._get_devices(next_url)
-            devices.extend(cur_devices)
+        try:
+            devices, next_url = await self._get_devices(url)
+            while next_url:
+                cur_devices, next_url = await self._get_devices(next_url)
+                devices.extend(cur_devices)
+        except Exception as e:
+            raise InventorySourceError(f'{self._name}: error while '
+                                       f'getting devices: {e}')
         return devices
 
     async def _get_devices(self, url: str) -> Tuple[List, str]:
@@ -151,7 +154,7 @@ class Netbox(Source, InventoryAsyncPlugin):
                 return res.get('results', []), res.get('next')
             else:
                 raise InventorySourceError(
-                    'Unable to connect to netbox:', response.status)
+                    f'{self._name}: error in inventory get {response.status}')
 
     def parse_inventory(self, inventory_list: list) -> Dict:
         """parse the raw inventory collected from the server and generates
