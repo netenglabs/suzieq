@@ -10,7 +10,7 @@ class MacsObj(SqObject):
     def __init__(self, **kwargs):
         super().__init__(table='macs', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'macaddr',
-                                'remoteVtepIp', 'vlan', 'localOnly', 'bd',
+                                'remoteVtepIp', 'vlan', 'local', 'bd',
                                 'moveCount', 'query_str']
         self._convert_args = {
             'macaddr': convert_macaddr_format_to_colon

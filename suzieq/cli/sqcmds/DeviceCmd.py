@@ -1,12 +1,18 @@
-import time
 import re
-from nubia import command, argument
+from nubia import command
+from suzieq.cli.nubia_patch import argument
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.device import DeviceObj
 
 
 @command("device", help="Act on device data")
+@argument("status", description="filter by polling status",
+          choices=["dead", "alive",  "neverpoll"])
+@argument("os", description="filter by NOS")
+@argument("version", description="filter by NOS version")
+@argument("vendor", description="filter by vendor")
+@argument("model", description="filter by model")
 class DeviceCmd(SqCommand):
     """Basic device information such as OS, version, model etc."""
 
@@ -21,6 +27,11 @@ class DeviceCmd(SqCommand):
             format: str = "",  # pylint: disable=redefined-builtin
             query_str: str = " ",
             columns: str = "default",
+            os: str = '',
+            version: str = '',
+            status: str = '',
+            vendor: str = '',
+            model: str = '',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -34,45 +45,13 @@ class DeviceCmd(SqCommand):
             query_str=query_str,
             sqobj=DeviceObj,
         )
-
-    def _get(self, **kwargs):
-        # Get the default display field names
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname, columns=self.columns,
-                                namespace=self.namespace,
-                                query_str=self.query_str,
-                                **kwargs,
-                                )
-
-        return df
-
-    @command("show", help="Show device information")
-    @argument("os", description="filter by NOS")
-    @argument("vendor", description="filter by vendor")
-    @argument("model", description="filter by model")
-    @argument("version", description="filter by version")
-    @argument("status", description="filter by polling status",
-              choices=["dead", "alive",  "neverpoll"])
-    def show(self, os: str = '', model: str = '', status: str = '',
-             vendor: str = '', version: str = ''):
-        """Show device info
-        """
-        now = time.time()
-
-        # Model has to be special cased because model names can have
-        # spaces in them such as "Nexus9000 C9300v Chassis"
         if model:
             model = re.split(r"\s+(?=[^']*(?:'))", model)
-        else:
-            model = []
-        df = self._get(os=os.split(), model=model, version=version,
-                       vendor=vendor.split(), status=status.split())
 
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-
-        return self._gen_output(df)
+        self.lvars = {
+            'os': os.split(),
+            'version': version.split(),
+            'status': status,
+            'model': model,
+            'vendor': vendor.split()
+        }

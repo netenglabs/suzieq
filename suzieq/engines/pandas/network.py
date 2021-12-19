@@ -304,7 +304,7 @@ class NetworkObj(SqPandasEngine):
                          vlan=ifdf.vlan.astype(str).unique().tolist(),
                          macaddr=[row.macaddr],
                          columns=['default'],
-                         localOnly=True)
+                         local=True)
                 if not macdf.empty:
                     oifs = [x for x in macdf.oif.unique() if x !=
                             "vPC Peer-Link"]

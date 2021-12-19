@@ -17,7 +17,7 @@ class MacsObj(SqPandasEngine):
         moveCount = kwargs.pop('moveCount', None)
         view = kwargs.pop('view', self.iobj.view)
         remoteOnly = False
-        localOnly = kwargs.pop('localOnly', False)
+        localOnly = kwargs.pop('local', False)
         user_query = kwargs.pop('query_str', '')
         vtep = kwargs.get('remoteVtepIp', [])
 

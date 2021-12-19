@@ -1,4 +1,3 @@
-import time
 from nubia import command
 
 from suzieq.cli.sqcmds.command import SqCommand
@@ -31,22 +30,3 @@ class TopcpuCmd(SqCommand):
             format=format,
             sqobj=TopcpuObj
         )
-
-    @command("show")
-    def show(self):
-        """Show topcpu info
-        """
-        # Get the default display field names
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname,
-                                columns=self.columns,
-                                namespace=self.namespace
-                                )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
