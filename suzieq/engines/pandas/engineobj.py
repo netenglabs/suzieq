@@ -374,7 +374,7 @@ class SqPandasEngine(SqEngineObj):
             df = pd.DataFrame({f'{column}': df[column].unique()})
 
         if query_str:
-            df = df.query(query_str).reset_index(drop=True)
+            df = self._handle_user_query_str(df, query_str)
 
         return df
 
