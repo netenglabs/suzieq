@@ -2100,17 +2100,24 @@ tests:
     --count=True --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: path unique cumulus
-  output: '[{"hostname": "exit01", "numRows": 16}, {"hostname": "leaf01", "numRows":
-    8}, {"hostname": "leaf02", "numRows": 8}, {"hostname": "leaf03", "numRows": 8},
-    {"hostname": "leaf04", "numRows": 8}, {"hostname": "server101", "numRows": 16},
+  output: '[{"hostname": "leaf01", "numRows": 8}, {"hostname": "leaf02", "numRows":
+    8}, {"hostname": "leaf03", "numRows": 8}, {"hostname": "leaf04", "numRows": 8},
+    {"hostname": "exit01", "numRows": 16}, {"hostname": "server101", "numRows": 16},
     {"hostname": "server104", "numRows": 16}, {"hostname": "spine01", "numRows": 16},
     {"hostname": "spine02", "numRows": 16}]'
 - command: path unique --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
     --count=True --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: path unique cumulus
-  output: '[{"hostname": "exit01", "numRows": 16}, {"hostname": "leaf01", "numRows":
-    8}, {"hostname": "leaf02", "numRows": 8}, {"hostname": "leaf03", "numRows": 8},
-    {"hostname": "leaf04", "numRows": 8}, {"hostname": "server101", "numRows": 16},
+  output: '[{"hostname": "leaf01", "numRows": 8}, {"hostname": "leaf02", "numRows":
+    8}, {"hostname": "leaf03", "numRows": 8}, {"hostname": "leaf04", "numRows": 8},
+    {"hostname": "exit01", "numRows": 16}, {"hostname": "server101", "numRows": 16},
     {"hostname": "server104", "numRows": 16}, {"hostname": "spine01", "numRows": 16},
     {"hostname": "spine02", "numRows": 16}]'
+- command: path unique --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
+    --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: path unique cumulus
+  output: '[{"hostname": "exit01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
+    {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname":
+    "server104"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'

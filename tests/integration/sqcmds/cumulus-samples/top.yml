@@ -3,72 +3,82 @@ tests:
 - command: interface top --what="statusChangeTimestamp" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface top statusChangeTimestamp
-  output: '[{"namespace": "ospf-single", "hostname": "server102", "ifname": "eth0",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
-    "master": "", "ipAddressList": ["10.255.2.68/24"], "ip6AddressList": [], "statusChangeTimestamp":
-    0, "timestamp": 1616352402674}, {"namespace": "ospf-single", "hostname": "server102",
-    "ifname": "eth1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.2.102/24"], "ip6AddressList":
-    [], "statusChangeTimestamp": 0, "timestamp": 1616352402674}, {"namespace": "ospf-single",
-    "hostname": "server101", "ifname": "eth1", "state": "up", "adminState": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.1.101/24"],
-    "ip6AddressList": [], "statusChangeTimestamp": 0, "timestamp": 1616352402700},
-    {"namespace": "ospf-single", "hostname": "server101", "ifname": "eth0", "state":
-    "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.255.2.78/24"], "ip6AddressList": [], "statusChangeTimestamp":
-    0, "timestamp": 1616352402700}, {"namespace": "ospf-single", "hostname": "server103",
-    "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.2.182/24"], "ip6AddressList":
-    [], "statusChangeTimestamp": 0, "timestamp": 1616352402700}]'
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "bond02", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1616706446400,
+    "timestamp": 1616681582391}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond", "mtu":
+    9000, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "statusChangeTimestamp": 1616706446390, "timestamp": 1616681582391}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp6", "state": "up", "adminState":
+    "up", "type": "bond_slave", "mtu": 9000, "vlan": 0, "master": "bond02", "ipAddressList":
+    [], "ip6AddressList": [], "statusChangeTimestamp": 1616706446340, "timestamp":
+    1616681582391}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bond02",
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1616706446340, "timestamp": 1616681582523}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "swp5", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond01", "ipAddressList": [], "ip6AddressList":
+    [], "statusChangeTimestamp": 1616706446330, "timestamp": 1616681582391}]'
 - command: interface top --what=statusChangeTimestamp --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface top statusChangeTimestamp
-  output: '[{"namespace": "ospf-ibgp", "hostname": "server101", "ifname": "eth0",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
-    "master": "", "ipAddressList": ["192.168.123.184/24"], "ip6AddressList": [], "statusChangeTimestamp":
-    0, "timestamp": 1616681581492}, {"namespace": "ospf-ibgp", "hostname": "server103",
-    "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.150/24"], "ip6AddressList":
-    [], "statusChangeTimestamp": 0, "timestamp": 1616681581509}, {"namespace": "ospf-ibgp",
-    "hostname": "server104", "ifname": "eth0", "state": "up", "adminState": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["192.168.123.197/24"],
-    "ip6AddressList": [], "statusChangeTimestamp": 0, "timestamp": 1616681581517},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "ifname": "eth0", "state": "up",
-    "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "",
-    "ipAddressList": ["192.168.123.180/24"], "ip6AddressList": [], "statusChangeTimestamp":
-    0, "timestamp": 1616681581517}, {"namespace": "ospf-ibgp", "hostname": "edge01",
-    "ifname": "eth1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
-    0, "timestamp": 1616681581517}]'
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "bond02", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1616706446400,
+    "timestamp": 1616681582391}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond", "mtu":
+    9000, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "statusChangeTimestamp": 1616706446390, "timestamp": 1616681582391}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp6", "state": "up", "adminState":
+    "up", "type": "bond_slave", "mtu": 9000, "vlan": 0, "master": "bond02", "ipAddressList":
+    [], "ip6AddressList": [], "statusChangeTimestamp": 1616706446340, "timestamp":
+    1616681582391}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bond02",
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1616706446340, "timestamp": 1616681582523}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "swp5", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond01", "ipAddressList": [], "ip6AddressList":
+    [], "statusChangeTimestamp": 1616706446330, "timestamp": 1616681582391}]'
 - command: interface top --what="statusChangeTimestamp" --namespace=ospf-ibgp --columns="hostname
     ifname state mtu" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface top statusChangeTimestamp
-  output: '[{"hostname": "server101", "ifname": "eth0", "state": "up", "mtu": 1500},
-    {"hostname": "server103", "ifname": "eth0", "state": "up", "mtu": 1500}, {"hostname":
-    "server104", "ifname": "eth0", "state": "up", "mtu": 1500}, {"hostname": "edge01",
-    "ifname": "eth0", "state": "up", "mtu": 1500}, {"hostname": "edge01", "ifname":
-    "eth1", "state": "up", "mtu": 1500}]'
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "bond02", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1616706446400,
+    "timestamp": 1616681582391}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond", "mtu":
+    9000, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
+    "statusChangeTimestamp": 1616706446390, "timestamp": 1616681582391}, {"namespace":
+    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp6", "state": "up", "adminState":
+    "up", "type": "bond_slave", "mtu": 9000, "vlan": 0, "master": "bond02", "ipAddressList":
+    [], "ip6AddressList": [], "statusChangeTimestamp": 1616706446340, "timestamp":
+    1616681582391}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bond02",
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1616706446340, "timestamp": 1616681582523}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "ifname": "swp5", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 9000, "vlan": 0, "master": "bond01", "ipAddressList": [], "ip6AddressList":
+    [], "statusChangeTimestamp": 1616706446330, "timestamp": 1616681582391}]'
 - command: interface top --what=numChanges --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: interface top numChanges
-  output: '[{"namespace": "ospf-single", "hostname": "server102", "ifname": "eth0",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
-    "master": "", "ipAddressList": ["10.255.2.68/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1616352402674}, {"namespace": "ospf-single", "hostname": "server102",
-    "ifname": "eth1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
-    1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.2.102/24"], "ip6AddressList":
-    [], "numChanges": 0, "timestamp": 1616352402674}, {"namespace": "ospf-single",
-    "hostname": "server101", "ifname": "eth1", "state": "up", "adminState": "up",
-    "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["172.16.1.101/24"],
-    "ip6AddressList": [], "numChanges": 0, "timestamp": 1616352402700}, {"namespace":
-    "ospf-single", "hostname": "server101", "ifname": "eth0", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
-    ["10.255.2.78/24"], "ip6AddressList": [], "numChanges": 0, "timestamp": 1616352402700},
-    {"namespace": "ospf-single", "hostname": "server103", "ifname": "eth0", "state":
-    "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master":
-    "", "ipAddressList": ["10.255.2.182/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1616352402700}]'
+  output: '[{"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "bond01", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822941},
+    {"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "bond02", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822941},
+    {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "bond02", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822983},
+    {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "bond01", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822983},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "bond02", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644823051}]'
 - command: bgp top --what="estdTime" --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: bgp top estdTime
@@ -380,10 +390,9 @@ tests:
 - command: interface top --what=numChanges --count=1 --format=json
   data-directory: tests/data/multidc/parquet-out/
   mark: interface top
-  output: '[{"namespace": "ospf-single", "hostname": "server102", "ifname": "eth0",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
-    "master": "", "ipAddressList": ["10.255.2.68/24"], "ip6AddressList": [], "numChanges":
-    0, "timestamp": 1616352402674}]'
+  output: '[{"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "bond01", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822941}]'
 - command: network top --what=deviceCnt --count=1 --format=json
   data-directory: tests/data/multidc/parquet-out/
   mark: network top
