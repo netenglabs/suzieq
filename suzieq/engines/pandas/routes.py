@@ -102,7 +102,7 @@ class RoutesObj(SqPandasEngine):
             df.insert(len(df.columns)-1, 'numNexthops', srs_max)
 
         if user_query:
-            df = df.query(user_query).reset_index(drop=True)
+            df = self._handle_user_query_str(df, user_query)
         if drop_cols:
             df.drop(columns=drop_cols, inplace=True, errors='ignore')
 
