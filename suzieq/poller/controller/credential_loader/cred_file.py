@@ -1,11 +1,15 @@
 """This module contains the class to import device credentials using files
 """
+import logging
 from os import path
 from typing import Dict
 
 import yaml
 from suzieq.poller.controller.credential_loader.base_credential_loader import \
     CredentialLoader
+from suzieq.shared.exceptions import InventorySourceError
+
+logger = logging.getLogger(__name__)
 
 
 class CredFile(CredentialLoader):
@@ -15,34 +19,36 @@ class CredFile(CredentialLoader):
     def init(self, init_data: dict):
         dev_cred_file = init_data.get('path', '')
         if not dev_cred_file:
-            raise RuntimeError(
-                'No field <path>\
-                    for device credential provided'
+            raise InventorySourceError(
+                'No field <path> '
+                'for device credential provided'
             )
         if not dev_cred_file or not path.isfile(dev_cred_file):
-            raise RuntimeError('The credential file ' 'does not exists')
+            raise InventorySourceError(
+                'The credential file does not exists')
         with open(dev_cred_file, 'r') as f:
             self._raw_credentials = yaml.safe_load(f.read())
 
         if not isinstance(self._raw_credentials, list):
-            raise RuntimeError(
-                'The credentials file must contain all device \
-                credential divided in namespaces'
+            raise InventorySourceError(
+                'The credentials file must contain all device '
+                'credential divided in namespaces'
             )
 
     def load(self, inventory: Dict):
         if not inventory:
-            raise RuntimeError('Empty inventory')
+            logger.info('Not loading credentials due to empty inventory')
+            return
 
         for ns_credentials in self._raw_credentials:
             namespace = ns_credentials.get('namespace', '')
             if not namespace:
-                raise RuntimeError('All namespaces must have a name')
+                raise InventorySourceError('All namespaces must have a name')
 
             ns_devices = ns_credentials.get('devices', [])
             if not ns_devices:
-                raise RuntimeError('No devices in {} namespace'
-                                   .format(namespace))
+                raise InventorySourceError('No devices in {} namespace'
+                                           .format(namespace))
 
             for dev_info in ns_devices:
                 if dev_info.get('hostname'):
@@ -52,19 +58,19 @@ class CredFile(CredentialLoader):
                     dev_id = dev_info['address']
                     dev_key = 'address'
                 else:
-                    raise RuntimeError(
+                    raise InventorySourceError(
                         'Devices must have a hostname or address')
 
                 device = [x for x in inventory.values() if x.get(dev_key)
                           == dev_id]
                 if not device:
-                    raise RuntimeError('Unknown device called {}'
-                                       .format(dev_id))
+                    raise InventorySourceError('Unknown device called {}'
+                                               .format(dev_id))
                 device = device[0]
                 if namespace != device.get('namespace', ''):
-                    raise RuntimeError(
-                        'The device {} does not belong the namespace {}'
-                        .format(dev_id, namespace)
+                    raise InventorySourceError(
+                        f'The device {dev_id} does not belong the namespace '
+                        f'{namespace}'
                     )
                 if dev_info.get('keyfile'):
                     # rename 'keyfile' into 'ssh_keyfile'
@@ -86,10 +92,10 @@ class CredFile(CredentialLoader):
                         not dev_cred.get('ssh_keyfile'):
                     # no configuration in device, use config ones
                     dev_cred.update({
-                            'passphrase': self._conf_passphrase,
-                            'ssh_key_file': self._conf_keyfile,
-                            'password': self._conf_password
-                        })
+                        'passphrase': self._conf_passphrase,
+                        'ssh_key_file': self._conf_keyfile,
+                        'password': self._conf_password
+                    })
 
                 self.write_credentials(device, dev_cred)
 
@@ -100,7 +106,7 @@ class CredFile(CredentialLoader):
             if not d.get('username', None)
         ]
         if len(no_cred_devs) != 0:
-            raise RuntimeError(
+            raise InventorySourceError(
                 'Some devices are left without credentials: {}'
                 .format(no_cred_devs)
             )
