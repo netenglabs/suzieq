@@ -47,17 +47,15 @@ class Netbox(Source, InventoryAsyncPlugin):
             input_data ([dict]): Input configuration data
 
         Raises:
-            ValueError: netbox url is empty
-            ValueError: netbox configuration
-                        is empty
+            InventorySourceError: invalid config
         """
 
         if not input_data:
-            raise ValueError('no netbox_config provided')
+            raise InventorySourceError('no netbox_config provided')
 
         url = input_data.get('url', '')
         if not url:
-            raise ValueError('netbox url not provided')
+            raise InventorySourceError(f'{self._name}: <url> not provided')
 
         url_data = urlparse(url)
         self._protocol = url_data.scheme or 'http'
@@ -65,7 +63,7 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._host = url_data.hostname
 
         if not self._protocol or not self._port or not self._host:
-            raise InventorySourceError('netbox: invalid url provided')
+            raise InventorySourceError(f'{self._name}: invalid url provided')
 
         self._tag = input_data.get('tag', 'null')
         self._namespace = input_data.get('namespace', 'site.name')
@@ -127,11 +125,14 @@ class Netbox(Source, InventoryAsyncPlugin):
         if not self._session:
             headers = self._token_auth_header()
             self._init_session(headers)
-
-        devices, next_url = await self._get_devices(url)
-        while next_url:
-            cur_devices, next_url = await self._get_devices(next_url)
-            devices.extend(cur_devices)
+        try:
+            devices, next_url = await self._get_devices(url)
+            while next_url:
+                cur_devices, next_url = await self._get_devices(next_url)
+                devices.extend(cur_devices)
+        except Exception as e:
+            raise InventorySourceError(f'{self._name}: error while '
+                                       f'getting devices: {e}')
         return devices
 
     async def _get_devices(self, url: str) -> Tuple[List, str]:
@@ -152,8 +153,8 @@ class Netbox(Source, InventoryAsyncPlugin):
                 res = await response.json()
                 return res.get('results', []), res.get('next')
             else:
-                raise RuntimeError(
-                    'Unable to connect to netbox:', response.json())
+                raise InventorySourceError(
+                    f'{self._name}: error in inventory get {response.status}')
 
     def parse_inventory(self, inventory_list: list) -> Dict:
         """parse the raw inventory collected from the server and generates
@@ -200,8 +201,12 @@ class Netbox(Source, InventoryAsyncPlugin):
                 address = ipv6
 
             if not address:
-                raise InventorySourceError(
-                    f"Device {hostname} doesn't have a management IP")
+                logger.warning(
+                    f"Skipping {namespace}.{hostname}: doesn't have a "
+                    "management IP")
+                continue
+
+            address = address.split("/")[0]
 
             inventory[f'{namespace}.{address}'] = {
                 'address': address,
