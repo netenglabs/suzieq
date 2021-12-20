@@ -1,7 +1,7 @@
 """This module contains the class to import device credentials using files
 """
 import logging
-from os import path
+from pathlib import Path
 from typing import Dict
 
 import yaml
@@ -17,21 +17,22 @@ class CredFile(CredentialLoader):
     """
 
     def init(self, init_data: dict):
-        dev_cred_file = init_data.get('path', '')
+        dev_cred_file = Path(init_data.get('path', ''))
         if not dev_cred_file:
             raise InventorySourceError(
-                'No field <path> '
+                f'{self._name} No field <path> '
                 'for device credential provided'
             )
-        if not dev_cred_file or not path.isfile(dev_cred_file):
+        if not dev_cred_file.is_file():
             raise InventorySourceError(
-                'The credential file does not exists')
+                f'{self._name} The credential file does not exists')
+
         with open(dev_cred_file, 'r') as f:
             self._raw_credentials = yaml.safe_load(f.read())
 
         if not isinstance(self._raw_credentials, list):
             raise InventorySourceError(
-                'The credentials file must contain all device '
+                f'{self._name} The credentials file must contain all device '
                 'credential divided in namespaces'
             )
 
@@ -43,7 +44,8 @@ class CredFile(CredentialLoader):
         for ns_credentials in self._raw_credentials:
             namespace = ns_credentials.get('namespace', '')
             if not namespace:
-                raise InventorySourceError('All namespaces must have a name')
+                raise InventorySourceError(
+                    f'{self._name} All namespaces must have a name')
 
             ns_devices = ns_credentials.get('devices', [])
             if not ns_devices:
