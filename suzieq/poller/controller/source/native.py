@@ -34,8 +34,6 @@ class SqNativeFile(Source):
     def _load(self, input_data):
         self.inventory_source = input_data
         self._cur_inventory = self._get_inventory()
-        if self._auth:
-            self._auth.load(self._cur_inventory)
         self.set_inventory(self._cur_inventory)
 
     def _get_inventory(self) -> Dict:
@@ -103,11 +101,6 @@ class SqNativeFile(Source):
                     'namespace': nsname,
                     'ssh_keyfile': keyfile,
                     'hostname': None,
-                    'jump_host': self._device.get('jump-host'),
-                    'jump_host_key_file':
-                    self._device.get('jump-host-key-file'),
-                    'ignore_known_hosts':
-                    self._device.get('ignore-known-hosts')
                 }
                 if self._validate_inventory_entry(entry):
                     # TODO: must add a credential_loader

@@ -4,6 +4,7 @@ import asyncio
 from abc import abstractmethod
 from copy import copy
 from os.path import isfile
+from pathlib import Path
 from typing import Dict, List
 
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
@@ -90,6 +91,13 @@ class Source(ControllerPlugin):
         Args:
             new_inventory ([List[Dict]]): the new inventory to set
         """
+        if self._auth:
+            self._auth.load(new_inventory)
+        self.set_device(new_inventory)
+        missing_keys = self._is_invalid_inventory(new_inventory)
+        if missing_keys:
+            raise InventorySourceError(
+                f'{self._name} missing informations: {missing_keys}')
 
         self._inventory = new_inventory
 
@@ -173,6 +181,43 @@ class Source(ControllerPlugin):
             src_conf.update({'run_once': run_once})
             src_plugins.append(plugin_classes[ptype](src_conf))
         return src_plugins
+
+    def set_device(self, inventory: Dict[str, Dict]):
+        """Add device config from inventory file to the inventory
+
+        Args:
+            inventory (Dict[str,Dict]): inventory
+        """
+        jump_host = None
+        jump_host_key_file = None
+        transport = None
+        ignore_known_hosts = None
+        port = None,
+        devtype = None
+        if self._device:
+            jump_host = self._device.get('jump-host')
+            if jump_host and not jump_host.startswith("//"):
+                jump_host = f'//{jump_host}'
+            jump_host_key_file = self._device.get('jump-host-key-file')
+            if jump_host_key_file and \
+                    not Path(jump_host_key_file).is_file():
+                raise InventorySourceError(f'{self._name} Jump host key file'
+                                           f" at {jump_host_key_file} doesn't"
+                                           " exists")
+            transport = self._device.get('transport')
+            ignore_known_hosts = self._device.get('ignore-known-hosts', False)
+            port = self._device('port')
+            devtype = self._device('devtype')
+
+        for device in inventory.values():
+            device.update({
+                'jump_host': jump_host,
+                'jump_host_key_file': jump_host_key_file,
+                'ignore_known_hosts': ignore_known_hosts,
+                'transport': device.get('transport', transport),
+                'port': device.get('port', port),
+                'devtype': device.get('devtype', devtype)
+            })
 
 
 def _load_inventory(source_file: str) -> List[dict]:

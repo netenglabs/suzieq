@@ -26,8 +26,6 @@ class AnsibleInventory(Source):
         self.ansible_file = input_data.pop('path', None)
         self.namespace = input_data.pop('namespace', None)
         inventory = self._get_inventory()
-        if self._auth:
-            self._auth.load(inventory)
         self.set_inventory(inventory)
 
     def _validate_config(self, input_data: dict):
@@ -114,10 +112,7 @@ class AnsibleInventory(Source):
                 'devtype': devtype,
                 'namespace': self.namespace,
                 'ssh_keyfile': keyfile,
-                'hostname': None,
-                'jump_host': self._device.get('jump-host'),
-                'jump_host_key_file': self._device.get('jump-host-key-file'),
-                'ignore_known_hosts': self._device.get('ignore-known-hosts')
+                'hostname': None
             }
             out_inv[f"{self.namespace}.{entry['ansible_host']}"] = host
 

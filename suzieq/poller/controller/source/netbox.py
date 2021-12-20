@@ -213,12 +213,8 @@ class Netbox(Source, InventoryAsyncPlugin):
                 'port': self._device.get('port') or 22,
                 'transport': self._device.get(
                     'transport') or 'ssh',
-                'devtype': self._device.get('devtype'),
                 'namespace': namespace,
                 'hostname': hostname,
-                'jump_host': self._device.get('jump-host'),
-                'jump_host_key_file': self._device.get('jump-host-key-file'),
-                'ignore_known_hosts': self._device.get('ignore-known-hosts')
             }
 
         return inventory
@@ -230,8 +226,6 @@ class Netbox(Source, InventoryAsyncPlugin):
                 f"Received netbox inventory from {self._protocol}"
                 f"://{self._host}:{self._port}")
             tmp_inventory = self.parse_inventory(inventory_list)
-            # load credentials into the inventory
-            self._auth.load(tmp_inventory)
             # Write the inventory and remove the tmp one
             self.set_inventory(tmp_inventory)
 
