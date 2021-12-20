@@ -9,7 +9,7 @@ To start, launch the docker container, **netenglabs/suzieq:latest** and attach t
   docker attach sq-poller
 ```
 
-In the docker run command above, the two `-v` options provide host file/directory access to (i) store the parquet output files (the first `-v` option), and (ii) the inventory file (the second `-v` option). We describe the inventory file below. The inventory file is the list of devices and their IP address that you wish to gather data from. 
+In the docker run command above, the two `-v` options provide host file/directory access to (i) store the parquet output files (the first `-v` option), and (ii) the inventory file (the second `-v` option). We describe the inventory file below. The inventory file is the list of devices and their IP address that you wish to gather data from.
 
 You then launch the poller via the command line:
 
@@ -34,7 +34,7 @@ sources:
 - name: netbox-instance-123
   token: af8717c89ec0ff420c19d89e6c20646ad55dd54e
   url: http://127.0.0.1:8000
-  tag: suzieq-demo # if not present, default is "suzieq"
+  tag: suzieq-demo
   period: 3600
 
 - name: dc-02-suzieq-native
@@ -46,12 +46,14 @@ sources:
   type: ansible
   file_path: /path/to/ansible/list
 
-devices: # default settings
+devices:
 - name: devices-with-jump-hosts
   transport: ssh
   jump-host: 127.0.0.1
   jump-host-key-file: /path/to/jump/key
-  # ignore-known-hosts: true
+  ignore-known-hosts: true
+  port: 22
+  devtype: eos
 
 - name: devices-using-rest
   transport: rest
@@ -93,12 +95,27 @@ The device sources currently supported are:
 - Netbox
 
 Each source must have a name so that it can be referred to in the `namespace` section.
+
+Each source can contain a field called `copy`. This field is used to replicate and override the content of another source:
+```yaml
+- name: netbox-orig
+  type: netbox
+  token: your-api-token-here
+  url: http://127.0.0.1:8000
+  tag: suzieq-demo
+  period: 3600
+
+- name: netbox-copy     # This source will use the same set of parameters of 'netbox-orig'
+  copy: netbox-orig     # and only overrides the 'tag' field.
+  tag: suzieq-copy
+
+```
 ### <a name='source-suzieq-native'></a>Suzieq native format
 
 The Suzieq native format contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. Here is an example of a native suzieq source type. For example (all possible combinations are shown for illustration):
 ```yaml
 - name: dc-01-native
-  type: file # optional, if type is not present this is the default value
+  type: native # optional, if type is not present this is the default value
   hosts:
     - url: https://vagrant@192.168.123.252 devtype=eos
     - url: ssh://vagrant@192.168.123.232  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
@@ -109,11 +126,11 @@ The Suzieq native format contains the IP address, the access method (SSH or REST
     - url: https://vagrant@192.168.123.123 password=vagrant
 ```
 
-There's a template in the docs directory called `hosts-template.yml`. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: `<transport>://[username:password]@<hostname or IP>:<port>`. For example, `ssh://dinesh:dinesh@myvx` or `ssh://dinesh:dinesh@172.1.1.23`. 
+There's a template in the docs directory called `hosts-template.yml`. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: `<transport>://[username:password]@<hostname or IP>:<port>`. For example, `ssh://dinesh:dinesh@myvx` or `ssh://dinesh:dinesh@172.1.1.23`.
 
 ### <a name='source-ansible'></a>Ansible
 
-If you're using Ansible to configure the devices, an alternate to the native Suzieq inventory format is to use an Ansible inventory format. The file to be used is the output of the ```ansible-inventory --list``` command. 
+If you're using Ansible to configure the devices, an alternate to the native Suzieq inventory format is to use an Ansible inventory format. The file to be used is the output of the ```ansible-inventory --list``` command.
 
 Now you can set the path of the ansible inventory in the source:
 ```yaml
@@ -134,7 +151,7 @@ Here is an example of the configuration of a netbox type source:
   token: your-api-token-here
   url: http://127.0.0.1:8000
   tag: suzieq-demo    # if not present, default is "suzieq"
-  period: 3600        
+  period: 3600
 ```
 
 If you use a netbox source you need to define an authentication source since credentials al pulled from netbox.
@@ -150,6 +167,7 @@ For example, if a set of devices is only reachable with a ssh jump, in `devices`
   transport: ssh
   jump-host: 10.0.0.1
   jump-host-key-file: /path/to/jump/key
+  port: 22
 ```
 
 In case you want to ignore the check of the device's key against the `known_hosts` file you can set:
@@ -159,13 +177,18 @@ In case you want to ignore the check of the device's key against the `known_host
   ignore-known-hosts: true
 ```
 
+Moreover if all the devices inside a namespace run the same NOS, it is possible to specify it via the `devtype` option:
+```yaml
+- name: eos-devices
+  devtype: eos
+```
 ## <a name='auths'></a>Auths
 
 This section is optional in case Suzieq native and ansible source types. Here a set of default authentication sources can be defined. Currently a `cred_file` type and a static default type are defined. This way if credentials are not defined in the sources, default values can be applied.
 
 Currently for both SSH and REST API, the only supported is username and password, therefore you will not be able to set api keys.
 
-The simplest method is defining either username and password/private key. 
+The simplest method is defining either username and password/private key.
 ```yaml
 - name: suzieq-user
   username: suzieq
@@ -198,7 +221,10 @@ The `cred_file` type is mandatory in case a Netbox source is used, in the `auths
 
 ### <a name='cred_file'></a>Credential file
 
-A `cred_file` is an external file where you store your credentials. It should look like this:
+A `cred_file` is an external file where you store credentials for all the devices.
+Each device credentials can be specified via its `hostname` or its `address`
+(with Netbox, it's encouraged the usage of `hostname`).
+The credential file should look like this:
 ```yaml
 - namespace: testing
   - hostname: leaf01
@@ -211,6 +237,9 @@ A `cred_file` is an external file where you store your credentials. It should lo
     keyfile: /path/to/private/key
     username: vagrant
     key-passphrase: ask
+  - address: 10.0.0.1
+    username: vagrant
+    password: my-password
 ```
 
 ## <a name='namespaces'></a>Namespaces
@@ -225,7 +254,9 @@ namespaces:
   auth: dc-01-credentials
 ```
 
-In case you are using the Suzieq native or ansible source types, auths and devices are optional since the settings can be defined per-device in the source.
+In case you are using the Suzieq native or ansible source types, `auth` field is optional since the settings can be defined per-device in the source.
+
+The `device` field is always optional since it only contains common configurations for all the devices in the namespace.
 
 ## <a name='running-poller'></a>Running the poller
 
@@ -235,11 +266,11 @@ Once you have generated the inventory file you can launch the poller inside the 
 sq-poller -I inventory.yaml
 ```
 
-The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above. 
+The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above.
 
 ## <a name='gathering-data'></a>Gathering Data
 Two important concepts in the poller are Nodes and Services. Nodes are devices of some kind;
-they are the object being monitored. Services are the data that is collected and consumed by Suzieq. 
+they are the object being monitored. Services are the data that is collected and consumed by Suzieq.
 Service definitions describe how to get output from devices and then how to turn that into useful data.
 
 Currently Suzieq supports polling [Arista](https://www.arista.com/en/),
@@ -252,7 +283,7 @@ and [SONIC](https://azure.github.io/SONiC/) devices, as well as native Linux dev
 Suzieq started out with least common denominator SSH and REST access to devices.
 It doesn't care much about transport, we will use whatever gets the best data.
 Suzieq does have support for agents, such as Kafka and SNMP, to push data and we've done some experiments with them, but don't
-have production versions of that code. 
+have production versions of that code.
 
 ## Debugging poller issues
 There are two places to look if you want to know what the poller is up to. The first is the poller
@@ -289,6 +320,6 @@ In this case the errors are because we aren't running any of those services on t
 
 ## Database and Data Persistence
 
-Because everything in Suzieq revolves around [Pandas](https://pandas.pydata.org/) dataframes, it can support different persistence engines underneath. For right now, we only support our own, which is built on [Parquet](https://parquet.apache.org/) files. 
-This is setup should be fast enough to get things going and for most people. It is also self contained and fairly simple. 
-We have tried other storage systems, so we know it can work, but none of that code is production worthy. As we all gain experience we can figure out what the right persistence engines are One of the advantages is that the data are just files that can easily be passed around. There is no database code that must be running before you query the data. 
+Because everything in Suzieq revolves around [Pandas](https://pandas.pydata.org/) dataframes, it can support different persistence engines underneath. For right now, we only support our own, which is built on [Parquet](https://parquet.apache.org/) files.
+This is setup should be fast enough to get things going and for most people. It is also self contained and fairly simple.
+We have tried other storage systems, so we know it can work, but none of that code is production worthy. As we all gain experience we can figure out what the right persistence engines are One of the advantages is that the data are just files that can easily be passed around. There is no database code that must be running before you query the data.
