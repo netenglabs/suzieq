@@ -4,226 +4,226 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: address badquery cumulus
+  marks: address show badquery cumulus
 - command: arpnd show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: arpnd badquery cumulus
+  marks: arpnd show badquery cumulus
 - command: bgp show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: bgp badquery cumulus
+  marks: bgp show badquery cumulus
 - command: device show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''mtu'' is not defined"}]'
-  marks: device badquery cumulus
+  marks: device show badquery cumulus
 - command: evpnVni show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: evpnVni badquery cumulus
+  marks: evpnVni show badquery cumulus
 - command: lldp show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: lldp badquery cumulus
+  marks: lldp show badquery cumulus
 - command: interface show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: interface badquery cumulus
+  marks: interface show badquery cumulus
 - command: mac show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: mac badquery cumulus
+  marks: mac badquery show cumulus
 - command: mlag show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: mlag badquery cumulus
+  marks: mlag show badquery cumulus
 - command: ospf show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: ospf badquery cumulus
+  marks: ospf show badquery cumulus
 - command: route show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: name ''vendor'' is not defined"}]'
-  marks: route badquery cumulus
+  marks: route show badquery cumulus
 - command: vlan show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: vlan badquery cumulus
+  marks: vlan show badquery cumulus
 - command: path show --src='172.16.1.101' --dest='172.16.3.202' --namespace='ospf-ibgp'
     --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: path badquery cumulus
+  marks: path show badquery cumulus
   output: '[]'
 - command: topology show --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: topology badquery cumulus
+  marks: topology show badquery cumulus
   output: '[]'
 - command: address summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: address badquery cumulus
+  marks: address summarize badquery cumulus
 - command: arpnd summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: arpnd badquery cumulus
+  marks: arpnd summarize badquery cumulus
 - command: bgp summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '{"error": {"0": "ERROR: UserQueryError: name ''vendor'' is not defined"}}'
-  marks: bgp badquery cumulus
+  marks: bgp summarize badquery cumulus
 - command: device summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''mtu'' is not defined"}]'
-  marks: device badquery cumulus
+  marks: device summarize badquery cumulus
 - command: evpnVni summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: evpnVni badquery cumulus
+  marks: evpnVni summarize badquery cumulus
 - command: lldp summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: lldp badquery cumulus
+  marks: lldp summarize badquery cumulus
 - command: interface summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: interface badquery cumulus
+  marks: interface summarize badquery cumulus
 - command: mac summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: mac badquery cumulus
+  marks: mac summarize badquery cumulus
 - command: mlag summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: mlag badquery cumulus
+  marks: mlag summarize badquery cumulus
 - command: ospf summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '{"error": {"0": "ERROR: UserQueryError: name ''vendor'' is not defined"}}'
-  marks: ospf badquery cumulus
+  marks: ospf summarize badquery cumulus
 - command: route summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '{"error": {"0": "ERROR: name ''vendor'' is not defined"}}'
-  marks: route badquery cumulus
+  marks: route summarize badquery cumulus
 - command: vlan summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: vlan badquery cumulus
+  marks: vlan summarize badquery cumulus
 - command: path summarize --src='172.16.1.101' --dest='172.16.3.202' --namespace='ospf-ibgp'
     --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/multidc/parquet-out/
-  marks: path badquery cumulus
+  marks: path summarize badquery cumulus
   output: '[]'
 - command: topology summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
-  marks: topology badquery cumulus
+  marks: topology summarize badquery cumulus
   output: '[]'
 - command: address unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: address badquery cumulus
+  marks: address unique badquery cumulus
 - command: arpnd unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: arpnd badquery cumulus
+  marks: arpnd unique badquery cumulus
 - command: bgp unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: bgp badquery cumulus
+  marks: bgp unique badquery cumulus
 - command: device unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''mtu'' is not defined"}]'
-  marks: device badquery cumulus
+  marks: device unique badquery cumulus
 - command: evpnVni unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: evpnVni badquery cumulus
+  marks: evpnVni unique badquery cumulus
 - command: lldp unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: lldp badquery cumulus
+  marks: lldp unique badquery cumulus
 - command: interface unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: interface badquery cumulus
+  marks: interface unique badquery cumulus
 - command: mac unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: mac badquery cumulus
+  marks: mac unique badquery cumulus
 - command: mlag unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: mlag badquery cumulus
+  marks: mlag unique badquery cumulus
 - command: ospf unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: ospf badquery cumulus
+  marks: ospf unique badquery cumulus
 - command: route unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: name ''vendor'' is not defined"}]'
-  marks: route badquery cumulus
+  marks: route unique badquery cumulus
 - command: vlan unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
-  marks: vlan badquery cumulus
+  marks: vlan unique badquery cumulus
 - command: path unique --src='172.16.1.101' --dest='172.16.3.202' --namespace='ospf-ibgp'
     --query-str='vendor == "Cisco" and mtu==1500' --format=json --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
-  marks: path badquery cumulus
+  marks: path unique badquery cumulus
   output: '[]'
 - command: topology unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --columns='hostname'
   data-directory: tests/data/multidc/parquet-out/
-  marks: topology badquery cumulus
+  marks: topology unique badquery cumulus
   output: '[]'
 - command: route lpm --address='172.16.1.101' --query-str='vendor == "Cisco" and mtu==1500'
     --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: name ''vendor'' is not defined"}]'
-  marks: route badquery cumulus
+  marks: route lpm badquery cumulus

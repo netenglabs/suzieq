@@ -22,7 +22,7 @@ def validate_arpnd_tbl(df: pd.DataFrame):
 
 
 @ pytest.mark.parsing
-@ pytest.mark.lldp
+@ pytest.mark.arpnd
 @ pytest.mark.parametrize('table', ['arpnd'])
 @ pytest.mark.parametrize('datadir', DATADIR)
 def test_arpnd_parsing(table, datadir, get_table_data):
