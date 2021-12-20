@@ -33,6 +33,7 @@ class Inventory(SqPlugin):
         self.add_task_fn = add_task_fn
 
         self.connect_timeout = kwargs.pop('connect_timeout', 15)
+        self.ssh_config_file = kwargs.pop('ssh_config_file', None)
 
     @property
     def nodes(self) -> Dict[str, Node]:
@@ -120,6 +121,7 @@ class Inventory(SqPlugin):
             init_tasks += [new_node._init(
                 **host,
                 connect_timeout=self.connect_timeout,
+                ssh_config_file=self.ssh_config_file
             )]
 
         for n in asyncio.as_completed(init_tasks):
