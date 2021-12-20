@@ -47,8 +47,9 @@ class CredFile(CredentialLoader):
 
             ns_devices = ns_credentials.get('devices', [])
             if not ns_devices:
-                raise InventorySourceError('No devices in {} namespace'
-                                           .format(namespace))
+                logger.warning(
+                    f'{self._name} No devices in {namespace} namespace')
+                continue
 
             for dev_info in ns_devices:
                 if dev_info.get('hostname'):
@@ -59,13 +60,16 @@ class CredFile(CredentialLoader):
                     dev_key = 'address'
                 else:
                     raise InventorySourceError(
-                        'Devices must have a hostname or address')
+                        f'{self._name} Devices must have a hostname or '
+                        'address')
 
-                device = [x for x in inventory.values() if x.get(dev_key)
-                          == dev_id]
+                device = [x for x in inventory.values()
+                          if x.get(dev_key) == dev_id]
                 if not device:
-                    raise InventorySourceError('Unknown device called {}'
-                                               .format(dev_id))
+                    logger.warning(
+                        f'{self._name} Unknown device called {dev_id}')
+                    continue
+
                 device = device[0]
                 if namespace != device.get('namespace', ''):
                     raise InventorySourceError(

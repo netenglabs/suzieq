@@ -64,11 +64,11 @@ class CredentialLoader(ControllerPlugin):
             credentials (Dict[str, Dict]): device's credentials
 
         Raises:
-            ValueError: Invalid credentials
+            InventorySourceError: Invalid credentials
         """
         missing_keys = self._validate_credentials(credentials)
         if missing_keys:
-            raise ValueError(
+            raise InventorySourceError(
                 f'Invalid credentials: missing keys {missing_keys}')
         device.update(credentials)
 

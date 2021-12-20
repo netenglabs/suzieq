@@ -118,6 +118,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         else:
             for i, chunk in enumerate(inventory_chunks):
                 if chunk != self._active_chunks[i]:
+                    logger.info(f'Updating worker {i} chunk')
                     pollers_to_launch.append(i)
 
         # Create the inventory chunks and stop the pollers
