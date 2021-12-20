@@ -206,8 +206,8 @@ class Source(ControllerPlugin):
                                            " exists")
             transport = self._device.get('transport')
             ignore_known_hosts = self._device.get('ignore-known-hosts', False)
-            port = self._device('port')
-            devtype = self._device('devtype')
+            port = self._device.get('port')
+            devtype = self._device.get('devtype')
 
         for device in inventory.values():
             device.update({
