@@ -35,7 +35,7 @@ async def start_worker(userargs: argparse.Namespace, cfg: Dict):
         await poller.run()
     except (SqPollerConfError, InventorySourceError) as error:
         logger.error(error)
-        print(f'ERROR: {error}')
+        print(error)
         sys.exit(1)
 
 
