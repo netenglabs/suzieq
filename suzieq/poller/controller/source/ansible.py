@@ -2,7 +2,7 @@
 This module contains the logic of the plugin in charge of importing an
 inventory from an Ansible inventory file.
 """
-from os.path import isfile, exists
+from pathlib import Path
 from typing import Dict
 import logging
 import yaml
@@ -34,7 +34,7 @@ class AnsibleInventory(Source):
             raise InventorySourceError('Invalid file inventory: '
                                        'no namespace/path sections')
 
-        if not isfile(input_data['path']):
+        if not Path(input_data['path']).is_file():
             raise InventorySourceError(
                 f"No file found at {input_data['path']}")
 
@@ -96,7 +96,7 @@ class AnsibleInventory(Source):
 
             # Get keyfile
             keyfile = entry.get('ansible_ssh_private_key_file', '')
-            if keyfile and not exists(keyfile):
+            if keyfile and not Path(keyfile).exists():
                 logger.warning(
                     f"Ignored host {entry['ansible_host']} not existing "
                     f'keyfile: {keyfile}'
