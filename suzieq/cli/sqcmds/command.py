@@ -87,7 +87,7 @@ class SqCommand(SqPlugin):
             # This happens because nubia strips off the trailing quote
             # if not followed by a blank
             query_str += '"'
-        if query_str.count("'") % 2 != 0:
+        elif query_str.count("'") % 2 != 0:
             # This happens because nubia strips off the trailing quote
             # if not followed by a blank
             query_str += "'"
