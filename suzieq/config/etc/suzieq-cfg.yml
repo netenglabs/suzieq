@@ -33,14 +33,12 @@ poller:
   source:
     path: "suzieq/.poller/intentory/inventory.yaml"
   manager:
-    type: static_manager
+    type: static
     # workers_count: 1
     # inventory_path: suzieq/.poller/intentory/static_inventory
     # inventory_file_name: static_inv
-    # start_workers: False
   chunker:
-    type: static_chunker
-    split_pol: namespace
+    type: static
 
 coalescer:
   # valid suffixes are h for hour, d for day and w for week

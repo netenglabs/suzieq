@@ -67,7 +67,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         # Configure the output directory for the inventory files
         self._inventory_path = Path(
             config_data.get('inventory-path',
-                            'suzieq/.poller/inventory/static_inventory')
+                            'suzieq/.poller/inventory/static')
         ).resolve()
 
         try:

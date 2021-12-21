@@ -31,7 +31,7 @@ class StaticManager(Inventory):
 
         # Get the paths of both credential and inventory files
         inv_path = kwargs.get('inventory-path',
-                              'suzieq/.poller/inventory/static_inventory')
+                              'suzieq/.poller/inventory/static')
         self._inventory_file = Path(inv_path).joinpath(
             f'{inventory_file_name}_{worker_id}.yml').resolve()
 

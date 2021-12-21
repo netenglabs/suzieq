@@ -107,10 +107,10 @@ class Controller:
 
         self._config['manager'].update(manager_args)
         if not self._config['manager'].get('type'):
-            self._config['manager']['type'] = 'static_manager'
+            self._config['manager']['type'] = 'static'
 
         if not self._config['chunker'].get('type'):
-            self._config['chunker']['type'] = 'static_chunker'
+            self._config['chunker']['type'] = 'static'
 
     @property
     def run_once(self) -> str:
