@@ -56,14 +56,15 @@ def controller_main():
     # Two inputs are possible:
     # 1. Suzieq inventory file
     # 2. Input directory
-    parser.add_argument(
+    source_arg = parser.add_mutually_exclusive_group()
+    source_arg.add_argument(
         '-I',
         '--inventory',
         type=str,
         help='Input inventory file'
     )
 
-    parser.add_argument(
+    source_arg.add_argument(
         '-i',
         '--input-dir',
         type=str,
