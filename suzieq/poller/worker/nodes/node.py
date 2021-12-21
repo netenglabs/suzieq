@@ -25,7 +25,7 @@ from dateparser import parse
 
 from suzieq.poller.worker.services.service import RsltToken
 from suzieq.shared.utils import get_timestamp_from_junos_time, known_devtypes
-from suzieq.shared.exceptions import UnknownDevtypeError
+from suzieq.shared.exceptions import SqPollerConfError, UnknownDevtypeError
 
 logger = logging.getLogger(__name__)
 
@@ -142,9 +142,9 @@ class Node:
                 self.jump_host_key = self._decrypt_pvtkey(pvtkey_file,
                                                           passphrase)
                 if not self.jump_host_key:
-                    self.logger.error("ERROR: terminating poller")
-                    self.jump_host_key = None
-                    sys.exit(1)
+                    raise SqPollerConfError('Unable to read private key file'
+                                            f' at {pvtkey_file}'
+                                            )
         else:
             self.jump_host = None
             self.jump_host_key = None

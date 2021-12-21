@@ -6,6 +6,7 @@ import logging
 import os
 from collections import defaultdict
 from pathlib import Path
+from time import struct_time
 from typing import Callable, Dict, List, Union
 
 import textfsm
@@ -108,6 +109,63 @@ class ServiceManager:
                 services.
         """
         return self._running_svcs
+
+    @staticmethod
+    def get_service_list(service_only: str,
+                         exclude_services: str,
+                         service_directory: struct_time) -> List[str]:
+        """Constuct the list of the name of the services to be started
+        in the poller, according to the arguments passed by the user.
+        Returns a InvalidAttribute exception if any of the passed service
+        is invalid.
+
+        Args:
+            service_only (str): take only the services in the space-separated
+                list
+            exclude_service (List[str]): remove the given services from the
+                space-separated service list
+            service_directory (str): the directory where services are defined
+
+        Raises:
+            SqPollerConfError: raised in case of wrong service name in
+            'include only' or exclude list
+
+        Returns:
+            List[str]: the list of services to executed in the poller
+        """
+        if not os.path.isdir(service_directory):
+            raise SqPollerConfError(
+                'The service directory provided is not a directory'
+            )
+
+        svcs = list(Path(service_directory).glob('*.yml'))
+        allsvcs = [os.path.basename(x).split('.')[0] for x in svcs]
+        svclist = None
+
+        if service_only:
+            svclist = service_only.split()
+
+            # Check if all the given services are valid
+            notvalid = [s for s in svclist if s not in allsvcs]
+            if notvalid:
+                raise SqPollerConfError(f'Invalid svcs specified: {notvalid}. '
+                                        f'Should have been one of {allsvcs}')
+        else:
+            svclist = allsvcs
+
+        if exclude_services:
+            excluded_services = exclude_services.split()
+            # Check if all the excluded services are valid
+            notvalid = [e for e in excluded_services if e not in allsvcs]
+            if notvalid:
+                raise SqPollerConfError(f'Services {notvalid} excluded, but '
+                                        'they are not valid.')
+            svclist = list(filter(lambda x: x not in excluded_services,
+                                  svclist))
+
+        if not svclist:
+            raise SqPollerConfError('The list of services to execute is empty')
+        return svclist
 
     async def init_services(self) -> List[Service]:
         """Instantiate Service objects and prepare
@@ -231,10 +289,8 @@ class ServiceManager:
     def _get_service_list(self,
                           service_only: str,
                           exclude_services: str) -> List[str]:
-        """Constuct the list of the name of the services to be started
-        in the poller, according to the arguments passed by the user.
-        Returns a InvalidAttribute exception if any of the passed service
-        is invalid.
+        """Call the get_service_directory static method to constuct the list
+        of the name of the services to be started.
 
         Args:
             service_only (str): take only the services in the space-separated
@@ -249,35 +305,9 @@ class ServiceManager:
         Returns:
             List[str]: the list of services to executed in the poller
         """
-
-        svcs = list(Path(self.service_directory).glob('*.yml'))
-        allsvcs = [os.path.basename(x).split('.')[0] for x in svcs]
-        svclist = None
-
-        if service_only:
-            svclist = service_only.split()
-
-            # Check if all the given services are valid
-            notvalid = [s for s in svclist if s not in allsvcs]
-            if notvalid:
-                raise SqPollerConfError(f'Invalid svcs specified: {notvalid}. '
-                                        f'Should have been one of {allsvcs}')
-        else:
-            svclist = allsvcs
-
-        if exclude_services:
-            excluded_services = exclude_services.split()
-            # Check if all the excluded services are valid
-            notvalid = [e for e in excluded_services if e not in allsvcs]
-            if notvalid:
-                raise SqPollerConfError(f'Services {notvalid} excluded, but '
-                                        'they are not valid.')
-            svclist = list(filter(lambda x: x not in excluded_services,
-                                  svclist))
-
-        if not svclist:
-            raise SqPollerConfError('The list of services to execute is empty')
-        return svclist
+        return self.get_service_list(service_only,
+                                     exclude_services,
+                                     self.service_directory)
 
     # pylint: disable=unused-argument
     def _parse_nos_version(self,

@@ -8,7 +8,6 @@ import os
 import signal
 from typing import Dict
 
-from suzieq.poller.worker.coalescer_launcher import CoalescerLauncher
 from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.poller.worker.writers.output_worker_manager \
@@ -27,21 +26,15 @@ class Poller:
     def __init__(self, userargs, cfg):
         self._validate_poller_args(userargs, cfg)
 
+        # Set the worker id
+        self.worker_id = userargs.worker_id
+
         # Setup poller tasks list
         self.waiting_tasks = []
         self.waiting_tasks_lock = asyncio.Lock()
 
         # Init the node inventory object
         self.inventory = self._init_inventory(userargs, cfg)
-
-        # Disable coalescer in specific, unusual cases
-        # in case of input_dir, we also seem to leave a coalescer
-        # instance running
-        self.no_coalescer = userargs.no_coalescer
-        if userargs.run_once or userargs.input_dir:
-            self.no_coalescer = True
-        else:
-            self.coalescer_launcher = CoalescerLauncher(userargs.config, cfg)
 
         # Setup poller writers
 
@@ -119,11 +112,6 @@ class Poller:
         await self.inventory.schedule_nodes_run()
         await self.service_manager.schedule_services_run()
         await self._add_poller_task([self.output_manager.run_output_workers()])
-        # Schedule the coalescer if needed
-        if not self.no_coalescer:
-            await self._add_poller_task(
-                [self.coalescer_launcher.start_and_monitor_coalescer()]
-            )
 
         try:
             # The logic below of handling the writer worker task separately
@@ -162,18 +150,13 @@ class Poller:
         # for any kind of inventory source
         connect_timeout = cfg.get('poller', {}).get('connect-timeout', 15)
         inventory_args = {
-            'passphrase': userargs.passphrase,
-            'jump_host': userargs.jump_host,
-            'jump_host_key_file': userargs.jump_host_key_file,
-            'user_password': userargs.ask_pass,
             'connect_timeout': connect_timeout,
             'ssh_config_file': userargs.ssh_config_file,
-            'ignore_known_hosts': userargs.ignore_known_hosts
         }
 
         # Retrieve the specific inventory source to use
         inv_types = Inventory.get_plugins()
-        # TODO: define a generic way to specify the source of the inventory
+
         inventory_class = None
         source_args = {}
 
@@ -184,15 +167,14 @@ class Poller:
             # inside the specified input directory.
             inventory_class = inv_types['dir']
             source_args = {'input_dir': userargs.input_dir}
-        elif userargs.devices_file:
-            inventory_class = inv_types['file']
-            source_args = {'inventory': userargs.devices_file}
         else:
-            inventory_class = inv_types['ansible']
+            mgr_cfg = cfg.get('poller', {}).get('manager', {})
+            type_to_use = mgr_cfg.get('type', 'static_manager')
+            inventory_class = inv_types[type_to_use]
             source_args = {
-                'ansible_file': userargs.ansible_file,
-                'default_namespace': userargs.namespace
-            }
+                           **mgr_cfg,
+                           'worker-id': self.worker_id
+                          }
 
         return inventory_class(self._add_poller_task,
                                **source_args,
@@ -237,30 +219,6 @@ class Poller:
         Raises:
             SqPollerConfError: raise when the configuration is not valid
         """
-        if userargs.devices_file and userargs.namespace:
-            raise SqPollerConfError('Cannot specify both -D and -n options')
-
-        if userargs.jump_host and not userargs.jump_host.startswith('//'):
-            raise SqPollerConfError(
-                'Jump host format is //<username>@<jumphost>:<port>'
-            )
-
-        if userargs.jump_host_key_file:
-            if not userargs.jump_host:
-                raise SqPollerConfError(
-                    'Jump host key specified without a jump host'
-                )
-
-            if not os.access(userargs.jump_host_key_file, os.F_OK):
-                raise SqPollerConfError(
-                    f'Jump host key file {userargs.jump_host_key_file}'
-                    'does not exist'
-                )
-            if not os.access(userargs.jump_host_key_file, os.R_OK):
-                raise SqPollerConfError(
-                    f'Jump host key file {userargs.jump_host_key_file} '
-                    'not readable'
-                )
 
         if userargs.ssh_config_file:
             if not os.access(userargs.ssh_config_file, os.F_OK):

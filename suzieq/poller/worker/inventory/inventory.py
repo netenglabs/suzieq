@@ -32,13 +32,8 @@ class Inventory(SqPlugin):
         self._node_tasks = {}
         self.add_task_fn = add_task_fn
 
-        self.passphrase = kwargs.pop('passphrase', None)
-        self.ssh_config_file = kwargs.pop('ssh_config_file', None)
-        self.jump_host = kwargs.pop('jump_host', None)
-        self.jump_host_key_file = kwargs.pop('jump_host_key_file', None)
-        self.ignore_known_hosts = kwargs.pop('ignore_known_hosts', False)
-        self.user_password = kwargs.pop('password', None)
         self.connect_timeout = kwargs.pop('connect_timeout', 15)
+        self.ssh_config_file = kwargs.pop('ssh_config_file', None)
 
     @property
     def nodes(self) -> Dict[str, Node]:
@@ -125,12 +120,8 @@ class Inventory(SqPlugin):
             # pylint: disable=protected-access
             init_tasks += [new_node._init(
                 **host,
-                passphrase=self.passphrase,
-                ssh_config_file=self.ssh_config_file,
-                jump_host=self.jump_host,
-                jump_host_key_file=self.jump_host_key_file,
                 connect_timeout=self.connect_timeout,
-                ignore_known_hosts=self.ignore_known_hosts,
+                ssh_config_file=self.ssh_config_file
             )]
 
         for n in asyncio.as_completed(init_tasks):
@@ -143,7 +134,7 @@ class Inventory(SqPlugin):
             else:
                 logger.info(f"Added node {newnode.hostname}:{newnode.port}")
 
-            nodes_list.update({self.get_node_key(new_node): newnode})
+            nodes_list.update({self.get_node_key(newnode): newnode})
 
         return nodes_list
 
