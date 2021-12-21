@@ -110,7 +110,8 @@ class CredFile(CredentialLoader):
         no_cred_nodes = [
             f"{d.get('namespace')}.{d.get('address')}"
             for d in inventory.values()
-            if not d.get('username', None)
+            if not d.get('username', None) or
+            not (d.get('password') or d.get('ssh_keyfile'))
         ]
         if no_cred_nodes:
             raise InventorySourceError(
