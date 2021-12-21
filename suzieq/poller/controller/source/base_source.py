@@ -243,7 +243,7 @@ def _load_inventory(source_file: str) -> List[dict]:
     sources = []
     for ns in ns_list:
         source = None
-        namespace = ns.get('namespace')
+        namespace = ns.get('name')
 
         source_name = ns.get('source')
 
