@@ -65,10 +65,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         os.environ['SQ_CONTROLLER_POLLER_CRED'] = cred_key.decode()
 
         # Configure the output directory for the inventory files
-        self._inventory_path = Path(
-            config_data.get('inventory-path',
-                            'suzieq/.poller/inventory/static')
-        ).resolve()
+        self._inventory_path = Path(f'/tmp/.suzieq/inventory.{os.getpid()}') \
+            .resolve()
 
         try:
             self._inventory_path.mkdir(parents=True, exist_ok=True)
@@ -77,8 +75,9 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                 f'The inventory dir is not a directory: {self._inventory_path}'
             )
 
-        self._inventory_file_name = config_data \
-            .get("inventory-file-name", "inv")
+        os.environ['SQ_INVENTORY_PATH'] = str(self._inventory_path)
+
+        self._inventory_file_name = 'inv'
 
         # Define poller parameters
         allowed_args = ['run-once', 'exclude-services',

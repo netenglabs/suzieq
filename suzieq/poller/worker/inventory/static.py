@@ -19,7 +19,6 @@ class StaticManager(Inventory):
 
     def __init__(self, add_task_fn: Callable, **kwargs) -> None:
         worker_id = kwargs.pop('worker-id', '0')
-        inventory_file_name = kwargs.pop('inventory-file-name', 'inv')
 
         # Retrieve the key for credential file decryption
         cred_key_str = os.environ.get('SQ_CONTROLLER_POLLER_CRED', None)
@@ -30,10 +29,14 @@ class StaticManager(Inventory):
         self._cred_key = cred_key_str.encode('utf-8')
 
         # Get the paths of both credential and inventory files
-        inv_path = kwargs.get('inventory-path',
-                              'suzieq/.poller/inventory/static')
+        inv_path = os.environ.get('SQ_INVENTORY_PATH', None)
+        if not inv_path:
+            raise InventorySourceError(
+                'Unable to get the inventory path'
+            )
+
         self._inventory_file = Path(inv_path).joinpath(
-            f'{inventory_file_name}_{worker_id}.yml').resolve()
+            f'inv_{worker_id}.yml').resolve()
 
         self._cred_file = Path(inv_path).joinpath(
             f'cred_{worker_id}').resolve()
