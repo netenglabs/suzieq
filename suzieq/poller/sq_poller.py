@@ -15,7 +15,7 @@ from suzieq.poller.controller.controller import Controller
 from suzieq.poller.worker.writers.output_worker import OutputWorker
 from suzieq.shared.exceptions import InventorySourceError, PollingError, \
     SqPollerConfError
-from suzieq.shared.utils import get_log_params, init_logger, load_sq_config
+from suzieq.shared.utils import poller_log_params, init_logger, load_sq_config
 
 
 async def start_controller(user_args: argparse.Namespace, config_data: Dict):
@@ -27,8 +27,10 @@ async def start_controller(user_args: argparse.Namespace, config_data: Dict):
         config_data (Dict): the content of the Suzieq configuration file
     """
     # Init logger of the poller
-    logfile, loglevel, logsize, log_stdout = get_log_params(
-        'poller', config_data, '/tmp/sq-poller-controller.log')
+    logfile, loglevel, logsize, log_stdout = poller_log_params(
+        config_data,
+        is_controller=True
+    )
     logger = init_logger('suzieq.poller.controller', logfile,
                          loglevel, logsize, log_stdout)
 
