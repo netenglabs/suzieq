@@ -1,6 +1,10 @@
 # <a name='inventory'></a>Gathering Data: Inventory File Format
 
-The inventory file that the poller uses describes a set of sources used to gather the list of devices, credentials to authenticate in the devices, default settings and eventually puts all together defining namespaces. An extensive explanation of each secation is provided on this page. The old options `-D` and `-a` are no longer supported.
+The inventory file that the poller uses describes a set of sources used to gather the list of devices, credentials to authenticate in the devices, default settings and eventually puts all together defining namespaces. An extensive explanation of each secation is provided on this page. 
+
+!!! warning
+    Starting with version 0.16.0 the old options `-D` and `-a`  and the old inventory format are no longer supported.
+    See the section [Migrating to the new format](#migrating-to-new-format).
 
 The new inventory is structured in 4 major pieces, explained in its own section:
 
@@ -25,7 +29,7 @@ sources:
 
 - name: ansible-01
   type: ansible
-  file_path: /path/to/ansible/list
+  path: /path/to/ansible/list
 
 devices:
 - name: devices-with-jump-hosts
@@ -42,7 +46,7 @@ devices:
 auths:
 - name: credentials-from-file-0
   type: cred_file
-  file_path: /path/to/device/credentials.yaml
+  path: /path/to/device/credentials.yaml
 
 - name: suzieq-user-01
   username: suzieq
@@ -61,7 +65,7 @@ auths:
   keyfile: path/to/key
 
 namespaces:
-- namespace: testing
+- name: testing
   source: netbox-instance-123
   device: devices-00
   auth: credentials-from-file-0
@@ -137,7 +141,7 @@ Here is an example of the configuration of a netbox type source:
 
 If you use a netbox source you need to define an authentication source since credentials al pulled from netbox.
 
-## <a name='device'></a>Devices
+## <a name='devices'></a>Devices
 
 In this section you can specify some default settings to be applied to set of devices. You can bind this settings to a source in the `namespaces` section.
 
@@ -229,7 +233,7 @@ In the `namespaces` section sources, auths and devices can be put together to de
 For example the following namespace will be defined by the source named `netbox-1`, the auths named `dc-01-credentials`, and the device named `ssh-jump-devs`:
 ```yaml
 namespaces:
-- namespace: example
+- name: example
   source: netbox-1
   device: ssh-jump-devs
   auth: dc-01-credentials
@@ -248,3 +252,46 @@ sq-poller -I inventory.yaml
 ```
 
 The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above.
+
+## <a name='migrating-to-new-format'></a>Migrating Suzieq Native Inventory to new format
+
+Starting with version 0.16.0, the Suzieq Native inventory format is no longer supported as is. We need to do some small changes to use it with the new version. Here is an example of creating a new `inventory.yml` from an old suzieq native inventory format.
+
+Suppose we have this inventory valid for version 0.15.x:
+
+```yaml
+- namespace: eos
+  hosts:
+    - url: https://vagrant@192.168.123.252 devtype=eos
+    - url: ssh://vagrant@192.168.123.232  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
+    - url: https://vagrant@192.168.123.164 devtype=eos
+    - url: ssh://192.168.123.70 username=admin password=admin
+    - url: ssh://vagrant@192.168.123.230  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
+    - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
+    - url: https://vagrant@192.168.123.123 password=vagrant
+```
+The new inventory format consists of four sections (sources, auths, devices, namespaces) which are described above. We need to add the devices specified in the old inventory format in a new source inside the `sources` section and link it to a namespace.
+
+
+Here is how the new format will look like:
+
+!!! important
+    Sections [auths](#auths) and [devices](#devices) are optional. See the full documentation to know how to use them.
+
+
+```yaml
+sources:
+- name: eos-source # namespace is defined below, this is only a name to be used as reference
+  hosts:
+    - url: https://vagrant@192.168.123.252 devtype=eos
+    - url: ssh://vagrant@192.168.123.232  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
+    - url: https://vagrant@192.168.123.164 devtype=eos
+    - url: ssh://192.168.123.70 username=admin password=admin
+    - url: ssh://vagrant@192.168.123.230  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
+    - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
+    - url: https://vagrant@192.168.123.123 password=vagrant
+
+namespaces:
+- name: eos
+  source: eos-source
+```
