@@ -194,6 +194,7 @@ class Source(ControllerPlugin):
         ignore_known_hosts = None
         port = None,
         devtype = None
+
         if self._device:
             jump_host = self._device.get('jump-host')
             if jump_host and not jump_host.startswith("//"):
@@ -209,14 +210,16 @@ class Source(ControllerPlugin):
             port = self._device.get('port')
             devtype = self._device.get('devtype')
 
-        for device in inventory.values():
-            device.update({
-                'jump_host': jump_host,
-                'jump_host_key_file': jump_host_key_file,
-                'ignore_known_hosts': ignore_known_hosts,
-                'transport': device.get('transport', transport),
-                'port': device.get('port', port),
-                'devtype': device.get('devtype', devtype)
+        for node in inventory.values():
+            node.update({
+                'jump_host': node.get('jump_host', jump_host),
+                'jump_host_key_file': node.get('jump_host_key_file',
+                                               jump_host_key_file),
+                'ignore_known_hosts': node.get('ignore_known_hosts',
+                                               ignore_known_hosts),
+                'transport': node.get('transport', transport) or 'ssh',
+                'port': node.get('port', port) or 22,
+                'devtype': node.get('devtype', devtype)
             })
 
 
