@@ -1,15 +1,14 @@
-
 data-directory: ./parquet
 temp-directory: /tmp/
 
 rest:
-# Uncomment these lines if you're using your own files for the REST server
-# The certificates listed below are provided purely to get started, In any
-# secure deployment, these must be generated specifically for the site and
-# these lines uncommented and containing the location of the site-specific file.
-# rest_certfile: /suzieq/cert.pem
-# rest_keyfile: /suzieq/key.pem
-#
+  # Uncomment these lines if you're using your own files for the REST server
+  # The certificates listed below are provided purely to get started, In any
+  # secure deployment, these must be generated specifically for the site and
+  # these lines uncommented and containing the location of the site-specific file.
+  # rest_certfile: /suzieq/cert.pem
+  # rest_keyfile: /suzieq/key.pem
+  #
   API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
   logging-level: WARNING
   address: 127.0.0.1
@@ -30,15 +29,26 @@ poller:
   # logsize is in bytes
   # logsize: 10000000
   # log-stdout: True
-  source:
-    path: "suzieq/.poller/intentory/inventory.yaml"
-  manager:
-    type: static
-    # workers_count: 1
-    # inventory_path: suzieq/.poller/intentory/static_inventory
-    # inventory_file_name: static_inv
-  chunker:
-    type: static
+  # inventory-file: "suzieq/conf/etc/inventory/inventory.yaml"  # Inventory file to use if-I is not specified
+  # inventory-timeout: 10                                       # The maximum time in seconds for a source to
+  # return its node list to the poller
+  # update-period: 3600                                         # The update period of the inventory in seconds
+
+  # The manager is the component of the poller producing the final inventory
+  # and launching the workers (the components in charge of polling the nodes)
+  # Uncomment these lines to customize its behaviour
+  #
+  # manager:
+  #   workers: 1  # Number of workers polling the nodes
+  #   inventory-path: suzieq/.poller/intentory/static_inventory
+  #   inventory-file-name: static_inv
+
+  # The chunker is the component of the poller in charge of splitting the
+  # final inventory into a number of chunks equal to the number of workers
+  # Uncomment these lines to customize its behaviour
+  #
+  # chunker:
+  #   policy: sequential
 
 coalescer:
   # valid suffixes are h for hour, d for day and w for week
@@ -46,9 +56,9 @@ coalescer:
   # don't make sense because those are not fixed units. We don't yet support
   # periods less than an hour.
   period: 1h
-# Comment the next line if you don't want the archive directory. This dir is
-# purely to save the uncoalesced data in raw format to avoid data loss in case
-# of a bug in the coalescer.
+  # Comment the next line if you don't want the archive directory. This dir is
+  # purely to save the uncoalesced data in raw format to avoid data loss in case
+  # of a bug in the coalescer.
   archive-directory:
   logging-level: WARNING
   # logfile: /tmp/sq-coalescer.log

@@ -18,36 +18,35 @@ class StaticChunker(Chunker):
     """StaticChunker splits the global inventory in chunks
 
     The StaticChunker supports policies for splitting:
-    - random (default): splits the global inventory as is in chunks
+    - sequential (default): splits the global inventory as is in chunks
     - namespace: splits the global inventory without splitting namespaces
     """
 
     def __init__(self, config_data: dict = None):
 
-        self._split_policies_list = ['sequential', 'namespace']
-        self._split_policies_fn = {}
+        self.policies_list = ['sequential', 'namespace']
+        self.policies_fn = {}
 
-        for pol_name in self._split_policies_list:
+        for pol_name in self.policies_list:
             fun = getattr(self, f'split_{pol_name}', None)
             if not fun or not callable(fun):
-                raise RuntimeError(f'No split function for {pol_name}'
-                                   ' split policy')
-            self._split_policies_fn[pol_name] = fun
+                raise RuntimeError(f'Unknown {pol_name} policy')
+            self.policies_fn[pol_name] = fun
         if config_data:
-            self._split_pol = config_data \
-                .get('split_pol', self._split_policies_list[0])
+            self.policy = config_data \
+                .get('policy', self.policies_list[0])
         else:
-            self._split_pol = self._split_policies_list[0]
+            self.policy = self.policies_list[0]
 
     def chunk(self, glob_inv: dict, n_chunks: int, **kwargs) -> List[Dict]:
 
-        split_pol = kwargs.pop('split_pol', self._split_pol)
+        policy = kwargs.pop('policy', self.policy)
 
-        split_fun = self._split_policies_fn.get(split_pol, None)
-        if not split_fun:
-            raise SqPollerConfError(f'Unknown split policy {split_pol}')
+        chunk_fun = self.policies_fn.get(policy, None)
+        if not chunk_fun:
+            raise SqPollerConfError(f'Unknown policy {policy}')
 
-        inv_chunks = [c for c in split_fun(glob_inv, n_chunks) if c]
+        inv_chunks = [c for c in chunk_fun(glob_inv, n_chunks) if c]
         if len(inv_chunks) < n_chunks:
             raise SqPollerConfError(
                 'Not enough devices to split the inventory'

@@ -66,14 +66,15 @@ class Controller:
 
         self._period = args.update_period or \
             self._config.get('update-period', 3600)
-        self._inventory_timeout = self._config.get('inventory_timeout', 10)
+        self._inventory_timeout = self._config.get('inventory-timeout', 10)
         self._n_workers = args.workers or self._config.get('workers', 1)
 
         # Validate the arguments
         self._validate_controller_args(args, config_data)
 
         # Get the inventory
-        inventory_file = args.inventory or self._config['path']
+        inventory_file = args.inventory or self._config.get('inventory-file')\
+            or 'suzieq/conf/etc/inventory/inventory.yaml'
 
         if inventory_file:
             if not Path(inventory_file).is_file():
