@@ -307,21 +307,21 @@ class Service(SqPlugin):
 
         return None
 
-    def _get_device_normalizer(self, data: Dict) -> Dict:
+    def _get_device_normalizer(self, data: Dict) -> Dict:   
         '''Returns the normalizer string appropriate for the data
 
         Every NOS/version has a normalizer string specified in the
         service config file (under suzieq/config). This function
         returns that string for the given data input
         '''
-        nfn = self.defn.get(data.get("hostname"), None)
+        nfn = self.defn.get(data.get("hostname"), {})
         if not nfn:
-            nfn = self.defn.get(data.get("devtype"), None)
+            nfn = self.defn.get(data.get("devtype"), {})
         if nfn:
             # If we're riding on the coattails of another device
             # get that device's normalization function
             if isinstance(nfn, dict):
-                copynfn = nfn.get("copy", None)
+                copynfn = nfn.get("copy", {})
                 if copynfn:
                     nfn = self.defn.get(copynfn, {})
             if isinstance(nfn, list):
