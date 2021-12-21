@@ -240,6 +240,8 @@ def _load_inventory(source_file: str) -> List[dict]:
 
     ns_list = inventory.get('namespaces')
 
+    sources_list = inventory.get('sources')
+
     sources = []
     for ns in ns_list:
         source = None
@@ -247,17 +249,17 @@ def _load_inventory(source_file: str) -> List[dict]:
 
         source_name = ns.get('source')
 
-        source = inventory.get('sources').get(source_name)
+        source = sources_list.get(source_name)
 
         if ns.get('auth'):
-            auth = inventory.get('auths', {}).get(ns['auth'])
-            auth['type'] = auth.get('type') or 'static_loader'
+            auth = inventory.get('auths', []).get(ns['auth'])
+            auth['type'] = auth.get('type') or 'static'
             source['auth'] = CredentialLoader.init_plugins(auth)[0]
         else:
             source['auth'] = None
 
         if ns.get('device'):
-            device = inventory.get('devices', {}).get(ns['device'])
+            device = inventory.get('devices', []).get(ns['device'])
             source['device'] = device
         else:
             source['device'] = None
