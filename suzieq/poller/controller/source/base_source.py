@@ -212,14 +212,14 @@ class Source(ControllerPlugin):
 
         for node in inventory.values():
             node.update({
-                'jump_host': node.get('jump_host', jump_host),
-                'jump_host_key_file': node.get('jump_host_key_file',
-                                               jump_host_key_file),
-                'ignore_known_hosts': node.get('ignore_known_hosts',
-                                               ignore_known_hosts),
-                'transport': node.get('transport', transport) or 'ssh',
-                'port': node.get('port', port) or 22,
-                'devtype': node.get('devtype', devtype)
+                'jump_host': node.get('jump_host') or jump_host,
+                'jump_host_key_file': node.get('jump_host_key_file')
+                or jump_host_key_file,
+                'ignore_known_hosts': node.get('ignore_known_hosts')
+                or ignore_known_hosts,
+                'transport': node.get('transport') or transport or 'ssh',
+                'port': node.get('port') or port or 22,
+                'devtype': node.get('devtype') or devtype
             })
 
 
@@ -256,7 +256,10 @@ def _load_inventory(source_file: str) -> List[dict]:
 
         if ns.get('auth'):
             auth = inventory.get('auths', []).get(ns['auth'])
-            auth['type'] = auth.get('type') or 'static'
+            auth_type = auth.get('type') or 'static'
+            if "-" in auth_type:
+                auth_type = auth_type.replace("-", "_")
+            auth['type'] = auth_type
             source['auth'] = CredentialLoader.init_plugins(auth)[0]
         else:
             source['auth'] = None
