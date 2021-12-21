@@ -122,27 +122,18 @@ class Source(ControllerPlugin):
         Returns:
             List[str]: list of missing fields
         """
-        for device in inventory.values():
-            device_keys = set(self._inv_format)
-            for key in device.keys():
-                if key in device_keys:
-                    device_keys.remove(key)
+        for host in inventory.values():
+            host_keys = set(self._inv_format)
+            for key in host.keys():
+                if key in host_keys:
+                    host_keys.remove(key)
 
-            if 'password' in device_keys and 'ssh_keyfile' in device_keys:
-                device_keys.remove('password')
-                device_keys.remove('ssh_keyfile')
-                ret = list(device_keys)
-                ret.append('password or ssh_keyfile')
-                return ret
+            if host.get('transport') == 'https' and not host.get('devtype'):
+                raise InventorySourceError('Missing devtype in https transport'
+                                           f' for host {host.get("address")}')
 
-            if 'password' in device_keys:
-                device_keys.remove('password')
-
-            if 'ssh_keyfile' in device_keys:
-                device_keys.remove('ssh_keyfile')
-
-            if device_keys:
-                return list(device_keys)
+            if host_keys:
+                return list(host_keys)
 
         return []
 

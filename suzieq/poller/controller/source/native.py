@@ -102,9 +102,8 @@ class SqNativeFile(Source):
                     'ssh_keyfile': keyfile,
                     'hostname': None,
                 }
-                if self._validate_inventory_entry(entry):
-                    # TODO: must add a credential_loader
-                    inventory[f'{nsname}.{address}'] = entry
+                self._validate_inventory_entry(entry)
+                inventory[f'{nsname}.{address}'] = entry
             else:
                 logger.error(f'Ignoring invalid host spec.: {entry}')
 
@@ -113,7 +112,7 @@ class SqNativeFile(Source):
 
         return inventory
 
-    def _validate_inventory_entry(self, entry: Dict) -> bool:
+    def _validate_inventory_entry(self, entry: Dict):
         """Validate the entry in the inventory file
 
         Args:
@@ -123,25 +122,22 @@ class SqNativeFile(Source):
             bool: True if the entry is valid, False otherwise
         """
         if entry['transport'] not in SUPPORTED_POLLER_TRANSPORTS:
-            logger.error(f'Transport {entry["transport"]} not supported for '
-                         f'host {entry["address"]}')
-            return False
+            raise InventorySourceError(f'Transport {entry["transport"]} not '
+                                       f'supported for host {entry["address"]}'
+                                       )
 
-        if entry['transport'] == 'https' and not entry['devtype']:
-            logger.error('Missing devtype in https transport for '
-                         f'host {entry["address"]}')
-            return False
+        # if entry['transport'] == 'https' and not entry['devtype']:
+        #     raise InventorySourceError('Missing devtype in https transport'
+        #                                f' for host {entry["address"]}')
 
-        if entry['devtype'] == "panos" and not entry['apiKey']:
-            logger.error(f'Missing apiKey for panos host {entry["address"]}')
-            return False
+        # if entry['devtype'] == "panos" and not entry['apiKey']:
+        #     raise InventorySourceError(
+        #         f'Missing apiKey for panos host {entry["address"]}')
 
         if re.match(r'^[0-9a-f:.]', entry['address']):
             try:
                 ip_address(entry['address'])
             except ValueError:
-                logger.error(f'Invalid IP address {entry["address"]}'
-                             f' for host {entry["address"]}')
-                return False
-
-        return True
+                raise InventorySourceError('Invalid IP address'
+                                           f'{entry["address"]} for host '
+                                           f'{entry["address"]}')
