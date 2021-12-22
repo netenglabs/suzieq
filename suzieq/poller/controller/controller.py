@@ -275,7 +275,7 @@ class Controller:
         except asyncio.CancelledError:
             logger.warning('Received termination signal, terminating...')
 
-    def _stop(self):
+    async def _stop(self):
         """Stop the controller"""
 
         tasks = [t for t in asyncio.all_tasks()
