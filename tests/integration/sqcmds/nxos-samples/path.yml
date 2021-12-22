@@ -568,7 +568,7 @@ tests:
     {"nxos": 1500}, {"nxos": false}, {"nxos": false}]'
 - command: path unique --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
-  marks: path show nxos
+  marks: path unique nxos
   output: '[{"hostname": "leaf01", "numRows": 4}, {"hostname": "leaf02", "numRows":
     4}, {"hostname": "leaf03", "numRows": 4}, {"hostname": "leaf04", "numRows": 4},
     {"hostname": "server101", "numRows": 8}, {"hostname": "server302", "numRows":
@@ -577,7 +577,7 @@ tests:
 - command: path unique --dest=172.16.3.202 --src=172.16.1.101 --format=json --count=True
     --namespace=nxos
   data-directory: tests/data/nxos/parquet-out/
-  marks: path show nxos
+  marks: path unique nxos
   output: '[{"hostname": "leaf01", "numRows": 4}, {"hostname": "leaf02", "numRows":
     4}, {"hostname": "leaf03", "numRows": 4}, {"hostname": "leaf04", "numRows": 4},
     {"hostname": "server101", "numRows": 8}, {"hostname": "server302", "numRows":

@@ -541,6 +541,7 @@ tests:
     "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1616352404640}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --namespace=dual-evpn
     --format=json
+  marks: path show cumulus
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server101",
@@ -799,7 +800,6 @@ tests:
       "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu":
       1500, "outMtu": 65536, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup":
       "", "nexthopIp": "", "error": "Dst MTU != Src MTU", "timestamp": 1616644823003}]'
-  marks: path show cumulus
 - command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
     --format=json
   data-directory: tests/data/multidc/parquet-out/
@@ -811,6 +811,7 @@ tests:
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"error": "ERROR: Must specify namespace to run the trace in"}]'
+  marks: path show cumulus
 - command: path show --dest=172.16.4.104 --src=172.16.1.101 --namespace=dual-bgp --format=json
   data-directory: tests/data/basic_dual_bgp/parquet-out/
   error:
@@ -1662,8 +1663,7 @@ tests:
       "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp":
       1616644822254}]'
   marks: path show cumulus bridged
-- command: path show --src=172.16.1.101 --dest=172.16.253.1 --namespace=ospf-ibgp
-    --format=json
+- command: path show --src=172.16.1.101 --dest=172.16.253.1 --namespace=ospf-ibgp --format=json
   data-directory: tests/data/multidc/parquet-out/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "ospf-ibgp", "hostname": "server101",

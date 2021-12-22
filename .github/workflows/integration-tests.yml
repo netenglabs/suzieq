@@ -1,26 +1,88 @@
 name: integration-tests
-on: [push, pull_request]
+on: [pull_request]
 jobs:
-  build:
+  test:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: [3.7, 3.8]
-
+        group: [1, 2, 3, 4]
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
-    - name: Install poetry
-      run: |
-        pip install --upgrade pip
-        pip install poetry
+
+    - name: Install Poetry
+      uses: snok/install-poetry@v1
+      with:
+        virtualenvs-create: true
+        virtualenvs-in-project: true
+
+    - name: Load cached venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v2
+      with:
+        path: .venv
+        key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
+
     - name: Install dependencies
-      run: |
-        poetry install -v
-        cp build/suzieq-cfg-travis.yml suzieq-cfg.yml
+      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
+      run: poetry install --no-interaction --no-root
+
+    - name: Install library
+      run: poetry install --no-interaction
+
+    - name: Set up suzieq config
+      run: cp build/suzieq-cfg-travis.yml suzieq-cfg.yml
+
+    - name: Install pytest split
+      run: poetry run pip install pytest-split
+
+    - name: Prepare dir for caching durations
+      run: mkdir test_durations
+
+    - name: Get durations from cache
+      uses: actions/cache@v2
+      with:
+        path: test_durations
+        # artificial cache miss to always save at the end of the job and avoid out of sync test runs
+        key: test-durations-split-${{ github.run_id }}-${{ github.run_number}}-${{ matrix.group }}-${{ matrix.python-version }}
+        restore-keys: |
+          test-durations
+
     - name: pytest
-      run: |
-        poetry run pytest
+      run: poetry run pytest --splits 4 --group ${{ matrix.group }} --store-durations --durations-path test_durations/.test_durations_${{ matrix.python-version }}
+
+    - name: Upload partial durations
+      uses: actions/upload-artifact@v2
+      with:
+        retention-days: 1
+        name: duration-chunk-${{ matrix.group }}-python-${{ matrix.python-version }}
+        path: test_durations
+
+  update_durations:
+    name: Merge and update test durations
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Get durations from cache
+        uses: actions/cache@v2
+        with:
+          path: test_durations
+          # artificial cache miss to always save at the end of the job and avoid out of sync test runs
+          key: test-durations-${{ github.sha }}
+          restore-keys: |
+            test-durations
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v2
+
+      - name: Merge test durations
+        run: python3 tests/utilities/merge_test_durations_ci.py
