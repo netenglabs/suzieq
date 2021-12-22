@@ -132,8 +132,8 @@ Now you can set the path of the ansible inventory in the source:
 
 ### <a name='source-netbox'></a>Netbox
 
-Netbox is often used to store devices type, management address and other useful information to be used in network automation. Suzieq can pull device data from Netbox selecting them by tag (currently only one per each source). To do so a token to access the netbox API is required as well as the netbox instance url.
-The data are pulled from netbox periodically, the period can be set to any desired number in seconds (default is 3600).
+[Netbox](https://netbox.readthedocs.io/en/stable/) is often used to store devices type, management address and other useful information to be used in network automation. Suzieq can pull device data from Netbox selecting them by tag (currently only one per each source). To do so a token to access the netbox API is required as well as the netbox instance url.
+Since Netbox is a _dynamic source_, the data are periodically pulled, the period can be set to any desired number in seconds (default is 3600.
 
 Here is an example of the configuration of a netbox type source:
 ```yaml
@@ -142,7 +142,7 @@ Here is an example of the configuration of a netbox type source:
   token: your-api-token-here
   url: http://127.0.0.1:8000
   tag: suzieq-demo    # if not present, default is "suzieq"
-  period: 3600
+  period: 3600 # How frequently Netbox should be polled
 ```
 
 !!! warning
