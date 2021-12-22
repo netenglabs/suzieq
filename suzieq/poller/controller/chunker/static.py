@@ -44,14 +44,20 @@ class StaticChunker(Chunker):
 
         chunk_fun = self.policies_fn.get(policy, None)
         if not chunk_fun:
-            raise SqPollerConfError(f'Unknown policy {policy}')
+            raise SqPollerConfError(f'Unknown chunking policy {policy}')
 
         inv_chunks = [c for c in chunk_fun(glob_inv, n_chunks) if c]
         if len(inv_chunks) < n_chunks:
-            raise SqPollerConfError(
-                'Not enough devices to split the inventory'
-                f'into {n_chunks} chunks'
-            )
+            if self.policy == 'sequential':
+                raise SqPollerConfError(
+                    'Not enough devices to split the inventory'
+                    f'into {n_chunks} chunks'
+                )
+            elif self.policy == 'namespace':
+                raise SqPollerConfError(
+                    'Not enough namespaces to split the inventory'
+                    f'into {n_chunks} chunks'
+                )
         return inv_chunks
 
     def split_sequential(self, glob_inv: dict, n_chunks: int) -> List[Dict]:
