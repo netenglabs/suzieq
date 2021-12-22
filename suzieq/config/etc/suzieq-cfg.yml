@@ -29,9 +29,9 @@ poller:
   # logsize is in bytes
   # logsize: 10000000
   # log-stdout: True
-  # inventory-file: "suzieq/conf/etc/inventory/inventory.yaml"  # Inventory file to use if-I is not specified
+  # inventory-file: "suzieq/conf/etc/inventory/inventory.yaml"  # Inventory file to use if it is not specified
   # inventory-timeout: 10                                       # The maximum time in seconds for a source to
-  # return its node list to the poller
+                                                                # return its node list to the poller
   # update-period: 3600                                         # The update period of the inventory in seconds
 
   # The manager is the component of the poller producing the final inventory
@@ -40,8 +40,6 @@ poller:
   #
   # manager:
   #   workers: 1  # Number of workers polling the nodes
-  #   inventory-path: suzieq/.poller/intentory/static_inventory
-  #   inventory-file-name: static_inv
 
   # The chunker is the component of the poller in charge of splitting the
   # final inventory into a number of chunks equal to the number of workers
