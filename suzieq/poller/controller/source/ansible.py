@@ -85,8 +85,9 @@ class AnsibleInventory(Source):
                 password = entry['ansible_password']
 
             # Retrieve password information
-            devtype = entry.get('ansible_network_os', None)
-            if devtype == 'eos':
+            devtype = None
+            if entry.get('ansible_network_os') in ['eos', 'panos']:
+                devtype = entry.get('ansible_network_os')
                 transport = 'https'
                 port = 443
             else:
