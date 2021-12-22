@@ -82,7 +82,9 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._valid_fields.extend(['token', 'url', 'tag', 'period'])
 
         if not self._auth:
-            return ["Netbox must have an 'auth' set"]
+            raise InventorySourceError(
+                f"{self._name} Netbox must have an 'auth' set in the "
+                "'namespaces' section")
 
         super()._validate_config(input_data)
 
