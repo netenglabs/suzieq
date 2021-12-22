@@ -208,8 +208,9 @@ class BgpObj(SqPandasEngine):
 
         kwargs.pop("columns", None)  # Loose whatever's passed
         status = kwargs.pop("status", 'all')
+        state = kwargs.pop('state', '!dynamic')
 
-        df = self.get(columns=assert_cols, state='!dynamic', **kwargs)
+        df = self.get(columns=assert_cols, state=state, **kwargs)
         if 'error' in df:
             return df
 

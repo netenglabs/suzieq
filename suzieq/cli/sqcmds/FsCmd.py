@@ -1,5 +1,5 @@
-import time
-from nubia import command, argument
+from nubia import command
+from suzieq.cli.nubia_patch import argument
 import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqCommand
@@ -7,20 +7,25 @@ from suzieq.sqobjects.fs import FsObj
 
 
 @command("fs", help="Act on File System data")
+@argument("used_percent", description="must be of the form "
+          "[<|<=|>=|>|!]value. Eg: '<=20'")
+@argument("mountPoint", description="Mount point inside the FileSystem")
 class FsCmd(SqCommand):
     """Filesystem information such as total disk space, filesystems etc"""
 
     def __init__(
-        self,
-        engine: str = "",
-        hostname: str = "",
-        start_time: str = "",
-        end_time: str = "",
-        view: str = "",
-        namespace: str = "",
-        format: str = "",  # pylint: disable=redefined-builtin
-        query_str: str = " ",
-        columns: str = "default",
+            self,
+            engine: str = "",
+            hostname: str = "",
+            start_time: str = "",
+            end_time: str = "",
+            view: str = "",
+            namespace: str = "",
+            format: str = "",  # pylint: disable=redefined-builtin
+            query_str: str = " ",
+            columns: str = "default",
+            used_percent: str = '',
+            mountPoint: str = ''
     ) -> None:
         super().__init__(
             engine=engine,
@@ -34,21 +39,17 @@ class FsCmd(SqCommand):
             query_str=query_str,
             sqobj=FsObj,
         )
+        self.lvars = {
+            'usedPercent': used_percent,
+            'mountPoint': mountPoint.split()
+        }
 
     @command("show")
-    @argument("mountPoint", description="Mount point inside the FileSystem")
-    @argument("used_percent", description="must be of the form "
-              "[<|<=|>=|>|!]value. Eg: '<=20'")
-    def show(self, mountPoint: str = '', used_percent: str = ''):
+    def show(self):
         """Show File System info
         """
         # Get the default display field names
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
+        used_percent = self.lvars.get('usedPercent')
         if used_percent and not any(used_percent.startswith(x)
                                     for x in ['<=', '>=', '<', '>', '!']):
             try:
@@ -58,16 +59,7 @@ class FsCmd(SqCommand):
                     {'error': ['ERROR invalid used-percent operation']})
                 return self._gen_output(df)
 
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname,
-                                columns=self.columns,
-                                namespace=self.namespace,
-                                mountPoint=mountPoint.split(),
-                                usedPercent=used_percent,
-                                query_str=self.query_str,
-                                )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        return super().show()
 
     @command("summarize")
     def summarize(self, **kwargs):

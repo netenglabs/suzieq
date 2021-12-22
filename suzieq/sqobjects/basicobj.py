@@ -65,8 +65,8 @@ class SqObject(SqPlugin):
 
         self._addnl_filter = self._addnl_fields = []
         self._valid_get_args = self._valid_assert_args = []
-        self._valid_summarize_args = ['namespace', 'hostname', 'query_str']
         self._valid_arg_vals = self._valid_find_args = []
+        self._valid_summarize_args = []
 
     @property
     def all_schemas(self):
@@ -135,7 +135,7 @@ class SqObject(SqPlugin):
 
     def validate_summarize_input(self, **kwargs):
         '''Validate the values of the summarize function'''
-        self._check_input_for_valid_args(self._valid_summarize_args, **kwargs)
+        self._check_input_for_valid_args(self._valid_get_args, **kwargs)
 
     def validate_columns(self, columns: typing.List[str]) -> bool:
         """Validate that the provided columns are valid for the table
@@ -308,6 +308,10 @@ class SqObject(SqPlugin):
                     'description': x.get('description', '')}
                    for x in sch.get_raw_schema()]
         df = pd.DataFrame.from_dict(entries).sort_values('name')
+
+        query_str = kwargs.get('query_str', '')
+        if query_str:
+            return df.query(query_str).reset_index(drop=True)
 
         return df
 

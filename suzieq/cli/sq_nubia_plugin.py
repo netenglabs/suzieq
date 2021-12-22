@@ -34,11 +34,7 @@ class NubiaSuzieqPlugin(PluginInterface):
 
     def get_commands(self):
 
-        cmds = [AutoCommand(x) for x in SqCommand.get_plugins().values()]
-        cmds.append(AutoCommand(context_commands.set_ctxt))
-        cmds.append(AutoCommand(context_commands.clear_ctxt))
-        cmds.append(context_commands.SqHelpCommand())
-        return cmds
+        return []
 
     def get_opts_parser(self, add_help=True):
         """

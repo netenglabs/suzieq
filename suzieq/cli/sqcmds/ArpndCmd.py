@@ -1,25 +1,37 @@
-import time
-from nubia import command, argument
+from nubia import command
+from suzieq.cli.nubia_patch import argument
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.arpnd import ArpndObj
 
 
 @command("arpnd", help="Act on ARP/ND data")
+@argument("prefix",
+          description=("Show all the addresses in this "
+                       "subnet prefix (in quotes)"))
+@argument("address",
+          description="IP address, in quotes, to qualify output")
+@argument("macaddr",
+          description="MAC address, in quotes, to qualify output")
+@argument("oif", description="outgoing interface to qualify")
 class ArpndCmd(SqCommand):
     """ARP/Neighbor Discovery information"""
 
     def __init__(
-        self,
-        engine: str = "",
-        hostname: str = "",
-        start_time: str = "",
-        end_time: str = "",
-        view: str = "",
-        namespace: str = "",
-        format: str = "",  # pylint: disable=redefined-builtin
-        columns: str = "default",
-        query_str: str = ' ',
+            self,
+            engine: str = "",
+            hostname: str = "",
+            start_time: str = "",
+            end_time: str = "",
+            view: str = "",
+            namespace: str = "",
+            format: str = "",  # pylint: disable=redefined-builtin
+            columns: str = "default",
+            query_str: str = ' ',
+            prefix: str = '',
+            address: str = '',
+            macaddr: str = '',
+            oif: str = '',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -33,36 +45,9 @@ class ArpndCmd(SqCommand):
             query_str=query_str,
             sqobj=ArpndObj,
         )
-
-    @command("show")
-    @argument("address",
-              description="IP address, in quotes, to qualify output")
-    @argument("macaddr",
-              description="MAC address, in quotes, to qualify output")
-    @argument("prefix",
-              description=("Show all the addresses in this "
-                           "subnet prefix (in quotes)"))
-    @argument("oif", description="outgoing interface to qualify")
-    def show(self, address: str = "", macaddr: str = "",
-             prefix: str = "", oif: str = ""):
-        """Show ARP/ND info
-        """
-        # Get the default display field names
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname,
-                                ipAddress=address.split(),
-                                prefix=prefix.split(),
-                                oif=oif.split(),
-                                columns=self.columns,
-                                namespace=self.namespace,
-                                query_str=self.query_str,
-                                macaddr=macaddr.split()
-                                )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
+        self.lvars = {
+            'prefix': prefix.split(),
+            'ipAddress': address.split(),
+            'macaddr': macaddr.split(),
+            'oif': oif.split(),
+        }

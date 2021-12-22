@@ -1,5 +1,3 @@
-import time
-
 from nubia import command
 
 from suzieq.cli.sqcmds.command import SqCommand
@@ -21,24 +19,3 @@ class MlagCmd(SqCommand):
                          view=view, namespace=namespace,
                          format=format, query_str=query_str, columns=columns,
                          sqobj=MlagObj)
-
-    @command('show')
-    def show(self):
-        """Show MLAG info
-        """
-        # Get the default display field names
-        now = time.time()
-        if self.columns != ['default']:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname,
-                                columns=self.columns, query_str=self.query_str,
-                                namespace=self.namespace)
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if not df.empty and 'state' in df.columns:
-            return self._gen_output(df.query('state != "disabled"'))
-        else:
-            return self._gen_output(df)

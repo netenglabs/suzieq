@@ -14,7 +14,7 @@ class BgpObj(SqObject):
             'state': ['Established', 'NotEstd', 'dynamic', ''],
             'status': ['all', 'pass', 'fail'],
         }
-        self._valid_assert_args = ['namespace', 'hostname', 'vrf', 'status']
+        self._valid_assert_args = self._valid_get_args + ['status']
 
     def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''
