@@ -56,7 +56,7 @@ class InventoryCmd(SqCommand):
         if model:
             model = re.split(r"\s+(?=[^']*(?:'))", model)
         else:
-            vendor = []
+            model = []
 
         self.lvars = {
             'type': type.split(),
