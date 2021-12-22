@@ -117,7 +117,7 @@ class BgpService(Service):
             afistr = (afistr
                       .replace('inet-vpn', 'vpnv4')
                       .replace('inet6-vpn', 'vpnv6')
-                      .replace('-', ' ')
+                      .replace('-', ' ', 1)
                       .replace('inet6', 'ipv6')
                       .replace('inet', 'ipv4')
                       .replace('flow', 'flowspec')
