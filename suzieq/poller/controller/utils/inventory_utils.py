@@ -97,6 +97,10 @@ def validate_raw_inventory(inventory: dict):
                                            f'{mf} item')
     # validate 'namespaces'
     for ns in inventory.get('namespaces'):
+        if not ns.get('name'):
+            raise InventorySourceError(
+                "all namespaces need 'name' field")
+
         if not ns.get('source'):
             raise InventorySourceError(
                 "all namespaces need 'source' field")

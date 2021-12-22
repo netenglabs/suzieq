@@ -608,6 +608,9 @@ class BgpService(Service):
                 drop_indices.append(i)
                 continue
 
+            if entry.get("state", "") not in ["Established", "dynamic"]:
+                entry["state"] = "NotEstd"
+
             peerGroup = entry.get("_peerGroup")
             entry["softReconfig"] = softReconfDict.get(peerGroup)
 

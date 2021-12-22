@@ -504,6 +504,32 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
     return query_str
 
 
+def poller_log_params(cfg: dict, is_controller=False, worker_id=0) -> tuple:
+    """Get the log file, level and size for the given program from config
+    
+    It gets the base file name of the configuration file and appends a prefix
+    which depends on the component of the poller
+
+    Args:
+        cfg (dict): The config dictionary
+        is_controller (bool, optional): If the component is the controller. 
+            Defaults to False.
+        worker_id (int, optional): The poller worker id. Defaults to 0.
+
+    Returns:
+        tuple: [description]
+    """
+    def_logfile = '/tmp/sq-poller.log'
+    logfile, loglevel, logsize, log_stdout = get_log_params(
+        'poller', cfg, def_logfile)
+    file_name = logfile.split('.log')[0]
+    if is_controller:
+        file_name += '-controller.log'
+    else:
+        file_name += f'-{worker_id}.log'
+    return file_name, loglevel, logsize, log_stdout
+
+
 def get_log_params(prog: str, cfg: dict, def_logfile: str) -> tuple:
     """Get the log file, level and size for the given program from config
 

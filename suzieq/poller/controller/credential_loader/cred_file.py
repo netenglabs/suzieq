@@ -47,72 +47,74 @@ class CredFile(CredentialLoader):
                 raise InventorySourceError(
                     f'{self._name} All namespaces must have a name')
 
-            ns_devices = ns_credentials.get('devices', [])
-            if not ns_devices:
+            ns_nodes = ns_credentials.get('devices', [])
+            if not ns_nodes:
                 logger.warning(
                     f'{self._name} No devices in {namespace} namespace')
                 continue
 
-            for dev_info in ns_devices:
-                if dev_info.get('hostname'):
-                    dev_id = dev_info['hostname']
-                    dev_key = 'hostname'
-                elif dev_info.get('address'):
-                    dev_id = dev_info['address']
-                    dev_key = 'address'
+            for node_info in ns_nodes:
+                if node_info.get('hostname'):
+                    node_id = node_info['hostname']
+                    node_key = 'hostname'
+                elif node_info.get('address'):
+                    node_id = node_info['address']
+                    node_key = 'address'
                 else:
                     raise InventorySourceError(
-                        f'{self._name} Devices must have a hostname or '
+                        f'{self._name} Nodes must have a hostname or '
                         'address')
 
-                device = [x for x in inventory.values()
-                          if x.get(dev_key) == dev_id]
-                if not device:
+                node = [x for x in inventory.values()
+                        if x.get(node_key) == node_id]
+                if not node:
                     logger.warning(
-                        f'{self._name} Unknown device called {dev_id}')
+                        f'{self._name} Unknown node called {node_id}')
                     continue
 
-                device = device[0]
-                if namespace != device.get('namespace', ''):
+                node = node[0]
+                if namespace != node.get('namespace', ''):
                     raise InventorySourceError(
-                        f'The device {dev_id} does not belong the namespace '
+                        f'The device {node_id} does not belong the namespace '
                         f'{namespace}'
                     )
-                if dev_info.get('keyfile'):
+                if node_info.get('keyfile'):
                     # rename 'keyfile' into 'ssh_keyfile'
-                    dev_info['ssh_keyfile'] = dev_info.pop('keyfile')
+                    node_info['ssh_keyfile'] = node_info.pop('keyfile')
 
-                if 'passphrase' not in dev_info:
-                    if dev_info.get('ssh-key-pass'):
+                if 'passphrase' not in node_info:
+                    if node_info.get('ssh-key-pass'):
                         # rename 'ssh-key-pass' into 'passphrase'
-                        dev_info['passphrase'] = dev_info.pop('key-passphrase')
+                        node_info['passphrase'] = node_info.pop(
+                            'key-passphrase')
                     else:
                         # set it to None
-                        dev_info['passphrase'] = None
+                        node_info['passphrase'] = None
 
-                dev_cred = dev_info.copy()
+                node_cred = node_info.copy()
 
-                dev_cred.pop(dev_key)
+                node_cred.pop(node_key)
 
-                if not dev_cred.get('password') and \
-                        not dev_cred.get('ssh_keyfile'):
+                if not node_cred.get('password') and \
+                        not node_cred.get('ssh_keyfile'):
                     # no configuration in device, use config ones
-                    dev_cred.update({
+                    node_cred.update({
                         'passphrase': self._conf_passphrase,
                         'ssh_key_file': self._conf_keyfile,
                         'password': self._conf_password
                     })
 
-                self.write_credentials(device, dev_cred)
+                self.write_credentials(node, node_cred)
 
         # check if all devices has credentials
-        no_cred_devs = [
+        no_cred_nodes = [
             f"{d.get('namespace')}.{d.get('address')}"
             for d in inventory.values()
-            if not d.get('username', None)
+            if not d.get('username', None) or
+            not (d.get('password') or d.get('ssh_keyfile'))
         ]
-        if len(no_cred_devs) != 0:
+        if no_cred_nodes:
             raise InventorySourceError(
-                'Some devices are left without credentials: {}'
-                .format(no_cred_devs)
+                'No credentials to log into the following nodes: '
+                f'{no_cred_nodes}'
             )

@@ -12,7 +12,7 @@ import uvloop
 from suzieq.poller.worker.poller import Poller
 from suzieq.poller.worker.writers.output_worker import OutputWorker
 from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
-from suzieq.shared.utils import get_log_params, init_logger, load_sq_config
+from suzieq.shared.utils import poller_log_params, init_logger, load_sq_config
 
 
 async def start_worker(userargs: argparse.Namespace, cfg: Dict):
@@ -23,8 +23,10 @@ async def start_worker(userargs: argparse.Namespace, cfg: Dict):
         cfg (Dict): the content of the Suzieq config file
     """
     # Init logger of the poller
-    logfile, loglevel, logsize, log_stdout = get_log_params(
-        'poller', cfg, f'/tmp/sq-poller-{userargs.worker_id}.log')
+    logfile, loglevel, logsize, log_stdout = poller_log_params(
+        cfg,
+        worker_id=userargs.worker_id
+    )
     logger = init_logger('suzieq.poller.worker', logfile,
                          loglevel, logsize, log_stdout)
 

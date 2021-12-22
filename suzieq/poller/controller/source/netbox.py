@@ -210,9 +210,6 @@ class Netbox(Source, InventoryAsyncPlugin):
 
             inventory[f'{namespace}.{address}'] = {
                 'address': address,
-                'port': self._device.get('port') or 22,
-                'transport': self._device.get(
-                    'transport') or 'ssh',
                 'namespace': namespace,
                 'hostname': hostname,
             }

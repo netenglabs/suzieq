@@ -498,12 +498,6 @@ class Node:
             if output[2]['status'] == 0:
                 self._extract_nos_version(output[2].get('data', ''))
 
-        elif output[4]['status'] == 0:
-            data = output[0]["data"]
-            version_str = data
-            if "paloaltonetworks" in data:
-                devtype = "panos"
-
         if not devtype:
             if not self.current_exception:
                 self.logger.info(

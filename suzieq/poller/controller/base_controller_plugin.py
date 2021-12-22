@@ -22,6 +22,9 @@ class ControllerPlugin(SqPlugin):
             List[Dict]: list of generated plugins
         """
 
+        if plugin_conf is None:
+            raise RuntimeError('Plugin configuration cannot be None')
+
         ptype = plugin_conf.get("type")
         if not ptype:
             raise SqPollerConfError('No default type provided')

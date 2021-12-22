@@ -169,8 +169,10 @@ class Poller:
             source_args = {'input_dir': userargs.input_dir}
         else:
             mgr_cfg = cfg.get('poller', {}).get('manager', {})
-            type_to_use = mgr_cfg.get('type', 'static_manager')
-            inventory_class = inv_types[type_to_use]
+            type_to_use = mgr_cfg.get('type', 'static')
+            inventory_class = inv_types.get(type_to_use)
+            if not inventory_class:
+                raise SqPollerConfError(f'No inventory {type_to_use} found')
             source_args = {
                            **mgr_cfg,
                            'worker-id': self.worker_id

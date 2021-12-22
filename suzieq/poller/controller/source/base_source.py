@@ -122,27 +122,18 @@ class Source(ControllerPlugin):
         Returns:
             List[str]: list of missing fields
         """
-        for device in inventory.values():
-            device_keys = set(self._inv_format)
-            for key in device.keys():
-                if key in device_keys:
-                    device_keys.remove(key)
+        for host in inventory.values():
+            host_keys = set(self._inv_format)
+            for key in host.keys():
+                if key in host_keys:
+                    host_keys.remove(key)
 
-            if 'password' in device_keys and 'ssh_keyfile' in device_keys:
-                device_keys.remove('password')
-                device_keys.remove('ssh_keyfile')
-                ret = list(device_keys)
-                ret.append('password or ssh_keyfile')
-                return ret
+            if host.get('transport') == 'https' and not host.get('devtype'):
+                raise InventorySourceError('Missing devtype in https transport'
+                                           f' for host {host.get("address")}')
 
-            if 'password' in device_keys:
-                device_keys.remove('password')
-
-            if 'ssh_keyfile' in device_keys:
-                device_keys.remove('ssh_keyfile')
-
-            if device_keys:
-                return list(device_keys)
+            if host_keys:
+                return list(host_keys)
 
         return []
 
@@ -194,6 +185,7 @@ class Source(ControllerPlugin):
         ignore_known_hosts = None
         port = None,
         devtype = None
+
         if self._device:
             jump_host = self._device.get('jump-host')
             if jump_host and not jump_host.startswith("//"):
@@ -209,14 +201,16 @@ class Source(ControllerPlugin):
             port = self._device.get('port')
             devtype = self._device.get('devtype')
 
-        for device in inventory.values():
-            device.update({
-                'jump_host': jump_host,
-                'jump_host_key_file': jump_host_key_file,
-                'ignore_known_hosts': ignore_known_hosts,
-                'transport': device.get('transport', transport),
-                'port': device.get('port', port),
-                'devtype': device.get('devtype', devtype)
+        for node in inventory.values():
+            node.update({
+                'jump_host': node.get('jump_host') or jump_host,
+                'jump_host_key_file': node.get('jump_host_key_file')
+                or jump_host_key_file,
+                'ignore_known_hosts': node.get('ignore_known_hosts')
+                or ignore_known_hosts,
+                'transport': node.get('transport') or transport or 'ssh',
+                'port': node.get('port') or port or 22,
+                'devtype': node.get('devtype') or devtype
             })
 
 
@@ -240,24 +234,29 @@ def _load_inventory(source_file: str) -> List[dict]:
 
     ns_list = inventory.get('namespaces')
 
+    sources_list = inventory.get('sources')
+
     sources = []
     for ns in ns_list:
         source = None
-        namespace = ns.get('namespace')
+        namespace = ns.get('name')
 
         source_name = ns.get('source')
 
-        source = inventory.get('sources').get(source_name)
+        source = sources_list.get(source_name)
 
         if ns.get('auth'):
-            auth = inventory.get('auths', {}).get(ns['auth'])
-            auth['type'] = auth.get('type') or 'static_loader'
+            auth = inventory.get('auths', []).get(ns['auth'])
+            auth_type = auth.get('type') or 'static'
+            if "-" in auth_type:
+                auth_type = auth_type.replace("-", "_")
+            auth['type'] = auth_type
             source['auth'] = CredentialLoader.init_plugins(auth)[0]
         else:
             source['auth'] = None
 
         if ns.get('device'):
-            device = inventory.get('devices', {}).get(ns['device'])
+            device = inventory.get('devices', []).get(ns['device'])
             source['device'] = device
         else:
             source['device'] = None
