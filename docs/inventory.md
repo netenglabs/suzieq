@@ -45,7 +45,7 @@ devices:
 
 auths:
 - name: credentials-from-file-0
-  type: cred_file
+  type: cred-file
   path: /path/to/device/credentials.yaml
 
 - name: suzieq-user-01
@@ -169,7 +169,7 @@ Moreover if all the devices inside a namespace run the same NOS, it is possible 
 ```
 ## <a name='auths'></a>Auths
 
-This section is optional in case Suzieq native and ansible source types. Here a set of default authentication sources can be defined. Currently a `cred_file` type and a static default type are defined. This way if credentials are not defined in the sources, default values can be applied.
+This section is optional in case Suzieq native and ansible source types. Here a set of default authentication sources can be defined. Currently a `cred-file` type and a static default type are defined. This way if credentials are not defined in the sources, default values can be applied.
 
 Currently for both SSH and REST API, the only supported is username and password, therefore you will not be able to set api keys.
 
@@ -196,22 +196,23 @@ In case a private key is used to authenticate:
 Where `key-passphrase` is the passphrase of the private key. As the `password` field, it can be set as plaintext, env variable or to be asked to the user.
 
 
-The `cred_file` type is mandatory in case a Netbox source is used, in the `auths` section you can then define:
+The `cred-file` type is mandatory in case a Netbox source is used, in the `auths` section you can then define:
 
 ```yaml
 - name: credentials-from-file-0
-  type: cred_file
+  type: cred-file
   path: /path/to/device/credentials.yaml
 ```
 
-### <a name='cred_file'></a>Credential file
+### <a name='cred-file'></a>Credential file
 
-A `cred_file` is an external file where you store credentials for all the devices.
+A `cred-file` is an external file where you store credentials for all the devices.
 Each device credentials can be specified via its `hostname` or its `address`
 (with Netbox, it's encouraged the usage of `hostname`).
 The credential file should look like this:
 ```yaml
 - namespace: testing
+  devices:
   - hostname: leaf01
     password: my-password
     username: vagrant
