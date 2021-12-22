@@ -16,7 +16,12 @@ class CredFile(CredentialLoader):
     """Reads devices credentials from a file and write them on the inventory
     """
 
+    def _validate_config(self, config: Dict):
+        self._valid_fields.append('path')
+        return super()._validate_config(config)
+
     def init(self, init_data: dict):
+
         dev_cred_file = Path(init_data.get('path', ''))
         if not dev_cred_file:
             raise InventorySourceError(
