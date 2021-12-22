@@ -169,7 +169,7 @@ tests:
   data-directory: tests/data/junos/parquet-out/
   marks: path show junos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "leaf02",
-    "iif": "xe-0/0/1.0", "oif": "xe-0/0/0.0", "vrf": "default", "isL2": false, "overlay":
+    "iif": "xe-0/0/0.0", "oif": "xe-0/0/0.0", "vrf": "default", "isL2": false, "overlay":
     false, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200, "protocol": "ospf", "ipLookup":
     "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "10.0.0.21", "timestamp":
     1623025802263}, {"pathid": 1, "hopCount": 1, "namespace": "junos", "hostname":
@@ -179,9 +179,9 @@ tests:
     "10.0.0.11", "timestamp": 1623025802890}, {"pathid": 1, "hopCount": 2, "namespace":
     "junos", "hostname": "leaf01", "iif": "xe-0/0/0.0", "oif": "xe-0/0/0.0", "vrf":
     "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9200, "outMtu":
-    9200, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp":
+    65536, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp":
     "", "timestamp": 1623025803099}, {"pathid": 2, "hopCount": 0, "namespace": "junos",
-    "hostname": "leaf02", "iif": "xe-0/0/1.0", "oif": "xe-0/0/1.0", "vrf": "default",
+    "hostname": "leaf02", "iif": "xe-0/0/0.0", "oif": "xe-0/0/1.0", "vrf": "default",
     "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9200, "outMtu": 9200,
     "protocol": "ospf", "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup":
     "", "nexthopIp": "10.0.0.22", "timestamp": 1623025802263}, {"pathid": 2, "hopCount":
@@ -191,7 +191,7 @@ tests:
     "", "macLookup": "", "nexthopIp": "10.0.0.11", "timestamp": 1623025802688}, {"pathid":
     2, "hopCount": 2, "namespace": "junos", "hostname": "leaf01", "iif": "xe-0/0/1.0",
     "oif": "xe-0/0/0.0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
-    true, "inMtu": 9200, "outMtu": 9200, "protocol": "", "ipLookup": "", "vtepLookup":
+    true, "inMtu": 9200, "outMtu": 65536, "protocol": "", "ipLookup": "", "vtepLookup":
     "", "macLookup": "", "nexthopIp": "", "timestamp": 1623025803099}]'
 - command: path summarize --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=junos
   data-directory: tests/data/junos/parquet-out/
