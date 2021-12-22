@@ -73,19 +73,30 @@ class Controller:
         self._validate_controller_args(args, config_data)
 
         # Get the inventory
-        inventory_file = args.inventory or self._config.get('inventory-file')\
-            or 'suzieq/conf/etc/inventory/inventory.yaml'
+        default_inventory_file = 'suzieq/config/etc/inventory.yaml'
+        inventory_file = None
 
-        if inventory_file:
+        if not self._input_dir:
+            inventory_file = args.inventory or \
+                             self._config.get('inventory-file') or \
+                             default_inventory_file
             if not Path(inventory_file).is_file():
+                if inventory_file != default_inventory_file:
+                    raise SqPollerConfError(
+                        f'Inventory file not found at {inventory_file}'
+                    )
+                else:
+                    raise SqPollerConfError(
+                        'Inventory file not found in the default location:'
+                        f'{inventory_file}, use -I argument to provide it, '
+                        'use instead -i to provide an input directory '
+                        'and simulate an input.'
+                    )
+        else:
+            if not Path(self._input_dir).is_dir():
                 raise SqPollerConfError(
-                    f'Inventory file not found at {inventory_file}'
+                    f'{self._input_dir} is not a valid directory'
                 )
-        elif not self._input_dir:
-            raise SqPollerConfError(
-                'No inventory file provided: use -I argument to provide it, '
-                'use -i to provide an input directory to simulate an input.'
-            )
 
         source_args = {'run-once': self._run_once,
                        'path': inventory_file}
