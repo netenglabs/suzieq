@@ -1442,7 +1442,7 @@ class SonicNode(Node):
 
 class PanosNode(Node):
 
-    def _init(self, **kwargs):
+    async def _init(self, **kwargs):
         super()._init(**kwargs)
         self.devtype = "panos"
 
