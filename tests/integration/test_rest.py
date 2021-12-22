@@ -63,7 +63,7 @@ FILTERS = ['',  # for vanilla commands without any filter
            'bd=',
            'state=pass',
            'oif=eth1.4',
-           'localOnly=True',
+           'local=True',
            'prefix=10.0.0.101/32',
            'protocol=bgp',
            'protocol=bgp&protocol=ospf',
@@ -131,7 +131,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
                     'lldp/show', 'ospf/show'],
     'ipAddress=10.0.0.11': ['arpnd/show'],
     'ipvers=v4': ['address/show'],
-    'localOnly=True': ['mac/show'],
+    'local=True': ['mac/show'],
     'macaddr=44:39:39:ff:00:13': ['arpnd/show', 'mac/show'],
     'mountPoint=/': ['fs/show'],
     'oif=eth1.4': ['arpnd/show'],
@@ -221,7 +221,8 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'vlan/summarize?state=notConnected',
     'interface/summarize?state=notConnected',
     'sqPoller/summarize?pollExcdPeriodCount=!0',
-
+    'interface/assert?vrf=default',
+    'interface/assert?state=notConnected',
 ]
 
 GOOD_SERVICE_VERBS = {
