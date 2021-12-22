@@ -89,8 +89,8 @@ class Controller:
                     raise SqPollerConfError(
                         'Inventory file not found in the default location:'
                         f'{inventory_file}, use -I argument to provide it, '
-                        'use instead -i to provide an input directory '
-                        'and simulate an input.'
+                        'use -i instead to provide an input directory '
+                        'with pre-captured output and simulate an input.'
                     )
         else:
             if not Path(self._input_dir).is_dir():
