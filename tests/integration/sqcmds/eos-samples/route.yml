@@ -1271,7 +1271,7 @@ tests:
     28}, {"prefixlen": 24, "numRows": 78}, {"prefixlen": 32, "numRows": 136}]'
 - command: route show --prefix='172.16.1.101' --format=json
   data-directory: tests/data/eos/parquet-out/
-  marks: route unique eos
+  marks: route show eos
   output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix":
     "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
     "protocol": "ibgp", "source": "", "preference": 200, "ipvers": 4, "action": "forward",

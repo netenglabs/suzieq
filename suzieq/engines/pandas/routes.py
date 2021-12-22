@@ -24,7 +24,7 @@ class RoutesObj(SqPandasEngine):
 
         if columns == ['default']:
             addnl_fields.append('metric')
-            drop_cols += ['metric']
+            drop_cols.append('metric')
         elif columns != ['*'] and 'metric' not in columns:
             addnl_fields.append('metric')
             drop_cols += ['metric']
@@ -33,7 +33,40 @@ class RoutesObj(SqPandasEngine):
                 addnl_fields.append('ipvers')
                 drop_cols += ['ipvers']
 
+            if 'protocol' not in columns:
+                addnl_fields.append('protocol')
+                drop_cols.append('protocol')
+
         return addnl_fields, drop_cols
+
+    def _fill_in_oifs(self, df: pd.DataFrame()):
+        '''Some NOS do not return an ifname, we need to fix it'''
+
+        def add_oifs(row, ifdict):
+            if row.nexthopIps == []:
+                return row.oifs
+
+            oifs = []
+            for hop in row.nexthopIps:
+                for k, v in ifdict.items():
+                    if hop in [str(x) for x in ip_network(k).hosts()]:
+                        oifs.append(v)
+                        break
+            return np.array(oifs)
+
+        conn_if_dict = df \
+            .query('protocol == "connected"')[['prefix', 'oifs']] \
+            .to_dict(orient='records')
+
+        conn_if_dict = {x['prefix']: x['oifs'][0] for x in conn_if_dict}
+        work_df = df.query('oifs.str.len() == 0').reset_index(drop=True)
+        if not work_df.empty:
+            ok_df = df.query('oifs.str.len() != 0').reset_index(drop=True)
+            work_df['oifs'] = work_df.apply(add_oifs, args=(conn_if_dict,),
+                                            axis=1)
+            df = pd.concat([ok_df, work_df]).reset_index(drop=True)
+
+        return df
 
     def get(self, **kwargs):
         '''Return the routes table for the given filters'''
@@ -100,6 +133,9 @@ class RoutesObj(SqPandasEngine):
             srs = np.array(list(zip(srs_oif, srs_hops)))
             srs_max = np.amax(srs, 1)
             df.insert(len(df.columns)-1, 'numNexthops', srs_max)
+
+        if not df.empty and 'oifs' in df.columns:
+            df = self._fill_in_oifs(df)
 
         if user_query:
             df = self._handle_user_query_str(df, user_query)

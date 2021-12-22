@@ -13,7 +13,7 @@ def validate_routes(df: pd.DataFrame):
     assert (df.vrf != '').all()
     assert (df.prefix != '').all()
     assert (df.action.isin(
-        ['multirecv', 'local', 'forward', 'drop', 'reject'])).all()
+        ['multirecv', 'local', 'forward', 'drop', 'reject', 'inactive'])).all()
     # For all forward action, there has to be an outgoimg interface
     # or nexthop OP
     assert (df.ipvers.isin([4, 6])).all()
@@ -35,7 +35,7 @@ def validate_routes(df: pd.DataFrame):
         'os != "linux" and os != "cumulus" and not '
         'protocol.isin(["direct", "local", "connected"])')
     assert (noncl_data.query(
-        'nexthopIps.str.len() != 0 and protocol != "hsrp"')
+        'nexthopIps.str.len() != 0 and protocol != "hsrp" and namespace != "panos" and hostname != "firewall01" ')
         .preference != 0).all()
 
     # The OS that supply route uptime

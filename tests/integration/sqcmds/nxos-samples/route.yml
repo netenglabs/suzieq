@@ -5353,7 +5353,7 @@ tests:
     30}, {"prefixlen": 31}, {"prefixlen": 32}, {"prefixlen": 128}]'
 - command: route show --prefix='172.16.1.101' --format=json
   data-directory: tests/data/nxos/parquet-out/
-  marks: route unique nxos
+  marks: route show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix":
     "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
     "protocol": "bgp", "source": "", "preference": 200, "ipvers": 4, "action": "forward",

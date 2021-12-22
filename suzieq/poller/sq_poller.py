@@ -1,104 +1,106 @@
 #!/usr/bin/env python3
+"""
+This module contains the logic needed to start the poller
+"""
 
 import argparse
 import asyncio
-import getpass
 import os
 import sys
 import traceback
+from typing import Dict
 
 import uvloop
-
-from suzieq.poller.poller import Poller
-from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
+from suzieq.poller.controller.controller import Controller
+from suzieq.poller.worker.writers.output_worker import OutputWorker
+from suzieq.shared.exceptions import InventorySourceError, PollingError, \
+    SqPollerConfError
 from suzieq.shared.utils import get_log_params, init_logger, load_sq_config
 
 
-async def start_poller(userargs, cfg):
-    '''Start the poller'''
+async def start_controller(user_args: argparse.Namespace, config_data: Dict):
+    """Start the poller, this function launches the controller which
+    spawns the poller workers
+
+    Args:
+        user_args (argparse.Namespace): the command line arguments
+        config_data (Dict): the content of the Suzieq configuration file
+    """
     # Init logger of the poller
     logfile, loglevel, logsize, log_stdout = get_log_params(
-        'poller', cfg, '/tmp/sq-poller.log')
-    logger = init_logger('suzieq.poller', logfile,
+        'poller', config_data, '/tmp/sq-poller-controller.log')
+    logger = init_logger('suzieq.poller.controller', logfile,
                          loglevel, logsize, log_stdout)
 
-    poller = None
     try:
-        poller = Poller(userargs, cfg)
-        await poller.init_poller()
-        await poller.run()
-    except (SqPollerConfError, InventorySourceError) as error:
+        controller = Controller(user_args, config_data)
+        controller.init()
+        await controller.run()
+    except (SqPollerConfError, InventorySourceError, PollingError) as error:
+        print(f"ERROR: {error}")
         logger.error(error)
-        print(f'ERROR: {error}')
-        sys.exit(1)
+        sys.exit(-1)
 
 
-def poller_main() -> None:
-    '''The routine that kicks things off including arg parsing'''
-    supported_outputs = ["parquet"]
-
+def controller_main():
+    """The routine that kicks things off including arg parsing
+    """
     parser = argparse.ArgumentParser()
-    requiredgrp = parser.add_mutually_exclusive_group(required=True)
-    requiredgrp.add_argument(
-        "-D",
-        "--devices-file",
+
+    # Get supported output, 'gather' cannot be manually selected
+    supported_outputs = OutputWorker.get_plugins()
+    if supported_outputs.get('gather', None):
+        del supported_outputs['gather']
+    supported_outputs = [k for k in supported_outputs]
+
+    # Two inputs are possible:
+    # 1. Suzieq inventory file
+    # 2. Input directory
+    parser.add_argument(
+        '-I',
+        '--inventory',
         type=str,
-        help="File with URL of devices to gather data from",
-    )
-    requiredgrp.add_argument(
-        "-a",
-        "--ansible-file",
-        type=str,
-        help="Ansible inventory file of devices to gather data from",
-    )
-    requiredgrp.add_argument(
-        "-i",
-        "--input-dir",
-        type=str,
-        help="Directory where run-once=gather data is"
+        help='Input inventory file'
     )
 
     parser.add_argument(
-        "-n",
-        "--namespace",
-        type=str, required='--ansible-file' in sys.argv or "-a" in sys.argv,
-        help="Namespace to associate for the gathered data"
+        '-i',
+        '--input-dir',
+        type=str,
+        help=('Directory where run-once=gather data is. Process the data in '
+              'directory as they were retrieved by the hosts')
     )
+
     parser.add_argument(
-        "-o",
-        "--outputs",
-        nargs="+",
-        default=["parquet"],
+        '-c',
+        '--config',
+        help='Controller configuration file',
+        type=str
+    )
+
+    parser.add_argument(
+        '-x',
+        '--exclude-services',
+        type=str,
+        help='Exclude running this space separated list of services',
+    )
+
+    parser.add_argument(
+        '--no-coalescer',
+        default=False,
+        action='store_true',
+        help='Do not start the coalescer',
+    )
+
+    parser.add_argument(
+        '-o',
+        '--outputs',
+        nargs='+',
+        default=['parquet'],
         choices=supported_outputs,
         type=str,
-        help="Output formats to write to: parquet. Use "
-        "this option multiple times for more than one output",
-    )
-    parser.add_argument(
-        "-s",
-        "--service-only",
-        type=str,
-        help="Only run this space separated list of services",
-    )
-
-    parser.add_argument(
-        "-x",
-        "--exclude-services",
-        type=str,
-        help="Exclude running this space separated list of services",
-    )
-
-    parser.add_argument(
-        "-c",
-        "--config",
-        type=str, help="alternate config file"
-    )
-
-    parser.add_argument(
-        "--run-once",
-        type=str,
-        choices=["gather", "process"],
-        help=argparse.SUPPRESS,
+        help='Output formats to write to: parquet. Use '
+        'this option multiple times for more than one output',
     )
 
     parser.add_argument(
@@ -109,101 +111,57 @@ def poller_main() -> None:
     )
 
     parser.add_argument(
-        "--ask-pass",
-        default=False,
-        action='store_true',
-        help="prompt to enter password for login to devices",
-    )
-    parser.add_argument(
-        "--passphrase",
-        default=False,
-        action='store_true',
-        help="prompt to enter private key passphrase",
-    )
-
-    parser.add_argument(
-        "--envpass",
-        default="",
+        '--run-once',
         type=str,
-        help="Use named environment variable to retrieve password",
+        choices=['gather', 'process'],
+        help=('Collect the data from the sources and terminates. gather store '
+              'the output as it has been collected, process performs some '
+              'processing on the data. Both cases store the results in a '
+              'plain output file, one for each service.')
     )
 
     parser.add_argument(
-        "-j",
-        "--jump-host",
-        default="",
+        '-s',
+        '--service-only',
         type=str,
-        help="Jump Host via which to access the devices, IP addr/DNS hostname"
+        help='Only run this space separated list of services',
     )
 
     parser.add_argument(
-        "-K",
-        "--jump-host-key-file",
-        default="",
-        type=str,
-        help="Key file to be used for jump host"
-    )
-
-    parser.add_argument(
-        "-k",
-        "--ignore-known-hosts",
-        default=False,
-        action='store_true',
-        help="Ignore Known Hosts File",
-    )
-
-    parser.add_argument(
-        "--ssh-config-file",
+        '--ssh-config-file',
         type=str,
         default=None,
-        help="Path to ssh config file, that you want to use"
+        help='Path to ssh config file, that you want to use'
     )
 
     parser.add_argument(
-        "--no-coalescer",
-        default=False,
-        action='store_true',
-        help=argparse.SUPPRESS,
+        '-p',
+        '--update-period',
+        help='How frequently the inventory updates [DEFAULT=3600]',
+        type=int
     )
 
-    userargs = parser.parse_args()
+    parser.add_argument(
+        '-w',
+        '--workers',
+        type=int,
+        help='Maximum number of workers to execute',
+    )
 
-    if userargs.passphrase:
-        userargs.passphrase = getpass.getpass(
-            'Passphrase to decode private key file: ')
-    else:
-        userargs.passphrase = None
-
-    if userargs.ask_pass:
-        userargs.ask_pass = getpass.getpass(
-            'Password to login to device: ')
-    else:
-        userargs.ask_pass = None
-
-    if userargs.envpass:
-        passwd = os.getenv(userargs.envpass, '')
-        if not passwd:
-            print(
-                f'ERROR: No password in environment '
-                f'variable {userargs.envpass}')
-            sys.exit(1)
-        userargs.ask_pass = passwd
-
+    args = parser.parse_args()
     uvloop.install()
-    cfg = load_sq_config(config_file=userargs.config)
+    cfg = load_sq_config(config_file=args.config)
     if not cfg:
         print("Could not load config file, aborting")
         sys.exit(1)
 
     try:
-        asyncio.run(start_poller(userargs, cfg))
+        asyncio.run(start_controller(args, cfg))
     except (KeyboardInterrupt, RuntimeError):
         pass
     except Exception:  # pylint: disable=broad-except
         traceback.print_exc()
 
-    sys.exit(0)
-
 
 if __name__ == '__main__':
-    poller_main()
+    controller_main()

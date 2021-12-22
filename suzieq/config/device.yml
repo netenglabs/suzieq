@@ -112,3 +112,13 @@ apply:
         
   junos-es:
     copy: junos-mx
+
+  panos:
+    version: all
+    command: <show><system><info/></system></show>
+    normalize: 'response/result/system/[
+      "model: model",
+      "sw-version: version",
+      "uptime: _uptime",
+      "serial: serialNumber",
+    ]'

@@ -348,7 +348,7 @@ tests:
     1616681064000, "timestamp": 1616681581441}]'
 - command: evpnVni top --what=vni --format=json
   data-directory: tests/data/multidc/parquet-out/
-  mark: evpnVni top
+  marks: evpnVni top
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vni": 104001, "type":
     "L3", "vlan": 0, "state": "down", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0,
     "priVtepIp": "0.0.0.0", "secVtepIp": "", "timestamp": 1616644822033}, {"namespace":
@@ -365,7 +365,7 @@ tests:
     "", "timestamp": 1616644822169}]'
 - command: network top --what=deviceCnt --format=json
   data-directory: tests/data/multidc/parquet-out/
-  mark: network top
+  marks: network top
   output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
     0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
     1639161298729}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
@@ -375,14 +375,14 @@ tests:
     false, "hasMlag": false, "lastUpdate": 1639161366022}]'
 - command: bgp top --what=numChanges --count=1 --format=json
   data-directory: tests/data/multidc/parquet-out/
-  mark: bgp top
+  marks: bgp top
   output: '[{"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer":
     "eth1.2", "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi":
     "unicast", "asn": 65530, "peerAsn": 65201, "pfxRx": 10, "pfxTx": 16, "numChanges":
     1, "estdTime": 1616644608000, "timestamp": 1616644822492}]'
 - command: ospf top --what=numChanges --count=1 --format=json
   data-directory: tests/data/multidc/parquet-out/
-  mark: ospf top
+  marks: ospf top
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
     "ifname": "swp6", "peerHostname": "exit01", "area": "0.0.0.0", "ifState": "up",
     "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101", "numChanges": 5.0,
@@ -395,7 +395,7 @@ tests:
     "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822941}]'
 - command: network top --what=deviceCnt --count=1 --format=json
   data-directory: tests/data/multidc/parquet-out/
-  mark: network top
+  marks: network top
   output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
     0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
     1639161298729}]'

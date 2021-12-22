@@ -648,37 +648,38 @@ tests:
     "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "management",
-    "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": [], "protocol":
-    "static", "source": "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "management",
     "prefix": "172.29.151.0/24", "nexthopIps": ["172.29.151.1"], "oifs": ["mgmt0"],
     "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
     "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs":
     ["_nexthopVrf:management"], "protocol": "static", "source": "", "preference":
     1, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["172.29.151.254"], "oifs": ["_nexthopVrf:management"], "protocol": "static",
+    "source": "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp":
+    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "management",
+    "prefix": "172.29.151.0/24", "nexthopIps": ["172.29.151.2"], "oifs": ["mgmt0"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf":
+    "default", "prefix": "172.29.151.0/24", "nexthopIps": [], "oifs": ["GigabitEthernet0/7"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395444170}, {"namespace": "mixed", "hostname": "leaf1-ios",
+    "vrf": "default", "prefix": "172.29.151.0/24", "nexthopIps": [], "oifs": ["GigabitEthernet0/7"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395444959}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "management", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"],
+    "oifs": ["GigabitEthernet0/7"], "protocol": "static", "source": "", "preference":
+    1, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
     "mixed", "hostname": "spine2-nxos", "vrf": "management", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["172.29.151.254"], "oifs": [], "protocol": "static", "source":
-    "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
-    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": ["_nexthopVrf:management"],
+    "nexthopIps": ["172.29.151.254"], "oifs": ["GigabitEthernet0/7"], "protocol":
+    "static", "source": "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp":
+    1627395440281}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": ["GigabitEthernet0/7"],
     "protocol": "static", "source": "", "preference": 1, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
-    "vrf": "management", "prefix": "172.29.151.0/24", "nexthopIps": ["172.29.151.2"],
-    "oifs": ["mgmt0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "leaf2-ios", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"],
-    "oifs": [], "protocol": "static", "source": "", "preference": 1, "ipvers": 4,
-    "action": "forward", "timestamp": 1627395444170}, {"namespace": "mixed", "hostname":
-    "leaf2-ios", "vrf": "default", "prefix": "172.29.151.0/24", "nexthopIps": [],
-    "oifs": ["GigabitEthernet0/7"], "protocol": "connected", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1627395444170}, {"namespace":
-    "mixed", "hostname": "leaf1-ios", "vrf": "default", "prefix": "172.29.151.0/24",
-    "nexthopIps": [], "oifs": ["GigabitEthernet0/7"], "protocol": "connected", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395444959},
-    {"namespace": "mixed", "hostname": "leaf1-ios", "vrf": "default", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["172.29.151.254"], "oifs": [], "protocol": "static", "source":
-    "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp": 1627395444959}]'
+    "timestamp": 1627395444170}, {"namespace": "mixed", "hostname": "leaf1-ios", "vrf":
+    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": ["GigabitEthernet0/7"],
+    "protocol": "static", "source": "", "preference": 1, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395444959}]'
 - command: route show --prefixlen=">24" --format=json
   data-directory: tests/data/mixed/parquet-out/
   marks: route show filter prefixlen mixed

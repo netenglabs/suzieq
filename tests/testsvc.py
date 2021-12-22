@@ -6,7 +6,7 @@ import json
 import argparse
 import os
 
-from suzieq.poller.services.svcparser import cons_recs_from_json_template
+from suzieq.poller.worker.services.svcparser import cons_recs_from_json_template
 
 
 if __name__ == '__main__':
