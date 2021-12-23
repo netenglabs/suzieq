@@ -8,7 +8,7 @@ system goes well beyond what is normally considered monitoring and alerting. Suz
 
 Suzieq does multiple things:
 
-* We [gather data](https://suzieq.readthedocs.io/en/latest/poller/) using an agentless model using either SSH or REST API as the transport. We gather data from routers, bridges and Linux servers. We support gathering data from Arista EOS, Cisco's IOS, IOS-XE, and IOS-XR platforms, Cisco's NXOS (N7K with versions 8.4.4 or higher, and N9K with versions 9.3.1 or higher), Cumulus Linux, Juniper's Junos(QFX, EX, MX and SRX platforms), and SoNIC devices, besides Linux servers.
+* We [gather data](https://suzieq.readthedocs.io/en/latest/poller/) using an agentless model using either SSH or REST API as the transport. We gather data from routers, bridges and Linux servers. We support gathering data from Arista EOS, Cisco's IOS, IOS-XE, and IOS-XR platforms, Cisco's NXOS (N7K with versions 8.4.4 or higher, and N9K with versions 9.3.1 or higher), Cumulus Linux, Juniper's Junos(QFX, EX, MX and SRX platforms), Palo Alto's Panos (version 8.0 or higher) and SoNIC devices, besides Linux servers.
 * We normalize the data into a vendor-agnostic format.
 * We store all data in files using the popular big data format, [Parquet](https://parquet.apache.org/). 
 * All the analysis are exposed either via a CLI, [GUI](https://suzieq.readthedocs.io/en/latest/gui/), a [REST API](https://suzieq.readthedocs.io/en/latest/rest-server/), or via Python. The output can be rendered in various formats from plain text to JSON and CSV.
