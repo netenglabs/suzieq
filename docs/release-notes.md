@@ -1,5 +1,18 @@
 # Release Notes
 
+## 0.16.0 alpha (Dec 24, 2021)
+
+This release has some major new features, and some breaking changes. Please note these changes before using Suzieq. This is an alpha release and so we expect there to be bugs. Please test and provide feedback via Slack or bug reports. The new features were the ones selected by the community as the ones they most cared about.
+
+* Palo Alto Networks Firewall support: We've added support for this new platform. Support today is only when running the firewall in L3 mode, with support for only BGP protocol. We hope to add support for OSPF protocol before the final release.
+* Netbox inventory support: We support pulling configuration directly from Netbox now. Netbox is the second of many plugins that we'll support for pulling inventory information. The first is Ansible. 
+* **BREAKING CHANGE**: The entire inventory support has been redone. The old poller options of -D and -a are no longer supported. Inventory specification is now done in a more modular fashion with profiles. Please look at the inventory format on the [documentation page](https://suzieq.readthedocs.io/en/0.16.0/inventory/). This page also includes instructions on migrating to the new format.
+* CLI Support for Remote Data: Its now possible to use the CLI with a REST backend to transparently support running the CLI from say your laptop, while the data itself resides on a remote server. Please look at the (documentation)[https://suzieq.readthedocs.io/en/0.16.0/remote-cli/] for more details on configuring this.
+* Enhanced filter support for all commands: Thus far, filters were largely only supported for show commands. Now, we've extended support for using the same filters across all commands. See route summaries based on the protocol, or look at device summaries based only on specific models, and so on.
+* Fix Issue 476: Juniper BGP sessions which have AFI/SAFI strings such as inet-labeled-unicast are now correctly parsed.
+* Support for seeing all interface addresses that much a subnet, or all ARP entries that match a subnet.
+* unique verb now assumes a default column for each table that makes sense for that table. If no column is specified, this default column is assumed.
+
 ## 0.15.6 (Nov 14, 2021)
 
 Another bugfix release of the 0.15 release train, hopefully the last. Here's what's fixed/new in this release:
