@@ -24,12 +24,11 @@ class SqNativeFile(Source):
         super().__init__(input_data)
 
     def _validate_config(self, input_data: dict):
-        if any(x not in input_data.keys()
-               for x in ['namespace', 'hosts']):
-            raise InventorySourceError('Invalid file inventory: '
-                                       'no namespace/hosts sections')
-        if not isinstance(input_data.get("hosts"), list):
-            raise InventorySourceError('Hosts must be a list')
+        self._valid_fields.extend(['hosts'])
+        super()._validate_config(input_data)
+
+        if not isinstance(input_data.get('hosts'), list):
+            raise InventorySourceError(f'{self._name} Hosts must be a list')
 
     def _load(self, input_data):
         self.inventory_source = input_data

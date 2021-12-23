@@ -35,6 +35,10 @@ class CredentialLoader(ControllerPlugin):
         self._conf_passphrase = None
         self._conf_keyfile = None
         self._conf_username = None
+        self._valid_fields = ['username', 'name', 'type',
+                              'password', 'ssh-passphrase', 'keyfile']
+
+        self._validate_config(init_data)
 
         self._init_conf_data(init_data)
 
@@ -55,6 +59,19 @@ class CredentialLoader(ControllerPlugin):
         Args:
             inventory (Dict[str, Dict]): inventory to update
         """
+
+    def _validate_config(self, config: Dict):
+        """Validate configuration
+
+        Reads the valid fields from
+
+        Args:
+            config (Dict): configuration dictionary
+        """
+        inv_fields = [x for x in config if x not in self._valid_fields]
+        if inv_fields:
+            raise InventorySourceError(
+                f'{self._name}: unknown fields {inv_fields}')
 
     def write_credentials(self, device: Dict, credentials: Dict[str, Dict]):
         """write and validate input credentials for a device

@@ -79,18 +79,21 @@ class Netbox(Source, InventoryAsyncPlugin):
         Returns:
             list: the list of errors
         """
-        errors = []
+        self._valid_fields.extend(['token', 'url', 'tag', 'period'])
 
         if not self._auth:
-            return ["Netbox must have an 'auth' set"]
+            raise InventorySourceError(
+                f"{self._name} Netbox must have an 'auth' set in the "
+                "'namespaces' section")
 
-        if not input_data.get('token'):
-            errors.append('No netbox token provided')
-        if not input_data.get('url'):
-            errors.append('No netbox url provided')
-        if not input_data.get('auth'):
-            errors.append('No device auth provided')
-        return errors
+        super()._validate_config(input_data)
+
+        miss_fields = [x for x in ['token', 'url'] if x not in input_data]
+
+        if miss_fields:
+            raise InventorySourceError(
+                f'{self._name} Invalid config missing fields {miss_fields}'
+            )
 
     def _init_session(self, headers: dict):
         """Initialize the session property

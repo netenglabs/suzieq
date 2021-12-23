@@ -26,8 +26,10 @@ class Source(ControllerPlugin):
         self._inv_is_set = False
         self._inv_is_set_event = asyncio.Event()
         self._name = input_data.get('name')
-        self._auth = input_data.get('auth')
+        self._auth = input_data.get('auth')  # auth object
         self._device = input_data.get('device') or {}
+        self._valid_fields = ['name', 'type', 'auth',
+                              'device', 'namespace', 'run_once']
 
         self._inv_format = [
             'address',
@@ -40,10 +42,10 @@ class Source(ControllerPlugin):
             'jump_host_key_file',
             'ignore_known_hosts'
         ]
-        errors = self._validate_config(input_data)
-        if errors:
-            raise InventorySourceError('Inventory validation failed: {}'
-                                       .format(errors))
+
+        self._validate_config(input_data)
+        self._validate_device()
+
         self._load(input_data)
 
     @property
@@ -60,10 +62,12 @@ class Source(ControllerPlugin):
         """Store informations from raw data"""
         raise NotImplementedError
 
-    @abstractmethod
     def _validate_config(self, input_data: dict):
         """Checks if the loaded data is valid or not"""
-        raise NotImplementedError
+        inv_fields = [x for x in input_data if x not in self._valid_fields]
+        if inv_fields:
+            raise InventorySourceError(
+                f'{self._name}: unknown fields {inv_fields}')
 
     async def get_inventory(self) -> Dict:
         """Retrieve the inventory from the source. If the inventory is not
@@ -183,7 +187,7 @@ class Source(ControllerPlugin):
         jump_host_key_file = None
         transport = None
         ignore_known_hosts = None
-        port = None,
+        port = None
         devtype = None
 
         if self._device:
@@ -212,6 +216,16 @@ class Source(ControllerPlugin):
                 'port': node.get('port') or port or 22,
                 'devtype': node.get('devtype') or devtype
             })
+
+    def _validate_device(self):
+        if self._device:
+            dev_fields = ['name', 'jump-host', 'jump-host-key-file',
+                          'ignore-known-hosts', 'transport', 'port', 'devtype']
+            inv_fields = [x for x in self._device if x not in dev_fields]
+            if inv_fields:
+                raise InventorySourceError(
+                    f'{self._device["name"]}: Unknow fields called '
+                    f'{inv_fields}')
 
 
 def _load_inventory(source_file: str) -> List[dict]:

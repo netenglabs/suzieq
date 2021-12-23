@@ -29,14 +29,12 @@ class AnsibleInventory(Source):
         self.set_inventory(inventory)
 
     def _validate_config(self, input_data: dict):
-        if any(x not in input_data.keys()
-               for x in ['namespace', 'path']):
-            raise InventorySourceError('Invalid file inventory: '
-                                       'no namespace/path sections')
+        self._valid_fields.extend(['path'])
+        super()._validate_config(input_data)
 
         if not Path(input_data['path']).is_file():
             raise InventorySourceError(
-                f"No file found at {input_data['path']}")
+                f"{self._name} No file found at {input_data['path']}")
 
     def _get_inventory(self) -> Dict:
         """Parse the output of ansible-inventory command for processing.
@@ -85,8 +83,9 @@ class AnsibleInventory(Source):
                 password = entry['ansible_password']
 
             # Retrieve password information
-            devtype = entry.get('ansible_network_os', None)
-            if devtype == 'eos':
+            devtype = None
+            if entry.get('ansible_network_os') in ['eos', 'panos']:
+                devtype = entry.get('ansible_network_os')
                 transport = 'https'
                 port = 443
             else:

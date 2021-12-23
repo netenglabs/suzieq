@@ -39,6 +39,7 @@ def read_inventory(source_file: str) -> Dict:
             inventory_data = yaml.safe_load(file_content)
         except Exception as e:
             raise InventorySourceError(f'Invalid Suzieq inventory file: {e}')
+
     validate_raw_inventory(inventory_data)
 
     for k in inventory:
@@ -96,26 +97,34 @@ def validate_raw_inventory(inventory: dict):
                                            "'name' of an already defined "
                                            f'{mf} item')
     # validate 'namespaces'
+    ns_fields = ['name', 'source', 'device', 'auth']
     for ns in inventory.get('namespaces'):
+
         if not ns.get('name'):
             raise InventorySourceError(
                 "all namespaces need 'name' field")
 
+        inv_fields = [x for x in ns if x not in ns_fields]
+        if inv_fields:
+            raise InventorySourceError(
+                f'{ns["name"]} invalid fields {inv_fields}'
+            )
+
         if not ns.get('source'):
             raise InventorySourceError(
-                "all namespaces need 'source' field")
+                f"{ns['name']} all namespaces need 'source' field")
 
         if ns.get('source') not in main_fields['sources']:
             raise InventorySourceError(
-                f"No source called '{ns['source']}'")
+                f"{ns['name']} No source called '{ns['source']}'")
 
         if ns.get('device') and ns['device'] not in main_fields['devices']:
             raise InventorySourceError(
-                f"No device called '{ns['device']}'")
+                f"{ns['name']} No device called '{ns['device']}'")
 
         if ns.get('auth') and ns['auth'] not in main_fields['auths']:
             raise InventorySourceError(
-                f"No auth called '{ns['auth']}'")
+                f"{ns['name']} No auth called '{ns['auth']}'")
 
 
 def get_inventory_config(conf_type: str, inventory: dict) -> dict:

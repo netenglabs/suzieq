@@ -16,7 +16,12 @@ class CredFile(CredentialLoader):
     """Reads devices credentials from a file and write them on the inventory
     """
 
+    def _validate_config(self, config: Dict):
+        self._valid_fields.append('path')
+        return super()._validate_config(config)
+
     def init(self, init_data: dict):
+
         dev_cred_file = Path(init_data.get('path', ''))
         if not dev_cred_file:
             raise InventorySourceError(
@@ -83,8 +88,8 @@ class CredFile(CredentialLoader):
                     node_info['ssh_keyfile'] = node_info.pop('keyfile')
 
                 if 'passphrase' not in node_info:
-                    if node_info.get('ssh-key-pass'):
-                        # rename 'ssh-key-pass' into 'passphrase'
+                    if node_info.get('key-passphrase'):
+                        # rename 'key-passphrase' into 'passphrase'
                         node_info['passphrase'] = node_info.pop(
                             'key-passphrase')
                     else:

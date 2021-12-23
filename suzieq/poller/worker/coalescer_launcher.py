@@ -10,6 +10,8 @@ import signal
 from asyncio.subprocess import Process
 from typing import Dict
 
+from asyncio.exceptions import CancelledError
+
 from suzieq.shared.utils import ensure_single_instance, get_sq_install_dir
 
 logger = logging.getLogger(__name__)
@@ -33,7 +35,7 @@ class CoalescerLauncher:
             coalescer_bin (str, optional): optional path to coalescer binary.
                 Defaults to None.
         """
-        self.coalescer_pid = None
+        self.coalescer_process = None
 
         self.config_file = config_file
         self.cfg = cfg
@@ -42,29 +44,48 @@ class CoalescerLauncher:
             sq_path = get_sq_install_dir()
             self.coalescer_bin = f'{sq_path}/utilities/sq_coalescer.py'
 
+    @property
+    def coalescer_pid(self) -> int:
+        """The coalescer_pid is the PID of the coalescer process
+
+        Returns:
+            int: the pid of the coalescer process
+        """
+
+        return self.coalescer_process.pid if self.coalescer_process else None
+
     async def start_and_monitor_coalescer(self):
         """Start and monitor the coalescer
-            Args:
-                config_file (str): the Suzieq configuration file to pass
-                    to the coalescer
-                cfg (dict): the Suzieq config dictionary
-                coalescer_bin (str, optional): optional path to coalescer
-                    binary. Defaults to None.
+        """
+        try:
+            await self._monitor_coalescer()
+        except CancelledError:
+            pass
+        finally:
+            if self.coalescer_process:
+                self.coalescer_process.terminate()
+                try:
+                    logger.warning('Waiting coalescer termination...')
+                    await asyncio.wait_for(self.coalescer_process.wait(), 10)
+                except asyncio.TimeoutError:
+                    self.coalescer_process.kill()
+
+    async def _monitor_coalescer(self):
+        """This function calls _start_coalescer() and check if the process
+        dies
         """
         fd = 0
-        process = None
         # Check to see file lock is possible
         while not fd:
-            if not process:
+            if not self.coalescer_process:
                 logger.info('Starting Coalescer')
-            elif process.returncode == errno.EBUSY:
+            elif self.coalescer_process.returncode == errno.EBUSY:
                 logger.warning('Trying to start coalescer')
 
             # Try to start the coalescer process
-            process = await self._start_coalescer()
-            self.coalescer_pid = process.pid
+            self.coalescer_process = await self._start_coalescer()
 
-            if not process:
+            if not self.coalescer_process:
                 os.kill(os.getpid(), signal.SIGTERM)
                 return
 
@@ -86,21 +107,13 @@ class CoalescerLauncher:
                 continue
 
             # Check if we have something from the stdout we need to log
-            try:
-                stdout, stderr = await process.communicate()
-            except asyncio.CancelledError:
-                if process:
-                    process.terminate()
-                    try:
-                        await asyncio.wait_for(process.wait(), 5)
-                    except asyncio.TimeoutError:
-                        process.kill()
-                return
+            stdout, stderr = await self.coalescer_process.communicate()
 
-            if process.returncode and (process.returncode != errno.EBUSY):
+            if self.coalescer_process.returncode and \
+               (self.coalescer_process.returncode != errno.EBUSY):
                 logger.error(f'coalescer stdout: {stdout}, stderr: {stderr}')
             else:
-                if process.returncode == errno.EBUSY:
+                if self.coalescer_process.returncode == errno.EBUSY:
                     await asyncio.sleep(10*60)
                 else:
                     logger.info(
