@@ -10,7 +10,10 @@ import signal
 from asyncio.subprocess import Process
 from typing import Dict
 
-from asyncio.exceptions import CancelledError
+try:
+    from asyncio.exceptions import CancelledError
+except ModuleNotFoundError:
+    from asyncio import CancelledError
 
 from suzieq.shared.utils import ensure_single_instance, get_sq_install_dir
 
