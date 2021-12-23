@@ -1,6 +1,10 @@
 # <a name='inventory'></a>Gathering Data: Inventory File Format
 
-The inventory file that the poller uses describes a set of sources used to gather the list of devices, credentials to authenticate in the devices, default settings and eventually puts all together defining namespaces. An extensive explanation of each secation is provided on this page. The old options `-D` and `-a` are no longer supported.
+The inventory file that the poller uses describes a set of sources used to gather the list of devices, credentials to authenticate in the devices, default settings and eventually puts all together defining namespaces. An extensive explanation of each secation is provided on this page.
+
+!!! warning
+    Starting with version 0.16.0 the old options `-D` and `-a`  and the old inventory format are no longer supported.
+    See the section [Migrating to the new format](#migrating-to-new-format).
 
 The new inventory is structured in 4 major pieces, explained in its own section:
 
@@ -25,7 +29,7 @@ sources:
 
 - name: ansible-01
   type: ansible
-  file_path: /path/to/ansible/list
+  path: /path/to/ansible/list
 
 devices:
 - name: devices-with-jump-hosts
@@ -41,8 +45,8 @@ devices:
 
 auths:
 - name: credentials-from-file-0
-  type: cred_file
-  file_path: /path/to/device/credentials.yaml
+  type: cred-file
+  path: /path/to/device/credentials.yaml
 
 - name: suzieq-user-01
   username: suzieq
@@ -61,7 +65,7 @@ auths:
   keyfile: path/to/key
 
 namespaces:
-- namespace: testing
+- name: testing
   source: netbox-instance-123
   device: devices-00
   auth: credentials-from-file-0
@@ -71,13 +75,14 @@ namespaces:
 
 The device sources currently supported are:
 
-- Suzieq native yaml (the same used with the old option `-D`)
+- Host list (the same used with the old option `-D` in Suzieq 0.15.x or lower)
 - Ansible inventory, specifing a path to a file that has to be the output of ```ansible-inventory --list``` command
 - Netbox
 
 Each source must have a name so that it can be referred to in the `namespace` section.
 
-Each source can contain a field called `copy`. This field is used to replicate and override the content of another source:
+Whenever a source has many fields in common with another, you don't have to rewrite it. With the `copy: <source_name>` all the fields of `<source-name>` are automatically replicated, and it is possible to specify only the ones which changes:
+
 ```yaml
 - name: netbox-orig
   type: netbox
@@ -91,9 +96,9 @@ Each source can contain a field called `copy`. This field is used to replicate a
   tag: suzieq-copy
 
 ```
-### <a name='source-suzieq-native'></a>Suzieq native format
+### <a name='source-host-list'></a>Host list
 
-The Suzieq native format contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. Here is an example of a native suzieq source type. For example (all possible combinations are shown for illustration):
+The host list contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. Here is an example of a native suzieq source type. For example (all possible combinations are shown for illustration):
 ```yaml
 - name: dc-01-native
   type: native # optional, if type is not present this is the default value
@@ -111,19 +116,24 @@ There's a template in the docs directory called `hosts-template.yml`. You can co
 
 ### <a name='source-ansible'></a>Ansible
 
-If you're using Ansible to configure the devices, an alternate to the native Suzieq inventory format is to use an Ansible inventory format. The file to be used is the output of the ```ansible-inventory --list``` command.
+If you are using Ansible to configure the devices, it is possible to set the output of the ```ansible-inventory --list``` command as an input source.
+Once you created a json file containing the result of the command, with:
+
+```shell
+ansible-inventory --list > ansible.json
+```
 
 Now you can set the path of the ansible inventory in the source:
 ```yaml
 - name: ansible-01
   type: ansible
-  path: /path/to/ansible/list
+  path: /path/to/ansible.json
 ```
 
 ### <a name='source-netbox'></a>Netbox
 
-Netbox is often used to store devices type, management address and other useful information to be used in network automation. Suzieq can pull device data from Netbox selecting them by tag (currently only one). To do so a token to access the netbox API is required as well as the netbox instance url.
-The data are pulled from netbox periodically, the period can be set to any desired number in seconds (default is 3600).
+[Netbox](https://netbox.readthedocs.io/en/stable/) is often used to store devices type, management address and other useful information to be used in network automation. Suzieq can pull device data from Netbox selecting them by tag (currently only one per each source). To do so a token to access the netbox API is required as well as the netbox instance url.
+Since Netbox is a _dynamic source_, the data are periodically pulled, the period can be set to any desired number in seconds (default is 3600.
 
 Here is an example of the configuration of a netbox type source:
 ```yaml
@@ -132,12 +142,13 @@ Here is an example of the configuration of a netbox type source:
   token: your-api-token-here
   url: http://127.0.0.1:8000
   tag: suzieq-demo    # if not present, default is "suzieq"
-  period: 3600
+  period: 3600 # How frequently Netbox should be polled
 ```
 
-If you use a netbox source you need to define an authentication source since credentials al pulled from netbox.
+!!! warning
+    Credentials are not pulled from netbox, you will need to define an authentication source under the [auths](#auths) get the nodes' credentials.
 
-## <a name='device'></a>Devices
+## <a name='devices'></a>Devices
 
 In this section you can specify some default settings to be applied to set of devices. You can bind this settings to a source in the `namespaces` section.
 
@@ -163,9 +174,14 @@ Moreover if all the devices inside a namespace run the same NOS, it is possible 
 - name: eos-devices
   devtype: eos
 ```
+
+!!! information
+    The fields specified in the `device` section are treated as default values, which are provided if the node does not have one. Fields such as `devtype` or `transport` could be already provided by the source, in this case device will not override them.
+
+
 ## <a name='auths'></a>Auths
 
-This section is optional in case Suzieq native and ansible source types. Here a set of default authentication sources can be defined. Currently a `cred_file` type and a static default type are defined. This way if credentials are not defined in the sources, default values can be applied.
+This section is optional in case Suzieq native and ansible source types. Here a set of default authentication sources can be defined. Currently a `cred-file` type and a static default type are defined. This way if credentials are not defined in the sources, default values can be applied.
 
 Currently for both SSH and REST API, the only supported is username and password, therefore you will not be able to set api keys.
 
@@ -191,23 +207,23 @@ In case a private key is used to authenticate:
 
 Where `key-passphrase` is the passphrase of the private key. As the `password` field, it can be set as plaintext, env variable or to be asked to the user.
 
+### <a name='cred-file'></a>Credential file
 
-The `cred_file` type is mandatory in case a Netbox source is used, in the `auths` section you can then define:
+All the fields specified directly inside an authentication source (i.e. `username`, `password`, `keyfile`, etc.) are used as default if the values are not provided. When the source do not provide the credentials, such as Netbox, we might want to specify different credentials for each device. This can be easily achieved via a `cred-file`, referenced in the `auths` section like in the following example:
 
 ```yaml
 - name: credentials-from-file-0
-  type: cred_file
+  type: cred-file
   path: /path/to/device/credentials.yaml
 ```
 
-### <a name='cred_file'></a>Credential file
-
-A `cred_file` is an external file where you store credentials for all the devices.
+A `cred-file` is an external file where you store credentials for all the devices.
 Each device credentials can be specified via its `hostname` or its `address`
 (with Netbox, it's encouraged the usage of `hostname`).
 The credential file should look like this:
 ```yaml
 - namespace: testing
+  devices:
   - hostname: leaf01
     password: my-password
     username: vagrant
@@ -217,7 +233,7 @@ The credential file should look like this:
   - hostname: leaf03
     keyfile: /path/to/private/key
     username: vagrant
-    key-passphrase: ask
+    key-passphrase: my-passphrase
   - address: 10.0.0.1
     username: vagrant
     password: my-password
@@ -229,7 +245,7 @@ In the `namespaces` section sources, auths and devices can be put together to de
 For example the following namespace will be defined by the source named `netbox-1`, the auths named `dc-01-credentials`, and the device named `ssh-jump-devs`:
 ```yaml
 namespaces:
-- namespace: example
+- name: example
   source: netbox-1
   device: ssh-jump-devs
   auth: dc-01-credentials
@@ -241,10 +257,51 @@ The `device` field is always optional since it only contains common configuratio
 
 ## <a name='running-poller'></a>Running the poller
 
-Once you have generated the inventory file you can launch the poller inside the docker container using:
+Once you have generated the inventory file you can launch the poller with the following command:
 
-```
+```shell
 sq-poller -I inventory.yaml
 ```
 
-The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above.
+## <a name='migrating-to-new-format'></a>Migrating Suzieq Native Inventory to new format
+
+Starting with version 0.16.0, the Suzieq Native inventory format is no longer supported as is. We need to do some small changes to use it with the new version. Here is an example of creating a new `inventory.yml` from an old suzieq native inventory format.
+
+Suppose we have this inventory valid for version 0.15.x:
+
+```yaml
+- namespace: eos
+  hosts:
+    - url: https://vagrant@192.168.123.252 devtype=eos
+    - url: ssh://vagrant@192.168.123.232  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
+    - url: https://vagrant@192.168.123.164 devtype=eos
+    - url: ssh://192.168.123.70 username=admin password=admin
+    - url: ssh://vagrant@192.168.123.230  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
+    - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
+    - url: https://vagrant@192.168.123.123 password=vagrant
+```
+The new inventory format consists of four sections (sources, auths, devices, namespaces) which are described above. We need to add the devices specified in the old inventory format in a new source inside the `sources` section and link it to a namespace.
+
+
+Here is how the new format will look like:
+
+!!! important
+    Sections [auths](#auths) and [devices](#devices) are optional. See the full documentation to know how to use them.
+
+
+```yaml
+sources:
+- name: eos-source # namespace is defined below, this is only a name to be used as reference
+  hosts:
+    - url: https://vagrant@192.168.123.252 devtype=eos
+    - url: ssh://vagrant@192.168.123.232  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
+    - url: https://vagrant@192.168.123.164 devtype=eos
+    - url: ssh://192.168.123.70 username=admin password=admin
+    - url: ssh://vagrant@192.168.123.230  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
+    - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
+    - url: https://vagrant@192.168.123.123 password=vagrant
+
+namespaces:
+- name: eos
+  source: eos-source
+```

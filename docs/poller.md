@@ -9,17 +9,49 @@ To start, launch the docker container, **netenglabs/suzieq:latest** and attach t
   docker attach sq-poller
 ```
 
-In the docker run command above, the two `-v` options provide host file/directory access to (i) store the parquet output files (the first `-v` option), and (ii) the inventory file (the second `-v` option). We describe the inventory file below. The inventory file is the list of devices and their IP address that you wish to gather data from.
+In the docker run command above, the two `-v` options provide host file/directory access to (I) store the parquet output files (the first `-v` option), and (II) the inventory file (the second `-v` option). The inventory file is the list of devices and their IP address that you wish to gather data from.
 
 You then launch the poller via the command line:
 
 ```bash
-  sq-poller -I inventory.yaml
+  sq-poller -I inventory
 ```
 
-To monitor the status of the poller, you can look at /tmp/sq-poller.log file.
+The inventory file format is covered in the [inventory page](./inventory.md).
 
-The inventory file format is covered in the [inventory page](https://suzieq.readthedocs.io/en/latest/inventory/).
+To monitor the status of the poller, you can look at the log files created (by default) in the `/tmp` directory. All the aspects related to the creation/update of the inventory are logged into `sq-poller-controller.log`, while the each worker logs into `sq-poller-<x>.log` where `x` is the worker id.
+
+## <a name='poller-architecture'></a>Poller architecture
+
+|![](images/sq-poller.png)
+|:--:|
+| Figure 1: Poller architecture  |
+
+The poller is the component in charge of periodically collecting the data from the devices. The list of nodes to poll comes from multiple sources, which are specified in the inventory file, given to the poller as input. The node lists coming from the sources are collected into a single global inventory, which could be splitted into multiple chunks and assigned to a different _worker_, the component in charge of polling the devices. The number of workers to use can be specified via the `-w <n_workers>` argument. For example, the poller could be launched with 2 workers polling the devices:
+
+```shell
+sq-poller -I inventory -w 2
+```
+
+Some of the sources could be _dynamic_ (i.e. Netbox), this means that the node list might change in time. The poller is able to dynamically track these changes and to provide the new inventory chunks to the workers.
+
+### Inventory chunking
+
+The poller could use different policies for the inventory splitting. At the moment two are supported:
+
+- `sequential`: in this case the inventory is splitted into `n` equal chunks, where `n` is the number of workers.
+- `namespace`: nodes can be groupped into namespaces, for example the nodes inside the same namespace can be the devices inside the same data center. This option avoids that nodes from the same namespace end into different chunks. In order to have a worker for each namespace, the number of workers must be equal to the number of namespaces in the inventory.
+
+!!! warning
+    At the moment, when using the namespace policy, you should make sure that the number of workers is less or equal than the number of namespaces.
+
+The chunking policy can be easily specified in the Suzieq configuration file via the `policy` field under chunker in poller:
+
+```yaml
+poller:
+  chunker:
+     policy: sequential
+```
 
 ## <a name='gathering-data'></a>Gathering Data
 Two important concepts in the poller are Nodes and Services. Nodes are devices of some kind;
