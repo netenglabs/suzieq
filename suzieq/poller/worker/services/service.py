@@ -307,7 +307,7 @@ class Service(SqPlugin):
 
         return None
 
-    def _get_device_normalizer(self, data: Dict) -> Dict:   
+    def _get_device_normalizer(self, data: Dict) -> Dict:
         '''Returns the normalizer string appropriate for the data
 
         Every NOS/version has a normalizer string specified in the
@@ -570,15 +570,16 @@ class Service(SqPlugin):
                                     entry[fld][i] = val
         return processed_data
 
-    async def commit_data(self, result, _, hostname):
+    async def commit_data(self, result: Dict, namespace: str, hostname: str):
         """Write the result data out"""
         records = []
-        prev_res = self.previous_results.get(hostname, [])
+        key = f'{namespace}-{hostname}'
+        prev_res = self.previous_results.get(key, [])
 
         if result or prev_res:
             adds, dels = self.get_diff(prev_res, result)
             if adds or dels:
-                self.previous_results[hostname] = copy.deepcopy(result)
+                self.previous_results[key] = copy.deepcopy(result)
                 for entry in adds:
                     records.append(entry)
                 for entry in dels:
