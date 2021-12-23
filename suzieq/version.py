@@ -2,7 +2,7 @@
 """Store the Suzieq version string."""
 
 
-SUZIEQ_VERSION = "0.16.0"
+SUZIEQ_VERSION = "0.16.0a1"
 
 if __name__ == '__main__':
     print(SUZIEQ_VERSION)
