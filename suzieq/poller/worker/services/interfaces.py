@@ -757,11 +757,14 @@ class InterfaceService(Service):
             if 'up' in state:
                 # IOSVL2 images show up as up (connected)
                 entry['state'] = 'up'
+            elif 'down' in state:
+                if 'notconnect' in state:
+                    entry['state'] = 'notConnected'
 
             iftype = entry.get('type', 'ethernet').lower()
-            if iftype in ['aggregated ethernet', 'gechannel']:
+            if iftype in ['aggregated ethernet', 'gechannel', 'etherchannel']:
                 iftype = 'bond'
-            elif iftype in ['ethernet', 'igbe', 'csr']:
+            elif iftype in ['ethernet', 'igbe', 'csr', 'rp', 'ten']:
                 iftype = 'ethernet'
             elif iftype.endswith('gige'):
                 iftype = 'ethernet'
