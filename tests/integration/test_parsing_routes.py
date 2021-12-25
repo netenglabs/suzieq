@@ -32,8 +32,9 @@ def validate_routes(df: pd.DataFrame):
             assert ([ip_address(x) for x in row.nexthopIps])
 
     noncl_data = df.query(
-        'os != "linux" and os != "cumulus" and not '
-        'protocol.isin(["direct", "local", "connected"])')
+        '~os.isin(["linux", "cumulus"]) and '
+        '(os == "ioxe" and protocol != "static") and'
+        '~protocol.isin(["direct", "local", "connected"])')
     assert (noncl_data.query(
         'nexthopIps.str.len() != 0 and protocol != "hsrp" and namespace != "panos" and hostname != "firewall01" ')
         .preference != 0).all()
