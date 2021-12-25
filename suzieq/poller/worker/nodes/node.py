@@ -453,7 +453,7 @@ class Node:
                 devtype = "sonic"
             elif "Cisco IOS XR" in data:
                 devtype = "iosxr"
-            elif "Cisco IOS XE" in data:
+            elif any(x in data for x in ["Cisco IOS XE", "Cisco IOS-XE"]):
                 devtype = "iosxe"
             elif "Cisco IOS Software" in data:
                 devtype = "ios"
@@ -1499,7 +1499,7 @@ class PanosNode(Node):
                 for cmd in cmd_list:
                     self.logger.error(
                         f"Unable to connect to node {self.hostname} cmd {cmd}"
-                        )
+                    )
                     result.append(self._create_error(cmd))
                 await service_callback(result, cb_token)
                 return
