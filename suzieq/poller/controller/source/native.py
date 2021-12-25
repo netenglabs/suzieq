@@ -102,7 +102,7 @@ class SqNativeFile(Source):
                     'hostname': None,
                 }
                 self._validate_inventory_entry(entry)
-                inventory[f'{nsname}.{address}'] = entry
+                inventory[f'{nsname}.{address}.{port}'] = entry
             else:
                 logger.error(f'Ignoring invalid host spec.: {entry}')
 
