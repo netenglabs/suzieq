@@ -112,6 +112,6 @@ class AnsibleInventory(Source):
                 'ssh_keyfile': keyfile,
                 'hostname': None
             }
-            out_inv[f"{self.namespace}.{entry['ansible_host']}"] = host
+            out_inv[f"{self.namespace}.{entry['ansible_host']}.{port}"] = host
 
         return out_inv
