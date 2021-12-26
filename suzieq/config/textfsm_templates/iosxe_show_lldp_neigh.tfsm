@@ -7,6 +7,8 @@ Start
 
 LLDP
   ^${peerHostname}\s+${ifname}\s+\d+\s+(.+?)\s+${peerIfname}\s*$$ -> Record
+  ^${peerHostname}\s*$$
+  ^\s+${ifname}\s+\d+\s+(.+?)\s+${peerIfname}\s*$$ -> Record
   
 
 #Capability Codes: R - Router, T - Trans Bridge, B - Source Route Bridge
@@ -34,5 +36,8 @@ LLDP
 #Device ID        Local Intrfce     Holdtme    Capability  Platform  Port ID
 #leaf2            Gig 0/1           152              R I   CSR1000V  Gig 2
 #leaf2            Gig 0/2           169              R I   CSR1000V  Gig 3
+#leaf3
+#                 Ten 2/1/13        157              S I   WS-C3850- Gig 1/1/4
+
 
 #Total cdp entries displayed : 2
