@@ -1,3 +1,4 @@
+from itertools import repeat
 from ipaddress import ip_network
 
 from suzieq.engines.pandas.engineobj import SqPandasEngine
@@ -270,7 +271,7 @@ class InterfacesObj(SqPandasEngine):
                     .fillna({i: [] for i in if_df.index})
 
         if 'vlanList' not in if_df.columns:
-            if_df['vlanList'] = []
+            if_df['vlanList'] = [[] for i in repeat(None, len(if_df))]
 
         if lldp_df.empty:
             if status != 'pass':
