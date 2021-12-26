@@ -89,6 +89,7 @@ def _validate_svi_and_subif(df: pd.DataFrame):
         if ((len(row.ipAddressList) == 0) and
                 (len(row.ip6AddressList) == 0)):
             warnings.warn("VLAN {} has no IP address".format(row.ifname))
+        assert(row.state == "up" and row.macaddr != "00:00:00:00:00:00")
         assert all(ip_interface(x) for x in row.ipAddressList)
         assert all(ip_interface(x) for x in row.ip6AddressList)
 
@@ -176,6 +177,7 @@ def test_interfaces(table, datadir, get_table_data):
                       'software-pseudo': None,
                       'subinterface': None,
                       'tap': None,
+                      'tunnel': None,
                       'tunnel-te': _validate_tunnel_te_if,
                       'virtual': None,
                       'vlan': _validate_svi_and_subif,
