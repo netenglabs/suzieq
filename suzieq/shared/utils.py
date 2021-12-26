@@ -715,6 +715,7 @@ def expand_ios_ifname(ifname: str) -> str:
              'Nu': 'Null',
              'Po': 'Port-channel',
              'TE': 'TenGigE',
+             'Te': 'TenGigabitEthernet',
              'TF': 'TwentyFiveGigE',
              'TH': 'TwoHundredGigE',
              'tsec': 'tunnel-ipsec',

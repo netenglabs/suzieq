@@ -1,7 +1,7 @@
 Value Required ifname (\S+)
 Value state (.+?)
 Value adminState (.+?)
-Value type (\S+?(?:\s+Ethernet|))
+Value type ([^,]+)
 Value macaddr ((?:\w{4}\.){2}\w{4})
 Value interfaceMac ((?:\w{4}\.){2}\w{4})
 Value description (.*?)
@@ -37,6 +37,7 @@ Start
   ^\s+{duplex}-?[Dd]uplex,.*$$
   ^\s+Last\s+link\s+flapped\s+${statusChangeTimestamp}
   ^\s+No\.\s+of\s+active\s+members\s+in\s+this\s+channel\s*:\s+${_bondMbrCnt}
+  ^\s+Members\s+in\s+this\s+channel:\s+${_bondMbrs}
   ^\s+Member\s+\d+\s+:\s+${_bondMbrs}\s?,.*$$
 
 #GigabitEthernet0/0/0 is up, line protocol is up 

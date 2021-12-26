@@ -6,7 +6,7 @@ from dateparser import parse
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
-from suzieq.shared.utils import get_timestamp_from_junos_time
+from suzieq.shared.utils import get_timestamp_from_junos_time, expand_ios_ifname
 from suzieq.shared.utils import convert_macaddr_format_to_colon
 from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
@@ -753,6 +753,10 @@ class InterfaceService(Service):
                 entry['speed'] = NO_SPEED
                 continue
 
+            if entry.get('_bondMbrs', ''):
+                bond_mbrs = ' '.join(entry['_bondMbrs'])
+            else:
+                bond_mbrs = ''
             state = entry.get('state', '')
             if 'up' in state:
                 # IOSVL2 images show up as up (connected)
@@ -760,11 +764,20 @@ class InterfaceService(Service):
             elif 'down' in state:
                 if 'notconnect' in state:
                     entry['state'] = 'notConnected'
+                if 'Autostate Enabled' in state:
+                    entry['state'] = 'down'
+                    entry['reason'] = state.split(',')[1].strip()
 
             iftype = entry.get('type', 'ethernet').lower()
-            if iftype in ['aggregated ethernet', 'gechannel', 'etherchannel']:
+            if '.' in entry.get('ifname', ''):
+                iftype = 'subinterface'
+            elif iftype in ['aggregated ethernet', 'gechannel',
+                            'etherchannel']:
                 iftype = 'bond'
-            elif iftype in ['ethernet', 'igbe', 'csr', 'rp', 'ten']:
+            elif iftype in ['ethernet', 'igbe', 'csr']:
+                iftype = 'ethernet'
+            elif any(x in iftype for x in ['gigabit ethernet',
+                                           'rp management']):
                 iftype = 'ethernet'
             elif iftype.endswith('gige'):
                 iftype = 'ethernet'
@@ -773,17 +786,18 @@ class InterfaceService(Service):
                 iftype = 'ethernet'
             elif iftype.endswith('ethernet'):
                 iftype = 'ethernet'
-            entry['type'] = iftype
 
+            # More iftype processing below before setting it in entry
             speed = self._textfsm_valid_speed_value(entry)
             if speed != MISSING_SPEED:
                 speed = int(speed)/1000  # is in Kbps
             entry['speed'] = speed
 
-            bondMbrs = entry.get('_bondMbrs', []) or []
-            if iftype == 'bond' and bondMbrs:
-                for mbr in bondMbrs:
+            if iftype == 'bond' and bond_mbrs:
+                for mbr in bond_mbrs.split():
                     mbr = mbr.strip()
+                    # expand the member name
+                    mbr = expand_ios_ifname(mbr)
                     if mbr in entry_dict:
                         mbr_entry = entry_dict[mbr]
                         mbr_entry['type'] = 'bond_slave'
@@ -805,11 +819,6 @@ class InterfaceService(Service):
             entry['interfaceMac'] = convert_macaddr_format_to_colon(
                 entry.get('interfaceMac', '0000.0000.0000'))
 
-            if entry.get('vlan', '') and entry.get('innerVlan', ''):
-                entry['type'] = "qinq"
-            if entry['ifname'].endswith('.0'):
-                entry['vlan'] = -1
-
             lastChange = parse(
                 entry.get('statusChangeTimestamp', ''),
                 settings={'RELATIVE_BASE':
@@ -827,6 +836,14 @@ class InterfaceService(Service):
             elif devtype == 'iosxr':
                 entry['ip6AddressList'] = []
 
+            if entry['ifname'].startswith('Vlan'):
+                iftype = 'vlan'
+                if entry.get('vlan', '') == '':
+                    entry['vlan'] = entry['ifname'].split('Vlan')[1].strip()
+            if entry.get('vlan', '') and entry.get('innerVlan', ''):
+                iftype = "qinq"
+
+            entry['type'] = iftype
             # This is specifically for IOSXE/IOS devices where
             # the IPv6 address uses capital letters
             if devtype != 'iosxr':
@@ -834,14 +851,15 @@ class InterfaceService(Service):
                                            for x in entry.get('ip6AddressList',
                                                               [])]
 
+            if entry['ifname'].endswith('.0'):
+                entry['vlan'] = -1
+
             if entry['ipAddressList'] == 'Unknown':
                 entry['ipAddressList'] = []
                 entry['ip6AddressList'] = []
 
             if entry['ipAddressList'] or entry['ip6AddressList']:
                 entry['master'] = entry.get('vrf', '')
-            elif entry['type'] == 'vlan':
-                entry['type'] = 'vlan-l2'  # Layer 2 transport mode port
 
             if entry['ifname'] in entry_dict:
                 add_info = entry_dict[entry['ifname']]
