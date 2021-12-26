@@ -15,7 +15,7 @@ def validate_speed_if(df: pd.DataFrame):
     pass
 
 
-def _validate_ethernet_if(df: pd.DataFrame):
+def _validate_ethernet_if(df: pd.DataFrame, _):
     '''Validate state in interfaces in UP state'''
 
     # We don't collect speed for Linux servers, vEOS doesn't provide speed
@@ -28,7 +28,7 @@ def _validate_ethernet_if(df: pd.DataFrame):
             .speed != MISSING_SPEED).all()
 
 
-def _validate_bridged_if(df: pd.DataFrame):
+def _validate_bridged_if(df: pd.DataFrame, _):
     '''Validate state in interfaces in UP state'''
     for row in df.itertuples():
         assert ((len(row.ipAddressList) == 0) and
@@ -54,15 +54,23 @@ def _validate_junos_speed_if(df: pd.DataFrame):
         assert(len(set(ifSpeeds)) == 1)
 
 
-def _validate_bond_if(df: pd.DataFrame):
+def _validate_bond_if(df: pd.DataFrame, full_df: pd.DataFrame):
     '''Validate bond interfaces'''
 
     # We don't collect speed for Linux servers, vEOS doesn't provide speed
     assert (df.query('~os.isin(["linux", "eos"]) '
                      'and (state == "up")').speed != 0).all()
 
+    # for every bond interface, verify we have info about its members
+    for row in df.itertuples():
+        if row.type != 'bond':
+            continue
+        assert not full_df.query(f'namespace=="{row.namespace}" and '
+                                 f'hostname=="{row.hostname}" and '
+                                 f'master == "{row.ifname}"').empty
 
-def _validate_vrf_if(df: pd.DataFrame):
+
+def _validate_vrf_if(df: pd.DataFrame, _):
     '''Validate VRF interfaces'''
 
     assert (df.master == "").all()
@@ -80,7 +88,7 @@ def _validate_vrf_if(df: pd.DataFrame):
                                 'vni != 0').empty
 
 
-def _validate_svi_and_subif(df: pd.DataFrame):
+def _validate_svi_and_subif(df: pd.DataFrame, _):
     '''Validate SVI and VLAN subif'''
     assert (df.query('state == "up"').vlan != 0).all()
     for row in df.itertuples():
@@ -94,7 +102,7 @@ def _validate_svi_and_subif(df: pd.DataFrame):
         assert all(ip_interface(x) for x in row.ip6AddressList)
 
 
-def _validate_vxlan_if(df: pd.DataFrame):
+def _validate_vxlan_if(df: pd.DataFrame, _):
     '''Validate VXLAN subif'''
 
     # Internal consistency, make sure its part of a bridge
@@ -114,28 +122,28 @@ def _validate_vxlan_if(df: pd.DataFrame):
         assert (restdf.macaddr == "00:00:00:00:00:00").all()
 
 
-def _validate_loopback_if(df: pd.DataFrame):
+def _validate_loopback_if(df: pd.DataFrame, _):
     '''Validate loopback interfaces'''
     pass
 
 
-def _validate_null_if(df: pd.DataFrame):
+def _validate_null_if(df: pd.DataFrame, _):
     '''Validate Null interfaces from XR'''
     assert (df.speed == 0).all()
 
 
-def _validate_tunnel_te_if(df: pd.DataFrame):
+def _validate_tunnel_te_if(df: pd.DataFrame, _):
     '''Validate Null interfaces from XR'''
     assert (df.speed == 0).all()
     assert (df.master != "").all()
 
 
-def _validate_gre_if(df: pd.DataFrame):
+def _validate_gre_if(df: pd.DataFrame, _):
     '''Validate GRE interfaces'''
     pass
 
 
-def _validate_junos_vtep_if(df: pd.DataFrame):
+def _validate_junos_vtep_if(df: pd.DataFrame, _):
     '''Validate Junos VTEP interfaces'''
     pass
 
@@ -215,7 +223,7 @@ def test_interfaces(table, datadir, get_table_data):
             if not subdf.empty:
                 # validate interface speed without Juniper
                 validate_speed_if(subdf_without_junos)
-                validation_fns[iftype](subdf)
+                validation_fns[iftype](subdf, df)
 
                 assert (subdf.macaddr.str.len() == 17).all()
                 assert (subdf.macaddr.str.contains(':')).all()
