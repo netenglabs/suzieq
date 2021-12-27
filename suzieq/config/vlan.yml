@@ -30,8 +30,15 @@ apply:
 
   ios:
     version: all
-    command: show vlan
-    textfsm: textfsm_templates/iosxe_show_vlan.tfsm
+    merge: False
+    command:
+      - command: show vlan
+        textfsm: textfsm_templates/iosxe_show_vlan.tfsm
+        _entryType: vlan
+
+      - command: show interface trunk
+        textfsm: textfsm_templates/iosxe_show_int_trunk.tfsm
+        _entryType: trunk
 
   iosxe:
     copy: ios
