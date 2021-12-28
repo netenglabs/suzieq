@@ -1,29 +1,19 @@
 import asyncio
 import asyncssh
 import sys
-import os
+from pathlib import Path
 import crypt
-from importlib.util import find_spec
 import argparse
 
 
 class MySSHServerSession(asyncssh.SSHServerSession):
-    def __init__(self, nos='iosxr', version='default', hostname='default'):
+    def __init__(self, input_dir: str = None):
         self._input = ''
         self._data = None
-        self.nos = nos
-        self.nos_version = version
-        self.hostname = hostname
+        self.input_dir = Path(f'{input_dir}')
         self.run_as_shell = False
         self.prompt = '# '
-        self.vendor = 'cisco'
-        self.sample_data_dir = './tests/integration/nossim'
         self._status = 0
-
-    def get_testinput_dir(self):
-        '''Get the dir where the test input data is stored'''
-        return(os.path.dirname(find_spec('suzieq').loader.path) +
-               '/../tests/integration/nossim')
 
     def connection_made(self, chan):
         self._chan = chan
@@ -40,17 +30,18 @@ class MySSHServerSession(asyncssh.SSHServerSession):
 
         if command:
             if command == 'cat /proc/uptime; hostnamectl; show version':
-                return f'{self.sample_data_dir}/{self.nos}' \
-                    f'/{self.nos_version}/{self.hostname}/nos.txt'
+                return f'{self.input_dir}/nos.txt'
 
             cmdfile = command.replace("*", "all").replace(" ", "_") \
                 .replace("-", "_")
 
-            filepath = f'{self.sample_data_dir}/{self.nos}/' \
-                f'{self.nos_version}/{self.hostname}/{cmdfile}{fmt}'
+            filepath = self.input_dir / f'{cmdfile}{fmt}'
 
-            if os.path.exists(filepath):
+            if filepath.exists():
                 return filepath
+
+            print(f'No file {filepath} found')
+            return ''
 
     def _exec_cmd(self, command):
         '''The routine to execute command and return data'''
@@ -104,11 +95,12 @@ class MySSHServerSession(asyncssh.SSHServerSession):
 
 
 class MySSHServer(asyncssh.SSHServer):
-    def __init__(self, nos='iosxr', version="default", hostname="default"):
+    def __init__(self, input_dir: str = ''):
         self.passwords = {'vagrant': 'vaqRzE48Dulhs'}   # password of 'vagrant'
-        self.nos = nos
-        self.version = version
-        self.hostname = hostname
+        self.input_dir = input_dir
+        if not Path(f'{input_dir}').exists():
+            print('ERROR: Received non-existent files dir '
+                  f'{input_dir}')
 
     def connection_made(self, conn):
         print('SSH connection received from %s.' %
@@ -132,43 +124,37 @@ class MySSHServer(asyncssh.SSHServer):
         return crypt.crypt(password, pw) == pw
 
     def session_requested(self):
-        return MySSHServerSession(
-            nos=self.nos, version=self.version, hostname=self.hostname)
+        return MySSHServerSession(input_dir=self.input_dir)
 
 
-async def start_server(
-            port=10000, nos='iosxr', version="default", hostname="default"):
-    """Run sim ssh server for the given nos, version and hostname"""
+async def start_server(port=10000, input_dir: str = None):
+    """Run sim ssh server using the files in the given dir"""
 
     await asyncssh.listen(
-        '', port, server_factory=lambda: MySSHServer(nos, version, hostname),
+        '127.0.0.1', port,
+        server_factory=lambda: MySSHServer(input_dir=input_dir),
         server_host_keys=['tests/integration/nossim/ssh_insecure_key'])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-n", "--nos", type=str, default="iosxr",
-        help="NOS name", required=True)
-    parser.add_argument(
-        "-v", "--nos-version", type=str, help="NOS version",
-        default="default")
-    parser.add_argument(
-        "-H", "--hostname", type=str, help="Hostname of the device",
-        default="default")
-    parser.add_argument(
         "-p", "--listening-port", type=int, default=10000,
         help="Listening port of the ssh server (default: 10000)")
+    parser.add_argument(
+        "-d", "--input-dir", type=str, default=None,
+        help="Input dir to search for host files")
     args = parser.parse_args()
 
     loop = asyncio.get_event_loop()
 
+    if not Path(args.input_dir).exists():
+        print(f'ERROR: Path {args.input_dir} does not exist, aborting')
+        sys.exit(1)
+
     try:
         loop.run_until_complete(start_server(
-            port=args.listening_port,
-            nos=args.nos,
-            version=args.nos_version,
-            hostname=args.hostname)
-            )
+            port=args.listening_port, input_dir=args.input_dir)
+        )
     except (OSError, asyncssh.Error) as exc:
         sys.exit('Error starting server: ' + str(exc))
 
