@@ -853,7 +853,7 @@ class InterfaceService(Service):
                                                               [])]
 
             if entry['ifname'].endswith('.0'):
-                entry['vlan'] = -1
+                entry['vlan'] = 0
 
             if entry['ipAddressList'] == 'Unknown':
                 entry['ipAddressList'] = []
