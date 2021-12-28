@@ -1,8 +1,16 @@
+'''
+Device simulator that serves up fake SSH/REST server
+
+The command outputs are reflected from files with the appropriate
+command name and format extension. show_lldp_neighbors_detail.txt,
+for example
+'''
 import sys
 import subprocess
 import argparse
-import yaml
 from pathlib import Path
+
+import yaml
 from jsonschema import validate
 from jsonschema.exceptions import ValidationError
 
@@ -38,6 +46,7 @@ schema = {
 }
 
 
+# pylint: disable=redefined-outer-name
 def run_simnodes(devices: list = None, input_dir: str = None,
                  port: int = None, transport: str = None):
     """Start ssh and rest simnode subprocesses with the options
@@ -72,12 +81,12 @@ def run_simnodes(devices: list = None, input_dir: str = None,
 
         processes += run_simnodes_dir(hostdirs, ssh_port, rest_port)
 
-    for p in processes:
-        p.wait()
+    for proc in processes:
+        proc.wait()
 
 
 def run_simnodes_dir(hostdirs: str, ssh_port, rest_port) -> list:
-
+    '''Run one or more sessions given the dir and port'''
     processes = []
 
     bindir = f'{get_sq_install_dir()}/utilities'
@@ -90,11 +99,12 @@ def run_simnodes_dir(hostdirs: str, ssh_port, rest_port) -> list:
                 "-p", str(ssh_port),
                 "-d", hostd,
             ]
-            p = subprocess.Popen(cmd)
+            # pylint: disable=consider-using-with
+            proc = subprocess.Popen(cmd)
             print(
                 f'Running ssh node with input dir {hostd} '
                 f'for {hostd.parts[-1]} on port {ssh_port}')
-            processes.append(p)
+            processes.append(proc)
 
         if rest_port:
             rest_port += 1
@@ -103,12 +113,13 @@ def run_simnodes_dir(hostdirs: str, ssh_port, rest_port) -> list:
                 "-p", str(rest_port),
                 "-d", hostd,
             ]
-            p = subprocess.Popen(cmd)
+            # pylint: disable=consider-using-with
+            proc = subprocess.Popen(cmd)
             print(
                 f'Running REST node with input dir {hostd} '
                 f'for {hostd.parts[-1]} on port {rest_port}')
 
-            processes.append(p)
+            processes.append(proc)
 
     return processes
 
@@ -136,14 +147,14 @@ if __name__ == '__main__':
     devs = {}
 
     if args.devices_file:
-        with open(args.devices_file) as fh:
+        with open(args.devices_file, encoding='utf8') as fh:
             devs = yaml.load(fh, Loader=yaml.FullLoader)
 
         try:
             validate(devs, schema)
         except ValidationError as e:
             print(e.message)
-            exit(1)
+            sys.exit(1)
     else:
         input_dir = Path(args.input_dir)
         if not input_dir.exists():

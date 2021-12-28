@@ -1,10 +1,14 @@
+'''
+Serve up a fake REST server acting as device REST API
+'''
 import sys
-from pathlib import Path
-from aiohttp import web
-import xmltodict
 import argparse
+from pathlib import Path
 import ssl
 import logging
+
+from aiohttp import web
+import xmltodict
 
 
 def get_filename_from_cmd(cmd_dict: dict) -> str:
@@ -55,15 +59,15 @@ def run_server(port=443, input_dir: str = None):
 
         # authentication with user and pass to get api key
         if req_type == "keygen":
-            u = request.query.get("user", "")
-            p = request.query.get("password", "")
-            if u == username and p == password:
+            user = request.query.get("user", "")
+            passwd = request.query.get("password", "")
+            if user == username and passwd == password:
                 return web.Response(text=auth_response)
-            else:
-                raise web.HTTPForbidden()
+
+            raise web.HTTPForbidden()
 
         # cmd queries
-        elif req_type == "op" and req_auth_key == api_key:
+        if req_type == "op" and req_auth_key == api_key:
             xml_cmd = request.query.get("cmd", "")
 
             if xml_cmd == "":
