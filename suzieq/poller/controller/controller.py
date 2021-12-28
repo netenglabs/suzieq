@@ -108,6 +108,9 @@ class Controller:
                         'no-coalescer': self._no_coalescer,
                         'output-dir': args.output_dir,
                         'outputs': args.outputs,
+                        # We are intentionally passing the run_once argument
+                        # since we do not want to give internal values as
+                        # arguments of the poller workers
                         'run-once': args.run_once,
                         'service-only': args.service_only,
                         'ssh-config-file': args.ssh_config_file,

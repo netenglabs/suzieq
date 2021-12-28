@@ -117,11 +117,15 @@ def controller_main():
     parser.add_argument(
         '--run-once',
         type=str,
-        choices=['gather', 'process', 'update'],
-        help=('Collect the data from the sources and terminates. gather store '
-              'the output as it has been collected, process performs some '
-              'processing on the data. Both cases store the results in a '
-              'plain output file, one for each service.')
+        choices=['gather', 'process', 'update', 'debug'],
+        help=('''The poller do not run forever, three modes are available:
+        (1) gather: store the output as it has been collected,
+        (2) process: performs some processing on the data.
+        Both cases store the results in a plain output file,
+        one for each service, and exit.
+        (3) update: poll the nodes only once, write the result and stop
+        (4) debug: build the device list and exit without polling
+        the nodes.''')
     )
 
     parser.add_argument(
@@ -149,7 +153,7 @@ def controller_main():
         '-w',
         '--workers',
         type=int,
-        help='Maximum number of workers to execute',
+        help='The number of workers polling the nodes',
     )
 
     parser.add_argument(
