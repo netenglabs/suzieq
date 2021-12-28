@@ -1,5 +1,4 @@
 import numpy as np
-from collections import defaultdict
 from suzieq.shared.utils import expand_ios_ifname
 from suzieq.poller.worker.services.service import Service
 
@@ -101,7 +100,7 @@ class VlanService(Service):
     def _clean_ios_data(self, processed_data, _):
         '''Massage the interface list'''
 
-        vlan_dict = dict()
+        vlan_dict = {}
         for entry in processed_data:
             if entry.get('_entryType', '') == 'vlan':
                 if entry['vlanName'] == 'default':

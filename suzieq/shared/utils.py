@@ -506,13 +506,12 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
 
 def poller_log_params(cfg: dict, is_controller=False, worker_id=0) -> tuple:
     """Get the log file, level and size for the given program from config
-
     It gets the base file name of the configuration file and appends a prefix
     which depends on the component of the poller
 
     Args:
         cfg (dict): The config dictionary
-        is_controller (bool, optional): If the component is the controller. 
+        is_controller (bool, optional): If the component is the controller.
             Defaults to False.
         worker_id (int, optional): The poller worker id. Defaults to 0.
 

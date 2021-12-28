@@ -669,6 +669,7 @@ class Service(SqPlugin):
         # Fire up the initial posts
         await self.start_data_gather()
         loop = asyncio.get_running_loop()
+        # pylint: disable=unnecessary-lambda
         pernode_stats = defaultdict(lambda: ServiceStats())
 
         while True:

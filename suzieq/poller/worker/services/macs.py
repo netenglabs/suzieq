@@ -150,7 +150,6 @@ class MacsService(Service):
 
     def _clean_iosxe_data(self, processed_data, _):
 
-        foo = ''
         for entry in processed_data:
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))

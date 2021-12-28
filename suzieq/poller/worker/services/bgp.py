@@ -597,7 +597,7 @@ class BgpService(Service):
                 continue
 
             if "softReconfig" in entry:
-                sr = True if entry["softReconfig"] == "yes" else False
+                sr = entry["softReconfig"] == "yes"
                 softReconfDict[entry.get("_peerGroup")] = sr
                 drop_indices.append(i)
                 continue
