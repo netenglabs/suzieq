@@ -12,11 +12,7 @@ import shlex
 from asyncio.subprocess import Process
 from typing import Dict
 
-try:
-    from asyncio.exceptions import CancelledError
-except ModuleNotFoundError:
-    from asyncio import CancelledError
-
+from suzieq.poller.controller.utils.proc_utils import monitor_process
 from suzieq.shared.utils import ensure_single_instance, get_sq_install_dir
 
 logger = logging.getLogger(__name__)
@@ -64,7 +60,7 @@ class CoalescerLauncher:
         """
         try:
             await self._monitor_coalescer()
-        except CancelledError:
+        except asyncio.CancelledError:
             pass
         finally:
             if self.coalescer_process:
@@ -100,6 +96,10 @@ class CoalescerLauncher:
                 .get('coalesce-directory',
                      f'{self.cfg.get("data-directory")}/coalesced')
 
+            # In order to be sure the coalescer correctly started we need to
+            # check if it got the lock file, if so we are not able to acquire
+            # the lock and we can proceed monitoring the coalescer process,
+            # otherwise we release the lock and retry starting the process
             fd = ensure_single_instance(f'{coalesce_dir}/.sq-coalescer.pid',
                                         False)
             if fd > 0:
@@ -112,18 +112,10 @@ class CoalescerLauncher:
                 continue
 
             # Check if we have something from the stdout we need to log
-            stdout, stderr = await self.coalescer_process.communicate()
+            await monitor_process(self.coalescer_process, 'COALESCER')
 
-            if self.coalescer_process.returncode and \
-               (self.coalescer_process.returncode != errno.EBUSY):
-                logger.error(f'coalescer stdout: {stdout}, stderr: {stderr}')
-            else:
-                if self.coalescer_process.returncode == errno.EBUSY:
-                    await asyncio.sleep(10*60)
-                else:
-                    logger.info(
-                        f'coalescer ended stdout: {stdout}, stderr: {stderr}')
-
+            if self.coalescer_process.returncode == errno.EBUSY:
+                await asyncio.sleep(10*60)
             fd = 0
 
     async def _start_coalescer(self) -> Process:
