@@ -1,8 +1,14 @@
-from aiohttp import web
-import xmltodict
+'''
+Serve up a fake REST server acting as device REST API
+'''
+import sys
 import argparse
+from pathlib import Path
 import ssl
 import logging
+
+from aiohttp import web
+import xmltodict
 
 
 def get_filename_from_cmd(cmd_dict: dict) -> str:
@@ -30,10 +36,8 @@ def get_filename_from_cmd(cmd_dict: dict) -> str:
     return "_".join(keys).replace("-", "_")
 
 
-def run_server(nos="panos", version="default", hostname="default", port=443):
+def run_server(port=443, input_dir: str = None):
     """Run sim rest server for the given nos, version and hostname"""
-
-    nossim = f"tests/integration/nossim/{nos}/{version}/{hostname}"
 
     api_key = "xxXYHqhFIAWAlWTulizbXtfVfvV5ETfNynHxAlV3ZEUTtrUNKZBDY3aKmCFC"
 
@@ -55,15 +59,15 @@ def run_server(nos="panos", version="default", hostname="default", port=443):
 
         # authentication with user and pass to get api key
         if req_type == "keygen":
-            u = request.query.get("user", "")
-            p = request.query.get("password", "")
-            if u == username and p == password:
+            user = request.query.get("user", "")
+            passwd = request.query.get("password", "")
+            if user == username and passwd == password:
                 return web.Response(text=auth_response)
-            else:
-                raise web.HTTPForbidden()
+
+            raise web.HTTPForbidden()
 
         # cmd queries
-        elif req_type == "op" and req_auth_key == api_key:
+        if req_type == "op" and req_auth_key == api_key:
             xml_cmd = request.query.get("cmd", "")
 
             if xml_cmd == "":
@@ -71,7 +75,7 @@ def run_server(nos="panos", version="default", hostname="default", port=443):
 
             cmd_dict = xmltodict.parse(xml_cmd)
             cmd = get_filename_from_cmd(cmd_dict)
-            return web.FileResponse(f"{nossim}/{cmd}.xml")
+            return web.FileResponse(f"{input_dir}/{cmd}.xml")
 
     ssl_context = ssl.create_default_context(ssl.Purpose.CLIENT_AUTH)
     ssl_context.load_cert_chain(
@@ -86,21 +90,15 @@ def run_server(nos="panos", version="default", hostname="default", port=443):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
-        "-n", "--nos", type=str, default="panos",
-        help="NOS name", required=True)
+        "-p", "--listening-port", type=int, default=10000,
+        help="Listening port of the ssh server (default: 10000)")
     parser.add_argument(
-        "-v", "--nos-version", type=str,
-        default="default", help="NOS version")
-    parser.add_argument(
-        "-H", "--hostname", type=str, default="default",
-        help="Hostname of the device")
-    parser.add_argument(
-        "-p", "--listening-port", type=int, default=8443,
-        help="Listening port of the ssh server (default: 8443)")
+        "-d", "--input-dir", type=str, default=None,
+        help="Input dir to search for host files")
     args = parser.parse_args()
 
-    run_server(
-        nos=args.nos,
-        version=args.nos_version,
-        hostname=args.hostname,
-        port=args.listening_port)
+    if not Path(args.input_dir).exists():
+        print(f'ERROR: Path {args.input_dir} does not exist, aborting')
+        sys.exit(1)
+
+    run_server(port=args.listening_port, input_dir=args.input_dir)
