@@ -4,21 +4,22 @@
     inventory chunks on different files for the pollers
     and start them up
 """
-import os
 import asyncio
 import copy
 import logging
+import os
 from asyncio.subprocess import Process
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List
-from cryptography.fernet import Fernet
 
 import aiofiles
 import yaml
+from cryptography.fernet import Fernet
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
 from suzieq.poller.controller.manager.base_manager import Manager
+from suzieq.poller.controller.utils.proc_utils import monitor_process
 from suzieq.poller.worker.coalescer_launcher import CoalescerLauncher
 from suzieq.shared.exceptions import PollingError, SqPollerConfError
 from suzieq.shared.utils import get_sq_install_dir
@@ -197,7 +198,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                 tasks = [t for t in tasks if t not in dead_workers]
 
                 self._running_workers.update(self._waiting_workers)
-                new_ptasks = {i: asyncio.create_task(p.wait())
+                new_ptasks = {i: asyncio.create_task(
+                                    monitor_process(p, f'WORKER {i}'))
                               for i, p in self._waiting_workers.items()}
                 poller_wait_tasks.update(new_ptasks)
                 tasks += list(new_ptasks.values())
@@ -229,32 +231,13 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                             # Worker natural death
                             del self._running_workers[poller_id]
                         else:
-                            # Unexpected worker death
-                            errstr = await self._get_process_out(process)
                             raise PollingError(f'Unexpected worker {poller_id}'
-                                               f' death process returned:'
-                                               f'{errstr}')
+                                               f' death')
                 else:
                     # Someone else died
                     raise PollingError('Unexpected task death')
 
             tasks = list(pending)
-
-    async def _get_process_out(self, process: Process) -> str:
-        """Get the stdout and the stderr ouput of a process
-
-        Args:
-            process (Process): the process from which retrieving the output
-
-        Returns:
-            str: content of the process output
-        """
-        pout = await process.communicate()
-        outstr = ''
-        for out in pout:
-            if out:
-                outstr += out.decode()
-        return outstr
 
     async def _write_chunk(self, poller_id: int, chunk: Dict):
         """Write the chunk into an output file
