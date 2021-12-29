@@ -1,5 +1,5 @@
 Value hostname (\S+)
-Value version (\S+)
+Value version ([^, ]+)
 Value bootupTimestamp (.*)
 Value model (\S+)
 Value architecture (\w+)
@@ -7,12 +7,14 @@ Value memory (\d+K)
 Value serialNumber (\w+)
 
 Start
-  ^Cisco IOS Software.*, Version ${version},.*$$
+  ^Cisco IOS Software.*, Version ${version}.*$$
+  ^Cisco IOS Software.*, Version ${version},.*$$  
   ^BOOTLDR:\s+System\s+Bootstrap,\s+Version\s+${version},.*$$
   ^${hostname}\s+uptime\s+is\s+${bootupTimestamp}$$
   ^[Cc]isco\s+${model}\s+.*memory.*$$
   ^Processor\s+board\s+ID\s+${serialNumber}.*$$
 
+#Cisco IOS Software, IOS-XE Software, Catalyst 4500 L3 Switch  Software (cat4500e-UNIVERSALK9-M), Version 03.11.02.E RELEASE SOFTWARE (fc3)
 #Cisco IOS Software, vios_l2 Software (vios_l2-ADVENTERPRISEK9-M), Version 15.2(CML_NIGHTLY_20190423)FLO_DSGS7, EARLY DEPLOYMENT DEVELOPMENT BUILD, synced to  V152_6_0_81_E
 #Technical Support: http://www.cisco.com/techsupport
 #Copyright (c) 1986-2019 by Cisco Systems, Inc.

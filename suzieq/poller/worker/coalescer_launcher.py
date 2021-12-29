@@ -7,6 +7,8 @@ import fcntl
 import logging
 import os
 import signal
+from pathlib import Path
+import shlex
 from asyncio.subprocess import Process
 from typing import Dict
 
@@ -45,7 +47,7 @@ class CoalescerLauncher:
         self.coalescer_bin = coalescer_bin
         if not coalescer_bin:
             sq_path = get_sq_install_dir()
-            self.coalescer_bin = f'{sq_path}/utilities/sq_coalescer.py'
+            self.coalescer_bin = Path(f'{sq_path}/utilities/sq_coalescer.py')
 
     @property
     def coalescer_pid(self) -> int:
@@ -135,7 +137,7 @@ class CoalescerLauncher:
         else:
             coalescer_args_str = ''
         coalescer_args_str = f'{self.coalescer_bin} {coalescer_args_str}'
-        coalescer_args = coalescer_args_str.strip().split()
+        coalescer_args = shlex.split(coalescer_args_str.strip())
 
         try:
             process = await asyncio.create_subprocess_exec(

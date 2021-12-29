@@ -18,7 +18,7 @@ def validate_macs(df: pd.DataFrame):
     # Ignore Linux HER entries and interface MAC entries, and some NXOS entries
     assert (df.query(
         'macaddr != "00:00:00:00:00:00" and flags != "permanent" and '
-        'mackey != "sup-eth1(R)"')
+        '~oif.isin(["cpu", "sup-eth1(R)"])')
         .vlan != 0).all()
     # Remote learnt MACs MUST have a non-zero VTEP IP
     assert (df.query('flags == "remote"').remoteVtepIp != '').all()

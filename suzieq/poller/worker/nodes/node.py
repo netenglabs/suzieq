@@ -1273,7 +1273,7 @@ class IosXENode(Node):
         await service_callback(result, cb_token)
 
     def _extract_nos_version(self, data: str) -> None:
-        match = re.search(r', Version\s+(\S+),', data)
+        match = re.search(r', Version\s+([^ ,]+)', data)
         if match:
             self.version = match.group(1).strip()
         else:

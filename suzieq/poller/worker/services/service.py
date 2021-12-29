@@ -669,6 +669,7 @@ class Service(SqPlugin):
         # Fire up the initial posts
         await self.start_data_gather()
         loop = asyncio.get_running_loop()
+        # pylint: disable=unnecessary-lambda
         pernode_stats = defaultdict(lambda: ServiceStats())
 
         while True:
@@ -692,6 +693,7 @@ class Service(SqPlugin):
             if output:
                 ostatus = [x.get('status', -1) for x in output]
 
+                # pylint: disable=use-a-generator
                 write_poller_stat = not all([Service.is_status_ok(x)
                                              for x in ostatus])
                 status = ostatus[0]

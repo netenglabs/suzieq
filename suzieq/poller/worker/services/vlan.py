@@ -100,15 +100,34 @@ class VlanService(Service):
     def _clean_ios_data(self, processed_data, _):
         '''Massage the interface list'''
 
+        vlan_dict = {}
         for entry in processed_data:
-            if entry['vlanName'] == 'default':
-                entry['vlanName'] = f'vlan{entry["vlan"]}'
-            if entry['interfaces']:
-                newiflist = []
-                for ifname in entry['interfaces'].split(','):
-                    newiflist.append(expand_ios_ifname(ifname.strip()))
-                entry['interfaces'] = newiflist
-            entry['state'] = entry['state'].lower()
+            if entry.get('_entryType', '') == 'vlan':
+                if entry['vlanName'] == 'default':
+                    entry['vlanName'] = f'vlan{entry["vlan"]}'
+                if entry['interfaces']:
+                    newiflist = []
+                    for ifname in entry['interfaces'].split(','):
+                        newiflist.append(expand_ios_ifname(ifname.strip()))
+                    entry['interfaces'] = newiflist
+                else:
+                    entry['interfaces'] = []
+                entry['state'] = entry['state'].lower()
+                vlan_dict[entry['vlan']] = entry
+            else:
+                vlans = entry.get('_nativeVlan', '')
+                if not vlans:
+                    vlans = entry.get('_vlansStpFwd', '')
+                if not vlans or vlans == 'none':
+                    continue
+
+                ifname = expand_ios_ifname(entry.get('ifname', ''))
+                vlans = sum((
+                    (list(range(*[int(j) + k
+                                  for k, j in enumerate(i.split('-'))]))
+                     if '-' in i else [i]) for i in vlans.split(',')), [])
+                for vlan in vlans:
+                    vlan_dict[str(vlan)]['interfaces'].append(ifname)
 
         return processed_data
 

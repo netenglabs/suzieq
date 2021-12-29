@@ -3,16 +3,14 @@ from datetime import datetime
 from copy import deepcopy
 
 from dateparser import parse
+import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import get_timestamp_from_cisco_time
 from suzieq.shared.utils import get_timestamp_from_junos_time
 
-import numpy as np
 
 # pylint: disable=too-many-statements
-
-
 class BgpService(Service):
     """bgp service. Different class because of munging of output across NOS"""
 
@@ -597,7 +595,7 @@ class BgpService(Service):
                 continue
 
             if "softReconfig" in entry:
-                sr = True if entry["softReconfig"] == "yes" else False
+                sr = entry["softReconfig"] == "yes"
                 softReconfDict[entry.get("_peerGroup")] = sr
                 drop_indices.append(i)
                 continue
