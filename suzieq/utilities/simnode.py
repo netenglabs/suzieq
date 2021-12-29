@@ -85,15 +85,16 @@ def run_simnodes(devices: list = None, input_dir: str = None,
         proc.wait()
 
 
-def run_simnodes_dir(hostdirs: str, ssh_port, rest_port) -> list:
+def run_simnodes_dir(hostdirs: str, base_ssh_port: int,
+                     base_rest_port: int) -> list:
     '''Run one or more sessions given the dir and port'''
     processes = []
 
     bindir = f'{get_sq_install_dir()}/utilities'
 
-    for hostd in sorted(hostdirs):
-        if ssh_port:
-            ssh_port += 1
+    for i, hostd in enumerate(sorted(hostdirs)):
+        if base_ssh_port:
+            ssh_port = base_ssh_port + i
             cmd = [
                 "python", f"{bindir}/simnode_ssh.py",
                 "-p", str(ssh_port),
@@ -106,8 +107,8 @@ def run_simnodes_dir(hostdirs: str, ssh_port, rest_port) -> list:
                 f'for {hostd.parts[-1]} on port {ssh_port}')
             processes.append(proc)
 
-        if rest_port:
-            rest_port += 1
+        if base_rest_port:
+            rest_port = base_rest_port + i
             cmd = [
                 "python", f"{bindir}/simnode_rest.py",
                 "-p", str(rest_port),
