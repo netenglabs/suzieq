@@ -12,6 +12,7 @@ class AddressObj(SqPandasEngine):
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'address'
 
     def addr_type(self, addr: list) -> list:
