@@ -756,6 +756,8 @@ class InterfaceService(Service):
                 if 'Autostate Enabled' in state:
                     entry['state'] = 'down'
                     entry['reason'] = state.split(',')[1].strip()
+                if 'err-disabled' in state:
+                    entry['state'] = 'errDisabled'
 
             iftype = entry.get('type', 'ethernet').lower()
             if '.' in entry.get('ifname', ''):
