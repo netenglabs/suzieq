@@ -5,8 +5,11 @@ Value state (\S+)
 Value oif (\S+)
 
 Start
+  ^IPv6\s+Address\s+Age\s+Link.* -> NDEntry
+
+NDEntry
   ^${ipAddress}\s+${age}\s+${macaddr}\s+${state}\s+${oif}.*$$ -> Record
-  ^IPv6
+
 
 #IPv6 Address                              Age Link-layer Addr State Interface
 #2000:0:0:4::2                               0 0003.a0d6.141e  REACH Ethernet2
