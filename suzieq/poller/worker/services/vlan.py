@@ -101,7 +101,9 @@ class VlanService(Service):
         '''Massage the interface list'''
 
         vlan_dict = {}
-        for entry in processed_data:
+        drop_indices = []
+
+        for i, entry in enumerate(processed_data):
             if entry.get('_entryType', '') == 'vlan':
                 if entry['vlanName'] == 'default':
                     entry['vlanName'] = f'vlan{entry["vlan"]}'
@@ -113,8 +115,11 @@ class VlanService(Service):
                 else:
                     entry['interfaces'] = []
                 entry['state'] = entry['state'].lower()
+                if entry['state'] == 'act/unsup':
+                    entry['state'] = 'unsupported'
                 vlan_dict[entry['vlan']] = entry
             else:
+                drop_indices.append(i)
                 vlans = entry.get('_nativeVlan', '')
                 if not vlans:
                     vlans = entry.get('_vlansStpFwd', '')
@@ -129,6 +134,7 @@ class VlanService(Service):
                 for vlan in vlans:
                     vlan_dict[str(vlan)]['interfaces'].append(ifname)
 
+        processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
 
     def _clean_iosxe_data(self, processed_data, raw_data):
