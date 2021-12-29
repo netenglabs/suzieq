@@ -208,7 +208,8 @@ def test_interfaces(table, datadir, get_table_data):
     assert not df.empty
     validate_host_shape(df, ns_dict)
 
-    assert df.state.isin(['up', 'down', 'notPresent', 'notConnected']).all()
+    assert df.state.isin(['up', 'down', 'notPresent', 'notConnected',
+                          'errDisabled']).all()
     # EOS uses disabled admin state on interfaces that have no XCVR
     assert df.adminState.isin(['up', 'down', 'disabled']).all()
 

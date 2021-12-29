@@ -11,7 +11,7 @@ def validate_vlan_tbl(df: pd.DataFrame):
     assert (df.vlan != 0).all()
     if not (df.query('vlan != 1').interfaces.str.len() != 0).all():
         warnings.warn('Some VLANs not assigned to any interface')
-    assert (df.state == 'active').all()
+    assert (df.state.isin(['active', 'unsupported'])).all()
     assert (df.vlanName != '').all()
 
 
