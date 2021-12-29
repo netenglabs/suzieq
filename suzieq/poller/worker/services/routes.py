@@ -2,14 +2,12 @@ import re
 from datetime import datetime
 
 from dateparser import parse
+import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (expand_nxos_ifname,
                                  get_timestamp_from_cisco_time,
                                  get_timestamp_from_junos_time)
-
-
-import numpy as np
 
 
 class RoutesService(Service):

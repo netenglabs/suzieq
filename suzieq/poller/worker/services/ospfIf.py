@@ -1,8 +1,8 @@
 from ipaddress import ip_address, IPv4Interface
 
-from suzieq.poller.worker.services.service import Service
-
 import numpy as np
+
+from suzieq.poller.worker.services.service import Service
 
 
 class OspfIfService(Service):

@@ -693,6 +693,7 @@ class Service(SqPlugin):
             if output:
                 ostatus = [x.get('status', -1) for x in output]
 
+                # pylint: disable=use-a-generator
                 write_poller_stat = not all([Service.is_status_ok(x)
                                              for x in ostatus])
                 status = ostatus[0]

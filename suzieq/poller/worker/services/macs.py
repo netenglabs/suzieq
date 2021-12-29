@@ -1,10 +1,11 @@
 import re
 
+import numpy as np
+
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import convert_macaddr_format_to_colon
 from suzieq.shared.utils import (expand_nxos_ifname, expand_eos_ifname,
                                  expand_ios_ifname)
-import numpy as np
 
 
 class MacsService(Service):
