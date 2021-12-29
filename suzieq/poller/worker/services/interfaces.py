@@ -207,10 +207,7 @@ class InterfaceService(Service):
     def _clean_cumulus_data(self, processed_data, _):
         """We have to merge the appropriate outputs of two separate commands"""
 
-        new_data_dict = {}
-
         for entry in processed_data:
-            ifname = entry["ifname"]
             if entry.get('hardware', '') == 'ether':
                 entry['type'] = 'ethernet'
 
@@ -221,62 +218,53 @@ class InterfaceService(Service):
                 entry['type'] = 'ethernet'
             if entry.get('type', '') == 'vxlan':
                 entry['speed'] = NO_SPEED
-            if ifname not in new_data_dict:
 
-                if not entry['linkUpCnt']:
-                    entry['linkUpCnt'] = 0
-                if not entry['linkDownCnt']:
-                    entry['linkDownCnt'] = 0
+            if not entry['linkUpCnt']:
+                entry['linkUpCnt'] = 0
+            if not entry['linkDownCnt']:
+                entry['linkDownCnt'] = 0
 
-                entry["numChanges"] = (int(entry["linkUpCnt"]) +
-                                       int(entry["linkDownCnt"]))
-                entry['state'] = entry['state'].lower()
-                if entry["state"] == "up":
-                    ts = entry["linkUpTimestamp"]
-                else:
-                    ts = entry["linkDownTimestamp"]
-                if "never" in ts or not ts:
-                    ts = 0
-                else:
-                    ts = int(
-                        datetime.strptime(
-                            ts.strip(), "%Y/%m/%d %H:%M:%S.%f"
-                        ).timestamp()
-                        * 1000
-                    )
-                entry["statusChangeTimestamp"] = ts
-                # artificial field for comparison with previous poll result
-                entry["statusChangeTimestamp1"] = entry.get(
-                    "statusChangeTimestamp", '')
-
-                if '(' in entry['master']:
-                    entry['master'] = entry['master'].replace(
-                        '(', '').replace(')', '')
-
-                # Lowercase the master value thanks to SoNIC
-                entry['master'] = entry.get('master', '').lower()
-                if entry['ip6AddressList'] and 'ip6AddressList-_2nd' in entry:
-                    # This is because textfsm adds peer LLA as well
-                    entry['ip6AddressList'] = entry['ip6AddressList-_2nd']
-
-                del entry["linkUpCnt"]
-                del entry["linkDownCnt"]
-                del entry["linkUpTimestamp"]
-                del entry["linkDownTimestamp"]
-                del entry["vrf"]
-                new_data_dict[ifname] = entry
+            entry["numChanges"] = (int(entry["linkUpCnt"]) +
+                                   int(entry["linkDownCnt"]))
+            entry['state'] = entry['state'].lower()
+            if entry["state"] == "up":
+                ts = entry["linkUpTimestamp"]
             else:
-                # Merge the two. The second entry is always from ip addr show
-                # And it has the more accurate type, master list
-                first_entry = new_data_dict[ifname]
-                first_entry.update({"type": entry["type"]})
-                first_entry.update({"master": entry["master"]})
+                ts = entry["linkDownTimestamp"]
+            if "never" in ts or not ts:
+                ts = 0
+            else:
+                ts = int(
+                    datetime.strptime(
+                        ts.strip(), "%Y/%m/%d %H:%M:%S.%f"
+                    ).timestamp()
+                    * 1000
+                )
+            entry["statusChangeTimestamp"] = ts
+            # artificial field for comparison with previous poll result
+            entry["statusChangeTimestamp1"] = entry.get(
+                "statusChangeTimestamp", '')
+
+            if '(' in entry['master']:
+                entry['master'] = entry['master'].replace(
+                    '(', '').replace(')', '')
+
+            # Lowercase the master value thanks to SoNIC
+            entry['master'] = entry.get('master', '').lower()
+            if entry['ip6AddressList'] and 'ip6AddressList-_2nd' in entry:
+                # This is because textfsm adds peer LLA as well
+                entry['ip6AddressList'] = entry['ip6AddressList-_2nd']
+
+            if 'type-_2nd' in entry:
+                entry['type'] = entry['type-_2nd']
+
+            del entry["linkUpCnt"]
+            del entry["linkDownCnt"]
+            del entry["linkUpTimestamp"]
+            del entry["linkDownTimestamp"]
+            del entry["vrf"]
 
             entry['speed'] = self._textfsm_valid_speed_value(entry)
-
-        processed_data = []
-        for _, v in new_data_dict.items():
-            processed_data.append(v)
 
         return processed_data
 
