@@ -62,7 +62,7 @@ class Service(SqPlugin):
         self._poller_schema = value
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
-                 queue, run_once="forever"):
+                 queue, run_once=None):
         self.name = name
         self.defn = defn
         self.ignore_fields = ignore_fields or []
@@ -760,14 +760,13 @@ class Service(SqPlugin):
                     self.previous_results[hostname] = []
                 await self.commit_data(result, output[0]["namespace"],
                                        hostname)
-            else:
-                if self.run_once in ["gather", "process"]:
-                    total_nodes -= 1
-                    if total_nodes <= 0:
-                        self.logger.info(
-                            f'Service: {self.name}: Finished gathering data')
-                        return
-                    continue
+            elif self.run_once in ["gather", "process", "update"]:
+                total_nodes -= 1
+                if total_nodes <= 0:
+                    self.logger.info(
+                        f'Service: {self.name}: Finished gathering data')
+                    return
+                continue
 
             total_time = int(time.time()*1000) - token.start_time
 
@@ -811,6 +810,11 @@ class Service(SqPlugin):
                         })
 
             # Post a cmd to fire up the next poll after the specified period
+            if self.run_once == "update":
+                total_nodes -= 1
+                if total_nodes <= 0:
+                    return
+                continue
             self.logger.debug(
                 f"Rescheduling service for {self.name} service")
             loop.call_later(self.period, self.call_node_postcmd,

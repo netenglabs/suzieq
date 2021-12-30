@@ -46,8 +46,8 @@ class Controller:
         self._config.update(config_data.get('poller', {}))
 
         # Set controller configuration
-        # run_once: ['gather', 'process'] tells the controller if the poller
-        #           should query the devices and exit
+        # run_once: ['gather', 'process', 'update'] tells the controller if
+        #           the poller should query the devices and exit
         # period: the update timeout of the inventory
         # input-dir: wether to use a directory with some data as input
         # no-coalescer: wether to use the coalescer or not, the coalescer
@@ -78,20 +78,20 @@ class Controller:
 
         if not self._input_dir:
             inventory_file = args.inventory or \
-                             self._config.get('inventory-file') or \
-                             default_inventory_file
+                self._config.get('inventory-file') or \
+                default_inventory_file
             if not Path(inventory_file).is_file():
                 if inventory_file != default_inventory_file:
                     raise SqPollerConfError(
                         f'Inventory file not found at {inventory_file}'
                     )
-                else:
-                    raise SqPollerConfError(
-                        'Inventory file not found in the default location:'
-                        f'{inventory_file}, use -I argument to provide it, '
-                        'use -i instead to provide an input directory '
-                        'with pre-captured output and simulate an input.'
-                    )
+
+                raise SqPollerConfError(
+                    'Inventory file not found in the default location:'
+                    f'{inventory_file}, use -I argument to provide it, '
+                    'use -i instead to provide an input directory '
+                    'with pre-captured output and simulate an input.'
+                )
         else:
             if not Path(self._input_dir).is_dir():
                 raise SqPollerConfError(

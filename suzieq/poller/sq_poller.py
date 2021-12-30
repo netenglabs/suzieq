@@ -116,7 +116,7 @@ def controller_main():
     parser.add_argument(
         '--run-once',
         type=str,
-        choices=['gather', 'process'],
+        choices=['gather', 'process', 'update'],
         help=('Collect the data from the sources and terminates. gather store '
               'the output as it has been collected, process performs some '
               'processing on the data. Both cases store the results in a '
