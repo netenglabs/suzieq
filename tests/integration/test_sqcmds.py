@@ -1,17 +1,21 @@
 import os
 import json
+import subprocess
+from pathlib import Path
 
 import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
+
+from nubia import context
+import pandas as pd
 
 from tests.conftest import (commands, load_up_the_tests, tables, DATADIR,
                             setup_sqcmds, cli_commands,
                             create_dummy_config_file)
 from suzieq.sqobjects import get_sqobject, get_tables
 from suzieq.cli.sqcmds import *  # noqa
-
-from nubia import context
-import pandas as pd
+from suzieq.version import SUZIEQ_VERSION
+from suzieq.shared.utils import get_sq_install_dir
 
 from .utils import assert_df_equal
 
@@ -48,6 +52,7 @@ def _test_command(cmd, verb, arg, filter=None):
     s = execute_cmd(cmd, verb, arg, filter)
     assert isinstance(s, int)
     return s
+
 
 @pytest.mark.sqcmds
 def test_summary_exception(setup_nubia):
@@ -509,3 +514,17 @@ def test_vmx_sqcmds(testvar, create_context_config):
                                  '/tests/integration/sqcmds/common-samples')))
 def test_common_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
+
+
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.version
+def test_version():
+
+    install_dir = Path(get_sq_install_dir())
+    cli_bin = install_dir / 'cli' / 'sq_cli.py'
+    output = subprocess.check_output(['python', cli_bin, '-V'])
+    assert output.decode('utf8').strip() == SUZIEQ_VERSION
+
+    output = subprocess.check_output(['python', cli_bin, 'version'])
+    assert output.decode('utf8').strip() == SUZIEQ_VERSION
