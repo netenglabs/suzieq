@@ -7,7 +7,7 @@ from nubia.internal.cmdbase import Command
 from prompt_toolkit.completion import Completion
 from termcolor import cprint, colored
 
-from suzieq.shared.utils import SUPPORTED_ENGINES
+from suzieq.shared.utils import SUPPORTED_ENGINES, print_version
 
 
 @command("set")
@@ -142,6 +142,11 @@ def clear_ctxt(
 
     if pager:
         ctxt.pager = False
+
+
+@command('version', help='print the suzieq version')
+def sq_version():
+    print_version()
 
 
 class SqHelpCommand (Command):

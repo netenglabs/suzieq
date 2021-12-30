@@ -50,6 +50,9 @@ class NubiaSuzieqPlugin(PluginInterface):
             "--config", "-c", default="", type=str, help="Configuration File"
         )
         opts_parser.add_argument(
+            "-V", type=str, default='', help='print suzieq version'
+        )
+        opts_parser.add_argument(
             "--verbose",
             "-v",
             action="count",
