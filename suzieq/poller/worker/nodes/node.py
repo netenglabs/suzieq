@@ -1430,7 +1430,7 @@ class SonicNode(Node):
 
 
 class PanosNode(Node):
-
+    '''Node object representing access to a Palo Alto Networks FW'''
     async def _init(self, **kwargs):
         super()._init(**kwargs)
         self.devtype = "panos"
@@ -1559,6 +1559,7 @@ class PanosNode(Node):
         await self.exec_cmd(self._parse_boottime_hostname,
                             ["show system info"], None, 'text')
 
+    # pylint: disable=unused-argument
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         """Parse the uptime command output"""
         if output[0]["status"] == 0:
