@@ -1,3 +1,7 @@
+# pylint: disable=missing-function-docstring, unused-argument
+# pylint: disable=wildcard-import
+# pylint: disable=relative-beyond-top-level
+
 import os
 import json
 import subprocess
@@ -9,7 +13,7 @@ from _pytest.mark.structures import Mark, MarkDecorator
 from nubia import context
 import pandas as pd
 
-from tests.conftest import (commands, load_up_the_tests, tables, DATADIR,
+from tests.conftest import (load_up_the_tests, tables, DATADIR,
                             setup_sqcmds, cli_commands,
                             create_dummy_config_file)
 from suzieq.sqobjects import get_sqobject, get_tables
@@ -40,16 +44,16 @@ def test_commands(setup_nubia, get_cmd_object_dict, command, verb):
     _test_command(get_cmd_object_dict[command], verb, None)
 
 
-def _test_command(cmd, verb, arg, filter=None):
+def _test_command(cmd, verb, arg, options=None):
 
     if ((cmd == 'PathCmd') and (verb != "help") and
-            (not filter or not all(x in filter for x in ['src', 'dest']))):
-        if not filter:
-            filter = {}
-        filter.update({'namespace': 'dual-bgp',
+            (not options or not all(x in options for x in ['src', 'dest']))):
+        if not options:
+            options = {}
+        options.update({'namespace': 'dual-bgp',
                        'src': '10.0.0.11',
-                       'dest': '10.0.0.14'})
-    s = execute_cmd(cmd, verb, arg, filter)
+                        'dest': '10.0.0.14'})
+    s = execute_cmd(cmd, verb, arg, options)
     assert isinstance(s, int)
     return s
 
@@ -68,7 +72,7 @@ def test_summary_exception(setup_nubia):
     for cmd in cli_commands])
 def test_all_columns(setup_nubia, get_cmd_object_dict, cmd):
     s = _test_command(get_cmd_object_dict[cmd], 'show', None,
-                      filter={'columns': '*'})
+                      options={'columns': '*'})
     assert s == 0
 
 
@@ -146,8 +150,8 @@ def test_columns_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
     for cmd in cli_commands])
 def test_bad_show_hostname_filter(setup_nubia, get_cmd_object_dict, cmd):
-    filter = {'hostname': 'unknown'}
-    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], filter)
+    options = {'hostname': 'unknown'}
+    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], options)
 
 
 @pytest.mark.sqcmds
@@ -156,8 +160,8 @@ def test_bad_show_hostname_filter(setup_nubia, get_cmd_object_dict, cmd):
     pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
     for cmd in cli_commands])
 def test_bad_show_engine_filter(setup_nubia, get_cmd_object_dict, cmd):
-    filter = {'engine': 'unknown'}
-    _ = _test_bad_show_filter_w_assert(get_cmd_object_dict[cmd], filter)
+    options = {'engine': 'unknown'}
+    _ = _test_bad_show_filter_w_assert(get_cmd_object_dict[cmd], options)
 
 
 @pytest.mark.sqcmds
@@ -166,8 +170,8 @@ def test_bad_show_engine_filter(setup_nubia, get_cmd_object_dict, cmd):
     pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
     for cmd in cli_commands])
 def test_bad_start_time_filter(setup_nubia, get_cmd_object_dict, cmd):
-    filter = {'start_time': 'unknown'}
-    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], filter, True)
+    options = {'start_time': 'unknown'}
+    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], options, True)
 
 
 # TODO
@@ -178,13 +182,13 @@ def test_bad_start_time_filter(setup_nubia, get_cmd_object_dict, cmd):
     pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
     for cmd in cli_commands])
 def test_bad_show_namespace_filter(setup_nubia, get_cmd_object_dict, cmd):
-    filter = {'namespace': 'unknown'}
-    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], filter)
+    options = {'namespace': 'unknown'}
+    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], options)
 
 
-def _test_bad_show_filter(cmd, filter, assert_error=False):
-    assert len(filter) == 1
-    s = _test_command(cmd, 'show', None, filter=filter)
+def _test_bad_show_filter(cmd, options, assert_error=False):
+    assert len(options) == 1
+    s = _test_command(cmd, 'show', None, options=options)
     if assert_error:
         assert s == 1
     else:
@@ -192,10 +196,10 @@ def _test_bad_show_filter(cmd, filter, assert_error=False):
     return s
 
 
-def _test_bad_show_filter_w_assert(cmd, filter):
-    assert len(filter) == 1
+def _test_bad_show_filter_w_assert(cmd, options):
+    assert len(options) == 1
     try:
-        _test_command(cmd, 'show', None, filter=filter)
+        _test_command(cmd, 'show', None, options=options)
         assert False
     except ModuleNotFoundError:
         assert True
@@ -214,8 +218,8 @@ good_filters = [{'hostname': ['leaf01']}]
     pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
     for cmd in cli_commands])
 def test_context_filtering(setup_nubia, get_cmd_object_dict, cmd):
-    for filter in good_filters:
-        s = _test_context_filtering(get_cmd_object_dict[cmd], filter)
+    for options in good_filters:
+        s = _test_context_filtering(get_cmd_object_dict[cmd], options)
         assert s == 0
 
 
@@ -287,7 +291,8 @@ def test_sqcmds_regex_hostname(table, datadir):
             # The hostnames for these output don't match the hostname regex
             assert df[df.table == 'device']['deviceCnt'].tolist() == [6]
         return
-    if 'basic_dual_bgp' in datadir and table in ['ospf', 'evpnVni', 'devconfig']:
+    if 'basic_dual_bgp' in datadir and table in ['ospf', 'evpnVni',
+                                                 'devconfig']:
         return
 
     if not any(x in datadir for x in ['vmx', 'mixed', 'junos']):
@@ -356,27 +361,27 @@ def test_sqcmds_regex_namespace(table, datadir):
                                                  'leaf03', 'leaf04'])
 
 
-def _test_context_filtering(cmd, filter):
-    assert len(filter) == 1
+def _test_context_filtering(cmd, options):
+    assert len(options) == 1
     ctx = context.get_context()
-    k = next(iter(filter))
-    v = filter[k]
+    k = next(iter(options))
+    v = options[k]
     setattr(ctx, k, v)
     s = _test_command(cmd, 'show', None)
     setattr(ctx, k, "")  # reset ctx back to no filtering
     return s
 
 
-def execute_cmd(cmd, verb, arg, filter=None):
+def execute_cmd(cmd, verb, arg, options=None):
     # expect the cmd class are in the module cmd and also named cmd
     module = globals()[cmd]
     instance = getattr(module, cmd)
-    if filter is None:
-        filter = {}
+    if options is None:
+        options = {}
         # filter = {'format': 'dataframe'}
     # else:
     #    filter['format'] = 'dataframe'
-    instance = instance(**filter)
+    instance = instance(**options)
 
     c = getattr(instance, verb)
     if arg is not None:
