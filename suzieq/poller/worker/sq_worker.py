@@ -48,7 +48,7 @@ def worker_main():
     supported_outputs = OutputWorker.get_plugins()
     if supported_outputs.get('gather', None):
         del supported_outputs['gather']
-    supported_outputs = [k for k in supported_outputs]
+    supported_outputs = list(supported_outputs.keys())
 
     parser = argparse.ArgumentParser()
 
