@@ -1,10 +1,7 @@
 import argparse
 from nubia import PluginInterface
 from nubia.internal.blackcmd import CommandBlacklist
-from nubia.internal.cmdbase import AutoCommand
 
-from suzieq.cli.sqcmds import context_commands
-from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 from suzieq.cli.sq_nubia_statusbar import NubiaSuzieqStatusBar
 
