@@ -11,7 +11,7 @@ from typing import Dict
 from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.poller.worker.writers.output_worker_manager \
-     import OutputWorkerManager
+    import OutputWorkerManager
 from suzieq.shared.exceptions import SqPollerConfError
 
 logger = logging.getLogger(__name__)
@@ -48,7 +48,7 @@ class Poller:
             'data_dir': cfg.get('data-directory')
         }
 
-        if userargs.run_once:
+        if userargs.run_once in ['gather', 'process']:
             userargs.outputs = ['gather']
         self.output_manager = OutputWorkerManager(userargs.outputs,
                                                   self.output_args)
@@ -174,9 +174,9 @@ class Poller:
             if not inventory_class:
                 raise SqPollerConfError(f'No inventory {type_to_use} found')
             source_args = {
-                           **mgr_cfg,
-                           'worker-id': self.worker_id
-                          }
+                **mgr_cfg,
+                'worker-id': self.worker_id
+            }
 
         return inventory_class(self._add_poller_task,
                                **source_args,

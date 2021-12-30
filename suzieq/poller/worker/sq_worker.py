@@ -92,7 +92,7 @@ def worker_main():
     parser.add_argument(
         '--run-once',
         type=str,
-        choices=['gather', 'process'],
+        choices=['gather', 'process', 'update'],
         help=argparse.SUPPRESS,
     )
 
