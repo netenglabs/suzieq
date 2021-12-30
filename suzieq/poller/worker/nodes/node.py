@@ -413,16 +413,13 @@ class Node:
         Returns:
             str: version
         """
-        if self.devtype == "linux":
-            for line in data.splitlines():
-                if line.startswith("VERSION_ID"):
-                    self.version = line.split('=')[1] \
-                        .strip().replace('"', '')
-                    break
-            else:
-                self.version = "all"
-                self.logger.error(
-                    f'Cannot parse version from {self.address}:{self.port}')
+        version_str = re.search(r'VERSION_ID=(\S+)', data)
+        if version_str:
+            self.version = version_str.group(1).strip()
+        else:
+            self.version = "all"
+            self.logger.error(
+                f'Cannot parse version from {self.address}:{self.port}')
 
     async def _parse_device_type_hostname(self, output, _) -> None:
         devtype = ""
@@ -478,25 +475,19 @@ class Node:
             elif devtype != "iosxr" and output[3]["status"] == 0:
                 hostname = output[3]["data"].strip()
 
-        elif output[1]["status"] == 0:
-            data = output[1]["data"]
+        elif output[2]["status"] == 0:
+            data = output[2]["data"]
             if "Cumulus Linux" in data:
                 devtype = "cumulus"
             else:
                 devtype = "linux"
 
-            # Hostname is in the first line of hostnamectl
-            hostline = data.splitlines()[0].strip()
-            if hostline.startswith("Static hostname"):
-                _, hostname = hostline.split(":")
-                hostname = hostname.strip()
+            version_str = data
+            if output[1]['status'] == 0:
+                # Hostname is the only line of /bin/hostname
+                hostname = output[1]['data'].strip()
 
-            if output[1]["status"] == 0:
-                data = output[2]["data"]
-                version_str = data
-
-            if output[2]['status'] == 0:
-                self._extract_nos_version(output[2].get('data', ''))
+            self._extract_nos_version(data)
 
         if not devtype:
             if not self.current_exception:
@@ -525,10 +516,8 @@ class Node:
                                        - float(upsecs)*1000)
         if output[1]["status"] == 0:
             data = output[1].get("data", '')
-            hostline = data.splitlines()[0].strip()
-            if hostline.startswith("Static hostname"):
-                _, hostname = hostline.split(":")
-                self.hostname = hostname.strip()
+            hostname = data.splitlines()[0].strip()
+            self.hostname = hostname
 
         if output[2]["status"] == 0:
             data = output[2].get("data", '')
@@ -567,7 +556,7 @@ class Node:
         # setup time. show version works on most networking boxes and
         # hostnamectl on Linux systems. That's all we support today.
         await self.exec_cmd(self._parse_device_type_hostname,
-                            ["show version", "hostnamectl",
+                            ["show version", "hostname",
                              "cat /etc/os-release", "show hostname"], None,
                             'text')
 
@@ -626,7 +615,7 @@ class Node:
     async def init_boot_time(self):
         """Fill in the boot time of the node by executing certain cmds"""
         await self.exec_cmd(self._parse_boottime_hostname,
-                            ["cat /proc/uptime", "hostnamectl",
+                            ["cat /proc/uptime", "hostname",
                              "cat /etc/os-release"], None, 'text')
 
     def post_commands(self, service_callback, svc_defn: dict,
