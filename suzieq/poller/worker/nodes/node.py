@@ -436,6 +436,8 @@ class Node:
                 if model:
                     if model.group(1).startswith(('mx', 'vmx')):
                         devtype = 'junos-mx'
+                    elif 'qfx10' in model.group(1):
+                        devtype = 'junos-qfx10k'
                     elif 'qfx' in model.group(1):
                         devtype = 'junos-qfx'
                     elif 'ex' in model.group(1):
@@ -1301,7 +1303,7 @@ class JunosNode(Node):
             data = output[0]["data"]
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
-                if self.devtype != "junos-mx":
+                if self.devtype not in ["junos-mx", "junos-qfx10k"]:
                     jdata = (jdata['multi-routing-engine-results'][0]
                              ['multi-routing-engine-item'][0])
 
