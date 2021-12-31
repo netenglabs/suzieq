@@ -15,7 +15,8 @@ from suzieq.poller.controller.controller import Controller
 from suzieq.poller.worker.writers.output_worker import OutputWorker
 from suzieq.shared.exceptions import InventorySourceError, PollingError, \
     SqPollerConfError
-from suzieq.shared.utils import poller_log_params, init_logger, load_sq_config
+from suzieq.shared.utils import (poller_log_params, init_logger,
+                                 load_sq_config, print_version)
 
 
 async def start_controller(user_args: argparse.Namespace, config_data: Dict):
@@ -151,7 +152,19 @@ def controller_main():
         help='Maximum number of workers to execute',
     )
 
+    parser.add_argument(
+        '-V',
+        '--version',
+        action='store_true',
+        help='print suzieq version'
+    )
+
     args = parser.parse_args()
+
+    if args.version:
+        print_version()
+        sys.exit(0)
+
     uvloop.install()
     cfg = load_sq_config(config_file=args.config)
     if not cfg:
