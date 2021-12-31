@@ -86,7 +86,7 @@ apply:
       - command: show evpn ip-prefix-database | display json | no-more
         normalize: 'evpn-ip-prefix-database-information/evpn-pfxdb-l3-context/*:context-name:vrf|evpn-pfxdb-evpn-ip-table/[0]/evpn-pfxdb-evpn-ip-entry/*/[
         "entry-prefix/[0]/data: prefix",
-        "evpn-pfxdb-evpn-ip-adv/[0]/adv-bgp-nexthop/[0]/data: _vtepAddr"
+        "evpn-pfxdb-evpn-ip-adv/[0]/adv-bgp-nexthop/[0]/data: _vtepAddr?|"
         ]'
 
   junos-ex:
@@ -96,6 +96,9 @@ apply:
     copy: junos-qfx
 
   junos-es:
+    copy: junos-qfx
+
+  junos-qfx10k:
     copy: junos-qfx
 
   nxos: 
