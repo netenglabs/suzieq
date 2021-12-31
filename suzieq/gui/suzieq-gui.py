@@ -6,6 +6,7 @@ import streamlit as st
 
 from suzieq.gui.guiutils import (display_title,
                                  get_main_session_by_id, SuzieqMainPages)
+from suzieq.version import SUZIEQ_VERSION
 
 
 def build_pages():
@@ -32,7 +33,11 @@ def build_pages():
 def apprun():
     '''The main application routine'''
 
-    st.set_page_config(layout="wide", page_title="Suzieq")
+    st.set_page_config(layout="wide",
+                       page_title="Suzieq",
+                       menu_items={
+                           'About': f'Suzieq Version: {SUZIEQ_VERSION}'
+                       })
 
     state = st.session_state
     for key, val in [('pages', None),

@@ -15,7 +15,8 @@ import uvicorn
 
 from suzieq.sqobjects import get_sqobject
 from suzieq.shared.utils import (load_sq_config, get_sq_install_dir,
-                                 get_log_params, sq_get_config_file)
+                                 get_log_params, sq_get_config_file,
+                                 print_version)
 
 API_KEY_NAME = 'access_token'
 
@@ -141,7 +142,17 @@ def rest_main(*args) -> None:
         help="Turn off HTTPS",
         default=False, action='store_true',
     )
+    parser.add_argument(
+        "--version",
+        "-V",
+        help="print Suzieq version",
+        default=False, action='store_true',
+    )
     userargs = parser.parse_args()
+
+    if userargs.version:
+        print_version()
+        sys.exit(0)
 
     config_file = sq_get_config_file(userargs.config)
     app = app_init(config_file)

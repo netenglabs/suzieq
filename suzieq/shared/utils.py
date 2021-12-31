@@ -20,6 +20,7 @@ from dateparser import parse
 
 import pandas as pd
 
+from suzieq.version import SUZIEQ_VERSION
 
 logger = logging.getLogger(__name__)
 MAX_MTU = 9216
@@ -764,3 +765,8 @@ def get_sleep_time(period: str) -> int:
         nextrun = nextrun.replace(hour=0, minute=0, second=0)
 
     return (nextrun-now).seconds
+
+
+def print_version():
+    '''Print the suzieq version and return'''
+    print(SUZIEQ_VERSION)

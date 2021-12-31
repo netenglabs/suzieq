@@ -24,6 +24,8 @@ _ArgDecoratorSpec = namedtuple(
     "_ArgDecoratorSpec", "arg name aliases description positional choices"
 )
 
+# pylint: disable=redefined-builtin
+
 
 def argument(
     arg,
@@ -78,9 +80,8 @@ def argument(
         #   )
 
         if positional and aliases:
-            msg = "Aliases are not yet supported for positional arguments @ {}".format(
-                arg
-            )
+            msg = ("Aliases are not yet supported for positional arguments"
+                   "@ {}".format(arg))
             raise ValueError(msg)
 
         # reject positional=True if we are applied over a class
@@ -92,6 +93,7 @@ def argument(
         # We use __annotations__ to allow the usage of python 3 typing
         function.__annotations__.setdefault(arg, type)
 
+        # pylint: disable=protected-access
         function.__arguments_decorator_specs[arg] = _ArgDecoratorSpec(
             arg=arg,
             description=description,
