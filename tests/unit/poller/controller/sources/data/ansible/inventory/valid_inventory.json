@@ -1,0 +1,593 @@
+{
+    "_meta": {
+        "hostvars": {
+            "firewall01": {
+                "ansible_host": "10.255.2.28",
+                "ansible_port": 22,
+                "ansible_ssh_private_key_file": "tests/unit/poller/controller/sources/data/ansible/inventory/keyfile",
+                "ansible_user": "vagrant",
+                "bgp_asn": 65533,
+                "default_vrf_asn": 65520,
+                "evpn_l3_info": [
+                    {
+                        "junos_vrf_loopback_ip": {
+                            "exit01": "10.0.0.121/32",
+                            "exit02": "10.0.0.122/32",
+                            "leaf01": "10.0.0.101/32",
+                            "leaf02": "10.0.0.102/32"
+                        },
+                        "vlan": 999,
+                        "vlanif": "vlan999",
+                        "vnid": 999,
+                        "vrf": "evpn-vrf"
+                    }
+                ],
+                "evpn_vrf_asn": 65521,
+                "fw_peers": [
+                    {
+                        "address": "169.254.254.2/30",
+                        "iface": "eth1.2",
+                        "peer": "169.254.254.1"
+                    },
+                    {
+                        "address": "169.254.254.6/30",
+                        "iface": "eth1.3",
+                        "peer": "169.254.254.5"
+                    },
+                    {
+                        "address": "169.254.254.10/30",
+                        "iface": "eth1.4",
+                        "peer": "169.254.254.9"
+                    },
+                    {
+                        "address": "169.254.253.2/30",
+                        "iface": "eth2.2",
+                        "peer": "169.254.253.1"
+                    },
+                    {
+                        "address": "169.254.253.6/30",
+                        "iface": "eth2.3",
+                        "peer": "169.254.253.5"
+                    },
+                    {
+                        "address": "169.254.253.10/30",
+                        "iface": "eth2.4",
+                        "peer": "169.254.253.9"
+                    }
+                ],
+                "ibgp_asn": 64520,
+                "internet_vrf_asn": 65522,
+                "l2_networks": {
+                    "10": {
+                        "ip_address": "172.16.1.254/24",
+                        "ip_subnet": "172.16.1.0/24",
+                        "ip_unique": "172.16.1.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan10",
+                        "vnid": 10,
+                        "vrf": "evpn-vrf"
+                    },
+                    "20": {
+                        "ip_address": "172.16.2.254/24",
+                        "ip_subnet": "172.16.2.0/24",
+                        "ip_unique": "172.16.2.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan20",
+                        "vnid": 20,
+                        "vrf": "evpn-vrf"
+                    },
+                    "30": {
+                        "ip_address": "172.16.3.254/24",
+                        "ip_subnet": "172.16.3.0/24",
+                        "ip_unique": "172.16.3.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan30",
+                        "vnid": 30,
+                        "vrf": "evpn-vrf"
+                    }
+                },
+                "lo_addr": "{{ loopback_ip.split('/')[0] }}",
+                "loopback_ip": "10.0.0.200/32",
+                "nxos_fabric_anycast_gw_mac": "00:00:00:11:12:10",
+                "overlay": "ibgp",
+                "replication": "ingress-replication",
+                "underlay": "ospf",
+                "use_local_as": "{% if underlay == 'ebgp' and overlay == 'ibgp' %} true {% else %} false {% endif %}"
+            },
+            "leaf01": {
+                "ansible_host": "10.255.2.184",
+                "ansible_network_os": "cumulus",
+                "ansible_port": 22,
+                "ansible_ssh_private_key_file": "tests/unit/poller/controller/sources/data/ansible/inventory/keyfile",
+                "ansible_user": "vagrant",
+                "anycast_gw_mac": "00:00:00:11:12:{{ item.vlanid }}",
+                "bgp_asn": "{{ ibgp_asn }}",
+                "default_vrf_asn": 65520,
+                "evpn_l3_info": [
+                    {
+                        "junos_vrf_loopback_ip": {
+                            "exit01": "10.0.0.121/32",
+                            "exit02": "10.0.0.122/32",
+                            "leaf01": "10.0.0.101/32",
+                            "leaf02": "10.0.0.102/32"
+                        },
+                        "vlan": 999,
+                        "vlanif": "vlan999",
+                        "vnid": 999,
+                        "vrf": "evpn-vrf"
+                    }
+                ],
+                "evpn_peers": [
+                    "10.0.0.21",
+                    "10.0.0.22"
+                ],
+                "evpn_vrf_asn": 65521,
+                "hw_address": "44:39:39:FF:40:95",
+                "ibgp_asn": 64520,
+                "internet_vrf_asn": 65522,
+                "isl_ports": {
+                    "cumulus": [
+                        "swp1",
+                        "swp2"
+                    ],
+                    "eos": [
+                        "Eth1",
+                        "Eth2"
+                    ],
+                    "junos": [
+                        "xe-0/0/0",
+                        "xe-0/0/1"
+                    ],
+                    "nxos": [
+                        "Eth1/1",
+                        "Eth1/2"
+                    ]
+                },
+                "l2_ifs": "{{ l2_ports[ansible_network_os] | json_query('[*].iface') | join(' ') }}",
+                "l2_networks": {
+                    "10": {
+                        "ip_address": "172.16.1.254/24",
+                        "ip_subnet": "172.16.1.0/24",
+                        "ip_unique": "172.16.1.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan10",
+                        "vnid": 10,
+                        "vrf": "evpn-vrf"
+                    },
+                    "20": {
+                        "ip_address": "172.16.2.254/24",
+                        "ip_subnet": "172.16.2.0/24",
+                        "ip_unique": "172.16.2.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan20",
+                        "vnid": 20,
+                        "vrf": "evpn-vrf"
+                    },
+                    "30": {
+                        "ip_address": "172.16.3.254/24",
+                        "ip_subnet": "172.16.3.0/24",
+                        "ip_unique": "172.16.3.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan30",
+                        "vnid": 30,
+                        "vrf": "evpn-vrf"
+                    }
+                },
+                "l2_ports": {
+                    "cumulus": [
+                        {
+                            "iface": "bond01",
+                            "vlanid": 10
+                        },
+                        {
+                            "iface": "bond02",
+                            "vlanid": 30
+                        }
+                    ],
+                    "eos": [
+                        {
+                            "iface": "port-channel3",
+                            "vlanid": 10
+                        },
+                        {
+                            "iface": "port-channel4",
+                            "vlanid": 30
+                        }
+                    ],
+                    "junos": [
+                        {
+                            "iface": "xe-0/0/2",
+                            "vlanid": 10
+                        },
+                        {
+                            "iface": "xe-0/0/3",
+                            "vlanid": 30
+                        }
+                    ],
+                    "nxos": [
+                        {
+                            "iface": "port-channel3",
+                            "vlanid": 10
+                        },
+                        {
+                            "iface": "port-channel4",
+                            "vlanid": 30
+                        }
+                    ]
+                },
+                "l2vni_ifs": "{{ ['vni'] | zip_longest(vid_list | map('extract', l2_networks) | list | json_query('[*].vnid'), fillvalue='vni') | map ('join', '') | join(' ') }}",
+                "l3_vni_vid_list": "{{ evpn_l3_info | json_query('[*].vlan') }}",
+                "l3vni_ifs": "{{ ['vni'] | zip_longest(evpn_l3_info | json_query('[*].vnid') | map('string') | list, fillvalue='vni') | map('join', '') | join(' ') }}",
+                "lo_addr": "{{ loopback_ip.split('/')[0] }}",
+                "loopback_ip": "10.0.0.11/32",
+                "mlag": {
+                    "mbr_portchannels": {
+                        "cumulus": [
+                            {
+                                "iface": "bond01",
+                                "mlag_id": 3,
+                                "ports": [
+                                    "swp3"
+                                ]
+                            },
+                            {
+                                "iface": "bond02",
+                                "mlag_id": 4,
+                                "ports": [
+                                    "swp4"
+                                ]
+                            }
+                        ],
+                        "eos": [
+                            {
+                                "iface": "port-channel3",
+                                "mlag_id": 3,
+                                "ports": [
+                                    "Eth3"
+                                ]
+                            },
+                            {
+                                "iface": "port-channel4",
+                                "mlag_id": 4,
+                                "ports": [
+                                    "Eth4"
+                                ]
+                            }
+                        ],
+                        "nxos": [
+                            {
+                                "iface": "port-channel3",
+                                "mlag_id": 3,
+                                "ports": [
+                                    "Eth1/3"
+                                ]
+                            },
+                            {
+                                "iface": "port-channel4",
+                                "mlag_id": 4,
+                                "ports": [
+                                    "Eth1/4"
+                                ]
+                            }
+                        ]
+                    },
+                    "peerlink": {
+                        "cumulus": "peerlink",
+                        "eos": "port-channel1",
+                        "nxos": "port-channel1"
+                    },
+                    "peerlink_vlan": {
+                        "cumulus": 4094,
+                        "eos": 4094,
+                        "nxos": 3960
+                    }
+                },
+                "mlag_info": {
+                    "clag_sysid": "{{ hw_address }}",
+                    "eos_domainid": "mlag_leaf12",
+                    "peer_switch": "leaf02",
+                    "peerlink_ip": "169.254.1.0/31",
+                    "vpc_domainid": 12
+                },
+                "nxos_fabric_anycast_gw_mac": "00:00:00:11:12:10",
+                "overlay": "ibgp",
+                "portchannels": {
+                    "cumulus": {
+                        "peerlink": {
+                            "ports": [
+                                "swp5",
+                                "swp6"
+                            ]
+                        }
+                    },
+                    "eos": {
+                        "port-channel1": {
+                            "ports": "Eth5-6"
+                        }
+                    },
+                    "nxos": {
+                        "port-channel1": {
+                            "ports": "Eth1/5-6"
+                        }
+                    }
+                },
+                "replication": "ingress-replication",
+                "underlay": "ospf",
+                "use_local_as": "{% if underlay == 'ebgp' and overlay == 'ibgp' %} true {% else %} false {% endif %}",
+                "vid_list": "{{ l2_ports[ansible_network_os] | json_query('[*].vlanid') }}",
+                "vtep_ip": {
+                    "cumulus": [
+                        "{{ loopback_ip }}",
+                        "10.0.0.112/32"
+                    ],
+                    "eos": [
+                        "{{ loopback_ip }}",
+                        "10.0.0.112/32"
+                    ],
+                    "nxos": [
+                        "10.0.0.201/32",
+                        "10.0.0.112/32"
+                    ]
+                }
+            },
+            "leaf02": {
+                "ansible_host": "10.255.2.185",
+                "ansible_network_os": "cumulus",
+                "ansible_port": 22,
+                "ansible_ssh_private_key_file": "tests/unit/poller/controller/sources/data/ansible/inventory/keyfile",
+                "ansible_user": "vagrant",
+                "anycast_gw_mac": "00:00:00:11:12:{{ item.vlanid }}",
+                "bgp_asn": "{{ ibgp_asn }}",
+                "default_vrf_asn": 65520,
+                "evpn_l3_info": [
+                    {
+                        "junos_vrf_loopback_ip": {
+                            "exit01": "10.0.0.121/32",
+                            "exit02": "10.0.0.122/32",
+                            "leaf01": "10.0.0.101/32",
+                            "leaf02": "10.0.0.102/32"
+                        },
+                        "vlan": 999,
+                        "vlanif": "vlan999",
+                        "vnid": 999,
+                        "vrf": "evpn-vrf"
+                    }
+                ],
+                "evpn_peers": [
+                    "10.0.0.21",
+                    "10.0.0.22"
+                ],
+                "evpn_vrf_asn": 65521,
+                "hw_address": "44:39:39:FF:40:95",
+                "ibgp_asn": 64520,
+                "internet_vrf_asn": 65522,
+                "isl_ports": {
+                    "cumulus": [
+                        "swp1",
+                        "swp2"
+                    ],
+                    "eos": [
+                        "Eth1",
+                        "Eth2"
+                    ],
+                    "junos": [
+                        "xe-0/0/0",
+                        "xe-0/0/1"
+                    ],
+                    "nxos": [
+                        "Eth1/1",
+                        "Eth1/2"
+                    ]
+                },
+                "l2_ifs": "{{ l2_ports[ansible_network_os] | json_query('[*].iface') | join(' ') }}",
+                "l2_networks": {
+                    "10": {
+                        "ip_address": "172.16.1.254/24",
+                        "ip_subnet": "172.16.1.0/24",
+                        "ip_unique": "172.16.1.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan10",
+                        "vnid": 10,
+                        "vrf": "evpn-vrf"
+                    },
+                    "20": {
+                        "ip_address": "172.16.2.254/24",
+                        "ip_subnet": "172.16.2.0/24",
+                        "ip_unique": "172.16.2.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan20",
+                        "vnid": 20,
+                        "vrf": "evpn-vrf"
+                    },
+                    "30": {
+                        "ip_address": "172.16.3.254/24",
+                        "ip_subnet": "172.16.3.0/24",
+                        "ip_unique": "172.16.3.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan30",
+                        "vnid": 30,
+                        "vrf": "evpn-vrf"
+                    }
+                },
+                "l2_ports": {
+                    "cumulus": [
+                        {
+                            "iface": "bond01",
+                            "vlanid": 10
+                        },
+                        {
+                            "iface": "bond02",
+                            "vlanid": 30
+                        }
+                    ],
+                    "eos": [
+                        {
+                            "iface": "port-channel3",
+                            "vlanid": 10
+                        },
+                        {
+                            "iface": "port-channel4",
+                            "vlanid": 30
+                        }
+                    ],
+                    "junos": [
+                        {
+                            "iface": "xe-0/0/2",
+                            "vlanid": 10
+                        },
+                        {
+                            "iface": "xe-0/0/3",
+                            "vlanid": 30
+                        }
+                    ],
+                    "nxos": [
+                        {
+                            "iface": "port-channel3",
+                            "vlanid": 10
+                        },
+                        {
+                            "iface": "port-channel4",
+                            "vlanid": 30
+                        }
+                    ]
+                },
+                "l2vni_ifs": "{{ ['vni'] | zip_longest(vid_list | map('extract', l2_networks) | list | json_query('[*].vnid'), fillvalue='vni') | map ('join', '') | join(' ') }}",
+                "l3_vni_vid_list": "{{ evpn_l3_info | json_query('[*].vlan') }}",
+                "l3vni_ifs": "{{ ['vni'] | zip_longest(evpn_l3_info | json_query('[*].vnid') | map('string') | list, fillvalue='vni') | map('join', '') | join(' ') }}",
+                "lo_addr": "{{ loopback_ip.split('/')[0] }}",
+                "loopback_ip": "10.0.0.12/32",
+                "mlag": {
+                    "mbr_portchannels": {
+                        "cumulus": [
+                            {
+                                "iface": "bond01",
+                                "mlag_id": 3,
+                                "ports": [
+                                    "swp3"
+                                ]
+                            },
+                            {
+                                "iface": "bond02",
+                                "mlag_id": 4,
+                                "ports": [
+                                    "swp4"
+                                ]
+                            }
+                        ],
+                        "eos": [
+                            {
+                                "iface": "port-channel3",
+                                "mlag_id": 3,
+                                "ports": [
+                                    "Eth3"
+                                ]
+                            },
+                            {
+                                "iface": "port-channel4",
+                                "mlag_id": 4,
+                                "ports": [
+                                    "Eth4"
+                                ]
+                            }
+                        ],
+                        "nxos": [
+                            {
+                                "iface": "port-channel3",
+                                "mlag_id": 3,
+                                "ports": [
+                                    "Eth1/3"
+                                ]
+                            },
+                            {
+                                "iface": "port-channel4",
+                                "mlag_id": 4,
+                                "ports": [
+                                    "Eth1/4"
+                                ]
+                            }
+                        ]
+                    },
+                    "peerlink": {
+                        "cumulus": "peerlink",
+                        "eos": "port-channel1",
+                        "nxos": "port-channel1"
+                    },
+                    "peerlink_vlan": {
+                        "cumulus": 4094,
+                        "eos": 4094,
+                        "nxos": 3960
+                    }
+                },
+                "mlag_info": {
+                    "clag_sysid": "{{ hw_address }}",
+                    "eos_domainid": "mlag_leaf12",
+                    "peer_switch": "leaf01",
+                    "peerlink_ip": "169.254.1.1/31",
+                    "vpc_domainid": 12
+                },
+                "nxos_fabric_anycast_gw_mac": "00:00:00:11:12:10",
+                "overlay": "ibgp",
+                "portchannels": {
+                    "cumulus": {
+                        "peerlink": {
+                            "ports": [
+                                "swp5",
+                                "swp6"
+                            ]
+                        }
+                    },
+                    "eos": {
+                        "port-channel1": {
+                            "ports": "Eth5-6"
+                        }
+                    },
+                    "nxos": {
+                        "port-channel1": {
+                            "ports": "Eth1/5-6"
+                        }
+                    }
+                },
+                "replication": "ingress-replication",
+                "underlay": "ospf",
+                "use_local_as": "{% if underlay == 'ebgp' and overlay == 'ibgp' %} true {% else %} false {% endif %}",
+                "vid_list": "{{ l2_ports[ansible_network_os] | json_query('[*].vlanid') }}",
+                "vtep_ip": {
+                    "cumulus": [
+                        "{{ loopback_ip }}",
+                        "10.0.0.112/32"
+                    ],
+                    "eos": [
+                        "{{ loopback_ip }}",
+                        "10.0.0.112/32"
+                    ],
+                    "nxos": [
+                        "10.0.0.202/32",
+                        "10.0.0.112/32"
+                    ]
+                }
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "dcedge",
+            "exit",
+            "firewall",
+            "leaf",
+            "servers",
+            "spine",
+            "ungrouped"
+        ]
+    },
+    "firewall": {
+        "hosts": [
+            "firewall01"
+        ]
+    },
+    "leaf": {
+        "hosts": [
+            "leaf01",
+            "leaf02"
+        ]
+    }
+}

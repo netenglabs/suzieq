@@ -1,0 +1,114 @@
+{
+    "_meta": {
+        "hostvars": {
+            "firewall01": {
+                "ansible_port": 22,
+                "ansible_ssh_private_key_file": "tests/unit/poller/controller/sources/data/ansible/inventory/keyfile",
+                "ansible_user": "vagrant",
+                "bgp_asn": 65533,
+                "default_vrf_asn": 65520,
+                "evpn_l3_info": [
+                    {
+                        "junos_vrf_loopback_ip": {
+                            "exit01": "10.0.0.121/32",
+                            "exit02": "10.0.0.122/32",
+                            "leaf01": "10.0.0.101/32",
+                            "leaf02": "10.0.0.102/32"
+                        },
+                        "vlan": 999,
+                        "vlanif": "vlan999",
+                        "vnid": 999,
+                        "vrf": "evpn-vrf"
+                    }
+                ],
+                "evpn_vrf_asn": 65521,
+                "fw_peers": [
+                    {
+                        "address": "169.254.254.2/30",
+                        "iface": "eth1.2",
+                        "peer": "169.254.254.1"
+                    },
+                    {
+                        "address": "169.254.254.6/30",
+                        "iface": "eth1.3",
+                        "peer": "169.254.254.5"
+                    },
+                    {
+                        "address": "169.254.254.10/30",
+                        "iface": "eth1.4",
+                        "peer": "169.254.254.9"
+                    },
+                    {
+                        "address": "169.254.253.2/30",
+                        "iface": "eth2.2",
+                        "peer": "169.254.253.1"
+                    },
+                    {
+                        "address": "169.254.253.6/30",
+                        "iface": "eth2.3",
+                        "peer": "169.254.253.5"
+                    },
+                    {
+                        "address": "169.254.253.10/30",
+                        "iface": "eth2.4",
+                        "peer": "169.254.253.9"
+                    }
+                ],
+                "ibgp_asn": 64520,
+                "internet_vrf_asn": 65522,
+                "l2_networks": {
+                    "10": {
+                        "ip_address": "172.16.1.254/24",
+                        "ip_subnet": "172.16.1.0/24",
+                        "ip_unique": "172.16.1.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan10",
+                        "vnid": 10,
+                        "vrf": "evpn-vrf"
+                    },
+                    "20": {
+                        "ip_address": "172.16.2.254/24",
+                        "ip_subnet": "172.16.2.0/24",
+                        "ip_unique": "172.16.2.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan20",
+                        "vnid": 20,
+                        "vrf": "evpn-vrf"
+                    },
+                    "30": {
+                        "ip_address": "172.16.3.254/24",
+                        "ip_subnet": "172.16.3.0/24",
+                        "ip_unique": "172.16.3.1/24",
+                        "mcast_grp": "224.1.1.192",
+                        "vlanif": "Vlan30",
+                        "vnid": 30,
+                        "vrf": "evpn-vrf"
+                    }
+                },
+                "lo_addr": "{{ loopback_ip.split('/')[0] }}",
+                "loopback_ip": "10.0.0.200/32",
+                "nxos_fabric_anycast_gw_mac": "00:00:00:11:12:10",
+                "overlay": "ibgp",
+                "replication": "ingress-replication",
+                "underlay": "ospf",
+                "use_local_as": "{% if underlay == 'ebgp' and overlay == 'ibgp' %} true {% else %} false {% endif %}"
+            }
+        }
+    },
+    "all": {
+        "children": [
+            "dcedge",
+            "exit",
+            "firewall",
+            "leaf",
+            "servers",
+            "spine",
+            "ungrouped"
+        ]
+    },
+    "firewall": {
+        "hosts": [
+            "firewall01"
+        ]
+    }
+}
