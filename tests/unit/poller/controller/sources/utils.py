@@ -1,4 +1,5 @@
 from typing import Dict
+import yaml
 
 
 def get_sample_config(src_type: str) -> Dict:
@@ -22,3 +23,15 @@ def get_sample_config(src_type: str) -> Dict:
         sample_config.update({'hosts': []})
 
     return sample_config
+
+
+def read_result_data(path: str) -> Dict:
+    """Read result from file
+
+    Args:
+        path (str): path of result file
+
+    Returns:
+        [Dict]: content of the file
+    """
+    return yaml.safe_load(open(path, 'r'))

@@ -1,35 +1,29 @@
 import asyncio
-from asyncio.tasks import wait_for
-import py
 
 import pytest
-import yaml
 from suzieq.poller.controller.source.ansible import AnsibleInventory
 from suzieq.shared.exceptions import InventorySourceError
-from tests.unit.poller.controller.sources.utils import get_sample_config
+from tests.unit.poller.controller.sources.utils import (get_sample_config,
+                                                        read_result_data)
 
-_RESULT_PATH = 'tests/unit/poller/controller/sources/data/ansible/results/'\
-    'result.yaml'
+_RESULT_PATH = ['tests/unit/poller/controller/sources/data/ansible/results/'
+                'result.yaml']
 
-_VALID_INVENTORY = 'tests/unit/poller/controller/sources/data/ansible/'\
-    'inventory/valid_inventory.json'
+_VALID_INVENTORY = ['tests/unit/poller/controller/sources/data/ansible/'
+                    'inventory/valid_inventory.json']
 
-_INVALID_INVENTORY = 'tests/unit/poller/controller/sources/data/ansible/'\
-    'inventory/invalid_inventory.json'
+_INVALID_INVENTORY = ['tests/unit/poller/controller/sources/data/ansible/'
+                      'inventory/invalid_inventory.json']
 
 _ANSIBLE_CONFIG = get_sample_config('ansible')
 
 
-def read_result_data(path: str):
-    return yaml.safe_load(open(path, 'r'))
-
-
 @pytest.mark.ansible
 @pytest.mark.source
-@pytest.mark.parametrize('inv_path', [_VALID_INVENTORY])
-@pytest.mark.parametrize('result_path', [_RESULT_PATH])
+@pytest.mark.parametrize('inv_path', _VALID_INVENTORY)
+@pytest.mark.parametrize('result_path', _RESULT_PATH)
 @pytest.mark.asyncio
-async def test_valid_ansible(inv_path: str, result_path: str):
+async def test_valid_inventory(inv_path: str, result_path: str):
     """Test if the ansible source has been loaded correctly
 
     Args:
@@ -51,7 +45,7 @@ async def test_valid_ansible(inv_path: str, result_path: str):
 
 @pytest.mark.ansible
 @pytest.mark.source
-def test_invalid_path_ansible():
+def test_invalid_path():
     """Test ansible with an invalid file path
     """
     config = _ANSIBLE_CONFIG
@@ -64,15 +58,17 @@ def test_invalid_path_ansible():
 @pytest.mark.ansible
 @pytest.mark.source
 @pytest.mark.asyncio
-async def test_invalid_inventory_ansible():
+@pytest.mark.parametrize('path', _INVALID_INVENTORY)
+async def test_invalid_inventory(path: str):
     """Test invalid ansible inventory
 
-    The file contains a device without 'ansible_hostname' field
+    Args:
+        path (str): invalid inventory path
     """
     config = _ANSIBLE_CONFIG
-    config['path'] = _INVALID_INVENTORY
+    config['path'] = path
 
     inv = AnsibleInventory(config)
 
-    cur_inv = await wait_for(inv.get_inventory(),5)
+    cur_inv = await asyncio.wait_for(inv.get_inventory(), 5)
     assert cur_inv == {}
