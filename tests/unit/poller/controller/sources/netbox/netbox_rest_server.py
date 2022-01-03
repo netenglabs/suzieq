@@ -1,10 +1,6 @@
-import argparse
-import asyncio
 import json
-import signal
-from os import getpid, kill
-from typing import Optional
 from pathlib import Path
+from typing import Any, Dict, Optional, Tuple
 
 import uvicorn
 import yaml
@@ -13,19 +9,19 @@ from fastapi.routing import APIRoute
 
 _NETBOX_DATA_DIR = 'tests/unit/poller/controller/sources/data/netbox/'\
     'rest_server/'
-_DEVICES_PATH = _NETBOX_DATA_DIR + 'netbox1.json'
 _ERRORS_PATH = _NETBOX_DATA_DIR + 'errors.yaml'
-_TOKENS_PATH = _NETBOX_DATA_DIR + 'tokens.json'
 
 
 class NetboxRestApp:
-    def __init__(self, ip: str = '127.0.0.1', port: int = 9000) -> None:
+    """Netbox REST server emulator class
+    """
+
+    def __init__(self, ip: str = '127.0.0.1', port: int = 9000,
+                 name: str = 'netbox0') -> None:
         self.ip_addr = ip
         self.port = port
-        # self.netbox_name = config_data.get("netbox_name", "")
-        # if not self.netbox_name:
-        #     raise ValueError("The field <netbox_name> must be set")
-        # self._file_name = self.netbox_name + ".json"
+        self.netbox_name = name
+        self._device_path = _NETBOX_DATA_DIR + self.netbox_name + '.json'
 
         self._valid_tokens = ['MY-TOKEN']
 
@@ -42,27 +38,44 @@ class NetboxRestApp:
                     self.getDevices,
                     status_code=200,
                     methods=["GET"]
-                ),
-                APIRoute(
-                    "/kill",
-                    self.server_kill,
-                    status_code=200,
-                    methods=["POST"]
                 )
             ]
         )
 
-    def getData(self, path: str):
+    def getData(self, path: str) -> Tuple[Any, Tuple[int, str]]:
+        """Return the content of path or an error
+
+        There it is an error if the content of the returned tuple in
+        position 1 is not None
+
+        Args:
+            path (str): path from which return the data
+
+        Returns:
+            Tuple[Any, Tuple[int, str]]: return the content of path
+            or the 'page not found' error if the path doesn't exists
+        """
         file_path = Path(path)
         if not file_path.is_file():
             return None, self.getError("page_not_found")
         with open(file_path, "r") as f:
             return json.loads(f.read()), None
 
-    def getError(self, error: str):
+    def getError(self, error: str) -> Tuple[int, str]:
+        """Return the error code and the error message corresponding to the input
+        input key
+
+        If the input error a generic 500(Internal error) is returned
+
+        Args:
+            error (str): error key identifier
+
+        Returns:
+            Tuple[int, str]: error_code, error_message
+        """
         if error not in self._errors:
             return 500, "Internal error"
-        return self._errors[error]['code'], self._errors[error]['text']
+        return self._errors[error]['code'], self._errors[error]['message']
 
     async def getDevices(
         self,
@@ -70,8 +83,33 @@ class NetboxRestApp:
         tag: Optional[str] = Query(None, max_length=50),
         limit: Optional[int] = Query(None),
         offset: Optional[int] = Query(None),
-    ):
+    ) -> Dict:
+        """Read the devices from file and return them in the same way as
+        Netbox does
 
+        Args:
+            request (Request): http request
+            tag (Optional[str], optional): tag to search.
+            Defaults to Query(None, max_length=50).
+
+            limit (Optional[int], optional): the number of devices to return.
+            Defaults to Query(None).
+
+            offset (Optional[int], optional): how many device to skip.
+            Defaults to Query(None).
+
+        Raises:
+            HTTPException: Error during device retrieving
+
+        Returns:
+            Dict: the returned dictionary is composed by:
+                'count': the total number of devices (also over limit)
+                'next': if limit and/or offset are set, this field contains the
+                url to get the next devices
+                'prev': if limit and/or offset are set, this field contains the
+                url to get the previous devices
+                'results': the current list of devices
+        """
         token = request.headers.get("authorization", None)
         if not token:
             error_code, error = self.getError("no_token")
@@ -81,8 +119,8 @@ class NetboxRestApp:
             error_code, error = self.getError("invalid_token")
             raise HTTPException(status_code=error_code, detail=error)
 
-        result = self.getData(_DEVICES_PATH)
-        if result[1] is not None:
+        result = self.getData(self._device_path)
+        if result[1]:
             error_code, error = result[1]
             raise HTTPException(status_code=error_code, detail=error)
         in_devices = result[0].get("results", [])
@@ -99,12 +137,13 @@ class NetboxRestApp:
         if not devices and tag is not None:
             return {
                 "tag": [
-                    "Select a valid choice. {} is not one of the available "
-                    "choices.".format(tag)
+                    f"Select a valid choice. {tag} is not one of the "
+                    "available choices."
                 ]
             }
 
         if not limit:
+            # default netbox limit is 50
             limit = 50
 
         if not offset:
@@ -116,30 +155,26 @@ class NetboxRestApp:
             "next": None
         }
 
+        server_host = f'http://{self.ip_addr}:{self.port}'
+
         if offset != 0:
             devices = devices[offset:]
             if offset - limit < 0:
-                res["previous"] = "/api/dcim/devices/?limit={}&tag={}"\
-                    .format(limit, tag)
+                res["previous"] = f"{server_host}/api/dcim/devices/"\
+                    f"?limit={limit}&tag={tag}"
             else:
-                res["previous"] = \
-                    "/api/dcim/devices/?limit={}&offset={}&tag={}"\
-                    .format(limit, offset - limit, tag)
+                res["previous"] = f"{server_host}/api/dcim/devices/"\
+                    f"?limit={limit}&offset={offset - limit}&tag={tag}"
 
         if len(devices) > limit:
             devices = devices[:limit]
-            res["next"] = "/api/dcim/devices/?limit={}&offset={}&tag={}"\
-                .format(limit, offset + limit, tag)
+            res["next"] = f"{server_host}/api/dcim/devices/"\
+                f"?limit={limit}&offset={offset + limit}&tag={tag}"
 
         res["results"] = devices
         return res
 
-    async def server_kill(self):
-        kill(getpid(), signal.SIGTERM)
-
     def start(self):
+        """Start the REST server
+        """
         uvicorn.run(self.app, host=self.ip_addr, port=self.port)
-
-    async def stop(self):
-        await self.server_kill()
-
