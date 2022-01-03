@@ -1,6 +1,8 @@
 from typing import Dict
 import yaml
 
+from suzieq.poller.controller.credential_loader.static import StaticLoader
+
 
 def get_sample_config(src_type: str) -> Dict:
     """Return a sample configuration
@@ -11,6 +13,7 @@ def get_sample_config(src_type: str) -> Dict:
     Returns:
         [Dict]: sample configuration
     """
+
     sample_config = {
         'name': f'{src_type}0',
         'namespace': f'{src_type}-ns',
@@ -21,6 +24,17 @@ def get_sample_config(src_type: str) -> Dict:
         sample_config.update({'path': ''})
     elif src_type == 'native':
         sample_config.update({'hosts': []})
+    elif src_type == 'netbox':
+        sample_config.update({
+            'token': 'MY-TOKEN',
+            'url': 'http://127.0.0.1:9000',
+            'tag': 'suzieq',
+            'run_once': True,
+            'auth': StaticLoader({
+                'username': 'user',
+                'password': 'plain:password'
+            }),
+        })
 
     return sample_config
 
