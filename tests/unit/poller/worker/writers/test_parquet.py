@@ -14,7 +14,7 @@ from suzieq.poller.worker.writers.parquet import ParquetOutputWorker
 from suzieq.shared.exceptions import SqPollerConfError
 from tests.integration.utils import assert_df_equal
 
-WRITER_OUTPUT_DIR = 'tests/unit/poller/writers/poller_output/parquet_out'
+WRITER_OUTPUT_DIR = 'tests/unit/poller/worker/writers/poller_output/parquet_out'
 
 
 @pytest.fixture
@@ -67,7 +67,7 @@ def test_wrong_file_instead_directory():
     """
     with pytest.raises(SqPollerConfError):
         ParquetOutputWorker(
-            data_dir='tests/unit/poller/writers/test_parquet.py'
+            data_dir='tests/unit/poller/worker/writers/test_parquet.py'
         )
 
 

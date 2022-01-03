@@ -12,7 +12,7 @@ import pytest
 from suzieq.poller.worker.writers.gather import GatherOutputWorker
 from suzieq.shared.exceptions import SqPollerConfError
 
-WRITER_OUTPUT_DIR = 'tests/unit/poller/writers/poller_output/gather'
+WRITER_OUTPUT_DIR = 'tests/unit/poller/worker/writers/poller_output/gather'
 
 
 @pytest.fixture
@@ -65,7 +65,7 @@ def test_wrong_file_instead_directory():
     """
     with pytest.raises(SqPollerConfError):
         GatherOutputWorker(
-            output_dir='tests/unit/poller/writers/test_gather.py'
+            output_dir='tests/unit/poller/worker/writers/test_gather.py'
         )
 
 

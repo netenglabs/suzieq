@@ -13,7 +13,7 @@ from suzieq.poller.worker.coalescer_launcher import CoalescerLauncher
 from suzieq.shared.utils import load_sq_config
 from tests.conftest import create_dummy_config_file
 
-MOCK_COALESCER = './tests/unit/poller/utils/coalescer_mock.py'
+MOCK_COALESCER = './tests/unit/poller/worker/utils/coalescer_mock.py'
 
 
 @pytest.fixture

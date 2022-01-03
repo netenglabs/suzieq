@@ -37,7 +37,7 @@ def poller_args():
         'service_only': None,
         'exclude_services': None,
         'outputs': ['parquet'],
-        'output_dir': 'tests/unit/poller/poller_output/parquet_out',
+        'output_dir': 'tests/unit/poller/worker/poller_output/parquet_out',
         'config': cfg_file,
         'run_once': None,
         'ssh_config_file': None,

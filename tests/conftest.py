@@ -22,9 +22,9 @@ from suzieq.sqobjects import get_sqobject, get_tables
 
 suzieq_cli_path = './suzieq/cli/sq_cli.py'
 suzieq_rest_server_path = './suzieq/restServer/sq_rest_server.py'
-suzieq_test_svc_dir = 'tests/unit/poller/service_dir_test'
+suzieq_test_svc_dir = 'tests/unit/poller/worker/service_dir_test'
 
-DATA_TO_STORE_FILE = 'tests/unit/poller/utils/data_to_store.pickle'
+DATA_TO_STORE_FILE = 'tests/unit/poller/worker/utils/data_to_store.pickle'
 
 DATADIR = ['tests/data/multidc/parquet-out/',
            'tests/data/basic_dual_bgp/parquet-out/',
