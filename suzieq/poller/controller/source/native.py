@@ -28,11 +28,14 @@ class SqNativeFile(Source):
         self._valid_fields.extend(['hosts'])
         super()._validate_config(input_data)
 
-        if not isinstance(input_data.get('hosts'), list):
-            raise InventorySourceError(f'{self._name} Hosts must be a list')
-
         if not input_data.get('hosts'):
-            raise InventorySourceError(f'{self._name} Hosts must not be empty')
+            raise InventorySourceError(f"{self._name} The 'hosts' field with "
+                                       "the list of nodes to poll is mandatory"
+                                       )
+
+        if not isinstance(input_data.get('hosts'), list):
+            raise InventorySourceError(f"{self._name} 'hosts' field must be a "
+                                       "list")
 
     def _load(self, input_data):
         self.inventory_source = input_data
