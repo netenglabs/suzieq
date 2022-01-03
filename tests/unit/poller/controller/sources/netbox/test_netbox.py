@@ -11,39 +11,49 @@ from tests.unit.poller.controller.sources.netbox.netbox_rest_server import \
 from tests.unit.poller.controller.sources.utils import (get_sample_config,
                                                         read_result_data)
 
-_RESULTS_PATH = [
-    'tests/unit/poller/controller/sources/data/netbox/results/results0.yaml']
-
 _SAMPLE_CONFIG = get_sample_config('netbox')
 
-_SERVER_CONFIGS = [{'port': 9000, 'name': 'netbox0'}]
+_SERVER_CONFIGS = [
+    {
+        'port': 9000,
+        'name': 'netbox0',
+        'result': 'tests/unit/poller/controller/sources/data/netbox/results/'
+        'results0.yaml'
+    }
+]
 
 
-@pytest.fixture(scope="session", autouse=True, params=_SERVER_CONFIGS)
+# ATTENTION: This fixture is executed for each test. Every test will spawn
+#            a process. This is not the best solution but it works for now
+#            Adding an element in _SERVER_CONFIGS will cause some problems
+@pytest.fixture(scope="session", autouse=True, params=[_SERVER_CONFIGS])
 def manager_rest_server(request):
     """Starts the server at the beginning of tests
     """
-    server_conf = request.param
-    nra = NetboxRestApp(name=server_conf['name'], port=server_conf['port'])
-    p = Process(target=nra.start)
-    p.start()
-    # wait for the REST server to start
+    server_conf_list = request.param
+    proc_list = []
+    for server_conf in server_conf_list:
+        nra = NetboxRestApp(name=server_conf['name'], port=server_conf['port'])
+        p = Process(target=nra.start)
+        p.start()
+        proc_list.append(p)
+    # wait for REST servers to start
     time.sleep(1)
     yield
-    p.terminate()
+    _ = [p.terminate() for p in proc_list]
 
 
-@pytest.mark.source
+@pytest.mark.controller_source
+@pytest.mark.controller
+@pytest.mark.poller
 @pytest.mark.netbox
 @pytest.mark.asyncio
-@pytest.mark.parametrize('results_path', _RESULTS_PATH)
 @pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
-async def test_valid_config(server_conf: Dict, results_path: str):
+async def test_valid_config(server_conf: Dict):
     """Tests if the pulled inventory is valid
 
     Args:
         server_conf(Dict): server configuration
-        results_path(str): path of results to compare
     """
     config = _SAMPLE_CONFIG
     config['url'] = f'http://127.0.0.1:{server_conf["port"]}'
@@ -54,10 +64,12 @@ async def test_valid_config(server_conf: Dict, results_path: str):
     await asyncio.wait_for(src.run(), 10)
 
     cur_inv = await asyncio.wait_for(src.get_inventory(), 5)
-    assert cur_inv == read_result_data(results_path)
+    assert cur_inv == read_result_data(server_conf['result'])
 
 
-@pytest.mark.source
+@pytest.mark.controller_source
+@pytest.mark.controller
+@pytest.mark.poller
 @pytest.mark.netbox
 @pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
 @pytest.mark.asyncio

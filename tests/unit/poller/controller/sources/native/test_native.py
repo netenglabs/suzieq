@@ -31,7 +31,9 @@ def load_hosts(path: str) -> List:
 
 
 @pytest.mark.native
-@pytest.mark.source
+@pytest.mark.controller_source
+@pytest.mark.controller
+@pytest.mark.poller
 @pytest.mark.parametrize('hosts_file', _VALID_HOSTS)
 @pytest.mark.parametrize('result_path', _RESULT_PATH)
 @pytest.mark.asyncio
@@ -52,7 +54,9 @@ async def test_valid_config(hosts_file: str, result_path: str):
     assert cur_inv == read_result_data(result_path)
 
 
-@pytest.mark.source
+@pytest.mark.controller_source
+@pytest.mark.controller
+@pytest.mark.poller
 @pytest.mark.native
 @pytest.mark.asyncio
 async def test_invalid_hosts():

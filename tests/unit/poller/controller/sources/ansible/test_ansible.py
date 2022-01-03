@@ -19,7 +19,9 @@ _ANSIBLE_CONFIG = get_sample_config('ansible')
 
 
 @pytest.mark.ansible
-@pytest.mark.source
+@pytest.mark.controller_source
+@pytest.mark.controller
+@pytest.mark.poller
 @pytest.mark.parametrize('inv_path', _VALID_INVENTORY)
 @pytest.mark.parametrize('result_path', _RESULT_PATH)
 @pytest.mark.asyncio
@@ -44,7 +46,9 @@ async def test_valid_inventory(inv_path: str, result_path: str):
 
 
 @pytest.mark.ansible
-@pytest.mark.source
+@pytest.mark.controller_source
+@pytest.mark.controller
+@pytest.mark.poller
 def test_invalid_path():
     """Test ansible with an invalid file path
     """
@@ -56,7 +60,9 @@ def test_invalid_path():
 
 
 @pytest.mark.ansible
-@pytest.mark.source
+@pytest.mark.controller_source
+@pytest.mark.controller
+@pytest.mark.poller
 @pytest.mark.asyncio
 @pytest.mark.parametrize('path', _INVALID_INVENTORY)
 async def test_invalid_inventory(path: str):
