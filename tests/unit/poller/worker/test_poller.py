@@ -74,6 +74,7 @@ async def run_poller_with_mocks(poller: Poller) -> Dict[str, MagicMock]:
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.poller_object
 def test_poller_object_init_validation(poller_args):
     """Test Poller object user_args validation
@@ -88,6 +89,7 @@ def test_poller_object_init_validation(poller_args):
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.poller_object
 @pytest.mark.asyncio
 async def test_add_pop_poller_task(poller_args):
@@ -111,6 +113,7 @@ async def test_add_pop_poller_task(poller_args):
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.poller_object
 @pytest.mark.asyncio
 async def test_poller_run(poller_args):
@@ -126,6 +129,7 @@ async def test_poller_run(poller_args):
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.poller_object
 def test_poller_inventory_init(poller_args):
     """Test if all the parameters are correctly passed to the Inventory
@@ -144,6 +148,7 @@ def test_poller_inventory_init(poller_args):
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.poller_object
 def test_poller_service_manager_init(poller_args):
     """Test if all the parameters are correctly passed to the ServiceManager

@@ -22,6 +22,7 @@ OUTPUT_ARGS = {
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.output_worker_manager
 def test_output_worker_manager_init():
     """Check correct initialization of the OuputWorkerManager
@@ -35,6 +36,7 @@ def test_output_worker_manager_init():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.output_worker_manager
 def test_wrong_output_worker():
     """Pass not existing OuputWorker
@@ -45,6 +47,7 @@ def test_wrong_output_worker():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.output_worker_manager
 @pytest.mark.asyncio
 async def test_run_output_workers(data_to_write):

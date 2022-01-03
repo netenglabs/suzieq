@@ -72,6 +72,7 @@ async def ready_inventory():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.poller_inventory
 def test_inventory_init():
     """Test init of Inventory class
@@ -90,6 +91,7 @@ def test_inventory_init():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.poller_inventory
 @pytest.mark.asyncio
 async def test_inventory_build():
@@ -126,6 +128,7 @@ async def test_inventory_build():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.poller_inventory
 @pytest.mark.asyncio
 async def test_get_node_callq(ready_inventory):
@@ -143,6 +146,7 @@ async def test_get_node_callq(ready_inventory):
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.poller_inventory
 @pytest.mark.asyncio
 async def test_node_scheduling(ready_inventory):

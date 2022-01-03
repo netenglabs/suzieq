@@ -36,6 +36,7 @@ def create_gather_dir():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.output_worker
 def test_parquet_writer_init_existing_dir(create_gather_dir):
     """Check the correct initialization of the GatherOutputWorker
@@ -49,6 +50,7 @@ def test_parquet_writer_init_existing_dir(create_gather_dir):
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.output_worker
 def test_parquet_writer_init(gather_output_worker):
     """Check the correct initialization of the GatherOutputWorker
@@ -59,6 +61,7 @@ def test_parquet_writer_init(gather_output_worker):
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.output_worker
 def test_wrong_file_instead_directory():
     """Pass a file instead of a data directory
@@ -71,6 +74,7 @@ def test_wrong_file_instead_directory():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.output_worker
 def test_wrong_missing_output_dir():
     """Do not pass an output directory
@@ -81,6 +85,7 @@ def test_wrong_missing_output_dir():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.output_worker
 def test_gather_write(gather_output_worker, data_to_write):
     """Write data in the parquet output directory

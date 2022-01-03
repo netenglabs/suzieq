@@ -56,6 +56,7 @@ def _init_service_manager(add_tasks: Callable = None,
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.service_manager
 def test_init_service_manager():
     """Test correct ServiceManager initialization
@@ -83,6 +84,7 @@ def test_init_service_manager():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.service_manager
 def test_wrong_service_dir():
     """Test a wrong service and schema directories
@@ -98,6 +100,7 @@ def test_wrong_service_dir():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.service_manager
 def test_svcslist_contruction():
     """Test the construction of the service list
@@ -132,6 +135,7 @@ def test_svcslist_contruction():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.service_manager
 def test_wrong_svcslist_contruction():
     """Test service construction with invalid service name
@@ -149,6 +153,7 @@ def test_wrong_svcslist_contruction():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.service_manager
 @pytest.mark.asyncio
 async def test_service_init():
@@ -176,6 +181,7 @@ async def test_service_init():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.service_manager
 @pytest.mark.asyncio
 async def test_service_init_service_only():
@@ -193,6 +199,7 @@ async def test_service_init_service_only():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.service_manager
 @pytest.mark.asyncio
 async def test_service_init_wrong_files():
@@ -217,6 +224,7 @@ async def test_service_init_wrong_files():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.service_manager
 @pytest.mark.asyncio
 async def test_service_scheduling():
@@ -244,6 +252,7 @@ async def test_service_scheduling():
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
 @pytest.mark.service_manager
 @pytest.mark.asyncio
 async def test_set_nodes():
