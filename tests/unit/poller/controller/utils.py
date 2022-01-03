@@ -1,10 +1,11 @@
 from typing import Dict
 import yaml
+from pathlib import Path
 
 from suzieq.poller.controller.credential_loader.static import StaticLoader
 
 
-def get_sample_config(src_type: str) -> Dict:
+def get_src_sample_config(src_type: str) -> Dict:
     """Return a sample configuration
 
     Args:
@@ -39,7 +40,7 @@ def get_sample_config(src_type: str) -> Dict:
     return sample_config
 
 
-def read_result_data(path: str) -> Dict:
+def read_data(path: str) -> Dict:
     """Read result from file
 
     Args:
@@ -48,4 +49,7 @@ def read_result_data(path: str) -> Dict:
     Returns:
         [Dict]: content of the file
     """
-    return yaml.safe_load(open(path, 'r'))
+    file_path = Path(path)
+    if not file_path.is_file():
+        raise RuntimeError(f'Invalid file to read {path}')
+    return yaml.safe_load(open(file_path, 'r'))

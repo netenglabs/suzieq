@@ -3,8 +3,8 @@ import asyncio
 import pytest
 from suzieq.poller.controller.source.ansible import AnsibleInventory
 from suzieq.shared.exceptions import InventorySourceError
-from tests.unit.poller.controller.sources.utils import (get_sample_config,
-                                                        read_result_data)
+from tests.unit.poller.controller.utils import (get_src_sample_config,
+                                                read_data)
 
 _RESULT_PATH = ['tests/unit/poller/controller/sources/data/ansible/results/'
                 'result.yaml']
@@ -15,7 +15,7 @@ _VALID_INVENTORY = ['tests/unit/poller/controller/sources/data/ansible/'
 _INVALID_INVENTORY = ['tests/unit/poller/controller/sources/data/ansible/'
                       'inventory/invalid_inventory.json']
 
-_ANSIBLE_CONFIG = get_sample_config('ansible')
+_ANSIBLE_CONFIG = get_src_sample_config('ansible')
 
 
 @pytest.mark.ansible
@@ -42,7 +42,7 @@ async def test_valid_inventory(inv_path: str, result_path: str):
     assert inv.ansible_file == config['path']
 
     cur_inv = await asyncio.wait_for(inv.get_inventory(), 5)
-    assert cur_inv == read_result_data(result_path)
+    assert cur_inv == read_data(result_path)
 
 
 @pytest.mark.ansible
