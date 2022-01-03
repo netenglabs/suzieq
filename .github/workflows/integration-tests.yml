@@ -1,5 +1,15 @@
 name: integration-tests
-on: [pull_request]
+on:
+  push:
+    # run on every push only in master and version specific branches
+    branches:
+      - master
+      - '[0].[0-9]+.[0-9]+'
+  pull_request:
+    # run on every branch which has an open PR
+    branches:
+    - '**'
+
 jobs:
   test:
     runs-on: ubuntu-latest
