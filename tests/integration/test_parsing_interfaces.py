@@ -67,7 +67,7 @@ def _validate_bond_if(df: pd.DataFrame, full_df: pd.DataFrame):
             continue
         assert not full_df.query(f'namespace=="{row.namespace}" and '
                                  f'hostname=="{row.hostname}" and '
-                                 f'master == "{row.ifname}"').empty
+                                 f'ifname == "{row.ifname}"').empty
 
 
 def _validate_vrf_if(df: pd.DataFrame, _):
