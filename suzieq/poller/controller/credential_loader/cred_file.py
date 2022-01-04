@@ -100,14 +100,19 @@ class CredFile(CredentialLoader):
 
                 node_cred.pop(node_key)
 
-                if not node_cred.get('password') and \
-                        not node_cred.get('ssh_keyfile'):
-                    # no configuration in device, use config ones
-                    node_cred.update({
-                        'passphrase': self._conf_passphrase,
-                        'ssh_key_file': self._conf_keyfile,
-                        'password': self._conf_password
-                    })
+                fields = ['username', 'passphrase', 'ssh_key_file', 'password']
+                multi_defined = []
+                for f in fields:
+                    if node.get(f) and node_cred.get(f):
+                        multi_defined.append(f)
+                    elif node.get(f):
+                        node_cred[f] = node[f]
+
+                if multi_defined:
+                    raise InventorySourceError(
+                        f"{self._name} the node {node.get('address')} has the "
+                        "following strings defined in multiple places "
+                        f"{multi_defined}")
 
                 self.write_credentials(node, node_cred)
 
