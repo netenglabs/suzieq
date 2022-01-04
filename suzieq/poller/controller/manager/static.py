@@ -4,21 +4,22 @@
     inventory chunks on different files for the pollers
     and start them up
 """
-import os
 import asyncio
 import copy
 import logging
+import os
 from asyncio.subprocess import Process
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List
-from cryptography.fernet import Fernet
 
 import aiofiles
 import yaml
+from cryptography.fernet import Fernet
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
 from suzieq.poller.controller.manager.base_manager import Manager
+from suzieq.poller.controller.utils.proc_utils import monitor_process
 from suzieq.poller.worker.coalescer_launcher import CoalescerLauncher
 from suzieq.shared.exceptions import PollingError, SqPollerConfError
 from suzieq.shared.utils import get_sq_install_dir
@@ -51,6 +52,10 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         self._input_dir = config_data.get('input-dir', None)
         self._run_once = config_data.get('run-once', None)
         self._no_coalescer = config_data.get('no-coalescer', False)
+
+        # If the debug mode is active we need to set run_once
+        if config_data.get('debug'):
+            self._run_once = 'debug'
 
         if not self._no_coalescer:
             self._coalescer_launcher = CoalescerLauncher(
@@ -106,14 +111,14 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         # and only after all terminated, it is possible to restart them with
         # the new inventory
         pollers_to_launch = []
-        inventory_len = len(inventory_chunks)
-        if inventory_len != self._workers_count:
+        n_chunks = len(inventory_chunks)
+        if n_chunks != self._workers_count:
             raise PollingError(
                 'The number of chunks is different than the number of workers'
             )
 
         if not self._active_chunks:
-            pollers_to_launch = [*range(inventory_len)]
+            pollers_to_launch = [*range(n_chunks)]
         else:
             for i, chunk in enumerate(inventory_chunks):
                 if chunk != self._active_chunks[i]:
@@ -134,14 +139,23 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             await asyncio.gather(*tasks)
 
             # Launch all the pollers we need to launch
-            launch_tasks = [self._launch_poller(i) for i in pollers_to_launch]
-            res = await asyncio.gather(*launch_tasks, return_exceptions=True)
-            # Check if there are exceptions
-            for r in res:
-                if r is not None and isinstance(r, Exception):
-                    raise r
-
-            self._active_chunks = copy.deepcopy(inventory_chunks)
+            # If the mode is debug we do not need to launch the pollers
+            if self._run_once != 'debug':
+                launch_tasks = [self._launch_poller(i)
+                                for i in pollers_to_launch]
+                res = await asyncio.gather(
+                    *launch_tasks, return_exceptions=True)
+                # Check if there are exceptions
+                for r in res:
+                    if r is not None and isinstance(r, Exception):
+                        raise r
+                # Copy the active inventory chunks in order to be able
+                # to detect any following modifications
+                self._active_chunks = copy.deepcopy(inventory_chunks)
+            else:
+                # When the debug mode is enabled print the instructions to
+                # manually launch the workers
+                self._print_poller_launch_instructions(n_chunks)
             self._poller_tasks_ready.set()
 
     async def launch_with_dir(self):
@@ -188,7 +202,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                 tasks = [t for t in tasks if t not in dead_workers]
 
                 self._running_workers.update(self._waiting_workers)
-                new_ptasks = {i: asyncio.create_task(p.wait())
+                new_ptasks = {i: asyncio.create_task(
+                                    monitor_process(p, f'WORKER {i}'))
                               for i, p in self._waiting_workers.items()}
                 poller_wait_tasks.update(new_ptasks)
                 tasks += list(new_ptasks.values())
@@ -220,32 +235,13 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                             # Worker natural death
                             del self._running_workers[poller_id]
                         else:
-                            # Unexpected worker death
-                            errstr = await self._get_process_out(process)
                             raise PollingError(f'Unexpected worker {poller_id}'
-                                               f' death process returned:'
-                                               f'{errstr}')
+                                               f' death')
                 else:
                     # Someone else died
                     raise PollingError('Unexpected task death')
 
             tasks = list(pending)
-
-    async def _get_process_out(self, process: Process) -> str:
-        """Get the stdout and the stderr ouput of a process
-
-        Args:
-            process (Process): the process from which retrieving the output
-
-        Returns:
-            str: content of the process output
-        """
-        pout = await process.communicate()
-        outstr = ''
-        for out in pout:
-            if out:
-                outstr += out.decode()
-        return outstr
 
     async def _write_chunk(self, poller_id: int, chunk: Dict):
         """Write the chunk into an output file
@@ -307,6 +303,29 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         if not process:
             raise PollingError('Unable to start the poller process')
         self._waiting_workers[poller_id] = process
+
+    def _print_poller_launch_instructions(self, n_chunks: int):
+        """Print the commands to execute in order to manually launch
+        the poller workers for debugging purpose.
+
+        Args:
+            n_chunks (int): the number of chunks the inventory is splitted into
+        """
+
+        print(f'{n_chunks} inventory chunks generated, you can '
+              'now manually start the workers with the following '
+              'commands:')
+
+        for i in range(n_chunks):
+            print()  # Print an empty line
+            env_to_print = ['SQ_CONTROLLER_POLLER_CRED',
+                            'SQ_INVENTORY_PATH']
+            for e in env_to_print:
+                print(f'export {e}={os.environ[e]}')
+            sq_dir = get_sq_install_dir()
+            print(
+                f'python {sq_dir}/poller/worker/sq_worker.py --worker-id {i}'
+            )
 
     async def _stop_poller(self, poller_id: int):
         """Kill the poller with the given id. The function first calls a

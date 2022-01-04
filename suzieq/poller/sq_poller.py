@@ -83,6 +83,12 @@ def controller_main():
     )
 
     parser.add_argument(
+        '--debug',
+        action='store_true',
+        help='Build the node list and exit without polling the nodes'
+    )
+
+    parser.add_argument(
         '-x',
         '--exclude-services',
         type=str,
@@ -118,10 +124,12 @@ def controller_main():
         '--run-once',
         type=str,
         choices=['gather', 'process', 'update'],
-        help=('Collect the data from the sources and terminates. gather store '
-              'the output as it has been collected, process performs some '
-              'processing on the data. Both cases store the results in a '
-              'plain output file, one for each service.')
+        help=('''The poller do not run forever, three modes are available:
+        (1) gather: store the output as it has been collected,
+        (2) process: performs some processing on the data.
+        Both cases store the results in a plain output file,
+        one for each service, and exit.
+        (3) update: poll the nodes only once, write the result and stop''')
     )
 
     parser.add_argument(
@@ -149,14 +157,14 @@ def controller_main():
         '-w',
         '--workers',
         type=int,
-        help='Maximum number of workers to execute',
+        help='The number of workers polling the nodes',
     )
 
     parser.add_argument(
         '-V',
         '--version',
         action='store_true',
-        help='print suzieq version'
+        help='Print suzieq version'
     )
 
     args = parser.parse_args()

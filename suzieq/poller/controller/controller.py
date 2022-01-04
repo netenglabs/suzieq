@@ -56,6 +56,10 @@ class Controller:
         #                    inventory from a source
         self._run_once = args.run_once
 
+        # If the debug mode is active we need to run the controller only once
+        if args.debug:
+            self._run_once = 'debug'
+
         self._input_dir = args.input_dir
         if self._input_dir:
             self._run_once = 'input-dir'
@@ -103,11 +107,15 @@ class Controller:
 
         manager_args = {'config': sq_get_config_file(args.config),
                         'config-dict': config_data,
+                        'debug': args.debug,
                         'input-dir': self._input_dir,
                         'exclude-services': args.exclude_services,
                         'no-coalescer': self._no_coalescer,
                         'output-dir': args.output_dir,
                         'outputs': args.outputs,
+                        # We are intentionally passing the run_once argument
+                        # since we do not want to give internal values as
+                        # arguments of the poller workers
                         'run-once': args.run_once,
                         'service-only': args.service_only,
                         'ssh-config-file': args.ssh_config_file,
