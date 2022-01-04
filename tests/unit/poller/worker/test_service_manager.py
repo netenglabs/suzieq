@@ -246,8 +246,7 @@ async def test_service_scheduling():
     assert svc_mgr.running_services
     assert len(svc_mgr.running_services) == len(svc_mgr.svcs_list)
     # Suppress never awaited alert
-    await asyncio.wait([asyncio.create_task(s)
-                        for s in svc_mgr.running_services])
+    await asyncio.wait(svc_mgr.running_services)
 
 
 @pytest.mark.poller

@@ -2,7 +2,6 @@
 Poller component unit tests
 """
 # pylint: disable=redefined-outer-name
-# pylint: disable=unsubscriptable-object
 # pylint: disable=protected-access
 
 import argparse
@@ -12,24 +11,28 @@ from typing import Dict
 from unittest.mock import MagicMock, patch
 
 import pytest
-from suzieq.poller.worker.coalescer_launcher import CoalescerLauncher
 from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.poller.worker.poller import Poller
 from suzieq.poller.worker.services.service_manager import ServiceManager
-from suzieq.poller.worker.writers.output_worker_manager import OutputWorkerManager
+from suzieq.poller.worker.writers.output_worker_manager import \
+    OutputWorkerManager
 from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.shared.utils import load_sq_config
-from tests.conftest import create_dummy_config_file, _get_async_task_mock
+from tests.conftest import _get_async_task_mock, create_dummy_config_file
+
+INVENTORY_PATH = 'tests/unit/poller/worker/utils/dummy_inventory'
+INV_CREDENTIAL_KEY = 'dummy_key'
 
 
 @pytest.fixture
-def poller_args():
+def poller_args(monkeypatch):
     """Generate a config file and some standard
     user arguments
     """
-    # Set an environment variable with a dummy key for credential file
-    # decryption
-    os.environ['SQ_CONTROLLER_POLLER_CRED'] = 'test'
+    # Set two enviroment variable containing the path to a dummy inventory
+    # and a dummy key for credential decryption
+    monkeypatch.setenv('SQ_CONTROLLER_POLLER_CRED', INV_CREDENTIAL_KEY)
+    monkeypatch.setenv('SQ_INVENTORY_PATH', INVENTORY_PATH)
     cfg_file = create_dummy_config_file()
     userargs_dict = {
         'namespace': None,
@@ -126,6 +129,7 @@ async def test_poller_run(poller_args):
     # Check if all the functions have been called
     for mk in mks:
         mks[mk].assert_called()
+
 
 @pytest.mark.poller
 @pytest.mark.poller_unit_tests

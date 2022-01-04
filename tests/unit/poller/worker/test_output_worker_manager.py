@@ -8,7 +8,8 @@ from unittest.mock import patch
 
 import pytest
 from suzieq.poller.worker.writers.gather import GatherOutputWorker
-from suzieq.poller.worker.writers.output_worker_manager import OutputWorkerManager
+from suzieq.poller.worker.writers.output_worker_manager import \
+    OutputWorkerManager
 from suzieq.poller.worker.writers.parquet import ParquetOutputWorker
 from suzieq.shared.exceptions import SqPollerConfError
 from tests.conftest import _get_async_task_mock

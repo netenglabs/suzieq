@@ -14,7 +14,7 @@ from suzieq.poller.worker.writers.parquet import ParquetOutputWorker
 from suzieq.shared.exceptions import SqPollerConfError
 from tests.integration.utils import assert_df_equal
 
-WRITER_OUTPUT_DIR = 'tests/unit/poller/worker/writers/poller_output/parquet_out'
+WRITER_OUT_DIR = 'tests/unit/poller/worker/writers/poller_output/parquet_out'
 
 
 @pytest.fixture
@@ -22,7 +22,7 @@ def parquet_output_worker():
     """Initializa an instance of the ParquetOuputWorker
     """
     # Append random number in order to allow parallel execution of the tests
-    random_dir = f'{WRITER_OUTPUT_DIR}_{random.random()}'
+    random_dir = f'{WRITER_OUT_DIR}_{random.random()}'
     yield ParquetOutputWorker(data_dir=random_dir)
     shutil.rmtree(random_dir)
 
@@ -31,9 +31,9 @@ def parquet_output_worker():
 def create_parquet_dir():
     """Generate the Parquet output dir
     """
-    os.makedirs(WRITER_OUTPUT_DIR)
+    os.makedirs(WRITER_OUT_DIR)
     yield
-    shutil.rmtree(WRITER_OUTPUT_DIR)
+    shutil.rmtree(WRITER_OUT_DIR)
 
 
 @pytest.mark.poller
@@ -44,10 +44,10 @@ def test_parquet_writer_init_existing_dir(create_parquet_dir):
     """Check the correct initialization of the ParquetOutputWorker
     with existing directory
     """
-    worker = ParquetOutputWorker(data_dir=WRITER_OUTPUT_DIR)
+    worker = ParquetOutputWorker(data_dir=WRITER_OUT_DIR)
     # Check if the output dir is correct
-    assert worker.root_output_dir == WRITER_OUTPUT_DIR
-    assert os.path.isdir(WRITER_OUTPUT_DIR)
+    assert worker.root_output_dir == WRITER_OUT_DIR
+    assert os.path.isdir(WRITER_OUT_DIR)
 
 
 @pytest.mark.poller

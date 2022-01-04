@@ -85,8 +85,8 @@ def test_inventory_init():
 
     inv = _init_inventory(**inventory_args)
 
-    for arg in inventory_args:
-        assert getattr(inv, arg) == inventory_args[arg]
+    for arg, arg_value in inventory_args.items():
+        assert getattr(inv, arg) == arg_value
 
 
 @pytest.mark.poller
@@ -116,14 +116,14 @@ async def test_inventory_build():
         assert node['jump_host'].split("@")[1] == invnode.jump_host
         assert invnode.jump_host_key
 
-        for arg in node:
-            if (arg == 'namespace'
-                or arg == 'ssh_keyfile'
-                or arg == 'jump_host'
-                or arg == 'jump_host_key_file'
-                or arg == 'passphrase'):
+        for arg, arg_value in node.items():
+            if arg == 'namespace' or \
+               arg == 'ssh_keyfile' or \
+               arg == 'jump_host' or \
+               arg == 'jump_host_key_file' or \
+               arg == 'passphrase':
                 continue
-            assert node[arg] == getattr(invnode, arg)
+            assert arg_value == getattr(invnode, arg)
 
 
 @pytest.mark.poller
@@ -132,7 +132,7 @@ async def test_inventory_build():
 @pytest.mark.poller_inventory
 @pytest.mark.asyncio
 async def test_get_node_callq(ready_inventory):
-    """Test the get function for the dictionary allowing
+    """Test the get function returning the dictionary allowing
     to send command query
     """
     nodes = ready_inventory.nodes
@@ -150,8 +150,8 @@ async def test_get_node_callq(ready_inventory):
 @pytest.mark.poller_inventory
 @pytest.mark.asyncio
 async def test_node_scheduling(ready_inventory):
-    """Test the get function for the dictionary allowing
-    to send command query
+    """Test the schedule_nodes_run() function of inventory, checking if
+    the function for adding tasks to the poller have been correctly called.
     """
     # Mock node run
     run_res = asyncio.Future()
@@ -166,5 +166,4 @@ async def test_node_scheduling(ready_inventory):
     assert ready_inventory.running_nodes
     assert len(ready_inventory.running_nodes) == len(sample_inventory)
     # Suppress never awaited alert
-    await asyncio.wait([asyncio.create_task(n)
-                        for n in ready_inventory.running_nodes.values()])
+    await asyncio.wait(list(ready_inventory.running_nodes.values()))
