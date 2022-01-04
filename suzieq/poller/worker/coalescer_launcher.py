@@ -63,7 +63,10 @@ class CoalescerLauncher:
         except asyncio.CancelledError:
             pass
         finally:
-            if self.coalescer_process:
+            # If the coalescer is still runnning we always need to terminate
+            # it before exiting
+            if self.coalescer_process and \
+               self.coalescer_process.returncode is None:
                 self.coalescer_process.terminate()
                 try:
                     logger.warning('Waiting coalescer termination...')
