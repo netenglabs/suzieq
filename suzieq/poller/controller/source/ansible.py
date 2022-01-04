@@ -80,7 +80,7 @@ class AnsibleInventory(Source):
             ansible_host = entry.get('ansible_host')
             if not ansible_host:
                 logger.warning(f'{self._name} skipping ansible device '
-                               'without name')
+                               'without hostname')
                 continue
 
             ansible_user = entry.get('ansible_user')
@@ -108,8 +108,8 @@ class AnsibleInventory(Source):
             keyfile = entry.get('ansible_ssh_private_key_file', '')
             if keyfile and not Path(keyfile).exists():
                 logger.warning(
-                    f"{self._name} Ignored host {ansible_host} not existing "
-                    f'keyfile: {keyfile}'
+                    f"{self._name} Ignored host {ansible_host} because "
+                    f"associated keyfile {keyfile} does not exist"
                 )
                 continue
 

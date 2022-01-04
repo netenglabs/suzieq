@@ -96,8 +96,8 @@ class SqNativeFile(Source):
 
                 if keyfile and not Path(keyfile).exists():
                     logger.warning(
-                        f"Ignored host {address} not existing "
-                        f'keyfile: {keyfile}'
+                        f"Ignored host {address} not existing because "
+                        f"associated keyfile {keyfile} does not exist"
                     )
                     continue
 
