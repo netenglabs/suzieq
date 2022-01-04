@@ -133,9 +133,8 @@ class Poller:
                     break
                 except asyncio.CancelledError:
                     break
-        finally:
-            logger.warning('sq-poller: Received terminate signal. Terminating')
-            loop.stop()
+        except asyncio.CancelledError:
+            logger.warning('Received terminate signal. Terminating...')
 
     async def _add_poller_task(self, tasks):
         """Add new tasks to be executed in the poller run loop."""

@@ -54,7 +54,9 @@ class OutputWorkerManager:
             try:
                 data = await self._output_queue.get()
             except asyncio.CancelledError:
-                logger.error("Writer thread received task cancel")
+                logger.error(
+                    'OutputWorkerManager: received signal to terminate'
+                )
                 return
 
             if not self._output_workers:
