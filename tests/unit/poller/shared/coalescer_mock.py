@@ -40,11 +40,11 @@ async def main():
     coalesce_dir = cfg.get('coalescer', {})\
         .get('coalesce-directory',
              f'{cfg.get("data-directory")}/coalesced')
-    ensure_single_instance(f'{coalesce_dir}/.sq-coalescer.pid',
-                           False)
 
-    async with server:
-        await server.serve_forever()
+    # Run the server only if we are able to acquire the lock
+    if ensure_single_instance(f'{coalesce_dir}/.sq-coalescer.pid', False) > 0:
+        async with server:
+            await server.serve_forever()
 
 if __name__ == '__main__':
     asyncio.run(main())

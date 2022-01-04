@@ -10,10 +10,10 @@ from contextlib import suppress
 
 import pytest
 from suzieq.poller.worker.coalescer_launcher import CoalescerLauncher
-from suzieq.shared.utils import load_sq_config
+from suzieq.shared.utils import ensure_single_instance, load_sq_config
 from tests.conftest import create_dummy_config_file
 
-MOCK_COALESCER = './tests/unit/poller/worker/utils/coalescer_mock.py'
+MOCK_COALESCER = './tests/unit/poller/shared/coalescer_mock.py'
 
 
 @pytest.fixture
@@ -78,6 +78,14 @@ async def test_coalescer_start(coalescer_cfg):
             '127.0.0.1', 8303)
         writer.close()
         await writer.wait_closed()
+        # Check if it is possible to get the file lock, if the coalescer
+        # is properly running, we should not be able to acquire the lock
+        coalesce_dir = cfg.get('coalescer', {})\
+            .get('coalesce-directory',
+                 f'{cfg.get("data-directory")}/coalesced')
+        assert ensure_single_instance(
+            f'{coalesce_dir}/.sq-coalescer.pid', False) == 0
+
         # Check if the task is still running
         if task.done():
             raise Exception('The start_and_monitor_coalescer task terminated '
