@@ -1,7 +1,7 @@
 from typing import Dict
 import pytest
 from suzieq.poller.controller.credential_loader.static import StaticLoader
-from tests.unit.poller.controller.utils import read_data
+from tests.unit.poller.controller.utils import read_yaml_file
 
 _DATA_PATH = [
     {
@@ -37,11 +37,11 @@ def test_load(data_path: Dict):
 
     sl = StaticLoader(init_data)
 
-    assert sl._conf_username == init_data['username']
-    assert sl._conf_passphrase == init_data['ssh-passphrase'].split(':')[1]
-    assert sl._conf_password == init_data['password'].split(':')[1]
+    assert sl._username == init_data['username']
+    assert sl._passphrase == init_data['ssh-passphrase'].split(':')[1]
+    assert sl._password == init_data['password'].split(':')[1]
 
-    inv = read_data(data_path['inventory'])
+    inv = read_yaml_file(data_path['inventory'])
     sl.load(inv)
 
-    assert inv == read_data(data_path['results'])
+    assert inv == read_yaml_file(data_path['results'])

@@ -1,21 +1,19 @@
 import asyncio
-from typing import List
 
 import pytest
-import yaml
 from suzieq.poller.controller.source.native import SqNativeFile
 from suzieq.shared.exceptions import InventorySourceError
 from tests.unit.poller.controller.utils import (get_src_sample_config,
-                                                read_data)
+                                                read_yaml_file)
 
 _SAMPLE_CONFIG = get_src_sample_config('native')
 
 _DATA_PATH = [
     {
         'hosts': 'tests/unit/poller/controller/sources/data/native/inventory/'
-     'valid_hosts.yaml',
-     'results': 'tests/unit/poller/controller/sources/data/native/results/'
-                'results.yaml'}
+        'valid_hosts.yaml',
+        'results': 'tests/unit/poller/controller/sources/data/native/results/'
+        'results.yaml'}
 ]
 
 
@@ -32,13 +30,13 @@ async def test_valid_config(data_path: str):
         data_path (str): file containing result and hosts
     """
     config = _SAMPLE_CONFIG
-    config['hosts'] = read_data(data_path['hosts'])
+    config['hosts'] = read_yaml_file(data_path['hosts'])
 
     src = SqNativeFile(config)
 
     assert src.name == config['name']
     cur_inv = await asyncio.wait_for(src.get_inventory(), 5)
-    assert cur_inv == read_data(data_path['results'])
+    assert cur_inv == read_yaml_file(data_path['results'])
 
 
 @pytest.mark.controller_source

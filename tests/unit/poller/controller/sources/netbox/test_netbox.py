@@ -9,7 +9,7 @@ from suzieq.poller.controller.source.netbox import Netbox
 from tests.unit.poller.controller.sources.netbox.netbox_rest_server import \
     NetboxRestApp
 from tests.unit.poller.controller.utils import (get_src_sample_config,
-                                                read_data)
+                                                read_yaml_file)
 
 _SAMPLE_CONFIG = get_src_sample_config('netbox')
 
@@ -64,7 +64,7 @@ async def test_valid_config(server_conf: Dict):
     await asyncio.wait_for(src.run(), 10)
 
     cur_inv = await asyncio.wait_for(src.get_inventory(), 5)
-    assert cur_inv == read_data(server_conf['result'])
+    assert cur_inv == read_yaml_file(server_conf['result'])
 
 
 @pytest.mark.controller_source

@@ -1,14 +1,14 @@
 import pytest
 from suzieq.poller.controller.chunker.static import StaticChunker
 from suzieq.shared.exceptions import SqPollerConfError
-from tests.unit.poller.controller.utils import read_data
+from tests.unit.poller.controller.utils import read_yaml_file
 
 _POLICIES = ['sequential', 'namespace']
 _N_CHUNKS = [1, 2, 3]
 _DATA_DIR = 'tests/unit/poller/controller/chunker/data/static'
 
 
-_GLOB_INV = read_data(f'{_DATA_DIR}/inventory.yaml')
+_GLOB_INV = read_yaml_file(f'{_DATA_DIR}/inventory.yaml')
 
 
 @pytest.mark.poller
@@ -30,7 +30,7 @@ def test_split(policy: str, n_chunks: int):
     chunks = ch.chunk(_GLOB_INV, n_chunks)
 
     res_path = f'{_DATA_DIR}/results/{policy}_{n_chunks}.yaml'
-    assert chunks == read_data(res_path)
+    assert chunks == read_yaml_file(res_path)
 
 
 @pytest.mark.poller

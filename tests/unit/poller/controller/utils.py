@@ -1,7 +1,7 @@
-from typing import Dict
-import yaml
 from pathlib import Path
+from typing import Dict
 
+import yaml
 from suzieq.poller.controller.credential_loader.static import StaticLoader
 
 
@@ -40,7 +40,7 @@ def get_src_sample_config(src_type: str) -> Dict:
     return sample_config
 
 
-def read_data(path: str) -> Dict:
+def read_yaml_file(path: str) -> Dict:
     """Read result from file
 
     Args:
