@@ -100,6 +100,38 @@ def parse_subtree(subflds, tmpval, maybe_list, defval):
         return tmpval
 
 
+def copy_keys_into_each_ele(result):
+    '''Copy key values into each element of sublist
+    Handle output like EOS OSPF output with the starting string
+    vrfs/*:vrf/instList/*:instance/ospfNeighborEntries/*/[
+    Move the keys into each element of the lists we need to pop
+    out these keys at the very end
+    '''
+    for entry in result:
+        elekeys = entry[0].keys() - set(['rest'])
+        if not elekeys:
+            # this happens when NXOS routes returns
+            # half-baked data when there are no routes
+            # in a VRF.
+            continue
+        for rstentry in entry[0]['rest']:
+            if isinstance(rstentry, list):
+                for entry2 in rstentry:
+                    entry2['sq-addnl-keys'] = []
+                    for key in elekeys:
+                        entry2['sq-addnl-keys'].append({
+                            key: entry[0][key]})
+            else:
+                rstentry['sq-addnl-keys'] = []
+                for key in elekeys:
+                    rstentry['sq-addnl-keys'].append({
+                        key: entry[0][key]})
+        for key in elekeys:
+            del entry[0][key]
+
+    return result
+
+
 def cons_recs_from_json_template(tmplt_str, in_data):
     ''' Return an array of records given the template and input data.
 
@@ -242,21 +274,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                             # vrfs/*:vrf/instList/*:instance/ospfNeighborEntries/*/[
                             # Move the keys into each element of the lists
                             # we need to pop out these keys at the very end
-                            for entry in result:
-                                elekeys = entry[0].keys() - set(['rest'])
-                                if not elekeys:
-                                    # this happens when NXOS routes returns
-                                    # half-baked data when there are no routes
-                                    # in a VRF.
-                                    continue
-                                for rstentry in entry[0]['rest']:
-                                    rstentry['sq-addnl-keys'] = []
-                                    for key in elekeys:
-                                        rstentry['sq-addnl-keys'].append({
-                                            key: entry[0][key]})
-                                for key in elekeys:
-                                    del entry[0][key]
-                                # We should only have 'rest' entries now
+                            result = copy_keys_into_each_ele(result)
+                            tmpres = result[0]
                             nokeys = True  # We've moved all the external keys
 
                         # Handle the output of the likes of EOS' BGP with

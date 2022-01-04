@@ -147,6 +147,7 @@ class Schema:
                                                      ('weight', pa.int32())])),
             "array.long": pa.list_(pa.int64()),
             "array.float": pa.list_(pa.float32()),
+            "array.double": pa.list_(pa.float64()),
         }
 
         for fld in avro_sch:

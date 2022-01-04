@@ -93,6 +93,10 @@ class OspfNbrService(Service):
         for i, entry in enumerate(processed_data):
             if entry.get('_entryType', '') == '_bfdType':
                 ifname = entry.get('ifname', '')
+                if not isinstance(ifname, str):
+                    # Not a session associated with OSPF
+                    drop_indices.append(i)
+                    continue
                 if ifentries.get(ifname, {}):
                     if any('OSPF' in x for x in entry['_client']):
                         ifentry = ifentries[ifname]
