@@ -71,6 +71,11 @@ async def test_invalid_hosts():
     with pytest.raises(InventorySourceError):
         SqNativeFile(config)
 
+    # hosts field not set
+    config.pop('hosts')
+    with pytest.raises(InventorySourceError):
+        SqNativeFile(config)
+
     # invalid hosts. All hosts will be ignored
     config['hosts'] = [
         # no 'url' key

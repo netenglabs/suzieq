@@ -102,3 +102,8 @@ async def test_invalid_config(server_conf: Dict):
         src = Netbox(config)
         await asyncio.wait_for(src.run(), 10)
     config['token'] = old_token
+
+    # set an invalid configuration
+    config.pop('token')
+    with pytest.raises(InventorySourceError):
+        Netbox(config)

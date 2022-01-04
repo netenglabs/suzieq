@@ -58,6 +58,11 @@ def test_invalid_path():
     with pytest.raises(InventorySourceError):
         AnsibleInventory(config)
 
+    # missing 'path' field
+    config.pop('path')
+    with pytest.raises(InventorySourceError):
+        AnsibleInventory(config)
+
 
 @pytest.mark.ansible
 @pytest.mark.controller_source
