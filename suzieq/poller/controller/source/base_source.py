@@ -13,8 +13,6 @@ from suzieq.poller.controller.credential_loader.base_credential_loader import \
 from suzieq.poller.controller.utils.inventory_utils import read_inventory
 from suzieq.shared.exceptions import InventorySourceError
 
-_DEFAULT_SOURCE_PATH = 'suzieq/.poller/intentory/inventory.yaml'
-
 
 class Source(ControllerPlugin):
     """Base class for plugins which reads inventories"""
@@ -163,8 +161,10 @@ class Source(ControllerPlugin):
         """
         src_plugins = []
         plugin_classes = cls.get_plugins()
-        src_confs = _load_inventory(
-            plugin_conf.get('path', _DEFAULT_SOURCE_PATH))
+        if not plugin_conf.get('path'):
+            raise InventorySourceError('A source plugin cannot be initialized'
+                                       'without the inventory file path')
+        src_confs = _load_inventory(plugin_conf.get('path'))
         run_once = plugin_conf.get('run-once', False)
         for src_conf in src_confs:
             ptype = src_conf.get('type') or 'native'
