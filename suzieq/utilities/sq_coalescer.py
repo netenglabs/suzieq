@@ -124,8 +124,8 @@ def coalescer_main():
     parser.add_argument(
         "-c",
         "--config",
-        default=f'{os.getenv("HOME")}/.suzieq/suzieq-cfg.yml',
-        type=str, help="alternate config file"
+        type=str,
+        help="alternate config file"
     )
     parser.add_argument(
         "--run-once",

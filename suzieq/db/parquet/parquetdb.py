@@ -295,7 +295,7 @@ class SqParquetDB(SqDB):
                 run_int = timedelta(minutes=timeint)
                 state.prefix = 'sqc-m-'
                 state.ign_pfx = ['.', '_', 'sqc-']
-            if time_unit == 'h':
+            elif time_unit == 'h':
                 run_int = timedelta(hours=timeint)
                 state.prefix = 'sqc-h-'
                 state.ign_pfx = ['.', '_', 'sqc-y-', 'sqc-d-', 'sqc-w-',
