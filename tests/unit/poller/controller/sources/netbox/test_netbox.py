@@ -59,7 +59,7 @@ async def test_valid_config(server_conf: Dict):
     config['url'] = f'http://127.0.0.1:{server_conf["port"]}'
 
     src = Netbox(config)
-    assert src._name == config['name']
+    assert src.name == config['name']
 
     await asyncio.wait_for(src.run(), 10)
 

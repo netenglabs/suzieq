@@ -37,7 +37,7 @@ async def test_valid_inventory(inv_path: str, result_path: str):
 
     inv = AnsibleInventory(config)
 
-    assert inv._name == config['name']
+    assert inv.name == config['name']
     assert inv.namespace == config['namespace']
     assert inv.ansible_file == config['path']
 
