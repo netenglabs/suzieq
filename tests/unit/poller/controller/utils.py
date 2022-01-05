@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict
 
 import yaml
 from suzieq.poller.controller.credential_loader.static import StaticLoader
@@ -40,14 +40,14 @@ def get_src_sample_config(src_type: str) -> Dict:
     return sample_config
 
 
-def read_yaml_file(path: str) -> Dict:
+def read_yaml_file(path: str) -> Any:
     """Read result from file
 
     Args:
         path (str): path of result file
 
     Returns:
-        [Dict]: content of the file
+        [Any]: content of the file
     """
     file_path = Path(path)
     if not file_path.is_file():
