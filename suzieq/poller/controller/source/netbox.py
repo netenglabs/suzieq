@@ -37,7 +37,7 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._period = 3600
         self._run_once = ''
         self._token = ''
-        self._ssl_verify = False
+        self._ssl_verify = None
 
         super().__init__(config_data)
 
@@ -77,6 +77,11 @@ class Netbox(Source, InventoryAsyncPlugin):
                 self._ssl_verify = False
             elif self._protocol == 'https':
                 self._ssl_verify = True
+        else:
+            if self._ssl_verify and self._protocol == 'http':
+                raise InventorySourceError(
+                    f"{self._name}: ssl-verify can be use only with https"
+                )
 
         logger.debug(f"Source {self._name} load completed")
 
@@ -93,11 +98,6 @@ class Netbox(Source, InventoryAsyncPlugin):
             raise InventorySourceError(
                 f"{self._name} Netbox must have an 'auth' set in the "
                 "'namespaces' section")
-
-        if self._ssl_verify and self._protocol == 'http':
-            raise InventorySourceError(
-                f"{self._name}: ssl-verify can be use only with https"
-            )
 
         super()._validate_config(input_data)
 
