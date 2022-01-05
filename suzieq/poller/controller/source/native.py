@@ -3,6 +3,7 @@ import re
 from typing import Dict
 from urllib.parse import urlparse
 from ipaddress import ip_address
+from pathlib import Path
 
 from suzieq.shared.utils import SUPPORTED_POLLER_TRANSPORTS
 from suzieq.poller.controller.source.base_source import Source
@@ -27,8 +28,14 @@ class SqNativeFile(Source):
         self._valid_fields.extend(['hosts'])
         super()._validate_config(input_data)
 
+        if not input_data.get('hosts'):
+            raise InventorySourceError(f"{self._name} The 'hosts' field with "
+                                       "the list of nodes to poll is mandatory"
+                                       )
+
         if not isinstance(input_data.get('hosts'), list):
-            raise InventorySourceError(f'{self._name} Hosts must be a list')
+            raise InventorySourceError(f"{self._name} 'hosts' field must be a "
+                                       "list")
 
     def _load(self, input_data):
         self.inventory_source = input_data
@@ -46,9 +53,6 @@ class SqNativeFile(Source):
         nsname = self.inventory_source['namespace']
 
         hostlist = self.inventory_source.get('hosts', [])
-        if not hostlist:
-            logger.error(f'No hosts in namespace {nsname}')
-            return []
 
         for address in hostlist:
             if not isinstance(address, dict):
@@ -88,6 +92,13 @@ class SqNativeFile(Source):
                     else:
                         logger.error("Invalid password spec., missing '='")
                     logger.error(f'Ignoring node {address}')
+                    continue
+
+                if keyfile and not Path(keyfile).exists():
+                    logger.warning(
+                        f"Ignored host {address} not existing because "
+                        f"associated keyfile {keyfile} does not exist"
+                    )
                     continue
 
                 entry = {

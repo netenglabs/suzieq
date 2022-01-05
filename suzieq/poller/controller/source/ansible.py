@@ -23,8 +23,8 @@ class AnsibleInventory(Source):
         super().__init__(input_data)
 
     def _load(self, input_data):
-        self.ansible_file = input_data.pop('path', None)
-        self.namespace = input_data.pop('namespace', None)
+        self.ansible_file = input_data.get('path', None)
+        self.namespace = input_data.get('namespace', None)
         inventory = self._get_inventory()
         self.set_inventory(inventory)
 
@@ -77,8 +77,20 @@ class AnsibleInventory(Source):
         for host in in_hosts:
             entry = in_hosts[host]
 
+            ansible_host = entry.get('ansible_host')
+            if not ansible_host:
+                logger.warning(f'{self._name} skipping ansible device '
+                               'without hostname')
+                continue
+
+            ansible_user = entry.get('ansible_user')
+            if not ansible_user:
+                logger.warning(
+                    f'{self._name} skipping ansible device without username')
+                continue
+
             # Get password if any
-            password = ''
+            password = None
             if 'ansible_password' in entry:
                 password = entry['ansible_password']
 
@@ -96,14 +108,14 @@ class AnsibleInventory(Source):
             keyfile = entry.get('ansible_ssh_private_key_file', '')
             if keyfile and not Path(keyfile).exists():
                 logger.warning(
-                    f"Ignored host {entry['ansible_host']} not existing "
-                    f'keyfile: {keyfile}'
+                    f"{self._name} Ignored host {ansible_host} because "
+                    f"associated keyfile {keyfile} does not exist"
                 )
                 continue
 
             host = {
-                'address': entry['ansible_host'],
-                'username': entry['ansible_user'],
+                'address': ansible_host,
+                'username': ansible_user,
                 'port': port,
                 'password': password,
                 'transport': transport,
@@ -112,6 +124,6 @@ class AnsibleInventory(Source):
                 'ssh_keyfile': keyfile,
                 'hostname': None
             }
-            out_inv[f"{self.namespace}.{entry['ansible_host']}.{port}"] = host
+            out_inv[f"{self.namespace}.{ansible_host}.{port}"] = host
 
         return out_inv

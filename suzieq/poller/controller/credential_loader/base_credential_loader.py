@@ -1,10 +1,8 @@
 """This module contains the base class for plugins which loads
 devices credentials
 """
-import getpass
 import logging
 from abc import abstractmethod
-from os import getenv
 from typing import Dict, List, Type
 
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
@@ -31,16 +29,10 @@ class CredentialLoader(ControllerPlugin):
         # load auth parameters
 
         self._name = init_data.get('name')
-        self._conf_password = None
-        self._conf_passphrase = None
-        self._conf_keyfile = None
-        self._conf_username = None
-        self._valid_fields = ['username', 'name', 'type',
-                              'password', 'ssh-passphrase', 'keyfile']
+
+        self._valid_fields = ['name', 'type']
 
         self._validate_config(init_data)
-
-        self._init_conf_data(init_data)
 
         self.init(init_data)
 
@@ -110,7 +102,8 @@ class CredentialLoader(ControllerPlugin):
                 if value or key == 'passphrase':
                     cred_keys.remove(key)
             else:
-                raise RuntimeError(f'Unexpected key {key} in credentials')
+                raise InventorySourceError(
+                    f'Unexpected key {key} in credentials')
 
         # One between password or ssh_keyfile must be defines
         if 'password' in cred_keys and 'ssh_keyfile' in cred_keys:
@@ -129,53 +122,3 @@ class CredentialLoader(ControllerPlugin):
             cred_keys.remove('ssh_keyfile')
 
         return list(cred_keys)
-
-    def _init_conf_data(self, init_data: Dict):
-        """Initialize parameters common to all devices
-
-        Args:
-            init_data (Dict): configuration dictionary
-
-        Raises:
-            InventorySourceError: Invalid env argument
-        """
-        self._conf_username = init_data.get('username')
-
-        if init_data.get('keyfile'):
-            self._conf_keyfile = init_data['keyfile']
-
-        if init_data.get('password'):
-            password = init_data['password']
-            if password.startswith('env:'):
-                self._conf_password = getenv(password.split('env:')[1], '')
-                if not self._conf_password:
-                    raise InventorySourceError(
-                        f'No password in environment '
-                        f'variable "{password.split("env:")[1]}"')
-            elif password.startswith('plain:'):
-                self._conf_password = password.split("plain:")[1]
-            elif password.startswith('ask'):
-                self._conf_password = getpass.getpass(
-                    f'{self._name} Password to login to device: ')
-            else:
-                raise InventorySourceError(
-                    f'{self._name} unknown password method.'
-                    'Supported methods are ["ask", "plain:", "env:"]')
-
-        if init_data.get('ssh-passphrase'):
-            passphrase = init_data['ssh-passphrase']
-            if passphrase.startswith('env:'):
-                self._conf_passphrase = getenv(
-                    passphrase.split('env:')[1], '')
-                if not self._conf_passphrase:
-                    raise InventorySourceError(
-                        f'No passphrase in environment '
-                        f'variable "{passphrase.split("env:")[1]}"')
-            elif passphrase.startswith('plain:'):
-                self._conf_passphrase = passphrase.split("plain:")[1]
-            elif passphrase.startswith('ask'):
-                self._conf_passphrase = getpass.getpass(
-                    f'{self._name} Passphrase to decode private key file: '
-                )
-
-        logger.debug(f"Loaded {self._name} default config credentials")
