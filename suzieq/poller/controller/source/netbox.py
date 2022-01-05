@@ -37,6 +37,7 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._period = 3600
         self._run_once = ''
         self._token = ''
+        self._ssl_verify = False
 
         super().__init__(config_data)
 
@@ -70,6 +71,12 @@ class Netbox(Source, InventoryAsyncPlugin):
         self._period = input_data.get('period', 3600)
         self._run_once = input_data.get('run_once', False)
         self._token = input_data.get('token', None)
+        self._ssl_verify = input_data.get('ssl-verify', None)
+        if self._ssl_verify is None:
+            if self._protocol == 'http':
+                self._ssl_verify = False
+            elif self._protocol == 'https':
+                self._ssl_verify = True
 
         logger.debug(f"Source {self._name} load completed")
 
@@ -79,12 +86,18 @@ class Netbox(Source, InventoryAsyncPlugin):
         Returns:
             list: the list of errors
         """
-        self._valid_fields.extend(['token', 'url', 'tag', 'period'])
+        self._valid_fields.extend(
+            ['token', 'url', 'tag', 'period', 'ssl-verify'])
 
         if not self._auth:
             raise InventorySourceError(
                 f"{self._name} Netbox must have an 'auth' set in the "
                 "'namespaces' section")
+
+        if self._ssl_verify and self._protocol == 'http':
+            raise InventorySourceError(
+                f"{self._name}: ssl-verify can be use only with https"
+            )
 
         super()._validate_config(input_data)
 
@@ -103,7 +116,8 @@ class Netbox(Source, InventoryAsyncPlugin):
         """
         if not self._session:
             self._session = aiohttp.ClientSession(
-                headers=headers
+                headers=headers,
+                connector=aiohttp.TCPConnector(verify_ssl=self._ssl_verify)
             )
 
     def _token_auth_header(self) -> Dict:
@@ -157,7 +171,8 @@ class Netbox(Source, InventoryAsyncPlugin):
                 return res.get('results', []), res.get('next')
             else:
                 raise InventorySourceError(
-                    f'{self._name}: error in inventory get {response.status}')
+                    f'{self._name}: error in inventory get '
+                    f'{await response.text()}')
 
     def parse_inventory(self, inventory_list: list) -> Dict:
         """parse the raw inventory collected from the server and generates
