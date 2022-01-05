@@ -26,11 +26,11 @@ _SERVER_CONFIGS = [
 # ATTENTION: This fixture is executed for each test. Every test will spawn
 #            a process. This is not the best solution but it works for now
 #            Adding an element in _SERVER_CONFIGS will cause some problems
-@pytest.fixture(scope="session", autouse=True, params=[_SERVER_CONFIGS])
-def manager_rest_server(request):
+@pytest.fixture(scope="session", autouse=True)
+def rest_server_manager():
     """Starts the server at the beginning of tests
     """
-    server_conf_list = request.param
+    server_conf_list = _SERVER_CONFIGS
     proc_list = []
     for server_conf in server_conf_list:
         nra = NetboxRestApp(name=server_conf['name'], port=server_conf['port'])

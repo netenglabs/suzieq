@@ -1,6 +1,8 @@
 from typing import Dict
+
 import pytest
 from suzieq.poller.controller.credential_loader.static import StaticLoader
+from suzieq.shared.exceptions import InventorySourceError
 from tests.unit.poller.controller.utils import read_yaml_file
 
 _DATA_PATH = [
@@ -37,6 +39,7 @@ def test_load(data_path: Dict):
 
     sl = StaticLoader(init_data)
 
+    # pylint: disable=protected-access
     assert sl._username == init_data['username']
     assert sl._passphrase == init_data['ssh-passphrase'].split(':')[1]
     assert sl._password == init_data['password'].split(':')[1]
@@ -45,3 +48,51 @@ def test_load(data_path: Dict):
     sl.load(inv)
 
     assert inv == read_yaml_file(data_path['results'])
+
+
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.credential_loader
+@pytest.mark.static_credential_loader
+def test_variables_init(monkeypatch):
+    """Test parameters are correctly set up
+    """
+    # pylint: disable=protected-access
+    ask_password = 'ask_password'
+    env_password = 'env_password'
+    plain_passphrase = 'my-pass'
+
+    # 'env' and 'plain' values
+    init_data = {
+        'ssh-passphrase': f'plain:{plain_passphrase}',
+        'password': 'env:SUZIEQ_ENV_PASSWORD'
+    }
+    monkeypatch.setenv('SUZIEQ_ENV_PASSWORD', env_password)
+    sl = StaticLoader(init_data)
+
+    assert sl._passphrase == plain_passphrase
+    assert sl._password == env_password
+
+    # 'ask' values
+    init_data = {
+        'password': 'ask'
+    }
+    monkeypatch.setattr('getpass.getpass', lambda x: ask_password)
+    sl = StaticLoader(init_data)
+
+    assert sl._password == ask_password
+
+    # unsupported method
+    init_data = {
+        'password': 'uns-method'
+    }
+    with pytest.raises(InventorySourceError):
+        StaticLoader(init_data)
+
+    # unknown parameter
+    init_data = {
+        'username': 'user',
+        'unknown': 'parameter'
+    }
+    with pytest.raises(InventorySourceError):
+        StaticLoader(init_data)
