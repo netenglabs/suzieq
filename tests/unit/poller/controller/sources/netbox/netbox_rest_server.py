@@ -197,11 +197,17 @@ class NetboxRestApp:
             if self.use_ssl == 'self-signed':
                 run_args.update({
                     'ssl_certfile': 'tests/unit/poller/controller/sources/'
-                    'netbox/data/rest_server/host.cert',
+                    'netbox/data/rest_server/self-signed.cert',
 
                     'ssl_keyfile': 'tests/unit/poller/controller/sources/'
-                    'netbox/data/rest_server/host.key'
+                    'netbox/data/rest_server/self-signed.key'
                 })
-            else:
-                raise NotImplementedError
+            elif self.use_ssl == 'valid':
+                run_args.update({
+                    'ssl_certfile': 'tests/unit/poller/controller/sources/'
+                    'netbox/data/rest_server/valid.crt',
+
+                    'ssl_keyfile': 'tests/unit/poller/controller/sources/'
+                    'netbox/data/rest_server/valid.key'
+                })
         uvicorn.run(self.app, **run_args)

@@ -111,7 +111,7 @@ class CredFile(CredentialLoader):
 
                 node_cred.pop(node_key)
 
-                fields = ['username', 'passphrase', 'ssh_key_file', 'password']
+                fields = ['username', 'passphrase', 'ssh_keyfile', 'password']
                 multi_defined = []
                 for f in fields:
                     if node.get(f) and node_cred.get(f):

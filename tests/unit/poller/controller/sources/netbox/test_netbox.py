@@ -84,6 +84,7 @@ async def test_valid_config(server_conf: Dict):
     assert src._protocol == config['url'].split(':')[0]
     assert src._host == '127.0.0.1'
     assert src._port == server_conf['port']
+    assert src._tag == config['tag']
     assert src._token == config['token']
     assert isinstance(src._auth, StaticLoader)
     if config.get('ssl-verify') is not None:
@@ -169,6 +170,3 @@ async def test_ssl_missconfiguration(server_conf):
         with pytest.raises(InventorySourceError):
             src = Netbox(config)
             await asyncio.wait_for(src.run(), 10)
-    elif server_conf['use_ssl'] == 'valid':
-        # TODO: test this case
-        pass
