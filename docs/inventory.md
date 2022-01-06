@@ -133,16 +133,56 @@ Now you can set the path of the ansible inventory in the source:
 ### <a name='source-netbox'></a>Netbox
 
 [Netbox](https://netbox.readthedocs.io/en/stable/) is often used to store devices type, management address and other useful information to be used in network automation. Suzieq can pull device data from Netbox selecting them by tag (currently only one per each source). To do so a token to access the netbox API is required as well as the netbox instance url.
-Since Netbox is a _dynamic source_, the data are periodically pulled, the period can be set to any desired number in seconds (default is 3600.
+Since Netbox is a _dynamic source_, the data are periodically pulled, the period can be set to any desired number in seconds (default is 3600).
+
+!!!Info
+    Each netbox source contains a parameter called `ssl-verify`.
+    This parameter is used to specify whether perform ssl certificate verify or not. By default `ssl-verify` is set to _true_ if the url contains an https host.
+    If the user manually sets `ssl-verify: true` with an http netbox server, an error will be notified.
 
 Here is an example of the configuration of a netbox type source:
 ```yaml
 - name: netbox-dc-01
   type: netbox
   token: your-api-token-here
-  url: http://127.0.0.1:8000
+  url: https://127.0.0.1:8000
   tag: suzieq-demo    # if not present, default is "suzieq"
-  period: 3600 # How frequently Netbox should be polled
+  period: 3600        # How frequently Netbox should be polled
+  ssl-verify: false   # Netbox certificate validation will be skipped
+```
+
+Moreover, netbox type source is capable to assign each device to a namespace which corresponds to the device's sitename.
+To obtain this behaviour, we need to declare a `namespace` object with `name: netbox-sitename`.
+
+Here is an example:
+```yaml
+sources:
+- name: netbox-dc-01
+  type: netbox
+  token: your-api-token-here
+  url: http://127.0.0.1:8000
+  tag: suzieq-demo
+
+- name: netbox-dc-02
+  type: netbox
+  token: your-api-token-here
+  url: http://127.0.0.1:9000
+  tag: suzieq
+
+auths:
+- name: auth-st
+  username: user
+  passowrd: my-password
+
+namespaces:
+- name: netbox-sitename # devices namespaces equal to their site names
+  source: netbox-dc-01
+  auth: auth-st
+
+- name: namespace01     # devices namespaces equal to 'namespace01'
+  source: netbox-dc-02
+  auth: auth-st
+
 ```
 
 !!! warning
