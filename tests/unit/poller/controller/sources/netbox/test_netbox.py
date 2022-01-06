@@ -17,7 +17,7 @@ _SERVER_CONFIGS = [
     {
         'port': 9000,
         'name': 'netbox0',
-        'result': 'tests/unit/poller/controller/sources/data/netbox/results/'
+        'result': 'tests/unit/poller/controller/sources/netbox/data/results/'
         'results0.yaml'
     }
 ]

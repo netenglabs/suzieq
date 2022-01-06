@@ -10,9 +10,10 @@ _SAMPLE_CONFIG = get_src_sample_config('native')
 
 _DATA_PATH = [
     {
-        'hosts': 'tests/unit/poller/controller/sources/data/native/inventory/'
+        'hosts': 'tests/unit/poller/controller/sources/native/data/inventory/'
         'valid_hosts.yaml',
-        'results': 'tests/unit/poller/controller/sources/data/native/results/'
+
+        'results': 'tests/unit/poller/controller/sources/native/data/results/'
         'results.yaml'}
 ]
 

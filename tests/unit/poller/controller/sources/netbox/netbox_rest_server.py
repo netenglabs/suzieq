@@ -7,7 +7,7 @@ import yaml
 from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.routing import APIRoute
 
-_NETBOX_DATA_DIR = 'tests/unit/poller/controller/sources/data/netbox/'\
+_NETBOX_DATA_DIR = 'tests/unit/poller/controller/sources/netbox/data/'\
     'rest_server/'
 _ERRORS_PATH = _NETBOX_DATA_DIR + 'errors.yaml'
 
