@@ -27,16 +27,36 @@ _SERVER_CONFIGS = [
         'result': 'tests/unit/poller/controller/sources/netbox/data/results/'
         'results1.yaml',
         'use_ssl': 'self-signed'
+    },
+    {
+        'name': 'netbox0',
+        'result': 'tests/unit/poller/controller/sources/netbox/data/results/'
+        'results0-sitename.yaml',
+        'use_ssl': 'valid',
+        'use-sitename': True
     }
 ]
 
 
 def update_config(server_conf: Dict, config: Dict) -> Dict:
-    config['url'] = f'http://127.0.0.1:{server_conf["port"]}'
+    """Set the netbox configuration correctly to connect to the
+    server
+
+    Args:
+        server_conf (Dict): server configuration
+        config (Dict): netbox configuration
+
+    Returns:
+        Dict: updated netbox configuration
+    """
+    config['url'] = 'http'
     if server_conf['use_ssl']:
-        config['url'] = config['url'].replace('http:', 'https:')
+        config['url'] = 'https'
         if server_conf['use_ssl'] == 'self-signed':
             config['ssl-verify'] = False
+    config['url'] += f'://127.0.0.1:{server_conf["port"]}'
+    if server_conf.get('use-sitename'):
+        config['namespace'] = 'site.name'
     return config
 
 # ATTENTION: This fixture is executed for each test. Every test will spawn
@@ -152,7 +172,12 @@ async def test_invalid_config(server_conf: Dict):
 @pytest.mark.netbox
 @pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
 @pytest.mark.asyncio
-async def test_ssl_missconfiguration(server_conf):
+async def test_ssl_missconfiguration(server_conf: Dict):
+    """Test possible ssl missconfigurations
+
+    Args:
+        server_conf (Dict): server configuration
+    """
     config = _SAMPLE_CONFIG
     config = update_config(server_conf, config)
 
