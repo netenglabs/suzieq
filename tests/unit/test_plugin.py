@@ -42,4 +42,3 @@ def test_plugin():
 
     with pytest.raises(DBNotFoundError):
         get_sqdb_engine({'db': {'foobar': 'bar'}}, 'foobar', None, None)
-        assert False
