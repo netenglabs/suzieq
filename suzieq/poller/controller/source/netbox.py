@@ -115,10 +115,16 @@ class Netbox(Source, InventoryAsyncPlugin):
             headers ([dict]): headers to initialize the session
         """
         if not self._session:
-            self._session = aiohttp.ClientSession(
-                headers=headers,
-                connector=aiohttp.TCPConnector(verify_ssl=self._ssl_verify)
-            )
+            if self._ssl_verify:
+                self._session = aiohttp.ClientSession(
+                    headers=headers,
+                    connector=aiohttp.TCPConnector(ssl=None)
+                )
+            else:
+                self._session = aiohttp.ClientSession(
+                    headers=headers,
+                    connector=aiohttp.TCPConnector(ssl=False)
+                )
 
     def _token_auth_header(self) -> Dict:
         """Generate the token authorization header
