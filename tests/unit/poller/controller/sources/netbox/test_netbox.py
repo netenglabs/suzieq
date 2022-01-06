@@ -4,28 +4,46 @@ from multiprocessing import Process
 from typing import Dict
 
 import pytest
-from suzieq.shared.exceptions import InventorySourceError
 from suzieq.poller.controller.source.netbox import Netbox
+from suzieq.shared.exceptions import InventorySourceError
 from tests.unit.poller.controller.sources.netbox.netbox_rest_server import \
     NetboxRestApp
-from tests.unit.poller.controller.utils import (get_src_sample_config,
+from tests.unit.poller.controller.utils import (get_free_port,
+                                                get_src_sample_config,
                                                 read_yaml_file)
+from suzieq.poller.controller.credential_loader.static import StaticLoader
 
 _SAMPLE_CONFIG = get_src_sample_config('netbox')
 
 _SERVER_CONFIGS = [
     {
-        'port': 9000,
         'name': 'netbox0',
         'result': 'tests/unit/poller/controller/sources/netbox/data/results/'
-        'results0.yaml'
+        'results0.yaml',
+        'use_ssl': ''
+    },
+    {
+        'name': 'netbox1',
+        'result': 'tests/unit/poller/controller/sources/netbox/data/results/'
+        'results1.yaml',
+        'use_ssl': 'self-signed'
     }
 ]
 
 
+def update_config(server_conf: Dict, config: Dict) -> Dict:
+    config['url'] = f'http://127.0.0.1:{server_conf["port"]}'
+    if server_conf['use_ssl']:
+        config['url'] = config['url'].replace('http:', 'https:')
+        if server_conf['use_ssl'] == 'self-signed':
+            config['ssl-verify'] = False
+    return config
+
 # ATTENTION: This fixture is executed for each test. Every test will spawn
-#            a process. This is not the best solution but it works for now
-#            Adding an element in _SERVER_CONFIGS will cause some problems
+#            a process. This is not the best solution but it works. The
+#            code will select a random free port and avoid ports conficts.
+
+
 @pytest.fixture(scope="session", autouse=True)
 def rest_server_manager():
     """Starts the server at the beginning of tests
@@ -33,7 +51,9 @@ def rest_server_manager():
     server_conf_list = _SERVER_CONFIGS
     proc_list = []
     for server_conf in server_conf_list:
-        nra = NetboxRestApp(name=server_conf['name'], port=server_conf['port'])
+        server_conf['port'] = get_free_port()
+        nra = NetboxRestApp(name=server_conf['name'], port=server_conf['port'],
+                            use_ssl=server_conf['use_ssl'])
         p = Process(target=nra.start)
         p.start()
         proc_list.append(p)
@@ -55,11 +75,25 @@ async def test_valid_config(server_conf: Dict):
     Args:
         server_conf(Dict): server configuration
     """
+    # pylint: disable=protected-access
     config = _SAMPLE_CONFIG
-    config['url'] = f'http://127.0.0.1:{server_conf["port"]}'
+    config = update_config(server_conf, config)
 
     src = Netbox(config)
     assert src.name == config['name']
+    assert src._protocol == config['url'].split(':')[0]
+    assert src._host == '127.0.0.1'
+    assert src._port == server_conf['port']
+    assert src._token == config['token']
+    assert isinstance(src._auth, StaticLoader)
+    if config.get('ssl-verify') is not None:
+        assert src._ssl_verify == config['ssl-verify']
+    else:
+        # default ssl config
+        if src._protocol == 'http':
+            assert src._ssl_verify is False
+        elif src._protocol == 'https':
+            assert src._ssl_verify is True
 
     await asyncio.wait_for(src.run(), 10)
 
@@ -80,13 +114,14 @@ async def test_invalid_config(server_conf: Dict):
         server_conf (Dict): server configuration
     """
     config = _SAMPLE_CONFIG
+    config = update_config(server_conf, config)
 
     # set an invalid url
-    config['url'] = f'http://127.0.0.1:{server_conf["port"]+1000}'
+    old_url, config['url'] = config['url'], 'http://0.0.0.0:80'
     with pytest.raises(InventorySourceError):
         src = Netbox(config)
         await asyncio.wait_for(src.run(), 10)
-    config['url'] = f'http://127.0.0.1:{server_conf["port"]}'
+    config['url'] = old_url
 
     # set invalid tag
     old_tag, config['tag'] = config['tag'], 'wrong_tag'
@@ -107,3 +142,33 @@ async def test_invalid_config(server_conf: Dict):
     config.pop('token')
     with pytest.raises(InventorySourceError):
         Netbox(config)
+    config['token'] = old_token
+
+
+@pytest.mark.controller_source
+@pytest.mark.controller
+@pytest.mark.poller
+@pytest.mark.netbox
+@pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
+@pytest.mark.asyncio
+async def test_ssl_missconfiguration(server_conf):
+    config = _SAMPLE_CONFIG
+    config = update_config(server_conf, config)
+
+    if server_conf['use_ssl'] == 'self-signed':
+        # verify ssl over self-signed certificate
+        config['ssl-verify'] = True
+
+        with pytest.raises(InventorySourceError):
+            src = Netbox(config)
+            await asyncio.wait_for(src.run(), 10)
+    elif server_conf['use_ssl'] == '':
+        # set ssl verify over an http connection
+        config['ssl-verify'] = True
+
+        with pytest.raises(InventorySourceError):
+            src = Netbox(config)
+            await asyncio.wait_for(src.run(), 10)
+    elif server_conf['use_ssl'] == 'valid':
+        # TODO: test this case
+        pass

@@ -17,11 +17,22 @@ class NetboxRestApp:
     """
 
     def __init__(self, ip: str = '127.0.0.1', port: int = 9000,
-                 name: str = 'netbox0') -> None:
+                 name: str = 'netbox0', use_ssl: str = '',
+                 log_level: str = 'info') -> None:
         self.ip_addr = ip
         self.port = port
         self.netbox_name = name
         self._device_path = _NETBOX_DATA_DIR + self.netbox_name + '.json'
+
+        if use_ssl and use_ssl not in ['valid', 'self-signed']:
+            raise ValueError(
+                "Argument 'use_ssl' can be only 'valid' or 'self-signed'")
+        self.use_ssl = use_ssl
+        if not use_ssl:
+            self.protocol = 'http'
+        else:
+            self.protocol = 'https'
+        self.log_level = log_level
 
         self._valid_tokens = ['MY-TOKEN']
 
@@ -155,7 +166,7 @@ class NetboxRestApp:
             "next": None
         }
 
-        server_host = f'http://{self.ip_addr}:{self.port}'
+        server_host = f'{self.protocol}://{self.ip_addr}:{self.port}'
 
         if offset != 0:
             devices = devices[offset:]
@@ -177,4 +188,20 @@ class NetboxRestApp:
     def start(self):
         """Start the REST server
         """
-        uvicorn.run(self.app, host=self.ip_addr, port=self.port)
+        run_args = {
+            'host': self.ip_addr,
+            'port': self.port,
+            'log_level': self.log_level
+        }
+        if self.use_ssl:
+            if self.use_ssl == 'self-signed':
+                run_args.update({
+                    'ssl_certfile': 'tests/unit/poller/controller/sources/'
+                    'netbox/data/rest_server/host.cert',
+
+                    'ssl_keyfile': 'tests/unit/poller/controller/sources/'
+                    'netbox/data/rest_server/host.key'
+                })
+            else:
+                raise NotImplementedError
+        uvicorn.run(self.app, **run_args)
