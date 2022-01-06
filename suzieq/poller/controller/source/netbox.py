@@ -8,7 +8,6 @@ Classes:
 """
 import asyncio
 import logging
-import ssl
 from typing import Dict, List, Tuple
 from urllib.parse import urlparse
 
