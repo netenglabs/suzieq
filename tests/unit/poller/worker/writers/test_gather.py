@@ -17,7 +17,7 @@ WRITER_OUTPUT_DIR = 'tests/unit/poller/worker/writers/poller_output/gather'
 
 @pytest.fixture
 def gather_output_worker():
-    """Initializa an instance of the ParquetOuputWorker
+    """Init an instance of the ParquetOuputWorker
     """
     # Append random number in order to allow parallel execution of the tests
     random_dir = f'{WRITER_OUTPUT_DIR}_{random.random()}'

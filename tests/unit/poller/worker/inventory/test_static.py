@@ -78,7 +78,7 @@ def gen_random_inventory():
     encryptor = Fernet(cred_key)
 
     cred_data = yaml.safe_dump(credentials)
-    if not inv_data:
+    if not cred_data:
         assert False, "Unable to produce the credentials list"
     # Encrypt credential data
     enc_cred_data = encryptor.encrypt(cred_data.encode('utf-8'))
