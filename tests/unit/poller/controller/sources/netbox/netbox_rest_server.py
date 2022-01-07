@@ -16,13 +16,12 @@ class NetboxRestApp:
     """Netbox REST server emulator class
     """
 
-    def __init__(self, ip: str = '127.0.0.1', port: int = 9000,
-                 name: str = 'netbox0', use_ssl: str = '',
+    def __init__(self, path: str, ip: str = '127.0.0.1', port: int = 9000,
+                 use_ssl: str = '',
                  log_level: str = 'info') -> None:
         self.ip_addr = ip
         self.port = port
-        self.netbox_name = name
-        self._device_path = _NETBOX_DATA_DIR + self.netbox_name + '.json'
+        self._device_path = path
 
         if use_ssl and use_ssl not in ['valid', 'self-signed']:
             raise ValueError(

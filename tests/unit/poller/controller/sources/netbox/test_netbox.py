@@ -1,7 +1,11 @@
 import asyncio
 import time
 from multiprocessing import Process
-from typing import Dict
+from typing import Any, Dict, Tuple
+import tempfile
+import json
+import os
+from pathlib import Path
 
 import pytest
 from suzieq.poller.controller.source.netbox import Netbox
@@ -9,33 +13,76 @@ from suzieq.shared.exceptions import InventorySourceError
 from tests.unit.poller.controller.sources.netbox.netbox_rest_server import \
     NetboxRestApp
 from tests.unit.poller.controller.utils import (get_free_port,
-                                                get_src_sample_config,
-                                                read_yaml_file)
+                                                get_src_sample_config)
 from suzieq.poller.controller.credential_loader.static import StaticLoader
+from tests.unit.poller.controller.sources.netbox.netbox_faker \
+    import NetboxFaker
 
 _SAMPLE_CONFIG = get_src_sample_config('netbox')
 
 _SERVER_CONFIGS = [
     {
-        'name': 'netbox0',
-        'result': 'tests/unit/poller/controller/sources/netbox/data/results/'
-        'results0.yaml',
-        'use_ssl': ''
+        'namespace': 'netbox-ns',
+        'use_ssl': '',
+        'tag': 'suzieq',
+        'count': 20
     },
     {
-        'name': 'netbox1',
-        'result': 'tests/unit/poller/controller/sources/netbox/data/results/'
-        'results1.yaml',
-        'use_ssl': 'self-signed'
+        'namespace': 'netbox-ns',
+        'use_ssl': 'self-signed',
+        'tag': 'suzieq',
+        'count': 10
     },
     {
-        'name': 'netbox0',
-        'result': 'tests/unit/poller/controller/sources/netbox/data/results/'
-        'results0-sitename.yaml',
+        'namespace': 'netbox-sitename',
         'use_ssl': 'valid',
-        'use-sitename': True
+        'tag': 'suzieq',
+        'count': 90
     }
 ]
+
+
+def fake_netbox_data(server_conf: Dict) -> Tuple[str, str]:
+    """Generate fake data for netbox
+
+    Args:
+        server_conf (Dict): server configuration
+
+    Returns:
+        Tuple[str, str]: fake server data, fake expected inventory
+    """
+    server_file = tempfile.NamedTemporaryFile(delete=False)
+    inv_file = tempfile.NamedTemporaryFile(delete=False)
+    config = {
+        'count': server_conf['count'],
+        'tag-value': server_conf['tag'],
+        'tag-prob': 0.9,
+        'ip4-prob': 0.5,
+        'ip6-prob': 0.9,
+        'site_count': 5,
+        'server_out_path': server_file.name,
+        'inventory_out_path': inv_file.name,
+        'namespace': server_conf['namespace']
+    }
+    n = NetboxFaker(config)
+    n.generate_data()
+    return server_file.name, inv_file.name
+
+
+def read_json_file(path: str) -> Any:
+    """Read result from file
+
+    Args:
+        path (str): path of result file
+
+    Returns:
+        [Any]: content of the file
+    """
+    file_path = Path(path)
+    if not file_path.is_file():
+        raise RuntimeError(f'Invalid file to read {path}')
+    with open(file_path, 'r') as f:
+        return json.load(f)
 
 
 def update_config(server_conf: Dict, config: Dict) -> Dict:
@@ -49,14 +96,14 @@ def update_config(server_conf: Dict, config: Dict) -> Dict:
     Returns:
         Dict: updated netbox configuration
     """
+    config['tag'] = server_conf['tag']
+    config['namespace'] = server_conf['namespace']
     config['url'] = 'http'
     if server_conf['use_ssl']:
         config['url'] = 'https'
         if server_conf['use_ssl'] == 'self-signed':
             config['ssl-verify'] = False
     config['url'] += f'://127.0.0.1:{server_conf["port"]}'
-    if server_conf.get('use-sitename'):
-        config['namespace'] = 'site.name'
     return config
 
 # ATTENTION: This fixture is executed for each test. Every test will spawn
@@ -70,9 +117,13 @@ def rest_server_manager():
     """
     server_conf_list = _SERVER_CONFIGS
     proc_list = []
+    temp_files = []
     for server_conf in server_conf_list:
+        serv_path, inv_path = fake_netbox_data(server_conf)
+        temp_files.extend([serv_path, inv_path])
+        server_conf['result'] = inv_path
         server_conf['port'] = get_free_port()
-        nra = NetboxRestApp(name=server_conf['name'], port=server_conf['port'],
+        nra = NetboxRestApp(path=serv_path, port=server_conf['port'],
                             use_ssl=server_conf['use_ssl'])
         p = Process(target=nra.start)
         p.start()
@@ -81,6 +132,7 @@ def rest_server_manager():
     time.sleep(1)
     yield
     _ = [p.terminate() for p in proc_list]
+    _ = [os.remove(f) for f in temp_files]
 
 
 @pytest.mark.controller_source
@@ -119,7 +171,7 @@ async def test_valid_config(server_conf: Dict):
     await asyncio.wait_for(src.run(), 10)
 
     cur_inv = await asyncio.wait_for(src.get_inventory(), 5)
-    assert cur_inv == read_yaml_file(server_conf['result'])
+    assert cur_inv == read_json_file(server_conf['result'])
 
 
 @pytest.mark.controller_source
