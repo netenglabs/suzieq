@@ -1,7 +1,7 @@
 import json
 from copy import deepcopy
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, Tuple
 
 from faker import Faker
 
@@ -31,6 +31,20 @@ class NetboxFaker:
     the expected inventory file
     """
     def __init__(self, config_data: dict) -> None:
+        """ config_data is the following:
+
+            count: int          # number of devices (Default 1)
+            tag-value: str      # devices tag (Default 'suzieq')
+            tag-prob: float     # probability that a device has the tag
+                                # (Default 1)
+            ip4-prob: float     # probability that a device has an ipv4
+                                # (Default 1)
+            ip6-prob: float     # probability that a device has an ipv6
+                                # (Default 1)
+            namespace: str      # devices namespace in the inventory file
+            site-count: int     # number of sites
+            seed: int           # faker seed
+        """
         base_path = Path(_BASIC_DEVICE_DATA_PATH)
         if not base_path.is_file():
             raise ValueError("invalid basic device path")
@@ -40,8 +54,11 @@ class NetboxFaker:
 
         self._fake = Faker()
         self.devices = []
+
+        seed = config_data.get('seed')
+        if seed:
+            self._fake.seed(seed)
         self.device_count = config_data.get("count", 1)
-        self._dev_root_name = config_data.get("name", "device")
         self._dev_tag = config_data.get("tag-value", 'suzieq')
         self._dev_tag_prob = config_data.get("tag-prob", 1)
         self._ip4_prob = config_data.get("ip4-prob", 1)
@@ -49,7 +66,7 @@ class NetboxFaker:
         self._namespace = config_data.get('namespace', 'netbox-ns')
 
         sites_set = set()
-        site_count = config_data.get("site_count", 1)
+        site_count = config_data.get("site-count", 1)
         while len(sites_set) < site_count:
             sites_set.add(self._fake.company())
         self._sites = list(sites_set)
@@ -57,15 +74,6 @@ class NetboxFaker:
         # The sort list is mandatory because otherwise the set -> list cast
         # can result in a different order every run of the code
         self._sites.sort()
-
-        self._dev_out_path = config_data.get("server_out_path", "")
-        if not self._dev_out_path:
-            raise RuntimeError("You must specify an out_path for devices")
-        self._inventory_out_path = config_data.get("inventory_out_path", "")
-        if not self._inventory_out_path:
-            raise RuntimeError("You must specify an out_path for devices")
-        self._dev_out_format = config_data.get("out_format", "json")
-        # self._dev_out_file = f"{self._gen_name}.{self._dev_out_format}"
 
     def set_dev_attr(self, index: int, key: str, value):
         """Create or overwrite the content of <key> of device <index>
@@ -167,12 +175,14 @@ class NetboxFaker:
             if out_format == "json":
                 f.write(json.dumps(output))
 
-    def generate_data(self):
-        '''
-        Generate the list of devices and tokens with random values
+    def generate_data(self) -> Tuple[Dict, Dict]:
+        """Generate the list of devices with random values
+        and the expected netbox inventory
 
-        If the flake seed is set, the same configuration file will produce
-        the same output
+        Returns:
+            Tuple[Dict, Dict]: server_data, exp_inventory
+        """
+        '''
         '''
         exp_inventory = {}
         # Generate devicces
@@ -181,7 +191,7 @@ class NetboxFaker:
             ip_set = False
             self.devices.append(deepcopy(self._base_device))
 
-            dev_name = "{}-{}".format(self._dev_root_name, self._fake.slug())
+            dev_name = self._fake.slug()
             self.set_hostname(i, dev_name)
 
             dev_site = self._sites[
@@ -232,12 +242,8 @@ class NetboxFaker:
                     'namespace': namespace
                 })
 
-        device_out_data = dict(
+        server_data = dict(
             results=self.devices
         )
 
-        self.write_data(device_out_data, self._dev_out_path,
-                        self._dev_out_format)
-
-        self.write_data(exp_inventory, self._inventory_out_path,
-                        self._dev_out_format)
+        return server_data, exp_inventory

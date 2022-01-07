@@ -16,12 +16,12 @@ class NetboxRestApp:
     """Netbox REST server emulator class
     """
 
-    def __init__(self, path: str, ip: str = '127.0.0.1', port: int = 9000,
+    def __init__(self, data: Dict, ip: str = '127.0.0.1', port: int = 9000,
                  use_ssl: str = '',
-                 log_level: str = 'info') -> None:
+                 log_level: str = 'error') -> None:
         self.ip_addr = ip
         self.port = port
-        self._device_path = path
+        self.data = data
 
         if use_ssl and use_ssl not in ['valid', 'self-signed']:
             raise ValueError(
@@ -45,33 +45,14 @@ class NetboxRestApp:
             routes=[
                 APIRoute(
                     "/api/dcim/devices/",
-                    self.getDevices,
+                    self.get_devices,
                     status_code=200,
                     methods=["GET"]
                 )
             ]
         )
 
-    def getData(self, path: str) -> Tuple[Any, Tuple[int, str]]:
-        """Return the content of path or an error
-
-        There it is an error if the content of the returned tuple in
-        position 1 is not None
-
-        Args:
-            path (str): path from which return the data
-
-        Returns:
-            Tuple[Any, Tuple[int, str]]: return the content of path
-            or the 'page not found' error if the path doesn't exists
-        """
-        file_path = Path(path)
-        if not file_path.is_file():
-            return None, self.getError("page_not_found")
-        with open(file_path, "r") as f:
-            return json.loads(f.read()), None
-
-    def getError(self, error: str) -> Tuple[int, str]:
+    def get_error(self, error: str) -> Tuple[int, str]:
         """Return the error code and the error message corresponding to the input
         input key
 
@@ -87,7 +68,7 @@ class NetboxRestApp:
             return 500, "Internal error"
         return self._errors[error]['code'], self._errors[error]['message']
 
-    async def getDevices(
+    async def get_devices(
         self,
         request: Request,
         tag: Optional[str] = Query(None, max_length=50),
@@ -122,18 +103,14 @@ class NetboxRestApp:
         """
         token = request.headers.get("authorization", None)
         if not token:
-            error_code, error = self.getError("no_token")
+            error_code, error = self.get_error("no_token")
             raise HTTPException(status_code=error_code, detail=error)
         token = token.split()[1]
         if token not in self._valid_tokens:
-            error_code, error = self.getError("invalid_token")
+            error_code, error = self.get_error("invalid_token")
             raise HTTPException(status_code=error_code, detail=error)
 
-        result = self.getData(self._device_path)
-        if result[1]:
-            error_code, error = result[1]
-            raise HTTPException(status_code=error_code, detail=error)
-        in_devices = result[0].get("results", [])
+        in_devices = self.data.get('results', [])
         if tag == "null":
             tag = None
         devices = []

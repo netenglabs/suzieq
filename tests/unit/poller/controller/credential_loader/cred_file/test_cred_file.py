@@ -100,7 +100,8 @@ def test_wrong_credentials(data_path: Dict):
         CredFile({'path': 'wrong/path'})
 
     # credential file has a wrong format
-    CredFile({'path': _WRONG_CRED_FILE})
+    with pytest.raises(InventorySourceError):
+        CredFile({'path': _WRONG_CRED_FILE})
 
     # invalid credential file
     with patch.multiple(CredFile, init=init_mock):

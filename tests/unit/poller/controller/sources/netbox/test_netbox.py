@@ -42,31 +42,26 @@ _SERVER_CONFIGS = [
 ]
 
 
-def fake_netbox_data(server_conf: Dict) -> Tuple[str, str]:
+def fake_netbox_data(server_conf: Dict) -> Tuple[Dict, Dict]:
     """Generate fake data for netbox
 
     Args:
         server_conf (Dict): server configuration
 
     Returns:
-        Tuple[str, str]: fake server data, fake expected inventory
+        Tuple[Dict, Dict]: fake server data, fake expected inventory
     """
-    server_file = tempfile.NamedTemporaryFile(delete=False)
-    inv_file = tempfile.NamedTemporaryFile(delete=False)
     config = {
         'count': server_conf['count'],
         'tag-value': server_conf['tag'],
         'tag-prob': 0.9,
         'ip4-prob': 0.5,
         'ip6-prob': 0.9,
-        'site_count': 5,
-        'server_out_path': server_file.name,
-        'inventory_out_path': inv_file.name,
+        'site-count': 5,
         'namespace': server_conf['namespace']
     }
     n = NetboxFaker(config)
-    n.generate_data()
-    return server_file.name, inv_file.name
+    return n.generate_data()
 
 
 def read_json_file(path: str) -> Any:
@@ -117,22 +112,19 @@ def rest_server_manager():
     """
     server_conf_list = _SERVER_CONFIGS
     proc_list = []
-    temp_files = []
     for server_conf in server_conf_list:
-        serv_path, inv_path = fake_netbox_data(server_conf)
-        temp_files.extend([serv_path, inv_path])
-        server_conf['result'] = inv_path
+        serv_data, exp_inv = fake_netbox_data(server_conf)
+        server_conf['result'] = exp_inv
         server_conf['port'] = get_free_port()
-        nra = NetboxRestApp(path=serv_path, port=server_conf['port'],
+        nra = NetboxRestApp(data=serv_data, port=server_conf['port'],
                             use_ssl=server_conf['use_ssl'])
         p = Process(target=nra.start)
         p.start()
         proc_list.append(p)
     # wait for REST servers to start
-    time.sleep(1)
+    time.sleep(0.5)
     yield
     _ = [p.terminate() for p in proc_list]
-    _ = [os.remove(f) for f in temp_files]
 
 
 @pytest.mark.controller_source
@@ -171,7 +163,7 @@ async def test_valid_config(server_conf: Dict):
     await asyncio.wait_for(src.run(), 10)
 
     cur_inv = await asyncio.wait_for(src.get_inventory(), 5)
-    assert cur_inv == read_json_file(server_conf['result'])
+    assert cur_inv == server_conf['result']
 
 
 @pytest.mark.controller_source
