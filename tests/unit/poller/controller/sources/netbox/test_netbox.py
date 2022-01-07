@@ -26,14 +26,8 @@ _SERVER_CONFIGS = [
         'count': 20
     },
     {
-        'namespace': 'netbox-ns',
-        'use_ssl': 'self-signed',
-        'tag': 'suzieq',
-        'count': 10
-    },
-    {
         'namespace': 'netbox-sitename',
-        'use_ssl': 'valid',
+        'use_ssl': 'self-signed',
         'tag': 'suzieq',
         'count': 90
     }
