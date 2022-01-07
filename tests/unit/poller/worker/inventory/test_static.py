@@ -17,7 +17,7 @@ from faker import Faker
 from suzieq.poller.worker.inventory.static import StaticManagerInventory
 from suzieq.shared.exceptions import InventorySourceError
 
-INVENTORY_PATH = 'tests/unit/poller/worker/inventory'
+INVENTORY_PATH = '/tmp/sq-tests-inventory'
 INVENTORY_SIZE = 200
 
 

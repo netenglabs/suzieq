@@ -16,8 +16,8 @@ from tests.conftest import _get_async_task_mock
 
 OUTPUT_TYPES = ['parquet', 'gather']
 OUTPUT_ARGS = {
-    'output_dir': 'tests/unit/poller/worker/poller_output',
-    'data_dir': 'tests/unit/poller/worker/poller_output/parquet_out'
+    'output_dir': '/tmp/poller_output',
+    'data_dir': '/tmp/poller_output/parquet_out'
 }
 
 

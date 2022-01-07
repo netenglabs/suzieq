@@ -14,7 +14,7 @@ from suzieq.poller.worker.writers.parquet import ParquetOutputWorker
 from suzieq.shared.exceptions import SqPollerConfError
 from tests.integration.utils import assert_df_equal
 
-WRITER_OUT_DIR = 'tests/unit/poller/worker/writers/poller_output/parquet_out'
+WRITER_OUT_DIR = '/tmp/parquet_out'
 
 
 @pytest.fixture
