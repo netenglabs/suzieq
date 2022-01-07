@@ -1,0 +1,15 @@
+data-directory: ./parquet
+temp-directory: /tmp/
+poller:
+  logging-level: WARNING
+  period: 60
+  connect-timeout: 15
+  inventory-file: "tests/unit/poller/controller/data/inventory.yaml"
+  inventory-timeout: 30
+  update-period: 60
+  manager:
+    type: static
+    workers: 2
+  chunker:
+    type: static
+    policy: namespace

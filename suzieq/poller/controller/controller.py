@@ -25,6 +25,8 @@ from suzieq.shared.utils import sq_get_config_file
 
 logger = logging.getLogger(__name__)
 
+DEFAULT_INVENTORY_PATH = 'suzieq/config/etc/inventory.yaml'
+
 
 class Controller:
     """This class manages all the plugins set on the configuration files
@@ -77,7 +79,7 @@ class Controller:
         self._validate_controller_args(args, config_data)
 
         # Get the inventory
-        default_inventory_file = 'suzieq/config/etc/inventory.yaml'
+        default_inventory_file = DEFAULT_INVENTORY_PATH
         inventory_file = None
 
         if not self._input_dir:
