@@ -1,22 +1,20 @@
 import asyncio
+import json
 import time
 from multiprocessing import Process
-from typing import Any, Dict, Tuple
-import tempfile
-import json
-import os
 from pathlib import Path
+from typing import Any, Dict, Tuple
 
 import pytest
+from suzieq.poller.controller.credential_loader.static import StaticLoader
 from suzieq.poller.controller.source.netbox import Netbox
 from suzieq.shared.exceptions import InventorySourceError
+from tests.unit.poller.controller.sources.netbox.netbox_faker import \
+    NetboxFaker
 from tests.unit.poller.controller.sources.netbox.netbox_rest_server import \
     NetboxRestApp
 from tests.unit.poller.controller.utils import (get_free_port,
                                                 get_src_sample_config)
-from suzieq.poller.controller.credential_loader.static import StaticLoader
-from tests.unit.poller.controller.sources.netbox.netbox_faker \
-    import NetboxFaker
 
 _SAMPLE_CONFIG = get_src_sample_config('netbox')
 

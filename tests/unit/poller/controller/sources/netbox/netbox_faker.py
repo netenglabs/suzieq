@@ -182,8 +182,6 @@ class NetboxFaker:
         Returns:
             Tuple[Dict, Dict]: server_data, exp_inventory
         """
-        '''
-        '''
         exp_inventory = {}
         # Generate devicces
         for i in range(self.device_count):
