@@ -96,7 +96,7 @@ def run_simnodes_dir(hostdirs: str, base_ssh_port: int,
         if base_ssh_port:
             ssh_port = base_ssh_port + i
             cmd = [
-                "python", f"{bindir}/simnode_ssh.py",
+                "python", f"{bindir}/sq_simnode_ssh.py",
                 "-p", str(ssh_port),
                 "-d", hostd,
             ]
@@ -110,7 +110,7 @@ def run_simnodes_dir(hostdirs: str, base_ssh_port: int,
         if base_rest_port:
             rest_port = base_rest_port + i
             cmd = [
-                "python", f"{bindir}/simnode_rest.py",
+                "python", f"{bindir}/sq_simnode_rest.py",
                 "-p", str(rest_port),
                 "-d", hostd,
             ]
@@ -125,7 +125,8 @@ def run_simnodes_dir(hostdirs: str, base_ssh_port: int,
     return processes
 
 
-if __name__ == '__main__':
+def simnodes_main():
+    '''The main routine'''
     parser = argparse.ArgumentParser()
     inputs = parser.add_mutually_exclusive_group(required=True)
     inputs.add_argument(
@@ -167,3 +168,7 @@ if __name__ == '__main__':
 
     run_simnodes(devs, input_dir=input_dir, port=args.port,
                  transport=args.transport)
+
+
+if __name__ == '__main__':
+    simnodes_main()

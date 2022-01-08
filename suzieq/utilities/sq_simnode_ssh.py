@@ -9,6 +9,8 @@ import crypt
 import asyncio
 import asyncssh
 
+from suzieq.shared.utils import get_sq_install_dir
+
 
 class MySSHServerSession(asyncssh.SSHServerSession):
     '''Customised ssh server session for serving precanned outputs'''
@@ -152,10 +154,11 @@ class MySSHServer(asyncssh.SSHServer):
 async def start_server(port=10000, input_dir: str = None):
     """Run sim ssh server using the files in the given dir"""
 
+    keyfile = Path(get_sq_install_dir()) / 'config/etc' / 'ssh_insecure_key'
     await asyncssh.listen(
         '127.0.0.1', port,
         server_factory=lambda: MySSHServer(input_dir=input_dir),
-        server_host_keys=['tests/integration/nossim/ssh_insecure_key'])
+        server_host_keys=[keyfile])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
