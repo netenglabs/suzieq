@@ -151,7 +151,7 @@ def load_sq_config(validate=True, config_file=None):
 
     if not cfg:
         print("suzieq requires a configuration file either in "
-              "./suzieq-cfg.yml or ~/suzieq/suzieq-cfg.yml")
+              "./suzieq-cfg.yml or ~/.suzieq/suzieq-cfg.yml")
         sys.exit(1)
 
     return cfg
