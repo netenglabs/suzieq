@@ -1,6 +1,8 @@
-# Gather Data From Directory of Command Outputs
+# Polling From a Local Folder
 
-If you have a directory of show command outputs from a device and want to use that to update the Suzieq DB instead of using the poller to get the information from a device, you can do it starting with SuzieQ version 0.16.0b1. This page explains the basic steps to do this.
+In some situations, you want to try SuzieQ, but cannot because of a lack of permission to either install or use the poller. In other cases, you have gathered the output of a bunch of show commands as a first step in maybe writing youe own homegrown code. Or maybe you have a new platform to support that the SuzieQ team has no access to, and you want to provide the data to help add support for the platform into SuzieQ. Whatever the reason, if you have a directory of show command outputs from a device and want to use that to update the Suzieq DB instead of using the poller to get the information from a device, you can do it starting with SuzieQ version 0.16.0b1. This page explains the basic steps to do this.
+
+This model is different from the --run-once=gather model of capturing the raw output. That model assumes that SuzieQ can identify the device, whereas this model works even when SuzieQ cannot identify a device.
 
 ## Folder Structure
 
