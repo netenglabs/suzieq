@@ -413,7 +413,7 @@ class SqCommand(SqPlugin):
         if 'error' in df.columns:
             retcode = 1
             max_colwidth = None
-            cols = df.columns
+            cols = df.columns.tolist()
             is_error = True
         else:
             max_colwidth = self.ctxt.col_width
