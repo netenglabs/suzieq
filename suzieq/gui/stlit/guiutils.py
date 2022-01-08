@@ -1,7 +1,7 @@
 from importlib.util import find_spec
 import os
-import base64
 from enum import Enum
+import base64
 
 import streamlit as st
 import pandas as pd
@@ -17,6 +17,20 @@ class SuzieqMainPages(str, Enum):
     XPLORE = "Xplore"
     PATH = "Path"
     SEARCH = "Search"
+
+
+def display_help_icon(url: str):
+    '''Display Help Icon with click to take you to appropriate page'''
+
+    help_img = f'{get_image_dir()}/helps.png'
+    with open(help_img, "rb") as f:
+        img = base64.b64encode(f.read()).decode()
+
+    st.sidebar.markdown(
+        f'<a target="_help" href="{url}"><img class="help-img" '
+        f'src="data:image/png;base64,'
+        f'{img}"></a>',
+        unsafe_allow_html=True)
 
 
 @st.cache(ttl=90, allow_output_mutation=True, show_spinner=False,
@@ -109,57 +123,6 @@ def get_image_dir():
                            .loader.path) + '/images')
 
 
-def display_help_icon(url: str):
-    '''Display Help Icon with click to take you to appropriate page'''
-
-    help_img = f'{get_image_dir()}/helps.png'
-    with open(help_img, "rb") as f:
-        img = base64.b64encode(f.read()).decode()
-
-    st.sidebar.markdown(
-        f'<a target="_help" href="{url}"><img class="help-img" '
-        f'src="data:image/png;base64,'
-        f'{img}"></a>',
-        unsafe_allow_html=True)
-
-
-def maximize_browser_window():
-    '''Maximize browser window in streamlit'''
-
-    max_width_str = "max-width: 2000px;"
-    st.markdown(
-        f"""
-    <style>
-    .reportview-container .main .block-container{{
-        {max_width_str}
-    }}
-    </style>
-    """,
-        unsafe_allow_html=True,
-    )
-
-
-def horizontal_radio():
-    '''Make the radio buttons horizontal'''
-    st.write('<style>div.row-widget.stRadio > '
-             'div{flex-direction:row;}</style>',
-             unsafe_allow_html=True)
-
-
-def hide_st_index():
-    '''CSS to hide table index rendered via st.table'''
-    st.markdown("""
-        <style>
-        .table td:nth-child(1) {
-            display: none;
-        }
-        .table th:nth-child(1) {
-            display: none;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-
-
 def color_row(row, **kwargs):
     """Color the appropriate column red if the status has failed"""
     fieldval = kwargs.pop("fieldval", "down")
@@ -246,95 +209,3 @@ def get_color_styles(color: str) -> str:
         "{ border-color: %s !important }" % color
     other = ".decoration { background: %s !important }" % color
     return f"<style>{css_root}{css_color}{css_bg}{css_border}{other}</style>"
-
-
-def display_title(page: str):
-    '''Render the logo and the app name'''
-
-    state = st.session_state
-    pagelist = state.pagelist
-    search_text = state.search_text
-
-    LOGO_IMAGE = f'{get_image_dir()}/logo-small.jpg'
-    st.markdown(
-        """
-        <style>
-        .container {
-            display: flex;
-        }
-        .logo-text {
-            font-weight:700 !important;
-            font-size:24px !important;
-            color: purple !important;
-            padding-top: 40px !important;
-        }
-        .logo-img {
-            width: 20%;
-            height: auto;
-            float:right;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    title_col, _, page_col, srch_col = st.columns([2, 1, 2, 2])
-
-    with open(LOGO_IMAGE, "rb") as f:
-        img = base64.b64encode(f.read()).decode()
-
-    with title_col:
-        st.markdown(
-            f"""
-            <div class="container">
-                <img class="logo-img" src="data:image/png;base64,
-                {img}">
-                <h1 style='color:purple;'>Suzieq</h1>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    sel_pagelist = list(filter(lambda x: not x.startswith('_'), pagelist))
-
-    with srch_col:
-        st.text(' ')
-        search_str = st.text_input("Search", value=state.search_text,
-                                   key='search', on_change=main_sync_state)
-    if search_text is not None and (search_str != search_text):
-        # We're assuming here that the page is titled Search
-        page = 'Search'
-
-    with page_col:
-        # The empty writes are for aligning the pages link with the logo
-        st.text(' ')
-        srch_holder = st.empty()
-        if page in sel_pagelist:
-            pageidx = sel_pagelist.index(page)
-        else:
-            pageidx = sel_pagelist.index('Status')
-        if 'sq_page' not in state:
-            page = srch_holder.selectbox('Page', sel_pagelist, index=pageidx,
-                                         key='sq_page',
-                                         on_change=main_sync_state)
-        else:
-            page = srch_holder.selectbox('Page', sel_pagelist, key='sq_page',
-                                         on_change=main_sync_state)
-            page = state.sq_page
-
-    return page, search_str
-
-
-def main_sync_state():
-    '''Sync search & page state on main Suzieq GUI page'''
-    wsstate = st.session_state
-
-    if wsstate.search_text != wsstate.search:
-        wsstate.search_text = wsstate.search
-        wsstate.page = wsstate.sq_page = 'Search'
-
-    if wsstate.page != wsstate.sq_page:
-        wsstate.page = wsstate.sq_page
-        st.experimental_set_query_params(**{})
-        if wsstate.page != 'Search':
-            wsstate.search_text = ''
