@@ -26,34 +26,19 @@ def test_plugin():
     # Now validate the APIs
     assert get_tables()
     assert get_sqobject('vlan') == VlanObj
-    try:
+    with pytest.raises(ModuleNotFoundError):
         get_sqobject('foobar')
-        assert False
-    except ModuleNotFoundError:
-        pass
 
     assert get_sqengine('pandas', '')
-    try:
+    with pytest.raises(ModuleNotFoundError):
         get_sqengine('foobar', '')
-        assert False
-    except ModuleNotFoundError:
-        pass
 
     assert get_sqengine('pandas', 'vlan')
-    try:
+    with pytest.raises(ModuleNotFoundError):
         get_sqengine('pandas', 'foobar')
-        assert False
-    except ModuleNotFoundError:
-        pass
 
     assert get_sqdb_engine({}, 'foobar', 'parquet', None)
-    try:
-        get_sqdb_engine({'foobar': 'parquet'}, 'foobar', None, None)
-    except DBNotFoundError:
-        assert False, 'parquet DB engine not found in config'
+    assert get_sqdb_engine({'foobar': 'parquet'}, 'foobar', None, None)
 
-    try:
+    with pytest.raises(DBNotFoundError):
         get_sqdb_engine({'db': {'foobar': 'bar'}}, 'foobar', None, None)
-        assert False
-    except DBNotFoundError:
-        pass
