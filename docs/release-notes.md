@@ -14,7 +14,7 @@ This release adds a bunch of major features on top of the alpha release set.
 * Use hostname instead of hostnamectl for determining Cumulus and Linux hostnames (Issue #530).
 * You can see the Suzieq version via suzieq-cli version OR suzieq-cli -V. Same -V option can be used for the poller, and rest server. You can get the same info via the About option from the Menu in the GUI
 
-A bunch of other additional bugs have been fixed. 
+A bunch of other additional bugs have been fixed. Thanks to Claudia de Luna and John Howard for their awesome assistance in getting this release out.
 
 
 ## 0.16.0 alpha (Dec 24, 2021)
