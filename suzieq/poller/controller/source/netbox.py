@@ -54,9 +54,7 @@ class Netbox(Source, InventoryAsyncPlugin):
         if not input_data:
             raise InventorySourceError('no netbox_config provided')
 
-        url = input_data.get('url', '')
-        if not url:
-            raise InventorySourceError(f'{self._name}: <url> not provided')
+        url = input_data.get('url')
 
         url_data = urlparse(url)
         self._protocol = url_data.scheme or 'http'
@@ -67,10 +65,10 @@ class Netbox(Source, InventoryAsyncPlugin):
             raise InventorySourceError(f'{self._name}: invalid url provided')
 
         self._tag = input_data.get('tag', 'null')
-        self._namespace = input_data.get('namespace', 'site.name')
+        self._namespace = input_data.get('namespace')
         self._period = input_data.get('period', 3600)
         self._run_once = input_data.get('run_once', False)
-        self._token = input_data.get('token', None)
+        self._token = input_data.get('token')
         self._ssl_verify = input_data.get('ssl-verify', None)
         if self._ssl_verify is None:
             if self._protocol == 'http':
@@ -78,6 +76,9 @@ class Netbox(Source, InventoryAsyncPlugin):
             elif self._protocol == 'https':
                 self._ssl_verify = True
         else:
+            if not isinstance(self._ssl_verify, bool):
+                raise InventorySourceError(
+                    f'{self.name} ssl-verify parameter must be a boolean')
             if self._ssl_verify and self._protocol == 'http':
                 raise InventorySourceError(
                     f"{self._name}: ssl-verify can be use only with https"
@@ -101,7 +102,8 @@ class Netbox(Source, InventoryAsyncPlugin):
 
         super()._validate_config(input_data)
 
-        miss_fields = [x for x in ['token', 'url'] if x not in input_data]
+        miss_fields = [x for x in ['token', 'url', 'namespace']
+                       if x not in input_data]
 
         if miss_fields:
             raise InventorySourceError(
@@ -115,9 +117,10 @@ class Netbox(Source, InventoryAsyncPlugin):
             headers ([dict]): headers to initialize the session
         """
         if not self._session:
+            ssl_option = None if self._ssl_verify else False
             self._session = aiohttp.ClientSession(
                 headers=headers,
-                connector=aiohttp.TCPConnector(verify_ssl=self._ssl_verify)
+                connector=aiohttp.TCPConnector(ssl=ssl_option)
             )
 
     def _token_auth_header(self) -> Dict:
@@ -207,7 +210,7 @@ class Netbox(Source, InventoryAsyncPlugin):
             ipv6 = get_field_value(device, 'primary_ip6.address')
             hostname = get_field_value(device, 'name')
             site_name = get_field_value(device, 'site.name')
-            if self._namespace == 'site.name':
+            if self._namespace == 'netbox-sitename':
                 namespace = site_name
             else:
                 namespace = self._namespace
