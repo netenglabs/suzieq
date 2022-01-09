@@ -18,7 +18,7 @@ from suzieq.poller.worker.writers.output_worker_manager import \
     OutputWorkerManager
 from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.shared.utils import load_sq_config
-from tests.conftest import _get_async_task_mock, create_dummy_config_file
+from tests.conftest import get_async_task_mock, create_dummy_config_file
 
 INVENTORY_PATH = 'tests/unit/poller/worker/utils/dummy_inventory'
 INV_CREDENTIAL_KEY = 'dummy_key'
@@ -57,9 +57,9 @@ async def run_poller_with_mocks(poller: Poller) -> Dict[str, MagicMock]:
 
     # Create a mock for each method
     mks = {
-        'inventory': _get_async_task_mock(),
-        'service_manager': _get_async_task_mock(),
-        'output_worker_manager': _get_async_task_mock()
+        'inventory': get_async_task_mock(),
+        'service_manager': get_async_task_mock(),
+        'output_worker_manager': get_async_task_mock()
     }
 
     with patch.multiple(Inventory,

@@ -11,7 +11,7 @@ import pytest
 from suzieq.poller.worker.services.service import Service
 from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.shared.exceptions import SqPollerConfError
-from tests.conftest import _get_async_task_mock, suzieq_test_svc_dir
+from tests.conftest import get_async_task_mock, suzieq_test_svc_dir
 
 SERVICE_DIR = './suzieq/config'
 SCHEMA_DIR = f'{SERVICE_DIR}/schema'
@@ -35,7 +35,7 @@ def _init_service_manager(add_tasks: Callable = None,
                           exclude_svcs: str = None):
     # Create add tasks method mock
     if not add_tasks:
-        add_tasks = _get_async_task_mock()
+        add_tasks = get_async_task_mock()
 
     # Construct additional parameters
     other_params = {}
@@ -63,7 +63,7 @@ def test_init_service_manager():
     """
     run_mode = 'forever'
     interval = 30
-    add_tasks = _get_async_task_mock()
+    add_tasks = get_async_task_mock()
     service_manager = ServiceManager(add_tasks,
                                      SERVICE_DIR,
                                      SCHEMA_DIR,

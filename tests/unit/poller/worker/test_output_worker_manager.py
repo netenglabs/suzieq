@@ -12,7 +12,7 @@ from suzieq.poller.worker.writers.output_worker_manager import \
     OutputWorkerManager
 from suzieq.poller.worker.writers.parquet import ParquetOutputWorker
 from suzieq.shared.exceptions import SqPollerConfError
-from tests.conftest import _get_async_task_mock
+from tests.conftest import get_async_task_mock
 
 OUTPUT_TYPES = ['parquet', 'gather']
 OUTPUT_ARGS = {
@@ -54,8 +54,8 @@ def test_wrong_output_worker():
 async def test_run_output_workers(data_to_write):
     """Check if the OutputWorkers are correctly launched
     """
-    parquet_write = _get_async_task_mock()
-    gather_write = _get_async_task_mock()
+    parquet_write = get_async_task_mock()
+    gather_write = get_async_task_mock()
     with patch.object(ParquetOutputWorker, 'write_data', parquet_write), \
          patch.object(GatherOutputWorker, 'write_data', gather_write):
         mgr = OutputWorkerManager(OUTPUT_TYPES, OUTPUT_ARGS)

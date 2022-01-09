@@ -130,7 +130,7 @@ def data_to_write():
     return pickle.load(open(DATA_TO_STORE_FILE, 'rb'))
 
 
-def _get_async_task_mock():
+def get_async_task_mock():
     """Mock for the add tasks method in the Poller class
     """
     fn_res = asyncio.Future()

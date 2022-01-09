@@ -10,7 +10,7 @@ from unittest.mock import patch
 import pytest
 from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.poller.worker.nodes.node import Node
-from tests.conftest import _get_async_task_mock
+from tests.conftest import get_async_task_mock
 
 sample_inventory = [
     {
@@ -53,7 +53,7 @@ class SampleInventory(Inventory):
 
 def _init_inventory(add_task_fn: Callable = None, **kwargs):
     if not add_task_fn:
-        add_task_fn = _get_async_task_mock()
+        add_task_fn = get_async_task_mock()
     return SampleInventory(add_task_fn,
                            **kwargs)
 
@@ -64,8 +64,8 @@ async def ready_inventory():
     """Fixture returning an already built inventory
     """
     inv = _init_inventory()
-    with patch.multiple(Node, _init_ssh=_get_async_task_mock(),
-                        init_node=_get_async_task_mock()):
+    with patch.multiple(Node, _init_ssh=get_async_task_mock(),
+                        init_node=get_async_task_mock()):
         await inv.build_inventory()
     return inv
 
@@ -78,7 +78,7 @@ def test_inventory_init():
     """Test init of Inventory class
     """
     inventory_args = {
-        'add_task_fn': _get_async_task_mock(),
+        'add_task_fn': get_async_task_mock(),
         'ssh_config_file': 'config/file',
         'connect_timeout': 30
     }
@@ -99,8 +99,8 @@ async def test_inventory_build():
     """
     inv = _init_inventory()
 
-    with patch.multiple(Node, _init_ssh=_get_async_task_mock(),
-                        init_node=_get_async_task_mock()):
+    with patch.multiple(Node, _init_ssh=get_async_task_mock(),
+                        init_node=get_async_task_mock()):
         nodes = await inv.build_inventory()
 
     # Check if nodes are registered in the inventory
