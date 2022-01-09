@@ -21,9 +21,9 @@ sample_inventory = [
         'transport': 'ssh',
         'devtype': 'linux',
         'namespace': 'test-namespace',
-        'ssh_keyfile': 'tests/integration/nossim/ssh_insecure_key',
+        'ssh_keyfile': 'tests/unit/poller/shared/sample_key',
         'jump_host': '//jump@host1',
-        'jump_host_key_file': 'tests/integration/nossim/ssh_insecure_key',
+        'jump_host_key_file': 'tests/unit/poller/shared/sample_key',
         'ignore_known_hosts': True,
         'passphrase': 'passphrase'
     },
@@ -35,9 +35,9 @@ sample_inventory = [
         'transport': 'ssh',
         'devtype': 'linux',
         'namespace': 'test-namespace',
-        'ssh_keyfile': 'tests/integration/nossim/ssh_insecure_key',
+        'ssh_keyfile': 'tests/unit/poller/shared/sample_key',
         'jump_host': '//jump@host2',
-        'jump_host_key_file': 'tests/integration/nossim/ssh_insecure_key',
+        'jump_host_key_file': 'tests/unit/poller/shared/sample_key',
         'ignore_known_hosts': True,
         'passphrase': 'passphrase'
     }

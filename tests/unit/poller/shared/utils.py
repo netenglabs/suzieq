@@ -25,7 +25,7 @@ def get_random_node_list(inventory_size: int = 200) -> Tuple[Dict, Dict, Dict]:
     transports = ['ssh', 'https', 'http']
     devtypes = ['panos', 'eos', None]
     namespaces = ['data-center-north', 'south-data-center']
-    keys = ['tests/unit/poller/worker/utils/sample_key', None]
+    keys = ['tests/unit/poller/shared/sample_key', None]
     for _ in range(inventory_size):
         entry = {
             'address': fake.ipv4(address_class='c'),
