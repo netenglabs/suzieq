@@ -4,73 +4,32 @@ one allowing to comunicate with the StaticManager in the controller side
 """
 # pylint: disable=protected-access
 # pylint: disable=redefined-outer-name
-
-import random
-import shutil
 from unittest.mock import MagicMock
 
-from pathlib import Path
 import pytest
 import yaml
 from cryptography.fernet import Fernet
-from faker import Faker
 from suzieq.poller.worker.inventory.static import StaticManagerInventory
 from suzieq.shared.exceptions import InventorySourceError
+from tests.unit.poller.shared.utils import get_random_node_list
 
 INVENTORY_PATH = '/tmp/sq-tests-inventory'
 INVENTORY_SIZE = 200
 
 
 @pytest.fixture
-def gen_random_inventory():
+def gen_random_inventory(tmp_path):
     """Generate a random inventory, write the files and return the resulting
     inventory, the directory containing the files and the key for credential
     decryption
     """
-    inventory = {}
-    credentials = {}
-    result = {}
-
-    fake = Faker()
-    Faker.seed(random.randint(1, 10000))
-
-    ports = [22, 443, 1244, 8080, 4565]
-    transports = ['ssh', 'https', 'http']
-    devtypes = ['panos', 'eos', None]
-    namespaces = ['data-center-north', 'south-data-center']
-    keys = ['tests/unit/poller/worker/utils/sample_key', None]
-    for _ in range(INVENTORY_SIZE):
-        entry = {
-            'address': fake.ipv4(address_class='c'),
-            'username': fake.domain_word(),
-            'port': fake.word(ports),
-            'transport': fake.word(transports),
-            'devtype': fake.word(devtypes),
-            'namespace': fake.word(namespaces),
-            'jump_host': fake.word([f"// {fake.domain_word()}@{fake.ipv4()}",
-                                   None])
-        }
-
-        cred = {
-            'password': fake.password(),
-            'ssh_keyfile': fake.word(keys),
-            'jump_host_key_file': fake.word(keys),
-            'passphrase': fake.word([fake.password(), None])
-        }
-        key = f"{entry['namespace']}.{entry['address']}.{entry['port']}"
-        inventory[key] = entry
-        credentials[key] = cred
-        result[key] = cred.copy()
-        result[key].update(entry)
-
+    inventory, credentials, result = get_random_node_list(INVENTORY_SIZE)
     # Generate the inventory files
-    random_dir = Path(f'{INVENTORY_PATH}_{random.random()}')
-    random_dir.mkdir()
     # Write the inventory file
     inv_data = yaml.safe_dump(inventory)
     if not inv_data:
         assert False, "Unable to produce the device list"
-    with open(f'{random_dir}/inv_0.yml', "w") as out_file:
+    with open(f'{tmp_path}/inv_0.yml', "w") as out_file:
         out_file.write(inv_data)
 
     # Encrypt and write the credential file
@@ -82,12 +41,10 @@ def gen_random_inventory():
         assert False, "Unable to produce the credentials list"
     # Encrypt credential data
     enc_cred_data = encryptor.encrypt(cred_data.encode('utf-8'))
-    with open(f'{random_dir}/cred_0', "w") as out_file:
+    with open(f'{tmp_path}/cred_0', "w") as out_file:
         out_file.write(enc_cred_data.decode())
 
-    yield result, random_dir, cred_key.decode()
-
-    shutil.rmtree(random_dir)
+    return result, tmp_path, cred_key.decode()
 
 
 @pytest.mark.poller
