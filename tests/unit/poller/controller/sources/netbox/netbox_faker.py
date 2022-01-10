@@ -13,7 +13,7 @@ _BASE_INVENTORY_DEVICE = {
     'address': '',
     'devtype': None,
     'hostname': '',
-    'ignore_known_hosts': None,
+    'ignore_known_hosts': False,
     'jump_host': None,
     'jump_host_key_file': None,
     'namespace': '',

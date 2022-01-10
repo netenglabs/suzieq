@@ -186,7 +186,7 @@ class Source(ControllerPlugin):
         jump_host = None
         jump_host_key_file = None
         transport = None
-        ignore_known_hosts = None
+        ignore_known_hosts = False
         port = None
         devtype = None
 
