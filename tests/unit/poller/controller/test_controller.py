@@ -6,15 +6,33 @@ from pathlib import Path
 import pytest
 from suzieq.poller.controller.controller import (DEFAULT_INVENTORY_PATH,
                                                  Controller)
-from suzieq.shared.exceptions import InventorySourceError
+from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.shared.utils import load_sq_config, sq_get_config_file
 from tests.conftest import create_dummy_config_file
+from suzieq.poller.controller.source.native import SqNativeFile
+from suzieq.poller.controller.source.netbox import Netbox
 
 # pylint: disable=protected-access
 
 _CONFIG_FILE = ['tests/unit/poller/controller/data/suzieq-cfg.yaml']
 
 _INVENTORY_FILE = ['tests/unit/poller/controller/data/inventory.yaml']
+
+_DEFAULT_ARGS = {
+    'inventory': None,
+    'input_dir': None,
+    'config': None,
+    'debug': False,
+    'exclude_services': None,
+    'no_coalescer': False,
+    'outputs': 'parquet',
+    'output_dir': f'{os.path.abspath(os.curdir)}/sqpoller-output',
+    'run_once': None,
+    'service_only': None,
+    'ssh_config_file': None,
+    'update_period': None,
+    'workers': None
+}
 
 _ARGS = [
     {
@@ -98,9 +116,7 @@ def generate_argparse(args: Dict) -> argparse.Namespace:
 def test_valid_controller_config(config_file: str, inv_file: str, args: Dict):
 
     args = update_args(args, inv_file, config_file)
-
     config = load_sq_config(config_file=config_file)
-
     parse_args = generate_argparse(args)
 
     c = Controller(parse_args, config)
@@ -138,33 +154,16 @@ def test_valid_controller_config(config_file: str, inv_file: str, args: Dict):
 @pytest.mark.poller
 @pytest.mark.controller
 def test_default_controller_config():
-    default_args = {
-        'inventory': None,
-        'input_dir': None,
-        'config': None,
-        'debug': False,
-        'exclude_services': None,
-        'no_coalescer': False,
-        'outputs': 'parquet',
-        'output_dir': f'{os.path.abspath(os.curdir)}/sqpoller-output',
-        'run_once': None,
-        'service_only': None,
-        'ssh_config_file': None,
-        'update_period': None,
-        'workers': None
-    }
 
     conf_file = create_dummy_config_file()
     config = load_sq_config(config_file=conf_file)
+    parse_args = generate_argparse(_DEFAULT_ARGS)
 
-    parse_args = generate_argparse(default_args)
-
-    # no inventory file in default directory
-    with pytest.raises(InventorySourceError):
+    # No inventory file in default directory
+    with pytest.raises(SqPollerConfError):
         Controller(parse_args, config)
 
-    # This is not working
-    # The file is never created
+    # Create inventory in the default directory
     def_file = Path(DEFAULT_INVENTORY_PATH)
     def_file.touch(exist_ok=False)
 
@@ -180,7 +179,29 @@ def test_default_controller_config():
                     'output-dir', 'service-only', 'ssh-config-file']
     for ma in manager_args:
         args_key = ma.replace('-', '_')
-        assert c._config['manager'][ma] == default_args[args_key]
+        assert c._config['manager'][ma] == _DEFAULT_ARGS[args_key]
 
     # Remove the default inventory file
     os.remove(def_file)
+
+
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
+def test_init_plugins(inv_file: str):
+    conf_file = create_dummy_config_file()
+    config = load_sq_config(config_file=conf_file)
+    args = update_args(_DEFAULT_ARGS, inv_file, conf_file)
+    parse_args = generate_argparse(args)
+
+    c = Controller(parse_args, config)
+
+    with pytest.raises(SqPollerConfError):
+        c.init_plugins('unknown-plugin-type')
+
+    src_plugins = c.init_plugins('source')
+    _ = [src_plugins.remove(v) for v in src_plugins.copy()
+         if isinstance(v, (Netbox, SqNativeFile))]
+    assert len(src_plugins) == 0
+
+
