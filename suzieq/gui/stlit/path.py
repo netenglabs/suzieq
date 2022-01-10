@@ -218,7 +218,9 @@ class PathPage(SqGuiPage):
 
         gb.configure_grid_options(
             domLayout='normal', preventDefaultOnContextMenu=True)
+
         gridOptions = gb.build()
+        gridOptions['getRowStyle'] = self._aggrid_style_rows(df)
 
         _ = AgGrid(
             df,
@@ -228,6 +230,30 @@ class PathPage(SqGuiPage):
             theme='streamlit',
         )
 
+    def _aggrid_style_rows(self, df: pd.DataFrame):
+        '''Style the cells based on value'''
+
+        if 'error' in df.columns:
+            a = """
+                function(params) {
+                    if (params.data.error !== '') {
+                        return {
+                            'color': 'white',
+                            'backgroundColor': 'red'
+                        }
+                    }
+                };
+                """
+        else:
+            a = """
+            function(params) {
+                    return {
+                        'backgroundColor': 'white'
+                    }
+            };
+            """
+        return JsCode(a)
+    
     def _get_path(self, forward_dir: bool = True) -> Tuple[pd.DataFrame,
                                                            pd.DataFrame]:
         '''Get path & summary df'''

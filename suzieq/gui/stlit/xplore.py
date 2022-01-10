@@ -310,15 +310,15 @@ class XplorePage(SqGuiPage):
         gb = GridOptionsBuilder.from_dataframe(df)
         gb.configure_pagination(paginationPageSize=25)
 
-        gb.configure_default_column(floatingFilter=True)
-        if any(x in df.columns for x in ['state', 'status']):
-            jscode = self._aggrid_style()
-            gb.configure_column("state", floatingFilter=True,
-                                cellStyle=jscode)
+        gb.configure_default_column(floatingFilter=True, selectable=False)
 
         gb.configure_grid_options(
             domLayout='normal', preventDefaultOnContextMenu=True)
+
         gridOptions = gb.build()
+        gridOptions['rowStyle'] = {'background': 'white'}
+        jscode = self._aggrid_style_rows()
+        gridOptions['getRowStyle'] = jscode
 
         grid_response = AgGrid(
             df,
@@ -338,17 +338,17 @@ class XplorePage(SqGuiPage):
             new_df = pd.DataFrame(new_data)
             self._draw_uniq_histogram(layout, new_df)
 
-    def _aggrid_style(self):
+    def _aggrid_style_rows(self):
         '''Style the cells based on value'''
         table = self._state.table
 
         if table == 'bgp':
             a = """
             function(params) {
-                if (params.value === 'NotEstd') {
+                if (params.data.state === 'NotEstd') {
                     return {
                         'color': 'white',
-                        'backgroundColor': 'darkred'
+                        'backgroundColor': 'red'
                     }
                 }
             };
@@ -356,15 +356,15 @@ class XplorePage(SqGuiPage):
         elif table == 'device':
             a = """
             function(params) {
-                if (params.value === 'dead') {
-                    return {
-                        'color': 'white',
-                        'backgroundColor': 'darkred'
-                    }
-                } else if (params.value === 'neverpoll') {
+                if (params.data.status === 'dead') {
                     return {
                         'color': 'white',
                         'backgroundColor': 'red'
+                    }
+                } else if (params.data.status === 'neverpoll') {
+                    return {
+                        'color': 'white',
+                        'backgroundColor': 'darkred'
                     }
                 }
             };
@@ -372,10 +372,10 @@ class XplorePage(SqGuiPage):
         elif table == 'arpnd':
             a = """
             function(params) {
-                if (params.value === 'failed') {
+                if (params.data.state === 'failed') {
                     return {
                         'color': 'white',
-                        'backgroundColor': 'darkred'
+                        'backgroundColor': 'red'
                     }
                 }
             };
@@ -383,17 +383,17 @@ class XplorePage(SqGuiPage):
         elif table in ['interfaces', 'evpnVni', 'address']:
             a = """
             function(params) {
-                if (params.value === 'down') {
+                if (params.data.state === 'down') {
                     return {
                         'color': 'white',
                         'backgroundColor': 'red'
                     }
-                } else if (params.value === 'notConnected') {
+                } else if (params.data.state === 'notConnected') {
                     return {
                         'color': 'black',
                         'backgroundColor': 'gray'
                     }
-                } else if (params.value === 'errDisabled') {
+                } else if (params.data.state === 'errDisabled') {
                     return {
                         'color': 'white',
                         'backgroundColor': 'darkred'
@@ -404,10 +404,10 @@ class XplorePage(SqGuiPage):
         elif table == 'vlan':
             a = """
             function(params) {
-                if (params.value != 'active') {
+                if (params.data.state != 'active') {
                     return {
                         'color': 'white',
-                        'backgroundColor': 'darkred'
+                        'backgroundColor': 'red'
                     }
                 }
             };
@@ -415,12 +415,20 @@ class XplorePage(SqGuiPage):
         elif table == 'sqPoller':
             a = """
             function(params) {
-                if (params.value != 0 or params.value != 200) {
+                if (params.data.status != 0 or params.data.status != 200) {
                     return {
                         'color': 'white',
-                        'backgroundColor': 'darkred'
+                        'backgroundColor': 'red'
                     }
                 }
+            };
+            """
+        else:
+            a = """
+            function(params) {
+                    return {
+                        'backgroundColor': 'white'
+                    }
             };
             """
 
