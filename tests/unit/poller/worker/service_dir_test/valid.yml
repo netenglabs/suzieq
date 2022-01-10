@@ -1,0 +1,100 @@
+service: valid
+keys:
+  - ipAddress
+  - oif
+
+show-fields:
+  - ipAddress
+  - oif
+  - macaddr
+  - state
+  - remote
+
+apply:
+  cumulus:
+    version: all
+    command: ip neigh show
+
+  iosxe:
+    version: all
+    command:
+      - command: show ipv6 neighbors
+        textfsm: textfsm_templates/sample.tfsm
+
+  iosxr:
+    version: all
+    command:
+      - command: show arp vrf default
+        textfsm: textfsm_templates/sample.tfsm
+      - command: show arp vrf all
+        textfsm: textfsm_templates/sample.tfsm
+
+  ios:
+    copy: iosxe
+
+  linux:
+    copy: cumulus
+
+  sonic:
+    copy: cumulus
+
+  eos:
+    version: all
+    command: show arp vrf all
+    normalize: 'vrfs/*:vrf/ipV4Neighbors/*/[
+    "hwAddress: macaddr",
+    "address: ipAddress",
+    "interface: oif",
+    "state: state?|reachable",
+    "offload: remote?|False",
+    ]'
+
+  junos-qfx:
+    version: all
+    command: show arp | display json | no-more
+    normalize: 'arp-table-information/[0]/arp-table-entry/*/[
+    "mac-address/[0]/data: macaddr",
+    "ip-address/[0]/data: ipAddress",
+    "interface-name/[0]/data: oif",
+    "arp-table-entry-flags: flags",
+    "offload: remote?|False",
+    ]'
+
+  junos-ex:
+    copy: junos-qfx
+
+  junos-mx:
+    version: all
+    command: show arp no-resolve | display json | no-more
+    normalize: 'arp-table-information/[0]/arp-table-entry/*/[
+    "mac-address/[0]/data: macaddr",
+    "ip-address/[0]/data: ipAddress",
+    "interface-name/[0]/data: oif",
+    "arp-table-entry-flags: flags",
+    "offload: remote?|False",
+    ]'
+
+  junos-es:
+    copy: junos-qfx
+
+  nxos:
+    version: all
+    command:
+      - command: show ip arp detail vrf all | json native
+        normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_adj/ROW_adj/*?/[
+        "intf-out: oif",
+        "ip-addr-out: ipAddress",
+        "flags: flags",
+        "incomplete: state?|reachable",
+        "mac: macaddr"
+        ]'
+
+      - command: show ipv6 neighbor detail | json native
+        normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_afi/ROW_afi/*?/[
+        "intf-out: oif",
+        "ip-addr-out: ipAddress",
+        "flags: flags",
+        "incomplete: state?|reachable",
+        "mac: macaddr"
+        ]'
+
