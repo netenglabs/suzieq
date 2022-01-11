@@ -121,7 +121,7 @@ async def test_coalescer_keep_on_failing(coalescer_cfg):
             f'Expected {cl.max_attempts} attempts, {attempts_done} done'
     except asyncio.TimeoutError:
         pytest.fail(
-            'The coalescer launcher task expected to file but it does not')
+            'The coalescer launcher task expected to fail but it does not')
 
 
 @pytest.mark.poller

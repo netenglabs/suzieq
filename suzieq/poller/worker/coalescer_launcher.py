@@ -88,11 +88,11 @@ class CoalescerLauncher:
         dies
         """
 
-        starting_attemps = 0
+        starting_attempts = 0
 
         # We would like to attempt the coalescer startup self.max_attempts
         # times
-        while starting_attemps < self.max_attempts:
+        while starting_attempts < self.max_attempts:
             if not self.coalescer_process:
                 logger.info('Starting Coalescer')
             elif self.coalescer_process.returncode == errno.EBUSY:
@@ -122,7 +122,7 @@ class CoalescerLauncher:
             else:
                 # The coalescer died for any other reason let's increase the
                 # attempts counter
-                starting_attemps += 1
+                starting_attempts += 1
         logger.error(
             f'Maximum number of attempts reached {self.max_attempts}/'
             f'{self.max_attempts}, the coalescer keep on crashing')
