@@ -3,17 +3,15 @@ This module contains all the logic needed to start and monitor the coalescer
 """
 import asyncio
 import errno
-import fcntl
 import logging
-import os
-import signal
 from pathlib import Path
 import shlex
 from asyncio.subprocess import Process
 from typing import Dict
 
 from suzieq.poller.controller.utils.proc_utils import monitor_process
-from suzieq.shared.utils import ensure_single_instance, get_sq_install_dir
+from suzieq.shared.exceptions import PollingError
+from suzieq.shared.utils import get_sq_install_dir
 
 logger = logging.getLogger(__name__)
 
@@ -26,7 +24,8 @@ class CoalescerLauncher:
     def __init__(self,
                  config_file: str,
                  cfg: Dict,
-                 coalescer_bin: str = None) -> None:
+                 coalescer_bin: str = None,
+                 max_attempts: int = 3) -> None:
         """Initialize an instance of the CoalescerLauncher
 
         Args:
@@ -35,11 +34,21 @@ class CoalescerLauncher:
             cfg (dict): the Suzieq config dictionary
             coalescer_bin (str, optional): optional path to coalescer binary.
                 Defaults to None.
+            max_attempts (int, optional): the number of attepts to perform
+                for starting the coalescer. Defaults to 3
         """
         self.coalescer_process = None
 
         self.config_file = config_file
         self.cfg = cfg
+
+        self.max_attempts = max_attempts
+        if self.max_attempts <= 0:
+            raise PollingError(
+                'The number of attempts for starting the coalescer cannot be '
+                '0 or less'
+            )
+
         self.coalescer_bin = coalescer_bin
         if not coalescer_bin:
             sq_path = get_sq_install_dir()
@@ -78,48 +87,45 @@ class CoalescerLauncher:
         """This function calls _start_coalescer() and check if the process
         dies
         """
-        fd = 0
-        # Check to see file lock is possible
-        while not fd:
+
+        starting_attempts = 0
+
+        # We would like to attempt the coalescer startup self.max_attempts
+        # times
+        while starting_attempts < self.max_attempts:
             if not self.coalescer_process:
                 logger.info('Starting Coalescer')
             elif self.coalescer_process.returncode == errno.EBUSY:
                 logger.warning('Trying to start coalescer')
+            else:
+                logger.warning('Restarting the coalescer')
 
             # Try to start the coalescer process
             self.coalescer_process = await self._start_coalescer()
-
             if not self.coalescer_process:
-                os.kill(os.getpid(), signal.SIGTERM)
-                return
-
-            # Initial sleep to ensure that the coalescer starts up
-            await asyncio.sleep(10)
-            coalesce_dir = self.cfg.get('coalescer', {})\
-                .get('coalesce-directory',
-                     f'{self.cfg.get("data-directory")}/coalesced')
-
-            # In order to be sure the coalescer correctly started we need to
-            # check if it got the lock file, if so we are not able to acquire
-            # the lock and we can proceed monitoring the coalescer process,
-            # otherwise we release the lock and retry starting the process
-            fd = ensure_single_instance(f'{coalesce_dir}/.sq-coalescer.pid',
-                                        False)
-            if fd > 0:
-                # unlock and try to start process
-                try:
-                    fcntl.flock(fd, fcntl.F_UNLCK)
-                    os.close(fd)
-                except OSError:
-                    pass
-                continue
+                raise PollingError('Unable to start the coalescer')
 
             # Check if we have something from the stdout we need to log
             await monitor_process(self.coalescer_process, 'COALESCER')
 
+            # When the coalescer exists with EBUSY error, it means
+            # there already is another instance of the coalescer running
+            # we are fine with that, but we need to make sure it is always
+            # running, so we wait some time before retrying launching again
+            # the coalescer
             if self.coalescer_process.returncode == errno.EBUSY:
+                logger.warning(
+                    "There is a running coalescer instance, "
+                    "let's try again later"
+                )
                 await asyncio.sleep(10*60)
-            fd = 0
+            else:
+                # The coalescer died for any other reason let's increase the
+                # attempts counter
+                starting_attempts += 1
+        logger.error(
+            f'Maximum number of attempts reached {self.max_attempts}/'
+            f'{self.max_attempts}, the coalescer keep on crashing')
 
     async def _start_coalescer(self) -> Process:
         """Start the coalescer

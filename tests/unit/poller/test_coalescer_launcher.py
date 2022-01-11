@@ -5,13 +5,14 @@ Test the CoalescerLauncher component
 
 import asyncio
 import os
-import signal
-from contextlib import suppress
+from unittest.mock import MagicMock, patch
 
 import pytest
+import suzieq.poller.worker.coalescer_launcher as coalescer_launcher_module
 from suzieq.poller.worker.coalescer_launcher import CoalescerLauncher
-from suzieq.shared.utils import ensure_single_instance, load_sq_config
-from tests.conftest import create_dummy_config_file
+from suzieq.shared.exceptions import PollingError
+from suzieq.shared.utils import load_sq_config
+from tests.conftest import create_dummy_config_file, get_async_task_mock
 
 MOCK_COALESCER = './tests/unit/poller/shared/coalescer_mock.py'
 
@@ -71,20 +72,13 @@ async def test_coalescer_start(coalescer_cfg):
     # Start coalescer
     task = asyncio.create_task(cl.start_and_monitor_coalescer())
     # Waiting for coalescer to start
-    await asyncio.sleep(11)
+    await asyncio.sleep(1)
     try:
         # Try to reach the coalescer mock
         _, writer = await asyncio.open_connection(
             '127.0.0.1', 8303)
         writer.close()
         await writer.wait_closed()
-        # Check if it is possible to get the file lock, if the coalescer
-        # is properly running, we should not be able to acquire the lock
-        coalesce_dir = cfg.get('coalescer', {})\
-            .get('coalesce-directory',
-                 f'{cfg.get("data-directory")}/coalesced')
-        assert ensure_single_instance(
-            f'{coalesce_dir}/.sq-coalescer.pid', False) == 0
 
         # Check if the task is still running
         if task.done():
@@ -97,7 +91,48 @@ async def test_coalescer_start(coalescer_cfg):
     finally:
         task.cancel()
         await task
-        coalescer_pid = cl.coalescer_pid
-        if coalescer_pid:
-            with suppress(OSError):
-                os.kill(cl.coalescer_pid, signal.SIGKILL)
+
+
+@pytest.mark.poller
+@pytest.mark.poller_unit_tests
+@pytest.mark.coalescer_launcher
+@pytest.mark.asyncio
+async def test_coalescer_keep_on_failing(coalescer_cfg):
+    """Try to start a coalescer which keep on failing
+    """
+    cfg_file = coalescer_cfg
+    cfg = load_sq_config(config_file=cfg_file)
+    cl = CoalescerLauncher(cfg_file, cfg, MOCK_COALESCER)
+
+    monitor_process_fn = get_async_task_mock()
+    dummy_process = MagicMock()
+    dummy_process.returncode = 1
+    start_coalescer_fn = get_async_task_mock(dummy_process)
+
+    try:
+        with patch.multiple(CoalescerLauncher,
+                            _start_coalescer=start_coalescer_fn), \
+            patch.multiple(coalescer_launcher_module,
+                           monitor_process=monitor_process_fn):
+            await asyncio.wait_for(cl.start_and_monitor_coalescer(), 5)
+        # Check if multiple attempts have been performed
+        attempts_done = start_coalescer_fn.call_count
+        assert attempts_done == cl.max_attempts, \
+            f'Expected {cl.max_attempts} attempts, {attempts_done} done'
+    except asyncio.TimeoutError:
+        pytest.fail(
+            'The coalescer launcher task expected to fail but it does not')
+
+
+@pytest.mark.poller
+@pytest.mark.poller_unit_tests
+@pytest.mark.coalescer_launcher
+@pytest.mark.asyncio
+async def test_coalescer_wrong_attempts_number(coalescer_cfg):
+    """Test if an exception is raised if a wrong number of attempts is passed
+    to the coalescer launcher
+    """
+    cfg_file = coalescer_cfg
+    cfg = load_sq_config(config_file=cfg_file)
+    with pytest.raises(PollingError, match=r'The number of attempts*'):
+        CoalescerLauncher(cfg_file, cfg, MOCK_COALESCER, max_attempts=0)
