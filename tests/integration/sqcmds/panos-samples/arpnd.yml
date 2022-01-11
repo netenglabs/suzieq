@@ -584,11 +584,14 @@ tests:
     79, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 6,
     "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 6, "failedEntriesCnt": 0, "failedV4EntriesCnt":
     0, "failedV6EntriesCnt": 0}}'
-- command: arpnd summarize --namespace=dual-evpn --format=json
+- command: arpnd summarize --namespace=panos --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd summarize
-  output: '{"namespace": {}, "hostname": {}, "ipAddress": {}, "oif": {}, "macaddr":
-    {}, "state": {}, "remote": {}, "timestamp": {}, "active": {}}'
+  output: '{"panos": {"deviceCnt": 14, "arpNdEntriesCnt": 154, "uniqueArpEntriesCnt":
+    65, "uniqueOifCnt": 22, "arpEntriesCnt": 75, "v6NDEntriesCnt": 79, "v6NDGlobalEntriesCnt":
+    79, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 6,
+    "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 6, "failedEntriesCnt": 0, "failedV4EntriesCnt":
+    0, "failedV6EntriesCnt": 0}}'
 - command: arpnd unique --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: arpnd unique
@@ -617,10 +620,10 @@ tests:
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
 - command: arpnd summarize --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/panos/parquet-out/
   marks: arpnd summarize
-  output: '{"dual-bgp": {"deviceCnt": 14, "arpNdEntriesCnt": 138, "uniqueArpEntriesCnt":
-    64, "uniqueOifCnt": 17, "arpEntriesCnt": 78, "v6NDEntriesCnt": 60, "v6NDGlobalEntriesCnt":
-    52, "v6NDLLAEntriesCnt": 8, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 36,
-    "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 16, "failedEntriesCnt": 0, "failedV4EntriesCnt":
+  output: '{"panos": {"deviceCnt": 14, "arpNdEntriesCnt": 154, "uniqueArpEntriesCnt":
+    65, "uniqueOifCnt": 22, "arpEntriesCnt": 75, "v6NDEntriesCnt": 79, "v6NDGlobalEntriesCnt":
+    79, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 6,
+    "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 6, "failedEntriesCnt": 0, "failedV4EntriesCnt":
     0, "failedV6EntriesCnt": 0}}'

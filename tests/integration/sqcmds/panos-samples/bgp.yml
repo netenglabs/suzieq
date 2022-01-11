@@ -834,333 +834,396 @@ tests:
       1639476253949}]'
   marks: bgp assert panos
 - command: bgp assert --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/panos/parquet-out/
   error:
-    error: '[{"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer":
-      "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
-      "exit01", "assert": "pass", "assertReason": "-", "timestamp": 1616638469998},
-      {"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.4",
-      "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname": "exit01",
-      "assert": "pass", "assertReason": "-", "timestamp": 1616638469998}, {"namespace":
-      "dual-bgp", "hostname": "edge01", "vrf": "default", "peer": "eth2.2", "asn":
-      65530, "peerAsn": 65202, "state": "Established", "peerHostname": "exit02", "assert":
-      "pass", "assertReason": "-", "timestamp": 1616638469998}, {"namespace": "dual-bgp",
-      "hostname": "edge01", "vrf": "default", "peer": "eth2.4", "asn": 65530, "peerAsn":
-      65202, "state": "Established", "peerHostname": "exit02", "assert": "pass", "assertReason":
-      "-", "timestamp": 1616638469998}, {"namespace": "dual-bgp", "hostname": "spine02",
-      "vrf": "default", "peer": "swp4", "asn": 65000, "peerAsn": 65104, "state": "Established",
-      "peerHostname": "leaf04", "assert": "pass", "assertReason": "-", "timestamp":
-      1616638470426}, {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default",
-      "peer": "swp3", "asn": 65000, "peerAsn": 65103, "state": "Established", "peerHostname":
-      "leaf03", "assert": "pass", "assertReason": "-", "timestamp": 1616638470426},
-      {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "swp2",
-      "asn": 65000, "peerAsn": 65102, "state": "Established", "peerHostname": "leaf02",
-      "assert": "pass", "assertReason": "-", "timestamp": 1616638470426}, {"namespace":
-      "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "swp1", "asn":
-      65000, "peerAsn": 65101, "state": "Established", "peerHostname": "leaf01", "assert":
-      "pass", "assertReason": "-", "timestamp": 1616638470426}, {"namespace": "dual-bgp",
-      "hostname": "spine02", "vrf": "default", "peer": "swp5", "asn": 65000, "peerAsn":
-      65202, "state": "Established", "peerHostname": "exit02", "assert": "fail", "assertReason":
-      "Not all Afi/Safis enabled", "timestamp": 1616638470426}, {"namespace": "dual-bgp",
-      "hostname": "spine02", "vrf": "default", "peer": "swp6", "asn": 65000, "peerAsn":
-      65201, "state": "Established", "peerHostname": "exit01", "assert": "fail", "assertReason":
-      "Not all Afi/Safis enabled", "timestamp": 1616638470426}, {"namespace": "dual-bgp",
-      "hostname": "internet", "vrf": "default", "peer": "swp1", "asn": 25253, "peerAsn":
-      65201, "state": "Established", "peerHostname": "exit01", "assert": "pass", "assertReason":
-      "-", "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname": "exit02",
-      "vrf": "internet-vrf", "peer": "swp5.4", "asn": 65202, "peerAsn": 65530, "state":
-      "Established", "peerHostname": "edge01", "assert": "pass", "assertReason": "-",
-      "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname": "exit02",
-      "vrf": "internet-vrf", "peer": "swp6", "asn": 65202, "peerAsn": 25253, "state":
-      "Established", "peerHostname": "internet", "assert": "pass", "assertReason":
-      "-", "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname": "exit02",
-      "vrf": "default", "peer": "swp2", "asn": 65202, "peerAsn": 65000, "state": "Established",
+    error: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer":
+      "169.254.254.9", "asn": 65533, "peerAsn": 65522, "state": "Established", "peerHostname":
+      "exit01", "assert": "pass", "assertReason": "-", "timestamp": 1639476253357},
+      {"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.254.5",
+      "asn": 65533, "peerAsn": 65521, "state": "Established", "peerHostname": "exit01",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+      "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.254.1",
+      "asn": 65533, "peerAsn": 65520, "state": "Established", "peerHostname": "exit01",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+      "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.253.9",
+      "asn": 65533, "peerAsn": 65522, "state": "Established", "peerHostname": "exit02",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+      "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.253.5",
+      "asn": 65533, "peerAsn": 65521, "state": "Established", "peerHostname": "exit02",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+      "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.253.1",
+      "asn": 65533, "peerAsn": 65520, "state": "Established", "peerHostname": "exit02",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+      "panos", "hostname": "leaf03", "vrf": "default", "peer": "10.0.0.22", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine02",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253942}, {"namespace": "panos", "hostname": "leaf03", "vrf": "default",
+      "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "spine02",
+      "vrf": "default", "peer": "10.0.0.14", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "leaf04", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253943}, {"namespace": "panos",
+      "hostname": "spine02", "vrf": "default", "peer": "10.0.0.13", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "leaf03", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253943},
+      {"namespace": "panos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.12",
+      "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname": "leaf02",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253943}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+      "peer": "10.0.0.11", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "leaf01", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "spine02",
+      "vrf": "default", "peer": "10.0.0.31", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "exit01", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253943}, {"namespace": "panos",
+      "hostname": "spine02", "vrf": "default", "peer": "10.0.0.32", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "exit02", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253943},
+      {"namespace": "panos", "hostname": "exit01", "vrf": "default", "peer": "swp3.2",
+      "asn": 65520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253943}, {"namespace":
+      "panos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.21", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine01",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253943}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+      "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established",
       "peerHostname": "spine02", "assert": "fail", "assertReason": "Not all Afi/Safis
-      enabled", "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname":
-      "exit02", "vrf": "default", "peer": "swp1", "asn": 65202, "peerAsn": 65000,
+      enabled", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit01",
+      "vrf": "internet-vrf", "peer": "swp3.4", "asn": 65522, "peerAsn": 65533, "state":
+      "Established", "peerHostname": "firewall01", "assert": "pass", "assertReason":
+      "-", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit01",
+      "vrf": "internet-vrf", "peer": "swp4", "asn": 65522, "peerAsn": 65534, "state":
+      "Established", "peerHostname": "dcedge01", "assert": "pass", "assertReason":
+      "-", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit01",
+      "vrf": "evpn-vrf", "peer": "swp3.3", "asn": 65521, "peerAsn": 65533, "state":
+      "Established", "peerHostname": "firewall01", "assert": "pass", "assertReason":
+      "-", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit02",
+      "vrf": "internet-vrf", "peer": "swp4", "asn": 65522, "peerAsn": 65534, "state":
+      "Established", "peerHostname": "dcedge01", "assert": "pass", "assertReason":
+      "-", "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "dcedge01",
+      "vrf": "default", "peer": "169.254.127.3", "asn": 65534, "peerAsn": 65522, "state":
+      "Established", "peerHostname": "exit02", "assert": "pass", "assertReason": "-",
+      "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "spine01", "vrf":
+      "default", "peer": "10.0.0.32", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "exit02", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "spine01",
+      "vrf": "default", "peer": "10.0.0.31", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "exit01", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "spine01", "vrf": "default", "peer": "10.0.0.14", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "leaf04", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253948},
+      {"namespace": "panos", "hostname": "spine01", "vrf": "default", "peer": "10.0.0.13",
+      "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname": "leaf03",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253948}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+      "peer": "10.0.0.12", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "leaf02", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "spine01",
+      "vrf": "default", "peer": "10.0.0.11", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "leaf01", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "dcedge01", "vrf": "default", "peer": "169.254.127.1", "asn": 65534,
+      "peerAsn": 65522, "state": "Established", "peerHostname": "exit01", "assert":
+      "pass", "assertReason": "-", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "exit02", "vrf": "internet-vrf", "peer": "swp3.4", "asn": 65522,
+      "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "assert":
+      "pass", "assertReason": "-", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "exit02", "vrf": "default", "peer": "swp3.2", "asn": 65520, "peerAsn":
+      65533, "state": "Established", "peerHostname": "firewall01", "assert": "pass",
+      "assertReason": "-", "timestamp": 1639476253948}, {"namespace": "panos", "hostname":
+      "exit02", "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520,
       "state": "Established", "peerHostname": "spine01", "assert": "fail", "assertReason":
-      "Not all Afi/Safis enabled", "timestamp": 1616638470550}, {"namespace": "dual-bgp",
-      "hostname": "exit02", "vrf": "default", "peer": "swp5.2", "asn": 65202, "peerAsn":
-      65530, "state": "Established", "peerHostname": "edge01", "assert": "pass", "assertReason":
-      "-", "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname": "internet",
-      "vrf": "default", "peer": "swp2", "asn": 25253, "peerAsn": 65202, "state": "Established",
-      "peerHostname": "exit02", "assert": "pass", "assertReason": "-", "timestamp":
-      1616638470550}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "internet-vrf",
-      "peer": "swp6", "asn": 65201, "peerAsn": 25253, "state": "Established", "peerHostname":
-      "internet", "assert": "pass", "assertReason": "-", "timestamp": 1616638470555},
-      {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "swp5.2",
-      "asn": 65201, "peerAsn": 65530, "state": "Established", "peerHostname": "edge01",
-      "assert": "pass", "assertReason": "-", "timestamp": 1616638470555}, {"namespace":
-      "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "swp2", "asn": 65201,
-      "peerAsn": 65000, "state": "Established", "peerHostname": "spine02", "assert":
-      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1616638470555},
-      {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "swp1",
-      "asn": 65201, "peerAsn": 65000, "state": "Established", "peerHostname": "spine01",
+      "Not all Afi/Safis enabled", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "exit02", "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn":
+      64520, "state": "Established", "peerHostname": "spine02", "assert": "fail",
+      "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253948}, {"namespace":
+      "panos", "hostname": "exit02", "vrf": "evpn-vrf", "peer": "swp3.3", "asn": 65521,
+      "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "assert":
+      "pass", "assertReason": "-", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "leaf02", "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn":
+      64520, "state": "Established", "peerHostname": "spine02", "assert": "fail",
+      "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253949}, {"namespace":
+      "panos", "hostname": "leaf02", "vrf": "default", "peer": "10.0.0.21", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine01",
       "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470555}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "internet-vrf",
-      "peer": "swp5.4", "asn": 65201, "peerAsn": 65530, "state": "Established", "peerHostname":
-      "edge01", "assert": "pass", "assertReason": "-", "timestamp": 1616638470555},
-      {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp6",
-      "asn": 65000, "peerAsn": 65201, "state": "Established", "peerHostname": "exit01",
+      1639476253949}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+      "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine02", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253949}, {"namespace": "panos", "hostname": "leaf01",
+      "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "spine01", "assert": "fail", "assertReason":
+      "Not all Afi/Safis enabled", "timestamp": 1639476253949}, {"namespace": "panos",
+      "hostname": "leaf04", "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn":
+      64520, "state": "Established", "peerHostname": "spine02", "assert": "fail",
+      "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253949}, {"namespace":
+      "panos", "hostname": "leaf04", "vrf": "default", "peer": "10.0.0.21", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine01",
       "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470647}, {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default",
-      "peer": "swp5", "asn": 65000, "peerAsn": 65202, "state": "Established", "peerHostname":
-      "exit02", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470647}, {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default",
-      "peer": "swp4", "asn": 65000, "peerAsn": 65104, "state": "Established", "peerHostname":
-      "leaf04", "assert": "pass", "assertReason": "-", "timestamp": 1616638470647},
-      {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp3",
-      "asn": 65000, "peerAsn": 65103, "state": "Established", "peerHostname": "leaf03",
-      "assert": "pass", "assertReason": "-", "timestamp": 1616638470647}, {"namespace":
-      "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp2", "asn":
-      65000, "peerAsn": 65102, "state": "Established", "peerHostname": "leaf02", "assert":
-      "pass", "assertReason": "-", "timestamp": 1616638470647}, {"namespace": "dual-bgp",
-      "hostname": "spine01", "vrf": "default", "peer": "swp1", "asn": 65000, "peerAsn":
-      65101, "state": "Established", "peerHostname": "leaf01", "assert": "pass", "assertReason":
-      "-", "timestamp": 1616638470647}, {"namespace": "dual-bgp", "hostname": "leaf04",
-      "vrf": "default", "peer": "swp2", "asn": 65104, "peerAsn": 65000, "state": "Established",
-      "peerHostname": "spine02", "assert": "pass", "assertReason": "-", "timestamp":
-      1616638471112}, {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default",
-      "peer": "swp1", "asn": 65102, "peerAsn": 65000, "state": "Established", "peerHostname":
-      "spine01", "assert": "pass", "assertReason": "-", "timestamp": 1616638471112},
-      {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default", "peer": "swp2",
-      "asn": 65102, "peerAsn": 65000, "state": "Established", "peerHostname": "spine02",
-      "assert": "pass", "assertReason": "-", "timestamp": 1616638471112}, {"namespace":
-      "dual-bgp", "hostname": "leaf04", "vrf": "default", "peer": "swp1", "asn": 65104,
-      "peerAsn": 65000, "state": "Established", "peerHostname": "spine01", "assert":
-      "pass", "assertReason": "-", "timestamp": 1616638471112}, {"namespace": "dual-bgp",
-      "hostname": "leaf01", "vrf": "default", "peer": "swp2", "asn": 65101, "peerAsn":
-      65000, "state": "Established", "peerHostname": "spine02", "assert": "pass",
-      "assertReason": "-", "timestamp": 1616638471143}, {"namespace": "dual-bgp",
-      "hostname": "leaf01", "vrf": "default", "peer": "swp1", "asn": 65101, "peerAsn":
-      65000, "state": "Established", "peerHostname": "spine01", "assert": "pass",
-      "assertReason": "-", "timestamp": 1616638471143}, {"namespace": "dual-bgp",
-      "hostname": "leaf03", "vrf": "default", "peer": "swp1", "asn": 65103, "peerAsn":
-      65000, "state": "Established", "peerHostname": "spine01", "assert": "pass",
-      "assertReason": "-", "timestamp": 1616638471475}, {"namespace": "dual-bgp",
-      "hostname": "leaf03", "vrf": "default", "peer": "swp2", "asn": 65103, "peerAsn":
-      65000, "state": "Established", "peerHostname": "spine02", "assert": "pass",
-      "assertReason": "-", "timestamp": 1616638471475}]'
+      1639476253949}]'
   marks: bgp assert panos
 - command: bgp assert --status=pass --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/panos/parquet-out/
   marks: bgp assert panos
-  output: '[{"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer":
-    "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
-    "exit01", "assert": "pass", "assertReason": "-", "timestamp": 1616638469998},
-    {"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.4",
-    "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname": "exit01",
-    "assert": "pass", "assertReason": "-", "timestamp": 1616638469998}, {"namespace":
-    "dual-bgp", "hostname": "edge01", "vrf": "default", "peer": "eth2.2", "asn": 65530,
-    "peerAsn": 65202, "state": "Established", "peerHostname": "exit02", "assert":
-    "pass", "assertReason": "-", "timestamp": 1616638469998}, {"namespace": "dual-bgp",
-    "hostname": "edge01", "vrf": "default", "peer": "eth2.4", "asn": 65530, "peerAsn":
-    65202, "state": "Established", "peerHostname": "exit02", "assert": "pass", "assertReason":
-    "-", "timestamp": 1616638469998}, {"namespace": "dual-bgp", "hostname": "spine02",
-    "vrf": "default", "peer": "swp4", "asn": 65000, "peerAsn": 65104, "state": "Established",
-    "peerHostname": "leaf04", "assert": "pass", "assertReason": "-", "timestamp":
-    1616638470426}, {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default",
-    "peer": "swp3", "asn": 65000, "peerAsn": 65103, "state": "Established", "peerHostname":
-    "leaf03", "assert": "pass", "assertReason": "-", "timestamp": 1616638470426},
-    {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "swp2",
-    "asn": 65000, "peerAsn": 65102, "state": "Established", "peerHostname": "leaf02",
-    "assert": "pass", "assertReason": "-", "timestamp": 1616638470426}, {"namespace":
-    "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "swp1", "asn": 65000,
-    "peerAsn": 65101, "state": "Established", "peerHostname": "leaf01", "assert":
-    "pass", "assertReason": "-", "timestamp": 1616638470426}, {"namespace": "dual-bgp",
-    "hostname": "internet", "vrf": "default", "peer": "swp1", "asn": 25253, "peerAsn":
-    65201, "state": "Established", "peerHostname": "exit01", "assert": "pass", "assertReason":
-    "-", "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname": "exit02",
-    "vrf": "internet-vrf", "peer": "swp5.4", "asn": 65202, "peerAsn": 65530, "state":
-    "Established", "peerHostname": "edge01", "assert": "pass", "assertReason": "-",
-    "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname": "exit02", "vrf":
-    "internet-vrf", "peer": "swp6", "asn": 65202, "peerAsn": 25253, "state": "Established",
-    "peerHostname": "internet", "assert": "pass", "assertReason": "-", "timestamp":
-    1616638470550}, {"namespace": "dual-bgp", "hostname": "exit02", "vrf": "default",
-    "peer": "swp5.2", "asn": 65202, "peerAsn": 65530, "state": "Established", "peerHostname":
-    "edge01", "assert": "pass", "assertReason": "-", "timestamp": 1616638470550},
-    {"namespace": "dual-bgp", "hostname": "internet", "vrf": "default", "peer": "swp2",
-    "asn": 25253, "peerAsn": 65202, "state": "Established", "peerHostname": "exit02",
-    "assert": "pass", "assertReason": "-", "timestamp": 1616638470550}, {"namespace":
-    "dual-bgp", "hostname": "exit01", "vrf": "internet-vrf", "peer": "swp6", "asn":
-    65201, "peerAsn": 25253, "state": "Established", "peerHostname": "internet", "assert":
-    "pass", "assertReason": "-", "timestamp": 1616638470555}, {"namespace": "dual-bgp",
-    "hostname": "exit01", "vrf": "default", "peer": "swp5.2", "asn": 65201, "peerAsn":
-    65530, "state": "Established", "peerHostname": "edge01", "assert": "pass", "assertReason":
-    "-", "timestamp": 1616638470555}, {"namespace": "dual-bgp", "hostname": "exit01",
-    "vrf": "internet-vrf", "peer": "swp5.4", "asn": 65201, "peerAsn": 65530, "state":
-    "Established", "peerHostname": "edge01", "assert": "pass", "assertReason": "-",
-    "timestamp": 1616638470555}, {"namespace": "dual-bgp", "hostname": "spine01",
-    "vrf": "default", "peer": "swp4", "asn": 65000, "peerAsn": 65104, "state": "Established",
-    "peerHostname": "leaf04", "assert": "pass", "assertReason": "-", "timestamp":
-    1616638470647}, {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default",
-    "peer": "swp3", "asn": 65000, "peerAsn": 65103, "state": "Established", "peerHostname":
-    "leaf03", "assert": "pass", "assertReason": "-", "timestamp": 1616638470647},
-    {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp2",
-    "asn": 65000, "peerAsn": 65102, "state": "Established", "peerHostname": "leaf02",
-    "assert": "pass", "assertReason": "-", "timestamp": 1616638470647}, {"namespace":
-    "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp1", "asn": 65000,
-    "peerAsn": 65101, "state": "Established", "peerHostname": "leaf01", "assert":
-    "pass", "assertReason": "-", "timestamp": 1616638470647}, {"namespace": "dual-bgp",
-    "hostname": "leaf04", "vrf": "default", "peer": "swp2", "asn": 65104, "peerAsn":
-    65000, "state": "Established", "peerHostname": "spine02", "assert": "pass", "assertReason":
-    "-", "timestamp": 1616638471112}, {"namespace": "dual-bgp", "hostname": "leaf02",
-    "vrf": "default", "peer": "swp1", "asn": 65102, "peerAsn": 65000, "state": "Established",
-    "peerHostname": "spine01", "assert": "pass", "assertReason": "-", "timestamp":
-    1616638471112}, {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default",
-    "peer": "swp2", "asn": 65102, "peerAsn": 65000, "state": "Established", "peerHostname":
-    "spine02", "assert": "pass", "assertReason": "-", "timestamp": 1616638471112},
-    {"namespace": "dual-bgp", "hostname": "leaf04", "vrf": "default", "peer": "swp1",
-    "asn": 65104, "peerAsn": 65000, "state": "Established", "peerHostname": "spine01",
-    "assert": "pass", "assertReason": "-", "timestamp": 1616638471112}, {"namespace":
-    "dual-bgp", "hostname": "leaf01", "vrf": "default", "peer": "swp2", "asn": 65101,
-    "peerAsn": 65000, "state": "Established", "peerHostname": "spine02", "assert":
-    "pass", "assertReason": "-", "timestamp": 1616638471143}, {"namespace": "dual-bgp",
-    "hostname": "leaf01", "vrf": "default", "peer": "swp1", "asn": 65101, "peerAsn":
-    65000, "state": "Established", "peerHostname": "spine01", "assert": "pass", "assertReason":
-    "-", "timestamp": 1616638471143}, {"namespace": "dual-bgp", "hostname": "leaf03",
-    "vrf": "default", "peer": "swp1", "asn": 65103, "peerAsn": 65000, "state": "Established",
-    "peerHostname": "spine01", "assert": "pass", "assertReason": "-", "timestamp":
-    1616638471475}, {"namespace": "dual-bgp", "hostname": "leaf03", "vrf": "default",
-    "peer": "swp2", "asn": 65103, "peerAsn": 65000, "state": "Established", "peerHostname":
-    "spine02", "assert": "pass", "assertReason": "-", "timestamp": 1616638471475}]'
+  output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer":
+    "169.254.254.9", "asn": 65533, "peerAsn": 65522, "state": "Established", "peerHostname":
+    "exit01", "assert": "pass", "assertReason": "-", "timestamp": 1639476253357},
+    {"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.254.5",
+    "asn": 65533, "peerAsn": 65521, "state": "Established", "peerHostname": "exit01",
+    "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.254.1",
+    "asn": 65533, "peerAsn": 65520, "state": "Established", "peerHostname": "exit01",
+    "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.253.9",
+    "asn": 65533, "peerAsn": 65522, "state": "Established", "peerHostname": "exit02",
+    "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.253.5",
+    "asn": 65533, "peerAsn": 65521, "state": "Established", "peerHostname": "exit02",
+    "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.253.1",
+    "asn": 65533, "peerAsn": 65520, "state": "Established", "peerHostname": "exit02",
+    "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+    "panos", "hostname": "exit01", "vrf": "default", "peer": "swp3.2", "asn": 65520,
+    "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "assert":
+    "pass", "assertReason": "-", "timestamp": 1639476253943}, {"namespace": "panos",
+    "hostname": "exit01", "vrf": "internet-vrf", "peer": "swp3.4", "asn": 65522, "peerAsn":
+    65533, "state": "Established", "peerHostname": "firewall01", "assert": "pass",
+    "assertReason": "-", "timestamp": 1639476253943}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "internet-vrf", "peer": "swp4", "asn": 65522, "peerAsn": 65534,
+    "state": "Established", "peerHostname": "dcedge01", "assert": "pass", "assertReason":
+    "-", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit01",
+    "vrf": "evpn-vrf", "peer": "swp3.3", "asn": 65521, "peerAsn": 65533, "state":
+    "Established", "peerHostname": "firewall01", "assert": "pass", "assertReason":
+    "-", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "internet-vrf", "peer": "swp4", "asn": 65522, "peerAsn": 65534, "state":
+    "Established", "peerHostname": "dcedge01", "assert": "pass", "assertReason": "-",
+    "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "dcedge01", "vrf":
+    "default", "peer": "169.254.127.3", "asn": 65534, "peerAsn": 65522, "state": "Established",
+    "peerHostname": "exit02", "assert": "pass", "assertReason": "-", "timestamp":
+    1639476253948}, {"namespace": "panos", "hostname": "dcedge01", "vrf": "default",
+    "peer": "169.254.127.1", "asn": 65534, "peerAsn": 65522, "state": "Established",
+    "peerHostname": "exit01", "assert": "pass", "assertReason": "-", "timestamp":
+    1639476253948}, {"namespace": "panos", "hostname": "exit02", "vrf": "internet-vrf",
+    "peer": "swp3.4", "asn": 65522, "peerAsn": 65533, "state": "Established", "peerHostname":
+    "firewall01", "assert": "pass", "assertReason": "-", "timestamp": 1639476253948},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "peer": "swp3.2",
+    "asn": 65520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
+    "assert": "pass", "assertReason": "-", "timestamp": 1639476253948}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "evpn-vrf", "peer": "swp3.3", "asn": 65521,
+    "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "assert":
+    "pass", "assertReason": "-", "timestamp": 1639476253948}]'
 - command: bgp assert --status=fail --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/panos/parquet-out/
   error:
-    error: '[{"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "peer":
-      "swp5", "asn": 65000, "peerAsn": 65202, "state": "Established", "peerHostname":
-      "exit02", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470426}, {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default",
-      "peer": "swp6", "asn": 65000, "peerAsn": 65201, "state": "Established", "peerHostname":
-      "exit01", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470426}, {"namespace": "dual-bgp", "hostname": "exit02", "vrf": "default",
-      "peer": "swp2", "asn": 65202, "peerAsn": 65000, "state": "Established", "peerHostname":
+    error: '[{"namespace": "panos", "hostname": "leaf03", "vrf": "default", "peer":
+      "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":
       "spine02", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470550}, {"namespace": "dual-bgp", "hostname": "exit02", "vrf": "default",
-      "peer": "swp1", "asn": 65202, "peerAsn": 65000, "state": "Established", "peerHostname":
-      "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470550}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "default",
-      "peer": "swp2", "asn": 65201, "peerAsn": 65000, "state": "Established", "peerHostname":
-      "spine02", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470555}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "default",
-      "peer": "swp1", "asn": 65201, "peerAsn": 65000, "state": "Established", "peerHostname":
-      "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470555}, {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default",
-      "peer": "swp6", "asn": 65000, "peerAsn": 65201, "state": "Established", "peerHostname":
-      "exit01", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470647}, {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default",
-      "peer": "swp5", "asn": 65000, "peerAsn": 65202, "state": "Established", "peerHostname":
-      "exit02", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470647}]'
+      1639476253942}, {"namespace": "panos", "hostname": "leaf03", "vrf": "default",
+      "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "spine02",
+      "vrf": "default", "peer": "10.0.0.14", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "leaf04", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253943}, {"namespace": "panos",
+      "hostname": "spine02", "vrf": "default", "peer": "10.0.0.13", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "leaf03", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253943},
+      {"namespace": "panos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.12",
+      "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname": "leaf02",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253943}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+      "peer": "10.0.0.11", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "leaf01", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "spine02",
+      "vrf": "default", "peer": "10.0.0.31", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "exit01", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253943}, {"namespace": "panos",
+      "hostname": "spine02", "vrf": "default", "peer": "10.0.0.32", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "exit02", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253943},
+      {"namespace": "panos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.21",
+      "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine01",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253943}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+      "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine02", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "spine01",
+      "vrf": "default", "peer": "10.0.0.32", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "exit02", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "spine01", "vrf": "default", "peer": "10.0.0.31", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "exit01", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253948},
+      {"namespace": "panos", "hostname": "spine01", "vrf": "default", "peer": "10.0.0.14",
+      "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname": "leaf04",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253948}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+      "peer": "10.0.0.13", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "leaf03", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "spine01",
+      "vrf": "default", "peer": "10.0.0.12", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "leaf02", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "spine01", "vrf": "default", "peer": "10.0.0.11", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "leaf01", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253948},
+      {"namespace": "panos", "hostname": "exit02", "vrf": "default", "peer": "10.0.0.21",
+      "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine01",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253948}, {"namespace": "panos", "hostname": "exit02", "vrf": "default",
+      "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine02", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "leaf02",
+      "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "spine02", "assert": "fail", "assertReason":
+      "Not all Afi/Safis enabled", "timestamp": 1639476253949}, {"namespace": "panos",
+      "hostname": "leaf02", "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn":
+      64520, "state": "Established", "peerHostname": "spine01", "assert": "fail",
+      "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253949}, {"namespace":
+      "panos", "hostname": "leaf01", "vrf": "default", "peer": "10.0.0.22", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine02",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253949}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+      "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253949}, {"namespace": "panos", "hostname": "leaf04",
+      "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "spine02", "assert": "fail", "assertReason":
+      "Not all Afi/Safis enabled", "timestamp": 1639476253949}, {"namespace": "panos",
+      "hostname": "leaf04", "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn":
+      64520, "state": "Established", "peerHostname": "spine01", "assert": "fail",
+      "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253949}]'
   marks: bgp assert panos
 - command: bgp assert --status=all --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/panos/parquet-out/
   error:
-    error: '[{"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer":
-      "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
-      "exit01", "assert": "pass", "assertReason": "-", "timestamp": 1616638469998},
-      {"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer": "eth1.4",
-      "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname": "exit01",
-      "assert": "pass", "assertReason": "-", "timestamp": 1616638469998}, {"namespace":
-      "dual-bgp", "hostname": "edge01", "vrf": "default", "peer": "eth2.2", "asn":
-      65530, "peerAsn": 65202, "state": "Established", "peerHostname": "exit02", "assert":
-      "pass", "assertReason": "-", "timestamp": 1616638469998}, {"namespace": "dual-bgp",
-      "hostname": "edge01", "vrf": "default", "peer": "eth2.4", "asn": 65530, "peerAsn":
-      65202, "state": "Established", "peerHostname": "exit02", "assert": "pass", "assertReason":
-      "-", "timestamp": 1616638469998}, {"namespace": "dual-bgp", "hostname": "spine02",
-      "vrf": "default", "peer": "swp4", "asn": 65000, "peerAsn": 65104, "state": "Established",
-      "peerHostname": "leaf04", "assert": "pass", "assertReason": "-", "timestamp":
-      1616638470426}, {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default",
-      "peer": "swp3", "asn": 65000, "peerAsn": 65103, "state": "Established", "peerHostname":
-      "leaf03", "assert": "pass", "assertReason": "-", "timestamp": 1616638470426},
-      {"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "swp2",
-      "asn": 65000, "peerAsn": 65102, "state": "Established", "peerHostname": "leaf02",
-      "assert": "pass", "assertReason": "-", "timestamp": 1616638470426}, {"namespace":
-      "dual-bgp", "hostname": "spine02", "vrf": "default", "peer": "swp1", "asn":
-      65000, "peerAsn": 65101, "state": "Established", "peerHostname": "leaf01", "assert":
-      "pass", "assertReason": "-", "timestamp": 1616638470426}, {"namespace": "dual-bgp",
-      "hostname": "spine02", "vrf": "default", "peer": "swp5", "asn": 65000, "peerAsn":
-      65202, "state": "Established", "peerHostname": "exit02", "assert": "fail", "assertReason":
-      "Not all Afi/Safis enabled", "timestamp": 1616638470426}, {"namespace": "dual-bgp",
-      "hostname": "spine02", "vrf": "default", "peer": "swp6", "asn": 65000, "peerAsn":
-      65201, "state": "Established", "peerHostname": "exit01", "assert": "fail", "assertReason":
-      "Not all Afi/Safis enabled", "timestamp": 1616638470426}, {"namespace": "dual-bgp",
-      "hostname": "internet", "vrf": "default", "peer": "swp1", "asn": 25253, "peerAsn":
-      65201, "state": "Established", "peerHostname": "exit01", "assert": "pass", "assertReason":
-      "-", "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname": "exit02",
-      "vrf": "internet-vrf", "peer": "swp5.4", "asn": 65202, "peerAsn": 65530, "state":
-      "Established", "peerHostname": "edge01", "assert": "pass", "assertReason": "-",
-      "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname": "exit02",
-      "vrf": "internet-vrf", "peer": "swp6", "asn": 65202, "peerAsn": 25253, "state":
-      "Established", "peerHostname": "internet", "assert": "pass", "assertReason":
-      "-", "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname": "exit02",
-      "vrf": "default", "peer": "swp2", "asn": 65202, "peerAsn": 65000, "state": "Established",
+    error: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer":
+      "169.254.254.9", "asn": 65533, "peerAsn": 65522, "state": "Established", "peerHostname":
+      "exit01", "assert": "pass", "assertReason": "-", "timestamp": 1639476253357},
+      {"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.254.5",
+      "asn": 65533, "peerAsn": 65521, "state": "Established", "peerHostname": "exit01",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+      "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.254.1",
+      "asn": 65533, "peerAsn": 65520, "state": "Established", "peerHostname": "exit01",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+      "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.253.9",
+      "asn": 65533, "peerAsn": 65522, "state": "Established", "peerHostname": "exit02",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+      "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.253.5",
+      "asn": 65533, "peerAsn": 65521, "state": "Established", "peerHostname": "exit02",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+      "panos", "hostname": "firewall01", "vrf": "default", "peer": "169.254.253.1",
+      "asn": 65533, "peerAsn": 65520, "state": "Established", "peerHostname": "exit02",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253357}, {"namespace":
+      "panos", "hostname": "leaf03", "vrf": "default", "peer": "10.0.0.22", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine02",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253942}, {"namespace": "panos", "hostname": "leaf03", "vrf": "default",
+      "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "spine02",
+      "vrf": "default", "peer": "10.0.0.14", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "leaf04", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253943}, {"namespace": "panos",
+      "hostname": "spine02", "vrf": "default", "peer": "10.0.0.13", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "leaf03", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253943},
+      {"namespace": "panos", "hostname": "spine02", "vrf": "default", "peer": "10.0.0.12",
+      "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname": "leaf02",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253943}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+      "peer": "10.0.0.11", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "leaf01", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "spine02",
+      "vrf": "default", "peer": "10.0.0.31", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "exit01", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253943}, {"namespace": "panos",
+      "hostname": "spine02", "vrf": "default", "peer": "10.0.0.32", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "exit02", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253943},
+      {"namespace": "panos", "hostname": "exit01", "vrf": "default", "peer": "swp3.2",
+      "asn": 65520, "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01",
+      "assert": "pass", "assertReason": "-", "timestamp": 1639476253943}, {"namespace":
+      "panos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.21", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine01",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253943}, {"namespace": "panos", "hostname": "exit01", "vrf": "default",
+      "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established",
       "peerHostname": "spine02", "assert": "fail", "assertReason": "Not all Afi/Safis
-      enabled", "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname":
-      "exit02", "vrf": "default", "peer": "swp1", "asn": 65202, "peerAsn": 65000,
+      enabled", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit01",
+      "vrf": "internet-vrf", "peer": "swp3.4", "asn": 65522, "peerAsn": 65533, "state":
+      "Established", "peerHostname": "firewall01", "assert": "pass", "assertReason":
+      "-", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit01",
+      "vrf": "internet-vrf", "peer": "swp4", "asn": 65522, "peerAsn": 65534, "state":
+      "Established", "peerHostname": "dcedge01", "assert": "pass", "assertReason":
+      "-", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit01",
+      "vrf": "evpn-vrf", "peer": "swp3.3", "asn": 65521, "peerAsn": 65533, "state":
+      "Established", "peerHostname": "firewall01", "assert": "pass", "assertReason":
+      "-", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit02",
+      "vrf": "internet-vrf", "peer": "swp4", "asn": 65522, "peerAsn": 65534, "state":
+      "Established", "peerHostname": "dcedge01", "assert": "pass", "assertReason":
+      "-", "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "dcedge01",
+      "vrf": "default", "peer": "169.254.127.3", "asn": 65534, "peerAsn": 65522, "state":
+      "Established", "peerHostname": "exit02", "assert": "pass", "assertReason": "-",
+      "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "spine01", "vrf":
+      "default", "peer": "10.0.0.32", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "exit02", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "spine01",
+      "vrf": "default", "peer": "10.0.0.31", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "exit01", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "spine01", "vrf": "default", "peer": "10.0.0.14", "asn": 64520,
+      "peerAsn": 64520, "state": "Established", "peerHostname": "leaf04", "assert":
+      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253948},
+      {"namespace": "panos", "hostname": "spine01", "vrf": "default", "peer": "10.0.0.13",
+      "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname": "leaf03",
+      "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253948}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+      "peer": "10.0.0.12", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "leaf02", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "spine01",
+      "vrf": "default", "peer": "10.0.0.11", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "leaf01", "assert": "fail", "assertReason": "Not
+      all Afi/Safis enabled", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "dcedge01", "vrf": "default", "peer": "169.254.127.1", "asn": 65534,
+      "peerAsn": 65522, "state": "Established", "peerHostname": "exit01", "assert":
+      "pass", "assertReason": "-", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "exit02", "vrf": "internet-vrf", "peer": "swp3.4", "asn": 65522,
+      "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "assert":
+      "pass", "assertReason": "-", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "exit02", "vrf": "default", "peer": "swp3.2", "asn": 65520, "peerAsn":
+      65533, "state": "Established", "peerHostname": "firewall01", "assert": "pass",
+      "assertReason": "-", "timestamp": 1639476253948}, {"namespace": "panos", "hostname":
+      "exit02", "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520,
       "state": "Established", "peerHostname": "spine01", "assert": "fail", "assertReason":
-      "Not all Afi/Safis enabled", "timestamp": 1616638470550}, {"namespace": "dual-bgp",
-      "hostname": "exit02", "vrf": "default", "peer": "swp5.2", "asn": 65202, "peerAsn":
-      65530, "state": "Established", "peerHostname": "edge01", "assert": "pass", "assertReason":
-      "-", "timestamp": 1616638470550}, {"namespace": "dual-bgp", "hostname": "internet",
-      "vrf": "default", "peer": "swp2", "asn": 25253, "peerAsn": 65202, "state": "Established",
-      "peerHostname": "exit02", "assert": "pass", "assertReason": "-", "timestamp":
-      1616638470550}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "internet-vrf",
-      "peer": "swp6", "asn": 65201, "peerAsn": 25253, "state": "Established", "peerHostname":
-      "internet", "assert": "pass", "assertReason": "-", "timestamp": 1616638470555},
-      {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "swp5.2",
-      "asn": 65201, "peerAsn": 65530, "state": "Established", "peerHostname": "edge01",
-      "assert": "pass", "assertReason": "-", "timestamp": 1616638470555}, {"namespace":
-      "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "swp2", "asn": 65201,
-      "peerAsn": 65000, "state": "Established", "peerHostname": "spine02", "assert":
-      "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp": 1616638470555},
-      {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "default", "peer": "swp1",
-      "asn": 65201, "peerAsn": 65000, "state": "Established", "peerHostname": "spine01",
+      "Not all Afi/Safis enabled", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "exit02", "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn":
+      64520, "state": "Established", "peerHostname": "spine02", "assert": "fail",
+      "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253948}, {"namespace":
+      "panos", "hostname": "exit02", "vrf": "evpn-vrf", "peer": "swp3.3", "asn": 65521,
+      "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "assert":
+      "pass", "assertReason": "-", "timestamp": 1639476253948}, {"namespace": "panos",
+      "hostname": "leaf02", "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn":
+      64520, "state": "Established", "peerHostname": "spine02", "assert": "fail",
+      "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253949}, {"namespace":
+      "panos", "hostname": "leaf02", "vrf": "default", "peer": "10.0.0.21", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine01",
       "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470555}, {"namespace": "dual-bgp", "hostname": "exit01", "vrf": "internet-vrf",
-      "peer": "swp5.4", "asn": 65201, "peerAsn": 65530, "state": "Established", "peerHostname":
-      "edge01", "assert": "pass", "assertReason": "-", "timestamp": 1616638470555},
-      {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp6",
-      "asn": 65000, "peerAsn": 65201, "state": "Established", "peerHostname": "exit01",
+      1639476253949}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+      "peer": "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine02", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253949}, {"namespace": "panos", "hostname": "leaf01",
+      "vrf": "default", "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state":
+      "Established", "peerHostname": "spine01", "assert": "fail", "assertReason":
+      "Not all Afi/Safis enabled", "timestamp": 1639476253949}, {"namespace": "panos",
+      "hostname": "leaf04", "vrf": "default", "peer": "10.0.0.22", "asn": 64520, "peerAsn":
+      64520, "state": "Established", "peerHostname": "spine02", "assert": "fail",
+      "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253949}, {"namespace":
+      "panos", "hostname": "leaf04", "vrf": "default", "peer": "10.0.0.21", "asn":
+      64520, "peerAsn": 64520, "state": "Established", "peerHostname": "spine01",
       "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470647}, {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default",
-      "peer": "swp5", "asn": 65000, "peerAsn": 65202, "state": "Established", "peerHostname":
-      "exit02", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
-      1616638470647}, {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default",
-      "peer": "swp4", "asn": 65000, "peerAsn": 65104, "state": "Established", "peerHostname":
-      "leaf04", "assert": "pass", "assertReason": "-", "timestamp": 1616638470647},
-      {"namespace": "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp3",
-      "asn": 65000, "peerAsn": 65103, "state": "Established", "peerHostname": "leaf03",
-      "assert": "pass", "assertReason": "-", "timestamp": 1616638470647}, {"namespace":
-      "dual-bgp", "hostname": "spine01", "vrf": "default", "peer": "swp2", "asn":
-      65000, "peerAsn": 65102, "state": "Established", "peerHostname": "leaf02", "assert":
-      "pass", "assertReason": "-", "timestamp": 1616638470647}, {"namespace": "dual-bgp",
-      "hostname": "spine01", "vrf": "default", "peer": "swp1", "asn": 65000, "peerAsn":
-      65101, "state": "Established", "peerHostname": "leaf01", "assert": "pass", "assertReason":
-      "-", "timestamp": 1616638470647}, {"namespace": "dual-bgp", "hostname": "leaf04",
-      "vrf": "default", "peer": "swp2", "asn": 65104, "peerAsn": 65000, "state": "Established",
-      "peerHostname": "spine02", "assert": "pass", "assertReason": "-", "timestamp":
-      1616638471112}, {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default",
-      "peer": "swp1", "asn": 65102, "peerAsn": 65000, "state": "Established", "peerHostname":
-      "spine01", "assert": "pass", "assertReason": "-", "timestamp": 1616638471112},
-      {"namespace": "dual-bgp", "hostname": "leaf02", "vrf": "default", "peer": "swp2",
-      "asn": 65102, "peerAsn": 65000, "state": "Established", "peerHostname": "spine02",
-      "assert": "pass", "assertReason": "-", "timestamp": 1616638471112}, {"namespace":
-      "dual-bgp", "hostname": "leaf04", "vrf": "default", "peer": "swp1", "asn": 65104,
-      "peerAsn": 65000, "state": "Established", "peerHostname": "spine01", "assert":
-      "pass", "assertReason": "-", "timestamp": 1616638471112}, {"namespace": "dual-bgp",
-      "hostname": "leaf01", "vrf": "default", "peer": "swp2", "asn": 65101, "peerAsn":
-      65000, "state": "Established", "peerHostname": "spine02", "assert": "pass",
-      "assertReason": "-", "timestamp": 1616638471143}, {"namespace": "dual-bgp",
-      "hostname": "leaf01", "vrf": "default", "peer": "swp1", "asn": 65101, "peerAsn":
-      65000, "state": "Established", "peerHostname": "spine01", "assert": "pass",
-      "assertReason": "-", "timestamp": 1616638471143}, {"namespace": "dual-bgp",
-      "hostname": "leaf03", "vrf": "default", "peer": "swp1", "asn": 65103, "peerAsn":
-      65000, "state": "Established", "peerHostname": "spine01", "assert": "pass",
-      "assertReason": "-", "timestamp": 1616638471475}, {"namespace": "dual-bgp",
-      "hostname": "leaf03", "vrf": "default", "peer": "swp2", "asn": 65103, "peerAsn":
-      65000, "state": "Established", "peerHostname": "spine02", "assert": "pass",
-      "assertReason": "-", "timestamp": 1616638471475}]'
+      1639476253949}]'
   marks: bgp assert panos
 - command: bgp assert --status=whatever --format=json
   data-directory: tests/data/panos/parquet-out/
@@ -1177,10 +1240,17 @@ tests:
       "peerHostname": "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis
       enabled", "timestamp": 1639476253949}]'
   marks: bgp assert panos
-- command: bgp assert --hostname=leaf01 --namespace=ospf-ibgp --format=json
+- command: bgp assert --hostname=leaf01 --namespace=panos --format=json
   data-directory: tests/data/panos/parquet-out/
+  error:
+    error: '[{"namespace": "panos", "hostname": "leaf01", "vrf": "default", "peer":
+      "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":
+      "spine02", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
+      1639476253949}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
+      "peer": "10.0.0.21", "asn": 64520, "peerAsn": 64520, "state": "Established",
+      "peerHostname": "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis
+      enabled", "timestamp": 1639476253949}]'
   marks: bgp assert panos
-  output: '[]'
 - command: bgp unique --columns=hostname --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: bgp unique panos

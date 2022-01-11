@@ -59,12 +59,14 @@ tests:
     "vm": 4, "PA-VM": 1}, "archCnt": {"x86_64": 9, "x86-64": 4, "": 1}, "versionCnt":
     {"4.1.1": 9, "18.04.6 LTS": 4, "8.0.0": 1}, "upTimeStat": [6018621, 91984946,
     6020852]}}'
-- command: device summarize --namespace=dual-evpn --format=json
+- command: device summarize --namespace=panos --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: device summarize panos
-  output: '{"namespace": {}, "hostname": {}, "model": {}, "version": {}, "vendor":
-    {}, "architecture": {}, "status": {}, "address": {}, "bootupTimestamp": {}, "timestamp":
-    {}, "uptime": {}, "os": {}, "serialNumber": {}, "active": {}}'
+  output: '{"panos": {"deviceCnt": 14, "downDeviceCnt": 0, "unpolledDeviceCnt": 0,
+    "vendorCnt": {"Cumulus": 9, "Ubuntu": 4, "Palo Alto": 1}, "modelCnt": {"VX": 9,
+    "vm": 4, "PA-VM": 1}, "archCnt": {"x86_64": 9, "x86-64": 4, "": 1}, "versionCnt":
+    {"4.1.1": 9, "18.04.6 LTS": 4, "8.0.0": 1}, "upTimeStat": [6018621, 91984946,
+    6020852]}}'
 - command: device summarize --columns="namespace hostname" --format=json
   data-directory: tests/data/panos/parquet-out/
   error:

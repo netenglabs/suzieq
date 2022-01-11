@@ -949,13 +949,11 @@ tests:
   marks: sqpoller summarize panos
   output: '{"panos": {"deviceCnt": 14, "entriesCnt": 217, "service": 18, "status":
     {"0": 210, "200": 7}, "pollExcdPeriodStat": [0, 0, 0.0]}}'
-- command: sqpoller summarize --namespace=dual-evpn --format=json
+- command: sqpoller summarize --namespace=panos --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: sqpoller summarize panos
-  output: '{"namespace": {}, "hostname": {}, "service": {}, "status": {}, "gatherTime":
-    {}, "totalTime": {}, "svcQsize": {}, "wrQsize": {}, "nodeQsize": {}, "rxBytes":
-    {}, "pollExcdPeriodCount": {}, "timestamp": {}, "version": {}, "nodesPolledCnt":
-    {}, "nodesFailedCnt": {}, "active": {}}'
+  output: '{"panos": {"deviceCnt": 14, "entriesCnt": 217, "service": 18, "status":
+    {"0": 210, "200": 7}, "pollExcdPeriodStat": [0, 0, 0.0]}}'
 - command: sqpoller unique --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: sqpoller unique
