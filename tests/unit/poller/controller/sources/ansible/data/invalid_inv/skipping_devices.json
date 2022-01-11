@@ -2,7 +2,6 @@
     "_meta": {
         "hostvars": {
             "firewall01": {
-                "ansible_host": "10.255.2.28",
                 "ansible_port": 22,
                 "ansible_ssh_private_key_file": "tests/unit/poller/shared/sample_key",
                 "ansible_user": "vagrant",
@@ -98,7 +97,7 @@
                 "ansible_host": "10.255.2.184",
                 "ansible_network_os": "cumulus",
                 "ansible_port": 22,
-                "ansible_password": "password",
+                "ansible_ssh_private_key_file": "wrong/path",
                 "ansible_user": "vagrant",
                 "anycast_gw_mac": "00:00:00:11:12:{{ item.vlanid }}",
                 "bgp_asn": "{{ ibgp_asn }}",
@@ -335,7 +334,6 @@
                 "ansible_network_os": "cumulus",
                 "ansible_port": 22,
                 "ansible_ssh_private_key_file": "tests/unit/poller/shared/sample_key",
-                "ansible_user": "vagrant",
                 "anycast_gw_mac": "00:00:00:11:12:{{ item.vlanid }}",
                 "bgp_asn": "{{ ibgp_asn }}",
                 "default_vrf_asn": 65520,

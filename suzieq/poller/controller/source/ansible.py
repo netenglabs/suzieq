@@ -110,7 +110,7 @@ class AnsibleInventory(Source):
                 port = entry.get('ansible_port', 22)
 
             # Get keyfile
-            keyfile = entry.get('ansible_ssh_private_key_file', '')
+            keyfile = entry.get('ansible_ssh_private_key_file', None)
             if keyfile and not Path(keyfile).exists():
                 logger.warning(
                     f"{self._name} Ignored host {ansible_host} because "
