@@ -18,6 +18,8 @@ from suzieq.shared.utils import load_sq_config, sq_get_config_file
 from tests.conftest import create_dummy_config_file
 
 # pylint: disable=protected-access
+# pylint: disable=unused-argument
+# pylint: disable=redefined-outer-name
 
 _CONFIG_FILE = ['tests/unit/poller/controller/data/suzieq-cfg.yaml']
 
@@ -234,6 +236,9 @@ def generate_argparse(args: Dict) -> argparse.Namespace:
 
 @pytest.fixture
 def mock_static_manager():
+    """Generate a mock for the static manager
+    """
+
     def mock_init(self, data):
         self._workers_count = 1
 
@@ -243,9 +248,12 @@ def mock_static_manager():
     async def mock_2(self):
         pass
 
-    with patch.multiple(StaticManager, __init__=mock_init,
-                        _execute=mock_2, run=mock_2, apply=mock_1):
-        yield
+    mng_mock = patch.multiple(StaticManager, __init__=mock_init,
+                              _execute=mock_2, run=mock_2, apply=mock_1)
+    # native_mock = patch.multiple(SqNativeFile)
+    mng_mock.start()
+    yield
+    mng_mock.stop()
 
 
 @pytest.mark.poller
@@ -326,13 +334,13 @@ def test_default_controller_config():
 
     # No inventory file in default directory
     with pytest.raises(SqPollerConfError):
-        generate_controller(args=_DEFAULT_ARGS, conf_file=None)
+        generate_controller(args=_DEFAULT_ARGS.copy(), conf_file=None)
 
     # Create inventory in the default directory
     def_file = Path(DEFAULT_INVENTORY_PATH)
     def_file.touch(exist_ok=False)
 
-    c = generate_controller(args=_DEFAULT_ARGS, conf_file=None)
+    c = generate_controller(args=_DEFAULT_ARGS.copy(), conf_file=None)
     assert c._config['source']['path'] == DEFAULT_INVENTORY_PATH
     assert c._input_dir is None
     assert c._no_coalescer is False
@@ -359,7 +367,7 @@ def test_controller_init_plugins(inv_file: str):
     Args:
         inv_file (str): inventory
     """
-    c = generate_controller(args=_DEFAULT_ARGS, inv_file=inv_file)
+    c = generate_controller(args=_DEFAULT_ARGS.copy(), inv_file=inv_file)
 
     # wrong plugin type
     with pytest.raises(SqPollerConfError):
@@ -384,7 +392,7 @@ def test_controller_init(inv_file: str, mock_static_manager):
     """
 
     # Test common initialization
-    c = generate_controller(args=_DEFAULT_ARGS, inv_file=inv_file)
+    c = generate_controller(args=_DEFAULT_ARGS.copy(), inv_file=inv_file)
 
     c.init()
     assert len(set(c.sources)) == len(c.sources) == 2
@@ -396,7 +404,7 @@ def test_controller_init(inv_file: str, mock_static_manager):
     assert isinstance(c.manager, StaticManager)
 
     # Test input dir
-    c = generate_controller(args=_DEFAULT_ARGS, inv_file=inv_file)
+    c = generate_controller(args=_DEFAULT_ARGS.copy(), inv_file=inv_file)
     c._input_dir = 'my/directory'
 
     c.init()
@@ -489,7 +497,7 @@ async def test_controller_run(inv_file: str, mock_static_manager):
         self.mock_launched = True
 
     # test usual run function behaviour
-    args = _DEFAULT_ARGS
+    args = _DEFAULT_ARGS.copy()
     c = generate_controller(args=args, inv_file=inv_file)
     with patch.object(c, '_stop', MagicMock(side_effect=c._stop)) as stop_mock:
         with patch.multiple(SqNativeFile, _load=mock_native_load):
@@ -511,7 +519,7 @@ async def test_controller_run(inv_file: str, mock_static_manager):
                     stop_mock.assert_called()
 
     # test with input-dir argument
-    args = _DEFAULT_ARGS
+    args = _DEFAULT_ARGS.copy()
     args['run_once'] = True
     args['input_dir'] = 'tests/unit/poller/controller/data/'
 
@@ -560,7 +568,7 @@ def test_controller_init_errors(inv_file: str, mock_static_manager):
                 self.mock_tested_plugins.append(plugin_type)
                 return {}
 
-    c = generate_controller(args=_DEFAULT_ARGS, inv_file=inv_file)
+    c = generate_controller(args=_DEFAULT_ARGS.copy(), inv_file=inv_file)
 
     # empty 'source' plugins
     with patch.multiple(Controller, init_plugins=mock_init_plugins):
@@ -600,10 +608,7 @@ async def test_controller_empty_inventory(inv_file: str, mock_static_manager):
     async def mock_empty_inventory(self):
         self.set_inventory({})
 
-    async def mock_manager_run(self):
-        pass
-
-    args = _DEFAULT_ARGS
+    args = _DEFAULT_ARGS.copy()
     c = generate_controller(args=args, inv_file=inv_file)
 
     with patch.multiple(SqNativeFile, _load=mock_empty_load):
@@ -619,7 +624,8 @@ async def test_controller_empty_inventory(inv_file: str, mock_static_manager):
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 @pytest.mark.parametrize('config_file', _CONFIG_FILE)
 @pytest.mark.asyncio
-async def test_controller_run_timeout_error(inv_file: str, config_file: str, mock_static_manager):
+async def test_controller_run_timeout_error(inv_file: str, config_file: str,
+                                            mock_static_manager):
     """Test that the controller launches an exception if the get_inventory
     function doesn't return before the timeout
 
@@ -634,8 +640,7 @@ async def test_controller_run_timeout_error(inv_file: str, config_file: str, moc
         Source.get_inventory function
         """
 
-
-    args = _DEFAULT_ARGS
+    args = _DEFAULT_ARGS.copy()
     c = generate_controller(args, inv_file, config_file)
     c.init()
     with patch.multiple(Netbox, run=mock_netbox_run):
