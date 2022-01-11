@@ -1,12 +1,12 @@
 import typing
 import os
 from nubia import command, context
-from suzieq.cli.nubia_patch import argument
 from nubia.internal.commands.help import HelpCommand
 from nubia.internal.cmdbase import Command
 from prompt_toolkit.completion import Completion
 from termcolor import cprint, colored
 
+from suzieq.cli.nubia_patch import argument
 from suzieq.shared.utils import SUPPORTED_ENGINES, print_version
 
 
@@ -146,6 +146,7 @@ def clear_ctxt(
 
 @command('version', help='print the suzieq version')
 def sq_version():
+    '''Print suzieq version'''
     print_version()
 
 

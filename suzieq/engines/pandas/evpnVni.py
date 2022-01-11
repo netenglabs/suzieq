@@ -1,9 +1,9 @@
 import ipaddress
 
-from suzieq.engines.pandas.engineobj import SqPandasEngine
-
 import numpy as np
 import pandas as pd
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class EvpnvniObj(SqPandasEngine):

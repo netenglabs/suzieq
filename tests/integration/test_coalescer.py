@@ -1,19 +1,19 @@
-import pytest
 import asyncio
 import os
-from tests.conftest import create_dummy_config_file
-import yaml
 from tempfile import TemporaryDirectory, NamedTemporaryFile
+from importlib.util import find_spec
+from subprocess import check_output
 from distutils.dir_util import copy_tree
+
+import pytest
+import yaml
 from dateparser import parse
 import pytz
 import pandas as pd
 import numpy as np
-from importlib.util import find_spec
-from subprocess import check_output
-from typing import Union
 
-from .utils import Yaml2Class, assert_df_equal
+from tests.conftest import create_dummy_config_file
+from tests.integration.utils import Yaml2Class, assert_df_equal
 from suzieq.sqobjects import get_sqobject
 from suzieq.shared.utils import humanize_timestamp
 from suzieq.shared.schema import Schema, SchemaForTable
@@ -41,19 +41,19 @@ def _verify_coalescing(datadir):
     original_files = []
     dirs = os.listdir(datadir.name)
     dirs = [x for x in dirs if x not in ['coalesced', '_archived']]
-    for dir in dirs:
-        for _, _, files in os.walk(dir):
+    for folder in dirs:
+        for _, _, files in os.walk(folder):
             if files:
                 original_files.extend(files)
     assert(len(original_files) == 0)
 
-    # And verify there are files in the coalesced dir
+    # And verify there are files in the coalesced folder
     coalesced_files = []
     for _, _, files in os.walk(coalesced_dir):
         if files:
             coalesced_files.extend(files)
 
-    assert(len(coalesced_files))
+    assert(len(coalesced_files) != 0)
 
 
 def _coalescer_init(pq_dir: str):
@@ -69,6 +69,7 @@ def _coalescer_init(pq_dir: str):
     """
 
     # Create a temp dir
+    # pylint: disable=consider-using-with
     temp_dir = TemporaryDirectory()
 
     # Copy the directory we want to copy
@@ -77,6 +78,7 @@ def _coalescer_init(pq_dir: str):
     config = load_sq_config(config_file=create_dummy_config_file())
     config['data-directory'] = f'{temp_dir.name}/'
 
+    # pylint: disable=consider-using-with
     tmpfile = NamedTemporaryFile(suffix='.yml', delete=False)
     with open(tmpfile.name, 'w') as f:
         yaml.dump(config, f)
@@ -128,12 +130,9 @@ def _coalescer_basic_test(pq_dir, namespace, path_src, path_dest):
 
     temp_dir, tmpfile = _coalescer_init(pq_dir)
 
-    from suzieq.sqobjects.tables import TablesObj
-    from suzieq.sqobjects.path import PathObj
-
-    tablesobj = TablesObj(config_file=tmpfile.name)
+    tablesobj = get_sqobject('tables')(config_file=tmpfile.name)
     pre_tables_df = tablesobj.get()
-    pathobj = PathObj(config_file=tmpfile.name)
+    pathobj = get_sqobject('path')(config_file=tmpfile.name)
     pre_path_df = pathobj.get(
         namespace=[namespace], source=path_src, dest=path_dest)
 
@@ -158,6 +157,7 @@ def _coalescer_basic_test(pq_dir, namespace, path_src, path_dest):
                                        '172.16.1.101', '172.16.2.201',
                                        marks=pytest.mark.nxos)])
 def test_basic_single_namespace(pq_dir, namespace, path_src, path_dest):
+    '''Test coalescer for single namespace'''
     _coalescer_basic_test(pq_dir, namespace, path_src, path_dest)
 
 
@@ -167,10 +167,12 @@ def test_basic_single_namespace(pq_dir, namespace, path_src, path_dest):
                          [('tests/data/multidc/parquet-out', 'dual-evpn',
                            '172.16.1.101', '172.16.2.104')])
 def test_basic_multi_namespace(pq_dir, namespace, path_src, path_dest):
+    '''Test coalescer for multi-namespace'''
     _coalescer_basic_test(pq_dir, namespace, path_src, path_dest)
 
 
 @pytest.mark.coalesce
+# pylint: disable=unused-argument
 def test_coalescer_bin(run_sequential):
     '''Verify the sq-coalescer bin works'''
 
@@ -195,7 +197,7 @@ async def _run(cmd):
         stdout=asyncio.subprocess.PIPE,
         stderr=asyncio.subprocess.PIPE)
 
-    stdout, stderr = await proc.communicate()
+    await proc.communicate()
 
     return proc.returncode
 
@@ -212,6 +214,7 @@ async def _run_multiple_coalescer(coalescer_cmd_args):
 
 @pytest.mark.coalesce
 @pytest.mark.asyncio
+# pylint: disable=unused-argument
 async def test_single_instance_run(run_sequential):
     '''Verify that only a single instance of the coalescer is running'''
 
@@ -331,7 +334,9 @@ def _write_verify_transform(mod_df, table, dbeng, schema, config_file,
 @pytest.mark.parametrize(
     "input_file", [pytest.param('tests/integration/coalescer/file1.yml')]
 )
+# pylint: disable=too-many-statements
 def test_transform(input_file):
+    '''Test transformation is captured by coalescer'''
     to_transform = Yaml2Class(input_file)
 
     try:
@@ -346,6 +351,7 @@ def test_transform(input_file):
     cfg = load_sq_config(config_file=tmpfile.name)
     schemas = Schema(cfg['schema-directory'])
 
+    # pylint: disable=too-many-nested-blocks, no-member
     for ele in to_transform.transform.transform:
         query_str_list = []
         # Each transformation has a record => write's happen per record
@@ -368,7 +374,7 @@ def test_transform(input_file):
                         try:
                             chg_df = mod_df.query(query_str) \
                                            .reset_index(drop=True)
-                        except Exception as ex:
+                        except Exception as ex:  # pylint: disable=broad-except
                             assert(not ex)
                         query_str_list.append(query_str)
                     else:
@@ -390,13 +396,11 @@ def test_transform(input_file):
                                         changed_fields)
 
     # Now we coalesce and verify it works
-    from suzieq.sqobjects.tables import TablesObj
-
-    pre_table_df = TablesObj(config_file=tmpfile.name).get()
+    pre_table_df = get_sqobject('tables')(config_file=tmpfile.name).get()
     do_coalesce(cfg, None)
     _verify_coalescing(temp_dir)
 
-    post_table_df = TablesObj(config_file=tmpfile.name).get()
+    post_table_df = get_sqobject('tables')(config_file=tmpfile.name).get()
     assert_df_equal(pre_table_df, post_table_df, None)
 
     # Run additional tests on the coalesced data

@@ -102,7 +102,7 @@ class Inventory(SqPlugin):
         if not self._node_tasks:
             self._node_tasks = {node: self._nodes[node].run()
                                 for node in self._nodes}
-            await self.add_task_fn([t for t in self._node_tasks.values()])
+            await self.add_task_fn(list(self._node_tasks.values()))
 
     async def _init_nodes(self, inventory_list: List[Dict]) -> Dict[str, Node]:
         """Initialize the Node objects given the of credentials of the nodes.
@@ -137,7 +137,7 @@ class Inventory(SqPlugin):
 
         return nodes_list
 
-    @abc.abstractmethod
+    @ abc.abstractmethod
     async def _get_device_list(self) -> List[Dict]:
         """Retrieve the devices credentials from the inventory
         source
@@ -151,7 +151,7 @@ class Inventory(SqPlugin):
         """
         raise NotImplementedError
 
-    @staticmethod
+    @ staticmethod
     def get_node_key(node: Node) -> str:
         """Given a node object it returns its ID key
 

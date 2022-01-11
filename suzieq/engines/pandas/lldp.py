@@ -1,6 +1,6 @@
-from suzieq.engines.pandas.engineobj import SqPandasEngine
-
 import numpy as np
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class LldpObj(SqPandasEngine):

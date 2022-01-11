@@ -117,11 +117,8 @@ async def test_inventory_build():
         assert invnode.jump_host_key
 
         for arg, arg_value in node.items():
-            if arg == 'namespace' or \
-               arg == 'ssh_keyfile' or \
-               arg == 'jump_host' or \
-               arg == 'jump_host_key_file' or \
-               arg == 'passphrase':
+            if arg in ['namespace', 'ssh_keyfile', 'jump_host',
+                       'jump_host_key_file', 'passphrase']:
                 continue
             assert arg_value == getattr(invnode, arg)
 

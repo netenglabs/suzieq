@@ -176,6 +176,7 @@ async def test_service_init():
     assert len(initialized) == len(initialized_set)
 
     # Check if the running mode is the correct one
+    # pylint: disable=use-a-generator
     assert all([s.run_once == svc_mgr.run_mode for s in services])
 
 

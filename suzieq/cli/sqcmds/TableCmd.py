@@ -1,9 +1,9 @@
 import time
 
-from nubia import command
-from suzieq.cli.nubia_patch import argument
 import pandas as pd
+from nubia import command
 
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.tables import TablesObj
 

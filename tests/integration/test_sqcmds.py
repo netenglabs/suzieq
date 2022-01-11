@@ -1,6 +1,5 @@
 # pylint: disable=missing-function-docstring, unused-argument
 # pylint: disable=wildcard-import
-# pylint: disable=relative-beyond-top-level
 
 import os
 import json
@@ -21,7 +20,7 @@ from suzieq.cli.sqcmds import *  # noqa
 from suzieq.version import SUZIEQ_VERSION
 from suzieq.shared.utils import get_sq_install_dir
 
-from .utils import assert_df_equal
+from tests.integration.utils import assert_df_equal
 
 verbs = ['show', 'summarize', 'describe', 'help']
 

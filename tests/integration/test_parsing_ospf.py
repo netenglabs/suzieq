@@ -23,7 +23,7 @@ def _validate_estd_ospf_data(df: pd.DataFrame):
                                         'up', 'down'])).all()
 
 
-def _validate_notestd_ospf_data(df: pd.DataFrame):
+def _validate_notestd_ospf_data(_):
     '''Validate data for those sessions not in neighbor output'''
     # Commenting out this check because in some cases, this can happen as in
     # when we captured the ospf output for mixed namespace. Due to the way
@@ -31,7 +31,6 @@ def _validate_notestd_ospf_data(df: pd.DataFrame):
     # neighbor while the ospfnbr output for that interface is still blank. So
     # commenting out this check.
     # assert (df.nbrCount == 0).all()
-    pass
 
 
 def _validate_common_ospf_data(df: pd.DataFrame):
@@ -55,6 +54,7 @@ def _validate_common_ospf_data(df: pd.DataFrame):
 @ pytest.mark.ospf
 @pytest.mark.parametrize('table', ['ospf'])
 @ pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_ospf_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for OSPF'''
 

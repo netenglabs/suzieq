@@ -22,7 +22,7 @@ df = pd.DataFrame({
     'vrf': {0: 'default', 1: 'evpn-vrf', 2: 'default', 3: 'evpn-vrf',
             4: 'default', 5: 'default', 6: 'evpn-vrf', 7: 'default',
             8: 'evpn-vrf', 9: 'default'},
-    'isL2': {0: False, 1: True, 2: True, 3: False, 4: False, 5: False, 
+    'isL2': {0: False, 1: True, 2: True, 3: False, 4: False, 5: False,
              6: True, 7: True, 8: False, 9: False},
     'overlay': {0: False, 1: False, 2: True, 3: True, 4: False, 5: False,
                 6: False, 7: True, 8: True, 9: False},
@@ -64,18 +64,22 @@ df = pd.DataFrame({
 @pytest.mark.cli
 @pytest.mark.parametrize('output_format', ['json', 'csv', 'markdown',
                                            'devconfig', ''])
+# pylint: disable=unused-argument
 def test_cli_outputs_with_error(output_format, setup_nubia):
     '''Test output generation with errors'''
 
     sqcmd = SqCommand(format=output_format, sqobj=PathObj)
+    # pylint: disable=protected-access
     assert sqcmd._gen_output(df) == 1
 
 
 @pytest.mark.cli
 @pytest.mark.parametrize('output_format', ['json', 'csv', 'markdown',
                                            'devconfig', ''])
+# pylint: disable=unused-argument
 def test_cli_outputs_without_error(output_format, setup_nubia):
     '''Test output generation without errors'''
 
     sqcmd = SqCommand(format=output_format, sqobj=PathObj)
+    # pylint: disable=protected-access
     assert sqcmd._gen_output(df.drop(columns=['error'])) == 0

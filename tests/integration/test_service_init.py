@@ -8,7 +8,7 @@ import yaml
 def _test_init_with_default_config(init_services_default):
     with open(os.path.abspath(os.curdir) +
               '/tests/integration/services/samples/init.yml', 'r') as file:
-        prev_results = yaml.load(file)
+        prev_results = yaml.safe_load(file)
 
     assert isinstance(init_services_default, list)
     for service in init_services_default:

@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
 
 import sys
-import yaml
 import json
 import argparse
 import os
 
-from suzieq.poller.worker.services.svcparser import cons_recs_from_json_template
+import yaml
+from suzieq.poller.worker.services.svcparser import \
+    cons_recs_from_json_template
 
 
 if __name__ == '__main__':

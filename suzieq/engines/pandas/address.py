@@ -1,10 +1,10 @@
 from ipaddress import ip_interface
 
-from suzieq.engines.pandas.engineobj import SqPandasEngine
-from suzieq.shared.utils import convert_macaddr_format_to_colon
-
 import numpy as np
 import pandas as pd
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+from suzieq.shared.utils import convert_macaddr_format_to_colon
 
 
 class AddressObj(SqPandasEngine):

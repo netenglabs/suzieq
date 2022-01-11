@@ -126,7 +126,7 @@ def load_sq_config(validate=True, config_file=None):
     #   ${HOME}/.suzieq/
 
     cfgfile = None
-    cfg = None
+    cfg = {}
 
     cfgfile = sq_get_config_file(config_file)
 

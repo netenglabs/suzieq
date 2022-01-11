@@ -1,11 +1,11 @@
 import operator
 from packaging import version
 
-from suzieq.engines.pandas.engineobj import SqPandasEngine
-from suzieq.shared.utils import humanize_timestamp
-
 import numpy as np
 import pandas as pd
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+from suzieq.shared.utils import humanize_timestamp
 
 
 class DeviceObj(SqPandasEngine):

@@ -1,12 +1,13 @@
 import os
 import json
-import pytest
-import pandas as pd
-from fastapi.testclient import TestClient
 import inspect
 import warnings
 
+import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
+import pandas as pd
+from fastapi.testclient import TestClient
+
 from tests.conftest import cli_commands, create_dummy_config_file
 
 from suzieq.restServer.query import (app, get_configured_api_key,
@@ -253,21 +254,22 @@ MANDATORY_SERVICE_ARGS = {
 ####
 
 
-def _validate_hostname_output(json_out, service, verb, args):
+def _validate_hostname_output(json_out, service, verb, _):
     if verb == "summarize":
-        return True
+        pass
     if service in ['network']:
         # nework has no hostname column
-        return True
+        pass
     elif service in ["mac", "vlan", "mlag", "evpnVni"]:
         # MAC addr is not present on spines
-        assert (set([x['hostname'] for x in json_out]) == set(['leaf01']))
+        assert ({x['hostname'] for x in json_out} == set(['leaf01']))
     else:
-        assert (set([x['hostname'] for x in json_out])
+        assert ({x['hostname'] for x in json_out}
                 == set(['leaf01', 'spine01']))
+    return True
 
 
-def _validate_namespace_output(json_out, service, verb, args):
+def _validate_namespace_output(json_out, service, verb, _):
     if verb == "summarize":
         if service == "network":
             # network summarize has no namespace column
@@ -279,26 +281,24 @@ def _validate_namespace_output(json_out, service, verb, args):
             assert (set(json_out.keys()) == set(['ospf-ibgp', 'ospf-single']))
     else:
         if service in ["bgp", "evpnVni", "devconfig", "mlag"]:
-            assert(set([x['namespace']
-                   for x in json_out]) == set(['ospf-ibgp']))
+            assert({x['namespace'] for x in json_out} == set(['ospf-ibgp']))
         else:
-            assert (set([x['namespace'] for x in json_out])
-                    == set(['ospf-ibgp', 'ospf-single']))
+            assert ({x['namespace'] for x in json_out} == set(['ospf-ibgp',
+                                                               'ospf-single']))
 
 
-def _validate_route_protocol(json_out, service, verb, args):
-    assert (set([x['protocol'] for x in json_out]) == set(['ospf', 'bgp']))
+def _validate_route_protocol(json_out, _, _2, _3):
+    assert ({x['protocol'] for x in json_out} == set(['ospf', 'bgp']))
 
 
-def _validate_macaddr_output(json_out, service, verb, args):
-    assert (set([x['macaddr'] for x in json_out])
+def _validate_macaddr_output(json_out, _, _2, _3):
+    assert ({x['macaddr'] for x in json_out}
             == set(['44:39:39:ff:00:13', '44:39:39:ff:00:24']))
 
 
-def _validate_columns_output(json_out, service, verb, args):
+def _validate_columns_output(json_out, _, _2, args):
     columns = args.split('=')[1]
-    assert (set([x[columns] for x in json_out])
-            != set())
+    assert ({x[columns] for x in json_out} != set())
 
 
 VALIDATE_OUTPUT_FILTER = {
@@ -317,17 +317,18 @@ VALIDATE_OUTPUT_FILTER = {
 
 
 def get(endpoint, service, verb, args):
+    '''Make the call'''
     api_key = get_configured_api_key()
     url = f"{endpoint}/{service}/{verb}?{args}"
 
     # Check if we need to add the mandatory filter for the keyword
     for mandatory_column in MANDATORTY_VERB_ARGS.get(verb, []):
         if mandatory_column not in args:
-            return
+            return -1
 
     for mandatory_column in MANDATORY_SERVICE_ARGS.get(service, []):
         if mandatory_column not in args:
-            return
+            return -1
 
     # Check if we need to add the mandatory filter for the keyword
 
@@ -340,7 +341,7 @@ def get(endpoint, service, verb, args):
 
     verb_use = GOOD_SERVICE_VERBS.get(verb, [])
     if 'all' not in verb_use and service not in verb_use:
-        return
+        return -1
 
     argval = GOOD_FILTERS_FOR_SERVICE_VERB.get(args, [])
 
@@ -359,7 +360,7 @@ def get(endpoint, service, verb, args):
             else:
                 assert df.empty
         else:
-            for elem in argval:
+            for _ in argval:
                 if f'{service}/{verb}' in GOOD_FILTERS_FOR_SERVICE_VERB:
                     validate_output = True
                     match_verb = argval[0].split('/')[1]
@@ -389,8 +390,10 @@ def get(endpoint, service, verb, args):
 @pytest.mark.parametrize("verb", [
     pytest.param(verb, marks=MarkDecorator(Mark(verb, [], {})))
     for verb in VERBS])
-@pytest.mark.parametrize("arg", [filter for filter in FILTERS])
+@pytest.mark.parametrize("arg", FILTERS)
+# pylint: disable=redefined-outer-name, unused-argument
 def test_rest_services(app_initialize, service, verb, arg):
+    '''Main workhorse'''
     get(ENDPOINT, service, verb, arg)
 
 
@@ -487,6 +490,9 @@ def test_rest_arg_consistency(service, verb):
 
 @ pytest.fixture()
 def app_initialize():
+    '''Initialize the test server'''
+
+    # pylint: disable=import-outside-toplevel
     from suzieq.restServer.query import app_init
 
     cfgfile = create_dummy_config_file(
@@ -502,6 +508,8 @@ def app_initialize():
 # For some reason, putting the no_https in a for loop didn't work either
 @ pytest.mark.rest
 def test_rest_server():
+    '''Try starting the REST server, actually'''
+    # pylint: disable=import-outside-toplevel
     import subprocess
     from time import sleep
     import requests
@@ -509,6 +517,7 @@ def test_rest_server():
     cfgfile = create_dummy_config_file(
         datadir='./tests/data/multidc/parquet-out')
 
+    # pylint: disable=consider-using-with
     server = subprocess.Popen(
         f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} --no-https'
         .split())
@@ -518,6 +527,7 @@ def test_rest_server():
     server.kill()
     sleep(5)
 
+    # pylint: disable=consider-using-with
     server = subprocess.Popen(
         f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} '.split())
     sleep(5)

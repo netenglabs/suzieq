@@ -53,7 +53,7 @@ class StaticChunker(Chunker):
                     'Not enough devices to split the inventory'
                     f'into {n_chunks} chunks'
                 )
-            elif self.policy == 'namespace':
+            if self.policy == 'namespace':
                 raise SqPollerConfError(
                     'Not enough namespaces to split the inventory'
                     f'into {n_chunks} chunks'

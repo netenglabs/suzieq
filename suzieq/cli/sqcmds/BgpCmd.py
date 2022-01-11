@@ -1,11 +1,10 @@
 import time
 from datetime import timedelta
 from nubia import command
-from suzieq.cli.nubia_patch import argument
 
 import pandas as pd
 
-
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.bgp import BgpObj
 
