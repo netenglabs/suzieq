@@ -34,7 +34,8 @@ def test_load(data_path: Dict):
     init_data = {
         'username': 'user-to-override',
         'ssh-passphrase': 'plain:my-pass',
-        'password': 'plain:password'
+        'password': 'plain:password',
+        'keyfile': 'my/keyfile'
     }
 
     sl = StaticLoader(init_data)
@@ -43,11 +44,27 @@ def test_load(data_path: Dict):
     assert sl._username == init_data['username']
     assert sl._passphrase == init_data['ssh-passphrase'].split(':')[1]
     assert sl._password == init_data['password'].split(':')[1]
+    assert sl._keyfile == init_data['keyfile']
 
     inv = read_yaml_file(data_path['inventory'])
     sl.load(inv)
 
     assert inv == read_yaml_file(data_path['results'])
+
+
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.credential_loader
+@pytest.mark.static_credential_loader
+def test_no_env_var():
+    """Testing a password retrieved from an unexisting env var
+    """
+    init_data = {
+        'password': 'env:WRONG_ENV',
+    }
+
+    with pytest.raises(InventorySourceError):
+        StaticLoader(init_data)
 
 
 @pytest.mark.poller

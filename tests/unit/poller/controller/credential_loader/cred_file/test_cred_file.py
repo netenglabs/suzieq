@@ -25,8 +25,12 @@ _DATA_PATH = [
     }
 ]
 
-_WRONG_CRED_FILE = 'tests/unit/poller/controller/credential_loader/'\
-    'cred_file/data/wrong_cred_file.yaml'
+_WRONG_CRED_FILE = ['tests/unit/poller/controller/credential_loader/'
+                    'cred_file/data/wrong_files/empty.yaml',
+                    'tests/unit/poller/controller/credential_loader/cred_file/'
+                    'data/wrong_files/not_a_list.yaml',
+                    'tests/unit/poller/controller/credential_loader/cred_file/'
+                    'data/wrong_files/not_a_yaml_file.yaml']
 
 
 def init_mock(self, data: Dict):
@@ -81,6 +85,21 @@ def test_credential_load(data_path: Dict):
 @pytest.mark.controller
 @pytest.mark.credential_loader
 @pytest.mark.credential_file
+@pytest.mark.parametrize('cred_file', _WRONG_CRED_FILE)
+def test_wrong_cred_file_format(cred_file: str):
+    """Test credential files with wrong formats
+
+    Args:
+        cred_file (str): credential file path
+    """
+    with pytest.raises(InventorySourceError):
+        CredFile({'path': cred_file})
+
+
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.credential_loader
+@pytest.mark.credential_file
 @pytest.mark.parametrize('data_path', [_DATA_PATH[0]])
 def test_wrong_credentials(data_path: Dict):
     """Tests all the possible ways to missconfigure a CredFile
@@ -98,10 +117,6 @@ def test_wrong_credentials(data_path: Dict):
     # credential file doesn't exists
     with pytest.raises(InventorySourceError):
         CredFile({'path': 'wrong/path'})
-
-    # credential file has a wrong format
-    with pytest.raises(InventorySourceError):
-        CredFile({'path': _WRONG_CRED_FILE})
 
     # invalid credential file
     with patch.multiple(CredFile, init=init_mock):
@@ -148,6 +163,11 @@ def test_wrong_credentials(data_path: Dict):
             cr = CredFile(cred_data)
             cr.load(inv)
         cred_dev.pop('username')
+
+        # load an empty inventory
+        cred_data['path'] = creds
+        cr = CredFile(cred_data)
+        cr.load({})
 
         # node with missing credentials
         creds[0]['devices'].pop()
