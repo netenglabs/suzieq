@@ -56,6 +56,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         # If the debug mode is active we need to set run_once
         if config_data.get('debug'):
             self._run_once = 'debug'
+        elif self._input_dir:
+            self._run_once = 'input-dir'
 
         if not self._no_coalescer:
             self._coalescer_launcher = CoalescerLauncher(
