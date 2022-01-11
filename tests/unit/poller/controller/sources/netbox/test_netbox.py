@@ -16,7 +16,7 @@ from tests.unit.poller.controller.sources.netbox.netbox_rest_server import \
 from tests.unit.poller.shared.utils import (get_free_port,
                                             get_src_sample_config)
 
-_SAMPLE_CONFIG = get_src_sample_config('netbox')
+# pylint: disable=redefined-outer-name
 
 _SERVER_CONFIGS = [
     {
@@ -119,20 +119,33 @@ def rest_server_manager():
     _ = [p.terminate() for p in proc_list]
 
 
+@pytest.fixture
+def default_config() -> Dict:
+    """Generate a default netbox config
+
+    Returns:
+        Dict: netbox config
+
+    Yields:
+        Iterator[Dict]: [description]
+    """
+    yield get_src_sample_config('netbox')
+
+
 @pytest.mark.controller_source
 @pytest.mark.controller
 @pytest.mark.poller
 @pytest.mark.netbox
 @pytest.mark.asyncio
 @pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
-async def test_valid_config(server_conf: Dict):
+async def test_valid_config(server_conf: Dict, default_config):
     """Tests if the pulled inventory is valid
 
     Args:
         server_conf(Dict): server configuration
     """
     # pylint: disable=protected-access
-    config = _SAMPLE_CONFIG
+    config = default_config
     config = update_config(server_conf, config)
 
     src = Netbox(config)
@@ -164,16 +177,16 @@ async def test_valid_config(server_conf: Dict):
 @pytest.mark.netbox
 @pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
 @pytest.mark.asyncio
-async def test_invalid_config(server_conf: Dict):
-    """Test invalid configuration
+async def test_netbox_invalid_server_config(server_conf: Dict, default_config):
+    """Test netbox recognize invalid server configuration
 
     Args:
         server_conf (Dict): server configuration
     """
-    config = _SAMPLE_CONFIG
+    config = default_config
     config = update_config(server_conf, config)
 
-    # set an invalid url
+    # set unexistent url
     old_url, config['url'] = config['url'], 'http://0.0.0.0:80'
     with pytest.raises(InventorySourceError):
         src = Netbox(config)
@@ -195,9 +208,40 @@ async def test_invalid_config(server_conf: Dict):
         await asyncio.wait_for(src.run(), 10)
     config['token'] = old_token
 
-    # set an invalid configuration
-    config.pop('token')
-    with pytest.raises(InventorySourceError):
+
+@pytest.mark.controller_source
+@pytest.mark.controller
+@pytest.mark.poller
+@pytest.mark.netbox
+def test_netbox_invalid_config(default_config):
+    """Test invalid netbox configurations
+    """
+    config = default_config
+
+    # set invalid url
+    old_url, config['url'] = config['url'], 'not_an_url'
+    with pytest.raises(InventorySourceError, match=r".* invalid url provided"):
+        Netbox(config)
+    config['url'] = old_url
+
+    # add invalid field
+    config['invalid'] = 'field'
+    with pytest.raises(InventorySourceError, match=r".* unknown fields "
+                       r"\['invalid'\]"):
+        Netbox(config)
+    config.pop('invalid')
+
+    # missing auth
+    old_auth = config.pop('auth')
+    with pytest.raises(InventorySourceError, match=r".* Netbox must have an "
+                       "'auth' set in the 'namespaces' section"):
+        Netbox(config)
+    config['auth'] = old_auth
+
+    # missing mandatory field
+    old_token = config.pop('token')
+    with pytest.raises(InventorySourceError, match=r".* Invalid config "
+                       r"missing fields \['token'\]"):
         Netbox(config)
     config['token'] = old_token
 
@@ -208,13 +252,13 @@ async def test_invalid_config(server_conf: Dict):
 @pytest.mark.netbox
 @pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
 @pytest.mark.asyncio
-async def test_ssl_missconfiguration(server_conf: Dict):
+async def test_ssl_missconfiguration(server_conf: Dict, default_config):
     """Test possible ssl missconfigurations
 
     Args:
         server_conf (Dict): server configuration
     """
-    config = _SAMPLE_CONFIG
+    config = default_config
     config = update_config(server_conf, config)
 
     if server_conf['use_ssl'] == 'self-signed':
@@ -231,3 +275,24 @@ async def test_ssl_missconfiguration(server_conf: Dict):
         with pytest.raises(InventorySourceError):
             src = Netbox(config)
             await asyncio.wait_for(src.run(), 10)
+
+
+@pytest.mark.controller_source
+@pytest.mark.controller
+@pytest.mark.poller
+@pytest.mark.netbox
+def test_netbox_automatic_ssl_verify(default_config):
+    """Test netbox ssl verify is set correctly if not specified
+    """
+    # pylint: disable=protected-access
+    config = default_config
+    if 'ssl-verify' in config:
+        config.pop('ssl-verify')
+    config['url'] = 'http://127.0.0.1:22'
+
+    n = Netbox(config)
+    assert not n._ssl_verify
+
+    config['url'] = 'https://127.0.0.1:22'
+    n = Netbox(config)
+    assert n._ssl_verify
