@@ -4,6 +4,7 @@ from nubia.internal.blackcmd import CommandBlacklist
 
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 from suzieq.cli.sq_nubia_statusbar import NubiaSuzieqStatusBar
+from suzieq.cli.sqcmds.context_commands import SqHelpCommand
 
 
 class NubiaSuzieqPlugin(PluginInterface):
@@ -31,7 +32,7 @@ class NubiaSuzieqPlugin(PluginInterface):
 
     def get_commands(self):
 
-        return []
+        return [SqHelpCommand()]
 
     def get_opts_parser(self, add_help=True):
         """
