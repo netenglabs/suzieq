@@ -45,8 +45,10 @@ def set_inventory_mock(self, inventory: Dict):
 
 
 @pytest.mark.controller_device
-@pytest.mark.controller
 @pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.asyncio
 @pytest.mark.parametrize('inventory', _INVENTORY)
 async def test_devices_set(inventory: Dict):
@@ -87,8 +89,10 @@ async def test_devices_set(inventory: Dict):
 
 
 @pytest.mark.controller_device
-@pytest.mark.controller
 @pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 def test_wrong_device_config():
     """Test device wrong configuration
     """

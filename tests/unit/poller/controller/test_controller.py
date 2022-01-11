@@ -258,6 +258,8 @@ def mock_static_manager():
 
 @pytest.mark.poller
 @pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('config_file', _CONFIG_FILE)
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 @pytest.mark.parametrize('args', _VALID_ARGS)
@@ -304,6 +306,8 @@ def test_controller_valid_args(config_file: str, inv_file: str, args: Dict):
 
 @pytest.mark.poller
 @pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('config_file', _CONFIG_FILE)
 @pytest.mark.parametrize('args', _INVALID_ARGS)
 def test_controller_invalid_args(config_file: str, args: Dict):
@@ -328,6 +332,8 @@ def test_controller_invalid_args(config_file: str, args: Dict):
 
 @pytest.mark.poller
 @pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 def test_default_controller_config():
     """Test controller default configuration
     """
@@ -360,6 +366,8 @@ def test_default_controller_config():
 
 @pytest.mark.poller
 @pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 def test_controller_init_plugins(inv_file: str):
     """Test Controller.init_plugins function
@@ -383,6 +391,8 @@ def test_controller_init_plugins(inv_file: str):
 
 @pytest.mark.poller
 @pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 def test_controller_init(inv_file: str, mock_static_manager):
     """Test Controler.init function
@@ -415,6 +425,8 @@ def test_controller_init(inv_file: str, mock_static_manager):
 
 @pytest.mark.poller
 @pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 @pytest.mark.asyncio
 async def test_controller_run(inv_file: str, mock_static_manager):
@@ -534,6 +546,8 @@ async def test_controller_run(inv_file: str, mock_static_manager):
 
 @pytest.mark.poller
 @pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 def test_controller_init_errors(inv_file: str, mock_static_manager):
     """Test Controller.init function errors
@@ -591,6 +605,8 @@ def test_controller_init_errors(inv_file: str, mock_static_manager):
 
 @pytest.mark.poller
 @pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 @pytest.mark.asyncio
 async def test_controller_empty_inventory(inv_file: str, mock_static_manager):
@@ -621,6 +637,8 @@ async def test_controller_empty_inventory(inv_file: str, mock_static_manager):
 
 @pytest.mark.poller
 @pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 @pytest.mark.parametrize('config_file', _CONFIG_FILE)
 @pytest.mark.asyncio

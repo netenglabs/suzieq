@@ -13,8 +13,10 @@ _GLOB_INV = read_yaml_file(f'{_DATA_DIR}/inventory.yaml')
 
 @pytest.mark.poller
 @pytest.mark.controller
-@pytest.mark.chunker
-@pytest.mark.static_chunker
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_chunker
+@pytest.mark.controller_chunker_static
 @pytest.mark.parametrize('policy', _POLICIES)
 @pytest.mark.parametrize('n_chunks', _N_CHUNKS)
 def test_split(policy: str, n_chunks: int):
@@ -35,8 +37,10 @@ def test_split(policy: str, n_chunks: int):
 
 @pytest.mark.poller
 @pytest.mark.controller
-@pytest.mark.chunker
-@pytest.mark.static_chunker
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_chunker
+@pytest.mark.controller_chunker_static
 def test_default_config():
     """Test that the default configuration is set up
     """
@@ -46,8 +50,10 @@ def test_default_config():
 
 @pytest.mark.poller
 @pytest.mark.controller
-@pytest.mark.chunker
-@pytest.mark.static_chunker
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_chunker
+@pytest.mark.controller_chunker_static
 @pytest.mark.parametrize('policy', _POLICIES)
 @pytest.mark.parametrize('n_chunks', [10])
 def test_too_much_chunks(policy: str, n_chunks: int):
@@ -70,8 +76,10 @@ def test_too_much_chunks(policy: str, n_chunks: int):
 
 @pytest.mark.poller
 @pytest.mark.controller
-@pytest.mark.chunker
-@pytest.mark.static_chunker
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_chunker
+@pytest.mark.controller_chunker_static
 def test_unknown_policy():
     """Test that an unknown policy is recognized
     """

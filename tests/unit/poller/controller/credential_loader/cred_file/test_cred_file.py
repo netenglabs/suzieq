@@ -57,8 +57,10 @@ def init_mock(self, data: Dict):
 
 @pytest.mark.poller
 @pytest.mark.controller
-@pytest.mark.credential_loader
-@pytest.mark.credential_file
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_credential_loader
+@pytest.mark.controller_credential_loader_credential_file
 @pytest.mark.parametrize('data_path', _DATA_PATH)
 def test_credential_load(data_path: Dict):
     """Test if the credentials are loaded correctly
@@ -83,8 +85,10 @@ def test_credential_load(data_path: Dict):
 
 @pytest.mark.poller
 @pytest.mark.controller
-@pytest.mark.credential_loader
-@pytest.mark.credential_file
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_credential_loader
+@pytest.mark.controller_credential_loader_credential_file
 @pytest.mark.parametrize('cred_file', _WRONG_CRED_FILE)
 def test_wrong_cred_file_format(cred_file: str):
     """Test credential files with wrong formats
@@ -98,8 +102,10 @@ def test_wrong_cred_file_format(cred_file: str):
 
 @pytest.mark.poller
 @pytest.mark.controller
-@pytest.mark.credential_loader
-@pytest.mark.credential_file
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_credential_loader
+@pytest.mark.controller_credential_loader_credential_file
 @pytest.mark.parametrize('data_path', [_DATA_PATH[0]])
 def test_wrong_credentials(data_path: Dict):
     """Tests all the possible ways to missconfigure a CredFile

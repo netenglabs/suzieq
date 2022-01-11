@@ -35,10 +35,12 @@ def default_config() -> Dict:
     yield get_src_sample_config('ansible')
 
 
-@pytest.mark.ansible
+@pytest.mark.controller_source_ansible
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('data_path', _DATA_PATH)
 @pytest.mark.asyncio
 async def test_valid_inventory(data_path: Dict, default_config):
@@ -61,10 +63,12 @@ async def test_valid_inventory(data_path: Dict, default_config):
     assert cur_inv == read_yaml_file(data_path['results'])
 
 
-@pytest.mark.ansible
+@pytest.mark.controller_source_ansible
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 def test_invalid_path(default_config):
     """Test ansible with an invalid file path
     """
@@ -82,10 +86,12 @@ def test_invalid_path(default_config):
         AnsibleInventory(config)
 
 
-@pytest.mark.ansible
+@pytest.mark.controller_source_ansible
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.asyncio
 @pytest.mark.parametrize('path', _SKIPPING_INVENTORY)
 async def test_skipping_inventory(path: str, default_config):
@@ -104,10 +110,12 @@ async def test_skipping_inventory(path: str, default_config):
     assert cur_inv == {}
 
 
-@pytest.mark.ansible
+@pytest.mark.controller_source_ansible
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('path', _INVALID_INVENTORY)
 def test_invalid_inventory(path: str, default_config):
     """Test invalid inventories

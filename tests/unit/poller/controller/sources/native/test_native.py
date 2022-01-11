@@ -29,10 +29,12 @@ def default_config() -> Dict:
     yield get_src_sample_config('native')
 
 
-@pytest.mark.native
+@pytest.mark.controller_source_native
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('data_path', _DATA_PATH)
 @pytest.mark.asyncio
 async def test_valid_config(data_path: str, default_config):
@@ -52,9 +54,11 @@ async def test_valid_config(data_path: str, default_config):
 
 
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
-@pytest.mark.native
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_native
 @pytest.mark.asyncio
 async def test_invalid_hosts(default_config):
     """Test invalid hosts param
@@ -119,9 +123,11 @@ async def test_invalid_hosts(default_config):
 
 
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
-@pytest.mark.native
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_native
 @pytest.mark.asyncio
 def test_validate_inventory(default_config):
     """Check that validate_inventory raise correctly

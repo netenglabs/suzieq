@@ -17,8 +17,10 @@ _DATA_PATH = [
 
 @pytest.mark.poller
 @pytest.mark.controller
-@pytest.mark.credential_loader
-@pytest.mark.static_credential_loader
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_credential_loader
+@pytest.mark.controller_credential_loader_static
 @pytest.mark.parametrize('data_path', _DATA_PATH)
 def test_load(data_path: Dict):
     """Test if the credentials are loaded correctly
@@ -54,8 +56,10 @@ def test_load(data_path: Dict):
 
 @pytest.mark.poller
 @pytest.mark.controller
-@pytest.mark.credential_loader
-@pytest.mark.static_credential_loader
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_credential_loader
+@pytest.mark.controller_credential_loader_static
 def test_no_env_var():
     """Testing a password retrieved from an unexisting env var
     """
@@ -69,8 +73,10 @@ def test_no_env_var():
 
 @pytest.mark.poller
 @pytest.mark.controller
-@pytest.mark.credential_loader
-@pytest.mark.static_credential_loader
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_credential_loader
+@pytest.mark.controller_credential_loader_static
 def test_variables_init(monkeypatch):
     """Test parameters are correctly set up
     """

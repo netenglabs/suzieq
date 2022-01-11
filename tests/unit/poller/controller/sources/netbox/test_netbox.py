@@ -133,9 +133,11 @@ def default_config() -> Dict:
 
 
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
-@pytest.mark.netbox
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_netbox
 @pytest.mark.asyncio
 @pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
 async def test_valid_config(server_conf: Dict, default_config):
@@ -172,9 +174,11 @@ async def test_valid_config(server_conf: Dict, default_config):
 
 
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
-@pytest.mark.netbox
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_netbox
 @pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
 @pytest.mark.asyncio
 async def test_netbox_invalid_server_config(server_conf: Dict, default_config):
@@ -210,9 +214,11 @@ async def test_netbox_invalid_server_config(server_conf: Dict, default_config):
 
 
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
-@pytest.mark.netbox
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_netbox
 def test_netbox_invalid_config(default_config):
     """Test invalid netbox configurations
     """
@@ -247,9 +253,11 @@ def test_netbox_invalid_config(default_config):
 
 
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
-@pytest.mark.netbox
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_netbox
 @pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
 @pytest.mark.asyncio
 async def test_ssl_missconfiguration(server_conf: Dict, default_config):
@@ -278,9 +286,11 @@ async def test_ssl_missconfiguration(server_conf: Dict, default_config):
 
 
 @pytest.mark.controller_source
-@pytest.mark.controller
 @pytest.mark.poller
-@pytest.mark.netbox
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_netbox
 def test_netbox_automatic_ssl_verify(default_config):
     """Test netbox ssl verify is set correctly if not specified
     """
