@@ -179,7 +179,7 @@ class Controller:
             self.sources = self.init_plugins('source')
             if not self.sources:
                 raise SqPollerConfError(
-                    'The inventory file has not any sources'
+                    "The inventory file doesn't have any source"
                 )
 
             # Initialize chunker module
@@ -198,7 +198,7 @@ class Controller:
         managers = self.init_plugins('manager')
         if len(managers) > 1:
             raise SqPollerConfError(
-                'Only 1 poller_manager at a time is supported'
+                'Only 1 manager at a time is supported'
             )
         self.manager = managers[0]
 
