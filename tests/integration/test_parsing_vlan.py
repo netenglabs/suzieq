@@ -1,8 +1,9 @@
-import pytest
 import warnings
 
-from tests.conftest import DATADIR, validate_host_shape
+import pytest
 import pandas as pd
+
+from tests.conftest import DATADIR, validate_host_shape
 
 
 def validate_vlan_tbl(df: pd.DataFrame):
@@ -19,6 +20,7 @@ def validate_vlan_tbl(df: pd.DataFrame):
 @ pytest.mark.vlan
 @ pytest.mark.parametrize('table', ['vlan'])
 @ pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_vlan_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for VLAN table'''
 

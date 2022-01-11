@@ -1,5 +1,9 @@
 from ipaddress import ip_address, ip_network
+
 import dateparser
+import numpy as np
+import pandas as pd
+from pandas.core.groupby import DataFrameGroupBy
 
 from suzieq.shared.utils import humanize_timestamp
 from suzieq.shared.schema import Schema, SchemaForTable
@@ -7,10 +11,6 @@ from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects import get_sqobject
 from suzieq.db import get_sqdb_engine
 from suzieq.shared.exceptions import UserQueryError
-
-import numpy as np
-import pandas as pd
-from pandas.core.groupby import DataFrameGroupBy
 
 
 class SqPandasEngine(SqEngineObj):

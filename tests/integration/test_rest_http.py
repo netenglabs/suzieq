@@ -1,12 +1,14 @@
-import pytest
-from tests.conftest import create_dummy_config_file, suzieq_rest_server_path
-import os
-from suzieq.shared.utils import load_sq_config
 from random import randint
 from time import sleep
 import subprocess
+import os
+
 import requests
 import yaml
+import pytest
+
+from tests.conftest import create_dummy_config_file, suzieq_rest_server_path
+from suzieq.shared.utils import load_sq_config
 
 
 @pytest.mark.rest
@@ -19,16 +21,18 @@ def test_server_exec():
     port = randint(9000, 10000)
     # We need to change the port used to avoid conflicts
     cfgfile = create_dummy_config_file()
-    cfg = load_sq_config(cfgfile)
-    if not cfg.get('rest', {}):
-        cfg['rest'] = {'port': port}
+    sqcfg = load_sq_config(cfgfile)
+
+    if 'rest' not in sqcfg:
+        sqcfg['rest'] = {'port': port}
     else:
-        cfg['rest']['port'] = port
+        sqcfg['rest']['port'] = port
 
     with open(cfgfile, 'w') as f:
-        f.write(yaml.safe_dump(cfg))
+        f.write(yaml.safe_dump(sqcfg))
 
     server_cmd_args = f'{suzieq_rest_server_path} -c {cfgfile}'.split()
+    # pylint: disable=consider-using-with
     proc = subprocess.Popen(server_cmd_args)
 
     # Try a request from the server
@@ -48,6 +52,7 @@ def test_server_exec():
     # Now test without https
     server_cmd_args = (
         f'{suzieq_rest_server_path} -c {cfgfile} --no-https'.split())
+    # pylint: disable=consider-using-with
     proc = subprocess.Popen(server_cmd_args)
 
     # Try a request from the server

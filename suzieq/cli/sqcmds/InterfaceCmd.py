@@ -1,12 +1,11 @@
 import time
 
 from nubia import command
+import pandas as pd
 
 from suzieq.cli.nubia_patch import argument
 from suzieq.sqobjects import get_sqobject
 from suzieq.cli.sqcmds.command import SqCommand
-
-import pandas as pd
 
 
 @command("interface", help="Act on Interface data", aliases=['interfaces'])

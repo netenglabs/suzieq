@@ -2,7 +2,9 @@ import pandas as pd
 import yaml
 
 
-class Dict2Class(object):
+class Dict2Class:
+    '''Convert dict to class to enable use of "." to access mbrs'''
+
     def __init__(self, dvar, def_topvar):
         if not isinstance(dvar, dict) or not dvar:
             setattr(self, def_topvar, None)
@@ -19,13 +21,16 @@ class Dict2Class(object):
                 setattr(self, key.replace('-', '_'), dvar[key])
 
 
-class Yaml2Class(object):
+class Yaml2Class:
+    '''Convert yaml file data into class'''
+
     def __init__(self, yaml_file, def_topvar='transform'):
         with open(yaml_file, 'r') as f:
             dvar = yaml.safe_load(f.read())
             self.transform = Dict2Class(dvar, def_topvar)
 
 
+# pylint: disable=too-many-statements
 def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
     '''Compare the dataframes for equality
 
@@ -92,11 +97,13 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
 
                 assert got_df.shape == expected_df.shape, \
                     f'expected/{expected_df.shape} != got/{got_df.shape}\n' \
-                    f'{expected_df.namespace.value_counts()} \nVS\n{got_df.namespace.value_counts()}'  # noqa
+                    f'{expected_df.namespace.value_counts()} \nVS\n' \
+                    f'{got_df.namespace.value_counts()}'  # noqa
             elif 'hostname' in expected_df.columns:
                 assert got_df.shape == expected_df.shape, \
                     f'expected/{expected_df.shape} != got/{got_df.shape}\n' \
-                    f'{expected_df.hostname.value_counts()} \nVS\n{got_df.hostname.value_counts()}'  # noqa
+                    f'{expected_df.hostname.value_counts()} \nVS\n' \
+                    f'{got_df.hostname.value_counts()}'  # noqa
             else:
                 assert got_df.shape == expected_df.shape, \
                     f'expected/{expected_df.shape} != got/{got_df.shape}'
@@ -119,6 +126,8 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
             # the failure. Pass if the problem is the order but they're
             # equal
             for row in rslt_df.itertuples():
+                # pylint: disable=protected-access
+                # Not really a protected member, its a col name
                 if isinstance(row._1, list) and isinstance(row._2, list):
                     if set(row._1) != set(row._2):
                         matches = False
@@ -134,11 +143,11 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
                 if isinstance(got_df.index, pd.RangeIndex):
                     got_tuples = [x[1:] for x in got_df.itertuples()]
                 else:
-                    got_tuples = [x for x in got_df.itertuples()]
+                    got_tuples = list(got_df.itertuples())
                 if isinstance(expected_df.index, pd.RangeIndex):
                     expected_tuples = [x[1:] for x in expected_df.itertuples()]
                 else:
-                    expected_tuples = [x for x in expected_df.itertuples()]
+                    expected_tuples = list(expected_df.itertuples())
                 try:
                     assert (set(got_tuples) == set(
                         expected_tuples)), f'{rslt_df}'
@@ -163,6 +172,7 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
             if not got_df.empty:
                 assert (not rslt_df.empty and rslt_df.query(
                     '_merge != "both"').empty), 'Merge compare failed'
+        # pylint: disable=broad-except
         except (Exception, AssertionError, TypeError):
             assert(got_df.shape == expected_df.shape)
             assert('Unable to compare' == '')
@@ -177,8 +187,8 @@ def _list_columns_to_str(col):
             for d in el:
                 # dictionaries are handled separately
                 if isinstance(d, dict):
-                    str_el.append(str({key: val for key, val in sorted(
-                        d.items(), key=lambda x: x[0])}))
+                    str_el.append(str(dict(sorted(
+                        d.items(), key=lambda x: x[0]))))
                 else:
                     str_el.append(str(d))
             res.append(" ".join(sorted(str_el)))

@@ -165,16 +165,18 @@ def apprun(*args):
     state = st.session_state
     state.config_file = config_file
 
-    st.set_page_config(layout="wide",
-                       page_title="Suzieq",
-                       menu_items={
-                           'Get Help': 'https://suzieq.readthedocs.io/',
-                           'Report a bug': 'https://github.com/netenglabs/suzieq/issues/new/choose',
-                           'About': f'''
-                            Suzieq Version: {SUZIEQ_VERSION}.
-                            Copyright 2022 Stardust Systems Inc. All Rights Reserved
-                           '''
-                       })
+    st.set_page_config(
+        layout="wide",
+        page_title="Suzieq",
+        menu_items={
+            'Get Help': 'https://suzieq.readthedocs.io/',
+            'Report a bug':
+            'https://github.com/netenglabs/suzieq/issues/new/choose',
+            'About': f'''
+            Suzieq Version: {SUZIEQ_VERSION}.
+            Copyright 2022 Stardust Systems Inc. All Rights Reserved
+            '''
+        })
 
     for key, val in [('pages', None),
                      ('menulist', []),

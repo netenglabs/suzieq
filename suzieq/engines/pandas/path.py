@@ -5,12 +5,12 @@ from functools import lru_cache
 from collections import defaultdict
 from copy import copy
 
+import numpy as np
+import pandas as pd
+
 from suzieq.shared.exceptions import EmptyDataframeError
 from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.utils import expand_nxos_ifname, MAX_MTU
-
-import numpy as np
-import pandas as pd
 
 # TODO: What timestamp to use (arpND, mac, interface, route..)
 

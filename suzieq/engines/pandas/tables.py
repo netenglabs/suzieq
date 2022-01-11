@@ -1,6 +1,6 @@
-from suzieq.engines.pandas.engineobj import SqPandasEngine
-
 import pandas as pd
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class TableObj(SqPandasEngine):

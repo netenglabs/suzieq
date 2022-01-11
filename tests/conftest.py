@@ -13,6 +13,10 @@ import pytest
 import yaml
 from _pytest.mark.structures import Mark, MarkDecorator
 from filelock import FileLock
+
+from nubia import Nubia
+from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
+
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.poller.worker.services.service_manager import ServiceManager
@@ -37,6 +41,7 @@ DATADIR = ['tests/data/multidc/parquet-out/',
 commands = [(x) for x in SqCommand.get_plugins()
             if x not in ['TopmemCmd', 'TopcpuCmd']]
 
+# pylint: disable=protected-access
 cli_commands = [(v.__command['name'])
                 for k, v in SqCommand.get_plugins().items()
                 if k not in ['TopmemCmd', 'TopcpuCmd']]
@@ -46,6 +51,7 @@ tables = get_tables()
 
 @pytest.fixture(scope='session')
 def get_cmd_object_dict() -> Dict:
+    '''Get dict of command to cli_command object'''
     return {v.__command['name']: k
             for k, v in SqCommand.get_plugins().items()
             if k not in ['TopmemCmd', 'TopcpuCmd']}
@@ -53,12 +59,15 @@ def get_cmd_object_dict() -> Dict:
 
 @pytest.fixture(scope='function')
 def setup_nubia():
+    '''Setup nubia for testing'''
     _setup_nubia()
 
 
 @pytest.fixture()
+# pylint: disable=unused-argument
 def create_context_config(datadir: str =
                           './tests/data/basic_dual_bgp/parquet-out'):
+    '''Create context config'''
     return
 
 
@@ -105,6 +114,7 @@ def get_table_data_cols(table: str, datadir: str, columns: List[str]):
 @ pytest.fixture
 @ pytest.mark.asyncio
 def init_services_default(event_loop):
+    '''Mock setup of services'''
     configs = os.path.abspath(os.curdir) + '/suzieq/config/'
     schema = configs + 'schema/'
     mock_queue = Mock()
@@ -115,10 +125,12 @@ def init_services_default(event_loop):
 
 
 @ pytest.fixture
+# pylint: disable=unused-argument
 def run_sequential(tmpdir):
     """Uses a file lock to run tests using this fixture, sequentially
 
     """
+    # pylint: disable=abstract-class-instantiated
     with FileLock('test.lock', timeout=15):
         yield()
 
@@ -139,8 +151,7 @@ def get_async_task_mock():
 
 
 def _setup_nubia():
-    from nubia import Nubia
-    from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
+    '''internal function to setup cli framework for testing'''
 
     # monkey patching -- there might be a better way
     plugin = NubiaSuzieqPlugin()
@@ -151,6 +162,7 @@ def _setup_nubia():
 
 
 def create_context():
+    '''Create a SqContext object'''
     config = load_sq_config(config_file=create_dummy_config_file())
     context = NubiaSuzieqContext()
     context.ctxt.cfg = config
@@ -160,6 +172,7 @@ def create_context():
 
 def create_dummy_config_file(
         datadir: str = './tests/data/basic_dual_bgp/parquet-out'):
+    '''Create a dummy config file'''
     config = {'data-directory': datadir,
               'temp-directory': '/tmp/suzieq',
               'logging-level': 'WARNING',
@@ -175,11 +188,11 @@ def create_dummy_config_file(
     return tmpfname
 
 
-def load_up_the_tests(dir):
+def load_up_the_tests(folder):
     """reads the files from the samples directory and parametrizes the test"""
     tests = []
 
-    for i in dir:
+    for i in folder:
         if not i.path.endswith('.yml'):
             continue
         with open(i, 'r') as f:
@@ -227,7 +240,10 @@ def load_up_the_tests(dir):
     return tests
 
 
+# pylint: disable=unused-argument
 def setup_sqcmds(testvar, context_config):
+    '''Setup the cli commands for testing'''
+
     sqcmd_path = [sys.executable, suzieq_cli_path]
 
     if 'data-directory' in testvar:

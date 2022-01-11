@@ -253,7 +253,7 @@ class PathPage(SqGuiPage):
             };
             """
         return JsCode(a)
-    
+
     def _get_path(self, forward_dir: bool = True) -> Tuple[pd.DataFrame,
                                                            pd.DataFrame]:
         '''Get path & summary df'''

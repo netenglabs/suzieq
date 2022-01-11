@@ -1,7 +1,7 @@
+import pandas as pd
+
 from suzieq.sqobjects.basicobj import SqObject
 from suzieq.shared.utils import humanize_timestamp
-
-import pandas as pd
 
 
 class NetworkObj(SqObject):

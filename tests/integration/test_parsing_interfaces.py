@@ -1,18 +1,17 @@
-import pytest
-
 import warnings
-import pandas as pd
 from ipaddress import ip_interface
+
+import pytest
+import pandas as pd
 
 from tests.conftest import DATADIR, validate_host_shape
 from suzieq.shared.utils import MISSING_SPEED
 
 
-def validate_speed_if(df: pd.DataFrame):
+def validate_speed_if(_):
     '''Validate interface speed'''
     # if not df.empty:
     #    assert(df.speed != MISSING_SPEED).all()
-    pass
 
 
 def _validate_ethernet_if(df: pd.DataFrame, _):
@@ -41,7 +40,7 @@ def _validate_junos_speed_if(df: pd.DataFrame):
 
     All logical and physical interfaces must have the same speed
     '''
-    ifnames = dict()
+    ifnames = {}
     for _, row in df.iterrows():
         pIfname = row["ifname"].split(".")[0]
         hostAndPIfname = f'{row["hostname"]}{pIfname}'
@@ -122,9 +121,8 @@ def _validate_vxlan_if(df: pd.DataFrame, _):
         assert (restdf.macaddr == "00:00:00:00:00:00").all()
 
 
-def _validate_loopback_if(df: pd.DataFrame, _):
+def _validate_loopback_if(_, _2):
     '''Validate loopback interfaces'''
-    pass
 
 
 def _validate_null_if(df: pd.DataFrame, _):
@@ -138,20 +136,19 @@ def _validate_tunnel_te_if(df: pd.DataFrame, _):
     assert (df.master != "").all()
 
 
-def _validate_gre_if(df: pd.DataFrame, _):
+def _validate_gre_if(_, _2):
     '''Validate GRE interfaces'''
-    pass
 
 
-def _validate_junos_vtep_if(df: pd.DataFrame, _):
+def _validate_junos_vtep_if(_, _2):
     '''Validate Junos VTEP interfaces'''
-    pass
 
 
 @pytest.mark.parsing
 @pytest.mark.interface
 @pytest.mark.parametrize('table', ['interfaces'])
 @pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_interfaces(table, datadir, get_table_data):
     '''Main workhorse routine to test interfaces'''
 
@@ -216,15 +213,15 @@ def test_interfaces(table, datadir, get_table_data):
     assert (df.type != "").all()
     assert df.type.isin(validation_fns.keys()).all()
 
-    for iftype in validation_fns.keys():
-        if validation_fns[iftype]:
+    for iftype, fn in validation_fns.items():
+        if fn:
             subdf = df.query(f'type == "{iftype}"').reset_index(drop=True)
             subdf_without_junos = subdf.query(
                 'os.str.match("^(?:(?!junos).)*$")')
             if not subdf.empty:
                 # validate interface speed without Juniper
                 validate_speed_if(subdf_without_junos)
-                validation_fns[iftype](subdf, df)
+                fn(subdf, df)
 
                 assert (subdf.macaddr.str.len() == 17).all()
                 assert (subdf.macaddr.str.contains(':')).all()

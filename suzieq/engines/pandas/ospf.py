@@ -1,11 +1,11 @@
 from ipaddress import IPv4Network
 
+import numpy as np
+import pandas as pd
+
 from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.utils import build_query_str, humanize_timestamp
 from suzieq.shared.schema import SchemaForTable
-
-import numpy as np
-import pandas as pd
 
 
 class OspfObj(SqPandasEngine):

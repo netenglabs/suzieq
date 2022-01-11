@@ -2,10 +2,10 @@ from typing import Tuple
 from ipaddress import ip_address, ip_network
 from collections import defaultdict
 
-from suzieq.engines.pandas.engineobj import SqPandasEngine
-
 import numpy as np
 import pandas as pd
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class RoutesObj(SqPandasEngine):

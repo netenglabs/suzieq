@@ -6,10 +6,13 @@ Generate AVRO schema files from the service definition and textfsm files
 import sys
 import os
 import re
-import yaml
 import json
 import ast
 from pathlib import Path
+
+import yaml
+
+# pylint: disable=redefined-outer-name
 
 
 def get_field_set(svc_def, textfsm_dir):
@@ -28,7 +31,7 @@ def get_field_set(svc_def, textfsm_dir):
                     nfn_flds = [
                         re.match(r'\s*(?:add\(|div\(|mul\(|sub\()*(\w+)',
                                  fld.split(':')[1]).group(1)
-                        for fld in nfn_fld_list if type(fld) is str
+                        for fld in nfn_fld_list if isinstance(fld, str)
                     ]
                     field_set.update(nfn_flds)
                 except (ValueError, SyntaxError):
@@ -39,6 +42,7 @@ def get_field_set(svc_def, textfsm_dir):
         else:
             nfn = defn_list[entry].get('textfsm', None)
             if nfn:
+                # pylint: disable=redefined-outer-name
                 with open(textfsm_dir + '/' + nfn, 'r') as f:
                     lines = f.readlines()
                 for line in lines:

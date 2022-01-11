@@ -1,7 +1,7 @@
-import pytest
-
 from ipaddress import ip_address
 import re
+
+import pytest
 
 import pandas as pd
 from tests.conftest import validate_host_shape, DATADIR
@@ -10,6 +10,7 @@ from tests.conftest import validate_host_shape, DATADIR
 def validate_arpnd_tbl(df: pd.DataFrame):
     '''Validate the ARPND table for all values'''
 
+    # pylint: disable=unnecessary-lambda
     assert df.ipAddress.apply(lambda x: ip_address(x)).all()
     assert (df.state.isin(["permanent", 'reachable', 'router', 'noarp',
                            'failed'])).all()
@@ -17,7 +18,7 @@ def validate_arpnd_tbl(df: pd.DataFrame):
     assert pass_df.macaddr.apply(
         lambda x: re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$",
                            x) is not None).all()
-    assert (pass_df.oif.isin(["", "None"]) == False).all()  # noqa
+    assert not (pass_df.oif.isin(["", "None"])).all()  # noqa
     assert (pass_df.remote.isin([True, False])).all()
 
 
@@ -25,6 +26,7 @@ def validate_arpnd_tbl(df: pd.DataFrame):
 @ pytest.mark.arpnd
 @ pytest.mark.parametrize('table', ['arpnd'])
 @ pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_arpnd_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for ARPND table'''
 

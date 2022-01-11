@@ -1,6 +1,6 @@
-import pytest
-
 import re
+
+import pytest
 import pandas as pd
 from tests.conftest import DATADIR, validate_host_shape
 
@@ -24,6 +24,7 @@ def validate_macs(df: pd.DataFrame):
     assert (df.query('flags == "remote"').remoteVtepIp != '').all()
     # Verify all entries with a remoteVtepIp have the remote flag set_index
     # Linux/CL entries also have a permanent entry representing the HER
+    # pylint: disable=use-a-generator
     assert all([x in ['dynamic', 'permanent', 'static', 'remote', 'offload']
                 for x in sorted(df.query('remoteVtepIp != ""')
                                 ['flags'].unique())])
@@ -33,6 +34,7 @@ def validate_macs(df: pd.DataFrame):
 @ pytest.mark.mac
 @ pytest.mark.parametrize('table', ['macs'])
 @ pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_macs_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for MAC table'''
 

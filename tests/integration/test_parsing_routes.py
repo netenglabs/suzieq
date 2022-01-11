@@ -1,9 +1,8 @@
-import pytest
-
-
-import pandas as pd
 from ipaddress import ip_network, ip_address
 
+import pytest
+
+import pandas as pd
 from tests.conftest import DATADIR, validate_host_shape
 
 
@@ -36,7 +35,8 @@ def validate_routes(df: pd.DataFrame):
         '(os == "ioxe" and protocol != "static") and'
         '~protocol.isin(["direct", "local", "connected"])')
     assert (noncl_data.query(
-        'nexthopIps.str.len() != 0 and protocol != "hsrp" and namespace != "panos" and hostname != "firewall01" ')
+        'nexthopIps.str.len() != 0 and protocol != "hsrp" and '
+        'namespace != "panos" and hostname != "firewall01" ')
         .preference != 0).all()
 
     # The OS that supply route uptime
@@ -49,6 +49,7 @@ def validate_routes(df: pd.DataFrame):
 @ pytest.mark.route
 @ pytest.mark.parametrize('table', ['routes'])
 @ pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_routes_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for Routes'''
 

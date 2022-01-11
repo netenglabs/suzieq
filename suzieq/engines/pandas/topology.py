@@ -1,11 +1,11 @@
 from dataclasses import dataclass
 
-from suzieq.engines.pandas.engineobj import SqPandasEngine
-from suzieq.shared.utils import build_query_str
-
 import networkx as nx
 import numpy as np
 import pandas as pd
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+from suzieq.shared.utils import build_query_str
 
 # TODO:
 # topology for different VRFs?

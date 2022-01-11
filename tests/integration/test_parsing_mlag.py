@@ -1,7 +1,8 @@
-import pytest
-
 import re
 from ipaddress import ip_address
+
+import pytest
+
 import pandas as pd
 from tests.conftest import validate_host_shape
 
@@ -11,6 +12,7 @@ def validate_mlag_tbl(df: pd.DataFrame):
 
     assert (df.state.isin(['active', 'disabled', 'inactive'])).all()
     assert (df.role != '').all()
+    # pylint: disable=unnecessary-lambda
     assert df.peerAddress.apply(lambda x: ip_address(x)).all()
     assert (df.peerLink != '').all()
     assert (df.query('backupActive == True').backupIP != '').all()
@@ -28,7 +30,7 @@ def validate_mlag_tbl(df: pd.DataFrame):
     noncl_df = df.query('os != "cumulus"')
     assert (noncl_df.configSanity.isin(['consistent', 'inconsistent'])).all()
     assert (noncl_df.domainId != '').all()
-    assert (noncl_df.usesLinkLocal == False).all()  # noqa
+    assert noncl_df.usesLinkLocal.empty or not (noncl_df.usesLinkLocal).all()
     assert (noncl_df.peerLinkStatus.isin(['up', 'down'])).all()
 
 
@@ -40,6 +42,7 @@ def validate_mlag_tbl(df: pd.DataFrame):
                            'tests/data/eos/parquet-out',
                            'tests/data/nxos/parquet-out',
                            ])
+# pylint: disable=unused-argument
 def test_mlag_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for MLAG table'''
 
