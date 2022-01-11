@@ -1,42 +1,46 @@
-name: Linting
+name: linting
 
-on: [pull_request]
+on:
+  push:
+    # run on every push only in master and version specific branches
+    branches:
+      - master
+      - '[0-9].[0-9]+.[0-9]+'
+  pull_request:
+    # run on branches having an open PR
+    branches:
+    - '**'
 
 jobs:
-  pre-commit:
+  linting:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        linter: [pylint, flake8]
 
     steps:
       - uses: actions/checkout@v2
-
       - name: Set up Python 3.8
         uses: actions/setup-python@v2
         with:
           python-version: '3.8'
           architecture: 'x64'
-
       - name: Install Poetry
         uses: snok/install-poetry@v1
         with:
           virtualenvs-create: true
           virtualenvs-in-project: true
-
       - name: Load cached venv
         id: cached-poetry-dependencies
         uses: actions/cache@v2
         with:
           path: .venv
-          key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
-
+          key: venv-${{ runner.os }}-3.8-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
       - name: Install dependencies
         if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
         run: poetry install --no-interaction --no-root
-
-      - name: Install library
+      - name: Install suzieq
         run: poetry install --no-interaction
-
-      - name: Install pre-commit
-        run: pip install pre-commit
-
-      - name: Run pre-commit
-        run: pre-commit run --all-files --show-diff-on-failure
+      - name: Run linter
+        run: poetry run ${{ matrix.linter }} suzieq/
