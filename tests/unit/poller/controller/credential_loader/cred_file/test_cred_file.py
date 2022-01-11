@@ -4,7 +4,7 @@ from unittest.mock import patch
 import pytest
 from suzieq.poller.controller.credential_loader.cred_file import CredFile
 from suzieq.shared.exceptions import InventorySourceError
-from tests.unit.poller.controller.utils import read_yaml_file
+from tests.unit.poller.shared.utils import read_yaml_file
 
 _DATA_PATH = [
     {

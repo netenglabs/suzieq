@@ -3,7 +3,7 @@ from typing import Dict
 import pytest
 from suzieq.poller.controller.credential_loader.static import StaticLoader
 from suzieq.shared.exceptions import InventorySourceError
-from tests.unit.poller.controller.utils import read_yaml_file
+from tests.unit.poller.shared.utils import read_yaml_file
 
 _DATA_PATH = [
     {

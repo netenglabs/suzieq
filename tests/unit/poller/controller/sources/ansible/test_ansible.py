@@ -4,8 +4,8 @@ from typing import Dict
 import pytest
 from suzieq.poller.controller.source.ansible import AnsibleInventory
 from suzieq.shared.exceptions import InventorySourceError
-from tests.unit.poller.controller.utils import (get_src_sample_config,
-                                                read_yaml_file)
+from tests.unit.poller.shared.utils import (get_src_sample_config,
+                                            read_yaml_file)
 
 _DATA_PATH = [
     {

@@ -1,7 +1,7 @@
 import pytest
 from suzieq.poller.controller.chunker.static import StaticChunker
 from suzieq.shared.exceptions import SqPollerConfError
-from tests.unit.poller.controller.utils import read_yaml_file
+from tests.unit.poller.shared.utils import read_yaml_file
 
 _POLICIES = ['sequential', 'namespace']
 _N_CHUNKS = [1, 2, 3]

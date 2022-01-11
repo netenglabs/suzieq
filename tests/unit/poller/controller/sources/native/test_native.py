@@ -3,8 +3,8 @@ import asyncio
 import pytest
 from suzieq.poller.controller.source.native import SqNativeFile
 from suzieq.shared.exceptions import InventorySourceError
-from tests.unit.poller.controller.utils import (get_src_sample_config,
-                                                read_yaml_file)
+from tests.unit.poller.shared.utils import (get_src_sample_config,
+                                            read_yaml_file)
 
 _SAMPLE_CONFIG = get_src_sample_config('native')
 

@@ -13,8 +13,8 @@ from tests.unit.poller.controller.sources.netbox.netbox_faker import \
     NetboxFaker
 from tests.unit.poller.controller.sources.netbox.netbox_rest_server import \
     NetboxRestApp
-from tests.unit.poller.controller.utils import (get_free_port,
-                                                get_src_sample_config)
+from tests.unit.poller.shared.utils import (get_free_port,
+                                            get_src_sample_config)
 
 _SAMPLE_CONFIG = get_src_sample_config('netbox')
 
