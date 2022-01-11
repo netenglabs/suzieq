@@ -66,3 +66,15 @@ def test_too_much_chunks(policy: str, n_chunks: int):
 
     with pytest.raises(SqPollerConfError):
         ch.chunk(_GLOB_INV, n_chunks)
+
+
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.chunker
+@pytest.mark.static_chunker
+def test_unknown_policy():
+    """Test that an unknown policy is recognized
+    """
+    with pytest.raises(SqPollerConfError, match="Unknown chunking policy "
+                       "unknown-policy"):
+        StaticChunker({'policy': 'unknown-policy'})
