@@ -232,6 +232,22 @@ def generate_argparse(args: Dict) -> argparse.Namespace:
     return argparse.Namespace(**args)
 
 
+@pytest.fixture
+def mock_static_manager():
+    def mock_init(self, data):
+        self._workers_count = 1
+
+    async def mock_1(self, data):
+        pass
+
+    async def mock_2(self):
+        pass
+
+    with patch.multiple(StaticManager, __init__=mock_init,
+                        _execute=mock_2, run=mock_2, apply=mock_1):
+        yield
+
+
 @pytest.mark.poller
 @pytest.mark.controller
 @pytest.mark.parametrize('config_file', _CONFIG_FILE)
@@ -360,12 +376,13 @@ def test_controller_init_plugins(inv_file: str):
 @pytest.mark.poller
 @pytest.mark.controller
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
-def test_controller_init(inv_file: str):
+def test_controller_init(inv_file: str, mock_static_manager):
     """Test Controler.init function
 
     Args:
         inv_file (str): inventory file
     """
+
     # Test common initialization
     c = generate_controller(args=_DEFAULT_ARGS, inv_file=inv_file)
 
@@ -392,7 +409,7 @@ def test_controller_init(inv_file: str):
 @pytest.mark.controller
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 @pytest.mark.asyncio
-async def test_controller_run(inv_file: str):
+async def test_controller_run(inv_file: str, mock_static_manager):
     """Test Controller.run function
 
     Args:
@@ -510,7 +527,7 @@ async def test_controller_run(inv_file: str):
 @pytest.mark.poller
 @pytest.mark.controller
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
-def test_controller_init_errors(inv_file: str):
+def test_controller_init_errors(inv_file: str, mock_static_manager):
     """Test Controller.init function errors
 
     Args:
@@ -568,7 +585,7 @@ def test_controller_init_errors(inv_file: str):
 @pytest.mark.controller
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 @pytest.mark.asyncio
-async def test_controller_empty_inventory(inv_file: str):
+async def test_controller_empty_inventory(inv_file: str, mock_static_manager):
     """Test that the controller launches an exception with an
     empty global inventory
 
@@ -590,12 +607,11 @@ async def test_controller_empty_inventory(inv_file: str):
     c = generate_controller(args=args, inv_file=inv_file)
 
     with patch.multiple(SqNativeFile, _load=mock_empty_load):
-        with patch.multiple(StaticManager, run=mock_manager_run):
-            with patch.multiple(Netbox, run=mock_empty_inventory):
-                c.init()
-                with pytest.raises(InventorySourceError,
-                                   match='No devices to poll'):
-                    await c.run()
+        with patch.multiple(Netbox, run=mock_empty_inventory):
+            c.init()
+            with pytest.raises(InventorySourceError,
+                               match='No devices to poll'):
+                await c.run()
 
 
 @pytest.mark.poller
@@ -603,7 +619,7 @@ async def test_controller_empty_inventory(inv_file: str):
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 @pytest.mark.parametrize('config_file', _CONFIG_FILE)
 @pytest.mark.asyncio
-async def test_controller_run_timeout_error(inv_file: str, config_file: str):
+async def test_controller_run_timeout_error(inv_file: str, config_file: str, mock_static_manager):
     """Test that the controller launches an exception if the get_inventory
     function doesn't return before the timeout
 
@@ -618,13 +634,10 @@ async def test_controller_run_timeout_error(inv_file: str, config_file: str):
         Source.get_inventory function
         """
 
-    async def mock_manager_run(self):
-        pass
 
     args = _DEFAULT_ARGS
     c = generate_controller(args, inv_file, config_file)
     c.init()
     with patch.multiple(Netbox, run=mock_netbox_run):
-        with patch.multiple(StaticManager, run=mock_manager_run):
-            with pytest.raises(InventorySourceError):
-                await c.run()
+        with pytest.raises(InventorySourceError):
+            await c.run()
