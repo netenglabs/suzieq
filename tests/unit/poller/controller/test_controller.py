@@ -7,9 +7,9 @@ from typing import Dict
 from unittest.mock import MagicMock, patch
 
 import pytest
+import suzieq.poller.controller.controller as controller_module
 from suzieq.poller.controller.chunker.static import StaticChunker
-from suzieq.poller.controller.controller import (DEFAULT_INVENTORY_PATH,
-                                                 Controller)
+from suzieq.poller.controller.controller import Controller
 from suzieq.poller.controller.manager.static import StaticManager
 from suzieq.poller.controller.source.native import SqNativeFile
 from suzieq.poller.controller.source.netbox import Netbox
@@ -350,29 +350,32 @@ def test_default_controller_config(default_args):
 
     args = default_args
     # No inventory file in default directory
-    with pytest.raises(SqPollerConfError):
-        generate_controller(args=args, conf_file=None)
+    default_inventory_path = '/tmp/test-inventory.yml'
+    with patch.multiple(controller_module,
+                        DEFAULT_INVENTORY_PATH=default_inventory_path):
+        with pytest.raises(SqPollerConfError):
+            generate_controller(args=args, conf_file=None)
 
-    # Create inventory in the default directory
-    def_file = Path(DEFAULT_INVENTORY_PATH)
-    def_file.touch(exist_ok=False)
+        # Create inventory in the default directory
+        def_file = Path(default_inventory_path)
+        def_file.touch(exist_ok=False)
 
-    c = generate_controller(args=args, conf_file=None)
-    assert c._config['source']['path'] == DEFAULT_INVENTORY_PATH
-    assert c._input_dir is None
-    assert c._no_coalescer is False
-    assert c._config['manager']['config'] == sq_get_config_file(None)
-    assert c._config['manager']['workers'] == 1
-    assert c.period == 3600
-    assert c.run_once is None
-    manager_args = ['debug', 'exclude-services', 'outputs',
-                    'output-dir', 'service-only', 'ssh-config-file']
-    for ma in manager_args:
-        args_key = ma.replace('-', '_')
-        assert c._config['manager'][ma] == args[args_key]
+        c = generate_controller(args=args, conf_file=None)
+        assert c._config['source']['path'] == default_inventory_path
+        assert c._input_dir is None
+        assert c._no_coalescer is False
+        assert c._config['manager']['config'] == sq_get_config_file(None)
+        assert c._config['manager']['workers'] == 1
+        assert c.period == 3600
+        assert c.run_once is None
+        manager_args = ['debug', 'exclude-services', 'outputs',
+                        'output-dir', 'service-only', 'ssh-config-file']
+        for ma in manager_args:
+            args_key = ma.replace('-', '_')
+            assert c._config['manager'][ma] == args[args_key]
 
-    # Remove the default inventory file
-    os.remove(def_file)
+        # Remove the default inventory file
+        os.remove(def_file)
 
 
 @pytest.mark.poller
