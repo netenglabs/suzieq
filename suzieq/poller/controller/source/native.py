@@ -132,7 +132,7 @@ class SqNativeFile(Source):
             bool: True if the entry is valid, False otherwise
         """
         if entry['transport'] not in SUPPORTED_POLLER_TRANSPORTS:
-            raise InventorySourceError(f'Transport {entry["transport"]} not '
+            raise InventorySourceError(f"Transport '{entry['transport']}' not "
                                        f'supported for host {entry["address"]}'
                                        )
 
