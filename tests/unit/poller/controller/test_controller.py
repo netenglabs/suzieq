@@ -1,8 +1,8 @@
 import argparse
 import asyncio
 import os
-from pathlib import Path
 import signal
+from tempfile import NamedTemporaryFile
 from typing import Dict
 from unittest.mock import MagicMock, patch
 
@@ -389,6 +389,17 @@ def test_controller_invalid_args(config_file: str, args: Dict):
         Controller(parse_args, config)
 
 
+def test_missing_default_inventory(default_args):
+    """Test if the controller launches and exception if no inventory if
+    passed in the configuration and there is no file in the default path
+    """
+    args = default_args
+    with patch.multiple(controller_module,
+                        DEFAULT_INVENTORY_PATH='/not/a/path'):
+        with pytest.raises(SqPollerConfError):
+            generate_controller(args=args, conf_file=None)
+
+
 @pytest.mark.poller
 @pytest.mark.controller
 @pytest.mark.poller_unit_tests
@@ -396,35 +407,24 @@ def test_controller_invalid_args(config_file: str, args: Dict):
 def test_default_controller_config(default_args):
     """Test controller default configuration
     """
-
     args = default_args
-    # No inventory file in default directory
-    default_inventory_path = '/tmp/test-inventory.yml'
-    with patch.multiple(controller_module,
-                        DEFAULT_INVENTORY_PATH=default_inventory_path):
-        with pytest.raises(SqPollerConfError):
-            generate_controller(args=args, conf_file=None)
 
-        # Create inventory in the default directory
-        def_file = Path(default_inventory_path)
-        def_file.touch(exist_ok=False)
-
-        c = generate_controller(args=args, conf_file=None)
-        assert c._config['source']['path'] == default_inventory_path
-        assert c._input_dir is None
-        assert c._no_coalescer is False
-        assert c._config['manager']['config'] == sq_get_config_file(None)
-        assert c._config['manager']['workers'] == 1
-        assert c.period == 3600
-        assert c.single_run_mode is None
-        manager_args = ['debug', 'exclude-services', 'outputs',
-                        'output-dir', 'service-only', 'ssh-config-file']
-        for ma in manager_args:
-            args_key = ma.replace('-', '_')
-            assert c._config['manager'][ma] == args[args_key]
-
-        # Remove the default inventory file
-        os.remove(def_file)
+    with NamedTemporaryFile(suffix='yml') as tmpfile:
+        with patch.multiple(controller_module,
+                            DEFAULT_INVENTORY_PATH=tmpfile.name):
+            c = generate_controller(args=args, conf_file=None)
+            assert c._config['source']['path'] == tmpfile.name
+            assert c._input_dir is None
+            assert c._no_coalescer is False
+            assert c._config['manager']['config'] == sq_get_config_file(None)
+            assert c._config['manager']['workers'] == 1
+            assert c.period == 3600
+            assert c.run_once is None
+            manager_args = ['debug', 'exclude-services', 'outputs',
+                            'output-dir', 'service-only', 'ssh-config-file']
+            for ma in manager_args:
+                args_key = ma.replace('-', '_')
+                assert c._config['manager'][ma] == args[args_key]
 
 
 @pytest.mark.poller
@@ -684,6 +684,7 @@ async def test_controller_empty_inventory(inv_file: str, mock_plugins,
     Args:
         inv_file (str): inventory file
     """
+
     def mock_set_device(self):
         self.mocked_inv = {}
 
