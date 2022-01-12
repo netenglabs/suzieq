@@ -50,14 +50,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
 
         # Get the running mode
         self._input_dir = config_data.get('input-dir', None)
-        self._run_once = config_data.get('run-once', None)
+        self._single_run_mode = config_data.get('single-run-mode', None)
         self._no_coalescer = config_data.get('no-coalescer', False)
-
-        # If the debug mode is active we need to set run_once
-        if config_data.get('debug'):
-            self._run_once = 'debug'
-        elif self._input_dir:
-            self._run_once = 'input-dir'
 
         if not self._no_coalescer:
             self._coalescer_launcher = CoalescerLauncher(
@@ -142,7 +136,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
 
             # Launch all the pollers we need to launch
             # If the mode is debug we do not need to launch the pollers
-            if self._run_once != 'debug':
+            if self._single_run_mode != 'debug':
                 launch_tasks = [self._launch_poller(i)
                                 for i in pollers_to_launch]
                 res = await asyncio.gather(
@@ -233,7 +227,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                         # Probably unexpected poller died
                         process = self._running_workers[poller_id]
 
-                        if self._run_once and process.returncode == 0:
+                        if self._single_run_mode and process.returncode == 0:
                             # Worker natural death
                             del self._running_workers[poller_id]
                         else:
