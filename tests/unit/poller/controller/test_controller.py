@@ -289,11 +289,11 @@ def test_controller_valid_args(config_file: str, inv_file: str, args: Dict):
     assert c._input_dir == args['input_dir']
 
     if args['debug']:
-        assert c.run_once == 'debug'
+        assert c.single_run_mode == 'debug'
     elif args['input_dir']:
-        assert c.run_once == 'input-dir'
+        assert c.single_run_mode == 'input-dir'
     else:
-        assert c.run_once == args['run_once']
+        assert c.single_run_mode == args['run_once']
 
     if not args['input_dir']:
         assert c._config['source']['path'] == args['inventory']
@@ -367,7 +367,7 @@ def test_default_controller_config(default_args):
         assert c._config['manager']['config'] == sq_get_config_file(None)
         assert c._config['manager']['workers'] == 1
         assert c.period == 3600
-        assert c.run_once is None
+        assert c.single_run_mode is None
         manager_args = ['debug', 'exclude-services', 'outputs',
                         'output-dir', 'service-only', 'ssh-config-file']
         for ma in manager_args:
