@@ -22,18 +22,29 @@ class CredFile(CredentialLoader):
 
     def init(self, init_data: dict):
 
-        dev_cred_file = Path(init_data.get('path', ''))
-        if not dev_cred_file:
+        if not init_data.get('path'):
             raise InventorySourceError(
                 f'{self._name} No field <path> '
                 'for device credential provided'
             )
+
+        dev_cred_file = Path(init_data['path'])
         if not dev_cred_file.is_file():
             raise InventorySourceError(
-                f'{self._name} The credential file does not exists')
+                f'{self._name} The credential file {init_data["path"]} '
+                'does not exists')
+        try:
+            with open(dev_cred_file, 'r') as f:
+                self._raw_credentials = yaml.safe_load(f.read())
+        except yaml.YAMLError:
+            raise InventorySourceError(
+                f'{self._name} The credential file is not a valid yaml file'
+            )
 
-        with open(dev_cred_file, 'r') as f:
-            self._raw_credentials = yaml.safe_load(f.read())
+        if not self._raw_credentials:
+            raise InventorySourceError(
+                f'{self._name} The credential file is empty'
+            )
 
         if not isinstance(self._raw_credentials, list):
             raise InventorySourceError(
@@ -100,7 +111,7 @@ class CredFile(CredentialLoader):
 
                 node_cred.pop(node_key)
 
-                fields = ['username', 'passphrase', 'ssh_key_file', 'password']
+                fields = ['username', 'passphrase', 'ssh_keyfile', 'password']
                 multi_defined = []
                 for f in fields:
                     if node.get(f) and node_cred.get(f):

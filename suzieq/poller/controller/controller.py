@@ -14,7 +14,7 @@ import logging
 import signal
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Type
+from typing import Dict, List
 
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 from suzieq.poller.controller.inventory_async_plugin import \
@@ -24,6 +24,8 @@ from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
 from suzieq.shared.utils import sq_get_config_file
 
 logger = logging.getLogger(__name__)
+
+DEFAULT_INVENTORY_PATH = 'suzieq/config/etc/inventory.yaml'
 
 
 class Controller:
@@ -77,7 +79,7 @@ class Controller:
         self._validate_controller_args(args, config_data)
 
         # Get the inventory
-        default_inventory_file = 'suzieq/config/etc/inventory.yaml'
+        default_inventory_file = DEFAULT_INVENTORY_PATH
         inventory_file = None
 
         if not self._input_dir:
@@ -177,7 +179,7 @@ class Controller:
             self.sources = self.init_plugins('source')
             if not self.sources:
                 raise SqPollerConfError(
-                    'The inventory file has not any sources'
+                    "The inventory file doesn't have any source"
                 )
 
             # Initialize chunker module
@@ -196,20 +198,9 @@ class Controller:
         managers = self.init_plugins('manager')
         if len(managers) > 1:
             raise SqPollerConfError(
-                'Only 1 poller_manager at a time is supported'
+                'Only 1 manager at a time is supported'
             )
         self.manager = managers[0]
-
-    def get_plugins_from_type(self, plugin_type: str) -> List[Type]:
-        """Returns the list of plugins of type <plugin_type>
-
-        Args:
-            plugin_type (str): type of the plugins to be returned
-
-        Returns:
-            List[Type]: list of plugins of type <plugin_type>
-        """
-        return self._plugin_objects.get(plugin_type, None)
 
     def init_plugins(self, plugin_type: str) -> List[ControllerPlugin]:
         """Initialize the controller plugins of type <plugin_type> according

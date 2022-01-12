@@ -1,0 +1,27 @@
+sources:
+- name: native0
+  hosts:
+  - url: https://vagrant@192.168.123.164 devtype=eos
+  - url: ssh://192.168.123.70 username=admin
+- name: netbox0
+  type: netbox
+  token: MY-TOKEN
+  url: http://localhost:8000
+  tag: suzieq
+
+auths:
+- name: auth0
+  password: plain:strong-passoword
+
+devices:
+- name: dev0
+  transport: ssh
+
+namespaces:
+- name: native-ns
+  device: dev0
+  auth: auth0
+  source: native0
+- name: netbox-ns
+  auth: auth0
+  source: netbox0

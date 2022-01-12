@@ -33,8 +33,11 @@ class StaticChunker(Chunker):
                 raise RuntimeError(f'Unknown {pol_name} policy')
             self.policies_fn[pol_name] = fun
         if config_data:
-            self.policy = config_data \
+            policy = config_data \
                 .get('policy', self.policies_list[0])
+            if policy not in self.policies_list:
+                raise SqPollerConfError(f'Unknown chunking policy {policy}')
+            self.policy = policy
         else:
             self.policy = self.policies_list[0]
 
@@ -44,7 +47,8 @@ class StaticChunker(Chunker):
 
         chunk_fun = self.policies_fn.get(policy, None)
         if not chunk_fun:
-            raise SqPollerConfError(f'Unknown chunking policy {policy}')
+            raise SqPollerConfError(
+                f'Unknown chunking function for policy {policy}')
 
         inv_chunks = [c for c in chunk_fun(glob_inv, n_chunks) if c]
         if len(inv_chunks) < n_chunks:
