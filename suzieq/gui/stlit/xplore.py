@@ -229,11 +229,16 @@ class XplorePage(SqGuiPage):
             return
 
         sqobj = get_sqobject(state.table)
-        df = gui_get_df(state.table,
-                        namespace=state.namespace.split(),
-                        hostname=state.hostname.split(),
-                        start_time=state.start_time, end_time=state.end_time,
-                        view=state.view, columns=state.columns)
+        try:
+            df = gui_get_df(state.table,
+                            namespace=state.namespace.split(),
+                            hostname=state.hostname.split(),
+                            start_time=state.start_time,
+                            end_time=state.end_time,
+                            view=state.view, columns=state.columns)
+        except Exception as e:  # pylint: disable=broad-except
+            st.error(e)
+            st.stop()
 
         if not df.empty:
             if 'error' in df.columns:
