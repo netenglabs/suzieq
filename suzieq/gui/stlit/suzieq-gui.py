@@ -6,8 +6,8 @@ from typing import Dict
 
 import streamlit as st
 
-from suzieq.gui.stlit.guiutils import (get_image_dir, get_main_session_by_id,
-                                       SuzieqMainPages)
+from suzieq.gui.stlit.guiutils import (SUZIEQ_COLOR, get_image_dir,
+                                       get_main_session_by_id, SuzieqMainPages)
 from suzieq.gui.stlit.pagecls import SqGuiPage
 from suzieq.version import SUZIEQ_VERSION
 from suzieq.shared.utils import sq_get_config_file
@@ -52,22 +52,32 @@ def display_title(page: str):
     st.markdown(
         """
         <style>
-        .container {
-            display: flex;
-        }
-        .logo-text {
-            font-weight:700 !important;
-            font-size:24px !important;
-            color: purple !important;
-            padding-top: 40px !important;
-        }
-        .logo-img {
-            width: 20%;
-            height: auto;
-            float:right;
-        }
+            .logo-container {
+                display: flex;
+            }
+            .logo-text {
+                color: %s;
+            }
+            .logo-img {
+                max-height: 7.5em;
+                margin-bottom: 1em;
+                float:right;
+            }
+            @media(max-width: 960px){
+                .logo-container {
+                    justify-content: center;
+                }
+                .logo-text {
+                    display: none;
+                }
+            }
+            @media(max-width: 640px){
+                .logo-text {
+                    display: inline;
+                }
+            }
         </style>
-        """,
+        """ % (SUZIEQ_COLOR),
         unsafe_allow_html=True
     )
 
@@ -79,10 +89,10 @@ def display_title(page: str):
     with title_col:
         st.markdown(
             f"""
-            <div class="container">
+            <div class="logo-container">
                 <img class="logo-img" src="data:image/png;base64,
                 {img}">
-                <h1 style='color:purple;'>Suzieq</h1>
+                <h1 class='logo-text'>Suzieq</h1>
             </div>
             """,
             unsafe_allow_html=True
@@ -101,20 +111,12 @@ def display_title(page: str):
     with page_col:
         # The empty writes are for aligning the pages link with the logo
         st.text(' ')
-        srch_holder = st.empty()
-        if page in sel_menulist:
-            pageidx = sel_menulist.index(page)
-        else:
-            pageidx = sel_menulist.index('Status')
         set_horizontal_radio()
-        if 'sq_page' not in state:
-            page = srch_holder.radio('Page', sel_menulist, index=pageidx,
-                                     key='sq_page',
-                                     on_change=main_sync_state)
-        else:
-            page = srch_holder.radio('Page', sel_menulist, key='sq_page',
-                                     index=pageidx, on_change=main_sync_state)
-            page = state.sq_page
+        st.radio('Page', sel_menulist, key='sq_page',
+                 index=sel_menulist.index('Status'),
+                 on_change=main_sync_state)
+        page = state.sq_page
+
     return page, search_str
 
 
@@ -146,6 +148,7 @@ def build_pages() -> Dict:
     return page_tbl
 
 
+# pylint: disable=too-many-statements
 def apprun(*args):
     '''The main application routine'''
 
@@ -197,6 +200,10 @@ def apprun(*args):
             if pg not in state.menulist and obj.add_to_menu:
                 state.menulist.append(pg)
 
+    # NOTE: Do not move this before set_page_config
+    if 'first_time' not in state:
+        state.first_time = True
+
     url_params = st.experimental_get_query_params()
     if url_params.get('page', ''):
         page = url_params['page']
@@ -213,6 +220,11 @@ def apprun(*args):
                 state.pages[page].build()
                 st.stop()
 
+        if page == 'Search' and state.first_time:
+            search_text = url_params.get('search_text', '')
+            if search_text:
+                state.search_text = search_text[0]
+
         if isinstance(page, list):
             page = page[0]
     else:
@@ -227,6 +239,7 @@ def apprun(*args):
     state.page = page
 
     page, search_text = display_title(page)
+    state.first_time = False
 
     if search_text != state.search_text:
         state.search_text = search_text
