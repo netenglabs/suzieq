@@ -32,7 +32,7 @@ class NetworkObj(SqObject):
         for addr in addresses:
             try:
                 ip_address(addr)
-            except Exception:
+            except ValueError:
                 addr = convert_macaddr_format_to_colon(addr)
                 if not re.match(
                         "[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$",
