@@ -106,3 +106,48 @@ tests:
   data-directory: tests/data/eos/parquet-out
   marks: network unique eos
   output: '[{"namespace": "eos", "numRows": 1}]'
+- command: network find --address='foobar' --format=json
+  data-directory: tests/data/eos/parquet-out
+  error:
+    error: '[{"error": "Not valid IP or MAC address: foobar"}]'
+  marks: network find eos
+- command: network find --address='172.17.1.1/24' --format=json
+  data-directory: tests/data/eos/parquet-out
+  error:
+    error: '[{"error": "Not valid IP or MAC address: 172.17.1.1/24"}]'
+  marks: network find eos
+- command: network find --address='00:00:00:11:12:10' --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find eos
+  output: '[{"namespace": "eos", "hostname": "server301", "vrf": "default", "ipAddress":
+    "172.16.2.254", "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0",
+    "bondMembers": "eth1, eth2", "type": "routed", "timestamp": 1623025176216}, {"namespace":
+    "eos", "hostname": "server302", "vrf": "default", "ipAddress": "172.16.3.254",
+    "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers":
+    "eth1, eth2", "type": "routed", "timestamp": 1623025176216}, {"namespace": "eos",
+    "hostname": "server101", "vrf": "default", "ipAddress": "172.16.1.254", "vlan":
+    "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers": "eth1,
+    eth2", "type": "routed", "timestamp": 1623025176435}, {"namespace": "eos", "hostname":
+    "server102", "vrf": "default", "ipAddress": "172.16.3.254", "vlan": "0", "macaddr":
+    "00:00:00:11:12:10", "ifname": "bond0", "bondMembers": "eth1, eth2", "type": "routed",
+    "timestamp": 1623025176627}]'
+- command: network find --address='00:00:00:11:12' --format=json
+  data-directory: tests/data/eos/parquet-out
+  error:
+    error: '[{"error": "Not valid IP or MAC address: 00:00:00:11:12"}]'
+  marks: network find eos
+- command: network find --address='0000.0011.1210' --format=json
+  data-directory: tests/data/eos/parquet-out
+  marks: network find eos
+  output: '[{"namespace": "eos", "hostname": "server301", "vrf": "default", "ipAddress":
+    "172.16.2.254", "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0",
+    "bondMembers": "eth1, eth2", "type": "routed", "timestamp": 1623025176216}, {"namespace":
+    "eos", "hostname": "server302", "vrf": "default", "ipAddress": "172.16.3.254",
+    "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers":
+    "eth1, eth2", "type": "routed", "timestamp": 1623025176216}, {"namespace": "eos",
+    "hostname": "server101", "vrf": "default", "ipAddress": "172.16.1.254", "vlan":
+    "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers": "eth1,
+    eth2", "type": "routed", "timestamp": 1623025176435}, {"namespace": "eos", "hostname":
+    "server102", "vrf": "default", "ipAddress": "172.16.3.254", "vlan": "0", "macaddr":
+    "00:00:00:11:12:10", "ifname": "bond0", "bondMembers": "eth1, eth2", "type": "routed",
+    "timestamp": 1623025176627}]'

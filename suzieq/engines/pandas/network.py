@@ -268,6 +268,8 @@ class NetworkObj(SqPandasEngine):
 
         result = []
         for row in arpdf.itertuples():
+            if getattr(row, 'error', None):
+                continue
             if row.oif.endswith('-v0'):
                 # Handle VRR interfaces in Cumulus
                 oif = row.oif[:-3]

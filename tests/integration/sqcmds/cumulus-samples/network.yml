@@ -160,3 +160,37 @@ tests:
   marks: network unique
   output: '[{"namespace": "dual-evpn", "numRows": 1}, {"namespace": "ospf-ibgp", "numRows":
     1}, {"namespace": "ospf-single", "numRows": 1}]'
+- command: network find --address='foobar' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  error:
+    error: '[{"error": "Not valid IP or MAC address: foobar"}]'
+  marks: network find eos
+- command: network find --address='172.17.1.1/24' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  error:
+    error: '[{"error": "Not valid IP or MAC address: 172.17.1.1/24"}]'
+  marks: network find eos
+- command: network find --address='44:39:30:ff:00:13' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network find eos
+  output: '[]'
+- command: network find --address='44:39:30:ff:00' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  error:
+    error: '[{"error": "Not valid IP or MAC address: 44:39:30:ff:00"}]'
+  marks: network find cumulus
+- command: network find --address='4439.39FF.0013' --format=json
+  data-directory: tests/data/multidc/parquet-out
+  marks: network find cumulus
+  output: '[{"namespace": "dual-evpn", "hostname": "server103", "vrf": "default",
+    "ipAddress": "172.16.1.1", "vlan": "0", "macaddr": "44:39:39:ff:00:13", "ifname":
+    "bond0", "bondMembers": "eth1, eth2", "type": "routed", "timestamp": 1616644821711},
+    {"namespace": "dual-evpn", "hostname": "server101", "vrf": "default", "ipAddress":
+    "172.16.1.1", "vlan": "0", "macaddr": "44:39:39:ff:00:13", "ifname": "bond0",
+    "bondMembers": "eth1, eth2", "type": "routed", "timestamp": 1616644821714}, {"namespace":
+    "ospf-ibgp", "hostname": "server103", "vrf": "default", "ipAddress": "172.16.1.1",
+    "vlan": "0", "macaddr": "44:39:39:ff:00:13", "ifname": "bond0", "bondMembers":
+    "eth1, eth2", "type": "routed", "timestamp": 1616681581179}, {"namespace": "ospf-ibgp",
+    "hostname": "server101", "vrf": "default", "ipAddress": "172.16.1.1", "vlan":
+    "0", "macaddr": "44:39:39:ff:00:13", "ifname": "bond0", "bondMembers": "eth1,
+    eth2", "type": "routed", "timestamp": 1616681581180}]'
