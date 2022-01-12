@@ -118,7 +118,7 @@ When specifying a table, you can specify multiple addresses to look for by
                                 verb='find',
                                 namespace=query_ns,
                                 view="latest", columns=columns,
-                                address=query_str)
+                                address=query_str.split())
             else:
                 df = gui_get_df(state.table,
                                 namespace=query_ns, query_str=query_str,
