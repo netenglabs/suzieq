@@ -7,8 +7,8 @@ from suzieq.sqobjects.evpnVni import EvpnvniObj
 
 
 @command("evpnVni", help="Act on EVPN VNI data")
-@argument("vni", description="VNI ID to qualify")
-@argument("priVtepIp", description="Primary VTEP IP to qualify")
+@argument("vni", description="VNI ID(s), space separated")
+@argument("priVtepIp", description="Primary VTEP IP(s), space separated")
 class EvpnVniCmd(SqCommand):
     """EVPN information such as VNI/VLAN mapping, VTEP IPs etc."""
 

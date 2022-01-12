@@ -10,10 +10,10 @@ from suzieq.sqobjects.arpnd import ArpndObj
           description=("Show all the addresses in this "
                        "subnet prefix (in quotes)"))
 @argument("address",
-          description="IP address, in quotes, to qualify output")
+          description="IP Address(es), in quotes, space separated")
 @argument("macaddr",
-          description="MAC address, in quotes, to qualify output")
-@argument("oif", description="outgoing interface to qualify")
+          description="MAC address(es), in quotes, space separated")
+@argument("oif", description="Outgoing interface(s), space separated")
 class ArpndCmd(SqCommand):
     """ARP/Neighbor Discovery information"""
 

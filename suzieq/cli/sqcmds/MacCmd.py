@@ -6,12 +6,12 @@ from suzieq.sqobjects.macs import MacsObj
 
 
 @command("mac", help="Act on MAC Table data", aliases=['macs'])
-@argument("vlan", description="VLAN(s) to qualify output")
+@argument("vlan", description="VLAN(s). space separated")
 @argument("macaddr",
-          description="MAC address(es), in quotes, to filter")
+          description="MAC address(es), in quotes, space separated")
 @argument("remoteVtepIp",
-          description="only with this remoteVtepIp; use any for all")
-@argument("bd", description="filter entries with this bridging domain")
+          description="Remote VTEP IP(s), space separated; use any for all")
+@argument("bd", description="Bridge Domain(s), space separated")
 @argument("local", type=bool,
           description="filter entries with no remoteVtep")
 @argument("moveCount", description="num of times this MAC has moved")

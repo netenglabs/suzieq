@@ -10,12 +10,12 @@ from suzieq.sqobjects.bgp import BgpObj
 
 
 @command("bgp", help="Act on BGP data")
-@argument("vrf", description="vrf name to qualify")
+@argument("vrf", description="VRF(s), space separated")
 @argument("state", description="status of the session to match",
           choices=["Established", "NotEstd", "dynamic"])
 @argument("peer",
-          description=("IP address, in quotes, or the interface name, "
-                       "of peer to qualify output"))
+          description=("IP address(es), in quotes, or the interface name(s), "
+                       "space separated"))
 class BgpCmd(SqCommand):
     """BGP protocol information"""
 

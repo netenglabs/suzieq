@@ -272,7 +272,66 @@ tests:
 - command: topology show --via='lldp bgp' --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: topology show junos
-  output: '[]'
+  output: '[{"namespace": "junos", "hostname": "firewall01", "ifname": "unknown",
+    "peerHostname": "exit01", "vrf": "default", "bgp": true, "lldp": false, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "ifname": "unknown", "peerHostname":
+    "exit02", "vrf": "default", "bgp": true, "lldp": false, "polled": true}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "xe-0/0/0", "peerHostname": "leaf01",
+    "vrf": "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "xe-0/0/2", "peerHostname": "exit01", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "xe-0/0/1", "peerHostname": "leaf02", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine01", "ifname": "xe-0/0/3", "peerHostname": "exit02", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "xe-0/0/0", "peerHostname": "leaf01", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "xe-0/0/1", "peerHostname": "leaf02", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "xe-0/0/3", "peerHostname": "exit02", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "ifname": "xe-0/0/2", "peerHostname": "exit01", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "leaf02", "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/3", "peerHostname": "dcedge01", "vrf":
+    "default", "bgp": false, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
+    "default", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
+    "internet-vrf", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
+    "evpn-vrf", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
+    "hostname": "exit01", "ifname": "unknown", "peerHostname": "dcedge01", "vrf":
+    "internet-vrf", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "leaf01", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/0", "peerHostname": "exit01", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "ifname": "xe-0/0/1", "peerHostname": "exit02", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "xe-0/0/3", "peerHostname": "dcedge01", "vrf":
+    "default", "bgp": false, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf":
+    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
+    "evpn-vrf", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
+    "default", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "unknown", "peerHostname": "dcedge01", "vrf":
+    "internet-vrf", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
+    "internet-vrf", "bgp": true, "lldp": false, "polled": true}]'
 - command: topology show --via=bgp --format=json
   data-directory: tests/data/junos/parquet-out/
   marks: topology show junos

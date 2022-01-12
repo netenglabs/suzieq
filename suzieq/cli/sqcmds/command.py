@@ -31,10 +31,10 @@ def colorize(x, color):
     choices=SUPPORTED_ENGINES,
 )
 @argument(
-    "namespace", description="Space separated list of namespaces to qualify"
+    "namespace", description="Namespace(s), space separated"
 )
 @argument("hostname",
-          description="Space separated list of hostnames to qualify")
+          description="Hostname(s), space separated")
 @argument(
     "start_time", description="Start of time window, try natural language spec"
 )
@@ -372,6 +372,8 @@ class SqCommand(SqPlugin):
             print(f"No argument information about {table} {verb}")
             return
 
+        print(Fore.YELLOW + '\nUse quotes when providing more than one value'
+              + Style.RESET_ALL)
         print(Fore.YELLOW + '\nArguments:' + Style.RESET_ALL)
 
         for arg in sorted(args):

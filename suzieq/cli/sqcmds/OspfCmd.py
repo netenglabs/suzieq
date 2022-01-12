@@ -11,10 +11,10 @@ from suzieq.sqobjects.ospf import OspfObj
 @command("ospf", help="Act on OSPF data")
 @argument(
     "ifname",
-    description="Space separated list of interface names to qualify"
+    description="Interface name(s), space separated"
 )
-@argument("vrf", description="Space separated list of VRFs to qualify")
-@argument("area", description="OSPF area to filter by")
+@argument("vrf", description="VRF(s), space separated")
+@argument("area", description="Area(s), space separated")
 @argument("state", description="Select view based on OSPF state",
           choices=["full", "other", "passive", "!full", "!passive",
                    "!other"])
@@ -50,9 +50,9 @@ class OspfCmd(SqCommand):
             sqobj=OspfObj,
         )
         self.lvars = {
-            'ifname': ifname,
-            'vrf': vrf,
-            'area': area,
+            'ifname': ifname.split(),
+            'vrf': vrf.split(),
+            'area': area.split(),
             'state': state
         }
 

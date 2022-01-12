@@ -6,9 +6,9 @@ from suzieq.sqobjects.lldp import LldpObj
 
 
 @command("lldp", help="Act on LLDP data")
-@argument("ifname", description="interface name to qualify")
-@argument("peerHostname", description="peer hostname to filter results")
-@argument("peerMacaddr", description="peer MAC address to filter results")
+@argument("ifname", description="Interface name(s), space separated")
+@argument("peerHostname", description="Peer hostname(s), space separated")
+@argument("peerMacaddr", description="Peer mac address(es), space separated")
 class LldpCmd(SqCommand):
     """LLDP protocol information"""
 

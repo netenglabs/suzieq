@@ -8,11 +8,13 @@ from suzieq.sqobjects.topology import TopologyObj
 @command("topology", help="build and act on topology data")
 @argument("polled", description="Is the device polled by Suzieq",
           choices=['True', 'False'])
-@argument("ifname", description="interface name to qualify")
-@argument("via", description="filter the method by which topology is seen",
-          choices=['arpnd', 'bgp', 'lldp', 'ospf'])
-@argument("peerHostname",
-          description="filter the result by specified peerHostname")
+@argument("ifname", description="Interface name(s), space separated")
+@argument("via",
+          description="Protocol(s) via which nodes are connected, "
+          "space separated")
+@ argument("peerHostname",
+           description="Peer hostname(s), space separated, "
+           "space separated")
 class TopologyCmd(SqCommand):
     """Information about the topology constructed from various protocols"""
 
