@@ -43,7 +43,7 @@ class RoutesObj(SqPandasEngine):
         '''Some NOS do not return an ifname, we need to fix it'''
 
         def add_oifs(row, ifdict):
-            if row.nexthopIps == []:
+            if row.nexthopIps.size == 0:
                 return row.oifs
 
             oifs = []
