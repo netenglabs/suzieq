@@ -275,10 +275,7 @@ class NetworkObj(SqPandasEngine):
                 oif = row.oif[:-3]
             else:
                 oif = row.oif
-            ifdf = self._get_table_sqobj(
-                'interfaces',
-                start_time=str(row.timestamp.timestamp()-30),
-                end_time=str(row.timestamp.timestamp()+30)) \
+            ifdf = self._get_table_sqobj('interfaces') \
                 .get(namespace=[row.namespace], hostname=[row.hostname],
                      ifname=[oif])
 
@@ -294,14 +291,12 @@ class NetworkObj(SqPandasEngine):
                         'macaddr': row.macaddr,
                         'ifname': oif,
                         'type': 'routed',
+                        'l2miss': False,
                         'timestamp': row.timestamp
                     })
                     continue
 
-                macdf = self._get_table_sqobj(
-                    'macs',
-                    start_time=str(row.timestamp.timestamp()-30),
-                    end_time=str(row.timestamp.timestamp()+30)) \
+                macdf = self._get_table_sqobj('macs') \
                     .get(namespace=[row.namespace], hostname=[row.hostname],
                          vlan=ifdf.vlan.astype(str).unique().tolist(),
                          macaddr=[row.macaddr],
@@ -321,6 +316,20 @@ class NetworkObj(SqPandasEngine):
                         'macaddr': row.macaddr,
                         'ifname': oifs[0],
                         'type': 'bridged',
+                        'l2miss': False,
+                        'timestamp': row.timestamp
+                    })
+                else:
+                    result.append({
+                        'namespace': row.namespace,
+                        'hostname': row.hostname,
+                        'vrf': ifdf.master.unique().tolist()[0] or 'default',
+                        'ipAddress': row.ipAddress,
+                        'vlan': ifdf.vlan.astype(str).unique().tolist()[0],
+                        'macaddr': row.macaddr,
+                        'ifname': ' '.join(ifdf.ifname.unique().tolist()),
+                        'type': 'bridged',
+                        'l2miss': True,
                         'timestamp': row.timestamp
                     })
 
@@ -413,6 +422,7 @@ class NetworkObj(SqPandasEngine):
                 'ifname': match_ifname,
                 'bondMembers': ', '.join(mbr_ports),
                 'type': row.type,
+                'l2miss': row.l2miss,
                 'timestamp': row.timestamp
             })
 
