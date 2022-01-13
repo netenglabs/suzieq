@@ -58,14 +58,6 @@ class XplorePage(SqGuiPage):
             get_tables()
         )
         table_vals = [''] + sorted(tables)
-
-        if state.table:
-            if isinstance(state.table, list):
-                tblidx = table_vals.index(state.table[0])
-            else:
-                tblidx = table_vals.index(state.table)
-        else:
-            tblidx = 0  # Default starting table
         assert_val = state.assert_clicked
         view_idx = 1 if state.view == 'all' else 0
 
@@ -76,15 +68,10 @@ class XplorePage(SqGuiPage):
 
         namespaces = [""]
         namespaces.extend(sorted(devdf.namespace.unique().tolist()))
-        if state.namespace:
-            nsidx = namespaces.index(state.namespace)
-        else:
-            nsidx = 0
         with st.sidebar:
             with st.form('Xplore'):
                 namespace = st.selectbox('Namespace',
-                                         namespaces, key='xplore_namespace',
-                                         index=nsidx)
+                                         namespaces, key='xplore_namespace')
                 state.start_time = st.text_input('Start time',
                                                  value=stime,
                                                  key='xplore_stime')
@@ -94,7 +81,7 @@ class XplorePage(SqGuiPage):
 
                 table = st.selectbox(
                     'Select Table to View', tuple(table_vals),
-                    key='xplore_table', index=tblidx)
+                    key='xplore_table')
                 if table != state.table:
                     # We need to reset the specific variables
                     state.query = ''
