@@ -31,37 +31,37 @@ tests:
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
-    "bondMembers": "Ethernet3", "type": "bridged", "timestamp": 1623025177307}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
-    "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
-    "Ethernet3", "type": "bridged", "timestamp": 1623025177688}]'
+    "bondMembers": "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177307},
+    {"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
+    "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177688}]'
 - command: network find --address="66:49:0d:d4:d8:63" --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
-    "bondMembers": "Ethernet3", "type": "bridged", "timestamp": 1623025177307}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
-    "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
-    "Ethernet3", "type": "bridged", "timestamp": 1623025177688}]'
+    "bondMembers": "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177307},
+    {"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
+    "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177688}]'
 - command: network find --address="6649.0dd4.d863" --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network find  eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
-    "bondMembers": "Ethernet3", "type": "bridged", "timestamp": 1623025177307}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
-    "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
-    "Ethernet3", "type": "bridged", "timestamp": 1623025177688}]'
+    "bondMembers": "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177307},
+    {"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
+    "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177688}]'
 - command: network find --address="66:49:0d:D4:D8:63" --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
-    "bondMembers": "Ethernet3", "type": "bridged", "timestamp": 1623025177307}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
-    "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
-    "Ethernet3", "type": "bridged", "timestamp": 1623025177688}]'
+    "bondMembers": "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177307},
+    {"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
+    "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177688}]'
 - command: network summarize --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network summarize eos
@@ -73,31 +73,31 @@ tests:
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "leaf01", "vrf": "default", "ipAddress":
     "10.0.0.11", "vlan": "0", "macaddr": "44:38:39:e3:19:2e", "ifname": "Ethernet1",
-    "bondMembers": "", "type": "routed", "timestamp": 1623025177202}]'
+    "bondMembers": "", "type": "routed", "l2miss": false, "timestamp": 1623025177202}]'
 - command: network find --address="169.254.127.0" --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "dcedge01", "vrf": "default", "ipAddress":
     "169.254.127.0", "vlan": "0", "macaddr": "02:05:86:71:f0:03", "ifname": "xe-0/0/0",
-    "bondMembers": "", "type": "routed", "timestamp": 1623025177530}]'
+    "bondMembers": "", "type": "routed", "l2miss": false, "timestamp": 1623025177530}]'
 - command: network find --address="169.254.127.1" --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "exit01", "vrf": "internet-vrf", "ipAddress":
     "169.254.127.1", "vlan": "0", "macaddr": "44:38:39:33:d8:43", "ifname": "Ethernet4",
-    "bondMembers": "", "type": "routed", "timestamp": 1623025181909}]'
+    "bondMembers": "", "type": "routed", "l2miss": false, "timestamp": 1623025181909}]'
 - command: network find --address="10.0.0.21" --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "spine01", "vrf": "default", "ipAddress":
     "10.0.0.21", "vlan": "0", "macaddr": "44:38:39:ba:d2:34", "ifname": "Ethernet3",
-    "bondMembers": "", "type": "routed", "timestamp": 1623025177304}]'
+    "bondMembers": "", "type": "routed", "l2miss": false, "timestamp": 1623025177304}]'
 - command: network find --address="10.0.0.32" --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "default", "ipAddress":
     "10.0.0.32", "vlan": "0", "macaddr": "44:38:39:c3:55:cb", "ifname": "Ethernet1",
-    "bondMembers": "", "type": "routed", "timestamp": 1623025177202}]'
+    "bondMembers": "", "type": "routed", "l2miss": false, "timestamp": 1623025177202}]'
 - command: network unique --format=json
   data-directory: tests/data/eos/parquet-out
   marks: network unique eos
@@ -121,16 +121,16 @@ tests:
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "server301", "vrf": "default", "ipAddress":
     "172.16.2.254", "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0",
-    "bondMembers": "eth1, eth2", "type": "routed", "timestamp": 1623025176216}, {"namespace":
-    "eos", "hostname": "server302", "vrf": "default", "ipAddress": "172.16.3.254",
+    "bondMembers": "eth1, eth2", "type": "routed", "l2miss": false, "timestamp": 1623025176216},
+    {"namespace": "eos", "hostname": "server302", "vrf": "default", "ipAddress": "172.16.3.254",
     "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers":
-    "eth1, eth2", "type": "routed", "timestamp": 1623025176216}, {"namespace": "eos",
-    "hostname": "server101", "vrf": "default", "ipAddress": "172.16.1.254", "vlan":
-    "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers": "eth1,
-    eth2", "type": "routed", "timestamp": 1623025176435}, {"namespace": "eos", "hostname":
-    "server102", "vrf": "default", "ipAddress": "172.16.3.254", "vlan": "0", "macaddr":
-    "00:00:00:11:12:10", "ifname": "bond0", "bondMembers": "eth1, eth2", "type": "routed",
-    "timestamp": 1623025176627}]'
+    "eth1, eth2", "type": "routed", "l2miss": false, "timestamp": 1623025176216},
+    {"namespace": "eos", "hostname": "server101", "vrf": "default", "ipAddress": "172.16.1.254",
+    "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers":
+    "eth1, eth2", "type": "routed", "l2miss": false, "timestamp": 1623025176435},
+    {"namespace": "eos", "hostname": "server102", "vrf": "default", "ipAddress": "172.16.3.254",
+    "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers":
+    "eth1, eth2", "type": "routed", "l2miss": false, "timestamp": 1623025176627}]'
 - command: network find --address='00:00:00:11:12' --format=json
   data-directory: tests/data/eos/parquet-out
   error:
@@ -141,13 +141,13 @@ tests:
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "server301", "vrf": "default", "ipAddress":
     "172.16.2.254", "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0",
-    "bondMembers": "eth1, eth2", "type": "routed", "timestamp": 1623025176216}, {"namespace":
-    "eos", "hostname": "server302", "vrf": "default", "ipAddress": "172.16.3.254",
+    "bondMembers": "eth1, eth2", "type": "routed", "l2miss": false, "timestamp": 1623025176216},
+    {"namespace": "eos", "hostname": "server302", "vrf": "default", "ipAddress": "172.16.3.254",
     "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers":
-    "eth1, eth2", "type": "routed", "timestamp": 1623025176216}, {"namespace": "eos",
-    "hostname": "server101", "vrf": "default", "ipAddress": "172.16.1.254", "vlan":
-    "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers": "eth1,
-    eth2", "type": "routed", "timestamp": 1623025176435}, {"namespace": "eos", "hostname":
-    "server102", "vrf": "default", "ipAddress": "172.16.3.254", "vlan": "0", "macaddr":
-    "00:00:00:11:12:10", "ifname": "bond0", "bondMembers": "eth1, eth2", "type": "routed",
-    "timestamp": 1623025176627}]'
+    "eth1, eth2", "type": "routed", "l2miss": false, "timestamp": 1623025176216},
+    {"namespace": "eos", "hostname": "server101", "vrf": "default", "ipAddress": "172.16.1.254",
+    "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers":
+    "eth1, eth2", "type": "routed", "l2miss": false, "timestamp": 1623025176435},
+    {"namespace": "eos", "hostname": "server102", "vrf": "default", "ipAddress": "172.16.3.254",
+    "vlan": "0", "macaddr": "00:00:00:11:12:10", "ifname": "bond0", "bondMembers":
+    "eth1, eth2", "type": "routed", "l2miss": false, "timestamp": 1623025176627}]'

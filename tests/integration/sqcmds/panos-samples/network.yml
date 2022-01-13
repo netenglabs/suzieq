@@ -57,31 +57,43 @@ tests:
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "leaf01", "vrf": "default", "ipAddress":
     "10.0.0.11", "vlan": "0", "macaddr": "52:54:00:89:13:56", "ifname": "swp2", "bondMembers":
-    "", "type": "routed", "timestamp": 1639476254326}]'
+    "", "type": "routed", "l2miss": false, "timestamp": 1639476254326}]'
 - command: network find --address="169.254.127.0" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "ipAddress":
     "169.254.127.0", "vlan": "0", "macaddr": "52:54:00:89:e4:e1", "ifname": "swp1",
-    "bondMembers": "", "type": "routed", "timestamp": 1639476254367}]'
+    "bondMembers": "", "type": "routed", "l2miss": false, "timestamp": 1639476254367}]'
 - command: network find --address="169.254.127.1" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf", "ipAddress":
     "169.254.127.1", "vlan": "0", "macaddr": "52:54:00:de:df:7d", "ifname": "swp4",
-    "bondMembers": "", "type": "routed", "timestamp": 1639476254136}]'
+    "bondMembers": "", "type": "routed", "l2miss": false, "timestamp": 1639476254136}]'
 - command: network find --address="10.0.0.21" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "spine01", "vrf": "default", "ipAddress":
     "10.0.0.21", "vlan": "0", "macaddr": "52:54:00:c4:54:00", "ifname": "swp6", "bondMembers":
-    "", "type": "routed", "timestamp": 1639476254350}]'
+    "", "type": "routed", "l2miss": false, "timestamp": 1639476254350}]'
 - command: network find --address="10.0.0.32" --format=json
   data-directory: tests/data/panos/parquet-out
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "exit02", "vrf": "default", "ipAddress":
     "10.0.0.32", "vlan": "0", "macaddr": "52:54:00:3c:63:f0", "ifname": "swp2", "bondMembers":
-    "", "type": "routed", "timestamp": 1639476254326}]'
+    "", "type": "routed", "l2miss": false, "timestamp": 1639476254326}, {"namespace":
+    "panos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "10.0.0.32", "vlan":
+    "999", "macaddr": "44:39:39:ff:41:96", "ifname": "vlan999", "bondMembers": "",
+    "type": "bridged", "l2miss": true, "timestamp": 1639476254402}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "evpn-vrf", "ipAddress": "10.0.0.32", "vlan":
+    "999", "macaddr": "44:39:39:ff:41:96", "ifname": "vlan999", "bondMembers": "",
+    "type": "bridged", "l2miss": true, "timestamp": 1639476254419}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "10.0.0.32", "vlan":
+    "999", "macaddr": "44:39:39:ff:41:96", "ifname": "vlan999", "bondMembers": "",
+    "type": "bridged", "l2miss": true, "timestamp": 1639476254425}, {"namespace":
+    "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "ipAddress": "10.0.0.32", "vlan":
+    "999", "macaddr": "44:39:39:ff:41:96", "ifname": "vlan999", "bondMembers": "",
+    "type": "bridged", "l2miss": true, "timestamp": 1639476254425}]'
 - command: network unique --format=json
   data-directory: tests/data/panos/parquet-out/
   marks: network unique
