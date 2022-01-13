@@ -389,6 +389,10 @@ def test_controller_invalid_args(config_file: str, args: Dict):
         Controller(parse_args, config)
 
 
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
 def test_missing_default_inventory(default_args):
     """Test if the controller launches and exception if no inventory if
     passed in the configuration and there is no file in the default path
