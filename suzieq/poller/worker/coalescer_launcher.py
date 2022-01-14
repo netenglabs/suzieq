@@ -5,7 +5,6 @@ import asyncio
 import errno
 import logging
 from pathlib import Path
-import shlex
 from asyncio.subprocess import Process
 from typing import Dict
 
@@ -133,12 +132,9 @@ class CoalescerLauncher:
         Returns:
             Process: the process object of the started coalescer.
         """
+        coalescer_args = [self.coalescer_bin]
         if self.config_file:
-            coalescer_args_str = f'-c {self.config_file}'
-        else:
-            coalescer_args_str = ''
-        coalescer_args_str = f'{self.coalescer_bin} {coalescer_args_str}'
-        coalescer_args = shlex.split(coalescer_args_str.strip())
+            coalescer_args += ['-c', self.config_file]
 
         try:
             process = await asyncio.create_subprocess_exec(
