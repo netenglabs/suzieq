@@ -13,8 +13,8 @@ from suzieq.sqobjects.inventory import InventoryObj
 @argument("status", description="Filter by status",
           choices=['present', 'absent'])
 @argument("model", description="Filter by model")
-@argument("serial", description="Filter by serial number")
-@argument("vendor", description="Filter by vendor name")
+@argument("serial", description="Serial number(s), space separated")
+@argument("vendor", description="Vendor(s), space separated")
 class InventoryCmd(SqCommand):
     """Device inventory information such as serial number, cable info etc"""
 

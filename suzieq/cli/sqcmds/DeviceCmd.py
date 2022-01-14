@@ -9,10 +9,10 @@ from suzieq.sqobjects.device import DeviceObj
 @command("device", help="Act on device data")
 @argument("status", description="filter by polling status",
           choices=["dead", "alive",  "neverpoll"])
-@argument("os", description="filter by NOS")
-@argument("version", description="filter by NOS version")
-@argument("vendor", description="filter by vendor")
-@argument("model", description="filter by model")
+@argument("os", description="NOS(s), space separated")
+@argument("version", description="NOS version(s), space separated")
+@argument("vendor", description="Vendor(s), space separated")
+@argument("model", description="Model(s), space separated")
 class DeviceCmd(SqCommand):
     """Basic device information such as OS, version, model etc."""
 

@@ -6,14 +6,14 @@ from suzieq.sqobjects.address import AddressObj
 
 
 @argument("vrf",
-          description="VRF to qualify the address")
-@argument("type", description="interface type to filter on")
-@argument("ifname", description="interface name to filter on")
+          description="VRF(s), space separated")
+@argument("type", description="Interface type(s), space separated")
+@argument("ifname", description="Interface name(s), space separated")
 @argument("ipvers",
           description="type of address, v4, v6 or l2",
           choices=["v4", "v6", "l2"])
 @argument("address",
-          description="Address, in quotes, to show info for")
+          description="Address(es), in quotes, space separated")
 @argument("prefix",
           description=("Show all the addresses in this "
                        "subnet prefix (in quotes)"))

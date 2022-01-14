@@ -14,76 +14,77 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: address help command
-  output: "address show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n -\
-    \ address: \e[36m\e[1mIP address, in quotes, to qualify output\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e\
-    [36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e\
-    [1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated\
-    \ list of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface name to qualify\e\
-    [0m\n - ipvers: \e[36m\e[1mtype of address, v4, v6 or l2\e[0m\n - namespace: \e\
-    [36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - prefix: \e[36m\e\
-    [1mPrefix, in quotes, to filter show on\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - type: \e\
-    [36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView all records or just the\
-    \ latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+  output: "address show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - address: \e[36m\e[1mIP\
+    \ Address(es), in quotes, space separated\e[0m\n - columns: \e[36m\e[1mSpace separated\
+    \ list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window,\
+    \ try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of\
+    \ the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - ipvers: \e\
+    [36m\e[1mtype of address, v4, v6 or l2\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - prefix: \e[36m\e[1mPrefix(es), in quotes, space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
+    \ try natural language spec\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n -\
+    \ view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e\
+    [1mVRF(s), space separated\e[0m\n"
 - command: address help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: address help command
   output: "address summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - address: \e[36m\e[1mIP address, in quotes, to\
-    \ qualify output\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - ifname:\
-    \ \e[36m\e[1minterface name to qualify\e[0m\n - ipvers: \e[36m\e[1mtype of address,\
-    \ v4, v6 or l2\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - prefix: \e[36m\e[1mPrefix, in quotes, to filter show on\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
-    \ try natural language spec\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n -\
-    \ view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e\
-    [1mVRF to qualify\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - address: \e[36m\e[1mIP Address(es), in quotes, space separated\e[0m\n\
+    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e\
+    [0m\n - ipvers: \e[36m\e[1mtype of address, v4, v6 or l2\e[0m\n - namespace: \e\
+    [36m\e[1mNamespace(s), space separated\e[0m\n - prefix: \e[36m\e[1mPrefix(es),\
+    \ in quotes, space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
+    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
+    [1mStart of time window, try natural language spec\e[0m\n - type: \e[36m\e[1mFilter\
+    \ by type\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
+    \ - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: address help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: address help command
   output: "address unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - address: \e[36m\e[1mIP address, in quotes,\
-    \ to qualify output\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e\
-    [0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e\
-    [0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - ifname: \e\
-    [36m\e[1minterface name to qualify\e[0m\n - ipvers: \e[36m\e[1mtype of address,\
-    \ v4, v6 or l2\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - prefix: \e[36m\e[1mPrefix, in quotes, to filter show on\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
-    \ try natural language spec\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n -\
-    \ view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e\
-    [1mVRF to qualify\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - address: \e[36m\e[1mIP Address(es), in quotes, space separated\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e\
+    [0m\n - ipvers: \e[36m\e[1mtype of address, v4, v6 or l2\e[0m\n - namespace: \e\
+    [36m\e[1mNamespace(s), space separated\e[0m\n - prefix: \e[36m\e[1mPrefix(es),\
+    \ in quotes, space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
+    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
+    [1mStart of time window, try natural language spec\e[0m\n - type: \e[36m\e[1mFilter\
+    \ by type\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
+    \ - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: address help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: address help command
   output: "address top: \e[36mReturn the top n values for a field in a table\e[0m\n\
-    \e[33m\nArguments:\e[0m\n - address: \e[36m\e[1mIP address, in quotes, to qualify\
-    \ output\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e\
-    [0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e\
-    [1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
-    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated list\
-    \ of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface name to qualify\e\
-    [0m\n - ipvers: \e[36m\e[1mtype of address, v4, v6 or l2\e[0m\n - namespace: \e\
-    [36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - prefix: \e[36m\e\
-    [1mPrefix, in quotes, to filter show on\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36m\e[1mreturn bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time\
-    \ window, try natural language spec\e[0m\n - type: \e[36m\e[1mFilter by type\e\
-    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e\
-    [36m\e[1mVRF to qualify\e[0m\n - what: \e[36m\e[1mnumeric field to get top values\
-    \ for\e[0m\n"
+    \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - address: \e[36m\e[1mIP Address(es), in quotes, space separated\e[0m\n\
+    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - count:\
+    \ \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - ipvers: \e\
+    [36m\e[1mtype of address, v4, v6 or l2\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - prefix: \e[36m\e[1mPrefix(es), in quotes, space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e\
+    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
+    [0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView all records\
+    \ or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n -\
+    \ what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: arpnd help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -98,152 +99,156 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: arpnd help command
-  output: "arpnd show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e\
-    [36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e\
-    [1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated\
-    \ list of hostnames to qualify\e[0m\n - ipAddress: \e[36m\e[1mNo description\e\
-    [0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes, to filter\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - oif: \e[36m\e\
-    [1moutgoing interface to qualify\e[0m\n - prefix: \e[36m\e[1mPrefix, in quotes,\
-    \ to filter show on\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
-    \ records or just the latest\e[0m\n"
+  output: "arpnd show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - ipAddress: \e[36m\e[1mNo description\e[0m\n - macaddr: \e[36m\e[1mMAC address(es),\
+    \ in quotes, space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space\
+    \ separated\e[0m\n - oif: \e[36m\e[1mOutgoing interface(s), space separated\e\
+    [0m\n - prefix: \e[36m\e[1mPrefix(es), in quotes, space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
 - command: arpnd help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: arpnd help command
   output: "arpnd summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - ipAddress:\
-    \ \e[36m\e[1mNo description\e[0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes,\
-    \ to filter\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - oif: \e[36m\e[1moutgoing interface to qualify\e[0m\n - prefix:\
-    \ \e[36m\e[1mPrefix, in quotes, to filter show on\e[0m\n - query_str: \e[36m\e\
-    [1mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - ipAddress: \e[36m\e[1mNo description\e\
+    [0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes, space separated\e[0m\n\
+    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - oif: \e[36m\e\
+    [1mOutgoing interface(s), space separated\e[0m\n - prefix: \e[36m\e[1mPrefix(es),\
+    \ in quotes, space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
+    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
+    [1mStart of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView\
+    \ all records or just the latest\e[0m\n"
 - command: arpnd help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: arpnd help command
   output: "arpnd unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n\
-    \ - ipAddress: \e[36m\e[1mNo description\e[0m\n - macaddr: \e[36m\e[1mMAC address(es),\
-    \ in quotes, to filter\e[0m\n - namespace: \e[36m\e[1mSpace separated list of\
-    \ namespaces to qualify\e[0m\n - oif: \e[36m\e[1moutgoing interface to qualify\e\
-    [0m\n - prefix: \e[36m\e[1mPrefix, in quotes, to filter show on\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - ipAddress: \e[36m\e[1mNo description\e\
+    [0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes, space separated\e[0m\n\
+    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - oif: \e[36m\e\
+    [1mOutgoing interface(s), space separated\e[0m\n - prefix: \e[36m\e[1mPrefix(es),\
+    \ in quotes, space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
+    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
+    [1mStart of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView\
+    \ all records or just the latest\e[0m\n"
 - command: arpnd help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: arpnd help command
   output: "arpnd top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
-    [33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - ipAddress: \e[36m\e[1mNo description\e\
-    [0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes, to filter\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - oif: \e[36m\e\
-    [1moutgoing interface to qualify\e[0m\n - prefix: \e[36m\e[1mPrefix, in quotes,\
-    \ to filter show on\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn\
-    \ bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural\
-    \ language spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
-    [0m\n - what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
+    [33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - ipAddress: \e[36m\e[1mNo description\e[0m\n - macaddr: \e[36m\e[1mMAC\
+    \ address(es), in quotes, space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - oif: \e[36m\e[1mOutgoing interface(s), space separated\e\
+    [0m\n - prefix: \e[36m\e[1mPrefix(es), in quotes, space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n - what: \e[36m\e[1mnumeric\
+    \ field to get top values for\e[0m\n"
 - command: bgp help --command=assert
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help
-  output: "bgp aver: \e[36mAssert BGP is functioning properly\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e\
-    [1mSpace separated list of namespaces to qualify\e[0m\n - peer: \e[36m\e[1mIP\
-    \ address, in quotes, or the interface name, of peer to qualify output\e[0m\n\
-    \ - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
-    \ natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n\
-    \ - status: \e[36m\e[1mShow only assert that matches this value\e[0m\n - view:\
-    \ \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF\
-    \ to qualify\e[0m\n"
+  output: "bgp aver: \e[36mAssert BGP is functioning properly\e[0m\n\e[33m\nUse quotes\
+    \ when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns:\
+    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e\
+    [36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e\
+    [1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - peer: \e[36m\e[1mIP address(es), in quotes, or the interface name(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of\
+    \ VLAN to query\e[0m\n - status: \e[36m\e[1mShow only assert that matches this\
+    \ value\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
+    \ vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help command
-  output: "bgp show: \e[36mShow BGP info\e[0m\n\e[33m\nArguments:\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e\
-    [36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e\
-    [1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated\
-    \ list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - peer: \e[36m\e[1mIP address, in quotes,\
-    \ or the interface name, of peer to qualify output\e[0m\n - query_str: \e[36m\e\
-    [1mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView\
-    \ all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+  output: "bgp show: \e[36mShow BGP info\e[0m\n\e[33m\nUse quotes when providing more\
+    \ than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
+    \ list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window,\
+    \ try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of\
+    \ the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - peer: \e[36m\e\
+    [1mIP address(es), in quotes, or the interface name(s), space separated\e[0m\n\
+    \ - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
+    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
+    \ natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n\
+    \ - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e\
+    [1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help command
   output: "bgp summarize: \e[36mSummarize relevant information about the table\e[0m\n\
-    \e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - peer: \e[36m\e\
-    [1mIP address, in quotes, or the interface name, of peer to qualify output\e[0m\n\
-    \ - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
-    \ natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n\
-    \ - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e\
-    [1mVRF to qualify\e[0m\n"
+    \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - peer: \e[36m\e[1mIP address(es), in quotes, or the\
+    \ interface name(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank\
+    \ terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
+    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
+    \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help command
   output: "bgp unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n\
-    \ - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n\
-    \ - peer: \e[36m\e[1mIP address, in quotes, or the interface name, of peer to\
-    \ qualify output\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
-    \ of time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of\
-    \ VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
-    [0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - peer: \e[36m\e[1mIP address(es), in quotes, or the\
+    \ interface name(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank\
+    \ terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
+    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
+    \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help command
   output: "bgp top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
-    [33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - peer: \e[36m\e[1mIP address,\
-    \ in quotes, or the interface name, of peer to qualify output\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
-    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
-    \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n - what: \e[36m\e\
-    [1mnumeric field to get top values for\e[0m\n"
+    [33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - peer: \e\
+    [36m\e[1mIP address(es), in quotes, or the interface name(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e\
+    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
+    [0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView\
+    \ all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
+    [0m\n - what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: devconfig help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -268,71 +273,73 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: device help command
-  output: "device show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n -\
-    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - model: \e[36m\e[1mFilter by\
-    \ model\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e\
-    [0m\n - os: \e[36m\e[1mfilter by NOS\e[0m\n - query_str: \e[36m\e[1mTrailing blank\
-    \ terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - status:\
-    \ \e[36m\e[1mstatus of service to match\e[0m\n - vendor: \e[36m\e[1mFilter by\
-    \ vendor name\e[0m\n - version: \e[36m\e[1mfilter by NOS version\e[0m\n - view:\
-    \ \e[36m\e[1mView all records or just the latest\e[0m\n"
+  output: "device show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - model: \e[36m\e[1mFilter by model\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - os: \e[36m\e[1mNOS(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
+    \ spec\e[0m\n - status: \e[36m\e[1mstatus of service to match\e[0m\n - vendor:\
+    \ \e[36m\e[1mVendor(s), space separated\e[0m\n - version: \e[36m\e[1mNOS version(s),\
+    \ space separated\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n"
 - command: device help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: device help command
   output: "device summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - model:\
-    \ \e[36m\e[1mFilter by model\e[0m\n - namespace: \e[36m\e[1mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - os: \e[36m\e[1mfilter by NOS\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - status: \e[36m\e[1mstatus of service to match\e[0m\n - vendor:\
-    \ \e[36m\e[1mFilter by vendor name\e[0m\n - version: \e[36m\e[1mfilter by NOS\
-    \ version\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - model: \e[36m\e[1mFilter by model\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - os: \e[36m\e\
+    [1mNOS(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
+    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
+    [1mStart of time window, try natural language spec\e[0m\n - status: \e[36m\e[1mstatus\
+    \ of service to match\e[0m\n - vendor: \e[36m\e[1mVendor(s), space separated\e\
+    [0m\n - version: \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n"
 - command: device help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: device help command
   output: "device unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n\
-    \ - model: \e[36m\e[1mFilter by model\e[0m\n - namespace: \e[36m\e[1mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - os: \e[36m\e[1mfilter by NOS\e[0m\n -\
-    \ query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
-    \ natural language spec\e[0m\n - status: \e[36m\e[1mstatus of service to match\e\
-    [0m\n - vendor: \e[36m\e[1mFilter by vendor name\e[0m\n - version: \e[36m\e[1mfilter\
-    \ by NOS version\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
-    [0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - model: \e[36m\e[1mFilter by model\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - os: \e[36m\e\
+    [1mNOS(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
+    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
+    [1mStart of time window, try natural language spec\e[0m\n - status: \e[36m\e[1mstatus\
+    \ of service to match\e[0m\n - vendor: \e[36m\e[1mVendor(s), space separated\e\
+    [0m\n - version: \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n"
 - command: device help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: device help command
   output: "device top: \e[36mReturn the top n values for a field in a table\e[0m\n\
-    \e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - model: \e[36m\e[1mFilter by\
-    \ model\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e\
-    [0m\n - os: \e[36m\e[1mfilter by NOS\e[0m\n - query_str: \e[36m\e[1mTrailing blank\
-    \ terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36m\e[1mreturn bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time\
-    \ window, try natural language spec\e[0m\n - status: \e[36m\e[1mstatus of service\
-    \ to match\e[0m\n - vendor: \e[36m\e[1mFilter by vendor name\e[0m\n - version:\
-    \ \e[36m\e[1mfilter by NOS version\e[0m\n - view: \e[36m\e[1mView all records\
-    \ or just the latest\e[0m\n - what: \e[36m\e[1mnumeric field to get top values\
-    \ for\e[0m\n"
+    \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - model: \e[36m\e[1mFilter by model\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - os: \e[36m\e[1mNOS(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - status:\
+    \ \e[36m\e[1mstatus of service to match\e[0m\n - vendor: \e[36m\e[1mVendor(s),\
+    \ space separated\e[0m\n - version: \e[36m\e[1mNOS version(s), space separated\e\
+    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n - what: \e\
+    [36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: evpnVni help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -348,81 +355,81 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: evpnVni help command
-  output: "evpnVni show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n -\
-    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - priVtepIp: \e[36m\e[1mPrimary\
-    \ VTEP IP to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
-    [1mStart of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView\
-    \ all records or just the latest\e[0m\n - vni: \e[36m\e[1mVNI ID to qualify\e\
-    [0m\n"
+  output: "evpnVni show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - priVtepIp: \e\
+    [36m\e[1mPrimary VTEP IP(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n - vni: \e[36m\e[1mVNI ID(s),\
+    \ space separated\e[0m\n"
 - command: evpnVni help --command=assert
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: evpnVni help command
   output: "evpnVni aver: \e[36mAssert VXLAN Forwarding is functioning properly\e[0m\n\
-    \e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - priVtepIp:\
-    \ \e[36m\e[1mPrimary VTEP IP to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - status:\
-    \ \e[36m\e[1mShow only assert that matches this value\e[0m\n - view: \e[36m\e\
-    [1mView all records or just the latest\e[0m\n - vni: \e[36m\e[1mVNI ID to qualify\e\
-    [0m\n"
+    \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - priVtepIp: \e[36m\e[1mPrimary VTEP IP(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
+    \ try natural language spec\e[0m\n - status: \e[36m\e[1mShow only assert that\
+    \ matches this value\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n - vni: \e[36m\e[1mVNI ID(s), space separated\e[0m\n"
 - command: evpnVni help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: evpnVni help command
   output: "evpnVni summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - priVtepIp:\
-    \ \e[36m\e[1mPrimary VTEP IP to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
-    [36m\e[1mView all records or just the latest\e[0m\n - vni: \e[36m\e[1mVNI ID to\
-    \ qualify\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - priVtepIp: \e[36m\e[1mPrimary VTEP IP(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
+    \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
+    \ the latest\e[0m\n - vni: \e[36m\e[1mVNI ID(s), space separated\e[0m\n"
 - command: evpnVni help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: evpnVni help command
   output: "evpnVni unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n\
-    \ - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n\
-    \ - priVtepIp: \e[36m\e[1mPrimary VTEP IP to qualify\e[0m\n - query_str: \e[36m\e\
-    [1mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vni: \e\
-    [36m\e[1mVNI ID to qualify\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - priVtepIp: \e[36m\e[1mPrimary VTEP IP(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
+    \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
+    \ the latest\e[0m\n - vni: \e[36m\e[1mVNI ID(s), space separated\e[0m\n"
 - command: evpnVni help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: evpnVni help command
   output: "evpnVni top: \e[36mReturn the top n values for a field in a table\e[0m\n\
-    \e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - priVtepIp: \e[36m\e[1mPrimary\
-    \ VTEP IP to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - reverse: \e[36m\e\
-    [1mreturn bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
-    \ the latest\e[0m\n - vni: \e[36m\e[1mVNI ID to qualify\e[0m\n - what: \e[36m\e\
-    [1mnumeric field to get top values for\e[0m\n"
+    \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - priVtepIp:\
+    \ \e[36m\e[1mPrimary VTEP IP(s), space separated\e[0m\n - query_str: \e[36m\e\
+    [1mTrailing blank terminated pandas query format to further filter the output\e\
+    [0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time: \e[36m\e\
+    [1mStart of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView\
+    \ all records or just the latest\e[0m\n - vni: \e[36m\e[1mVNI ID(s), space separated\e\
+    [0m\n - what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: fs help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -450,105 +457,109 @@ tests:
   format: text
   marks: interface help command
   output: "interfaces aver: \e[36mAssert aspects about the interface\e[0m\n\e[33m\n\
-    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
-    \ all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec\
-    \ \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - ifname: \e\
-    [36m\e[1minterface name to qualify\e[0m\n - ignore_missing_peer: \e[36m\e[1mTreat\
-    \ missing peer as passing assert check\e[0m\n - mtu: \e[36m\e[1mfilter interfaces\
-    \ with MTU\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces to\
-    \ qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
-    \ time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN\
-    \ to query\e[0m\n - status: \e[36m\e[1mShow only assert that matches this value\e\
-    [0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - value: \e[36m\e[1mValue to match\
-    \ against\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
-    \ - vrf: \e[36m\e[1mVRF to qualify\e[0m\n - what: \e[36m\e[1mWhat do you want\
-    \ to assert\e[0m\n"
+    Use quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n\
+    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e\
+    [0m\n - ignore_missing_peer: \e[36m\e[1mTreat missing peer as passing assert check\e\
+    [0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n\
+    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e\
+    [36m\e[1mTrailing blank terminated pandas query format to further filter the output\e\
+    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
+    [0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - status: \e[36m\e[1mShow\
+    \ only assert that matches this value\e[0m\n - type: \e[36m\e[1mFilter by type\e\
+    [0m\n - value: \e[36m\e[1mValue to match against\e[0m\n - view: \e[36m\e[1mView\
+    \ all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
+    [0m\n - what: \e[36m\e[1mWhat do you want to assert\e[0m\n"
 - command: interface help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: interface help command
   output: "interfaces describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\n\
-    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
-    \ all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec\
-    \ \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - ifname: \e\
-    [36m\e[1minterface name to qualify\e[0m\n - mtu: \e[36m\e[1mfilter interfaces\
-    \ with MTU\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces to\
-    \ qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
-    \ time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN\
-    \ to query\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView\
-    \ all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+    Use quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n\
+    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e\
+    [0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n\
+    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e\
+    [36m\e[1mTrailing blank terminated pandas query format to further filter the output\e\
+    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
+    [0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - type: \e[36m\e[1mFilter\
+    \ by type\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
+    \ - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: interface help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: interface help command
-  output: "interfaces show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n\
-    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface\
-    \ name to qualify\e[0m\n - mtu: \e[36m\e[1mfilter interfaces with MTU\e[0m\n -\
-    \ namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n -\
-    \ query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
-    \ natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n\
-    \ - type: \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView all records\
-    \ or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+  output: "interfaces show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when\
+    \ providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e\
+    [36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e\
+    [1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - mtu: \e\
+    [36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
+    [36m\e[1mState of VLAN to query\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n\
+    \ - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e\
+    [1mVRF(s), space separated\e[0m\n"
 - command: interface help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: interface help command
   output: "interfaces summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - ifname:\
-    \ \e[36m\e[1minterface name to qualify\e[0m\n - mtu: \e[36m\e[1mfilter interfaces\
-    \ with MTU\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces to\
-    \ qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
-    \ time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN\
-    \ to query\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView\
-    \ all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s),\
+    \ space separated\e[0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can use <,\
+    \ >, <=, >=, !\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
+    \ try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e\
+    [0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView all records\
+    \ or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: interface help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: interface help command
   output: "interfaces top: \e[36mReturn the top n values for a field in a table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface\
-    \ name to qualify\e[0m\n - mtu: \e[36m\e[1mfilter interfaces with MTU\e[0m\n -\
-    \ namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n -\
-    \ query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n\
-    \ - start_time: \e[36m\e[1mStart of time window, try natural language spec\e[0m\n\
-    \ - state: \e[36m\e[1mState of VLAN to query\e[0m\n - type: \e[36m\e[1mFilter\
-    \ by type\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
-    \ - vrf: \e[36m\e[1mVRF to qualify\e[0m\n - what: \e[36m\e[1mnumeric field to\
-    \ get top values for\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - mtu: \e\
+    [36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
+    \ \e[36m\e[1mreturn bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time\
+    \ window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to\
+    \ query\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView\
+    \ all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
+    [0m\n - what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: interface help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: interface help command
   output: "interfaces unique: \e[36mGet unique values (and counts) associated with\
-    \ requested field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
-    \ separated list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count\
-    \ of times a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try\
-    \ natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the\
-    \ output\e[0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e\
-    [0m\n - ifname: \e[36m\e[1minterface name to qualify\e[0m\n - mtu: \e[36m\e[1mfilter\
-    \ interfaces with MTU\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
-    \ time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN\
-    \ to query\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView\
-    \ all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+    \ requested field\e[0m\n\e[33m\nUse quotes when providing more than one value\e\
+    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
+    \ * for all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e\
+    [0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e\
+    [0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
+    \ \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface\
+    \ name(s), space separated\e[0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can\
+    \ use <, >, <=, >=, !\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
+    \ try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e\
+    [0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView all records\
+    \ or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: inventory help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -574,84 +585,88 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: lldp help command
-  output: "lldp describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - ifname: \e[36m\e\
-    [1minterface name to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - peerHostname: \e[36m\e[1mfilter the result\
-    \ by specified peerHostname\e[0m\n - peerMacaddr: \e[36m\e[1mpeer MAC address\
-    \ to filter results\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
-    \ records or just the latest\e[0m\n"
+  output: "lldp describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
+    \ quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n -\
+    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - peerHostname:\
+    \ \e[36m\e[1mPeer hostname(s), space separated, space separated\e[0m\n - peerMacaddr:\
+    \ \e[36m\e[1mPeer mac address(es), space separated\e[0m\n - query_str: \e[36m\e\
+    [1mTrailing blank terminated pandas query format to further filter the output\e\
+    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
+    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
 - command: lldp help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: lldp help command
-  output: "lldp show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e\
-    [36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e\
-    [1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated\
-    \ list of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface name to qualify\e\
-    [0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e\
-    [0m\n - peerHostname: \e[36m\e[1mfilter the result by specified peerHostname\e\
-    [0m\n - peerMacaddr: \e[36m\e[1mpeer MAC address to filter results\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
+  output: "lldp show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - peerHostname: \e[36m\e[1mPeer\
+    \ hostname(s), space separated, space separated\e[0m\n - peerMacaddr: \e[36m\e\
+    [1mPeer mac address(es), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n"
 - command: lldp help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: lldp help command
   output: "lldp summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - ifname:\
-    \ \e[36m\e[1minterface name to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - peerHostname: \e[36m\e[1mfilter the result\
-    \ by specified peerHostname\e[0m\n - peerMacaddr: \e[36m\e[1mpeer MAC address\
-    \ to filter results\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
-    \ records or just the latest\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - peerHostname: \e[36m\e[1mPeer hostname(s), space separated, space separated\e\
+    [0m\n - peerMacaddr: \e[36m\e[1mPeer mac address(es), space separated\e[0m\n -\
+    \ query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
+    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
+    \ natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just the\
+    \ latest\e[0m\n"
 - command: lldp help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: lldp help command
   output: "lldp top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
-    [33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface\
-    \ name to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - peerHostname: \e[36m\e[1mfilter the result by specified\
-    \ peerHostname\e[0m\n - peerMacaddr: \e[36m\e[1mpeer MAC address to filter results\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n - what: \e\
-    [36m\e[1mnumeric field to get top values for\e[0m\n"
+    [33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - peerHostname: \e[36m\e[1mPeer\
+    \ hostname(s), space separated, space separated\e[0m\n - peerMacaddr: \e[36m\e\
+    [1mPeer mac address(es), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
+    \ \e[36m\e[1mreturn bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time\
+    \ window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all records\
+    \ or just the latest\e[0m\n - what: \e[36m\e[1mnumeric field to get top values\
+    \ for\e[0m\n"
 - command: lldp help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: lldp help command
   output: "lldp unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n\
-    \ - ifname: \e[36m\e[1minterface name to qualify\e[0m\n - namespace: \e[36m\e\
-    [1mSpace separated list of namespaces to qualify\e[0m\n - peerHostname: \e[36m\e\
-    [1mfilter the result by specified peerHostname\e[0m\n - peerMacaddr: \e[36m\e\
-    [1mpeer MAC address to filter results\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
-    [36m\e[1mView all records or just the latest\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - peerHostname: \e[36m\e[1mPeer hostname(s), space separated, space separated\e\
+    [0m\n - peerMacaddr: \e[36m\e[1mPeer mac address(es), space separated\e[0m\n -\
+    \ query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
+    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
+    \ natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just the\
+    \ latest\e[0m\n"
 - command: mac help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -666,95 +681,100 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: mac help command
-  output: "macs describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - bd: \e[36m\e[1mfilter entries with this bridging domain\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e\
-    [36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e\
-    [1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated\
-    \ list of hostnames to qualify\e[0m\n - local: \e[36m\e[1mfilter entries with\
-    \ no remoteVtep\e[0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes, to filter\e\
-    [0m\n - moveCount: \e[36m\e[1mnum of times this MAC has moved\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - remoteVtepIp: \e[36m\e[1monly with this remoteVtepIp; use any\
-    \ for all\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
-    \ vlan: \e[36m\e[1mSpace separated list of vlan IDs to show\e[0m\n"
+  output: "macs describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
+    \ quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n -\
+    \ bd: \e[36m\e[1mBridge Domain(s), space separated\e[0m\n - columns: \e[36m\e\
+    [1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - local: \e[36m\e[1mfilter entries with no remoteVtep\e[0m\n - macaddr:\
+    \ \e[36m\e[1mMAC address(es), in quotes, space separated\e[0m\n - moveCount: \e\
+    [36m\e[1mnum of times this MAC has moved\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - remoteVtepIp: \e[36m\e[1mRemote\
+    \ VTEP IP(s), space separated; use any for all\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated,\
+    \ can use <, >, <=, >=, !\e[0m\n"
 - command: mac help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: mac help command
-  output: "macs show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n - bd:\
-    \ \e[36m\e[1mfilter entries with this bridging domain\e[0m\n - columns: \e[36m\e\
-    [1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd\
-    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
-    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated list\
-    \ of hostnames to qualify\e[0m\n - local: \e[36m\e[1mfilter entries with no remoteVtep\e\
-    [0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes, to filter\e[0m\n - moveCount:\
-    \ \e[36m\e[1mnum of times this MAC has moved\e[0m\n - namespace: \e[36m\e[1mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - remoteVtepIp:\
-    \ \e[36m\e[1monly with this remoteVtepIp; use any for all\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
-    [36m\e[1mView all records or just the latest\e[0m\n - vlan: \e[36m\e[1mSpace separated\
-    \ list of vlan IDs to show\e[0m\n"
+  output: "macs show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - bd: \e[36m\e[1mBridge\
+    \ Domain(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list\
+    \ of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try\
+    \ natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the\
+    \ output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - local:\
+    \ \e[36m\e[1mfilter entries with no remoteVtep\e[0m\n - macaddr: \e[36m\e[1mMAC\
+    \ address(es), in quotes, space separated\e[0m\n - moveCount: \e[36m\e[1mnum of\
+    \ times this MAC has moved\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space\
+    \ separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
+    \ format to further filter the output\e[0m\n - remoteVtepIp: \e[36m\e[1mRemote\
+    \ VTEP IP(s), space separated; use any for all\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated,\
+    \ can use <, >, <=, >=, !\e[0m\n"
 - command: mac help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: mac help command
   output: "macs summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - bd: \e[36m\e[1mfilter entries with this bridging\
-    \ domain\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e\
-    [0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e\
-    [0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - local: \e[36m\e\
-    [1mfilter entries with no remoteVtep\e[0m\n - macaddr: \e[36m\e[1mMAC address(es),\
-    \ in quotes, to filter\e[0m\n - moveCount: \e[36m\e[1mnum of times this MAC has\
-    \ moved\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - remoteVtepIp: \e[36m\e[1monly with this remoteVtepIp;\
-    \ use any for all\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural\
-    \ language spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
-    [0m\n - vlan: \e[36m\e[1mSpace separated list of vlan IDs to show\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - bd: \e[36m\e[1mBridge Domain(s), space separated\e[0m\n - columns: \e\
+    [36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e\
+    [1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - local: \e[36m\e[1mfilter entries with no remoteVtep\e[0m\n - macaddr:\
+    \ \e[36m\e[1mMAC address(es), in quotes, space separated\e[0m\n - moveCount: \e\
+    [36m\e[1mnum of times this MAC has moved\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - remoteVtepIp: \e[36m\e[1mRemote\
+    \ VTEP IP(s), space separated; use any for all\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated,\
+    \ can use <, >, <=, >=, !\e[0m\n"
 - command: mac help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: mac help command
   output: "macs top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
-    [33m\nArguments:\e[0m\n - bd: \e[36m\e[1mfilter entries with this bridging domain\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
-    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
-    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated list\
-    \ of hostnames to qualify\e[0m\n - local: \e[36m\e[1mfilter entries with no remoteVtep\e\
-    [0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes, to filter\e[0m\n - moveCount:\
-    \ \e[36m\e[1mnum of times this MAC has moved\e[0m\n - namespace: \e[36m\e[1mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - remoteVtepIp:\
-    \ \e[36m\e[1monly with this remoteVtepIp; use any for all\e[0m\n - reverse: \e\
-    [36m\e[1mreturn bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time\
-    \ window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all records\
-    \ or just the latest\e[0m\n - vlan: \e[36m\e[1mSpace separated list of vlan IDs\
-    \ to show\e[0m\n - what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
+    [33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - bd: \e[36m\e[1mBridge Domain(s), space separated\e[0m\n - columns: \e\
+    [36m\e[1mSpace separated list of columns, * for all\e[0m\n - count: \e[36m\e[1mnumber\
+    \ of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
+    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
+    [0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - local: \e[36m\e\
+    [1mfilter entries with no remoteVtep\e[0m\n - macaddr: \e[36m\e[1mMAC address(es),\
+    \ in quotes, space separated\e[0m\n - moveCount: \e[36m\e[1mnum of times this\
+    \ MAC has moved\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - remoteVtepIp: \e[36m\e[1mRemote VTEP IP(s),\
+    \ space separated; use any for all\e[0m\n - reverse: \e[36m\e[1mreturn bottom\
+    \ n values\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
+    \ vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n -\
+    \ what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: mac help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: mac help command
   output: "macs unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - bd: \e[36m\e[1mfilter entries with this\
-    \ bridging domain\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e\
-    [0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e\
-    [0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - local: \e[36m\e\
-    [1mfilter entries with no remoteVtep\e[0m\n - macaddr: \e[36m\e[1mMAC address(es),\
-    \ in quotes, to filter\e[0m\n - moveCount: \e[36m\e[1mnum of times this MAC has\
-    \ moved\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - remoteVtepIp: \e[36m\e[1monly with this remoteVtepIp;\
-    \ use any for all\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural\
-    \ language spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
-    [0m\n - vlan: \e[36m\e[1mSpace separated list of vlan IDs to show\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - bd: \e[36m\e[1mBridge Domain(s), space separated\e[0m\n -\
+    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - count:\
+    \ \e[36m\e[1minclude count of times a value is seen\e[0m\n - end_time: \e[36m\e\
+    [1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - local: \e[36m\e[1mfilter entries with no remoteVtep\e[0m\n - macaddr:\
+    \ \e[36m\e[1mMAC address(es), in quotes, space separated\e[0m\n - moveCount: \e\
+    [36m\e[1mnum of times this MAC has moved\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - remoteVtepIp: \e[36m\e[1mRemote\
+    \ VTEP IP(s), space separated; use any for all\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated,\
+    \ can use <, >, <=, >=, !\e[0m\n"
 - command: mlag help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -770,72 +790,74 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: mlag help command
-  output: "mlag show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e\
-    [36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e\
-    [1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated\
-    \ list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank\
-    \ terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
-    [36m\e[1mView all records or just the latest\e[0m\n"
+  output: "mlag show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e\
+    [36m\e[1mTrailing blank terminated pandas query format to further filter the output\e\
+    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
+    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
 - command: mlag help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: mlag help command
-  output: "mlag describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e\
-    [1mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m\e\
-    [1mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
+  output: "mlag describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
+    \ quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n -\
+    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
+    \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
+    \ the latest\e[0m\n"
 - command: mlag help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: mlag help command
   output: "mlag summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n"
 - command: mlag help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: mlag help command
   output: "mlag top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
-    [33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36m\e[1mreturn bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time\
-    \ window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all records\
-    \ or just the latest\e[0m\n - what: \e[36m\e[1mnumeric field to get top values\
-    \ for\e[0m\n"
+    [33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n - what: \e[36m\e[1mnumeric\
+    \ field to get top values for\e[0m\n"
 - command: mlag help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: mlag help command
   output: "mlag unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n\
-    \ - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n\
-    \ - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
-    \ natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just the\
-    \ latest\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n"
 - command: network help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -852,90 +874,92 @@ tests:
   format: text
   marks: network help command
   output: "network describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\n\
-    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
-    \ all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec\
-    \ \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
+    Use quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n\
+    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
+    \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
+    \ the latest\e[0m\n"
 - command: network help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: network help command
-  output: "network show: \e[36mShow network info\e[0m\n\e[33m\nArguments:\e[0m\n -\
-    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - model: \e[36m\e[1mmodels to\
-    \ filter with\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - os: \e[36m\e[1mNOS to filter with\e[0m\n - query_str: \e\
-    [36m\e[1mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - vendor: \e[36m\e[1mvendor to filter with\e[0m\n - version: \e[36m\e[1mNOS\
-    \ version to filter with\e[0m\n - view: \e[36m\e[1mView all records or just the\
-    \ latest\e[0m\n"
+  output: "network show: \e[36mShow network info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - model: \e[36m\e[1mmodel(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - os: \e[36m\e[1mNOS(es), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
+    \ spec\e[0m\n - vendor: \e[36m\e[1mVendor(s), space separated\e[0m\n - version:\
+    \ \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n"
 - command: network help --command=find
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: network help command
   output: "network find: \e[36mFind the network attach point of a given IP or MAC\
-    \ address.\e[0m\n\e[33m\nArguments:\e[0m\n - address: \e[36m\e[1mIP/MAC address\
-    \ to find\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ address.\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e\
+    [33m\nArguments:\e[0m\n - address: \e[36m\e[1mIP/MAC addresses, in quotes, space\
+    \ separated\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
     \ all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec\
     \ \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
-    \ vlan: \e[36m\e[1mFind MAC within this VLAN\e[0m\n - vrf: \e[36m\e[1mFind within\
-    \ this VRF, used for IP addr\e[0m\n"
+    \ \e[36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mFind MAC within this VLAN\e\
+    [0m\n - vrf: \e[36m\e[1mFind within this VRF, used for IP addr\e[0m\n"
 - command: network help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: network help command
   output: "network summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n"
 - command: network help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: network help command
   output: "network top: \e[36mReturn the top n values for a field in a table\e[0m\n\
-    \e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36m\e[1mreturn bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time\
-    \ window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all records\
-    \ or just the latest\e[0m\n - what: \e[36m\e[1mnumeric field to get top values\
-    \ for\e[0m\n"
+    \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n - what: \e[36m\e[1mnumeric\
+    \ field to get top values for\e[0m\n"
 - command: network help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: network help command
   output: "network unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n\
-    \ - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n\
-    \ - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
-    \ natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just the\
-    \ latest\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n"
 - command: path help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -950,82 +974,85 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: path help command
-  output: "path describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - dest: \e[36m\e[1mDestination IP address, in quotes\e[0m\n - end_time: \e[36m\e\
-    [1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
-    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated list\
-    \ of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - src: \e[36m\e[1mSource\
-    \ IP address, in quotes\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
-    \ the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+  output: "path describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
+    \ quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n -\
+    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - dest:\
+    \ \e[36m\e[1mDestination IP address, in quotes\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - src: \e[36m\e[1mSource IP address, in quotes\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
+    \ space separated\e[0m\n"
 - command: path help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: path help command
-  output: "path show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - dest: \e[36m\e\
-    [1mDestination IP address, in quotes\e[0m\n - end_time: \e[36m\e[1mEnd of time\
-    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
-    \ of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames\
-    \ to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - src: \e[36m\e[1mSource IP address,\
-    \ in quotes\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural\
-    \ language spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
-    [0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+  output: "path show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - dest: \e[36m\e[1mDestination IP\
+    \ address, in quotes\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
+    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
+    [0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - src:\
+    \ \e[36m\e[1mSource IP address, in quotes\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
+    [0m\n"
 - command: path help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: path help command
   output: "path summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - dest: \e[36m\e[1mDestination IP address, in quotes\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e\
-    [1mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m\e\
-    [1mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - src: \e[36m\e[1mSource IP address, in quotes\e[0m\n - start_time: \e[36m\e\
-    [1mStart of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView\
-    \ all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - dest: \e[36m\e[1mDestination IP address, in quotes\e[0m\n - end_time: \e[36m\e\
+    [1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - src: \e[36m\e[1mSource IP address, in quotes\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
+    \ space separated\e[0m\n"
 - command: path help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: path help command
   output: "path top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
-    [33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - dest:\
-    \ \e[36m\e[1mDestination IP address, in quotes\e[0m\n - end_time: \e[36m\e[1mEnd\
-    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
-    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated list\
-    \ of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated list\
-    \ of namespaces to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - reverse: \e[36m\e\
-    [1mreturn bottom n values\e[0m\n - src: \e[36m\e[1mSource IP address, in quotes\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e\
-    [36m\e[1mVRF to qualify\e[0m\n - what: \e[36m\e[1mnumeric field to get top values\
-    \ for\e[0m\n"
+    [33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - dest: \e[36m\e[1mDestination\
+    \ IP address, in quotes\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try\
+    \ natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the\
+    \ output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
+    \ \e[36m\e[1mreturn bottom n values\e[0m\n - src: \e[36m\e[1mSource IP address,\
+    \ in quotes\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural\
+    \ language spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n - what: \e[36m\e[1mnumeric\
+    \ field to get top values for\e[0m\n"
 - command: path help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: path help command
   output: "path unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - dest: \e[36m\e[1mDestination IP address, in quotes\e\
-    [0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e\
-    [0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - dest: \e[36m\e[1mDestination IP address, in quotes\e[0m\n - end_time: \e[36m\e\
+    [1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str:\
     \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
     \ output\e[0m\n - src: \e[36m\e[1mSource IP address, in quotes\e[0m\n - start_time:\
     \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
-    [36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e\
-    [0m\n"
+    [36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
+    \ space separated\e[0m\n"
 - command: ospf help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1041,102 +1068,103 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: ospf help command
-  output: "ospf describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - area: \e[36m\e[1mOSPF area to filter by\e[0m\n - columns: \e[36m\e[1mSpace\
+  output: "ospf describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
+    \ quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n -\
+    \ area: \e[36m\e[1mArea(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace\
     \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
     \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
-    \ of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames\
-    \ to qualify\e[0m\n - ifname: \e[36m\e[1minterface name to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e\
-    [1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e\
-    [0m\n"
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
+    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
+    \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: ospf help --command=assert
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: ospf help command
   output: "ospf aver: \e[36mTest OSPF runtime state is without errors\e[0m\n\e[33m\n\
-    Arguments:\e[0m\n - area: \e[36m\e[1mOSPF area to filter by\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e\
-    [36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e\
-    [1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated\
-    \ list of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface name to qualify\e\
-    [0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
-    \ try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e\
-    [0m\n - status: \e[36m\e[1mShow only assert that matches this value\e[0m\n - view:\
-    \ \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF\
-    \ to qualify\e[0m\n"
+    Use quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n\
+    \ - area: \e[36m\e[1mArea(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
+    [36m\e[1mState of VLAN to query\e[0m\n - status: \e[36m\e[1mShow only assert that\
+    \ matches this value\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: ospf help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: ospf help command
-  output: "ospf show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n - area:\
-    \ \e[36m\e[1mOSPF area to filter by\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window,\
-    \ try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of\
-    \ the output\e[0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to\
-    \ qualify\e[0m\n - ifname: \e[36m\e[1minterface name to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e\
-    [1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e\
-    [0m\n"
+  output: "ospf show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - area: \e[36m\e[1mArea(s),\
+    \ space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
+    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
+    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
+    \ hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e\
+    [1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of\
+    \ VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: ospf help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: ospf help command
   output: "ospf summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - area: \e[36m\e[1mOSPF area to filter by\e[0m\n\
-    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface\
-    \ name to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
-    \ time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN\
-    \ to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
-    \ - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - area: \e[36m\e[1mArea(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
+    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
+    \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: ospf help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: ospf help command
   output: "ospf top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
-    [33m\nArguments:\e[0m\n - area: \e[36m\e[1mOSPF area to filter by\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - count: \e[36m\e\
-    [1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd of time window,\
-    \ try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of\
-    \ the output\e[0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to\
-    \ qualify\e[0m\n - ifname: \e[36m\e[1minterface name to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
-    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
-    \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n - what: \e[36m\e\
-    [1mnumeric field to get top values for\e[0m\n"
+    [33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - area: \e[36m\e[1mArea(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - count: \e[36m\e[1mnumber of rows\
+    \ to return\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
+    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
+    \ hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e\
+    [1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn\
+    \ bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural\
+    \ language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - view:\
+    \ \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
+    \ space separated\e[0m\n - what: \e[36m\e[1mnumeric field to get top values for\e\
+    [0m\n"
 - command: ospf help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: ospf help command
   output: "ospf unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - area: \e[36m\e[1mOSPF area to filter\
-    \ by\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e\
-    [0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface\
-    \ name to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
-    \ time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN\
-    \ to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
-    \ - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - area: \e[36m\e[1mArea(s), space separated\e[0m\n - columns:\
+    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - count: \e[36m\e\
+    [1minclude count of times a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of\
+    \ time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the\
+    \ pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
+    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
+    \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: route help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1152,103 +1180,108 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: route help command
-  output: "routes describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e\
-    [1mSpace separated list of namespaces to qualify\e[0m\n - prefix: \e[36m\e[1mPrefix,\
-    \ in quotes, to filter show on\e[0m\n - prefixlen: \e[36m\e[1mmust be of the form\
-    \ [<|<=|>=|>|!] length\e[0m\n - protocol: \e[36m\e[1mrouting protocol to qualify\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
-    \ the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+  output: "routes describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
+    \ quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n -\
+    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - prefix: \e[36m\e[1mPrefix(es), in quotes, space separated\e[0m\n - prefixlen:\
+    \ \e[36m\e[1mmust be of the form [<|<=|>=|>|!] length\e[0m\n - protocol: \e[36m\e\
+    [1mRouting protocol(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
+    \ space separated\e[0m\n"
 - command: route help --command=lpm
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: route help command
   output: "routes lpm: \e[36mShow the Longest Prefix Match(LPM) on a given prefix,\
-    \ vrf\e[0m\n\e[33m\nArguments:\e[0m\n - address: \e[36m\e[1mIP Address, in quotes,\
-    \ for lpm query\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - prefix: \e\
-    [36m\e[1mPrefix, in quotes, to filter show on\e[0m\n - prefixlen: \e[36m\e[1mmust\
-    \ be of the form [<|<=|>=|>|!] length\e[0m\n - protocol: \e[36m\e[1mrouting protocol\
-    \ to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
-    \ time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all records\
-    \ or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+    \ vrf\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - address: \e[36m\e[1mIP Address, in quotes, for lpm query\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - prefix: \e[36m\e[1mPrefix(es), in quotes, space separated\e\
+    [0m\n - prefixlen: \e[36m\e[1mmust be of the form [<|<=|>=|>|!] length\e[0m\n\
+    \ - protocol: \e[36m\e[1mRouting protocol(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
+    \ vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: route help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: route help command
-  output: "routes show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n -\
-    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - prefix: \e[36m\e[1mPrefix,\
-    \ in quotes, to filter show on\e[0m\n - prefixlen: \e[36m\e[1mmust be of the form\
-    \ [<|<=|>=|>|!] length\e[0m\n - protocol: \e[36m\e[1mrouting protocol to qualify\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
-    \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
-    \ the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+  output: "routes show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - prefix: \e[36m\e\
+    [1mPrefix(es), in quotes, space separated\e[0m\n - prefixlen: \e[36m\e[1mmust\
+    \ be of the form [<|<=|>=|>|!] length\e[0m\n - protocol: \e[36m\e[1mRouting protocol(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
+    [0m\n"
 - command: route help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: route help command
   output: "routes summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - prefix: \e\
-    [36m\e[1mPrefix, in quotes, to filter show on\e[0m\n - prefixlen: \e[36m\e[1mmust\
-    \ be of the form [<|<=|>=|>|!] length\e[0m\n - protocol: \e[36m\e[1mrouting protocol\
-    \ to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
-    \ time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all records\
-    \ or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - prefix: \e[36m\e[1mPrefix(es), in quotes, space separated\e\
+    [0m\n - prefixlen: \e[36m\e[1mmust be of the form [<|<=|>=|>|!] length\e[0m\n\
+    \ - protocol: \e[36m\e[1mRouting protocol(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
+    \ vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: route help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: route help command
   output: "routes top: \e[36mReturn the top n values for a field in a table\e[0m\n\
-    \e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - prefix: \e[36m\e[1mPrefix,\
-    \ in quotes, to filter show on\e[0m\n - prefixlen: \e[36m\e[1mmust be of the form\
-    \ [<|<=|>=|>|!] length\e[0m\n - protocol: \e[36m\e[1mrouting protocol to qualify\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e\
-    [36m\e[1mVRF to qualify\e[0m\n - what: \e[36m\e[1mnumeric field to get top values\
-    \ for\e[0m\n"
+    \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - prefix: \e\
+    [36m\e[1mPrefix(es), in quotes, space separated\e[0m\n - prefixlen: \e[36m\e[1mmust\
+    \ be of the form [<|<=|>=|>|!] length\e[0m\n - protocol: \e[36m\e[1mRouting protocol(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn\
+    \ bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural\
+    \ language spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n - what: \e[36m\e[1mnumeric\
+    \ field to get top values for\e[0m\n"
 - command: route help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: route help command
   output: "routes unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n\
-    \ - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n\
-    \ - prefix: \e[36m\e[1mPrefix, in quotes, to filter show on\e[0m\n - prefixlen:\
-    \ \e[36m\e[1mmust be of the form [<|<=|>=|>|!] length\e[0m\n - protocol: \e[36m\e\
-    [1mrouting protocol to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
-    [1mStart of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView\
-    \ all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF to qualify\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - prefix: \e[36m\e[1mPrefix(es), in quotes, space separated\e\
+    [0m\n - prefixlen: \e[36m\e[1mmust be of the form [<|<=|>=|>|!] length\e[0m\n\
+    \ - protocol: \e[36m\e[1mRouting protocol(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
+    \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
+    \ vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: topology help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1265,88 +1298,90 @@ tests:
   format: text
   marks: topology help command
   output: "topology describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\n\
-    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
-    \ all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec\
-    \ \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - ifname: \e\
-    [36m\e[1minterface name to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - peerHostname: \e[36m\e[1mfilter the result\
-    \ by specified peerHostname\e[0m\n - polled: \e[36m\e[1mIs the device polled by\
-    \ Suzieq\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
-    \ time window, try natural language spec\e[0m\n - via: \e[36m\e[1mfilter the method\
-    \ by which topology is seen\e[0m\n - view: \e[36m\e[1mView all records or just\
-    \ the latest\e[0m\n"
+    Use quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n\
+    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - peerHostname:\
+    \ \e[36m\e[1mPeer hostname(s), space separated, space separated\e[0m\n - polled:\
+    \ \e[36m\e[1mIs the device polled by Suzieq\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - via: \e\
+    [36m\e[1mProtocol(s) via which nodes are connected, space separated\e[0m\n - view:\
+    \ \e[36m\e[1mView all records or just the latest\e[0m\n"
 - command: topology help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: topology help command
-  output: "topology show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n\
-    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface\
-    \ name to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - peerHostname: \e[36m\e[1mfilter the result by specified\
-    \ peerHostname\e[0m\n - polled: \e[36m\e[1mIs the device polled by Suzieq\e[0m\n\
-    \ - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
-    \ natural language spec\e[0m\n - via: \e[36m\e[1mfilter the method by which topology\
-    \ is seen\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
+  output: "topology show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - peerHostname: \e[36m\e[1mPeer\
+    \ hostname(s), space separated, space separated\e[0m\n - polled: \e[36m\e[1mIs\
+    \ the device polled by Suzieq\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
+    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
+    [1mStart of time window, try natural language spec\e[0m\n - via: \e[36m\e[1mProtocol(s)\
+    \ via which nodes are connected, space separated\e[0m\n - view: \e[36m\e[1mView\
+    \ all records or just the latest\e[0m\n"
 - command: topology help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: topology help command
   output: "topology summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - ifname:\
-    \ \e[36m\e[1minterface name to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - peerHostname: \e[36m\e[1mfilter the result\
-    \ by specified peerHostname\e[0m\n - polled: \e[36m\e[1mIs the device polled by\
-    \ Suzieq\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
-    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
-    \ time window, try natural language spec\e[0m\n - via: \e[36m\e[1mfilter the method\
-    \ by which topology is seen\e[0m\n - view: \e[36m\e[1mView all records or just\
-    \ the latest\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - peerHostname: \e[36m\e[1mPeer hostname(s), space separated, space separated\e\
+    [0m\n - polled: \e[36m\e[1mIs the device polled by Suzieq\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
+    \ spec\e[0m\n - via: \e[36m\e[1mProtocol(s) via which nodes are connected, space\
+    \ separated\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
 - command: topology help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: topology help command
   output: "topology top: \e[36mReturn the top n values for a field in a table\e[0m\n\
-    \e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - ifname: \e[36m\e[1minterface\
-    \ name to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated list of namespaces\
-    \ to qualify\e[0m\n - peerHostname: \e[36m\e[1mfilter the result by specified\
-    \ peerHostname\e[0m\n - polled: \e[36m\e[1mIs the device polled by Suzieq\e[0m\n\
-    \ - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n\
-    \ - start_time: \e[36m\e[1mStart of time window, try natural language spec\e[0m\n\
-    \ - via: \e[36m\e[1mfilter the method by which topology is seen\e[0m\n - view:\
-    \ \e[36m\e[1mView all records or just the latest\e[0m\n - what: \e[36m\e[1mnumeric\
-    \ field to get top values for\e[0m\n"
+    \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - peerHostname: \e[36m\e[1mPeer\
+    \ hostname(s), space separated, space separated\e[0m\n - polled: \e[36m\e[1mIs\
+    \ the device polled by Suzieq\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
+    \ pandas query format to further filter the output\e[0m\n - reverse: \e[36m\e\
+    [1mreturn bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
+    \ try natural language spec\e[0m\n - via: \e[36m\e[1mProtocol(s) via which nodes\
+    \ are connected, space separated\e[0m\n - view: \e[36m\e[1mView all records or\
+    \ just the latest\e[0m\n - what: \e[36m\e[1mnumeric field to get top values for\e\
+    [0m\n"
 - command: topology help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: topology help command
   output: "topology unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n\
-    \ - ifname: \e[36m\e[1minterface name to qualify\e[0m\n - namespace: \e[36m\e\
-    [1mSpace separated list of namespaces to qualify\e[0m\n - peerHostname: \e[36m\e\
-    [1mfilter the result by specified peerHostname\e[0m\n - polled: \e[36m\e[1mIs\
-    \ the device polled by Suzieq\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
-    [1mStart of time window, try natural language spec\e[0m\n - via: \e[36m\e[1mfilter\
-    \ the method by which topology is seen\e[0m\n - view: \e[36m\e[1mView all records\
-    \ or just the latest\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - peerHostname: \e[36m\e[1mPeer hostname(s), space separated, space separated\e\
+    [0m\n - polled: \e[36m\e[1mIs the device polled by Suzieq\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
+    \ spec\e[0m\n - via: \e[36m\e[1mProtocol(s) via which nodes are connected, space\
+    \ separated\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
 - command: vlan help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -1362,82 +1397,82 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: vlan help command
-  output: "vlan describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e\
-    [1mSpace separated list of namespaces to qualify\e[0m\n - query_str: \e[36m\e\
-    [1mTrailing blank terminated pandas query format to further filter the output\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView\
-    \ all records or just the latest\e[0m\n - vlan: \e[36m\e[1mSpace separated list\
-    \ of vlan IDs to show\e[0m\n - vlanName: \e[36m\e[1mSpace separated list of VLAN\
-    \ names to show\e[0m\n"
+  output: "vlan describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
+    \ quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n -\
+    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
+    \ try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e\
+    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vlan: \e\
+    [36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n - vlanName:\
+    \ \e[36m\e[1mVLAN name(s), space separated\e[0m\n"
 - command: vlan help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: vlan help command
-  output: "vlan show: \e[36mShow address info\e[0m\n\e[33m\nArguments:\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e\
-    [36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e\
-    [1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace separated\
-    \ list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace separated\
-    \ list of namespaces to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing blank\
-    \ terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
-    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
-    \ just the latest\e[0m\n - vlan: \e[36m\e[1mSpace separated list of vlan IDs to\
-    \ show\e[0m\n - vlanName: \e[36m\e[1mSpace separated list of VLAN names to show\e\
+  output: "vlan show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e\
+    [36m\e[1mTrailing blank terminated pandas query format to further filter the output\e\
+    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
+    [0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView\
+    \ all records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated,\
+    \ can use <, >, <=, >=, !\e[0m\n - vlanName: \e[36m\e[1mVLAN name(s), space separated\e\
     [0m\n"
 - command: vlan help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: vlan help command
   output: "vlan summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n - namespace:\
-    \ \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e\
-    [1mView all records or just the latest\e[0m\n - vlan: \e[36m\e[1mSpace separated\
-    \ list of vlan IDs to show\e[0m\n - vlanName: \e[36m\e[1mSpace separated list\
-    \ of VLAN names to show\e[0m\n"
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of\
+    \ VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n - vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n\
+    \ - vlanName: \e[36m\e[1mVLAN name(s), space separated\e[0m\n"
 - command: vlan help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: vlan help command
   output: "vlan top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
-    [33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time:\
-    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
-    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mSpace\
-    \ separated list of hostnames to qualify\e[0m\n - namespace: \e[36m\e[1mSpace\
-    \ separated list of namespaces to qualify\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - reverse:\
-    \ \e[36m\e[1mreturn bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time\
-    \ window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to\
-    \ query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
-    \ vlan: \e[36m\e[1mSpace separated list of vlan IDs to show\e[0m\n - vlanName:\
-    \ \e[36m\e[1mSpace separated list of VLAN names to show\e[0m\n - what: \e[36m\e\
-    [1mnumeric field to get top values for\e[0m\n"
+    [33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
+    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
+    \ just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated, can use\
+    \ <, >, <=, >=, !\e[0m\n - vlanName: \e[36m\e[1mVLAN name(s), space separated\e\
+    [0m\n - what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: vlan help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: vlan help command
   output: "vlan unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mSpace separated list of hostnames to qualify\e[0m\n\
-    \ - namespace: \e[36m\e[1mSpace separated list of namespaces to qualify\e[0m\n\
-    \ - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
-    \ filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
-    \ natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n\
-    \ - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vlan: \e[36m\e\
-    [1mSpace separated list of vlan IDs to show\e[0m\n - vlanName: \e[36m\e[1mSpace\
-    \ separated list of VLAN names to show\e[0m\n"
+    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
+    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
+    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of\
+    \ VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n - vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n\
+    \ - vlanName: \e[36m\e[1mVLAN name(s), space separated\e[0m\n"

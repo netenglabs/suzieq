@@ -6,7 +6,7 @@ from suzieq.sqobjects.sqPoller import SqPollerObj
 
 
 @command("sqPoller", help="Act on SqPoller data", aliases=['sqpoller'])
-@argument("service", description="name of service to match")
+@argument("service", description="Service(s), space separated")
 @argument("status", description="status of service to match",
           choices=["all", "pass", "fail"])
 @argument('poll_period_exceeded',

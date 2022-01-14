@@ -10,9 +10,9 @@ from suzieq.sqobjects.routes import RoutesObj
 
 
 @command("route", help="Act on Routes", aliases=['routes'])
-@argument("vrf", description="VRF to qualify")
-@argument("protocol", description="routing protocol to qualify")
-@argument("prefix", description="Prefix, in quotes, to filter show on")
+@argument("vrf", description="VRF(s), space separated")
+@argument("protocol", description="Routing protocol(s), space separated")
+@argument("prefix", description="Prefix(es), in quotes, space separated")
 @argument("prefixlen", description="must be of the form "
           "[<|<=|>=|>|!] length")
 class RouteCmd(SqCommand):

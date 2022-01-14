@@ -9,13 +9,14 @@ from suzieq.cli.sqcmds.command import SqCommand
 
 
 @command("interface", help="Act on Interface data", aliases=['interfaces'])
-@argument("ifname", description="interface name to qualify")
-@argument("type", description="interface type to qualify")
-@argument("vrf", description="filter interfaces matching VRFs")
+@argument("ifname", description="interface name(s), space separated")
+@argument("type", description="interface type(s), space separated")
+@argument("vrf", description="VRF(s), space separated")
 @argument("state", description="interface state to qualify show",
           choices=["up", "down", "notConnected", "!up", "!down",
                    "!notConnected"])
-@argument("mtu", description="filter interfaces with MTU")
+@argument("mtu",
+          description="MTU(s), space separated, can use <, >, <=, >=, !")
 class InterfaceCmd(SqCommand):
     """Device interface information including MTU, Speed, IP address etc"""
 

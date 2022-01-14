@@ -36,10 +36,10 @@ class NetworkCmd(SqCommand):
         )
 
     @command("show", help="Show device information")
-    @argument("model", description="models to filter with")
-    @argument("os", description='NOS to filter with')
-    @argument('vendor', description='vendor to filter with')
-    @argument('version', description='NOS version to filter with')
+    @argument("model", description="model(s), space separated")
+    @argument("os", description='NOS(es), space separated')
+    @argument('vendor', description='Vendor(s), space separated')
+    @argument('version', description='NOS version(s), space separated')
     # pylint: disable=arguments-differ
     def show(self, os: str = "", vendor: str = "", model: str = "",
              version: str = "") -> int:
@@ -59,7 +59,8 @@ class NetworkCmd(SqCommand):
         return self._gen_output(df)
 
     @command("find", help="find where an IP/MAC address is attached")
-    @argument("address", type=str, description="IP/MAC address to find")
+    @argument("address", type=str,
+              description="IP/MAC addresses, in quotes, space separated")
     @argument("vrf", type=str,
               description="Find within this VRF, used for IP addr")
     @argument("vlan", type=str,

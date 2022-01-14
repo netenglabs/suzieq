@@ -9,7 +9,7 @@ from suzieq.sqobjects.fs import FsObj
 @command("fs", help="Act on File System data")
 @argument("used_percent", description="must be of the form "
           "[<|<=|>=|>|!]value. Eg: '<=20'")
-@argument("mountPoint", description="Mount point inside the FileSystem")
+@argument("mountPoint", description="Mount point(s), space separated")
 class FsCmd(SqCommand):
     """Filesystem information such as total disk space, filesystems etc"""
 

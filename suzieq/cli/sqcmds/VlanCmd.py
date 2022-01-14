@@ -8,9 +8,10 @@ from suzieq.sqobjects.vlan import VlanObj
 @command('vlan', help="Act on vlan data")
 @argument("state", description="State of VLAN to query",
           choices=['active', 'suspended'])
-@argument("vlan", description="Space separated list of vlan IDs to show")
+@argument("vlan",
+          description="VLAN(s), space separated, can use <, >, <=, >=, !")
 @argument('vlanName',
-          description="Space separated list of VLAN names to show")
+          description="VLAN name(s), space separated")
 class VlanCmd(SqCommand):
     """Information about VLANs including interfaces belonging to a VLAN"""
 
