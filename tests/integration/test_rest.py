@@ -507,6 +507,8 @@ def app_initialize():
 # which screws things up. So, we run server with & without https sequentially
 # For some reason, putting the no_https in a for loop didn't work either
 @ pytest.mark.rest
+@ pytest.mark.filterwarnings(
+    'ignore::urllib3.exceptions.InsecureRequestWarning')
 def test_rest_server():
     '''Try starting the REST server, actually'''
     # pylint: disable=import-outside-toplevel

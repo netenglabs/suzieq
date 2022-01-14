@@ -274,7 +274,7 @@ def _write_verify_transform(mod_df, table, dbeng, schema, config_file,
 
     """
     mod_df = mod_df.reset_index(drop=True)
-    mod_df.timestamp = mod_df.timestamp.astype(np.int64)
+    mod_df.timestamp = mod_df.timestamp.view(np.int64)
     mod_df.timestamp = mod_df.timestamp//1000000
     mod_df.sqvers = mod_df.sqvers.astype(str)
     dbeng.write(table, 'pandas', mod_df, False, schema.get_arrow_schema(),
