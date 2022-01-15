@@ -15,7 +15,7 @@ This assumes that you're using port 8000 to connect to the REST server. If you w
 
 You then connect to the container with ```docker attach suzieq```, and launch the server with ```sq-rest-server.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running. 
 
-The server is now accessible via [https://localhost:8000/docs](https://localhost:8000/docs) (or whatever port you've mapped the server to on the host). You need to pass the API_KEY in the request to be able to access the server. A simple example using the default API key and certificate is to use curl as follows:
+The server is now accessible via [https://localhost:8000/api/docs](https://localhost:8000/api/docs) (or whatever port you've mapped the server to on the host). You need to pass the API_KEY in the request to be able to access the server. A simple example using the default API key and certificate is to use curl as follows:
 ```
     curl --insecure 'https://localhost:8000/api/v2/device/show?&access_token=496157e6e869ef7f3d6ecb24a6f6d847b224ee4f'
 ```
