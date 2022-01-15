@@ -1,5 +1,19 @@
 # Release Notes
 
+## 0.16.0 (Jan 15, 2022)
+
+This is the 16th release of Suzieq, with many new and useful features. Refer to the release notes for 0.16.0b1 and 0.16.0a1 for details. In addition to those features and bug fixes, this release has the following changes compared to 0.16.0b1:
+
+* **Improved GUI Support** The new GUI had a bunch of critical bugs. This version fixes most of them. Refer to the caveats section of the GUI document for issues using it especially with the experimental feature enabled.
+* **Breaking Change** Network find was broken in some cases and this has been addressed correctly. With this change, you can now get the output even if the MAC address has been aged out. This update adds a new column, l2miss, that is True if the MAC address was found in the L2 table, else false.
+* You can specify a port to start the GUI on, if you can't use the default 8501.
+* use-stdout for the logger is honored even if multiple poller instances are launched.
+* Address table had a bug with the VRF field support thats been fixed.
+* Lots more tests
+* Made all the help messages associated with keywords in the CLI consistent, and clearer.
+
+Thanks to Claudio Lorina, Claudio Usai, Luca Nicosia and Andrea Florio for their awesome work in getting this release out. This is the first release in a long time that has a ton of work done by developers other than myself.
+
 ## 0.16.0 beta (Jan 7, 2022)
 
 This release adds a bunch of major features on top of the alpha release set. 
