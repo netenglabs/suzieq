@@ -1,7 +1,7 @@
-from .dblib import get_sqdb_engine, do_coalesce
-from .base_db import SqCoalesceStats
+from suzieq.db.dblib import get_sqdb_engine, do_coalesce
+from suzieq.db.base_db import SqCoalesceStats
 
 name = "sqdb"
 
 
-__all__ = [get_sqdb_engine, do_coalesce, SqCoalesceStats]
+__all__ = ['get_sqdb_engine', 'do_coalesce', 'SqCoalesceStats']

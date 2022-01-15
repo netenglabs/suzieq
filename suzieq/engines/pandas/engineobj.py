@@ -1,42 +1,57 @@
-import pandas as pd
+from ipaddress import ip_address, ip_network
+
+import dateparser
 import numpy as np
-from suzieq.utils import SchemaForTable, humanize_timestamp, Schema
+import pandas as pd
+from pandas.core.groupby import DataFrameGroupBy
+
+from suzieq.shared.utils import humanize_timestamp
+from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects import get_sqobject
 from suzieq.db import get_sqdb_engine
-from suzieq.exceptions import UserQueryError
-import dateparser
-from pandas.core.groupby import DataFrameGroupBy
+from suzieq.shared.exceptions import UserQueryError
 
 
 class SqPandasEngine(SqEngineObj):
+    '''Base class to handle manipulating tables with pandas'''
+
     def __init__(self, baseobj):
         self.ctxt = baseobj.ctxt
         self.iobj = baseobj
         self.summary_row_order = []
+        self.nsgrp = None
+        self.ns_df = pd.DataFrame()
+        self.ns = []
+        self.summary_df = pd.DataFrame()
         self._summarize_on_add_field = []
         self._summarize_on_add_with_query = []
         self._summarize_on_add_list_or_count = []
         self._summarize_on_add_stat = []
         self._summarize_on_perdevice_stat = []
+        self._check_empty_col = 'namespace'
         self._dbeng = get_sqdb_engine(baseobj.ctxt.cfg, baseobj.table, '',
                                       None)
 
     @property
     def all_schemas(self) -> Schema:
+        '''Return dict of all schemas'''
         return self.ctxt.schemas
 
     @property
     def schema(self) -> SchemaForTable:
+        '''Return schema for this table'''
         return self.iobj.schema
 
     @property
     def cfg(self):
-        return self.iobj._cfg
+        '''Return config dicttionary'''
+        return self.iobj.cfg
 
     @property
     def table(self):
-        return self.iobj._table
+        '''Table name'''
+        return self.iobj.table
 
     def _get_ipvers(self, value: str) -> int:
         """Return the IP version in use"""
@@ -65,16 +80,51 @@ class SqPandasEngine(SqEngineObj):
             pd.DataFrame: dataframe post query
         """
         if query_str:
-            if query_str.startswith('"') and query_str.endswith('"'):
-                query_str = query_str[1:-1]
-
             try:
                 df = df.query(query_str).reset_index(drop=True)
             except Exception as ex:
-                raise UserQueryError(ex)
+                raise UserQueryError(ex) from Exception
 
         return df
 
+    def _is_in_subnet(self, addr: pd.Series, net: str) -> pd.Series:
+        """Check if the IP addresses in a Pandas dataframe
+        belongs to the given subnet
+
+        Args:
+            addr (PandasObject): the collection of ip addresses to check
+            net: (str): network id of the subnet
+
+        Returns:
+            PandasObject: A collection of bool reporting the result
+        """
+        network = ip_network(net)
+        if isinstance(addr.iloc[0], np.ndarray):
+            return addr.apply(lambda x, network:
+                              False if not x.any()
+                              else any(ip_address(a.split("/")[0]) in network
+                                       for a in x),
+                              args=(network,))
+        else:
+            return addr.apply(lambda a: (
+                False if not a else ip_address(a.split("/")[0]) in network)
+            )
+
+    def _check_ipvers(self,  addr: pd.Series, version: int) -> pd.Series:
+        """Check if the IP version of addresses in a Pandas dataframe
+        correspond to the given version
+
+        Args:
+            addr (PandasObject): the collection of ip addresses to check
+            version: (int): IP version (4 or 6)
+
+        Returns:
+            PandasObject: A collection of bool reporting the result
+        """
+
+        return addr.apply(lambda a: (self._get_ipvers(a) == version))
+
+    # pylint: disable=too-many-statements
     def get_valid_df(self, table: str, **kwargs) -> pd.DataFrame:
         """The heart of the engine: retrieving the data from the backing store
 
@@ -136,6 +186,7 @@ class SqPandasEngine(SqEngineObj):
                     self.iobj.start_time.replace('last night', 'yesterday'))
                     .timestamp()*1000)
             except Exception:
+                # pylint disable=raise-missing-from
                 raise ValueError(
                     f"unable to parse start-time: {self.iobj.start_time}")
         else:
@@ -143,6 +194,7 @@ class SqPandasEngine(SqEngineObj):
 
         if self.iobj.start_time and not start_time:
             # Something went wrong with our parsing
+            # pylint disable=raise-missing-from
             raise ValueError(
                 f"unable to parse start-time: {self.iobj.start_time}")
 
@@ -152,6 +204,7 @@ class SqPandasEngine(SqEngineObj):
                     self.iobj.end_time.replace('last night', 'yesterday'))
                     .timestamp()*1000)
             except Exception:
+                # pylint disable=raise-missing-from
                 raise ValueError(
                     f"unable to parse end-time: {self.iobj.end_time}")
         else:
@@ -159,6 +212,7 @@ class SqPandasEngine(SqEngineObj):
 
         if self.iobj.end_time and not end_time:
             # Something went wrong with our parsing
+            # pylint disable=raise-missing-from
             raise ValueError(
                 f"unable to parse end-time: {self.iobj.end_time}")
 
@@ -193,7 +247,7 @@ class SqPandasEngine(SqEngineObj):
                 table_df.drop(columns=drop_cols, inplace=True)
             else:
                 table_df = table_df.query('active') \
-                                   .drop(columns=drop_cols)
+                    .drop(columns=drop_cols)
             if 'timestamp' in table_df.columns and not table_df.empty:
                 table_df['timestamp'] = humanize_timestamp(
                     table_df.timestamp, self.cfg.get('analyzer', {})
@@ -273,7 +327,7 @@ class SqPandasEngine(SqEngineObj):
         If you don't override this, then you get a default summary of all
         columns
         """
-        self._init_summarize(self.iobj._table, **kwargs)
+        self._init_summarize(**kwargs)
         if self.summary_df.empty:
             return self.summary_df
 
@@ -291,18 +345,14 @@ class SqPandasEngine(SqEngineObj):
             pd.DataFrame: Pandas dataframe of unique values for given column
         """
         count = kwargs.pop("count", 0)
-        query_str = kwargs.get('query_str', '')
+        query_str = kwargs.pop('query_str', '')
+        get_query_str = kwargs.pop('get_query_str', '')
 
         columns = kwargs.pop("columns", None)
 
-        if query_str:
-            getcols = ['*']
-        else:
-            getcols = columns
-
         column = columns[0]
 
-        df = self.get(columns=getcols, **kwargs)
+        df = self.get(columns=columns, query_str=get_query_str, **kwargs)
         if df.empty:
             return df
 
@@ -310,20 +360,23 @@ class SqPandasEngine(SqEngineObj):
         if df.apply(lambda x: isinstance(x[column], np.ndarray), axis=1).all():
             df = df.explode(column).dropna(how='any')
 
-        if not count:
-            return (pd.DataFrame({f'{column}': df[column].unique()}))
-        else:
+        if count:
             r = df[column].value_counts()
-            return (pd.DataFrame({column: r})
-                    .reset_index()
-                    .rename(columns={column: 'numRows',
-                                     'index': column})
-                    .sort_values(column))
+            df = pd.DataFrame({column: r}) \
+                .reset_index() \
+                .rename(columns={column: 'numRows',
+                                 'index': column}) \
+                   .sort_values(column)
+        else:
+            df = pd.DataFrame({f'{column}': df[column].unique()})
 
-    def analyze(self, **kwargs):
-        raise NotImplementedError
+        if query_str:
+            df = self._handle_user_query_str(df, query_str)
+
+        return df
 
     def aver(self, **kwargs):
+        '''Assert'''
         raise NotImplementedError
 
     def top(self, **kwargs):
@@ -348,7 +401,7 @@ class SqPandasEngine(SqEngineObj):
         if what not in columns:
             columns.insert(-1, what)
 
-        df = self.get(addnl_fields=self.iobj._addnl_fields, columns=columns,
+        df = self.get(addnl_fields=self.iobj.addnl_fields, columns=columns,
                       **kwargs)
         if df.empty or ('error' in df.columns):
             return df
@@ -380,11 +433,9 @@ class SqPandasEngine(SqEngineObj):
             end_time=end_time or self.iobj.end_time,
             view=view or self.iobj.view)
 
-    def _init_summarize(self, table: str, **kwargs) -> None:
+    def _init_summarize(self, **kwargs) -> None:
         """Initialize the data structures for use with generating summary
 
-        Args:
-            table (str): Name of table to generate summary for
         """
         kwargs.pop('columns', None)
         columns = ['*']
@@ -410,7 +461,7 @@ class SqPandasEngine(SqEngineObj):
                 ('deviceCnt', 'hostname', 'nunique'),
             ]
         for field_name, col, function in self._summarize_on_add_field:
-            if col != 'namespace' and col != 'timestamp':
+            if col not in ['namespace', 'timestamp']:
                 self._add_field_to_summary(col, function, field_name)
                 self.summary_row_order.append(field_name)
 
@@ -442,8 +493,8 @@ class SqPandasEngine(SqEngineObj):
         for field_name, query_str, field in self._summarize_on_add_stat:
             if query_str:
                 statfld = self.summary_df.query(query_str) \
-                                         .groupby(by=['namespace'],
-                                                  observed=True)[field]
+                    .groupby(by=['namespace'],
+                             observed=True)[field]
             else:
                 statfld = self.summary_df.groupby(
                     by=['namespace'], observed=True)[field]
@@ -495,7 +546,8 @@ class SqPandasEngine(SqEngineObj):
     def _add_constant_to_summary(self, field: str, value):
         """And a constant value to specified field name in summary"""
         if field:
-            {self.ns[i].update({field: value}) for i in self.ns.keys()}
+            # pylint disable=expression-not-assigned
+            _ = {self.ns[i].update({field: value}) for i in self.ns.keys()}
 
     def _add_field_to_summary(self, field: str, method: str = 'nunique',
                               field_name: str = None):
@@ -510,8 +562,8 @@ class SqPandasEngine(SqEngineObj):
         if not field_name:
             field_name = field
         field_per_ns = getattr(self.nsgrp[field], method)()
-        {self.ns[i].update({field_name: field_per_ns.get(i, 0)})
-         for i in self.ns.keys()}
+        _ = {self.ns[i].update({field_name: field_per_ns.get(i, 0)})
+             for i in self.ns.keys()}
 
     def _add_list_or_count_to_summary(self, field: str,
                                       field_name: str = None) -> None:
@@ -542,29 +594,31 @@ class SqPandasEngine(SqEngineObj):
                               filter_by_ns: bool = False) -> None:
         """Takes grouped stats and adds min, max, and median to stats"""
 
-        {self.ns[i].update({fieldname: []}) for i in self.ns.keys()}
+        _ = {self.ns[i].update({fieldname: []}) for i in self.ns.keys()}
         if filter_by_ns:
-            {self.ns[i][fieldname].append(groupedby[i].min())
-             if i in groupedby else self.ns[i][fieldname].append(0)
-             for i in self.ns.keys()}
-            {self.ns[i][fieldname].append(groupedby[i].max())
-             if i in groupedby else self.ns[i][fieldname].append(0)
-             for i in self.ns.keys()}
-            {self.ns[i][fieldname].append(
+            _ = {self.ns[i][fieldname].append(groupedby[i].min())
+                 if i in groupedby else self.ns[i][fieldname].append(0)
+                 for i in self.ns.keys()}
+            # pylint disable=expression-not-assigned
+            _ = {self.ns[i][fieldname].append(groupedby[i].max())
+                 if i in groupedby else self.ns[i][fieldname].append(0)
+                 for i in self.ns.keys()}
+            # pylint disable=expression-not-assigned
+            _ = {self.ns[i][fieldname].append(
                 groupedby[i].median(numeric_only=False))
-             if i in groupedby else self.ns[i][fieldname].append(0)
-             for i in self.ns.keys()}
+                if i in groupedby else self.ns[i][fieldname].append(0)
+                for i in self.ns.keys()}
         else:
             min_field = groupedby.min()
             max_field = groupedby.max()
             med_field = groupedby.median(numeric_only=False)
 
-            {self.ns[i][fieldname].append(min_field[i])
-             if i in min_field else self.ns[i][fieldname].append(0)
-             for i in self.ns.keys()}
-            {self.ns[i][fieldname].append(max_field[i])
-             if i in max_field else self.ns[i][fieldname].append(0)
-             for i in self.ns.keys()}
-            {self.ns[i][fieldname].append(med_field[i])
-             if i in med_field else self.ns[i][fieldname].append(0)
-             for i in self.ns.keys()}
+            _ = {self.ns[i][fieldname].append(min_field[i])
+                 if i in min_field else self.ns[i][fieldname].append(0)
+                 for i in self.ns.keys()}
+            _ = {self.ns[i][fieldname].append(max_field[i])
+                 if i in max_field else self.ns[i][fieldname].append(0)
+                 for i in self.ns.keys()}
+            _ = {self.ns[i][fieldname].append(med_field[i])
+                 if i in med_field else self.ns[i][fieldname].append(0)
+                 for i in self.ns.keys()}

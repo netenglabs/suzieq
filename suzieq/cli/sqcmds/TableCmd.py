@@ -1,14 +1,14 @@
 import time
 
-from nubia import command, argument
 import pandas as pd
+from nubia import command
 
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.tables import TablesObj
 
 
-@command("table", help="Information about the various tables",
-         aliases=['tables'])
+@command('table', help='get data about data captured for various tables')
 class TableCmd(SqCommand):
     """Meta information about the various data gathered"""
 
@@ -20,7 +20,7 @@ class TableCmd(SqCommand):
         end_time: str = "",
         view: str = "",
         namespace: str = "",
-        format: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
         columns: str = "default",
     ) -> None:
         super().__init__(
@@ -35,19 +35,10 @@ class TableCmd(SqCommand):
             sqobj=TablesObj,
         )
 
-    @command("show")
-    def show(self, **kwargs):
-        """Show meta-information about various tables gathered by Suzieq
-        """
-        now = time.time()
-        df = self.sqobj.get(hostname=self.hostname, namespace=self.namespace,
-                            columns=self.columns)
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
-
     @ command("describe")
     @ argument("table", description="interface name to qualify")
-    def describe(self, table: str = "tables", **kwargs):
+    # pylint: disable=arguments-differ
+    def describe(self, table: str = "tables"):
         """
         Describe fields in table
         """

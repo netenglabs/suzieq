@@ -1,9 +1,12 @@
-from suzieq.sqobjects.basicobj import SqObject
 import pandas as pd
-from suzieq.utils import humanize_timestamp
+
+from suzieq.sqobjects.basicobj import SqObject
+from suzieq.shared.utils import humanize_timestamp
 
 
 class BgpObj(SqObject):
+    '''The object providing access to the bgp table'''
+
     def __init__(self, **kwargs):
         super().__init__(table='bgp', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'state',
@@ -12,9 +15,9 @@ class BgpObj(SqObject):
             'state': ['Established', 'NotEstd', 'dynamic', ''],
             'status': ['all', 'pass', 'fail'],
         }
-        self._valid_assert_args = ['namespace', 'hostname', 'vrf', 'status']
+        self._valid_assert_args = self._valid_get_args + ['status']
 
-    def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
+    def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''
         if df.empty:
             return df
@@ -24,4 +27,4 @@ class BgpObj(SqObject):
                                                 self.cfg.get('analyzer', {})
                                                 .get('timezone', None))
 
-        return df
+        return super().humanize_fields(df)

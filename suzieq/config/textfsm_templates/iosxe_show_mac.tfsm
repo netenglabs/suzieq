@@ -1,10 +1,16 @@
 Value Required vlan (\d+| All)
 Value Required macaddr (\S+)
 Value Required flags (\w+)
-Value oif (\w+)
+Value oif (\S+)
+Value protocol (\S+)
 
 Start
+  ^\s+vlan.*protocol.* -> WithProtocol
   ^\s*${vlan}\s+${macaddr}\s+${flags}\s+${oif}.*$$ -> Record
+
+WithProtocol
+  ^\s*${vlan}\s+${macaddr}\s+${flags}\s+${protocol}\s+${oif}.*$$ -> Record
+  ^Multicast\s+Entries -> Start
 
 #          Mac Address Table
 #-------------------------------------------

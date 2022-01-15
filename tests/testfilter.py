@@ -4,6 +4,7 @@ import six
 import pandas as pd
 
 
+# pylint: disable=redefined-outer-name
 def build_pa_filters(start_tm: str, end_tm: str,
                      key_fields: list, **kwargs):
     """Build filters for predicate pushdown of parquet read"""
@@ -13,12 +14,13 @@ def build_pa_filters(start_tm: str, end_tm: str,
     if start_tm and not end_tm:
         timeset = pd.date_range(pd.to_datetime(
             start_tm, infer_datetime_format=True), periods=2,
-                                freq='15min')
+            freq='15min')
+        # pylint: disable=redefined-outer-name
         filters = [[('timestamp', '>=', timeset[0].timestamp()*1000)]]
     elif end_tm and not start_tm:
         timeset = pd.date_range(pd.to_datetime(
             end_tm, infer_datetime_format=True), periods=2,
-                                freq='15min')
+            freq='15min')
         filters = [[('timestamp', '<=', timeset[-1].timestamp()*1000)]]
     elif start_tm and end_tm:
         timeset = [pd.to_datetime(start_tm, infer_datetime_format=True),
@@ -30,7 +32,7 @@ def build_pa_filters(start_tm: str, end_tm: str,
 
     # pyarrow's filters are in Disjunctive Normative Form and so filters
     # can get a bit long when lists are present in the kwargs
-
+    # pylint: disable=too-many-nested-blocks
     for k, v in kwargs.items():
         if v and k in key_fields:
             if isinstance(v, list):
@@ -40,17 +42,18 @@ def build_pa_filters(start_tm: str, end_tm: str,
                         kwdor.append([tuple(('{}'.format(k), '==',
                                              '{}'.format(e)))])
                     else:
-                        if len(filters) == 1 and not isinstance(filters[0], list):
-                            foo = deepcopy(filters)
-                            foo.append(tuple(('{}'.format(k), '==',
-                                              '{}'.format(e))))
-                            kwdor.append(foo)
+                        if len(filters) == 1 and not isinstance(filters[0],
+                                                                list):
+                            fltcopy = deepcopy(filters)
+                            fltcopy.append(tuple(('{}'.format(k), '==',
+                                                  '{}'.format(e))))
+                            kwdor.append(fltcopy)
                         else:
                             for entry in filters:
-                                foo = deepcopy(entry)
-                                foo.append(tuple(('{}'.format(k), '==',
-                                                  '{}'.format(e))))
-                                kwdor.append(foo)
+                                fltcopy = deepcopy(entry)
+                                fltcopy.append(tuple(('{}'.format(k), '==',
+                                                      '{}'.format(e))))
+                                kwdor.append(fltcopy)
 
                 filters = kwdor
             else:
@@ -79,6 +82,7 @@ def _check_contains_null(val):
     return False
 
 
+# pylint: disable=redefined-outer-name
 def check_filters(filters):
     """
     Check if filters are well-formed. This is copied from parquet.py in pyarrow
@@ -92,7 +96,7 @@ def check_filters(filters):
             #   We have [(,,), ..] instead of [[(,,), ..]]
             filters = [filters]
         for conjunction in filters:
-            for col, op, val in conjunction:
+            for _, _, val in conjunction:
                 if (
                     isinstance(val, list)
                     and all(_check_contains_null(v) for v in val)
@@ -132,7 +136,8 @@ if __name__ == '__main__':
                 check_filters(filters)
                 print(filters)
 
-                filters = build_pa_filters('2019-05-02 01:28:14', '05/02/19 02:10:10',
+                filters = build_pa_filters('2019-05-02 01:28:14',
+                                           '05/02/19 02:10:10',
                                            key_fields, namespace=dc,
                                            hostname=host, ifname=ifn)
                 check_filters(filters)

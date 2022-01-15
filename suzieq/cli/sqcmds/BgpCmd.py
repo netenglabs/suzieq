@@ -1,28 +1,38 @@
 import time
 from datetime import timedelta
-from nubia import command, argument
+from nubia import command
+
 import pandas as pd
 
-from suzieq.utils import humanize_timestamp
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.bgp import BgpObj
 
 
 @command("bgp", help="Act on BGP data")
+@argument("vrf", description="VRF(s), space separated")
+@argument("state", description="status of the session to match",
+          choices=["Established", "NotEstd", "dynamic"])
+@argument("peer",
+          description=("IP address(es), in quotes, or the interface name(s), "
+                       "space separated"))
 class BgpCmd(SqCommand):
     """BGP protocol information"""
 
     def __init__(
-        self,
-        engine: str = "",
-        hostname: str = "",
-        start_time: str = "",
-        end_time: str = "",
-        view: str = "",
-        namespace: str = "",
-        format: str = "",
-        columns: str = "default",
-        query_str: str = ' ',
+            self,
+            engine: str = "",
+            hostname: str = "",
+            start_time: str = "",
+            end_time: str = "",
+            view: str = "",
+            namespace: str = "",
+            format: str = "",  # pylint: disable=redefined-builtin
+            columns: str = "default",
+            query_str: str = ' ',
+            vrf: str = '',
+            state: str = '',
+            peer: str = ''
     ) -> None:
         super().__init__(
             engine=engine,
@@ -36,6 +46,11 @@ class BgpCmd(SqCommand):
             query_str=query_str,
             sqobj=BgpObj,
         )
+        self.lvars = {
+            'vrf': vrf.split(),
+            'state': state,
+            'peer': peer.split(),
+        }
 
     def _clean_output(self, df) -> pd.DataFrame:
         """Make upTime look good"""
@@ -53,67 +68,29 @@ class BgpCmd(SqCommand):
         return df.dropna(how='any')
 
     @command("show")
-    @argument("vrf", description="vrf name to qualify")
-    @argument("peer",
-              description=("IP address, in quotes, or the interface name, "
-                           "of peer to qualify output"))
-    @argument("state", description="status of the session to match",
-              choices=["Established", "NotEstd", "dynamic"])
-    def show(self, state: str = "", vrf: str = '', peer: str = ''):
+    def show(self):
         """Show BGP info
         """
-        if self.columns is None:
-            return
-
-        # Get the default display field names
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
 
         if (self.columns != ['default'] and self.columns != ['*'] and
                 'state' not in self.columns):
-            addnl_fields = ['state']
-        else:
-            addnl_fields = []
+            self.lvars['addnl_fields'] = ['state']
 
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname, columns=self.columns,
-                                namespace=self.namespace, state=state,
-                                addnl_fields=addnl_fields,
-                                query_str=self.query_str,
-                                vrf=vrf.split(), peer=peer.split()
-                                )
-
-        if 'estdTime' in df.columns and not df.empty:
-            df['estdTime'] = humanize_timestamp(df.estdTime,
-                                                self.cfg.get('analyzer', {})
-                                                .get('timezone', None))
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
-
-    @command("summarize", help="Provide summary info about BGP per namespace")
-    def summarize(self):
-        """Summarize bgp info
-        """
-        self._init_summarize()
-        return self._post_summarize()
+        return super().show()
 
     @command("assert")
-    @argument("vrf", description="Only assert BGP state in this VRF")
     @argument("status", description="Show only assert that matches this value",
               choices=["all", "fail", "pass"])
-    def aver(self, vrf: str = "", status: str = "all") -> pd.DataFrame:
+    def aver(self, status: str = "all") -> pd.DataFrame:
         """Assert BGP is functioning properly"""
 
         now = time.time()
+
         df = self._invoke_sqobj(self.sqobj.aver,
-                                vrf=vrf.split(),
                                 namespace=self.namespace,
                                 hostname=self.hostname,
                                 status=status,
+                                **self.lvars,
                                 )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 

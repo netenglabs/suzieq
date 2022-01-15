@@ -110,7 +110,7 @@ apply:
         "speed/[0]/data: speed?|0",
         "name/[0]/data: ifname",
         "description/[0]/data: description?|",
-        "if-type/[0]/data: type",
+        "if-type/[0]/data: type?|",
         "link-level-type/[0]/data: type?|type",
         "mtu/[0]/data: mtu?|0",
         "minimum-links-in-aggregate/[0]/data: _minLinksBond",
@@ -139,6 +139,9 @@ apply:
   junos-es:
     copy: junos-qfx
 
+  junos-qfx10k:
+    copy: junos-qfx
+
   nxos:
     version: all
     command:
@@ -148,7 +151,7 @@ apply:
         "state: state",
         "oper_state: state?|state",
         "svi_admin_state: state?|state",
-        "speed: speed?|",
+        "speed: speed?|0",
         "mtu: mtu?|0",
         "portmode: _portmode?|routed",
         "portchan: _portchannel?|0",
@@ -197,4 +200,42 @@ apply:
           "rd: routeDistinguisher",
           "mtu: mtu?|1500",
           "vni: vni?|0",
+        ]'
+
+  panos:
+    version: all
+    command: 
+      - command: <show><system><state><filter>sw.dev.interface.config</filter></state></system></show>
+        normalize: 'response/[result: _mtu_data]'
+      
+      - command: <show><interface>management</interface></show>
+        normalize: 'response/result/info/[
+          "name: ifname",
+          "state: adminState",
+          "ip: ipAddressList?|[]",
+          "ipv6ll: ip6AddressList?|[]",
+          "ipv6: _ip",
+          "speed: speed?|-1",
+          "hwaddr: macaddr",
+        ]'
+
+      - command: <show><interface>all</interface></show>
+        normalize: 'response/result/hw/entry/*/[
+          "name: ifname",
+          "id: ifindex",
+          "mac: macaddr",
+          "speed: speed?|-1",
+          "state: adminState",
+          "st: state",
+          "type: type",
+        ]'
+
+      - command: <show><interface>all</interface></show>
+        normalize: 'response/result/ifnet/entry/*/[
+          "name: ifname",
+          "id: ifindex",
+          "addr/member: ipAddressList?|[]",
+          "addr6/member: ip6AddressList?|[]",
+          "ip: _ip",
+          "fwd: master"
         ]'

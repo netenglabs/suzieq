@@ -69,5 +69,3 @@ Obj
 ::: suzieq.sqobjects.vlan.VlanObj
     :docstring:
     :members:
-
-

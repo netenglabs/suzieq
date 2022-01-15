@@ -1,4 +1,3 @@
-import time
 from nubia import command
 import pandas as pd
 
@@ -18,7 +17,7 @@ class DevconfigCmd(SqCommand):
             end_time: str = "",
             view: str = "",
             namespace: str = "",
-            format: str = "",
+            format: str = "",  # pylint: disable=redefined-builtin
             query_str: str = " ",
             columns: str = "default",
     ) -> None:
@@ -39,29 +38,12 @@ class DevconfigCmd(SqCommand):
     def show(self):
         """Show device config info
         """
-        if self.columns is None:
-            return
-
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname, columns=self.columns,
-                                namespace=self.namespace,
-                                query_str=self.query_str,
-                                )
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-
         if not self.format or (self.format == 'text'):
             self.format = 'devconfig'
-        return self._gen_output(df)
+        return super().show()
 
     @command("unique", help="Show unique information about columns")
-    def unique(self):
+    def unique(self, **kwargs):  # pylint: disable=arguments-differ
         """
         Unique device config info
         """

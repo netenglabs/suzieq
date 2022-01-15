@@ -1,9 +1,7 @@
 import pytest
 
-
 import pandas as pd
 from tests.conftest import DATADIR, validate_host_shape
-from suzieq.utils import known_devtypes
 
 
 def validate_device_tbl(df: pd.DataFrame):
@@ -21,6 +19,7 @@ def validate_device_tbl(df: pd.DataFrame):
 @ pytest.mark.device
 @ pytest.mark.parametrize('table', ['device'])
 @ pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_device_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for device table'''
 

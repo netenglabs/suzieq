@@ -1,0 +1,149 @@
+{
+    "namespace": "suzieq",
+    "name": "sqPoller",
+    "type": "counter",
+    "fields": [
+        {
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
+        {
+            "name": "gatherTime",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "float",
+                    "name": "time"
+                }
+            },
+            "display": 4,
+            "description": "Min, max, median of time taken to get data, for this 5-min interval"
+        },
+        {
+            "name": "totalTime",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "float",
+                    "name": "time"
+                }
+            },
+            "display": 5,
+            "description": "Min, max, median of time taken to get & process data, for this 5-min intervals"
+        },
+        {
+            "name": "svcQsize",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "float",
+                    "name": "svcQsize"
+                }
+            },
+            "display": 6,
+            "description": "Min, max, median of service queue size, for this 5-min interval"
+        },
+        {
+            "name": "wrQsize",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "float",
+                    "name": "wrQsize"
+                }
+            },
+            "display": 7,
+            "description": "Min, max, median of write queue size, for this 5-min interval"
+        },
+        {
+            "name": "nodeQsize",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "float",
+                    "name": "nodeQsize"
+                }
+            },
+            "display": 8,
+            "description": "Min, max, median of node queue size, for this 5-min interval"
+        },
+        {
+            "name": "rxBytes",
+            "type": {
+                "type": "array",
+                "items": {
+                    "type": "float",
+                    "name": "rxBytes"
+                }
+            },
+            "display": 9,
+            "description": "Min, max, median of bytes read, for this 5-min interval"
+        },
+        {
+            "name": "version",
+            "type": "string",
+            "description": "The suzieq version used to create this record"
+        },
+        {
+            "name": "pollExcdPeriodCount",
+            "type": "long",
+            "display": 10,
+            "description": "Number of times the poller has exceeded the poll period"
+        },
+        {
+            "name": "status",
+            "type": "long",
+            "display": 3
+        },
+        {
+            "name": "nodesPolledCnt",
+            "type": "long",
+            "description": "Number of nodes polled"
+        },
+        {
+            "name": "nodesFailedCnt",
+            "type": "long",
+            "description": "Number of nodes that could not be polled"
+        },
+        {
+            "name": "service",
+            "type": "string",
+            "key": 2,
+            "display": 2,
+            "partition": 2,
+            "description": "The polled service (a.k.a table) name"
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "key": 1,
+            "display": 1,
+            "partition": 2,
+            "description": "Hostname associated with this record"
+        },
+        {
+            "name": "namespace",
+            "type": "string",
+            "key": 0,
+            "display": 0,
+            "partition": 1,
+            "description": "The namespace associated with this record"
+        },
+        {
+            "name": "timestamp",
+            "type": "long",
+            "display": 11,
+            "description": "The timestamp of the record"
+        },
+        {
+            "name": "active",
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
+        }
+    ],
+    "recordType": "counters"
+}

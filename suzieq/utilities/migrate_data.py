@@ -5,7 +5,7 @@ import typing
 import pyarrow.parquet as pq
 import pyarrow as pa
 from pathlib import Path, PosixPath
-from suzieq.utils import Schema, SchemaForTable
+from suzieq.shared.schema import Schema, SchemaForTable
 import concurrent.futures
 import logging
 

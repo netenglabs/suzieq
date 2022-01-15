@@ -1,6 +1,6 @@
 # Gathering Data: Poller
 
-To gather data from your network, you need to run the poller. We support gathering data from Arista EOS, Cisco's IOS, IOS-XE, and IOS-XR platforms, Cisco's NXOS (N7K with versions 8.4.4 or higher, and N9K with versions 9.3.1 or higher), Cumulus Linux, Juniper's Junos(QFX, EX, MX and SRX platforms), and SoNIC devices, besides Linux servers
+To gather data from your network, you need to run the poller. We support gathering data from Arista EOS, Cisco's IOS, IOS-XE, and IOS-XR platforms, Cisco's NXOS (N7K with versions 8.4.4 or higher, and N9K with versions 9.3.1 or higher), Cumulus Linux, Juniper's Junos(QFX, EX, MX and SRX platforms), Palo Alto's Panos (version 8.0 or higher, see the  [guide](./panos-support.md)) and SoNIC devices, besides Linux servers
 
 To start, launch the docker container, **netenglabs/suzieq:latest** and attach to it via the following steps:
 
@@ -9,74 +9,53 @@ To start, launch the docker container, **netenglabs/suzieq:latest** and attach t
   docker attach sq-poller
 ```
 
-In the docker run command above, the two `-v` options provide host file/directory access to (i) store the parquet output files (the first `-v` option), and (ii) the inventory file (the second `-v` option). We describe the inventory file below. The inventory file is the list of devices and their IP address that you wish to gather data from. 
+In the docker run command above, the two `-v` options provide host file/directory access to (I) store the parquet output files (the first `-v` option), and (II) the inventory file (the second `-v` option). The inventory file is the list of devices and their IP address that you wish to gather data from.
 
 You then launch the poller via the command line:
 
-```
-  sq-poller -D inventory
-```
-
-To monitor the status of the poller, you can look at /tmp/sq-poller.log file.
-
-The inventory file that the poller uses can be supplied either:
-
-* via a Suzieq native YAML format file (use the `-D` option as above) or 
-* via or an Ansible inventory file (instead of `-D`, use `-a` option along with `-n`). This file has to be the output of ```ansible-inventory --list``` command
-
-The Suzieq native inventory file format that contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. The format looks as follows, for example (all possible combinations are shown for illustration):
-```
-- namespace: eos
-  hosts:
-    - url: https://vagrant@192.168.123.252 devtype=eos
-    - url: ssh://vagrant@192.168.123.232  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
-    - url: https://vagrant@192.168.123.164 devtype=eos
-    - url: ssh://192.168.123.70 username=admin password=admin
-    - url: ssh://vagrant@192.168.123.230  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
-    - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
-    - url: https://vagrant@192.168.123.123 password=vagrant
+```bash
+  sq-poller -I inventory
 ```
 
-There's a template in the docs directory called `hosts-template.yml`. You can copy that file as the template and fill out the values for namespace and url (remember to delete the empty URLs and to not use TABS, some editors add them automatically if the filename extension isn't right). The URL is the standard URL format: `<transport>://[username:password]@<hostname or IP>:<port>`. For example, `ssh://dinesh:dinesh@myvx` or `ssh://dinesh:dinesh@172.1.1.23`. 
+The inventory file format is covered in the [inventory page](./inventory.md).
 
-If you're using Ansible to configure the devices, an alternate to the native Suzieq inventory format is to use an Ansible inventory format. The file to be used is the output of the ```ansible-inventory --list``` command. 
+To monitor the status of the poller, you can look at the log files created (by default) in the `/tmp` directory. All the aspects related to the creation/update of the inventory are logged into `sq-poller-controller.log`, while the each worker logs into `sq-poller-<x>.log` where `x` is the worker id.
 
-Once you have either generated the hosts file or are using the Ansible inventory file, you can launch the poller inside the docker container using **one** of the following two options: 
+## <a name='poller-architecture'></a>Poller architecture
 
-* If you're using the native YAML hosts file, use the -D option like this: `sq-poller -D eos`
-* if you're using the Ansible inventory format, use the `-a` and `-n` options like this: via `sq-poller -a /suzieq/inventory -n eos`. 
+|![](images/sq-poller.png)
+|:--:|
+| Figure 1: Poller architecture  |
 
-The poller creates a log file called /tmp/sq-poller.log. You can look at the file for errors. The output is stored in the parquet directory specified under /suzieq/parquet and visible in the host, outside the container, via the path specified during docker run above. 
+The poller is the component in charge of periodically collecting the data from the devices. The list of nodes to poll comes from multiple sources, which are specified in the inventory file, given to the poller as input. The node lists coming from the sources are collected into a single global inventory, which could be splitted into multiple chunks and assigned to a different _worker_, the component in charge of polling the devices. The number of workers to use can be specified via the `-w <n_workers>` argument. For example, the poller could be launched with 2 workers polling the devices:
 
-## <a name='ssh-options'></a>SSH Security Options
+```shell
+sq-poller -I inventory -w 2
+```
 
-If you're using SSH to connect to the devices (only Arista EOS uses the REST API), the supported models for specifying login credentials are:
+Some of the sources could be _dynamic_ (i.e. Netbox), this means that the node list might change in time. The poller is able to dynamically track these changes and to provide the new inventory chunks to the workers.
 
-* Put the password in the inventory file and ensure no one can read it
-* Use `--ask-pass` to then be prompted for a password
-* Use an environment var to store the password and pass the name of the env var via `--envpass`
-* Use keyfile
-* Use passphrase protected keyfile  (use `--passphrase`)
-* Use ssh-config
+### Inventory chunking
 
-In addition, there maybe various additional options you may want to specify to connect to the device:
+The poller could use different policies for the inventory splitting. At the moment two are supported:
 
-* Jumphost use
-  : You can use the `-j` option to specify connection via a jumphost. The parameter specified with `-j` has the format: ```//<username>@<jumphost>:<port>```. Jumphost support is via a private key file, with the same characteristics as the private key file to connect to the remote devices. For example, if you need to use a passphrase for the private key file to the device, you'll have to use the same passphrase to connect to the device as well.
-* Ignore host key authentication
-  : This is the equivalent of "StrictHostKeyChecking=no UserKnownHostsFile=/dev/null" ssh options. You can enable this via the -k command line option when starting sq-poller
-* Passphrase with Private Key File
-  : Some operators have a passphrase associated with the private key file, a more secure model. To enable sq-poller to prompt for this passphrase, use the `--passphrase` option. You'll be prompted for the password.
-* SSH Config file
-  : Some operators choose to put everything in the ssh config file and expect the SSH client to honor this configuration. You can specify the ssh config file via the  `--ssh-config-file` option. 
+- `sequential`: in this case the inventory is splitted into `n` equal chunks, where `n` is the number of workers.
+- `namespace`: nodes can be groupped into namespaces, for example the nodes inside the same namespace can be the devices inside the same data center. This option avoids that nodes from the same namespace end into different chunks. In order to have a worker for each namespace, the number of workers must be equal to the number of namespaces in the inventory.
 
-## <a name='rest-security'></a>REST Security
+!!! warning
+    At the moment, when using the namespace policy, you should make sure that the number of workers is less or equal than the number of namespaces.
 
-With REST API, the only supported authentication at present is username and password.
+The chunking policy can be easily specified in the Suzieq configuration file via the `policy` field under chunker in poller:
+
+```yaml
+poller:
+  chunker:
+     policy: sequential
+```
 
 ## <a name='gathering-data'></a>Gathering Data
 Two important concepts in the poller are Nodes and Services. Nodes are devices of some kind;
-they are the object being monitored. Services are the data that is collected and consumed by Suzieq. 
+they are the object being monitored. Services are the data that is collected and consumed by Suzieq.
 Service definitions describe how to get output from devices and then how to turn that into useful data.
 
 Currently Suzieq supports polling [Arista](https://www.arista.com/en/),
@@ -89,7 +68,7 @@ and [SONIC](https://azure.github.io/SONiC/) devices, as well as native Linux dev
 Suzieq started out with least common denominator SSH and REST access to devices.
 It doesn't care much about transport, we will use whatever gets the best data.
 Suzieq does have support for agents, such as Kafka and SNMP, to push data and we've done some experiments with them, but don't
-have production versions of that code. 
+have production versions of that code.
 
 ## Debugging poller issues
 There are two places to look if you want to know what the poller is up to. The first is the poller
@@ -126,8 +105,6 @@ In this case the errors are because we aren't running any of those services on t
 
 ## Database and Data Persistence
 
-Because everything in Suzieq revolves around [Pandas](https://pandas.pydata.org/) dataframes, it can support different persistence engines underneath. For right now, we only support our own, which is built on [Parquet](https://parquet.apache.org/) files. 
-This is setup should be fast enough to get things going and for most people. It is also self contained and fairly simple. 
-We have tried other storage systems, so we know it can work, but none of that code is production worthy. As we all gain experience we can figure out what the right persistence engines are One of the advantages is that the data are just files that can easily be passed around. There is no database code that must be running before you query the data. 
-
-
+Because everything in Suzieq revolves around [Pandas](https://pandas.pydata.org/) dataframes, it can support different persistence engines underneath. For right now, we only support our own, which is built on [Parquet](https://parquet.apache.org/) files.
+This is setup should be fast enough to get things going and for most people. It is also self contained and fairly simple.
+We have tried other storage systems, so we know it can work, but none of that code is production worthy. As we all gain experience we can figure out what the right persistence engines are One of the advantages is that the data are just files that can easily be passed around. There is no database code that must be running before you query the data.

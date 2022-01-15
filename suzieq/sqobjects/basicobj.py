@@ -1,42 +1,36 @@
 import typing
 import pandas as pd
 
-from suzieq.utils import load_sq_config, Schema, SchemaForTable
+from suzieq.shared.utils import load_sq_config, humanize_timestamp
+from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines import get_sqengine
+from suzieq.shared.sq_plugin import SqPlugin
+from suzieq.shared.context import SqContext
 
 
-class SqContext(object):
+class SqObject(SqPlugin):
+    '''The base class for accessing the backend independent of the engine'''
 
-    def __init__(self, engine, config_file=None):
-        self.cfg = load_sq_config(config_file=config_file)
-
-        self.schemas = Schema(self.cfg['schema-directory'])
-
-        self.namespace = ''
-        self.hostname = ''
-        self.start_time = ''
-        self.end_time = ''
-        self.exec_time = ''
-        self.engine = engine
-        self.view = ''
-        self.sort_fields = []
-
-
-class SqObject(object):
-
-    def __init__(self, engine_name: str = 'pandas',
-                 hostname: typing.List[str] = [],
+    def __init__(self, engine_name: str = '',
+                 hostname: typing.List[str] = None,
                  start_time: str = '', end_time: str = '',
-                 view: str = '', namespace: typing.List[str] = [],
-                 columns: typing.List[str] = ['default'],
+                 view: str = '', namespace: typing.List[str] = None,
+                 columns: typing.List[str] = None,
                  context=None, table: str = '', config_file=None) -> None:
 
-        if context is None:
-            self.ctxt = SqContext(engine_name, config_file)
+        if not context:
+            self.ctxt = SqContext(cfg=load_sq_config(validate=True,
+                                                     config_file=config_file),
+                                  engine=engine_name)
+            self.ctxt.schemas = Schema(self.ctxt.cfg["schema-directory"])
         else:
             self.ctxt = context
-            if not self.ctxt:
-                self.ctxt = SqContext(engine_name)
+            if not self.ctxt.cfg:
+                self.ctxt.cfg = load_sq_config(validate=True,
+                                               config_file=config_file)
+                self.ctxt.schemas = Schema(self.ctxt.cfg["schema-directory"])
+            if not self.ctxt.engine:
+                self.ctxt.engine = engine_name
 
         self._cfg = self.ctxt.cfg
         self._schema = SchemaForTable(table, self.ctxt.schemas)
@@ -44,76 +38,75 @@ class SqObject(object):
         self._sort_fields = self._schema.key_fields()
         self._convert_args = {}
 
-        if not namespace and self.ctxt.namespace:
-            self.namespace = self.ctxt.namespace
-        else:
-            self.namespace = namespace
-        if not hostname and self.ctxt.hostname:
-            self.hostname = self.ctxt.hostname
-        else:
-            self.hostname = hostname
+        self.namespace = namespace or self.ctxt.namespace or []
+        self.hostname = hostname or self.ctxt.hostname or []
+        self.start_time = start_time or self.ctxt.start_time
+        self.end_time = end_time or self.ctxt.end_time
 
-        if not start_time and self.ctxt.start_time:
-            self.start_time = self.ctxt.start_time
-        else:
-            self.start_time = start_time
-
-        if not end_time and self.ctxt.end_time:
-            self.end_time = self.ctxt.end_time
-        else:
-            self.end_time = end_time
-
-        if not view and self.ctxt.view:
-            view = self.ctxt.view
+        view = view or self.ctxt.view
 
         if self.start_time and self.end_time and not view:
             self.view = 'all'
         else:
             self.view = view or 'latest'
 
-        self.columns = columns
+        self.columns = columns or ['default']
+        self._unique_def_column = ['hostname']
 
         if engine_name and engine_name != '':
-            self.engine = get_sqengine(engine_name,
-                                       self._table)(self._table, self)
+            self.engine = get_sqengine(engine_name, self._table)(self)
         elif self.ctxt.engine:
-            self.engine = get_sqengine(self.ctxt.engine,
-                                       self._table)(self._table, self)
+            self.engine = get_sqengine(self.ctxt.engine, self._table)(self)
 
         if not self.engine:
             raise ValueError('Unknown analysis engine')
 
-        self._addnl_filter = None
-        self._addnl_fields = []
-        self._valid_get_args = None
-        self._valid_assert_args = None
-        self._valid_arg_vals = None
-        self._valid_find_args = None
+        self.summarize_df = pd.DataFrame()
+
+        self._addnl_filter = self._addnl_fields = []
+        self._valid_get_args = self._valid_assert_args = []
+        self._valid_arg_vals = self._valid_find_args = []
+        self._valid_summarize_args = []
 
     @property
     def all_schemas(self):
+        '''Return the set of all schemas of tables supported'''
         return self.ctxt.schemas
 
     @property
     def schema(self):
+        '''Return table-specific schema'''
         return self._schema
 
     @property
     def cfg(self):
+        '''Return general suzieq config'''
         return self._cfg
 
     @property
     def table(self):
+        '''Return the table served by this object'''
         return self._table
 
+    @property
+    def addnl_fields(self):
+        '''Return the additional fields field'''
+        return self._addnl_fields
+
+    @property
+    def sort_fields(self):
+        '''Return default list of fields to sort by'''
+        return self._sort_fields
+
     def _check_input_for_valid_args(self, good_arg_list, **kwargs,):
+        '''Check that the provided set of kwargs is valid for the table'''
         if not good_arg_list:
             return
 
         # add standard args that are always
         good_arg_list = good_arg_list + (['namespace', 'addnl_fields'])
 
-        for arg in kwargs.keys():
+        for arg in kwargs:
             if arg not in good_arg_list:
                 raise AttributeError(
                     f"argument {arg} not supported for this command")
@@ -124,19 +117,25 @@ class SqObject(object):
         if not good_arg_val_list:
             return
 
-        for arg in kwargs.keys():
+        for arg, val in kwargs.items():
             if arg in good_arg_val_list:
-                if kwargs[arg] not in good_arg_val_list[arg]:
-                    raise AttributeError(
-                        f"invalid value {kwargs[arg]} for argument {arg}")
+                if val not in good_arg_val_list[arg]:
+                    raise ValueError(
+                        f"invalid value {val} for argument {arg}")
 
     def validate_get_input(self, **kwargs):
+        '''Validate the values of the get function'''
         self._check_input_for_valid_args(
             self._valid_get_args + ['columns'], **kwargs)
         self._check_input_for_valid_vals(self._valid_arg_vals, **kwargs)
 
     def validate_assert_input(self, **kwargs):
+        '''Validate the values of the assert function'''
         self._check_input_for_valid_args(self._valid_assert_args, **kwargs)
+
+    def validate_summarize_input(self, **kwargs):
+        '''Validate the values of the summarize function'''
+        self._check_input_for_valid_args(self._valid_get_args, **kwargs)
 
     def validate_columns(self, columns: typing.List[str]) -> bool:
         """Validate that the provided columns are valid for the table
@@ -150,16 +149,17 @@ class SqObject(object):
             ValueError: if columns are invalid
         """
 
-        if columns == ['default'] or columns == ['*']:
+        if columns in [['default'], ['*']]:
             return True
 
         table_schema = SchemaForTable(self._table, self.all_schemas)
         invalid_columns = [x for x in columns if x not in table_schema.fields]
         if invalid_columns:
             raise ValueError(f"Invalid columns specified: {invalid_columns}")
+        return True
 
     def get(self, **kwargs) -> pd.DataFrame:
-
+        '''Return the data for this table given a set of attributes'''
         if not self._table:
             raise NotImplementedError
 
@@ -172,7 +172,7 @@ class SqObject(object):
         # This raises exceptions if it fails
         try:
             self.validate_get_input(**kwargs)
-        except Exception as error:
+        except (AttributeError, ValueError) as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
@@ -182,38 +182,40 @@ class SqObject(object):
         # This raises ValueError if it fails
         self.validate_columns(kwargs.get('columns', []))
 
-        for k in self._convert_args:
-            v = kwargs.get(k, None)
-            if v:
+        for k, v in self._convert_args.items():
+            if v and k in kwargs:
                 val = kwargs[k]
                 newval = []
                 if isinstance(val, list):
                     for ele in val:
-                        ele = self._convert_args[k](ele)
+                        ele = v(ele)
                         newval.append(ele)
                     kwargs[k] = newval
                 elif isinstance(val, str):
-                    kwargs[k] = self._convert_args[k](val)
+                    kwargs[k] = v(val)
 
         return self.engine.get(**kwargs)
 
-    def summarize(self, namespace=[], hostname=[],
-                  query_str='') -> pd.DataFrame:
+    def summarize(self, **kwargs) -> pd.DataFrame:
+        '''Summarize the data from specific table'''
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
                 {'error':
                  ['ERROR: You cannot specify columns with summarize']})
             return self.summarize_df
+
         if not self._table:
             raise NotImplementedError
 
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
 
-        return self.engine.summarize(namespace=namespace, hostname=hostname,
-                                     query_str=query_str)
+        self.validate_summarize_input(**kwargs)
+
+        return self.engine.summarize(**kwargs)
 
     def unique(self, **kwargs) -> pd.DataFrame:
+        '''Identify unique values and value counts for a column in table'''
         if not self._table:
             raise NotImplementedError
 
@@ -223,9 +225,9 @@ class SqObject(object):
         columns = kwargs.pop('columns', self.columns)
 
         if columns is None or columns == ['default']:
-            raise ValueError('Must specify columns with unique')
+            columns = self._unique_def_column
 
-        if len(columns) > 1:
+        if len(columns) > 1 or columns == ['*']:
             raise ValueError('Specify a single column with unique')
 
         # This raises ValueError if it fails
@@ -234,6 +236,7 @@ class SqObject(object):
         return self.engine.unique(**kwargs, columns=columns)
 
     def aver(self, **kwargs):
+        '''Assert one or more checks on table'''
         if self._valid_assert_args:
             return self._assert_if_supported(**kwargs)
 
@@ -254,7 +257,7 @@ class SqObject(object):
         # This raises exceptions if it fails
         try:
             self.validate_get_input(**kwargs)
-        except Exception as error:
+        except (ValueError, AttributeError) as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
@@ -284,6 +287,12 @@ class SqObject(object):
 
         table = kwargs.get('table', self.table)
 
+        cols = kwargs.get('columns', ['default'])
+        if cols not in [['default'], ['*']]:
+            df = pd.DataFrame(
+                {'error': ['ERROR: cannot specify column names for describe']})
+            return df
+
         try:
             sch = SchemaForTable(table, self.all_schemas)
         except ValueError:
@@ -299,6 +308,10 @@ class SqObject(object):
                     'description': x.get('description', '')}
                    for x in sch.get_raw_schema()]
         df = pd.DataFrame.from_dict(entries).sort_values('name')
+
+        query_str = kwargs.get('query_str', '')
+        if query_str:
+            return df.query(query_str).reset_index(drop=True)
 
         return df
 
@@ -316,12 +329,17 @@ class SqObject(object):
 
         return self.engine.get_table_info(table, **kwargs)
 
-    def humanize_fields(self, df: pd.DataFrame, subset=None) -> pd.DataFrame:
+    def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the fields for human consumption.
 
         Individual classes will implement the right transofmations. This
         routine is just a placeholder for all those with nothing to modify.
         '''
+        if 'timestamp' in df.columns and not df.empty:
+            df['timestamp'] = humanize_timestamp(df.timestamp,
+                                                 self.cfg.get('analyzer', {})
+                                                 .get('timezone', None))
+
         return df
 
     def _field_exists(self, table_schema: SchemaForTable, field: str) -> bool:
@@ -346,7 +364,7 @@ class SqObject(object):
             raise AttributeError('No analysis engine specified')
         try:
             self.validate_assert_input(**kwargs)
-        except Exception as error:
+        except AttributeError as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 

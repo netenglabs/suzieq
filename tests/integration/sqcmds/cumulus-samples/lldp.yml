@@ -397,6 +397,20 @@ tests:
   marks: lldp summarize
   output: '{"dual-evpn": {"deviceCnt": 10, "nbrCnt": 40, "peerHostnameCnt": 40, "uniquePeerMgmtIPCnt":
     11, "missingPeerInfoCnt": 2}}'
+- command: lldp unique --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: lldp unique
+  output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "leaf03"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
+- command: lldp unique --count=True --format=json
+  data-directory: tests/data/multidc/parquet-out/
+  marks: lldp unique
+  output: '[{"hostname": "edge01", "numRows": 4}, {"hostname": "internet", "numRows":
+    4}, {"hostname": "leaf01", "numRows": 10}, {"hostname": "leaf02", "numRows": 10},
+    {"hostname": "leaf03", "numRows": 10}, {"hostname": "leaf04", "numRows": 10},
+    {"hostname": "exit01", "numRows": 12}, {"hostname": "exit02", "numRows": 12},
+    {"hostname": "spine01", "numRows": 18}, {"hostname": "spine02", "numRows": 18}]'
 - command: lldp unique --columns=hostname --format=json
   data-directory: tests/data/multidc/parquet-out/
   marks: lldp unique

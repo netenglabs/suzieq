@@ -14,9 +14,10 @@ from dataclasses import asdict
 
 import pandas as pd
 
-from suzieq.utils import (load_sq_config, Schema, init_logger,
-                          SchemaForTable, ensure_single_instance,
-                          get_log_params, get_sleep_time)
+from suzieq.shared.utils import (load_sq_config, init_logger,
+                                 ensure_single_instance,
+                                 get_log_params, get_sleep_time)
+from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.db import do_coalesce, get_sqdb_engine
 from suzieq.version import SUZIEQ_VERSION
 
@@ -123,8 +124,8 @@ def coalescer_main():
     parser.add_argument(
         "-c",
         "--config",
-        default=f'{os.getenv("HOME")}/.suzieq/suzieq-cfg.yml',
-        type=str, help="alternate config file"
+        type=str,
+        help="alternate config file"
     )
     parser.add_argument(
         "--run-once",
@@ -152,8 +153,8 @@ def coalescer_main():
         print(f'Invalid Suzieq config file {userargs.config}')
         sys.exit(1)
 
-    logfile, loglevel, logsize, log_stdout = get_log_params('coalescer', cfg,
-                                                            '/tmp/sq-coalescer.log')
+    logfile, loglevel, logsize, log_stdout = get_log_params(
+        'coalescer', cfg, '/tmp/sq-coalescer.log')
     logger = init_logger('suzieq.coalescer', logfile,
                          loglevel, logsize, log_stdout)
 

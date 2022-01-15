@@ -1,21 +1,23 @@
-from .engineobj import SqPandasEngine
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class MacsObj(SqPandasEngine):
+    '''Backend class to handle manipulating MAC table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'macs'
 
     def get(self, **kwargs):
-        if not self.iobj._table:
+        if not self.iobj.table:
             raise NotImplementedError
 
         columns = kwargs.get('columns', ['default'])
         moveCount = kwargs.pop('moveCount', None)
         view = kwargs.pop('view', self.iobj.view)
         remoteOnly = False
-        localOnly = kwargs.pop('localOnly', False)
+        localOnly = kwargs.pop('local', False)
         user_query = kwargs.pop('query_str', '')
         vtep = kwargs.get('remoteVtepIp', [])
 
@@ -37,7 +39,7 @@ class MacsObj(SqPandasEngine):
         if columns in [['default'], ['*']] or 'mackey' not in columns:
             drop_cols.append('mackey')
 
-        df = self.get_valid_df(self.iobj._table, view=view, **kwargs)
+        df = self.get_valid_df(self.iobj.table, view=view, **kwargs)
 
         if compute_moves and not df.empty:
             df = df.set_index('namespace hostname mackey macaddr'.split()) \

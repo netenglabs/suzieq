@@ -1,13 +1,17 @@
 from typing import List
+
 import pandas as pd
-from .engineobj import SqPandasEngine
-from suzieq.utils import convert_macaddr_format_to_colon
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+from suzieq.shared.utils import convert_macaddr_format_to_colon
 
 
 class NetworkObj(SqPandasEngine):
+    '''Backend class to handle ops on virtual table, network, with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'network'
 
     def get(self, **kwargs):
@@ -88,7 +92,7 @@ class NetworkObj(SqPandasEngine):
 
             gotns = df.namespace.unique().tolist()
             newdf[fld] = newdf.apply(
-                lambda x, y: True if x.namespace in y else False,
+                lambda x, y: x.namespace in y,
                 axis=1, args=(gotns,))
 
         if 'sqvers' in show_cols:
@@ -257,22 +261,21 @@ class NetworkObj(SqPandasEngine):
 
         if any(x in addr for x in ['::', '.']):
             arpdf = self._get_table_sqobj('arpnd').get(
-                ipAddress=addr, **kwargs)
+                ipAddress=addr.split(), **kwargs)
         else:
             arpdf = self._get_table_sqobj('arpnd').get(
-                macaddr=addr, **kwargs)
+                macaddr=addr.split(), **kwargs)
 
         result = []
         for row in arpdf.itertuples():
+            if getattr(row, 'error', None):
+                continue
             if row.oif.endswith('-v0'):
                 # Handle VRR interfaces in Cumulus
                 oif = row.oif[:-3]
             else:
                 oif = row.oif
-            ifdf = self._get_table_sqobj(
-                'interfaces',
-                start_time=str(row.timestamp.timestamp()-30),
-                end_time=str(row.timestamp.timestamp()+30)) \
+            ifdf = self._get_table_sqobj('interfaces') \
                 .get(namespace=[row.namespace], hostname=[row.hostname],
                      ifname=[oif])
 
@@ -288,19 +291,17 @@ class NetworkObj(SqPandasEngine):
                         'macaddr': row.macaddr,
                         'ifname': oif,
                         'type': 'routed',
+                        'l2miss': False,
                         'timestamp': row.timestamp
                     })
                     continue
 
-                macdf = self._get_table_sqobj(
-                    'macs',
-                    start_time=str(row.timestamp.timestamp()-30),
-                    end_time=str(row.timestamp.timestamp()+30)) \
+                macdf = self._get_table_sqobj('macs') \
                     .get(namespace=[row.namespace], hostname=[row.hostname],
                          vlan=ifdf.vlan.astype(str).unique().tolist(),
                          macaddr=[row.macaddr],
                          columns=['default'],
-                         localOnly=True)
+                         local=True)
                 if not macdf.empty:
                     oifs = [x for x in macdf.oif.unique() if x !=
                             "vPC Peer-Link"]
@@ -315,6 +316,20 @@ class NetworkObj(SqPandasEngine):
                         'macaddr': row.macaddr,
                         'ifname': oifs[0],
                         'type': 'bridged',
+                        'l2miss': False,
+                        'timestamp': row.timestamp
+                    })
+                else:
+                    result.append({
+                        'namespace': row.namespace,
+                        'hostname': row.hostname,
+                        'vrf': ifdf.master.unique().tolist()[0] or 'default',
+                        'ipAddress': row.ipAddress,
+                        'vlan': ifdf.vlan.astype(str).unique().tolist()[0],
+                        'macaddr': row.macaddr,
+                        'ifname': ' '.join(ifdf.ifname.unique().tolist()),
+                        'type': 'bridged',
+                        'l2miss': True,
                         'timestamp': row.timestamp
                     })
 
@@ -407,6 +422,7 @@ class NetworkObj(SqPandasEngine):
                 'ifname': match_ifname,
                 'bondMembers': ', '.join(mbr_ports),
                 'type': row.type,
+                'l2miss': row.l2miss,
                 'timestamp': row.timestamp
             })
 

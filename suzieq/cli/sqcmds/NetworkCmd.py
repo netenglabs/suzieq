@@ -1,5 +1,6 @@
 import time
-from nubia import command, argument
+from nubia import command
+from suzieq.cli.nubia_patch import argument
 
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.network import NetworkObj
@@ -17,7 +18,7 @@ class NetworkCmd(SqCommand):
             end_time: str = "",
             view: str = "",
             namespace: str = "",
-            format: str = "",
+            format: str = "",  # pylint: disable=redefined-builtin
             query_str: str = " ",
             columns: str = "default",
     ) -> None:
@@ -35,10 +36,11 @@ class NetworkCmd(SqCommand):
         )
 
     @command("show", help="Show device information")
-    @argument("model", description="models to filter with")
-    @argument("os", description='NOS to filter with')
-    @argument('vendor', description='vendor to filter with')
-    @argument('version', description='NOS version to filter with')
+    @argument("model", description="model(s), space separated")
+    @argument("os", description='NOS(es), space separated')
+    @argument('vendor', description='Vendor(s), space separated')
+    @argument('version', description='NOS version(s), space separated')
+    # pylint: disable=arguments-differ
     def show(self, os: str = "", vendor: str = "", model: str = "",
              version: str = "") -> int:
         """Show network info
@@ -57,12 +59,13 @@ class NetworkCmd(SqCommand):
         return self._gen_output(df)
 
     @command("find", help="find where an IP/MAC address is attached")
-    @argument("address", type=str, description="IP/MAC address to find")
+    @argument("address", type=str,
+              description="IP/MAC addresses, in quotes, space separated")
     @argument("vrf", type=str,
               description="Find within this VRF, used for IP addr")
     @argument("vlan", type=str,
               description="Find MAC within this VLAN")
-    def find(self, address: str = '', asn: str = '', vrf: str = '',
+    def find(self, address: str = '', vrf: str = '',
              vlan: str = ''):
         """Find the network attach point of a given IP or MAC address.
         """

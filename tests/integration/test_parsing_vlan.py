@@ -1,8 +1,9 @@
-import pytest
 import warnings
 
-from tests.conftest import DATADIR, validate_host_shape
+import pytest
 import pandas as pd
+
+from tests.conftest import DATADIR, validate_host_shape
 
 
 def validate_vlan_tbl(df: pd.DataFrame):
@@ -10,8 +11,8 @@ def validate_vlan_tbl(df: pd.DataFrame):
 
     assert (df.vlan != 0).all()
     if not (df.query('vlan != 1').interfaces.str.len() != 0).all():
-        warnings.warn(f'Some VLANs not assigned to any interface')
-    assert (df.state == 'active').all()
+        warnings.warn('Some VLANs not assigned to any interface')
+    assert (df.state.isin(['active', 'unsupported'])).all()
     assert (df.vlanName != '').all()
 
 
@@ -19,6 +20,7 @@ def validate_vlan_tbl(df: pd.DataFrame):
 @ pytest.mark.vlan
 @ pytest.mark.parametrize('table', ['vlan'])
 @ pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_vlan_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for VLAN table'''
 

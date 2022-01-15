@@ -20,6 +20,7 @@ def validate_lldp_tbl(df: pd.DataFrame):
 @ pytest.mark.lldp
 @ pytest.mark.parametrize('table', ['lldp'])
 @ pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_lldp_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for LLDP table'''
 

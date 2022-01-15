@@ -1,53 +1,73 @@
-from typing import List
-from filelock import FileLock
-from subprocess import check_output, CalledProcessError
-import shlex
-from tempfile import mkstemp
-import yaml
-from unittest.mock import Mock
-from suzieq.poller.services import init_services
-from suzieq.utils import load_sq_config, Schema
-from suzieq.sqobjects import get_sqobject, get_tables
-from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
-import sys
+import asyncio
 import os
-from _pytest.mark.structures import Mark, MarkDecorator
-import pytest
+import pickle
+import shlex
+import sys
+from subprocess import CalledProcessError, check_output
+from tempfile import mkstemp
+from typing import Dict, List
+from unittest.mock import MagicMock, Mock
+
 import pandas as pd
+import pytest
+import yaml
+from _pytest.mark.structures import Mark, MarkDecorator
+from filelock import FileLock
+
+from nubia import Nubia
+from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
+
+from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
+from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.poller.worker.services.service_manager import ServiceManager
+from suzieq.shared.schema import Schema
+from suzieq.shared.utils import load_sq_config
+from suzieq.sqobjects import get_sqobject, get_tables
 
 suzieq_cli_path = './suzieq/cli/sq_cli.py'
 suzieq_rest_server_path = './suzieq/restServer/sq_rest_server.py'
+suzieq_test_svc_dir = 'tests/unit/poller/worker/service_dir_test'
+
+DATA_TO_STORE_FILE = 'tests/unit/poller/worker/utils/data_to_store.pickle'
 
 DATADIR = ['tests/data/multidc/parquet-out/',
+           'tests/data/basic_dual_bgp/parquet-out/',
            'tests/data/eos/parquet-out',
            'tests/data/nxos/parquet-out',
            'tests/data/junos/parquet-out',
            'tests/data/mixed/parquet-out',
            'tests/data/vmx/parquet-out']
 
-commands = [('AddressCmd'), ('ArpndCmd'), ('BgpCmd'), ('DeviceCmd'),
-            ('DevconfigCmd'), ('EvpnVniCmd'), ('InterfaceCmd'),
-            ('InventoryCmd'), ('LldpCmd'),
-            ('MacCmd'), ('MlagCmd'), ('NetworkCmd'), ('OspfCmd'),
-            ('SqPollerCmd'), ('RouteCmd'), ('TopologyCmd'), ('VlanCmd')]
+commands = [(x) for x in SqCommand.get_plugins()
+            if x not in ['TopmemCmd', 'TopcpuCmd']]
 
-cli_commands = [('arpnd'), ('address'), ('bgp'), ('device'), ('devconfig'),
-                ('evpnVni'), ('fs'), ('interface'), ('inventory'), ('lldp'),
-                ('mac'), ('mlag'), ('network'), ('ospf'), ('path'), ('route'),
-                ('sqPoller'), ('topology'), ('vlan')]
-
+# pylint: disable=protected-access
+cli_commands = [(v.__command['name'])
+                for k, v in SqCommand.get_plugins().items()
+                if k not in ['TopmemCmd', 'TopcpuCmd']]
 
 tables = get_tables()
 
 
+@pytest.fixture(scope='session')
+def get_cmd_object_dict() -> Dict:
+    '''Get dict of command to cli_command object'''
+    return {v.__command['name']: k
+            for k, v in SqCommand.get_plugins().items()
+            if k not in ['TopmemCmd', 'TopcpuCmd']}
+
+
 @pytest.fixture(scope='function')
 def setup_nubia():
+    '''Setup nubia for testing'''
     _setup_nubia()
 
 
 @pytest.fixture()
+# pylint: disable=unused-argument
 def create_context_config(datadir: str =
                           './tests/data/basic_dual_bgp/parquet-out'):
+    '''Create context config'''
     return
 
 
@@ -94,26 +114,45 @@ def get_table_data_cols(table: str, datadir: str, columns: List[str]):
 @ pytest.fixture
 @ pytest.mark.asyncio
 def init_services_default(event_loop):
-    configs = os.path.abspath(os.curdir) + '/config/'
+    '''Mock setup of services'''
+    configs = os.path.abspath(os.curdir) + '/suzieq/config/'
     schema = configs + 'schema/'
     mock_queue = Mock()
-    services = event_loop.run_until_complete(
-        init_services(configs, schema, mock_queue, True))
+    service_manager = ServiceManager(None, configs, schema,
+                                     mock_queue, 'forever')
+    services = event_loop.run_until_complete(service_manager.init_services())
     return services
 
 
 @ pytest.fixture
+# pylint: disable=unused-argument
 def run_sequential(tmpdir):
     """Uses a file lock to run tests using this fixture, sequentially
 
     """
+    # pylint: disable=abstract-class-instantiated
     with FileLock('test.lock', timeout=15):
         yield()
 
 
+@pytest.fixture
+def data_to_write():
+    """Retrieve a data structure to pass to an OuputWorker
+    """
+    return pickle.load(open(DATA_TO_STORE_FILE, 'rb'))
+
+
+def get_async_task_mock(result=None):
+    """Mock for the add tasks method in the Poller class
+    """
+    fn_res = asyncio.Future()
+    fn_res.set_result(result)
+    return MagicMock(return_value=fn_res)
+
+
 def _setup_nubia():
-    from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
-    from nubia import Nubia
+    '''internal function to setup cli framework for testing'''
+
     # monkey patching -- there might be a better way
     plugin = NubiaSuzieqPlugin()
     plugin.create_context = create_context
@@ -123,15 +162,17 @@ def _setup_nubia():
 
 
 def create_context():
+    '''Create a SqContext object'''
     config = load_sq_config(config_file=create_dummy_config_file())
     context = NubiaSuzieqContext()
-    context.cfg = config
-    context.schemas = Schema(config["schema-directory"])
+    context.ctxt.cfg = config
+    context.ctxt.schemas = Schema(config["schema-directory"])
     return context
 
 
 def create_dummy_config_file(
         datadir: str = './tests/data/basic_dual_bgp/parquet-out'):
+    '''Create a dummy config file'''
     config = {'data-directory': datadir,
               'temp-directory': '/tmp/suzieq',
               'logging-level': 'WARNING',
@@ -147,11 +188,11 @@ def create_dummy_config_file(
     return tmpfname
 
 
-def load_up_the_tests(dir):
+def load_up_the_tests(folder):
     """reads the files from the samples directory and parametrizes the test"""
     tests = []
 
-    for i in dir:
+    for i in folder:
         if not i.path.endswith('.yml'):
             continue
         with open(i, 'r') as f:
@@ -199,7 +240,10 @@ def load_up_the_tests(dir):
     return tests
 
 
+# pylint: disable=unused-argument
 def setup_sqcmds(testvar, context_config):
+    '''Setup the cli commands for testing'''
+
     sqcmd_path = [sys.executable, suzieq_cli_path]
 
     if 'data-directory' in testvar:

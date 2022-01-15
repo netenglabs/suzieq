@@ -1,0 +1,20 @@
+service: arpnd
+keys:
+  - ipAddress
+  - oif
+
+show-fields:
+  - ipAddress
+  - oif
+  - macaddr
+  - state
+  - remote
+
+apply:
+  cumulus:
+    version: all
+    command: ip neigh show
+    textfsm: textfsm_templates/linux_ipneigh.tfsm
+
+  iosxe:
+    copy: linux

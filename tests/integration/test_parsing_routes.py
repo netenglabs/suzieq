@@ -1,9 +1,8 @@
-import pytest
-
-
-import pandas as pd
 from ipaddress import ip_network, ip_address
 
+import pytest
+
+import pandas as pd
 from tests.conftest import DATADIR, validate_host_shape
 
 
@@ -13,8 +12,9 @@ def validate_routes(df: pd.DataFrame):
     assert (df.vrf != '').all()
     assert (df.prefix != '').all()
     assert (df.action.isin(
-        ['multirecv', 'local', 'forward', 'drop', 'reject'])).all()
-    # For all forward action, there has to be an outgoimg interface or nexthop OP
+        ['multirecv', 'local', 'forward', 'drop', 'reject', 'inactive'])).all()
+    # For all forward action, there has to be an outgoimg interface
+    # or nexthop OP
     assert (df.ipvers.isin([4, 6])).all()
 
     for row in df.itertuples():
@@ -22,20 +22,25 @@ def validate_routes(df: pd.DataFrame):
         assert ((row != "forward") or ((row.action == "forward") and
                                        ((row.nexthopIps != []).all() or
                                         (row.oifs != []).all())))
-        assert ((row.os in ["linux", "sonic"]) or ((row.os == "cumulus" and
-                                                    row.hostname == "internet" and
-                                                    row.prefix == "0.0.0.0/0")) or
+        assert ((row.os in ["linux", "sonic"]) or
+                ((row.os == "cumulus" and
+                  row.hostname == "internet" and
+                  row.prefix == "0.0.0.0/0")) or
                 ((row.os != "linux") and (row.protocol != "")))
         if row.nexthopIps.any():
             assert ([ip_address(x) for x in row.nexthopIps])
 
     noncl_data = df.query(
-        'os != "linux" and os != "cumulus" and not protocol.isin(["direct", "local", "connected"])')
+        '~os.isin(["linux", "cumulus"]) and '
+        '(os == "ioxe" and protocol != "static") and'
+        '~protocol.isin(["direct", "local", "connected"])')
     assert (noncl_data.query(
-        'nexthopIps.str.len() != 0 and protocol != "hsrp"').preference != 0).all()
+        'nexthopIps.str.len() != 0 and protocol != "hsrp" and '
+        'namespace != "panos" and hostname != "firewall01" ')
+        .preference != 0).all()
 
     # The OS that supply route uptime
-    upt_df = df.query('not os.isin(["linux", "sonic", "cumulus", "EOS", "eos"]) and '
+    upt_df = df.query('not os.isin(["linux", "sonic", "cumulus", "eos"]) and '
                       'not protocol.isin(["local", "connected", "static"])')
     assert (upt_df.statusChangeTimestamp != 0).all()
 
@@ -44,6 +49,7 @@ def validate_routes(df: pd.DataFrame):
 @ pytest.mark.route
 @ pytest.mark.parametrize('table', ['routes'])
 @ pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_routes_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for Routes'''
 

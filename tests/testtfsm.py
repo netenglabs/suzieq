@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 
 import sys
-import textfsm
 import json
 
+import textfsm
 # Read the tfsm file from args
 with open(sys.argv[1], 'r') as f:
     raw_input = f.read()

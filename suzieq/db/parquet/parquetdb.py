@@ -1,10 +1,9 @@
 import os
 import re
 from time import time
-from typing import List
+from typing import List, Optional
 import logging
 from pathlib import Path
-import pyarrow.dataset as ds
 from datetime import datetime, timedelta, timezone
 from contextlib import suppress
 from shutil import rmtree
@@ -13,16 +12,19 @@ from collections import defaultdict
 import pandas as pd
 import numpy as np
 import pyarrow as pa
+import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 
 from suzieq.db.base_db import SqDB, SqCoalesceStats
-from suzieq.utils import Schema, SchemaForTable
+from suzieq.shared.schema import Schema, SchemaForTable
 
-from .pq_coalesce import SqCoalesceState, coalesce_resource_table
-from .migratedb import get_migrate_fn
+from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
+                                           coalesce_resource_table)
+from suzieq.db.parquet.migratedb import get_migrate_fn
 
 
 class SqParquetDB(SqDB):
+    '''Class supporting Parquet backend as DB'''
 
     def __init__(self, cfg: dict, logger: logging.Logger) -> None:
         '''Init the Parquet DB object'''
@@ -30,6 +32,7 @@ class SqParquetDB(SqDB):
         self.logger = logger or logging.getLogger()
 
     def supported_data_formats(self):
+        '''What formats are supported as return types by DB'''
         return ['pandas']
 
     def get_tables(self):
@@ -42,6 +45,7 @@ class SqParquetDB(SqDB):
 
         return tables
 
+    # pylint: disable=too-many-statements
     def read(self, table_name: str, data_format: str,
              **kwargs) -> pd.DataFrame:
         """Read the data specified from parquet files and return
@@ -114,7 +118,7 @@ class SqParquetDB(SqDB):
                         continue
                     if sqvers and f'sqvers={sqvers}' != elem:
                         continue
-                    elif need_sqvers:
+                    if need_sqvers:
                         vers = float(str(elem).split('=')[-1])
                         if vers > max_vers:
                             max_vers = vers
@@ -248,8 +252,9 @@ class SqParquetDB(SqDB):
 
         return 0
 
+    # pylint: disable=too-many-statements
     def coalesce(self, tables: List[str] = None, period: str = '',
-                 ign_sqpoller: bool = False) -> None:
+                 ign_sqpoller: bool = False) -> Optional[List]:
         """Coalesce all the resource parquet files in specified folder.
 
         This routine does not run periodically. It runs once and returns.
@@ -290,7 +295,7 @@ class SqParquetDB(SqDB):
                 run_int = timedelta(minutes=timeint)
                 state.prefix = 'sqc-m-'
                 state.ign_pfx = ['.', '_', 'sqc-']
-            if time_unit == 'h':
+            elif time_unit == 'h':
                 run_int = timedelta(hours=timeint)
                 state.prefix = 'sqc-h-'
                 state.ign_pfx = ['.', '_', 'sqc-y-', 'sqc-d-', 'sqc-w-',
@@ -316,7 +321,7 @@ class SqParquetDB(SqDB):
                               'must be one of m/h/d/w')
         except ValueError:
             logging.error(f'Invalid time, {period}')
-            return
+            return None
 
         state.period = run_int
         # Create list of tables to coalesce.
@@ -333,7 +338,7 @@ class SqParquetDB(SqDB):
             # among other things.
             self.logger.error(
                 'No sqPoller data, cannot compute discontinuities')
-            return
+            return None
         else:
             # We want sqPoller to be first to compute discontinuities
             with suppress(ValueError):
@@ -381,7 +386,7 @@ class SqParquetDB(SqDB):
                                              state.wrrec_count,
                                              int(datetime.now(tz=timezone.utc)
                                                  .timestamp() * 1000)))
-            except Exception:
+            except Exception:  # pylint: disable=broad-except
                 self.logger.exception(f'Unable to coalesce table {entry}')
                 stats.append(SqCoalesceStats(entry, period, int(end-start),
                                              0, 0,
@@ -404,6 +409,7 @@ class SqParquetDB(SqDB):
         arrow_schema = schema.get_arrow_schema()
         schema_def = dict(zip(arrow_schema.names, arrow_schema.types))
 
+        # pylint: disable=too-many-nested-blocks
         for sqvers in self._get_avail_sqvers(table_name, True):
             if sqvers != current_vers:
                 migrate_rtn = get_migrate_fn(table_name, sqvers, current_vers)
@@ -452,7 +458,6 @@ class SqParquetDB(SqDB):
                     rmtree(
                         f'{self._get_table_directory(table_name, True)}/'
                         f'sqvers={sqvers}', ignore_errors=True)
-        return
 
     def _get_avail_sqvers(self, table_name: str, coalesced: bool) -> List[str]:
         """Get list of DB versions for a given table.
@@ -504,7 +509,8 @@ class SqParquetDB(SqDB):
 
         folder = self._get_table_directory(table_name, True)
 
-        if start_time and end_time or (view == "all"):
+        # pylint: disable=simplifiable-if-statement
+        if (start_time and end_time) or (view == "all"):
             # Enforcing the logic we have: if both start_time & end_time
             # are given, return all files since the model is that the user is
             # expecting to see all changes in the time window. Otherwise, user
@@ -518,15 +524,16 @@ class SqParquetDB(SqDB):
         # causes the read to abort.
         dirs = Path(folder)
         if not dirs.exists() or not dirs.is_dir():
-            return
+            return []
 
+        # pylint: disable=too-many-nested-blocks
         for elem in dirs.iterdir():
             # Additional processing around sqvers filtering and data
             if 'sqvers=' not in str(elem):
                 continue
             if sqvers and f'sqvers={sqvers}' != elem.name:
                 continue
-            elif need_sqvers:
+            if need_sqvers:
                 vers = float(str(elem).split('=')[-1])
                 if vers > max_vers:
                     max_vers = vers
@@ -560,7 +567,7 @@ class SqParquetDB(SqDB):
                             if not end_time:
                                 files.extend(lists[ele][i:])
                                 break
-                            elif thistime[0] < end_time:
+                            if thistime[0] < end_time:
                                 files.append(file)
                                 start_selected = True
                             else:
@@ -585,7 +592,7 @@ class SqParquetDB(SqDB):
             sch_set = set(sch)
             if msch_set.issuperset(sch):
                 continue
-            elif sch_set.issuperset(msch):
+            if sch_set.issuperset(msch):
                 msch = sch
             else:
                 for fld in sch_set-msch_set:
@@ -663,6 +670,7 @@ class SqParquetDB(SqDB):
         else:
             return (ds.field(keyfld) == int(filter_str))
 
+    # pylint: disable=too-many-statements
     def build_ds_filters(self, start_tm: float, end_tm: float,
                          schema: pa.lib.Schema,
                          **kwargs) -> ds.Expression:
@@ -681,6 +689,7 @@ class SqParquetDB(SqDB):
             filters = (ds.field("timestamp") != 0)
 
         sch_fields = schema.names
+        # pylint: disable=too-many-nested-blocks
         for k, v in kwargs.items():
             if not v:
                 continue
@@ -746,16 +755,16 @@ class SqParquetDB(SqDB):
 
         """
         if coalesced:
-            dir = self.cfg.get('coalescer', {})\
+            folder = self.cfg.get('coalescer', {})\
                 .get('coalesce-directory',
                      f'{self.cfg.get("data-directory")}/coalesced')
         else:
-            dir = f'{self.cfg.get("data-directory")}'
+            folder = f'{self.cfg.get("data-directory")}'
 
         if table_name:
-            return f'{dir}/{table_name}'
+            return f'{folder}/{table_name}'
         else:
-            return dir
+            return folder
 
     def _get_default_vals(self) -> dict:
         return({

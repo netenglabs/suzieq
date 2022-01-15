@@ -1,5 +1,36 @@
 # Release Notes
 
+## 0.16.0 beta (Jan 7, 2022)
+
+This release adds a bunch of major features on top of the alpha release set. 
+
+* **New GUI**: There's a new way to sort/filter information in the GUI without having to know any pandas or fancy SQL. Check out the Xplore page for more info. One limitation with the beta release: Entire rows are not highlighted in case of a bad status, only the cell (for example only the state column in interfaces table is highlighted if down, not the entire row)
+* **Snapshot Mode**: A common use case is wanting to run the SuzieQ poller in snapshot mode i.e. run once over all supported tables over all devices in the inventory, update the parquet DB and terminate. People who used this had to resort to a slightly complicated sequence of steps to achieve their goal. Now, add --run-once=update option to the sq-poller command, and you get the snapshot mode behavior. 
+* Filters applied to all verbs: Before this release, you couldn't apply filters to any command except show. For example, you couldn't get summaries over interfaces with an MTU > 9200 or BGP IPv4 unicast sessions or routes populated with BGP etc. Now, a table's filters are applicable to all commands associated with that command.
+* **Polling from a local folder**: If you can't run the SuzieQ poller for whatever reason, but have a directory full of show command outputs from a set of devices and want this to be used to update the Suzieq database so that you can run all your favorite suzieq commands, it is now possible with the sq-simnodes program. More details can be found on [the documentation page](https://suzieq.readthedocs.io/en/0.16.0/simnode/).
+* **Improved support for IOSXE devices**: including Catalyst 4509, Catlyst 9300, Catalyst 9500 and more. 
+* **QFX10K Support**: Added support for Junos QFX10K platforms. QFX10K platforms are not like QFX5K platform, they're a hybrid between QFX and MX. This is now handled correctly.
+* Poller now honors use-stdout: True in the config file.
+* Use hostname instead of hostnamectl for determining Cumulus and Linux hostnames (Issue #530).
+* You can see the Suzieq version via suzieq-cli version OR suzieq-cli -V. Same -V option can be used for the poller, and rest server. You can get the same info via the About option from the Menu in the GUI
+
+A bunch of other additional bugs have been fixed. Thanks to Claudia de Luna and John Howard for their awesome assistance in getting this release out.
+
+
+## 0.16.0 alpha (Dec 24, 2021)
+
+This release has some major new features, and some breaking changes. Please note these changes before using Suzieq. This is an alpha release and so we expect there to be bugs. Please test and provide feedback via Slack or bug reports. The new features were the ones selected by the community as the ones they most cared about.
+
+* Palo Alto Networks Firewall support: We've added support for this new platform. Support today is only when running the firewall in L3 mode, with support for only BGP protocol. We hope to add support for OSPF protocol before the final release. Please look at the [guide](./panos-support.md) for more details on using this feature.
+* Netbox inventory support: We support pulling configuration directly from Netbox now. Netbox is the second of many plugins that we'll support for pulling inventory information. The first is Ansible. 
+* **BREAKING CHANGE**: The entire inventory support has been redone. The old poller options of -D and -a are no longer supported. Inventory specification is now done in a more modular fashion with profiles. Please look at the inventory format on the [documentation page](./inventory.md). This page also includes instructions on migrating to the new format.
+* CLI Support for Remote Data: Its now possible to use the CLI with a REST backend to transparently support running the CLI from say your laptop, while the data itself resides on a remote server. Please look at the [documentation](./remote-cli.md) for more details on configuring this.
+* Support for breaking up the inventory across multiple pollers automatically. You can now specify the number of pollers when launching the poller, and we'll spin up the appropriate number of worker pollers and break up the inventory into equal sized chunks across these pollers.
+* Enhanced filter support for all commands: Thus far, filters were largely only supported for show commands. Now, we've extended support for using the same filters across all commands. See route summaries based on the protocol, or look at device summaries based only on specific models, and so on.
+* Fix Issue 476: Juniper BGP sessions which have AFI/SAFI strings such as inet-labeled-unicast are now correctly parsed.
+* Support for seeing all interface addresses that much a subnet, or all ARP entries that match a subnet.
+* unique verb now assumes a default column for each table that makes sense for that table. If no column is specified, this default column is assumed.
+
 ## 0.15.6 (Nov 14, 2021)
 
 Another bugfix release of the 0.15 release train, hopefully the last. Here's what's fixed/new in this release:
@@ -341,7 +372,3 @@ More specific release notes and caveats emptor are:
 * No testing has been done at scale. Please reach out to us if you're running into problems with polling either a large number of devices or pulling a lot of data (routes, macs, arp/nd usually) from a single device. If you don't run into any problems doing so, please reach out to us to let us know about your success.
 
 * [Bug #169](https://github.com/netenglabs/suzieq/issues/169) which shows an incorrect error message in the poller log file
-
-
-
-

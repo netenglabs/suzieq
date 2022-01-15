@@ -1,0 +1,53 @@
+Value Required ifname (\S+)
+Value _nativeVlan (\d+)
+Value _vlansAllowed (\S+)
+Value _vlansActive (\S+)
+Value _vlansStpFwd (\S+)
+
+Start
+  ^Port\s+Mode\s+.*$$ -> NativeVlan
+  
+NativeVlan
+  ^${ifname}\s+\S+\s+\S+\s+\S+\s+${_nativeVlan} -> Record
+  ^Port\s+Vlans\s+allowed\s+on\s+trunk.*$$ -> Allowed
+
+Allowed
+  ^${ifname}\s+${_vlansAllowed}\s*$$ -> Record
+  ^Port\s+Vlans\s+allowed\s+and\s+active.*$$ -> Active
+
+Active
+  ^${ifname}\s+${_vlansActive}\s*$$ -> Record
+  ^Port\s+Vlans\s+in\s+spanning\s+tree.*$$ -> Stp
+
+Stp
+  ^${ifname}\s+${_vlansStpFwd}\s*$$ -> Record
+
+
+#Port        Mode             Encapsulation  Status        Native vlan
+#Te1/2/2     on               802.1q         trunking      1
+#Te2/2/2     on               802.1q         trunking      1
+#Po1         on               802.1q         trunking      1
+#Po2         on               802.1q         trunking      1
+#Po51        on               802.1q         trunking      888
+#
+#Port        Vlans allowed on trunk
+#Te1/2/2     900-911,914-918,920,922-926,990
+#Te2/2/2     928,936-938,940-941
+#Po1         1-4094
+#Po2         1-4094
+#Po51        108,208,803,908,1607,1636,1638
+#
+#Port        Vlans allowed and active in management domain
+#Te1/2/2     900-903,905-911,914-915,917-918,920,924-926
+#Te2/2/2     928,936-938,940-941
+#Po1         1,100-112,114-118,120,122-126,128,131,136-140,188,200-218,220,222-223,228,236,240,600-601,700,800,803,888,900-903,905-911,914-915,917-918,920,924-926,928,936-941,1600-1630,1634-1639,1642-1654,1656-1657,1699
+#Po2         1,100-112,114-118,120,122-126,128,131,136-140,188,200-218,220,222-223,228,236,240,600-601,700,800,803,888,900-903,905-911,914-915,917-918,920,924-926,928,936-941,1600-1630,1634-1639,1642-1654,1656-1657,1699
+#Po51        108,208,803,908,1607,1636,1638
+#
+#Port        Vlans in spanning tree forwarding state and not pruned
+#Te1/2/2     900-903,905-911,914-915,917-918,920,924-926
+#Te2/2/2     928,936-938,940-941
+#Po1         none
+#Po2         none
+#Po51        108,208,803,908,1607,1636,1638
+#

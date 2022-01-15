@@ -8,8 +8,7 @@ import argparse
 from subprocess import check_output, CalledProcessError
 import logging
 from tests import conftest
-import tempfile
-from suzieq.utils import load_sq_config
+from suzieq.shared.utils import load_sq_config
 
 
 def create_config(testvar):
@@ -102,10 +101,12 @@ if __name__ == '__main__':
 
             if userargs.namespace:
                 if userargs.namespace not in test['command']:
-                    test['command'] = f"{test['command']} --namespace={userargs.namespace}"
+                    test['command'] = \
+                        f"{test['command']} --namespace={userargs.namespace}"
                     changes += 1
 
-            if result not in test or test[result] is None or userargs.overwrite:
+            if (result not in test or test[result] is None or
+                    userargs.overwrite):
                 changes += 1
                 if userargs.data_dir:
                     test['data-directory'] = userargs.data_dir
@@ -116,19 +117,28 @@ if __name__ == '__main__':
                 reason = None
                 output, error, xfail = run_cmd(sqcmd, test, logger)
 
-                # make sure that the result is the same class of result from before
-                # there would be no result if no output had been specified in the captured output
-                # sometimes we correctly produce no results, so avoid checking that
+                # make sure that the result is the same class of result from
+                # before there would be no result if no output had been
+                # specified in the captured output sometimes we correctly
+                # produce no results, so avoid checking that
 
                 if result and (output or error or xfail):
                     assert globals()[result], \
-                        f"result is different type than exepcted: result {result}, output: {output}, error: {error}, xfail: {xfail}"
+                        (
+                            "result is different type than exepcted: "
+                            f"result {result}, output: {output}, "
+                            f"error: {error}, xfail: {xfail}"
+                    )
                     if xfail:
-                        assert result == 'xfail', \
-                            f"expected xfail ({test[result]}), but got {result} ({globals()[result]}) "
+                        assert result == (
+                            'xfail',
+                            f"expected xfail ({test[result]}), but got "
+                            f"{result} ({globals()[result]}) "
+                        )
                 if 'output' in test and len(output) == 0:
                     assert test['output'] == '[]' or test['output'] == '{}',  \
-                        f" output was empty dataframe, but was expecting some values {test['output']}"
+                        f" output was empty dataframe, but was expecting" \
+                        f" some values {test['output']}"
                 # TODO: what to do when captured output is correctly empty []
 
                 if not error and result != 'xfail':

@@ -1,0 +1,31 @@
+name: pre-commit
+
+on:
+  push:
+    # run on every push only in master and version specific branches
+    branches:
+      - master
+      - '[0-9].[0-9]+.[0-9]+'
+  pull_request:
+    # run on branches having an open PR
+    branches:
+    - '**'
+
+jobs:
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'
+          architecture: 'x64'
+
+      - name: Install pre-commit
+        run: pip install pre-commit
+
+      - name: Run pre-commit
+        run: pre-commit run --all-files --show-diff-on-failure

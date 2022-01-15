@@ -5,7 +5,7 @@ import inspect
 
 
 def get_engine_object(table, baseobj):
-
+    '''Return the appropriate class object to operate on the specified table'''
     spec = find_spec('suzieq.engines.pandas')
     for file in spec.loader.contents():
         if (os.path.isfile(f'{os.path.dirname(spec.loader.path)}/{file}') and
@@ -21,4 +21,4 @@ def get_engine_object(table, baseobj):
     return None
 
 
-__all__ = [get_engine_object]
+__all__ = ['get_engine_object']

@@ -2,7 +2,9 @@ import pandas as pd
 import yaml
 
 
-class Dict2Class(object):
+class Dict2Class:
+    '''Convert dict to class to enable use of "." to access mbrs'''
+
     def __init__(self, dvar, def_topvar):
         if not isinstance(dvar, dict) or not dvar:
             setattr(self, def_topvar, None)
@@ -19,13 +21,16 @@ class Dict2Class(object):
                 setattr(self, key.replace('-', '_'), dvar[key])
 
 
-class Yaml2Class(object):
+class Yaml2Class:
+    '''Convert yaml file data into class'''
+
     def __init__(self, yaml_file, def_topvar='transform'):
         with open(yaml_file, 'r') as f:
             dvar = yaml.safe_load(f.read())
             self.transform = Dict2Class(dvar, def_topvar)
 
 
+# pylint: disable=too-many-statements
 def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
     '''Compare the dataframes for equality
 
@@ -35,10 +40,10 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
     order could change as a consequence of coalescing or some other change.
 
     We work our way from the simplest and fastest attempts to compare equality
-    to slower ways to compare equality. Trying to ignore the sort is the hardest
+    to slower ways to compare equality. Ignoring the sort is the hardest
     part. First we attempt to sort the two and reset the index to avoid index
     mismatches. When one of the columns is a list in which case we resort to
-    deriving tuples of the expected and obtained dataframes, stripping the Index
+    deriving tuples of the expected & obtained dataframes, stripping the Index
     column (should be a range Index only), and then verifying that a row is
     present in the other dataframe. We even use sets to attempt a quicker tuple
     comparison which can again fail due to the presence of a list.
@@ -64,30 +69,23 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
             expected_df = expected_df.drop(
                 columns=ignore_cols, errors='ignore')
 
-    try:
-        if isinstance(got_df.index, pd.RangeIndex):
-            expected_df = expected_df \
-                .sort_values(by=expected_df.columns.tolist()) \
-                .reset_index(drop=True)
-        else:
-            expected_df = expected_df \
-                .sort_values(by=expected_df.columns.tolist())
+    # Detect which columns contain lists and convert lists to string
+    expected_df = expected_df.transform(_list_columns_to_str)
+    got_df = got_df.transform(_list_columns_to_str)
 
-        if isinstance(expected_df.index, pd.RangeIndex):
-            got_df = got_df.sort_values(by=got_df.columns.tolist()) \
-                           .reset_index(drop=True)
-        else:
-            got_df = got_df.sort_values(by=got_df.columns.tolist())
+    if isinstance(got_df.index, pd.RangeIndex):
+        expected_df = expected_df \
+            .sort_values(by=expected_df.columns.tolist()) \
+            .reset_index(drop=True)
+    else:
+        expected_df = expected_df \
+            .sort_values(by=expected_df.columns.tolist())
 
-    except Exception:
-        sortcols = [x
-                    for x in ['namespace', 'hostname', 'ifname', 'vrf',
-                              'peer', 'prefix', 'ipAddress', 'vlan', 'macaddr']
-                    if x in expected_df.columns]
-        if sortcols:
-            expected_df = expected_df.sort_values(by=sortcols) \
-                                     .reset_index(drop=True)
-            got_df = got_df.sort_values(by=sortcols).reset_index(drop=True)
+    if isinstance(expected_df.index, pd.RangeIndex):
+        got_df = got_df.sort_values(by=got_df.columns.tolist()) \
+            .reset_index(drop=True)
+    else:
+        got_df = got_df.sort_values(by=got_df.columns.tolist())
 
     if got_df.shape != expected_df.shape:
         if 'count' in expected_df.columns and (
@@ -99,11 +97,13 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
 
                 assert got_df.shape == expected_df.shape, \
                     f'expected/{expected_df.shape} != got/{got_df.shape}\n' \
-                    f'{expected_df.namespace.value_counts()} \nVS\n{got_df.namespace.value_counts()}'
+                    f'{expected_df.namespace.value_counts()} \nVS\n' \
+                    f'{got_df.namespace.value_counts()}'  # noqa
             elif 'hostname' in expected_df.columns:
                 assert got_df.shape == expected_df.shape, \
                     f'expected/{expected_df.shape} != got/{got_df.shape}\n' \
-                    f'{expected_df.hostname.value_counts()} \nVS\n{got_df.hostname.value_counts()}'
+                    f'{expected_df.hostname.value_counts()} \nVS\n' \
+                    f'{got_df.hostname.value_counts()}'  # noqa
             else:
                 assert got_df.shape == expected_df.shape, \
                     f'expected/{expected_df.shape} != got/{got_df.shape}'
@@ -115,8 +115,8 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
     try:
         rslt_df = expected_df.compare(got_df, keep_equal=True)
         if not rslt_df.empty:
-            # Check if its just the timestamps that are different, as would be the
-            # case if we had a new capture
+            # Check if its just the timestamps that are different, as would be
+            # the case if we had a new capture
             maincols = [x[0] for x in rslt_df.columns.tolist()]
             if all(x in ['timestamp', 'lastChangeTime', 'bootupTimestamp']
                    for x in maincols):
@@ -126,6 +126,8 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
             # the failure. Pass if the problem is the order but they're
             # equal
             for row in rslt_df.itertuples():
+                # pylint: disable=protected-access
+                # Not really a protected member, its a col name
                 if isinstance(row._1, list) and isinstance(row._2, list):
                     if set(row._1) != set(row._2):
                         matches = False
@@ -141,11 +143,11 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
                 if isinstance(got_df.index, pd.RangeIndex):
                     got_tuples = [x[1:] for x in got_df.itertuples()]
                 else:
-                    got_tuples = [x for x in got_df.itertuples()]
+                    got_tuples = list(got_df.itertuples())
                 if isinstance(expected_df.index, pd.RangeIndex):
                     expected_tuples = [x[1:] for x in expected_df.itertuples()]
                 else:
-                    expected_tuples = [x for x in expected_df.itertuples()]
+                    expected_tuples = list(expected_df.itertuples())
                 try:
                     assert (set(got_tuples) == set(
                         expected_tuples)), f'{rslt_df}'
@@ -170,6 +172,27 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
             if not got_df.empty:
                 assert (not rslt_df.empty and rslt_df.query(
                     '_merge != "both"').empty), 'Merge compare failed'
+        # pylint: disable=broad-except
         except (Exception, AssertionError, TypeError):
             assert(got_df.shape == expected_df.shape)
             assert('Unable to compare' == '')
+
+
+def _list_columns_to_str(col):
+    res = []
+    for el in col:
+        if isinstance(el, list):
+            str_el = []
+            # convert to string each element of the list
+            for d in el:
+                # dictionaries are handled separately
+                if isinstance(d, dict):
+                    str_el.append(str(dict(sorted(
+                        d.items(), key=lambda x: x[0]))))
+                else:
+                    str_el.append(str(d))
+            res.append(" ".join(sorted(str_el)))
+        # if the element is not a list, convert to string the original value
+        else:
+            res.append(str(el))
+    return res

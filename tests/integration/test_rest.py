@@ -1,12 +1,13 @@
 import os
 import json
-import pytest
-import pandas as pd
-from fastapi.testclient import TestClient
 import inspect
 import warnings
 
+import pytest
 from _pytest.mark.structures import Mark, MarkDecorator
+import pandas as pd
+from fastapi.testclient import TestClient
+
 from tests.conftest import cli_commands, create_dummy_config_file
 
 from suzieq.restServer.query import (app, get_configured_api_key,
@@ -63,7 +64,7 @@ FILTERS = ['',  # for vanilla commands without any filter
            'bd=',
            'state=pass',
            'oif=eth1.4',
-           'localOnly=True',
+           'local=True',
            'prefix=10.0.0.101/32',
            'protocol=bgp',
            'protocol=bgp&protocol=ospf',
@@ -107,6 +108,7 @@ NOT_SUMMARIZE = ['all/top', 'all/unique', 'all/show',
                  'route/lpm', 'all/assert', 'network/find']
 NOT_UNIQUE = ['all/top', 'all/summarize', 'all/show',
               'route/lpm', 'all/assert', 'network/find']
+NOT_SUMMARIZE_OR_DESCRIBE = ['all/describe'] + NOT_SUMMARIZE
 GOOD_FILTERS_FOR_SERVICE_VERB = {
     '': ['all'],  # this is for all non-filtered requests
     'address=10.0.0.11': ['route/lpm'],
@@ -121,7 +123,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
     'namespace=ospf-ibgp': NOT_UNIQUE,
     'namespace=ospf-ibgp&columns=namespace': ['all/unique'],
     'view=latest': ['all'],
-    'columns=namespace': NOT_SUMMARIZE,
+    'columns=namespace': NOT_SUMMARIZE_OR_DESCRIBE,
     'hostname=leaf01': NOT_UNIQUE,
     'hostname=leaf01&columns=hostname': ['all/unique'],
     'dest=172.16.2.104&src=172.16.1.101&namespace=ospf-ibgp':
@@ -130,7 +132,7 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
                     'lldp/show', 'ospf/show'],
     'ipAddress=10.0.0.11': ['arpnd/show'],
     'ipvers=v4': ['address/show'],
-    'localOnly=True': ['mac/show'],
+    'local=True': ['mac/show'],
     'macaddr=44:39:39:ff:00:13': ['arpnd/show', 'mac/show'],
     'mountPoint=/': ['fs/show'],
     'oif=eth1.4': ['arpnd/show'],
@@ -199,11 +201,29 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'evpnVni/assert?status=fail',
     'interface/show?state=notConnected',
     'interface/show?vrf=default',
+    'interface/summarize?vrf=default',
     'device/show?status=neverpoll',
     'device/show?status=dead',
     'inventory/all',
     'vlan/unique?state=notConnected',
     'sqPoller/show?pollExcdPeriodCount=!0',
+    'arpnd/summarize?macaddr=44:39:39:FF:40:95',
+    'mac/summarize?macaddr=44:39:39:FF:40:95',
+    'arpnd/summarize?macaddr=4439.39FF.4095',
+    'mac/summarize?macaddr=4439.39FF.4095',
+    'arpnd/summarize?macaddr=4439.39ff.4095',
+    'mac/summarize?macaddr=4439.39ff.4095',
+    'sqPoller/summarize?status=fail',
+    'device/summarize?status=dead',
+    'device/summarize?status=neverpoll',
+    'vlan/summarize?state=up',
+    'vlan/summarize?state=down',
+    'vlan/summarize?state=pass',
+    'vlan/summarize?state=notConnected',
+    'interface/summarize?state=notConnected',
+    'sqPoller/summarize?pollExcdPeriodCount=!0',
+    'interface/assert?vrf=default',
+    'interface/assert?state=notConnected',
 ]
 
 GOOD_SERVICE_VERBS = {
@@ -234,21 +254,22 @@ MANDATORY_SERVICE_ARGS = {
 ####
 
 
-def _validate_hostname_output(json_out, service, verb, args):
+def _validate_hostname_output(json_out, service, verb, _):
     if verb == "summarize":
-        return True
+        pass
     if service in ['network']:
         # nework has no hostname column
-        return True
+        pass
     elif service in ["mac", "vlan", "mlag", "evpnVni"]:
         # MAC addr is not present on spines
-        assert (set([x['hostname'] for x in json_out]) == set(['leaf01']))
+        assert ({x['hostname'] for x in json_out} == set(['leaf01']))
     else:
-        assert (set([x['hostname'] for x in json_out])
+        assert ({x['hostname'] for x in json_out}
                 == set(['leaf01', 'spine01']))
+    return True
 
 
-def _validate_namespace_output(json_out, service, verb, args):
+def _validate_namespace_output(json_out, service, verb, _):
     if verb == "summarize":
         if service == "network":
             # network summarize has no namespace column
@@ -260,26 +281,24 @@ def _validate_namespace_output(json_out, service, verb, args):
             assert (set(json_out.keys()) == set(['ospf-ibgp', 'ospf-single']))
     else:
         if service in ["bgp", "evpnVni", "devconfig", "mlag"]:
-            assert(set([x['namespace']
-                   for x in json_out]) == set(['ospf-ibgp']))
+            assert({x['namespace'] for x in json_out} == set(['ospf-ibgp']))
         else:
-            assert (set([x['namespace'] for x in json_out])
-                    == set(['ospf-ibgp', 'ospf-single']))
+            assert ({x['namespace'] for x in json_out} == set(['ospf-ibgp',
+                                                               'ospf-single']))
 
 
-def _validate_route_protocol(json_out, service, verb, args):
-    assert (set([x['protocol'] for x in json_out]) == set(['ospf', 'bgp']))
+def _validate_route_protocol(json_out, _, _2, _3):
+    assert ({x['protocol'] for x in json_out} == set(['ospf', 'bgp']))
 
 
-def _validate_macaddr_output(json_out, service, verb, args):
-    assert (set([x['macaddr'] for x in json_out])
+def _validate_macaddr_output(json_out, _, _2, _3):
+    assert ({x['macaddr'] for x in json_out}
             == set(['44:39:39:ff:00:13', '44:39:39:ff:00:24']))
 
 
-def _validate_columns_output(json_out, service, verb, args):
+def _validate_columns_output(json_out, _, _2, args):
     columns = args.split('=')[1]
-    assert (set([x[columns] for x in json_out])
-            != set())
+    assert ({x[columns] for x in json_out} != set())
 
 
 VALIDATE_OUTPUT_FILTER = {
@@ -298,17 +317,18 @@ VALIDATE_OUTPUT_FILTER = {
 
 
 def get(endpoint, service, verb, args):
+    '''Make the call'''
     api_key = get_configured_api_key()
     url = f"{endpoint}/{service}/{verb}?{args}"
 
     # Check if we need to add the mandatory filter for the keyword
     for mandatory_column in MANDATORTY_VERB_ARGS.get(verb, []):
         if mandatory_column not in args:
-            return
+            return -1
 
     for mandatory_column in MANDATORY_SERVICE_ARGS.get(service, []):
         if mandatory_column not in args:
-            return
+            return -1
 
     # Check if we need to add the mandatory filter for the keyword
 
@@ -321,7 +341,7 @@ def get(endpoint, service, verb, args):
 
     verb_use = GOOD_SERVICE_VERBS.get(verb, [])
     if 'all' not in verb_use and service not in verb_use:
-        return
+        return -1
 
     argval = GOOD_FILTERS_FOR_SERVICE_VERB.get(args, [])
 
@@ -340,7 +360,7 @@ def get(endpoint, service, verb, args):
             else:
                 assert df.empty
         else:
-            for elem in argval:
+            for _ in argval:
                 if f'{service}/{verb}' in GOOD_FILTERS_FOR_SERVICE_VERB:
                     validate_output = True
                     match_verb = argval[0].split('/')[1]
@@ -370,8 +390,10 @@ def get(endpoint, service, verb, args):
 @pytest.mark.parametrize("verb", [
     pytest.param(verb, marks=MarkDecorator(Mark(verb, [], {})))
     for verb in VERBS])
-@pytest.mark.parametrize("arg", [filter for filter in FILTERS])
+@pytest.mark.parametrize("arg", FILTERS)
+# pylint: disable=redefined-outer-name, unused-argument
 def test_rest_services(app_initialize, service, verb, arg):
+    '''Main workhorse'''
     get(ENDPOINT, service, verb, arg)
 
 
@@ -380,6 +402,8 @@ def test_rest_services(app_initialize, service, verb, arg):
     (cmd, verb) for cmd in get_tables() for verb in VERBS])
 def test_rest_arg_consistency(service, verb):
     '''check that the arguments used in REST match whats in sqobjects'''
+
+    alias_args = {'path': {'source': 'src'}}
 
     if verb == "describe" and not service == "tables":
         return
@@ -409,9 +433,15 @@ def test_rest_arg_consistency(service, verb):
         assert fnlist, f"No functions found for {service}/{verb}"
 
     for fn in fnlist:
-        rest_args = [i for i in inspect.getfullargspec(fn[1]).args
-                     if i not in
-                     ['verb', 'token', 'request']]
+        rest_args = []
+
+        for i in inspect.getfullargspec(fn[1]).args:
+            if i in ['verb', 'token', 'request']:
+                continue
+            aliases = alias_args.get(service, {})
+            val = i if i not in aliases else aliases[i]
+            rest_args.append(val)
+
         sqobj = get_sqobject(service)()
         supported_verbs = {x[0].replace('aver', 'assert')
                            .replace('get', 'show')
@@ -421,6 +451,8 @@ def test_rest_arg_consistency(service, verb):
 
         if verb not in supported_verbs:
             continue
+
+        aliases = alias_args.get(service, {})
 
         arglist = getattr(sqobj, f'_valid_{verb}_args', None)
         if not arglist:
@@ -458,6 +490,9 @@ def test_rest_arg_consistency(service, verb):
 
 @ pytest.fixture()
 def app_initialize():
+    '''Initialize the test server'''
+
+    # pylint: disable=import-outside-toplevel
     from suzieq.restServer.query import app_init
 
     cfgfile = create_dummy_config_file(
@@ -472,7 +507,11 @@ def app_initialize():
 # which screws things up. So, we run server with & without https sequentially
 # For some reason, putting the no_https in a for loop didn't work either
 @ pytest.mark.rest
+@ pytest.mark.filterwarnings(
+    'ignore::urllib3.exceptions.InsecureRequestWarning')
 def test_rest_server():
+    '''Try starting the REST server, actually'''
+    # pylint: disable=import-outside-toplevel
     import subprocess
     from time import sleep
     import requests
@@ -480,6 +519,7 @@ def test_rest_server():
     cfgfile = create_dummy_config_file(
         datadir='./tests/data/multidc/parquet-out')
 
+    # pylint: disable=consider-using-with
     server = subprocess.Popen(
         f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} --no-https'
         .split())
@@ -489,6 +529,7 @@ def test_rest_server():
     server.kill()
     sleep(5)
 
+    # pylint: disable=consider-using-with
     server = subprocess.Popen(
         f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} '.split())
     sleep(5)

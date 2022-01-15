@@ -1,6 +1,5 @@
 import pytest
 
-import re
 import pandas as pd
 from tests.conftest import DATADIR, validate_host_shape
 
@@ -22,8 +21,9 @@ def validate_evpnVni(df: pd.DataFrame):
     assert (df.replicationType.isin(['ingressBGP', 'multicast', ''])).all()
     assert (df.vrf != '').all()
 
+    # pylint: disable=singleton-comparison
     assert (df.query('replicationType == "multicast"').mcastGroup.isin(
-        ['', '0.0.0.0']) == False).all()
+        ['', '0.0.0.0']) == False).all()  # noqa
     assert (df.query('os == "nxos"').routerMac != '').all()
 
 
@@ -31,8 +31,13 @@ def validate_evpnVni(df: pd.DataFrame):
 @ pytest.mark.evpnVni
 @ pytest.mark.parametrize('table', ['evpnVni'])
 @ pytest.mark.parametrize('datadir', DATADIR)
+# pylint: disable=unused-argument
 def test_evpnVni_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for EVPN VNI table'''
+
+    if 'basic_dual_bgp' in datadir:
+        # No EVPN info in this one
+        return
 
     df = get_table_data
 

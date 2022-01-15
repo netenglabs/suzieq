@@ -1,14 +1,17 @@
 from ipaddress import ip_network
-import pandas as pd
-import numpy as np
 
-from .engineobj import SqPandasEngine
+import numpy as np
+import pandas as pd
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
 class InterfacesObj(SqPandasEngine):
+    '''Backend class to handle manipulating interfaces table with pandas'''
 
     @staticmethod
     def table_name():
+        '''Table name'''
         return 'interfaces'
 
     def get(self, **kwargs):
@@ -22,8 +25,10 @@ class InterfacesObj(SqPandasEngine):
         if vrf:
             master.extend(vrf)
 
-        if iftype and iftype != ["all"]:
+        if not ifname and iftype and iftype != ["all"]:
             df = super().get(type=iftype, master=master, **kwargs)
+        elif not ifname and iftype != ['all']:
+            df = super().get(master=master, type=['!internal'], **kwargs)
         else:
             df = super().get(master=master, **kwargs)
 
@@ -41,6 +46,7 @@ class InterfacesObj(SqPandasEngine):
         else:
             return df.reset_index(drop=True)
 
+    # pylint: disable=arguments-differ
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
 
@@ -52,7 +58,7 @@ class InterfacesObj(SqPandasEngine):
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize interface information"""
-        self._init_summarize(self.iobj._table, **kwargs)
+        self._init_summarize(**kwargs)
         if self.summary_df.empty:
             return self.summary_df
 
@@ -149,11 +155,14 @@ class InterfacesObj(SqPandasEngine):
         else:
             return result_df
 
+    # pylint: disable=too-many-statements
     def _assert_interfaces(self, **kwargs) -> pd.DataFrame:
         """Workhorse routine that validates MTU match for specified input"""
         columns = kwargs.pop('columns', [])
         status = kwargs.pop('status', 'all')
         ignore_missing_peer = kwargs.pop('ignore_missing_peer', False)
+        state = kwargs.pop('state', '')
+        iftype = kwargs.pop('type', [])
 
         def _check_field(x, fld1, fld2, reason):
             if x.skipIfCheck or x.indexPeer < 0:
@@ -185,11 +194,13 @@ class InterfacesObj(SqPandasEngine):
                    "vlan", "adminState", "ipAddressList", "ip6AddressList",
                    "speed", "master", "timestamp", "reason"]
 
-        if_df = self.get(columns=columns,
-                         type=['ethernet', 'bond_slave', 'subinterface',
-                               'vlan', 'bond'],
-                         state='up',
-                         **kwargs)
+        if not state:
+            state = 'up'
+
+        if not iftype:
+            iftype = ['ethernet', 'bond_slave', 'subinterface', 'vlan', 'bond']
+
+        if_df = self.get(columns=columns, type=iftype, state=state, **kwargs)
         if if_df.empty:
             if status != 'pass':
                 if_df['assert'] = 'fail'
@@ -200,7 +211,7 @@ class InterfacesObj(SqPandasEngine):
         # Map subinterface into parent interface
         if_df['pifname'] = if_df.apply(
             lambda x: x['ifname'].split('.')[0]
-            if (x.type == 'subinterface') or (x.type == 'vlan')
+            if x.type in ['subinterface', 'vlan']
             else x['ifname'], axis=1)
 
         # Thanks for Junos, remove all the useless parent interfaces
@@ -259,7 +270,7 @@ class InterfacesObj(SqPandasEngine):
                     .fillna({i: [] for i in if_df.index})
 
         if 'vlanList' not in if_df.columns:
-            if_df['vlanList'] = []
+            if_df['vlanList'] = [[] for i in range(len(if_df))]
 
         if lldp_df.empty:
             if status != 'pass':
@@ -335,8 +346,7 @@ class InterfacesObj(SqPandasEngine):
         # find a peer
         combined_df['skipIfCheck'] = combined_df.apply(
             lambda x:
-            True if ((x.master == 'bridge') or
-                     (x.type in ['bond_slave', 'vlan'])) else False,
+            (x.master == 'bridge') or (x.type in ['bond_slave', 'vlan']),
             axis=1)
 
         combined_df['indexPeer'] = combined_df.apply(

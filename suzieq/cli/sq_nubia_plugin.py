@@ -1,21 +1,16 @@
 import argparse
-from importlib import import_module
-
-from nubia import PluginInterface, CompletionDataSource
+from nubia import PluginInterface
 from nubia.internal.blackcmd import CommandBlacklist
-from nubia.internal.cmdbase import AutoCommand
 
-from suzieq.cli.sqcmds import context_commands
-from suzieq.cli.sqcmds import sqcmds_all
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 from suzieq.cli.sq_nubia_statusbar import NubiaSuzieqStatusBar
+from suzieq.cli.sqcmds.context_commands import SqHelpCommand
 
 
 class NubiaSuzieqPlugin(PluginInterface):
     """
-    The PluginInterface class is a way to customize nubia for every customer
-    use case. It allowes custom argument validation, control over command
-    loading, custom context objects, and much more.
+    The PluginInterface class is a way to customize nubia for Suzieq
+    use case. Mainly used to build the list of commands
     """
 
     def create_context(self):
@@ -34,18 +29,10 @@ class NubiaSuzieqPlugin(PluginInterface):
         with the values, and/or decide to raise `ArgsValidationError` with
         the error message.
         """
-        pass
 
     def get_commands(self):
 
-        cmds = [AutoCommand(
-            getattr(import_module(f'suzieq.cli.sqcmds.{x}'), x))
-            for x in sqcmds_all
-            if not x.startswith(('_', 'ArgHelpClass'))]
-        cmds.append(AutoCommand(context_commands.set_ctxt))
-        cmds.append(AutoCommand(context_commands.clear_ctxt))
-        cmds.append(context_commands.SqHelpCommand())
-        return cmds
+        return [SqHelpCommand()]
 
     def get_opts_parser(self, add_help=True):
         """
@@ -59,6 +46,9 @@ class NubiaSuzieqPlugin(PluginInterface):
         )
         opts_parser.add_argument(
             "--config", "-c", default="", type=str, help="Configuration File"
+        )
+        opts_parser.add_argument(
+            "-V", type=str, default='', help='print suzieq version'
         )
         opts_parser.add_argument(
             "--verbose",
@@ -82,9 +72,7 @@ class NubiaSuzieqPlugin(PluginInterface):
         # )
         return opts_parser
 
-    def get_completion_datasource_for_global_argument(self, argument):
-        if argument == "--use-engine":
-            return ConfigEngineCompletionDataSource()
+    def get_completion_datasource_for_global_argument(self, _):
         return None
 
     def create_usage_logger(self, context):
@@ -106,8 +94,3 @@ class NubiaSuzieqPlugin(PluginInterface):
         blacklister.add_blocked_command("topcpu")
         blacklister.add_blocked_command("topmem")
         return blacklister
-
-
-class ConfigEngineCompletionDataSource(CompletionDataSource):
-    def get_all(self):
-        return ["pandas"]

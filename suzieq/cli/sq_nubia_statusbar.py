@@ -1,6 +1,5 @@
 from pygments.token import Token
 
-from nubia import context
 from nubia import statusbar
 from pandas import DataFrame
 
@@ -8,9 +7,11 @@ from suzieq.version import SUZIEQ_VERSION
 
 
 class NubiaSuzieqStatusBar(statusbar.StatusBar):
-    def __init__(self, ctx):
+    '''Process CLI statusbar updates'''
+
+    def __init__(self, ctxt):
         self._last_status = None
-        self.ctx = ctx
+        self.ctxt = ctxt
 
     def get_rprompt_tokens(self):
         if not isinstance(self._last_status, DataFrame) and self._last_status:
@@ -22,12 +23,17 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
 
     def get_tokens(self):
         spacer = (Token.Spacer, "  ")
-
-        if context.get_context().pager:
+        ctxt = self.ctxt.ctxt
+        if ctxt.pager:
             is_pager = (Token.Warn, "ON")
         else:
             is_pager = (Token.Info, "OFF")
 
+        if ctxt.engine != "rest":
+            engine = ctxt.engine
+        else:
+            engine = (f'{ctxt.rest_server_ip}:'
+                      f'{ctxt.rest_server_port}')
         return [
             (Token.Toolbar, "Suzieq"),
             spacer,
@@ -41,25 +47,25 @@ class NubiaSuzieqStatusBar(statusbar.StatusBar):
             spacer,
             (Token.Toolbar, "Namespace "),
             spacer,
-            (Token.Info, ", ".join(self.ctx.namespace)),
+            (Token.Info, ", ".join(ctxt.namespace)),
             spacer,
             (Token.Toolbar, "Hostname "),
             spacer,
-            (Token.Info, ", ".join(self.ctx.hostname)),
+            (Token.Info, ", ".join(ctxt.hostname)),
             spacer,
             (Token.Toolbar, "StartTime "),
             spacer,
-            (Token.Info, self.ctx.start_time),
+            (Token.Info, ctxt.start_time),
             spacer,
             (Token.Toolbar, "EndTime "),
             spacer,
-            (Token.Info, self.ctx.end_time),
+            (Token.Info, ctxt.end_time),
             spacer,
             (Token.Toolbar, "Engine "),
             spacer,
-            (Token.Info, self.ctx.engine),
+            (Token.Info, engine),
             spacer,
             (Token.Toolbar, "Query Time "),
             spacer,
-            (Token.Info, self.ctx.exec_time),
+            (Token.Info, ctxt.exec_time),
         ]
