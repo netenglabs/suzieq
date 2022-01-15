@@ -506,7 +506,8 @@ async def query_network_find(request: Request,
                              hostname: List[str] = Query(None),
                              start_time: str = "", end_time: str = "",
                              view: ViewValues = "latest",
-                             address: str = "", vlan: str = '', vrf: str = '',
+                             address: List[str] = Query(None),
+                             vlan: str = '', vrf: str = '',
                              query_str: str = None,
                              ):
     function_name = inspect.currentframe().f_code.co_name

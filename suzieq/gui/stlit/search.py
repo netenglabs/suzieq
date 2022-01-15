@@ -1,14 +1,15 @@
 from collections import deque
 from dataclasses import dataclass, field
 from ipaddress import ip_address
+from random import randint
 
 import streamlit as st
-from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode
-
-from suzieq.shared.utils import convert_macaddr_format_to_colon
-from suzieq.gui.stlit.guiutils import (gui_get_df,
-                                       SuzieqMainPages)
+from pandas.core.frame import DataFrame
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
+from suzieq.gui.stlit.guiutils import SuzieqMainPages, gui_get_df
 from suzieq.gui.stlit.pagecls import SqGuiPage
+from suzieq.shared.utils import (convert_macaddr_format_to_colon,
+                                 validate_macaddr)
 
 
 @dataclass
@@ -104,8 +105,16 @@ When specifying a table, you can specify multiple addresses to look for by
     def _render(self, layout) -> None:
 
         state = self._state
-        search_text = st.session_state.search_text
-        query_str, uniq_dict, columns = self._build_query(search_text)
+        search_text = st.session_state.search or state.search_text
+        query_str, uniq_dict, columns = '', {}, []
+        df = DataFrame()
+        try:
+            query_str, uniq_dict, columns = self._build_query(search_text)
+        except ValueError as ve:
+            expander = layout['current'].expander(f'Search for {search_text}',
+                                                  expanded=True)
+            df = DataFrame({'error': [ve]})
+            self._draw_aggrid_df(expander, df)
 
         if state.namespace:
             query_ns = [state.namespace]
@@ -118,7 +127,7 @@ When specifying a table, you can specify multiple addresses to look for by
                                 verb='find',
                                 namespace=query_ns,
                                 view="latest", columns=columns,
-                                address=query_str)
+                                address=query_str.split())
             else:
                 df = gui_get_df(state.table,
                                 namespace=query_ns, query_str=query_str,
@@ -130,11 +139,8 @@ When specifying a table, you can specify multiple addresses to look for by
 
             expander = layout['current'].expander(f'Search for {search_text}',
                                                   expanded=True)
-            with expander:
-                if not df.empty:
-                    self._draw_aggrid_df(df)
-                else:
-                    st.info('No matching result found')
+            self._draw_aggrid_df(expander, df)
+
         elif uniq_dict:
             columns = ['namespace'] + uniq_dict['column']
             df = gui_get_df(uniq_dict['table'],
@@ -144,68 +150,93 @@ When specifying a table, you can specify multiple addresses to look for by
 
             expander = layout['current'].expander(f'Search for {search_text}',
                                                   expanded=True)
-            with expander:
-                if not df.empty:
-                    self._draw_aggrid_df(df)
-                else:
-                    st.info('No matching result found')
+            self._draw_aggrid_df(expander, df)
         elif len(state.prev_results) == 0:
-            st.info('Enter a search string to see results')
+            st.info('Enter a search string to see results, '
+                    'see sidebar for examples')
 
-        for prev_res in reversed(state.prev_results):
-            psrch, prev_df = prev_res
-            if psrch == search_text:
+        prev_searches = [search_text]
+        for psrch, prev_df in reversed(state.prev_results):
+            if psrch in prev_searches:
                 continue
+            prev_searches.append(psrch)
             expander = st.expander(f'Search for {psrch}', expanded=True)
-            with expander:
-                if not prev_df.empty:
-                    self._draw_aggrid_df(prev_df)
-                else:
-                    st.info('No matching result found')
+            self._draw_aggrid_df(expander, prev_df)
 
-        if ((query_str or uniq_dict) and
-                (search_text != state.search_text)):
+        is_error = (not df.empty) and all(df.columns == 'error')
+        if ((query_str or uniq_dict) and st.session_state.search and
+                (st.session_state.search != state.search_text) and
+                not is_error):
             state.prev_results.append((search_text, df))
-            state.search_text = search_text
+            state.search_text = st.session_state.search
 
-    def _draw_aggrid_df(self, df):
+    def _draw_aggrid_df(self, expander, df):
 
-        gb = GridOptionsBuilder.from_dataframe(df)
-        gb.configure_pagination(paginationPageSize=25)
+        with expander:
+            if df.empty:
+                st.info('No matching result found')
+            elif 'error' in df:
+                st.error(df['error'][0])
+            else:
 
-        gb.configure_default_column(floatingFilter=True, editable=False)
+                gb = GridOptionsBuilder.from_dataframe(df)
+                gb.configure_pagination(paginationPageSize=25)
 
-        gb.configure_grid_options(
-            domLayout='normal', preventDefaultOnContextMenu=True)
-        gridOptions = gb.build()
+                gb.configure_default_column(floatingFilter=True,
+                                            editable=False,
+                                            selectable=False)
 
-        _ = AgGrid(
-            df,
-            gridOptions=gridOptions,
-            allow_unsafe_jscode=True,
-            update_mode=GridUpdateMode.NO_UPDATE,
-            theme='streamlit',
-        )
+                gb.configure_grid_options(
+                    domLayout='normal', preventDefaultOnContextMenu=True)
+                gridOptions = gb.build()
+
+                if df.shape[0] == 1:
+                    height = 150
+                elif df.shape[0] < 4:
+                    height = 200
+                else:
+                    height = 400
+                _ = AgGrid(
+                    df,
+                    height=height,
+                    gridOptions=gridOptions,
+                    allow_unsafe_jscode=True,
+                    update_mode=GridUpdateMode.NO_UPDATE,
+                    theme='streamlit',
+                    key=str(randint(1, 10000000))
+                )
 
     def _sync_state(self) -> None:
         pass
 
     # pylint: disable=too-many-statements
-    def _build_query(self, search_text: str) -> str:
+    def _build_query(self, search_text: str):
         '''Build the appropriate query for the search'''
 
         state = self._state
+        search_text = search_text.replace('\"', '').replace('\'', '')
         if not search_text:
-            return '', '', []
+            return '', {}, []
 
         unique_query = {}
 
         addrs = search_text.split()
         if not addrs:
-            return '', '', []
+            return '', {}, []
 
         query_str = disjunction = ''
         columns = ['default']
+
+        if addrs[0] not in ['mac', 'macs', 'route', 'routes',
+                            'arpnd', 'address', 'vtep', 'vteps',
+                            'asn', 'asns', 'vlan', 'vlans',
+                            'mtu', 'mtus']:
+            try:
+                ip_address(addrs[0])
+            except ValueError:
+                if not validate_macaddr(addrs[0]):
+                    raise ValueError('Invalid keyword or IP/Mac address '
+                                     f'"{addrs[0]}"')
 
         if addrs[0].startswith('mac'):
             state.table = 'macs'
@@ -213,7 +244,7 @@ When specifying a table, you can specify multiple addresses to look for by
         elif addrs[0].startswith('route'):
             state.table = 'routes'
             addrs = addrs[1:]
-        elif addrs[0].startswith('arp'):
+        elif addrs[0] == 'arpnd':
             state.table = 'arpnd'
             addrs = addrs[1:]
         elif addrs[0].startswith('address'):
@@ -228,7 +259,7 @@ When specifying a table, you can specify multiple addresses to look for by
                            'secVtepIp']
         elif addrs[0].startswith('vni'):
             state.table = 'evpnVni'
-            if addrs[0] == 'vnis':
+            if addrs[0] != 'vnis':
                 try:
                     vnis = [int(x) for x in addrs[1:]]
                 except ValueError:
@@ -253,7 +284,7 @@ When specifying a table, you can specify multiple addresses to look for by
                     vlans = []
                 query_str = f'vlan.isin({vlans})'
                 columns = ['namespace', 'hostname', 'vlan']
-        elif addrs[0].startswith('mtus'):
+        elif addrs[0].startswith('mtu'):
             state.table = 'interface'
             if addrs[0] != "mtus":
                 try:
@@ -296,7 +327,7 @@ When specifying a table, you can specify multiple addresses to look for by
                         f'ip6AddressList.str.startswith("{addr}/") '
             elif ':' in addr and state.table in ['macs', 'arpnd']:
                 query_str += f' {disjunction} macaddr == "{addr}" '
-            else:
+            elif state.table in ['macs', 'arpnd', 'routes']:
                 try:
                     addr = ip_address(addr)
                     macaddr = None

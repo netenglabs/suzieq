@@ -99,7 +99,7 @@ class SqPandasEngine(SqEngineObj):
             PandasObject: A collection of bool reporting the result
         """
         network = ip_network(net)
-        if isinstance(addr[0], np.ndarray):
+        if isinstance(addr.iloc[0], np.ndarray):
             return addr.apply(lambda x, network:
                               False if not x.any()
                               else any(ip_address(a.split("/")[0]) in network

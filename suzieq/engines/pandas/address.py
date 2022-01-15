@@ -4,7 +4,8 @@ import numpy as np
 import pandas as pd
 
 from suzieq.engines.pandas.engineobj import SqPandasEngine
-from suzieq.shared.utils import convert_macaddr_format_to_colon
+from suzieq.shared.utils import (convert_macaddr_format_to_colon,
+                                 build_query_str)
 
 
 class AddressObj(SqPandasEngine):
@@ -66,21 +67,19 @@ class AddressObj(SqPandasEngine):
                 addnl_fields.append('macaddr')
                 drop_cols.append('macaddr')
 
-        if vrf == "default":
-            master = ''
-        else:
-            master = vrf
-        df = self.get_valid_df("address", master=master,
-                               addnl_fields=addnl_fields, **kwargs)
+        df = self.get_valid_df("address", addnl_fields=addnl_fields, **kwargs)
 
         if df.empty:
             return df
 
-        if vrf == "default":
-            df = df.query('master==""')
-
         df = df.rename({'master': 'vrf'}, axis=1) \
             .replace({'vrf': {'': 'default'}})
+
+        df.loc[(df.vrf == 'bridge') | ((df.ipAddressList.str.len() == 0)
+                                       & (df.ip6AddressList.str.len() == 0)),
+               'vrf'] = ''
+
+        query_str = build_query_str([], self.schema, vrf=vrf)
 
         addrcols = []
         if 4 in addr_types or ipvers in ["v4", ""]:
@@ -99,7 +98,6 @@ class AddressObj(SqPandasEngine):
 
         v4addr = []
         v6addr = []
-        query_str = ''
         filter_prefix = ''
 
         # Address and prefix filtering are mutual exclusive

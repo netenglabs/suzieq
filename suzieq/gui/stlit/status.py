@@ -30,7 +30,6 @@ class StatusPage(SqGuiPage):
         self._create_sidebar()
         layout = self._create_layout()
         self._render(layout)
-        self._save_page_url()
 
     def _create_sidebar(self) -> None:
         '''Draw appropriate sidebar for the page'''
@@ -112,6 +111,7 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the
         wsstate = st.session_state
 
         self._state.namespace = wsstate.status_ns
+        self._save_page_url()
 
     def _chart_dev(self, layout: dict, ns_list: List[str]) -> None:
         '''Chart the devices table status'''

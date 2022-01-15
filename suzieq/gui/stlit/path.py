@@ -33,7 +33,6 @@ class PathPage(SqGuiPage):
     _title: str = SuzieqMainPages.PATH.value
     _state: PathSessionState = PathSessionState()
     _failed_dfs = {}
-    _first_time: bool = True
     _pathobj = None
     _path_df: pd.DataFrame = None
 
@@ -46,7 +45,6 @@ class PathPage(SqGuiPage):
         self._create_sidebar()
         layout = self._create_layout()
         self._render(layout)
-        self._save_page_url()
 
     def _create_layout(self) -> dict:
 
@@ -78,7 +76,7 @@ class PathPage(SqGuiPage):
             st.error('Unable to retrieve any namespace info')
             st.stop()
 
-        namespaces = [' '] + sorted(devdf.namespace.unique().tolist())
+        namespaces = [''] + sorted(devdf.namespace.unique().tolist())
         if self._state.namespace:
             nsidx = namespaces.index(self._state.namespace)
         else:
@@ -95,12 +93,11 @@ class PathPage(SqGuiPage):
                 state.namespace = st.selectbox(
                     'Namespace', namespaces, key='path_namespace',
                     index=nsidx)
-                src_ph = st.empty()
-                dst_ph = st.empty()
-                state.source = src_ph.text_input(
-                    'Source IP', key='path_source', value=state.source)
-                state.dest = dst_ph.text_input('Dest IP', value=state.dest,
-                                               key='path_dest')
+                state.source = st.text_input('Source IP',
+                                             key='path_source',
+                                             value=state.source)
+                state.dest = st.text_input('Dest IP', value=state.dest,
+                                           key='path_dest')
 
                 state.vrf = st.text_input('VRF', value=state.vrf,
                                           key='path_vrf')
@@ -136,14 +133,18 @@ class PathPage(SqGuiPage):
         self._state.start_time = wsstate.path_start_time
         self._state.end_time = wsstate.path_end_time
         self._state.show_ifnames = wsstate.path_show_ifnames
+        self._save_page_url()
 
     def _render(self, layout: dict) -> None:
         '''Compute the path, render all objects'''
 
         state = self._state
-
-        if not all(x for x in [state.source, state.dest, state.namespace]):
-            return
+        missing = [x for x in [state.source,
+                               state.dest, state.namespace] if not x]
+        if missing:
+            st.warning('Set namespace, source and destination in the sidebar '
+                       'to do a path trace ')
+            st.stop()
 
         layout['pgbar'].progress(0)
         self._pathobj = get_sqobject(

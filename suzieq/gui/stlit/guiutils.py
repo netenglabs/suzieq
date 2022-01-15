@@ -10,6 +10,8 @@ from streamlit.report_thread import get_report_ctx
 
 from suzieq.sqobjects import get_sqobject
 
+SUZIEQ_COLOR = "#68279D"
+
 
 class SuzieqMainPages(str, Enum):
     '''Pages in Suzieq GUI'''

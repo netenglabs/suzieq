@@ -3,8 +3,8 @@ import subprocess
 import argparse
 from importlib.util import find_spec
 from pathlib import Path
-import shlex
 
+from colorama import init, Fore, Style
 from suzieq.shared.utils import print_version
 
 
@@ -33,6 +33,12 @@ def gui_main(*args):
         help="print Suzieq version",
         default=False, action='store_true',
     )
+    parser.add_argument(
+        "--port",
+        "-p",
+        help="http port to connect to",
+        default='8501',
+    )
     userargs = parser.parse_args()
 
     if userargs.version:
@@ -44,11 +50,18 @@ def gui_main(*args):
         if userargs.framework == 'streamlit':
             thisprog = Path(spec.loader.path).parent / \
                 'stlit' / 'suzieq-gui.py'
+            thisprog = str(thisprog)
 
     if userargs.config:
         thisprog += f' -c {userargs.config}'
 
-    _ = subprocess.check_output(shlex.split(f'streamlit run {thisprog}'))
+    init()
+    with subprocess.Popen(['streamlit', 'run', thisprog,
+                           '--server.port', userargs.port,
+                           '--theme.base', 'light']) as p:
+        print(Fore.CYAN + Style.BRIGHT +
+              "\n  Starting Suzieq GUI" + Style.RESET_ALL)
+        p.communicate()
 
 
 if __name__ == '__main__':

@@ -58,7 +58,7 @@ class ArpndObj(SqPandasEngine):
             ('v6NDEntriesCnt', '@self._check_ipvers(ipAddress, 6)',
                 'ipAddress'),
             ('v6NDGlobalEntriesCnt',
-                '@self._check_ipvers(ipAddress, 6) and'
+                '@self._check_ipvers(ipAddress, 6) and '
                 '@self._is_in_subnet(ipAddress, "fe80::/10")', 'ipAddress'),
             ('v6NDLLAEntriesCnt',
                 '@self._check_ipvers(ipAddress, 6) and not '
