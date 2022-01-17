@@ -119,20 +119,19 @@ class PathPage(SqGuiPage):
 
     def _sync_state(self) -> None:
         wsstate = st.session_state
+        state = self._state
 
-        if wsstate.path_swap:
-            self._state.source, self._state.dest = \
-                self._state.dest, self._state.source
-            wsstate.path_source = self._state.source
-            wsstate.path_dest = self._state.dest
+        if wsstate.get('path_swap', False):
+            state.source, state.dest = \
+                state.dest, state.source
         else:
-            self._state.source = wsstate.path_source
-            self._state.dest = wsstate.path_dest
-        self._state.namespace = wsstate.path_namespace
-        self._state.vrf = wsstate.path_vrf
-        self._state.start_time = wsstate.path_start_time
-        self._state.end_time = wsstate.path_end_time
-        self._state.show_ifnames = wsstate.path_show_ifnames
+            state.source = wsstate.path_source
+            state.dest = wsstate.path_dest
+        state.namespace = wsstate.path_namespace
+        state.vrf = wsstate.path_vrf
+        state.start_time = wsstate.path_start_time
+        state.end_time = wsstate.path_end_time
+        state.show_ifnames = wsstate.path_show_ifnames
         self._save_page_url()
 
     def _render(self, layout: dict) -> None:
