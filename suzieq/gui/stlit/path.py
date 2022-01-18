@@ -124,9 +124,6 @@ class PathPage(SqGuiPage):
         if wsstate.get('path_swap', False):
             state.source, state.dest = \
                 state.dest, state.source
-        else:
-            state.source = wsstate.path_source
-            state.dest = wsstate.path_dest
         state.namespace = wsstate.path_namespace
         state.vrf = wsstate.path_vrf
         state.start_time = wsstate.path_start_time
