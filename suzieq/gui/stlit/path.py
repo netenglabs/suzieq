@@ -115,15 +115,18 @@ class PathPage(SqGuiPage):
                                              key='path_show_ifnames',
                                              on_change=self._sync_state)
             _ = st.button(
-                'Source <-> Dest', key='path_swap', on_click=self._sync_state)
+                'Source <-> Dest', key='path_swap',
+                on_click=self._swap_src_dest)
+
+    def _swap_src_dest(self):
+        state = self._state
+        state.source, state.dest = state.dest, state.source
+        self._sync_state()
 
     def _sync_state(self) -> None:
         wsstate = st.session_state
         state = self._state
 
-        if wsstate.get('path_swap', False):
-            state.source, state.dest = \
-                state.dest, state.source
         state.namespace = wsstate.path_namespace
         state.vrf = wsstate.path_vrf
         state.start_time = wsstate.path_start_time
