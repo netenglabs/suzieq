@@ -1,14 +1,14 @@
-from dataclasses import dataclass, field, asdict
-from typing import List
+from dataclasses import asdict, dataclass, field
+from typing import Any, List
 
+import altair as alt
 import numpy as np
 import pandas as pd
-import altair as alt
 import streamlit as st
-from st_aggrid import GridOptionsBuilder, AgGrid, GridUpdateMode, JsCode
-
-from suzieq.gui.stlit.guiutils import (SUZIEQ_COLOR, gui_get_df, sq_gui_style,
-                                       SuzieqMainPages)
+from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode
+from suzieq.gui.stlit.guiutils import (SUZIEQ_COLOR, SuzieqMainPages,
+                                       gui_get_df, pandas_df_to_markdown_table,
+                                       sq_gui_style)
 from suzieq.gui.stlit.pagecls import SqGuiPage
 from suzieq.sqobjects import get_sqobject, get_tables
 
@@ -27,6 +27,7 @@ class XploreSessionState:
     uniq_clicked: str = '-'
     assert_clicked: bool = False
     experimental_ok: bool = False
+    tables_obj: Any = None
 
 
 class XplorePage(SqGuiPage):
@@ -114,10 +115,10 @@ class XplorePage(SqGuiPage):
             state.namespace = namespace
 
         if state.table:
-            tables_obj = get_sqobject('tables')(start_time=state.start_time,
+            state.tables_obj = get_sqobject('tables')(start_time=state.start_time,
                                                 end_time=state.end_time,
                                                 view=state.view)
-            fields = tables_obj.describe(table=state.table)
+            fields = state.tables_obj.describe(table=state.table)
             colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                     fields.name.tolist())))
             columns = st.sidebar.multiselect('Pick columns',
@@ -162,14 +163,6 @@ class XplorePage(SqGuiPage):
         if columns == ['all']:
             columns = ['*']
 
-        if state.table:
-            col_expander = st.sidebar.expander('Column Names', expanded=False)
-            with col_expander:
-                st.subheader(f'{state.table} column names')
-                st.table(tables_obj.describe(table=state.table)
-                         .query('name != "sqvers"')
-                         .reset_index(drop=True).astype(str).style)
-
         if not col_ok:
             st.experimental_set_query_params(**asdict(state))
             st.stop()
@@ -197,6 +190,7 @@ class XplorePage(SqGuiPage):
             else:
                 validate_ph = None
             table_ph = st.empty()
+            col_names_ph = st.empty()
 
         return {
             'header': header_ph,  # summary header
@@ -205,6 +199,7 @@ class XplorePage(SqGuiPage):
             'uniq': scol2_ph,  # unique table
             'assert': validate_ph,  # assert expander
             'table': table_ph,  # table dataframe expander
+            'col_names': col_names_ph  # column name table expander
         }
 
     def _render(self, layout: dict) -> None:
@@ -317,6 +312,14 @@ class XplorePage(SqGuiPage):
                 else:
                     self._draw_uniq_histogram(layout, agdf)
 
+                help_df = self._state.tables_obj \
+                    .describe(table=self._state.table) \
+                    .query('name != "sqvers"') \
+                    .drop(['key', 'display'], axis=1) \
+                    .reset_index(drop=True)
+
+                help_table = pandas_df_to_markdown_table(help_df)
+                st.button("?", help=help_table)
             else:
                 st.warning('No Data from query')
 
