@@ -6,6 +6,8 @@ from abc import abstractmethod
 from typing import Dict, List, Type
 
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
+from suzieq.poller.controller.inventory_async_plugin import \
+    InventoryAsyncPlugin
 from suzieq.shared.exceptions import InventorySourceError
 
 logger = logging.getLogger(__name__)
@@ -35,6 +37,40 @@ class CredentialLoader(ControllerPlugin):
         self._validate_config(init_data)
 
         self.init(init_data)
+
+    @property
+    def name(self) -> str:
+        """Name of the source set in the inventory file
+
+        Returns:
+            str: name of the source
+        """
+        return self._name
+
+    @classmethod
+    def init_plugins(cls, plugin_conf: Dict) -> List[Dict]:
+        cred_plugins = []
+        plugin_classes = cls.get_plugins()
+        if not plugin_conf.get('inventory'):
+            raise InventorySourceError(
+                'Credential loader cannot be initialized '
+                'without an inventory')
+
+        cred_confs = plugin_conf['inventory'].get('auths', [])
+        run_once = plugin_conf.get('run-once', False)
+        for cred_conf in cred_confs.values():
+            ptype = cred_conf.get('type') or 'static'
+            if "-" in ptype:
+                ptype = ptype.replace("-", "_")
+
+            if ptype not in plugin_classes:
+                raise InventorySourceError(
+                    f'Unknown plugin called {ptype}'
+                )
+            if isinstance(plugin_classes[ptype], InventoryAsyncPlugin):
+                cred_conf.update({'run_once': run_once})
+            cred_plugins.append(plugin_classes[ptype](cred_conf))
+        return cred_plugins
 
     @abstractmethod
     def init(self, init_data: Type):

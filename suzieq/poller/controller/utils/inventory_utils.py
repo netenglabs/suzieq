@@ -2,8 +2,9 @@
 This module contains the logic needed to parse the Suzieq native inventory
 file
 """
+from copy import deepcopy
 from pathlib import Path
-from typing import Dict
+from typing import Dict, List
 
 import yaml
 from suzieq.shared.exceptions import InventorySourceError
@@ -24,7 +25,7 @@ def read_inventory(source_file: str) -> Dict:
     """
     if not Path(source_file).is_file():
         raise InventorySourceError(
-            f"Inventory file {source_file} doesn't exits")
+            f"Inventory file {source_file} doesn't exists")
 
     inventory = {
         'sources': {},
@@ -40,21 +41,23 @@ def read_inventory(source_file: str) -> Dict:
         except Exception as e:
             raise InventorySourceError(f'Invalid Suzieq inventory file: {e}')
 
-    validate_raw_inventory(inventory_data)
+    unused_plugins = validate_raw_inventory(inventory_data)
 
     for k in inventory:
         inventory[k] = get_inventory_config(k, inventory_data)
+
+    inventory = remove_unused_plugins(unused_plugins, inventory)
 
     inventory['namespaces'] = inventory_data.get('namespaces')
 
     return inventory
 
 
-def validate_raw_inventory(inventory: dict):
+def validate_raw_inventory(inventory: Dict) -> List:
     """Validate the inventory read from file
 
     Args:
-        inventory (dict): inventory read from file
+        inventory (Dict): inventory read from file
 
     Raises:
         InventorySourceError: invalid inventory
@@ -97,6 +100,7 @@ def validate_raw_inventory(inventory: dict):
                                            "'name' of an already defined "
                                            f'{mf} item')
     # validate 'namespaces'
+    unused_plugins = deepcopy(main_fields)
     ns_fields = ['name', 'source', 'device', 'auth']
     for ns in inventory.get('namespaces'):
 
@@ -125,6 +129,35 @@ def validate_raw_inventory(inventory: dict):
         if ns.get('auth') and ns['auth'] not in main_fields['auths']:
             raise InventorySourceError(
                 f"{ns['name']} No auth called '{ns['auth']}'")
+
+        for t, t_list in unused_plugins.items():
+            # remove the last 's' character
+            ns_type = t[:-1]
+            if ns.get(ns_type) and ns[ns_type] in t_list:
+                t_list.remove(ns[ns_type])
+
+    return unused_plugins
+
+
+def remove_unused_plugins(unused_plugins: List, inventory: Dict) -> Dict:
+    """Remove unused plugins from inventory. The unused plugins are listed in the
+    input parameter
+
+    Args:
+        unused_plugins: List of plugins to remove
+        inventory (Dict): input inventory
+
+    Returns:
+        Dict: cleaned inventory
+    """
+    for t, t_dict in inventory.items():
+        if t == 'namespaces':
+            continue
+        for p_name in list(t_dict):
+            if p_name in unused_plugins[t]:
+                t_dict.pop(p_name)
+
+    return inventory
 
 
 def get_inventory_config(conf_type: str, inventory: dict) -> dict:

@@ -19,6 +19,7 @@ from typing import Dict, List
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
+from suzieq.poller.controller.utils.inventory_utils import read_inventory
 from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
 from suzieq.shared.utils import sq_get_config_file
@@ -40,6 +41,7 @@ class Controller:
         self._base_plugin_classes = ControllerPlugin.get_plugins()
 
         self.sources = []
+        self.cred_loaders = []
         self.chunker = None
         self.manager = None
 
@@ -80,7 +82,7 @@ class Controller:
 
         # Get the inventory
         default_inventory_file = DEFAULT_INVENTORY_PATH
-        inventory_file = None
+        inventory = None
 
         if not self._input_dir:
             inventory_file = args.inventory or \
@@ -98,6 +100,7 @@ class Controller:
                     'use -i instead to provide an input directory '
                     'with pre-captured output and simulate an input.'
                 )
+            inventory = read_inventory(inventory_file)
         else:
             if not Path(self._input_dir).is_dir():
                 raise SqPollerConfError(
@@ -105,7 +108,7 @@ class Controller:
                 )
 
         source_args = {'run-once': self._run_once,
-                       'path': inventory_file}
+                       'inventory': inventory}
 
         manager_args = {'config': sq_get_config_file(args.config),
                         'config-dict': config_data,
@@ -124,6 +127,9 @@ class Controller:
                         'workers': self._n_workers
                         }
 
+        cred_args = {'run_once': self._run_once,
+                     'inventory': inventory}
+
         # Update configuration with command arguments
         self._config['source'].update(source_args)
 
@@ -133,6 +139,8 @@ class Controller:
 
         if not self._config['chunker'].get('type'):
             self._config['chunker']['type'] = 'static'
+
+        self._config['credential_loader'] = cred_args
 
     @property
     def run_once(self) -> str:
@@ -175,6 +183,11 @@ class Controller:
         # since there is no need to build and split the inventory
         if not self._input_dir:
             logger.debug('Inizialing sources')
+
+            self.cred_loaders = self.init_plugins('credential_loader')
+
+            self._config['source']['credential_loaders'] = \
+                {c.name: c for c in self.cred_loaders}
 
             self.sources = self.init_plugins('source')
             if not self.sources:
@@ -250,12 +263,16 @@ class Controller:
         if isinstance(self.manager, InventoryAsyncPlugin):
             manager_tasks.append(self.manager.run())
 
+        cred_tasks = [c.run() for c in self.cred_loaders
+                      if isinstance(s, InventorySourceError)]
+
         # Append the synchronization manager
         controller_task = [self._inventory_sync()]
 
         # Launch all the tasks
         tasks = [asyncio.create_task(t)
-                 for t in (source_tasks + manager_tasks + controller_task)]
+                 for t in (cred_tasks + source_tasks + manager_tasks +
+                           controller_task)]
         try:
             while tasks:
                 done, pending = await asyncio.wait(

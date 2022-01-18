@@ -3,14 +3,10 @@
 import asyncio
 from abc import abstractmethod
 from copy import copy
-from os.path import isfile
 from pathlib import Path
 from typing import Dict, List
 
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
-from suzieq.poller.controller.credential_loader.base_credential_loader import \
-    CredentialLoader
-from suzieq.poller.controller.utils.inventory_utils import read_inventory
 from suzieq.shared.exceptions import InventorySourceError
 
 
@@ -153,7 +149,7 @@ class Source(ControllerPlugin):
             Must contain 'path' key with the inventory file as value.
 
         Raises:
-            InventorySourceError: No 'path' key in plugin_conf
+            InventorySourceError: Missing key in plugin_conf
             RuntimeError: Unknown plugin
 
         Returns:
@@ -161,10 +157,15 @@ class Source(ControllerPlugin):
         """
         src_plugins = []
         plugin_classes = cls.get_plugins()
-        if not plugin_conf.get('path'):
+        inv = plugin_conf.get('inventory')
+        if not inv:
             raise InventorySourceError('A source plugin cannot be initialized'
-                                       'without the inventory file path')
-        src_confs = _load_inventory(plugin_conf.get('path'))
+                                       'without the inventory')
+        cl = plugin_conf.get('credential_loaders')
+        if not cl:
+            raise InventorySourceError('A source plugin cannot be initialized'
+                                       'without the credential loaders')
+        src_confs = _load_inventory(inv, cl)
         run_once = plugin_conf.get('run-once', False)
         for src_conf in src_confs:
             ptype = src_conf.get('type') or 'native'
@@ -228,11 +229,12 @@ class Source(ControllerPlugin):
                     f'{inv_fields}')
 
 
-def _load_inventory(source_file: str) -> List[dict]:
+def _load_inventory(inventory: Dict, cred_loaders: Dict) -> List[dict]:
     """Load inventory from a file
 
     Args:
-        source_file (str): inventory file
+        inventory (Dict): content of inventory file
+        cred_loaders (Dict): dict of credential loaders
 
     Raises:
         InventorySourceError: inventory file doesn't exists
@@ -241,10 +243,6 @@ def _load_inventory(source_file: str) -> List[dict]:
     Returns:
         List[dict]: list of sources
     """
-    if not isfile(source_file):
-        raise InventorySourceError(f"File {source_file} doesn't exists")
-
-    inventory = read_inventory(source_file)
 
     ns_list = inventory.get('namespaces')
 
@@ -261,11 +259,11 @@ def _load_inventory(source_file: str) -> List[dict]:
 
         if ns.get('auth'):
             auth = inventory.get('auths', []).get(ns['auth'])
-            auth_type = auth.get('type') or 'static'
-            if "-" in auth_type:
-                auth_type = auth_type.replace("-", "_")
-            auth['type'] = auth_type
-            source['auth'] = CredentialLoader.init_plugins(auth)[0]
+            cred = cred_loaders.get(auth.get('name'))
+            if not cred:
+                raise InventorySourceError(
+                    f'auth {auth.get("name")} not found')
+            source['auth'] = cred
         else:
             source['auth'] = None
 
