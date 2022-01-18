@@ -115,9 +115,10 @@ class XplorePage(SqGuiPage):
             state.namespace = namespace
 
         if state.table:
-            state.tables_obj = get_sqobject('tables')(start_time=state.start_time,
-                                                end_time=state.end_time,
-                                                view=state.view)
+            state.tables_obj = get_sqobject('tables')(
+                start_time=state.start_time,
+                end_time=state.end_time,
+                view=state.view)
             fields = state.tables_obj.describe(table=state.table)
             colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                     fields.name.tolist())))
