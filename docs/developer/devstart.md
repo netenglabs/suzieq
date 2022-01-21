@@ -7,6 +7,8 @@ Setting up the development environment for Suzieq involves the following steps:
 * Make sure you have a python3 version that is > 3.7.1 and less than 3.9.0. If you don't have a system provided python version that matches this requirement, you can use [pyenv](https://realpython.com/intro-to-pyenv/) to install one.
 * If you've used pyenv to install a specific python version, ensure you activate it.
 * Install poetry--follow the instructions posted [here](https://python-poetry.org/docs/#installation).
+* Install *poetry-dynamic-versioning* -- follow the instructions posted
+  [here](https://pypi.org/project/poetry-dynamic-versioning/)
 * Ensure you have git installed (follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
 * Clone the github repository: ```git clone https://github.com/netenglabs/suzieq.git```. This creates a copy of the code repository in the subfolder suzieq in the current directory. 
 * Create the virtual environment and install the appropriate packages by typing: ```poetry install```
