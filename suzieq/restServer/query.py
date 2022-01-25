@@ -417,6 +417,8 @@ async def query_interface(verb: CommonExtraVerbs, request: Request,
                           matchval: int = Query(None, alias="value"),
                           status: AssertStatusValues = Query(None),
                           ignore_missing_peer: bool = Query(False),
+                          vlan: List[str] = Query(None),
+                          portmode: List[str] = Query(None),
                           query_str: str = None,
                           ):
     function_name = inspect.currentframe().f_code.co_name

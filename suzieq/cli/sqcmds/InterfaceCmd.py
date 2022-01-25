@@ -12,6 +12,9 @@ from suzieq.cli.sqcmds.command import SqCommand
 @argument("ifname", description="interface name(s), space separated")
 @argument("type", description="interface type(s), space separated")
 @argument("vrf", description="VRF(s), space separated")
+@argument("portmode", description="Portmode(s), space separated")
+@argument("vlan", description="Vlan(s), space separated")
+@argument("vrf", description="VRF(s), space separated")
 @argument("state", description="interface state to qualify show",
           choices=["up", "down", "notConnected", "!up", "!down",
                    "!notConnected"])
@@ -36,7 +39,9 @@ class InterfaceCmd(SqCommand):
             state: str = '',
             type: str = '',
             vrf: str = '',
-            mtu: str = ''
+            mtu: str = '',
+            portmode: str = '',
+            vlan: str = '',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -56,6 +61,8 @@ class InterfaceCmd(SqCommand):
             'type': type.split(),
             'vrf': vrf.split(),
             'mtu': mtu.split(),
+            'vlan': vlan.split(),
+            'portmode': portmode.split(),
         }
 
     @command("assert")

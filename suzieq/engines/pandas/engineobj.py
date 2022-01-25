@@ -245,10 +245,10 @@ class SqPandasEngine(SqEngineObj):
                     return pd.DataFrame(columns=table_df.columns.tolist())
 
             if view == "all" or not active_only:
-                table_df = table_df.drop(columns=drop_cols)
+                table_df = table_df.drop(columns=drop_cols, errors='ignore')
             else:
                 table_df = table_df.query('active') \
-                    .drop(columns=drop_cols)
+                    .drop(columns=drop_cols, errors='ignore')
 
             if 'timestamp' in table_df.columns and not table_df.empty:
                 table_df['timestamp'] = humanize_timestamp(
@@ -359,7 +359,8 @@ class SqPandasEngine(SqEngineObj):
             return df
 
         # check if column we're looking at is a list, and if so explode it
-        if df[column].apply(lambda x: isinstance(x, list)).all():
+        if df[column].apply(
+                lambda x: isinstance(x, (list, np.ndarray))).any():
             df = df.explode(column).dropna(how='any')
 
         if count:
