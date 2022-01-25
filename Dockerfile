@@ -11,6 +11,7 @@ WORKDIR /suzieq
 COPY ./dist/suzieq-$version-py3-none-any.whl  /tmp/
 RUN pip install /tmp//suzieq-$version-py3-none-any.whl
 COPY suzieq/config/etc/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml
+RUN sed -i 's/127.0.0.1/0.0.0.0/' /root/.suzieq/suzieq-cfg.yml
 
 # Certificates and such for REST server
 #COPY logo-small.jpg /suzieq
