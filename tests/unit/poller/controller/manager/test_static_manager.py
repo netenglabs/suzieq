@@ -30,6 +30,7 @@ MANAGER_ARGS = {
     'output-dir': '/tmp/out-dir',
     'outputs': ['parquet', 'gather'],
     'run-once': None,
+    'single-run-mode': None,
     'service-only': None,
     'ssh-config-file': None,
     'workers': 1
@@ -309,7 +310,7 @@ async def test_launch_debug_mode(monkeypatch, manager_cfg, capsys):
     monkeypatch.setattr(os, 'environ', fake_environ)
 
     manager_args = MANAGER_ARGS.copy()
-    manager_args['debug'] = True
+    manager_args['single-run-mode'] = 'debug'
     manager_args['workers'] = 2
     manager = init_static_manager(manager_cfg, manager_args)
 
@@ -610,6 +611,7 @@ async def test_execute_run_once(monkeypatch, manager_cfg):
     monkeypatch.setattr(os, 'environ', fake_environ)
     manager_args = MANAGER_ARGS.copy()
     manager_args['run-once'] = 'gather'
+    manager_args['single-run-mode'] = manager_args['run-once']
     manager_args['no-coalescer'] = True
 
     manager = init_static_manager(manager_cfg, manager_args)
@@ -634,6 +636,8 @@ async def test_execute_run_once(monkeypatch, manager_cfg):
 
             # Check if the execute task properly terminated
             assert execute_task.done()
+            assert not execute_task.exception(), \
+                f'Manager terminated with exception {execute_task.exception()}'
         finally:
             # Cancel the execute task
             if not execute_task.done():

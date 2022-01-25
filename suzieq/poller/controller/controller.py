@@ -48,26 +48,27 @@ class Controller:
         self._config.update(config_data.get('poller', {}))
 
         # Set controller configuration
-        # run_once: ['gather', 'process', 'update'] tells the controller if
-        #           the poller should query the devices and exit
+        # single_run_mode: ['gather', 'process', 'update', 'debug',
+        #                   'input-dir']
+        #                  tells if the poller should not run forever
         # period: the update timeout of the inventory
         # input-dir: wether to use a directory with some data as input
         # no-coalescer: wether to use the coalescer or not, the coalescer
         #               is always disabled with run-once
         # inventory_timeout: the maximum amount of time to wait for an
         #                    inventory from a source
-        self._run_once = args.run_once
-
-        # If the debug mode is active we need to run the controller only once
-        if args.debug:
-            self._run_once = 'debug'
+        self._single_run_mode = args.run_once
 
         self._input_dir = args.input_dir
         if self._input_dir:
-            self._run_once = 'input-dir'
+            self._single_run_mode = 'input-dir'
+
+        # If the debug mode is active we need to run the controller only once
+        if args.debug:
+            self._single_run_mode = 'debug'
 
         self._no_coalescer = args.no_coalescer
-        if self._run_once:
+        if self._single_run_mode:
             self._no_coalescer = True
 
         self._period = args.update_period or \
@@ -104,7 +105,7 @@ class Controller:
                     f'{self._input_dir} is not a valid directory'
                 )
 
-        source_args = {'run-once': self._run_once,
+        source_args = {'single-run-mode': self._single_run_mode,
                        'path': inventory_file}
 
         manager_args = {'config': sq_get_config_file(args.config),
@@ -115,9 +116,11 @@ class Controller:
                         'no-coalescer': self._no_coalescer,
                         'output-dir': args.output_dir,
                         'outputs': args.outputs,
-                        # We are intentionally passing the run_once argument
-                        # since we do not want to give internal values as
-                        # arguments of the poller workers
+                        # `single-run-mode` and `run-once` are different.
+                        # The former is an internal variable telling the
+                        # poller if it should run and terminate, the other
+                        # is a special run mode for the worker.
+                        'single-run-mode': self._single_run_mode,
                         'run-once': args.run_once,
                         'service-only': args.service_only,
                         'ssh-config-file': args.ssh_config_file,
@@ -135,14 +138,14 @@ class Controller:
             self._config['chunker']['type'] = 'static'
 
     @property
-    def run_once(self) -> str:
-        """Returns the current working mode, wether it is gather or process.
-        If None pollers will run forever.
+    def single_run_mode(self) -> str:
+        """Returns the current single-run mode if any, if the poller should
+        run forever this function returns None
 
         Returns:
-            [str]: current run mode
+            [str]: current single-run mode
         """
-        return self._run_once
+        return self._single_run_mode
 
     @property
     def period(self) -> int:
@@ -267,8 +270,8 @@ class Controller:
                 for task in done:
                     if task.exception():
                         raise task.exception()
-                # Ignore completed task if started with run_once
-                if self.run_once:
+                # Ignore completed task if started with single-run mode
+                if self._single_run_mode:
                     continue
 
         except asyncio.CancelledError:
@@ -322,7 +325,7 @@ class Controller:
 
             await self.manager.apply(inventory_chunks)
 
-            if self.run_once:
+            if self._single_run_mode:
                 break
             await asyncio.sleep(self._period)
 

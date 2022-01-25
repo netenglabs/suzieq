@@ -165,7 +165,7 @@ class Source(ControllerPlugin):
             raise InventorySourceError('A source plugin cannot be initialized'
                                        'without the inventory file path')
         src_confs = _load_inventory(plugin_conf.get('path'))
-        run_once = plugin_conf.get('run-once', False)
+        run_once = plugin_conf.get('single-run-mode', None)
         for src_conf in src_confs:
             ptype = src_conf.get('type') or 'native'
 
