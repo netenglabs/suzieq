@@ -4,6 +4,8 @@ import numpy as np
 import pandas as pd
 
 from suzieq.engines.pandas.engineobj import SqPandasEngine
+from suzieq.sqobjects import get_sqobject
+from ciscoconfparse import CiscoConfParse
 
 
 class InterfacesObj(SqPandasEngine):
@@ -21,6 +23,8 @@ class InterfacesObj(SqPandasEngine):
         ifname = kwargs.get('ifname', '')
         vrf = kwargs.pop('vrf', '')
         master = kwargs.pop('master', [])
+        columns = kwargs.get('columns', [])
+        user_query = kwargs.pop('query_str', '')
 
         if vrf:
             master.extend(vrf)
@@ -35,11 +39,22 @@ class InterfacesObj(SqPandasEngine):
         if df.empty:
             return df
 
+        if 'portmode' in columns or '*' in columns:
+            df = self._add_portmode(df)
+
+        if "vlanList" in columns or '*' in columns:
+            if 'portmode' not in columns and '*' not in columns:
+                df = self._add_portmode(df)
+            df = self._add_vlanlist(df)
+
         if state:
             if state.startswith('!'):
                 df = df.query(f'state != "{state[1:]}"')
             else:
                 df = df.query(f'state=="{state}"')
+
+        if user_query:
+            df = df.query(user_query)
 
         if not (iftype or ifname) and 'type' in df.columns:
             return df.query('type != "internal"').reset_index(drop=True)
@@ -190,9 +205,7 @@ class InterfacesObj(SqPandasEngine):
 
             return reason
 
-        columns = ["namespace", "hostname", "ifname", "state", "type", "mtu",
-                   "vlan", "adminState", "ipAddressList", "ip6AddressList",
-                   "speed", "master", "timestamp", "reason"]
+        columns = ['*']
 
         if not state:
             state = 'up'
@@ -208,6 +221,8 @@ class InterfacesObj(SqPandasEngine):
 
             return if_df
 
+        if_df = if_df.drop(columns=['description', 'routeDistinguisher',
+                                    'interfaceMac'], errors='ignore')
         # Map subinterface into parent interface
         if_df['pifname'] = if_df.apply(
             lambda x: x['ifname'].split('.')[0]
@@ -231,7 +246,6 @@ class InterfacesObj(SqPandasEngine):
             else x['pifname'], axis=1)
 
         lldpobj = self._get_table_sqobj('lldp')
-        vlanobj = self._get_table_sqobj('vlan')
         mlagobj = self._get_table_sqobj('mlag')
 
         # can't pass all kwargs, because lldp acceptable arguements are
@@ -249,25 +263,6 @@ class InterfacesObj(SqPandasEngine):
                                  .groups.keys())
         else:
             mlag_peerlinks = set()
-
-        # Get the VLAN info to ensure trunking ports are identical on both ends
-        vlan_df = vlanobj.get(namespace=namespace, hostname=hostname)
-        if not vlan_df.empty and not (vlan_df.interfaces.str.len() == 0).all():
-            vlan_df = vlan_df.explode('interfaces') \
-                             .drop(columns=['vlanName'], errors='ignore') \
-                             .rename(columns={'interfaces': 'ifname',
-                                              'vlan': 'vlanList'})
-
-            vlan_df = vlan_df.groupby(by=['namespace', 'hostname', 'ifname'])[
-                'vlanList'].unique().reset_index().query('ifname != ""')
-
-            # OK merge this list into the interface info
-            if_df = if_df.merge(vlan_df,
-                                on=['namespace', 'hostname', 'ifname'],
-                                how='left')
-            if not if_df.empty:
-                if_df['vlanList'] = if_df['vlanList'] \
-                    .fillna({i: [] for i in if_df.index})
 
         if 'vlanList' not in if_df.columns:
             if_df['vlanList'] = [[] for i in range(len(if_df))]
@@ -292,7 +287,9 @@ class InterfacesObj(SqPandasEngine):
                 how="outer",
             )
             .drop(columns=['ifname_y', 'timestamp_y'])
-            .rename({'ifname_x': 'ifname', 'timestamp_x': 'timestamp'}, axis=1)
+            .rename({'ifname_x': 'ifname', 'timestamp_x': 'timestamp',
+                     'adminState_x': 'adminState',
+                     'portmode_x': 'portmode'}, axis=1)
         )
         idf_nonsubif = idf.query('~type.isin(["subinterface", "vlan"])')
         idf_subif = idf.query('type.isin(["subinterface", "vlan"])')
@@ -384,6 +381,11 @@ class InterfacesObj(SqPandasEngine):
             axis=1)
 
         combined_df['assertReason'] += combined_df.apply(
+            lambda x: [] if (x.indexPeer < 0 or
+                             (x['portmode'] == x['portmodePeer']))
+            else ['portMode Mismatch'], axis=1)
+
+        combined_df['assertReason'] += combined_df.apply(
             lambda x:
             _check_ipaddr(x, 'ipAddressList', 'ipAddressListPeer',
                           ['IP address mismatch']), axis=1)
@@ -396,6 +398,11 @@ class InterfacesObj(SqPandasEngine):
         # platforms perform their own MLAG consistency checks, we can skip
         # doing VLAN consistency check on the peerlink.
         # TODO: A better checker for MLAG peerlinks if needed at a later time.
+
+        combined_df['assertReason'] += combined_df.apply(
+            lambda x: [] if (x.indexPeer < 0 or
+                             (x['vlan'] == x['vlanPeer']))
+            else ['pvid Mismatch'], axis=1)
 
         combined_df['assertReason'] += combined_df.apply(
             lambda x, mlag_peerlinks: []
@@ -425,3 +432,96 @@ class InterfacesObj(SqPandasEngine):
                             'peerHostname', 'peerIfname', 'check',
                             'assertReason', 'timestamp']] \
             .rename({'check': 'assert'}, axis=1)
+
+    def _add_portmode(self, df: pd.DataFrame):
+        '''Add the port-mode i.e. acceess/trunk/routed for an interface'''
+
+        if df.empty:
+            return df
+
+        conf_df = self._get_table_sqobj('devconfig') \
+            .get(namespace=df.namespace.unique().tolist(),
+                 hostname=df.hostname.unique().tolist())
+
+        if conf_df.empty:
+            return df
+
+        pm_df = pd.DataFrame({'namespace': [], 'hostname': [],
+                              'ifname': [], 'portmode': []})
+
+        pm_list = []
+        for row in conf_df.itertuples():
+            try:
+                conf = CiscoConfParse(row.config.split('\n'))
+            except Exception:
+                break
+
+            for intf in conf.find_objects_w_child('^interface', '.*access'):
+                ifname = intf.text.split('interface')[1].strip()
+                acc_vlan = intf.re_match_iter_typed(r'^.*vlan\s+(\d+)')
+                pm_list.append({
+                    'namespace': row.namespace,
+                    'hostname': row.hostname,
+                    'ifname': ifname,
+                    'portmode': 'access',
+                    'vlan': acc_vlan})
+
+            for intf in conf.find_objects_w_child('^interface', '.*trunk'):
+                ifname = intf.text.split('interface')[1].strip()
+                nvlan = intf.re_match_iter_typed(r'.*native vlan\s+(\d+)',
+                                                 default='1')
+                pm_list.append({
+                    'namespace': row.namespace,
+                    'hostname': row.hostname,
+                    'ifname': ifname,
+                    'portmode': 'trunk',
+                    'vlan': nvlan})
+
+        pm_df = pd.DataFrame(pm_list)
+
+        df = df.merge(pm_df, how='left', on=[
+                      'namespace', 'hostname', 'ifname'],
+                      suffixes=['', '_y']) \
+            .fillna({'portmode': 'routed', 'vlan': 0})
+
+        if 'vlan_y' in df.columns:
+            df['vlan'] = np.where(df.vlan_y.isnull(), df.vlan,
+                                  df.vlan_y)
+            df = df.drop(columns=['vlan_y'], errors='ignore')
+
+        df['portmode'] = np.where(df.adminState != 'up', '',
+                                  df.portmode)
+        return df
+
+    def _add_vlanlist(self, df: pd.DataFrame):
+        '''Add list of active, unpruned VLANs on trunjed ports'''
+
+        if df.empty:
+            return df
+
+        vlan_df = self._get_table_sqobj('vlan') \
+                      .get(namespace=df.namespace.unique().tolist(),
+                           hostname=df.hostname.unique().tolist())
+
+        if vlan_df.empty:
+            return df
+
+        # Transform the list of VLANs from VLAN-oriented to interface oriented
+        vlan_if_df = vlan_df.explode('interfaces') \
+                            .groupby(by=['namespace', 'hostname',
+                                         'interfaces'])['vlan'].unique() \
+                            .reset_index() \
+                            .rename(columns={'interfaces': 'ifname',
+                                             'vlan': 'vlanList'})
+
+        isnull = vlan_if_df.vlanList.isnull()
+        vlan_if_df.loc[isnull, 'vlanList'] = [[[]] * isnull.sum()]
+        vlan_if_df['vlanList'] = vlan_if_df.vlanList.apply(sorted)
+
+        df = df.merge(vlan_if_df, how='left',
+                      on=['namespace', 'hostname', 'ifname'])
+
+        df['vlanList'] = np.where(df.portmode == "trunk", df.vlanList,
+                                  '')
+
+        return df
