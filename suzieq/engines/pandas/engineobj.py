@@ -168,6 +168,7 @@ class SqPandasEngine(SqEngineObj):
         # Order matters. Don't put this before the missing key fields insert
         for f in aug_fields:
             dep_fields = sch.get_parent_fields(f)
+            dep_fields = [x for x in dep_fields if x not in aug_fields]
             addnl_fields += dep_fields
 
         for fld in key_fields:
