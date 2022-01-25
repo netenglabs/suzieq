@@ -115,11 +115,8 @@ class XplorePage(SqGuiPage):
             state.namespace = namespace
 
         if state.table:
-            state.tables_obj = get_sqobject('tables')(
-                start_time=state.start_time,
-                end_time=state.end_time,
-                view=state.view)
-            fields = state.tables_obj.describe(table=state.table)
+            state.tables_obj = get_sqobject(state.table)()
+            fields = state.tables_obj.describe()
             colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                     fields.name.tolist())))
             columns = st.sidebar.multiselect('Pick columns',
@@ -314,7 +311,7 @@ class XplorePage(SqGuiPage):
                     self._draw_uniq_histogram(layout, agdf)
 
                 help_df = self._state.tables_obj \
-                    .describe(table=self._state.table) \
+                    .describe() \
                     .query('name != "sqvers"') \
                     .drop(['key', 'display'], axis=1) \
                     .reset_index(drop=True)
