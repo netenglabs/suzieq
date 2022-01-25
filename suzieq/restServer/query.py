@@ -216,7 +216,6 @@ class TableVerbs(str, Enum):
     summarize = "summarize"
     unique = "unique"
     top = "top"
-    describe = "describe"
 
 
 class DeviceStatus(str, Enum):
@@ -645,6 +644,32 @@ async def query_topology(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
+@ app.get("/api/v2/table/describe")
+async def query_table(
+        verb: TableVerbs, request: Request,
+        token: str = Depends(get_api_key),
+        format: str = None,
+        table: str = None,
+):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, 'describe', request, locals())
+
+
+@ app.get("/api/v2/table/{verb}")
+async def query_table(
+        verb: TableVerbs, request: Request,
+        token: str = Depends(get_api_key),
+        format: str = None,
+        hostname: List[str] = Query(None),
+        start_time: str = "", end_time: str = "",
+        view: ViewValues = "latest", namespace: List[str] = Query(None),
+        columns: List[str] = Query(default=["default"]),
+        query_str: str = None, table: str = None,
+):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
 @ app.get("/api/v2/vlan/{verb}")
 async def query_vlan(verb: CommonVerbs, request: Request,
                      token: str = Depends(get_api_key),
@@ -659,21 +684,6 @@ async def query_vlan(verb: CommonVerbs, request: Request,
                      vlanName: List[str] = Query(None),
                      query_str: str = None, what: str = None,
                      ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, request, locals())
-
-
-@ app.get("/api/v2/table/{verb}")
-async def query_table(
-    verb: TableVerbs, request: Request,
-    token: str = Depends(get_api_key),
-    format: str = None,
-    hostname: List[str] = Query(None),
-    start_time: str = "", end_time: str = "",
-    view: ViewValues = "latest", namespace: List[str] = Query(None),
-    columns: List[str] = Query(default=["default"]),
-    query_str: str = None
-):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
