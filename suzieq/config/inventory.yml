@@ -31,6 +31,7 @@ apply:
     "part-number/[0]/data: partNum?|",
     "serial-number/[0]/data: serial?|",
     "model-number/[0]/data: model?|",
+    "description/[0]/data: descr?|",
     "chassis-sub-module: _chassisSubMod"
     ]'
 
@@ -45,6 +46,11 @@ apply:
 
   junos-qfx10k:
     copy: junos-qfx
+
+  iosxe:
+    version: all
+    command: show inventory
+    textfsm: textfsm_templates/iosxe_show_inventory.tfsm
 
   nxos:
    version: all
@@ -64,7 +70,7 @@ apply:
       "interface: name?|",
       "sfp: _sfp?|",
       "name: model?|",
-      "type: type?|",
+      "type: partType?|",
       "rev: version?|",
       "partnum: partNum?|",
       "serialnum: serial?|",

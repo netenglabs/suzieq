@@ -1,5 +1,7 @@
 import re
 import numpy as np
+
+from suzieq.shared.utils import expand_ios_ifname
 from suzieq.poller.worker.services.service import Service
 
 
@@ -207,6 +209,7 @@ class InventoryService(Service):
         return processed_data
 
     def _junos_create_xcvr_entry(self, picent: dict, port_substr: str) -> dict:
+        '''Create a Xcvr entry for a port in Junos'''
         xname = picent.get('name', [{}])[0].get('data', '')
         pid = xname.split()[1]
         partnum = picent.get('part-number', [{}])[0].get('data', '')
@@ -220,7 +223,7 @@ class InventoryService(Service):
             "status": "present",
             'vendor': vendor,
             "version": picent.get('version', [{}])[0].get('data', ''),
-            "model": picent.get('description', [{}])[0].get('data', ''),
+            "partType": picent.get('description', [{}])[0].get('data', ''),
             "partNum": partnum,
             "serial": picent.get('serial-number', [{}])[0].get(
                 'data', ''),
@@ -228,5 +231,27 @@ class InventoryService(Service):
 
         return nentry
 
-    def _clean_ios_data(self, processed_data, raw_data):
-        pass
+    def _clean_iosxe_data(self, processed_data, raw_data):
+
+        for entry in processed_data:
+            name = entry['name']
+            if name.endswith('Stack'):
+                entry['type'] = 'chassis'
+            elif 'StackPort' in name:
+                entry['type'] = 'stackport'
+                entry['partType'] = entry['descr']
+            elif 'Power Supply' in name:
+                entry['type'] = 'power'
+            elif 'Uplink Module' in name:
+                entry['type'] = 'uplink'
+                entry['partType'] = entry['descr']
+            elif name.startswith('Switch '):
+                entry['type'] = 'stackswitch'
+
+            else:
+                entry['type'] = 'xcvr'
+                entry['name'] = expand_ios_ifname(name)
+                entry['partType'] = entry['descr']
+            entry['status'] = 'present'
+
+        return processed_data
