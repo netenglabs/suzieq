@@ -427,7 +427,7 @@ class SqCommand(SqPlugin):
             is_error = False
 
         if dont_strip_cols or not all(item in df.columns for item in cols):
-            cols = df.columns
+            cols = df.columns.tolist()
 
         if self.format == 'json':
             if self._json_print_handler:
