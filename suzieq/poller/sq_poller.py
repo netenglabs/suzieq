@@ -5,7 +5,6 @@ This module contains the logic needed to start the poller
 
 import argparse
 import asyncio
-import os
 import sys
 import traceback
 from typing import Dict
@@ -116,7 +115,6 @@ def controller_main():
     parser.add_argument(
         "--output-dir",
         type=str,
-        default=f'{os.path.abspath(os.curdir)}/sqpoller-output',
         help=argparse.SUPPRESS,
     )
 
