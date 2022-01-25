@@ -1,13 +1,13 @@
-from importlib.util import find_spec
+import base64
 import os
 from enum import Enum
-import base64
+from importlib.util import find_spec
 
-import streamlit as st
 import pandas as pd
-from streamlit.server.server import Server
+import streamlit as st
+from IPython.display import Markdown
 from streamlit.report_thread import get_report_ctx
-
+from streamlit.server.server import Server
 from suzieq.sqobjects import get_sqobject
 
 SUZIEQ_COLOR = "#68279D"
@@ -19,6 +19,22 @@ class SuzieqMainPages(str, Enum):
     XPLORE = "Xplore"
     PATH = "Path"
     SEARCH = "Search"
+
+
+def pandas_df_to_markdown_table(df: pd.DataFrame) -> str:
+    """Convert a Dataframe into a markdown table
+
+    Args:
+        df (pd.DataFrame): input dataframe
+
+    Returns:
+        str: markdown table
+    """
+
+    fmt = ['---' for i in range(len(df.columns))]
+    df_fmt = pd.DataFrame([fmt], columns=df.columns)
+    df_formatted = pd.concat([df_fmt, df])
+    return Markdown(df_formatted.to_csv(sep="|", index=False)).data
 
 
 def display_help_icon(url: str):
