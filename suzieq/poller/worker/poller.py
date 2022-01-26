@@ -2,11 +2,12 @@
 This module contains the Poller logic
 """
 
+import argparse
 import asyncio
 import logging
 import os
 import signal
-from typing import Dict
+from typing import Dict, Type
 
 from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.poller.worker.services.service_manager import ServiceManager
@@ -22,6 +23,8 @@ class Poller:
     output worker tasks, in order to pull the data from the devices configured
     in the device inventory.
     """
+
+    DEFAULT_INVENTORY = 'static'
 
     def __init__(self, userargs, cfg):
         self._validate_poller_args(userargs, cfg)
@@ -143,7 +146,29 @@ class Poller:
         self.waiting_tasks += tasks
         self.waiting_tasks_lock.release()
 
-    def _init_inventory(self, userargs, cfg):
+    def _get_inventory_plugins(self) -> Dict[str, Type]:
+        """Get all types of inventory it is possible to instantiate
+
+        Returns:
+            Dict[str, Type]: a dictionary containing the name of the inventory
+                type and its class
+        """
+        return Inventory.get_plugins()
+
+    def _init_inventory(self, userargs: argparse.Namespace, cfg: Dict,
+                        addnl_args: Dict = None):
+        """Initialize the Inventory object, in charge of retrieving the
+        list of nodes this worker is in charge to poll
+
+        Args:
+            userargs (argparse.Namespace): the cli arguments
+            cfg (Dict): the content of the SuzieQ config file
+            addnl_args (Dict): additional arguments to pass to the init
+                function of the Inventory class
+
+        Raises:
+            SqPollerConfError: raised if a wrong configuration is provided
+        """
 
         # Define the dictionary with the settings
         # for any kind of inventory source
@@ -153,8 +178,11 @@ class Poller:
             'ssh_config_file': userargs.ssh_config_file,
         }
 
+        if addnl_args:
+            inventory_args.update(addnl_args)
+
         # Retrieve the specific inventory source to use
-        inv_types = Inventory.get_plugins()
+        inv_types = self._get_inventory_plugins()
 
         inventory_class = None
         source_args = {}
@@ -168,7 +196,7 @@ class Poller:
             source_args = {'input_dir': userargs.input_dir}
         else:
             mgr_cfg = cfg.get('poller', {}).get('manager', {})
-            type_to_use = mgr_cfg.get('type', 'static')
+            type_to_use = mgr_cfg.get('type', self.DEFAULT_INVENTORY)
             inventory_class = inv_types.get(type_to_use)
             if not inventory_class:
                 raise SqPollerConfError(f'No inventory {type_to_use} found')

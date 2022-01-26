@@ -154,6 +154,51 @@ def test_poller_inventory_init(poller_args):
 @pytest.mark.poller_unit_tests
 @pytest.mark.poller_worker
 @pytest.mark.poller_object
+def test_worker_inventory_init_addnl_args(poller_args):
+    """Test if all the additional params are actually passed to the
+    Inventory class init function
+    """
+    cfg = load_sq_config(poller_args.config)
+    poller_args.ssh_config_file = 'config/file'
+    cfg['poller']['connect-timeout'] = 30
+    dummy_inventory_class = MagicMock()
+    dummy_get_classes = MagicMock(
+        return_value={Poller.DEFAULT_INVENTORY: dummy_inventory_class}
+    )
+    with patch.multiple(Poller, _validate_poller_args=MagicMock(),
+                        _init_inventory=MagicMock()):
+        poller = Poller(poller_args, cfg)
+
+    # Init the inventory with additional parameters
+    addnl_args = {
+        'test_1': 1,
+        'test_2': 2
+    }
+    with patch.multiple(Poller, _get_inventory_plugins=dummy_get_classes):
+        poller._init_inventory(poller_args, cfg, addnl_args)
+
+    # Check if the Inventory have been initiliazed
+    dummy_inventory_class.assert_called()
+
+    # Check if the additional params have been provided
+    provided_args = dummy_inventory_class.call_args_list[0][1]
+
+    assert addnl_args.items() <= provided_args.items(), \
+        'Additional arguments not provided to the Inventory class init'
+
+    # Check that even the other parameters are provided
+    inventory_args = {
+        'connect_timeout': cfg['poller']['connect-timeout'],
+        'ssh_config_file': poller_args.ssh_config_file
+    }
+    assert inventory_args.items() <= provided_args.items(), \
+        'Additional args provided but the others were not provided'
+
+
+@pytest.mark.poller
+@pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
+@pytest.mark.poller_object
 def test_poller_service_manager_init(poller_args):
     """Test if all the parameters are correctly passed to the ServiceManager
     """
