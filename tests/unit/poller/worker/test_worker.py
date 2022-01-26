@@ -12,7 +12,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 from suzieq.poller.worker.inventory.inventory import Inventory
-from suzieq.poller.worker.poller import Poller
+from suzieq.poller.worker.worker import Worker
 from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.poller.worker.writers.output_worker_manager import \
     OutputWorkerManager
@@ -51,7 +51,7 @@ def poller_args(monkeypatch):
     os.remove(cfg_file)
 
 
-async def run_poller_with_mocks(poller: Poller) -> Dict[str, MagicMock]:
+async def run_worker_with_mocks(poller: Worker) -> Dict[str, MagicMock]:
     """Run the poller replacing component 'run' functions with mocks
     """
 
@@ -79,7 +79,7 @@ async def run_poller_with_mocks(poller: Poller) -> Dict[str, MagicMock]:
 @pytest.mark.poller_unit_tests
 @pytest.mark.poller_worker
 @pytest.mark.poller_object
-def test_poller_object_init_validation(poller_args):
+def test_worker_object_init_validation(poller_args):
     """Test Poller object user_args validation
     """
     cfg = load_sq_config(poller_args.config)
@@ -87,7 +87,7 @@ def test_poller_object_init_validation(poller_args):
     # Test invalid ssh config file
     poller_args.ssh_config_file = 'invalid'
     with pytest.raises(SqPollerConfError):
-        Poller(poller_args, cfg)
+        Worker(poller_args, cfg)
 
 
 @pytest.mark.poller
@@ -95,17 +95,17 @@ def test_poller_object_init_validation(poller_args):
 @pytest.mark.poller_worker
 @pytest.mark.poller_object
 @pytest.mark.asyncio
-async def test_add_pop_poller_task(poller_args):
+async def test_add_pop_worker_task(poller_args):
     """Test the methods for adding and removing the poller tasks
     """
     cfg = load_sq_config(poller_args.config)
-    poller = Poller(poller_args, cfg)
+    poller = Worker(poller_args, cfg)
     # Test add_poller_task()
     tasks = [asyncio.Future(), asyncio.Future()]
-    await poller._add_poller_task(tasks)
+    await poller._add_worker_tasks(tasks)
     assert poller.waiting_tasks == tasks
     # Test _pop_waiting_poller_tasks()
-    received = await poller._pop_waiting_poller_tasks()
+    received = await poller._pop_waiting_worker_tasks()
 
     # Check if there aren't poller tasks
     assert not poller.waiting_tasks
@@ -119,13 +119,13 @@ async def test_add_pop_poller_task(poller_args):
 @pytest.mark.poller_worker
 @pytest.mark.poller_object
 @pytest.mark.asyncio
-async def test_poller_run(poller_args):
+async def test_poller_worker_run(poller_args):
     """Check if all the services are launched after calling Poller.run()
     """
     cfg = load_sq_config(poller_args.config)
-    poller = Poller(poller_args, cfg)
+    poller = Worker(poller_args, cfg)
 
-    mks = await run_poller_with_mocks(poller)
+    mks = await run_worker_with_mocks(poller)
     # Check if all the functions have been called
     for mk in mks:
         mks[mk].assert_called()
@@ -135,14 +135,14 @@ async def test_poller_run(poller_args):
 @pytest.mark.poller_unit_tests
 @pytest.mark.poller_worker
 @pytest.mark.poller_object
-def test_poller_inventory_init(poller_args):
+def test_worker_inventory_init(poller_args):
     """Test if all the parameters are correctly passed to the Inventory
     """
     cfg = load_sq_config(poller_args.config)
     poller_args.ssh_config_file = 'config/file'
     cfg['poller']['connect-timeout'] = 30
-    with patch.multiple(Poller, _validate_poller_args=MagicMock()):
-        poller = Poller(poller_args, cfg)
+    with patch.multiple(Worker, _validate_worker_args=MagicMock()):
+        poller = Worker(poller_args, cfg)
 
     inv = poller.inventory
     # Check if all the values are valid
@@ -163,18 +163,18 @@ def test_worker_inventory_init_addnl_args(poller_args):
     cfg['poller']['connect-timeout'] = 30
     dummy_inventory_class = MagicMock()
     dummy_get_classes = MagicMock(
-        return_value={Poller.DEFAULT_INVENTORY: dummy_inventory_class}
+        return_value={Worker.DEFAULT_INVENTORY: dummy_inventory_class}
     )
-    with patch.multiple(Poller, _validate_poller_args=MagicMock(),
+    with patch.multiple(Worker, _validate_worker_args=MagicMock(),
                         _init_inventory=MagicMock()):
-        poller = Poller(poller_args, cfg)
+        poller = Worker(poller_args, cfg)
 
     # Init the inventory with additional parameters
     addnl_args = {
         'test_1': 1,
         'test_2': 2
     }
-    with patch.multiple(Poller, _get_inventory_plugins=dummy_get_classes):
+    with patch.multiple(Worker, _get_inventory_plugins=dummy_get_classes):
         poller._init_inventory(poller_args, cfg, addnl_args)
 
     # Check if the Inventory have been initiliazed
@@ -199,13 +199,13 @@ def test_worker_inventory_init_addnl_args(poller_args):
 @pytest.mark.poller_unit_tests
 @pytest.mark.poller_worker
 @pytest.mark.poller_object
-def test_poller_service_manager_init(poller_args):
+def test_worker_service_manager_init(poller_args):
     """Test if all the parameters are correctly passed to the ServiceManager
     """
     cfg = load_sq_config(poller_args.config)
     poller_args.run_once = 'gather'
     cfg['poller']['period'] = 30
-    poller = Poller(poller_args, cfg)
+    poller = Worker(poller_args, cfg)
 
     mgr = poller.service_manager
     # Check if all the values are valid

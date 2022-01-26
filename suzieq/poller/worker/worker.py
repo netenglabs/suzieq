@@ -18,8 +18,8 @@ from suzieq.shared.exceptions import SqPollerConfError
 logger = logging.getLogger(__name__)
 
 
-class Poller:
-    """Poller is the object in charge of coordinating services, nodes and
+class Worker:
+    """Worker is the object in charge of coordinating services, nodes and
     output worker tasks, in order to pull the data from the devices configured
     in the device inventory.
     """
@@ -27,7 +27,7 @@ class Poller:
     DEFAULT_INVENTORY = 'static'
 
     def __init__(self, userargs, cfg):
-        self._validate_poller_args(userargs, cfg)
+        self._validate_worker_args(userargs, cfg)
 
         # Set the worker id
         self.worker_id = userargs.worker_id
@@ -66,7 +66,7 @@ class Poller:
             'service_only': userargs.service_only,
             'exclude_services': userargs.exclude_services
         }
-        self.service_manager = ServiceManager(self._add_poller_task,
+        self.service_manager = ServiceManager(self._add_worker_tasks,
                                               service_dir,
                                               svc_schema_dir,
                                               self.output_queue,
@@ -74,13 +74,13 @@ class Poller:
                                               default_svc_period,
                                               **svc_manager_args)
 
-    async def init_poller(self):
-        """Initialize the poller, instantiating the services and setting up
+    async def init_worker(self):
+        """Initialize the worker, instantiating the services and setting up
         the connection with the nodes. This function should be called only
         at the beginning before calling run().
         """
 
-        logger.info('Initializing poller')
+        logger.info('Initializing poller worker')
 
         init_tasks = []
         init_tasks.append(self.inventory.build_inventory())
@@ -95,7 +95,7 @@ class Poller:
 
     async def run(self):
         """Start polling the devices.
-        Before running this function the poller should be initialized.
+        Before running this function the worker should be initialized.
         """
 
         # Add the node list in the services
@@ -114,14 +114,15 @@ class Poller:
         # Schedule the tasks to run
         await self.inventory.schedule_nodes_run()
         await self.service_manager.schedule_services_run()
-        await self._add_poller_task([self.output_manager.run_output_workers()])
+        await self._add_worker_tasks(
+            [self.output_manager.run_output_workers()])
 
         try:
             # The logic below of handling the writer worker task separately
             # is to ensure we can terminate properly when all the other
             # tasks have finished as in the case of using file input
             # instead of SSH
-            tasks = await self._pop_waiting_poller_tasks()
+            tasks = await self._pop_waiting_worker_tasks()
             while tasks:
                 try:
                     _, pending = await asyncio.wait(
@@ -139,8 +140,8 @@ class Poller:
         except asyncio.CancelledError:
             logger.warning('Received terminate signal. Terminating...')
 
-    async def _add_poller_task(self, tasks):
-        """Add new tasks to be executed in the poller run loop."""
+    async def _add_worker_tasks(self, tasks):
+        """Add new tasks to be executed in the poller worker run loop."""
 
         await self.waiting_tasks_lock.acquire()
         self.waiting_tasks += tasks
@@ -205,11 +206,11 @@ class Poller:
                 'worker-id': self.worker_id
             }
 
-        return inventory_class(self._add_poller_task,
+        return inventory_class(self._add_worker_tasks,
                                **source_args,
                                **inventory_args)
 
-    async def _pop_waiting_poller_tasks(self):
+    async def _pop_waiting_worker_tasks(self):
         """Empty the list of tasks to be added in the run loop
         and return its content.
         """
@@ -227,7 +228,7 @@ class Poller:
         return poller_tasks
 
     async def _stop(self):
-        """Stop the poller"""
+        """Stop the worker"""
 
         tasks = [t for t in asyncio.all_tasks()
                  if t is not asyncio.current_task()]
@@ -235,7 +236,7 @@ class Poller:
         for task in tasks:
             task.cancel()
 
-    def _validate_poller_args(self, userargs: Dict, _):
+    def _validate_worker_args(self, userargs: Dict, _):
         """Validate the arguments and the configuration passed to the poller.
         The function produces a SqPollerConfError exception if there is
         something wrong in the configuration.
