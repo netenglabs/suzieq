@@ -88,10 +88,21 @@ class Worker:
 
         nodes, services = await asyncio.gather(*init_tasks)
 
-        if not nodes or not services:
-            # Logging should've been done by init_nodes/services for details
-            raise SqPollerConfError('Terminating because no nodes'
-                                    'or services found')
+        if not nodes:
+            # Get the logger filename
+            root_logger = logging.getLogger()
+            log_filename = ""
+            for h in root_logger.handlers:
+                if hasattr(h, 'baseFilename'):
+                    log_filename = h.baseFilename
+                    break
+
+            raise SqPollerConfError(
+                f'No nodes could be polled. Check {log_filename} for errors '
+                'in connecting'
+            )
+        if not services:
+            raise SqPollerConfError('No services candidate for execution')
 
     async def run(self):
         """Start polling the devices.
