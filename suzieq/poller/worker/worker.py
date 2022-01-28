@@ -36,9 +36,6 @@ class Worker:
         self.waiting_tasks = []
         self.waiting_tasks_lock = asyncio.Lock()
 
-        # Init the node inventory object
-        self.inventory = self._init_inventory(userargs, cfg)
-
         # Setup poller writers
 
         # TODO: At the moment:
@@ -73,6 +70,9 @@ class Worker:
                                               run_mode,
                                               default_svc_period,
                                               **svc_manager_args)
+
+        # Init the node inventory object
+        self.inventory = self._init_inventory(userargs, cfg)
 
     async def init_worker(self):
         """Initialize the worker, instantiating the services and setting up
