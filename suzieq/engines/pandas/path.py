@@ -29,7 +29,12 @@ class PathObj(SqPandasEngine):
 
         self.source = source
         self.dest = dest
+        # Recursive route handling, handle 2 levels of recursion only
+        # Why? Just to stop infinite recursion in case of a bug
+        self.max_rr_recursion = 2
+
         self._underlay_dfs = {}  # lpm entries for each vtep IP
+        self._srcnode_via_arp = False
 
         namespace = [ns]
         try:
@@ -104,6 +109,8 @@ class PathObj(SqPandasEngine):
             .rename(columns={'master': 'vrf'}) \
             .replace({'vrf': {'': 'default'}}) \
             .query('state != "failed"') \
+            .drop_duplicates(subset=['namespace', 'hostname', 'ipAddress',
+                                     'oif']) \
             .reset_index(drop=True)
 
         self._macsobj = self._get_table_sqobj('macs')
@@ -119,8 +126,16 @@ class PathObj(SqPandasEngine):
             # TODO: No host with this src addr. Is addr a local ARP entry?
             self._src_df = self._find_fhr_df(None, source)
 
+            # We use check_arp to identify whether we look up the source's
+            # interface table to identify its IP address and subnet to
+            # determine if the destination is in the same subnet or not.
+            # We cannot just use the ARP table in this case because the ARP
+            # table may not have been populated yet.
+            self._srcnode_via_arp = True
+
         if self._src_df.empty:
             raise AttributeError(f"Invalid src {source}")
+        src_hostname = self._src_df.hostname.unique().tolist()[0]
 
         if self._src_df.hostname.nunique() == 1 and len(self._src_df) > 1:
             # Multiple interfaces with the same IP address. Possible case
@@ -135,26 +150,37 @@ class PathObj(SqPandasEngine):
             self._dest_df = self._if_df[self._if_df.ipAddressList.astype(str)
                                         .str.contains(dest + "/")]
 
-        srcnet = self._src_df.ipAddressList.tolist()[0]
-        if ip_address(dest) in ip_network(srcnet, strict=False):
-            self.is_l2 = True
-        else:
-            self.is_l2 = False
-
         if self._dest_df.empty:
-            # TODO: No host with this dest addr. Is addr a local ARP entry?
+            # Check if addr is in any switch's local ARP
             self._dest_df = self._find_fhr_df(None, dest)
 
-        if self._dest_df.empty:
-            raise AttributeError(f"Invalid dest {dest}")
+        if self._srcnode_via_arp:
+            # If the dest is in the source host's ARP table, its L2
+            if not self._arpnd_df.query(f'namespace=="{namespace}" and '
+                                        f'hostname=="{src_hostname}" and '
+                                        f'ipAddress=="{self.dest}"').empty:
+                self.is_l2 = True
+            else:
+                self.is_l2 = False
+        else:
+            srcnet = self._src_df.ipAddressList.tolist()[0]
+            if ip_address(dest) in ip_network(srcnet, strict=False):
+                self.is_l2 = True
+            else:
+                self.is_l2 = False
 
-        if self._dest_df.hostname.nunique() == 1 and len(self._dest_df) > 1:
-            # Multiple interfaces with the same IP address. Possible case
-            # of Unnumbered interfaces. See if there's a loopback in there
-            if 'loopback' in self._dest_df.type.unique().tolist():
-                self._dest_df = self._dest_df.query('type == "loopback"')
+        if not self._dest_df.empty:
+            if (self._dest_df.hostname.nunique() == 1 and
+                    len(self._dest_df) > 1):
+                # Multiple interfaces with the same IP address. Possible case
+                # of Unnumbered interfaces. See if there's a loopback in there
+                if 'loopback' in self._dest_df.type.unique().tolist():
+                    self._dest_df = self._dest_df.query('type == "loopback"')
 
-        self.dest_device = self._dest_df["hostname"].unique()
+            self.dest_device = self._dest_df["hostname"].unique()
+        else:
+            self.dest_device = []
+
         self.src_device = self._src_df["hostname"].unique()
 
         # Start with the source host and find its route to the destination
@@ -274,8 +300,10 @@ class PathObj(SqPandasEngine):
                     continue
             if fhr_df.empty:
                 fhr_df = idf
+                fhr_df['master'] = rslt_df.vrf.unique().tolist()[0]
             else:
                 fhr_df = pd.concat([fhr_df, idf])
+                fhr_df['master'] = rslt_df.vrf.unique().tolist()[0]
         return fhr_df
 
     def _get_if_vlan(self, device: str, ifname: str) -> int:
@@ -400,6 +428,50 @@ class PathObj(SqPandasEngine):
 
         return result
 
+    def _handle_recursive_route(self, df: pd.DataFrame,
+                                max_recurse: int) -> pd.DataFrame:
+        '''Handle recursive routes which are routes without an OIF.
+
+        NXOS, Panos, IOS and others have this scenario when showing BGP routes
+
+        Args:
+            df (pd.DataFrame): The route DF with the routes to resolve
+            max_recurse(int): Recurse this many times to resolve a route
+
+        Returns:
+            pd.DataFrame: The original dataframe with the OIF filled in
+        '''
+        if not max_recurse:
+            return df
+
+        for row in df.itertuples():
+            oifs = []
+            nhops = []
+            for nhop in row.nexthopIps:
+                rrdf = self._get_table_sqobj('routes') \
+                           .lpm(namespace=[row.namespace],
+                                hostname=[row.hostname], address=[nhop],
+                                vrf=[row.vrf])
+
+                if not rrdf.empty:
+                    if not rrdf.oifs.size:
+                        # Recurse once more
+                        rrdf = self._handle_recursive_route(rrdf,
+                                                            max_recurse-1)
+                    oif = rrdf.oifs.tolist()[0]
+                    oifs.extend(oif)
+                    if isinstance(oif, np.ndarray):
+                        oif = oif.tolist()[0]
+                    if oif.startswith('_nexthopVrf:'):
+                        # We need to change the nhop too
+                        nhops.extend(rrdf.nexthopIps.tolist()[0])
+
+            df.at[row.Index, 'oifs'] = np.array(oifs)
+            if nhops:
+                df.at[row.Index, 'nexthopIps'] = np.array(nhops)
+
+        return df
+
     def _get_nexthops(self, device: str, vrf: str, dest: str, is_l2: bool,
                       vtep: str, macaddr: str) -> list:
         """Get nexthops (oif + IP + overlay) or just oif for given host/vrf.
@@ -422,23 +494,19 @@ class PathObj(SqPandasEngine):
         if not rslt.empty and (len(rslt.nexthopIps.iloc[0]) != 0 and
                                rslt.nexthopIps.iloc[0][0] != '') and (
                                    rslt.protocol.iloc[0] != 'hmm'):
+            if not rslt.oifs.iloc[0].size:
+                rslt = self._handle_recursive_route(rslt,
+                                                    self.max_rr_recursion)
+
             # Handle overlay routes given how NXOS programs its FIB
             if rslt.oifs.explode().str.startswith('_nexthopVrf:').any():
                 # We need to find the true NHIP
                 if rslt.oifs.iloc[0].tolist() == [False]:
                     raise AttributeError('mising vtep')
                 return self._get_underlay_nexthop(
-                    device,
-                    rslt.nexthopIps.iloc[0].tolist(),
+                    device, rslt.nexthopIps.iloc[0].tolist(),
                     rslt.oifs.iloc[0].tolist(), True)
-            elif not rslt.empty and (len(rslt.nexthopIps.iloc[0]) != 0 and
-                                     rslt.nexthopIps.iloc[0][0] != '') and (
-                                         not rslt.oifs.iloc[0].tolist()):
-                # NXOS and recursive route handling
-                if rslt.ofs.iloc[0].tolist() == [False]:
-                    raise AttributeError('mising vtep recursive route')
-                return self._get_underlay_nexthop(
-                    device, rslt.nexthopIps.iloc[0].tolist(), [vrf], False)
+
             return zip(rslt.nexthopIps.iloc[0].tolist(),
                        rslt.oifs.iloc[0].tolist(),
                        repeat(False), repeat(False),
@@ -702,7 +770,7 @@ class PathObj(SqPandasEngine):
                 "error": [],
                 "lookup": dest,
                 "macaddr": None,
-                "vrf": item['master'],
+                "vrf": dvrf or item['master'],  # pick user pref if given
                 'mtuMatch': True,  # Its the first node
                 "is_l2": self.is_l2,
                 "nhip": '',
@@ -725,7 +793,8 @@ class PathObj(SqPandasEngine):
             error = []
             dest_device_iifs[f'{item.hostname}/'] = {
                 "iif": '',
-                "vrf": item["master"] or "default",
+                # this is what the dest is, so user pref doesn't come in
+                "vrf": item["master"] or dvrf,
                 "mtu": item["mtu"],
                 "outMtu": item["mtu"],
                 "macaddr": None,
@@ -1047,7 +1116,8 @@ class PathObj(SqPandasEngine):
             if prev_hop:
                 # Taking advantage of python's shallow copy, that this
                 # also changes what's in df_plist
-                prev_hop['oif'] = self._dest_df.iloc[0]['ifname']
+                if not self._dest_df.empty:
+                    prev_hop['oif'] = self._dest_df.iloc[0]['ifname']
                 if (isinstance(prev_hop['outMtu'], str) and
                         '/' in prev_hop['outMtu']):
                     prev_hop['outMtu'] = int(prev_hop['outMtu'].split('/')[1])
@@ -1095,7 +1165,11 @@ class PathObj(SqPandasEngine):
                         prev_hop['vtepLookup'] = ele[item]["overlay"]
                     elif hop["isL2"]:
                         prev_hop["macLookup"] = ele[item]["macaddr"]
-                    prev_hop['isL2'] = hop['isL2']
+                    if not self._srcnode_via_arp or hop['hopCount'] != 1:
+                        # When we're starting from the first hop switch rather
+                        # than the true source endpoint, and we're jumping into
+                        # VXLAN, its not correct to use the isL2 from nexthop.
+                        prev_hop['isL2'] = hop['isL2']
                     prev_hop['oif'] = hop['oif']
                     if isinstance(hop['outMtu'], str) and '/' in hop['outMtu']:
                         prev_hop['outMtu'] = int(hop['outMtu'].split('/')[0])
@@ -1105,7 +1179,8 @@ class PathObj(SqPandasEngine):
         if prev_hop:
             # Taking advantage of python's shallow copy, that this
             # also changes what's in df_plist
-            prev_hop['oif'] = self._dest_df.iloc[0]['ifname']
+            if not self._dest_df.empty:
+                prev_hop['oif'] = self._dest_df.iloc[0]['ifname']
             if (isinstance(prev_hop['outMtu'], str) and
                     '/' in prev_hop['outMtu']):
                 prev_hop['outMtu'] = int(prev_hop['outMtu'].split('/')[1])
