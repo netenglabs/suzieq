@@ -16,8 +16,8 @@ class RoutesObj(SqPandasEngine):
         '''Table name'''
         return 'routes'
 
-    def _cons_addnl_fields(self, columns: list,
-                           addnl_fields: list) -> Tuple[list, list]:
+    def _cons_addnl_fields(self, columns: list, addnl_fields: list,
+                           add_prefixlen: bool) -> Tuple[list, list]:
         '''get all the additional columns we need'''
 
         drop_cols = []
@@ -25,9 +25,10 @@ class RoutesObj(SqPandasEngine):
         if columns == ['default']:
             addnl_fields.append('metric')
             drop_cols.append('metric')
-        elif columns != ['*'] and 'metric' not in columns:
-            addnl_fields.append('metric')
-            drop_cols += ['metric']
+        elif columns != ['*']:
+            if 'metric' not in columns:
+                addnl_fields.append('metric')
+                drop_cols += ['metric']
 
             if 'ipvers' not in columns:
                 addnl_fields.append('ipvers')
@@ -37,36 +38,13 @@ class RoutesObj(SqPandasEngine):
                 addnl_fields.append('protocol')
                 drop_cols.append('protocol')
 
+        if add_prefixlen:
+            if columns != ['*'] and all('prefixlen' not in x
+                                        for x in [columns, addnl_fields]):
+                addnl_fields.append('prefixlen')
+                drop_cols.append('prefixlen')
+
         return addnl_fields, drop_cols
-
-    def _fill_in_oifs(self, df: pd.DataFrame()):
-        '''Some NOS do not return an ifname, we need to fix it'''
-
-        def add_oifs(row, ifdict):
-            if row.nexthopIps.size == 0:
-                return row.oifs
-
-            oifs = []
-            for hop in row.nexthopIps:
-                for k, v in ifdict.items():
-                    if hop in [str(x) for x in ip_network(k).hosts()]:
-                        oifs.append(v)
-                        break
-            return np.array(oifs)
-
-        conn_if_dict = df \
-            .query('protocol == "connected"')[['prefix', 'oifs']] \
-            .to_dict(orient='records')
-
-        conn_if_dict = {x['prefix']: x['oifs'][0] for x in conn_if_dict}
-        work_df = df.query('oifs.str.len() == 0').reset_index(drop=True)
-        if not work_df.empty:
-            ok_df = df.query('oifs.str.len() != 0').reset_index(drop=True)
-            work_df['oifs'] = work_df.apply(add_oifs, args=(conn_if_dict,),
-                                            axis=1)
-            df = pd.concat([ok_df, work_df]).reset_index(drop=True)
-
-        return df
 
     def get(self, **kwargs):
         '''Return the routes table for the given filters'''
@@ -79,11 +57,7 @@ class RoutesObj(SqPandasEngine):
 
         columns = kwargs.get('columns', ['default'])
         addnl_fields, drop_cols = self._cons_addnl_fields(
-            columns, addnl_fields)
-
-        if prefixlen and ('prefixlen' not in columns or columns != ['*']):
-            addnl_fields.append('prefixlen')
-            drop_cols.append('prefixlen')
+            columns, addnl_fields, prefixlen != '')
 
         # /32 routes are stored with the /32 prefix, so if user doesn't specify
         # prefix as some folks do, assume /32
@@ -106,7 +80,8 @@ class RoutesObj(SqPandasEngine):
             df = df.loc[df['prefix'] != "127.0.0.0/8"]
             df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
 
-            if prefixlen or 'prefixlen' in columns or (columns == ['*']):
+            if (prefixlen or (columns == ['*']) or
+                    any('prefixlen' in x for x in [columns, addnl_fields])):
                 # This convoluted logic to handle the issue of invalid entries
                 # for prefix in JUNOS routing table
                 df['prefixlen'] = df['prefix'].str.split('/')
@@ -124,7 +99,8 @@ class RoutesObj(SqPandasEngine):
                 # drop in reset_index to not add an additional index col
                 df = df.query(query_str).reset_index(drop=True)
 
-            if columns != ['*'] and 'prefixlen' not in columns:
+            if (columns != ['*'] and
+                    all('prefixlen' not in x for x in [columns, addnl_fields])):
                 drop_cols.append('prefixlen')
 
         if not df.empty and ('numNexthops' in columns or (columns == ['*'])):
@@ -133,9 +109,6 @@ class RoutesObj(SqPandasEngine):
             srs = np.array(list(zip(srs_oif, srs_hops)))
             srs_max = np.amax(srs, 1)
             df.insert(len(df.columns)-1, 'numNexthops', srs_max)
-
-        if not df.empty and 'oifs' in df.columns:
-            df = self._fill_in_oifs(df)
 
         if user_query:
             df = self._handle_user_query_str(df, user_query)
@@ -217,11 +190,15 @@ class RoutesObj(SqPandasEngine):
                 usercols.append('timestamp')
         else:
             usercols = self.schema.get_display_fields(usercols)
-        cols = ["default"]
-        drop_cols = []
+        cols = self.schema.get_display_fields(["default"])
+        for col in usercols:
+            if col not in cols:
+                cols.append(col)
 
-        addnl_fields, drop_cols = self._cons_addnl_fields(
-            cols, addnl_fields)
+        # We call it here, and not use the one in get because we don't
+        # want them dropped
+        addnl_fields, _ = self._cons_addnl_fields(
+            cols, addnl_fields, True)
         rslt = pd.DataFrame()
 
         # if not using a pre-populated dataframe
@@ -233,12 +210,6 @@ class RoutesObj(SqPandasEngine):
 
         if df.empty:
             return df
-
-        if 'prefixlen' not in df.columns:
-            df['prefixlen'] = df['prefix'].str.split('/')
-            df = df[df.prefixlen.str.len() == 2]
-            df['prefixlen'] = df['prefixlen'].str[1].astype('int')
-            drop_cols.append('prefixlen')
 
         # Vectorized operation for faster results with IPv4:
         if ipvers == 4:
