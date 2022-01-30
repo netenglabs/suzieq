@@ -8,6 +8,7 @@ import asyncio
 import copy
 import logging
 import os
+import shlex
 from asyncio.subprocess import Process
 from collections import defaultdict
 from pathlib import Path
@@ -60,25 +61,27 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             )
 
         # Configure the encyrption of the credential file
-        cred_key = Fernet.generate_key()
-        self._encryptor = Fernet(cred_key)
-        # Save the key into an env. variable
-        os.environ['SQ_CONTROLLER_POLLER_CRED'] = cred_key.decode()
+        if not self._input_dir:
+            cred_key = Fernet.generate_key()
+            self._encryptor = Fernet(cred_key)
+            # Save the key into an env. variable
+            os.environ['SQ_CONTROLLER_POLLER_CRED'] = cred_key.decode()
 
-        # Configure the output directory for the inventory files
-        self._inventory_path = Path(f'/tmp/.suzieq/inventory.{os.getpid()}') \
-            .resolve()
+            # Configure the output directory for the inventory files
+            path_name = f'/tmp/.suzieq/inventory.{os.getpid()}'
+            self._inventory_path = Path(path_name).resolve()
 
-        try:
-            self._inventory_path.mkdir(parents=True, exist_ok=True)
-        except FileExistsError:
-            raise SqPollerConfError(
-                f'The inventory dir is not a directory: {self._inventory_path}'
-            )
+            try:
+                self._inventory_path.mkdir(parents=True, exist_ok=True)
+            except FileExistsError:
+                raise SqPollerConfError(
+                    f'The inventory dir is not a directory: '
+                    f'{self._inventory_path}'
+                )
 
-        os.environ['SQ_INVENTORY_PATH'] = str(self._inventory_path)
+            os.environ['SQ_INVENTORY_PATH'] = str(self._inventory_path)
 
-        self._inventory_file_name = 'inv'
+            self._inventory_file_name = 'inv'
 
         # Define poller parameters
         allowed_args = ['run-once', 'exclude-services',
@@ -158,7 +161,10 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         """Launch a single poller writing the content of and input directory
         produced with the run-once=gather mode
         """
-        await self._launch_poller(0)
+        if self._single_run_mode == 'debug':
+            self._print_poller_launch_instructions()
+        else:
+            await self._launch_poller(0)
         self._poller_tasks_ready.set()
 
     def get_n_workers(self, _) -> int:
@@ -301,28 +307,36 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             raise PollingError('Unable to start the poller process')
         self._waiting_workers[poller_id] = process
 
-    def _print_poller_launch_instructions(self, n_chunks: int):
+    def _print_poller_launch_instructions(self, n_chunks: int = 1):
         """Print the commands to execute in order to manually launch
         the poller workers for debugging purpose.
 
         Args:
             n_chunks (int): the number of chunks the inventory is splitted into
         """
+        quoted_args = [shlex.quote(v) for v in self._args_to_pass]
+        args_str = ' '.join(quoted_args)
+        if self._input_dir:
+            print('You can manually start the worker with the following '
+                  'command:')
+            print()  # Print empty line
+            print(f'python {args_str}')
+        else:
+            print(f'{n_chunks} inventory chunks generated, you can '
+                  'now manually start the workers with the following '
+                  'commands:')
 
-        print(f'{n_chunks} inventory chunks generated, you can '
-              'now manually start the workers with the following '
-              'commands:')
+            for i in range(n_chunks):
+                print()  # Print an empty line
+                env_to_print = ['SQ_CONTROLLER_POLLER_CRED',
+                                'SQ_INVENTORY_PATH']
+                for e in env_to_print:
+                    print(f'export {e}={os.environ[e]}')
 
-        for i in range(n_chunks):
-            print()  # Print an empty line
-            env_to_print = ['SQ_CONTROLLER_POLLER_CRED',
-                            'SQ_INVENTORY_PATH']
-            for e in env_to_print:
-                print(f'export {e}={os.environ[e]}')
-            sq_dir = get_sq_install_dir()
-            print(
-                f'python {sq_dir}/poller/worker/sq_worker.py --worker-id {i}'
-            )
+                args_to_print = args_str
+                if i > 0:
+                    args_to_print += f' --worker-id {i}'
+                print(f'python {args_to_print}')
 
     async def _stop_poller(self, poller_id: int):
         """Kill the poller with the given id. The function first calls a

@@ -348,6 +348,75 @@ async def test_launch_debug_mode(monkeypatch, manager_cfg, capsys):
 @pytest.mark.controller_manager
 @pytest.mark.controller_manager_static
 @pytest.mark.asyncio
+async def test_launch_debug_mode_input_dir(monkeypatch, manager_cfg, capsys):
+    """Test the debug mode with the input directory
+    """
+    fake_environ = {}
+    monkeypatch.setattr(os, 'environ', fake_environ)
+
+    manager_args = MANAGER_ARGS.copy()
+    manager_args['single-run-mode'] = 'debug'
+    manager_args['input-dir'] = 'tests/'
+    manager = init_static_manager(manager_cfg, manager_args)
+
+    launch_fn = get_async_task_mock()
+    with patch.multiple(StaticManager,
+                        _launch_poller=launch_fn):
+        await manager.launch_with_dir()
+
+    # Check if no worker has been launched
+    launch_fn.assert_not_called()
+
+    # Check that no inventory have been written
+    assert not hasattr(manager, '_inventory_path'), \
+        'The inventory path is set but not inventory should be written'
+
+    help_message = capsys.readouterr().out
+    # Make sure an output have been returned
+    assert help_message, 'No help message printed'
+    worker_messages = help_message.split('\n\n')
+
+    assert len(worker_messages) == 2, 'Expected help message with 2 lines'
+
+    # Check if the input directory is in the arguments
+    command_line = worker_messages[1]
+    assert '-i' in command_line, '-i flag not present'
+    assert manager_args['input-dir'] in command_line
+
+
+@pytest.mark.poller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller
+@pytest.mark.controller_manager
+@pytest.mark.controller_manager_static
+@pytest.mark.asyncio
+async def test_launch_with_input_dir(monkeypatch, manager_cfg):
+    """Test the debug mode with the input directory
+    """
+    fake_environ = {}
+    monkeypatch.setattr(os, 'environ', fake_environ)
+
+    manager_args = MANAGER_ARGS.copy()
+    manager_args['single-run-mode'] = 'input-dir'
+    manager_args['input-dir'] = 'tests/'
+    manager = init_static_manager(manager_cfg, manager_args)
+
+    launch_fn = get_async_task_mock()
+    with patch.multiple(StaticManager,
+                        _launch_poller=launch_fn):
+        await manager.launch_with_dir()
+
+    # Check if the worker have been called
+    launch_fn.assert_called_once()
+    launch_fn.assert_any_call(0)
+
+
+@pytest.mark.poller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller
+@pytest.mark.controller_manager
+@pytest.mark.controller_manager_static
+@pytest.mark.asyncio
 async def test_exception_when_launching_worker(monkeypatch, manager_cfg):
     """Test if exception when launching the workers is properly handled
     """
