@@ -205,16 +205,16 @@ class EvpnvniObj(SqPandasEngine):
         else:
             her_df = pd.DataFrame()
 
-        if (not her_df.empty and
-                (her_df.remoteVtepList.str.len() != 0).any()):
-            # Check if every VTEP we know is reachable
-            rdf = self._get_table_sqobj('routes').get(
-                namespace=kwargs.get('namespace'), vrf='default')
-            if not rdf.empty:
-                rdf['prefixlen'] = rdf['prefix'].str.split('/') \
-                                                    .str[1].astype('int')
-            her_df["assertReason"] += her_df.apply(
-                self._is_vtep_reachable, args=(rdf,), axis=1)
+        # if (not her_df.empty and
+        #         (her_df.remoteVtepList.str.len() != 0).any()):
+        #     # Check if every VTEP we know is reachable
+        #     rdf = self._get_table_sqobj('routes').get(
+        #         namespace=kwargs.get('namespace'), vrf='default')
+        #     if not rdf.empty:
+        #         rdf['prefixlen'] = rdf['prefix'].str.split('/') \
+        #                                             .str[1].astype('int')
+        #     her_df["assertReason"] += her_df.apply(
+        #         self._is_vtep_reachable, args=(rdf,), axis=1)
 
         mcast_df = df.query('mcastGroup != "0.0.0.0"')
         if not mcast_df.empty:
@@ -262,18 +262,22 @@ class EvpnvniObj(SqPandasEngine):
                 and x['master'] != "bridge") else [],
             axis=1)
 
-        # mac_df = MacsObj(context=self.ctxt) \
-        #     .get(namespace=kwargs.get("namespace", ""),
-        #          macaddr=["00:00:00:00:00:00"])
+        mac_df = self._get_table_sqobj('macs') \
+            .get(namespace=kwargs.get("namespace", ""),
+                 macaddr=["00:00:00:00:00:00"], remoteVtepIp=['any'])
 
-        # # Assert that we have HER for every remote VTEP
-        # df['assertReason'] += df.apply(self._is_her_good,
-        #                                args=(mac_df, ), axis=1)
+        # # Assert that we have HER for every remote VTEP; Cumulus/SONiC
+        if not mac_df.empty:
+            df['assertReason'] += df.apply(self._is_her_good,
+                                           args=(mac_df, ), axis=1)
 
         # Fill out the assert column
         df['result'] = df.apply(lambda x: 'pass'
                                 if len(x.assertReason) == 0 else 'fail',
                                 axis=1)
+
+        # Force VNI to be an int
+        df['vni'] = df.vni.astype(int)
 
         if result == 'fail':
             df = df.query('assertReason.str.len() != 0')
