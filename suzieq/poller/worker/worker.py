@@ -2,11 +2,12 @@
 This module contains the Poller logic
 """
 
+import argparse
 import asyncio
 import logging
 import os
 import signal
-from typing import Dict
+from typing import Dict, Type
 
 from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.poller.worker.services.service_manager import ServiceManager
@@ -17,14 +18,16 @@ from suzieq.shared.exceptions import SqPollerConfError
 logger = logging.getLogger(__name__)
 
 
-class Poller:
-    """Poller is the object in charge of coordinating services, nodes and
+class Worker:
+    """Worker is the object in charge of coordinating services, nodes and
     output worker tasks, in order to pull the data from the devices configured
     in the device inventory.
     """
 
+    DEFAULT_INVENTORY = 'static'
+
     def __init__(self, userargs, cfg):
-        self._validate_poller_args(userargs, cfg)
+        self._validate_worker_args(userargs, cfg)
 
         # Set the worker id
         self.worker_id = userargs.worker_id
@@ -32,9 +35,6 @@ class Poller:
         # Setup poller tasks list
         self.waiting_tasks = []
         self.waiting_tasks_lock = asyncio.Lock()
-
-        # Init the node inventory object
-        self.inventory = self._init_inventory(userargs, cfg)
 
         # Setup poller writers
 
@@ -63,7 +63,7 @@ class Poller:
             'service_only': userargs.service_only,
             'exclude_services': userargs.exclude_services
         }
-        self.service_manager = ServiceManager(self._add_poller_task,
+        self.service_manager = ServiceManager(self._add_worker_tasks,
                                               service_dir,
                                               svc_schema_dir,
                                               self.output_queue,
@@ -71,13 +71,16 @@ class Poller:
                                               default_svc_period,
                                               **svc_manager_args)
 
-    async def init_poller(self):
-        """Initialize the poller, instantiating the services and setting up
+        # Init the node inventory object
+        self.inventory = self._init_inventory(userargs, cfg)
+
+    async def init_worker(self):
+        """Initialize the worker, instantiating the services and setting up
         the connection with the nodes. This function should be called only
         at the beginning before calling run().
         """
 
-        logger.info('Initializing poller')
+        logger.info('Initializing poller worker')
 
         init_tasks = []
         init_tasks.append(self.inventory.build_inventory())
@@ -85,14 +88,25 @@ class Poller:
 
         nodes, services = await asyncio.gather(*init_tasks)
 
-        if not nodes or not services:
-            # Logging should've been done by init_nodes/services for details
-            raise SqPollerConfError('Terminating because no nodes'
-                                    'or services found')
+        if not nodes:
+            # Get the logger filename
+            root_logger = logging.getLogger()
+            log_filename = ""
+            for h in root_logger.handlers:
+                if hasattr(h, 'baseFilename'):
+                    log_filename = h.baseFilename
+                    break
+
+            raise SqPollerConfError(
+                f'No nodes could be polled. Check {log_filename} for errors '
+                'in connecting'
+            )
+        if not services:
+            raise SqPollerConfError('No services candidate for execution')
 
     async def run(self):
         """Start polling the devices.
-        Before running this function the poller should be initialized.
+        Before running this function the worker should be initialized.
         """
 
         # Add the node list in the services
@@ -111,14 +125,15 @@ class Poller:
         # Schedule the tasks to run
         await self.inventory.schedule_nodes_run()
         await self.service_manager.schedule_services_run()
-        await self._add_poller_task([self.output_manager.run_output_workers()])
+        await self._add_worker_tasks(
+            [self.output_manager.run_output_workers()])
 
         try:
             # The logic below of handling the writer worker task separately
             # is to ensure we can terminate properly when all the other
             # tasks have finished as in the case of using file input
             # instead of SSH
-            tasks = await self._pop_waiting_poller_tasks()
+            tasks = await self._pop_waiting_worker_tasks()
             while tasks:
                 try:
                     _, pending = await asyncio.wait(
@@ -136,14 +151,36 @@ class Poller:
         except asyncio.CancelledError:
             logger.warning('Received terminate signal. Terminating...')
 
-    async def _add_poller_task(self, tasks):
-        """Add new tasks to be executed in the poller run loop."""
+    async def _add_worker_tasks(self, tasks):
+        """Add new tasks to be executed in the poller worker run loop."""
 
         await self.waiting_tasks_lock.acquire()
         self.waiting_tasks += tasks
         self.waiting_tasks_lock.release()
 
-    def _init_inventory(self, userargs, cfg):
+    def _get_inventory_plugins(self) -> Dict[str, Type]:
+        """Get all types of inventory it is possible to instantiate
+
+        Returns:
+            Dict[str, Type]: a dictionary containing the name of the inventory
+                type and its class
+        """
+        return Inventory.get_plugins()
+
+    def _init_inventory(self, userargs: argparse.Namespace, cfg: Dict,
+                        addnl_args: Dict = None):
+        """Initialize the Inventory object, in charge of retrieving the
+        list of nodes this worker is in charge to poll
+
+        Args:
+            userargs (argparse.Namespace): the cli arguments
+            cfg (Dict): the content of the SuzieQ config file
+            addnl_args (Dict): additional arguments to pass to the init
+                function of the Inventory class
+
+        Raises:
+            SqPollerConfError: raised if a wrong configuration is provided
+        """
 
         # Define the dictionary with the settings
         # for any kind of inventory source
@@ -153,8 +190,11 @@ class Poller:
             'ssh_config_file': userargs.ssh_config_file,
         }
 
+        if addnl_args:
+            inventory_args.update(addnl_args)
+
         # Retrieve the specific inventory source to use
-        inv_types = Inventory.get_plugins()
+        inv_types = self._get_inventory_plugins()
 
         inventory_class = None
         source_args = {}
@@ -168,7 +208,7 @@ class Poller:
             source_args = {'input_dir': userargs.input_dir}
         else:
             mgr_cfg = cfg.get('poller', {}).get('manager', {})
-            type_to_use = mgr_cfg.get('type', 'static')
+            type_to_use = mgr_cfg.get('type', self.DEFAULT_INVENTORY)
             inventory_class = inv_types.get(type_to_use)
             if not inventory_class:
                 raise SqPollerConfError(f'No inventory {type_to_use} found')
@@ -177,11 +217,11 @@ class Poller:
                 'worker-id': self.worker_id
             }
 
-        return inventory_class(self._add_poller_task,
+        return inventory_class(self._add_worker_tasks,
                                **source_args,
                                **inventory_args)
 
-    async def _pop_waiting_poller_tasks(self):
+    async def _pop_waiting_worker_tasks(self):
         """Empty the list of tasks to be added in the run loop
         and return its content.
         """
@@ -199,7 +239,7 @@ class Poller:
         return poller_tasks
 
     async def _stop(self):
-        """Stop the poller"""
+        """Stop the worker"""
 
         tasks = [t for t in asyncio.all_tasks()
                  if t is not asyncio.current_task()]
@@ -207,7 +247,7 @@ class Poller:
         for task in tasks:
             task.cancel()
 
-    def _validate_poller_args(self, userargs: Dict, _):
+    def _validate_worker_args(self, userargs: Dict, _):
         """Validate the arguments and the configuration passed to the poller.
         The function produces a SqPollerConfError exception if there is
         something wrong in the configuration.

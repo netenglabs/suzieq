@@ -365,8 +365,15 @@ class Node:
                 if self.sigend:
                     await self._terminate()
                     return
-                self.logger.error("ERROR: Unable to connect to "
-                                  f"{self.address}:{self.port}, {e}")
+                if isinstance(e, asyncssh.HostKeyNotVerifiable):
+                    self.logger.error(
+                        f'Unable to connect to {self.address}: {self.port}, '
+                        'host key is unknown. If you do not need to verify '
+                        'the host identity, add "ignore-known-hosts: True" in '
+                        'the device section of the inventory')
+                else:
+                    self.logger.error('Unable to connect to '
+                                      f'{self.address}:{self.port}, {e}')
                 self.current_exception = e
                 await self._close_connection()
                 if rel_lock:
@@ -726,7 +733,7 @@ class Node:
                     cmd, output.exit_status, output.stdout))
             except Exception as e:
                 if self.sigend:
-                    await self._terminte()
+                    await self._terminate()
                     return
                 result.append(self._create_error(cmd))
                 self.current_exception = e
