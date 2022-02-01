@@ -18,6 +18,7 @@ class SqContext:
     exec_time: str = ''
     engine: str = None
     col_width: int = 50
+    debug: bool = False
     sort_fields: List[str] = field(default_factory=list)
     view: str = None
     rest_server_ip: str = '127.0.0.1'
