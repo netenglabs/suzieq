@@ -1,6 +1,6 @@
 To add your functionality to SuzieQ, you need to follow some steps:
 
-1. First of all, fork the SuzieQ repository and clone the forked project on your computer
+1. Fork the SuzieQ repository and clone the forked project on your local machine.
 2. Move into the `develop` branch using the command `git checkout develop`, create a new branch and move into it (`git checkout -b <NEW_BRANCH-NAME>`).
 
     Now you can start developing your new functionality for SuzieQ.
@@ -15,7 +15,7 @@ To add your functionality to SuzieQ, you need to follow some steps:
         - a new platform support MUST include the relevant input files similar to what we have in tests/integration/sqcmds/-input directories, along with the relevant tests in the tests/integration/sqcmds/-samples dir. That list MUST include the all.yml file fully filled out.
         - any new service (or table) addition MUST include comments about what network OS are supported (along with version) with this command along with test samples for those platforms and input files in the *-input dir
 
-3. Once you have done with coding (and testing), open a pull request from the forked github page.
+3. Once you're done coding and testing the feature, open a pull request from the forked github page.
    The target repository and base branch must be set respectively to `netenglabs/suzieq` and `develop`.
 
    ![](../images/open-PR.png)
