@@ -423,7 +423,7 @@ def test_default_controller_config(default_args):
             assert c._config['manager']['config'] == sq_get_config_file(None)
             assert c._config['manager']['workers'] == 1
             assert c.period == 3600
-            assert c.run_once is None
+            assert c._single_run_mode is None
             manager_args = ['debug', 'exclude-services', 'outputs',
                             'output-dir', 'service-only', 'ssh-config-file']
             for ma in manager_args:
