@@ -28,6 +28,9 @@ from suzieq.shared.utils import SUPPORTED_ENGINES, print_version
     description="What backend analyzer engine to use",
 )
 @argument(
+    "debug", choices=['True'], description="Enable debug mode",
+)
+@argument(
     "datadir",
     description="Set the data directory for the command"
 )
@@ -52,6 +55,7 @@ def set_ctxt(
         namespace: typing.List[str] = None,
         engine: str = "",
         datadir: str = "",
+        debug: str = '',
         col_width: int = 50,
         rest_server_ip: str = "",
         rest_server_port: str = "",
@@ -76,6 +80,9 @@ def set_ctxt(
 
     if engine:
         plugin_ctx.change_engine(engine)
+
+    if debug:
+        ctxt.debug = True
 
     if datadir:
         if os.path.isdir(datadir):
@@ -117,12 +124,16 @@ def set_ctxt(
           description="End of time window in YYYY-MM-dd HH:mm:SS format")
 @argument("pager",
           description="End of time window in YYYY-MM-dd HH:mm:SS format")
+@argument(
+    "debug", choices=['True'], description="Disable debug mode",
+)
 def clear_ctxt(
         pager: str = 'off',
         hostname: str = "",
         start_time: str = "",
         end_time: str = "",
         namespace: str = "",
+        debug: str = '',
 ):
     """clear certain contexts for subsequent commands. Cmd is additive"""
     plugin_ctx = context.get_context()
@@ -142,6 +153,9 @@ def clear_ctxt(
 
     if pager:
         ctxt.pager = False
+
+    if debug:
+        ctxt.debug = False
 
 
 @command('version', help='print the suzieq version')
