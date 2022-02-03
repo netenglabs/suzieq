@@ -1,7 +1,7 @@
 description: 'Testing verbs for mac: show summarize unique'
 tests:
-- command: mac show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mac show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mac show
   output: '[{"namespace": "ospf-single", "hostname": "leaf02", "vlan": 10, "macaddr":
     "44:38:39:00:00:18", "oif": "bridge", "remoteVtepIp": "", "bd": "", "flags": "permanent",
@@ -755,8 +755,8 @@ tests:
     "ospf-ibgp", "hostname": "leaf04", "vlan": 4001, "macaddr": "44:39:39:ff:40:94",
     "oif": "vxlan4001", "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote",
     "timestamp": 1616681581649}]'
-- command: mac show --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mac show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mac show
   output: '[{"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
@@ -852,8 +852,8 @@ tests:
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}]'
-- command: mac summarize --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mac summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mac summarize
   output: '{"ospf-single": {"deviceCnt": 4, "totalMacsinNSCnt": 12, "uniqueMacCnt":
     8, "uniqueVlanperHostStat": [1, 1, 1.0]}, "dual-evpn": {"deviceCnt": 7, "totalMacsinNSCnt":
@@ -861,12 +861,12 @@ tests:
     7, "totalMacsinNSCnt": 133, "uniqueMacCnt": 38, "uniqueVlanperHostStat": [1, 3,
     3.0]}}'
 - command: mac summarize --namespace=dual-evpn --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: mac summarize
   output: '{"dual-evpn": {"deviceCnt": 7, "totalMacsinNSCnt": 181, "uniqueMacCnt":
     34, "uniqueVlanperHostStat": [2, 2, 2.0]}}'
-- command: mac unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mac unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mac unique
   output: '[{"macaddr": "00:00:00:00:00:00"}, {"macaddr": "00:03:00:11:11:01"}, {"macaddr":
     "00:03:00:22:22:02"}, {"macaddr": "00:03:00:33:33:01"}, {"macaddr": "00:03:00:44:44:02"},
@@ -898,8 +898,8 @@ tests:
     "b6:9f:4e:7d:59:06"}, {"macaddr": "be:36:a9:16:eb:97"}, {"macaddr": "d2:16:49:c4:d2:18"},
     {"macaddr": "ea:80:a4:cb:5d:63"}, {"macaddr": "ea:c9:a5:5f:c7:ca"}, {"macaddr":
     "f2:9f:12:1e:f8:1f"}, {"macaddr": "fa:fc:63:55:97:6c"}]'
-- command: mac unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mac unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mac unique
   output: '[{"macaddr": "00:03:00:11:11:01", "numRows": 1}, {"macaddr": "00:03:00:22:22:02",
     "numRows": 1}, {"macaddr": "00:03:00:33:33:01", "numRows": 1}, {"macaddr": "00:03:00:44:44:02",
@@ -939,14 +939,14 @@ tests:
     "numRows": 13}, {"macaddr": "44:38:39:00:00:58", "numRows": 13}, {"macaddr": "44:39:39:ff:00:13",
     "numRows": 16}, {"macaddr": "44:39:39:ff:00:24", "numRows": 16}, {"macaddr": "00:00:00:00:00:00",
     "numRows": 44}]'
-- command: mac unique --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mac unique --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mac unique
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
     "leaf04"}]'
 - command: mac show --namespace=ospf-ibgp --vlan='13 24' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: mac filter show
   output: '[{"namespace": "ospf-ibgp", "hostname": "leaf02", "vlan": 13, "macaddr":
     "52:54:00:33:b7:b8", "oif": "bridge", "remoteVtepIp": "", "bd": "", "flags": "permanent",
@@ -1076,7 +1076,7 @@ tests:
     "48:47:00:e9:d5:41", "oif": "bridge", "remoteVtepIp": "", "bd": "", "flags": "permanent",
     "timestamp": 1616681581649}]'
 - command: mac show --namespace=ospf-ibgp --vlan='!24' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: mac show filter
   output: '[{"namespace": "ospf-ibgp", "hostname": "leaf02", "vlan": 4001, "macaddr":
     "ea:c9:a5:5f:c7:ca", "oif": "vxlan4001", "remoteVtepIp": "10.0.0.102", "bd": "",
@@ -1322,16 +1322,16 @@ tests:
     "oif": "vlan24", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
     1616681581649}]'
 - command: mac show --namespace=ospf-ibgp --vlan='! 24' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "operator must not be separated by space, as in \"<20\""}]'
   marks: mac show filter
 - command: mac show --namespace=ospf-ibgp --vlan='10 100' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: mac show filter
   output: '[]'
-- command: mac show --vlan='13' --columns='remoteVtepIp' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mac show --vlan='13' --columns='remoteVtepIp' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mac show filter
   output: '[{"remoteVtepIp": "10.0.0.134"}, {"remoteVtepIp": ""}, {"remoteVtepIp":
     ""}, {"remoteVtepIp": "10.0.0.101"}, {"remoteVtepIp": "10.0.0.101"}, {"remoteVtepIp":
@@ -1361,13 +1361,13 @@ tests:
     "10.0.0.134"}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""},
     {"remoteVtepIp": ""}, {"remoteVtepIp": "10.0.0.112"}, {"remoteVtepIp": "10.0.0.112"},
     {"remoteVtepIp": "10.0.0.112"}, {"remoteVtepIp": ""}, {"remoteVtepIp": ""}]'
-- command: mac show --vlan='abc' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mac show --vlan='abc' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid VLAN value: [''abc'']"}]'
   marks: mac show filter
-- command: mac show --query-str='vlan == 0' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mac show --query-str='vlan == 0' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mac show filter cumulus
   output: '[{"namespace": "ospf-single", "hostname": "leaf02", "vlan": 0, "macaddr":
     "44:38:39:00:00:18", "oif": "swp5", "remoteVtepIp": "", "bd": "", "flags": "permanent",

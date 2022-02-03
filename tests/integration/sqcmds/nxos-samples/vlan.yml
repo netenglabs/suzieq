@@ -1,7 +1,7 @@
 description: 'Testing verbs for vlan: show summarize unique'
 tests:
-- command: vlan show --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: vlan show --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: vlan show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf02", "vlanName": "vlan30", "state":
     "active", "interfaces": ["port-channel1", "port-channel4", "Ethernet1/4", "Ethernet1/5",
@@ -147,8 +147,8 @@ tests:
     "vlan": 1, "timestamp": 1619275257683}, {"namespace": "nxos", "hostname": "exit02",
     "vlanName": "vlan999", "state": "active", "interfaces": [""], "vlan": 999, "timestamp":
     1619275257683}]'
-- command: vlan show --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: vlan show --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: vlan show nxos
   output: '[{"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
     {"hostname": "leaf02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
@@ -157,22 +157,22 @@ tests:
     "dcedge01"}, {"hostname": "spine01"}, {"hostname": "exit01"}, {"hostname": "exit01"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "exit02"}, {"hostname": "exit02"}]'
-- command: vlan summarize --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: vlan summarize --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: vlan summarize nxos
   output: '{"nxos": {"deviceCnt": 9, "uniqueVlanCnt": 5, "activeVlanCnt": 5, "suspendedVlanCnt":
     0, "vlanPerDeviceStat": [1, 4, 2.0], "ifPerVlanStat": [2, 9, 4.0]}}'
-- command: vlan unique --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: vlan unique --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: vlan unique nxos
   output: '[{"vlan": 1}, {"vlan": 10}, {"vlan": 20}, {"vlan": 30}, {"vlan": 999}]'
-- command: vlan unique --count=True --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: vlan unique --count=True --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: vlan unique nxos
   output: '[{"vlan": 10, "numRows": 2}, {"vlan": 20, "numRows": 2}, {"vlan": 30, "numRows":
     4}, {"vlan": 999, "numRows": 6}, {"vlan": 1, "numRows": 9}]'
-- command: vlan unique --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: vlan unique --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: vlan unique nxos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":

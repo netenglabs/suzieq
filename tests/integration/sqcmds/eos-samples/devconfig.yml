@@ -1,7 +1,7 @@
 description: 'Testing verbs for device config: show'
 tests:
-- command: devconfig show --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: devconfig show --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: devconfig show eos
   output: '[{"namespace": "eos", "config": "! Command: show running-config\n! device:
     leaf02 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
@@ -1171,8 +1171,8 @@ tests:
     65522;\n            }\n        }\n    }\n    lldp {\n        interface all;\n    }\n    igmp-snooping
     {\n        vlan default;\n    }\n}\nvlans {\n    default {\n        vlan-id 1;\n    }\n}",
     "hostname": "dcedge01", "timestamp": 1623025176891}]'
-- command: devconfig show --hostname=leaf01 --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: devconfig show --hostname=leaf01 --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: devconfig show eos
   output: '[{"namespace": "eos", "config": "! Command: show running-config\n! device:
     leaf01 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
@@ -1218,8 +1218,8 @@ tests:
     ADV_SVIS\n!\nrouter ospf 1\n   router-id 10.0.0.11\n   passive-interface Loopback0\n   passive-interface
     Loopback1\n   max-lsa 12000\n   log-adjacency-changes detail\n!\nmanagement api
     http-commands\n   no shutdown\n!\nend", "hostname": "leaf01", "timestamp": 1623025174541}]'
-- command: devconfig show --hostname='leaf01 spine01' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: devconfig show --hostname='leaf01 spine01' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: devconfig show eos
   output: '[{"namespace": "eos", "config": "! Command: show running-config\n! device:
     leaf01 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
@@ -1298,9 +1298,8 @@ tests:
     ospf 1\n   router-id 10.0.0.21\n   passive-interface Loopback0\n   max-lsa 12000\n   log-adjacency-changes
     detail\n!\nmanagement api http-commands\n   no shutdown\n!\nend", "hostname":
     "spine01", "timestamp": 1623025174548}]'
-- command: devconfig show --hostname='leaf01 spine01' --query-str='config.str.contains("10.0.0.21")'
-    --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: devconfig show --hostname='leaf01 spine01' --query-str='config.str.contains("10.0.0.21")' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: devconfig show eos
   output: '[{"namespace": "eos", "config": "! Command: show running-config\n! device:
     leaf01 (vEOS, EOS-4.23.5M)\n!\n! boot system flash:/vEOS-lab.swi\n!\ntransceiver
@@ -1379,16 +1378,16 @@ tests:
     ospf 1\n   router-id 10.0.0.21\n   passive-interface Loopback0\n   max-lsa 12000\n   log-adjacency-changes
     detail\n!\nmanagement api http-commands\n   no shutdown\n!\nend", "hostname":
     "spine01", "timestamp": 1623025174548}]'
-- command: devconfig summarize --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: devconfig summarize --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: devconfig summarize eos
   output: '{"eos": {"deviceCnt": 9}}'
-- command: devconfig summarize --hostname='leaf01 spine01' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: devconfig summarize --hostname='leaf01 spine01' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: devconfig summarize eos
   output: '{"eos": {"deviceCnt": 2}}'
-- command: devconfig unique --columns=config --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: devconfig unique --columns=config --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Unique not supported for Device Config"}]'
   marks: devconfig unique eos

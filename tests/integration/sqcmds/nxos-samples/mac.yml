@@ -1,7 +1,7 @@
 description: 'Testing verbs for mac: show summarize unique'
 tests:
-- command: mac show --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mac show --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mac show nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr": "33:33:00:00:00:01",
     "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
@@ -465,13 +465,13 @@ tests:
     1619275257856}, {"namespace": "nxos", "hostname": "spine02", "vlan": 0, "macaddr":
     "44:01:01:02:1b:08", "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags":
     "static", "timestamp": 1619275258116}]'
-- command: mac summarize --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mac summarize --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mac summarize nxos
   output: '{"nxos": {"deviceCnt": 13, "totalMacsinNSCnt": 208, "uniqueMacCnt": 31,
     "uniqueVlanperHostStat": [1, 3, 3.0]}}'
-- command: mac unique --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mac unique --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mac unique nxos
   output: '[{"macaddr": "00:00:00:11:12:10"}, {"macaddr": "01:00:5e:00:00:01"}, {"macaddr":
     "01:80:c2:00:00:00"}, {"macaddr": "01:80:c2:00:00:02"}, {"macaddr": "01:80:c2:00:00:03"},
@@ -486,8 +486,8 @@ tests:
     {"macaddr": "44:01:02:02:1b:08"}, {"macaddr": "44:01:02:03:1b:08"}, {"macaddr":
     "44:01:02:04:1b:08"}, {"macaddr": "44:01:03:01:1b:08"}, {"macaddr": "44:01:03:02:1b:08"},
     {"macaddr": "da:bf:63:c6:2f:0a"}]'
-- command: mac unique --count=True --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mac unique --count=True --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mac unique nxos
   output: '[{"macaddr": "33:33:ff:00:00:00", "numRows": 1}, {"macaddr": "33:33:ff:2b:da:d5",
     "numRows": 1}, {"macaddr": "33:33:ff:6d:18:e7", "numRows": 1}, {"macaddr": "33:33:ff:6e:32:d5",
@@ -505,16 +505,16 @@ tests:
     "numRows": 11}, {"macaddr": "01:80:c2:00:00:00", "numRows": 17}, {"macaddr": "01:80:c2:00:00:03",
     "numRows": 17}, {"macaddr": "01:80:c2:00:00:0e", "numRows": 17}, {"macaddr": "01:00:5e:00:00:01",
     "numRows": 25}, {"macaddr": "33:33:00:00:00:01", "numRows": 25}]'
-- command: mac unique --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mac unique --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mac unique nxos
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "firewall01"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
     "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"}, {"hostname":
     "server301"}, {"hostname": "server302"}, {"hostname": "spine01"}, {"hostname":
     "spine02"}]'
-- command: mac show --query-str='vlan == 0' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mac show --query-str='vlan == 0' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mac show filter nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr": "33:33:00:00:00:01",
     "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
@@ -851,8 +851,8 @@ tests:
     "", "bd": "", "flags": "static", "timestamp": 1619275257856}, {"namespace": "nxos",
     "hostname": "spine02", "vlan": 0, "macaddr": "44:01:01:02:1b:08", "oif": "sup-eth1(R)",
     "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1619275258116}]'
-- command: mac show --macaddr="4401.0203.1b08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mac show --macaddr="4401.0203.1b08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mac show filter nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "vlan": 0, "macaddr": "44:01:02:03:1b:08",
     "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
@@ -879,8 +879,8 @@ tests:
     "flags": "static", "timestamp": 1619275257479}, {"namespace": "nxos", "hostname":
     "exit02", "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp":
     "10.0.0.134", "bd": "", "flags": "remote", "timestamp": 1619275257856}]'
-- command: mac show --macaddr="4401.0203.1B08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mac show --macaddr="4401.0203.1B08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mac show filter nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "vlan": 0, "macaddr": "44:01:02:03:1b:08",
     "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":
@@ -907,8 +907,8 @@ tests:
     "flags": "static", "timestamp": 1619275257479}, {"namespace": "nxos", "hostname":
     "exit02", "vlan": 999, "macaddr": "44:01:02:03:1b:08", "oif": "nve1", "remoteVtepIp":
     "10.0.0.134", "bd": "", "flags": "remote", "timestamp": 1619275257856}]'
-- command: mac show --macaddr="44:01:02:03:1B:08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mac show --macaddr="44:01:02:03:1B:08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mac show filter nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "vlan": 0, "macaddr": "44:01:02:03:1b:08",
     "oif": "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp":

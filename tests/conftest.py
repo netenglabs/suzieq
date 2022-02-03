@@ -30,13 +30,7 @@ suzieq_test_svc_dir = 'tests/unit/poller/worker/service_dir_test'
 
 DATA_TO_STORE_FILE = 'tests/unit/poller/worker/utils/data_to_store.pickle'
 
-DATADIR = ['tests/data/multidc/parquet-out/',
-           'tests/data/basic_dual_bgp/parquet-out/',
-           'tests/data/eos/parquet-out',
-           'tests/data/nxos/parquet-out',
-           'tests/data/junos/parquet-out',
-           'tests/data/mixed/parquet-out',
-           'tests/data/vmx/parquet-out']
+DATADIR = ['tests/data/parquet']
 
 commands = [(x) for x in SqCommand.get_plugins()
             if x not in ['TopmemCmd', 'TopcpuCmd']]
@@ -66,7 +60,7 @@ def setup_nubia():
 @pytest.fixture()
 # pylint: disable=unused-argument
 def create_context_config(datadir: str =
-                          './tests/data/basic_dual_bgp/parquet-out'):
+                          './tests/data/parquet'):
     '''Create context config'''
     return
 
@@ -171,7 +165,7 @@ def create_context():
 
 
 def create_dummy_config_file(
-        datadir: str = './tests/data/basic_dual_bgp/parquet-out'):
+        datadir: str = './tests/data/parquet'):
     '''Create a dummy config file'''
     config = {'data-directory': datadir,
               'temp-directory': '/tmp/suzieq',

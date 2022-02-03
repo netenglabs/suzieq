@@ -1,7 +1,7 @@
 description: Testing interfaces
 tests:
-- command: interface show --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: interface show --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: interface show junos vmx
   output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0.16385",
     "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
@@ -530,8 +530,8 @@ tests:
     "TOR1CRP-DGW-RT01", "ifname": "lo0", "state": "up", "adminState": "up", "type":
     "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1631009089864}]'
-- command: interface show --type=bond_slave --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: interface show --type=bond_slave --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: interface show junos vmx
   output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/0",
     "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan":
@@ -581,8 +581,8 @@ tests:
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/3", "state":
     "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
     "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864}]'
-- command: interface show --type=bond --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: interface show --type=bond --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: interface show junos vmx
   output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae0",
     "state": "up", "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master":
@@ -607,8 +607,8 @@ tests:
     "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1", "state": "up", "adminState":
     "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "", "ipAddressList": [],
     "ip6AddressList": [], "timestamp": 1631009089864}]'
-- command: interface show --type=internal --columns=* --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: interface show --type=internal --columns=* --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: interface show junos vmx
   output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "tap",
     "state": "up", "adminState": "up", "type": "internal", "mtu": 65536, "vlan": 0,
@@ -1080,15 +1080,15 @@ tests:
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": 0, "innerVlan":
     0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 1631009089864, "vni":
     0, "lacpBypass": false, "active": true}]'
-- command: interface unique --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: interface unique --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: interface unique junos vmx
   output: '[{"type": "bond"}, {"type": "bond_slave"}, {"type": "ethernet"}, {"type":
     "flexible-ethernet"}, {"type": "flexible-tunnel-interface"}, {"type": "loopback"},
     {"type": "null"}, {"type": "pppoe"}, {"type": "remote-beb"}, {"type": "software-pseudo"},
     {"type": "subinterface"}, {"type": "vlan"}, {"type": "vrf"}, {"type": "vtep"}]'
-- command: interface unique --count=True --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: interface unique --count=True --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: interface unique junos vmx
   output: '[{"type": "flexible-ethernet", "numRows": 1}, {"type": "vlan", "numRows":
     4}, {"type": "vrf", "numRows": 4}, {"type": "loopback", "numRows": 5}, {"type":

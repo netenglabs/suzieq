@@ -1,7 +1,7 @@
 description: Testing prefixlen as filter for routes
 tests:
-- command: route show --prefixlen="32" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefixlen="32" --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "ospf-single", "hostname": "leaf04", "vrf": "default", "prefix":
     "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
@@ -1244,8 +1244,8 @@ tests:
     "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
     ["swp1", "swp2"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
     4, "action": "forward", "timestamp": 1616681582006}]'
-- command: route show --prefixlen="< 32" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefixlen="< 32" --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "ospf-single", "hostname": "server102", "vrf": "default",
     "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol":
@@ -1973,8 +1973,8 @@ tests:
     "0.0.0.0/0", "nexthopIps": ["192.168.123.1"], "oifs": ["eth0"], "protocol": "",
     "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
     1616681582006}]'
-- command: route show --prefixlen="> 16" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefixlen="> 16" --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "ospf-single", "hostname": "server102", "vrf": "default",
     "prefix": "172.16.2.0/24", "nexthopIps": [""], "oifs": ["eth1"], "protocol": "kernel",
@@ -3766,8 +3766,8 @@ tests:
     "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
     ["swp1", "swp2"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
     4, "action": "forward", "timestamp": 1616681582006}]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "ospf-single", "hostname": "leaf04", "vrf": "default", "prefix":
     "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
@@ -5135,8 +5135,8 @@ tests:
     "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
     ["swp1", "swp2"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
     4, "action": "forward", "timestamp": 1616681582006}]'
-- command: route show --prefixlen="! 32" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefixlen="! 32" --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "ospf-single", "hostname": "server102", "vrf": "default",
     "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol":
@@ -5865,7 +5865,7 @@ tests:
     "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
     1616681582006}]'
 - command: route show --namespace='ospf-ibgp' --prefixlen="<= 16" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "ospf-ibgp", "hostname": "server101", "vrf": "default",
     "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.1.1"], "oifs": ["bond0"], "protocol":
@@ -5938,7 +5938,7 @@ tests:
     "action": "forward", "timestamp": 1616681582006}]'
 - command: route show --namespace='ospf-ibgp' --hostname="leaf01" --prefixlen="<=
     16" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix":
     "0.0.0.0/0", "nexthopIps": ["10.0.0.101", "10.0.0.102"], "oifs": ["vlan4001",
@@ -5946,7 +5946,7 @@ tests:
     "forward", "timestamp": 1616681581705}]'
 - command: route show --namespace="ospf-ibgp" --prefix="172.16.253.1" --prefixlen="<=
     32" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "evpn-vrf", "prefix":
     "172.16.253.1/32", "nexthopIps": ["169.254.254.6"], "oifs": ["swp5.3"], "protocol":
@@ -5994,11 +5994,11 @@ tests:
     "timestamp": 1616681581985}]'
 - command: route show --namespace='ospf-ibgp' --hostname="leaf01" --prefixlen="<=
     16" --columns="prefix nexthopIps" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"prefix": "0.0.0.0/0", "nexthopIps": ["10.0.0.101", "10.0.0.102"]}]'
-- command: route show --prefixlen="32" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefixlen="32" --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "ospf-single", "hostname": "leaf04", "vrf": "default", "prefix":
     "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
@@ -7241,8 +7241,8 @@ tests:
     "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
     ["swp1", "swp2"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
     4, "action": "forward", "timestamp": 1616681582006}]'
-- command: route show --prefixlen="! 32" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefixlen="! 32" --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "ospf-single", "hostname": "server102", "vrf": "default",
     "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol":
@@ -7972,11 +7972,11 @@ tests:
     1616681582006}]'
 - command: route show --namespace="ospf-ibgp" --prefix="172.16.253.1" --prefixlen="<
     32" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[]'
 - command: route show --namespace="ospf-ibgp" --prefix="172.16.253.1" --prefixlen="<
     32" --columns="prefix oifs" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[]'

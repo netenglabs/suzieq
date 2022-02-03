@@ -1,7 +1,7 @@
 description: 'Testing verbs for sqpoller: show summarize unique'
 tests:
-- command: sqpoller show --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller show --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller show panos
   output: '[{"namespace": "panos", "hostname": "server102", "service": "routes", "status":
     0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [1.0, 1.0, 1.0], "svcQsize": [13.0,
@@ -876,8 +876,8 @@ tests:
     "gatherTime": [182.0, 182.0, 182.0], "totalTime": [183.0, 183.0, 183.0], "svcQsize":
     [0.0, 0.0, 0.0], "wrQsize": [409.0, 409.0, 409.0], "nodeQsize": [18.0, 18.0, 18.0],
     "rxBytes": [1324.0, 1324.0, 1324.0], "pollExcdPeriodCount": 0, "timestamp": 1639498880095}]'
-- command: sqpoller show --columns=hostname --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller show --columns=hostname --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller show panos
   output: '[{"hostname": "server102"}, {"hostname": "server301"}, {"hostname": "server101"},
     {"hostname": "spine01"}, {"hostname": "server302"}, {"hostname": "spine02"}, {"hostname":
@@ -944,26 +944,26 @@ tests:
     "leaf03"}, {"hostname": "spine01"}, {"hostname": "exit02"}, {"hostname": "spine02"},
     {"hostname": "dcedge01"}, {"hostname": "server101"}, {"hostname": "server302"},
     {"hostname": "server301"}, {"hostname": "server102"}]'
-- command: sqpoller summarize --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller summarize --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller summarize panos
   output: '{"panos": {"deviceCnt": 14, "entriesCnt": 217, "service": 18, "status":
     {"0": 210, "200": 7}, "pollExcdPeriodStat": [0, 0, 0.0]}}'
-- command: sqpoller summarize --namespace=panos --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller summarize --namespace=panos --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller summarize panos
   output: '{"panos": {"deviceCnt": 14, "entriesCnt": 217, "service": 18, "status":
     {"0": 210, "200": 7}, "pollExcdPeriodStat": [0, 0, 0.0]}}'
-- command: sqpoller unique --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller unique --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller unique
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: sqpoller unique --count=True --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller unique --count=True --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller unique
   output: '[{"hostname": "firewall01", "numRows": 7}, {"hostname": "server101", "numRows":
     12}, {"hostname": "server102", "numRows": 12}, {"hostname": "server301", "numRows":
@@ -973,16 +973,16 @@ tests:
     18}, {"hostname": "leaf03", "numRows": 18}, {"hostname": "leaf04", "numRows":
     18}, {"hostname": "spine01", "numRows": 18}, {"hostname": "spine02", "numRows":
     18}]'
-- command: sqpoller unique --columns=hostname --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller unique --columns=hostname --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller unique panos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: sqpoller show --status=pass --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller show --status=pass --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[{"namespace": "panos", "hostname": "server102", "service": "routes", "status":
     0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [1.0, 1.0, 1.0], "svcQsize": [13.0,
@@ -1857,12 +1857,12 @@ tests:
     "gatherTime": [182.0, 182.0, 182.0], "totalTime": [183.0, 183.0, 183.0], "svcQsize":
     [0.0, 0.0, 0.0], "wrQsize": [409.0, 409.0, 409.0], "nodeQsize": [18.0, 18.0, 18.0],
     "rxBytes": [1324.0, 1324.0, 1324.0], "pollExcdPeriodCount": 0, "timestamp": 1639498880095}]'
-- command: sqpoller show --status=fail --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller show --status=fail --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[]'
-- command: sqpoller show --status=all --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller show --status=all --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[{"namespace": "panos", "hostname": "server102", "service": "routes", "status":
     0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [1.0, 1.0, 1.0], "svcQsize": [13.0,
@@ -2737,9 +2737,9 @@ tests:
     "gatherTime": [182.0, 182.0, 182.0], "totalTime": [183.0, 183.0, 183.0], "svcQsize":
     [0.0, 0.0, 0.0], "wrQsize": [409.0, 409.0, 409.0], "nodeQsize": [18.0, 18.0, 18.0],
     "rxBytes": [1324.0, 1324.0, 1324.0], "pollExcdPeriodCount": 0, "timestamp": 1639498880095}]'
-- command: sqpoller show --status=pass --format=json --columns='namespace hostname
+- command: sqpoller show --status=pass --format=json --namespace=panos --columns='namespace hostname
     service status'
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[{"namespace": "panos", "hostname": "server102", "service": "routes", "status":
     0}, {"namespace": "panos", "hostname": "server301", "service": "routes", "status":
@@ -2957,30 +2957,30 @@ tests:
     "service": "macs", "status": 0}, {"namespace": "panos", "hostname": "server301",
     "service": "macs", "status": 0}, {"namespace": "panos", "hostname": "server102",
     "service": "macs", "status": 0}]'
-- command: sqpoller show --status=fail --format=json --columns='hostname service status'
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller show --status=fail --format=json --namespace=panos --columns='hostname service status'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[]'
-- command: sqpoller show --status=foobar --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller show --status=foobar --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[]'
-- command: sqpoller show --format=json --poll-period-exceeded=True
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller show --format=json --namespace=panos --poll-period-exceeded=True
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[]'
-- command: sqpoller show --format=json --poll-period-exceeded=True --columns='hostname
+- command: sqpoller show --format=json --namespace=panos --poll-period-exceeded=True --columns='hostname
     service status'
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[]'
-- command: sqpoller show --status=fail --format=json --poll-period-exceeded=True --columns='hostname
+- command: sqpoller show --status=fail --format=json --namespace=panos --poll-period-exceeded=True --columns='hostname
     service status'
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[]'
-- command: sqpoller show --format=json --poll-period-exceeded=False
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller show --format=json --namespace=panos --poll-period-exceeded=False
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[{"namespace": "panos", "hostname": "server102", "service": "routes", "status":
     0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [1.0, 1.0, 1.0], "svcQsize": [13.0,
@@ -3855,13 +3855,13 @@ tests:
     "gatherTime": [182.0, 182.0, 182.0], "totalTime": [183.0, 183.0, 183.0], "svcQsize":
     [0.0, 0.0, 0.0], "wrQsize": [409.0, 409.0, 409.0], "nodeQsize": [18.0, 18.0, 18.0],
     "rxBytes": [1324.0, 1324.0, 1324.0], "pollExcdPeriodCount": 0, "timestamp": 1639498880095}]'
-- command: sqpoller show --format=json --status=fail --poll-period-exceeded=False
-  data-directory: tests/data/panos/parquet-out/
+- command: sqpoller show --format=json --namespace=panos --status=fail --poll-period-exceeded=False
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[]'
-- command: sqpoller show --format=json --status=pass --columns='namespace hostname
+- command: sqpoller show --format=json --namespace=panos --status=pass --columns='namespace hostname
     service pollExcdPeriodCount'
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: sqpoller status show panos
   output: '[{"namespace": "panos", "hostname": "server102", "service": "routes", "pollExcdPeriodCount":
     0}, {"namespace": "panos", "hostname": "server301", "service": "routes", "pollExcdPeriodCount":

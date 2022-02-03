@@ -1,7 +1,7 @@
 description: Testing all columns for all tables
 tests:
-- command: address show --format=json --columns='*'
-  data-directory: tests/data/eos/parquet-out/
+- command: address show --format=json --columns='*' --namespace=eos
+  data-directory: tests/data/parquet/
   marks: address show all eos
   output: '[{"namespace": "eos", "hostname": "server301", "ifname": "lo", "ipAddressList":
     [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
@@ -676,8 +676,8 @@ tests:
     [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
     1623025179345, "vlan": 0, "type": "gre", "active": true, "vrf": "", "ipAddress":
     []}]'
-- command: arpnd show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd show eos all
   output: '[{"namespace": "eos", "hostname": "server301", "ipAddress": "10.255.2.1",
     "oif": "eth0", "macaddr": "52:54:00:92:a9:68", "state": "reachable", "remote":
@@ -880,8 +880,8 @@ tests:
     "timestamp": 1623025181909, "active": true}, {"namespace": "eos", "hostname":
     "dcedge01", "ipAddress": "10.255.2.1", "oif": "em0.0", "macaddr": "52:54:00:92:a9:68",
     "state": "reachable", "remote": false, "timestamp": 1623025181909, "active": true}]'
-- command: bgp show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp show eos all
   output: '[{"namespace": "eos", "hostname": "leaf03", "vrf": "default", "peer": "10.0.0.22",
     "peerHostname": "spine02", "state": "Established", "afi": "l2vpn", "safi": "evpn",
@@ -2133,8 +2133,8 @@ tests:
     "extnhEnabled": false, "peerIP": "169.254.127.1", "mrai": 0, "reason": "Hold Timer
     Expired Error", "lastDownTime": 0, "ifname": "xe-0/0/0.0", "active": true, "afiSafi":
     "ipv4 unicast"}]'
-- command: device show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: device show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: device show eos all
   output: '[{"namespace": "eos", "hostname": "server301", "model": "vm", "version":
     "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
@@ -2189,8 +2189,8 @@ tests:
     "address": "10.255.2.250", "bootupTimestamp": 1620675742.016, "timestamp": 1623025180016,
     "uptime": 2349438000, "os": "junos-qfx", "serialNumber": "65873387107", "active":
     true}]'
-- command: evpnVni show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: evpnVni show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: evpnVni show eos all
   output: '[{"namespace": "eos", "hostname": "leaf02", "vni": 10, "type": "L2", "vlan":
     10, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.112",
@@ -2263,8 +2263,8 @@ tests:
     "", "vrf": "evpn-vrf", "advGateway": false, "ifname": "Vxlan1", "replicationType":
     "ingressBGP", "numArpNd": 0, "remoteVtepList": ["10.0.0.112"], "vniFilter": "",
     "l2VniList": [], "numMacs": 2, "active": true}]'
-- command: interface show --format=json --columns='*'
-  data-directory: tests/data/eos/parquet-out/
+- command: interface show --format=json --columns='*' --namespace=eos
+  data-directory: tests/data/parquet/
   marks: interface show eos all
   output: '[{"namespace": "eos", "hostname": "server302", "ifname": "eth2", "state":
     "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan": 0, "master":
@@ -3443,8 +3443,8 @@ tests:
     "", "macaddr": "00:00:00:00:00:00", "interfaceMac": "", "description": "", "numChanges":
     0, "speed": 800, "innerVlan": 0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp":
     1623025179345.0, "vni": 0, "lacpBypass": false, "active": true}]'
-- command: lldp show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: lldp show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: lldp show eos all
   output: '[{"namespace": "eos", "hostname": "leaf01", "ifname": "Ethernet6", "peerHostname":
     "leaf02", "peerIfname": "Ethernet6", "description": "", "mgmtIP": "10.0.0.12",
@@ -3576,8 +3576,8 @@ tests:
     "description": "", "mgmtIP": "10.0.0.31", "timestamp": 1623025179139, "peerIfindex":
     0, "peerMacaddr": "00:00:00:00:00:00", "subtype": "interface name", "active":
     true}]'
-- command: mac show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mac show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mac show eos all
   output: '[{"namespace": "eos", "hostname": "server101", "macaddr": "33:33:00:00:00:01",
     "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
@@ -4126,8 +4126,8 @@ tests:
     "eos", "hostname": "leaf04", "macaddr": "44:38:39:e3:19:2e", "vlan": 1006, "oif":
     "Vxlan1", "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote", "timestamp":
     1623025176019, "protocol": "", "active": true, "moveCount": 0}]'
-- command: mlag show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mlag show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mlag show eos all
   output: '[{"namespace": "eos", "hostname": "leaf02", "systemId": "46:38:39:99:c7:9e",
     "state": "active", "peerAddress": "169.254.1.0", "role": "primary", "peerLink":
@@ -4162,8 +4162,8 @@ tests:
     false, "peerMacAddress": "44:38:39:99:c7:9e", "configSanity": "consistent", "backupReason":
     "", "backupIP": "", "peerLinkStatus": "up", "domainId": "mlag_leaf12", "active":
     true}]'
-- command: ospf show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf show eos all
   output: '[{"namespace": "eos", "hostname": "spine01", "vrf": "default", "ifname":
     "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
@@ -4447,8 +4447,8 @@ tests:
     "peerRouterId": "10.0.0.21", "cost": 10, "retxTime": 5, "deadTime": 40, "helloTime":
     10, "networkType": "p2p", "maskLen": 32, "isUnnumbered": true, "ipAddress": "10.0.0.14",
     "routerId": "10.0.0.14", "active": true}]'
-- command: route show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route show eos all
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix":
     "172.16.2.0/24", "nexthopIps": ["10.0.0.31", "10.0.0.134", "10.0.0.134"], "oifs":
@@ -5969,8 +5969,8 @@ tests:
     "weights": [], "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1620675816627, "active": true,
     "numNexthops": 0, "prefixlen": 128}]'
-- command: vlan show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: vlan show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: vlan show eos all
   output: '[{"namespace": "eos", "hostname": "leaf02", "vlanName": "vlan1006", "state":
     "active", "interfaces": ["Cpu", "Vxlan1", "Port-Channel1"], "vlan": 1006, "timestamp":
@@ -6032,14 +6032,14 @@ tests:
     "active", "interfaces": [], "vlan": 1, "timestamp": 1623025174550, "active": true},
     {"namespace": "eos", "hostname": "dcedge01", "vlanName": "vlan1", "state": "active",
     "interfaces": [], "vlan": 1, "timestamp": 1623025176433, "active": true}]'
-- command: network show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out
+- command: network show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet
   marks: network show all eos
   output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
     1639161231163, "active": true}]'
-- command: sqPoller show --columns='*' --format=json
-  data-directory: tests/data/eos/parquet-out
+- command: sqPoller show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet
   marks: sqPoller show all eos
   output: '[{"namespace": "eos", "hostname": "firewall01", "service": "bgp", "status":
     0, "gatherTime": [0.0, 0.0, 0.0], "totalTime": [3.0, 3.0, 3.0], "svcQsize": [9.0,

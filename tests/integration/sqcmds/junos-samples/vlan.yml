@@ -1,7 +1,7 @@
 description: 'Testing verbs for vlan: show summarize unique'
 tests:
-- command: vlan show --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: vlan show --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: vlan show junos
   output: '[{"namespace": "junos", "hostname": "exit01", "vlanName": "vlan1", "state":
     "active", "interfaces": [], "vlan": 1, "timestamp": 1623025796342}, {"namespace":
@@ -23,29 +23,29 @@ tests:
     "vlan1", "state": "active", "interfaces": [], "vlan": 1, "timestamp": 1623025797192},
     {"namespace": "junos", "hostname": "exit02", "vlanName": "vlan1", "state": "active",
     "interfaces": [], "vlan": 1, "timestamp": 1623025797193}]'
-- command: vlan show --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: vlan show --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: vlan show junos
   output: '[{"hostname": "exit01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
     "leaf02"}, {"hostname": "dcedge01"}, {"hostname": "spine01"}, {"hostname": "spine02"},
     {"hostname": "exit02"}]'
-- command: vlan summarize --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: vlan summarize --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: vlan summarize junos
   output: '{"junos": {"deviceCnt": 7, "uniqueVlanCnt": 4, "activeVlanCnt": 4, "suspendedVlanCnt":
     0, "vlanPerDeviceStat": [1, 3, 1.0], "ifPerVlanStat": [1, 7, 1.5]}}'
-- command: vlan unique --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: vlan unique --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: vlan unique junos
   output: '[{"vlan": 1}, {"vlan": 10}, {"vlan": 20}, {"vlan": 30}]'
-- command: vlan unique --count=True --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: vlan unique --count=True --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: vlan unique junos
   output: '[{"vlan": 10, "numRows": 1}, {"vlan": 20, "numRows": 1}, {"vlan": 30, "numRows":
     2}, {"vlan": 1, "numRows": 7}]'
-- command: vlan unique --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: vlan unique --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: vlan unique junos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname":

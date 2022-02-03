@@ -1,7 +1,7 @@
 description: Testing all columns for all tables
 tests:
-- command: address show --format=json --columns='*'
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --format=json --namespace=nxos --columns='*'
+  data-directory: tests/data/parquet/
   marks: address show all nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "ifname": "eth2", "ipAddressList":
     [], "macaddr": "32:bb:c5:b5:3a:20", "ip6AddressList": [], "state": "up", "timestamp":
@@ -2272,8 +2272,8 @@ tests:
     "44:01:03:02:01:23", "ip6AddressList": [], "state": "notConnected", "timestamp":
     1619275260177, "vlan": 1, "type": "ethernet", "active": true, "vrf": "", "ipAddress":
     []}]'
-- command: arpnd show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos all
   output: '[{"namespace": "nxos", "hostname": "server101", "ipAddress": "10.255.2.1",
     "oif": "eth0", "macaddr": "52:54:00:9b:7d:db", "state": "reachable", "remote":
@@ -2458,8 +2458,8 @@ tests:
     "hostname": "leaf04", "ipAddress": "172.16.3.202", "oif": "Vlan30", "macaddr":
     "0a:b5:b6:22:53:72", "state": "reachable", "remote": false, "timestamp": 1619275264853,
     "active": true}]'
-- command: bgp show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp show nxos all
   output: '[{"namespace": "nxos", "hostname": "firewall01", "vrf": "default", "peer":
     "eth2.2", "peerHostname": "exit02", "state": "Established", "afi": "ipv4", "safi":
@@ -3295,8 +3295,8 @@ tests:
     "extnhReceived": true, "extnhEnabled": false, "peerIP": "169.254.253.10", "mrai":
     0, "reason": "No error", "lastDownTime": 0, "ifname": "Ethernet1/3.4", "active":
     true, "afiSafi": "ipv4 unicast"}]'
-- command: device show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: device show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: device show nxos all
   output: '[{"namespace": "nxos", "hostname": "server101", "model": "vm", "version":
     "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
@@ -3357,8 +3357,8 @@ tests:
     Core Processor (Skylake, IBRS)", "status": "alive", "address": "10.255.2.188",
     "bootupTimestamp": 1619043783.0, "timestamp": 1619275265679, "uptime": 231482679,
     "os": "nxos", "serialNumber": "9AC2MF0S5QO", "active": true}]'
-- command: evpnVni show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: evpnVni show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: evpnVni show nxos all
   output: '[{"namespace": "nxos", "hostname": "leaf02", "vni": 999, "type": "L3",
     "vlan": 999, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp":
@@ -3438,8 +3438,8 @@ tests:
     "44:01:03:01:1b:08", "vrf": "evpn-vrf", "advGateway": false, "ifname": "nve1",
     "replicationType": "", "numArpNd": 0, "remoteVtepList": ["10.0.0.112", "10.0.0.134",
     "10.0.0.222"], "vniFilter": "", "l2VniList": [], "numMacs": 3, "active": true}]'
-- command: interface show --format=json --columns='*'
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface show --format=json --namespace=nxos --columns='*'
+  data-directory: tests/data/parquet/
   marks: interface show nxos all
   output: '[{"namespace": "nxos", "hostname": "server101", "ifname": "eth2", "state":
     "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan": 0, "master":
@@ -7905,8 +7905,8 @@ tests:
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": 10000, "innerVlan":
     0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass":
     false, "active": true}]'
-- command: lldp show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: lldp show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: lldp show nxos all
   output: '[{"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/6",
     "peerHostname": "exit02", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v",
@@ -8070,8 +8070,8 @@ tests:
     "peerHostname": "leaf03", "peerIfname": "Ethernet1/1", "description": "N9K-C9300v",
     "mgmtIP": "10.255.2.190", "timestamp": 1619275257776, "peerIfindex": 0, "peerMacaddr":
     "00:00:00:00:00:00", "subtype": "interface name", "active": true}]'
-- command: mac show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mac show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mac show nxos all
   output: '[{"namespace": "nxos", "hostname": "server101", "macaddr": "33:33:00:00:00:01",
     "vlan": 0, "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
@@ -8661,8 +8661,8 @@ tests:
     "nxos", "hostname": "spine02", "macaddr": "44:01:01:02:1b:08", "vlan": 0, "oif":
     "sup-eth1(R)", "remoteVtepIp": "", "bd": "", "flags": "static", "timestamp": 1619275258116,
     "protocol": "", "active": true, "moveCount": 0}]'
-- command: mlag show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: mlag show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: mlag show nxos all
   output: '[{"namespace": "nxos", "hostname": "leaf03", "systemId": "00:23:04:ee:be:22",
     "state": "active", "peerAddress": "10.255.2.191", "role": "primary", "peerLink":
@@ -8695,8 +8695,8 @@ tests:
     false, "usesLinkLocal": false, "peerMacAddress": "44:01:02:03:1b:08", "configSanity":
     "consistent", "backupReason": "", "backupIP": "", "peerLinkStatus": "up", "domainId":
     "34", "active": true}]'
-- command: ospf show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: ospf show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: ospf show nxos all
   output: '[{"namespace": "nxos", "hostname": "leaf03", "vrf": "default", "ifname":
     "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
@@ -9018,8 +9018,8 @@ tests:
     "cost": 40, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "p2p",
     "maskLen": 32, "isUnnumbered": true, "ipAddress": "10.0.0.21/32", "routerId":
     "10.0.0.21", "active": true}]'
-- command: route show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route show nxos all
   output: '[{"namespace": "nxos", "hostname": "server101", "vrf": "default", "prefix":
     "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source":
@@ -10956,8 +10956,8 @@ tests:
     "forward", "timestamp": 1619275257722, "weights": [], "routeTag": "[65533]", "asPathList":
     [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1619116288722, "active": true, "numNexthops": 1, "prefixlen": 32}]'
-- command: vlan show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: vlan show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: vlan show nxos all
   output: '[{"namespace": "nxos", "hostname": "leaf02", "vlanName": "vlan30", "state":
     "active", "interfaces": ["port-channel1", "port-channel4", "Ethernet1/4", "Ethernet1/5",
@@ -11108,14 +11108,14 @@ tests:
     true}, {"namespace": "nxos", "hostname": "exit02", "vlanName": "vlan999", "state":
     "active", "interfaces": [""], "vlan": 999, "timestamp": 1619275257683, "active":
     true}]'
-- command: network show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out
+- command: network show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet
   marks: network show all nxos
   output: '[{"namespace": "nxos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
     1639161231216, "active": true}]'
-- command: sqPoller show --columns='*' --format=json
-  data-directory: tests/data/nxos/parquet-out
+- command: sqPoller show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet
   marks: sqPoller show all nxos
   output: '[{"namespace": "nxos", "hostname": "leaf04", "service": "bgp", "status":
     0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [5.0, 5.0, 5.0], "svcQsize": [9.0,

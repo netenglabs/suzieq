@@ -1,7 +1,7 @@
 description: 'Testing verbs for evpnVni: show summarize unique'
 tests:
-- command: evpnVni show --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: evpnVni show --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: evpnVni show junos
   output: '[{"namespace": "junos", "hostname": "leaf01", "vni": 10, "type": "L2",
     "vlan": 10, "state": "up", "mcastGroup": "", "remoteVtepCnt": 0, "priVtepIp":
@@ -24,34 +24,34 @@ tests:
     "junos", "hostname": "exit02", "vni": 999, "type": "L3", "vlan": 0, "state": "up",
     "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.32", "secVtepIp":
     "", "timestamp": 1623025802220}]'
-- command: evpnVni show --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: evpnVni show --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: evpnVni show junos
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
     "exit01"}, {"hostname": "exit02"}]'
-- command: evpnVni summarize --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: evpnVni summarize --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: evpnVni summarize junos
   output: '{"junos": {"mode": "symmetric", "uniqueVtepCnt": 4, "uniqueVniCnt": 4,
     "uniqueL3VniCnt": 1, "uniqueL2VniCnt": 3, "uniqueMulticastGroups": 1, "vnisUsingMulticast":
     0, "vnisUsingIngressRepl": 1, "remoteVtepsPerVtepStat": [1, 1, 1.0]}}'
-- command: evpnVni unique --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: evpnVni unique --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: evpnVni unique junos
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}]'
-- command: evpnVni unique --count=True --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: evpnVni unique --count=True --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: evpnVni unique junos
   output: '[{"hostname": "exit01", "numRows": 1}, {"hostname": "exit02", "numRows":
     1}, {"hostname": "leaf01", "numRows": 3}, {"hostname": "leaf02", "numRows": 3}]'
-- command: evpnVni unique --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: evpnVni unique --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: evpnVni unique junos
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}]'
-- command: evpnVni show --priVtepIp='10.0.0.112' --format=json
+- command: evpnVni show --priVtepIp='10.0.0.112' --format=json --namespace=junos
   data-directory: tests/data/nxos/parquet-out/
   marks: evpnVni show junos filter
   output: '[]'

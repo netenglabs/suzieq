@@ -1,7 +1,7 @@
 description: 'Testing verbs for device config: show'
 tests:
-- command: devconfig show --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: devconfig show --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: devconfig show panos
   output: '[{"namespace": "panos", "config": "{''@version'': ''8.0.0'', ''@urldb'':
     ''paloaltonetworks'', ''mgt-config'': {''users'': {''entry'': [{''@name'': ''admin'',
@@ -565,8 +565,8 @@ tests:
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.14\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
     vrf mgmt", "hostname": "leaf04", "timestamp": 1639476253949}]'
-- command: devconfig show --hostname=leaf01 --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: devconfig show --hostname=leaf01 --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: devconfig show panos
   output: '[{"namespace": "panos", "config": "# hostname\nleaf01\n# interfaces\n#
     This file describes the network interfaces available on your system\n# and how
@@ -628,8 +628,8 @@ tests:
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.11\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
     vrf mgmt", "hostname": "leaf01", "timestamp": 1639476253949}]'
-- command: devconfig show --hostname='leaf01 spine01' --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: devconfig show --hostname='leaf01 spine01' --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: devconfig show panos
   output: '[{"namespace": "panos", "config": "# hostname\nleaf01\n# interfaces\n#
     This file describes the network interfaces available on your system\n# and how
@@ -723,8 +723,8 @@ tests:
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
     vrf mgmt", "hostname": "spine01", "timestamp": 1639476253942}]'
 - command: devconfig show --hostname='leaf01 spine01' --query-str='config.str.contains("10.0.0.21")'
-    --format=json
-  data-directory: tests/data/panos/parquet-out/
+    --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: devconfig show panos
   output: '[{"namespace": "panos", "config": "# hostname\nleaf01\n# interfaces\n#
     This file describes the network interfaces available on your system\n# and how
@@ -817,16 +817,16 @@ tests:
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.21\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
     vrf mgmt", "hostname": "spine01", "timestamp": 1639476253942}]'
-- command: devconfig summarize --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: devconfig summarize --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: devconfig summarize panos
   output: '{"panos": {"deviceCnt": 10}}'
-- command: devconfig summarize --hostname='leaf01 spine01' --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: devconfig summarize --hostname='leaf01 spine01' --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: devconfig summarize panos
   output: '{"panos": {"deviceCnt": 2}}'
-- command: devconfig unique --columns=config --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: devconfig unique --columns=config --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Unique not supported for Device Config"}]'
   marks: devconfig unique panos

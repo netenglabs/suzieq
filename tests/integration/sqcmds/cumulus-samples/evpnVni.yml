@@ -1,7 +1,7 @@
 description: 'Testing verbs for evpnVni: show summarize unique'
 tests:
-- command: evpnVni show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni show cumulus
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vni": 24, "type": "L2",
     "vlan": 24, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp":
@@ -87,8 +87,8 @@ tests:
     "hostname": "leaf01", "vni": 24, "type": "L2", "vlan": 24, "state": "up", "mcastGroup":
     "0.0.0.0", "remoteVtepCnt": 1, "priVtepIp": "10.0.0.112", "secVtepIp": "", "timestamp":
     1616681582726}]'
-- command: evpnVni show --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni show cumulus
   output: '[{"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
@@ -100,8 +100,8 @@ tests:
     {"hostname": "exit01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
     {"hostname": "leaf01"}]'
-- command: evpnVni summarize --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni summarize cumulus
   output: '{"dual-evpn": {"mode": "symmetric", "uniqueVtepCnt": 5, "uniqueVniCnt":
     3, "uniqueL3VniCnt": 2, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast":
@@ -110,29 +110,29 @@ tests:
     1, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast": 0, "vnisUsingIngressRepl":
     2, "remoteVtepsPerVtepStat": [1, 1, 1.0]}}'
 - command: evpnVni summarize --namespace=dual-evpn --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: evpnVni summarize cumulus
   output: '{"dual-evpn": {"mode": "symmetric", "uniqueVtepCnt": 5, "uniqueVniCnt":
     3, "uniqueL3VniCnt": 2, "uniqueL2VniCnt": 2, "uniqueMulticastGroups": 0, "vnisUsingMulticast":
     0, "vnisUsingIngressRepl": 2, "remoteVtepsPerVtepStat": [3, 3, 3.0]}}'
-- command: evpnVni unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni unique cumulus
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}]'
-- command: evpnVni unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni unique cumulus
   output: '[{"hostname": "exit01", "numRows": 4}, {"hostname": "exit02", "numRows":
     4}, {"hostname": "leaf01", "numRows": 6}, {"hostname": "leaf02", "numRows": 6},
     {"hostname": "leaf03", "numRows": 6}, {"hostname": "leaf04", "numRows": 6}]'
-- command: evpnVni unique --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni unique --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni unique cumulus
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}]'
-- command: evpnVni assert --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni assert --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni assert cumulus
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vni": 24.0, "type":
     "L2", "assertReason": "-", "assert": "pass", "timestamp": 1616644822033}, {"namespace":
@@ -191,8 +191,8 @@ tests:
     "pass", "timestamp": 1616681582726}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
     "vni": 24.0, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
     1616681582726}]'
-- command: evpnVni show --columns='hostname vni' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni show --columns='hostname vni' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni show filter cumulus
   output: '[{"hostname": "exit02", "vni": 24}, {"hostname": "exit02", "vni": 13},
     {"hostname": "exit02", "vni": 104001}, {"hostname": "leaf04", "vni": 24}, {"hostname":
@@ -209,8 +209,8 @@ tests:
     104001}, {"hostname": "leaf04", "vni": 13}, {"hostname": "exit02", "vni": 104001},
     {"hostname": "leaf01", "vni": 13}, {"hostname": "leaf01", "vni": 104001}, {"hostname":
     "leaf01", "vni": 24}]'
-- command: evpnVni show --columns='hostname vni remoteVtepCnt' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni show --columns='hostname vni remoteVtepCnt' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni show filter cumulus
   output: '[{"hostname": "exit02", "vni": 24, "remoteVtepCnt": 3}, {"hostname": "exit02",
     "vni": 13, "remoteVtepCnt": 3}, {"hostname": "exit02", "vni": 104001, "remoteVtepCnt":
@@ -234,8 +234,8 @@ tests:
     "vni": 104001, "remoteVtepCnt": 0}, {"hostname": "leaf01", "vni": 13, "remoteVtepCnt":
     1}, {"hostname": "leaf01", "vni": 104001, "remoteVtepCnt": 0}, {"hostname": "leaf01",
     "vni": 24, "remoteVtepCnt": 1}]'
-- command: evpnVni show --columns='hostname vni remoteVtepCnt remoteVtepList' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni show --columns='hostname vni remoteVtepCnt remoteVtepList' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni show filter cumulus
   output: '[{"hostname": "exit02", "vni": 24, "remoteVtepCnt": 3, "remoteVtepList":
     ["10.0.0.134", "10.0.0.112", "10.0.0.101"]}, {"hostname": "exit02", "vni": 13,
@@ -274,8 +274,8 @@ tests:
     "leaf01", "vni": 13, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.134"]}, {"hostname":
     "leaf01", "vni": 104001, "remoteVtepCnt": 0, "remoteVtepList": []}, {"hostname":
     "leaf01", "vni": 24, "remoteVtepCnt": 1, "remoteVtepList": ["10.0.0.134"]}]'
-- command: evpnVni show --columns='hostname vni remoteVtepList' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni show --columns='hostname vni remoteVtepList' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni show filter cumulus
   output: '[{"hostname": "exit02", "vni": 24, "remoteVtepList": ["10.0.0.134", "10.0.0.112",
     "10.0.0.101"]}, {"hostname": "exit02", "vni": 13, "remoteVtepList": ["10.0.0.134",
@@ -306,8 +306,8 @@ tests:
     "exit02", "vni": 104001, "remoteVtepList": []}, {"hostname": "leaf01", "vni":
     13, "remoteVtepList": ["10.0.0.134"]}, {"hostname": "leaf01", "vni": 104001, "remoteVtepList":
     []}, {"hostname": "leaf01", "vni": 24, "remoteVtepList": ["10.0.0.134"]}]'
-- command: evpnVni assert --status=pass --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni assert --status=pass --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni assert cumulus
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vni": 24.0, "type":
     "L2", "assertReason": "-", "assert": "pass", "timestamp": 1616644822033}, {"namespace":
@@ -366,12 +366,12 @@ tests:
     "pass", "timestamp": 1616681582726}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
     "vni": 24.0, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
     1616681582726}]'
-- command: evpnVni assert --status=fail --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni assert --status=fail --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni assert cumulus
   output: '[]'
-- command: evpnVni assert --status=all --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni assert --status=all --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni assert cumulus
   output: '[{"namespace": "dual-evpn", "hostname": "exit02", "vni": 24.0, "type":
     "L2", "assertReason": "-", "assert": "pass", "timestamp": 1616644822033}, {"namespace":
@@ -430,17 +430,17 @@ tests:
     "pass", "timestamp": 1616681582726}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
     "vni": 24.0, "type": "L2", "assertReason": "-", "assert": "pass", "timestamp":
     1616681582726}]'
-- command: evpnVni assert --status=whatever --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni assert --status=whatever --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni assert cumulus
   output: '[]'
-- command: evpnVni unique --columns=vni --format=json --count=True
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni unique --columns=vni --format=json --count=True --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni unique cumulus
   output: '[{"vni": 13, "numRows": 10}, {"vni": 24, "numRows": 10}, {"vni": 104001,
     "numRows": 12}]'
-- command: evpnVni show --priVtepIp='10.0.0.112' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: evpnVni show --priVtepIp='10.0.0.112' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: evpnVni show cumulus filter
   output: '[{"namespace": "dual-evpn", "hostname": "leaf01", "vni": 24, "type": "L2",
     "vlan": 24, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 3, "priVtepIp":

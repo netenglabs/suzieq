@@ -48,11 +48,6 @@ def test_macs_parsing(table, datadir, get_table_data):
         'mixed': 2,
     }
 
-    if datadir.endswith(('vmx/parquet-out')):
-        # mixed dataset has no evpn
-        assert (True)
-        return
-
     assert not df.empty
     validate_host_shape(df, ns_dict)
     validate_macs(df)

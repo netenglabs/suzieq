@@ -1,7 +1,7 @@
 description: 'Testing verbs for interface: show summarize unique assert top'
 tests:
-- command: interface show --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface show --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: interface show panos
   output: '[{"namespace": "panos", "hostname": "server102", "ifname": "bond0", "state":
     "up", "adminState": "up", "type": "bond", "mtu": 9216, "vlan": 0, "master": "",
@@ -509,8 +509,8 @@ tests:
     "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9000, "vlan":
     0, "master": "bond01", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1639476254854}]'
-- command: interface show --columns=hostname --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface show --columns=hostname --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: interface show panos
   output: '[{"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
     {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server301"},
@@ -562,38 +562,38 @@ tests:
     {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
     "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
     {"hostname": "leaf01"}]'
-- command: interface summarize --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface summarize --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: interface summarize panos
   output: '{"panos": {"deviceCnt": 14, "interfaceCnt": 167, "devicesWithL2Cnt": 6,
     "devicesWithVxlanCnt": 14, "ifDownCnt": 0, "ifAdminDownCnt": 0, "ifWithMultipleIPCnt":
     4, "uniqueMTUCnt": 5, "uniqueIfTypesCnt": 9, "speedCnt": 4, "ifChangesStat": [0,
     5, 0.0], "ifPerDeviceStat": [5, 21, 9.5], "uniqueIPv4AddrCnt": 50, "uniqueIPv6AddrCnt":
     3}}'
-- command: interface unique --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface unique --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: interface unique panos
   output: '[{"type": "bond"}, {"type": "bond_slave"}, {"type": "bridge"}, {"type":
     "ethernet"}, {"type": "loopback"}, {"type": "subinterface"}, {"type": "vlan"},
     {"type": "vrf"}, {"type": "vxlan"}]'
-- command: interface unique --count=True --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface unique --count=True --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: interface unique panos
   output: '[{"type": "bridge", "numRows": 6}, {"type": "subinterface", "numRows":
     6}, {"type": "loopback", "numRows": 14}, {"type": "vxlan", "numRows": 14}, {"type":
     "bond", "numRows": 16}, {"type": "vrf", "numRows": 17}, {"type": "bond_slave",
     "numRows": 24}, {"type": "vlan", "numRows": 24}, {"type": "ethernet", "numRows":
     46}]'
-- command: interface unique --columns=hostname --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface unique --columns=hostname --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: interface unique panos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: interface assert --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface assert --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/1.3",
       "state": "up", "peerHostname": "exit01", "peerIfname": "swp3", "assert": "fail",
@@ -873,8 +873,8 @@ tests:
       "leaf02", "peerIfname": "swp6", "assert": "pass", "assertReason": [], "timestamp":
       1639476254854}]'
   marks: interface assert panos
-- command: interface top --what='statusChangeTimestamp' --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface top --what='statusChangeTimestamp' --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: interface top panos
   output: '[{"namespace": "panos", "hostname": "leaf04", "ifname": "bond02", "state":
     "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 0, "master": "bridge",
@@ -893,8 +893,8 @@ tests:
     "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 0, "master":
     "bridge", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
     1639466736510, "timestamp": 1639476254854}]'
-- command: interface assert --status=pass --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface assert --status=pass --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: interface assert panos
   output: '[{"namespace": "panos", "hostname": "exit01", "ifname": "swp3.2", "state":
     "up", "peerHostname": "firewall01", "peerIfname": "ethernet1/1", "assert": "pass",
@@ -1089,8 +1089,8 @@ tests:
     "assertReason": [], "timestamp": 1639476254854}, {"namespace": "panos", "hostname":
     "leaf01", "ifname": "swp6", "state": "up", "peerHostname": "leaf02", "peerIfname":
     "swp6", "assert": "pass", "assertReason": [], "timestamp": 1639476254854}]'
-- command: interface assert --status=fail --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface assert --status=fail --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/1.3",
       "state": "up", "peerHostname": "exit01", "peerIfname": "swp3", "assert": "fail",
@@ -1175,8 +1175,8 @@ tests:
       "firewall01", "peerIfname": "ethernet1/2", "assert": "fail", "assertReason":
       ["MTU mismatch"], "timestamp": 1639476254817}]'
   marks: interface assert panos
-- command: interface assert --status=all --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface assert --status=all --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/1.3",
       "state": "up", "peerHostname": "exit01", "peerIfname": "swp3", "assert": "fail",
@@ -1456,7 +1456,7 @@ tests:
       "leaf02", "peerIfname": "swp6", "assert": "pass", "assertReason": [], "timestamp":
       1639476254854}]'
   marks: interface assert panos
-- command: interface assert --status=whatever --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: interface assert --status=whatever --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: interface assert panos
   output: '[]'

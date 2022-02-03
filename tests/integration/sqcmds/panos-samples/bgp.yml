@@ -1,7 +1,7 @@
 description: 'Testing verbs for bgp: show summarize unique'
 tests:
-- command: bgp show --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp show --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: bgp show panos
   output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer":
     "169.254.254.9", "peerHostname": "exit01", "state": "Established", "afi": "ipv4",
@@ -150,8 +150,8 @@ tests:
     "peerHostname": "spine01", "state": "Established", "afi": "l2vpn", "safi": "evpn",
     "asn": 64520, "peerAsn": 64520, "pfxRx": 18, "pfxTx": 8, "numChanges": 1, "estdTime":
     1639470254000.0, "timestamp": 1639476253949}]'
-- command: bgp show --columns=hostname --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp show --columns=hostname --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: bgp show filter panos
   output: '[{"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
     {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
@@ -165,8 +165,8 @@ tests:
     "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf01"}, {"hostname":
     "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
-- command: bgp show --columns='*' --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp show --columns='*' --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: bgp show filter panos
   output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer":
     "169.254.254.9", "peerHostname": "exit01", "state": "Established", "afi": "ipv4",
@@ -674,37 +674,37 @@ tests:
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.0.21", "mrai": 0, "reason": "", "lastDownTime": 0, "ifname": "", "active":
     true, "afiSafi": "l2vpn evpn"}]'
-- command: bgp summarize --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp summarize --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: bgp summarize panos
   output: '{"panos": {"deviceCnt": 10, "totalPeerCnt": 40, "uniqueAsnCnt": 6, "uniqueVrfsCnt":
     3, "failedPeerCnt": 0, "iBGPPeerCnt": 24, "eBGPPeerCnt": 16, "rrClientPeerCnt":
     12, "activeAfiSafiCnt": 2, "upTimeStat": [25000, 6014000, 5995000], "updatesRxStat":
     [2, 1734, 24.0], "updatesTxStat": [2, 528, 20.0]}}'
-- command: bgp unique --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp unique --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: bgp unique panos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
-- command: bgp unique --count=True --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp unique --count=True --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: bgp unique panos
   output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
     2}, {"hostname": "leaf02", "numRows": 2}, {"hostname": "leaf03", "numRows": 2},
     {"hostname": "leaf04", "numRows": 2}, {"hostname": "exit01", "numRows": 6}, {"hostname":
     "exit02", "numRows": 6}, {"hostname": "firewall01", "numRows": 6}, {"hostname":
     "spine01", "numRows": 6}, {"hostname": "spine02", "numRows": 6}]'
-- command: bgp unique --columns=hostname --format=json --count=True
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp unique --columns=hostname --format=json --namespace=panos --count=True
+  data-directory: tests/data/parquet/
   marks: bgp unique panos
   output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
     2}, {"hostname": "leaf02", "numRows": 2}, {"hostname": "leaf03", "numRows": 2},
     {"hostname": "leaf04", "numRows": 2}, {"hostname": "exit01", "numRows": 6}, {"hostname":
     "exit02", "numRows": 6}, {"hostname": "firewall01", "numRows": 6}, {"hostname":
     "spine01", "numRows": 6}, {"hostname": "spine02", "numRows": 6}]'
-- command: bgp assert --format=json
-  data-directory: tests/data/panos/parquet-out
+- command: bgp assert --format=json --namespace=panos
+  data-directory: tests/data/parquet
   error:
     error: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer":
       "169.254.254.9", "asn": 65533, "peerAsn": 65522, "state": "Established", "peerHostname":
@@ -833,8 +833,8 @@ tests:
       "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
       1639476253949}]'
   marks: bgp assert panos
-- command: bgp assert --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp assert --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer":
       "169.254.254.9", "asn": 65533, "peerAsn": 65522, "state": "Established", "peerHostname":
@@ -963,8 +963,8 @@ tests:
       "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
       1639476253949}]'
   marks: bgp assert panos
-- command: bgp assert --status=pass --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp assert --status=pass --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: bgp assert panos
   output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer":
     "169.254.254.9", "asn": 65533, "peerAsn": 65522, "state": "Established", "peerHostname":
@@ -1013,8 +1013,8 @@ tests:
     "panos", "hostname": "exit02", "vrf": "evpn-vrf", "peer": "swp3.3", "asn": 65521,
     "peerAsn": 65533, "state": "Established", "peerHostname": "firewall01", "assert":
     "pass", "assertReason": "-", "timestamp": 1639476253948}]'
-- command: bgp assert --status=fail --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp assert --status=fail --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "panos", "hostname": "leaf03", "vrf": "default", "peer":
       "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":
@@ -1095,8 +1095,8 @@ tests:
       64520, "state": "Established", "peerHostname": "spine01", "assert": "fail",
       "assertReason": "Not all Afi/Safis enabled", "timestamp": 1639476253949}]'
   marks: bgp assert panos
-- command: bgp assert --status=all --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp assert --status=all --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "peer":
       "169.254.254.9", "asn": 65533, "peerAsn": 65522, "state": "Established", "peerHostname":
@@ -1225,12 +1225,12 @@ tests:
       "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
       1639476253949}]'
   marks: bgp assert panos
-- command: bgp assert --status=whatever --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp assert --status=whatever --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: bgp assert panos
   output: '[]'
-- command: bgp assert --hostname=leaf01 --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp assert --hostname=leaf01 --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "panos", "hostname": "leaf01", "vrf": "default", "peer":
       "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":
@@ -1241,7 +1241,7 @@ tests:
       enabled", "timestamp": 1639476253949}]'
   marks: bgp assert panos
 - command: bgp assert --hostname=leaf01 --namespace=panos --format=json
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "panos", "hostname": "leaf01", "vrf": "default", "peer":
       "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":
@@ -1251,8 +1251,8 @@ tests:
       "peerHostname": "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis
       enabled", "timestamp": 1639476253949}]'
   marks: bgp assert panos
-- command: bgp unique --columns=hostname --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: bgp unique --columns=hostname --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: bgp unique panos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":

@@ -1,7 +1,7 @@
 description: 'Testing verbs for interface: show summarize unique assert top'
 tests:
-- command: interface show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: interface show
   output: '[{"namespace": "ospf-single", "hostname": "server102", "ifname": "eth1",
     "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1500, "vlan": 0,
@@ -1365,8 +1365,8 @@ tests:
     "hostname": "leaf01", "ifname": "swp1", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 9216, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.11/32"],
     "ip6AddressList": ["fe80::5054:ff:fee6:f5c/64"], "timestamp": 1616681582844}]'
-- command: interface show --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: interface show
   output: '[{"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
     {"hostname": "server101"}, {"hostname": "server104"}, {"hostname": "server103"},
@@ -1497,8 +1497,8 @@ tests:
     {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
     "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
     {"hostname": "leaf01"}, {"hostname": "leaf01"}]'
-- command: interface summarize --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: interface summarize
   output: '{"ospf-single": {"deviceCnt": 14, "interfaceCnt": 97, "devicesWithL2Cnt":
     4, "devicesWithVxlanCnt": 0, "ifDownCnt": 0, "ifAdminDownCnt": 12, "ifWithMultipleIPCnt":
@@ -1514,36 +1514,36 @@ tests:
     9, "speedCnt": 5, "ifChangesStat": [0, 5, 0.0], "ifPerDeviceStat": [4, 23, 9.5],
     "uniqueIPv4AddrCnt": 60, "uniqueIPv6AddrCnt": 1}}'
 - command: interface summarize --namespace=dual-evpn --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: interface summarize
   output: '{"dual-evpn": {"deviceCnt": 14, "interfaceCnt": 166, "devicesWithL2Cnt":
     6, "devicesWithVxlanCnt": 12, "ifDownCnt": 0, "ifAdminDownCnt": 4, "ifWithMultipleIPCnt":
     5, "uniqueMTUCnt": 4, "uniqueIfTypesCnt": 9, "speedCnt": 5, "ifChangesStat": [0,
     7, 0.0], "ifPerDeviceStat": [4, 21, 9.5], "uniqueIPv4AddrCnt": 56, "uniqueIPv6AddrCnt":
     1}}'
-- command: interface unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: interface unique
   output: '[{"type": "bond"}, {"type": "bond_slave"}, {"type": "bridge"}, {"type":
     "ethernet"}, {"type": "loopback"}, {"type": "macvlan"}, {"type": "vlan"}, {"type":
     "vrf"}, {"type": "vxlan"}]'
-- command: interface unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: interface unique
   output: '[{"type": "macvlan", "numRows": 12}, {"type": "bridge", "numRows": 16},
     {"type": "vxlan", "numRows": 26}, {"type": "bond", "numRows": 32}, {"type": "vrf",
     "numRows": 37}, {"type": "loopback", "numRows": 42}, {"type": "bond_slave", "numRows":
     48}, {"type": "vlan", "numRows": 62}, {"type": "ethernet", "numRows": 166}]'
-- command: interface unique --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface unique --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: interface unique
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: interface assert --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface assert --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "ospf-single", "hostname": "leaf01", "ifname": "vlan10",
       "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
@@ -2240,8 +2240,8 @@ tests:
       "ifname": "swp4", "state": "up", "peerHostname": "leaf02", "peerIfname": "swp4",
       "assert": "pass", "assertReason": [], "timestamp": 1616681582844}]'
   marks: interface assert
-- command: interface top --what='statusChangeTimestamp' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface top --what='statusChangeTimestamp' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: interface top
   output: '[{"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "bond02", "state":
     "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 0, "master": "bridge",
@@ -2260,8 +2260,8 @@ tests:
     "leaf03", "ifname": "swp5", "state": "up", "adminState": "up", "type": "bond_slave",
     "mtu": 9000, "vlan": 0, "master": "bond01", "ipAddressList": [], "ip6AddressList":
     [], "statusChangeTimestamp": 1616677646330, "timestamp": 1616681582391}]'
-- command: interface assert --status=pass --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface assert --status=pass --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: interface assert cumulus
   output: '[{"namespace": "ospf-single", "hostname": "leaf01", "ifname": "vlan10",
     "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
@@ -2739,8 +2739,8 @@ tests:
     "assertReason": [], "timestamp": 1616681582844}, {"namespace": "ospf-ibgp", "hostname":
     "leaf01", "ifname": "swp4", "state": "up", "peerHostname": "leaf02", "peerIfname":
     "swp4", "assert": "pass", "assertReason": [], "timestamp": 1616681582844}]'
-- command: interface assert --status=fail --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface assert --status=fail --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "ospf-single", "hostname": "server102", "ifname": "eth0",
       "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
@@ -2951,8 +2951,8 @@ tests:
       "assert": "fail", "assertReason": ["MTU mismatch", "Speed mismatch"], "timestamp":
       1616681582248}]'
   marks: interface assert cumulus
-- command: interface assert --status=all --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface assert --status=all --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "ospf-single", "hostname": "leaf01", "ifname": "vlan10",
       "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
@@ -3649,7 +3649,7 @@ tests:
       "ifname": "swp4", "state": "up", "peerHostname": "leaf02", "peerIfname": "swp4",
       "assert": "pass", "assertReason": [], "timestamp": 1616681582844}]'
   marks: interface assert cumulus
-- command: interface assert --status=whatever --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: interface assert --status=whatever --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: interface assert cumulus
   output: '[]'

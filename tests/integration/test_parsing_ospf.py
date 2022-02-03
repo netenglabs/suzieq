@@ -72,11 +72,6 @@ def test_ospf_parsing(table, datadir, get_table_data):
         'mixed': 8
     }
 
-    if datadir.endswith(('vmx/parquet-out')):
-        # mixed dataset has no evpn
-        assert (True)
-        return
-
     validate_host_shape(df, ns_dict)
     # These apply to all sessions
     _validate_common_ospf_data(df)

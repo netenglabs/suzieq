@@ -1,22 +1,22 @@
 description: 'Testing verbs for path: show summarize'
 tests:
 - command: path show --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Must specify trace source and dest"}]'
   marks: path show eos
 - command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
   marks: path show eos
 - command: path show --dest=172.16.3.202 --src=172.16.1.104 --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid src 172.16.1.104"}]'
   marks: path show eos
 - command: path show --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "server101",
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
@@ -205,7 +205,7 @@ tests:
       "", "timestamp": 1623025175379}]'
   marks: path show eos
 - command: path show --dest=172.16.2.201 --src=172.16.1.101 --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "server101",
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
@@ -394,7 +394,7 @@ tests:
       "", "timestamp": 1623025175379}]'
   marks: path show eos
 - command: path show --src=172.16.3.202 --dest=172.16.3.102 --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "server302",
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
@@ -579,7 +579,7 @@ tests:
       "", "timestamp": 1623025175575}]'
   marks: path show eos
 - command: path show --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show eos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "leaf04",
     "iif": "Loopback0", "oif": "Ethernet1", "vrf": "default", "isL2": false, "overlay":
@@ -606,7 +606,7 @@ tests:
     false, "mtuMatch": true, "inMtu": 1500, "outMtu": 65535, "protocol": "", "ipLookup":
     "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1623025176024}]'
 - command: path show --src=10.0.0.31 --dest=10.0.0.41 --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "eos", "hostname": "exit01",
       "iif": "Loopback0", "oif": "Ethernet3.2", "vrf": "default", "isL2": false, "overlay":
@@ -646,24 +646,24 @@ tests:
       "", "nexthopIp": "", "error": "no reverse path", "timestamp": 1623025179345}]'
   marks: path show eos
 - command: path summarize --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path summarize eos
   output: '[{"eos": 8}, {"eos": [2, 2, 2, 1]}, {"eos": 4}, {"eos": 4.0}, {"eos": 8},
     {"eos": 1500}, {"eos": true}, {"eos": true}]'
 - command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path summarize eos
   output: '{"eos": {"totalPaths": 2, "perHopEcmp": [2, 1], "maxPathLength": 2, "avgPathLength":
     2.0, "uniqueDevices": 4, "pathMtu": 1500, "usesOverlay": false, "mtuMismatch":
     false}}'
 - command: path unique --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=eos
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path unique eos
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf04"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
 - command: path unique --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=eos
     --count=True
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path unique eos
   output: '[{"hostname": "spine01", "numRows": 1}, {"hostname": "spine02", "numRows":
     1}, {"hostname": "leaf01", "numRows": 2}, {"hostname": "leaf04", "numRows": 2}]'

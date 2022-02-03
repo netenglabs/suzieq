@@ -1,11 +1,11 @@
 description: 'Testing verbs for route: show summarize unique lpm'
 tests:
-- command: route show --prefixlen=64 --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route show --prefixlen=64 --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   marks: route show filter prefixlen mixed
   output: '[]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   marks: route show filter prefixlen mixed
   output: '[{"namespace": "mixed", "hostname": "leaf6-eos", "vrf": "default", "prefix":
     "10.1.1.0/30", "nexthopIps": ["10.1.6.1"], "oifs": ["Ethernet1"], "protocol":
@@ -614,8 +614,8 @@ tests:
     "default", "prefix": "10.1.5.0/30", "nexthopIps": ["10.1.1.1"], "oifs": ["GigabitEthernet0/0"],
     "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
     "timestamp": 1627395444959}]'
-- command: route show --prefixlen="<=24" --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route show --prefixlen="<=24" --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   marks: route show filter prefixlen mixed
   output: '[{"namespace": "mixed", "hostname": "leaf6-eos", "vrf": "default", "prefix":
     "172.29.151.0/24", "nexthopIps": [], "oifs": ["Management1"], "protocol": "connected",
@@ -680,8 +680,8 @@ tests:
     "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": ["GigabitEthernet0/7"],
     "protocol": "static", "source": "", "preference": 1, "ipvers": 4, "action": "forward",
     "timestamp": 1627395444959}]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   marks: route show filter prefixlen mixed
   output: '[{"namespace": "mixed", "hostname": "leaf6-eos", "vrf": "default", "prefix":
     "10.1.1.0/30", "nexthopIps": ["10.1.6.1"], "oifs": ["Ethernet1"], "protocol":
@@ -1290,8 +1290,8 @@ tests:
     "default", "prefix": "10.1.5.0/30", "nexthopIps": ["10.1.1.1"], "oifs": ["GigabitEthernet0/0"],
     "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
     "timestamp": 1627395444959}]'
-- command: route show --prefixlen=">=24" --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route show --prefixlen=">=24" --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   marks: route show filter prefixlen mixed
   output: '[{"namespace": "mixed", "hostname": "leaf6-eos", "vrf": "default", "prefix":
     "10.1.1.0/30", "nexthopIps": ["10.1.6.1"], "oifs": ["Ethernet1"], "protocol":
@@ -1931,8 +1931,8 @@ tests:
     "vrf": "default", "prefix": "10.1.5.0/30", "nexthopIps": ["10.1.1.1"], "oifs":
     ["GigabitEthernet0/0"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
     4, "action": "forward", "timestamp": 1627395444959}]'
-- command: route show --prefixlen="!24" --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route show --prefixlen="!24" --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   marks: route show filter prefixlen mixed
   output: '[{"namespace": "mixed", "hostname": "leaf6-eos", "vrf": "default", "prefix":
     "10.1.1.0/30", "nexthopIps": ["10.1.6.1"], "oifs": ["Ethernet1"], "protocol":
@@ -2572,24 +2572,24 @@ tests:
     "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": [],
     "protocol": "static", "source": "", "preference": 1, "ipvers": 4, "action": "forward",
     "timestamp": 1627395444959}]'
-- command: route show --prefixlen=">128" --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route show --prefixlen=">128" --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   error:
     error: '[{"error": "Invalid prefixlen: value should be between 0 and 128"}]'
   marks: route show filter prefixlen mixed
-- command: route show --prefixlen="<0" --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route show --prefixlen="<0" --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   error:
     error: '[{"error": "Invalid prefixlen: value should be between 0 and 128"}]'
   marks: route show filter prefixlen mixed
-- command: route show --prefixlen=">24 and !32" --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route show --prefixlen=">24 and !32" --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   error:
     error: '[{"error": "Invalid prefixlen query: it must be of the form ''[<|<=|>=|>|!]
       length'' (i.e. ''>= 24'')"}]'
   marks: route show filter prefixlen mixed
-- command: route lpm --address='11.11.11.11' --columns='hostname nexthopIps' --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route lpm --address='11.11.11.11' --columns='hostname nexthopIps' --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   marks: route lpm mixed
   output: '[{"hostname": "leaf6-eos", "nexthopIps": ["10.1.6.1"]}, {"hostname": "spine2-nxos",
     "nexthopIps": ["10.2.1.2", "10.2.2.2", "10.2.3.2", "10.2.4.2"]}, {"hostname":
@@ -2599,8 +2599,8 @@ tests:
     ["10.1.3.1"]}, {"hostname": "spine1-nxos", "nexthopIps": ["11.11.11.11", "11.11.11.11"]},
     {"hostname": "spine2-nxos", "nexthopIps": ["172.29.151.254"]}, {"hostname": "spine1-nxos",
     "nexthopIps": ["172.29.151.254"]}]'
-- command: route unique  --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route unique  --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   marks: route unique mixed
   output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "1.1.1.1/32"}, {"prefix": "10.1.1.0/30"},
     {"prefix": "10.1.1.1/32"}, {"prefix": "10.1.1.2/32"}, {"prefix": "10.1.2.0/30"},
@@ -2621,8 +2621,8 @@ tests:
     {"prefix": "4.4.4.4/32"}, {"prefix": "5.5.5.5/32"}, {"prefix": "6.6.6.6/32"},
     {"prefix": "fe80::205:860f:fc71:1300/128"}, {"prefix": "fe80::205:860f:fc71:8700/128"},
     {"prefix": "ff02::2/128"}]'
-- command: route unique  --count=True --format=json
-  data-directory: tests/data/mixed/parquet-out/
+- command: route unique  --count=True --format=json --namespace=mixed
+  data-directory: tests/data/parquet//
   marks: route unique mixed
   output: '[{"prefix": "10.1.1.1/32", "numRows": 1}, {"prefix": "10.1.1.2/32", "numRows":
     1}, {"prefix": "10.1.2.1/32", "numRows": 1}, {"prefix": "10.1.2.2/32", "numRows":

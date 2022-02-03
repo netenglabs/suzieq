@@ -225,7 +225,9 @@ def test_interfaces(table, datadir, get_table_data):
 
                 assert (subdf.macaddr.str.len() == 17).all()
                 assert (subdf.macaddr.str.contains(':')).all()
-        assert (df.query('state != "notConnected" and type != "vpls"')
+        assert (df.query('namespace=="panos" and hostname == "firewall01" and'
+                         ' ~ifname.isin(["Management Interface", "loopback"])'
+                         ' and state != "notConnected" and type != "vpls"')
                 .mtu != 0).all()
 
     # Juniper interfaces speed must be tested with specific function

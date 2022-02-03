@@ -1,7 +1,7 @@
 description: 'Testing verbs for fs: show unique'
 tests:
-- command: fs show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: fs show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: fs show
   output: '[{"namespace": "ospf-single", "hostname": "server102", "mountPoint": "/run/user/1000",
     "totalSize": "49M", "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp":
@@ -967,8 +967,8 @@ tests:
     "usedSize": "0", "usedPercent": 0, "device": "tmpfs", "timestamp": 1616681581514},
     {"namespace": "ospf-ibgp", "hostname": "internet", "mountPoint": "/dev", "totalSize":
     "328M", "usedSize": "0", "usedPercent": 0, "device": "udev", "timestamp": 1616681581514}]'
-- command: fs show --hostname="edge01" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: fs show --hostname="edge01" --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: fs show
   output: '[{"namespace": "ospf-single", "hostname": "edge01", "mountPoint": "/boot",
     "totalSize": "464M", "usedSize": "111M", "usedPercent": 26, "device": "/dev/sda1",
@@ -1024,7 +1024,7 @@ tests:
     "/dev", "totalSize": "349M", "usedSize": "0", "usedPercent": 0, "device": "udev",
     "timestamp": 1616681581180}]'
 - command: fs show --namespace="dual-evpn" --mountPoint="/dev" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: fs show
   output: '[{"namespace": "dual-evpn", "hostname": "server103", "mountPoint": "/dev",
     "totalSize": "223M", "usedSize": "0", "usedPercent": 0, "device": "udev", "timestamp":
@@ -1055,18 +1055,18 @@ tests:
     0, "device": "udev", "timestamp": 1616644821714}, {"namespace": "dual-evpn", "hostname":
     "server101", "mountPoint": "/dev", "totalSize": "223M", "usedSize": "0", "usedPercent":
     0, "device": "udev", "timestamp": 1616644821714}]'
-- command: fs unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: fs unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: fs unique
   output: '[{"fstype": "btrfs"}, {"fstype": "devtmpfs"}, {"fstype": "ext4"}, {"fstype":
     "tmpfs"}]'
-- command: fs unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: fs unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: fs unique
   output: '[{"fstype": "devtmpfs", "numRows": 42}, {"fstype": "ext4", "numRows": 48},
     {"fstype": "btrfs", "numRows": 144}, {"fstype": "tmpfs", "numRows": 201}]'
-- command: fs unique --columns="mountPoint" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: fs unique --columns="mountPoint" --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: fs unique
   output: '[{"mountPoint": "/"}, {"mountPoint": "/.snapshots"}, {"mountPoint": "/boot"},
     {"mountPoint": "/boot/grub/i386-pc"}, {"mountPoint": "/boot/grub/x86_64-efi"},
@@ -1076,8 +1076,8 @@ tests:
     {"mountPoint": "/usr/local"}, {"mountPoint": "/var/cache/cumulus"}, {"mountPoint":
     "/var/lib/libvirt/images"}, {"mountPoint": "/var/log"}, {"mountPoint": "/var/opt"},
     {"mountPoint": "/var/spool"}, {"mountPoint": "/var/support"}, {"mountPoint": "/var/tmp"}]'
-- command: fs unique --columns="hostname" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: fs unique --columns="hostname" --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: fs unique
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":

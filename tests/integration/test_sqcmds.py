@@ -281,7 +281,7 @@ def test_sqcmds_regex_hostname(table, datadir):
     cfgfile = create_dummy_config_file(datadir=datadir)
 
     df = get_sqobject(table)(config_file=cfgfile).get(
-        hostname=['~leaf.*', '~exit.*'])
+        hostname=['~leaf0.*', '~exit0.*'])
 
     if table == 'tables':
         if 'junos' in datadir:
@@ -290,34 +290,17 @@ def test_sqcmds_regex_hostname(table, datadir):
             # The hostnames for these output don't match the hostname regex
             assert df[df.table == 'device']['deviceCnt'].tolist() == [6]
         return
-    if 'basic_dual_bgp' in datadir and table in ['ospf', 'evpnVni',
-                                                 'devconfig']:
-        return
 
-    if not any(x in datadir for x in ['vmx', 'mixed', 'junos']):
-        assert not df.empty
+    assert not df.empty
 
-        if table in ['macs', 'vlan'] and 'basic_dual_bgp' in datadir:
-            assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
-                                                     'leaf03', 'leaf04'])
-        elif table not in ['mlag']:
-            assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
-                                                     'leaf03', 'leaf04',
-                                                     'exit01', 'exit02'])
+    if table not in ['mlag']:
+        assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
+                                                 'leaf03', 'leaf04',
+                                                 'exit01', 'exit02'])
 
-        else:
-            assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
-                                                     'leaf03', 'leaf04'])
-    elif 'junos' in datadir:
-        if table == 'mlag':
-            # Our current Junos tests don't have MLAG
-            return
-        assert not df.empty
-        if table == 'macs':
-            assert set(df.hostname.unique()) == set(['leaf01', 'leaf02'])
-        else:
-            assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
-                                                     'exit01', 'exit02'])
+    else:
+        assert set(df.hostname.unique()) == set(['leaf01', 'leaf02',
+                                                 'leaf03', 'leaf04'])
 
 
 @pytest.mark.sqcmds
@@ -328,7 +311,7 @@ def test_sqcmds_regex_hostname(table, datadir):
                            for x in get_tables()
                            if x not in ['path', 'inventory']
                            ])
-@ pytest.mark.parametrize('datadir', ['tests/data/multidc/parquet-out/'])
+@ pytest.mark.parametrize('datadir', ['tests/data/parquet/'])
 def test_sqcmds_regex_namespace(table, datadir):
 
     cfgfile = create_dummy_config_file(datadir=datadir)
