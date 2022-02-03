@@ -1,7 +1,7 @@
 description: Testing all columns for all tables
 tests:
-- command: address show --format=json --columns='*'
-  data-directory: tests/data/junos/parquet-out
+- command: address show --format=json --namespace=junos --columns='*'
+  data-directory: tests/data/parquet
   marks: address show all junos
   output: '[{"namespace": "junos", "hostname": "server102", "ifname": "eth0", "ipAddressList":
     ["10.255.5.169/24"], "macaddr": "52:54:00:48:10:1c", "ip6AddressList": [], "state":
@@ -1465,8 +1465,8 @@ tests:
     [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "timestamp":
     1623025803099, "vlan": 0, "type": "internal", "active": true, "vrf": "", "ipAddress":
     []}]'
-- command: arpnd show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: arpnd show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: arpnd show junos all
   output: '[{"namespace": "junos", "hostname": "server102", "ipAddress": "172.16.3.202",
     "oif": "eth1", "macaddr": "28:b7:ad:88:ae:71", "state": "reachable", "remote":
@@ -1639,8 +1639,8 @@ tests:
     {"namespace": "junos", "hostname": "exit02", "ipAddress": "169.254.127.2", "oif":
     "xe-0/0/3.0", "macaddr": "02:05:86:71:c2:07", "state": "reachable", "remote":
     false, "timestamp": 1623025797433, "active": true}]'
-- command: bgp show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: bgp show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: bgp show junos all
   output: '[{"namespace": "junos", "hostname": "firewall01", "vrf": "default", "peer":
     "eth1.3", "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi":
@@ -2059,8 +2059,8 @@ tests:
     Error", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false,
     "peerIP": "10.0.0.32", "mrai": 0, "reason": "Cease", "lastDownTime": 0, "ifname":
     "", "active": true, "afiSafi": "l2vpn evpn"}]'
-- command: device show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: device show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: device show junos all
   output: '[{"namespace": "junos", "hostname": "server101", "model": "vm", "version":
     "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
@@ -2110,8 +2110,8 @@ tests:
     "10.255.5.252", "bootupTimestamp": 1622998009.947, "timestamp": 1623025800947,
     "uptime": 27791000, "os": "junos-qfx", "serialNumber": "87673382385", "active":
     true}]'
-- command: evpnVni show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: evpnVni show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: evpnVni show junos all
   output: '[{"namespace": "junos", "hostname": "leaf01", "vni": 10, "type": "L2",
     "vlan": 10, "state": "up", "mcastGroup": "", "remoteVtepCnt": 0, "priVtepIp":
@@ -2154,8 +2154,8 @@ tests:
     "02:05:86:71:27:00", "vrf": "evpn-vrf", "advGateway": false, "ifname": "", "replicationType":
     "", "numArpNd": 0, "remoteVtepList": [], "vniFilter": "", "l2VniList": [], "numMacs":
     0.0, "active": true}]'
-- command: interface show --format=json --columns='*'
-  data-directory: tests/data/junos/parquet-out
+- command: interface show --format=json --namespace=junos --columns='*'
+  data-directory: tests/data/parquet
   marks: interface show junos all
   output: '[{"namespace": "junos", "hostname": "server201", "ifname": "lo", "state":
     "up", "adminState": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
@@ -4477,8 +4477,8 @@ tests:
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": 0, "innerVlan":
     0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 1623025803099.0,
     "vni": 0, "lacpBypass": false, "active": true}]'
-- command: lldp show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: lldp show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: lldp show junos all
   output: '[{"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/0", "peerHostname":
     "leaf01", "peerIfname": "xe-0/0/0", "description": "Juniper Networks, Inc. vqfx-10000
@@ -4586,8 +4586,8 @@ tests:
     (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1623025799497,
     "peerIfindex": 519, "peerMacaddr": "00:00:00:00:00:00", "subtype": "locally assigned",
     "active": true}]'
-- command: mac show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: mac show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: mac show junos all
   output: '[{"namespace": "junos", "hostname": "firewall01", "macaddr": "01:00:5e:00:00:01",
     "vlan": 0, "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
@@ -4842,12 +4842,12 @@ tests:
     "junos", "hostname": "leaf01", "macaddr": "28:b7:ad:3c:81:d0", "vlan": 10, "oif":
     "xe-0/0/2", "remoteVtepIp": "", "bd": "", "flags": "", "timestamp": 1623025798828,
     "protocol": "", "active": true, "moveCount": 0}]'
-- command: mlag show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: mlag show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: mlag show junos all
   output: '[]'
-- command: ospf show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: ospf show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: ospf show junos all
   output: '[{"namespace": "junos", "hostname": "leaf02", "vrf": "default", "ifname":
     "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0,
@@ -5023,8 +5023,8 @@ tests:
     1, "retxTime": 5, "deadTime": 40, "helloTime": 10, "networkType": "p2p", "maskLen":
     32, "isUnnumbered": false, "ipAddress": "10.0.0.22/32", "routerId": "10.0.0.22",
     "active": true}]'
-- command: route show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: route show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: route show junos all
   output: '[{"namespace": "junos", "hostname": "server101", "vrf": "default", "prefix":
     "10.255.5.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source":
@@ -6317,8 +6317,8 @@ tests:
     "multirecv", "timestamp": 1623025803098, "weights": [], "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp":
     1622998503098, "active": true, "numNexthops": 0, "prefixlen": 32}]'
-- command: vlan show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: vlan show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: vlan show junos all
   output: '[{"namespace": "junos", "hostname": "exit01", "vlanName": "vlan1", "state":
     "active", "interfaces": [], "vlan": 1, "timestamp": 1623025796342, "active": true},
@@ -6342,14 +6342,14 @@ tests:
     "interfaces": [], "vlan": 1, "timestamp": 1623025797192, "active": true}, {"namespace":
     "junos", "hostname": "exit02", "vlanName": "vlan1", "state": "active", "interfaces":
     [], "vlan": 1, "timestamp": 1623025797193, "active": true}]'
-- command: network show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: network show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: network show all junos
   output: '[{"namespace": "junos", "deviceCnt": 12, "serviceCnt": 17, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
     1639161231051, "active": true}]'
-- command: sqPoller show --columns='*' --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: sqPoller show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: sqPoller show all junos
   output: '[{"namespace": "junos", "hostname": "spine02", "service": "bgp", "status":
     0, "gatherTime": [0.0, 0.0, 0.0], "totalTime": [4.0, 4.0, 4.0], "svcQsize": [7.0,

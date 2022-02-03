@@ -1,7 +1,7 @@
 description: 'Testing verbs for table: show describe'
 tests:
-- command: table show --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: table show --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: table show junos
   output: '[{"table": "arpnd", "firstTime": 1623025795112, "latestTime": 1623025797433,
     "intervals": 6, "allRows": 68, "namespaces": 1, "deviceCnt": 12}, {"table": "bgp",
@@ -36,21 +36,21 @@ tests:
     "intervals": 4, "allRows": 11, "namespaces": 1, "deviceCnt": 7}, {"table": "TOTAL",
     "firstTime": 1623025795112, "latestTime": 1639161231051, "intervals": 102, "allRows":
     1470, "namespaces": 1, "deviceCnt": 12}]'
-- command: table show --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: table show --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid columns specified: [''hostname'']"}]'
   marks: table show junos
 - command: table show --namespace=dummy --format=json
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: table show junos
   output: '[]'
-- command: table show --view=changes --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: table show --view=changes --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: table show junos
   output: '[]'
-- command: table show --view=latest --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: table show --view=latest --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: table show junos
   output: '[{"table": "arpnd", "firstTime": 1623025795112, "latestTime": 1623025797433,
     "intervals": 6, "allRows": 68, "namespaces": 1, "deviceCnt": 12}, {"table": "bgp",
@@ -85,8 +85,8 @@ tests:
     "intervals": 4, "allRows": 11, "namespaces": 1, "deviceCnt": 7}, {"table": "TOTAL",
     "firstTime": 1623025795112, "latestTime": 1639161231051, "intervals": 102, "allRows":
     1470, "namespaces": 1, "deviceCnt": 12}]'
-- command: table show --hostname=leaf01 --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: table show --hostname=leaf01 --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: table show junos
   output: '[{"table": "arpnd", "firstTime": 1623025797193, "latestTime": 1623025797193,
     "intervals": 1, "allRows": 7, "namespaces": 1, "deviceCnt": 1}, {"table": "bgp",
@@ -114,8 +114,8 @@ tests:
     3, "namespaces": 1, "deviceCnt": 1}, {"table": "TOTAL", "firstTime": 1623025796342,
     "latestTime": 1639161231042, "intervals": 13, "allRows": 166, "namespaces": 1,
     "deviceCnt": 1}]'
-- command: table describe --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: table describe --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: table describe junos
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "allRows", "type": "long", "key":
@@ -130,16 +130,16 @@ tests:
     in database"}, {"name": "sqvers", "type": "string", "key": "", "display": "",
     "description": "Schema version, not selectable"}, {"name": "table", "type": "string",
     "key": "", "display": 1, "description": "Table name"}]'
-- command: table unique --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: table unique --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: table unique junos
   output: '[{"table": "TOTAL"}, {"table": "arpnd"}, {"table": "bgp"}, {"table": "devconfig"},
     {"table": "device"}, {"table": "evpnVni"}, {"table": "fs"}, {"table": "ifCounters"},
     {"table": "interfaces"}, {"table": "lldp"}, {"table": "macs"}, {"table": "ospfIf"},
     {"table": "ospfNbr"}, {"table": "routes"}, {"table": "sqPoller"}, {"table": "time"},
     {"table": "topcpu"}, {"table": "topmem"}, {"table": "vlan"}]'
-- command: table unique --count=True --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: table unique --count=True --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: table unique junos
   output: '[{"table": "TOTAL", "numRows": 1}, {"table": "arpnd", "numRows": 1}, {"table":
     "bgp", "numRows": 1}, {"table": "devconfig", "numRows": 1}, {"table": "device",

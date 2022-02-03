@@ -1,7 +1,7 @@
 description: 'Testing verbs for device: show summarize unique'
 tests:
-- command: device show --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: device show --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: device show junos
   output: '[{"namespace": "junos", "hostname": "server101", "model": "vm", "version":
     "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
@@ -39,47 +39,47 @@ tests:
     "exit02", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
     "architecture": "", "status": "alive", "address": "10.255.5.252", "bootupTimestamp":
     1622998009.947, "timestamp": 1623025800947}]'
-- command: device show --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: device show --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: device show junos
   output: '[{"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server201"},
     {"hostname": "server202"}, {"hostname": "firewall01"}, {"hostname": "spine01"},
     {"hostname": "spine02"}, {"hostname": "leaf02"}, {"hostname": "exit01"}, {"hostname":
     "leaf01"}, {"hostname": "dcedge01"}, {"hostname": "exit02"}]'
-- command: device summarize --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: device summarize --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: device summarize junos
   output: '{"junos": {"deviceCnt": 12, "downDeviceCnt": 0, "unpolledDeviceCnt": 0,
     "vendorCnt": {"Juniper": 7, "Ubuntu": 5}, "modelCnt": {"vqfx-10000": 7, "vm":
     5}, "archCnt": {"": 7, "x86-64": 5}, "versionCnt": {"19.4R1.10": 7, "18.04.3 LTS":
     5}, "upTimeStat": [27781000, 27893928, 27810500]}}'
-- command: device summarize --columns="namespace hostname" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: device summarize --columns="namespace hostname" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   error:
     error: '{"error": {"0": "ERROR: You cannot specify columns with summarize"}}'
   marks: device summarize junos
-- command: device unique --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: device unique --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: device unique junos
   output: '[{"model": "vm"}, {"model": "vqfx-10000"}]'
-- command: device unique --count=True --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: device unique --count=True --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: device unique junos
   output: '[{"model": "vm", "numRows": 5}, {"model": "vqfx-10000", "numRows": 7}]'
-- command: device unique --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: device unique --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: device unique junos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "server101"}, {"hostname": "server102"}, {"hostname": "server201"}, {"hostname":
     "server202"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
-- command: device unique --columns="hostname namespace" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: device unique --columns="hostname namespace" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Specify a single column with unique"}]'
   marks: device unique junos
-- command: device unique --columns=badcolumn --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: device unique --columns=badcolumn --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid columns specified: [''badcolumn'']"}]'
   marks: device unique junos

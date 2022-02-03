@@ -1,7 +1,7 @@
 description: 'Testing verbs for ospf: show summarize unique assert top'
 tests:
-- command: ospf show --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf show --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf show eos
   output: '[{"namespace": "eos", "hostname": "spine01", "vrf": "default", "ifname":
     "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
@@ -125,8 +125,8 @@ tests:
     "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
     "10.0.0.21", "numChanges": 7.0, "lastChangeTime": 1620677087929.0, "timestamp":
     1623025177660}]'
-- command: ospf show --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf show --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf show eos
   output: '[{"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
     {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
@@ -139,42 +139,42 @@ tests:
     "exit01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
     {"hostname": "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}]'
-- command: ospf summarize --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf summarize --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf summarize eos
   output: '{"eos": {"deviceCnt": 8, "peerCnt": 36, "stubbyPeerCnt": 0, "passivePeerCnt":
     12, "unnumberedPeerCnt": 32, "failedPeerCnt": 0, "area": {"0.0.0.0": 36}, "vrf":
     {"default": 36}, "helloTime": {"10": 36}, "deadTime": {"40": 36}, "retxTime":
     {"5": 36}, "networkType": {"p2p": 24, "broadcast": 12}, "adjChangesStat": [6.0,
     7.0, 7.0], "upTimeStat": [106674000, 2348165000, 2348090500]}}'
-- command: ospf unique --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf unique --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf unique eos
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
     "spine01"}, {"hostname": "spine02"}]'
-- command: ospf unique --count=True --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf unique --count=True --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf unique eos
   output: '[{"hostname": "exit01", "numRows": 3}, {"hostname": "exit02", "numRows":
     3}, {"hostname": "leaf01", "numRows": 4}, {"hostname": "leaf02", "numRows": 4},
     {"hostname": "leaf03", "numRows": 4}, {"hostname": "leaf04", "numRows": 4}, {"hostname":
     "spine01", "numRows": 7}, {"hostname": "spine02", "numRows": 7}]'
-- command: ospf unique --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf unique --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf unique eos
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
     "spine01"}, {"hostname": "spine02"}]'
-- command: ospf unique --columns=hostname --format=json --count=True
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf unique --columns=hostname --format=json --namespace=eos --count=True
+  data-directory: tests/data/parquet/
   marks: ospf unique eos
   output: '[{"hostname": "exit01", "numRows": 3}, {"hostname": "exit02", "numRows":
     3}, {"hostname": "leaf01", "numRows": 4}, {"hostname": "leaf02", "numRows": 4},
     {"hostname": "leaf03", "numRows": 4}, {"hostname": "leaf04", "numRows": 4}, {"hostname":
     "spine01", "numRows": 7}, {"hostname": "spine02", "numRows": 7}]'
-- command: ospf assert --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf assert --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf assert eos
   output: '[{"namespace": "eos", "hostname": "spine01", "ifname": "Ethernet1", "vrf":
     "default", "assert": "pass", "assertReason": "-", "timestamp": 1623025177058},
@@ -221,8 +221,8 @@ tests:
     "pass", "assertReason": "-", "timestamp": 1623025177660}, {"namespace": "eos",
     "hostname": "leaf04", "ifname": "Ethernet2", "vrf": "default", "assert": "pass",
     "assertReason": "-", "timestamp": 1623025177660}]'
-- command: ospf top --what=numChanges --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf top --what=numChanges --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf top eos
   output: '[{"namespace": "eos", "hostname": "spine01", "vrf": "default", "ifname":
     "Ethernet6", "peerHostname": "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
@@ -242,8 +242,8 @@ tests:
     "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
     "peerIP": "10.0.0.22", "numChanges": 7.0, "lastChangeTime": 1620677086564, "timestamp":
     1623025177253}]'
-- command: ospf show --state='passive' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf show --state='passive' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf show eos filter
   output: '[{"namespace": "eos", "hostname": "spine01", "vrf": "default", "ifname":
     "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
@@ -283,8 +283,8 @@ tests:
     "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
     0.0, "timestamp": 1623025177660}]'
-- command: ospf show --ifname=Ethernet2 --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf show --ifname=Ethernet2 --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf show eos filter
   output: '[{"namespace": "eos", "hostname": "spine01", "vrf": "default", "ifname":
     "Ethernet2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
@@ -313,8 +313,8 @@ tests:
     "vrf": "default", "ifname": "Ethernet2", "peerHostname": "spine02", "area": "0.0.0.0",
     "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
     7, "lastChangeTime": 1620677086930, "timestamp": 1623025177660}]'
-- command: ospf show --ifname=Ethernet1 --hostname='leaf01 leaf02' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: ospf show --ifname=Ethernet1 --hostname='leaf01 leaf02' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: ospf show eos filter
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "default", "ifname":
     "Ethernet1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":

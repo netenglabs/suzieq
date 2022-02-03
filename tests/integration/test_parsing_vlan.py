@@ -34,11 +34,6 @@ def test_vlan_parsing(table, datadir, get_table_data):
         'mixed': 6,
     }
 
-    if datadir.endswith(('vmx/parquet-out')):
-        # mixed dataset has no evpn
-        assert (True)
-        return
-
     assert not df.empty
 
     validate_host_shape(df, ns_dict)

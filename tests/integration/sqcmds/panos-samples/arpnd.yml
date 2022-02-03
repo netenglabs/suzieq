@@ -1,7 +1,7 @@
 description: 'Testing verbs for arpnd: show summarize unique'
 tests:
-- command: arpnd show --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd show
   output: '[{"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.254.1",
     "oif": "ethernet1/1.2", "macaddr": "52:54:00:de:82:68", "state": "reachable",
@@ -364,8 +364,8 @@ tests:
     "panos", "hostname": "leaf04", "ipAddress": "fe80::fc38:39ff:fe01:204", "oif":
     "eth0", "macaddr": "fe:38:39:01:02:04", "state": "reachable", "remote": false,
     "timestamp": 1639476254425}]'
-- command: arpnd show --columns=hostname --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --columns=hostname --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd show
   output: '[{"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
     {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
@@ -413,40 +413,40 @@ tests:
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}]'
-- command: arpnd show --address="169.254.253.1" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --address="169.254.253.1" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd show panos filter
   output: '[{"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
     "oif": "ethernet1/2.2", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
     "remote": false, "timestamp": 1639476253556}]'
-- command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd show panos filter
   output: '[{"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
     "oif": "ethernet1/2.2", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
     "remote": false, "timestamp": 1639476253556}, {"namespace": "panos", "hostname":
     "exit02", "ipAddress": "169.254.253.2", "oif": "swp3.2", "macaddr": "52:54:00:8e:ea:75",
     "state": "reachable", "remote": false, "timestamp": 1639476254350}]'
-- command: arpnd show --address="invalidaddress" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --address="invalidaddress" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid IP address specified"}]'
   marks: arpnd show panos filter
-- command: arpnd show --macaddr="52:54:00:4c:dd:5a" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --macaddr="52:54:00:4c:dd:5a" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd show panos filter
   output: '[]'
-- command: arpnd show --macaddr="52:54:00:4c:dd:5a 52:54:00:76:61:4f" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --macaddr="52:54:00:4c:dd:5a 52:54:00:76:61:4f" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd show panos filter
   output: '[]'
-- command: arpnd show --macaddr="invalidaddress" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --macaddr="invalidaddress" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid mac address specified"}]'
   marks: arpnd show panos filter
-- command: arpnd show --prefix="169.254.253.0/24" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --prefix="169.254.253.0/24" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd show panos filter
   output: '[{"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
     "oif": "ethernet1/2.2", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
@@ -463,8 +463,8 @@ tests:
     1639476254350}, {"namespace": "panos", "hostname": "exit02", "ipAddress": "169.254.253.2",
     "oif": "swp3.2", "macaddr": "52:54:00:8e:ea:75", "state": "reachable", "remote":
     false, "timestamp": 1639476254350}]'
-- command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd show panos filter
   output: '[{"namespace": "panos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
     "oif": "ethernet1/2.2", "macaddr": "52:54:00:36:33:d9", "state": "reachable",
@@ -571,37 +571,37 @@ tests:
     {"namespace": "panos", "hostname": "leaf04", "ipAddress": "10.0.0.112", "oif":
     "vlan999", "macaddr": "44:39:39:ff:40:95", "state": "reachable", "remote": true,
     "timestamp": 1639476254425}]'
-- command: arpnd show --prefix="169.254.253.0" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd show --prefix="169.254.253.0" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: arpnd show panos filter
-- command: arpnd summarize --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd summarize --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd summarize
   output: '{"panos": {"deviceCnt": 14, "arpNdEntriesCnt": 154, "uniqueArpEntriesCnt":
     65, "uniqueOifCnt": 22, "arpEntriesCnt": 75, "v6NDEntriesCnt": 79, "v6NDGlobalEntriesCnt":
     79, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 6,
     "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 6, "failedEntriesCnt": 0, "failedV4EntriesCnt":
     0, "failedV6EntriesCnt": 0}}'
-- command: arpnd summarize --namespace=panos --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd summarize --namespace=panos --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd summarize
   output: '{"panos": {"deviceCnt": 14, "arpNdEntriesCnt": 154, "uniqueArpEntriesCnt":
     65, "uniqueOifCnt": 22, "arpEntriesCnt": 75, "v6NDEntriesCnt": 79, "v6NDGlobalEntriesCnt":
     79, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 6,
     "remoteV6EntriesCnt": 0, "staticV6EntriesCnt": 6, "failedEntriesCnt": 0, "failedV4EntriesCnt":
     0, "failedV6EntriesCnt": 0}}'
-- command: arpnd unique --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd unique --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd unique
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: arpnd unique --count=True --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd unique --count=True --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd unique
   output: '[{"hostname": "server101", "numRows": 2}, {"hostname": "server102", "numRows":
     2}, {"hostname": "server301", "numRows": 2}, {"hostname": "server302", "numRows":
@@ -611,16 +611,16 @@ tests:
     15}, {"hostname": "exit01", "numRows": 17}, {"hostname": "exit02", "numRows":
     17}, {"hostname": "leaf02", "numRows": 20}, {"hostname": "leaf04", "numRows":
     20}]'
-- command: arpnd unique --columns=hostname --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd unique --columns=hostname --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd unique
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: arpnd summarize --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: arpnd summarize --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: arpnd summarize
   output: '{"panos": {"deviceCnt": 14, "arpNdEntriesCnt": 154, "uniqueArpEntriesCnt":
     65, "uniqueOifCnt": 22, "arpEntriesCnt": 75, "v6NDEntriesCnt": 79, "v6NDGlobalEntriesCnt":

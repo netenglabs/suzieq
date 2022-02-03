@@ -1,7 +1,7 @@
 description: 'Testing verbs for route: show summarize unique lpm'
 tests:
-- command: route show --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route show eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix":
     "172.16.2.0/24", "nexthopIps": ["10.0.0.31", "10.0.0.134", "10.0.0.134"], "oifs":
@@ -887,8 +887,8 @@ tests:
     "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["em0.0"],
     "protocol": "access-internal", "source": "", "preference": 12, "ipvers": 4, "action":
     "forward", "timestamp": 1623025176627}]'
-- command: route show --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route show eos
   output: '[{"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
     {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname":
@@ -972,15 +972,15 @@ tests:
     {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
     {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
     {"hostname": "dcedge01"}, {"hostname": "dcedge01"}]'
-- command: route summarize --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route summarize --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route summarize eos
   output: '{"eos": {"deviceCnt": 14, "uniquePrefixCnt": 41, "uniqueVrfsCnt": 3, "ifRoutesCnt":
     40, "hostRoutesCnt": 136, "totalV4RoutesinNs": 274, "totalV6RoutesinNs": 2, "routingProtocolCnt":
     14, "nexthopCnt": 5, "routesPerHostStat": [6, 48, 16.0], "routesperVrfStat": [22,
     176, 78.0], "deviceWithNoDefRoute": true}}'
-- command: route unique --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route unique --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route unique eos
   output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "10.0.0.0/24"}, {"prefix": "10.0.0.11/32"},
     {"prefix": "10.0.0.112/32"}, {"prefix": "10.0.0.12/32"}, {"prefix": "10.0.0.13/32"},
@@ -996,8 +996,8 @@ tests:
     {"prefix": "172.16.2.0/24"}, {"prefix": "172.16.2.201/32"}, {"prefix": "172.16.3.0/24"},
     {"prefix": "172.16.3.102/32"}, {"prefix": "172.16.3.202/32"}, {"prefix": "192.168.0.179/32"},
     {"prefix": "fe80::205:860f:fc71:f000/128"}, {"prefix": "ff02::2/128"}]'
-- command: route unique  --format=json --count=True
-  data-directory: tests/data/eos/parquet-out/
+- command: route unique  --format=json --namespace=eos --count=True
+  data-directory: tests/data/parquet/
   marks: route unique eos
   output: '[{"prefix": "10.255.2.250/32", "numRows": 1}, {"prefix": "169.254.0.2/32",
     "numRows": 1}, {"prefix": "169.254.127.0/32", "numRows": 1}, {"prefix": "169.254.127.2/32",
@@ -1021,8 +1021,8 @@ tests:
     "numRows": 13}, {"prefix": "172.16.2.0/24", "numRows": 13}, {"prefix": "172.16.3.0/24",
     "numRows": 14}, {"prefix": "0.0.0.0/0", "numRows": 16}, {"prefix": "10.255.2.0/24",
     "numRows": 22}]'
-- command: route unique --columns=hostname --format=json --count=True
-  data-directory: tests/data/eos/parquet-out/
+- command: route unique --columns=hostname --format=json --namespace=eos --count=True
+  data-directory: tests/data/parquet/
   marks: route unique eos
   output: '[{"hostname": "server101", "numRows": 6}, {"hostname": "server102", "numRows":
     6}, {"hostname": "server301", "numRows": 6}, {"hostname": "server302", "numRows":
@@ -1032,8 +1032,8 @@ tests:
     25}, {"hostname": "leaf03", "numRows": 25}, {"hostname": "leaf04", "numRows":
     25}, {"hostname": "exit01", "numRows": 48}, {"hostname": "exit02", "numRows":
     48}]'
-- command: route lpm --address=10.0.0.1 --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route lpm --address=10.0.0.1 --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route lpm eos
   output: '[{"namespace": "eos", "hostname": "server102", "vrf": "default", "prefix":
     "10.0.0.0/24", "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol":
@@ -1086,8 +1086,8 @@ tests:
     "eos", "hostname": "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
     ["10.255.2.1"], "oifs": ["em0.0"], "protocol": "access-internal", "source": "",
     "preference": 12, "ipvers": 4, "action": "forward", "timestamp": 1623025176627}]'
-- command: route lpm --address="10.0.0.12" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route lpm --address="10.0.0.12" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route lpm eos
   output: '[{"namespace": "eos", "hostname": "spine02", "vrf": "default", "prefix":
     "10.0.0.12/32", "nexthopIps": [], "oifs": ["Ethernet2"], "protocol": "ospf", "source":
@@ -1160,15 +1160,15 @@ tests:
     "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"],
     "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "preference":
     12, "ipvers": 4, "action": "forward", "timestamp": 1623025176627}]'
-- command: route lpm --address="10.0.0.12" --hostname="server101 server103" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route lpm --address="10.0.0.12" --hostname="server101 server103" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route lpm eos
   output: '[{"namespace": "eos", "hostname": "server101", "vrf": "default", "prefix":
     "10.0.0.0/24", "nexthopIps": ["172.16.1.254"], "oifs": ["bond0"], "protocol":
     "", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
     1623025174997}]'
-- command: route lpm --address="10.0.0.12" --vrf=default --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route lpm --address="10.0.0.12" --vrf=default --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route lpm eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
     "10.0.0.12/32", "nexthopIps": [], "oifs": ["Loopback0"], "protocol": "connected",
@@ -1215,8 +1215,8 @@ tests:
     "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["em0.0"],
     "protocol": "access-internal", "source": "", "preference": 12, "ipvers": 4, "action":
     "forward", "timestamp": 1623025176627}]'
-- command: route lpm --address="10.0.0.11" --vrf=default --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route lpm --address="10.0.0.11" --vrf=default --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route lpm eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
     "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
@@ -1263,14 +1263,14 @@ tests:
     "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["em0.0"],
     "protocol": "access-internal", "source": "", "preference": 12, "ipvers": 4, "action":
     "forward", "timestamp": 1623025176627}]'
-- command: route unique --columns=prefixlen --format=json --count=True
-  data-directory: tests/data/eos/parquet-out/
+- command: route unique --columns=prefixlen --format=json --namespace=eos --count=True
+  data-directory: tests/data/parquet/
   marks: route unique eos
   output: '[{"prefixlen": 128, "numRows": 2}, {"prefixlen": 16, "numRows": 4}, {"prefixlen":
     30, "numRows": 12}, {"prefixlen": 0, "numRows": 16}, {"prefixlen": 31, "numRows":
     28}, {"prefixlen": 24, "numRows": 78}, {"prefixlen": 32, "numRows": 136}]'
-- command: route show --prefix='172.16.1.101' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --prefix='172.16.1.101' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route show eos
   output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix":
     "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
@@ -1286,12 +1286,12 @@ tests:
     "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs":
     ["_nexthopVrf:default"], "protocol": "ibgp", "source": "", "preference": 200,
     "ipvers": 4, "action": "forward", "timestamp": 1623025174546}]'
-- command: route show --prefixlen=64 --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --prefixlen=64 --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen eos
   output: '[]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
     "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
@@ -1869,8 +1869,8 @@ tests:
     "vrf": "default", "prefix": "169.254.127.0/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
     "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
     "timestamp": 1623025176627}]'
-- command: route show --prefixlen="<=24" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --prefixlen="<=24" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix":
     "172.16.2.0/24", "nexthopIps": ["10.0.0.31", "10.0.0.134", "10.0.0.134"], "oifs":
@@ -2184,8 +2184,8 @@ tests:
     "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"],
     "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "preference":
     12, "ipvers": 4, "action": "forward", "timestamp": 1623025176627}]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
     "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
@@ -2763,8 +2763,8 @@ tests:
     "vrf": "default", "prefix": "169.254.127.0/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
     "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
     "timestamp": 1623025176627}]'
-- command: route show --prefixlen=">=24" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --prefixlen=">=24" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix":
     "172.16.2.0/24", "nexthopIps": ["10.0.0.31", "10.0.0.134", "10.0.0.134"], "oifs":
@@ -3587,8 +3587,8 @@ tests:
     "vrf": "default", "prefix": "169.254.127.0/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
     "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
     "timestamp": 1623025176627}]'
-- command: route show --prefixlen="!24" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --prefixlen="!24" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "default", "prefix":
     "10.0.0.32/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["Ethernet1",
@@ -4228,29 +4228,29 @@ tests:
     "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["em0.0"],
     "protocol": "access-internal", "source": "", "preference": 12, "ipvers": 4, "action":
     "forward", "timestamp": 1623025176627}]'
-- command: route show --prefixlen=">128" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --prefixlen=">128" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefixlen: value should be between 0 and 128"}]'
   marks: route show filter prefixlen eos
-- command: route show --prefixlen="<0" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --prefixlen="<0" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefixlen: value should be between 0 and 128"}]'
   marks: route show filter prefixlen eos
-- command: route show --prefixlen=">24 and !32" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route show --prefixlen=">24 and !32" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefixlen query: it must be of the form ''[<|<=|>=|>|!]
       length'' (i.e. ''>= 24'')"}]'
   marks: route show filter prefixlen eos
-- command: route unique --columns=prefixlen --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route unique --columns=prefixlen --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route unique eos
   output: '[{"prefixlen": 0}, {"prefixlen": 16}, {"prefixlen": 24}, {"prefixlen":
     30}, {"prefixlen": 31}, {"prefixlen": 32}, {"prefixlen": 128}]'
-- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: route lpm eos
   output: '[{"hostname": "exit02", "nexthopIps": ["10.0.0.112"]}, {"hostname": "leaf04",
     "nexthopIps": ["10.0.0.112", "10.0.0.112"]}, {"hostname": "exit01", "nexthopIps":

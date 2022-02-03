@@ -1,7 +1,7 @@
 description: 'Testing verbs for address: show summarize unique'
 tests:
-- command: address show --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "ifname": "eth2", "ipAddressList":
     [], "macaddr": "32:bb:c5:b5:3a:20", "ip6AddressList": [], "state": "up", "vrf":
@@ -1729,8 +1729,8 @@ tests:
     "nxos", "hostname": "exit02", "ifname": "Ethernet1/35", "ipAddressList": [], "macaddr":
     "44:01:03:02:01:23", "ip6AddressList": [], "state": "notConnected", "vrf": "",
     "timestamp": 1619275260177}]'
-- command: address show --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show nxos
   output: '[{"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
     {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server102"},
@@ -1935,15 +1935,15 @@ tests:
     "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
     "exit02"}, {"hostname": "exit02"}]'
-- command: address summarize --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address summarize --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address summarize nxos
   output: '{"nxos": {"deviceCnt": 14, "addressCnt": 694, "uniqueV4AddressCnt": 63,
     "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 535, "deviceWithv4AddressCnt": 14,
     "deviceWithv6AddressCnt": 0, "subnetsUsed": ["32", "24", "30", "2", "31"], "subnetTopCounts":
     [{"32": 44}, {"24": 29}, {"30": 12}]}}'
-- command: address unique --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address unique --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address unique nxos
   output: '[{"ipAddress": "10.0.0.11/32"}, {"ipAddress": "10.0.0.112/32"}, {"ipAddress":
     "10.0.0.12/32"}, {"ipAddress": "10.0.0.13/32"}, {"ipAddress": "10.0.0.134/32"},
@@ -1971,8 +1971,8 @@ tests:
     "172.16.3.102/24"}, {"ipAddress": "172.16.3.202/24"}, {"ipAddress": "172.16.3.254/24"},
     {"ipAddress": "192.0.2.2/24"}, {"ipAddress": "192.168.1.2/24"}, {"ipAddress":
     "fe80::205:860f:fc71:3c00/128"}]'
-- command: address unique --count=True --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address unique --count=True --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address unique nxos
   output: '[{"ipAddress": "10.0.0.200/32", "numRows": 1}, {"ipAddress": "10.0.0.201/32",
     "numRows": 1}, {"ipAddress": "10.0.0.202/32", "numRows": 1}, {"ipAddress": "10.0.0.203/32",
@@ -2009,16 +2009,16 @@ tests:
     "numRows": 3}, {"ipAddress": "10.0.0.31/32", "numRows": 3}, {"ipAddress": "10.0.0.32/32",
     "numRows": 3}, {"ipAddress": "172.16.3.254/24", "numRows": 4}, {"ipAddress": "10.0.0.21/32",
     "numRows": 7}, {"ipAddress": "10.0.0.22/32", "numRows": 7}]'
-- command: address unique --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address unique --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address unique nxos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: address unique --columns=hostname --format=json --count=True
-  data-directory: tests/data/nxos/parquet-out/
+- command: address unique --columns=hostname --format=json --namespace=nxos --count=True
+  data-directory: tests/data/parquet/
   marks: address unique nxos
   output: '[{"hostname": "server101", "numRows": 5}, {"hostname": "server102", "numRows":
     5}, {"hostname": "server301", "numRows": 5}, {"hostname": "server302", "numRows":
@@ -2028,24 +2028,24 @@ tests:
     77}, {"hostname": "leaf01", "numRows": 78}, {"hostname": "leaf02", "numRows":
     78}, {"hostname": "leaf03", "numRows": 78}, {"hostname": "leaf04", "numRows":
     78}]'
-- command: address unique --columns=vrf --format=json --count=True
-  data-directory: tests/data/nxos/parquet-out/
+- command: address unique --columns=vrf --format=json --namespace=nxos --count=True
+  data-directory: tests/data/parquet/
   marks: address unique nxos
   output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "management", "numRows":
     8}, {"vrf": "evpn-vrf", "numRows": 10}, {"vrf": "default", "numRows": 65}]'
-- command: address unique --columns="vrf"  --format=json
-  data-directory: tests/data/nxos/parquet-out
+- command: address unique --columns="vrf"  --format=json --namespace=nxos
+  data-directory: tests/data/parquet
   marks: address unique nxos filter
   output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "internet-vrf"}, {"vrf":
     "management"}]'
 - command: address unique --columns="vrf" --query-str='hostname.isin(["exit01", "exit02"])
-    ' --format=json
-  data-directory: tests/data/nxos/parquet-out
+    ' --format=json --namespace=nxos
+  data-directory: tests/data/parquet
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''hostname'' is not defined"}]'
   marks: address unique nxos filter
-- command: address show --address=10.0.0.11 --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --address=10.0.0.11 --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show filter nxos
   output: '[{"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2", "ipAddressList":
     ["10.0.0.11/32"], "macaddr": "44:01:02:01:1b:08", "ip6AddressList": [], "state":
@@ -2055,8 +2055,8 @@ tests:
     1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "loopback0",
     "ipAddressList": ["10.0.0.11/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
     [], "state": "up", "vrf": "default", "timestamp": 1619275258762}]'
-- command: address show --address='10.0.0.11 172.16.1.254' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --address='10.0.0.11 172.16.1.254' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show filter nxos
   output: '[{"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/2", "ipAddressList":
     ["10.0.0.11/32"], "macaddr": "44:01:02:01:1b:08", "ip6AddressList": [], "state":
@@ -2071,8 +2071,8 @@ tests:
     "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
     "Vlan10", "ipAddressList": ["172.16.1.254/24"], "macaddr": "00:00:00:11:12:10",
     "ip6AddressList": [], "state": "up", "vrf": "evpn-vrf", "timestamp": 1619275259186}]'
-- command: address show --address="44:01:02:03:1b:08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --address="44:01:02:03:1b:08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show filter nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2", "ipAddressList":
     ["10.0.0.13/32"], "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state":
@@ -2080,8 +2080,8 @@ tests:
     "leaf03", "ifname": "Ethernet1/1", "ipAddressList": ["10.0.0.13/32"], "macaddr":
     "44:01:02:03:1b:08", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1619275258539}]'
-- command: address show --address="44:01:02:03:1B:08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --address="44:01:02:03:1B:08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show filter nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2", "ipAddressList":
     ["10.0.0.13/32"], "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state":
@@ -2089,8 +2089,8 @@ tests:
     "leaf03", "ifname": "Ethernet1/1", "ipAddressList": ["10.0.0.13/32"], "macaddr":
     "44:01:02:03:1b:08", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1619275258539}]'
-- command: address show --address="4401.0203.1b08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --address="4401.0203.1b08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show filter nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2", "ipAddressList":
     ["10.0.0.13/32"], "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state":
@@ -2098,8 +2098,8 @@ tests:
     "leaf03", "ifname": "Ethernet1/1", "ipAddressList": ["10.0.0.13/32"], "macaddr":
     "44:01:02:03:1b:08", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1619275258539}]'
-- command: address show --address="4401.0203.1B08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --address="4401.0203.1B08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show filter nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/2", "ipAddressList":
     ["10.0.0.13/32"], "macaddr": "44:01:02:03:1b:08", "ip6AddressList": [], "state":
@@ -2107,13 +2107,13 @@ tests:
     "leaf03", "ifname": "Ethernet1/1", "ipAddressList": ["10.0.0.13/32"], "macaddr":
     "44:01:02:03:1b:08", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1619275258539}]'
-- command: address show --address="invalidaddress" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --address="invalidaddress" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid address specified"}]'
   marks: address show nxos filter
-- command: address show --prefix="169.254.253.0/30" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --prefix="169.254.253.0/30" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show nxos filter
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList":
     ["169.254.253.2/30"], "macaddr": "52:54:00:86:df:51", "ip6AddressList": [], "state":
@@ -2121,12 +2121,12 @@ tests:
     "exit02", "ifname": "Ethernet1/3.2", "ipAddressList": ["169.254.253.1/30"], "macaddr":
     "44:01:03:02:1b:08", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1619275260177}]'
-- command: address show --prefix="2001:db8:0:1::/64" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --prefix="2001:db8:0:1::/64" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show nxos filter
   output: '[]'
-- command: address show --prefix="2001:db8:0:1::/64 169.254.253.0/30" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --prefix="2001:db8:0:1::/64 169.254.253.0/30" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show nxos filter
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList":
     ["169.254.253.2/30"], "macaddr": "52:54:00:86:df:51", "ip6AddressList": [], "state":
@@ -2134,8 +2134,8 @@ tests:
     "exit02", "ifname": "Ethernet1/3.2", "ipAddressList": ["169.254.253.1/30"], "macaddr":
     "44:01:03:02:1b:08", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1619275260177}]'
-- command: address show --prefix="169.254.253.0/30 10.0.0.0/24" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --prefix="169.254.253.0/30 10.0.0.0/24" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: address show nxos filter
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ifname": "lo", "ipAddressList":
     ["10.0.0.200/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
@@ -2248,23 +2248,23 @@ tests:
     "exit02", "ifname": "Ethernet1/2", "ipAddressList": ["10.0.0.32/32"], "macaddr":
     "44:01:03:02:1b:08", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1619275260177}]'
-- command: address show --prefix="192.168.1.0" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --prefix="192.168.1.0" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: address show nxos filter
-- command: address show --prefix="44:38:39:00:00:23" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --prefix="44:38:39:00:00:23" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: address show nxos filter
-- command: address show --prefix="10.0.0.0/24" --address="192.168.1.2" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --prefix="10.0.0.0/24" --address="192.168.1.2" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Cannot specify address and prefix together"}]'
   marks: address show nxos filter
-- command: address show --prefix="10.0.0.1/24" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: address show --prefix="10.0.0.1/24" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: address show nxos filter

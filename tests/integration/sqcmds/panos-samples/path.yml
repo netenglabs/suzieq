@@ -1,21 +1,21 @@
 description: 'Testing verbs for path: show summarize unique'
 tests:
 - command: path show --dest=172.16.2.201 --src=10.0.0.21 --format=json --namespace=panos
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show panos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "panos", "hostname": "spine01",
     "iif": "lo", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
     "mtuMatch": true, "inMtu": 65536, "outMtu": 65536, "protocol": "", "ipLookup":
     "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1639476254852}]'
 - command: path show --dest=172.16.2.201 --src=172.16.2.201 --format=json --namespace=panos
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show panos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "panos", "hostname": "server301",
     "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
     "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "", "ipLookup": "",
     "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1639476253889}]'
 - command: path show --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=panos
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show panos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "panos", "hostname": "leaf04",
     "iif": "lo", "oif": "swp1", "vrf": "default", "isL2": false, "overlay": false,
@@ -42,7 +42,7 @@ tests:
     true, "inMtu": 9216, "outMtu": 65536, "protocol": "", "ipLookup": "", "vtepLookup":
     "", "macLookup": "", "nexthopIp": "", "timestamp": 1639476254854}]'
 - command: path show --src=172.16.1.101 --dest=172.16.2.254 --format=json --namespace=panos
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "panos", "hostname": "server101",
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
@@ -190,12 +190,12 @@ tests:
       "Dst MTU != Src MTU", "timestamp": 1639476254836}]'
   marks: path show panos
 - command: path summarize --dest=172.16.2.254 --src=172.16.1.101 --format=json --namespace=panos
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path summarize panos
   output: '[{"panos": 8}, {"panos": [2, 2, 2]}, {"panos": 3}, {"panos": 3.0}, {"panos":
     7}, {"panos": 9000}, {"panos": true}, {"panos": true}]'
 - command: path show --src=172.16.1.101 --dest=10.0.0.200 --format=json --namespace=panos
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "panos", "hostname": "server101",
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":

@@ -1,14 +1,17 @@
 # Basic coalescer test adds testing for checking coalescer
 # in the presence of multiple time windows. All of the data
 # in the parquet files used for testing have a single time window
-data-directory: tests/data/multidc/parquet-out/
+# IMPORTANT: Make sure these dates are modified if we ever take
+# new data because that causes the new data to be returned as the
+# latest data.
+data-directory: tests/data/parquet/
 transform:
   - record:
       - interfaces:
           - match:
               all
             set:
-              timestamp: 26 Mar 2021, 11:01 am UTC
+              timestamp: 2 Feb 2022, 11:01 am UTC
   - record:
       - interfaces:
           - match: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1"
@@ -19,20 +22,20 @@ transform:
 verify:
   - interfaces:
       - test:
-          start-time: 26 Mar 2021, 11:01 am UTC
+          start-time: 2 Feb 2022, 11:01 am UTC
           query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="down"
       - test:
-          end-time: 26 Mar 2021, 11:01 am UTC
+          end-time: 2 Feb 2022, 11:01 am UTC
           query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="up"
       - test:
-          start-time: 26 Mar 2021, 11:01 am UTC 
-          end-time: 26 Mar 2021, 11:21 am UTC
+          start-time: 2 Feb 2022, 11:01 am UTC 
+          end-time: 2 Feb 2022, 11:21 am UTC
           query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="up"
       - test:
-          start-time: 26 Mar 2021, 12:00 pm UTC
+          start-time: 2 Feb 2022, 12:00 pm UTC
           assertempty:
       - test:
-          start-time: 26 Mar 2021, 3:01 am PST
+          start-time: 2 Feb 2022, 3:01 am PST
           query: namespace=="dual-evpn" and hostname=="leaf01" and ifname=="swp1" and state=="down"
           shape: 1 *
 

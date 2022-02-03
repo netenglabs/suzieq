@@ -1,7 +1,7 @@
 description: 'Testing verbs for arpnd: show summarize unique'
 tests:
-- command: arpnd show --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "ipAddress": "10.255.2.1",
     "oif": "eth0", "macaddr": "52:54:00:9b:7d:db", "state": "reachable", "remote":
@@ -174,8 +174,8 @@ tests:
     false, "timestamp": 1619275264853}, {"namespace": "nxos", "hostname": "leaf04",
     "ipAddress": "172.16.3.202", "oif": "Vlan30", "macaddr": "0a:b5:b6:22:53:72",
     "state": "reachable", "remote": false, "timestamp": 1619275264853}]'
-- command: arpnd show --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos
   output: '[{"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server301"},
@@ -200,24 +200,24 @@ tests:
     "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}]'
-- command: arpnd summarize --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd summarize --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd summarize nxos
   output: '{"nxos": {"deviceCnt": 14, "arpNdEntriesCnt": 74, "uniqueArpEntriesCnt":
     38, "uniqueOifCnt": 25, "arpEntriesCnt": 73, "v6NDEntriesCnt": 1, "v6NDGlobalEntriesCnt":
     1, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0, "remoteV6EntriesCnt":
     0, "staticV6EntriesCnt": 0, "failedEntriesCnt": 0, "failedV4EntriesCnt": 0, "failedV6EntriesCnt":
     0}}'
-- command: arpnd unique --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd unique --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd unique nxos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: arpnd unique --count=True --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd unique --count=True --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd unique nxos
   output: '[{"hostname": "server101", "numRows": 2}, {"hostname": "server301", "numRows":
     2}, {"hostname": "server102", "numRows": 3}, {"hostname": "server302", "numRows":
@@ -226,16 +226,16 @@ tests:
     {"hostname": "leaf04", "numRows": 6}, {"hostname": "exit01", "numRows": 7}, {"hostname":
     "exit02", "numRows": 7}, {"hostname": "spine01", "numRows": 7}, {"hostname": "spine02",
     "numRows": 7}, {"hostname": "firewall01", "numRows": 8}]'
-- command: arpnd unique --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd unique --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd unique nxos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: arpnd show --oif="Ethernet1/1" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --oif="Ethernet1/1" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos
   output: '[{"namespace": "nxos", "hostname": "spine02", "ipAddress": "10.0.0.11",
     "oif": "Ethernet1/1", "macaddr": "44:01:02:01:1b:08", "state": "reachable", "remote":
@@ -256,8 +256,8 @@ tests:
     false, "timestamp": 1619275264429}, {"namespace": "nxos", "hostname": "leaf04",
     "ipAddress": "10.0.0.21", "oif": "Ethernet1/1", "macaddr": "44:01:01:01:1b:08",
     "state": "reachable", "remote": false, "timestamp": 1619275264853}]'
-- command: arpnd show --address=10.0.0.21 --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --address=10.0.0.21 --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "ipAddress": "10.0.0.21",
     "oif": "Ethernet1/1", "macaddr": "44:01:01:01:1b:08", "state": "reachable", "remote":
@@ -274,8 +274,8 @@ tests:
     "nxos", "hostname": "leaf04", "ipAddress": "10.0.0.21", "oif": "Ethernet1/1",
     "macaddr": "44:01:01:01:1b:08", "state": "reachable", "remote": false, "timestamp":
     1619275264853}]'
-- command: arpnd show --format=json --columns='*'
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --format=json --namespace=nxos --columns='*'
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "ipAddress": "10.255.2.1",
     "oif": "eth0", "macaddr": "52:54:00:9b:7d:db", "state": "reachable", "remote":
@@ -460,8 +460,8 @@ tests:
     "hostname": "leaf04", "ipAddress": "172.16.3.202", "oif": "Vlan30", "macaddr":
     "0a:b5:b6:22:53:72", "state": "reachable", "remote": false, "timestamp": 1619275264853,
     "active": true}]'
-- command: arpnd show --macaddr="44:01:03:01:1b:08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --macaddr="44:01:03:01:1b:08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.254.9",
     "oif": "eth1.4", "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote":
@@ -478,8 +478,8 @@ tests:
     "nxos", "hostname": "spine01", "ipAddress": "10.0.0.31", "oif": "Ethernet1/5",
     "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote": false, "timestamp":
     1619275263663}]'
-- command: arpnd show --macaddr="44:01:03:01:1B:08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --macaddr="44:01:03:01:1B:08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.254.9",
     "oif": "eth1.4", "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote":
@@ -496,8 +496,8 @@ tests:
     "nxos", "hostname": "spine01", "ipAddress": "10.0.0.31", "oif": "Ethernet1/5",
     "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote": false, "timestamp":
     1619275263663}]'
-- command: arpnd show --macaddr="4401.0301.1b08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --macaddr="4401.0301.1b08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.254.9",
     "oif": "eth1.4", "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote":
@@ -514,8 +514,8 @@ tests:
     "nxos", "hostname": "spine01", "ipAddress": "10.0.0.31", "oif": "Ethernet1/5",
     "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote": false, "timestamp":
     1619275263663}]'
-- command: arpnd show --macaddr="4401.0301.1B08" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --macaddr="4401.0301.1B08" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.254.9",
     "oif": "eth1.4", "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote":
@@ -532,27 +532,27 @@ tests:
     "nxos", "hostname": "spine01", "ipAddress": "10.0.0.31", "oif": "Ethernet1/5",
     "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote": false, "timestamp":
     1619275263663}]'
-- command: arpnd show --address="169.254.253.1" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --address="169.254.253.1" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos filter
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
     "oif": "eth2.2", "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote":
     false, "timestamp": 1619275256617}]'
-- command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos filter
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
     "oif": "eth2.2", "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote":
     false, "timestamp": 1619275256617}, {"namespace": "nxos", "hostname": "exit02",
     "ipAddress": "169.254.253.2", "oif": "Ethernet1/3.2", "macaddr": "52:54:00:86:df:51",
     "state": "reachable", "remote": false, "timestamp": 1619275264340}]'
-- command: arpnd show --address="invalidaddress" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --address="invalidaddress" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid IP address specified"}]'
   marks: arpnd show nxos filter
-- command: arpnd show --macaddr="44:01:03:01:1B:08 0205.8671.3c03" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --macaddr="44:01:03:01:1B:08 0205.8671.3c03" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos filter
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.254.9",
     "oif": "eth1.4", "macaddr": "44:01:03:01:1b:08", "state": "reachable", "remote":
@@ -571,13 +571,13 @@ tests:
     1619275263663}, {"namespace": "nxos", "hostname": "exit01", "ipAddress": "169.254.127.0",
     "oif": "Ethernet1/4", "macaddr": "02:05:86:71:3c:03", "state": "reachable", "remote":
     false, "timestamp": 1619275264358}]'
-- command: arpnd show --macaddr="invalidaddress" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --macaddr="invalidaddress" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid mac address specified"}]'
   marks: arpnd show nxos filter
-- command: arpnd show --prefix="169.254.253.0/24" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --prefix="169.254.253.0/24" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos filter
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.253.5",
     "oif": "eth2.3", "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote":
@@ -594,8 +594,8 @@ tests:
     "nxos", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "Ethernet1/3.4",
     "macaddr": "52:54:00:86:df:51", "state": "reachable", "remote": false, "timestamp":
     1619275264340}]'
-- command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: arpnd show nxos filter
   output: '[{"namespace": "nxos", "hostname": "firewall01", "ipAddress": "169.254.253.5",
     "oif": "eth2.3", "macaddr": "44:01:03:02:1b:08", "state": "reachable", "remote":
@@ -668,8 +668,8 @@ tests:
     "nxos", "hostname": "leaf04", "ipAddress": "10.0.0.22", "oif": "Ethernet1/2",
     "macaddr": "44:01:01:02:1b:08", "state": "reachable", "remote": false, "timestamp":
     1619275264853}]'
-- command: arpnd show --prefix="169.254.253.0" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: arpnd show --prefix="169.254.253.0" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: arpnd show nxos filter

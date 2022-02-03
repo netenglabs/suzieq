@@ -1,7 +1,7 @@
 description: 'Testing verbs for evpnVni: show summarize unique'
 tests:
-- command: evpnVni show --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: evpnVni show --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: evpnVni show eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vni": 10, "type": "L2", "vlan":
     10, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.112",
@@ -39,42 +39,42 @@ tests:
     1623025177461}, {"namespace": "eos", "hostname": "leaf04", "vni": 30, "type":
     "L2", "vlan": 30, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 1,
     "priVtepIp": "10.0.0.134", "secVtepIp": "", "timestamp": 1623025177461}]'
-- command: evpnVni show --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: evpnVni show --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: evpnVni show eos
   output: '[{"hostname": "leaf02"}, {"hostname": "leaf02"}, {"hostname": "leaf02"},
     {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
     "exit02"}, {"hostname": "exit01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"},
     {"hostname": "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}]'
-- command: evpnVni summarize --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: evpnVni summarize --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: evpnVni summarize eos
   output: '{"eos": {"mode": "symmetric", "uniqueVtepCnt": 4, "uniqueVniCnt": 4, "uniqueL3VniCnt":
     1, "uniqueL2VniCnt": 3, "uniqueMulticastGroups": 0, "vnisUsingMulticast": 0, "vnisUsingIngressRepl":
     3, "remoteVtepsPerVtepStat": [1, 1, 1.0]}}'
-- command: evpnVni unique --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: evpnVni unique --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: evpnVni unique eos
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}]'
-- command: evpnVni unique --format=json --count=True
-  data-directory: tests/data/eos/parquet-out/
+- command: evpnVni unique --format=json --count=True --namespace=eos
+  data-directory: tests/data/parquet/
   marks: evpnVni unique eos
   output: '[{"hostname": "exit01", "numRows": 1}, {"hostname": "exit02", "numRows":
     1}, {"hostname": "leaf01", "numRows": 3}, {"hostname": "leaf02", "numRows": 3},
     {"hostname": "leaf03", "numRows": 3}, {"hostname": "leaf04", "numRows": 3}]'
-- command: evpnVni unique --columns=vni --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: evpnVni unique --columns=vni --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: evpnVni unique eos
   output: '[{"vni": 10}, {"vni": 20}, {"vni": 30}, {"vni": 999}]'
-- command: evpnVni unique --columns=vni --format=json --count=True
-  data-directory: tests/data/eos/parquet-out/
+- command: evpnVni unique --columns=vni --format=json --count=True --namespace=eos
+  data-directory: tests/data/parquet/
   marks: evpnVni unique eos
   output: '[{"vni": 10, "numRows": 2}, {"vni": 20, "numRows": 2}, {"vni": 30, "numRows":
     4}, {"vni": 999, "numRows": 6}]'
-- command: evpnVni assert --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: evpnVni assert --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: evpnVni assert eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "vni": 10, "type": "L2", "assertReason":
     "-", "assert": "pass", "timestamp": 1623025177153}, {"namespace": "eos", "hostname":
@@ -99,8 +99,8 @@ tests:
     "leaf04", "vni": 999, "type": "L3", "assertReason": "-", "assert": "pass", "timestamp":
     1623025177461}, {"namespace": "eos", "hostname": "leaf04", "vni": 30, "type":
     "L2", "assertReason": "-", "assert": "pass", "timestamp": 1623025177461}]'
-- command: evpnVni show --priVtepIp='10.0.0.112' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: evpnVni show --priVtepIp='10.0.0.112' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: evpnVni show eos filter
   output: '[{"namespace": "eos", "hostname": "leaf02", "vni": 10, "type": "L2", "vlan":
     10, "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.112",

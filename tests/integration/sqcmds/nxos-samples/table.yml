@@ -1,7 +1,7 @@
 description: 'Testing verbs for table: show describe'
 tests:
-- command: table show --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: table show --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: table show nxos
   output: '[{"table": "arpnd", "firstTime": 1619275256310, "latestTime": 1619275264853,
     "intervals": 14, "allRows": 74, "namespaces": 1, "deviceCnt": 14}, {"table": "bgp",
@@ -38,21 +38,21 @@ tests:
     6, "allRows": 23, "namespaces": 1, "deviceCnt": 9}, {"table": "TOTAL", "firstTime":
     1619275256085, "latestTime": 1639161231216, "intervals": 131, "allRows": 2478,
     "namespaces": 1, "deviceCnt": 14}]'
-- command: table show --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: table show --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid columns specified: [''hostname'']"}]'
   marks: table show nxos
 - command: table show --namespace=dummy --format=json
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: table show nxos
   output: '[]'
-- command: table show --view=changes --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: table show --view=changes --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: table show nxos
   output: '[]'
-- command: table show --view=latest --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: table show --view=latest --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: table show nxos
   output: '[{"table": "arpnd", "firstTime": 1619275256310, "latestTime": 1619275264853,
     "intervals": 14, "allRows": 74, "namespaces": 1, "deviceCnt": 14}, {"table": "bgp",
@@ -89,8 +89,8 @@ tests:
     6, "allRows": 23, "namespaces": 1, "deviceCnt": 9}, {"table": "TOTAL", "firstTime":
     1619275256085, "latestTime": 1639161231216, "intervals": 131, "allRows": 2478,
     "namespaces": 1, "deviceCnt": 14}]'
-- command: table show --hostname=leaf01 --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: table show --hostname=leaf01 --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: table show nxos
   output: '[{"table": "arpnd", "firstTime": 1619275264429, "latestTime": 1619275264429,
     "intervals": 1, "allRows": 6, "namespaces": 1, "deviceCnt": 1}, {"table": "bgp",
@@ -121,8 +121,8 @@ tests:
     "intervals": 1, "allRows": 4, "namespaces": 1, "deviceCnt": 1}, {"table": "TOTAL",
     "firstTime": 1619275257018, "latestTime": 1639161231210, "intervals": 15, "allRows":
     240, "namespaces": 1, "deviceCnt": 1}]'
-- command: table describe --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: table describe --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: table describe nxos
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "allRows", "type": "long", "key":
@@ -137,16 +137,16 @@ tests:
     in database"}, {"name": "sqvers", "type": "string", "key": "", "display": "",
     "description": "Schema version, not selectable"}, {"name": "table", "type": "string",
     "key": "", "display": 1, "description": "Table name"}]'
-- command: table unique --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: table unique --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: table unique nxos
   output: '[{"table": "TOTAL"}, {"table": "arpnd"}, {"table": "bgp"}, {"table": "devconfig"},
     {"table": "device"}, {"table": "evpnVni"}, {"table": "fs"}, {"table": "ifCounters"},
     {"table": "interfaces"}, {"table": "lldp"}, {"table": "macs"}, {"table": "mlag"},
     {"table": "ospfIf"}, {"table": "ospfNbr"}, {"table": "routes"}, {"table": "sqPoller"},
     {"table": "time"}, {"table": "topcpu"}, {"table": "topmem"}, {"table": "vlan"}]'
-- command: table unique --count=True --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: table unique --count=True --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: table unique nxos
   output: '[{"table": "TOTAL", "numRows": 1}, {"table": "arpnd", "numRows": 1}, {"table":
     "bgp", "numRows": 1}, {"table": "devconfig", "numRows": 1}, {"table": "device",

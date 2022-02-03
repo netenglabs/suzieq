@@ -1,15 +1,15 @@
 description: 'Testing verbs for mlag: show summarize unique'
 tests:
-- command: mlag show --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: mlag show --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: mlag show junos
   output: '[]'
-- command: mlag show --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: mlag show --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: mlag show junos
   output: '[]'
-- command: mlag summarize --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: mlag summarize --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: mlag summarize junos
   output: '{"namespace": {}, "hostname": {}, "systemId": {}, "state": {}, "peerAddress":
     {}, "role": {}, "peerLink": {}, "mlagDualPortsCnt": {}, "mlagSinglePortsCnt":
@@ -18,15 +18,15 @@ tests:
     {}, "backupActive": {}, "usesLinkLocal": {}, "peerMacAddress": {}, "configSanity":
     {}, "backupReason": {}, "backupIP": {}, "peerLinkStatus": {}, "domainId": {},
     "active": {}}'
-- command: mlag unique --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: mlag unique --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: mlag unique junos
   output: '[]'
-- command: mlag unique --count=True --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: mlag unique --count=True --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: mlag unique junos
   output: '[]'
-- command: mlag unique --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: mlag unique --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: mlag unique junos
   output: '[]'

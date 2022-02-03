@@ -1,22 +1,22 @@
 description: 'Testing verbs for path: show summarize'
 tests:
 - command: path show --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Must specify trace source and dest"}]'
   marks: path show junos
 - command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
   marks: path show junos
 - command: path show --dest=172.16.3.202 --src=172.16.1.104 --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid src 172.16.1.104"}]'
   marks: path show junos
 - command: path show --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "server101",
       "iif": "eth1", "oif": "eth1", "vrf": "default", "isL2": false, "overlay": false,
@@ -66,7 +66,7 @@ tests:
       "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp": 1623025795928}]'
   marks: path show junos
 - command: path show --dest=172.16.2.201 --src=172.16.1.101 --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "server101",
       "iif": "eth1", "oif": "eth1", "vrf": "default", "isL2": false, "overlay": false,
@@ -116,7 +116,7 @@ tests:
       "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp": 1623025795928}]'
   marks: path show junos
 - command: path show --src=172.16.3.202 --dest=172.16.3.102 --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "server202",
       "iif": "eth1", "oif": "eth1", "vrf": "default", "isL2": true, "overlay": false,
@@ -166,7 +166,7 @@ tests:
       "", "timestamp": 1623025795928}]'
   marks: path show junos
 - command: path show --dest=10.0.0.11 --src=10.0.0.12 --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show junos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "junos", "hostname": "leaf02",
     "iif": "xe-0/0/0.0", "oif": "xe-0/0/0.0", "vrf": "default", "isL2": false, "overlay":
@@ -194,23 +194,23 @@ tests:
     true, "inMtu": 9200, "outMtu": 65536, "protocol": "", "ipLookup": "", "vtepLookup":
     "", "macLookup": "", "nexthopIp": "", "timestamp": 1623025803099}]'
 - command: path summarize --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path summarize junos
   output: '[{"junos": 2}, {"junos": [1, 2, 1, 1]}, {"junos": 4}, {"junos": 4.0}, {"junos":
     6}, {"junos": 1514}, {"junos": true}, {"junos": true}]'
 - command: path summarize --dest=10.0.0.11 --src=10.0.0.12 --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path summarize junos
   output: '[{"junos": 2}, {"junos": [2, 1]}, {"junos": 2}, {"junos": 2.0}, {"junos":
     4}, {"junos": 9200}, {"junos": false}, {"junos": false}]'
 - command: path unique --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path unique junos
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "server101"},
     {"hostname": "server202"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
 - command: path unique --count=True --dest=172.16.3.202 --src=172.16.1.101 --format=json
     --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path unique junos
   output: '[{"hostname": "spine01", "numRows": 1}, {"hostname": "spine02", "numRows":
     1}, {"hostname": "leaf01", "numRows": 2}, {"hostname": "leaf02", "numRows": 2},
@@ -218,7 +218,7 @@ tests:
     2}]'
 - command: path unique --count=True --dest=172.16.3.202 --src=172.16.1.101 --count=True
     --format=json --namespace=junos
-  data-directory: tests/data/junos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path unique junos
   output: '[{"hostname": "spine01", "numRows": 1}, {"hostname": "spine02", "numRows":
     1}, {"hostname": "leaf01", "numRows": 2}, {"hostname": "leaf02", "numRows": 2},

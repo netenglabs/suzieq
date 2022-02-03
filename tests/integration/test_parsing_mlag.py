@@ -4,7 +4,7 @@ from ipaddress import ip_address
 import pytest
 
 import pandas as pd
-from tests.conftest import validate_host_shape
+from tests.conftest import DATADIR, validate_host_shape
 
 
 def validate_mlag_tbl(df: pd.DataFrame):
@@ -37,11 +37,7 @@ def validate_mlag_tbl(df: pd.DataFrame):
 @ pytest.mark.parsing
 @ pytest.mark.mlag
 @ pytest.mark.parametrize('table', ['mlag'])
-@ pytest.mark.parametrize('datadir',
-                          ['tests/data/multidc/parquet-out/',
-                           'tests/data/eos/parquet-out',
-                           'tests/data/nxos/parquet-out',
-                           ])
+@ pytest.mark.parametrize('datadir', DATADIR)
 # pylint: disable=unused-argument
 def test_mlag_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for MLAG table'''
@@ -55,9 +51,6 @@ def test_mlag_parsing(table, datadir, get_table_data):
         'ospf-ibgp': 4,
     }
 
-    if datadir.endswith(('mixed/parquet-out', 'vmx/parquet-out')):
-        assert(True)
-        return
     assert not df.empty
     validate_host_shape(df, ns_dict)
     validate_mlag_tbl(df)

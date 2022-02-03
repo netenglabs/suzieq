@@ -1,7 +1,8 @@
 description: Testing the NOT operator for filtering
 tests:
-- command: bgp show --hostname='!leaf01' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp show --hostname='!leaf01' --format=json --namespace='ospf-single dual-evpn
+    ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp show negate
   output: '[{"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer":
     "eth1.2", "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi":
@@ -373,7 +374,8 @@ tests:
     65000, "pfxRx": 6, "pfxTx": 38, "numChanges": 1, "estdTime": 1616681049000.0,
     "timestamp": 1616681583504}]'
 - command: bgp show --hostname='!leaf01' --columns='namespace hostname' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+    --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp show negate
   output: '[{"namespace": "dual-evpn", "hostname": "edge01"}, {"namespace": "dual-evpn",
     "hostname": "edge01"}, {"namespace": "dual-evpn", "hostname": "edge01"}, {"namespace":
@@ -436,25 +438,25 @@ tests:
     "hostname": "spine02"}, {"namespace": "ospf-ibgp", "hostname": "spine02"}, {"namespace":
     "ospf-ibgp", "hostname": "spine02"}, {"namespace": "ospf-ibgp", "hostname": "spine02"}]'
 - command: ospf show --namespace='!ospf-single' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   ignore-columns: lastChangeTime timestamp
   marks: ospf show negate
-  output: '[{"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname":
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname":
     "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
     "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
-    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default",
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default",
     "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
     0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
-    "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
-    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
+    "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit02",
     "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
     0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
     "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
     "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
     0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine02",
@@ -463,41 +465,206 @@ tests:
     0.0, "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
     "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1616681582523}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "vrf": "default", "ifname": "swp5", "peerHostname": "exit02", "area": "0.0.0.0",
-    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.102", "numChanges":
+    0.0, "timestamp": 1616681582523}, {"namespace": "nxos", "hostname": "leaf03",
+    "vrf": "default", "ifname": "loopback1", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1619275260398}, {"namespace": "nxos",
+    "hostname": "leaf03", "vrf": "default", "ifname": "loopback0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1619275260398},
+    {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "ifname": "loopback1",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1619275260613}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1619275260613}, {"namespace": "nxos", "hostname": "leaf01",
+    "vrf": "default", "ifname": "loopback1", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1619275261428}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "default", "ifname": "loopback1", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1619275261428},
+    {"namespace": "nxos", "hostname": "leaf01", "vrf": "default", "ifname": "loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1619275261428}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default",
+    "ifname": "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1619275261428}, {"namespace": "nxos", "hostname": "exit02",
+    "vrf": "default", "ifname": "loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1619275261836}, {"namespace": "nxos",
+    "hostname": "exit02", "vrf": "default", "ifname": "loopback1", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1619275261836},
+    {"namespace": "nxos", "hostname": "leaf04", "vrf": "default", "ifname": "loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1619275262039}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default",
+    "ifname": "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1619275262039}, {"namespace": "nxos", "hostname": "spine01",
+    "vrf": "default", "ifname": "loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1619275262040}, {"namespace": "nxos",
+    "hostname": "spine01", "vrf": "default", "ifname": "loopback1", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1619275262040},
+    {"namespace": "nxos", "hostname": "leaf02", "vrf": "default", "ifname": "loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1619275262652}, {"namespace": "nxos", "hostname": "leaf02", "vrf": "default",
+    "ifname": "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1619275262652}, {"namespace": "eos", "hostname": "spine01",
+    "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1623025177058}, {"namespace": "eos",
+    "hostname": "leaf02", "vrf": "default", "ifname": "Loopback0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1623025177152},
+    {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "ifname": "Loopback1",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1623025177152}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "ifname":
+    "Loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "timestamp": 1623025177253}, {"namespace": "eos", "hostname": "leaf03", "vrf":
+    "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025177253}, {"namespace": "eos", "hostname": "spine02",
+    "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1623025177290}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "default", "ifname": "Loopback0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1623025177308},
+    {"namespace": "eos", "hostname": "exit01", "vrf": "default", "ifname": "Loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1623025177431}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "ifname":
+    "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "timestamp": 1623025177614}, {"namespace": "eos", "hostname": "leaf01", "vrf":
+    "default", "ifname": "Loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025177614}, {"namespace": "eos", "hostname": "leaf04", "vrf":
+    "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025177660}, {"namespace": "eos", "hostname": "leaf04", "vrf":
+    "default", "ifname": "Loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025177660}, {"namespace": "junos", "hostname": "leaf02",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025798026}, {"namespace": "junos", "hostname": "spine01",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025798027}, {"namespace": "junos", "hostname": "exit01",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025798361}, {"namespace": "junos", "hostname": "leaf01",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025798813}, {"namespace": "junos", "hostname": "exit02",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025799339}, {"namespace": "junos", "hostname": "spine02",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025799761}, {"namespace": "mixed", "hostname": "leaf6-eos",
+    "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1627395434614}, {"namespace": "mixed",
+    "hostname": "leaf5-eos", "vrf": "default", "ifname": "Loopback0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "fail", "peerIP":
+    "-", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1627395434713}, {"namespace":
+    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "ifname": "lo0.0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1627395434941},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "ifname":
+    "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "timestamp": 1627395434972}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "ifname": "loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1627395434985}, {"namespace": "mixed",
+    "hostname": "leaf4-qfx", "vrf": "default", "ifname": "lo0.0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1627395435166},
+    {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default", "ifname": "Loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1627395436999}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default",
+    "ifname": "GigabitEthernet0/3", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "down", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1627395436999}, {"namespace": "mixed", "hostname": "leaf2-ios",
+    "vrf": "default", "ifname": "GigabitEthernet0/4", "peerHostname": "", "area":
+    "0.0.0.0", "ifState": "down", "nbrCount": 0, "adjState": "fail", "peerIP": "-",
+    "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1627395436999}, {"namespace":
+    "mixed", "hostname": "leaf2-ios", "vrf": "default", "ifname": "GigabitEthernet0/5",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "down", "nbrCount": 0, "adjState":
+    "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1627395436999}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default",
+    "ifname": "GigabitEthernet0/2", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "down", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1627395436999}, {"namespace": "mixed", "hostname": "leaf1-ios",
+    "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1627395437050}, {"namespace": "panos",
+    "hostname": "exit01", "vrf": "default", "ifname": "lo", "peerHostname": "", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "",
+    "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1639476253934}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "default", "ifname": "lo", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1639476253942},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "ifname": "lo",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1639476253942}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit02", "vrf":
+    "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1639476253949}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1639476253949}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
     5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname": "swp5", "peerHostname":
-    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.102", "numChanges": 5.0, "lastChangeTime": 1616681058000.0,
-    "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "vrf": "default", "ifname": "swp4", "peerHostname": "leaf04", "area": "0.0.0.0",
-    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges":
-    4.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname": "swp4", "peerHostname":
-    "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.14", "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp":
-    1616681581441}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default",
-    "ifname": "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime":
+    "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp1", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default",
+    "ifname": "swp1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 4.0, "lastChangeTime":
     1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp3", "peerHostname": "leaf03", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
-    "swp2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges": 4.0, "lastChangeTime":
+    "leaf03", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
     1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp2", "peerHostname": "leaf02", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
-    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
-    "swp1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges": 4.0, "lastChangeTime":
-    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp1", "peerHostname": "leaf01", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
+    "leaf04", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681582523},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
+    1616681064000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "exit02", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 4.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440},
     {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname": "swp2",
     "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
     "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
@@ -509,86 +676,12 @@ tests:
     "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
     "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
     1616681063000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "exit02", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
-    "numChanges": 4.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440},
-    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp2",
-    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
-    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
-    1616681064000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
     "leaf04", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
     "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
     "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681582523},
-    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname": "swp1",
-    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
-    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
-    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
-    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "swp1",
-    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
-    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 4.0, "lastChangeTime":
-    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
-    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440},
-    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname": "swp1",
-    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
-    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
-    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
-    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681582523},
     {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
-    "swp6", "peerHostname": "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.101", "numChanges": 5.0, "lastChangeTime":
-    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp6", "peerHostname": "exit01", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441}]'
-- command: ospf show --namespace='!ospf-single' --hostname='!leaf01' --format=json
-  data-directory: tests/data/multidc/parquet-out/
-  ignore-columns: lastChangeTime timestamp
-  marks: ospf show negate
-  output: '[{"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname":
-    "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
-    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
-    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default",
-    "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
-    "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
-    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
-    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit02",
-    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine02",
-    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
-    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
-    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1616681582523}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "vrf": "default", "ifname": "swp5", "peerHostname": "exit02", "area": "0.0.0.0",
-    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.102", "numChanges":
-    5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname": "swp5", "peerHostname":
-    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.102", "numChanges": 5.0, "lastChangeTime": 1616681058000.0,
-    "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname": "spine01",
-    "vrf": "default", "ifname": "swp4", "peerHostname": "leaf04", "area": "0.0.0.0",
-    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges":
-    4.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname": "swp4", "peerHostname":
-    "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
-    "peerIP": "10.0.0.14", "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp":
-    1616681581441}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default",
-    "ifname": "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime":
+    "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime":
     1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
     "spine02", "vrf": "default", "ifname": "swp3", "peerHostname": "leaf03", "area":
     "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13",
@@ -607,70 +700,1144 @@ tests:
     "spine02", "vrf": "default", "ifname": "swp1", "peerHostname": "leaf01", "area":
     "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11",
     "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
-    {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname": "swp2",
-    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
-    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
-    1616681064000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581440},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "swp2",
-    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
-    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime":
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp4", "peerHostname": "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges": 4.0, "lastChangeTime":
     1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581440},
-    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vrf": "default", "ifname": "swp2",
-    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
-    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
-    1616681064000.0, "timestamp": 1616681582523}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
-    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440},
-    {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "swp1",
-    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
-    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 4.0, "lastChangeTime":
+    "spine02", "vrf": "default", "ifname": "swp4", "peerHostname": "leaf04", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14",
+    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp5", "peerHostname": "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.102", "numChanges": 5.0, "lastChangeTime":
     1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
-    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440},
-    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname": "swp1",
-    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
-    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
-    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
-    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681582523},
+    "spine02", "vrf": "default", "ifname": "swp5", "peerHostname": "exit02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.102",
+    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581441},
     {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
     "swp6", "peerHostname": "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
     1, "adjState": "full", "peerIP": "10.0.0.101", "numChanges": 5.0, "lastChangeTime":
     1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
     "spine02", "vrf": "default", "ifname": "swp6", "peerHostname": "exit01", "area":
     "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441}]'
-- command: ospf show --namespace='!ospf-single' --hostname='!leaf01' --columns='hostname
-    area' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
+    {"namespace": "nxos", "hostname": "leaf03", "vrf": "default", "ifname": "Ethernet1/2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 7.0, "lastChangeTime":
+    1619045052091.0, "timestamp": 1619275260398}, {"namespace": "nxos", "hostname":
+    "leaf01", "vrf": "default", "ifname": "Ethernet1/2", "peerHostname": "spine02",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "numChanges": 7.0, "lastChangeTime": 1619045027136.0, "timestamp":
+    1619275261428}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default",
+    "ifname": "Ethernet1/2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    4.0, "lastChangeTime": 1619014438999.0, "timestamp": 1619275261428}, {"namespace":
+    "nxos", "hostname": "exit02", "vrf": "default", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 4.0, "lastChangeTime": 1619014440052.0, "timestamp":
+    1619275261836}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default",
+    "ifname": "Ethernet1/2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    4.0, "lastChangeTime": 1619045067882.0, "timestamp": 1619275262039}, {"namespace":
+    "nxos", "hostname": "leaf02", "vrf": "default", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 7.0, "lastChangeTime": 1619045039142.0, "timestamp":
+    1619275262652}, {"namespace": "nxos", "hostname": "leaf03", "vrf": "default",
+    "ifname": "Ethernet1/1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    7.0, "lastChangeTime": 1619045052091.0, "timestamp": 1619275260398}, {"namespace":
+    "nxos", "hostname": "leaf01", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime": 1619045027136.0, "timestamp":
+    1619275261428}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default",
+    "ifname": "Ethernet1/1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    4.0, "lastChangeTime": 1619014438999.0, "timestamp": 1619275261428}, {"namespace":
+    "nxos", "hostname": "exit02", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime": 1619014440052.0, "timestamp":
+    1619275261836}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default",
+    "ifname": "Ethernet1/1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    4.0, "lastChangeTime": 1619045067882.0, "timestamp": 1619275262039}, {"namespace":
+    "nxos", "hostname": "leaf02", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime": 1619045039142.0, "timestamp":
+    1619275262652}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/4", "peerHostname": "leaf04", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges":
+    4.0, "lastChangeTime": 1619014447056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/4", "peerHostname":
+    "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.14", "numChanges": 4.0, "lastChangeTime": 1619014444515.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/6", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    5.0, "lastChangeTime": 1619014449056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/6", "peerHostname":
+    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.32", "numChanges": 5.0, "lastChangeTime": 1619014446515.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/5", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    4.0, "lastChangeTime": 1619014447056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/5", "peerHostname":
+    "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.31", "numChanges": 5.0, "lastChangeTime": 1619014444515.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
+    7.0, "lastChangeTime": 1619014447056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname":
+    "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.11", "numChanges": 4.0, "lastChangeTime": 1619014444515.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges":
+    7.0, "lastChangeTime": 1619014447056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/3", "peerHostname":
+    "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.13", "numChanges": 7.0, "lastChangeTime": 1619014444515.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    7.0, "lastChangeTime": 1619014447056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/2", "peerHostname":
+    "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.12", "numChanges": 4.0, "lastChangeTime": 1619014444515.0, "timestamp":
+    1619275262040}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    6.0, "lastChangeTime": 1620677082549.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet2", "peerHostname":
+    "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.12", "numChanges": 6.0, "lastChangeTime": 1620677093480.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges":
+    6.0, "lastChangeTime": 1620677082551.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet3", "peerHostname":
+    "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.13", "numChanges": 6.0, "lastChangeTime": 1620677086485.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
+    6.0, "lastChangeTime": 1620677090556.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet1", "peerHostname":
+    "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.11", "numChanges": 6.0, "lastChangeTime": 1620677088486.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet6", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    7.0, "lastChangeTime": 1620677012543.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet6", "peerHostname":
+    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.32", "numChanges": 7.0, "lastChangeTime": 1620677015479.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet4", "peerHostname": "leaf04", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges":
+    7.0, "lastChangeTime": 1620677087548.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet4", "peerHostname":
+    "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.14", "numChanges": 6.0, "lastChangeTime": 1620677086486.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet5", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    6.0, "lastChangeTime": 1622918503556.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet5", "peerHostname":
+    "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.31", "numChanges": 7.0, "lastChangeTime": 1622918178487.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "ifname":
+    "Ethernet1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 7.0, "lastChangeTime":
+    1620677081758.0, "timestamp": 1623025177152}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "ifname": "Ethernet1", "peerHostname": "spine01",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "numChanges": 7.0, "lastChangeTime": 1620677083563.0, "timestamp":
+    1623025177253}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "ifname":
+    "Ethernet1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 6.0, "lastChangeTime":
+    1620677012855.0, "timestamp": 1623025177308}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "default", "ifname": "Ethernet1", "peerHostname": "spine01",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "numChanges": 6.0, "lastChangeTime": 1622918497521.0, "timestamp":
+    1623025177431}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "ifname":
+    "Ethernet1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 7.0, "lastChangeTime":
+    1620677091169.0, "timestamp": 1623025177614}, {"namespace": "eos", "hostname":
+    "leaf04", "vrf": "default", "ifname": "Ethernet1", "peerHostname": "spine01",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "numChanges": 7.0, "lastChangeTime": 1620677087929.0, "timestamp":
+    1623025177660}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "ifname":
+    "Ethernet2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 6.0, "lastChangeTime":
+    1620677092759.0, "timestamp": 1623025177152}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "ifname": "Ethernet2", "peerHostname": "spine02",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "numChanges": 7.0, "lastChangeTime": 1620677086564.0, "timestamp":
+    1623025177253}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "ifname":
+    "Ethernet2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 6.0, "lastChangeTime":
+    1620677014856.0, "timestamp": 1623025177308}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "default", "ifname": "Ethernet2", "peerHostname": "spine02",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "numChanges": 6.0, "lastChangeTime": 1622918168508.0, "timestamp":
+    1623025177431}, {"namespace": "eos", "hostname": "leaf01", "vrf": "default", "ifname":
+    "Ethernet2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 7.0, "lastChangeTime":
+    1620677089163.0, "timestamp": 1623025177614}, {"namespace": "eos", "hostname":
+    "leaf04", "vrf": "default", "ifname": "Ethernet2", "peerHostname": "spine02",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "numChanges": 7.0, "lastChangeTime": 1620677086930.0, "timestamp":
+    1623025177660}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    0.0, "lastChangeTime": 1622998742098.0, "timestamp": 1623025798026}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
+    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 0.0, "lastChangeTime": 1622998711894.0, "timestamp":
+    1623025798361}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    0.0, "lastChangeTime": 1622998719890.0, "timestamp": 1623025798813}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
+    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 0.0, "lastChangeTime": 1622998701476.0, "timestamp":
+    1623025799339}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1622998742098.0, "timestamp": 1623025798026}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 0.0, "lastChangeTime": 1622998711894.0, "timestamp":
+    1623025798361}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1622998720890.0, "timestamp": 1623025798813}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 0.0, "lastChangeTime": 1622998703476.0, "timestamp":
+    1623025799339}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/2.0", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    0.0, "lastChangeTime": 1622998711428.0, "timestamp": 1623025798027}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/2.0", "peerHostname":
+    "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.31", "numChanges": 0.0, "lastChangeTime": 1622998711688.0, "timestamp":
+    1623025799761}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
+    0.0, "lastChangeTime": 1622998720428.0, "timestamp": 1623025798027}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.11", "numChanges": 0.0, "lastChangeTime": 1622998720688.0, "timestamp":
+    1623025799761}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/3.0", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    0.0, "lastChangeTime": 1622998703428.0, "timestamp": 1623025798027}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/3.0", "peerHostname":
+    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.32", "numChanges": 0.0, "lastChangeTime": 1622998701688.0, "timestamp":
+    1623025799761}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    0.0, "lastChangeTime": 1622998742428.0, "timestamp": 1623025798027}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
+    "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.12", "numChanges": 0.0, "lastChangeTime": 1622998742688.0, "timestamp":
+    1623025799761}, {"namespace": "mixed", "hostname": "leaf6-eos", "vrf": "default",
+    "ifname": "Ethernet1", "peerHostname": "spine1-nxos", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.1.6.1", "numChanges": 11.0,
+    "lastChangeTime": 1626937975528.0, "timestamp": 1627395434614}, {"namespace":
+    "mixed", "hostname": "leaf6-eos", "vrf": "default", "ifname": "Ethernet2", "peerHostname":
+    "spine2-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.2.6.1", "numChanges": 6.0, "lastChangeTime": 1625734326528.0,
+    "timestamp": 1627395434614}, {"namespace": "mixed", "hostname": "leaf5-eos", "vrf":
+    "default", "ifname": "Ethernet1", "peerHostname": "spine1-nxos", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.1.5.1", "numChanges":
+    6.0, "lastChangeTime": 1625740719592.0, "timestamp": 1627395434713}, {"namespace":
+    "mixed", "hostname": "leaf5-eos", "vrf": "default", "ifname": "Ethernet2", "peerHostname":
+    "spine2-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.2.5.1", "numChanges": 6.0, "lastChangeTime": 1625734328593.0,
+    "timestamp": 1627395434713}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
+    "default", "ifname": "xe-0/0/1.0", "peerHostname": "spine2-nxos", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.2.3.1", "numChanges":
+    0.0, "lastChangeTime": 1625734325739.0, "timestamp": 1627395434941}, {"namespace":
+    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "spine1-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.1.3.1", "numChanges": 0.0, "lastChangeTime": 1626288126739.0,
+    "timestamp": 1627395434941}, {"namespace": "mixed", "hostname": "spine2-nxos",
+    "vrf": "default", "ifname": "Ethernet1/3", "peerHostname": "leaf3-qfx", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.2.3.2",
+    "numChanges": 5.0, "lastChangeTime": 1625734194018.0, "timestamp": 1627395434972},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "ifname":
+    "Ethernet1/1", "peerHostname": "leaf1-ios", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.2.1.2", "numChanges": 5.0, "lastChangeTime":
+    1625734195018.0, "timestamp": 1627395434972}, {"namespace": "mixed", "hostname":
+    "spine2-nxos", "vrf": "default", "ifname": "Ethernet1/6", "peerHostname": "leaf6-eos",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.2.6.2", "numChanges": 5.0, "lastChangeTime": 1625734195018.0, "timestamp":
+    1627395434972}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
+    "ifname": "Ethernet1/2", "peerHostname": "leaf2-ios", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.2.2.2", "numChanges": 5.0,
+    "lastChangeTime": 1625734195018.0, "timestamp": 1627395434972}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "ifname": "Ethernet1/5",
+    "peerHostname": "leaf5-eos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.2.5.2", "numChanges": 5.0, "lastChangeTime":
+    1625734195018.0, "timestamp": 1627395434972}, {"namespace": "mixed", "hostname":
+    "spine2-nxos", "vrf": "default", "ifname": "Ethernet1/4", "peerHostname": "leaf4-qfx",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.2.4.2", "numChanges": 5.0, "lastChangeTime": 1625734194018.0, "timestamp":
+    1627395434972}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
+    "ifname": "Ethernet1/1", "peerHostname": "leaf1-ios", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.1.1.2", "numChanges": 4.0,
+    "lastChangeTime": 1625740326636.0, "timestamp": 1627395434985}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "ifname": "Ethernet1/6",
+    "peerHostname": "leaf6-eos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.1.6.2", "numChanges": 5.0, "lastChangeTime":
+    1625740328636.0, "timestamp": 1627395434985}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "ifname": "Ethernet1/5", "peerHostname": "leaf5-eos",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.1.5.2", "numChanges": 5.0, "lastChangeTime": 1625740328636.0, "timestamp":
+    1627395434985}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
+    "ifname": "Ethernet1/4", "peerHostname": "leaf4-qfx", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.1.4.2", "numChanges": 5.0,
+    "lastChangeTime": 1625740326636.0, "timestamp": 1627395434985}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "ifname": "Ethernet1/2",
+    "peerHostname": "leaf2-ios", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.1.2.2", "numChanges": 5.0, "lastChangeTime":
+    1625740326636.0, "timestamp": 1627395434985}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "ifname": "Ethernet1/3", "peerHostname": "leaf3-qfx",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.1.3.2", "numChanges": 5.0, "lastChangeTime": 1625740326636.0, "timestamp":
+    1627395434985}, {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine2-nxos", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.2.4.1", "numChanges": 0.0,
+    "lastChangeTime": 1625734326150.0, "timestamp": 1627395435166}, {"namespace":
+    "mixed", "hostname": "leaf4-qfx", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "spine1-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.1.4.1", "numChanges": 0.0, "lastChangeTime": 1626288402150.0,
+    "timestamp": 1627395435166}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf":
+    "default", "ifname": "GigabitEthernet0/1", "peerHostname": "spine2-nxos", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.2.2.1",
+    "numChanges": 6.0, "lastChangeTime": 1637519631000.0, "timestamp": 1627395436999},
+    {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default", "ifname": "GigabitEthernet0/0",
+    "peerHostname": "spine1-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.1.2.1", "numChanges": 6.0, "lastChangeTime":
+    1637519631000.0, "timestamp": 1627395436999}, {"namespace": "mixed", "hostname":
+    "leaf1-ios", "vrf": "default", "ifname": "GigabitEthernet0/1", "peerHostname":
+    "spine2-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.2.1.1", "numChanges": 6.0, "lastChangeTime": 1637519631000.0,
+    "timestamp": 1627395437050}, {"namespace": "mixed", "hostname": "leaf1-ios", "vrf":
+    "default", "ifname": "GigabitEthernet0/0", "peerHostname": "spine1-nxos", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.1.1.1",
+    "numChanges": 6.0, "lastChangeTime": 1638732831000.0, "timestamp": 1627395437050},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253934}, {"namespace": "panos", "hostname":
+    "leaf03", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253942},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253943}, {"namespace": "panos", "hostname":
+    "leaf04", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253948},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253949}, {"namespace": "panos", "hostname":
+    "leaf01", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253949},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 4.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253934}, {"namespace": "panos", "hostname":
+    "leaf03", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253942},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 4.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253943}, {"namespace": "panos", "hostname":
+    "leaf04", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253948},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253949}, {"namespace": "panos", "hostname":
+    "leaf01", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253949},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.12", "numChanges": 5.0, "lastChangeTime": 1639470255000.0,
+    "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "spine02", "vrf":
+    "default", "ifname": "swp2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    4.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253943}, {"namespace":
+    "panos", "hostname": "spine01", "vrf": "default", "ifname": "swp3", "peerHostname":
+    "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime": 1639470250000.0, "timestamp":
+    1639476253942}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "ifname": "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253943}, {"namespace": "panos", "hostname":
+    "spine01", "vrf": "default", "ifname": "swp4", "peerHostname": "leaf04", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14",
+    "numChanges": 5.0, "lastChangeTime": 1639470255000.0, "timestamp": 1639476253942},
+    {"namespace": "panos", "hostname": "spine02", "vrf": "default", "ifname": "swp4",
+    "peerHostname": "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.14", "numChanges": 4.0, "lastChangeTime": 1639470250000.0,
+    "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "spine01", "vrf":
+    "default", "ifname": "swp6", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    5.0, "lastChangeTime": 1639470255000.0, "timestamp": 1639476253942}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "ifname": "swp6", "peerHostname":
+    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.32", "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp":
+    1639476253943}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "ifname": "swp1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges": 5.0, "lastChangeTime":
+    1639470255000.0, "timestamp": 1639476253942}, {"namespace": "panos", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp1", "peerHostname": "leaf01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11",
+    "numChanges": 4.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253943},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "ifname": "swp5",
+    "peerHostname": "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.31", "numChanges": 5.0, "lastChangeTime": 1639470255000.0,
+    "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "spine02", "vrf":
+    "default", "ifname": "swp5", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253943}]'
+- command: ospf show --namespace='!ospf-single' --hostname='!leaf01' --format=json
+  data-directory: tests/data/parquet/
   ignore-columns: lastChangeTime timestamp
   marks: ospf show negate
-  output: '[{"hostname": "exit01", "area": "0.0.0.0"}, {"hostname": "spine01", "area":
-    "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname":
+    "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default",
+    "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "exit02",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1616681582523}, {"namespace": "nxos", "hostname": "leaf03",
+    "vrf": "default", "ifname": "loopback1", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1619275260398}, {"namespace": "nxos",
+    "hostname": "leaf03", "vrf": "default", "ifname": "loopback0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1619275260398},
+    {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "ifname": "loopback1",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1619275260613}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1619275260613}, {"namespace": "nxos", "hostname": "exit01",
+    "vrf": "default", "ifname": "loopback1", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1619275261428}, {"namespace": "nxos",
+    "hostname": "exit01", "vrf": "default", "ifname": "loopback0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1619275261428},
+    {"namespace": "nxos", "hostname": "exit02", "vrf": "default", "ifname": "loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1619275261836}, {"namespace": "nxos", "hostname": "exit02", "vrf": "default",
+    "ifname": "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1619275261836}, {"namespace": "nxos", "hostname": "leaf04",
+    "vrf": "default", "ifname": "loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1619275262039}, {"namespace": "nxos",
+    "hostname": "leaf04", "vrf": "default", "ifname": "loopback1", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1619275262039},
+    {"namespace": "nxos", "hostname": "spine01", "vrf": "default", "ifname": "loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine01", "vrf": "default",
+    "ifname": "loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1619275262040}, {"namespace": "nxos", "hostname": "leaf02",
+    "vrf": "default", "ifname": "loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1619275262652}, {"namespace": "nxos",
+    "hostname": "leaf02", "vrf": "default", "ifname": "loopback1", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1619275262652},
+    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "ifname": "Loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1623025177058}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "ifname":
+    "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "timestamp": 1623025177152}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "default", "ifname": "Loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025177152}, {"namespace": "eos", "hostname": "leaf03", "vrf":
+    "default", "ifname": "Loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025177253}, {"namespace": "eos", "hostname": "leaf03", "vrf":
+    "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025177253}, {"namespace": "eos", "hostname": "spine02",
+    "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1623025177290}, {"namespace": "eos",
+    "hostname": "exit02", "vrf": "default", "ifname": "Loopback0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1623025177308},
+    {"namespace": "eos", "hostname": "exit01", "vrf": "default", "ifname": "Loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1623025177431}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "ifname":
+    "Loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "timestamp": 1623025177660}, {"namespace": "eos", "hostname": "leaf04", "vrf":
+    "default", "ifname": "Loopback1", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025177660}, {"namespace": "junos", "hostname": "leaf02",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025798026}, {"namespace": "junos", "hostname": "spine01",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025798027}, {"namespace": "junos", "hostname": "exit01",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025798361}, {"namespace": "junos", "hostname": "exit02",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025799339}, {"namespace": "junos", "hostname": "spine02",
+    "vrf": "default", "ifname": "lo0.0", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1623025799761}, {"namespace": "mixed", "hostname": "leaf6-eos",
+    "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1627395434614}, {"namespace": "mixed",
+    "hostname": "leaf5-eos", "vrf": "default", "ifname": "Loopback0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "fail", "peerIP":
+    "-", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1627395434713}, {"namespace":
+    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "ifname": "lo0.0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1627395434941},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "ifname":
+    "loopback0", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "timestamp": 1627395434972}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "ifname": "loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1627395434985}, {"namespace": "mixed",
+    "hostname": "leaf4-qfx", "vrf": "default", "ifname": "lo0.0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1627395435166},
+    {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default", "ifname": "Loopback0",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1627395436999}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default",
+    "ifname": "GigabitEthernet0/3", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "down", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1627395436999}, {"namespace": "mixed", "hostname": "leaf2-ios",
+    "vrf": "default", "ifname": "GigabitEthernet0/4", "peerHostname": "", "area":
+    "0.0.0.0", "ifState": "down", "nbrCount": 0, "adjState": "fail", "peerIP": "-",
+    "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1627395436999}, {"namespace":
+    "mixed", "hostname": "leaf2-ios", "vrf": "default", "ifname": "GigabitEthernet0/5",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "down", "nbrCount": 0, "adjState":
+    "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1627395436999}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default",
+    "ifname": "GigabitEthernet0/2", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "down", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1627395436999}, {"namespace": "mixed", "hostname": "leaf1-ios",
+    "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1627395437050}, {"namespace": "panos",
+    "hostname": "exit01", "vrf": "default", "ifname": "lo", "peerHostname": "", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive", "peerIP": "",
+    "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1639476253934}, {"namespace":
+    "panos", "hostname": "leaf03", "vrf": "default", "ifname": "lo", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "passive",
+    "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1639476253942},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "ifname": "lo",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState":
+    "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1639476253942}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime": 0.0,
+    "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "exit02", "vrf":
+    "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "leaf04",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1639476253948}, {"namespace": "panos", "hostname": "leaf02",
+    "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 0, "adjState": "passive", "peerIP": "", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1639476253949}, {"namespace": "ospf-ibgp", "hostname": "exit01",
+    "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "swp1", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 4.0, "lastChangeTime": 1616681058000.0, "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default",
+    "ifname": "swp1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
+    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf02", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "leaf04", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
+    1616681058000.0, "timestamp": 1616681582523}, {"namespace": "ospf-ibgp", "hostname":
+    "exit01", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime":
+    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581440},
+    {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
+    1616681064000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681582523},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime":
+    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp3", "peerHostname": "leaf03", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13",
+    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges": 4.0, "lastChangeTime":
+    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp2", "peerHostname": "leaf02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12",
+    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges": 4.0, "lastChangeTime":
+    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp1", "peerHostname": "leaf01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11",
+    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp4", "peerHostname": "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges": 4.0, "lastChangeTime":
+    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp4", "peerHostname": "leaf04", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14",
+    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp5", "peerHostname": "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.102", "numChanges": 5.0, "lastChangeTime":
+    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp5", "peerHostname": "exit02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.102",
+    "numChanges": 5.0, "lastChangeTime": 1616681058000.0, "timestamp": 1616681581441},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+    "swp6", "peerHostname": "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.101", "numChanges": 5.0, "lastChangeTime":
+    1616681058000.0, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp6", "peerHostname": "exit01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101",
+    "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441},
+    {"namespace": "nxos", "hostname": "leaf03", "vrf": "default", "ifname": "Ethernet1/2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 7.0, "lastChangeTime":
+    1619045052091.0, "timestamp": 1619275260398}, {"namespace": "nxos", "hostname":
+    "exit01", "vrf": "default", "ifname": "Ethernet1/2", "peerHostname": "spine02",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "numChanges": 4.0, "lastChangeTime": 1619014438999.0, "timestamp":
+    1619275261428}, {"namespace": "nxos", "hostname": "exit02", "vrf": "default",
+    "ifname": "Ethernet1/2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    4.0, "lastChangeTime": 1619014440052.0, "timestamp": 1619275261836}, {"namespace":
+    "nxos", "hostname": "leaf04", "vrf": "default", "ifname": "Ethernet1/2", "peerHostname":
+    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 4.0, "lastChangeTime": 1619045067882.0, "timestamp":
+    1619275262039}, {"namespace": "nxos", "hostname": "leaf02", "vrf": "default",
+    "ifname": "Ethernet1/2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    7.0, "lastChangeTime": 1619045039142.0, "timestamp": 1619275262652}, {"namespace":
+    "nxos", "hostname": "leaf03", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 7.0, "lastChangeTime": 1619045052091.0, "timestamp":
+    1619275260398}, {"namespace": "nxos", "hostname": "exit01", "vrf": "default",
+    "ifname": "Ethernet1/1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    4.0, "lastChangeTime": 1619014438999.0, "timestamp": 1619275261428}, {"namespace":
+    "nxos", "hostname": "exit02", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime": 1619014440052.0, "timestamp":
+    1619275261836}, {"namespace": "nxos", "hostname": "leaf04", "vrf": "default",
+    "ifname": "Ethernet1/1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    4.0, "lastChangeTime": 1619045067882.0, "timestamp": 1619275262039}, {"namespace":
+    "nxos", "hostname": "leaf02", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime": 1619045039142.0, "timestamp":
+    1619275262652}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/4", "peerHostname": "leaf04", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges":
+    4.0, "lastChangeTime": 1619014447056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/4", "peerHostname":
+    "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.14", "numChanges": 4.0, "lastChangeTime": 1619014444515.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/6", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    5.0, "lastChangeTime": 1619014449056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/6", "peerHostname":
+    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.32", "numChanges": 5.0, "lastChangeTime": 1619014446515.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/5", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    4.0, "lastChangeTime": 1619014447056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/5", "peerHostname":
+    "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.31", "numChanges": 5.0, "lastChangeTime": 1619014444515.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
+    7.0, "lastChangeTime": 1619014447056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname":
+    "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.11", "numChanges": 4.0, "lastChangeTime": 1619014444515.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges":
+    7.0, "lastChangeTime": 1619014447056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/3", "peerHostname":
+    "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.13", "numChanges": 7.0, "lastChangeTime": 1619014444515.0, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
+    "ifname": "Ethernet1/2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    7.0, "lastChangeTime": 1619014447056.0, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/2", "peerHostname":
+    "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.12", "numChanges": 4.0, "lastChangeTime": 1619014444515.0, "timestamp":
+    1619275262040}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    6.0, "lastChangeTime": 1620677082549.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet2", "peerHostname":
+    "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.12", "numChanges": 6.0, "lastChangeTime": 1620677093480.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges":
+    6.0, "lastChangeTime": 1620677082551.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet3", "peerHostname":
+    "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.13", "numChanges": 6.0, "lastChangeTime": 1620677086485.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
+    6.0, "lastChangeTime": 1620677090556.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet1", "peerHostname":
+    "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.11", "numChanges": 6.0, "lastChangeTime": 1620677088486.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet6", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    7.0, "lastChangeTime": 1620677012543.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet6", "peerHostname":
+    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.32", "numChanges": 7.0, "lastChangeTime": 1620677015479.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet4", "peerHostname": "leaf04", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges":
+    7.0, "lastChangeTime": 1620677087548.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet4", "peerHostname":
+    "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.14", "numChanges": 6.0, "lastChangeTime": 1620677086486.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "spine01", "vrf": "default",
+    "ifname": "Ethernet5", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    6.0, "lastChangeTime": 1622918503556.0, "timestamp": 1623025177058}, {"namespace":
+    "eos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet5", "peerHostname":
+    "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.31", "numChanges": 7.0, "lastChangeTime": 1622918178487.0, "timestamp":
+    1623025177290}, {"namespace": "eos", "hostname": "leaf02", "vrf": "default", "ifname":
+    "Ethernet1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 7.0, "lastChangeTime":
+    1620677081758.0, "timestamp": 1623025177152}, {"namespace": "eos", "hostname":
+    "leaf03", "vrf": "default", "ifname": "Ethernet1", "peerHostname": "spine01",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "numChanges": 7.0, "lastChangeTime": 1620677083563.0, "timestamp":
+    1623025177253}, {"namespace": "eos", "hostname": "exit02", "vrf": "default", "ifname":
+    "Ethernet1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 6.0, "lastChangeTime":
+    1620677012855.0, "timestamp": 1623025177308}, {"namespace": "eos", "hostname":
+    "exit01", "vrf": "default", "ifname": "Ethernet1", "peerHostname": "spine01",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "numChanges": 6.0, "lastChangeTime": 1622918497521.0, "timestamp":
+    1623025177431}, {"namespace": "eos", "hostname": "leaf04", "vrf": "default", "ifname":
+    "Ethernet1", "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 7.0, "lastChangeTime":
+    1620677087929.0, "timestamp": 1623025177660}, {"namespace": "eos", "hostname":
+    "leaf02", "vrf": "default", "ifname": "Ethernet2", "peerHostname": "spine02",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "numChanges": 6.0, "lastChangeTime": 1620677092759.0, "timestamp":
+    1623025177152}, {"namespace": "eos", "hostname": "leaf03", "vrf": "default", "ifname":
+    "Ethernet2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 7.0, "lastChangeTime":
+    1620677086564.0, "timestamp": 1623025177253}, {"namespace": "eos", "hostname":
+    "exit02", "vrf": "default", "ifname": "Ethernet2", "peerHostname": "spine02",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "numChanges": 6.0, "lastChangeTime": 1620677014856.0, "timestamp":
+    1623025177308}, {"namespace": "eos", "hostname": "exit01", "vrf": "default", "ifname":
+    "Ethernet2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 6.0, "lastChangeTime":
+    1622918168508.0, "timestamp": 1623025177431}, {"namespace": "eos", "hostname":
+    "leaf04", "vrf": "default", "ifname": "Ethernet2", "peerHostname": "spine02",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.22", "numChanges": 7.0, "lastChangeTime": 1620677086930.0, "timestamp":
+    1623025177660}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    0.0, "lastChangeTime": 1622998742098.0, "timestamp": 1623025798026}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
+    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 0.0, "lastChangeTime": 1622998711894.0, "timestamp":
+    1623025798361}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    0.0, "lastChangeTime": 1622998701476.0, "timestamp": 1623025799339}, {"namespace":
+    "junos", "hostname": "leaf02", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 0.0, "lastChangeTime": 1622998742098.0, "timestamp":
+    1623025798026}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1622998711894.0, "timestamp": 1623025798361}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.21", "numChanges": 0.0, "lastChangeTime": 1622998703476.0, "timestamp":
+    1623025799339}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/2.0", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    0.0, "lastChangeTime": 1622998711428.0, "timestamp": 1623025798027}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/2.0", "peerHostname":
+    "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.31", "numChanges": 0.0, "lastChangeTime": 1622998711688.0, "timestamp":
+    1623025799761}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
+    0.0, "lastChangeTime": 1622998720428.0, "timestamp": 1623025798027}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.11", "numChanges": 0.0, "lastChangeTime": 1622998720688.0, "timestamp":
+    1623025799761}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/3.0", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    0.0, "lastChangeTime": 1622998703428.0, "timestamp": 1623025798027}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/3.0", "peerHostname":
+    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.32", "numChanges": 0.0, "lastChangeTime": 1622998701688.0, "timestamp":
+    1623025799761}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    0.0, "lastChangeTime": 1622998742428.0, "timestamp": 1623025798027}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
+    "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.12", "numChanges": 0.0, "lastChangeTime": 1622998742688.0, "timestamp":
+    1623025799761}, {"namespace": "mixed", "hostname": "leaf6-eos", "vrf": "default",
+    "ifname": "Ethernet1", "peerHostname": "spine1-nxos", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.1.6.1", "numChanges": 11.0,
+    "lastChangeTime": 1626937975528.0, "timestamp": 1627395434614}, {"namespace":
+    "mixed", "hostname": "leaf6-eos", "vrf": "default", "ifname": "Ethernet2", "peerHostname":
+    "spine2-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.2.6.1", "numChanges": 6.0, "lastChangeTime": 1625734326528.0,
+    "timestamp": 1627395434614}, {"namespace": "mixed", "hostname": "leaf5-eos", "vrf":
+    "default", "ifname": "Ethernet1", "peerHostname": "spine1-nxos", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.1.5.1", "numChanges":
+    6.0, "lastChangeTime": 1625740719592.0, "timestamp": 1627395434713}, {"namespace":
+    "mixed", "hostname": "leaf5-eos", "vrf": "default", "ifname": "Ethernet2", "peerHostname":
+    "spine2-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.2.5.1", "numChanges": 6.0, "lastChangeTime": 1625734328593.0,
+    "timestamp": 1627395434713}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
+    "default", "ifname": "xe-0/0/1.0", "peerHostname": "spine2-nxos", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.2.3.1", "numChanges":
+    0.0, "lastChangeTime": 1625734325739.0, "timestamp": 1627395434941}, {"namespace":
+    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "spine1-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.1.3.1", "numChanges": 0.0, "lastChangeTime": 1626288126739.0,
+    "timestamp": 1627395434941}, {"namespace": "mixed", "hostname": "spine2-nxos",
+    "vrf": "default", "ifname": "Ethernet1/3", "peerHostname": "leaf3-qfx", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.2.3.2",
+    "numChanges": 5.0, "lastChangeTime": 1625734194018.0, "timestamp": 1627395434972},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "ifname":
+    "Ethernet1/1", "peerHostname": "leaf1-ios", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.2.1.2", "numChanges": 5.0, "lastChangeTime":
+    1625734195018.0, "timestamp": 1627395434972}, {"namespace": "mixed", "hostname":
+    "spine2-nxos", "vrf": "default", "ifname": "Ethernet1/6", "peerHostname": "leaf6-eos",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.2.6.2", "numChanges": 5.0, "lastChangeTime": 1625734195018.0, "timestamp":
+    1627395434972}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
+    "ifname": "Ethernet1/2", "peerHostname": "leaf2-ios", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.2.2.2", "numChanges": 5.0,
+    "lastChangeTime": 1625734195018.0, "timestamp": 1627395434972}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "ifname": "Ethernet1/5",
+    "peerHostname": "leaf5-eos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.2.5.2", "numChanges": 5.0, "lastChangeTime":
+    1625734195018.0, "timestamp": 1627395434972}, {"namespace": "mixed", "hostname":
+    "spine2-nxos", "vrf": "default", "ifname": "Ethernet1/4", "peerHostname": "leaf4-qfx",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.2.4.2", "numChanges": 5.0, "lastChangeTime": 1625734194018.0, "timestamp":
+    1627395434972}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
+    "ifname": "Ethernet1/1", "peerHostname": "leaf1-ios", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.1.1.2", "numChanges": 4.0,
+    "lastChangeTime": 1625740326636.0, "timestamp": 1627395434985}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "ifname": "Ethernet1/6",
+    "peerHostname": "leaf6-eos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.1.6.2", "numChanges": 5.0, "lastChangeTime":
+    1625740328636.0, "timestamp": 1627395434985}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "ifname": "Ethernet1/5", "peerHostname": "leaf5-eos",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.1.5.2", "numChanges": 5.0, "lastChangeTime": 1625740328636.0, "timestamp":
+    1627395434985}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
+    "ifname": "Ethernet1/4", "peerHostname": "leaf4-qfx", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.1.4.2", "numChanges": 5.0,
+    "lastChangeTime": 1625740326636.0, "timestamp": 1627395434985}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "ifname": "Ethernet1/2",
+    "peerHostname": "leaf2-ios", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.1.2.2", "numChanges": 5.0, "lastChangeTime":
+    1625740326636.0, "timestamp": 1627395434985}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "ifname": "Ethernet1/3", "peerHostname": "leaf3-qfx",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.1.3.2", "numChanges": 5.0, "lastChangeTime": 1625740326636.0, "timestamp":
+    1627395434985}, {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default",
+    "ifname": "xe-0/0/1.0", "peerHostname": "spine2-nxos", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.2.4.1", "numChanges": 0.0,
+    "lastChangeTime": 1625734326150.0, "timestamp": 1627395435166}, {"namespace":
+    "mixed", "hostname": "leaf4-qfx", "vrf": "default", "ifname": "xe-0/0/0.0", "peerHostname":
+    "spine1-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.1.4.1", "numChanges": 0.0, "lastChangeTime": 1626288402150.0,
+    "timestamp": 1627395435166}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf":
+    "default", "ifname": "GigabitEthernet0/1", "peerHostname": "spine2-nxos", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.2.2.1",
+    "numChanges": 6.0, "lastChangeTime": 1637519631000.0, "timestamp": 1627395436999},
+    {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default", "ifname": "GigabitEthernet0/0",
+    "peerHostname": "spine1-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.1.2.1", "numChanges": 6.0, "lastChangeTime":
+    1637519631000.0, "timestamp": 1627395436999}, {"namespace": "mixed", "hostname":
+    "leaf1-ios", "vrf": "default", "ifname": "GigabitEthernet0/1", "peerHostname":
+    "spine2-nxos", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.2.1.1", "numChanges": 6.0, "lastChangeTime": 1637519631000.0,
+    "timestamp": 1627395437050}, {"namespace": "mixed", "hostname": "leaf1-ios", "vrf":
+    "default", "ifname": "GigabitEthernet0/0", "peerHostname": "spine1-nxos", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.1.1.1",
+    "numChanges": 6.0, "lastChangeTime": 1638732831000.0, "timestamp": 1627395437050},
+    {"namespace": "panos", "hostname": "exit01", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253934}, {"namespace": "panos", "hostname":
+    "leaf03", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253942},
+    {"namespace": "panos", "hostname": "exit02", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 4.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253943}, {"namespace": "panos", "hostname":
+    "leaf04", "vrf": "default", "ifname": "swp1", "peerHostname": "spine01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
+    "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253948},
+    {"namespace": "panos", "hostname": "leaf02", "vrf": "default", "ifname": "swp1",
+    "peerHostname": "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253949}, {"namespace": "panos", "hostname":
+    "exit01", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 4.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253934},
+    {"namespace": "panos", "hostname": "leaf03", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253942}, {"namespace": "panos", "hostname":
+    "exit02", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 4.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253943},
+    {"namespace": "panos", "hostname": "leaf04", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 5.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253948}, {"namespace": "panos", "hostname":
+    "leaf02", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.22",
+    "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253949},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "ifname": "swp2",
+    "peerHostname": "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.12", "numChanges": 5.0, "lastChangeTime": 1639470255000.0,
+    "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "spine02", "vrf":
+    "default", "ifname": "swp2", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    4.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253943}, {"namespace":
+    "panos", "hostname": "spine01", "vrf": "default", "ifname": "swp3", "peerHostname":
+    "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime": 1639470250000.0, "timestamp":
+    1639476253942}, {"namespace": "panos", "hostname": "spine02", "vrf": "default",
+    "ifname": "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime":
+    1639470250000.0, "timestamp": 1639476253943}, {"namespace": "panos", "hostname":
+    "spine01", "vrf": "default", "ifname": "swp4", "peerHostname": "leaf04", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14",
+    "numChanges": 5.0, "lastChangeTime": 1639470255000.0, "timestamp": 1639476253942},
+    {"namespace": "panos", "hostname": "spine02", "vrf": "default", "ifname": "swp4",
+    "peerHostname": "leaf04", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.14", "numChanges": 4.0, "lastChangeTime": 1639470250000.0,
+    "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "spine01", "vrf":
+    "default", "ifname": "swp6", "peerHostname": "exit02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.32", "numChanges":
+    5.0, "lastChangeTime": 1639470255000.0, "timestamp": 1639476253942}, {"namespace":
+    "panos", "hostname": "spine02", "vrf": "default", "ifname": "swp6", "peerHostname":
+    "exit02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full",
+    "peerIP": "10.0.0.32", "numChanges": 5.0, "lastChangeTime": 1639470250000.0, "timestamp":
+    1639476253943}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
+    "ifname": "swp1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState": "up",
+    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges": 5.0, "lastChangeTime":
+    1639470255000.0, "timestamp": 1639476253942}, {"namespace": "panos", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp1", "peerHostname": "leaf01", "area":
+    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11",
+    "numChanges": 4.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253943},
+    {"namespace": "panos", "hostname": "spine01", "vrf": "default", "ifname": "swp5",
+    "peerHostname": "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState":
+    "full", "peerIP": "10.0.0.31", "numChanges": 5.0, "lastChangeTime": 1639470255000.0,
+    "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "spine02", "vrf":
+    "default", "ifname": "swp5", "peerHostname": "exit01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.31", "numChanges":
+    5.0, "lastChangeTime": 1639470250000.0, "timestamp": 1639476253943}]'
+- command: ospf show --namespace='!ospf-single' --hostname='!leaf01' --columns='hostname
+    area' --format=json
+  data-directory: tests/data/parquet/
+  ignore-columns: lastChangeTime timestamp
+  marks: ospf show negate
+  output: '[{"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname": "exit01", "area":
+    "0.0.0.0"}, {"hostname": "exit01", "area": "0.0.0.0"}, {"hostname": "exit01",
+    "area": "0.0.0.0"}, {"hostname": "exit02", "area": "0.0.0.0"}, {"hostname": "exit02",
+    "area": "0.0.0.0"}, {"hostname": "exit02", "area": "0.0.0.0"}, {"hostname": "spine01",
     "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
     "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "leaf03",
-    "area": "0.0.0.0"}, {"hostname": "leaf03", "area": "0.0.0.0"}, {"hostname": "spine01",
-    "area": "0.0.0.0"}, {"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname": "leaf03",
-    "area": "0.0.0.0"}, {"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname": "exit02",
-    "area": "0.0.0.0"}, {"hostname": "exit02", "area": "0.0.0.0"}, {"hostname": "exit02",
-    "area": "0.0.0.0"}, {"hostname": "exit01", "area": "0.0.0.0"}, {"hostname": "exit01",
-    "area": "0.0.0.0"}, {"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "leaf03", "area": "0.0.0.0"}, {"hostname": "leaf03",
+    "area": "0.0.0.0"}, {"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname": "leaf02",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine02",
     "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
     "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
     "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
     "area": "0.0.0.0"}, {"hostname": "leaf04", "area": "0.0.0.0"}, {"hostname": "leaf04",
-    "area": "0.0.0.0"}, {"hostname": "leaf04", "area": "0.0.0.0"}]'
-- command: ospf show --state="full" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+    "area": "0.0.0.0"}, {"hostname": "leaf04", "area": "0.0.0.0"}, {"hostname": "leaf03",
+    "area": "0.0.0.0"}, {"hostname": "leaf03", "area": "0.0.0.0"}, {"hostname": "leaf03",
+    "area": "0.0.0.0"}, {"hostname": "leaf03", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "exit01",
+    "area": "0.0.0.0"}, {"hostname": "exit01", "area": "0.0.0.0"}, {"hostname": "exit01",
+    "area": "0.0.0.0"}, {"hostname": "exit01", "area": "0.0.0.0"}, {"hostname": "exit02",
+    "area": "0.0.0.0"}, {"hostname": "exit02", "area": "0.0.0.0"}, {"hostname": "exit02",
+    "area": "0.0.0.0"}, {"hostname": "exit02", "area": "0.0.0.0"}, {"hostname": "leaf04",
+    "area": "0.0.0.0"}, {"hostname": "leaf04", "area": "0.0.0.0"}, {"hostname": "leaf04",
+    "area": "0.0.0.0"}, {"hostname": "leaf04", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "leaf02",
+    "area": "0.0.0.0"}, {"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname": "leaf02",
+    "area": "0.0.0.0"}, {"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname": "leaf02",
+    "area": "0.0.0.0"}, {"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname": "leaf02",
+    "area": "0.0.0.0"}, {"hostname": "leaf03", "area": "0.0.0.0"}, {"hostname": "leaf03",
+    "area": "0.0.0.0"}, {"hostname": "leaf03", "area": "0.0.0.0"}, {"hostname": "leaf03",
+    "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "exit02",
+    "area": "0.0.0.0"}, {"hostname": "exit02", "area": "0.0.0.0"}, {"hostname": "exit02",
+    "area": "0.0.0.0"}, {"hostname": "exit01", "area": "0.0.0.0"}, {"hostname": "exit01",
+    "area": "0.0.0.0"}, {"hostname": "exit01", "area": "0.0.0.0"}, {"hostname": "leaf04",
+    "area": "0.0.0.0"}, {"hostname": "leaf04", "area": "0.0.0.0"}, {"hostname": "leaf04",
+    "area": "0.0.0.0"}, {"hostname": "leaf04", "area": "0.0.0.0"}, {"hostname": "leaf02",
+    "area": "0.0.0.0"}, {"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname": "leaf02",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "spine01",
+    "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname": "exit01",
+    "area": "0.0.0.0"}, {"hostname": "exit01", "area": "0.0.0.0"}, {"hostname": "exit01",
+    "area": "0.0.0.0"}, {"hostname": "exit02", "area": "0.0.0.0"}, {"hostname": "exit02",
+    "area": "0.0.0.0"}, {"hostname": "exit02", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine02",
+    "area": "0.0.0.0"}, {"hostname": "leaf6-eos", "area": "0.0.0.0"}, {"hostname":
+    "leaf6-eos", "area": "0.0.0.0"}, {"hostname": "leaf6-eos", "area": "0.0.0.0"},
+    {"hostname": "leaf5-eos", "area": "0.0.0.0"}, {"hostname": "leaf5-eos", "area":
+    "0.0.0.0"}, {"hostname": "leaf5-eos", "area": "0.0.0.0"}, {"hostname": "leaf3-qfx",
+    "area": "0.0.0.0"}, {"hostname": "leaf3-qfx", "area": "0.0.0.0"}, {"hostname":
+    "leaf3-qfx", "area": "0.0.0.0"}, {"hostname": "spine2-nxos", "area": "0.0.0.0"},
+    {"hostname": "spine2-nxos", "area": "0.0.0.0"}, {"hostname": "spine2-nxos", "area":
+    "0.0.0.0"}, {"hostname": "spine2-nxos", "area": "0.0.0.0"}, {"hostname": "spine2-nxos",
+    "area": "0.0.0.0"}, {"hostname": "spine2-nxos", "area": "0.0.0.0"}, {"hostname":
+    "spine2-nxos", "area": "0.0.0.0"}, {"hostname": "spine1-nxos", "area": "0.0.0.0"},
+    {"hostname": "spine1-nxos", "area": "0.0.0.0"}, {"hostname": "spine1-nxos", "area":
+    "0.0.0.0"}, {"hostname": "spine1-nxos", "area": "0.0.0.0"}, {"hostname": "spine1-nxos",
+    "area": "0.0.0.0"}, {"hostname": "spine1-nxos", "area": "0.0.0.0"}, {"hostname":
+    "spine1-nxos", "area": "0.0.0.0"}, {"hostname": "leaf4-qfx", "area": "0.0.0.0"},
+    {"hostname": "leaf4-qfx", "area": "0.0.0.0"}, {"hostname": "leaf4-qfx", "area":
+    "0.0.0.0"}, {"hostname": "leaf2-ios", "area": "0.0.0.0"}, {"hostname": "leaf2-ios",
+    "area": "0.0.0.0"}, {"hostname": "leaf2-ios", "area": "0.0.0.0"}, {"hostname":
+    "leaf2-ios", "area": "0.0.0.0"}, {"hostname": "leaf2-ios", "area": "0.0.0.0"},
+    {"hostname": "leaf2-ios", "area": "0.0.0.0"}, {"hostname": "leaf2-ios", "area":
+    "0.0.0.0"}, {"hostname": "leaf1-ios", "area": "0.0.0.0"}, {"hostname": "leaf1-ios",
+    "area": "0.0.0.0"}, {"hostname": "leaf1-ios", "area": "0.0.0.0"}, {"hostname":
+    "exit01", "area": "0.0.0.0"}, {"hostname": "exit01", "area": "0.0.0.0"}, {"hostname":
+    "exit01", "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname":
+    "leaf03", "area": "0.0.0.0"}, {"hostname": "leaf03", "area": "0.0.0.0"}, {"hostname":
+    "leaf03", "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname":
+    "spine01", "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname":
+    "spine01", "area": "0.0.0.0"}, {"hostname": "spine01", "area": "0.0.0.0"}, {"hostname":
+    "spine01", "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname":
+    "spine02", "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname":
+    "spine02", "area": "0.0.0.0"}, {"hostname": "spine02", "area": "0.0.0.0"}, {"hostname":
+    "spine02", "area": "0.0.0.0"}, {"hostname": "exit02", "area": "0.0.0.0"}, {"hostname":
+    "exit02", "area": "0.0.0.0"}, {"hostname": "exit02", "area": "0.0.0.0"}, {"hostname":
+    "spine02", "area": "0.0.0.0"}, {"hostname": "leaf04", "area": "0.0.0.0"}, {"hostname":
+    "leaf04", "area": "0.0.0.0"}, {"hostname": "leaf04", "area": "0.0.0.0"}, {"hostname":
+    "leaf02", "area": "0.0.0.0"}, {"hostname": "leaf02", "area": "0.0.0.0"}, {"hostname":
+    "leaf02", "area": "0.0.0.0"}]'
+- command: ospf show --state="full" --format=json --namespace='ospf-single dual-evpn
+    ospf-ibgp'
+  data-directory: tests/data/parquet/
   ignore-columns: lastChangeTime timestamp
   marks: ospf show status full
   output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
@@ -895,8 +2062,9 @@ tests:
     "spine02", "vrf": "default", "ifname": "swp6", "peerHostname": "exit01", "area":
     "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101",
     "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441}]'
-- command: ospf show --state="other" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf show --state="other" --format=json --namespace='ospf-single dual-evpn
+    ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: ospf show status fail
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
     "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
@@ -905,13 +2073,15 @@ tests:
     "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
     0.0, "timestamp": 1616352403219}]'
-- command: ospf show --state="other" --columns='hostname area' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf show --state="other" --columns='hostname area' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: ospf show status fail columns
   output: '[{"hostname": "spine02", "area": "0.0.0.0"}, {"hostname": "spine01", "area":
     "0.0.0.0"}]'
-- command: ospf show --state="full" --columns='hostname adjState' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf show --state="full" --columns='hostname adjState' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: ospf show status pass columns
   output: '[{"hostname": "spine02", "adjState": "full"}, {"hostname": "spine02", "adjState":
     "full"}, {"hostname": "spine02", "adjState": "full"}, {"hostname": "spine02",
@@ -952,7 +2122,7 @@ tests:
     "full"}, {"hostname": "leaf04", "adjState": "passive"}]'
 - command: ospf show --namespace='!ospf-ibgp' --hostname='!leaf01' --state="other"
     --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: ospf show status negate fail
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
     "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
@@ -960,9 +2130,30 @@ tests:
     "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname": "spine01",
     "vrf": "default", "ifname": "lo", "peerHostname": "", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
-    0.0, "timestamp": 1616352403219}]'
-- command: bgp show --state="Established" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+    0.0, "timestamp": 1616352403219}, {"namespace": "mixed", "hostname": "leaf6-eos",
+    "vrf": "default", "ifname": "Loopback0", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "numChanges":
+    0.0, "lastChangeTime": 0.0, "timestamp": 1627395434614}, {"namespace": "mixed",
+    "hostname": "leaf5-eos", "vrf": "default", "ifname": "Loopback0", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 0, "adjState": "fail", "peerIP":
+    "-", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1627395434713}, {"namespace":
+    "mixed", "hostname": "leaf2-ios", "vrf": "default", "ifname": "GigabitEthernet0/5",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "down", "nbrCount": 0, "adjState":
+    "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1627395436999}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default",
+    "ifname": "GigabitEthernet0/4", "peerHostname": "", "area": "0.0.0.0", "ifState":
+    "down", "nbrCount": 0, "adjState": "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime":
+    0.0, "timestamp": 1627395436999}, {"namespace": "mixed", "hostname": "leaf2-ios",
+    "vrf": "default", "ifname": "GigabitEthernet0/3", "peerHostname": "", "area":
+    "0.0.0.0", "ifState": "down", "nbrCount": 0, "adjState": "fail", "peerIP": "-",
+    "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp": 1627395436999}, {"namespace":
+    "mixed", "hostname": "leaf2-ios", "vrf": "default", "ifname": "GigabitEthernet0/2",
+    "peerHostname": "", "area": "0.0.0.0", "ifState": "down", "nbrCount": 0, "adjState":
+    "fail", "peerIP": "-", "numChanges": 0.0, "lastChangeTime": 0.0, "timestamp":
+    1627395436999}]'
+- command: bgp show --state="Established" --format=json --namespace='ospf-single dual-evpn
+    ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp show status pass
   output: '[{"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer":
     "eth1.2", "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi":
@@ -1352,19 +2543,22 @@ tests:
     "Established", "afi": "l2vpn", "safi": "evpn", "asn": 65000, "peerAsn": 65000,
     "pfxRx": 6, "pfxTx": 38, "numChanges": 1, "estdTime": 1616681049000.0, "timestamp":
     1616681583504}]'
-- command: bgp show --state="NotEstd" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp show --state="NotEstd" --format=json --namespace='ospf-single dual-evpn
+    ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp show status fail
   output: '[{"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "peer":
     "swp2", "peerHostname": "", "state": "NotEstd", "afi": "", "safi": "", "asn":
     65000, "peerAsn": 0, "pfxRx": 0, "pfxTx": 0, "numChanges": 0, "estdTime": 0.0,
     "timestamp": 1616681583200}]'
-- command: bgp show --state="NotEstd" --columns='hostname reason' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp show --state="NotEstd" --columns='hostname reason' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp show status fail columns
   output: '[{"hostname": "exit02", "reason": "Waiting for Peer IPv6 LLA"}]'
 - command: bgp show --state="Established" --columns='hostname reason' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+    --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp show status pass columns
   output: '[{"hostname": "edge01", "reason": "No AFI/SAFI activated for peer"}, {"hostname":
     "edge01", "reason": "No AFI/SAFI activated for peer"}, {"hostname": "edge01",
@@ -1436,6 +2630,6 @@ tests:
     for peer"}]'
 - command: bgp show --namespace='!ospf-ibgp' --hostname='!leaf01' --state="NotEstd"
     --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: bgp show status negate fail
   output: '[]'

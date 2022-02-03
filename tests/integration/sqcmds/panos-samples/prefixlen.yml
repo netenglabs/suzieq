@@ -1,7 +1,7 @@
 description: Testing prefixlen as filter for routes
 tests:
-- command: route show --prefixlen="32" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --prefixlen="32" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "panos", "hostname": "leaf03", "vrf": "default", "prefix":
     "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
@@ -299,8 +299,8 @@ tests:
     "prefix": "169.254.254.2/32", "nexthopIps": [], "oifs": [], "protocol": "local",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1639476253357}]'
-- command: route show --prefixlen="< 32" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --prefixlen="< 32" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix":
     "169.254.254.8/30", "nexthopIps": ["169.254.254.10"], "oifs": ["ethernet1/1.4"],
@@ -517,8 +517,8 @@ tests:
     "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.9", "169.254.254.9"],
     "oifs": ["ethernet1/2.4", "ethernet1/1.4"], "protocol": "bgp", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}]'
-- command: route show --prefixlen="> 16" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --prefixlen="> 16" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix":
     "169.254.254.8/30", "nexthopIps": ["169.254.254.10"], "oifs": ["ethernet1/1.4"],
@@ -1010,8 +1010,8 @@ tests:
     "panos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.254.2/32",
     "nexthopIps": [], "oifs": [], "protocol": "local", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix":
     "169.254.254.8/30", "nexthopIps": ["169.254.254.10"], "oifs": ["ethernet1/1.4"],
@@ -1372,8 +1372,8 @@ tests:
     "vrf": "default", "prefix": "169.254.254.2/32", "nexthopIps": [], "oifs": [],
     "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1639476253357}]'
-- command: route show --prefixlen="! 32" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --prefixlen="! 32" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix":
     "169.254.254.8/30", "nexthopIps": ["169.254.254.10"], "oifs": ["ethernet1/1.4"],
@@ -1602,8 +1602,8 @@ tests:
     "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.9", "169.254.254.9"], "oifs":
     ["ethernet1/2.4", "ethernet1/1.4"], "protocol": "bgp", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}]'
-- command: route show --prefixlen="<= 16" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --prefixlen="<= 16" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "panos", "hostname": "server302", "vrf": "default", "prefix":
     "172.16.0.0/16", "nexthopIps": ["172.16.3.254"], "oifs": ["bond0"], "protocol":
@@ -1639,21 +1639,21 @@ tests:
     "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.9", "169.254.254.9"],
     "oifs": [], "protocol": "bgp", "source": "", "preference": 0, "ipvers": 4, "action":
     "forward", "timestamp": 1639476253357}]'
-- command: route show --hostname="leaf01" --prefixlen="<=16" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --hostname="leaf01" --prefixlen="<=16" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[]'
-- command: route show --prefix="172.16.253.1" --prefixlen="<=32" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --prefix="172.16.253.1" --prefixlen="<=32" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[]'
 - command: route show --hostname="leaf01" --prefixlen="<=16" --columns="prefix nexthopIps"
-    --format=json
-  data-directory: tests/data/panos/parquet-out/
+    --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[]'
-- command: route show --prefixlen="32" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --prefixlen="32" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "panos", "hostname": "leaf03", "vrf": "default", "prefix":
     "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
@@ -1951,8 +1951,8 @@ tests:
     "prefix": "169.254.254.2/32", "nexthopIps": [], "oifs": [], "protocol": "local",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1639476253357}]'
-- command: route show --prefixlen="! 32" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --prefixlen="! 32" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[{"namespace": "panos", "hostname": "firewall01", "vrf": "default", "prefix":
     "169.254.254.8/30", "nexthopIps": ["169.254.254.10"], "oifs": ["ethernet1/1.4"],
@@ -2181,12 +2181,12 @@ tests:
     "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.253.9", "169.254.254.9"], "oifs":
     ["ethernet1/2.4", "ethernet1/1.4"], "protocol": "bgp", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1639476253357}]'
-- command: route show --prefix="172.16.253.1" --prefixlen="<32" --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: route show --prefix="172.16.253.1" --prefixlen="<32" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[]'
 - command: route show --prefix="172.16.253.1" --prefixlen="<32" --columns="prefix
-    oifs" --format=json
-  data-directory: tests/data/panos/parquet-out/
+    oifs" --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: route show prefixlen
   output: '[]'

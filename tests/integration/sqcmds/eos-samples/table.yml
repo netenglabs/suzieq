@@ -1,7 +1,7 @@
 description: 'Testing verbs for table: show describe'
 tests:
-- command: table show --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: table show --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: table show eos
   output: '[{"table": "arpnd", "firstTime": 1623025176216, "latestTime": 1623025181909,
     "intervals": 12, "allRows": 82, "namespaces": 1, "deviceCnt": 14}, {"table": "bgp",
@@ -38,21 +38,21 @@ tests:
     9, "allRows": 27, "namespaces": 1, "deviceCnt": 9}, {"table": "TOTAL", "firstTime":
     1623025174530, "latestTime": 1639161231163, "intervals": 130, "allRows": 1591,
     "namespaces": 1, "deviceCnt": 14}]'
-- command: table show --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: table show --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid columns specified: [''hostname'']"}]'
   marks: table show eos
 - command: table show --namespace=dummy --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: table show eos
   output: '[]'
-- command: table show --view=changes --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: table show --view=changes --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: table show eos
   output: '[]'
-- command: table show --view=latest --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: table show --view=latest --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: table show eos
   output: '[{"table": "arpnd", "firstTime": 1623025176216, "latestTime": 1623025181909,
     "intervals": 12, "allRows": 82, "namespaces": 1, "deviceCnt": 14}, {"table": "bgp",
@@ -89,8 +89,8 @@ tests:
     9, "allRows": 27, "namespaces": 1, "deviceCnt": 9}, {"table": "TOTAL", "firstTime":
     1623025174530, "latestTime": 1639161231163, "intervals": 130, "allRows": 1591,
     "namespaces": 1, "deviceCnt": 14}]'
-- command: table show --hostname=leaf01 --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: table show --hostname=leaf01 --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: table show eos
   output: '[{"table": "arpnd", "firstTime": 1623025177688, "latestTime": 1623025177688,
     "intervals": 1, "allRows": 7, "namespaces": 1, "deviceCnt": 1}, {"table": "bgp",
@@ -126,8 +126,8 @@ tests:
     "intervals": 1, "allRows": 5, "namespaces": 1, "deviceCnt": 1}, {"table": "TOTAL",
     "firstTime": 1623025174541, "latestTime": 1639161231156, "intervals": 18, "allRows":
     128, "namespaces": 1, "deviceCnt": 1}]'
-- command: table describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: table describe --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: table describe eos
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "allRows", "type": "long", "key":
@@ -142,8 +142,8 @@ tests:
     in database"}, {"name": "sqvers", "type": "string", "key": "", "display": "",
     "description": "Schema version, not selectable"}, {"name": "table", "type": "string",
     "key": "", "display": 1, "description": "Table name"}]'
-- command: table unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: table unique --format=json --namespace=eos
+  data-directory: tests/data/parquet
   marks: table unique eos
   output: '[{"table": "TOTAL"}, {"table": "arpnd"}, {"table": "bgp"}, {"table": "devconfig"},
     {"table": "device"}, {"table": "evpnVni"}, {"table": "fs"}, {"table": "ifCounters"},

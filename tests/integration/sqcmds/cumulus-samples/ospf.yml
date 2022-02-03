@@ -1,7 +1,7 @@
 description: 'Testing verbs for ospf: show summarize unique assert top'
 tests:
-- command: ospf show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   ignore-columns: lastChangeTime timestamp
   marks: ospf show
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
@@ -232,8 +232,8 @@ tests:
     "spine02", "vrf": "default", "ifname": "swp6", "peerHostname": "exit01", "area":
     "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101",
     "numChanges": 5.0, "lastChangeTime": 1616681064000.0, "timestamp": 1616681581441}]'
-- command: ospf show --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: ospf show
   output: '[{"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
@@ -255,27 +255,27 @@ tests:
     {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
     "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
-- command: ospf unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: ospf unique
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
     "spine01"}, {"hostname": "spine02"}]'
-- command: ospf unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: ospf unique
   output: '[{"hostname": "exit01", "numRows": 6}, {"hostname": "exit02", "numRows":
     6}, {"hostname": "leaf01", "numRows": 7}, {"hostname": "leaf02", "numRows": 7},
     {"hostname": "leaf03", "numRows": 7}, {"hostname": "leaf04", "numRows": 7}, {"hostname":
     "spine01", "numRows": 14}, {"hostname": "spine02", "numRows": 14}]'
-- command: ospf unique --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf unique --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: ospf unique
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
     "spine01"}, {"hostname": "spine02"}]'
-- command: ospf assert --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf assert --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6",
@@ -367,7 +367,7 @@ tests:
     "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert":
     "pass", "assertReason": "-", "timestamp": 1616681582523}]'
 - command: ospf assert --namespace=ospf-single --format=json
-  data-directory: tests/data/multidc/parquet-out
+  data-directory: tests/data/parquet
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6",
@@ -415,13 +415,13 @@ tests:
     "pass", "assertReason": "-", "timestamp": 1616352403440}, {"namespace": "ospf-single",
     "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert": "pass", "assertReason":
     "-", "timestamp": 1616352403440}]'
-- command: ospf assert --status=fail --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf assert --status=fail --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert cumulus
   output: '[]'
-- command: ospf assert --status=pass --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf assert --status=pass --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert cumulus
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6",
@@ -512,8 +512,8 @@ tests:
     "assert": "pass", "assertReason": "-", "timestamp": 1616681582523}, {"namespace":
     "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert":
     "pass", "assertReason": "-", "timestamp": 1616681582523}]'
-- command: ospf assert --status=all --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf assert --status=all --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert cumulus
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "ifname": "swp6",
@@ -604,8 +604,8 @@ tests:
     "assert": "pass", "assertReason": "-", "timestamp": 1616681582523}, {"namespace":
     "ospf-ibgp", "hostname": "leaf04", "ifname": "swp1", "vrf": "default", "assert":
     "pass", "assertReason": "-", "timestamp": 1616681582523}]'
-- command: ospf assert --status=whatever --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: ospf assert --status=whatever --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert cumulus
   output: '[]'

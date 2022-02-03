@@ -47,7 +47,7 @@ def create_config(t_dir, suzieq_dir):
     '''Create dummy config'''
     # We need to create a tempfile to hold the config
     tmpconfig = load_sq_config(conftest.create_dummy_config_file())
-    tmpconfig['data-directory'] = f"{t_dir}/parquet-out"
+    tmpconfig['data-directory'] = f"{t_dir}/parquet"
     tmpconfig['service-directory'] = \
         f"{suzieq_dir}/{tmpconfig['service-directory']}"
     tmpconfig['schema-directory'] = \
@@ -274,7 +274,7 @@ class TestUpdate:
             f'{orig_dir}/tests/integration/sqcmds/cumulus-input/ospf-single',
             orig_dir, tmp_path)
 
-        dst_dir = f'{orig_dir}/tests/data/multidc/parquet-out'
+        dst_dir = f'{orig_dir}/tests/data/parquet'
         git_del_dir(dst_dir)
         copytree(f'{tmp_path}/parquet-out', dst_dir)
         shutil.rmtree(f'{tmp_path}/parquet-out')
@@ -284,7 +284,7 @@ class TestUpdate:
             f'{orig_dir}/tests/integration/sqcmds/cumulus-input/dual-bgp',
             orig_dir, tmp_path)
 
-        dst_dir = f'{orig_dir}/tests/data/basic_dual_bgp/parquet-out'
+        dst_dir = f'{orig_dir}/tests/data/parquet'
         git_del_dir(dst_dir)
 
         copytree(f'{tmp_path}/parquet-out', dst_dir)
@@ -302,7 +302,7 @@ class TestUpdate:
         update_data(nos, f'{orig_dir}/tests/integration/sqcmds/{nos}-input/',
                     orig_dir, tmp_path, number_of_devices=device_cnt)
 
-        dst_dir = f'{orig_dir}/tests/data/{nos}/parquet-out'
+        dst_dir = f'{orig_dir}/tests/data/parquet'
         git_del_dir(dst_dir)
         copytree(f'{tmp_path}/parquet-out', dst_dir)
         shutil.rmtree(f'{tmp_path}/parquet-out')

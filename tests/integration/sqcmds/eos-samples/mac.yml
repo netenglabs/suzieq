@@ -1,7 +1,7 @@
 description: 'Testing verbs for mac: show summarize unique'
 tests:
-- command: mac show --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mac show --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mac show eos
   output: '[{"namespace": "eos", "hostname": "server101", "vlan": 0, "macaddr": "33:33:00:00:00:01",
     "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":
@@ -430,8 +430,8 @@ tests:
     "", "bd": "", "flags": "static", "timestamp": 1623025176019}, {"namespace": "eos",
     "hostname": "leaf04", "vlan": 1006, "macaddr": "44:38:39:e3:19:2e", "oif": "Vxlan1",
     "remoteVtepIp": "10.0.0.112", "bd": "", "flags": "remote", "timestamp": 1623025176019}]'
-- command: mac show --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mac show --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mac show eos
   output: '[{"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
     {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
@@ -495,13 +495,13 @@ tests:
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}]'
-- command: mac summarize --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mac summarize --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mac summarize eos
   output: '{"eos": {"deviceCnt": 11, "totalMacsinNSCnt": 192, "uniqueMacCnt": 28,
     "uniqueVlanperHostStat": [1, 4, 4.0]}}'
-- command: mac unique --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mac unique --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mac unique eos
   output: '[{"macaddr": "01:00:5e:00:00:01"}, {"macaddr": "01:80:c2:00:00:00"}, {"macaddr":
     "01:80:c2:00:00:02"}, {"macaddr": "01:80:c2:00:00:03"}, {"macaddr": "01:80:c2:00:00:0e"},
@@ -515,8 +515,8 @@ tests:
     "44:38:39:c3:55:cb"}, {"macaddr": "44:38:39:e3:19:2e"}, {"macaddr": "5e:91:28:03:52:e7"},
     {"macaddr": "66:49:0d:d4:d8:63"}, {"macaddr": "b2:8f:7e:c3:49:72"}, {"macaddr":
     "d2:74:8c:66:e7:e2"}]'
-- command: mac unique --count=True --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mac unique --count=True --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mac unique eos
   output: '[{"macaddr": "33:33:ff:00:00:00", "numRows": 1}, {"macaddr": "33:33:ff:6d:12:3e",
     "numRows": 1}, {"macaddr": "33:33:ff:95:20:c5", "numRows": 1}, {"macaddr": "33:33:ff:a0:c7:37",
@@ -533,15 +533,15 @@ tests:
     "numRows": 17}, {"macaddr": "01:80:c2:00:00:03", "numRows": 17}, {"macaddr": "01:80:c2:00:00:0e",
     "numRows": 17}, {"macaddr": "01:00:5e:00:00:01", "numRows": 25}, {"macaddr": "33:33:00:00:00:01",
     "numRows": 25}]'
-- command: mac unique --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mac unique --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mac unique eos
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "firewall01"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
     "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"}, {"hostname":
     "server301"}, {"hostname": "server302"}]'
-- command: mac show --query-str='vlan == 0' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mac show --query-str='vlan == 0' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mac show filter eos
   output: '[{"namespace": "eos", "hostname": "server101", "vlan": 0, "macaddr": "33:33:00:00:00:01",
     "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "timestamp":

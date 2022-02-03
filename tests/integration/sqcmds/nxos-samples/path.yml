@@ -1,22 +1,22 @@
 description: 'Testing verbs for path: show summarize'
 tests:
 - command: path show --format=json --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Must specify trace source and dest"}]'
   marks: path show nxos
 - command: path show --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid dest 172.16.2.104"}]'
   marks: path show nxos
 - command: path show --dest=172.16.3.202 --src=172.16.1.104 --format=json --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid src 172.16.1.104"}]'
   marks: path show nxoss
 - command: path show --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show nxos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "server101",
     "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
@@ -187,7 +187,7 @@ tests:
     true, "inMtu": 9216, "outMtu": 9216, "protocol": "", "ipLookup": "", "vtepLookup":
     "", "macLookup": "", "nexthopIp": "", "timestamp": 1619275256321}]'
 - command: path show --dest=172.16.2.201 --src=172.16.1.101 --format=json --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show nxos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "server101",
     "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
@@ -358,7 +358,7 @@ tests:
     true, "inMtu": 9216, "outMtu": 9216, "protocol": "", "ipLookup": "", "vtepLookup":
     "", "macLookup": "", "nexthopIp": "", "timestamp": 1619275256205}]'
 - command: path show --src=172.16.3.202 --dest=172.16.3.102 --format=json --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show nxos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "server302",
     "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
@@ -529,7 +529,7 @@ tests:
     true, "inMtu": 9216, "outMtu": 9216, "protocol": "", "ipLookup": "", "vtepLookup":
     "", "macLookup": "", "nexthopIp": "", "timestamp": 1619275256204}]'
 - command: path show --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show nxos
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "leaf04",
     "iif": "loopback0", "oif": "Ethernet1/1", "vrf": "default", "isL2": false, "overlay":
@@ -557,24 +557,24 @@ tests:
     true, "inMtu": 9216, "outMtu": 1500, "protocol": "", "ipLookup": "", "vtepLookup":
     "", "macLookup": "", "nexthopIp": "", "timestamp": 1619275258762}]'
 - command: path summarize --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path summarize nxos
   output: '[{"nxos": 8}, {"nxos": [2, 2, 2, 1]}, {"nxos": 4}, {"nxos": 4.0}, {"nxos":
     8}, {"nxos": 9216}, {"nxos": true}, {"nxos": false}]'
 - command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path summarize nxos
   output: '[{"nxos": 2}, {"nxos": [2, 1]}, {"nxos": 2}, {"nxos": 2.0}, {"nxos": 4},
     {"nxos": 1500}, {"nxos": false}, {"nxos": false}]'
 - command: path unique --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path unique nxos
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
     {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server302"},
     {"hostname": "spine01"}, {"hostname": "spine02"}]'
 - command: path unique --dest=172.16.3.202 --src=172.16.1.101 --format=json --count=True
     --namespace=nxos
-  data-directory: tests/data/nxos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path unique nxos
   output: '[{"hostname": "leaf01", "numRows": 4}, {"hostname": "leaf02", "numRows":
     4}, {"hostname": "leaf03", "numRows": 4}, {"hostname": "leaf04", "numRows": 4},
