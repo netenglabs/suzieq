@@ -1,7 +1,7 @@
 description: 'Testing verbs for route: show summarize unique lpm'
 tests:
-- command: route show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show
   output: '[{"namespace": "ospf-single", "hostname": "server102", "vrf": "default",
     "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol":
@@ -1970,8 +1970,8 @@ tests:
     "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
     ["swp1", "swp2"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
     4, "action": "forward", "timestamp": 1616681582006}]'
-- command: route show --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show
   output: '[{"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
     {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
@@ -2150,8 +2150,8 @@ tests:
     {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
     {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"},
     {"hostname": "internet"}, {"hostname": "internet"}, {"hostname": "internet"}]'
-- command: route summarize --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route summarize
   output: '{"ospf-single": {"deviceCnt": 14, "uniquePrefixCnt": 16, "uniqueVrfsCnt":
     2, "ifRoutesCnt": 0, "hostRoutesCnt": 56, "totalV4RoutesinNs": 128, "totalV6RoutesinNs":
@@ -2167,14 +2167,14 @@ tests:
     5, "nexthopCnt": {"1": 156, "2": 87, "6": 2}, "routesPerHostStat": [4, 42, 18.0],
     "routesperVrfStat": [16, 145, 42.0], "deviceWithNoDefRoute": true}}'
 - command: route summarize --namespace=dual-evpn --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route summarize
   output: '{"dual-evpn": {"deviceCnt": 14, "uniquePrefixCnt": 27, "uniqueVrfsCnt":
     4, "ifRoutesCnt": 20, "hostRoutesCnt": 161, "totalV4RoutesinNs": 257, "totalV6RoutesinNs":
     0, "routingProtocolCnt": 4, "nexthopCnt": {"1": 156, "2": 100, "3": 1}, "routesPerHostStat":
     [4, 51, 17.0], "routesperVrfStat": [16, 175, 33.0], "deviceWithNoDefRoute": true}}'
-- command: route unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route unique
   output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "10.0.0.0/8"}, {"prefix": "10.0.0.100/32"},
     {"prefix": "10.0.0.101/32"}, {"prefix": "10.0.0.102/32"}, {"prefix": "10.0.0.11/32"},
@@ -2188,8 +2188,8 @@ tests:
     {"prefix": "172.16.1.103/32"}, {"prefix": "172.16.2.0/24"}, {"prefix": "172.16.2.102/32"},
     {"prefix": "172.16.2.104/32"}, {"prefix": "172.16.253.1/32"}, {"prefix": "172.16.3.0/24"},
     {"prefix": "172.16.4.0/24"}, {"prefix": "192.168.121.0/24"}, {"prefix": "192.168.123.0/24"}]'
-- command: route unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route unique
   output: '[{"prefix": "10.0.0.0/8", "numRows": 4}, {"prefix": "169.254.127.0/31",
     "numRows": 4}, {"prefix": "169.254.127.2/31", "numRows": 4}, {"prefix": "169.254.253.0/30",
@@ -2210,16 +2210,16 @@ tests:
     "numRows": 31}, {"prefix": "10.0.0.14/32", "numRows": 31}, {"prefix": "172.16.1.0/24",
     "numRows": 35}, {"prefix": "172.16.2.0/24", "numRows": 35}, {"prefix": "0.0.0.0/0",
     "numRows": 66}]'
-- command: route unique --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route unique --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route unique
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: route lpm --address=10.0.0.1 --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route lpm --address=10.0.0.1 --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route lpm
   output: '[{"namespace": "ospf-single", "hostname": "server102", "vrf": "default",
     "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.2.1"], "oifs": ["eth1"], "protocol":
@@ -2428,7 +2428,7 @@ tests:
     "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
     1616681582006}]'
 - command: route lpm --address="10.0.0.12" --namespace=ospf-single --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route lpm
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
     "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs": ["swp2"], "protocol":
@@ -2498,7 +2498,7 @@ tests:
     4, "action": "forward", "timestamp": 1616352402798}]'
 - command: route lpm --address="10.0.0.12" --namespace=ospf-single --hostname="server101
     server103" --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route lpm
   output: '[{"namespace": "ospf-single", "hostname": "server101", "vrf": "default",
     "prefix": "10.0.0.0/8", "nexthopIps": ["172.16.1.1"], "oifs": ["eth1"], "protocol":
@@ -2508,11 +2508,11 @@ tests:
     "", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
     1616352402601}]'
 - command: route lpm --address="10.0.0.12" --namespace=evpn-dual --vrf=evpn-vrf --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route lpm
   output: '[]'
 - command: route lpm --address="10.0.0.11" --namespace=dual-evpn --vrf=evpn-vrf --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: route lpm
   output: '[{"namespace": "dual-evpn", "hostname": "exit01", "vrf": "evpn-vrf", "prefix":
     "10.0.0.11/32", "nexthopIps": ["169.254.254.6"], "oifs": ["swp5.3"], "protocol":
@@ -2521,8 +2521,8 @@ tests:
     "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.253.6"], "oifs": ["swp5.3"],
     "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
     "timestamp": 1616644822167}]'
-- command: route show --prefix='10.0.0.134' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefix='10.0.0.134' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show prefix
   output: '[{"namespace": "dual-evpn", "hostname": "internet", "vrf": "default", "prefix":
     "10.0.0.134/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1",
@@ -2598,8 +2598,8 @@ tests:
     "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol":
     "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
     1616681582006}]'
-- command: route show --prefix='10.0.0.134/32' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefix='10.0.0.134/32' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show prefix
   output: '[{"namespace": "dual-evpn", "hostname": "internet", "vrf": "default", "prefix":
     "10.0.0.134/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1",
@@ -2675,8 +2675,8 @@ tests:
     "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol":
     "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
     1616681582006}]'
-- command: route show --prefix='10.0.0.134' --columns='nexthopIps' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefix='10.0.0.134' --columns='nexthopIps' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show filter prefix
   output: '[{"nexthopIps": ["169.254.127.1", "169.254.127.3"]}, {"nexthopIps": ["169.254.253.1",
     "169.254.254.1"]}, {"nexthopIps": ["169.254.0.1", "169.254.0.1"]}, {"nexthopIps":
@@ -2690,8 +2690,8 @@ tests:
     ["10.0.0.13", "10.0.0.14"]}, {"nexthopIps": ["10.0.0.13", "10.0.0.14"]}, {"nexthopIps":
     ["169.254.253.1", "169.254.254.1"]}, {"nexthopIps": ["10.0.0.21", "10.0.0.22"]},
     {"nexthopIps": ["169.254.127.1", "169.254.127.3"]}]'
-- command: route show --prefix='!10.0.0.134' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route show --prefix='!10.0.0.134' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route show prefix negate
   output: '[{"namespace": "ospf-single", "hostname": "server102", "vrf": "default",
     "prefix": "172.16.0.0/16", "nexthopIps": ["172.16.2.1"], "oifs": ["eth1"], "protocol":
@@ -4588,8 +4588,8 @@ tests:
     "10.0.0.102/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1",
     "swp2"], "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action":
     "forward", "timestamp": 1616681582006}]'
-- command: route show --prefix='2001:db8:0:1::/64' --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route show --prefix='2001:db8:0:1::/64' --namespace=dual-bgp --format=json
+  data-directory: tests/data/parquet
   marks: route show
   output: '[{"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "prefix":
     "2001:db8:0:1::/64", "nexthopIps": ["fe80::5054:ff:fe8c:5b4d"], "oifs": ["swp2"],
@@ -4609,8 +4609,8 @@ tests:
     "nexthopIps": ["fe80::5054:ff:fed6:9480", "fe80::5054:ff:fedb:b08e"], "oifs":
     ["swp2", "swp1"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
     6, "action": "forward", "timestamp": 1616638470426}]'
-- command: route show --prefixlen=64 --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route show --prefixlen=64 --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   marks: route show filter prefixlen cumulus
   output: '[{"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "prefix":
     "2001:db8:0:2::/64", "nexthopIps": ["fe80::5054:ff:fe8c:5b4d"], "oifs": ["swp2"],
@@ -4682,8 +4682,8 @@ tests:
     "default", "prefix": "2001:db8:0:2::/64", "nexthopIps": ["fe80::5054:ff:fed6:9480",
     "fe80::5054:ff:fedb:b08e"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source":
     "", "preference": 20, "ipvers": 6, "action": "forward", "timestamp": 1616638470426}]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   marks: route show filter prefixlen cumulus
   output: '[{"namespace": "dual-bgp", "hostname": "server102", "vrf": "default", "prefix":
     "2001:db8::/32", "nexthopIps": ["2001:db8:0:2::1"], "oifs": ["bond0"], "protocol":
@@ -5247,8 +5247,8 @@ tests:
     "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps":
     ["169.254.0.1", "169.254.0.1"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source":
     "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1616638470426}]'
-- command: route show --prefixlen="<=24" --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route show --prefixlen="<=24" --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   marks: route show filter prefixlen cumulus
   output: '[{"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "prefix":
     "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol": "",
@@ -5539,8 +5539,8 @@ tests:
     "dual-bgp", "hostname": "leaf03", "vrf": "mgmt", "prefix": "192.168.121.0/24",
     "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source": "192.168.121.33",
     "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1616638470426}]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   marks: route show filter prefixlen cumulus
   output: '[{"namespace": "dual-bgp", "hostname": "server102", "vrf": "default", "prefix":
     "2001:db8::/32", "nexthopIps": ["2001:db8:0:2::1"], "oifs": ["bond0"], "protocol":
@@ -6104,8 +6104,8 @@ tests:
     "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps":
     ["169.254.0.1", "169.254.0.1"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source":
     "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1616638470426}]'
-- command: route show --prefixlen=">=24" --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route show --prefixlen=">=24" --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   marks: route show filter prefixlen cumulus
   output: '[{"namespace": "dual-bgp", "hostname": "server102", "vrf": "default", "prefix":
     "2001:db8::/32", "nexthopIps": ["2001:db8:0:2::1"], "oifs": ["bond0"], "protocol":
@@ -6885,8 +6885,8 @@ tests:
     "hostname": "leaf03", "vrf": "default", "prefix": "10.0.0.253/32", "nexthopIps":
     ["169.254.0.1", "169.254.0.1"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source":
     "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp": 1616638470426}]'
-- command: route show --prefixlen="!24" --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route show --prefixlen="!24" --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   marks: route show filter prefixlen cumulus
   output: '[{"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "prefix":
     "0.0.0.0/0", "nexthopIps": ["192.168.121.1"], "oifs": ["eth0"], "protocol": "",
@@ -7523,31 +7523,31 @@ tests:
     "nexthopIps": ["169.254.0.1", "169.254.0.1"], "oifs": ["swp2", "swp1"], "protocol":
     "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
     1616638470426}]'
-- command: route show --prefixlen=">128" --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route show --prefixlen=">128" --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   error:
     error: '[{"error": "Invalid prefixlen: value should be between 0 and 128"}]'
   marks: route show filter prefixlen cumulus
-- command: route show --prefixlen="<0" --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route show --prefixlen="<0" --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   error:
     error: '[{"error": "Invalid prefixlen: value should be between 0 and 128"}]'
   marks: route show filter prefixlen cumulus
-- command: route show --prefixlen=">24 and !32" --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route show --prefixlen=">24 and !32" --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   error:
     error: '[{"error": "Invalid prefixlen query: it must be of the form ''[<|<=|>=|>|!]
       length'' (i.e. ''>= 24'')"}]'
   marks: route show filter prefixlen cumulus
-- command: route summarize --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route summarize --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   marks: route summarize
   output: '{"dual-bgp": {"deviceCnt": 14, "uniquePrefixCnt": 35, "uniqueVrfsCnt":
     3, "ifRoutesCnt": 16, "hostRoutesCnt": 119, "totalV4RoutesinNs": 228, "totalV6RoutesinNs":
     40, "routingProtocolCnt": 4, "nexthopCnt": {"1": 153, "2": 113, "3": 2}, "routesPerHostStat":
     [6, 35, 22.0], "routesperVrfStat": [16, 218, 34.0], "deviceWithNoDefRoute": true}}'
-- command: route lpm --address 2001:db8::11 --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route lpm --address 2001:db8::11 --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   marks: route lpm
   output: '[{"namespace": "dual-bgp", "hostname": "server102", "vrf": "default", "prefix":
     "2001:db8::/32", "nexthopIps": ["2001:db8:0:2::1"], "oifs": ["bond0"], "protocol":
@@ -7579,18 +7579,18 @@ tests:
     "default", "prefix": "2001:db8::11/128", "nexthopIps": ["fe80::5054:ff:fed6:9480",
     "fe80::5054:ff:fedb:b08e"], "oifs": ["swp2", "swp1"], "protocol": "bgp", "source":
     "", "preference": 20, "ipvers": 6, "action": "forward", "timestamp": 1616638470426}]'
-- command: route lpm --address 2001:db:0:2::102 --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route lpm --address 2001:db:0:2::102 --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   marks: route lpm cumulus
   output: '[]'
-- command: route unique --columns=prefixlen --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+- command: route unique --columns=prefixlen --format=json --namespace=dual-bgp
+  data-directory: tests/data/parquet
   marks: route unique cumulus
   output: '[{"prefixlen": 0}, {"prefixlen": 8}, {"prefixlen": 16}, {"prefixlen": 24},
     {"prefixlen": 30}, {"prefixlen": 31}, {"prefixlen": 32}, {"prefixlen": 64}, {"prefixlen":
     128}]'
-- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: route lpm cumulus
   output: '[{"hostname": "leaf03", "nexthopIps": ["10.0.0.112"]}, {"hostname": "leaf04",
     "nexthopIps": ["10.0.0.112"]}, {"hostname": "exit01", "nexthopIps": ["10.0.0.112"]},

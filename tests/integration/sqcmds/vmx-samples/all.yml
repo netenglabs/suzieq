@@ -1,7 +1,7 @@
 description: Testing all columns for all tables
 tests:
-- command: address show --format=json --columns='*'
-  data-directory: tests/data/vmx/parquet-out
+- command: address show --format=json --namespace=vmx --columns='*'
+  data-directory: tests/data/parquet
   marks: address show all junos vmx
   output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0.16385",
     "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
@@ -819,8 +819,8 @@ tests:
     "ifname": "lo0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
     [], "state": "up", "timestamp": 1631009089864, "vlan": 0, "type": "loopback",
     "active": true, "vrf": "", "ipAddress": []}]'
-- command: arpnd show --columns=* --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: arpnd show --columns=* --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: arpnd show junos all vmx
   output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ipAddress": "128.0.0.16",
     "oif": "em1.0", "macaddr": "50:06:00:0e:00:01", "state": "reachable", "remote":
@@ -881,8 +881,8 @@ tests:
     {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ipAddress": "128.0.0.16", "oif":
     "em1.0", "macaddr": "50:06:00:04:00:01", "state": "reachable", "remote": false,
     "timestamp": 1631009089696, "active": true}]'
-- command: bgp show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: bgp show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: bgp show junos all vmx
   output: '[{"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default",
     "peer": "10.0.100.1", "peerHostname": "", "state": "Established", "afi": "ipv4",
@@ -1003,8 +1003,8 @@ tests:
     "", "extnhAdvertised": false, "extnhReceived": false, "extnhEnabled": false, "peerIP":
     "10.0.20.2", "mrai": 0, "reason": "None", "lastDownTime": 0, "ifname": "", "active":
     true, "afiSafi": "ipv4 unicast"}]'
-- command: device show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: device show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: device show junos all vmx
   output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "model": "vmx", "version":
     "18.2R1.9", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
@@ -1027,12 +1027,12 @@ tests:
     "172.26.145.152", "bootupTimestamp": 1629105452.912, "timestamp": 1631009087912,
     "uptime": 1903635000, "os": "junos", "serialNumber": "VM60E8243DDB", "active":
     true}]'
-- command: evpnVni show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: evpnVni show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: evpnVni show junos all vmx
   output: '[]'
-- command: interface show --format=json --columns='*'
-  data-directory: tests/data/vmx/parquet-out
+- command: interface show --format=json --namespace=vmx --columns='*'
+  data-directory: tests/data/parquet
   marks: interface show junos all vmx
   output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0.16385",
     "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
@@ -2190,8 +2190,8 @@ tests:
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": 0, "innerVlan":
     0, "vlanName": "", "srcVtepIp": "", "statusChangeTimestamp": 1631009089864.0,
     "vni": 0, "lacpBypass": false, "active": true}]'
-- command: lldp show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: lldp show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: lldp show junos all vmx
   output: '[{"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/0",
     "peerHostname": "TOR1CRP-SEC-FW01", "peerIfname": "ethernet1/1", "description":
@@ -2258,8 +2258,8 @@ tests:
     "peerHostname": "TOR4CRP-DGW-RT01", "peerIfname": "ge-0/0/2", "description": "description",
     "mgmtIP": "", "timestamp": 1631009087687, "peerIfindex": 528, "peerMacaddr": "00:00:00:00:00:00",
     "subtype": "locally assigned", "active": true}]'
-- command: mac show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: mac show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: mac show junos all vmx
   output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "macaddr": "00:50:79:66:68:07",
     "vlan": 200, "oif": "ae0", "remoteVtepIp": "", "bd": "default-switch", "flags":
@@ -2315,22 +2315,22 @@ tests:
     {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "macaddr": "00:50:79:66:68:09",
     "vlan": 201, "oif": "ae0", "remoteVtepIp": "", "bd": "default-switch", "flags":
     "", "timestamp": 1631009088079, "protocol": "", "active": true, "moveCount": 0}]'
-- command: mlag show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: mlag show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: mlag show junos all vmx
   output: '[]'
-- command: network show --columns=* --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: network show --columns=* --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: network show vmx all vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1639161230623, "active": true}]'
-- command: ospf show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: ospf show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: ospf show junos all vmx
   output: '[]'
-- command: route show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: route show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: route show junos all vmx
   output: '[{"namespace": "vmx", "hostname": "CRP-ACC-SW01", "vrf": "default", "prefix":
     "0.0.0.0/0", "nexthopIps": ["172.26.147.254"], "oifs": ["fxp0.0"], "protocol":
@@ -2639,8 +2639,8 @@ tests:
     1631009087742, "weights": [], "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629185244742,
     "active": true, "numNexthops": 0, "prefixlen": 128}]'
-- command: vlan show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: vlan show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: vlan show junos all vmx
   output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vlanName": "vl100",
     "state": "active", "interfaces": ["ae0"], "vlan": 100, "timestamp": 1631009088716,
@@ -2664,8 +2664,8 @@ tests:
     "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "vlanName":
     "vl20", "state": "active", "interfaces": ["ae1", "ae2", "ge-0/0/0"], "vlan": 20,
     "timestamp": 1631009089744, "active": true}]'
-- command: inventory show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: inventory show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: inventory show junos all vmx
   output: '[{"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "name": "port-adapter-0/0",
     "model": "", "status": "present", "vendor": "Juniper", "type": "port-adapter",
@@ -2740,14 +2740,14 @@ tests:
     "hostname": "CRP-DIS-SW01", "name": "midplane", "model": "", "status": "present",
     "vendor": "Juniper", "type": "midplane", "version": "", "timestamp": 1631009090098,
     "serial": "", "partNum": "", "active": true}]'
-- command: network show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: network show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: network show all junos vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1639161230623, "active": true}]'
-- command: sqPoller show --columns='*' --format=json
-  data-directory: tests/data/vmx/parquet-out
+- command: sqPoller show --columns='*' --format=json --namespace=vmx
+  data-directory: tests/data/parquet
   marks: sqPoller show all vmx junos
   output: '[{"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "service": "bgp",
     "status": 0, "gatherTime": [0.0, 0.0, 0.0], "totalTime": [2.0, 2.0, 2.0], "svcQsize":

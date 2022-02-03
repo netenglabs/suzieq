@@ -1,7 +1,7 @@
 description: 'Testing verbs for table: show describe'
 tests:
-- command: table show --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table show --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: table show
   output: '[{"table": "arpnd", "firstTime": 1639476253556, "latestTime": 1639476254425,
     "intervals": 13, "allRows": 154, "namespaces": 1, "deviceCnt": 14}, {"table":
@@ -38,13 +38,13 @@ tests:
     1639476254419, "intervals": 4, "allRows": 14, "namespaces": 1, "deviceCnt": 6},
     {"table": "TOTAL", "firstTime": 1639476253357, "latestTime": 1639498880095, "intervals":
     131, "allRows": 1611, "namespaces": 1, "deviceCnt": 14}]'
-- command: table show --columns=hostname --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table show --columns=hostname --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid columns specified: [''hostname'']"}]'
   marks: table show
-- command: table show --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table show --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: table show
   output: '[{"table": "arpnd", "firstTime": 1639476253556, "latestTime": 1639476254425,
     "intervals": 13, "allRows": 154, "namespaces": 1, "deviceCnt": 14}, {"table":
@@ -81,12 +81,12 @@ tests:
     1639476254419, "intervals": 4, "allRows": 14, "namespaces": 1, "deviceCnt": 6},
     {"table": "TOTAL", "firstTime": 1639476253357, "latestTime": 1639498880095, "intervals":
     131, "allRows": 1611, "namespaces": 1, "deviceCnt": 14}]'
-- command: table show --view=changes --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table show --view=changes --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: table show
   output: '[]'
-- command: table show --view=latest --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table show --view=latest --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: table show
   output: '[{"table": "arpnd", "firstTime": 1639476253556, "latestTime": 1639476254425,
     "intervals": 13, "allRows": 154, "namespaces": 1, "deviceCnt": 14}, {"table":
@@ -123,8 +123,8 @@ tests:
     1639476254419, "intervals": 4, "allRows": 14, "namespaces": 1, "deviceCnt": 6},
     {"table": "TOTAL", "firstTime": 1639476253357, "latestTime": 1639498880095, "intervals":
     131, "allRows": 1611, "namespaces": 1, "deviceCnt": 14}]'
-- command: table show --hostname=leaf01 --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table show --hostname=leaf01 --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: table show
   output: '[{"table": "arpnd", "firstTime": 1639476254425, "latestTime": 1639476254425,
     "intervals": 1, "allRows": 15, "namespaces": 1, "deviceCnt": 1}, {"table": "bgp",
@@ -160,8 +160,8 @@ tests:
     "intervals": 1, "allRows": 3, "namespaces": 1, "deviceCnt": 1}, {"table": "TOTAL",
     "firstTime": 1639476253487, "latestTime": 1639498880087, "intervals": 18, "allRows":
     155, "namespaces": 1, "deviceCnt": 1}]'
-- command: table show --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table show --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: table show filter
   output: '[{"table": "arpnd", "firstTime": 1639476253556, "latestTime": 1639476254425,
     "intervals": 13, "allRows": 154, "namespaces": 1, "deviceCnt": 14}, {"table":
@@ -198,8 +198,8 @@ tests:
     1639476254419, "intervals": 4, "allRows": 14, "namespaces": 1, "deviceCnt": 6},
     {"table": "TOTAL", "firstTime": 1639476253357, "latestTime": 1639498880095, "intervals":
     131, "allRows": 1611, "namespaces": 1, "deviceCnt": 14}]'
-- command: table describe --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table describe --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: table describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "allRows", "type": "long", "key":
@@ -214,21 +214,21 @@ tests:
     in database"}, {"name": "sqvers", "type": "string", "key": "", "display": "",
     "description": "Schema version, not selectable"}, {"name": "table", "type": "string",
     "key": "", "display": 1, "description": "Table name"}]'
-- command: table describe --table=floop --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table describe --table=floop --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: incorrect table name floop"}]'
   marks: table describe
-- command: table unique --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table unique --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: table unique
   output: '[{"table": "TOTAL"}, {"table": "arpnd"}, {"table": "bgp"}, {"table": "devconfig"},
     {"table": "device"}, {"table": "evpnVni"}, {"table": "fs"}, {"table": "ifCounters"},
     {"table": "interfaces"}, {"table": "lldp"}, {"table": "macs"}, {"table": "mlag"},
     {"table": "ospfIf"}, {"table": "ospfNbr"}, {"table": "routes"}, {"table": "sqPoller"},
     {"table": "time"}, {"table": "topcpu"}, {"table": "topmem"}, {"table": "vlan"}]'
-- command: table unique --count=True --format=json
-  data-directory: tests/data/panos/parquet-out/
+- command: table unique --count=True --format=json --namespace=panos
+  data-directory: tests/data/parquet/
   marks: table unique
   output: '[{"table": "TOTAL", "numRows": 1}, {"table": "arpnd", "numRows": 1}, {"table":
     "bgp", "numRows": 1}, {"table": "devconfig", "numRows": 1}, {"table": "device",

@@ -1,7 +1,7 @@
 description: 'Testing verbs for lldp: show summarize unique'
 tests:
-- command: lldp show --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: lldp show --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: lldp show junos
   output: '[{"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/0", "peerHostname":
     "leaf01", "peerIfname": "xe-0/0/0", "description": "Juniper Networks, Inc. vqfx-10000
@@ -83,8 +83,8 @@ tests:
     "spine01", "peerIfname": "xe-0/0/3", "description": "Juniper Networks, Inc. vqfx-10000
     Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
     (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1623025799497}]'
-- command: lldp show --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: lldp show --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: lldp show junos
   output: '[{"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
     {"hostname": "spine01"}, {"hostname": "exit01"}, {"hostname": "exit01"}, {"hostname":
@@ -92,32 +92,32 @@ tests:
     {"hostname": "spine02"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
     "leaf02"}, {"hostname": "leaf02"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}]'
-- command: lldp summarize --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: lldp summarize --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: lldp summarize junos
   output: '{"junos": {"deviceCnt": 7, "nbrCnt": 20, "peerHostnameCnt": 20, "uniquePeerMgmtIPCnt":
     1, "missingPeerInfoCnt": 20}}'
-- command: lldp unique --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: lldp unique --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: lldp unique junos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname":
     "spine02"}]'
-- command: lldp unique --count=True --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: lldp unique --count=True --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: lldp unique junos
   output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
     2}, {"hostname": "leaf02", "numRows": 2}, {"hostname": "exit01", "numRows": 3},
     {"hostname": "exit02", "numRows": 3}, {"hostname": "spine01", "numRows": 4}, {"hostname":
     "spine02", "numRows": 4}]'
-- command: lldp unique --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: lldp unique --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: lldp unique junos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname":
     "spine02"}]'
-- command: lldp show --peerHostname=spine01 --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: lldp show --peerHostname=spine01 --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: lldp show junos
   output: '[{"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/0", "peerHostname":
     "spine01", "peerIfname": "xe-0/0/2", "description": "Juniper Networks, Inc. vqfx-10000
@@ -135,8 +135,8 @@ tests:
     "spine01", "peerIfname": "xe-0/0/3", "description": "Juniper Networks, Inc. vqfx-10000
     Ethernet Switch, kernel JUNOS 19.4R1.10, Build date: 2019-12-19 03:14:17 UTC Copyright
     (c) 1996-2019 Juniper Networks, Inc.", "mgmtIP": "", "timestamp": 1623025799497}]'
-- command: lldp show --peerHostname='leaf01 exit01' --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: lldp show --peerHostname='leaf01 exit01' --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: lldp show junos
   output: '[{"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/2", "peerHostname":
     "exit01", "peerIfname": "xe-0/0/0", "description": "Juniper Networks, Inc. vqfx-10000

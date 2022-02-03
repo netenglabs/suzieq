@@ -1,7 +1,7 @@
 description: 'Testing verbs for sqpoller: show summarize unique'
 tests:
-- command: sqpoller show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller show cumulus
   output: '[{"namespace": "dual-evpn", "hostname": "edge01", "service": "lldp", "status":
     0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [2.0, 2.0, 2.0], "svcQsize": [13.0,
@@ -2625,8 +2625,8 @@ tests:
     [1330.0, 1330.0, 1330.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [180.0, 180.0,
     180.0], "nodeQsize": [7.0, 7.0, 7.0], "rxBytes": [703.0, 703.0, 703.0], "pollExcdPeriodCount":
     0, "timestamp": 1641830465167}]'
-- command: sqpoller show --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller show cumulus
   output: '[{"hostname": "spine02"}, {"hostname": "leaf01"}, {"hostname": "exit02"},
     {"hostname": "leaf04"}, {"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname":
@@ -2820,8 +2820,8 @@ tests:
     {"hostname": "server104"}, {"hostname": "leaf03"}, {"hostname": "spine02"}, {"hostname":
     "server101"}, {"hostname": "server102"}, {"hostname": "spine01"}, {"hostname":
     "leaf01"}, {"hostname": "leaf02"}]'
-- command: sqpoller summarize --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller summarize cumulus
   output: '{"dual-evpn": {"deviceCnt": 14, "entriesCnt": 217, "service": 17, "status":
     {"0": 217}, "pollExcdPeriodStat": [0, 0, 0.0]}, "ospf-single": {"deviceCnt": 14,
@@ -2829,20 +2829,20 @@ tests:
     [0, 0, 0.0]}, "ospf-ibgp": {"deviceCnt": 14, "entriesCnt": 226, "service": 18,
     "status": {"0": 226}, "pollExcdPeriodStat": [0, 0, 0.0]}}'
 - command: sqpoller summarize --namespace=dual-evpn --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: sqpoller summarize cumulus
   output: '{"dual-evpn": {"deviceCnt": 14, "entriesCnt": 217, "service": 17, "status":
     {"0": 217}, "pollExcdPeriodStat": [0, 0, 0.0]}}'
-- command: sqpoller unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller unique
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: sqpoller unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller unique
   output: '[{"hostname": "server101", "numRows": 36}, {"hostname": "server102", "numRows":
     36}, {"hostname": "server103", "numRows": 36}, {"hostname": "server104", "numRows":
@@ -2852,16 +2852,16 @@ tests:
     51}, {"hostname": "leaf03", "numRows": 51}, {"hostname": "leaf04", "numRows":
     51}, {"hostname": "spine01", "numRows": 51}, {"hostname": "spine02", "numRows":
     51}]'
-- command: sqpoller unique --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller unique --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller unique cumulus
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: sqpoller show --status=pass --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --status=pass --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[{"namespace": "dual-evpn", "hostname": "edge01", "service": "lldp", "status":
     0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [2.0, 2.0, 2.0], "svcQsize": [13.0,
@@ -5485,12 +5485,12 @@ tests:
     [1330.0, 1330.0, 1330.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [180.0, 180.0,
     180.0], "nodeQsize": [7.0, 7.0, 7.0], "rxBytes": [703.0, 703.0, 703.0], "pollExcdPeriodCount":
     0, "timestamp": 1641830465167}]'
-- command: sqpoller show --status=fail --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --status=fail --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[]'
-- command: sqpoller show --status=all --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --status=all --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[{"namespace": "dual-evpn", "hostname": "edge01", "service": "lldp", "status":
     0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [2.0, 2.0, 2.0], "svcQsize": [13.0,
@@ -8114,9 +8114,8 @@ tests:
     [1330.0, 1330.0, 1330.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [180.0, 180.0,
     180.0], "nodeQsize": [7.0, 7.0, 7.0], "rxBytes": [703.0, 703.0, 703.0], "pollExcdPeriodCount":
     0, "timestamp": 1641830465167}]'
-- command: sqpoller show --status=pass --format=json --columns='namespace hostname
-    service status'
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --status=pass --format=json --columns='namespace hostname service status' --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[{"namespace": "ospf-ibgp", "hostname": "spine02", "service": "evpnVni",
     "status": 0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service": "evpnVni",
@@ -8771,30 +8770,29 @@ tests:
     "ospf-single", "hostname": "spine01", "service": "arpnd", "status": 0}, {"namespace":
     "ospf-single", "hostname": "leaf01", "service": "arpnd", "status": 0}, {"namespace":
     "ospf-single", "hostname": "leaf02", "service": "arpnd", "status": 0}]'
-- command: sqpoller show --status=fail --format=json --columns='hostname service status'
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --status=fail --format=json --columns='hostname service status' --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[]'
-- command: sqpoller show --status=foobar --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --status=foobar --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[]'
-- command: sqpoller show --format=json --poll-period-exceeded=True
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --format=json --poll-period-exceeded=True --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[]'
-- command: sqpoller show --format=json --poll-period-exceeded=True --columns='hostname
+- command: sqpoller show --format=json --poll-period-exceeded=True --columns='hostname --namespace='ospf-single dual-evpn ospf-ibgp'
     service status'
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[]'
-- command: sqpoller show --status=fail --format=json --poll-period-exceeded=True --columns='hostname
-    service status'
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --status=fail --format=json --poll-period-exceeded=True --columns='hostname service status' --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[]'
-- command: sqpoller show --format=json --poll-period-exceeded=False
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --format=json --poll-period-exceeded=False --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[{"namespace": "dual-evpn", "hostname": "edge01", "service": "lldp", "status":
     0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [2.0, 2.0, 2.0], "svcQsize": [13.0,
@@ -11418,13 +11416,12 @@ tests:
     [1330.0, 1330.0, 1330.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize": [180.0, 180.0,
     180.0], "nodeQsize": [7.0, 7.0, 7.0], "rxBytes": [703.0, 703.0, 703.0], "pollExcdPeriodCount":
     0, "timestamp": 1641830465167}]'
-- command: sqpoller show --format=json --status=fail --poll-period-exceeded=False
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --format=json --status=fail --poll-period-exceeded=False --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[]'
-- command: sqpoller show --format=json --status=pass --columns='namespace hostname
-    service pollExcdPeriodCount'
-  data-directory: tests/data/multidc/parquet-out/
+- command: sqpoller show --format=json --status=pass --columns='namespace hostname service pollExcdPeriodCount' --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: sqpoller status show cumulus
   output: '[{"namespace": "ospf-ibgp", "hostname": "spine02", "service": "evpnVni",
     "pollExcdPeriodCount": 0}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "service":

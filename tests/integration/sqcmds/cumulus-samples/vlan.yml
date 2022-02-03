@@ -1,7 +1,7 @@
 description: 'Testing verbs for vlan: show summarize unique'
 tests:
-- command: vlan show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show
   output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vlanName": "vlan10",
     "state": "active", "interfaces": ["swp5"], "vlan": 10, "timestamp": 1616352402915},
@@ -79,8 +79,8 @@ tests:
     "peerlink", "bond02"], "vlan": 24, "timestamp": 1616681582524}, {"namespace":
     "ospf-ibgp", "hostname": "leaf04", "vlanName": "vlan4001", "state": "active",
     "interfaces": ["vxlan4001"], "vlan": 4001, "timestamp": 1616681582524}]'
-- command: vlan show --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf03"}, {"hostname": "leaf02"},
     {"hostname": "leaf04"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
@@ -93,8 +93,8 @@ tests:
     "leaf03"}, {"hostname": "leaf03"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
-- command: vlan summarize --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan summarize
   output: '{"ospf-single": {"deviceCnt": 4, "uniqueVlanCnt": 1, "activeVlanCnt": 1,
     "suspendedVlanCnt": 0, "vlanPerDeviceStat": [1, 1, 1.0], "ifPerVlanStat": [4,
@@ -104,46 +104,46 @@ tests:
     "suspendedVlanCnt": 0, "vlanPerDeviceStat": [1, 4, 4.0], "ifPerVlanStat": [4,
     6, 4.0]}}'
 - command: vlan summarize --namespace=dual-evpn --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: vlan summarize
   output: '{"dual-evpn": {"deviceCnt": 6, "uniqueVlanCnt": 3, "activeVlanCnt": 3,
     "suspendedVlanCnt": 0, "vlanPerDeviceStat": [2, 3, 3.0], "ifPerVlanStat": [4,
     6, 6.0]}}'
-- command: vlan unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan unique
   output: '[{"vlan": 1}, {"vlan": 10}, {"vlan": 13}, {"vlan": 24}, {"vlan": 4001}]'
-- command: vlan unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan unique
   output: '[{"vlan": 10, "numRows": 4}, {"vlan": 4001, "numRows": 6}, {"vlan": 1,
     "numRows": 8}, {"vlan": 13, "numRows": 10}, {"vlan": 24, "numRows": 10}]'
-- command: vlan unique --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan unique --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan unique
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}]'
-- command: vlan show --vlan='13 4001' --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --vlan='13 4001' --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show cumulus
   output: '[{"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "exit01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
     "leaf02"}, {"hostname": "leaf02"}, {"hostname": "exit01"}, {"hostname": "leaf03"},
     {"hostname": "leaf03"}, {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname":
     "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
-- command: vlan show --vlan='24' --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --vlan='24' --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show cumulus
   output: '[{"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "exit01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
     "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf01"}, {"hostname": "leaf04"}]'
-- command: vlan show --vlan='>100' --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --vlan='>100' --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show cumulus
   output: '[{"hostname": "leaf02"}, {"hostname": "exit01"}, {"hostname": "leaf03"},
     {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf04"}]'
-- command: vlan show --vlan='<=24' --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --vlan='<=24' --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show cumulus
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf03"}, {"hostname": "leaf02"},
     {"hostname": "leaf04"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
@@ -155,25 +155,25 @@ tests:
     {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf01"}, {"hostname":
     "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"},
     {"hostname": "leaf04"}]'
-- command: vlan show --vlanName='vlan4001' --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --vlanName='vlan4001' --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show cumulus
   output: '[{"hostname": "leaf02"}, {"hostname": "exit01"}, {"hostname": "leaf03"},
     {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "leaf04"}]'
-- command: vlan show --vlanName='vlan4001 vlan13' --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --vlanName='vlan4001 vlan13' --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show cumulus
   output: '[{"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname": "exit01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
     "leaf02"}, {"hostname": "leaf02"}, {"hostname": "exit01"}, {"hostname": "leaf03"},
     {"hostname": "leaf03"}, {"hostname": "exit02"}, {"hostname": "leaf01"}, {"hostname":
     "leaf01"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
-- command: vlan show --state='suspended' --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --state='suspended' --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show cumulus
   output: '[]'
-- command: vlan show --state='active' --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --state='active' --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show cumulus
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf03"}, {"hostname": "leaf02"},
     {"hostname": "leaf04"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
@@ -186,7 +186,7 @@ tests:
     "leaf03"}, {"hostname": "leaf03"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname": "leaf01"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}]'
-- command: vlan show --state='boombah' --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: vlan show --state='boombah' --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: vlan show cumulus
   output: '[]'

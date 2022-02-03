@@ -1,7 +1,7 @@
 description: 'Testing verbs for interface: show summarize unique assert top'
 tests:
-- command: interface show --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: interface show --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: interface show eos
   output: '[{"namespace": "eos", "hostname": "server302", "ifname": "eth2", "state":
     "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan": 0, "master":
@@ -551,8 +551,8 @@ tests:
     1623025179345}, {"namespace": "eos", "hostname": "dcedge01", "ifname": "gr-0/0/0",
     "state": "up", "adminState": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master":
     "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025179345}]'
-- command: interface show --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: interface show --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: interface show eos
   output: '[{"hostname": "server302"}, {"hostname": "server301"}, {"hostname": "server301"},
     {"hostname": "server301"}, {"hostname": "server301"}, {"hostname": "server301"},
@@ -612,30 +612,30 @@ tests:
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
     "dcedge01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}, {"hostname":
     "dcedge01"}]'
-- command: interface summarize --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: interface summarize --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: interface summarize eos
   output: '{"eos": {"deviceCnt": 14, "interfaceCnt": 188, "devicesWithL2Cnt": 6, "devicesWithVxlanCnt":
     6, "ifDownCnt": 1, "ifAdminDownCnt": 0, "ifWithMultipleIPCnt": 9, "uniqueMTUCnt":
     9, "uniqueIfTypesCnt": 13, "speedCnt": 5, "ifChangesStat": [0, 0, 0.0], "ifPerDeviceStat":
     [5, 44, 11.5], "uniqueIPv4AddrCnt": 60, "uniqueIPv6AddrCnt": 0}}'
-- command: interface unique --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: interface unique --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: interface unique eos
   output: '[{"type": "bond"}, {"type": "bond_slave"}, {"type": "ethernet"}, {"type":
     "flexible-tunnel-interface"}, {"type": "gre"}, {"type": "loopback"}, {"type":
     "mgmt-vlan"}, {"type": "null"}, {"type": "subinterface"}, {"type": "vlan"}, {"type":
     "vrf"}, {"type": "vtep"}, {"type": "vxlan"}]'
-- command: interface unique --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: interface unique --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: interface unique eos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: interface assert --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: interface assert --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "eos", "hostname": "firewall01", "ifname": "eth2.4", "state":
       "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
@@ -968,8 +968,8 @@ tests:
       "Ethernet4", "assert": "fail", "assertReason": ["Speed mismatch"], "timestamp":
       1623025179345}]'
   marks: interface assert eos
-- command: interface top --what=statusChangeTimestamp --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: interface top --what=statusChangeTimestamp --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: interface top eos
   output: '[{"namespace": "eos", "hostname": "dcedge01", "ifname": "dsc", "state":
     "up", "adminState": "up", "type": "null", "mtu": 65536, "vlan": 0, "master": "",
@@ -988,8 +988,8 @@ tests:
     "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "statusChangeTimestamp": 1623025179345, "timestamp":
     1623025179345}]'
-- command: interface show --type=vxlan --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: interface show --type=vxlan --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: interface show eos filter
   output: '[{"namespace": "eos", "hostname": "leaf02", "ifname": "Vxlan1", "state":
     "up", "adminState": "up", "type": "vxlan", "mtu": -1, "vlan": 0, "master": "bridge",
@@ -1008,8 +1008,8 @@ tests:
     {"namespace": "eos", "hostname": "leaf01", "ifname": "Vxlan1", "state": "up",
     "adminState": "up", "type": "vxlan", "mtu": -1, "vlan": 0, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025176024}]'
-- command: interface show --type='vrf vlan' --hostname='leaf01 spine01' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: interface show --type='vrf vlan' --hostname='leaf01 spine01' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: interface show eos
   output: '[{"namespace": "eos", "hostname": "leaf01", "ifname": "Vlan1006", "state":
     "up", "adminState": "up", "type": "vlan", "mtu": 9164, "vlan": 1006, "master":

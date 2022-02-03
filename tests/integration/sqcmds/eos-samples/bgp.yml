@@ -1,7 +1,7 @@
 description: 'Testing verbs for bgp: show summarize unique assert'
 tests:
-- command: bgp show --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp show --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp show eos
   output: '[{"namespace": "eos", "hostname": "leaf03", "vrf": "default", "peer": "10.0.0.22",
     "peerHostname": "spine02", "state": "Established", "afi": "l2vpn", "safi": "evpn",
@@ -352,8 +352,8 @@ tests:
     "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi": "unicast",
     "asn": 65534, "peerAsn": 65522, "pfxRx": 4, "pfxTx": 6, "numChanges": 2, "estdTime":
     1622918156989.0, "timestamp": 1623025177989}]'
-- command: bgp show --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp show --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp show eos
   output: '[{"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"},
     {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname": "leaf03"}, {"hostname":
@@ -383,47 +383,47 @@ tests:
     {"hostname": "leaf01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
     {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
     {"hostname": "firewall01"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"}]'
-- command: bgp summarize --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp summarize --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp summarize eos
   output: '{"eos": {"deviceCnt": 10, "totalPeerCnt": 40, "uniqueAsnCnt": 6, "uniqueVrfsCnt":
     3, "failedPeerCnt": 0, "iBGPPeerCnt": 24, "eBGPPeerCnt": 16, "rrClientPeerCnt":
     12, "activeAfiSafiCnt": 3, "upTimeStat": [104400000, 2348178000, 2347200000],
     "updatesRxStat": [2, 26522, 4802.0], "updatesTxStat": [1, 26522, 4802.0]}}'
-- command: bgp unique --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp unique --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp unique eos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
-- command: bgp unique --format=json --count=True
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp unique --format=json --count=True --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp unique eos
   output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "firewall01", "numRows":
     6}, {"hostname": "leaf01", "numRows": 6}, {"hostname": "leaf02", "numRows": 6},
     {"hostname": "leaf03", "numRows": 6}, {"hostname": "leaf04", "numRows": 6}, {"hostname":
     "exit01", "numRows": 14}, {"hostname": "exit02", "numRows": 14}, {"hostname":
     "spine01", "numRows": 18}, {"hostname": "spine02", "numRows": 18}]'
-- command: bgp unique --columns=hostname --format=json --count=True
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp unique --columns=hostname --format=json --count=True --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp unique eos
   output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "firewall01", "numRows":
     6}, {"hostname": "leaf01", "numRows": 6}, {"hostname": "leaf02", "numRows": 6},
     {"hostname": "leaf03", "numRows": 6}, {"hostname": "leaf04", "numRows": 6}, {"hostname":
     "exit01", "numRows": 14}, {"hostname": "exit02", "numRows": 14}, {"hostname":
     "spine01", "numRows": 18}, {"hostname": "spine02", "numRows": 18}]'
-- command: bgp unique --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp unique --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp unique eos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
-- command: bgp show --state=NotEstd --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp show --state=NotEstd --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp show eos filter
   output: '[]'
-- command: bgp show --vrf=evpn-vrf --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp show --vrf=evpn-vrf --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp show eos filter
   output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "evpn-vrf", "peer":
     "169.254.253.6", "peerHostname": "firewall01", "state": "Established", "afi":
@@ -440,8 +440,8 @@ tests:
     "peer": "169.254.254.6", "peerHostname": "firewall01", "state": "Established",
     "afi": "ipv6", "safi": "unicast", "asn": 65521, "peerAsn": 65533, "pfxRx": 0,
     "pfxTx": 0, "numChanges": 1, "estdTime": 1622920776021.0, "timestamp": 1623025176021}]'
-- command: bgp show --peer=10.0.0.14 --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp show --peer=10.0.0.14 --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp show eos filter
   output: '[{"namespace": "eos", "hostname": "spine01", "vrf": "default", "peer":
     "10.0.0.14", "peerHostname": "leaf04", "state": "Established", "afi": "l2vpn",
@@ -465,8 +465,8 @@ tests:
     "peer": "10.0.0.14", "peerHostname": "leaf04", "state": "Established", "afi":
     "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 8, "pfxTx":
     44, "numChanges": 1, "estdTime": 1620677976023.0, "timestamp": 1623025176023}]'
-- command: bgp show --peer='10.0.0.21 10.0.0.22' --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp show --peer='10.0.0.21 10.0.0.22' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: bgp show eos filter
   output: '[{"namespace": "eos", "hostname": "leaf03", "vrf": "default", "peer": "10.0.0.22",
     "peerHostname": "spine02", "state": "Established", "afi": "l2vpn", "safi": "evpn",
@@ -597,8 +597,8 @@ tests:
     "peerHostname": "spine01", "state": "Established", "afi": "ipv4", "safi": "unicast",
     "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges": 1, "estdTime":
     1620677976024.0, "timestamp": 1623025176024}]'
-- command: bgp assert --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: bgp assert --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "eos", "hostname": "leaf03", "vrf": "default", "peer":
       "10.0.0.22", "asn": 64520, "peerAsn": 64520, "state": "Established", "peerHostname":

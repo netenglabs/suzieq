@@ -60,7 +60,7 @@ def _coalescer_init(pq_dir: str):
     """Basic Coalescer test
 
     :param pq_dir: the input parquet dir to be copied, this is the root of the
-                   parquet dir (tests/data/nxos/parquet-out, for example)
+                   parquet dir (tests/data/parquet, for example)
     :returns: temporary dir where the parquet data has been copied to
     :rtype: TemporaryDirectory
     :returns: Temporary config file
@@ -152,19 +152,9 @@ def _coalescer_basic_test(pq_dir, namespace, path_src, path_dest):
 
 
 @pytest.mark.coalesce
-@pytest.mark.parametrize("pq_dir, namespace, path_src, path_dest",
-                         [pytest.param('tests/data/nxos/parquet-out', 'nxos',
-                                       '172.16.1.101', '172.16.2.201',
-                                       marks=pytest.mark.nxos)])
-def test_basic_single_namespace(pq_dir, namespace, path_src, path_dest):
-    '''Test coalescer for single namespace'''
-    _coalescer_basic_test(pq_dir, namespace, path_src, path_dest)
-
-
-@pytest.mark.coalesce
 @pytest.mark.cumulus
 @pytest.mark.parametrize("pq_dir, namespace, path_src, path_dest",
-                         [('tests/data/multidc/parquet-out', 'dual-evpn',
+                         [('tests/data/parquet', 'dual-evpn',
                            '172.16.1.101', '172.16.2.104')])
 def test_basic_multi_namespace(pq_dir, namespace, path_src, path_dest):
     '''Test coalescer for multi-namespace'''
@@ -177,7 +167,7 @@ def test_coalescer_bin(run_sequential):
     '''Verify the sq-coalescer bin works'''
 
     temp_dir, tmpfile = _coalescer_init(
-        'tests/data/basic_dual_bgp/parquet-out')
+        'tests/data/parquet')
 
     sq_path = os.path.dirname(find_spec('suzieq').loader.path)
     coalescer_bin = f'{sq_path}/utilities/sq_coalescer.py'
@@ -219,7 +209,7 @@ async def test_single_instance_run(run_sequential):
     '''Verify that only a single instance of the coalescer is running'''
 
     temp_dir, tmpfile = _coalescer_init(
-        'tests/data/basic_dual_bgp/parquet-out')
+        'tests/data/parquet')
 
     sq_path = os.path.dirname(find_spec('suzieq').loader.path)
     coalescer_bin = f'{sq_path}/utilities/sq_coalescer.py'

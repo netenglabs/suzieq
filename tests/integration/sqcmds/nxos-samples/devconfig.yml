@@ -1,7 +1,7 @@
 description: 'Testing verbs for device config: show'
 tests:
-- command: devconfig show --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: devconfig show --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: devconfig show nxos
   output: '[{"namespace": "nxos", "config": "## Last commit: 2021-05-22 19:12:54 UTC
     by vagrant\nversion 20191212.201431_builder.r1074901;\nsystem {\n    host-name
@@ -1395,8 +1395,8 @@ tests:
     peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
     ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
     ibgp 4\n\n\n", "hostname": "leaf02", "timestamp": 1622031362822}]'
-- command: devconfig show --hostname=leaf01 --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: devconfig show --hostname=leaf01 --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: devconfig show nxos
   output: '[{"namespace": "nxos", "config": "\n!Command: show running-config exclude
     security\n!Running configuration last done at: Wed May 26 11:59:05 2021\n\nversion
@@ -1473,8 +1473,8 @@ tests:
     peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
     ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
     ibgp 4\n\n\n", "hostname": "leaf01", "timestamp": 1622031362773}]'
-- command: devconfig show --hostname='leaf01 spine01' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: devconfig show --hostname='leaf01 spine01' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: devconfig show nxos
   output: '[{"namespace": "nxos", "config": "\n!Command: show running-config exclude
     security\n!Running configuration last done at: Wed May 26 11:59:05 2021\n\nversion
@@ -1606,8 +1606,8 @@ tests:
     l2vpn evpn\n      send-community\n      send-community extended\n      route-reflector-client\n\n\n",
     "hostname": "spine01", "timestamp": 1622031362803}]'
 - command: devconfig show --hostname='leaf01 spine01' --query-str='config.str.contains("10.0.0.21")'
-    --format=json
-  data-directory: tests/data/nxos/parquet-out/
+    --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: devconfig show nxos
   output: '[{"namespace": "nxos", "config": "\n!Command: show running-config exclude
     security\n!Running configuration last done at: Wed May 26 11:59:05 2021\n\nversion
@@ -1738,16 +1738,16 @@ tests:
     all\n  neighbor 10.0.0.0/24\n    remote-as 64520\n    update-source loopback0\n    address-family
     l2vpn evpn\n      send-community\n      send-community extended\n      route-reflector-client\n\n\n",
     "hostname": "spine01", "timestamp": 1622031362803}]'
-- command: devconfig summarize --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: devconfig summarize --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: devconfig summarize nxos
   output: '{"nxos": {"deviceCnt": 9}}'
-- command: devconfig summarize --hostname='leaf01 spine01' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: devconfig summarize --hostname='leaf01 spine01' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: devconfig summarize nxos
   output: '{"nxos": {"deviceCnt": 2}}'
-- command: devconfig unique --columns=config --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: devconfig unique --columns=config --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Unique not supported for Device Config"}]'
   marks: devconfig unique nxos

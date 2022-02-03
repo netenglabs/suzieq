@@ -1,7 +1,7 @@
 description: 'Testing verbs for arpnd: show summarize unique'
 tests:
-- command: arpnd show --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd show eos
   output: '[{"namespace": "eos", "hostname": "server301", "ipAddress": "10.255.2.1",
     "oif": "eth0", "macaddr": "52:54:00:92:a9:68", "state": "reachable", "remote":
@@ -191,8 +191,8 @@ tests:
     "timestamp": 1623025181909}, {"namespace": "eos", "hostname": "dcedge01", "ipAddress":
     "10.255.2.1", "oif": "em0.0", "macaddr": "52:54:00:92:a9:68", "state": "reachable",
     "remote": false, "timestamp": 1623025181909}]'
-- command: arpnd show --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd show eos
   output: '[{"hostname": "server301"}, {"hostname": "server301"}, {"hostname": "server302"},
     {"hostname": "server302"}, {"hostname": "server302"}, {"hostname": "server101"},
@@ -219,33 +219,33 @@ tests:
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname":
     "leaf04"}, {"hostname": "leaf04"}, {"hostname": "dcedge01"}, {"hostname": "dcedge01"},
     {"hostname": "dcedge01"}, {"hostname": "dcedge01"}]'
-- command: arpnd show --address="169.254.253.1" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --address="169.254.253.1" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd show eos filter
   output: '[{"namespace": "eos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
     "oif": "eth2.2", "macaddr": "44:38:39:c3:55:cb", "state": "reachable", "remote":
     false, "timestamp": 1623025176628}]'
-- command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --address="169.254.253.1 169.254.253.2" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd show eos filter
   output: '[{"namespace": "eos", "hostname": "firewall01", "ipAddress": "169.254.253.1",
     "oif": "eth2.2", "macaddr": "44:38:39:c3:55:cb", "state": "reachable", "remote":
     false, "timestamp": 1623025176628}, {"namespace": "eos", "hostname": "exit02",
     "ipAddress": "169.254.253.2", "oif": "Ethernet3.2", "macaddr": "52:54:00:ec:1d:36",
     "state": "reachable", "remote": false, "timestamp": 1623025177541}]'
-- command: arpnd show --address="invalidaddress" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --address="invalidaddress" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid IP address specified"}]'
   marks: arpnd show eos filter
-- command: arpnd show --macaddr="52:54:00:e9:f0:bc" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --macaddr="52:54:00:e9:f0:bc" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd show eos filter
   output: '[{"namespace": "eos", "hostname": "dcedge01", "ipAddress": "169.254.0.1",
     "oif": "em1.0", "macaddr": "52:54:00:e9:f0:bc", "state": "reachable", "remote":
     false, "timestamp": 1623025181909}]'
-- command: arpnd show --macaddr="52:54:00:e9:f0:bc 44:38:39:fa:78:46" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --macaddr="52:54:00:e9:f0:bc 44:38:39:fa:78:46" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd show eos filter
   output: '[{"namespace": "eos", "hostname": "leaf03", "ipAddress": "10.0.0.22", "oif":
     "Ethernet2", "macaddr": "44:38:39:fa:78:46", "state": "reachable", "remote": false,
@@ -263,13 +263,13 @@ tests:
     false, "timestamp": 1623025177689}, {"namespace": "eos", "hostname": "dcedge01",
     "ipAddress": "169.254.0.1", "oif": "em1.0", "macaddr": "52:54:00:e9:f0:bc", "state":
     "reachable", "remote": false, "timestamp": 1623025181909}]'
-- command: arpnd show --macaddr="invalidaddress" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --macaddr="invalidaddress" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid mac address specified"}]'
   marks: arpnd show eos filter
-- command: arpnd show --prefix="169.254.253.0/24" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --prefix="169.254.253.0/24" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd show eos filter
   output: '[{"namespace": "eos", "hostname": "firewall01", "ipAddress": "169.254.253.5",
     "oif": "eth2.3", "macaddr": "44:38:39:c3:55:cb", "state": "reachable", "remote":
@@ -286,8 +286,8 @@ tests:
     "eos", "hostname": "exit02", "ipAddress": "169.254.253.10", "oif": "Ethernet3.4",
     "macaddr": "52:54:00:ec:1d:36", "state": "reachable", "remote": false, "timestamp":
     1623025177541}]'
-- command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --prefix="169.254.253.0/24 10.0.0.0/24" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd show eos filter
   output: '[{"namespace": "eos", "hostname": "firewall01", "ipAddress": "169.254.253.5",
     "oif": "eth2.3", "macaddr": "44:38:39:c3:55:cb", "state": "reachable", "remote":
@@ -358,29 +358,29 @@ tests:
     {"namespace": "eos", "hostname": "leaf04", "ipAddress": "10.0.0.22", "oif": "Ethernet2",
     "macaddr": "44:38:39:fa:78:46", "state": "reachable", "remote": false, "timestamp":
     1623025177689}]'
-- command: arpnd show --prefix="169.254.253.0" --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd show --prefix="169.254.253.0" --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: arpnd show eos filter
-- command: arpnd summarize --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd summarize --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd summarize eos
   output: '{"eos": {"deviceCnt": 14, "arpNdEntriesCnt": 82, "uniqueArpEntriesCnt":
     40, "uniqueOifCnt": 26, "arpEntriesCnt": 77, "v6NDEntriesCnt": 5, "v6NDGlobalEntriesCnt":
     5, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0, "remoteV6EntriesCnt":
     0, "staticV6EntriesCnt": 0, "failedEntriesCnt": 0, "failedV4EntriesCnt": 0, "failedV6EntriesCnt":
     0}}'
-- command: arpnd unique --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd unique --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd unique eos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: arpnd unique --format=json --count=True
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd unique --format=json --count=True --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd unique eos
   output: '[{"hostname": "server101", "numRows": 2}, {"hostname": "server301", "numRows":
     2}, {"hostname": "server102", "numRows": 3}, {"hostname": "server302", "numRows":
@@ -389,16 +389,16 @@ tests:
     {"hostname": "leaf02", "numRows": 7}, {"hostname": "leaf03", "numRows": 7}, {"hostname":
     "leaf04", "numRows": 7}, {"hostname": "spine01", "numRows": 7}, {"hostname": "spine02",
     "numRows": 7}, {"hostname": "firewall01", "numRows": 12}]'
-- command: arpnd unique --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd unique --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd unique eos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: arpnd unique --columns=hostname --format=json --count=True
-  data-directory: tests/data/eos/parquet-out/
+- command: arpnd unique --columns=hostname --format=json --count=True --namespace=eos
+  data-directory: tests/data/parquet/
   marks: arpnd unique eos
   output: '[{"hostname": "server101", "numRows": 2}, {"hostname": "server301", "numRows":
     2}, {"hostname": "server102", "numRows": 3}, {"hostname": "server302", "numRows":

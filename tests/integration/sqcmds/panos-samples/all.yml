@@ -1,7 +1,7 @@
 description: Testing all columns for all tables
 tests:
 - command: address show --namespace=panos --format=json --columns='*'
-  data-directory: tests/data/panos/parquet-out/
+  data-directory: tests/data/parquet/
   marks: address show all panos
   output: '[{"namespace": "panos", "hostname": "server102", "ifname": "bond0", "ipAddressList":
     ["172.16.3.102/24"], "macaddr": "2a:b4:fa:73:2a:0d", "ip6AddressList": [], "state":
@@ -609,8 +609,8 @@ tests:
     "leaf01", "ifname": "swp3", "ipAddressList": [], "macaddr": "52:54:00:05:e0:cc",
     "ip6AddressList": [], "state": "up", "timestamp": 1639476254854, "vlan": 0, "type":
     "bond_slave", "active": true, "vrf": "", "ipAddress": []}]'
-- command: sqPoller show --columns='*' --format=json
-  data-directory: tests/data/panos/parquet-out
+- command: sqPoller show --columns='*' --format=json --namespace=panos
+  data-directory: tests/data/parquet
   marks: sqPoller show all panos
   output: '[{"namespace": "panos", "hostname": "server102", "service": "routes", "status":
     0, "gatherTime": [1.0, 1.0, 1.0], "totalTime": [1.0, 1.0, 1.0], "svcQsize": [13.0,

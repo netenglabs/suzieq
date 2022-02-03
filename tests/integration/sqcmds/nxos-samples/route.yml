@@ -1,7 +1,7 @@
 description: 'Testing verbs for route: show summarize unique lpm'
 tests:
-- command: route show --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route show nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "vrf": "default", "prefix":
     "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source":
@@ -1110,8 +1110,8 @@ tests:
     "vrf": "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": ["169.254.253.5"],
     "oifs": ["Ethernet1/3.3"], "protocol": "direct", "source": "", "preference": 0,
     "ipvers": 4, "action": "forward", "timestamp": 1619275257722}]'
-- command: route show --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route show nxos
   output: '[{"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
     {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server102"},
@@ -1216,12 +1216,12 @@ tests:
     "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
     "exit02"}, {"hostname": "exit02"}]'
-- command: route show --prefixlen=64 --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --prefixlen=64 --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen nxos
   output: '[]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "vrf": "default", "prefix":
     "10.255.2.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source":
@@ -2013,8 +2013,8 @@ tests:
     "prefix": "169.254.253.4/30", "nexthopIps": ["169.254.253.5"], "oifs": ["Ethernet1/3.3"],
     "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1619275257722}]'
-- command: route show --prefixlen="<=24" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --prefixlen="<=24" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "vrf": "default", "prefix":
     "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source":
@@ -2334,8 +2334,8 @@ tests:
     "vrf": "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": [], "oifs": ["Null0"],
     "protocol": "bgp", "source": "", "preference": 220, "ipvers": 4, "action": "drop",
     "timestamp": 1619275257722}]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "vrf": "default", "prefix":
     "10.255.2.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source":
@@ -3127,8 +3127,8 @@ tests:
     "prefix": "169.254.253.4/30", "nexthopIps": ["169.254.253.5"], "oifs": ["Ethernet1/3.3"],
     "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1619275257722}]'
-- command: route show --prefixlen=">=24" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --prefixlen=">=24" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "vrf": "default", "prefix":
     "10.255.2.0/24", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "kernel", "source":
@@ -4154,8 +4154,8 @@ tests:
     "vrf": "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps": ["169.254.253.5"],
     "oifs": ["Ethernet1/3.3"], "protocol": "direct", "source": "", "preference": 0,
     "ipvers": 4, "action": "forward", "timestamp": 1619275257722}]'
-- command: route show --prefixlen="!24" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --prefixlen="!24" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "vrf": "default", "prefix":
     "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source":
@@ -5031,31 +5031,31 @@ tests:
     "prefix": "169.254.253.4/30", "nexthopIps": ["169.254.253.5"], "oifs": ["Ethernet1/3.3"],
     "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1619275257722}]'
-- command: route show --prefixlen=">128" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --prefixlen=">128" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefixlen: value should be between 0 and 128"}]'
   marks: route show filter prefixlen nxos
-- command: route show --prefixlen="<0" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --prefixlen="<0" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefixlen: value should be between 0 and 128"}]'
   marks: route show filter prefixlen nxos
-- command: route show --prefixlen=">24 and !32" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --prefixlen=">24 and !32" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefixlen query: it must be of the form ''[<|<=|>=|>|!]
       length'' (i.e. ''>= 24'')"}]'
   marks: route show filter prefixlen nxos
-- command: route summarize --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route summarize --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route summarize nxos
   output: '{"nxos": {"deviceCnt": 14, "uniquePrefixCnt": 63, "uniqueVrfsCnt": 4, "ifRoutesCnt":
     36, "hostRoutesCnt": 208, "totalV4RoutesinNs": 348, "totalV6RoutesinNs": 2, "routingProtocolCnt":
     11, "nexthopCnt": 4, "routesPerHostStat": [5, 60, 19.0], "routesperVrfStat": [24,
     204, 61.0], "deviceWithNoDefRoute": true}}'
-- command: route unique --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route unique --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route unique nxos
   output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "10.0.0.11/32"}, {"prefix": "10.0.0.112/32"},
     {"prefix": "10.0.0.12/32"}, {"prefix": "10.0.0.13/32"}, {"prefix": "10.0.0.134/32"},
@@ -5079,8 +5079,8 @@ tests:
     {"prefix": "172.16.3.0/24"}, {"prefix": "172.16.3.102/32"}, {"prefix": "172.16.3.202/32"},
     {"prefix": "172.16.3.254/32"}, {"prefix": "fe80::205:860f:fc71:3c00/128"}, {"prefix":
     "ff02::2/128"}]'
-- command: route unique --count=True --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route unique --count=True --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route unique nxos
   output: '[{"prefix": "10.255.2.119/32", "numRows": 1}, {"prefix": "10.255.2.120/32",
     "numRows": 1}, {"prefix": "10.255.2.188/32", "numRows": 1}, {"prefix": "10.255.2.189/32",
@@ -5115,16 +5115,16 @@ tests:
     "numRows": 13}, {"prefix": "172.16.2.0/24", "numRows": 13}, {"prefix": "172.16.3.0/24",
     "numRows": 14}, {"prefix": "0.0.0.0/0", "numRows": 24}, {"prefix": "10.255.2.0/24",
     "numRows": 24}]'
-- command: route unique --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route unique --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route unique nxos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: route lpm --address=10.0.0.1 --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route lpm --address=10.0.0.1 --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route lpm nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "vrf": "default", "prefix":
     "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs": ["eth0"], "protocol": "", "source":
@@ -5199,8 +5199,8 @@ tests:
     "nxos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
     ["169.254.253.6"], "oifs": [], "protocol": "bgp", "source": "", "preference":
     20, "ipvers": 4, "action": "forward", "timestamp": 1619275257722}]'
-- command: route lpm --address="172.16.1.254" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route lpm --address="172.16.1.254" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route lpm nxos
   output: '[{"namespace": "nxos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix":
     "172.16.1.254/32", "nexthopIps": ["172.16.1.254"], "oifs": ["Vlan10"], "protocol":
@@ -5276,8 +5276,8 @@ tests:
     "nexthopIps": ["10.255.2.1"], "oifs": [], "protocol": "static", "source": "",
     "preference": 1, "ipvers": 4, "action": "forward", "timestamp": 1619275257123}]'
 - command: route lpm --address="172.16.1.101" --hostname="server102  server301 leaf01
-    leaf03" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+    leaf03" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route lpm nxos
   output: '[{"namespace": "nxos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix":
     "172.16.1.101/32", "nexthopIps": ["172.16.1.101"], "oifs": ["Vlan10"], "protocol":
@@ -5298,8 +5298,8 @@ tests:
     "vrf": "management", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
     [], "protocol": "static", "source": "", "preference": 1, "ipvers": 4, "action":
     "forward", "timestamp": 1619275257228}]'
-- command: route lpm --address="10.0.0.11" --vrf=default --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route lpm --address="10.0.0.11" --vrf=default --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route lpm nxos
   output: '[{"namespace": "nxos", "hostname": "spine02", "vrf": "default", "prefix":
     "10.0.0.11/32", "nexthopIps": ["10.0.0.11"], "oifs": ["Ethernet1/1"], "protocol":
@@ -5346,13 +5346,13 @@ tests:
     "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.2.1"], "oifs":
     ["em0.0"], "protocol": "access-internal", "source": "", "preference": 12, "ipvers":
     4, "action": "forward", "timestamp": 1619275257671}]'
-- command: route unique --columns=prefixlen --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route unique --columns=prefixlen --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route unique nxos
   output: '[{"prefixlen": 0}, {"prefixlen": 16}, {"prefixlen": 24}, {"prefixlen":
     30}, {"prefixlen": 31}, {"prefixlen": 32}, {"prefixlen": 128}]'
-- command: route show --prefix='172.16.1.101' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route show --prefix='172.16.1.101' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "vrf": "evpn-vrf", "prefix":
     "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs": ["_nexthopVrf:default"],
@@ -5374,8 +5374,8 @@ tests:
     "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs":
     ["_nexthopVrf:default"], "protocol": "bgp", "source": "", "preference": 200, "ipvers":
     4, "action": "forward", "timestamp": 1619275257722}]'
-- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: route lpm nxos
   output: '[{"hostname": "exit02", "nexthopIps": ["10.0.0.112"]}, {"hostname": "leaf01",
     "nexthopIps": ["172.16.1.101"]}, {"hostname": "leaf04", "nexthopIps": ["10.0.0.112"]},

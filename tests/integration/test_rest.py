@@ -199,12 +199,8 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'sqPoller/show?status=fail',
     'ospf/assert?status=fail',
     'evpnVni/assert?status=fail',
-    'interface/show?state=notConnected',
-    'interface/show?vrf=default',
-    'interface/summarize?vrf=default',
     'device/show?status=neverpoll',
     'device/show?status=dead',
-    'inventory/all',
     'vlan/unique?state=notConnected',
     'sqPoller/show?pollExcdPeriodCount=!0',
     'arpnd/summarize?macaddr=44:39:39:FF:40:95',
@@ -220,10 +216,19 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'vlan/summarize?state=down',
     'vlan/summarize?state=pass',
     'vlan/summarize?state=notConnected',
-    'interface/summarize?state=notConnected',
     'sqPoller/summarize?pollExcdPeriodCount=!0',
-    'interface/assert?vrf=default',
-    'interface/assert?state=notConnected',
+    'inventory/show?hostname=leaf01',
+    'inventory/show?namespace=ospf-ibgp',
+    'inventory/show?hostname=leaf01&hostname=spine01',
+    'inventory/show?namespace=ospf-ibgp&namespace=ospf-single',
+    'inventory/show?type=ethernet',
+    'inventory/show?query_str=hostname%20==%20"leaf01"',
+    'inventory/summarize?hostname=leaf01',
+    'inventory/summarize?namespace=ospf-ibgp',
+    'inventory/summarize?hostname=leaf01&hostname=spine01',
+    'inventory/summarize?namespace=ospf-ibgp&namespace=ospf-single',
+    'inventory/summarize?type=ethernet',
+    'inventory/summarize?query_str=hostname%20==%20"leaf01"',
 ]
 
 GOOD_SERVICE_VERBS = {
@@ -496,7 +501,7 @@ def app_initialize():
     from suzieq.restServer.query import app_init
 
     cfgfile = create_dummy_config_file(
-        datadir='./tests/data/multidc/parquet-out')
+        datadir='./tests/data/parquet')
     app_init(cfgfile)
     yield
     os.remove(cfgfile)
@@ -517,7 +522,7 @@ def test_rest_server():
     import requests
 
     cfgfile = create_dummy_config_file(
-        datadir='./tests/data/multidc/parquet-out')
+        datadir='./tests/data/parquet')
 
     # pylint: disable=consider-using-with
     server = subprocess.Popen(

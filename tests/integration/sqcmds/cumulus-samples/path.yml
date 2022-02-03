@@ -2,7 +2,7 @@ description: 'Testing verbs for path: show summarize unique'
 tests:
 - command: path show --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
     --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server101",
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
@@ -508,12 +508,12 @@ tests:
   marks: path show cumulus
 - command: path show --dest=172.16.2.104 --src=172.16.1.104 --namespace=dual-evpn
     --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid src 172.16.1.104"}]'
   marks: path show cumulus
 - command: path show --dest=10.0.0.11 --src=10.0.0.14 --namespace=ospf-single --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show cumulus
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "ospf-single", "hostname": "leaf04",
     "iif": "lo", "oif": "swp1", "vrf": "default", "isL2": false, "overlay": false,
@@ -542,7 +542,7 @@ tests:
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --namespace=dual-evpn
     --format=json
   marks: path show cumulus
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server101",
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
@@ -802,18 +802,18 @@ tests:
       "", "nexthopIp": "", "error": "Dst MTU != Src MTU", "timestamp": 1616644823003}]'
 - command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
     --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path summarize cumulus
   output: '[{"dual-evpn": 16}, {"dual-evpn": [2, 2, 1, 2, 2, 1]}, {"dual-evpn": 6},
     {"dual-evpn": 6.0}, {"dual-evpn": 9}, {"dual-evpn": 1500}, {"dual-evpn": true},
     {"dual-evpn": true}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Must specify namespace to run the trace in"}]'
   marks: path show cumulus
 - command: path show --dest=172.16.4.104 --src=172.16.1.101 --namespace=dual-bgp --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-bgp", "hostname": "server101",
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
@@ -1018,7 +1018,7 @@ tests:
   marks: path show cumulus
 - command: path show --src='2001:db8:0:1::101' --dest='2001:db8:0:4::104' --namespace=dual-bgp
     --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/parquet
   marks: path show cumulus ipv6
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-bgp", "hostname": "server101",
     "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
@@ -1026,7 +1026,7 @@ tests:
     "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1616638469517}]'
 - command: path show --src='2001:db8::11' --dest='2001:db8::12' --namespace=dual-bgp
     --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+  data-directory: tests/data/parquet
   marks: path show cumulus ipv6
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-bgp", "hostname": "leaf01",
     "iif": "lo", "oif": "swp1", "vrf": "default", "isL2": false, "overlay": false,
@@ -1105,7 +1105,7 @@ tests:
     1616638471115}]'
 - command: path show --src='2001:db8:0:1::1' --dest='2001:db8:0:4::1' --namespace=dual-bgp
     --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out/
+  data-directory: tests/data/parquet
   marks: path show cumulus ipv6
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-bgp", "hostname": "leaf02",
     "iif": "vlan13", "oif": "swp1", "vrf": "default", "isL2": false, "overlay": false,
@@ -1159,7 +1159,7 @@ tests:
     "", "timestamp": 1616638471859}]'
 - command: path show --dest=172.16.2.102 --src=172.16.1.103 --namespace=dual-evpn
     --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server103",
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
@@ -1664,7 +1664,7 @@ tests:
       1616644822254}]'
   marks: path show cumulus bridged
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --namespace=ospf-ibgp --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "ospf-ibgp", "hostname": "server101",
       "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay":
@@ -1926,7 +1926,7 @@ tests:
   marks: path show cumulus
 - command: path show --src=172.16.1.101 --dest=172.16.1.103 --namespace=ospf-ibgp
     --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path show cumulus bridged
   output: '[{"pathid": 1, "hopCount": 0, "namespace": "ospf-ibgp", "hostname": "server101",
     "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": true, "overlay": false,
@@ -2098,7 +2098,7 @@ tests:
     "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1616681581509}]'
 - command: path unique --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
     --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path unique cumulus
   output: '[{"hostname": "leaf01", "numRows": 8}, {"hostname": "leaf02", "numRows":
     8}, {"hostname": "leaf03", "numRows": 8}, {"hostname": "leaf04", "numRows": 8},
@@ -2107,7 +2107,7 @@ tests:
     {"hostname": "spine02", "numRows": 16}]'
 - command: path unique --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
     --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path unique cumulus
   output: '[{"hostname": "leaf01", "numRows": 8}, {"hostname": "leaf02", "numRows":
     8}, {"hostname": "leaf03", "numRows": 8}, {"hostname": "leaf04", "numRows": 8},
@@ -2116,7 +2116,7 @@ tests:
     {"hostname": "spine02", "numRows": 16}]'
 - command: path unique --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
     --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: path unique cumulus
   output: '[{"hostname": "exit01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
     {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname":

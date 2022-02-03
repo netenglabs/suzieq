@@ -1,11 +1,11 @@
 description: 'Testing verbs for route: show summarize unique lpm'
 tests:
-- command: route show --prefixlen=64 --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route show --prefixlen=64 --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen vmx
   output: '[]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen vmx
   output: '[{"namespace": "vmx", "hostname": "CRP-ACC-SW01", "vrf": "default", "prefix":
     "172.26.145.151/32", "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "local",
@@ -97,8 +97,8 @@ tests:
     1631009087742}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default",
     "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
     "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1631009087742}]'
-- command: route show --prefixlen="<=24" --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route show --prefixlen="<=24" --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen vmx
   output: '[{"namespace": "vmx", "hostname": "CRP-ACC-SW01", "vrf": "default", "prefix":
     "0.0.0.0/0", "nexthopIps": ["172.26.147.254"], "oifs": ["fxp0.0"], "protocol":
@@ -180,8 +180,8 @@ tests:
     "172.26.144.0/22", "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "direct",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1631009087742}]'
-- command: route show --prefixlen=">24" --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route show --prefixlen=">24" --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen vmx
   output: '[{"namespace": "vmx", "hostname": "CRP-ACC-SW01", "vrf": "default", "prefix":
     "172.26.145.151/32", "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "local",
@@ -273,8 +273,8 @@ tests:
     1631009087742}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default",
     "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
     "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1631009087742}]'
-- command: route show --prefixlen=">=24" --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route show --prefixlen=">=24" --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen vmx
   output: '[{"namespace": "vmx", "hostname": "CRP-ACC-SW01", "vrf": "default", "prefix":
     "172.26.145.151/32", "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "local",
@@ -403,8 +403,8 @@ tests:
     1631009087742}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default",
     "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
     "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1631009087742}]'
-- command: route show --prefixlen="!24" --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route show --prefixlen="!24" --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   marks: route show filter prefixlen vmx
   output: '[{"namespace": "vmx", "hostname": "CRP-ACC-SW01", "vrf": "default", "prefix":
     "0.0.0.0/0", "nexthopIps": ["172.26.147.254"], "oifs": ["fxp0.0"], "protocol":
@@ -539,24 +539,24 @@ tests:
     {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default", "prefix":
     "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "",
     "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1631009087742}]'
-- command: route show --prefixlen=">128" --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route show --prefixlen=">128" --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefixlen: value should be between 0 and 128"}]'
   marks: route show filter prefixlen vmx
-- command: route show --prefixlen="<0" --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route show --prefixlen="<0" --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefixlen: value should be between 0 and 128"}]'
   marks: route show filter prefixlen vmx
-- command: route show --prefixlen=">24 and !32" --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route show --prefixlen=">24 and !32" --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefixlen query: it must be of the form ''[<|<=|>=|>|!]
       length'' (i.e. ''>= 24'')"}]'
   marks: route show filter prefixlen vmx
-- command: route lpm --address='172.16.1.11' --columns='hostname nexthopIps' --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route lpm --address='172.16.1.11' --columns='hostname nexthopIps' --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   marks: route lpm vmx
   output: '[{"hostname": "CRP-ACC-SW01", "nexthopIps": ["172.26.147.254"]}, {"hostname":
     "TOR4CRP-DGW-RT01", "nexthopIps": ["10.0.10.1"]}, {"hostname": "TOR4CRP-DGW-RT01",
@@ -565,8 +565,8 @@ tests:
     "TOR1CRP-DGW-RT01", "nexthopIps": ["10.0.20.1"]}, {"hostname": "TOR1CRP-DGW-RT01",
     "nexthopIps": ["10.0.10.1"]}, {"hostname": "CRP-DIS-SW01", "nexthopIps": ["172.26.147.254"]},
     {"hostname": "TOR1BBN-PE-RT01", "nexthopIps": ["172.26.147.254"]}]'
-- command: route unique --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route unique --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   marks: route unique vmx
   output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "10.0.10.0/29"}, {"prefix": "10.0.10.2/32"},
     {"prefix": "10.0.10.3/32"}, {"prefix": "10.0.100.0/31"}, {"prefix": "10.0.100.0/32"},
@@ -576,8 +576,8 @@ tests:
     {"prefix": "172.16.21.0/24"}, {"prefix": "172.16.21.254/32"}, {"prefix": "172.26.144.0/22"},
     {"prefix": "172.26.145.151/32"}, {"prefix": "172.26.145.152/32"}, {"prefix": "172.26.145.153/32"},
     {"prefix": "172.26.145.154/32"}, {"prefix": "172.26.145.155/32"}, {"prefix": "ff02::2/128"}]'
-- command: route unique --count=True --format=json
-  data-directory: tests/data/vmx/parquet-out/
+- command: route unique --count=True --format=json --namespace=vmx
+  data-directory: tests/data/parquet/
   marks: route unique vmx
   output: '[{"prefix": "10.0.10.2/32", "numRows": 1}, {"prefix": "10.0.10.3/32", "numRows":
     1}, {"prefix": "10.0.100.0/31", "numRows": 1}, {"prefix": "10.0.100.0/32", "numRows":

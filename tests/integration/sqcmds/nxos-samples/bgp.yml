@@ -1,7 +1,7 @@
 description: 'Testing verbs for bgp: show summarize unique assert'
 tests:
-- command: bgp show --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp show --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp show nxos
   output: '[{"namespace": "nxos", "hostname": "firewall01", "vrf": "default", "peer":
     "eth2.2", "peerHostname": "exit02", "state": "Established", "afi": "ipv4", "safi":
@@ -238,8 +238,8 @@ tests:
     "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 64520, "peerAsn":
     65533, "pfxRx": 4, "pfxTx": 6, "numChanges": 1, "estdTime": 1619110472384.0, "timestamp":
     1619275259384}]'
-- command: bgp show --columns='hostname afiSafi' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp show --columns='hostname afiSafi' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp show nxos
   output: '[{"hostname": "firewall01", "afiSafi": "ipv4 unicast"}, {"hostname": "firewall01",
     "afiSafi": "ipv4 unicast"}, {"hostname": "firewall01", "afiSafi": "ipv4 unicast"},
@@ -281,43 +281,43 @@ tests:
     "exit02", "afiSafi": "ipv4 unicast"}, {"hostname": "exit02", "afiSafi": "l2vpn
     evpn"}, {"hostname": "exit02", "afiSafi": "ipv4 unicast"}, {"hostname": "exit02",
     "afiSafi": "ipv4 unicast"}]'
-- command: bgp summarize --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp summarize --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp summarize nxos
   output: '{"nxos": {"deviceCnt": 10, "totalPeerCnt": 40, "uniqueAsnCnt": 3, "uniqueVrfsCnt":
     3, "failedPeerCnt": 0, "iBGPPeerCnt": 24, "eBGPPeerCnt": 16, "rrClientPeerCnt":
     32, "activeAfiSafiCnt": 2, "upTimeStat": [157736000, 230934000, 164817000], "updatesRxStat":
     [3, 1197, 221.0], "updatesTxStat": [1, 1573, 225.0]}}'
-- command: bgp unique --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp unique --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp unique nxos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
-- command: bgp unique --count=True --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp unique --count=True --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp unique nxos
   output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
     4}, {"hostname": "leaf02", "numRows": 4}, {"hostname": "leaf03", "numRows": 4},
     {"hostname": "leaf04", "numRows": 4}, {"hostname": "firewall01", "numRows": 6},
     {"hostname": "exit01", "numRows": 8}, {"hostname": "exit02", "numRows": 8}, {"hostname":
     "spine01", "numRows": 12}, {"hostname": "spine02", "numRows": 12}]'
-- command: bgp unique --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp unique --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp unique nxos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
-- command: bgp unique --columns=hostname --format=json --count=True
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp unique --columns=hostname --format=json --namespace=nxos --count=True
+  data-directory: tests/data/parquet/
   marks: bgp unique nxos
   output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
     4}, {"hostname": "leaf02", "numRows": 4}, {"hostname": "leaf03", "numRows": 4},
     {"hostname": "leaf04", "numRows": 4}, {"hostname": "firewall01", "numRows": 6},
     {"hostname": "exit01", "numRows": 8}, {"hostname": "exit02", "numRows": 8}, {"hostname":
     "spine01", "numRows": 12}, {"hostname": "spine02", "numRows": 12}]'
-- command: bgp assert --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp assert --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "nxos", "hostname": "firewall01", "vrf": "default", "peer":
       "eth2.2", "asn": 65533, "peerAsn": 65520, "state": "Established", "peerHostname":
@@ -440,12 +440,12 @@ tests:
       "state": "Established", "peerHostname": "firewall01", "assert": "pass", "assertReason":
       "-", "timestamp": 1619275259384}]'
   marks: bgp assert nxos
-- command: bgp show --state=NotEstd --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp show --state=NotEstd --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp show nxos filter
   output: '[]'
-- command: bgp show --vrf=evpn-vrf --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp show --vrf=evpn-vrf --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp show nxos filter
   output: '[{"namespace": "nxos", "hostname": "exit01", "vrf": "evpn-vrf", "peer":
     "169.254.254.6", "peerHostname": "firewall01", "state": "Established", "afi":
@@ -455,8 +455,8 @@ tests:
     "peerHostname": "firewall01", "state": "Established", "afi": "ipv4", "safi": "unicast",
     "asn": 64520, "peerAsn": 65533, "pfxRx": 7, "pfxTx": 3, "numChanges": 1, "estdTime":
     1619110469384.0, "timestamp": 1619275259384}]'
-- command: bgp show --peer=10.0.0.14 --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp show --peer=10.0.0.14 --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp show nxos filter
   output: '[{"namespace": "nxos", "hostname": "spine02", "vrf": "default", "peer":
     "10.0.0.14", "peerHostname": "leaf04", "state": "Established", "afi": "l2vpn",
@@ -473,8 +473,8 @@ tests:
     "peerHostname": "leaf04", "state": "Established", "afi": "ipv4", "safi": "unicast",
     "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges": 3, "estdTime":
     1619044325180.0, "timestamp": 1619275259180}]'
-- command: bgp show --peer='10.0.0.21 10.0.0.22' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: bgp show --peer='10.0.0.21 10.0.0.22' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: bgp show nxos filter
   output: '[{"namespace": "nxos", "hostname": "leaf03", "vrf": "default", "peer":
     "10.0.0.22", "peerHostname": "spine02", "state": "Established", "afi": "l2vpn",

@@ -1,7 +1,7 @@
 description: 'Testing verbs for interface: show summarize unique assert top'
 tests:
-- command: interface show --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface show --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: interface show nxos
   output: '[{"namespace": "nxos", "hostname": "server101", "ifname": "eth2", "state":
     "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan": 0, "master":
@@ -2022,8 +2022,8 @@ tests:
     "exit02", "ifname": "Ethernet1/35", "state": "notConnected", "adminState": "up",
     "type": "ethernet", "mtu": 1500, "vlan": 1, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275260177}]'
-- command: interface show --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface show --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: interface show nxos
   output: '[{"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server101"},
     {"hostname": "server101"}, {"hostname": "server101"}, {"hostname": "server102"},
@@ -2223,24 +2223,24 @@ tests:
     "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname":
     "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}]'
-- command: interface summarize --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface summarize --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: interface summarize nxos
   output: '{"nxos": {"deviceCnt": 14, "interfaceCnt": 680, "devicesWithL2Cnt": 8,
     "devicesWithVxlanCnt": 6, "ifDownCnt": 469, "ifAdminDownCnt": 8, "ifWithMultipleIPCnt":
     5, "uniqueMTUCnt": 6, "uniqueIfTypesCnt": 13, "speedCnt": 8, "ifChangesStat":
     [0, 6, 0.0], "ifPerDeviceStat": [5, 78, 70.0], "uniqueIPv4AddrCnt": 63, "uniqueIPv6AddrCnt":
     0}}'
-- command: interface unique --columns=hostname --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface unique --columns=hostname --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: interface unique nxos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server301"}, {"hostname": "server302"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: interface top --what=statusChangeTimestamp --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface top --what=statusChangeTimestamp --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: interface top nxos
   output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "gr-0/0/0", "state":
     "up", "adminState": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master": "",
@@ -2260,8 +2260,8 @@ tests:
     "jsrv.1", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514,
     "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
     [], "statusChangeTimestamp": 1619275258985, "timestamp": 1619275258985}]'
-- command: interface show --ifname="Ethernet1/1" --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface show --ifname="Ethernet1/1" --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: interface show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/1", "state":
     "up", "adminState": "up", "type": "ethernet", "mtu": 9216, "vlan": 0, "master":
@@ -2288,8 +2288,8 @@ tests:
     "exit02", "ifname": "Ethernet1/1", "state": "up", "adminState": "up", "type":
     "ethernet", "mtu": 9216, "vlan": 0, "master": "default", "ipAddressList": ["10.0.0.32/32"],
     "ip6AddressList": [], "timestamp": 1619275260177}]'
-- command: interface show --type=vxlan --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface show --type=vxlan --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: interface show nxos filter
   output: '[{"namespace": "nxos", "hostname": "leaf03", "ifname": "nve1", "state":
     "up", "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": 0, "master": "bridge",
@@ -2308,8 +2308,8 @@ tests:
     {"namespace": "nxos", "hostname": "exit02", "ifname": "nve1", "state": "up", "adminState":
     "up", "type": "vxlan", "mtu": 9216, "vlan": 0, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275260177}]'
-- command: interface show --type='vrf vlan' --hostname='leaf01 spine01' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface show --type='vrf vlan' --hostname='leaf01 spine01' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: interface show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf01", "ifname": "default", "state":
     "up", "adminState": "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master": "",
@@ -2339,8 +2339,8 @@ tests:
     1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Vlan1",
     "state": "down", "adminState": "down", "type": "vlan", "mtu": 1500, "vlan": 1,
     "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1619275259180}]'
-- command: interface unique --columns=hostname --format=json --count=True
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface unique --columns=hostname --format=json --namespace=nxos --count=True
+  data-directory: tests/data/parquet/
   marks: interface unique nxos
   output: '[{"hostname": "server101", "numRows": 5}, {"hostname": "server102", "numRows":
     5}, {"hostname": "server301", "numRows": 5}, {"hostname": "server302", "numRows":
@@ -2350,8 +2350,8 @@ tests:
     77}, {"hostname": "leaf01", "numRows": 78}, {"hostname": "leaf02", "numRows":
     78}, {"hostname": "leaf03", "numRows": 78}, {"hostname": "leaf04", "numRows":
     78}]'
-- command: interface assert --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface assert --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "nxos", "hostname": "firewall01", "ifname": "eth2.2", "state":
       "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
@@ -2675,7 +2675,7 @@ tests:
       "dcedge01", "peerIfname": "xe-0/0/1", "assert": "fail", "assertReason": ["Speed
       mismatch"], "timestamp": 1619275260177}]'
   marks: interface assert nxos
-- command: interface show --query-str='adminState == "down" and state == "up" ' --format=json
-  data-directory: tests/data/nxos/parquet-out/
+- command: interface show --query-str='adminState == "down" and state == "up" ' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
   marks: interface show nxos
   output: '[]'

@@ -1,7 +1,7 @@
 description: 'Testing verbs for address: show summarize unique'
 tests:
-- command: address show --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: address show junos
   output: '[{"namespace": "junos", "hostname": "server102", "ifname": "eth0", "ipAddressList":
     ["10.255.5.169/24"], "macaddr": "52:54:00:48:10:1c", "ip6AddressList": [], "state":
@@ -1107,8 +1107,8 @@ tests:
     "junos", "hostname": "leaf01", "ifname": "ipip", "ipAddressList": [], "macaddr":
     "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "", "timestamp":
     1623025803099}]'
-- command: address show --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: address show junos
   output: '[{"hostname": "server102"}, {"hostname": "server101"}, {"hostname": "server101"},
     {"hostname": "server101"}, {"hostname": "server102"}, {"hostname": "server102"},
@@ -1245,15 +1245,15 @@ tests:
     "leaf01"}, {"hostname": "leaf01"}, {"hostname": "spine01"}, {"hostname": "spine01"},
     {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname": "spine01"}, {"hostname":
     "spine01"}, {"hostname": "leaf01"}]'
-- command: address summarize --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address summarize --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: address summarize junos
   output: '{"junos": {"deviceCnt": 12, "addressCnt": 458, "uniqueV4AddressCnt": 54,
     "uniqueV6AddressCnt": 0, "uniqueIfMacCnt": 175, "deviceWithv4AddressCnt": 12,
     "deviceWithv6AddressCnt": 0, "subnetsUsed": ["24", "2", "32", "30", "31"], "subnetTopCounts":
     [{"24": 41}, {"2": 35}, {"32": 27}]}}'
-- command: address unique --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address unique --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: address unique junos
   output: '[{"ipAddress": "10.0.0.101/32"}, {"ipAddress": "10.0.0.102/32"}, {"ipAddress":
     "10.0.0.11/32"}, {"ipAddress": "10.0.0.12/32"}, {"ipAddress": "10.0.0.121/32"},
@@ -1280,8 +1280,8 @@ tests:
     {"ipAddress": "fe80::205:860f:fc71:5500/128"}, {"ipAddress": "fe80::205:860f:fc71:7400/128"},
     {"ipAddress": "fe80::205:860f:fc71:ad00/128"}, {"ipAddress": "fe80::205:860f:fc71:c200/128"},
     {"ipAddress": "fe80::205:860f:fc71:c600/128"}]'
-- command: address unique --count=True --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address unique --count=True --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: address unique junos
   output: '[{"ipAddress": "10.0.0.101/32", "numRows": 1}, {"ipAddress": "10.0.0.102/32",
     "numRows": 1}, {"ipAddress": "10.0.0.121/32", "numRows": 1}, {"ipAddress": "10.0.0.122/32",
@@ -1317,15 +1317,15 @@ tests:
     "numRows": 7}, {"ipAddress": "128.0.0.4/2", "numRows": 7}, {"ipAddress": "128.0.0.63/2",
     "numRows": 7}, {"ipAddress": "169.254.0.2/24", "numRows": 7}, {"ipAddress": "192.0.2.2/24",
     "numRows": 7}, {"ipAddress": "192.168.1.2/24", "numRows": 7}]'
-- command: address unique --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address unique --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: address unique junos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "server101"}, {"hostname": "server102"}, {"hostname": "server201"}, {"hostname":
     "server202"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
-- command: address unique --columns=hostname --format=json --count=True
-  data-directory: tests/data/junos/parquet-out/
+- command: address unique --columns=hostname --format=json --namespace=junos --count=True
+  data-directory: tests/data/parquet/
   marks: address unique junos
   output: '[{"hostname": "server101", "numRows": 3}, {"hostname": "server102", "numRows":
     3}, {"hostname": "server201", "numRows": 3}, {"hostname": "server202", "numRows":
@@ -1334,23 +1334,23 @@ tests:
     60}, {"hostname": "leaf01", "numRows": 63}, {"hostname": "leaf02", "numRows":
     63}, {"hostname": "exit01", "numRows": 66}, {"hostname": "exit02", "numRows":
     66}]'
-- command: address unique --columns=vrf --format=json --count=True
-  data-directory: tests/data/junos/parquet-out/
+- command: address unique --columns=vrf --format=json --namespace=junos --count=True
+  data-directory: tests/data/parquet/
   marks: address unique junos
   output: '[{"vrf": "internet-vrf", "numRows": 4}, {"vrf": "evpn-vrf", "numRows":
     10}, {"vrf": "default", "numRows": 84}]'
-- command: address unique --columns="vrf"  --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: address unique --columns="vrf"  --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: address unique junos filter
   output: '[{"vrf": "default"}, {"vrf": "evpn-vrf"}, {"vrf": "internet-vrf"}]'
 - command: address unique --columns="vrf" --query-str='hostname.isin(["leaf01", "leaf02"])
-    ' --format=json
-  data-directory: tests/data/junos/parquet-out
+    ' --format=json --namespace=junos
+  data-directory: tests/data/parquet
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''hostname'' is not defined"}]'
   marks: address unique junos filter
-- command: address show --address="0200.0000.000a" --format=json
-  data-directory: tests/data/junos/parquet-out
+- command: address show --address="0200.0000.000a" --format=json --namespace=junos
+  data-directory: tests/data/parquet
   marks: address show junos filter
   output: '[{"namespace": "junos", "hostname": "exit01", "ifname": "bme0", "ipAddressList":
     [], "macaddr": "02:00:00:00:00:0a", "ip6AddressList": [], "state": "up", "vrf":
@@ -1391,13 +1391,13 @@ tests:
     1623025803099}, {"namespace": "junos", "hostname": "spine01", "ifname": "bme0",
     "ipAddressList": [], "macaddr": "02:00:00:00:00:0a", "ip6AddressList": [], "state":
     "up", "vrf": "", "timestamp": 1623025803099}]'
-- command: address show --address="invalidaddress" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --address="invalidaddress" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid address specified"}]'
   marks: address show junos filter
-- command: address show --prefix="169.254.253.0/30" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --prefix="169.254.253.0/30" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: address show junos filter
   output: '[{"namespace": "junos", "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList":
     ["169.254.253.2/30"], "macaddr": "28:b7:ad:21:bd:53", "ip6AddressList": [], "state":
@@ -1405,12 +1405,12 @@ tests:
     "exit02", "ifname": "xe-0/0/2.2", "ipAddressList": ["169.254.253.1/30"], "macaddr":
     "02:05:86:71:27:0b", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1623025801614}]'
-- command: address show --prefix="2001:db8:0:1::/64" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --prefix="2001:db8:0:1::/64" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: address show junos filter
   output: '[]'
-- command: address show --prefix="2001:db8:0:1::/64 169.254.253.0/30" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --prefix="2001:db8:0:1::/64 169.254.253.0/30" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: address show junos filter
   output: '[{"namespace": "junos", "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList":
     ["169.254.253.2/30"], "macaddr": "28:b7:ad:21:bd:53", "ip6AddressList": [], "state":
@@ -1418,8 +1418,8 @@ tests:
     "exit02", "ifname": "xe-0/0/2.2", "ipAddressList": ["169.254.253.1/30"], "macaddr":
     "02:05:86:71:27:0b", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1623025801614}]'
-- command: address show --prefix="169.254.253.0/30 10.0.0.0/24" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --prefix="169.254.253.0/30 10.0.0.0/24" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: address show junos filter
   output: '[{"namespace": "junos", "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList":
     ["169.254.253.2/30"], "macaddr": "28:b7:ad:21:bd:53", "ip6AddressList": [], "state":
@@ -1498,23 +1498,23 @@ tests:
     "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname":
     "xe-0/0/1.0", "ipAddressList": ["10.0.0.11/32"], "macaddr": "02:05:86:71:ad:07",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1623025803099}]'
-- command: address show --prefix="192.168.1.0" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --prefix="192.168.1.0" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: address show junos filter
-- command: address show --prefix="44:38:39:00:00:23" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --prefix="44:38:39:00:00:23" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: address show junos filter
-- command: address show --prefix="10.0.0.0/24" --address="192.168.1.2" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --prefix="10.0.0.0/24" --address="192.168.1.2" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Cannot specify address and prefix together"}]'
   marks: address show junos filter
-- command: address show --prefix="10.0.0.1/24" --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: address show --prefix="10.0.0.1/24" --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: address show junos filter

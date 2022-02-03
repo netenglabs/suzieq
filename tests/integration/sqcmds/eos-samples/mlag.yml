@@ -1,7 +1,7 @@
 description: 'Testing verbs for mlag: show summarize unique'
 tests:
-- command: mlag show --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mlag show --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mlag show eos
   output: '[{"namespace": "eos", "hostname": "leaf02", "systemId": "46:38:39:99:c7:9e",
     "state": "active", "peerAddress": "169.254.1.0", "role": "primary", "peerLink":
@@ -16,29 +16,29 @@ tests:
     "leaf01", "systemId": "46:38:39:99:c7:9e", "state": "active", "peerAddress": "169.254.1.1",
     "role": "secondary", "peerLink": "Port-Channel1", "mlagDualPortsCnt": 2, "mlagSinglePortsCnt":
     0, "mlagErrorPortsCnt": 0, "timestamp": 1623025177894}]'
-- command: mlag show --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mlag show --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mlag show eos
   output: '[{"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"},
     {"hostname": "leaf01"}]'
-- command: mlag summarize --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mlag summarize --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mlag summarize eos
   output: '{"eos": {"deviceCnt": 4, "uniqueSystemIdCnt": 2, "devicesWithfailedStateCnt":
     0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [2, 2, 2.0], "mlagNumSinglePortStat":
     [0, 0, 0.0], "mlagNumErrorPortStat": [0, 0, 0.0]}}'
-- command: mlag unique --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mlag unique --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mlag unique eos
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
     {"hostname": "leaf04"}]'
-- command: mlag unique --count=True --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mlag unique --count=True --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mlag unique eos
   output: '[{"hostname": "leaf01", "numRows": 1}, {"hostname": "leaf02", "numRows":
     1}, {"hostname": "leaf03", "numRows": 1}, {"hostname": "leaf04", "numRows": 1}]'
-- command: mlag unique --columns=hostname --format=json
-  data-directory: tests/data/eos/parquet-out/
+- command: mlag unique --columns=hostname --format=json --namespace=eos
+  data-directory: tests/data/parquet/
   marks: mlag unique eos
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
     {"hostname": "leaf04"}]'

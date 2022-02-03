@@ -1,7 +1,7 @@
 description: 'Testing verbs for device config: show'
 tests:
-- command: devconfig show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: devconfig show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: devconfig show cumulus
   output: '[{"namespace": "ospf-ibgp", "config": "# hostname\nspine02\n# interfaces\nauto
     all\n\niface lo inet loopback\n\n# Management interface\n\niface eth0 inet dhcp\n    vrf
@@ -303,8 +303,8 @@ tests:
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.22\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 192.168.123.1
     # vrf mgmt", "hostname": "spine01", "timestamp": 1622008051479}]'
-- command: devconfig show --hostname=leaf01 --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: devconfig show --hostname=leaf01 --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: devconfig show cumulus
   output: '[{"namespace": "ospf-ibgp", "config": "# hostname\nleaf01\n# interfaces\nauto
     all\n\niface lo inet loopback\n  address 10.0.0.11/32\n  vxlan-local-tunnelip
@@ -348,8 +348,8 @@ tests:
     ospf\n ospf router-id 10.0.0.11\n passive-interface lo\n!\nline vty\n!\nend\n#
     ports.conf\n# resolv.conf\nnameserver 192.168.123.1 # vrf mgmt", "hostname": "leaf01",
     "timestamp": 1622008051293}]'
-- command: devconfig show --hostname='leaf01 spine01' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: devconfig show --hostname='leaf01 spine01' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: devconfig show cumulus
   output: '[{"namespace": "ospf-ibgp", "config": "# hostname\nleaf01\n# interfaces\nauto
     all\n\niface lo inet loopback\n  address 10.0.0.11/32\n  vxlan-local-tunnelip
@@ -418,21 +418,21 @@ tests:
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.22\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 192.168.123.1
     # vrf mgmt", "hostname": "spine01", "timestamp": 1622008051479}]'
-- command: devconfig show --hostname='leaf01 spine01' --query-str='config.str.contains("10.0.0.21")'
+- command: devconfig show --hostname='leaf01 spine01' --query-str='config.str.contains("10.0.0.21")' --namespace='ospf-single dual-evpn ospf-ibgp'
     --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: devconfig show cumulus
   output: '[]'
-- command: devconfig summarize --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: devconfig summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: devconfig summarize cumulus
   output: '{"ospf-ibgp": {"deviceCnt": 9}}'
-- command: devconfig summarize --hostname='leaf01 spine01' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: devconfig summarize --hostname='leaf01 spine01' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: devconfig summarize cumulus
   output: '{"ospf-ibgp": {"deviceCnt": 2}}'
-- command: devconfig unique --columns=config --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: devconfig unique --columns=config --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Unique not supported for Device Config"}]'
   marks: devconfig unique cumulus

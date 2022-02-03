@@ -1,7 +1,7 @@
 description: 'Testing verbs for mlag: show summarize unique'
 tests:
-- command: mlag show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mlag show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mlag show
   output: '[{"namespace": "dual-evpn", "hostname": "leaf03", "systemId": "44:39:39:ff:40:94",
     "state": "active", "peerAddress": "169.254.1.2", "role": "primary", "peerLink":
@@ -30,14 +30,14 @@ tests:
     "systemId": "44:39:39:ff:40:95", "state": "active", "peerAddress": "169.254.1.1",
     "role": "secondary", "peerLink": "peerlink.4094", "mlagDualPortsCnt": 5, "mlagSinglePortsCnt":
     0, "mlagErrorPortsCnt": 0, "timestamp": 1616681583412}]'
-- command: mlag show --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mlag show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mlag show
   output: '[{"hostname": "leaf03"}, {"hostname": "leaf01"}, {"hostname": "leaf02"},
     {"hostname": "leaf04"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
     "leaf01"}, {"hostname": "leaf04"}]'
-- command: mlag summarize --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mlag summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mlag summarize
   output: '{"dual-evpn": {"deviceCnt": 4, "uniqueSystemIdCnt": 1, "devicesWithfailedStateCnt":
     0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [4, 4, 4.0], "mlagNumSinglePortStat":
@@ -46,23 +46,23 @@ tests:
     4, "mlagNumDualPortsStat": [5, 5, 5.0], "mlagNumSinglePortStat": [0, 0, 0.0],
     "mlagNumErrorPortStat": [0, 0, 0.0]}}'
 - command: mlag summarize --namespace=dual-evpn --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: mlag summarize
   output: '{"dual-evpn": {"deviceCnt": 4, "uniqueSystemIdCnt": 1, "devicesWithfailedStateCnt":
     0, "devicesWithBackupInactiveCnt": 4, "mlagNumDualPortsStat": [4, 4, 4.0], "mlagNumSinglePortStat":
     [0, 0, 0.0], "mlagNumErrorPortStat": [0, 0, 0.0]}}'
-- command: mlag unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mlag unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mlag unique
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
     {"hostname": "leaf04"}]'
-- command: mlag unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mlag unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mlag unique
   output: '[{"hostname": "leaf01", "numRows": 2}, {"hostname": "leaf02", "numRows":
     2}, {"hostname": "leaf03", "numRows": 2}, {"hostname": "leaf04", "numRows": 2}]'
-- command: mlag unique --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: mlag unique --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: mlag unique
   output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
     {"hostname": "leaf04"}]'

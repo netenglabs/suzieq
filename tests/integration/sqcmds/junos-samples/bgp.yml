@@ -1,7 +1,7 @@
 description: 'Testing verbs for bgp: show summarize unique assert'
 tests:
-- command: bgp show --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: bgp show --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: bgp show junos junos
   output: '[{"namespace": "junos", "hostname": "firewall01", "vrf": "default", "peer":
     "eth1.3", "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi":
@@ -120,8 +120,8 @@ tests:
     "peer": "10.0.0.32", "peerHostname": "exit02", "state": "Established", "afi":
     "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 2, "pfxTx":
     24, "numChanges": 282, "estdTime": 1623025725030.0, "timestamp": 1623025798030}]'
-- command: bgp show --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: bgp show --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: bgp show junos junos
   output: '[{"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
     {"hostname": "firewall01"}, {"hostname": "firewall01"}, {"hostname": "firewall01"},
@@ -133,34 +133,34 @@ tests:
     "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"}, {"hostname": "exit02"},
     {"hostname": "exit02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname":
     "spine02"}, {"hostname": "spine02"}]'
-- command: bgp summarize --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: bgp summarize --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: bgp summarize junos junos
   output: '{"junos": {"deviceCnt": 8, "totalPeerCnt": 32, "uniqueAsnCnt": 3, "uniqueVrfsCnt":
     3, "failedPeerCnt": 0, "iBGPPeerCnt": 16, "eBGPPeerCnt": 16, "rrClientPeerCnt":
     8, "activeAfiSafiCnt": 2, "upTimeStat": [19000, 27023000, 26428000], "updatesRxStat":
     [0, 1389, 9.5], "updatesTxStat": [0, 1388, 9.0]}}'
-- command: bgp unique --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: bgp unique --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: bgp unique junos junos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "spine01"}, {"hostname": "spine02"}]'
-- command: bgp unique --count=True --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: bgp unique --count=True --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: bgp unique junos junos
   output: '[{"hostname": "dcedge01", "numRows": 2}, {"hostname": "leaf01", "numRows":
     2}, {"hostname": "leaf02", "numRows": 2}, {"hostname": "spine01", "numRows": 4},
     {"hostname": "spine02", "numRows": 4}, {"hostname": "exit01", "numRows": 6}, {"hostname":
     "exit02", "numRows": 6}, {"hostname": "firewall01", "numRows": 6}]'
-- command: bgp unique --columns=hostname --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: bgp unique --columns=hostname --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   marks: bgp unique junos junos
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "spine01"}, {"hostname": "spine02"}]'
-- command: bgp assert --format=json
-  data-directory: tests/data/junos/parquet-out/
+- command: bgp assert --format=json --namespace=junos
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "junos", "hostname": "firewall01", "vrf": "default", "peer":
       "eth1.3", "asn": 65533, "peerAsn": 64520, "state": "Established", "peerHostname":

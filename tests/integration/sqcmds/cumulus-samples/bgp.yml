@@ -1,7 +1,7 @@
 description: 'Testing verbs for bgp: show summarize unique'
 tests:
-- command: bgp show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp show
   output: '[{"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer":
     "eth1.2", "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi":
@@ -394,8 +394,8 @@ tests:
     "Established", "afi": "l2vpn", "safi": "evpn", "asn": 65000, "peerAsn": 65000,
     "pfxRx": 6, "pfxTx": 38, "numChanges": 1, "estdTime": 1616681049000.0, "timestamp":
     1616681583504}]'
-- command: bgp show --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp show filter
   output: '[{"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"},
     {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname": "edge01"}, {"hostname":
@@ -429,8 +429,8 @@ tests:
     {"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname":
     "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"}, {"hostname": "spine02"},
     {"hostname": "spine02"}]'
-- command: bgp show --columns='*' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp show --columns='*' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp show filter
   output: '[{"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default", "peer":
     "eth1.2", "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi":
@@ -1844,8 +1844,8 @@ tests:
     false, "extnhReceived": false, "extnhEnabled": true, "peerIP": "fe80::5054:ff:fe28:db32",
     "mrai": 0, "reason": "No AFI/SAFI activated for peer", "lastDownTime": 535000,
     "ifname": "", "active": true, "afiSafi": "l2vpn evpn"}]'
-- command: bgp summarize --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp summarize
   output: '{"dual-evpn": {"deviceCnt": 10, "totalPeerCnt": 40, "uniqueAsnCnt": 9,
     "uniqueVrfsCnt": 3, "failedPeerCnt": 0, "iBGPPeerCnt": 0, "eBGPPeerCnt": 40, "rrClientPeerCnt":
@@ -1855,30 +1855,30 @@ tests:
     "iBGPPeerCnt": 22, "eBGPPeerCnt": 17, "rrClientPeerCnt": 11, "activeAfiSafiCnt":
     3, "upTimeStat": [531000, 537000, 534000], "updatesRxStat": [6, 49, 17.0], "updatesTxStat":
     [6, 49, 17.0]}}'
-- command: bgp unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp unique
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
-- command: bgp unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp unique
   output: '[{"hostname": "internet", "numRows": 4}, {"hostname": "leaf01", "numRows":
     6}, {"hostname": "leaf02", "numRows": 6}, {"hostname": "leaf03", "numRows": 6},
     {"hostname": "leaf04", "numRows": 6}, {"hostname": "edge01", "numRows": 12}, {"hostname":
     "exit02", "numRows": 15}, {"hostname": "exit01", "numRows": 16}, {"hostname":
     "spine02", "numRows": 18}, {"hostname": "spine01", "numRows": 20}]'
-- command: bgp unique --columns=hostname --format=json --count=True
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp unique --columns=hostname --format=json --count=True --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp unique
   output: '[{"hostname": "internet", "numRows": 4}, {"hostname": "leaf01", "numRows":
     6}, {"hostname": "leaf02", "numRows": 6}, {"hostname": "leaf03", "numRows": 6},
     {"hostname": "leaf04", "numRows": 6}, {"hostname": "edge01", "numRows": 12}, {"hostname":
     "exit02", "numRows": 15}, {"hostname": "exit01", "numRows": 16}, {"hostname":
     "spine02", "numRows": 18}, {"hostname": "spine01", "numRows": 20}]'
-- command: bgp assert --format=json
-  data-directory: tests/data/multidc/parquet-out
+- command: bgp assert --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet
   error:
     error: '[{"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "peer":
       "swp2", "asn": 65000, "peerAsn": 0, "state": "NotEstd", "peerHostname": "",
@@ -2114,8 +2114,8 @@ tests:
       "leaf04", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
       1616681583504}]'
   marks: bgp assert
-- command: bgp assert --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+- command: bgp assert --namespace=dual-bgp --format=json
+  data-directory: tests/data/parquet
   error:
     error: '[{"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer":
       "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
@@ -2223,8 +2223,8 @@ tests:
       65000, "state": "Established", "peerHostname": "spine02", "assert": "pass",
       "assertReason": "-", "timestamp": 1616638471475}]'
   marks: bgp assert
-- command: bgp assert --status=pass --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+- command: bgp assert --status=pass --namespace=dual-bgp --format=json
+  data-directory: tests/data/parquet
   marks: bgp assert
   output: '[{"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer":
     "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
@@ -2305,8 +2305,8 @@ tests:
     1616638471475}, {"namespace": "dual-bgp", "hostname": "leaf03", "vrf": "default",
     "peer": "swp2", "asn": 65103, "peerAsn": 65000, "state": "Established", "peerHostname":
     "spine02", "assert": "pass", "assertReason": "-", "timestamp": 1616638471475}]'
-- command: bgp assert --status=fail --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+- command: bgp assert --status=fail --namespace=dual-bgp --format=json
+  data-directory: tests/data/parquet
   error:
     error: '[{"namespace": "dual-bgp", "hostname": "spine02", "vrf": "default", "peer":
       "swp5", "asn": 65000, "peerAsn": 65202, "state": "Established", "peerHostname":
@@ -2334,8 +2334,8 @@ tests:
       "exit02", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
       1616638470647}]'
   marks: bgp assert
-- command: bgp assert --status=all --format=json
-  data-directory: tests/data/basic_dual_bgp/parquet-out
+- command: bgp assert --status=all --namespace=dual-bgp --format=json
+  data-directory: tests/data/parquet
   error:
     error: '[{"namespace": "dual-bgp", "hostname": "edge01", "vrf": "default", "peer":
       "eth1.2", "asn": 65530, "peerAsn": 65201, "state": "Established", "peerHostname":
@@ -2443,12 +2443,12 @@ tests:
       65000, "state": "Established", "peerHostname": "spine02", "assert": "pass",
       "assertReason": "-", "timestamp": 1616638471475}]'
   marks: bgp assert cumulus
-- command: bgp assert --status=whatever --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp assert --status=whatever --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp assert cumulus
   output: '[]'
-- command: bgp assert --hostname=leaf01 --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp assert --hostname=leaf01 --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "dual-evpn", "hostname": "leaf01", "vrf": "default", "peer":
       "swp1", "asn": 65101, "peerAsn": 65000, "state": "Established", "peerHostname":
@@ -2465,7 +2465,7 @@ tests:
       1616681583330}]'
   marks: bgp assert cumulus
 - command: bgp assert --hostname=leaf01 --namespace=ospf-ibgp --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "peer":
       "swp2", "asn": 65000, "peerAsn": 65000, "state": "Established", "peerHostname":
@@ -2475,8 +2475,8 @@ tests:
       "spine01", "assert": "fail", "assertReason": "Not all Afi/Safis enabled", "timestamp":
       1616681583330}]'
   marks: bgp assert cumulus
-- command: bgp unique --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: bgp unique --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: bgp unique
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "internet"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":

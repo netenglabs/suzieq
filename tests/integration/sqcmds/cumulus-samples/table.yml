@@ -1,7 +1,7 @@
 description: 'Testing verbs for table: show describe'
 tests:
-- command: table show --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: table show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: table show
   output: '[{"table": "arpnd", "firstTime": 1616352402449, "latestTime": 1616681581503,
     "intervals": 17, "allRows": 437, "namespaces": 3, "deviceCnt": 14}, {"table":
@@ -38,21 +38,21 @@ tests:
     1616681582524, "intervals": 11, "allRows": 38, "namespaces": 3, "deviceCnt": 6},
     {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1641830465167, "intervals":
     338, "allRows": 4700, "namespaces": 3, "deviceCnt": 14}]'
-- command: table show --columns=hostname --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: table show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: Invalid columns specified: [''hostname'']"}]'
   marks: table show
 - command: table show --namespace=dummy --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: table show
   output: '[]'
-- command: table show --view=changes --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: table show --view=changes --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: table show
   output: '[]'
-- command: table show --view=latest --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: table show --view=latest --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: table show
   output: '[{"table": "arpnd", "firstTime": 1616352402449, "latestTime": 1616681581503,
     "intervals": 17, "allRows": 437, "namespaces": 3, "deviceCnt": 14}, {"table":
@@ -89,8 +89,8 @@ tests:
     1616681582524, "intervals": 11, "allRows": 38, "namespaces": 3, "deviceCnt": 6},
     {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1641830465167, "intervals":
     338, "allRows": 4700, "namespaces": 3, "deviceCnt": 14}]'
-- command: table show --hostname=leaf01 --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: table show --hostname=leaf01 --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: table show
   output: '[{"table": "arpnd", "firstTime": 1616352402479, "latestTime": 1616681581180,
     "intervals": 3, "allRows": 50, "namespaces": 3, "deviceCnt": 1}, {"table": "bgp",
@@ -127,7 +127,7 @@ tests:
     "firstTime": 1616352402479, "latestTime": 1641830465164, "intervals": 49, "allRows":
     458, "namespaces": 3, "deviceCnt": 1}]'
 - command: table show --namespace='ospf-single' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: table show filter
   output: '[{"table": "arpnd", "firstTime": 1616352402449, "latestTime": 1616352402659,
     "intervals": 8, "allRows": 55, "namespaces": 1, "deviceCnt": 14}, {"table": "device",
@@ -158,7 +158,7 @@ tests:
     {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1639161366022, "intervals":
     98, "allRows": 1106, "namespaces": 1, "deviceCnt": 14}]'
 - command: table show --namespace='ospf-single dual-evpn' --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: table show filter
   output: '[{"table": "arpnd", "firstTime": 1616352402449, "latestTime": 1616644821823,
     "intervals": 13, "allRows": 251, "namespaces": 2, "deviceCnt": 14}, {"table":
@@ -193,8 +193,8 @@ tests:
     1616644821824, "intervals": 5, "allRows": 20, "namespaces": 2, "deviceCnt": 6},
     {"table": "TOTAL", "firstTime": 1616352402449, "latestTime": 1639161366022, "intervals":
     223, "allRows": 2963, "namespaces": 2, "deviceCnt": 14}]'
-- command: table describe --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: table describe --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: table describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "allRows", "type": "long", "key":
@@ -210,7 +210,7 @@ tests:
     "description": "Schema version, not selectable"}, {"name": "table", "type": "string",
     "key": "", "display": 1, "description": "Table name"}]'
 - command: table describe --namespace=dual-evpn --format=json
-  data-directory: tests/data/multidc/parquet-out/
+  data-directory: tests/data/parquet/
   marks: table describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "allRows", "type": "long", "key":
@@ -225,21 +225,21 @@ tests:
     in database"}, {"name": "sqvers", "type": "string", "key": "", "display": "",
     "description": "Schema version, not selectable"}, {"name": "table", "type": "string",
     "key": "", "display": 1, "description": "Table name"}]'
-- command: table describe --table=floop --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: table describe --table=floop --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: incorrect table name floop"}]'
   marks: table describe
-- command: table unique --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: table unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: table unique
   output: '[{"table": "TOTAL"}, {"table": "arpnd"}, {"table": "bgp"}, {"table": "devconfig"},
     {"table": "device"}, {"table": "evpnVni"}, {"table": "fs"}, {"table": "ifCounters"},
     {"table": "interfaces"}, {"table": "lldp"}, {"table": "macs"}, {"table": "mlag"},
     {"table": "ospfIf"}, {"table": "ospfNbr"}, {"table": "routes"}, {"table": "sqPoller"},
     {"table": "time"}, {"table": "topcpu"}, {"table": "topmem"}, {"table": "vlan"}]'
-- command: table unique --count=True --format=json
-  data-directory: tests/data/multidc/parquet-out/
+- command: table unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
   marks: table unique
   output: '[{"table": "TOTAL", "numRows": 1}, {"table": "arpnd", "numRows": 1}, {"table":
     "bgp", "numRows": 1}, {"table": "devconfig", "numRows": 1}, {"table": "device",
