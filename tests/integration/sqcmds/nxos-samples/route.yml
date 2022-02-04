@@ -5374,7 +5374,8 @@ tests:
     "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps": ["10.0.0.112"], "oifs":
     ["_nexthopVrf:default"], "protocol": "bgp", "source": "", "preference": 200, "ipvers":
     4, "action": "forward", "timestamp": 1619275257722}]'
-- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json --namespace=nxos
+- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json
+    --namespace=nxos
   data-directory: tests/data/parquet/
   marks: route lpm nxos
   output: '[{"hostname": "exit02", "nexthopIps": ["10.0.0.112"]}, {"hostname": "leaf01",
@@ -5394,3 +5395,33 @@ tests:
     ["10.255.2.1"]}, {"hostname": "leaf03", "nexthopIps": ["10.255.2.1"]}, {"hostname":
     "exit01", "nexthopIps": ["10.255.2.1"]}, {"hostname": "leaf02", "nexthopIps":
     ["10.255.2.1"]}]'
+- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps metric
+    protocol' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
+  description: handles case of testing columns which are stripped if not specified
+  marks: route lpm nxos
+  output: '[{"hostname": "exit02", "nexthopIps": ["10.0.0.112"], "metric": 0, "protocol":
+    "bgp"}, {"hostname": "leaf01", "nexthopIps": ["172.16.1.101"], "metric": 0, "protocol":
+    "hmm"}, {"hostname": "leaf04", "nexthopIps": ["10.0.0.112"], "metric": 0, "protocol":
+    "bgp"}, {"hostname": "exit01", "nexthopIps": ["10.0.0.112"], "metric": 0, "protocol":
+    "bgp"}, {"hostname": "leaf03", "nexthopIps": ["10.0.0.112"], "metric": 0, "protocol":
+    "bgp"}, {"hostname": "leaf02", "nexthopIps": ["172.16.1.101"], "metric": 0, "protocol":
+    "hmm"}, {"hostname": "exit01", "nexthopIps": ["169.254.254.10"], "metric": 0,
+    "protocol": "bgp"}, {"hostname": "exit02", "nexthopIps": ["169.254.253.2"], "metric":
+    0, "protocol": "bgp"}, {"hostname": "exit02", "nexthopIps": ["169.254.253.10"],
+    "metric": 0, "protocol": "bgp"}, {"hostname": "dcedge01", "nexthopIps": ["169.254.127.3"],
+    "metric": 0, "protocol": "bgp"}, {"hostname": "exit01", "nexthopIps": ["169.254.254.2"],
+    "metric": 0, "protocol": "bgp"}, {"hostname": "firewall01", "nexthopIps": ["169.254.253.5",
+    "169.254.254.5"], "metric": 20, "protocol": "bgp"}, {"hostname": "server101",
+    "nexthopIps": [""], "metric": 20, "protocol": "kernel"}, {"hostname": "server302",
+    "nexthopIps": ["172.16.3.254"], "metric": 20, "protocol": ""}, {"hostname": "server102",
+    "nexthopIps": ["172.16.3.254"], "metric": 20, "protocol": ""}, {"hostname": "server301",
+    "nexthopIps": ["172.16.2.254"], "metric": 20, "protocol": ""}, {"hostname": "leaf01",
+    "nexthopIps": ["10.255.2.1"], "metric": 0, "protocol": "static"}, {"hostname":
+    "exit02", "nexthopIps": ["10.255.2.1"], "metric": 0, "protocol": "static"}, {"hostname":
+    "leaf04", "nexthopIps": ["10.255.2.1"], "metric": 0, "protocol": "static"}, {"hostname":
+    "spine01", "nexthopIps": ["10.255.2.1"], "metric": 0, "protocol": "static"}, {"hostname":
+    "spine02", "nexthopIps": ["10.255.2.1"], "metric": 0, "protocol": "static"}, {"hostname":
+    "leaf03", "nexthopIps": ["10.255.2.1"], "metric": 0, "protocol": "static"}, {"hostname":
+    "exit01", "nexthopIps": ["10.255.2.1"], "metric": 0, "protocol": "static"}, {"hostname":
+    "leaf02", "nexthopIps": ["10.255.2.1"], "metric": 0, "protocol": "static"}]'
