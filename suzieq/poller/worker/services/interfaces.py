@@ -18,10 +18,10 @@ class InterfaceService(Service):
     """Service class for interfaces. Cleanup of data is specific"""
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
-                 queue, run_once="forever"):
+                 queue, db_access, run_once="forever"):
 
         super().__init__(name, defn, period, stype, keys, ignore_fields,
-                         schema, queue, run_once)
+                         schema, queue, db_access, run_once)
         # Thanks to JunOS obsolete timestamp, we cannot use the
         # statusChangeTimestamp field directly. We use an artificial field
         # called statusChangeTimestamp1 to ensure we capture changes

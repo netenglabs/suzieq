@@ -13,9 +13,9 @@ class DeviceService(Service):
     """
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields,
-                 schema, queue, run_once):
+                 schema, queue, db_access, run_once):
         super().__init__(name, defn, period, stype, keys, ignore_fields,
-                         schema, queue, run_once)
+                         schema, queue, db_access, run_once)
         self.ignore_fields.append("bootupTimestamp")
 
     def _common_data_cleaner(self, processed_data, raw_data):
