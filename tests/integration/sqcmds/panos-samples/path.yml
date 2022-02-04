@@ -287,3 +287,152 @@ tests:
       false, "overlay": false, "mtuMatch": false, "inMtu": 1500, "outMtu": 0, "protocol":
       "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
       "Dst MTU != Src MTU", "timestamp": 1639476254171}]'
+- command: path show --namespace=panos --dest='172.16.2.254' --src='10.0.0.200' --format=json
+  data-directory: tests/data/parquet/
+  description: shows off recursive route handling in path
+  error:
+    error: '[{"pathid": 1, "hopCount": 0, "namespace": "panos", "hostname": "firewall01",
+      "iif": "loopback", "oif": "ethernet1/1.3", "vrf": "default", "isL2": false,
+      "overlay": false, "mtuMatch": true, "inMtu": 0, "outMtu": 1500, "protocol":
+      "bgp", "ipLookup": "172.16.2.0/24", "vtepLookup": "", "macLookup": "", "nexthopIp":
+      "169.254.254.5", "error": "", "timestamp": 1639476253357}, {"pathid": 1, "hopCount":
+      1, "namespace": "panos", "hostname": "exit01", "iif": "swp3.3", "oif": "swp1",
+      "vrf": "evpn-vrf", "isL2": true, "overlay": false, "mtuMatch": false, "inMtu":
+      9216, "outMtu": 9216, "protocol": "bgp", "ipLookup": "172.16.2.0/24", "vtepLookup":
+      "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.21", "error": "", "timestamp":
+      1639476253487}, {"pathid": 1, "hopCount": 2, "namespace": "panos", "hostname":
+      "spine01", "iif": "swp5", "oif": "swp3", "vrf": "default", "isL2": true, "overlay":
+      true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+      "10.0.0.134", "vtepLookup": "", "macLookup": null, "nexthopIp": "", "error":
+      "", "timestamp": 1639476253487}, {"pathid": 1, "hopCount": 3, "namespace": "panos",
+      "hostname": "leaf03", "iif": "swp1", "oif": "Vlan20", "vrf": "evpn-vrf", "isL2":
+      false, "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000, "protocol":
+      "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
+      "Dst MTU != Src MTU", "timestamp": 1639476254844}, {"pathid": 2, "hopCount":
+      0, "namespace": "panos", "hostname": "firewall01", "iif": "loopback", "oif":
+      "ethernet1/2.3", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+      true, "inMtu": 0, "outMtu": 1500, "protocol": "bgp", "ipLookup": "172.16.2.0/24",
+      "vtepLookup": "", "macLookup": "", "nexthopIp": "169.254.253.5", "error": "",
+      "timestamp": 1639476253357}, {"pathid": 2, "hopCount": 1, "namespace": "panos",
+      "hostname": "exit02", "iif": "swp3.3", "oif": "swp1", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": false, "inMtu": 9216, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.2.0/24", "vtepLookup": "10.0.0.134", "macLookup":
+      "", "nexthopIp": "10.0.0.21", "error": "", "timestamp": 1639476253487}, {"pathid":
+      2, "hopCount": 2, "namespace": "panos", "hostname": "spine01", "iif": "swp6",
+      "oif": "swp3", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+      true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134",
+      "vtepLookup": "", "macLookup": null, "nexthopIp": "", "error": "", "timestamp":
+      1639476253487}, {"pathid": 2, "hopCount": 3, "namespace": "panos", "hostname":
+      "leaf03", "iif": "swp1", "oif": "Vlan20", "vrf": "evpn-vrf", "isL2": false,
+      "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000, "protocol":
+      "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
+      "Dst MTU != Src MTU", "timestamp": 1639476254844}, {"pathid": 3, "hopCount":
+      0, "namespace": "panos", "hostname": "firewall01", "iif": "loopback", "oif":
+      "ethernet1/1.3", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+      true, "inMtu": 0, "outMtu": 1500, "protocol": "bgp", "ipLookup": "172.16.2.0/24",
+      "vtepLookup": "", "macLookup": "", "nexthopIp": "169.254.254.5", "error": "",
+      "timestamp": 1639476253357}, {"pathid": 3, "hopCount": 1, "namespace": "panos",
+      "hostname": "exit01", "iif": "swp3.3", "oif": "swp1", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": false, "inMtu": 9216, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.2.0/24", "vtepLookup": "10.0.0.134", "macLookup":
+      "", "nexthopIp": "10.0.0.21", "error": "", "timestamp": 1639476253487}, {"pathid":
+      3, "hopCount": 2, "namespace": "panos", "hostname": "spine01", "iif": "swp5",
+      "oif": "swp4", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+      true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134",
+      "vtepLookup": "", "macLookup": null, "nexthopIp": "", "error": "", "timestamp":
+      1639476253487}, {"pathid": 3, "hopCount": 3, "namespace": "panos", "hostname":
+      "leaf04", "iif": "swp1", "oif": "Vlan20", "vrf": "evpn-vrf", "isL2": false,
+      "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000, "protocol":
+      "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
+      "Dst MTU != Src MTU", "timestamp": 1639476254836}, {"pathid": 4, "hopCount":
+      0, "namespace": "panos", "hostname": "firewall01", "iif": "loopback", "oif":
+      "ethernet1/2.3", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+      true, "inMtu": 0, "outMtu": 1500, "protocol": "bgp", "ipLookup": "172.16.2.0/24",
+      "vtepLookup": "", "macLookup": "", "nexthopIp": "169.254.253.5", "error": "",
+      "timestamp": 1639476253357}, {"pathid": 4, "hopCount": 1, "namespace": "panos",
+      "hostname": "exit02", "iif": "swp3.3", "oif": "swp1", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": false, "inMtu": 9216, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.2.0/24", "vtepLookup": "10.0.0.134", "macLookup":
+      "", "nexthopIp": "10.0.0.21", "error": "", "timestamp": 1639476253487}, {"pathid":
+      4, "hopCount": 2, "namespace": "panos", "hostname": "spine01", "iif": "swp6",
+      "oif": "swp4", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+      true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134",
+      "vtepLookup": "", "macLookup": null, "nexthopIp": "", "error": "", "timestamp":
+      1639476253487}, {"pathid": 4, "hopCount": 3, "namespace": "panos", "hostname":
+      "leaf04", "iif": "swp1", "oif": "Vlan20", "vrf": "evpn-vrf", "isL2": false,
+      "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000, "protocol":
+      "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
+      "Dst MTU != Src MTU", "timestamp": 1639476254836}, {"pathid": 5, "hopCount":
+      0, "namespace": "panos", "hostname": "firewall01", "iif": "loopback", "oif":
+      "ethernet1/1.3", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+      true, "inMtu": 0, "outMtu": 1500, "protocol": "bgp", "ipLookup": "172.16.2.0/24",
+      "vtepLookup": "", "macLookup": "", "nexthopIp": "169.254.254.5", "error": "",
+      "timestamp": 1639476253357}, {"pathid": 5, "hopCount": 1, "namespace": "panos",
+      "hostname": "exit01", "iif": "swp3.3", "oif": "swp2", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": false, "inMtu": 9216, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.2.0/24", "vtepLookup": "10.0.0.134", "macLookup":
+      "", "nexthopIp": "10.0.0.22", "error": "", "timestamp": 1639476253487}, {"pathid":
+      5, "hopCount": 2, "namespace": "panos", "hostname": "spine02", "iif": "swp5",
+      "oif": "swp3", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+      true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134",
+      "vtepLookup": "", "macLookup": null, "nexthopIp": "", "error": "", "timestamp":
+      1639476253487}, {"pathid": 5, "hopCount": 3, "namespace": "panos", "hostname":
+      "leaf03", "iif": "swp2", "oif": "Vlan20", "vrf": "evpn-vrf", "isL2": false,
+      "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000, "protocol":
+      "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
+      "Dst MTU != Src MTU", "timestamp": 1639476254844}, {"pathid": 6, "hopCount":
+      0, "namespace": "panos", "hostname": "firewall01", "iif": "loopback", "oif":
+      "ethernet1/2.3", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+      true, "inMtu": 0, "outMtu": 1500, "protocol": "bgp", "ipLookup": "172.16.2.0/24",
+      "vtepLookup": "", "macLookup": "", "nexthopIp": "169.254.253.5", "error": "",
+      "timestamp": 1639476253357}, {"pathid": 6, "hopCount": 1, "namespace": "panos",
+      "hostname": "exit02", "iif": "swp3.3", "oif": "swp2", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": false, "inMtu": 9216, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.2.0/24", "vtepLookup": "10.0.0.134", "macLookup":
+      "", "nexthopIp": "10.0.0.22", "error": "", "timestamp": 1639476253487}, {"pathid":
+      6, "hopCount": 2, "namespace": "panos", "hostname": "spine02", "iif": "swp6",
+      "oif": "swp3", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+      true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134",
+      "vtepLookup": "", "macLookup": null, "nexthopIp": "", "error": "", "timestamp":
+      1639476253487}, {"pathid": 6, "hopCount": 3, "namespace": "panos", "hostname":
+      "leaf03", "iif": "swp2", "oif": "Vlan20", "vrf": "evpn-vrf", "isL2": false,
+      "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000, "protocol":
+      "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
+      "Dst MTU != Src MTU", "timestamp": 1639476254844}, {"pathid": 7, "hopCount":
+      0, "namespace": "panos", "hostname": "firewall01", "iif": "loopback", "oif":
+      "ethernet1/1.3", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+      true, "inMtu": 0, "outMtu": 1500, "protocol": "bgp", "ipLookup": "172.16.2.0/24",
+      "vtepLookup": "", "macLookup": "", "nexthopIp": "169.254.254.5", "error": "",
+      "timestamp": 1639476253357}, {"pathid": 7, "hopCount": 1, "namespace": "panos",
+      "hostname": "exit01", "iif": "swp3.3", "oif": "swp2", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": false, "inMtu": 9216, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.2.0/24", "vtepLookup": "10.0.0.134", "macLookup":
+      "", "nexthopIp": "10.0.0.22", "error": "", "timestamp": 1639476253487}, {"pathid":
+      7, "hopCount": 2, "namespace": "panos", "hostname": "spine02", "iif": "swp5",
+      "oif": "swp4", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+      true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134",
+      "vtepLookup": "", "macLookup": null, "nexthopIp": "", "error": "", "timestamp":
+      1639476253487}, {"pathid": 7, "hopCount": 3, "namespace": "panos", "hostname":
+      "leaf04", "iif": "swp2", "oif": "Vlan20", "vrf": "evpn-vrf", "isL2": false,
+      "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000, "protocol":
+      "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
+      "Dst MTU != Src MTU", "timestamp": 1639476254836}, {"pathid": 8, "hopCount":
+      0, "namespace": "panos", "hostname": "firewall01", "iif": "loopback", "oif":
+      "ethernet1/2.3", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+      true, "inMtu": 0, "outMtu": 1500, "protocol": "bgp", "ipLookup": "172.16.2.0/24",
+      "vtepLookup": "", "macLookup": "", "nexthopIp": "169.254.253.5", "error": "",
+      "timestamp": 1639476253357}, {"pathid": 8, "hopCount": 1, "namespace": "panos",
+      "hostname": "exit02", "iif": "swp3.3", "oif": "swp2", "vrf": "evpn-vrf", "isL2":
+      true, "overlay": false, "mtuMatch": false, "inMtu": 9216, "outMtu": 9216, "protocol":
+      "bgp", "ipLookup": "172.16.2.0/24", "vtepLookup": "10.0.0.134", "macLookup":
+      "", "nexthopIp": "10.0.0.22", "error": "", "timestamp": 1639476253487}, {"pathid":
+      8, "hopCount": 2, "namespace": "panos", "hostname": "spine02", "iif": "swp6",
+      "oif": "swp4", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+      true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134",
+      "vtepLookup": "", "macLookup": null, "nexthopIp": "", "error": "", "timestamp":
+      1639476253487}, {"pathid": 8, "hopCount": 3, "namespace": "panos", "hostname":
+      "leaf04", "iif": "swp2", "oif": "Vlan20", "vrf": "evpn-vrf", "isL2": false,
+      "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000, "protocol":
+      "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error":
+      "Dst MTU != Src MTU", "timestamp": 1639476254836}]'
+  marks: path show panos recursive
