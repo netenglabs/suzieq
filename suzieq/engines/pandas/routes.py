@@ -100,7 +100,8 @@ class RoutesObj(SqPandasEngine):
                 df = df.query(query_str).reset_index(drop=True)
 
             if (columns != ['*'] and
-                    all('prefixlen' not in x for x in [columns, addnl_fields])):
+                all('prefixlen' not in x
+                    for x in [columns, addnl_fields])):
                 drop_cols.append('prefixlen')
 
         if not df.empty and ('numNexthops' in columns or (columns == ['*'])):
