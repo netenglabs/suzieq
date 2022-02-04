@@ -62,13 +62,14 @@ class Service(SqPlugin):
         self._poller_schema = value
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
-                 queue, run_once=None):
+                 queue, db_access, run_once=None):
         self.name = name
         self.defn = defn
         self.ignore_fields = ignore_fields or []
         self.writer_queue = queue
         self.keys = keys
         self.schema = schema.get_arrow_schema()
+        self.schema_table = schema
         self.period = period
         self.stype = stype
         self.logger = logging.getLogger(__name__)
@@ -76,6 +77,8 @@ class Service(SqPlugin):
         self.post_timeout = 5
         self.sigend = False
         self.version = schema.version
+        # Get sqobject to retrieve the data of this service
+        self._db_access = db_access
 
         self.update_nodes = False  # we have a new node list
         self.rebuild_nodelist = False  # used only when a node gets init
@@ -592,9 +595,28 @@ class Service(SqPlugin):
 
     async def commit_data(self, result: Dict, namespace: str, hostname: str):
         """Write the result data out"""
+        # pylint: disable=protected-access
         records = []
         key = f'{namespace}-{hostname}'
-        prev_res = self.previous_results.get(key, [])
+        prev_res = self.previous_results.get(key, None)
+        # No data previously polled with this service from the the
+        # current namespace and hostname. Check if the datastore contains some
+        # information about
+        filter_df = f"hostname.str.match('{hostname}') and " \
+                    f"namespace.str.match('{namespace}')"
+        if prev_res is None:
+            df = self._db_access.read(
+                self.schema_table._table,
+                'pandas',
+                start_time='',
+                end_time='',
+                columns=self.schema_table.fields,
+                view='latest',
+                key_fields=self.schema_table.key_fields(),
+                add_filter=filter_df,
+                hostname=[hostname],
+                namespace=[namespace]).query('active')
+            prev_res = df.to_dict('records')
 
         if result or prev_res:
             adds, dels = self.get_diff(prev_res, result)

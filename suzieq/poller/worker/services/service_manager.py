@@ -12,6 +12,7 @@ from typing import Callable, Dict, List, Union
 import textfsm
 import yaml
 from genericpath import isfile
+from suzieq.db.base_db import SqDB
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.exceptions import SqPollerConfError
@@ -31,6 +32,7 @@ class ServiceManager:
                  schema_dir: str,
                  output_queue: asyncio.Queue,
                  run_mode: str,
+                 cfg: Dict,
                  default_interval: int = 15,
                  **kwargs) -> None:
         """Instantiate an instance of the ServiceManager class
@@ -58,6 +60,8 @@ class ServiceManager:
         self.output_queue = output_queue
         self.default_interval = default_interval
         self.run_mode = run_mode
+        self.cfg = cfg
+        self.outputs = kwargs.pop('outputs', [])
 
         # Set and validate service and schema directories
         if not os.path.isdir(service_directory):
@@ -184,6 +188,8 @@ class ServiceManager:
             poller_schema = schemas.get_arrow_schema('sqPoller')
             poller_schema_version = SchemaForTable('sqPoller', schemas).version
 
+        db_access = self._get_db_access(self.cfg)
+
         # Read the available services and iterate over them, discarding
         # the ones we do not need to instantiate
         svc_desc_files = Path(self.service_directory).glob('*.yml')
@@ -254,6 +260,7 @@ class ServiceManager:
                 svc_def.get('ignore-fields', []),
                 schema,
                 self.output_queue,
+                db_access,
                 self.run_mode
             )
             service.poller_schema = poller_schema
@@ -285,6 +292,31 @@ class ServiceManager:
         """
         for svc in self._services:
             await svc.set_nodes(node_callq)
+
+    def _get_db_access(self, cfg) -> SqDB:
+        """Return the SqDB to use to access to the state of the previous
+        polls
+
+        Raises:
+            DBNotFoundError: raised if not plugin for the given outputs is
+                found
+
+        Returns:
+            SqDB: the SqBB object to use for data access
+        """
+        if not self.outputs:
+            return None
+        # Remove gather from the outputs, since with it we only write in files
+        candidate_out = [o for o in self.outputs if o != 'gather']
+        if candidate_out:
+            dbs = SqDB.get_plugins()
+            # Get only the first out as source
+            outdb = candidate_out[0]
+            if outdb not in dbs:
+                raise SqPollerConfError(f'{outdb} database not found')
+            # Init the SqDB object
+            return dbs[outdb](cfg, logger)
+        return None
 
     def _get_service_list(self,
                           service_only: str,
