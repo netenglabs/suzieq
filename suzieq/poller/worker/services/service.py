@@ -187,32 +187,44 @@ class Service(SqPlugin):
         """
         adds = []
         dels = []
-        koldvals = {}
-        knewvals = {}
+        koldvals = []
+        knewvals = []
         koldkeys = []
         knewkeys = []
 
         # keys that start with _ are transient and must be ignored
         # from comparison
-        for i, elem in enumerate(old):
-            vals = [v for k, v in elem.items()
-                    if k not in self.ignore_fields and not k.startswith('_')]
-            kvals = [v for k, v in elem.items() if k in self.keys]
-            koldvals.update({tuple(str(vals)): i})
+        for elem in old:
+            # Checking the __iter__ attribute to check if it is iterable
+            # is not pythonic but much faster, we need to be fast since this
+            # piece of code is executed tons of times
+            vals = {k: set(v) if hasattr(v, '__iter__') and
+                    not isinstance(v, str) and
+                    not isinstance(v, dict) else str(v)
+                    for k, v in elem.items()
+                    if k not in self.ignore_fields and not k.startswith('_')}
+            kvals = {v for k, v in elem.items() if k in self.keys}
+            koldvals.append(vals)
             koldkeys.append(kvals)
 
-        for i, elem in enumerate(new):
-            vals = [v for k, v in elem.items()
-                    if k not in self.ignore_fields and not k.startswith('_')]
-            kvals = [v for k, v in elem.items() if k in self.keys]
-            knewvals.update({tuple(str(vals)): i})
+        for elem in new:
+            vals = {k: set(v) if hasattr(v, '__iter__') and
+                    not isinstance(v, str) and
+                    not isinstance(v, dict) else str(v)
+                    for k, v in elem.items()
+                    if k not in self.ignore_fields and not k.startswith('_')}
+            kvals = {v for k, v in elem.items() if k in self.keys}
+            knewvals.append(vals)
             knewkeys.append(kvals)
 
-        addlist = [v for k, v in knewvals.items() if k not in koldvals]
-        dellist = [v for k, v in koldvals.items() if k not in knewvals]
+        adds = [new[k] for k, v in enumerate(knewvals) if v not in koldvals]
+        dels = [old[k] for k, v in enumerate(koldvals)
+                if v not in knewvals and koldkeys[k] not in knewkeys]
 
-        adds = [new[v] for v in addlist]
-        dels = [old[v] for v in dellist if koldkeys[v] not in knewkeys]
+        # The sqvers type for dels might be float, we expect str
+        for d in dels:
+            if d.get('sqvers'):
+                d['sqvers'] = str(d['sqvers'])
 
         if adds and self.stype == "counters":
             # If there's a change in any field of the counters, update them all
