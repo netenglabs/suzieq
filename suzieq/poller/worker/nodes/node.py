@@ -393,11 +393,6 @@ class Node:
         return self._create_result(cmd, status, data)
 
     def _create_result(self, cmd, status, data) -> dict:
-        if self.port in [22, 443]:
-            # Ignore port if defaults (SSH or HTTPS)
-            addrstr = self.address
-        else:
-            addrstr = f'{self.address}:{self.port}'
         result = {
             "status": status,
             "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
@@ -405,7 +400,8 @@ class Node:
             "devtype": self.devtype,
             "namespace": self.nsname,
             "hostname": self.hostname,
-            "address": addrstr,
+            "address": self.address,
+            "port": self.port,
             "version": self.version,
             "data": data,
         }

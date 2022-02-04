@@ -22,6 +22,7 @@ class DeviceService(Service):
         for entry in processed_data:
             entry['status'] = "alive"
             entry["address"] = raw_data[0]["address"]
+            entry["port"] = raw_data[0].get("port")
 
         return processed_data
 

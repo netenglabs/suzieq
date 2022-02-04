@@ -69,7 +69,7 @@ class FileNode:
             data = await f.read()
 
         required_keys = ['status', 'timestamp', 'cmd', 'devtype', 'namespace',
-                         'hostname', 'address', 'version', 'data']
+                         'hostname', 'address', 'port', 'version', 'data']
         entries = re.split(r'\]\n*\[\n', data)
         entlen = len(entries)
 
