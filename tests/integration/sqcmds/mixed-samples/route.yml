@@ -2587,8 +2587,7 @@ tests:
     error: '[{"error": "Invalid prefixlen query: it must be of the form ''[<|<=|>=|>|!]
       length'' (i.e. ''>= 24'')"}]'
   marks: route show filter prefixlen mixed
-- command: route lpm --address='11.11.11.11' --columns='hostname nexthopIps' --format=json
-    --namespace=mixed
+- command: route lpm --address='11.11.11.11' --columns='hostname nexthopIps' --format=json --namespace=mixed
   data-directory: tests/data/parquet//
   marks: route lpm mixed
   output: '[{"hostname": "leaf6-eos", "nexthopIps": ["10.1.6.1"]}, {"hostname": "spine2-nxos",

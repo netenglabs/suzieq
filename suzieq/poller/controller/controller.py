@@ -15,6 +15,7 @@ import signal
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List
+from copy import deepcopy
 
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 from suzieq.poller.controller.inventory_async_plugin import \
@@ -297,10 +298,10 @@ class Controller:
 
             for inv_src in self.sources:
                 try:
-                    cur_inv = await asyncio.wait_for(
+                    cur_inv = deepcopy(await asyncio.wait_for(
                         inv_src.get_inventory(),
                         self._inventory_timeout
-                    )
+                    ))
                 except asyncio.TimeoutError:
                     raise InventorySourceError(
                         f'Timeout error: source {inv_src.name} took'
@@ -308,11 +309,18 @@ class Controller:
                     )
 
                 if cur_inv:
+                    cur_inv_count = len(cur_inv)
                     duplicated_devices = [x for x in cur_inv
                                           if x in global_inventory]
                     for dd in duplicated_devices:
                         logger.warning(f'Ignoring duplicated device {dd}')
                         cur_inv.pop(dd)
+                    if len(duplicated_devices) == cur_inv_count:
+                        logger.warning(
+                            f'All {inv_src.name} nodes have been ignored')
+                else:
+                    logger.warning(
+                        f'source {inv_src.name} returned an empty inventory')
 
                 global_inventory.update(cur_inv)
 

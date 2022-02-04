@@ -260,8 +260,8 @@ def test_netbox_invalid_config(default_config):
 @pytest.mark.controller_source_netbox
 @pytest.mark.parametrize('server_conf', _SERVER_CONFIGS)
 @pytest.mark.asyncio
-async def test_ssl_missconfiguration(server_conf: Dict, default_config):
-    """Test possible ssl missconfigurations
+async def test_ssl_misconfiguration(server_conf: Dict, default_config):
+    """Test possible ssl misconfigurations
 
     Args:
         server_conf (Dict): server configuration

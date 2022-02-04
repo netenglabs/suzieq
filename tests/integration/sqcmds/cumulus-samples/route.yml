@@ -1970,8 +1970,7 @@ tests:
     "prefix": "10.0.0.102/32", "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs":
     ["swp1", "swp2"], "protocol": "bgp", "source": "", "preference": 20, "ipvers":
     4, "action": "forward", "timestamp": 1616681582006}]'
-- command: route show --columns=hostname --format=json --namespace='ospf-single dual-evpn
-    ospf-ibgp'
+- command: route show --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: route show
   output: '[{"hostname": "server102"}, {"hostname": "server102"}, {"hostname": "server102"},
@@ -2189,8 +2188,7 @@ tests:
     {"prefix": "172.16.1.103/32"}, {"prefix": "172.16.2.0/24"}, {"prefix": "172.16.2.102/32"},
     {"prefix": "172.16.2.104/32"}, {"prefix": "172.16.253.1/32"}, {"prefix": "172.16.3.0/24"},
     {"prefix": "172.16.4.0/24"}, {"prefix": "192.168.121.0/24"}, {"prefix": "192.168.123.0/24"}]'
-- command: route unique --count=True --format=json --namespace='ospf-single dual-evpn
-    ospf-ibgp'
+- command: route unique --count=True --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: route unique
   output: '[{"prefix": "10.0.0.0/8", "numRows": 4}, {"prefix": "169.254.127.0/31",
@@ -2212,8 +2210,7 @@ tests:
     "numRows": 31}, {"prefix": "10.0.0.14/32", "numRows": 31}, {"prefix": "172.16.1.0/24",
     "numRows": 35}, {"prefix": "172.16.2.0/24", "numRows": 35}, {"prefix": "0.0.0.0/0",
     "numRows": 66}]'
-- command: route unique --columns=hostname --format=json --namespace='ospf-single
-    dual-evpn ospf-ibgp'
+- command: route unique --columns=hostname --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: route unique
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
@@ -2221,8 +2218,7 @@ tests:
     "leaf03"}, {"hostname": "leaf04"}, {"hostname": "server101"}, {"hostname": "server102"},
     {"hostname": "server103"}, {"hostname": "server104"}, {"hostname": "spine01"},
     {"hostname": "spine02"}]'
-- command: route lpm --address=10.0.0.1 --format=json --namespace='ospf-single dual-evpn
-    ospf-ibgp'
+- command: route lpm --address=10.0.0.1 --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: route lpm
   output: '[{"namespace": "ospf-single", "hostname": "server102", "vrf": "default",
@@ -2525,8 +2521,7 @@ tests:
     "prefix": "10.0.0.11/32", "nexthopIps": ["169.254.253.6"], "oifs": ["swp5.3"],
     "protocol": "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
     "timestamp": 1616644822167}]'
-- command: route show --prefix='10.0.0.134' --format=json --namespace='ospf-single
-    dual-evpn ospf-ibgp'
+- command: route show --prefix='10.0.0.134' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: route show prefix
   output: '[{"namespace": "dual-evpn", "hostname": "internet", "vrf": "default", "prefix":
@@ -2603,8 +2598,7 @@ tests:
     "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol":
     "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
     1616681582006}]'
-- command: route show --prefix='10.0.0.134/32' --format=json --namespace='ospf-single
-    dual-evpn ospf-ibgp'
+- command: route show --prefix='10.0.0.134/32' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: route show prefix
   output: '[{"namespace": "dual-evpn", "hostname": "internet", "vrf": "default", "prefix":
@@ -2681,8 +2675,7 @@ tests:
     "nexthopIps": ["169.254.127.1", "169.254.127.3"], "oifs": ["swp1", "swp2"], "protocol":
     "bgp", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "timestamp":
     1616681582006}]'
-- command: route show --prefix='10.0.0.134' --columns='nexthopIps' --format=json --namespace='ospf-single
-    dual-evpn ospf-ibgp'
+- command: route show --prefix='10.0.0.134' --columns='nexthopIps' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: route show filter prefix
   output: '[{"nexthopIps": ["169.254.127.1", "169.254.127.3"]}, {"nexthopIps": ["169.254.253.1",
@@ -2697,8 +2690,7 @@ tests:
     ["10.0.0.13", "10.0.0.14"]}, {"nexthopIps": ["10.0.0.13", "10.0.0.14"]}, {"nexthopIps":
     ["169.254.253.1", "169.254.254.1"]}, {"nexthopIps": ["10.0.0.21", "10.0.0.22"]},
     {"nexthopIps": ["169.254.127.1", "169.254.127.3"]}]'
-- command: route show --prefix='!10.0.0.134' --format=json --namespace='ospf-single
-    dual-evpn ospf-ibgp'
+- command: route show --prefix='!10.0.0.134' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: route show prefix negate
   output: '[{"namespace": "ospf-single", "hostname": "server102", "vrf": "default",
@@ -7597,8 +7589,7 @@ tests:
   output: '[{"prefixlen": 0}, {"prefixlen": 8}, {"prefixlen": 16}, {"prefixlen": 24},
     {"prefixlen": 30}, {"prefixlen": 31}, {"prefixlen": 32}, {"prefixlen": 64}, {"prefixlen":
     128}]'
-- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json
-    --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: route lpm --address='172.16.1.101' --columns='hostname nexthopIps' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: route lpm cumulus
   output: '[{"hostname": "leaf03", "nexthopIps": ["10.0.0.112"]}, {"hostname": "leaf04",
