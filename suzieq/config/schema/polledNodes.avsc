@@ -1,0 +1,48 @@
+{
+    "namespace": "suzieq",
+    "name": "polledNodes",
+    "type": "record",
+    "fields": [
+        {
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "1.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
+        {
+            "name": "address",
+            "type": "string",
+            "display": 1,
+            "partition": 3,
+            "key": 1,
+            "description": "The IP address/hostname used for polling"
+        },
+        {
+            "name": "port",
+            "type": "int",
+            "display": 2,
+            "key": 2,
+            "description": "The port number used for polling"
+        },
+        {
+            "name": "namespace",
+            "type": "string",
+            "key": 0,
+            "display": 0,
+            "partition": 1,
+            "description": "Namespace associated with this record"
+        },
+        {
+            "name": "timestamp",
+            "type": "timestamp",
+            "display": 3
+        },
+        {
+            "name": "active",
+            "type": "boolean",
+            "description": "If this entry is active or deleted"
+        }
+    ]
+}

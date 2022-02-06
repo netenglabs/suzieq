@@ -20,8 +20,11 @@ from copy import deepcopy
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
+from suzieq.poller.controller.utils.inventory_writer import InventoryWriter
 from suzieq.poller.worker.services.service_manager import ServiceManager
+from suzieq.shared.context import SqContext
 from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
+from suzieq.shared.schema import Schema
 from suzieq.shared.utils import sq_get_config_file
 
 logger = logging.getLogger(__name__)
@@ -137,6 +140,16 @@ class Controller:
 
         if not self._config['chunker'].get('type'):
             self._config['chunker']['type'] = 'static'
+
+        # We need to write the current inventory only when the inventory
+        # file is used as input: run-once=update and forever modes
+        self._inventory_writer = None
+        if self._single_run_mode is None or self._single_run_mode == 'update':
+            outputs = [o for o in args.outputs if o != 'gather']
+            if outputs:
+                sq_context = SqContext(cfg=config_data)
+                sq_context.schemas = Schema(config_data["schema-directory"])
+                self._inventory_writer = InventoryWriter(sq_context, outputs)
 
     @property
     def single_run_mode(self) -> str:
@@ -260,6 +273,14 @@ class Controller:
         # Launch all the tasks
         tasks = [asyncio.create_task(t)
                  for t in (source_tasks + manager_tasks + controller_task)]
+
+        # Check if we need to launch writers
+        if self._inventory_writer:
+            writer_task = asyncio.create_task(
+                self._inventory_writer.output_manager.run_output_workers()
+            )
+            tasks.append(writer_task)
+
         try:
             while tasks:
                 done, pending = await asyncio.wait(
@@ -267,10 +288,17 @@ class Controller:
                     return_when=asyncio.FIRST_COMPLETED
                 )
 
-                tasks = list(pending)
+                # Check if there are exceptions if so launch them
                 for task in done:
                     if task.exception():
                         raise task.exception()
+
+                tasks = list(pending)
+                # Terminate if we have only the writer task left if any
+                if (self._inventory_writer and len(tasks) == 1
+                   and tasks[0] == writer_task):
+                    tasks = []
+
                 # Ignore completed task if started with single-run mode
                 if self._single_run_mode:
                     continue
@@ -328,6 +356,9 @@ class Controller:
                 raise InventorySourceError('No devices to poll')
 
             n_pollers = self.manager.get_n_workers(global_inventory)
+
+            if self._inventory_writer:
+                self._inventory_writer.write(global_inventory)
 
             inventory_chunks = self.chunker.chunk(global_inventory, n_pollers)
 
