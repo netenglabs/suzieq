@@ -23,20 +23,14 @@ class RoutesObj(SqPandasEngine):
         drop_cols = []
 
         if columns == ['default']:
+            # Thanks to Linux, we need metric and weed out some routes
             addnl_fields.append('metric')
             drop_cols.append('metric')
         elif columns != ['*']:
-            if 'metric' not in columns:
-                addnl_fields.append('metric')
-                drop_cols += ['metric']
-
-            if 'ipvers' not in columns:
-                addnl_fields.append('ipvers')
-                drop_cols += ['ipvers']
-
-            if 'protocol' not in columns:
-                addnl_fields.append('protocol')
-                drop_cols.append('protocol')
+            for col in ['metric', 'ipvers', 'protocol', 'prefix']:
+                if col not in columns:
+                    addnl_fields.append(col)
+                    drop_cols += [col]
 
         if add_prefixlen:
             if columns != ['*'] and all('prefixlen' not in x
