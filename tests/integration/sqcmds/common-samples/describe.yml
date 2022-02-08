@@ -241,23 +241,26 @@ tests:
     "", "display": 6, "description": ""}, {"name": "namespace", "type": "string",
     "key": 0, "display": 0, "description": "Namespace associated with this record"},
     {"name": "numChanges", "type": "long", "key": "", "display": "", "description":
-    "Number of interface state changes"}, {"name": "reason", "type": "string", "key":
-    "", "display": "", "description": "Reason for interface being down"}, {"name":
-    "routeDistinguisher", "type": "string", "key": "", "display": "", "description":
-    "Route distinguisher of interface, if VRF"}, {"name": "speed", "type": "long",
-    "key": "", "display": "", "description": "Interface speed in Mbps"}, {"name":
-    "sqvers", "type": "string", "key": "", "display": "", "description": "Schema version,
-    not selectable"}, {"name": "srcVtepIp", "type": "string", "key": "", "display":
-    "", "description": "Some NOS provide the Src VTEP IP associated with interface"},
-    {"name": "state", "type": "string", "key": "", "display": 3, "description": "Operational
-    state of interface"}, {"name": "statusChangeTimestamp", "type": "double", "key":
-    "", "display": "", "description": ""}, {"name": "timestamp", "type": "timestamp",
-    "key": "", "display": 11, "description": ""}, {"name": "type", "type": "string",
-    "key": "", "display": 5, "description": "Interface type, such as loopback, bond,
-    etc"}, {"name": "vlan", "type": "int", "key": "", "display": 7, "description":
-    "VLAN ID of interface, if any"}, {"name": "vlanName", "type": "string", "key":
-    "", "display": "", "description": "VLAN name if assigned"}, {"name": "vni", "type":
-    "int", "key": "", "display": "", "description": "Virtual Network ID, if provided"}]'
+    "Number of interface state changes"}, {"name": "portmode", "type": "string", "key":
+    "", "display": "", "description": "switchport mode: access, trunk or routed"},
+    {"name": "reason", "type": "string", "key": "", "display": "", "description":
+    "Reason for interface being down"}, {"name": "routeDistinguisher", "type": "string",
+    "key": "", "display": "", "description": "Route distinguisher of interface, if
+    VRF"}, {"name": "speed", "type": "long", "key": "", "display": "", "description":
+    "Interface speed in Mbps"}, {"name": "sqvers", "type": "string", "key": "", "display":
+    "", "description": "Schema version, not selectable"}, {"name": "srcVtepIp", "type":
+    "string", "key": "", "display": "", "description": "Some NOS provide the Src VTEP
+    IP associated with interface"}, {"name": "state", "type": "string", "key": "",
+    "display": 3, "description": "Operational state of interface"}, {"name": "statusChangeTimestamp",
+    "type": "double", "key": "", "display": "", "description": ""}, {"name": "timestamp",
+    "type": "timestamp", "key": "", "display": 11, "description": ""}, {"name": "type",
+    "type": "string", "key": "", "display": 5, "description": "Interface type, such
+    as loopback, bond, etc"}, {"name": "vlan", "type": "int", "key": "", "display":
+    7, "description": "VLAN ID of interface, if any"}, {"name": "vlanList", "type":
+    "string", "key": "", "display": "", "description": "List of active, unpruned VLANs
+    on a trunk port"}, {"name": "vlanName", "type": "string", "key": "", "display":
+    "", "description": "VLAN name if assigned"}, {"name": "vni", "type": "int", "key":
+    "", "display": "", "description": "Virtual Network ID, if provided"}]'
 - command: inventory describe --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: inventory describe
@@ -269,16 +272,17 @@ tests:
     "Name of inventory entry"}, {"name": "namespace", "type": "string", "key": 0,
     "display": 0, "description": "Namespace associated with this entry"}, {"name":
     "partNum", "type": "string", "key": 5, "display": "", "description": "Part number
-    of entry"}, {"name": "serial", "type": "string", "key": 4, "display": "", "description":
-    "Serial number of entry"}, {"name": "sqvers", "type": "string", "key": "", "display":
-    "", "description": "Schema version, not selectable"}, {"name": "status", "type":
-    "string", "key": "", "display": 4, "description": "Status of the entry"}, {"name":
-    "timestamp", "type": "timestamp", "key": "", "display": 8, "description": ""},
-    {"name": "type", "type": "string", "key": "", "display": 6, "description": "Type
-    of entry, such as linecard, Xcvr etc."}, {"name": "vendor", "type": "string",
-    "key": "", "display": 5, "description": "Manufacturing vendor of entry"}, {"name":
-    "version", "type": "string", "key": "", "display": 7, "description": "Version
-    number of inventory"}]'
+    of entry"}, {"name": "partType", "type": "string", "key": "", "display": 8, "description":
+    "Type specific info such as optics and such"}, {"name": "serial", "type": "string",
+    "key": 4, "display": "", "description": "Serial number of entry"}, {"name": "sqvers",
+    "type": "string", "key": "", "display": "", "description": "Schema version, not
+    selectable"}, {"name": "status", "type": "string", "key": "", "display": 4, "description":
+    "Status of the entry"}, {"name": "timestamp", "type": "timestamp", "key": "",
+    "display": 8, "description": ""}, {"name": "type", "type": "string", "key": "",
+    "display": 6, "description": "Type of entry, such as linecard, Xcvr etc."}, {"name":
+    "vendor", "type": "string", "key": "", "display": 5, "description": "Manufacturing
+    vendor of entry"}, {"name": "version", "type": "string", "key": "", "display":
+    7, "description": "Version number of inventory"}]'
 - command: lldp describe --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: lldp describe
