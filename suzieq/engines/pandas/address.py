@@ -54,18 +54,10 @@ class AddressObj(SqPandasEngine):
         # if there is a filter on them
 
         if columns not in [['default'], ['*']]:
-            if ((4 in addr_types or ipvers == "v4") and
-                    'ipAddressList' not in columns):
-                addnl_fields.append('ipAddressList')
-                drop_cols.append('ipAddressList')
-            if ((6 in addr_types or ipvers == 'v6') and
-                    'ip6AddressList' not in columns):
-                addnl_fields.append('ip6AddressList')
-                drop_cols.append('ip6AddressList')
-            if ((0 in addr_types or ipvers == "l2") and
-                    'macaddr' not in columns):
-                addnl_fields.append('macaddr')
-                drop_cols.append('macaddr')
+            for x in ['ipAddressList', 'ip6AddressList', 'macaddr']:
+                if x not in columns:
+                    addnl_fields.append(x)
+                    drop_cols.append(x)
 
         df = self.get_valid_df("address", addnl_fields=addnl_fields, **kwargs)
 

@@ -76,10 +76,36 @@ class Schema:
         # if f.get('key', None) is not None]
         return self._sort_fields_for_table(table, 'key')
 
-    def augmented_fields_for_table(self, table: str) -> List[str]:
-        '''Returns list of augmented fields in table'''
-        return [x['name'] for x in self._schema.get(table, [])
-                if 'depends' in x]
+    def augmented_fields_for_table(self, table: str,
+                                   fields: List[str],
+                                   recurse: int) -> List[str]:
+        '''Return all augmented fields in given list of fields (all if empty)
+        If recurse is non-zero, continue to recurse till all fields are
+        resolved
+        '''
+        all_aug_fields = [x['name'] for x in self._schema.get(table, [])
+                          if 'depends' in x]
+        if not fields:
+            aug_fields = all_aug_fields
+        else:
+            aug_fields = [x for x in all_aug_fields if x in fields]
+
+        if not (fields or recurse):
+            return aug_fields
+
+        all_parents = []
+        new_aug_fields = []
+        for f in aug_fields:
+            all_parents += self.get_parent_fields(table, f)
+        if all_parents:
+            new_aug_fields = self.augmented_fields_for_table(
+                table, all_parents, recurse-1)
+        if not new_aug_fields:
+            return aug_fields
+        else:
+            aug_fields.extend([x for x in new_aug_fields
+                               if x not in aug_fields])
+            return aug_fields
 
     def sorted_display_fields_for_table(self, table: str,
                                         getall: bool = False) -> List[str]:
@@ -201,23 +227,23 @@ class SchemaForTable:
         if table not in self._all_schemas.tables():
             raise ValueError(f"Unknown table {table}, no schema found for it")
 
-    @property
+    @ property
     def type(self):
         '''Type of table'''
         return self._all_schemas.type_for_table(self._table)
 
-    @property
+    @ property
     def version(self):
         '''DB version for table'''
         return self._all_schemas.field_for_table(self._table,
                                                  'sqvers')['default']
 
-    @property
+    @ property
     def fields(self):
         '''Returns list of fields for table'''
         return self._all_schemas.fields_for_table(self._table)
 
-    @property
+    @ property
     def array_fields(self):
         '''Return list of array fields in table'''
         return self._all_schemas.array_fields_for_table(self._table)
@@ -234,9 +260,12 @@ class SchemaForTable:
         '''Returns list of key fields for table'''
         return self._all_schemas.key_fields_for_table(self._table)
 
-    def get_augmented_fields(self) -> List[str]:
-        '''Returns list of augmented fields in table'''
-        return self._all_schemas.augmented_fields_for_table(self._table)
+    def get_augmented_fields(self, fields) -> List[str]:
+        '''Returns list of augmented fields, recursively resolving'''
+        MAX_AUGMENTED_RECURSE = 2
+
+        return self._all_schemas.augmented_fields_for_table(
+            self._table, fields, MAX_AUGMENTED_RECURSE)
 
     def sorted_display_fields(self, getall: bool = False) -> List[str]:
         '''Returns sorted list of default display fields'''
