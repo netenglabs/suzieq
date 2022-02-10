@@ -55,25 +55,6 @@ class DeviceObj(SqPandasEngine):
         if view == 'latest' and 'status' in df.columns:
             df['status'] = np.where(df.active, df['status'], 'dead')
 
-        if columns == ['*'] or 'lastSeenTimestamp' in columns:
-            # consider only polling events with passed status
-            lastSeen_df = self._get_table_sqobj('sqPoller').get(
-                namespace=kwargs.get('namespace', []),
-                hostname=kwargs.get('hostname', []),
-                service='device',
-                columns='namespace hostname status'.split(),
-                status='pass')
-
-            # filter events: last successful polling for each ns-hostname
-            lastSeen_df = lastSeen_df.set_index(['namespace', 'hostname']) \
-                .query('~index.duplicated(keep="last")') \
-                .drop(columns=['status'], errors='ignore') \
-                .rename(columns={"timestamp": "lastSeenTimestamp"})
-
-            df = df.merge(
-                lastSeen_df, how='left', on=['namespace', 'hostname']) \
-                .fillna(value={'lastSeenTimestamp': 0})
-
         poller_df = self._get_table_sqobj('sqPoller').get(
             namespace=kwargs.get('namespace', []),
             hostname=kwargs.get('hostname', []),
@@ -99,7 +80,7 @@ class DeviceObj(SqPandasEngine):
             df = df.merge(poller_df, on=['namespace', 'hostname'],
                           how='outer', suffixes=['', '_y'])  \
                 .fillna({'bootupTimestamp': 0, 'timestamp': 0,
-                         'lastSeenTimestamp': 0, 'active': True}) \
+                         'active': True}) \
                 .fillna('N/A')
 
             df.status = np.where(

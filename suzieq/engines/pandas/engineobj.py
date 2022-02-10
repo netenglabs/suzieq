@@ -253,6 +253,25 @@ class SqPandasEngine(SqEngineObj):
                     table_df.timestamp, self.cfg.get('analyzer', {})
                     .get('timezone', None))
 
+            if columns == ['*'] or 'lastPoll' in columns:
+                # consider only polling events with passed status
+                lastPoll_df = self._get_table_sqobj('sqPoller').get(
+                    namespace=kwargs.get('namespace', []),
+                    hostname=kwargs.get('hostname', []),
+                    service=phy_table,
+                    columns=['namespace', 'hostname', 'status'],
+                    status='pass')
+
+                # filter events: last successful polling for each ns-hostname
+                lastPoll_df = lastPoll_df.set_index(['namespace', 'hostname'])\
+                    .query('~index.duplicated(keep="last")') \
+                    .drop(columns=['status'], errors='ignore') \
+                    .rename(columns={"timestamp": "lastPoll"})
+
+                table_df = table_df.merge(
+                    lastPoll_df, how='left', on=['namespace', 'hostname']) \
+                    .fillna(value={'lastPoll': 0})
+
         return table_df
 
     def get(self, **kwargs) -> pd.DataFrame:

@@ -2,9 +2,6 @@
     "namespace": "suzieq",
     "name": "device",
     "type": "record",
-    "depends": [
-        "sqPoller"
-    ],
     "fields": [
         {
             "name": "sqvers",
@@ -86,9 +83,10 @@
             "display": 10
         },
         {
-            "name": "lastSeenTimestamp",
+            "name": "lastPoll",
             "type": "timestamp",
-            "depends": "timestamp"
+            "depends": "sqPoller:timestamp",
+            "description": "Last polling timestamp for this record"
         },
         {
             "name": "active",
