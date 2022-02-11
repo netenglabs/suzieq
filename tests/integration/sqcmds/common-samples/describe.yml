@@ -545,3 +545,42 @@ tests:
     7, "description": ""}, {"name": "vlan", "type": "long", "key": "", "display":
     6, "description": "VLAN ID"}, {"name": "vlanName", "type": "string", "key": 2,
     "display": 3, "description": "VLAN name"}]'
+- command: sqPoller describe --format=json
+  data-directory: tests/data/parquet-out/
+  marks: sqPoller describe
+  output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
+    "If this entry is active or deleted"}, {"name": "gatherTime", "type": {"type":
+    "array", "items": {"type": "float", "name": "time"}}, "key": "", "display": 4,
+    "description": "[min, max, avg] of time taken to get data, computed over the greater
+    between the last 5 mins and the polling period"}, {"name": "hostname", "type":
+    "string", "key": 1, "display": 1, "description": "Hostname associated with this
+    record"}, {"name": "namespace", "type": "string", "key": 0, "display": 0, "description":
+    "The namespace associated with this record"}, {"name": "nodeQsize", "type": {"type":
+    "array", "items": {"type": "float", "name": "nodeQsize"}}, "key": "", "display":
+    8, "description": "[min, max, avg] of node queue size, computed over the greater
+    between the last 5 mins and the polling period"}, {"name": "nodesFailedCnt", "type":
+    "long", "key": "", "display": "", "description": "Number of nodes that could not
+    be polled"}, {"name": "nodesPolledCnt", "type": "long", "key": "", "display":
+    "", "description": "Number of nodes polled"}, {"name": "pollExcdPeriodCount",
+    "type": "long", "key": "", "display": 10, "description": "Number of times the
+    poller has exceeded the poll period"}, {"name": "rxBytes", "type": {"type": "array",
+    "items": {"type": "double", "name": "rxBytes"}}, "key": "", "display": 9, "description":
+    "[min, max, avg] of bytes read, computed over the greater between the last 5 mins
+    and the polling period"}, {"name": "service", "type": "string", "key": 2, "display":
+    2, "description": "The polled service (a.k.a table) name"}, {"name": "sqvers",
+    "type": "string", "key": "", "display": "", "description": "Schema version, not
+    selectable"}, {"name": "status", "type": "long", "key": "", "display": 3, "description":
+    "Service polling status. 0 or 200 means successfully polled, -1 means time timeout,
+    other values mean failed to poll"}, {"name": "svcQsize", "type": {"type": "array",
+    "items": {"type": "float", "name": "svcQsize"}}, "key": "", "display": 6, "description":
+    "[min, max, avg] of service queue size, computed over the greater between the
+    last 5 mins and the polling period"}, {"name": "timestamp", "type": "long", "key":
+    "", "display": 11, "description": "The timestamp of the record"}, {"name": "totalTime",
+    "type": {"type": "array", "items": {"type": "float", "name": "time"}}, "key":
+    "", "display": 5, "description": "[min, max, avg] of time taken to get & process
+    data,computed over the greater between the last 5 mins and the polling period"},
+    {"name": "version", "type": "string", "key": "", "display": "", "description":
+    "The suzieq version used to create this record"}, {"name": "wrQsize", "type":
+    {"type": "array", "items": {"type": "float", "name": "wrQsize"}}, "key": "", "display":
+    7, "description": "[min, max, avg] of write queue size, computed over the greater
+    between the last 5 mins and the polling period"}]'
