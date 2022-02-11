@@ -608,6 +608,18 @@ class Service(SqPlugin):
                 }
             )
 
+    def reset_stats(self, stats: ServiceStats) -> None:
+        """Reset the stats arrays.
+        """
+        stats.total_time = []
+        stats.gather_time = []
+        stats.svcQsize = []
+        stats.nodeQsize = []
+        stats.wrQsize = []
+        stats.rxBytes = []
+        stats.empty_count = 0
+        stats.time_excd_count = 0
+
     def compute_basic_stats(self, statsList, newval: int) -> None:
         """Compute min/max/avg for given stats with the new value
 
@@ -808,6 +820,7 @@ class Service(SqPlugin):
                             "schema": self.poller_schema,
                             "partition_cols": self.partition_cols
                         })
+                    self.reset_stats(pernode_stats[statskey])
 
             # Post a cmd to fire up the next poll after the specified period
             if self.run_once == "update":
