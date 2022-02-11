@@ -257,10 +257,11 @@ tests:
     "type": "string", "key": "", "display": 5, "description": "Interface type, such
     as loopback, bond, etc"}, {"name": "vlan", "type": "int", "key": "", "display":
     7, "description": "VLAN ID of interface, if any"}, {"name": "vlanList", "type":
-    "string", "key": "", "display": "", "description": "List of active, unpruned VLANs
-    on a trunk port"}, {"name": "vlanName", "type": "string", "key": "", "display":
-    "", "description": "VLAN name if assigned"}, {"name": "vni", "type": "int", "key":
-    "", "display": "", "description": "Virtual Network ID, if provided"}]'
+    {"type": "array", "items": {"type": "int", "name": "vlan"}}, "key": "", "display":
+    "", "description": "List of active, unpruned VLANs on a trunk port"}, {"name":
+    "vlanName", "type": "string", "key": "", "display": "", "description": "VLAN name
+    if assigned"}, {"name": "vni", "type": "int", "key": "", "display": "", "description":
+    "Virtual Network ID, if provided"}]'
 - command: inventory describe --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: inventory describe
