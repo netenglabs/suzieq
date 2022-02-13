@@ -171,6 +171,10 @@ class SqPandasEngine(SqEngineObj):
             dep_fields = [x for x in dep_fields if x not in aug_fields]
             addnl_fields += dep_fields
 
+        # Remove augmented fields from being passed to DB read.
+        # Augmented fields are computed from other fields
+        fields = [x for x in fields if x not in aug_fields]
+
         for fld in key_fields:
             if fld not in fields+addnl_fields:
                 addnl_fields.insert(0, fld)
