@@ -4,19 +4,19 @@ file
 """
 # pylint: disable=no-name-in-module
 
-from dataclasses import dataclass
 import getpass
+import re
+import sys
+from dataclasses import dataclass
 from ipaddress import ip_address
 from os import getenv
 from pathlib import Path
-import re
 from typing import Dict, List, Optional
-from pydantic import BaseModel, Field, ValidationError
 
 import yaml
+from pydantic import BaseModel, Field, ValidationError
+from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 from suzieq.shared.exceptions import InventorySourceError
-from suzieq.poller.controller.base_controller_plugin import \
-    ControllerPlugin
 
 
 @dataclass
@@ -375,6 +375,15 @@ def validate_hostname(in_hostname: str) -> bool:
     """
     try:
         ip_address(in_hostname)
+        if sys.version_info[:3] < (3, 8, 12):
+            # for python versions before 3.8.12, the ip_address function
+            # doesn't tolerate addresses having octets with leading 0, like
+            # "10.00.0.1"
+            # The following regex makes the validation consistent across
+            # python versions
+            wrong_ip_pattern = r'(\.0\d+\.?)|(^0\d+\.?)'
+            if re.search(wrong_ip_pattern, in_hostname):
+                return False
         return True
     except ValueError:
         # check if it was a misspelled ipv4

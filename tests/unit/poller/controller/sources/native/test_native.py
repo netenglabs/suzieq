@@ -122,17 +122,30 @@ def test_validate_inventory(default_config):
     with pytest.raises(ValidationError, match=r".*'wrong' not supported.*"):
         SqNativeFile(config.copy(), validate=True)
 
-    # wrong ip address
-    wrong_addresses = [
-        '192.168.0',
-        '192.168.00.1',
-        '10.0.1.9000',
-        'not_a_domain.com'
+
+@pytest.mark.controller_source
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_native
+@pytest.mark.asyncio
+@pytest.mark.parametrize('address', [
+    '192.168.0',
+    '192.168.00.1',
+    '10.0.1.9000',
+    'not_a_domain.com'
+])
+def test_wrong_addresses(address: str, default_config):
+    """Validate wrong addresses formats
+
+    Args:
+        address (str): wrong address to validate
+    """
+    config = default_config
+    config['hosts'] = [
+        {'url': f'ssh://vagrant@{address} password=my-password'}
     ]
-    for wa in wrong_addresses:
-        config['hosts'] = [
-            {'url': f'ssh://vagrant@{wa} password=my-password'}
-        ]
-        with pytest.raises(ValidationError,
-                           match=r'.*Invalid hostname or address.*'):
-            SqNativeFile(config.copy(), validate=True)
+    with pytest.raises(ValidationError,
+                       match=r'.*Invalid hostname or address.*'):
+        SqNativeFile(config.copy(), validate=True)
