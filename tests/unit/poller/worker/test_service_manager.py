@@ -4,14 +4,17 @@ ServiceManager component unit tests
 import asyncio
 import os
 from pathlib import Path
-from typing import Callable
+from typing import Callable, Dict
 from unittest.mock import patch
 
 import pytest
+from suzieq.db.parquet.parquetdb import SqParquetDB
 from suzieq.poller.worker.services.service import Service
 from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.shared.exceptions import SqPollerConfError
 from tests.conftest import get_async_task_mock, suzieq_test_svc_dir
+
+# pylint: disable=protected-access
 
 SERVICE_DIR = './suzieq/config'
 SCHEMA_DIR = f'{SERVICE_DIR}/schema'
@@ -32,7 +35,8 @@ def _init_service_manager(add_tasks: Callable = None,
                           run_mode: str = 'forever',
                           interval: int = 30,
                           service_only: str = None,
-                          exclude_svcs: str = None):
+                          exclude_svcs: str = None,
+                          cfg: Dict = None):
     # Create add tasks method mock
     if not add_tasks:
         add_tasks = get_async_task_mock()
@@ -51,6 +55,7 @@ def _init_service_manager(add_tasks: Callable = None,
                           queue,
                           run_mode,
                           interval,
+                          cfg,
                           **other_params)
 
 
@@ -64,11 +69,15 @@ def test_init_service_manager():
     run_mode = 'forever'
     interval = 30
     add_tasks = get_async_task_mock()
+    dummy_cfg = {
+        'dummy': 'cfg'
+    }
     service_manager = ServiceManager(add_tasks,
                                      SERVICE_DIR,
                                      SCHEMA_DIR,
                                      asyncio.Queue(),
                                      run_mode,
+                                     dummy_cfg,
                                      interval)
     # Check if the service manager has been correctly initialized
     assert service_manager.add_task_fn == add_tasks
@@ -76,6 +85,7 @@ def test_init_service_manager():
     assert service_manager.schema_dir == SCHEMA_DIR
     assert service_manager.output_queue
     assert service_manager.default_interval == 30
+    assert service_manager.cfg == dummy_cfg
     assert service_manager.run_mode == run_mode
 
     # Check the list of services
@@ -269,3 +279,23 @@ async def test_set_nodes():
     await svc_mgr.set_nodes(node_list)
     # Check if all the nodes have the inventory set
     assert all(s.node_postcall_list == node_list for s in svc_mgr.services)
+
+
+@pytest.mark.poller
+@pytest.mark.poller_unit_tests
+@pytest.mark.poller_worker
+@pytest.mark.service_manager
+def test_get_db_access():
+    """Test the function returning the dbobject for accessing the database
+    """
+    svc_mgr = _init_service_manager()
+    svc_mgr.outputs = ['parquet']
+    db_obj = svc_mgr._get_db_access({})
+    assert db_obj, 'Parquet DBobj not retrieved'
+    assert isinstance(db_obj, SqParquetDB)
+
+    # Check if the result is None if the output is  gather
+    svc_mgr = _init_service_manager()
+    svc_mgr.outputs = ['gather']
+    db_obj = svc_mgr._get_db_access({})
+    assert not db_obj, f'Expected None but {type(db_obj).__name__} returned'
