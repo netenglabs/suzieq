@@ -40,3 +40,13 @@ class Manager(ControllerPlugin):
         Returns:
             int: number of desired workers
         """
+    @classmethod
+    def default_type(cls) -> str:
+        return 'static'
+
+    @classmethod
+    def get_data_model(cls):
+        """This is only temporary. In future release I will add manager
+        validation via pydantic
+        """
+        raise NotImplementedError

@@ -35,7 +35,9 @@ class StaticManager(Manager, InventoryAsyncPlugin):
     the path for inventory files
     """
 
-    def __init__(self, config_data: Dict = None):
+    def __init__(self, config_data: Dict = None, validate: bool = True):
+
+        super().__init__(config_data, validate)
 
         self._workers_count = config_data.get("workers", 1)
 
@@ -96,6 +98,13 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                 self._args_to_pass.append(f'--{arg}', )
                 # All the arguments should be string
                 self._args_to_pass += [str(v) for v in val_list]
+
+    @classmethod
+    def get_data_model(cls):
+        """This is only temporary. In future release I will add mananger
+        validation via pydantic
+        """
+        raise NotImplementedError
 
     async def apply(self, inventory_chunks: List[Dict]):
         """Apply the inventory chyunks to the pollers
@@ -205,8 +214,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
 
                 self._running_workers.update(self._waiting_workers)
                 new_ptasks = {i: asyncio.create_task(
-                                    monitor_process(p, f'WORKER {i}'))
-                              for i, p in self._waiting_workers.items()}
+                    monitor_process(p, f'WORKER {i}'))
+                    for i, p in self._waiting_workers.items()}
                 poller_wait_tasks.update(new_ptasks)
                 tasks += list(new_ptasks.values())
                 self._waiting_workers = {}
