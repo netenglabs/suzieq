@@ -2,14 +2,55 @@
 This module contains the logic of the plugin in charge of importing an
 inventory from an Ansible inventory file.
 """
+# pylint: disable=no-self-argument
+
 from pathlib import Path
-from typing import Dict
+from typing import Dict, Union
 import logging
+from pydantic import Field, validator
 import yaml
-from suzieq.poller.controller.source.base_source import Source
-from suzieq.shared.exceptions import InventorySourceError
+from suzieq.poller.controller.source.base_source import Source, SourceModel
 
 logger = logging.getLogger(__name__)
+
+
+class AnsibleSourceModel(SourceModel):
+    """Model used to validate ansible input format
+    """
+    hosts: Union[str, Dict] = Field(alias='path')
+
+    @validator('hosts')
+    def validate_and_set(cls, path: str):
+        """checks if the path is valid
+        """
+        if isinstance(path, str):
+            if not Path(path).is_file():
+                raise ValueError(
+                    f"No file found at {path}")
+
+            try:
+                with open(path, 'r') as f:
+                    inventory = yaml.safe_load(f)
+            except Exception as error:
+                raise ValueError(
+                    f'Unable to process Ansible inventory: {str(error)}'
+                )
+
+        elif isinstance(path, Dict):
+            inventory = path
+        if '_meta' not in inventory \
+                or 'hostvars' not in inventory['_meta']:
+            if isinstance(inventory, list) and 'namespace' in inventory[0]:
+                raise ValueError(
+                    'Invalid Ansible inventory, found Suzieq inventory'
+                )
+            raise ValueError(
+                'Invalid Ansible inventory, missing keys: _meta and / or'
+                "hostvars\n \tUse 'ansible-inventory --list' to create "
+                'the correct file'
+            )
+
+        return inventory['_meta']['hostvars']
 
 
 class AnsibleInventory(Source):
@@ -17,29 +58,19 @@ class AnsibleInventory(Source):
     of 'ansible-inventory command' as input of the poller.
     """
 
-    def __init__(self, input_data: dict) -> None:
-        self.ansible_file = ''
-        self.namespace = ''
-        super().__init__(input_data)
+    @classmethod
+    def get_data_model(cls):
+        return AnsibleSourceModel
 
     def _load(self, input_data):
-        self.ansible_file = input_data.get('path', None)
-        self.namespace = input_data.get('namespace', None)
+        # pydantic aliases mess up things
+        # put back data in 'hosts' from the 'path' alias
+        if not self._validate:
+            input_data['hosts'] = input_data.pop('path', {})
+
+        super()._load(input_data)
         inventory = self._get_inventory()
         self.set_inventory(inventory)
-
-    def _validate_config(self, input_data: dict):
-        self._valid_fields.extend(['path'])
-        super()._validate_config(input_data)
-
-        if not input_data.get('path'):
-            raise InventorySourceError(
-                f"{self._name} 'path' field must be specified"
-            )
-
-        if not Path(input_data['path']).is_file():
-            raise InventorySourceError(
-                f"{self._name} No file found at {input_data['path']}")
 
     def _get_inventory(self) -> Dict:
         """Parse the output of ansible-inventory command for processing.
@@ -50,48 +81,26 @@ class AnsibleInventory(Source):
         us. This function takes the JSON output of that command and gathers
         the data needed to start polling.
 
-        Raises:
-            InventorySourceError: raised if the file is not valid or cannot
-                be read.
-
         Returns:
             Dict: A list containing a dictionary of data with the data to
                 connect to the host.
         """
-        try:
-            with open(self.ansible_file, 'r') as f:
-                inventory = yaml.safe_load(f)
-        except Exception as error:
-            raise InventorySourceError(
-                f'Unable to process Ansible inventory: {str(error)}'
-            )
 
-        if '_meta' not in inventory or 'hostvars' not in inventory['_meta']:
-            if isinstance(inventory, list) and 'namespace' in inventory[0]:
-                raise InventorySourceError(
-                    'Invalid Ansible inventory, found Suzieq inventory'
-                )
-            raise InventorySourceError(
-                'Invalid Ansible inventory, missing keys: _meta and / or'
-                "hostvars\n \tUse 'ansible-inventory --list' to create "
-                'the correct file'
-            )
-
-        in_hosts = inventory['_meta']['hostvars']
+        in_hosts = self._data.hosts
         out_inv = {}
         for host in in_hosts:
             entry = in_hosts[host]
 
             ansible_host = entry.get('ansible_host')
             if not ansible_host:
-                logger.warning(f'{self._name} skipping ansible device '
+                logger.warning(f'{self.name} skipping ansible device '
                                'without hostname')
                 continue
 
             ansible_user = entry.get('ansible_user')
             if not ansible_user:
                 logger.warning(
-                    f'{self._name} skipping ansible device without username')
+                    f'{self.name} skipping ansible device without username')
                 continue
 
             # Get password if any
@@ -113,7 +122,7 @@ class AnsibleInventory(Source):
             keyfile = entry.get('ansible_ssh_private_key_file', None)
             if keyfile and not Path(keyfile).exists():
                 logger.warning(
-                    f"{self._name} Ignored host {ansible_host} because "
+                    f"{self.name} Ignored host {ansible_host} because "
                     f"associated keyfile {keyfile} does not exist"
                 )
                 continue
@@ -125,10 +134,10 @@ class AnsibleInventory(Source):
                 'password': password,
                 'transport': transport,
                 'devtype': devtype,
-                'namespace': self.namespace,
+                'namespace': self._namespace,
                 'ssh_keyfile': keyfile,
                 'hostname': None
             }
-            out_inv[f"{self.namespace}.{ansible_host}.{port}"] = host
+            out_inv[f"{self._namespace}.{ansible_host}.{port}"] = host
 
         return out_inv
