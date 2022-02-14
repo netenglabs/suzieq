@@ -1,10 +1,33 @@
-import getpass
-from os import getenv
-from typing import Dict
+# pylint: disable=no-self-argument
+from typing import Dict, Optional
+
+from pydantic import Field, validator
 
 from suzieq.poller.controller.credential_loader.base_credential_loader import \
-    CredentialLoader
+    CredentialLoader, CredentialLoaderModel, check_credentials
+from suzieq.poller.controller.utils.inventory_utils import get_sensitive_data
 from suzieq.shared.exceptions import InventorySourceError
+
+
+class StaticModel(CredentialLoaderModel):
+    """Model for static credential loader
+    """
+    username: Optional[str]
+    password: Optional[str]
+    ssh_passphrase: Optional[str] = Field(alias='ssh-passphrase')
+    keyfile: Optional[str]
+
+    @validator('password', 'ssh_passphrase')
+    def validate_sens_field(cls, field):
+        """Validate if the sensitive var was passed correctly
+        """
+        try:
+            if field == 'ask':
+                # the field is valid, but I cannot ask here the value
+                return field
+            return get_sensitive_data(field)
+        except InventorySourceError as e:
+            raise ValueError(e)
 
 
 class StaticLoader(CredentialLoader):
@@ -13,17 +36,9 @@ class StaticLoader(CredentialLoader):
     Loads the credentials inside all devices
     """
 
-    def __init__(self, init_data: Dict) -> None:
-        self._password = None
-        self._passphrase = None
-        self._keyfile = None
-        self._username = None
-        super().__init__(init_data)
-
-    def _validate_config(self, config: Dict):
-        self._valid_fields.extend(['username', 'password',
-                                   'ssh-passphrase', 'keyfile'])
-        return super()._validate_config(config)
+    @classmethod
+    def get_data_model(cls):
+        return StaticModel
 
     def init(self, init_data: dict):
         """Initialize parameters common to all devices
@@ -34,53 +49,39 @@ class StaticLoader(CredentialLoader):
         Raises:
             InventorySourceError: Invalid env argument
         """
-        self._username = init_data.get('username')
+        if not self._validate:
+            # fix pydantic alias
+            init_data['ssh_passphrase'] = init_data.pop('ssh-passphrase', None)
+        super().init(init_data)
 
-        if init_data.get('keyfile'):
-            self._keyfile = init_data['keyfile']
+        if self._data.password == 'ask':
+            try:
+                self._data.password = get_sensitive_data(
+                    self._data.password,
+                    f'{self.name} Password to login to device: ')
+            except InventorySourceError as e:
+                raise InventorySourceError(f'{self.name} {e}')
 
-        if init_data.get('password'):
-            password = init_data['password']
-            if password.startswith('env:'):
-                self._password = getenv(password.split('env:')[1], '')
-                if not self._password:
-                    raise InventorySourceError(
-                        f'No password in environment '
-                        f'variable "{password.split("env:")[1]}"')
-            elif password.startswith('plain:'):
-                self._password = password.split("plain:")[1]
-            elif password.startswith('ask'):
-                self._password = getpass.getpass(
-                    f'{self._name} Password to login to device: ')
-            else:
-                raise InventorySourceError(
-                    f'{self._name} unknown password method.'
-                    'Supported methods are ["ask", "plain:", "env:"]')
-
-        if init_data.get('ssh-passphrase'):
-            passphrase = init_data['ssh-passphrase']
-            if passphrase.startswith('env:'):
-                self._passphrase = getenv(
-                    passphrase.split('env:')[1], '')
-                if not self._passphrase:
-                    raise InventorySourceError(
-                        f'No passphrase in environment '
-                        f'variable "{passphrase.split("env:")[1]}"')
-            elif passphrase.startswith('plain:'):
-                self._passphrase = passphrase.split("plain:")[1]
-            elif passphrase.startswith('ask'):
-                self._passphrase = getpass.getpass(
-                    f'{self._name} Passphrase to decode private key file: '
+        if self._data.ssh_passphrase == 'ask':
+            try:
+                self._data.ssh_passphrase = get_sensitive_data(
+                    self._data.ssh_passphrase,
+                    f'{self.name} Passphrase to decode private key file: '
                 )
+            except InventorySourceError as e:
+                raise InventorySourceError(f'{self.name} {e}')
 
     def load(self, inventory: Dict[str, Dict]):
 
         for device in inventory.values():
             dev_creds = {
-                'ssh_keyfile': device.get('ssh_keyfile') or self._keyfile,
-                'password': device.get('password') or self._password,
-                'username': device.get('username') or self._username,
-                'passphrase': device.get('passphrase') or self._passphrase
+                'ssh_keyfile': device.get('ssh_keyfile') or self._data.keyfile,
+                'password': device.get('password') or self._data.password,
+                'username': device.get('username') or self._data.username,
+                'passphrase': device.get('passphrase')
+                or self._data.ssh_passphrase
             }
 
             self.write_credentials(device, dev_creds)
+
+        check_credentials(inventory)
