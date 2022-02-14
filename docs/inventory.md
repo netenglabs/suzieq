@@ -71,6 +71,15 @@ namespaces:
   auth: credentials-from-file-0
 ```
 
+## <a name='sensitive-data'></a>Sensible data
+A sensitive data is an information that the user doesn't want to store in plain-text inside the inventory.
+For this reason, SuzieQ inventory now supports three different options to store these kind of informations
+
+- `plain:<password-in-plaintext>` or `<password-in-plaintext>`: the sensitive information is stored as is in the inventory
+- `env:<ENV_VARIABLE>`: the sensitive information is stored in an environment variable
+- `ask`: the user can write the sensitive information on the stdin
+
+Currently this method is used to specify passwords, passphrases and tokens.
 ## <a name='inventory-sources'></a>Sources
 
 The device sources currently supported are:
@@ -132,7 +141,11 @@ Now you can set the path of the ansible inventory in the source:
 
 ### <a name='source-netbox'></a>Netbox
 
-[Netbox](https://netbox.readthedocs.io/en/stable/) is often used to store devices type, management address and other useful information to be used in network automation. Suzieq can pull device data from Netbox selecting them by tag (currently only one per each source). To do so a token to access the netbox API is required as well as the netbox instance url.
+[Netbox](https://netbox.readthedocs.io/en/stable/) is often used to store devices type, management address and other useful information to be used in network automation. Suzieq can pull device data from Netbox selecting them by tag (currently only one per each source).
+To do so a token to access the netbox API is required as well as the netbox instance url.
+
+The token is considered a [sensitive data](#sensitive-data), so it can be specified via an environment variable using the format `env:ENV_TOKEN`.
+
 Since Netbox is a _dynamic source_, the data are periodically pulled, the period can be set to any desired number in seconds (default is 3600).
 
 !!!Info
@@ -172,7 +185,7 @@ sources:
 auths:
 - name: auth-st
   username: user
-  passowrd: my-password
+  password: my-password
 
 namespaces:
 - name: netbox-sitename # devices namespaces equal to their site names
@@ -232,12 +245,6 @@ The simplest method is defining either username and password/private key.
   password: plain:pass
 ```
 
-where `password` can be specified in plaintext, as an environment variable or to be asked to the user:
-
-- `plain:<password-in-plaintext>`
-- `env:<ENV_VARIABLE>`
-- `ask`
-
 In case a private key is used to authenticate:
 ```yaml
 - name: suzieq-user
@@ -245,7 +252,10 @@ In case a private key is used to authenticate:
   key-passphrase: ask
 ```
 
-Where `key-passphrase` is the passphrase of the private key. As the `password` field, it can be set as plaintext, env variable or to be asked to the user.
+Where `key-passphrase` is the passphrase of the private key.
+
+Both `passoword` and `key-passphrase` are considered [sensitive data](#sensitive-data).
+For this reason they can be set as plaintext, env variable or asked to the user via stdin.
 
 ### <a name='cred-file'></a>Credential file
 
