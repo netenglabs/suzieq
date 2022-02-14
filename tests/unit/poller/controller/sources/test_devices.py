@@ -1,10 +1,12 @@
 import asyncio
 from typing import Dict
 from unittest.mock import MagicMock, patch
+from pydantic import ValidationError
 
 import pytest
 from suzieq.poller.controller.source.base_source import Source
 from suzieq.shared.exceptions import InventorySourceError
+from suzieq.poller.controller.utils.inventory_utils import DeviceModel
 
 # pylint: disable=protected-access
 
@@ -58,6 +60,7 @@ async def test_devices_set(inventory: Dict):
         inventory (Dict): inventory to be loaded
     """
     config = {
+        'namespace': 'ns',
         'device': {
             'ignore-known-hosts': True,
             'jump-host': None,
@@ -68,9 +71,9 @@ async def test_devices_set(inventory: Dict):
         }
     }
 
-    with patch.multiple(Source, _load=MagicMock(),
+    with patch.multiple(Source, _load=MagicMock(), name='n',
                         set_inventory=set_inventory_mock):
-        src = Source(config)
+        src = Source(config.copy())
         assert src._device == config['device']
 
         src.set_inventory(inventory)
@@ -97,10 +100,8 @@ def test_wrong_device_config():
     """Test device wrong configuration
     """
     config = {
-        'device': {
-            'wrong': 'parameter'
-        }
+        'wrong': 'parameter'
     }
 
-    with pytest.raises(InventorySourceError):
-        Source(config)
+    with pytest.raises(ValidationError):
+        DeviceModel(**config)

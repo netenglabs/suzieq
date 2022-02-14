@@ -4,6 +4,7 @@ import time
 from multiprocessing import Process
 from pathlib import Path
 from typing import Any, Dict, Tuple
+from pydantic import ValidationError
 
 import pytest
 from suzieq.poller.controller.credential_loader.static import StaticLoader
@@ -150,22 +151,22 @@ async def test_valid_config(server_conf: Dict, default_config):
     config = default_config
     config = update_config(server_conf, config)
 
-    src = Netbox(config)
+    src = Netbox(config.copy())
     assert src.name == config['name']
-    assert src._protocol == config['url'].split(':')[0]
-    assert src._host == '127.0.0.1'
-    assert src._port == server_conf['port']
-    assert src._tag == config['tag']
-    assert src._token == config['token']
+    assert src._server.protocol == config['url'].split(':')[0]
+    assert src._server.host == '127.0.0.1'
+    assert src._server.port == str(server_conf['port'])
+    assert src._data.tag == config['tag']
+    assert src._data.token == config['token']
     assert isinstance(src._auth, StaticLoader)
     if config.get('ssl-verify') is not None:
-        assert src._ssl_verify == config['ssl-verify']
+        assert src._data.ssl_verify == config['ssl-verify']
     else:
         # default ssl config
-        if src._protocol == 'http':
-            assert src._ssl_verify is False
-        elif src._protocol == 'https':
-            assert src._ssl_verify is True
+        if src._server.protocol == 'http':
+            assert src._data.ssl_verify is False
+        elif src._server.protocol == 'https':
+            assert src._data.ssl_verify is True
 
     await asyncio.wait_for(src.run(), 10)
 
@@ -193,13 +194,13 @@ async def test_netbox_invalid_server_config(server_conf: Dict, default_config):
     # set unexistent url
     old_url, config['url'] = config['url'], 'http://0.0.0.0:80'
     with pytest.raises(InventorySourceError):
-        src = Netbox(config)
+        src = Netbox(config.copy())
         await asyncio.wait_for(src.run(), 10)
     config['url'] = old_url
 
     # set invalid tag
     old_tag, config['tag'] = config['tag'], 'wrong_tag'
-    src = Netbox(config)
+    src = Netbox(config.copy())
     await asyncio.wait_for(src.run(), 10)
     cur_inv = await asyncio.wait_for(src.get_inventory(), 5)
     assert cur_inv == {}
@@ -208,7 +209,7 @@ async def test_netbox_invalid_server_config(server_conf: Dict, default_config):
     # set invalid token
     old_token, config['token'] = config['token'], 'WRONG-TOKEN'
     with pytest.raises(InventorySourceError):
-        src = Netbox(config)
+        src = Netbox(config.copy())
         await asyncio.wait_for(src.run(), 10)
     config['token'] = old_token
 
@@ -226,29 +227,29 @@ def test_netbox_invalid_config(default_config):
 
     # set invalid url
     old_url, config['url'] = config['url'], 'not_an_url'
-    with pytest.raises(InventorySourceError, match=r".* invalid url provided"):
-        Netbox(config)
+    with pytest.raises(ValidationError,
+                       match=r".* Unable to parse hostname .*"):
+        Netbox(config.copy())
     config['url'] = old_url
 
     # add invalid field
     config['invalid'] = 'field'
-    with pytest.raises(InventorySourceError, match=r".* unknown fields "
-                       r"\['invalid'\]"):
-        Netbox(config)
+    with pytest.raises(ValidationError, match=r".* extra fields not "
+                       r"permitted .*"):
+        Netbox(config.copy())
     config.pop('invalid')
 
     # missing auth
     old_auth = config.pop('auth')
     with pytest.raises(InventorySourceError, match=r".* Netbox must have an "
                        "'auth' set in the 'namespaces' section"):
-        Netbox(config)
+        Netbox(config.copy())
     config['auth'] = old_auth
 
     # missing mandatory field
     old_token = config.pop('token')
-    with pytest.raises(InventorySourceError, match=r".* Invalid config "
-                       r"missing fields \['token'\]"):
-        Netbox(config)
+    with pytest.raises(ValidationError, match=r".* field required .*"):
+        Netbox(config.copy())
     config['token'] = old_token
 
 
@@ -280,7 +281,7 @@ async def test_ssl_misconfiguration(server_conf: Dict, default_config):
         # set ssl verify over an http connection
         config['ssl-verify'] = True
 
-        with pytest.raises(InventorySourceError):
+        with pytest.raises(ValidationError):
             src = Netbox(config)
             await asyncio.wait_for(src.run(), 10)
 
@@ -300,9 +301,9 @@ def test_netbox_automatic_ssl_verify(default_config):
         config.pop('ssl-verify')
     config['url'] = 'http://127.0.0.1:22'
 
-    n = Netbox(config)
-    assert not n._ssl_verify
+    n = Netbox(config.copy(), validate=True)
+    assert not n._data.ssl_verify
 
     config['url'] = 'https://127.0.0.1:22'
-    n = Netbox(config)
-    assert n._ssl_verify
+    n = Netbox(config.copy(), validate=True)
+    assert n._data.ssl_verify

@@ -1,8 +1,10 @@
 import asyncio
 from typing import Dict
+from pydantic import ValidationError
 
 import pytest
-from suzieq.poller.controller.source.ansible import AnsibleInventory
+from suzieq.poller.controller.source.ansible import (AnsibleInventory,
+                                                     AnsibleSourceModel)
 from suzieq.shared.exceptions import InventorySourceError
 from tests.unit.poller.shared.utils import (get_src_sample_config,
                                             read_yaml_file)
@@ -50,14 +52,14 @@ async def test_valid_inventory(data_path: Dict, default_config):
         inv_path (str): path to add in the configuration
         result_path (str): path with result to compare
     """
+    # pylint: disable=protected-access
     config = default_config
     config['path'] = data_path['inventory']
 
-    inv = AnsibleInventory(config)
+    inv = AnsibleInventory(config.copy(), validate=True)
 
     assert inv.name == config['name']
-    assert inv.namespace == config['namespace']
-    assert inv.ansible_file == config['path']
+    assert inv._namespace == config['namespace']
 
     cur_inv = await asyncio.wait_for(inv.get_inventory(), 5)
     assert cur_inv == read_yaml_file(data_path['results'])
@@ -72,18 +74,19 @@ async def test_valid_inventory(data_path: Dict, default_config):
 def test_invalid_path(default_config):
     """Test ansible with an invalid file path
     """
-    config = default_config
+    config = default_config.copy()
 
     # wrong path
     config['path'] = 'wrong/path'
 
-    with pytest.raises(InventorySourceError):
-        AnsibleInventory(config)
+    with pytest.raises(ValidationError):
+        AnsibleInventory(config, validate=True)
 
     # missing 'path' field
+    config = default_config.copy()
     config.pop('path')
-    with pytest.raises(InventorySourceError):
-        AnsibleInventory(config)
+    with pytest.raises(ValidationError):
+        AnsibleInventory(config, validate=True)
 
 
 @pytest.mark.controller_source_ansible
@@ -103,7 +106,7 @@ async def test_skipping_inventory(path: str, default_config):
     config = default_config
     config['path'] = path
 
-    inv = AnsibleInventory(config)
+    inv = AnsibleInventory(config, validate=True)
 
     cur_inv = await asyncio.wait_for(inv.get_inventory(), 5)
     # the inventory is empty because all devices are skipped
@@ -126,5 +129,5 @@ def test_invalid_inventory(path: str, default_config):
     config = default_config
     config['path'] = path
 
-    with pytest.raises(InventorySourceError):
-        AnsibleInventory(config)
+    with pytest.raises(ValidationError):
+        AnsibleInventory(config, validate=True)

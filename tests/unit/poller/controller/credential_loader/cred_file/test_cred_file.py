@@ -1,5 +1,6 @@
 from typing import Dict
 from unittest.mock import patch
+from pydantic import ValidationError
 
 import pytest
 from suzieq.poller.controller.credential_loader.cred_file import CredFile
@@ -33,26 +34,26 @@ _WRONG_CRED_FILE = ['tests/unit/poller/controller/credential_loader/'
                     'data/wrong_files/not_a_yaml_file.yaml']
 
 
-def init_mock(self, data: Dict):
-    """CredFile.init mock function
+# def init_mock(self, data: Dict):
+#     """CredFile.init mock function
 
-    This function load the content of data['path'] into the CredFile
-    object.
-    The original version of the init function expect to read the
-    credentials from a path.
-    This mock function loads the data directly into object
+#     This function load the content of data['path'] into the CredFile
+#     object.
+#     The original version of the init function expect to read the
+#     credentials from a path.
+#     This mock function loads the data directly into object
 
 
-    The credentials are passed into 'path' because otherwise I need to
-    update also the plugin validation. If for example I used the 'cred'
-    key, the plugin will raise an exception because it doesn't recognize
-    the 'cred' field
+#     The credentials are passed into 'path' because otherwise I need to
+#     update also the plugin validation. If for example I used the 'cred'
+#     key, the plugin will raise an exception because it doesn't recognize
+#     the 'cred' field
 
-    Args:
-        data (Dict): dictionary with credentials under 'path' key
-    """
-    # pylint: disable=protected-access
-    self._raw_credentials = data['path']
+#     Args:
+#         data (Dict): dictionary with credentials under 'path' key
+#     """
+#     # pylint: disable=protected-access
+#     self._raw_credentials = data['path']
 
 
 @pytest.mark.poller
@@ -76,7 +77,7 @@ def test_credential_load(data_path: Dict):
         'path': data_path['credentials']
     }
 
-    cf = CredFile(init_data)
+    cf = CredFile(init_data, validate=True)
     inv = read_yaml_file(data_path['inventory'])
     cf.load(inv)
 
@@ -96,8 +97,8 @@ def test_wrong_cred_file_format(cred_file: str):
     Args:
         cred_file (str): credential file path
     """
-    with pytest.raises(InventorySourceError):
-        CredFile({'path': cred_file})
+    with pytest.raises(ValidationError):
+        CredFile({'name': 'n', 'path': cred_file}, validate=True)
 
 
 @pytest.mark.poller
@@ -117,67 +118,55 @@ def test_wrong_credentials(data_path: Dict):
     creds = read_yaml_file(data_path['credentials'])
 
     # missing 'path' field in input data
-    with pytest.raises(InventorySourceError):
-        CredFile({})
+    # with pytest.raises(ValidationError):
+    #     CredFile({'name': 'n'}, validate=True)
 
-    # credential file doesn't exists
-    with pytest.raises(InventorySourceError):
-        CredFile({'path': 'wrong/path'})
+    # # credential file doesn't exists
+    # with pytest.raises(ValidationError):
+    #     CredFile({'name': 'n', 'path': 'wrong/path'}, validate=True)
 
     # invalid credential file
-    with patch.multiple(CredFile, init=init_mock):
 
-        # empty credentials
-        cred_data = {
-            'name': 'file0',
-            'path': []
-        }
-        with pytest.raises(InventorySourceError):
-            cr = CredFile(cred_data)
-            cr.load(inv)
+    # empty credentials
+    cred_data = {
+        'name': 'file0',
+        'path': []
+    }
+    with pytest.raises(InventorySourceError):
+        cr = CredFile(cred_data.copy(), validate=False)
+        cr.load(inv)
 
-        # wrongly formatted credentials
-        # missing 'namespace' field
-        cred_data['path'] = [{'devices': []}]
-        with pytest.raises(InventorySourceError):
-            cr = CredFile(cred_data)
-            cr.load(inv)
+    # wrongly formatted credentials
+    # missing 'namespace' field
+    cred_data['path'] = [{'devices': []}]
+    with pytest.raises(ValidationError):
+        cr = CredFile(cred_data.copy(), validate=False)
+        cr.load(inv)
 
-        # wrong namespace
-        cred_data['path'] = [
-            {
-                'devices': [],
-                'namespace': 'wrong_namespace'
-            }
-        ]
-        with pytest.raises(InventorySourceError):
-            cr = CredFile(cred_data)
-            cr.load(inv)
+    # credentials specified in both inventory and credential file
+    cred_dev = creds[0]['devices'][0]
+    cred_dev['username'] = 'user'
+    for node in inv.values():
+        if cred_dev.get('address') and \
+                cred_dev['address'] == node['address']:
+            node['username'] = 'user'
+        elif cred_dev.get('hostname') and \
+                cred_dev['hostname'] == node['hostname']:
+            node['username'] = 'user'
+    cred_data['path'] = creds
+    with pytest.raises(InventorySourceError):
+        cr = CredFile(cred_data.copy(), validate=False)
+        cr.load(inv)
+    cred_dev.pop('username')
 
-        # credentials specified in both inventory and credential file
-        cred_dev = creds[0]['devices'][0]
-        cred_dev['username'] = 'user'
-        for node in inv.values():
-            if cred_dev.get('address') and \
-                    cred_dev['address'] == node['address']:
-                node['username'] = 'user'
-            elif cred_dev.get('hostname') and \
-                    cred_dev['hostname'] == node['hostname']:
-                node['username'] = 'user'
-        cred_data['path'] = creds
-        with pytest.raises(InventorySourceError):
-            cr = CredFile(cred_data)
-            cr.load(inv)
-        cred_dev.pop('username')
+    # load an empty inventory
+    cred_data['path'] = creds
+    cr = CredFile(cred_data, validate=False)
+    cr.load({})
 
-        # load an empty inventory
-        cred_data['path'] = creds
-        cr = CredFile(cred_data)
-        cr.load({})
-
-        # node with missing credentials
-        creds[0]['devices'].pop()
-        cred_data['path'] = creds
-        with pytest.raises(InventorySourceError):
-            cr = CredFile(cred_data)
-            cr.load(inv)
+    # node with missing credentials
+    creds[0]['devices'].pop()
+    cred_data['path'] = creds
+    with pytest.raises(InventorySourceError):
+        cr = CredFile(cred_data, validate=False)
+        cr.load(inv)
