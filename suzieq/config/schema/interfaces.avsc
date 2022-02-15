@@ -73,6 +73,18 @@
             "type": "string",
             "description": "VLAN name if assigned"
         },
+	{
+	    "name": "vlanList",
+	    "type": {
+                "type": "array",
+                "items": {
+                    "type": "int",
+                    "name": "vlan"
+                }
+            },
+	    "description": "List of active, unpruned VLANs on a trunk port",
+	    "depends": "namespace hostname ifname portmode"
+	 },
         {
             "name": "ipAddressList",
             "type": {
@@ -143,6 +155,12 @@
             "type": "long",
             "display": 6
         },
+	{
+	    "name": "portmode",
+	    "type": "string",
+	    "description": "switchport mode: access, trunk or routed",
+	    "depends": "namespace hostname ifname adminState type ipAddressList ip6AddressList"
+	 },
         {
             "name": "hostname",
             "type": "string",

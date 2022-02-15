@@ -256,7 +256,7 @@ class TopologyObj(SqPandasEngine):
             mac_df = self._get_table_sqobj('macs')\
                          .get(namespace=self._namespaces, local=True,
                               columns=['namespace', 'hostname', 'vlan',
-                                       'macaddr', 'oif'])
+                                       'macaddr', 'oif', 'remoteVtepIp'])
             df = df.merge(mac_df,
                           on=['namespace', 'hostname', 'macaddr'],
                           how='outer') \

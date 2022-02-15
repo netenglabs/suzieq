@@ -155,7 +155,7 @@ class SqPandasEngine(SqEngineObj):
         if columns == ['*']:
             drop_cols.append('sqvers')
 
-        aug_fields = sch.get_augmented_fields()
+        aug_fields = sch.get_augmented_fields(fields)
 
         if 'timestamp' not in fields:
             fields.append('timestamp')
@@ -168,7 +168,12 @@ class SqPandasEngine(SqEngineObj):
         # Order matters. Don't put this before the missing key fields insert
         for f in aug_fields:
             dep_fields = sch.get_parent_fields(f)
+            dep_fields = [x for x in dep_fields if x not in aug_fields]
             addnl_fields += dep_fields
+
+        # Remove augmented fields from being passed to DB read.
+        # Augmented fields are computed from other fields
+        fields = [x for x in fields if x not in aug_fields]
 
         for fld in key_fields:
             if fld not in fields+addnl_fields:
@@ -244,16 +249,17 @@ class SqPandasEngine(SqEngineObj):
                     return pd.DataFrame(columns=table_df.columns.tolist())
 
             if view == "all" or not active_only:
-                table_df.drop(columns=drop_cols, inplace=True)
+                table_df = table_df.drop(columns=drop_cols, errors='ignore')
             else:
                 table_df = table_df.query('active') \
-                    .drop(columns=drop_cols)
+                    .drop(columns=drop_cols, errors='ignore')
+
             if 'timestamp' in table_df.columns and not table_df.empty:
                 table_df['timestamp'] = humanize_timestamp(
                     table_df.timestamp, self.cfg.get('analyzer', {})
                     .get('timezone', None))
 
-        return table_df
+        return table_df.reset_index(drop=True)
 
     def get(self, **kwargs) -> pd.DataFrame:
         """The default get method for all tables
@@ -357,7 +363,8 @@ class SqPandasEngine(SqEngineObj):
             return df
 
         # check if column we're looking at is a list, and if so explode it
-        if df.apply(lambda x: isinstance(x[column], np.ndarray), axis=1).all():
+        if df[column].apply(
+                lambda x: isinstance(x, (list, np.ndarray))).any():
             df = df.explode(column).dropna(how='any')
 
         if count:

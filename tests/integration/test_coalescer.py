@@ -1,3 +1,4 @@
+from typing import List
 import asyncio
 import os
 from tempfile import TemporaryDirectory, NamedTemporaryFile
@@ -151,17 +152,32 @@ def _coalescer_basic_test(pq_dir, namespace, path_src, path_dest):
     _coalescer_cleanup(temp_dir, tmpfile)
 
 
-@pytest.mark.coalesce
-@pytest.mark.cumulus
-@pytest.mark.parametrize("pq_dir, namespace, path_src, path_dest",
-                         [('tests/data/parquet', 'dual-evpn',
+def _get_non_aug_all(schema: SchemaForTable) -> List[str]:
+    '''Return only fields that are not augmented
+    When we compute augmented fields and attempt to write back the dataframe
+    without the augmented fields, the write fails. We have to spruce up our
+    write code in this file to fix this. Instead just fetch non-augmented
+    fields and we're done.
+    '''
+    columns = schema.fields
+    # MAX_AUGMENTED_RECURSE is 2
+    aug_fields = schema.get_augmented_fields(columns)
+    columns = [x for x in columns if x not in aug_fields]
+
+    return columns
+
+
+@ pytest.mark.coalesce
+@ pytest.mark.cumulus
+@ pytest.mark.parametrize("pq_dir, namespace, path_src, path_dest",
+                          [('tests/data/parquet', 'dual-evpn',
                            '172.16.1.101', '172.16.2.104')])
 def test_basic_multi_namespace(pq_dir, namespace, path_src, path_dest):
     '''Test coalescer for multi-namespace'''
     _coalescer_basic_test(pq_dir, namespace, path_src, path_dest)
 
 
-@pytest.mark.coalesce
+@ pytest.mark.coalesce
 # pylint: disable=unused-argument
 def test_coalescer_bin(run_sequential):
     '''Verify the sq-coalescer bin works'''
@@ -202,8 +218,8 @@ async def _run_multiple_coalescer(coalescer_cmd_args):
     assert(rc[0] != rc[1])
 
 
-@pytest.mark.coalesce
-@pytest.mark.asyncio
+@ pytest.mark.coalesce
+@ pytest.mark.asyncio
 # pylint: disable=unused-argument
 async def test_single_instance_run(run_sequential):
     '''Verify that only a single instance of the coalescer is running'''
@@ -275,7 +291,7 @@ def _write_verify_transform(mod_df, table, dbeng, schema, config_file,
 
     tblobj = get_sqobject(table)
     post_read_df = tblobj(config_file=config_file).get(
-        columns=schema.fields)
+        columns=_get_non_aug_all(schema))
 
     assert(not post_read_df.empty)
     # If the data was built up as a series of queries, we have to
@@ -353,7 +369,7 @@ def test_transform(input_file):
                 # Lets read the data in now that we know the table
                 tblobj = get_sqobject(table)
                 pq_db = get_sqdb_engine(cfg, table, None, None)
-                columns = schemas.fields_for_table(table)
+                columns = _get_non_aug_all(SchemaForTable(table, schemas))
                 mod_df = tblobj(config_file=tmpfile.name).get(
                     columns=columns)
 

@@ -145,7 +145,6 @@ class SqParquetDB(SqDB):
 
             avail_fields = list(filter(lambda x: x in master_schema.names,
                                        fields))
-
             filters = self.build_ds_filters(
                 start, end, master_schema, merge_fields=merge_fields, **kwargs)
 
@@ -190,7 +189,8 @@ class SqParquetDB(SqDB):
             fields.insert(0, 'sqvers')
 
         cols = set(final_df.columns.tolist() + final_df.index.names)
-        fields = [x for x in fields if x in cols]
+        for fld in [x for x in fields if x not in cols]:
+            final_df[fld] = ''
         return final_df.reset_index()[fields]
 
     def write(self, table_name: str, data_format: str,

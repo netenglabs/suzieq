@@ -125,7 +125,7 @@ def run_sequential(tmpdir):
 
     """
     # pylint: disable=abstract-class-instantiated
-    with FileLock('test.lock', timeout=15):
+    with FileLock('test.lock', timeout=120):
         yield()
 
 

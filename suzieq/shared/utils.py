@@ -461,13 +461,14 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
     def _build_query_str(fld, val, fldtype) -> str:
         """Builds the string from the provided user input"""
 
-        if ((fldtype in ["long", "float"]) and not
+        num_type = ["long", "float", "int"]
+        if ((fldtype in num_type) and not
                 isinstance(val, str)):
             result = f'{fld} == {val}'
 
         elif val.startswith('!'):
             val = val[1:]
-            if fldtype in ["long", "float"]:
+            if fldtype in num_type:
                 result = f'{fld} != {val}'
             else:
                 result = f'{fld} != "{val}"'
@@ -477,7 +478,10 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
             val = val[1:]
             result = f'{fld}.str.match("{val}")'
         else:
-            result = f'{fld} == "{val}"'
+            if fldtype in num_type:
+                result = f'{fld} == {val}'
+            else:
+                result = f'{fld} == "{val}"'
 
         return result
 

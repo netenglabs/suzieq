@@ -295,67 +295,64 @@ tests:
   ignore-columns: lastChangeTime timestamp
   marks: ospf top lastChangeTime
   output: '[{"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname":
-    "swp2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
-    1616681064000, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000, "timestamp": 1616681581440},
-    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp2",
-    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "swp2", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
     "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
     1616681064000, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000, "timestamp": 1616681582523},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
-    "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 5.0, "lastChangeTime":
-    1616681064000, "timestamp": 1616681581441}]'
+    "leaf02", "vrf": "default", "ifname": "swp2", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    5.0, "lastChangeTime": 1616681064000, "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp2", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "numChanges": 5.0, "lastChangeTime": 1616681064000, "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default",
+    "ifname": "swp1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges": 5.0, "lastChangeTime":
+    1616681064000, "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp2", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    5.0, "lastChangeTime": 1616681064000, "timestamp": 1616681581441}]'
 - command: ospf top --what="lastChangeTime" --namespace="ospf-single" --format=json
   data-directory: tests/data/parquet/
   ignore-columns: lastChangeTime timestamp
   marks: ospf top
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
-    "ifname": "swp6", "peerHostname": "exit01", "area": "0.0.0.0", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101", "numChanges": 5.0,
-    "lastChangeTime": 1616352030000, "timestamp": 1616352403216}, {"namespace": "ospf-single",
-    "hostname": "spine01", "vrf": "default", "ifname": "swp6", "peerHostname": "exit01",
-    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
-    "10.0.0.101", "numChanges": 4.0, "lastChangeTime": 1616352030000, "timestamp":
-    1616352403219}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
-    "ifname": "swp4", "peerHostname": "leaf04", "area": "0.0.0.0", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges": 4.0, "lastChangeTime":
+    "ifname": "swp6", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.101", "numChanges": 5.0, "lastChangeTime":
     1616352030000, "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp4", "peerHostname": "leaf04", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14",
-    "numChanges": 4.0, "lastChangeTime": 1616352030000, "timestamp": 1616352403219},
-    {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default", "ifname":
-    "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 4.0, "lastChangeTime":
-    1616352030000, "timestamp": 1616352403216}]'
+    "spine02", "vrf": "default", "ifname": "swp4", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.14", "numChanges":
+    4.0, "lastChangeTime": 1616352030000, "timestamp": 1616352403216}, {"namespace":
+    "ospf-single", "hostname": "spine02", "vrf": "default", "ifname": "swp3", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.13", "numChanges": 4.0, "lastChangeTime": 1616352030000, "timestamp":
+    1616352403216}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
+    "ifname": "swp2", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges": 4.0, "lastChangeTime":
+    1616352030000, "timestamp": 1616352403216}, {"namespace": "ospf-single", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp1", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
+    4.0, "lastChangeTime": 1616352030000, "timestamp": 1616352403216}]'
 - command: ospf top --what="lastChangeTime" --columns="hostname ifname adjState" --format=json
     --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: ospf top
   output: '[{"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname":
-    "swp2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
-    1616681064000, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000, "timestamp": 1616681581440},
-    {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp2",
-    "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
+    "swp2", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1,
     "adjState": "full", "peerIP": "10.0.0.21", "numChanges": 5.0, "lastChangeTime":
     1616681064000, "timestamp": 1616681581440}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "vrf": "default", "ifname": "swp2", "peerHostname": "spine02", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000, "timestamp": 1616681582523},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
-    "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 5.0, "lastChangeTime":
-    1616681064000, "timestamp": 1616681581441}]'
+    "leaf02", "vrf": "default", "ifname": "swp2", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    5.0, "lastChangeTime": 1616681064000, "timestamp": 1616681581440}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp2", "peerHostname":
+    "", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP":
+    "10.0.0.21", "numChanges": 5.0, "lastChangeTime": 1616681064000, "timestamp":
+    1616681581440}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default",
+    "ifname": "swp1", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.11", "numChanges": 5.0, "lastChangeTime":
+    1616681064000, "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ifname": "swp2", "peerHostname": "", "area": "0.0.0.0",
+    "ifState": "up", "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.12", "numChanges":
+    5.0, "lastChangeTime": 1616681064000, "timestamp": 1616681581441}]'
 - command: evpnVni top --what=vni --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/
@@ -398,9 +395,9 @@ tests:
   data-directory: tests/data/parquet/
   marks: ospf top
   output: '[{"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
-    "ifname": "swp6", "peerHostname": "exit01", "area": "0.0.0.0", "ifState": "up",
-    "nbrCount": 1, "adjState": "full", "peerIP": "10.0.0.101", "numChanges": 5.0,
-    "lastChangeTime": 1616352030000, "timestamp": 1616352403216}]'
+    "ifname": "swp6", "peerHostname": "", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1, "adjState": "full", "peerIP": "10.0.0.101", "numChanges": 5.0, "lastChangeTime":
+    1616352030000, "timestamp": 1616352403216}]'
 - command: interface top --what=numChanges --count=1 --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
