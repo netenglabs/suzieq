@@ -264,7 +264,7 @@ def validate_raw_inventory(inventory: dict) -> Dict:
             inv_field = field + 's'
             try:
                 if value and value not in new_inventory[inv_field]:
-                    if find_error(errors, value, 'sources'):
+                    if find_error(errors, value, inv_field):
                         # an error already raised for this object
                         continue
                     raise InventorySourceError(

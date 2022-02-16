@@ -49,7 +49,8 @@ async def start_controller(user_args: argparse.Namespace, config_data: Dict):
         controller.init()
         await controller.run()
     except (SqPollerConfError, InventorySourceError, PollingError) as error:
-        print(f"ERROR: {error}")
+        if not log_stdout:
+            print(f"ERROR: {error}")
         logger.error(error)
         sys.exit(-1)
 
