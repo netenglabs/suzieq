@@ -207,7 +207,7 @@ class BgpObj(SqPandasEngine):
                        "afisRcvOnly", "peerIP", "updateSource", "timestamp"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
-        status = kwargs.pop("status", 'all')
+        result = kwargs.pop("result", 'all')
         state = kwargs.pop('state', '!dynamic')
 
         df = self.get(columns=assert_cols, state=state, **kwargs)
@@ -215,15 +215,15 @@ class BgpObj(SqPandasEngine):
             return df
 
         if df.empty:
-            if status != "pass":
-                df['assert'] = 'fail'
+            if result != "pass":
+                df['result'] = 'fail'
                 df['assertReason'] = 'No data'
             return df
 
         df = self._get_peer_matched_df(df)
         if df.empty:
-            if status != "pass":
-                df['assert'] = 'fail'
+            if result != "pass":
+                df['result'] = 'fail'
                 df['assertReason'] = 'No data'
             return df
 
@@ -273,19 +273,19 @@ class BgpObj(SqPandasEngine):
 
         df = pd.concat([failed_df, passed_df])
 
-        df['assert'] = df.apply(lambda x: 'pass'
+        df['result'] = df.apply(lambda x: 'pass'
                                 if len(x.assertReason) == 0 else 'fail',
                                 axis=1)
 
-        result = df[['namespace', 'hostname', 'vrf', 'peer', 'asn',
-                     'peerAsn', 'state', 'peerHostname', 'assert',
-                     'assertReason', 'timestamp']] \
+        result_df = df[['namespace', 'hostname', 'vrf', 'peer', 'asn',
+                        'peerAsn', 'state', 'peerHostname', 'result',
+                        'assertReason', 'timestamp']] \
             .explode(column="assertReason") \
             .fillna({'assertReason': '-'})
 
-        if status == "fail":
-            return result.query('assertReason != "-"')
-        elif status == "pass":
-            return result.query('assertReason == "-"')
+        if result == "fail":
+            return result_df.query('assertReason != "-"')
+        elif result == "pass":
+            return result_df.query('assertReason == "-"')
 
-        return result
+        return result_df

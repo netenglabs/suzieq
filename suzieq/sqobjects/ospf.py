@@ -14,11 +14,11 @@ class OspfObj(SqObject):
         self._addnl_nbr_fields = ['state']
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'area',
                                 'vrf', 'ifname', 'state', 'query_str']
-        self._valid_assert_args = self._valid_get_args + ['status']
+        self._valid_assert_args = self._valid_get_args + ['result']
         self._valid_arg_vals = {
             'state': ['full', 'other', 'passive', '!full', '!passive',
                       '!other', ''],
-            'status': ['all', 'pass', 'fail'],
+            'result': ['all', 'pass', 'fail'],
         }
 
     def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
