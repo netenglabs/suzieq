@@ -79,9 +79,9 @@ class BgpCmd(SqCommand):
         return super().show()
 
     @command("assert")
-    @argument("status", description="Show only assert that matches this value",
+    @argument("result", description="Show only assert that matches this value",
               choices=["all", "fail", "pass"])
-    def aver(self, status: str = "all") -> pd.DataFrame:
+    def aver(self, result: str = "all") -> pd.DataFrame:
         """Assert BGP is functioning properly"""
 
         now = time.time()
@@ -89,7 +89,7 @@ class BgpCmd(SqCommand):
         df = self._invoke_sqobj(self.sqobj.aver,
                                 namespace=self.namespace,
                                 hostname=self.hostname,
-                                status=status,
+                                result=result,
                                 **self.lvars,
                                 )
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
