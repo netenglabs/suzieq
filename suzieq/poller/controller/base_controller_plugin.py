@@ -51,7 +51,7 @@ class ControllerPlugin(SqPlugin):
         Args:
             plugin_conf (dict): plugin configuration
             validate (bool): validate the plugin during initialization
-                             Defalult: False
+                             Default: False
 
         Returns:
             List[Dict]: list of generated plugins

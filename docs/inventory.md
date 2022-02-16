@@ -71,7 +71,7 @@ namespaces:
   auth: credentials-from-file-0
 ```
 
-## <a name='sensitive-data'></a>Sensible data
+## <a name='sensitive-data'></a>Sensitive data
 A sensitive data is an information that the user doesn't want to store in plain-text inside the inventory.
 For this reason, SuzieQ inventory now supports three different options to store these kind of informations
 
