@@ -2,7 +2,6 @@
 This module contains the logic needed to parse the Suzieq native inventory
 file
 """
-# pylint: disable=no-name-in-module
 
 import getpass
 import re
@@ -11,11 +10,14 @@ from dataclasses import dataclass
 from ipaddress import ip_address
 from os import getenv
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 import yaml
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import ValidationError
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
+from suzieq.poller.controller.utils.inventory_models import (DeviceModel,
+                                                             InventoryModel,
+                                                             NamespaceModel)
 from suzieq.shared.exceptions import InventorySourceError
 
 
@@ -30,52 +32,6 @@ class InventoryValidationError:
     location: str
     name: str
     what: Exception
-
-
-class InventoryModel(BaseModel):
-    """Model for the inventory validation
-    """
-    sources: List[Dict] = Field(min_items=1)
-    namespaces: List[Dict] = Field(min_items=1)
-    auths: Optional[List[Dict]]
-    devices: Optional[List[Dict]]
-
-    class Config:
-        """pydantic configuration
-        """
-        extra = 'forbid'
-
-
-class DeviceModel(BaseModel):
-    """Device model validation
-    """
-    name: str
-    jump_host: Optional[str] = Field(alias='jump-host')
-    jump_host_key_file: Optional[str] = Field(alias='jump-host-key-file')
-    ignore_known_hosts: Optional[bool] = Field(
-        alias='ignore-known-hosts', default=False)
-    transport: Optional[str]
-    port: Optional[str]
-    devtype: Optional[str]
-
-    class Config:
-        """pydantic configuration
-        """
-        extra = 'forbid'
-
-
-class NamespaceModel(BaseModel):
-    """Namespace model validation
-    """
-    name: str
-    source: str
-    device: Optional[str]
-    auth: Optional[str]
-
-    class Config:
-        """pydantic configuration
-        """
-        extra = 'forbid'
 
 
 def read_inventory(source_file: str) -> Dict:
