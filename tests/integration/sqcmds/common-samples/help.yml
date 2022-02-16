@@ -177,10 +177,10 @@ tests:
     \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
     [0m\n - peer: \e[36m\e[1mIP address(es), in quotes, or the interface name(s),\
     \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
-    \ of time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of\
-    \ VLAN to query\e[0m\n - status: \e[36m\e[1mShow only assert that matches this\
-    \ value\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
+    \ query format to further filter the output\e[0m\n - result: \e[36m\e[1mShow only\
+    \ assert that matches this value\e[0m\n - start_time: \e[36m\e[1mStart of time\
+    \ window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to\
+    \ query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
     \ vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=show
   data-directory: tests/data/eos/parquet-out/
@@ -378,10 +378,10 @@ tests:
     [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
     \ space separated\e[0m\n - priVtepIp: \e[36m\e[1mPrimary VTEP IP(s), space separated\e\
     [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
-    \ try natural language spec\e[0m\n - status: \e[36m\e[1mShow only assert that\
-    \ matches this value\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
-    [0m\n - vni: \e[36m\e[1mVNI ID(s), space separated\e[0m\n"
+    \ further filter the output\e[0m\n - result: \e[36m\e[1mShow only assert that\
+    \ matches this value\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
+    \ natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just the\
+    \ latest\e[0m\n - vni: \e[36m\e[1mVNI ID(s), space separated\e[0m\n"
 - command: evpnVni help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -466,10 +466,10 @@ tests:
     [0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n\
     \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - portmode: \e\
     [36m\e[1mPortmode(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
-    [36m\e[1mState of VLAN to query\e[0m\n - status: \e[36m\e[1mShow only assert that\
-    \ matches this value\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - value:\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - result:\
+    \ \e[36m\e[1mShow only assert that matches this value\e[0m\n - start_time: \e\
+    [36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e[36m\e\
+    [1mState of VLAN to query\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - value:\
     \ \e[36m\e[1mValue to match against\e[0m\n - view: \e[36m\e[1mView all records\
     \ or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated, can use\
     \ <, >, <=, >=, !\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n - what:\
@@ -1104,11 +1104,11 @@ tests:
     \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
     \ - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
     \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
-    [36m\e[1mState of VLAN to query\e[0m\n - status: \e[36m\e[1mShow only assert that\
-    \ matches this value\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
-    [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
+    \ blank terminated pandas query format to further filter the output\e[0m\n - result:\
+    \ \e[36m\e[1mShow only assert that matches this value\e[0m\n - start_time: \e\
+    [36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e[36m\e\
+    [1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the\
+    \ latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: ospf help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
