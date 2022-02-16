@@ -241,7 +241,13 @@ class ViewValues(str, Enum):
     changes = "changes"
 
 
-class AssertStatusValues(str, Enum):
+class AssertResultValue(str, Enum):
+    PASS = "pass"
+    FAIL = "fail"
+    ALL = "all"
+
+
+class SqPollerStatus(str, Enum):
     PASS = "pass"
     FAIL = "fail"
     ALL = "all"
@@ -312,7 +318,7 @@ async def query_bgp(verb: CommonExtraVerbs, request: Request,
                     state: BgpStateValues = Query(None),
                     vrf: List[str] = Query(None),
                     asn: List[str] = Query(None),
-                    status: AssertStatusValues = Query(None),
+                    result: AssertResultValue = Query(None),
                     query_str: str = None, what: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
@@ -367,7 +373,7 @@ async def query_evpnVni(verb: CommonExtraVerbs, request: Request,
                         columns: List[str] = Query(default=["default"]),
                         vni: List[str] = Query(None),
                         priVtepIp: List[str] = Query(None),
-                        status: AssertStatusValues = None,
+                        result: AssertResultValue = None,
                         query_str: str = None, what: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
@@ -407,7 +413,7 @@ async def query_interface(verb: CommonExtraVerbs, request: Request,
                           mtu: List[str] = Query(None),
                           ifindex: List[str] = Query(None),
                           matchval: int = Query(None, alias="value"),
-                          status: AssertStatusValues = Query(None),
+                          result: AssertResultValue = Query(None),
                           ignore_missing_peer: bool = Query(False),
                           vlan: List[str] = Query(None),
                           portmode: List[str] = Query(None),
@@ -540,7 +546,7 @@ async def query_ospf(verb: CommonExtraVerbs, request: Request,
                      state: OspfStateValues = Query(None),
                      area: List[str] = Query(None),
                      vrf: List[str] = Query(None),
-                     status: AssertStatusValues = None,
+                     result: AssertResultValue = None,
                      query_str: str = None, what: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
@@ -595,7 +601,7 @@ async def query_sqPoller(verb: CommonVerbs, request: Request,
                          namespace: List[str] = Query(None),
                          columns: List[str] = Query(default=["default"]),
                          service: str = None,
-                         status: AssertStatusValues = Query(None),
+                         status: SqPollerStatus = Query(None),
                          query_str: str = None, what: str = None,
                          pollExcdPeriodCount: str = None,
                          ):
