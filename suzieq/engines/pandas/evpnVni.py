@@ -180,14 +180,14 @@ class EvpnvniObj(SqPandasEngine):
                        "secVtepIp", "timestamp"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
-        status = kwargs.pop('status', 'all')
+        result = kwargs.pop('result', 'all')
 
         df = self.get(columns=assert_cols, **kwargs)
         if df.empty:
             df = pd.DataFrame(columns=assert_cols)
-            if status != 'pass':
+            if result != 'pass':
                 df['assertReason'] = 'No data found'
-                df['assert'] = 'fail'
+                df['result'] = 'fail'
             return df
 
         df["assertReason"] = [[] for _ in range(len(df))]
@@ -272,17 +272,17 @@ class EvpnvniObj(SqPandasEngine):
         #                                args=(mac_df, ), axis=1)
 
         # Fill out the assert column
-        df['assert'] = df.apply(lambda x: 'pass'
+        df['result'] = df.apply(lambda x: 'pass'
                                 if len(x.assertReason) == 0 else 'fail',
                                 axis=1)
 
-        if status == 'fail':
+        if result == 'fail':
             df = df.query('assertReason.str.len() != 0')
-        elif status == "pass":
+        elif result == "pass":
             df = df.query('assertReason.str.len() == 0')
 
         return df[['namespace', 'hostname', 'vni', 'type',
-                   'assertReason', 'assert', 'timestamp']] \
+                   'assertReason', 'result', 'timestamp']] \
             .explode(column='assertReason') \
             .fillna({'assertReason': '-'})
 

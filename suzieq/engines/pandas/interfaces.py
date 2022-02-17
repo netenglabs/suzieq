@@ -99,10 +99,12 @@ class InterfacesObj(SqPandasEngine):
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
 
+        ignore_missing_peer = kwargs.pop('ignore_missing_peer', False)
+
         if what == "mtu-value":
             result_df = self._assert_mtu_value(**kwargs)
         else:
-            result_df = self._assert_interfaces(**kwargs)
+            result_df = self._assert_interfaces(ignore_missing_peer, **kwargs)
         return result_df
 
     def summarize(self, **kwargs) -> pd.DataFrame:
@@ -182,7 +184,7 @@ class InterfacesObj(SqPandasEngine):
                    "timestamp"]
 
         matchval = kwargs.pop('matchval', [])
-        status = kwargs.pop('status', '')
+        result = kwargs.pop('result', '')
 
         matchval = [int(x) for x in matchval]
 
@@ -190,26 +192,23 @@ class InterfacesObj(SqPandasEngine):
                         .query('ifname != "lo"')
 
         if not result_df.empty:
-            result_df['status'] = result_df.apply(
+            result_df['result'] = result_df.apply(
                 lambda x, matchval: 'pass' if x['mtu'] in matchval else 'fail',
                 axis=1, args=(matchval,))
 
-        if status == "fail":
-            result_df = result_df.query('status == "fail"')
-        elif status == "pass":
-            result_df = result_df.query('status == "pass"')
+        if result == "fail":
+            result_df = result_df.query('result == "fail"')
+        elif result == "pass":
+            result_df = result_df.query('result == "pass"')
 
-        if not result_df.empty:
-            return result_df.rename(columns={'status': 'assert'})
-        else:
-            return result_df
+        return result_df
 
     # pylint: disable=too-many-statements
-    def _assert_interfaces(self, **kwargs) -> pd.DataFrame:
+    def _assert_interfaces(self, ignore_missing_peer: bool, **kwargs) \
+            -> pd.DataFrame:
         """Workhorse routine that validates MTU match for specified input"""
         columns = kwargs.pop('columns', [])
-        status = kwargs.pop('status', 'all')
-        ignore_missing_peer = kwargs.pop('ignore_missing_peer', False)
+        result = kwargs.pop('result', 'all')
         state = kwargs.pop('state', '')
         iftype = kwargs.pop('type', [])
 
@@ -249,8 +248,8 @@ class InterfacesObj(SqPandasEngine):
 
         if_df = self.get(columns=columns, type=iftype, state=state, **kwargs)
         if if_df.empty:
-            if status != 'pass':
-                if_df['assert'] = 'fail'
+            if result != 'pass':
+                if_df['result'] = 'fail'
                 if_df['assertReason'] = 'No data'
 
             return if_df
@@ -302,9 +301,9 @@ class InterfacesObj(SqPandasEngine):
             if_df['vlanList'] = [[] for i in range(len(if_df))]
 
         if lldp_df.empty:
-            if status != 'pass':
+            if result != 'pass':
                 if_df['assertReason'] = 'No LLDP peering info'
-                if_df['assert'] = 'fail'
+                if_df['result'] = 'fail'
 
             return if_df
 
@@ -354,9 +353,9 @@ class InterfacesObj(SqPandasEngine):
             .drop_duplicates(subset=['namespace', 'hostname', 'ifname'])
 
         if combined_df.empty:
-            if status != 'pass':
+            if result != 'pass':
                 if_df['assertReason'] = 'No LLDP peering info'
-                if_df['assert'] = 'fail'
+                if_df['result'] = 'fail'
 
             return if_df
 
@@ -452,24 +451,27 @@ class InterfacesObj(SqPandasEngine):
             else ['VLAN set mismatch'], args=(mlag_peerlinks,), axis=1)
 
         if ignore_missing_peer:
-            combined_df['check'] = combined_df.apply(
+            combined_df['result'] = combined_df.apply(
                 lambda x: 'fail'
                 if (len(x.assertReason) and
                     (x.assertReason[0] != 'No Peer Found'))
                 else 'pass', axis=1)
         else:
-            combined_df['check'] = combined_df.apply(
+            combined_df['result'] = combined_df.apply(
                 lambda x: 'fail' if (len(x.assertReason)) else 'pass', axis=1)
 
-        if status == "fail":
-            combined_df = combined_df.query('check == "fail"').reset_index()
-        elif status == "pass":
-            combined_df = combined_df.query('check == "pass"').reset_index()
+        if result == "fail":
+            combined_df = combined_df.query('result == "fail"').reset_index()
+        elif result == "pass":
+            combined_df = combined_df.query('result == "pass"').reset_index()
+
+        combined_df['assertReason'] = combined_df['assertReason'].apply(
+            lambda x: x if len(x) else '-'
+        )
 
         return combined_df[['namespace', 'hostname', 'ifname', 'state',
-                            'peerHostname', 'peerIfname', 'check',
-                            'assertReason', 'timestamp']] \
-            .rename({'check': 'assert'}, axis=1)
+                            'peerHostname', 'peerIfname', 'result',
+                            'assertReason', 'timestamp']]
 
     def _add_portmode(self, df: pd.DataFrame):
         """Add the switchport-mode i.e. acceess/trunk/routed'''

@@ -72,13 +72,13 @@ class InterfaceCmd(SqCommand):
         choices=["mtu-value"],
     )
     @argument("value", description="Value to match against")
-    @argument("status", description="Show only assert that matches this value",
+    @argument("result", description="Show only assert that matches this value",
               choices=["all", "fail", "pass"])
     @argument("ignore_missing_peer",
               description="Treat missing peer as passing assert check",
               choices=["True", "False"])
     def aver(self, what: str = "",
-             value: str = '', status: str = 'all',
+             value: str = '', result: str = 'all',
              ignore_missing_peer: str = "False"):
         """Assert aspects about the interface
         """
@@ -99,7 +99,7 @@ class InterfaceCmd(SqCommand):
                                 namespace=self.namespace,
                                 what=what,
                                 matchval=value.split(),
-                                status=status,
+                                result=result,
                                 ignore_missing_peer=(
                                     ignore_missing_peer == "True"),
                                 **self.lvars,

@@ -13,9 +13,9 @@ class BgpObj(SqObject):
                                 'vrf', 'peer', 'asn', 'query_str']
         self._valid_arg_vals = {
             'state': ['Established', 'NotEstd', 'dynamic', ''],
-            'status': ['all', 'pass', 'fail'],
+            'result': ['all', 'pass', 'fail'],
         }
-        self._valid_assert_args = self._valid_get_args + ['status']
+        self._valid_assert_args = self._valid_get_args + ['result']
 
     def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the timestamp and boot time fields'''

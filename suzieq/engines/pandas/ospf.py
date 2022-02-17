@@ -250,7 +250,7 @@ class OspfObj(SqPandasEngine):
             "nbrCount",
         ]
 
-        status = kwargs.pop('status', 'all')
+        result = kwargs.pop('result', 'all')
         kwargs.pop('state', '')
         # we have to not filter hostname at this point because we need to
         #   understand neighbor relationships
@@ -287,9 +287,9 @@ class OspfObj(SqPandasEngine):
             ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
                                 ospf_df.ifname.str.contains('Vlan'))]
             ospf_df['assertReason'] = 'No LLDP peering info'
-            ospf_df['assert'] = 'fail'
+            ospf_df['result'] = 'fail'
             return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
-                            'assertReason', 'assert']]
+                            'assertReason', 'result']]
 
         # Create a single massive DF with fields populated appropriately
         use_cols = [
@@ -324,19 +324,19 @@ class OspfObj(SqPandasEngine):
 
         if int_df.empty:
             # Weed out the loopback, SVI interfaces as they have no LLDP peers
-            if status == "pass":
+            if result == "pass":
                 ospf_df = ospf_df[(ospf_df.ifname.str.contains('loopback') |
                                    ospf_df.ifname.str.contains('Vlan'))]
                 ospf_df['assertReason'] = []
-                ospf_df['assert'] = 'pass'
+                ospf_df['result'] = 'pass'
             else:
                 ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
                                     ospf_df.ifname.str.contains('Vlan'))]
                 ospf_df['assertReason'] = 'No LLDP peering info'
-                ospf_df['assert'] = 'fail'
+                ospf_df['result'] = 'fail'
 
             return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
-                            'assertReason', 'assert']]
+                            'assertReason', 'result']]
 
         peer_df = ospf_df.merge(
             int_df,
@@ -348,7 +348,7 @@ class OspfObj(SqPandasEngine):
             ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
                                 ospf_df.ifname.str.contains('Vlan'))]
             ospf_df['assertReason'] = 'No LLDP peering info'
-            ospf_df['assert'] = 'fail'
+            ospf_df['result'] = 'fail'
         else:
             ospf_df = peer_df
             # Now start comparing the various parameters
@@ -402,11 +402,11 @@ class OspfObj(SqPandasEngine):
             )
 
         # Fill up a single assert column now indicating pass/fail
-        ospf_df['assert'] = ospf_df.apply(lambda x: 'pass'
+        ospf_df['result'] = ospf_df.apply(lambda x: 'pass'
                                           if len(x['assertReason']) == 0
                                           else 'fail', axis=1)
 
-        result = (
+        result_df = (
             ospf_df.rename(
                 index=str,
                 columns={
@@ -415,14 +415,14 @@ class OspfObj(SqPandasEngine):
                     "vrf_x": "vrf",
                     "timestamp_x": "timestamp",
                 },
-            )[["namespace", "hostname", "ifname", "vrf", "assert",
+            )[["namespace", "hostname", "ifname", "vrf", "result",
                "assertReason", "timestamp"]].explode(column='assertReason')
             .fillna({'assertReason': '-'})
         )
 
-        if status == "pass":
-            return result.query('assertReason == "-"')
-        elif status == "fail":
-            return result.query('assertReason != "-"')
+        if result == "pass":
+            return result_df.query('assertReason == "-"')
+        elif result == "fail":
+            return result_df.query('assertReason != "-"')
 
-        return result.reset_index(drop=True)
+        return result_df.reset_index(drop=True)

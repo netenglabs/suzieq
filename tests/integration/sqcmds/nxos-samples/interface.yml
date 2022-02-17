@@ -2308,7 +2308,8 @@ tests:
     {"namespace": "nxos", "hostname": "exit02", "ifname": "nve1", "state": "up", "adminState":
     "up", "type": "vxlan", "mtu": 9216, "vlan": 0, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1619275260177}]'
-- command: interface show --type='vrf vlan' --hostname='leaf01 spine01' --format=json --namespace=nxos
+- command: interface show --type='vrf vlan' --hostname='leaf01 spine01' --format=json
+    --namespace=nxos
   data-directory: tests/data/parquet/
   marks: interface show nxos
   output: '[{"namespace": "nxos", "hostname": "leaf01", "ifname": "default", "state":
@@ -2354,328 +2355,329 @@ tests:
   data-directory: tests/data/parquet/
   error:
     error: '[{"namespace": "nxos", "hostname": "firewall01", "ifname": "eth2.2", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275256290}, {"namespace": "nxos", "hostname": "firewall01",
-      "ifname": "eth1.2", "state": "up", "peerHostname": "", "peerIfname": "", "assert":
-      "pass", "assertReason": [], "timestamp": 1619275256290}, {"namespace": "nxos",
+      "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275256290}, {"namespace": "nxos", "hostname": "firewall01",
+      "ifname": "eth1.2", "state": "up", "peerHostname": "", "peerIfname": "", "result":
+      "pass", "assertReason": "-", "timestamp": 1619275256290}, {"namespace": "nxos",
       "hostname": "firewall01", "ifname": "eth2.3", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275256290},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275256290},
       {"namespace": "nxos", "hostname": "firewall01", "ifname": "eth1.3", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275256290}, {"namespace": "nxos", "hostname": "firewall01",
-      "ifname": "eth2.4", "state": "up", "peerHostname": "", "peerIfname": "", "assert":
-      "pass", "assertReason": [], "timestamp": 1619275256290}, {"namespace": "nxos",
+      "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275256290}, {"namespace": "nxos", "hostname": "firewall01",
+      "ifname": "eth2.4", "state": "up", "peerHostname": "", "peerIfname": "", "result":
+      "pass", "assertReason": "-", "timestamp": 1619275256290}, {"namespace": "nxos",
       "hostname": "firewall01", "ifname": "eth1.4", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275256290},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275256290},
       {"namespace": "nxos", "hostname": "leaf03", "ifname": "Vlan20", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason": [],
+      "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason": "-",
       "timestamp": 1619275258539}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
-      "Vlan20", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass",
-      "assertReason": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+      "Vlan20", "state": "up", "peerHostname": "", "peerIfname": "", "result": "pass",
+      "assertReason": "-", "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
       "leaf03", "ifname": "Vlan30", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "pass", "assertReason": [], "timestamp": 1619275258539}, {"namespace":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1619275258539}, {"namespace":
       "nxos", "hostname": "leaf01", "ifname": "Vlan30", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275258762},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275258762},
       {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan30", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason": [],
+      "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-      "Vlan30", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass",
-      "assertReason": [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname":
+      "Vlan30", "state": "up", "peerHostname": "", "peerIfname": "", "result": "pass",
+      "assertReason": "-", "timestamp": 1619275259186}, {"namespace": "nxos", "hostname":
       "leaf03", "ifname": "Vlan999", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "pass", "assertReason": [], "timestamp": 1619275258539}, {"namespace":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1619275258539}, {"namespace":
       "nxos", "hostname": "leaf01", "ifname": "Vlan999", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275258762},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275258762},
       {"namespace": "nxos", "hostname": "leaf04", "ifname": "Vlan999", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason": [],
+      "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-      "Vlan999", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass",
-      "assertReason": [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname":
+      "Vlan999", "state": "up", "peerHostname": "", "peerIfname": "", "result": "pass",
+      "assertReason": "-", "timestamp": 1619275259186}, {"namespace": "nxos", "hostname":
       "exit01", "ifname": "Vlan999", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "pass", "assertReason": [], "timestamp": 1619275259574}, {"namespace":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1619275259574}, {"namespace":
       "nxos", "hostname": "exit02", "ifname": "Vlan999", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275260177},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275260177},
       {"namespace": "nxos", "hostname": "leaf01", "ifname": "Vlan10", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason": [],
+      "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason": "-",
       "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
-      "Vlan10", "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass",
-      "assertReason": [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname":
+      "Vlan10", "state": "up", "peerHostname": "", "peerIfname": "", "result": "pass",
+      "assertReason": "-", "timestamp": 1619275259186}, {"namespace": "nxos", "hostname":
       "dcedge01", "ifname": "lo0.16385", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
       {"namespace": "nxos", "hostname": "dcedge01", "ifname": "em2.32768", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
       "dcedge01", "ifname": "em4.32768", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
       {"namespace": "nxos", "hostname": "dcedge01", "ifname": "jsrv.1", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason": ["No
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
       "server101", "ifname": "eth1", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "pass", "assertReason": [], "timestamp": 1619275256203}, {"namespace":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1619275256203}, {"namespace":
       "nxos", "hostname": "server101", "ifname": "bond0", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp":
+      "", "peerIfname": "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp":
       1619275256203}, {"namespace": "nxos", "hostname": "server101", "ifname": "eth2",
-      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275256203}, {"namespace": "nxos", "hostname": "server101",
-      "ifname": "eth0", "state": "up", "peerHostname": "", "peerIfname": "", "assert":
+      "state": "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275256203}, {"namespace": "nxos", "hostname": "server101",
+      "ifname": "eth0", "state": "up", "peerHostname": "", "peerIfname": "", "result":
       "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275256203}, {"namespace":
       "nxos", "hostname": "server102", "ifname": "bond0", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp":
+      "", "peerIfname": "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp":
       1619275256204}, {"namespace": "nxos", "hostname": "server102", "ifname": "eth1",
-      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275256204}, {"namespace": "nxos", "hostname": "server102",
-      "ifname": "eth2", "state": "up", "peerHostname": "", "peerIfname": "", "assert":
-      "pass", "assertReason": [], "timestamp": 1619275256204}, {"namespace": "nxos",
+      "state": "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275256204}, {"namespace": "nxos", "hostname": "server102",
+      "ifname": "eth2", "state": "up", "peerHostname": "", "peerIfname": "", "result":
+      "pass", "assertReason": "-", "timestamp": 1619275256204}, {"namespace": "nxos",
       "hostname": "server102", "ifname": "eth0", "state": "up", "peerHostname": "",
-      "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp":
+      "peerIfname": "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp":
       1619275256204}, {"namespace": "nxos", "hostname": "server301", "ifname": "eth0",
-      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "state": "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275256205}, {"namespace": "nxos", "hostname":
       "server301", "ifname": "eth1", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "pass", "assertReason": [], "timestamp": 1619275256205}, {"namespace":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1619275256205}, {"namespace":
       "nxos", "hostname": "server301", "ifname": "eth2", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275256205},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275256205},
       {"namespace": "nxos", "hostname": "server301", "ifname": "bond0", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason": ["No
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1619275256205}, {"namespace": "nxos", "hostname":
       "firewall01", "ifname": "eth2", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275256290},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275256290},
       {"namespace": "nxos", "hostname": "firewall01", "ifname": "eth1", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason": ["No
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1619275256290}, {"namespace": "nxos", "hostname":
       "firewall01", "ifname": "eth0", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275256290},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275256290},
       {"namespace": "nxos", "hostname": "server302", "ifname": "eth2", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason": [],
+      "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason": "-",
       "timestamp": 1619275256321}, {"namespace": "nxos", "hostname": "server302",
-      "ifname": "eth0", "state": "up", "peerHostname": "", "peerIfname": "", "assert":
+      "ifname": "eth0", "state": "up", "peerHostname": "", "peerIfname": "", "result":
       "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275256321}, {"namespace":
       "nxos", "hostname": "server302", "ifname": "bond0", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp":
+      "", "peerIfname": "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp":
       1619275256321}, {"namespace": "nxos", "hostname": "server302", "ifname": "eth1",
-      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275256321}, {"namespace": "nxos", "hostname": "leaf03",
+      "state": "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275256321}, {"namespace": "nxos", "hostname": "leaf03",
       "ifname": "Ethernet1/4", "state": "up", "peerHostname": "", "peerIfname": "",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275258539}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275258539}, {"namespace":
       "nxos", "hostname": "leaf03", "ifname": "Ethernet1/3", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275258539},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275258539},
       {"namespace": "nxos", "hostname": "leaf03", "ifname": "port-channel1", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275258539}, {"namespace": "nxos", "hostname": "leaf03",
+      "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275258539}, {"namespace": "nxos", "hostname": "leaf03",
       "ifname": "port-channel3", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "pass", "assertReason": [], "timestamp": 1619275258539}, {"namespace":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1619275258539}, {"namespace":
       "nxos", "hostname": "leaf03", "ifname": "port-channel4", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275258539},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275258539},
       {"namespace": "nxos", "hostname": "leaf01", "ifname": "Ethernet1/4", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01",
+      "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01",
       "ifname": "Ethernet1/3", "state": "up", "peerHostname": "", "peerIfname": "",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275258762}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275258762}, {"namespace":
       "nxos", "hostname": "leaf01", "ifname": "port-channel1", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275258762},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275258762},
       {"namespace": "nxos", "hostname": "leaf01", "ifname": "port-channel4", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01",
+      "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01",
       "ifname": "port-channel3", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "pass", "assertReason": [], "timestamp": 1619275258762}, {"namespace":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1619275258762}, {"namespace":
       "nxos", "hostname": "dcedge01", "ifname": "lo0", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp":
+      "", "peerIfname": "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp":
       1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/3",
-      "state": "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "state": "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
       "dcedge01", "ifname": "xe-0/0/4", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
       {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/5", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
       "dcedge01", "ifname": "xe-0/0/6", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
       {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/7", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
       "dcedge01", "ifname": "xe-0/0/8", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
       {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/10", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
       "dcedge01", "ifname": "xe-0/0/11", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
       {"namespace": "nxos", "hostname": "dcedge01", "ifname": "bme0", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason": ["No
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
       "dcedge01", "ifname": "em0", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
       {"namespace": "nxos", "hostname": "dcedge01", "ifname": "em1", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason": ["No
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
       "dcedge01", "ifname": "em2", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
       {"namespace": "nxos", "hostname": "dcedge01", "ifname": "em4", "state": "up",
-      "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason": ["No
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
       "dcedge01", "ifname": "xe-0/0/2", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
       {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/9", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
       "dcedge01", "ifname": "em3", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275258985},
       {"namespace": "nxos", "hostname": "leaf04", "ifname": "Ethernet1/4", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04",
+      "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04",
       "ifname": "port-channel4", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace":
       "nxos", "hostname": "leaf04", "ifname": "port-channel3", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275259180},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275259180},
       {"namespace": "nxos", "hostname": "leaf04", "ifname": "port-channel1", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04",
+      "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04",
       "ifname": "Ethernet1/3", "state": "up", "peerHostname": "", "peerIfname": "",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace":
       "nxos", "hostname": "leaf02", "ifname": "Ethernet1/3", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275259186},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275259186},
       {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/4", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02",
+      "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02",
       "ifname": "port-channel3", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "pass", "assertReason": [], "timestamp": 1619275259186}, {"namespace":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1619275259186}, {"namespace":
       "nxos", "hostname": "leaf02", "ifname": "port-channel4", "state": "up", "peerHostname":
-      "", "peerIfname": "", "assert": "pass", "assertReason": [], "timestamp": 1619275259186},
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1619275259186},
       {"namespace": "nxos", "hostname": "leaf02", "ifname": "port-channel1", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "exit01",
+      "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "exit01",
       "ifname": "Ethernet1/3.3", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275259574},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275259574},
       {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/3.2", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275259574}, {"namespace": "nxos", "hostname":
       "exit01", "ifname": "Ethernet1/3", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275259574},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275259574},
       {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/3.4", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275259574}, {"namespace": "nxos", "hostname":
       "exit02", "ifname": "Ethernet1/3", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275260177},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275260177},
       {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/3.2", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275260177}, {"namespace": "nxos", "hostname":
       "exit02", "ifname": "Ethernet1/3.3", "state": "up", "peerHostname": "", "peerIfname":
-      "", "assert": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275260177},
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1619275260177},
       {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/3.4", "state":
-      "up", "peerHostname": "", "peerIfname": "", "assert": "fail", "assertReason":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1619275260177}, {"namespace": "nxos", "hostname":
       "leaf03", "ifname": "Ethernet1/6", "state": "up", "peerHostname": "leaf04",
-      "peerIfname": "Ethernet1/6", "assert": "pass", "assertReason": [], "timestamp":
+      "peerIfname": "Ethernet1/6", "result": "pass", "assertReason": "-", "timestamp":
       1619275258539}, {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/5",
-      "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/5", "assert":
-      "pass", "assertReason": [], "timestamp": 1619275258539}, {"namespace": "nxos",
+      "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/5", "result":
+      "pass", "assertReason": "-", "timestamp": 1619275258539}, {"namespace": "nxos",
       "hostname": "leaf03", "ifname": "Ethernet1/2", "state": "up", "peerHostname":
-      "spine02", "peerIfname": "Ethernet1/3", "assert": "pass", "assertReason": [],
+      "spine02", "peerIfname": "Ethernet1/3", "result": "pass", "assertReason": "-",
       "timestamp": 1619275258539}, {"namespace": "nxos", "hostname": "leaf03", "ifname":
       "Ethernet1/1", "state": "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/3",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275258539}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275258539}, {"namespace":
       "nxos", "hostname": "leaf03", "ifname": "mgmt0", "state": "up", "peerHostname":
-      "spine01", "peerIfname": "mgmt0", "assert": "pass", "assertReason": [], "timestamp":
+      "spine01", "peerIfname": "mgmt0", "result": "pass", "assertReason": "-", "timestamp":
       1619275258539}, {"namespace": "nxos", "hostname": "leaf01", "ifname": "mgmt0",
-      "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "assert": "fail",
+      "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "result": "fail",
       "assertReason": ["Speed mismatch"], "timestamp": 1619275258762}, {"namespace":
       "nxos", "hostname": "spine02", "ifname": "mgmt0", "state": "up", "peerHostname":
-      "spine01", "peerIfname": "mgmt0", "assert": "pass", "assertReason": [], "timestamp":
+      "spine01", "peerIfname": "mgmt0", "result": "pass", "assertReason": "-", "timestamp":
       1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname": "mgmt0",
-      "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "assert": "pass",
-      "assertReason": [], "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
+      "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0", "result": "pass",
+      "assertReason": "-", "timestamp": 1619275259180}, {"namespace": "nxos", "hostname":
       "leaf02", "ifname": "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "mgmt0", "assert": "pass", "assertReason": [], "timestamp": 1619275259186},
+      "mgmt0", "result": "pass", "assertReason": "-", "timestamp": 1619275259186},
       {"namespace": "nxos", "hostname": "exit01", "ifname": "mgmt0", "state": "up",
-      "peerHostname": "spine01", "peerIfname": "mgmt0", "assert": "pass", "assertReason":
-      [], "timestamp": 1619275259574}, {"namespace": "nxos", "hostname": "exit02",
+      "peerHostname": "spine01", "peerIfname": "mgmt0", "result": "pass", "assertReason":
+      "-", "timestamp": 1619275259574}, {"namespace": "nxos", "hostname": "exit02",
       "ifname": "mgmt0", "state": "up", "peerHostname": "spine01", "peerIfname": "mgmt0",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275260177}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275260177}, {"namespace":
       "nxos", "hostname": "leaf01", "ifname": "Ethernet1/1", "state": "up", "peerHostname":
-      "spine01", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": [],
+      "spine01", "peerIfname": "Ethernet1/1", "result": "pass", "assertReason": "-",
       "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
       "Ethernet1/6", "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet1/6",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275258762}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275258762}, {"namespace":
       "nxos", "hostname": "leaf01", "ifname": "Ethernet1/5", "state": "up", "peerHostname":
-      "leaf02", "peerIfname": "Ethernet1/5", "assert": "pass", "assertReason": [],
+      "leaf02", "peerIfname": "Ethernet1/5", "result": "pass", "assertReason": "-",
       "timestamp": 1619275258762}, {"namespace": "nxos", "hostname": "leaf01", "ifname":
       "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/1",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275258762}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275258762}, {"namespace":
       "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/1", "state": "up", "peerHostname":
-      "exit02", "peerIfname": "Ethernet1/4", "assert": "fail", "assertReason": ["Speed
+      "exit02", "peerIfname": "Ethernet1/4", "result": "fail", "assertReason": ["Speed
       mismatch"], "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01",
       "ifname": "xe-0/0/0", "state": "up", "peerHostname": "exit01", "peerIfname":
-      "Ethernet1/4", "assert": "fail", "assertReason": ["Speed mismatch"], "timestamp":
+      "Ethernet1/4", "result": "fail", "assertReason": ["Speed mismatch"], "timestamp":
       1619275258985}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/1",
-      "state": "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/1", "assert":
-      "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace": "nxos",
+      "state": "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/1", "result":
+      "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace": "nxos",
       "hostname": "leaf04", "ifname": "Ethernet1/6", "state": "up", "peerHostname":
-      "leaf03", "peerIfname": "Ethernet1/6", "assert": "pass", "assertReason": [],
+      "leaf03", "peerIfname": "Ethernet1/6", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
       "Ethernet1/5", "state": "up", "peerHostname": "leaf03", "peerIfname": "Ethernet1/5",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace":
       "nxos", "hostname": "spine01", "ifname": "mgmt0", "state": "up", "peerHostname":
-      "leaf03", "peerIfname": "mgmt0", "assert": "pass", "assertReason": [], "timestamp":
+      "leaf03", "peerIfname": "mgmt0", "result": "pass", "assertReason": "-", "timestamp":
       1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname": "Ethernet1/2",
-      "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet1/1", "assert":
-      "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace": "nxos",
+      "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet1/1", "result":
+      "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace": "nxos",
       "hostname": "spine01", "ifname": "Ethernet1/3", "state": "up", "peerHostname":
-      "leaf03", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": [],
+      "leaf03", "peerIfname": "Ethernet1/1", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname":
       "Ethernet1/4", "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/1",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace":
       "nxos", "hostname": "spine01", "ifname": "Ethernet1/5", "state": "up", "peerHostname":
-      "exit01", "peerIfname": "Ethernet1/1", "assert": "pass", "assertReason": [],
+      "exit01", "peerIfname": "Ethernet1/1", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine01", "ifname":
       "Ethernet1/6", "state": "up", "peerHostname": "exit02", "peerIfname": "Ethernet1/1",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace":
       "nxos", "hostname": "spine02", "ifname": "Ethernet1/1", "state": "up", "peerHostname":
-      "leaf01", "peerIfname": "Ethernet1/2", "assert": "pass", "assertReason": [],
+      "leaf01", "peerIfname": "Ethernet1/2", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname":
       "Ethernet1/2", "state": "up", "peerHostname": "leaf02", "peerIfname": "Ethernet1/2",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace":
       "nxos", "hostname": "spine02", "ifname": "Ethernet1/3", "state": "up", "peerHostname":
-      "leaf03", "peerIfname": "Ethernet1/2", "assert": "pass", "assertReason": [],
+      "leaf03", "peerIfname": "Ethernet1/2", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname":
       "Ethernet1/4", "state": "up", "peerHostname": "leaf04", "peerIfname": "Ethernet1/2",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace":
       "nxos", "hostname": "spine02", "ifname": "Ethernet1/5", "state": "up", "peerHostname":
-      "exit01", "peerIfname": "Ethernet1/2", "assert": "pass", "assertReason": [],
+      "exit01", "peerIfname": "Ethernet1/2", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "spine02", "ifname":
       "Ethernet1/6", "state": "up", "peerHostname": "exit02", "peerIfname": "Ethernet1/2",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace":
       "nxos", "hostname": "leaf04", "ifname": "Ethernet1/1", "state": "up", "peerHostname":
-      "spine01", "peerIfname": "Ethernet1/4", "assert": "pass", "assertReason": [],
+      "spine01", "peerIfname": "Ethernet1/4", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259180}, {"namespace": "nxos", "hostname": "leaf04", "ifname":
       "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/4",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275259180}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275259180}, {"namespace":
       "nxos", "hostname": "leaf02", "ifname": "Ethernet1/1", "state": "up", "peerHostname":
-      "spine01", "peerIfname": "Ethernet1/2", "assert": "pass", "assertReason": [],
+      "spine01", "peerIfname": "Ethernet1/2", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
       "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/2",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275259186}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275259186}, {"namespace":
       "nxos", "hostname": "leaf02", "ifname": "Ethernet1/5", "state": "up", "peerHostname":
-      "leaf01", "peerIfname": "Ethernet1/5", "assert": "pass", "assertReason": [],
+      "leaf01", "peerIfname": "Ethernet1/5", "result": "pass", "assertReason": "-",
       "timestamp": 1619275259186}, {"namespace": "nxos", "hostname": "leaf02", "ifname":
       "Ethernet1/6", "state": "up", "peerHostname": "leaf01", "peerIfname": "Ethernet1/6",
-      "assert": "pass", "assertReason": [], "timestamp": 1619275259186}, {"namespace":
+      "result": "pass", "assertReason": "-", "timestamp": 1619275259186}, {"namespace":
       "nxos", "hostname": "exit01", "ifname": "Ethernet1/4", "state": "up", "peerHostname":
-      "dcedge01", "peerIfname": "xe-0/0/0", "assert": "fail", "assertReason": ["Speed
+      "dcedge01", "peerIfname": "xe-0/0/0", "result": "fail", "assertReason": ["Speed
       mismatch"], "timestamp": 1619275259574}, {"namespace": "nxos", "hostname": "exit01",
       "ifname": "Ethernet1/2", "state": "up", "peerHostname": "spine02", "peerIfname":
-      "Ethernet1/5", "assert": "pass", "assertReason": [], "timestamp": 1619275259574},
+      "Ethernet1/5", "result": "pass", "assertReason": "-", "timestamp": 1619275259574},
       {"namespace": "nxos", "hostname": "exit01", "ifname": "Ethernet1/1", "state":
-      "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/5", "assert": "pass",
-      "assertReason": [], "timestamp": 1619275259574}, {"namespace": "nxos", "hostname":
+      "up", "peerHostname": "spine01", "peerIfname": "Ethernet1/5", "result": "pass",
+      "assertReason": "-", "timestamp": 1619275259574}, {"namespace": "nxos", "hostname":
       "exit02", "ifname": "Ethernet1/1", "state": "up", "peerHostname": "spine01",
-      "peerIfname": "Ethernet1/6", "assert": "pass", "assertReason": [], "timestamp":
+      "peerIfname": "Ethernet1/6", "result": "pass", "assertReason": "-", "timestamp":
       1619275260177}, {"namespace": "nxos", "hostname": "exit02", "ifname": "Ethernet1/2",
-      "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/6", "assert":
-      "pass", "assertReason": [], "timestamp": 1619275260177}, {"namespace": "nxos",
+      "state": "up", "peerHostname": "spine02", "peerIfname": "Ethernet1/6", "result":
+      "pass", "assertReason": "-", "timestamp": 1619275260177}, {"namespace": "nxos",
       "hostname": "exit02", "ifname": "Ethernet1/4", "state": "up", "peerHostname":
-      "dcedge01", "peerIfname": "xe-0/0/1", "assert": "fail", "assertReason": ["Speed
+      "dcedge01", "peerIfname": "xe-0/0/1", "result": "fail", "assertReason": ["Speed
       mismatch"], "timestamp": 1619275260177}]'
   marks: interface assert nxos
-- command: interface show --query-str='adminState == "down" and state == "up" ' --format=json --namespace=nxos
+- command: interface show --query-str='adminState == "down" and state == "up" ' --format=json
+    --namespace=nxos
   data-directory: tests/data/parquet/
   marks: interface show nxos
   output: '[]'

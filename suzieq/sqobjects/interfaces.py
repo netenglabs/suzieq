@@ -13,11 +13,11 @@ class InterfacesObj(SqObject):
                                 'state', 'type', 'mtu', 'master', 'ifindex',
                                 'vrf', 'portmode', 'vlan', 'query_str']
         self._valid_assert_args = self._valid_get_args + \
-            ['what', 'matchval', 'status', 'ignore_missing_peer']
+            ['what', 'matchval', 'result', 'ignore_missing_peer']
         self._valid_arg_vals = {
             'state': ['up', 'down', 'notConnected', '!up', '!down',
                       '!notConnected', ''],
-            'status': ['all', 'pass', 'fail'],
+            'result': ['all', 'pass', 'fail'],
         }
         self._unique_def_column = ['type']
 

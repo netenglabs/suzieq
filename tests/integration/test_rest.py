@@ -73,9 +73,9 @@ FILTERS = ['',  # for vanilla commands without any filter
            'polled=True',
            'usedPercent=8',
            'column=prefixlen',
-           'status=pass',
-           'status=fail',
-           'status=all',
+           'result=pass',
+           'result=fail',
+           'result=all',
            'status=whatever',
            'vlanName=vlan13',
            'status=alive',
@@ -164,11 +164,11 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
                     'ospf/assert', 'ospf/show',
                     'route/show', 'route/summarize',
                     ],
-    'status=pass': ['bgp/assert', 'evpnVni/assert', 'interfaces/assert',
+    'result=pass': ['bgp/assert', 'evpnVni/assert', 'interfaces/assert',
                     'ospf/assert', 'sqpoller/show'],
-    'status=fail': ['bgp/assert', 'evpnVni/assert', 'interfaces/assert',
+    'result=fail': ['bgp/assert', 'evpnVni/assert', 'interfaces/assert',
                     'ospf/assert'],
-    'status=all': ['bgp/assert', 'evpnVni/assert', 'interfaces/assert',
+    'result=all': ['bgp/assert', 'evpnVni/assert', 'interfaces/assert',
                    'ospf/assert'],
     'status=alive': ['device/show'],
     'status=dead': ['device/show'],
@@ -197,8 +197,8 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
 
 GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'sqPoller/show?status=fail',
-    'ospf/assert?status=fail',
-    'evpnVni/assert?status=fail',
+    'ospf/assert?result=fail',
+    'evpnVni/assert?result=fail',
     'device/show?status=neverpoll',
     'device/show?status=dead',
     'vlan/unique?state=notConnected',
@@ -482,8 +482,8 @@ def test_rest_arg_consistency(service, verb):
                 f"{arg} missing from {fn} arguments for verb {verb}"
 
         for arg in rest_args:
-            if arg not in valid_args and arg != "status":
-                # status is usually part of assert keyword and so ignore
+            if arg not in valid_args and arg != "result":
+                # result is usually part of assert keyword and so ignore
                 if found_service_rest_fn:
                     assert False, \
                         f"{arg} not in {service} sqobj {verb} arguments"

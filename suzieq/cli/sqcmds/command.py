@@ -478,7 +478,7 @@ class SqCommand(SqPlugin):
             result = 0
         elif df.columns.to_list() == ['error']:
             result = 1
-        elif df.loc[df['assert'] != "pass"].empty:
+        elif df.loc[df['result'] != "pass"].empty:
             result = 0
         else:
             result = -1
