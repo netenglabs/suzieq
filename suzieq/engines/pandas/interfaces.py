@@ -204,7 +204,8 @@ class InterfacesObj(SqPandasEngine):
         return result_df
 
     # pylint: disable=too-many-statements
-    def _assert_interfaces(self, ignore_missing_peer: bool, **kwargs) -> pd.DataFrame:
+    def _assert_interfaces(self, ignore_missing_peer: bool, **kwargs) \
+            -> pd.DataFrame:
         """Workhorse routine that validates MTU match for specified input"""
         columns = kwargs.pop('columns', [])
         result = kwargs.pop('result', 'all')
