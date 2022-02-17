@@ -99,10 +99,12 @@ class InterfacesObj(SqPandasEngine):
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
 
+        ignore_missing_peer = kwargs.pop('ignore_missing_peer', False)
+
         if what == "mtu-value":
             result_df = self._assert_mtu_value(**kwargs)
         else:
-            result_df = self._assert_interfaces(**kwargs)
+            result_df = self._assert_interfaces(ignore_missing_peer, **kwargs)
         return result_df
 
     def summarize(self, **kwargs) -> pd.DataFrame:
@@ -202,11 +204,10 @@ class InterfacesObj(SqPandasEngine):
         return result_df
 
     # pylint: disable=too-many-statements
-    def _assert_interfaces(self, **kwargs) -> pd.DataFrame:
+    def _assert_interfaces(self, ignore_missing_peer: bool, **kwargs) -> pd.DataFrame:
         """Workhorse routine that validates MTU match for specified input"""
         columns = kwargs.pop('columns', [])
         result = kwargs.pop('result', 'all')
-        ignore_missing_peer = kwargs.pop('ignore_missing_peer', False)
         state = kwargs.pop('state', '')
         iftype = kwargs.pop('type', [])
 
