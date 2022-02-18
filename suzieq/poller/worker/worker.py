@@ -61,13 +61,15 @@ class Worker:
         run_mode = userargs.run_once or 'forever'
         svc_manager_args = {
             'service_only': userargs.service_only,
-            'exclude_services': userargs.exclude_services
+            'exclude_services': userargs.exclude_services,
+            'outputs': userargs.outputs
         }
         self.service_manager = ServiceManager(self._add_worker_tasks,
                                               service_dir,
                                               svc_schema_dir,
                                               self.output_queue,
                                               run_mode,
+                                              cfg,
                                               default_svc_period,
                                               **svc_manager_args)
 

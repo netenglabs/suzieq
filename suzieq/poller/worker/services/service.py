@@ -62,13 +62,14 @@ class Service(SqPlugin):
         self._poller_schema = value
 
     def __init__(self, name, defn, period, stype, keys, ignore_fields, schema,
-                 queue, run_once=None):
+                 queue, db_access, run_once=None):
         self.name = name
         self.defn = defn
         self.ignore_fields = ignore_fields or []
         self.writer_queue = queue
         self.keys = keys
         self.schema = schema.get_arrow_schema()
+        self.schema_table = schema
         self.period = period
         self.stype = stype
         self.logger = logging.getLogger(__name__)
@@ -76,6 +77,8 @@ class Service(SqPlugin):
         self.post_timeout = 5
         self.sigend = False
         self.version = schema.version
+        # Get sqobject to retrieve the data of this service
+        self._db_access = db_access
 
         self.update_nodes = False  # we have a new node list
         self.rebuild_nodelist = False  # used only when a node gets init
@@ -185,34 +188,54 @@ class Service(SqPlugin):
         """Compare list of dictionaries ignoring certain fields
         Return list of adds and deletes
         """
+        # If old is empty there is no need to look for differences
+        # just return adds
+        if not old:
+            return new, []
+
+        # Work out the differences between the new and the old records
         adds = []
         dels = []
-        koldvals = {}
-        knewvals = {}
+        koldvals = []
+        knewvals = []
         koldkeys = []
         knewkeys = []
 
         # keys that start with _ are transient and must be ignored
         # from comparison
-        for i, elem in enumerate(old):
-            vals = [v for k, v in elem.items()
-                    if k not in self.ignore_fields and not k.startswith('_')]
-            kvals = [v for k, v in elem.items() if k in self.keys]
-            koldvals.update({tuple(str(vals)): i})
+        for elem in old:
+            # Checking the __iter__ attribute to check if it is iterable
+            # is not pythonic but much faster, we need to be fast since this
+            # piece of code is executed tons of times
+            vals = {k: set(v) if hasattr(v, '__iter__') and
+                    not isinstance(v, str) and
+                    not isinstance(v, dict) else str(v)
+                    for k, v in elem.items()
+                    if k not in self.ignore_fields and not k.startswith('_')
+                    and k in self.schema_table.fields}
+            kvals = {v for k, v in elem.items() if k in self.keys}
+            koldvals.append(vals)
             koldkeys.append(kvals)
 
-        for i, elem in enumerate(new):
-            vals = [v for k, v in elem.items()
-                    if k not in self.ignore_fields and not k.startswith('_')]
-            kvals = [v for k, v in elem.items() if k in self.keys]
-            knewvals.update({tuple(str(vals)): i})
+        for elem in new:
+            vals = {k: set(v) if hasattr(v, '__iter__') and
+                    not isinstance(v, str) and
+                    not isinstance(v, dict) else str(v)
+                    for k, v in elem.items()
+                    if k not in self.ignore_fields and not k.startswith('_')
+                    and k in self.schema_table.fields}
+            kvals = {v for k, v in elem.items() if k in self.keys}
+            knewvals.append(vals)
             knewkeys.append(kvals)
 
-        addlist = [v for k, v in knewvals.items() if k not in koldvals]
-        dellist = [v for k, v in koldvals.items() if k not in knewvals]
+        adds = [new[k] for k, v in enumerate(knewvals) if v not in koldvals]
+        dels = [old[k] for k, v in enumerate(koldvals)
+                if v not in knewvals and koldkeys[k] not in knewkeys]
 
-        adds = [new[v] for v in addlist]
-        dels = [old[v] for v in dellist if koldkeys[v] not in knewkeys]
+        # The sqvers type for dels might be float, we expect str
+        for d in dels:
+            if d.get('sqvers'):
+                d['sqvers'] = str(d['sqvers'])
 
         if adds and self.stype == "counters":
             # If there's a change in any field of the counters, update them all
@@ -572,9 +595,28 @@ class Service(SqPlugin):
 
     async def commit_data(self, result: Dict, namespace: str, hostname: str):
         """Write the result data out"""
+        # pylint: disable=protected-access
         records = []
         key = f'{namespace}-{hostname}'
-        prev_res = self.previous_results.get(key, [])
+        prev_res = self.previous_results.get(key, None)
+        # No data previously polled with this service from the the
+        # current namespace and hostname. Check if the datastore contains some
+        # information about
+        filter_df = f"hostname.str.match('{hostname}') and " \
+                    f"namespace.str.match('{namespace}')"
+        if prev_res is None:
+            df = self._db_access.read(
+                self.schema_table._table,
+                'pandas',
+                start_time='',
+                end_time='',
+                columns=self.schema_table.fields,
+                view='latest',
+                key_fields=self.schema_table.key_fields(),
+                add_filter=filter_df,
+                hostname=[hostname],
+                namespace=[namespace]).query('active')
+            prev_res = df.to_dict('records')
 
         if result or prev_res:
             adds, dels = self.get_diff(prev_res, result)
