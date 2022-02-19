@@ -89,3 +89,13 @@ tests:
     3}, {"routerId": "10.0.0.32", "numRows": 3}, {"routerId": "10.0.0.21", "numRows":
     4}, {"routerId": "10.0.0.22", "numRows": 4}, {"routerId": "10.0.0.200", "numRows":
     6}]'
+- command: bgp unique --count=True --format=json --namespace=junos --columns=peerAsndot
+  data-directory: tests/data/parquet/
+  marks: bgp unique junos
+  output: '[{"peerAsndot": "0.65534", "numRows": 2}, {"peerAsndot": "0.65533", "numRows":
+    6}, {"peerAsndot": "0.64520", "numRows": 24}]'
+- command: bgp unique --count=True --format=json --namespace=junos --columns=asndot
+  data-directory: tests/data/parquet/
+  marks: bgp unique junos
+  output: '[{"asndot": "0.65534", "numRows": 2}, {"asndot": "0.65533", "numRows":
+    6}, {"asndot": "0.64520", "numRows": 24}]'

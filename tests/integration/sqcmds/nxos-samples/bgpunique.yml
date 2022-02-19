@@ -96,3 +96,19 @@ tests:
     "numRows": 5}, {"routerId": "10.0.0.32", "numRows": 5}, {"routerId": "10.0.0.200",
     "numRows": 6}, {"routerId": "10.0.0.21", "numRows": 12}, {"routerId": "10.0.0.22",
     "numRows": 12}]'
+- command: bgp unique --count=True --format=json --namespace=nxos --columns=peerAsndot
+  data-directory: tests/data/parquet/
+  marks: bgp unique nxos
+  output: '[{"peerAsndot": "0.65520", "numRows": 2}, {"peerAsndot": "0.65521", "numRows":
+    2}, {"peerAsndot": "0.65534", "numRows": 2}, {"peerAsndot": "0.65522", "numRows":
+    4}, {"peerAsndot": "0.65533", "numRows": 6}, {"peerAsndot": "0.64520", "numRows":
+    48}]'
+- command: bgp unique --count=True --format=json --namespace=nxos --columns=asndot
+  data-directory: tests/data/parquet/
+  marks: bgp unique nxos
+  output: '[{"asndot": "0.65534", "numRows": 2}, {"asndot": "0.65533", "numRows":
+    6}, {"asndot": "0.64520", "numRows": 56}]'
+- command: bgp unique --format=json --namespace=nxos --columns=asndot
+  data-directory: tests/data/parquet/
+  marks: bgp unique nxos
+  output: '[{"asndot": "0.64520"}, {"asndot": "0.65533"}, {"asndot": "0.65534"}]'

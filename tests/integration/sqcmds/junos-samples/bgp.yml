@@ -260,3 +260,165 @@ tests:
       "peerAsn": 64520, "state": "Established", "peerHostname": "exit02", "result":
       "pass", "assertReason": "-", "timestamp": 1623025798030}]'
   marks: bgp assert junos junos
+- command: bgp show --columns='hostname vrf peer state peerAsndot' --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: bgp show junos filter
+  output: '[{"hostname": "firewall01", "vrf": "default", "peer": "eth1.3", "state":
+    "Established", "peerAsndot": "0.64520"}, {"hostname": "firewall01", "vrf": "default",
+    "peer": "eth2.4", "state": "Established", "peerAsndot": "0.64520"}, {"hostname":
+    "firewall01", "vrf": "default", "peer": "eth2.3", "state": "Established", "peerAsndot":
+    "0.64520"}, {"hostname": "firewall01", "vrf": "default", "peer": "eth2.2", "state":
+    "Established", "peerAsndot": "0.64520"}, {"hostname": "firewall01", "vrf": "default",
+    "peer": "eth1.4", "state": "Established", "peerAsndot": "0.64520"}, {"hostname":
+    "firewall01", "vrf": "default", "peer": "eth1.2", "state": "Established", "peerAsndot":
+    "0.64520"}, {"hostname": "leaf01", "vrf": "default", "peer": "10.0.0.22", "state":
+    "Established", "peerAsndot": "0.64520"}, {"hostname": "leaf01", "vrf": "default",
+    "peer": "10.0.0.21", "state": "Established", "peerAsndot": "0.64520"}, {"hostname":
+    "leaf02", "vrf": "default", "peer": "10.0.0.22", "state": "Established", "peerAsndot":
+    "0.64520"}, {"hostname": "leaf02", "vrf": "default", "peer": "10.0.0.21", "state":
+    "Established", "peerAsndot": "0.64520"}, {"hostname": "spine01", "vrf": "default",
+    "peer": "10.0.0.32", "state": "Established", "peerAsndot": "0.64520"}, {"hostname":
+    "spine01", "vrf": "default", "peer": "10.0.0.31", "state": "Established", "peerAsndot":
+    "0.64520"}, {"hostname": "spine01", "vrf": "default", "peer": "10.0.0.12", "state":
+    "Established", "peerAsndot": "0.64520"}, {"hostname": "spine01", "vrf": "default",
+    "peer": "10.0.0.11", "state": "Established", "peerAsndot": "0.64520"}, {"hostname":
+    "dcedge01", "vrf": "default", "peer": "169.254.127.1", "state": "Established",
+    "peerAsndot": "0.64520"}, {"hostname": "exit01", "vrf": "default", "peer": "169.254.254.2",
+    "state": "Established", "peerAsndot": "0.65533"}, {"hostname": "exit01", "vrf":
+    "internet-vrf", "peer": "169.254.254.10", "state": "Established", "peerAsndot":
+    "0.65533"}, {"hostname": "exit01", "vrf": "evpn-vrf", "peer": "169.254.254.6",
+    "state": "Established", "peerAsndot": "0.65533"}, {"hostname": "exit01", "vrf":
+    "internet-vrf", "peer": "169.254.127.0", "state": "Established", "peerAsndot":
+    "0.65534"}, {"hostname": "exit01", "vrf": "default", "peer": "10.0.0.22", "state":
+    "Established", "peerAsndot": "0.64520"}, {"hostname": "exit01", "vrf": "default",
+    "peer": "10.0.0.21", "state": "Established", "peerAsndot": "0.64520"}, {"hostname":
+    "dcedge01", "vrf": "default", "peer": "169.254.127.3", "state": "Established",
+    "peerAsndot": "0.64520"}, {"hostname": "exit02", "vrf": "evpn-vrf", "peer": "169.254.253.6",
+    "state": "Established", "peerAsndot": "0.65533"}, {"hostname": "exit02", "vrf":
+    "default", "peer": "169.254.253.2", "state": "Established", "peerAsndot": "0.65533"},
+    {"hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.127.2", "state":
+    "Established", "peerAsndot": "0.65534"}, {"hostname": "exit02", "vrf": "default",
+    "peer": "10.0.0.22", "state": "Established", "peerAsndot": "0.64520"}, {"hostname":
+    "exit02", "vrf": "default", "peer": "10.0.0.21", "state": "Established", "peerAsndot":
+    "0.64520"}, {"hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.253.10",
+    "state": "Established", "peerAsndot": "0.65533"}, {"hostname": "spine02", "vrf":
+    "default", "peer": "10.0.0.12", "state": "Established", "peerAsndot": "0.64520"},
+    {"hostname": "spine02", "vrf": "default", "peer": "10.0.0.31", "state": "Established",
+    "peerAsndot": "0.64520"}, {"hostname": "spine02", "vrf": "default", "peer": "10.0.0.11",
+    "state": "Established", "peerAsndot": "0.64520"}, {"hostname": "spine02", "vrf":
+    "default", "peer": "10.0.0.32", "state": "Established", "peerAsndot": "0.64520"}]'
+- command: bgp show --columns='hostname vrf peer state asndot' --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: bgp show junos filter
+  output: '[{"hostname": "firewall01", "vrf": "default", "peer": "eth1.3", "state":
+    "Established", "asndot": "0.65533"}, {"hostname": "firewall01", "vrf": "default",
+    "peer": "eth2.4", "state": "Established", "asndot": "0.65533"}, {"hostname": "firewall01",
+    "vrf": "default", "peer": "eth2.3", "state": "Established", "asndot": "0.65533"},
+    {"hostname": "firewall01", "vrf": "default", "peer": "eth2.2", "state": "Established",
+    "asndot": "0.65533"}, {"hostname": "firewall01", "vrf": "default", "peer": "eth1.4",
+    "state": "Established", "asndot": "0.65533"}, {"hostname": "firewall01", "vrf":
+    "default", "peer": "eth1.2", "state": "Established", "asndot": "0.65533"}, {"hostname":
+    "leaf01", "vrf": "default", "peer": "10.0.0.22", "state": "Established", "asndot":
+    "0.64520"}, {"hostname": "leaf01", "vrf": "default", "peer": "10.0.0.21", "state":
+    "Established", "asndot": "0.64520"}, {"hostname": "leaf02", "vrf": "default",
+    "peer": "10.0.0.22", "state": "Established", "asndot": "0.64520"}, {"hostname":
+    "leaf02", "vrf": "default", "peer": "10.0.0.21", "state": "Established", "asndot":
+    "0.64520"}, {"hostname": "spine01", "vrf": "default", "peer": "10.0.0.32", "state":
+    "Established", "asndot": "0.64520"}, {"hostname": "spine01", "vrf": "default",
+    "peer": "10.0.0.31", "state": "Established", "asndot": "0.64520"}, {"hostname":
+    "spine01", "vrf": "default", "peer": "10.0.0.12", "state": "Established", "asndot":
+    "0.64520"}, {"hostname": "spine01", "vrf": "default", "peer": "10.0.0.11", "state":
+    "Established", "asndot": "0.64520"}, {"hostname": "dcedge01", "vrf": "default",
+    "peer": "169.254.127.1", "state": "Established", "asndot": "0.65534"}, {"hostname":
+    "exit01", "vrf": "default", "peer": "169.254.254.2", "state": "Established", "asndot":
+    "0.64520"}, {"hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.254.10",
+    "state": "Established", "asndot": "0.64520"}, {"hostname": "exit01", "vrf": "evpn-vrf",
+    "peer": "169.254.254.6", "state": "Established", "asndot": "0.64520"}, {"hostname":
+    "exit01", "vrf": "internet-vrf", "peer": "169.254.127.0", "state": "Established",
+    "asndot": "0.64520"}, {"hostname": "exit01", "vrf": "default", "peer": "10.0.0.22",
+    "state": "Established", "asndot": "0.64520"}, {"hostname": "exit01", "vrf": "default",
+    "peer": "10.0.0.21", "state": "Established", "asndot": "0.64520"}, {"hostname":
+    "dcedge01", "vrf": "default", "peer": "169.254.127.3", "state": "Established",
+    "asndot": "0.65534"}, {"hostname": "exit02", "vrf": "evpn-vrf", "peer": "169.254.253.6",
+    "state": "Established", "asndot": "0.64520"}, {"hostname": "exit02", "vrf": "default",
+    "peer": "169.254.253.2", "state": "Established", "asndot": "0.64520"}, {"hostname":
+    "exit02", "vrf": "internet-vrf", "peer": "169.254.127.2", "state": "Established",
+    "asndot": "0.64520"}, {"hostname": "exit02", "vrf": "default", "peer": "10.0.0.22",
+    "state": "Established", "asndot": "0.64520"}, {"hostname": "exit02", "vrf": "default",
+    "peer": "10.0.0.21", "state": "Established", "asndot": "0.64520"}, {"hostname":
+    "exit02", "vrf": "internet-vrf", "peer": "169.254.253.10", "state": "Established",
+    "asndot": "0.64520"}, {"hostname": "spine02", "vrf": "default", "peer": "10.0.0.12",
+    "state": "Established", "asndot": "0.64520"}, {"hostname": "spine02", "vrf": "default",
+    "peer": "10.0.0.31", "state": "Established", "asndot": "0.64520"}, {"hostname":
+    "spine02", "vrf": "default", "peer": "10.0.0.11", "state": "Established", "asndot":
+    "0.64520"}, {"hostname": "spine02", "vrf": "default", "peer": "10.0.0.32", "state":
+    "Established", "asndot": "0.64520"}]'
+- command: bgp show --columns='hostname vrf peer state asn peerAsn asndot peerAsndot'
+    --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: bgp show junos filter
+  output: '[{"hostname": "firewall01", "vrf": "default", "peer": "eth1.3", "state":
+    "Established", "asn": 65533, "peerAsn": 64520, "asndot": "0.65533", "peerAsndot":
+    "0.64520"}, {"hostname": "firewall01", "vrf": "default", "peer": "eth2.4", "state":
+    "Established", "asn": 65533, "peerAsn": 64520, "asndot": "0.65533", "peerAsndot":
+    "0.64520"}, {"hostname": "firewall01", "vrf": "default", "peer": "eth2.3", "state":
+    "Established", "asn": 65533, "peerAsn": 64520, "asndot": "0.65533", "peerAsndot":
+    "0.64520"}, {"hostname": "firewall01", "vrf": "default", "peer": "eth2.2", "state":
+    "Established", "asn": 65533, "peerAsn": 64520, "asndot": "0.65533", "peerAsndot":
+    "0.64520"}, {"hostname": "firewall01", "vrf": "default", "peer": "eth1.4", "state":
+    "Established", "asn": 65533, "peerAsn": 64520, "asndot": "0.65533", "peerAsndot":
+    "0.64520"}, {"hostname": "firewall01", "vrf": "default", "peer": "eth1.2", "state":
+    "Established", "asn": 65533, "peerAsn": 64520, "asndot": "0.65533", "peerAsndot":
+    "0.64520"}, {"hostname": "leaf01", "vrf": "default", "peer": "10.0.0.22", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "leaf01", "vrf": "default", "peer": "10.0.0.21", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "leaf02", "vrf": "default", "peer": "10.0.0.22", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "leaf02", "vrf": "default", "peer": "10.0.0.21", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "spine01", "vrf": "default", "peer": "10.0.0.32", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "spine01", "vrf": "default", "peer": "10.0.0.31", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "spine01", "vrf": "default", "peer": "10.0.0.12", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "spine01", "vrf": "default", "peer": "10.0.0.11", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "dcedge01", "vrf": "default", "peer": "169.254.127.1",
+    "state": "Established", "asn": 65534, "peerAsn": 64520, "asndot": "0.65534", "peerAsndot":
+    "0.64520"}, {"hostname": "exit01", "vrf": "default", "peer": "169.254.254.2",
+    "state": "Established", "asn": 64520, "peerAsn": 65533, "asndot": "0.64520", "peerAsndot":
+    "0.65533"}, {"hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.254.10",
+    "state": "Established", "asn": 64520, "peerAsn": 65533, "asndot": "0.64520", "peerAsndot":
+    "0.65533"}, {"hostname": "exit01", "vrf": "evpn-vrf", "peer": "169.254.254.6",
+    "state": "Established", "asn": 64520, "peerAsn": 65533, "asndot": "0.64520", "peerAsndot":
+    "0.65533"}, {"hostname": "exit01", "vrf": "internet-vrf", "peer": "169.254.127.0",
+    "state": "Established", "asn": 64520, "peerAsn": 65534, "asndot": "0.64520", "peerAsndot":
+    "0.65534"}, {"hostname": "exit01", "vrf": "default", "peer": "10.0.0.22", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "exit01", "vrf": "default", "peer": "10.0.0.21", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "dcedge01", "vrf": "default", "peer": "169.254.127.3",
+    "state": "Established", "asn": 65534, "peerAsn": 64520, "asndot": "0.65534", "peerAsndot":
+    "0.64520"}, {"hostname": "exit02", "vrf": "evpn-vrf", "peer": "169.254.253.6",
+    "state": "Established", "asn": 64520, "peerAsn": 65533, "asndot": "0.64520", "peerAsndot":
+    "0.65533"}, {"hostname": "exit02", "vrf": "default", "peer": "169.254.253.2",
+    "state": "Established", "asn": 64520, "peerAsn": 65533, "asndot": "0.64520", "peerAsndot":
+    "0.65533"}, {"hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.127.2",
+    "state": "Established", "asn": 64520, "peerAsn": 65534, "asndot": "0.64520", "peerAsndot":
+    "0.65534"}, {"hostname": "exit02", "vrf": "default", "peer": "10.0.0.22", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "exit02", "vrf": "default", "peer": "10.0.0.21", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "exit02", "vrf": "internet-vrf", "peer": "169.254.253.10",
+    "state": "Established", "asn": 64520, "peerAsn": 65533, "asndot": "0.64520", "peerAsndot":
+    "0.65533"}, {"hostname": "spine02", "vrf": "default", "peer": "10.0.0.12", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "spine02", "vrf": "default", "peer": "10.0.0.31", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "spine02", "vrf": "default", "peer": "10.0.0.11", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}, {"hostname": "spine02", "vrf": "default", "peer": "10.0.0.32", "state":
+    "Established", "asn": 64520, "peerAsn": 64520, "asndot": "0.64520", "peerAsndot":
+    "0.64520"}]'
