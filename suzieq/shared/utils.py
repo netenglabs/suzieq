@@ -772,6 +772,27 @@ def get_sleep_time(period: str) -> int:
     return (nextrun-now).seconds
 
 
+def convert_asndot_to_asn(asn: str) -> int:
+    """Convert BGP ASN into asdot format
+
+    Convert BGP ASN if a single integer to asdot(<asn_hi>.<asn_lo>)
+    format. If input ASN is in asdot format already, it returns it as is.
+    If input ASN is < 65535, returns it as is.
+
+    Args:
+        asn: ASN to convert
+
+    Returns:
+        BGP ASN as 32b integer
+    """
+
+    if isinstance(asn, int) or '.' not in asn:
+        return asn
+
+    s_asn = asn.split('.')
+    return int(s_asn[0])*65536+int(s_asn[1])
+
+
 def print_version():
     '''Print the suzieq version and return'''
     print(SUZIEQ_VERSION)

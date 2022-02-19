@@ -1,6 +1,6 @@
 Value peer (\S+)
-Value peerAsn (\d+)
-Value asn (\d+)
+Value peerAsn ([0-9.]+)
+Value asn ([0-9.]+)
 Value vrf (\S+)
 Value description (.+?)
 Value peerRouterId ([0-9.]+)
@@ -67,7 +67,8 @@ Start
 
 PrefixStats
   ^\s+${afi}\s+${safi}:\s+${pfxTx}\s+${pfxRx}\s+${pfxBestRx}.*$$
-  ^\s+${afi}\s+${safi}:\s+${pfxTx}\s+${pfxRx}\s*$$  
+  ^\s+${afi}\s+${safi}:\s+${pfxTx}\s+${pfxRx}\s*$$
+  ^\s+${afi}\s*:\s+${pfxTx}\s+${pfxRx}\s+${pfxBestRx}.*$$  
   ^\s+${afi}:\s+${pfxTx}\s+${pfxRx}\s*$$
   ^\s+Configured\s+maximum\s+total\s+number\s+of\s+routes\s+is\s+${pfxMaxRx}\s*$$
   ^\s+Inbound\s+route\s+map\s+for\s+${iMapafisafi}\s+is\s+${ingressRmap}\s*$$
