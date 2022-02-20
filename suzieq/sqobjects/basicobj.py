@@ -118,8 +118,15 @@ class SqObject(SqPlugin):
             return
 
         for arg, val in kwargs.items():
-            if arg in good_arg_val_list:
-                if val not in good_arg_val_list[arg]:
+            if arg not in good_arg_val_list:
+                continue
+
+            if not isinstance(val, list):
+                chkval = [val]
+            else:
+                chkval = val
+            for v in chkval:
+                if v not in good_arg_val_list[arg]:
                     raise ValueError(
                         f"invalid value {val} for argument {arg}")
 
