@@ -83,3 +83,90 @@ tests:
   error:
     error: '[{"error": "ERROR: Invalid columns specified: [''badcolumn'']"}]'
   marks: device unique junos
+- command: device show --version='<19.5' --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: device show filter junos
+  output: '[{"namespace": "junos", "hostname": "server101", "model": "vm", "version":
+    "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "10.255.5.72", "bootupTimestamp": 1622997922.0, "timestamp": 1623025795928},
+    {"namespace": "junos", "hostname": "server102", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.5.169", "bootupTimestamp": 1622997951.0, "timestamp": 1623025795928},
+    {"namespace": "junos", "hostname": "server201", "model": "vm", "version": "18.04.3
+    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
+    "10.255.5.49", "bootupTimestamp": 1622997945.0, "timestamp": 1623025795928}, {"namespace":
+    "junos", "hostname": "server202", "model": "vm", "version": "18.04.3 LTS", "vendor":
+    "Ubuntu", "architecture": "x86-64", "status": "alive", "address": "10.255.5.71",
+    "bootupTimestamp": 1622997902.0, "timestamp": 1623025795928}, {"namespace": "junos",
+    "hostname": "firewall01", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu",
+    "architecture": "x86-64", "status": "alive", "address": "10.255.5.40", "bootupTimestamp":
+    1622997934.0, "timestamp": 1623025796138}, {"namespace": "junos", "hostname":
+    "spine01", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.5.117", "bootupTimestamp":
+    1622997977.081, "timestamp": 1623025799081}, {"namespace": "junos", "hostname":
+    "spine02", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.5.118", "bootupTimestamp":
+    1622998003.357, "timestamp": 1623025799357}, {"namespace": "junos", "hostname":
+    "leaf02", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.5.185", "bootupTimestamp":
+    1622998018.407, "timestamp": 1623025799407}, {"namespace": "junos", "hostname":
+    "exit01", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.5.251", "bootupTimestamp":
+    1622998009.512, "timestamp": 1623025799512}, {"namespace": "junos", "hostname":
+    "leaf01", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.5.184", "bootupTimestamp":
+    1622998000.875, "timestamp": 1623025799875}, {"namespace": "junos", "hostname":
+    "dcedge01", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.5.250", "bootupTimestamp":
+    1622998015.405, "timestamp": 1623025800405}, {"namespace": "junos", "hostname":
+    "exit02", "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper",
+    "architecture": "", "status": "alive", "address": "10.255.5.252", "bootupTimestamp":
+    1622998009.947, "timestamp": 1623025800947}]'
+- command: device show --version='18.04.3' --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: device show filter junos
+  output: '[]'
+- command: device show --vendor='Juniper' --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: device show filter junos
+  output: '[{"namespace": "junos", "hostname": "spine01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.117", "bootupTimestamp": 1622997977.081, "timestamp": 1623025799081},
+    {"namespace": "junos", "hostname": "spine02", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.118", "bootupTimestamp": 1622998003.357, "timestamp": 1623025799357},
+    {"namespace": "junos", "hostname": "leaf02", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.185", "bootupTimestamp": 1622998018.407, "timestamp": 1623025799407},
+    {"namespace": "junos", "hostname": "exit01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.251", "bootupTimestamp": 1622998009.512, "timestamp": 1623025799512},
+    {"namespace": "junos", "hostname": "leaf01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.184", "bootupTimestamp": 1622998000.875, "timestamp": 1623025799875},
+    {"namespace": "junos", "hostname": "dcedge01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.250", "bootupTimestamp": 1622998015.405, "timestamp": 1623025800405},
+    {"namespace": "junos", "hostname": "exit02", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.252", "bootupTimestamp": 1622998009.947, "timestamp": 1623025800947}]'
+- command: device unique --columns=vendor --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: device show filter junos
+  output: '[{"vendor": "Juniper"}, {"vendor": "Ubuntu"}]'
+- command: device unique --columns=model --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: device show filter junos
+  output: '[{"model": "vm"}, {"model": "vqfx-10000"}]'
+- command: device unique --columns=os --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: device show filter junos
+  output: '[{"os": "junos-qfx"}, {"os": "linux"}]'
+- command: device unique --columns=version --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: device show filter junos
+  output: '[{"version": "18.04.3 LTS"}, {"version": "19.4R1.10"}]'
+- command: device unique --os=junos-qfx --columns=version --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: device show filter junos
+  output: '[{"version": "19.4R1.10"}]'
