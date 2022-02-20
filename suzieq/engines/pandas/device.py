@@ -25,8 +25,6 @@ class DeviceObj(SqPandasEngine):
         user_query = kwargs.pop('query_str', '')
         status = kwargs.pop('status', '')
         os_version = kwargs.pop('version', '')
-        vendor = kwargs.get('vendor', '')
-        model = kwargs.get('model', '')
         os = kwargs.get('os', '')
 
         drop_cols = []
@@ -34,6 +32,10 @@ class DeviceObj(SqPandasEngine):
         if 'active' not in addnl_fields+columns and columns != ['*']:
             addnl_fields.append('active')
             drop_cols.append('active')
+
+        fields = self.iobj.schema.get_display_fields(columns)
+        if columns == ['*']:
+            fields.remove('sqvers')
 
         # os is not included in the default column list. Why? I was dumb
         if (columns == ['default'] and os) or (os and 'os' not in columns):
@@ -105,40 +107,30 @@ class DeviceObj(SqPandasEngine):
                 df.insert(len(df.columns)-1, 'uptime', uptime_cols)
 
         if df.empty:
-            return df
+            return df[fields]
 
         # The poller merge kills the filtering we did earlier, so redo:
         if status:
             df = df.loc[df.status.isin(status)]
-        if vendor:
-            df = df.loc[df.vendor.isin(vendor)]
-        if model:
-            df = df.loc[df.model.isin(model)]
-        if os:
-            df = df.loc[df.os.isin(os)]
         if os_version:
             opdict = {'>': operator.gt, '<': operator.lt, '>=': operator.ge,
                       '<=': operator.le, '=': operator.eq, '!=': operator.ne}
             op = operator.eq
-            for elem, val in opdict.items():
-                if os_version.startswith(elem):
-                    os_version = os_version.replace(elem, '')
-                    op = val
-                    break
+            for osv in os_version:
+                for elem, val in opdict.items():
+                    if osv.startswith(elem):
+                        osv = osv.replace(elem, '')
+                        op = val
+                        break
 
-            df = df.loc[df.version.apply(
-                lambda x: op(version.LegacyVersion(x),
-                             version.LegacyVersion(os_version)))]
+                df = df.loc[df.version.apply(
+                    lambda x: op(version.LegacyVersion(x),
+                                 version.LegacyVersion(osv)))]
 
         df = self._handle_user_query_str(df, user_query)
 
         # if poller has failed completely, Can mess up the order of columns
-        cols = self.iobj.schema.get_display_fields(columns)
-        if columns == ['default'] and 'timestamp' not in cols:
-            cols.append('timestamp')
-        if 'sqvers' in cols:
-            cols.remove('sqvers')
-        return df.drop(columns=drop_cols, errors='ignore')[cols]
+        return df[fields]
 
     def summarize(self, **kwargs):
         """Summarize device information across namespace"""

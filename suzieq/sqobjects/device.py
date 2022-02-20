@@ -12,6 +12,10 @@ class DeviceObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'os',
                                 'vendor', 'model', 'status', 'version',
                                 'query_str']
+        self._valid_arg_vals = {
+            'status': ['alive', 'dead', 'neverpoll',
+                       '!alive', '!dead', '!neverpoll']
+        }
         self._unique_def_column = ['model']
 
     def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
