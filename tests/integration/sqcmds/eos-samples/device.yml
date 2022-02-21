@@ -92,3 +92,82 @@ tests:
   error:
     error: '[{"error": "ERROR: Invalid columns specified: [''badcolumn'']"}]'
   marks: device unique eos
+- command: device show --version='>4.23 < 19.5' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
+  marks: device show filter eos
+  output: '[]'
+- command: device show --version='4.23.5M' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
+  marks: device show filter eos
+  output: '[{"namespace": "eos", "hostname": "leaf02", "model": "vEOS", "version":
+    "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address":
+    "10.255.2.185", "bootupTimestamp": 1620676826.0, "timestamp": 1623025176903},
+    {"namespace": "eos", "hostname": "spine01", "model": "vEOS", "version": "4.23.5M",
+    "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address": "10.255.2.117",
+    "bootupTimestamp": 1620676825.0, "timestamp": 1623025176945}, {"namespace": "eos",
+    "hostname": "leaf03", "model": "vEOS", "version": "4.23.5M", "vendor": "Arista",
+    "architecture": "x86_64", "status": "alive", "address": "10.255.2.186", "bootupTimestamp":
+    1620676827.0, "timestamp": 1623025177028}, {"namespace": "eos", "hostname": "exit02",
+    "model": "vEOS", "version": "4.23.5M", "vendor": "Arista", "architecture": "x86_64",
+    "status": "alive", "address": "10.255.2.253", "bootupTimestamp": 1620676831.0,
+    "timestamp": 1623025177051}, {"namespace": "eos", "hostname": "spine02", "model":
+    "vEOS", "version": "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status":
+    "alive", "address": "10.255.2.118", "bootupTimestamp": 1620676826.0, "timestamp":
+    1623025177075}, {"namespace": "eos", "hostname": "leaf01", "model": "vEOS", "version":
+    "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address":
+    "10.255.2.184", "bootupTimestamp": 1620676827.0, "timestamp": 1623025177093},
+    {"namespace": "eos", "hostname": "exit01", "model": "vEOS", "version": "4.23.5M",
+    "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address": "10.255.2.251",
+    "bootupTimestamp": 1622917982.0, "timestamp": 1623025177156}, {"namespace": "eos",
+    "hostname": "leaf04", "model": "vEOS", "version": "4.23.5M", "vendor": "Arista",
+    "architecture": "x86_64", "status": "alive", "address": "10.255.2.187", "bootupTimestamp":
+    1620676832.0, "timestamp": 1623025177156}]'
+- command: device show --vendor='Arista Juniper' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
+  marks: device show filter eos
+  output: '[{"namespace": "eos", "hostname": "leaf02", "model": "vEOS", "version":
+    "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address":
+    "10.255.2.185", "bootupTimestamp": 1620676826.0, "timestamp": 1623025176903},
+    {"namespace": "eos", "hostname": "spine01", "model": "vEOS", "version": "4.23.5M",
+    "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address": "10.255.2.117",
+    "bootupTimestamp": 1620676825.0, "timestamp": 1623025176945}, {"namespace": "eos",
+    "hostname": "leaf03", "model": "vEOS", "version": "4.23.5M", "vendor": "Arista",
+    "architecture": "x86_64", "status": "alive", "address": "10.255.2.186", "bootupTimestamp":
+    1620676827.0, "timestamp": 1623025177028}, {"namespace": "eos", "hostname": "exit02",
+    "model": "vEOS", "version": "4.23.5M", "vendor": "Arista", "architecture": "x86_64",
+    "status": "alive", "address": "10.255.2.253", "bootupTimestamp": 1620676831.0,
+    "timestamp": 1623025177051}, {"namespace": "eos", "hostname": "spine02", "model":
+    "vEOS", "version": "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status":
+    "alive", "address": "10.255.2.118", "bootupTimestamp": 1620676826.0, "timestamp":
+    1623025177075}, {"namespace": "eos", "hostname": "leaf01", "model": "vEOS", "version":
+    "4.23.5M", "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address":
+    "10.255.2.184", "bootupTimestamp": 1620676827.0, "timestamp": 1623025177093},
+    {"namespace": "eos", "hostname": "exit01", "model": "vEOS", "version": "4.23.5M",
+    "vendor": "Arista", "architecture": "x86_64", "status": "alive", "address": "10.255.2.251",
+    "bootupTimestamp": 1622917982.0, "timestamp": 1623025177156}, {"namespace": "eos",
+    "hostname": "leaf04", "model": "vEOS", "version": "4.23.5M", "vendor": "Arista",
+    "architecture": "x86_64", "status": "alive", "address": "10.255.2.187", "bootupTimestamp":
+    1620676832.0, "timestamp": 1623025177156}, {"namespace": "eos", "hostname": "dcedge01",
+    "model": "vqfx-10000", "version": "19.4R1.10", "vendor": "Juniper", "architecture":
+    "", "status": "alive", "address": "10.255.2.250", "bootupTimestamp": 1620675742.016,
+    "timestamp": 1623025180016}]'
+- command: device unique --columns=vendor --format=json --namespace=eos
+  data-directory: tests/data/parquet/
+  marks: device show filter eos
+  output: '[{"vendor": "Arista"}, {"vendor": "Juniper"}, {"vendor": "Ubuntu"}]'
+- command: device unique --columns=model --format=json --namespace=eos
+  data-directory: tests/data/parquet/
+  marks: device show filter eos
+  output: '[{"model": "vEOS"}, {"model": "vm"}, {"model": "vqfx-10000"}]'
+- command: device unique --columns=os --format=json --namespace=eos
+  data-directory: tests/data/parquet/
+  marks: device show filter eos
+  output: '[{"os": "eos"}, {"os": "junos-qfx"}, {"os": "linux"}]'
+- command: device unique --columns=version --format=json --namespace=eos
+  data-directory: tests/data/parquet/
+  marks: device show filter eos
+  output: '[{"version": "18.04.3 LTS"}, {"version": "19.4R1.10"}, {"version": "4.23.5M"}]'
+- command: device unique --os=eos --columns=version --format=json --namespace=eos
+  data-directory: tests/data/parquet/
+  marks: device show filter eos
+  output: '[{"version": "4.23.5M"}]'

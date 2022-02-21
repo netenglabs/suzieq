@@ -1,4 +1,4 @@
-import re
+import shlex
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
@@ -7,8 +7,7 @@ from suzieq.sqobjects.device import DeviceObj
 
 
 @command("device", help="Act on device data")
-@argument("status", description="filter by polling status",
-          choices=["dead", "alive",  "neverpoll"])
+@argument("status", description="filter by polling status",)
 @argument("os", description="NOS(s), space separated")
 @argument("version", description="NOS version(s), space separated")
 @argument("vendor", description="Vendor(s), space separated")
@@ -45,13 +44,21 @@ class DeviceCmd(SqCommand):
             query_str=query_str,
             sqobj=DeviceObj,
         )
+
+        # Nubia eats up the first and last quote. Detect and add back
+        model = model.strip()
+        if model.count("'") % 2 != 0:
+            if not model.startswith("'"):
+                model = f"'{model}"
+            elif not model.endswith("'"):
+                model = f"{model}'"
         if model:
-            model = re.split(r"\s+(?=[^']*(?:'))", model)
+            model = shlex.split(model)
 
         self.lvars = {
             'os': os.split(),
             'version': version.split(),
-            'status': status,
+            'status': status.split(),
             'model': model,
             'vendor': vendor.split()
         }
