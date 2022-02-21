@@ -44,7 +44,7 @@ class NetboxServerModel(BaseModel):
 class NetboxSourceModel(SourceModel):
     """Netbox source validation model
     """
-    tag: Optional[str] = Field(default='null')
+    tag: Optional[str] = Field(default='suzieq')
     period: Optional[int] = Field(default=3600)
     token: str
     ssl_verify: Optional[bool] = Field(alias='ssl-verify')
