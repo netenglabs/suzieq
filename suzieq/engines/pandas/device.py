@@ -27,11 +27,8 @@ class DeviceObj(SqPandasEngine):
         os_version = kwargs.pop('version', '')
         os = kwargs.get('os', '')
 
-        drop_cols = []
-
         if 'active' not in addnl_fields+columns and columns != ['*']:
             addnl_fields.append('active')
-            drop_cols.append('active')
 
         fields = self.iobj.schema.get_display_fields(columns)
         if columns == ['*']:
@@ -40,17 +37,14 @@ class DeviceObj(SqPandasEngine):
         # os is not included in the default column list. Why? I was dumb
         if (columns == ['default'] and os) or (os and 'os' not in columns):
             addnl_fields.append('os')
-            drop_cols.append('os')
 
         for col in ['namespace', 'hostname', 'status', 'address']:
             if columns not in [['default'], ['*']] and col not in columns:
                 addnl_fields.append(col)
-                drop_cols.append(col)
 
         if columns == ['*'] or 'uptime' in columns:
             if columns != ['*'] and 'bootupTimestamp' not in columns:
                 addnl_fields.append('bootupTimestamp')
-                drop_cols.append('bootupTimestamp')
 
         df = super().get(active_only=False, addnl_fields=addnl_fields,
                          **kwargs)
@@ -95,8 +89,6 @@ class DeviceObj(SqPandasEngine):
             if 'address' in df.columns:
                 df.address = np.where(df['address'] == 'N/A', df['hostname'],
                                       df['address'])
-
-            drop_cols.extend(['status_y', 'timestamp_y'])
 
             if 'uptime' in columns or columns == ['*']:
                 uptime_cols = (df['timestamp'] -
