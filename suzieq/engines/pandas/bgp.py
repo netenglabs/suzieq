@@ -23,7 +23,6 @@ class BgpObj(SqPandasEngine):
         hostname = kwargs.pop('hostname', None)
         user_query = kwargs.pop('query_str', None)
 
-        drop_cols = ['origPeer', 'peerHost']
         addnl_fields.extend(['origPeer'])
         sch = self.schema
         fields = sch.get_display_fields(columns)
@@ -36,7 +35,6 @@ class BgpObj(SqPandasEngine):
                     'peer', 'hostname']:
             if col not in fields:
                 addnl_fields.append(col)
-                drop_cols.append(col)
 
         try:
             df = super().get(addnl_fields=addnl_fields, **kwargs)
@@ -48,6 +46,8 @@ class BgpObj(SqPandasEngine):
                 return df
 
         if df.empty:
+            # We cannot add df[fields] here because we haven't added the
+            # augmented columns yet and so can fail.
             return df
 
         if 'afiSafi' in columns or (columns == ['*']):
@@ -69,18 +69,15 @@ class BgpObj(SqPandasEngine):
         # Convert old data into new 2.0 data format
         if 'peerHostname' in df.columns:
             mdf = self._get_peer_matched_df(df)
-            drop_cols = [x for x in drop_cols if x in mdf.columns]
-            drop_cols.extend(list(mdf.filter(regex='_y')))
         else:
             mdf = df
 
         mdf = self._handle_user_query_str(mdf, user_query)
 
         if query_str:
-            return mdf.query(query_str).drop(columns=drop_cols,
-                                             errors='ignore')[fields]
+            return mdf.query(query_str)[fields]
         else:
-            return mdf.drop(columns=drop_cols, errors='ignore')[fields]
+            return mdf[fields]
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize key information about BGP"""
