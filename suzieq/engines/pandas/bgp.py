@@ -23,16 +23,18 @@ class BgpObj(SqPandasEngine):
         hostname = kwargs.pop('hostname', None)
         user_query = kwargs.pop('query_str', None)
 
-        drop_cols = ['origPeer', 'peerHost']
         addnl_fields.extend(['origPeer'])
         sch = self.schema
         fields = sch.get_display_fields(columns)
+
+        if columns == ['*']:
+            fields.remove('sqvers')
+            fields.remove('origPeer')
 
         for col in ['peerIP', 'updateSource', 'state', 'namespace', 'vrf',
                     'peer', 'hostname']:
             if col not in fields:
                 addnl_fields.append(col)
-                drop_cols.append(col)
 
         try:
             df = super().get(addnl_fields=addnl_fields, **kwargs)
@@ -44,6 +46,8 @@ class BgpObj(SqPandasEngine):
                 return df
 
         if df.empty:
+            # We cannot add df[fields] here because we haven't added the
+            # augmented columns yet and so can fail.
             return df
 
         if 'afiSafi' in columns or (columns == ['*']):
@@ -55,21 +59,25 @@ class BgpObj(SqPandasEngine):
             df['peer'] = np.where(df['origPeer'] != "",
                                   df['origPeer'], df['peer'])
 
+        if 'asndot' in fields:
+            df['asndot'] = df.asn.apply(lambda x: f'{int(x/65536)}.{x%65536}')
+
+        if 'peerAsndot' in fields:
+            df['peerAsndot'] = df.peerAsn.apply(
+                lambda x: f'{int(x/65536)}.{x%65536}')
+
         # Convert old data into new 2.0 data format
         if 'peerHostname' in df.columns:
             mdf = self._get_peer_matched_df(df)
-            drop_cols = [x for x in drop_cols if x in mdf.columns]
-            drop_cols.extend(list(mdf.filter(regex='_y')))
         else:
             mdf = df
 
         mdf = self._handle_user_query_str(mdf, user_query)
 
         if query_str:
-            return mdf.query(query_str).drop(columns=drop_cols,
-                                             errors='ignore')
+            return mdf.query(query_str)[fields]
         else:
-            return mdf.drop(columns=drop_cols, errors='ignore')
+            return mdf[fields]
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize key information about BGP"""
@@ -263,19 +271,23 @@ class BgpObj(SqPandasEngine):
                      x['reason'] != "No error"))
                 else [], axis=1)
 
+            failed_df['result'] = 'fail'
+
         # Get list of peer IP addresses for peer not in Established state
         # Returning to performing checks even if we didn't get LLDP/Intf info
 
-        passed_df['assertReason'] += passed_df.apply(
-            lambda x: ['Not all Afi/Safis enabled']
-            if x['afisAdvOnly'].any() or x['afisRcvOnly'].any() else [],
-            axis=1)
+        if not passed_df.empty:
+            passed_df['assertReason'] += passed_df.apply(
+                lambda x: ['Not all Afi/Safis enabled']
+                if x['afisAdvOnly'].any() or x['afisRcvOnly'].any() else [],
+                axis=1)
+
+            passed_df['result'] = passed_df.apply(
+                lambda x: 'pass'
+                if len(x.assertReason) == 0 else 'fail',
+                axis=1)
 
         df = pd.concat([failed_df, passed_df])
-
-        df['result'] = df.apply(lambda x: 'pass'
-                                if len(x.assertReason) == 0 else 'fail',
-                                axis=1)
 
         result_df = df[['namespace', 'hostname', 'vrf', 'peer', 'asn',
                         'peerAsn', 'state', 'peerHostname', 'result',

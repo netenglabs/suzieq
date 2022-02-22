@@ -96,3 +96,21 @@ tests:
     "numRows": 6}, {"routerId": "10.0.0.31", "numRows": 8}, {"routerId": "10.0.0.32",
     "numRows": 8}, {"routerId": "10.0.0.21", "numRows": 18}, {"routerId": "10.0.0.22",
     "numRows": 18}]'
+- command: bgp unique --count=True --format=json --namespace=eos --columns=peerAsndot
+  data-directory: tests/data/parquet/
+  marks: bgp unique eos
+  output: '[{"peerAsndot": "0.65520", "numRows": 2}, {"peerAsndot": "0.65521", "numRows":
+    2}, {"peerAsndot": "0.65522", "numRows": 4}, {"peerAsndot": "0.65534", "numRows":
+    4}, {"peerAsndot": "0.65533", "numRows": 12}, {"peerAsndot": "0.64520", "numRows":
+    72}]'
+- command: bgp unique --count=True --format=json --namespace=eos --columns=asndot
+  data-directory: tests/data/parquet/
+  marks: bgp unique eos
+  output: '[{"asndot": "0.65534", "numRows": 2}, {"asndot": "0.65520", "numRows":
+    4}, {"asndot": "0.65521", "numRows": 4}, {"asndot": "0.65533", "numRows": 6},
+    {"asndot": "0.65522", "numRows": 8}, {"asndot": "0.64520", "numRows": 72}]'
+- command: bgp unique --format=json --namespace=eos --columns=asndot
+  data-directory: tests/data/parquet/
+  marks: bgp unique eos
+  output: '[{"asndot": "0.64520"}, {"asndot": "0.65520"}, {"asndot": "0.65521"}, {"asndot":
+    "0.65522"}, {"asndot": "0.65533"}, {"asndot": "0.65534"}]'

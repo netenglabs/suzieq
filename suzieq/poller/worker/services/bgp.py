@@ -6,13 +6,27 @@ from dateparser import parse
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
-from suzieq.shared.utils import get_timestamp_from_cisco_time
-from suzieq.shared.utils import get_timestamp_from_junos_time
+from suzieq.shared.utils import (get_timestamp_from_cisco_time,
+                                 get_timestamp_from_junos_time,
+                                 convert_asndot_to_asn)
 
 
 # pylint: disable=too-many-statements
 class BgpService(Service):
     """bgp service. Different class because of munging of output across NOS"""
+
+    def _normalize_asn(self, entry: dict) -> None:
+        """Convert ASN from asdot format into single 32b int
+
+        if ASN is in asdot(<16b>.<16b>) format, convert it into a
+        single 32b number
+
+        Args:
+            entry: record which contains asn and peerAsn keys that
+                need converting
+        """
+        entry['asn'] = convert_asndot_to_asn(entry.get('asn', 0))
+        entry['peerAsn'] = convert_asndot_to_asn(entry.get('peerAsn', 0))
 
     def _clean_eos_data(self, processed_data, raw_data):
 
@@ -51,6 +65,7 @@ class BgpService(Service):
             if not bfd_status or (bfd_status == "unknown"):
                 bfd_status = "disabled"
             entry['bfdStatus'] = bfd_status
+            self._normalize_asn(entry)
 
             for i, afi in enumerate(entry['afi']):
                 if 'sr-te' in entry['safi'][i]:
@@ -142,6 +157,7 @@ class BgpService(Service):
                 bfd_status = bfd_status.lower()
             entry['bfdStatus'] = bfd_status
 
+            self._normalize_asn(entry)
             # JunOS adds entries which includes the port as IP+Port
             entry['peerIP'] = entry['peerIP'].split('+')[0]
             entry['peer'] = entry['peer'].split('+')[0]
@@ -149,8 +165,6 @@ class BgpService(Service):
             entry['numChanges'] = int(entry['numChanges'])
             entry['updatesRx'] = int(entry['updatesRx'])
             entry['updatesTx'] = int(entry['updatesTx'])
-            entry['asn'] = int(entry['asn'])
-            entry['peerAsn'] = int(entry['peerAsn'])
             entry['keepaliveTime'] = int(entry['keepaliveTime'])
             entry['holdTime'] = int(entry['holdTime'])
 
@@ -256,6 +270,7 @@ class BgpService(Service):
                 drop_indices.append(j)
                 continue
 
+            self._normalize_asn(entry)
             bfd_status = entry.get('bfdStatus', '').lower()
             if bfd_status == "true":
                 entry['bfdStatus'] = 'up'
@@ -377,6 +392,7 @@ class BgpService(Service):
                 drop_indices.append(i)
                 continue
 
+            self._normalize_asn(entry)
             bfd_status = entry.get('bfdStatus', 'disabled').lower()
             if not bfd_status or (bfd_status == "unknown"):
                 bfd_status = "disabled"
@@ -432,6 +448,7 @@ class BgpService(Service):
                 bfd_status = "disabled"
             entry['bfdStatus'] = bfd_status
 
+            self._normalize_asn(entry)
             for afi in entry.get('_afiInfo', {}):
                 if afi in (entry.get('afisAdvOnly', []) or []):
                     continue
@@ -503,6 +520,7 @@ class BgpService(Service):
 
         for i, entry in enumerate(processed_data):
             check_peer_key = f"{entry['peer']}-{entry['peerAsn']}"
+            self._normalize_asn(entry)
             if entry.get('_entryType', ''):
                 drop_indices.append(i)
                 # Find the matching entry in the already processed data
@@ -609,6 +627,7 @@ class BgpService(Service):
             if entry.get("state", "") not in ["Established", "dynamic"]:
                 entry["state"] = "NotEstd"
 
+            self._normalize_asn(entry)
             peerGroup = entry.get("_peerGroup")
             entry["softReconfig"] = softReconfDict.get(peerGroup)
 

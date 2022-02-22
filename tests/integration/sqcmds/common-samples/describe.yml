@@ -56,44 +56,47 @@ tests:
     only we advertised"}, {"name": "afisRcvOnly", "type": {"type": "array", "items":
     {"name": "weight", "type": "string"}}, "key": "", "display": "", "description":
     "The list of AFIs only our peer advertised"}, {"name": "asn", "type": "long",
-    "key": "", "display": 8, "description": "This devices'' ASN"}, {"name": "bfdStatus",
-    "type": "string", "key": "", "display": "", "description": "BFD status"}, {"name":
-    "communityTypes", "type": {"type": "array", "items": {"name": "weight", "type":
-    "string"}}, "key": "", "display": "", "description": "List of types of communities
-    advertised for AFI/SAFI to peer"}, {"name": "defOriginate", "type": "boolean",
-    "key": "", "display": "", "description": "True if advertising default route for
-    this AFI/SAFI to peer"}, {"name": "egressRmap", "type": "string", "key": "", "display":
-    "", "description": "Route map name associated with egress for AFI/SAFI"}, {"name":
-    "estdTime", "type": "timedelta64[s]", "key": "", "display": 13, "description":
-    "Session uptime"}, {"name": "extnhAdvertised", "type": "boolean", "key": "", "display":
-    "", "description": "Extended NextHop capability sent"}, {"name": "extnhEnabled",
+    "key": "", "display": 8, "description": "This devices'' ASN"}, {"name": "asndot",
+    "type": "string", "key": "", "display": "", "description": "This devices'' ASN
+    displayed in asdot format"}, {"name": "bfdStatus", "type": "string", "key": "",
+    "display": "", "description": "BFD status"}, {"name": "communityTypes", "type":
+    {"type": "array", "items": {"name": "weight", "type": "string"}}, "key": "", "display":
+    "", "description": "List of types of communities advertised for AFI/SAFI to peer"},
+    {"name": "defOriginate", "type": "boolean", "key": "", "display": "", "description":
+    "True if advertising default route for this AFI/SAFI to peer"}, {"name": "egressRmap",
+    "type": "string", "key": "", "display": "", "description": "Route map name associated
+    with egress for AFI/SAFI"}, {"name": "estdTime", "type": "timedelta64[s]", "key":
+    "", "display": 13, "description": "Session uptime"}, {"name": "extnhAdvertised",
     "type": "boolean", "key": "", "display": "", "description": "Extended NextHop
-    capability enabled on session"}, {"name": "extnhReceived", "type": "boolean",
-    "key": "", "display": "", "description": "Extended NextHop capability rcvd"},
-    {"name": "holdTime", "type": "long", "key": "", "display": "", "description":
-    "BGP hold time"}, {"name": "hopsMax", "type": "long", "key": "", "display": "",
-    "description": "Maximum #hops this peer can be"}, {"name": "hostname", "type":
-    "string", "key": 1, "display": 1, "description": "Hostname associated with this
-    record"}, {"name": "ifname", "type": "string", "key": "", "display": "", "description":
-    "Interface name associated with session"}, {"name": "ingressRmap", "type": "string",
-    "key": "", "display": "", "description": "Route map name associated with ingress
-    for AFI/SAFI"}, {"name": "keepaliveTime", "type": "long", "key": "", "display":
-    "", "description": "BGP peer keepalive time in secs"}, {"name": "lastDownTime",
-    "type": "timestamp", "key": "", "display": "", "description": "Unix epoch indicating
-    when session was last down"}, {"name": "mrai", "type": "long", "key": "", "display":
-    "", "description": "Min Route Adv Interval, in secs"}, {"name": "namespace", "type":
-    "string", "key": 0, "display": 0, "description": "Namespace associated with this
-    record"}, {"name": "nhSelf", "type": "boolean", "key": "", "display": "", "description":
-    "True if set nexthop self is configured for iBGP peer"}, {"name": "nhUnchanged",
-    "type": "boolean", "key": "", "display": "", "description": "True if set nexthop
-    unchanged is configured for eBGP peer"}, {"name": "notificnReason", "type": "string",
-    "key": "", "display": "", "description": "Last BGP notification reason"}, {"name":
-    "numChanges", "type": "long", "key": "", "display": 12, "description": "Count
-    of changes in BGP session state"}, {"name": "origPeer", "type": "string", "key":
-    "", "display": "", "description": "internal field, not selectable"}, {"name":
-    "peer", "type": "string", "key": 3, "display": 3, "description": "IP address or
-    ifname of BGP peer"}, {"name": "peerAsn", "type": "long", "key": "", "display":
-    9, "description": "Peer device''s ASN"}, {"name": "peerHostname", "type": "string",
+    capability sent"}, {"name": "extnhEnabled", "type": "boolean", "key": "", "display":
+    "", "description": "Extended NextHop capability enabled on session"}, {"name":
+    "extnhReceived", "type": "boolean", "key": "", "display": "", "description": "Extended
+    NextHop capability rcvd"}, {"name": "holdTime", "type": "long", "key": "", "display":
+    "", "description": "BGP hold time"}, {"name": "hopsMax", "type": "long", "key":
+    "", "display": "", "description": "Maximum #hops this peer can be"}, {"name":
+    "hostname", "type": "string", "key": 1, "display": 1, "description": "Hostname
+    associated with this record"}, {"name": "ifname", "type": "string", "key": "",
+    "display": "", "description": "Interface name associated with session"}, {"name":
+    "ingressRmap", "type": "string", "key": "", "display": "", "description": "Route
+    map name associated with ingress for AFI/SAFI"}, {"name": "keepaliveTime", "type":
+    "long", "key": "", "display": "", "description": "BGP peer keepalive time in secs"},
+    {"name": "lastDownTime", "type": "timestamp", "key": "", "display": "", "description":
+    "Unix epoch indicating when session was last down"}, {"name": "mrai", "type":
+    "long", "key": "", "display": "", "description": "Min Route Adv Interval, in secs"},
+    {"name": "namespace", "type": "string", "key": 0, "display": 0, "description":
+    "Namespace associated with this record"}, {"name": "nhSelf", "type": "boolean",
+    "key": "", "display": "", "description": "True if set nexthop self is configured
+    for iBGP peer"}, {"name": "nhUnchanged", "type": "boolean", "key": "", "display":
+    "", "description": "True if set nexthop unchanged is configured for eBGP peer"},
+    {"name": "notificnReason", "type": "string", "key": "", "display": "", "description":
+    "Last BGP notification reason"}, {"name": "numChanges", "type": "long", "key":
+    "", "display": 12, "description": "Count of changes in BGP session state"}, {"name":
+    "origPeer", "type": "string", "key": "", "display": "", "description": "internal
+    field, not selectable"}, {"name": "peer", "type": "string", "key": 3, "display":
+    3, "description": "IP address or ifname of BGP peer"}, {"name": "peerAsn", "type":
+    "long", "key": "", "display": 9, "description": "Peer device''s ASN"}, {"name":
+    "peerAsndot", "type": "string", "key": "", "display": "", "description": "Peer
+    device''s ASN displayed in asdot format"}, {"name": "peerHostname", "type": "string",
     "key": "", "display": 4, "description": "Hostname of BGP peer"}, {"name": "peerIP",
     "type": "string", "key": "", "display": "", "description": "Peering IP address,
     if any"}, {"name": "peerRouterId", "type": "string", "key": "", "display": "",
