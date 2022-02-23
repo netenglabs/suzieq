@@ -1035,7 +1035,9 @@ class EosNode(Node):
                 self.hostname = "-"
 
     def _extract_nos_version(self, data) -> None:
-        match = re.search(r'Software Image Version:\s+(\S+)', data)
+        # < 4.27 or so, the cases were different.
+        match = re.search(r'Software Image Version:\s+(\S+)', data,
+                          re.IGNORECASE)
         if match:
             self.version = match.group(1).strip()
         else:
