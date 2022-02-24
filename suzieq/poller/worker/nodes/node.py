@@ -110,7 +110,7 @@ class Node:
         self._status = "init"
         self.svcs_proc = set()
         self.error_svcs_proc = set()
-        self.ssh_ready = asyncio.Event()
+        self.ssh_ready = asyncio.Lock()
         self._last_exception = None
         self._exception_timestamp = None
         self._current_exception = None
@@ -162,7 +162,6 @@ class Node:
 
         self._init_service_queue()
 
-        self.ssh_ready.set()
         if not self.port:
             if self.transport == "ssh":
                 self.port = 22
@@ -329,16 +328,15 @@ class Node:
         return options
 
     async def _init_ssh(self, init_boot_time=True, rel_lock=True) -> None:
-        await self.ssh_ready.wait()
+        await self.ssh_ready.acquire()
         if not self._conn:
-            self.ssh_ready.clear()
 
             options = self._init_ssh_options()
             if self.jump_host and not self._tunnel:
                 await self._init_jump_host_connection(options)
                 if not self._tunnel:
                     if rel_lock:
-                        self.ssh_ready.set()
+                        self.ssh_ready.release()
                     return
 
             try:
@@ -353,14 +351,11 @@ class Node:
                         username=self.username,
                         port=self.port,
                         options=options)
-
                 self.logger.info(
                     f"Connected to {self.address}:{self.port} at "
                     f"{time.time()}")
                 if init_boot_time:
                     await self.init_boot_time()
-                elif rel_lock:
-                    self.ssh_ready.set()
             except Exception as e:  # pylint: disable=broad-except
                 if self.sigend:
                     await self._terminate()
@@ -376,8 +371,9 @@ class Node:
                                       f'{self.address}:{self.port}, {e}')
                 self.current_exception = e
                 await self._close_connection()
+            finally:
                 if rel_lock:
-                    self.ssh_ready.set()
+                    self.ssh_ready.release()
         return
 
     def _create_error(self, cmd) -> dict:
@@ -1129,7 +1125,6 @@ class IosXRNode(Node):
             await asyncio.sleep(backoff_period)
             backoff_period *= 2
             backoff_period = min(backoff_period, 120)
-            self.ssh_ready.set()
         if self._conn:
             try:
                 self._long_proc = await self._conn.create_process(
@@ -1143,7 +1138,6 @@ class IosXRNode(Node):
 
         if not self.hostname:
             await self.init_boot_time()
-        self.ssh_ready.set()
 
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
@@ -1173,7 +1167,6 @@ class IosXRNode(Node):
                 self.hostname = hostname.group(1)
                 self.logger.error(f'set hostname of {self.address}:{self.port}'
                                   f' to {hostname.group(1)}')
-        self.ssh_ready.set()
 
     def _extract_nos_version(self, data) -> None:
         match = re.search(r'Version\s+:\s+ (\S+)', data)
