@@ -84,6 +84,14 @@ class Worker:
 
         logger.info('Initializing poller worker')
 
+        # When the poller receives a termination signal, we would like
+        # to gracefully terminate all the tasks, i.e. closing all the
+        # connections with nodes.
+        loop = asyncio.get_event_loop()
+        for s in [signal.SIGTERM, signal.SIGINT]:
+            loop.add_signal_handler(
+                s, lambda s=s: asyncio.create_task(self._stop()))
+
         init_tasks = []
         init_tasks.append(self.inventory.build_inventory())
         init_tasks.append(self.service_manager.init_services())
@@ -115,14 +123,6 @@ class Worker:
         await self.service_manager.set_nodes(self.inventory.get_node_callq())
 
         logger.info('Suzieq Started')
-
-        # When the poller receives a termination signal, we would like
-        # to gracefully terminate all the tasks, i.e. closing all the
-        # connections with nodes.
-        loop = asyncio.get_event_loop()
-        for s in [signal.SIGTERM, signal.SIGINT]:
-            loop.add_signal_handler(
-                s, lambda s=s: asyncio.create_task(self._stop()))
 
         # Schedule the tasks to run
         await self.inventory.schedule_nodes_run()
