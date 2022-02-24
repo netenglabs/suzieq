@@ -197,7 +197,6 @@ GOOD_FILTERS_FOR_SERVICE_VERB = {
 
 GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'sqPoller/show?status=fail',
-    'ospf/assert?result=fail',
     'evpnVni/assert?result=fail',
     'device/show?status=neverpoll',
     'device/show?status=dead',
