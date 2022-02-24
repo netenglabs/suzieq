@@ -1,3 +1,4 @@
+from typing import List
 from ipaddress import IPv4Network
 
 import numpy as np
@@ -133,41 +134,14 @@ class OspfObj(SqPandasEngine):
 
         df.bfill(axis=0, inplace=True)
 
-        if 'peerHostname' in columns or (columns in [['*'], ['default']]):
-            nfdf = df.query('adjState != "full"').reset_index()
-            nfdf['peerHostname'] = ''
-            newdf = df.query('adjState == "full"').reset_index() \
-                .drop('peerHostname', axis=1, errors='ignore')
-            if not newdf.empty:
-                newdf['matchIP'] = newdf.ipAddress.str.split('/').str[0]
-                newdf = newdf.merge(newdf[['namespace', 'hostname', 'vrf',
-                                           'matchIP']],
-                                    left_on=['namespace', 'vrf', 'peerIP'],
-                                    right_on=['namespace', 'vrf', 'matchIP'],
-                                    suffixes=["", "_y"]) \
-                    .rename(columns={'hostname_y': 'peerHostname'}) \
-                    .drop_duplicates(subset=['namespace', 'hostname',
-                                             'vrf', 'ifname']) \
-                    .drop(columns=['matchIP', 'matchIP_y', 'timestamp_y'],
-                          errors='ignore')
-
-                if newdf.empty:
-                    newdf = df.query('adjState == "full"').reset_index()
-                    newdf['peerHostname'] = ''
-                final_df = pd.concat([nfdf, newdf])
-            else:
-                final_df = df
-        else:
-            final_df = df.drop(list(df.filter(regex='_y$')), axis=1) \
-                         .rename({'timestamp_x': 'timestamp'})
-
+        final_df = self._get_peernames(df, cols)
         if query_str:
             final_df = final_df.query(query_str).reset_index(drop=True)
 
         if user_query and not final_df.empty:
             final_df = self._handle_user_query_str(final_df, user_query)
         # Move the timestamp column to the end
-        return final_df[cols]
+        return final_df.reset_index(drop=True)[cols]
 
     def get(self, **kwargs):
         return self._get_combined_df(**kwargs)
@@ -192,7 +166,7 @@ class OspfObj(SqPandasEngine):
             ('stubbyPeerCnt', 'areaStub', 'areaStub'),
             ('passivePeerCnt', 'adjState == "passive"', 'ifname'),
             ('unnumberedPeerCnt', 'isUnnumbered', 'isUnnumbered'),
-            ('failedPeerCnt', 'adjState != "passive" and nbrCount == 0',
+            ('failedPeerCnt', '~adjState.isin(["passive", "full"])',
              'ifname'),
         ]
 
@@ -236,11 +210,13 @@ class OspfObj(SqPandasEngine):
             "hostname",
             "vrf",
             "ifname",
-            "state",
+            "ifState",
+            "adjState",
             "routerId",
             "helloTime",
             "deadTime",
             "passive",
+            "peerIP",
             "ipAddress",
             "isUnnumbered",
             "areaStub",
@@ -255,10 +231,17 @@ class OspfObj(SqPandasEngine):
         # we have to not filter hostname at this point because we need to
         #   understand neighbor relationships
 
-        ospf_df = self.get_valid_df("ospfIf", columns=columns,
-                                    state='!adminDown', **kwargs)
+        ospf_df = self.get(columns=columns, **kwargs)
+
+        if not ospf_df.empty:
+            ospf_df = ospf_df.query('ifState != "adminDown"') \
+                             .reset_index(drop=True)
+
         if ospf_df.empty:
             return pd.DataFrame(columns=columns)
+
+        columns.extend(['peerHostname', 'peerIfname'])
+        ospf_df = self._get_peernames(ospf_df, columns)
 
         ospf_df["assertReason"] = [[] for _ in range(len(ospf_df))]
         df = (
@@ -280,149 +263,232 @@ class OspfObj(SqPandasEngine):
                     if (x["hostname_y"] is not np.nan and
                         len(x['hostname_y']) != 1) else [], axis=1))
 
-        # Now  peering match
-        lldp_df = self._get_table_sqobj('lldp').get(
-            namespace=kwargs.get('namespace', []), columns=['default'])
-        if lldp_df.empty:
-            ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
-                                ospf_df.ifname.str.contains('Vlan'))]
-            ospf_df['assertReason'] = 'No LLDP peering info'
-            ospf_df['result'] = 'fail'
-            return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
-                            'assertReason', 'result']]
+        pasv_df = ospf_df \
+            .query('adjState == "passive"') \
+            .reset_index(drop=True)
+        failed_df = ospf_df \
+            .query('~adjState.isin(["passive"]) and '
+                   'ifState != "down"') \
+            .reset_index(drop=True)
+        ifdown_df = ospf_df \
+            .query('~adjState.isin(["full", "passive"]) and '
+                   'ifState == "down"') \
+            .reset_index(drop=True)
+        ifdown_df['assertReason'] += \
+            ifdown_df.ifState.apply(lambda x: ['ifdown'])
 
-        # Create a single massive DF with fields populated appropriately
-        use_cols = [
-            "namespace",
-            "routerId",
-            "hostname",
-            "vrf",
-            "ifname",
-            "helloTime",
-            "deadTime",
-            "passive",
-            "ipAddress",
-            "areaStub",
-            "isUnnumbered",
-            "networkType",
-            "area",
-            "timestamp",
-            "lldpIfname"
-        ]
+        # Validate loopback interfaces are of the right network type
+        pasv_df['assertReason'] += pasv_df.apply(
+            lambda x: ['network type !loopback']
+            if (any(ele in x.ifname for ele in ['lo', 'oopbac']) and
+                x.networkType != "loopback") else [], axis=1)
 
-        # In case of Junos, the OSPF interface name is a subif of
-        # the interface name. So, create a new column with the
-        # orignal interface name.
-        ospf_df['lldpIfname'] = ospf_df['ifname'].str.split('.').str[0]
-        int_df = ospf_df[use_cols].merge(
-            lldp_df,
-            left_on=["namespace", "hostname", "lldpIfname"],
-            right_on=['namespace', 'hostname', "ifname"],
-            suffixes=("", "_y")) \
-            .drop(columns=['timestamp_y', 'ifname_y'], errors='ignore') \
-            .dropna(how="any")
+        if failed_df.empty:
+            return self._create_aver_result([pasv_df, ifdown_df], result)
 
-        if int_df.empty:
-            # Weed out the loopback, SVI interfaces as they have no LLDP peers
-            if result == "pass":
-                ospf_df = ospf_df[(ospf_df.ifname.str.contains('loopback') |
-                                   ospf_df.ifname.str.contains('Vlan'))]
-                ospf_df['assertReason'] = []
-                ospf_df['result'] = 'pass'
-            else:
-                ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
-                                    ospf_df.ifname.str.contains('Vlan'))]
-                ospf_df['assertReason'] = 'No LLDP peering info'
-                ospf_df['result'] = 'fail'
+        # We have the MTU mismatch which requires us to pull the MTU from the
+        # interfaces table
+        ifdf = self._get_table_sqobj('interfaces').get(
+            namespace=failed_df.namespace.unique().tolist(),
+            hostname=failed_df.hostname.unique().tolist(),
+            ifname=failed_df.ifname.unique().tolist(),
+            columns=['namespace', 'hostname', 'ifname', 'mtu',
+                     'ipAddressList'])
 
-            return ospf_df[['namespace', 'hostname', 'vrf', 'ifname',
-                            'assertReason', 'result']]
+        if not ifdf.empty:
+            failed_df = failed_df.merge(
+                ifdf, how='left',
+                on=['namespace', 'hostname', 'ifname'],
+                suffixes=('', '_y'))
+            check_mtu = True
+        else:
+            check_mtu = False
 
-        peer_df = ospf_df.merge(
-            int_df,
-            left_on=["namespace", "hostname", "lldpIfname"],
+        peer_df = failed_df.merge(
+            failed_df,
+            left_on=["namespace", "hostname", "ifname"],
             right_on=["namespace", "peerHostname", "peerIfname"]) \
             .dropna(how="any")
 
         if peer_df.empty:
-            ospf_df = ospf_df[~(ospf_df.ifname.str.contains('loopback') |
-                                ospf_df.ifname.str.contains('Vlan'))]
-            ospf_df['assertReason'] = 'No LLDP peering info'
-            ospf_df['result'] = 'fail'
-        else:
-            ospf_df = peer_df
-            # Now start comparing the various parameters
-            ospf_df["assertReason"] += ospf_df.apply(
-                lambda x: ["subnet mismatch"]
-                if (
-                    (x["isUnnumbered_x"] != x["isUnnumbered_y"])
-                    and (
-                        IPv4Network(x["ipAddress_x"], strict=False)
-                        != IPv4Network(x["ipAddress_y"], strict=False)
-                    )
+            return self._create_aver_result([pasv_df, ifdown_df, failed_df],
+                                            result)
+
+        peer_df["assertReason"] = [[] for _ in range(len(peer_df))]
+
+        # Now start comparing the various parameters
+        peer_df["assertReason"] += peer_df.apply(
+            lambda x: ["subnet mismatch"]
+            if (
+                (x["isUnnumbered_x"] != x["isUnnumbered_y"])
+                and (
+                    IPv4Network(x["ipAddress_x"], strict=False)
+                    != IPv4Network(x["ipAddress_y"], strict=False)
                 )
-                else [],
-                axis=1,
             )
-            ospf_df["assertReason"] += ospf_df.apply(
-                lambda x: ["area mismatch"]
-                if (x["area_x"] != x["area_y"]) else [], axis=1)
+            else [],
+            axis=1,
+        )
 
-            ospf_df["assertReason"] += ospf_df.apply(
-                lambda x: ["area stub mismatch"]
-                if (x["areaStub_x"] != x["areaStub_y"]) else [], axis=1)
+        peer_df["assertReason"] += peer_df.apply(
+            lambda x: ["area mismatch"]
+            if (x["area_x"] != x["area_y"]) else [], axis=1)
 
-            ospf_df["assertReason"] += ospf_df.apply(
-                lambda x: ["Hello timers mismatch"]
-                if x["helloTime_x"] != x["helloTime_y"]
-                else [],
-                axis=1,
-            )
-            ospf_df["assertReason"] += ospf_df.apply(
-                lambda x: ["Dead timer mismatch"]
-                if x["deadTime_x"] != x["deadTime_y"]
-                else [],
-                axis=1,
-            )
-            ospf_df["assertReason"] += ospf_df.apply(
-                lambda x: ["network type mismatch"]
-                if x["networkType_x"] != x["networkType_y"]
-                else [],
-                axis=1,
-            )
-            ospf_df["assertReason"] += ospf_df.apply(
-                lambda x: ["passive config mismatch"]
-                if x["passive_x"] != x["passive_y"]
-                else [],
-                axis=1,
-            )
-            ospf_df["assertReason"] += ospf_df.apply(
-                lambda x: ["vrf mismatch"] if x["vrf_x"] != x["vrf_y"] else [],
-                axis=1,
-            )
+        peer_df["assertReason"] += peer_df.apply(
+            lambda x: ["area stub mismatch"]
+            if (x["areaStub_x"] != x["areaStub_y"]) else [], axis=1)
 
-        # Fill up a single assert column now indicating pass/fail
-        ospf_df['result'] = ospf_df.apply(lambda x: 'pass'
-                                          if len(x['assertReason']) == 0
-                                          else 'fail', axis=1)
+        peer_df["assertReason"] += peer_df.apply(
+            lambda x: ["Hello timers mismatch"]
+            if x["helloTime_x"] != x["helloTime_y"]
+            else [],
+            axis=1,
+        )
+        peer_df["assertReason"] += peer_df.apply(
+            lambda x: ["Dead timer mismatch"]
+            if x["deadTime_x"] != x["deadTime_y"]
+            else [],
+            axis=1,
+        )
+        peer_df["assertReason"] += peer_df.apply(
+            lambda x: ["network type mismatch"]
+            if x["networkType_x"] != x["networkType_y"]
+            else [],
+            axis=1,
+        )
+        peer_df["assertReason"] += peer_df.apply(
+            lambda x: ["vrf mismatch"] if x["vrf_x"] != x["vrf_y"] else [],
+            axis=1,
+        )
+
+        if check_mtu:
+            peer_df["assertReason"] += peer_df.apply(
+                lambda x: ["MTU mismatch"]
+                if x["mtu_x"] != x["mtu_y"] else [],
+                axis=1,
+            )
 
         result_df = (
-            ospf_df.rename(
+            peer_df.rename(
                 index=str,
                 columns={
                     "hostname_x": "hostname",
                     "ifname_x": "ifname",
                     "vrf_x": "vrf",
                     "timestamp_x": "timestamp",
+                    "adjState_x": "adjState",
                 },
-            )[["namespace", "hostname", "ifname", "vrf", "result",
-               "assertReason", "timestamp"]].explode(column='assertReason')
-            .fillna({'assertReason': '-'})
+            )[["namespace", "hostname", "ifname", "vrf", "adjState",
+               "assertReason", "timestamp"]]
         )
 
-        if result == "pass":
-            return result_df.query('assertReason == "-"')
-        elif result == "fail":
-            return result_df.query('assertReason != "-"')
+        return self._create_aver_result([pasv_df, ifdown_df, result_df],
+                                        result)
 
-        return result_df.reset_index(drop=True)
+    def _get_peernames(self, df: pd.DataFrame,
+                       columns: List[str]) -> pd.DataFrame:
+        """Fill in columns of peerhostname and peerifname if requested
+
+        Using a combination of LLDP info, if available and without it,
+        this routine tries to fill in the columns of peerhostname and
+        peerifname for the relevant rows. In the absence of LLDP info,
+        filling in peerifname is very error-prone especially in the
+        presence of unnumbered interfaces.
+
+        Args:
+            df: The OSPF dataframe with the relevant dependent cols
+            columns: List of column names provided by user
+
+        Returns:
+            The OSPF dataframe with the peerHostname and peerifname
+            filled in
+        """
+
+        if df.empty or not any(x in columns
+                               for x in ['peerHostname', 'peerIfname', '*',
+                                         'default']):
+            return df
+
+        df['peerHostname'] = ''
+        df['peerIfname'] = ''
+
+        nfdf = df.query('adjState == "passive"').reset_index()
+        newdf = df.query('adjState != "passive"').reset_index() \
+            .drop('peerHostname', axis=1, errors='ignore')
+        if newdf.empty:
+            return df
+
+        lldp_df = self._get_table_sqobj('lldp').get(
+            namespace=newdf.namespace.unique().tolist(),
+            hostname=newdf.hostname.unique().tolist(),
+            use_bond='True')
+
+        if lldp_df.empty:
+            # Try a match entirely within ospf, but we can't
+            # get ifname effectively in cases of unnumbered
+            newdf['matchIP'] = newdf.ipAddress.str.split('/').str[0]
+            newdf = newdf \
+                .merge(newdf[['namespace', 'hostname', 'vrf',
+                              'matchIP']],
+                       left_on=['namespace', 'vrf', 'peerIP'],
+                       right_on=['namespace', 'vrf', 'matchIP'],
+                       suffixes=["", "_y"]) \
+                .rename(columns={'hostname_y': 'peerHostname'}) \
+                .drop_duplicates(subset=['namespace', 'hostname',
+                                         'vrf', 'ifname']) \
+                .drop(columns=['matchIP', 'matchIP_y', 'timestamp_y'],
+                      errors='ignore')
+            if 'peerIfname' in columns:
+                newdf['peerIfname'] = ''
+        else:
+            # In case of Junos, the OSPF interface name is a subif of
+            # the interface name. So, create a new column with the
+            # orignal interface name.
+            newdf['lldpIfname'] = newdf['ifname'].str.split('.').str[0]
+
+            newdf = newdf.merge(
+                lldp_df[['namespace', 'hostname', 'ifname',
+                         'peerHostname', 'peerIfname']],
+                left_on=['namespace', 'hostname', 'lldpIfname'],
+                right_on=['namespace', 'hostname', 'ifname'],
+                how='outer', suffixes=('', '_y')) \
+                .drop(columns=['ifname_y', 'lldpIfname', 'peerIfname']) \
+                .rename(columns={'peerIfname_y': 'peerIfname'}) \
+                .dropna(subset=['hostname', 'vrf', 'ifname'], how='any')\
+                .fillna('')
+
+        if newdf.empty:
+            newdf = df.query('adjState != "passive"').reset_index()
+            newdf['peerHostname'] = ''
+        final_df = pd.concat([nfdf, newdf])
+
+        return final_df
+
+    def _create_aver_result(self, dflist: List[pd.DataFrame],
+                            result: str) -> pd.DataFrame:
+        """Create a result dataframe from list and return a single df
+
+        A common function to concat all the different dataframes
+        created during assert such as passed_df, failed_df etc.,
+        create a single dataframe and return the list given user input
+        to return all rows or just some
+
+        Args:
+            dflist: List[pd.DataFrame]
+            result: str: user specification of what result to return
+
+        Returns:
+            The assert result dataframe
+        """
+        ospf_df = pd.concat(dflist)
+        ospf_df['result'] = ospf_df.assertReason.apply(
+            lambda x: 'fail' if x else 'pass')
+        # Weed out the loopback, SVI interfaces as they have no LLDP peers
+        if result and result != "all":
+            ospf_df = ospf_df.query(f'result == "{result}"')
+
+        return ospf_df[['namespace', 'hostname', 'vrf', 'ifname', 'adjState',
+                        'assertReason', 'result']] \
+            .explode('assertReason') \
+            .fillna('') \
+            .reset_index(drop=True)

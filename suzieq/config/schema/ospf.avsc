@@ -96,8 +96,14 @@
             "name": "peerHostname",
             "type": "string",
             "display": 4,
-            "depends": "hostname vrf peerIP ipAddress",
-            "description": "The OSPF neighbor hostname"
+            "depends": "hostname vrf ifname peerIP ipAddress",
+            "description": "The OSPF neighbor hostname adjState"
+        },
+        {
+            "name": "peerIfname",
+            "type": "string",
+            "depends": "hostname vrf ifname peerIP ipAddress adjState",
+            "description": "The OSPF neighbor's ifname"
         },
         {
             "name": "vrf",
