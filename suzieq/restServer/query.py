@@ -616,23 +616,6 @@ async def query_sqPoller(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/topology/summarize")
-async def query_topology_summarize(
-    request: Request,
-    token: str = Depends(get_api_key),
-    format: str = None,
-    hostname: List[str] = Query(None),
-    start_time: str = "", end_time: str = "",
-    view: ViewValues = "latest",
-    namespace: List[str] = Query(None),
-    columns: List[str] = Query(default=["default"]),
-    via: List[str] = Query(None),
-    query_str: str = None,
-):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, "summarize", request, locals())
-
-
 @ app.get("/api/v2/topology/{verb}")
 async def query_topology(verb: CommonVerbs, request: Request,
                          token: str = Depends(get_api_key),
@@ -646,6 +629,9 @@ async def query_topology(verb: CommonVerbs, request: Request,
                          via: List[str] = Query(None),
                          ifname: List[str] = Query(None),
                          peerHostname: List[str] = Query(None),
+                         asn: List[str] = Query(None),
+                         area: List[str] = Query(None),
+                         vrf: List[str] = Query(None),
                          query_str: str = None, what: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name
