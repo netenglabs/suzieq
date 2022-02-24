@@ -91,6 +91,7 @@ class Service(SqPlugin):
 
         self.poller_schema = property(
             self.get_poller_schema, self.set_poller_schema)
+        self.poller_schema_version = None
 
         # The queue to which all nodes will post the result of the command
         self.result_queue = asyncio.Queue()
@@ -825,7 +826,7 @@ class Service(SqPlugin):
                     poller_stat = [
                         {"hostname": (output[0]["hostname"] or
                                       output[0]['address']),
-                         "sqvers": self.version,
+                         "sqvers": self.poller_schema_version,
                          "namespace": output[0]["namespace"],
                          "active": True,
                          "service": self.name,

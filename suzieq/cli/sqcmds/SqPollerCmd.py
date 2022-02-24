@@ -28,7 +28,7 @@ class SqPollerCmd(SqCommand):
             columns: str = "default",
             service: str = '',
             status: str = 'all',
-            poll_period_exceeded: str = 'False',
+            poll_period_exceeded: str = '',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -42,9 +42,9 @@ class SqPollerCmd(SqCommand):
             query_str=query_str,
             sqobj=SqPollerObj,
         )
-        if not poll_period_exceeded or poll_period_exceeded == "False":
+        if poll_period_exceeded == "False":
             poll_period_exceeded = "0"
-        else:
+        elif poll_period_exceeded == "True":
             poll_period_exceeded = "!0"
         self.lvars = {
             'service': service.split(),
