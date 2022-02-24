@@ -216,7 +216,8 @@ class BgpObj(SqPandasEngine):
 
         kwargs.pop("columns", None)  # Loose whatever's passed
         result = kwargs.pop("result", 'all')
-        state = kwargs.pop('state', '!dynamic')
+        # by default, state paramter is set to ''
+        state = kwargs.pop('state', '') or '!dynamic'
 
         df = self.get(columns=assert_cols, state=state, **kwargs)
         if 'error' in df:
@@ -272,6 +273,10 @@ class BgpObj(SqPandasEngine):
                 else [], axis=1)
 
             failed_df['result'] = 'fail'
+            failed_df['assertReason'] += failed_df .apply(
+                lambda x: ['Not established']
+                if len(x.assertReason) == 0 else [],
+                axis=1)
 
         # Get list of peer IP addresses for peer not in Established state
         # Returning to performing checks even if we didn't get LLDP/Intf info
