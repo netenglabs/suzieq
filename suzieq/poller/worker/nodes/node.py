@@ -116,6 +116,7 @@ class Node:
         self._current_exception = None
         self.sigend = False
         self.api_key = None
+        self._stdin = self._stdout = None
 
         self.address = kwargs["address"]
         self.hostname = kwargs["address"]  # default till we get hostname
@@ -313,7 +314,9 @@ class Node:
             username=self.username,
             agent_identities=self.pvtkey if self.pvtkey else None,
             client_keys=self.pvtkey if self.pvtkey else None,
-            password=self.password if not self.pvtkey else None
+            password=self.password if not self.pvtkey else None,
+            kex_algs='+diffie-hellman-group1-sha1',  # for older boxes
+            encryption_algs='+aes256-cbc',           # for older boxes
         )
         if self.ignore_known_hosts:
             options = asyncssh.SSHClientConnectionOptions(
@@ -1118,10 +1121,8 @@ class IosXRNode(Node):
         of retries to enable things like run-once=gather to work.
         '''
         backoff_period = 1
-        while True:
+        while not self._conn:
             await super()._init_ssh(init_boot_time=False, rel_lock=False)
-            if self._conn:
-                break
 
             await asyncio.sleep(backoff_period)
             backoff_period *= 2
@@ -1187,6 +1188,93 @@ class IosXRNode(Node):
 class IosXENode(Node):
     '''IOS-XE Node-sepcific telemetry gather implementation'''
 
+    async def _init_ssh(self, init_boot_time=True, rel_lock: bool = True) -> None:
+        '''Need to start an interactive session for XE
+
+        Many IOSXE devices cannot accept commands as fast as we can fire them.
+        Furthermore, many TACACS servers also collapse under the load of
+        multiple authemtication requests because each SSH session needs to be
+        authenticated, not just the main SSH connection.
+        '''
+        backoff_period = 1
+        self.WAITFOR = r'.*[>#]\s*$'
+
+        while not self._conn:
+            await super()._init_ssh(init_boot_time=False, rel_lock=False)
+            if not self._conn:
+                await asyncio.sleep(backoff_period)
+                backoff_period *= 2
+                backoff_period = min(backoff_period, 120)
+                if rel_lock:
+                    self.ssh_ready.release()
+                return
+
+        if self._conn:
+            try:
+                self._stdin, self._stdout, self._stderr = \
+                    await self._conn.open_session(term_type='xterm')
+                self.logger.info(
+                    f'Persistent SSH created for {self.hostname}')
+
+                output = await self.wait_for_prompt()
+                if output.strip().endswith('>'):
+                    # We're not in enable mode and cannot function
+                    self.logger.warning(
+                        'Privilege escalation required. Trying')
+                    self._stdin.write('enable\n')
+                    output = await self.wait_for_prompt()
+                    if self.enable_password:
+                        self._stdin.write(self.enable_password + '\n')
+                    else:
+                        self._stdin.write(self.password + '\n')
+
+                    output = await self.wait_for_prompt()
+                    if (output in ['timeout', 'Password:'] or
+                            output.strip().endswith('>')):
+                        self.logger.error(
+                            'Invalid enable password, commands may fail')
+                        await self._conn.terminate()
+                        self._conn = None
+                        if rel_lock:
+                            self.ssh_ready.release()
+                        return
+                    else:
+                        self.logger.warning('Privilege escalation succeeded')
+            except Exception:
+                self._conn = None
+                return
+
+        # Set the terminal length to 0 to avoid paging
+        self._stdin.write('terminal length 0\n')
+        output = await self._stdout.readuntil(self.WAITFOR)
+        if not self.hostname:
+            await self.init_boot_time()
+        if rel_lock:
+            self.ssh_ready.release()
+        return
+
+    async def wait_for_prompt(self, timeout: int = 10) -> str:
+        """Wait for specified prompt upto timeout duration
+
+        Since we're waiting for a prompt, we want to not wait forever.
+        asyncssh's readuntil doesn't take a timeout parameter as of
+        2.9.0. So, instead of adding a asyncio.waitfor everywhere, we
+        just call this routine.
+
+        Args:
+            timeout[int]: How long to wait in secs
+        Returns:
+            the output data or 'timeout'
+        """
+        coro = self._stdout.readuntil(self.WAITFOR)
+        try:
+            output = await asyncio.wait_for(coro, timeout=timeout)
+            return output
+        except asyncio.TimeoutError:
+            self.logger.error(f'{self.address}.{self.port} '
+                              'Timed out waiting for expected prompt')
+            return 'timeout'
+
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self.exec_cmd(self._parse_boottime_hostname,
@@ -1217,34 +1305,29 @@ class IosXENode(Node):
         """
 
         result = []
-
-        options = self._init_ssh_options()
-        if self.jump_host and not self._tunnel:
-            await self._init_jump_host_connection(options)
-            if not self._tunnel:
-                result.append(self._create_error(cmd_list))
-                await service_callback(result, cb_token)
-
         if cmd_list is None:
             await service_callback({}, cb_token)
 
-        timeout = timeout or self.cmd_timeout
+        if not self._stdin:
+            await self._init_ssh()
 
+        if not self._stdin:
+            self.logger.error(f'Not connected to {self.address}"{self.port}')
+            return
+
+        timeout = timeout or self.cmd_timeout
         for cmd in cmd_list:
             try:
-                if self._tunnel:
-                    connect_with = self._tunnel.connect_ssh
+                self._stdin.write(cmd + '\n')
+                output = await self.wait_for_prompt()
+                if 'Invalid input detected' in output or 'timeout' in output:
+                    status = -1
                 else:
-                    connect_with = asyncssh.connect
-                async with connect_with(self.address, port=self.port,
-                                        options=options) as conn:
-                    output = await asyncio.wait_for(conn.run(cmd),
-                                                    timeout=timeout)
-                    if isinstance(cb_token, RsltToken):
-                        cb_token.node_token = self.bootupTimestamp
-
-                    result.append(self._create_result(
-                        cmd, output.exit_status, output.stdout))
+                    status = 0
+                if isinstance(cb_token, RsltToken):
+                    cb_token.node_token = self.bootupTimestamp
+                result.append(self._create_result(cmd, status, output))
+                continue
             except Exception as e:
                 if self.sigend:
                     await self._terminate()
@@ -1260,10 +1343,8 @@ class IosXENode(Node):
                     self.logger.error(
                         f"Unable to connect to {self.hostname} {cmd} "
                         "due to timeout")
-
                 break
 
-        self._conn = None
         await service_callback(result, cb_token)
 
     def _extract_nos_version(self, data: str) -> None:
@@ -1467,9 +1548,9 @@ class PanosNode(Node):
                         "data": output}]
                     await self._parse_boottime_hostname(res, None)
             self._session = aiohttp.ClientSession(
-                    conn_timeout=self.connect_timeout,
-                    connector=aiohttp.TCPConnector(ssl=False),
-                )
+                conn_timeout=self.connect_timeout,
+                connector=aiohttp.TCPConnector(ssl=False),
+            )
             if self.api_key is None:
                 await self.get_api_key()
             # if we reached this point we are in a good state
