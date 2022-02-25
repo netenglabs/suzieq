@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 
 from suzieq.engines.pandas.engineobj import SqPandasEngine
 
@@ -17,8 +18,11 @@ class LldpObj(SqPandasEngine):
         addnl_fields = kwargs.get('addnl_fields', [])
         namespace = kwargs.get('namespace', [])
         columns = kwargs.get('columns', [])
-        dropcols = []
+        use_bond = kwargs.pop('use_bond', "False")
 
+        cols = self.schema.get_display_fields(columns)
+        if columns == ['*']:
+            cols.remove('sqvers')
         if columns == ['default']:
             needed_fields = ['subtype', 'peerMacaddr', 'peerIfindex']
         elif 'peerIfname' in columns:
@@ -27,10 +31,7 @@ class LldpObj(SqPandasEngine):
         else:
             needed_fields = []
 
-        for f in needed_fields:
-            if f not in columns:
-                addnl_fields.append(f)
-                dropcols.append(f)
+        addnl_fields = [f for f in needed_fields if f not in cols]
 
         df = super().get(addnl_fields=addnl_fields, **kwargs)
         if df.empty or (not needed_fields and columns != ['*']):
@@ -76,8 +77,10 @@ class LldpObj(SqPandasEngine):
                 df['peerIfname'] = np.where(df['peerIfname'] == '-',
                                             df['ifname_y'], df['peerIfname'])
 
-        dropcols.extend(['hostname_y', 'ifname_y', 'timestamp_y', 'ifindex'])
-        return df.drop(columns=dropcols, errors='ignore')
+        if use_bond.lower() != "true":
+            return df[cols]
+        else:
+            return self._resolve_to_bond(df)[cols]
 
     def summarize(self, **kwargs):
         '''Summarize LLDP info'''
@@ -93,3 +96,57 @@ class LldpObj(SqPandasEngine):
         ]
 
         return super().summarize(**kwargs)
+
+    def _resolve_to_bond(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Change bond/channel member ports into bond name
+
+        With normal port channels or bond interfaces, this routine
+        replaces the ifname and peerifname with the appropriate bond
+        name.
+
+        Args:
+            df: The original LLDP dataframe
+
+        Returns:
+            The LLDP dataframe with the appropriate substitution
+        """
+
+        iflist = df.ifname.unique().tolist() + \
+            df.peerIfname.unique().tolist()
+        ifdf = self._get_table_sqobj('interfaces').get(
+            namespace=df.namespace.unique().tolist(),
+            hostname=df.hostname.unique().tolist(),
+            ifname=iflist,
+            columns=['namespace', 'hostname', 'ifname', 'adminState',
+                     'ipAddressList', 'master', 'mtu'])
+
+        if ifdf.empty:
+            # Could we do something better, probably. TBD.
+            return df
+
+        # OSPF sessions maybe over a port-channel. Make LLDP
+        # matchup
+        lldp_df = df.merge(ifdf, on=['namespace', 'hostname', 'ifname'],
+                           how='left')
+        lldp_df = lldp_df.merge(
+            ifdf,
+            left_on=['namespace', 'peerHostname', 'peerIfname'],
+            right_on=['namespace', 'hostname', 'ifname'],
+            how='left', suffixes=['', '_peer']) \
+            .replace(to_replace={'master': {'bridge': np.nan,
+                                            'default': np.nan,
+                                            '': np.nan},
+                                 'master_peer': {'bridge': np.nan,
+                                                 'default': np.nan,
+                                                 '': np.nan}})
+
+        lldp_df['ifname'] = np.where(~lldp_df.master.isnull(),
+                                     lldp_df.master, lldp_df.ifname)
+        lldp_df['peerIfname'] = np.where(~lldp_df.master_peer.isnull(),
+                                         lldp_df.master_peer,
+                                         lldp_df.peerIfname)
+        lldp_df = lldp_df.drop_duplicates(
+            subset=['namespace', 'hostname', 'ifname']) \
+            .drop(columns=['master', 'master_peer'], errors='ignore')
+
+        return lldp_df
