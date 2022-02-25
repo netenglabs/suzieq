@@ -274,7 +274,7 @@ class BgpObj(SqPandasEngine):
 
             failed_df['result'] = 'fail'
             failed_df['assertReason'] += failed_df .apply(
-                lambda x: ['Not established']
+                lambda x: ['Unknown reason']
                 if len(x.assertReason) == 0 else [],
                 axis=1)
 
