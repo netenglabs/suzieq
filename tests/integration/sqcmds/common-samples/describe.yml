@@ -464,18 +464,19 @@ tests:
     OSPF interface network type: p2p, p2mp. nbma etc."}, {"name": "numChanges", "type":
     "long", "key": "", "display": 10, "description": "The number of times the OSPF
     neighbor status has changed"}, {"name": "peerHostname", "type": "string", "key":
-    "", "display": 4, "description": "The OSPF neighbor hostname"}, {"name": "peerIP",
-    "type": "string", "key": "", "display": 9, "description": "The OSPF neighbor IP
-    address"}, {"name": "peerRouterId", "type": "string", "key": "", "display": "",
-    "description": "The OSPF neighbor router ID"}, {"name": "reason", "type": "string",
-    "key": "", "display": "", "description": "The reason the OSPF neighbor was down"},
-    {"name": "retxTime", "type": "long", "key": "", "display": "", "description":
-    "The OSPF neighbor retransmission period"}, {"name": "routerId", "type": "string",
-    "key": "", "display": "", "description": "The OSPF router ID"}, {"name": "sqvers",
-    "type": "string", "key": "", "display": "", "description": "Schema version, not
-    selectable"}, {"name": "timestamp", "type": "timestamp", "key": "", "display":
-    12, "description": ""}, {"name": "vrf", "type": "string", "key": 2, "display":
-    2, "description": "The OSPF instance VRF"}]'
+    "", "display": 4, "description": "The OSPF neighbor hostname adjState"}, {"name":
+    "peerIP", "type": "string", "key": "", "display": 9, "description": "The OSPF
+    neighbor IP address"}, {"name": "peerIfname", "type": "string", "key": "", "display":
+    "", "description": "The OSPF neighbor''s ifname"}, {"name": "peerRouterId", "type":
+    "string", "key": "", "display": "", "description": "The OSPF neighbor router ID"},
+    {"name": "reason", "type": "string", "key": "", "display": "", "description":
+    "The reason the OSPF neighbor was down"}, {"name": "retxTime", "type": "long",
+    "key": "", "display": "", "description": "The OSPF neighbor retransmission period"},
+    {"name": "routerId", "type": "string", "key": "", "display": "", "description":
+    "The OSPF router ID"}, {"name": "sqvers", "type": "string", "key": "", "display":
+    "", "description": "Schema version, not selectable"}, {"name": "timestamp", "type":
+    "timestamp", "key": "", "display": 12, "description": ""}, {"name": "vrf", "type":
+    "string", "key": 2, "display": 2, "description": "The OSPF instance VRF"}]'
 - command: route describe --format=json
   data-directory: tests/data/eos/parquet-out/
   marks: route describe

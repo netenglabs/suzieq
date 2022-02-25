@@ -258,9 +258,15 @@ class InventoryStatusValues(str, Enum):
     ABSENT = "absent"
 
 
+class TruthasStrings(str, Enum):
+    yes = "True"
+    no = "False"
+
 # The logic in the code below is that you have a common function to
 # split the common arguments across all the functions, and split the
 # object-specific arguments in the object function itself.
+
+
 @app.get("/api/v1/{rest_of_path:path}", deprecated=True)
 async def deprecated_function(request: Request, rest_of_path: str):
     return([{'error': 'v1 is deprecated, use API version v2'}])
@@ -455,6 +461,7 @@ async def query_lldp(verb: CommonVerbs, request: Request,
                      peerHostname: List[str] = Query(None),
                      columns: List[str] = Query(default=["default"]),
                      ifname: List[str] = Query(None),
+                     use_bond: TruthasStrings = Query(None),
                      query_str: str = None, what: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
