@@ -1,61 +1,73 @@
 description: Testing bad query syntax to validate we get no exceptions
 tests:
-- command: address show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: address show --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: address show badquery cumulus
-- command: arpnd show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: arpnd show --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: arpnd show badquery cumulus
-- command: bgp show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: bgp show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: bgp show badquery cumulus
-- command: device show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: device show --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''mtu'' is not defined"}]'
   marks: device show badquery cumulus
-- command: evpnVni show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: evpnVni show --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: evpnVni show badquery cumulus
-- command: lldp show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: lldp show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: lldp show badquery cumulus
-- command: interface show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: interface show --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: interface show badquery cumulus
-- command: mac show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: mac show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: mac badquery show cumulus
-- command: mlag show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: mlag show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: mlag show badquery cumulus
-- command: ospf show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: ospf show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: ospf show badquery cumulus
-- command: route show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: route show --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: route show badquery cumulus
-- command: vlan show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: vlan show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
@@ -65,66 +77,80 @@ tests:
   data-directory: tests/data/parquet/
   marks: path show badquery cumulus
   output: '[]'
-- command: topology show --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: topology show --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
+  error:
+    error: '[{"error": "ERROR: name ''vendor'' is not defined"}]'
   marks: topology show badquery cumulus
-  output: '[]'
-- command: address summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: address summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: address summarize badquery cumulus
-- command: arpnd summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: arpnd summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: arpnd summarize badquery cumulus
-- command: bgp summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: bgp summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '{"error": {"0": "ERROR: UserQueryError: name ''vendor'' is not defined"}}'
   marks: bgp summarize badquery cumulus
-- command: device summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: device summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''mtu'' is not defined"}]'
   marks: device summarize badquery cumulus
-- command: evpnVni summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: evpnVni summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: evpnVni summarize badquery cumulus
-- command: lldp summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: lldp summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: lldp summarize badquery cumulus
-- command: interface summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: interface summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: interface summarize badquery cumulus
-- command: mac summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: mac summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: mac summarize badquery cumulus
-- command: mlag summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: mlag summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: mlag summarize badquery cumulus
-- command: ospf summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: ospf summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '{"error": {"0": "ERROR: UserQueryError: name ''vendor'' is not defined"}}'
   marks: ospf summarize badquery cumulus
-- command: route summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: route summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '{"error": {"0": "ERROR: UserQueryError: name ''vendor'' is not defined"}}'
   marks: route summarize badquery cumulus
-- command: vlan summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+- command: vlan summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
@@ -134,79 +160,80 @@ tests:
   data-directory: tests/data/parquet/
   marks: path summarize badquery cumulus
   output: '[]'
-- command: topology summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: topology summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
+  error:
+    error: '{"error": {"0": "ERROR: You cannot specify columns with summarize"}}'
   marks: topology summarize badquery cumulus
-  output: '[]'
-- command: address unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: address unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: address unique badquery cumulus
-- command: arpnd unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: arpnd unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: arpnd unique badquery cumulus
-- command: bgp unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: bgp unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: bgp unique badquery cumulus
-- command: device unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: device unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: device unique badquery cumulus
-- command: evpnVni unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: evpnVni unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: evpnVni unique badquery cumulus
-- command: lldp unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: lldp unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: lldp unique badquery cumulus
-- command: interface unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: interface unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: interface unique badquery cumulus
-- command: mac unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: mac unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: mac unique badquery cumulus
-- command: mlag unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: mlag unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: mlag unique badquery cumulus
-- command: ospf unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: ospf unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: ospf unique badquery cumulus
-- command: route unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: route unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: route unique badquery cumulus
-- command: vlan unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: vlan unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
@@ -216,11 +243,11 @@ tests:
   data-directory: tests/data/parquet/
   marks: path unique badquery cumulus
   output: '[]'
-- command: topology unique --query-str='vendor == "Cisco" and mtu==1500' --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-    --columns='hostname'
+- command: topology unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
+    --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
   error:
-    error: '[{"error": "ERROR: name ''vendor'' is not defined"}]'
+    error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: topology unique badquery cumulus
 - command: route lpm --address='172.16.1.101' --query-str='vendor == "Cisco" and mtu==1500'
     --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
