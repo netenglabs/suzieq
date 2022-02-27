@@ -21,7 +21,7 @@
                 }
             },
             "display": 4,
-            "description": "Min, max, median of time taken to get data, for this 5-min interval"
+            "description": "[min, max, avg] of time taken to get data, computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "totalTime",
@@ -33,7 +33,7 @@
                 }
             },
             "display": 5,
-            "description": "Min, max, median of time taken to get & process data, for this 5-min intervals"
+            "description": "[min, max, avg] of time taken to get & process data,computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "svcQsize",
@@ -45,7 +45,7 @@
                 }
             },
             "display": 6,
-            "description": "Min, max, median of service queue size, for this 5-min interval"
+            "description": "[min, max, avg] of service queue size, computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "wrQsize",
@@ -57,7 +57,7 @@
                 }
             },
             "display": 7,
-            "description": "Min, max, median of write queue size, for this 5-min interval"
+            "description": "[min, max, avg] of write queue size, computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "nodeQsize",
@@ -69,7 +69,7 @@
                 }
             },
             "display": 8,
-            "description": "Min, max, median of node queue size, for this 5-min interval"
+            "description": "[min, max, avg] of node queue size, computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "rxBytes",
@@ -81,7 +81,7 @@
                 }
             },
             "display": 9,
-            "description": "Min, max, median of bytes read, for this 5-min interval"
+            "description": "[min, max, avg] of bytes read, computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "version",
@@ -97,7 +97,8 @@
         {
             "name": "status",
             "type": "long",
-            "display": 3
+            "display": 3,
+            "description": "Service polling status. 0 or 200 means successfully polled, -1 means time timeout, other values mean failed to poll"
         },
         {
             "name": "nodesPolledCnt",
