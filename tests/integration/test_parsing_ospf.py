@@ -40,7 +40,9 @@ def _validate_common_ospf_data(df: pd.DataFrame):
 
     assert (df.area != '').all()
     assert (df.routerId != '').all()
-    assert (df.ipAddress != '').all()
+
+    nocls_df = df.query('~os.isin(["cumulus", "sonic"])')
+    assert (nocls_df.ipAddress != '').all()
 
     # Timers
     assert (df.deadTime != 0).all()
