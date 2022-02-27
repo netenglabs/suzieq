@@ -17,8 +17,8 @@ class ArpndObj(SqPandasEngine):
         prefix = kwargs.pop('prefix', [])
         columns = kwargs.get('columns', [])
         user_query = kwargs.pop('query_str', '')
+        addnl_fields = kwargs.pop('addnl_fields', [])
 
-        addnl_fields = []
         drop_cols = []
 
         # Always get the ipAddress if there is a filter prefix

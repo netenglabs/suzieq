@@ -15,7 +15,7 @@ class LldpObj(SqPandasEngine):
     def get(self, **kwargs):
         '''A separate get to handle JunOS MACaddr as peer'''
 
-        addnl_fields = kwargs.get('addnl_fields', [])
+        addnl_fields = kwargs.pop('addnl_fields', [])
         namespace = kwargs.get('namespace', [])
         columns = kwargs.get('columns', [])
         use_bond = kwargs.pop('use_bond', "False")
