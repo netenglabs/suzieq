@@ -1,0 +1,19 @@
+Value Required name (.*)
+Value descr (.*)
+Value partNum (([\S+]+|.*))
+Value version (.*)
+Value serial ([\w+\d+]+) 
+
+Start
+  ^NAME:\s+"${name}",\s+DESCR:\s+"${descr}"
+  ^PID:\s+${partNum}.*,.*VID:\s+${version},.*SN:\s+${serial} -> Record
+  ^PID:\s+,.*VID:\s+${version},.*SN: -> Record
+  ^PID:\s+${partNum}.*,.*VID:\s+${version},.*SN: -> Record
+  ^PID:\s+,.*VID:\s+${version},.*SN:\s+${serial} -> Record
+  ^PID:\s+${partNum}.*,.*VIDame:\s+${version}.*
+  ^PID:\s+,.*VID:\s+${version}.*
+  ^.*SN:\s+${serial} -> Record
+  ^.*SN: -> Record
+  # Capture time-stamp if vty line has command time-stamping turned on
+  ^Load\s+for\s+
+  ^Time\s+source\s+is
