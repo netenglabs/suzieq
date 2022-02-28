@@ -24,6 +24,7 @@ class CredFileEntryModel(BaseModel):
     password: Optional[str]
     keyfile: Optional[str]
     key_passphrase: Optional[str] = Field(alias='key-passphrase')
+    enable_password: Optional[str] = Field(alias='enable-password')
 
     class Config:
         """pydantic configuration
@@ -154,6 +155,10 @@ class CredFile(CredentialLoader):
                 # rename 'key-passphrase' into 'passphrase'
                 node_info['passphrase'] = node_info.pop(
                         'key-passphrase', None)
+
+                # rename 'enable-password' into 'enable_password'
+                node_info['enable_password'] = node_info.pop(
+                    'enable-password', None)
 
                 node_cred = node_info.copy()
 

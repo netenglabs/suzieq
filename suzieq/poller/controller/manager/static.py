@@ -262,7 +262,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             chunk (Dict): chunk of the inventory containing the dictionary
         """
         confidential_data = ['password', 'passphrase',
-                             'ssh_keyfile', 'jump_host_key_file']
+                             'ssh_keyfile', 'jump_host_key_file',
+                             'enable_password']
         out_name = {}
         out_name['inv'] = (f'{str(self._inventory_path)}/'
                            f'{self._inventory_file_name}_{poller_id}.yml')

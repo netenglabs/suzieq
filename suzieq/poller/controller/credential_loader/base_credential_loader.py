@@ -47,7 +47,8 @@ class CredentialLoader(ControllerPlugin):
             'username',
             'password',
             'ssh_keyfile',
-            'passphrase'
+            'passphrase',
+            'enable_password'
         ]
 
         self._data: CredentialLoaderModel = None

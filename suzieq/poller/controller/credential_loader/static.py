@@ -16,8 +16,9 @@ class StaticModel(CredentialLoaderModel):
     password: Optional[str]
     ssh_passphrase: Optional[str] = Field(alias='ssh-passphrase')
     keyfile: Optional[str]
+    enable_password: Optional[str] = Field(alias='enable-password')
 
-    @validator('password', 'ssh_passphrase')
+    @validator('password', 'ssh_passphrase', 'enable_password')
     def validate_sens_field(cls, field):
         """Validate if the sensitive var was passed correctly
         """
@@ -52,6 +53,8 @@ class StaticLoader(CredentialLoader):
         if not self._validate:
             # fix pydantic alias
             init_data['ssh_passphrase'] = init_data.pop('ssh-passphrase', None)
+            init_data['enable_password'] = \
+                init_data.pop('enable-password', None)
         super().init(init_data)
 
         if self._data.password == 'ask':
@@ -71,6 +74,15 @@ class StaticLoader(CredentialLoader):
             except InventorySourceError as e:
                 raise InventorySourceError(f'{self.name} {e}')
 
+        if self._data.enable_password == 'ask':
+            try:
+                self._data.enable_password = get_sensitive_data(
+                    self._data.enable_password,
+                    f'{self.name} Insert enable password: '
+                )
+            except InventorySourceError as e:
+                raise InventorySourceError(f'{self.name} {e}')
+
     def load(self, inventory: Dict[str, Dict]):
 
         for device in inventory.values():
@@ -79,7 +91,8 @@ class StaticLoader(CredentialLoader):
                 'password': device.get('password') or self._data.password,
                 'username': device.get('username') or self._data.username,
                 'passphrase': device.get('passphrase')
-                or self._data.ssh_passphrase
+                or self._data.ssh_passphrase,
+                'enable_password': self._data.enable_password
             }
 
             self.write_credentials(device, dev_creds)
