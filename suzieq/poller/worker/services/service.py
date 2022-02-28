@@ -91,7 +91,7 @@ class Service(SqPlugin):
         self._poller_schema = {}
         self.node_boot_times = defaultdict(int)
         self._failed_node_set = set()
-        self._consecutive_failures = {}
+        self._consecutive_failures = defaultdict(int)
 
         self.poller_schema = property(
             self.get_poller_schema, self.set_poller_schema)
@@ -772,12 +772,12 @@ class Service(SqPlugin):
                     # The info will be committed in a future run.
                     if any((not Service.is_status_ok(x) for x in ostatus)):
                         self._consecutive_failures[key] = \
-                            self._consecutive_failures.get(key, 0) + 1
+                            self._consecutive_failures[key] + 1
                     # otherwise reset the counter.
                     else:
                         self._consecutive_failures[key] = 0
 
-                if 0 < self._consecutive_failures.get(key, 0) < \
+                if 0 < self._consecutive_failures[key] < \
                         HYSTERESIS_FAILURE_CNT:
                     self.logger.info(
                         f"{self.name} {key} node failure hysteresis,"
