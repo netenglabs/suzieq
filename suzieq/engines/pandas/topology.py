@@ -30,7 +30,7 @@ class TopologyObj(SqPandasEngine):
 
     # pylint: disable=attribute-defined-outside-init
     def _init_dfs(self, namespaces):
-        """Initialize the dataframes used"""
+        """Initialize the dataframes used for the given namespace"""
 
         self._if_df = self._get_table_sqobj('interfaces') \
             .get(namespace=namespaces, state="up",
@@ -78,11 +78,34 @@ class TopologyObj(SqPandasEngine):
         ifname = kwargs.pop('ifname', '')
         peerHostname = kwargs.pop('peerHostname', [])
         columns = kwargs.pop('columns', ['default'])
+        asn = kwargs.pop('asn', '')
+        area = kwargs.pop('area', '')
+        vrf = kwargs.pop('vrf', '')
+        addnl_fields = kwargs.pop('addnl_fields', [])
 
         self._init_dfs(self._namespaces)
         self.lsdb = pd.DataFrame()
         self._a_df = pd.DataFrame()
         self._ip_table = pd.DataFrame()
+
+        fields = self.schema.get_display_fields(columns)
+        if columns == ['*']:
+            fields.remove('sqvers')
+
+        if peerHostname and 'peerHostname' not in fields:
+            addnl_fields.append('peerHostname')
+
+        if 'asn' in columns or asn:
+            # When you don't constrain the via to bgp when asn is explicitly
+            # requested, we can have some issues. unique or any sort of sorting
+            # on the asn column will fail because all rows without BGP == true
+            # will have asn as either an undefined value, 0 or blank. The net
+            # result of this will be to confuse the user. Think of all the pain
+            # automation scripts will have to endure for this.
+            if via and via != ['bgp']:
+                raise AttributeError(
+                    'Cannot provide any via except bgp with asn')
+            via = ['bgp']
 
         self.services = [
             Services('lldp', {}, ['ifname', 'vrf'],
@@ -90,22 +113,25 @@ class TopologyObj(SqPandasEngine):
             Services('arpnd', {},
                      ['ipAddress', 'macaddr', 'ifname', 'vrf', 'arpndBidir'],
                      self._augment_arpnd_show),
-            Services('bgp', {'state': 'Established',
-                             'columns': ['*']},
-                     ['vrf'],
+            Services('bgp', {'state': 'Established', 'asn': asn,
+                             'vrf': vrf, 'columns': ['*']},
+                     ['vrf', 'asn', 'peerAsn'],
                      self._augment_bgp_show),
             # Services('evpnVni', {}, 'peerHostname',
             #    'vni', self._augment_evpnvni_show),
-            Services('ospf', {'state': 'full'},
-                     ['ifname', 'vrf'], self._augment_ospf_show),
+            Services('ospf', {'state': 'full', 'area': area, 'vrf': vrf},
+                     ['ifname', 'vrf', 'area'], self._augment_ospf_show),
         ]
 
         if via:
             self.services = [x for x in self.services if x.name in via]
         key = 'peerHostname'
+
+        kwargs['addnl_fields'] = addnl_fields
         for srv in self.services:
             if 'columns' not in srv.extra_args:
                 srv.extra_args['columns'] = ['default']
+            extra_cols = [x for x in srv.extra_cols if x not in addnl_fields]
             df = self._get_table_sqobj(srv.name).get(
                 **kwargs,
                 **srv.extra_args
@@ -115,8 +141,8 @@ class TopologyObj(SqPandasEngine):
                 if srv.augment:
                     df = srv.augment(df)
                 cols = ['namespace', 'hostname', key]
-                if srv.extra_cols:
-                    cols = cols + srv.extra_cols
+                if extra_cols:
+                    cols = cols + extra_cols
                 df = df[cols]
                 df.insert(len(df.columns), srv.name, True)
                 if self.lsdb.empty:
@@ -126,6 +152,7 @@ class TopologyObj(SqPandasEngine):
             else:
                 self.lsdb[srv.name] = False
 
+        self.lsdb = self.lsdb.fillna('').reset_index(drop=True)
         self._find_polled_neighbors(polled)
         if self.lsdb.empty:
             return self.lsdb
@@ -156,39 +183,37 @@ class TopologyObj(SqPandasEngine):
 
         # Apply the appropriate filters
         if not self.lsdb.empty:
+            self.lsdb = self.lsdb.fillna('')
             query_str = build_query_str([], self.schema, ignore_regex=False,
                                         hostname=hostname,
                                         peerHostname=peerHostname,
-                                        ifname=ifname)
+                                        ifname=ifname, asn=asn, area=area,
+                                        vrf=vrf)
             if query_str:
                 self.lsdb = self.lsdb.query(query_str)
 
         if user_query and not self.lsdb.empty:
             self.lsdb = self.lsdb.query(user_query)
 
-        cols = self.lsdb.columns.tolist()
-        cols = self.schema.sorted_display_fields(columns)
-        cols = [x for x in cols if x in self.lsdb.columns]
-
-        return self.lsdb[cols].reset_index(drop=True)
+        fields = [x for x in self.lsdb.columns if x in fields]
+        return self.lsdb[fields].reset_index(drop=True)
 
     def _find_polled_neighbors(self, polled):
         if self.lsdb.empty:
             return
 
-        devices = self._get_table_sqobj('device').get(
-            namespace=self._namespaces, columns=['namespace', 'hostname'])
-        self.lsdb = devices.merge(self.lsdb, how='outer',
-                                  indicator=True)
-        self.lsdb = self.lsdb.rename(columns={'_merge': 'polled'})
-        self.lsdb.polled = self.lsdb.polled == 'both'
+        hosts = set(self.lsdb.hostname)
+        peer_hosts = set(self.lsdb.peerHostname)
+        unpolled_neighbors = peer_hosts.difference(hosts)
+
+        self.lsdb['polled'] = True
+        self.lsdb.loc[self.lsdb.peerHostname.isin(unpolled_neighbors),
+                      'polled'] = False
 
         if polled and polled.lower() == 'true':
-            self.lsdb = self.lsdb.query('polled == True')
+            self.lsdb = self.lsdb.query('polled')
         elif polled.lower() == 'false':
-            self.lsdb = self.lsdb.query('polled == False')
-        if self.lsdb.empty:
-            self.lsdb = pd.DataFrame()
+            self.lsdb = self.lsdb.query('~polled')
 
     def _create_graphs_from_lsdb(self):
         self.graphs = {}
@@ -203,7 +228,7 @@ class TopologyObj(SqPandasEngine):
     def _augment_ospf_show(self, df):
         if not df.empty:
             df = df.query('adjState != "passive"').reset_index(drop=True)
-
+            df['area'] = df['area'].astype(str)
         return df
 
     def _augment_lldp_show(self, df):
@@ -211,7 +236,8 @@ class TopologyObj(SqPandasEngine):
             df = df[df.peerHostname != '']
             df = df.merge(
                 self._if_df[['namespace', 'hostname', 'ifname', 'vrf']],
-                on=['namespace', 'hostname', 'ifname'])
+                on=['namespace', 'hostname', 'ifname'], how='outer')
+
         return df
 
     def _augment_bgp_show(self, df):
@@ -355,21 +381,3 @@ class TopologyObj(SqPandasEngine):
                               f'{name}_number_of_nodes',
                               f'{name}_number_of_edges']:
                         self.ns[ns][k] = None
-
-    def unique(self, **kwargs):
-        '''Unique values for topology'''
-        columns = kwargs.pop('columns', ['default'])
-        count = kwargs.pop("count", 0)
-
-        df = self.get(columns=['*'], **kwargs)
-        column = columns[0]
-
-        if not count:
-            return (pd.DataFrame({f'{column}': df[column].unique()}))
-        else:
-            r = df[column].value_counts()
-            return (pd.DataFrame({column: r})
-                    .reset_index()
-                    .rename(columns={column: 'numRows',
-                                     'index': column})
-                    .sort_values(column))

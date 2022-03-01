@@ -12,6 +12,9 @@ from suzieq.sqobjects.topology import TopologyObj
 @argument("via",
           description="Protocol(s) via which nodes are connected, "
           "space separated")
+@argument("vrf", description="VRF(s), space separated")
+@argument("asn", description="BGP ASN(s), space separated")
+@argument("area", description="OSPF Area(s), space separated")
 @ argument("peerHostname",
            description="Peer hostname(s), space separated, "
            "space separated")
@@ -32,6 +35,9 @@ class TopologyCmd(SqCommand):
             polled: str = '',
             ifname: str = '',
             via: str = '',
+            vrf: str = '',
+            asn: str = '',
+            area: str = '',
             peerHostname: str = ''
     ) -> None:
         super().__init__(
@@ -47,8 +53,11 @@ class TopologyCmd(SqCommand):
             sqobj=TopologyObj
         )
         self.lvars = {
-            'polled': polled,
+            'polled': str(polled),
             'ifname': ifname.split(),
+            'asn': asn.split(),
+            'area': area.split(),
             'via': via.split(),
+            'vrf': vrf.split(),
             'peerHostname': peerHostname.split()
         }

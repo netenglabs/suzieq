@@ -3,620 +3,587 @@ tests:
 - command: topology show --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
-  output: '[{"namespace": "junos", "hostname": "server101", "ifname": "eth1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "server101",
-    "ifname": "eth0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true,
-    "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "junos", "hostname": "server102", "ifname": "eth1", "peerHostname":
-    "server202", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "server102", "ifname": "eth1", "peerHostname": "leaf02", "vrf": "default", "arpnd":
-    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "junos", "hostname": "server102", "ifname": "eth1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "server102",
-    "ifname": "eth0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true,
-    "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "junos", "hostname": "server201", "ifname": "eth0", "peerHostname":
-    "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "server201", "ifname": "eth1", "peerHostname": "leaf02", "vrf": "default", "arpnd":
-    true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false, "polled":
-    true}, {"namespace": "junos", "hostname": "server202", "ifname": "eth0", "peerHostname":
-    "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "server202", "ifname": "eth1", "peerHostname": "server102", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "junos", "hostname": "server202", "ifname": "eth1",
-    "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos",
-    "hostname": "server202", "ifname": "eth1", "peerHostname": "leaf01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "junos", "hostname": "firewall01", "ifname": "eth2.3",
-    "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "bgp": true, "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos",
-    "hostname": "firewall01", "ifname": "eth2.4", "peerHostname": "exit02", "vrf":
-    "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf":
-    false, "polled": true}, {"namespace": "junos", "hostname": "firewall01", "ifname":
-    "eth2.2", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "firewall01", "ifname": "eth1.3", "peerHostname": "exit01",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "firewall01",
-    "ifname": "eth1.2", "peerHostname": "exit01", "vrf": "default", "arpnd": true,
-    "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth1.4", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "firewall01",
-    "ifname": "eth0", "peerHostname": "server102", "vrf": "default", "arpnd": true,
-    "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth0", "peerHostname":
-    "server101", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "firewall01", "ifname": "eth0", "peerHostname": "fe80::fc54:ff:fef9:71ff", "vrf":
-    "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf":
-    false, "polled": true}, {"namespace": "junos", "hostname": "firewall01", "ifname":
-    "eth0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "firewall01", "ifname": "eth0", "peerHostname": "server201",
-    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "firewall01",
-    "ifname": "eth0", "peerHostname": "server202", "vrf": "default", "arpnd": true,
-    "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/0", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "spine01", "ifname": "xe-0/0/0.0", "peerHostname": "leaf01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/2", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "spine01", "ifname": "xe-0/0/2.0", "peerHostname": "exit01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/1", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "spine01", "ifname": "xe-0/0/1.0", "peerHostname": "leaf02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/3", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "spine01", "ifname": "xe-0/0/3.0", "peerHostname": "exit02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "spine01", "ifname": "em1.0", "peerHostname":
-    "169.254.0.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "spine01", "ifname": "em0.0", "peerHostname": "10.255.5.1", "vrf": "default",
-    "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/0",
-    "peerHostname": "leaf01", "vrf": "default", "arpnd": false, "arpndBidir": false,
-    "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "xe-0/0/0.0", "peerHostname": "leaf01", "vrf":
-    "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf":
-    true, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "xe-0/0/1", "peerHostname": "leaf02", "vrf": "default", "arpnd": false, "arpndBidir":
-    false, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "xe-0/0/1.0", "peerHostname": "leaf02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false,
-    "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "xe-0/0/3", "peerHostname": "exit02", "vrf": "default", "arpnd": false, "arpndBidir":
-    false, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "xe-0/0/3.0", "peerHostname": "exit02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false,
-    "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "xe-0/0/2", "peerHostname": "exit01", "vrf": "default", "arpnd": false, "arpndBidir":
-    false, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "xe-0/0/2.0", "peerHostname": "exit01",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false,
-    "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "em1.0", "peerHostname": "169.254.0.1",
-    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "xe-0/0/0", "peerHostname": "spine01", "vrf": "default", "arpnd": false, "arpndBidir":
-    false, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "leaf02", "ifname": "xe-0/0/0.0", "peerHostname": "spine01",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false,
-    "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "xe-0/0/1", "peerHostname": "spine02", "vrf": "default", "arpnd": false, "arpndBidir":
-    false, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "leaf02", "ifname": "xe-0/0/1.0", "peerHostname": "spine02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false,
-    "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "xe-0/0/3", "peerHostname": "server202", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
-    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "leaf02", "ifname": "irb.30", "peerHostname": "server102",
-    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "xe-0/0/2", "peerHostname": "server201", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
-    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "leaf02", "ifname": "em1.0", "peerHostname": "169.254.0.1",
-    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "exit01", "ifname": "xe-0/0/0", "peerHostname": "spine01",
-    "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true, "lldp": true,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "xe-0/0/0.0", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": false, "ospf": true, "polled": true}, {"namespace":
-    "junos", "hostname": "exit01", "ifname": "xe-0/0/3", "peerHostname": "dcedge01",
-    "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": false, "lldp": true,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "xe-0/0/1", "peerHostname": "spine02", "vrf": "default", "arpnd": false, "arpndBidir":
-    false, "bgp": true, "lldp": true, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "exit01", "ifname": "xe-0/0/1.0", "peerHostname": "spine02",
-    "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false,
-    "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "exit01", "ifname": "em1.0", "peerHostname": "169.254.0.1",
-    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "xe-0/0/3.0", "peerHostname": "dcedge01", "vrf": "internet-vrf", "arpnd": true,
-    "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/2.2", "peerHostname":
-    "firewall01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "exit01", "ifname": "xe-0/0/2.3", "peerHostname": "firewall01", "vrf": "evpn-vrf",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/2.4",
-    "peerHostname": "firewall01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "leaf01", "ifname": "xe-0/0/1", "peerHostname": "spine02",
-    "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true, "lldp": true,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "leaf01", "ifname":
-    "xe-0/0/1.0", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": false, "ospf": true, "polled": true}, {"namespace":
-    "junos", "hostname": "leaf01", "ifname": "xe-0/0/0", "peerHostname": "spine01",
-    "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true, "lldp": true,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "leaf01", "ifname":
-    "xe-0/0/0.0", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": false, "ospf": true, "polled": true}, {"namespace":
-    "junos", "hostname": "leaf01", "ifname": "xe-0/0/3", "peerHostname": "server102",
-    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "leaf01", "ifname":
-    "irb.30", "peerHostname": "server202", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
-    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "leaf01", "ifname": "em0.0", "peerHostname": "10.255.5.1",
-    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "leaf01", "ifname":
-    "em1.0", "peerHostname": "169.254.0.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "leaf01", "ifname": "xe-0/0/2", "peerHostname": "server101",
-    "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "xe-0/0/0", "peerHostname": "exit01", "vrf": "default", "arpnd": false,
-    "arpndBidir": false, "bgp": true, "lldp": true, "ospf": false, "polled": true},
-    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/0.0", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "xe-0/0/1", "peerHostname": "exit02", "vrf": "default", "arpnd": false,
-    "arpndBidir": false, "bgp": true, "lldp": true, "ospf": false, "polled": true},
-    {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/1.0", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true,
-    "arpndBidir": false, "bgp": false, "lldp": false, "ospf": false, "polled": true},
-    {"namespace": "junos", "hostname": "dcedge01", "ifname": "em1.0", "peerHostname":
-    "169.254.0.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf": "default", "arpnd":
-    false, "arpndBidir": false, "bgp": true, "lldp": true, "ospf": false, "polled":
-    true}, {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/1.0", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    false, "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "exit02",
-    "ifname": "xe-0/0/3", "peerHostname": "dcedge01", "vrf": "default", "arpnd": false,
-    "arpndBidir": false, "bgp": false, "lldp": true, "ospf": false, "polled": true},
-    {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/0", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/2.3", "peerHostname":
-    "firewall01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": true,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "xe-0/0/2.2", "peerHostname": "firewall01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/2.4",
-    "peerHostname": "firewall01", "vrf": "internet-vrf", "arpnd": true, "arpndBidir":
-    true, "bgp": true, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "exit02", "ifname": "em1.0", "peerHostname": "169.254.0.1",
-    "vrf": "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false,
-    "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "exit02", "ifname":
-    "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace":
-    "junos", "hostname": "exit02", "ifname": "xe-0/0/3.0", "peerHostname": "dcedge01",
-    "vrf": "internet-vrf", "arpnd": true, "arpndBidir": true, "bgp": true, "lldp":
-    false, "ospf": false, "polled": true}]'
+  output: '[{"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf01",
+    "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd":
+    "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled":
+    true}, {"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd":
+    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf":
+    true, "polled": true}, {"namespace": "junos", "hostname": "spine01", "peerHostname":
+    "exit01", "ifname": "xe-0/0/2", "vrf": "default", "lldp": true, "arpndBidir":
+    "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "",
+    "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "spine01", "peerHostname":
+    "exit01", "ifname": "xe-0/0/2.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine01",
+    "peerHostname": "leaf02", "ifname": "xe-0/0/1", "vrf": "default", "lldp": true,
+    "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "spine01",
+    "peerHostname": "leaf02", "ifname": "xe-0/0/1.0", "vrf": "default", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
+    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine01", "peerHostname": "exit02", "ifname": "xe-0/0/3", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "spine01", "peerHostname": "exit02", "ifname": "xe-0/0/3.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "spine01", "ifname": "xe-0/0/0",
+    "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "spine01", "ifname": "xe-0/0/0.0",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "junos", "hostname": "exit01", "peerHostname": "dcedge01", "ifname":
+    "xe-0/0/3", "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn":
+    "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "spine02", "ifname": "xe-0/0/1",
+    "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "spine02", "ifname": "xe-0/0/1.0",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf01", "ifname":
+    "xe-0/0/0", "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn":
+    64520.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled": true},
+    {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf01", "ifname":
+    "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true,
+    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true,
+    "polled": true}, {"namespace": "junos", "hostname": "spine02", "peerHostname":
+    "leaf02", "ifname": "xe-0/0/1", "vrf": "default", "lldp": true, "arpndBidir":
+    "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "",
+    "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "spine02", "peerHostname":
+    "leaf02", "ifname": "xe-0/0/1.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine02",
+    "peerHostname": "exit02", "ifname": "xe-0/0/3", "vrf": "default", "lldp": true,
+    "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "spine02",
+    "peerHostname": "exit02", "ifname": "xe-0/0/3.0", "vrf": "default", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
+    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "peerHostname": "exit01", "ifname": "xe-0/0/2", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "peerHostname": "exit01", "ifname": "xe-0/0/2.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "leaf01", "peerHostname": "spine02", "ifname": "xe-0/0/1",
+    "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace":
+    "junos", "hostname": "leaf01", "peerHostname": "spine02", "ifname": "xe-0/0/1.0",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine01", "ifname":
+    "xe-0/0/0", "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn":
+    64520.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled": true},
+    {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine01", "ifname":
+    "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true,
+    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true,
+    "polled": true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "arpndBidir":
+    "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "",
+    "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "leaf02",
+    "peerHostname": "spine02", "ifname": "xe-0/0/1", "vrf": "default", "lldp": true,
+    "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "leaf02",
+    "peerHostname": "spine02", "ifname": "xe-0/0/1.0", "vrf": "default", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
+    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "peerHostname": "exit01", "ifname": "xe-0/0/0", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 65534.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "peerHostname": "exit01", "ifname": "xe-0/0/0.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 65534.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "peerHostname": "exit02", "ifname": "xe-0/0/1", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 65534.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "peerHostname": "exit02", "ifname": "xe-0/0/1.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 65534.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "spine02", "ifname": "xe-0/0/1", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "spine02", "ifname": "xe-0/0/1.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "exit02", "peerHostname": "dcedge01", "ifname": "xe-0/0/3",
+    "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": "", "peerAsn":
+    "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "spine01", "ifname": "xe-0/0/0", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "spine01", "ifname": "xe-0/0/0.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "server102", "peerHostname": "server202", "ifname": "eth1",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn":
+    "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "server102", "peerHostname": "leaf02", "ifname": "eth1", "vrf": "default",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "server102", "peerHostname": "leaf01", "ifname": "eth1", "vrf": "default", "lldp":
+    "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area":
+    "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "server201",
+    "peerHostname": "leaf02", "ifname": "eth1", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "exit02", "ifname": "eth2.3", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "exit02", "ifname": "eth2.4", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "exit02", "ifname": "eth2.2", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "server101", "peerHostname":
+    "leaf01", "ifname": "eth1", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "exit01",
+    "ifname": "eth1.3", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd":
+    true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "",
+    "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "exit01", "ifname": "eth1.2", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "exit01", "ifname": "eth1.4", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "server102", "ifname": "eth0", "vrf": "default", "lldp": "", "arpndBidir": false,
+    "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "server101",
+    "ifname": "eth0", "vrf": "default", "lldp": "", "arpndBidir": false, "arpnd":
+    true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true},
+    {"namespace": "junos", "hostname": "firewall01", "peerHostname": "server201",
+    "ifname": "eth0", "vrf": "default", "lldp": "", "arpndBidir": false, "arpnd":
+    true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true},
+    {"namespace": "junos", "hostname": "firewall01", "peerHostname": "server202",
+    "ifname": "eth0", "vrf": "default", "lldp": "", "arpndBidir": false, "arpnd":
+    true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true},
+    {"namespace": "junos", "hostname": "server202", "peerHostname": "server102", "ifname":
+    "eth1", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn":
+    "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace":
+    "junos", "hostname": "server202", "peerHostname": "leaf02", "ifname": "eth1",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn":
+    "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "server202", "peerHostname": "leaf01", "ifname": "eth1", "vrf": "default",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "leaf02", "peerHostname": "server202", "ifname": "xe-0/0/3", "vrf": "evpn-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "leaf02", "peerHostname": "server102", "ifname": "irb.30", "vrf": "evpn-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "leaf02", "peerHostname": "server201", "ifname": "xe-0/0/2", "vrf": "evpn-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "exit01", "peerHostname": "dcedge01", "ifname": "xe-0/0/3.0", "vrf": "internet-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65534.0,
+    "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "exit01", "peerHostname": "firewall01", "ifname": "xe-0/0/2.2", "vrf": "default",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0,
+    "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "exit01", "peerHostname": "firewall01", "ifname": "xe-0/0/2.3", "vrf": "evpn-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0,
+    "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "exit01", "peerHostname": "firewall01", "ifname": "xe-0/0/2.4", "vrf": "internet-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0,
+    "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "leaf01", "peerHostname": "server102", "ifname": "xe-0/0/3", "vrf": "evpn-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "leaf01", "peerHostname": "server202", "ifname": "irb.30", "vrf": "evpn-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "leaf01", "peerHostname": "server101", "ifname": "xe-0/0/2", "vrf": "evpn-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "exit02", "peerHostname": "firewall01", "ifname": "xe-0/0/2.3", "vrf": "evpn-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0,
+    "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "exit02", "peerHostname": "firewall01", "ifname": "xe-0/0/2.2", "vrf": "default",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0,
+    "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "exit02", "peerHostname": "firewall01", "ifname": "xe-0/0/2.4", "vrf": "internet-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0,
+    "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "exit02", "peerHostname": "dcedge01", "ifname": "xe-0/0/3.0", "vrf": "internet-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65534.0,
+    "bgp": true, "area": "", "ospf": "", "polled": true}]'
 - command: topology show --via=lldp --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
-  output: '[{"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/0", "peerHostname":
-    "leaf01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "spine01", "ifname": "xe-0/0/2", "peerHostname": "exit01", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "junos", "hostname": "spine01",
-    "ifname": "xe-0/0/1", "peerHostname": "leaf02", "vrf": "default", "lldp": true,
-    "polled": true}, {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/3",
-    "peerHostname": "exit02", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "junos", "hostname": "spine02", "ifname": "xe-0/0/0", "peerHostname": "leaf01",
+  output: '[{"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf01",
+    "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "spine01", "peerHostname": "exit01", "ifname": "xe-0/0/2",
     "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "spine02", "ifname": "xe-0/0/1", "peerHostname": "leaf02", "vrf": "default", "lldp":
-    true, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "xe-0/0/3", "peerHostname": "exit02", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/2", "peerHostname":
-    "exit01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf":
+    "spine01", "peerHostname": "leaf02", "ifname": "xe-0/0/1", "vrf": "default", "lldp":
+    true, "polled": true}, {"namespace": "junos", "hostname": "spine01", "peerHostname":
+    "exit02", "ifname": "xe-0/0/3", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "junos", "hostname": "exit01", "peerHostname": "spine01", "ifname":
+    "xe-0/0/0", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit01", "peerHostname": "dcedge01", "ifname": "xe-0/0/3", "vrf":
+    "default", "lldp": true, "polled": true}, {"namespace": "junos", "hostname": "exit01",
+    "peerHostname": "spine02", "ifname": "xe-0/0/1", "vrf": "default", "lldp": true,
+    "polled": true}, {"namespace": "junos", "hostname": "spine02", "peerHostname":
+    "leaf01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf02", "ifname":
+    "xe-0/0/1", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "peerHostname": "exit02", "ifname": "xe-0/0/3", "vrf":
+    "default", "lldp": true, "polled": true}, {"namespace": "junos", "hostname": "spine02",
+    "peerHostname": "exit01", "ifname": "xe-0/0/2", "vrf": "default", "lldp": true,
+    "polled": true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname":
+    "spine02", "ifname": "xe-0/0/1", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine01", "ifname":
+    "xe-0/0/0", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "leaf02", "peerHostname": "spine01", "ifname": "xe-0/0/0", "vrf":
     "default", "lldp": true, "polled": true}, {"namespace": "junos", "hostname": "leaf02",
-    "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf": "default", "lldp": true,
-    "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/0",
-    "peerHostname": "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "junos", "hostname": "exit01", "ifname": "xe-0/0/3", "peerHostname": "dcedge01",
-    "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit01", "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf": "default", "lldp":
-    true, "polled": true}, {"namespace": "junos", "hostname": "leaf01", "ifname":
-    "xe-0/0/1", "peerHostname": "spine02", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/0", "peerHostname":
-    "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/0", "peerHostname": "exit01", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "junos", "hostname": "dcedge01",
-    "ifname": "xe-0/0/1", "peerHostname": "exit02", "vrf": "default", "lldp": true,
-    "polled": true}, {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/1",
-    "peerHostname": "spine02", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "junos", "hostname": "exit02", "ifname": "xe-0/0/3", "peerHostname": "dcedge01",
-    "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf": "default", "lldp":
-    true, "polled": true}]'
+    "peerHostname": "spine02", "ifname": "xe-0/0/1", "vrf": "default", "lldp": true,
+    "polled": true}, {"namespace": "junos", "hostname": "dcedge01", "peerHostname":
+    "exit01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "junos", "hostname": "dcedge01", "peerHostname": "exit02", "ifname":
+    "xe-0/0/1", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "spine02", "ifname": "xe-0/0/1", "vrf":
+    "default", "lldp": true, "polled": true}, {"namespace": "junos", "hostname": "exit02",
+    "peerHostname": "dcedge01", "ifname": "xe-0/0/3", "vrf": "default", "lldp": true,
+    "polled": true}, {"namespace": "junos", "hostname": "exit02", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "polled": true}]'
 - command: topology show --via='lldp bgp' --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
-  output: '[{"namespace": "junos", "hostname": "firewall01", "ifname": "unknown",
-    "peerHostname": "exit01", "vrf": "default", "bgp": true, "lldp": false, "polled":
-    true}, {"namespace": "junos", "hostname": "firewall01", "ifname": "unknown", "peerHostname":
-    "exit02", "vrf": "default", "bgp": true, "lldp": false, "polled": true}, {"namespace":
-    "junos", "hostname": "spine01", "ifname": "xe-0/0/0", "peerHostname": "leaf01",
-    "vrf": "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "spine01", "ifname": "xe-0/0/2", "peerHostname": "exit01", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "spine01", "ifname": "xe-0/0/1", "peerHostname": "leaf02", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "spine01", "ifname": "xe-0/0/3", "peerHostname": "exit02", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "xe-0/0/0", "peerHostname": "leaf01", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "xe-0/0/1", "peerHostname": "leaf02", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "xe-0/0/3", "peerHostname": "exit02", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "xe-0/0/2", "peerHostname": "exit01", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "leaf02", "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "exit01", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "exit01", "ifname": "xe-0/0/3", "peerHostname": "dcedge01", "vrf":
-    "default", "bgp": false, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "exit01", "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "exit01", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
-    "default", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
-    "hostname": "exit01", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
-    "internet-vrf", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
-    "hostname": "exit01", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
-    "evpn-vrf", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
-    "hostname": "exit01", "ifname": "unknown", "peerHostname": "dcedge01", "vrf":
-    "internet-vrf", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/0", "peerHostname": "exit01", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "dcedge01", "ifname": "xe-0/0/1", "peerHostname": "exit02", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "exit02", "ifname": "xe-0/0/1", "peerHostname": "spine02", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "exit02", "ifname": "xe-0/0/3", "peerHostname": "dcedge01", "vrf":
-    "default", "bgp": false, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "exit02", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf":
-    "default", "bgp": true, "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "exit02", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
-    "evpn-vrf", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
-    "hostname": "exit02", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
-    "default", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
-    "hostname": "exit02", "ifname": "unknown", "peerHostname": "dcedge01", "vrf":
-    "internet-vrf", "bgp": true, "lldp": false, "polled": true}, {"namespace": "junos",
-    "hostname": "exit02", "ifname": "unknown", "peerHostname": "firewall01", "vrf":
-    "internet-vrf", "bgp": true, "lldp": false, "polled": true}]'
+  output: '[{"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf01",
+    "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "spine01",
+    "peerHostname": "exit01", "ifname": "xe-0/0/2", "vrf": "default", "lldp": true,
+    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "spine01", "peerHostname": "leaf02", "ifname": "xe-0/0/1",
+    "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "polled": true}, {"namespace": "junos", "hostname": "spine01", "peerHostname":
+    "exit02", "ifname": "xe-0/0/3", "vrf": "default", "lldp": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
+    "exit01", "peerHostname": "spine01", "ifname": "xe-0/0/0", "vrf": "default", "lldp":
+    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "dcedge01", "ifname": "xe-0/0/3",
+    "vrf": "default", "lldp": true, "asn": "", "peerAsn": "", "bgp": "", "polled":
+    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "spine02",
+    "peerHostname": "leaf01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true,
+    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "spine02", "peerHostname": "leaf02", "ifname": "xe-0/0/1",
+    "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "polled": true}, {"namespace": "junos", "hostname": "spine02", "peerHostname":
+    "exit02", "ifname": "xe-0/0/3", "vrf": "default", "lldp": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
+    "spine02", "peerHostname": "exit01", "ifname": "xe-0/0/2", "vrf": "default", "lldp":
+    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "leaf01", "peerHostname": "spine02", "ifname": "xe-0/0/1",
+    "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "polled": true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
+    "leaf02", "peerHostname": "spine01", "ifname": "xe-0/0/0", "vrf": "default", "lldp":
+    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "leaf02", "peerHostname": "spine02", "ifname": "xe-0/0/1",
+    "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "polled": true}, {"namespace": "junos", "hostname": "dcedge01", "peerHostname":
+    "exit01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "asn": 65534.0,
+    "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
+    "dcedge01", "peerHostname": "exit02", "ifname": "xe-0/0/1", "vrf": "default",
+    "lldp": true, "asn": 65534.0, "peerAsn": 64520.0, "bgp": true, "polled": true},
+    {"namespace": "junos", "hostname": "exit02", "peerHostname": "spine02", "ifname":
+    "xe-0/0/1", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0,
+    "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "exit02", "peerHostname":
+    "dcedge01", "ifname": "xe-0/0/3", "vrf": "default", "lldp": true, "asn": "", "peerAsn":
+    "", "bgp": "", "polled": true}, {"namespace": "junos", "hostname": "exit02", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
+    "firewall01", "peerHostname": "exit01", "ifname": "", "vrf": "default", "lldp":
+    "", "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "firewall01", "peerHostname": "exit02", "ifname": "", "vrf":
+    "default", "lldp": "", "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "polled":
+    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "firewall01",
+    "ifname": "", "vrf": "default", "lldp": "", "asn": 64520.0, "peerAsn": 65533.0,
+    "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "exit01", "peerHostname":
+    "firewall01", "ifname": "", "vrf": "internet-vrf", "lldp": "", "asn": 64520.0,
+    "peerAsn": 65533.0, "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
+    "exit01", "peerHostname": "firewall01", "ifname": "", "vrf": "evpn-vrf", "lldp":
+    "", "asn": 64520.0, "peerAsn": 65533.0, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "dcedge01", "ifname": "", "vrf":
+    "internet-vrf", "lldp": "", "asn": 64520.0, "peerAsn": 65534.0, "bgp": true, "polled":
+    true}, {"namespace": "junos", "hostname": "exit02", "peerHostname": "firewall01",
+    "ifname": "", "vrf": "evpn-vrf", "lldp": "", "asn": 64520.0, "peerAsn": 65533.0,
+    "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "exit02", "peerHostname":
+    "firewall01", "ifname": "", "vrf": "default", "lldp": "", "asn": 64520.0, "peerAsn":
+    65533.0, "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "exit02",
+    "peerHostname": "dcedge01", "ifname": "", "vrf": "internet-vrf", "lldp": "", "asn":
+    64520.0, "peerAsn": 65534.0, "bgp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "firewall01", "ifname": "", "vrf": "internet-vrf",
+    "lldp": "", "asn": 64520.0, "peerAsn": 65533.0, "bgp": true, "polled": true}]'
 - command: topology show --via=bgp --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
   output: '[{"namespace": "junos", "hostname": "firewall01", "peerHostname": "exit01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "firewall01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "spine01", "peerHostname": "exit02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "spine01", "peerHostname": "exit01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "spine01", "peerHostname": "leaf01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "spine02", "peerHostname": "exit01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "spine02", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf02", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "firewall01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit01", "peerHostname": "firewall01", "vrf": "internet-vrf", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "firewall01",
-    "vrf": "evpn-vrf", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit01", "peerHostname": "dcedge01", "vrf": "internet-vrf", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit01", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine02",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "peerHostname": "spine01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "dcedge01", "peerHostname": "exit01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "dcedge01", "peerHostname": "exit02", "vrf": "default", "bgp": true, "polled":
+    "vrf": "default", "asn": 65533, "peerAsn": 64520, "bgp": true, "polled": true},
+    {"namespace": "junos", "hostname": "firewall01", "peerHostname": "exit02", "vrf":
+    "default", "asn": 65533, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "leaf01", "peerHostname": "spine02", "vrf": "default", "asn":
+    64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "leaf01", "peerHostname": "spine01", "vrf": "default", "asn": 64520,
+    "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
+    "leaf02", "peerHostname": "spine02", "vrf": "default", "asn": 64520, "peerAsn":
+    64520, "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "leaf02",
+    "peerHostname": "spine01", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp":
+    true, "polled": true}, {"namespace": "junos", "hostname": "spine01", "peerHostname":
+    "exit02", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine01", "peerHostname": "exit01",
+    "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true},
+    {"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf02", "vrf":
+    "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "spine01", "peerHostname": "leaf01", "vrf": "default", "asn":
+    64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "peerHostname": "exit01", "vrf": "default", "asn": 65534,
+    "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
+    "exit01", "peerHostname": "firewall01", "vrf": "default", "asn": 64520, "peerAsn":
+    65533, "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "exit01",
+    "peerHostname": "firewall01", "vrf": "internet-vrf", "asn": 64520, "peerAsn":
+    65533, "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "exit01",
+    "peerHostname": "firewall01", "vrf": "evpn-vrf", "asn": 64520, "peerAsn": 65533,
+    "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "exit01", "peerHostname":
+    "dcedge01", "vrf": "internet-vrf", "asn": 64520, "peerAsn": 65534, "bgp": true,
+    "polled": true}, {"namespace": "junos", "hostname": "exit01", "peerHostname":
+    "spine02", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
+    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "spine01",
+    "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true},
+    {"namespace": "junos", "hostname": "dcedge01", "peerHostname": "exit02", "vrf":
+    "default", "asn": 65534, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "exit02", "peerHostname": "firewall01", "vrf": "evpn-vrf",
+    "asn": 64520, "peerAsn": 65533, "bgp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "firewall01", "vrf": "default", "asn": 64520,
+    "peerAsn": 65533, "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
+    "exit02", "peerHostname": "dcedge01", "vrf": "internet-vrf", "asn": 64520, "peerAsn":
+    65534, "bgp": true, "polled": true}, {"namespace": "junos", "hostname": "exit02",
+    "peerHostname": "spine02", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp":
+    true, "polled": true}, {"namespace": "junos", "hostname": "exit02", "peerHostname":
+    "spine01", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
     true}, {"namespace": "junos", "hostname": "exit02", "peerHostname": "firewall01",
-    "vrf": "evpn-vrf", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "peerHostname": "firewall01", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "exit02", "peerHostname": "dcedge01",
-    "vrf": "internet-vrf", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "peerHostname": "spine02", "vrf": "default", "bgp": true, "polled":
-    true}, {"namespace": "junos", "hostname": "exit02", "peerHostname": "spine01",
-    "vrf": "default", "bgp": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "peerHostname": "firewall01", "vrf": "internet-vrf", "bgp": true, "polled":
-    true}]'
+    "vrf": "internet-vrf", "asn": 64520, "peerAsn": 65533, "bgp": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf02",
+    "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true},
+    {"namespace": "junos", "hostname": "spine02", "peerHostname": "exit01", "vrf":
+    "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "spine02", "peerHostname": "leaf01", "vrf": "default", "asn":
+    64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "peerHostname": "exit02", "vrf": "default", "asn": 64520,
+    "peerAsn": 64520, "bgp": true, "polled": true}]'
 - command: topology show --via=ospf --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
-  output: '[{"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/3.0",
-    "peerHostname": "exit02", "vrf": "default", "ospf": true, "polled": true}, {"namespace":
-    "junos", "hostname": "spine01", "ifname": "xe-0/0/2.0", "peerHostname": "exit01",
-    "vrf": "default", "ospf": true, "polled": true}, {"namespace": "junos", "hostname":
-    "spine01", "ifname": "xe-0/0/1.0", "peerHostname": "leaf02", "vrf": "default",
-    "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine01", "ifname":
-    "xe-0/0/0.0", "peerHostname": "leaf01", "vrf": "default", "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/3.0", "peerHostname":
-    "exit02", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "junos",
-    "hostname": "spine02", "ifname": "xe-0/0/2.0", "peerHostname": "exit01", "vrf":
-    "default", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine02",
-    "ifname": "xe-0/0/1.0", "peerHostname": "leaf02", "vrf": "default", "ospf": true,
-    "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/0.0",
-    "peerHostname": "leaf01", "vrf": "default", "ospf": true, "polled": true}, {"namespace":
-    "junos", "hostname": "leaf02", "ifname": "xe-0/0/0.0", "peerHostname": "spine01",
-    "vrf": "default", "ospf": true, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf02", "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "vrf": "default",
-    "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "xe-0/0/0.0", "peerHostname": "spine01", "vrf": "default", "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/1.0", "peerHostname":
-    "spine02", "vrf": "default", "ospf": true, "polled": true}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "vrf":
-    "default", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "leaf01",
-    "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "vrf": "default", "ospf": true,
-    "polled": true}, {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/0.0",
-    "peerHostname": "spine01", "vrf": "default", "ospf": true, "polled": true}, {"namespace":
-    "junos", "hostname": "exit02", "ifname": "xe-0/0/1.0", "peerHostname": "spine02",
-    "vrf": "default", "ospf": true, "polled": true}]'
+  output: '[{"namespace": "junos", "hostname": "leaf02", "peerHostname": "spine01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine01", "peerHostname": "exit02",
+    "ifname": "xe-0/0/3.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine01", "peerHostname": "exit01",
+    "ifname": "xe-0/0/2.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "spine01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "exit02", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "exit02", "peerHostname": "spine01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine02", "peerHostname": "exit01",
+    "ifname": "xe-0/0/2.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine02", "peerHostname": "exit02",
+    "ifname": "xe-0/0/3.0", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}]'
 - command: topology show --via=arpnd --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
-  output: '[{"namespace": "junos", "hostname": "server101", "ifname": "eth1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "server101", "ifname": "eth0", "peerHostname":
-    "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "polled":
-    true}, {"namespace": "junos", "hostname": "server102", "ifname": "eth1", "peerHostname":
-    "server202", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "server102", "ifname": "eth1", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "server102", "ifname": "eth1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "server102", "ifname": "eth0", "peerHostname":
-    "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "polled":
-    true}, {"namespace": "junos", "hostname": "server201", "ifname": "eth0", "peerHostname":
-    "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "polled":
-    true}, {"namespace": "junos", "hostname": "server201", "ifname": "eth1", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "server202", "ifname": "eth0", "peerHostname":
-    "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir": false, "polled":
-    true}, {"namespace": "junos", "hostname": "server202", "ifname": "eth1", "peerHostname":
-    "server102", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "server202", "ifname": "eth1", "peerHostname":
-    "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "server202", "ifname": "eth1", "peerHostname":
-    "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth2.3", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth2.4", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth2.2", "peerHostname":
-    "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth1.3", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth1.2", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth1.4", "peerHostname":
-    "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth0", "peerHostname":
-    "server102", "vrf": "default", "arpnd": true, "arpndBidir": false, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth0", "peerHostname":
-    "server101", "vrf": "default", "arpnd": true, "arpndBidir": false, "polled": true},
-    {"namespace": "junos", "hostname": "firewall01", "ifname": "eth0", "peerHostname":
-    "fe80::fc54:ff:fef9:71ff", "vrf": "default", "arpnd": true, "arpndBidir": false,
-    "polled": true}, {"namespace": "junos", "hostname": "firewall01", "ifname": "eth0",
-    "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir": false,
-    "polled": true}, {"namespace": "junos", "hostname": "firewall01", "ifname": "eth0",
-    "peerHostname": "server201", "vrf": "default", "arpnd": true, "arpndBidir": false,
-    "polled": true}, {"namespace": "junos", "hostname": "firewall01", "ifname": "eth0",
-    "peerHostname": "server202", "vrf": "default", "arpnd": true, "arpndBidir": false,
-    "polled": true}, {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/0.0",
-    "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true,
-    "polled": true}, {"namespace": "junos", "hostname": "spine01", "ifname": "em1.0",
-    "peerHostname": "169.254.0.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "junos", "hostname": "spine01", "ifname":
-    "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "junos", "hostname": "spine01", "ifname":
-    "xe-0/0/3.0", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "spine01", "ifname":
-    "xe-0/0/2.0", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "spine01", "ifname":
-    "xe-0/0/1.0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "xe-0/0/3.0", "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "xe-0/0/2.0", "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "xe-0/0/1.0", "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "xe-0/0/0.0", "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "junos", "hostname": "spine02", "ifname":
-    "em1.0", "peerHostname": "169.254.0.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "xe-0/0/3", "peerHostname": "server202", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "irb.30", "peerHostname": "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "xe-0/0/2", "peerHostname": "server201", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "em1.0", "peerHostname": "169.254.0.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "xe-0/0/1.0", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "leaf02", "ifname":
-    "xe-0/0/0.0", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "xe-0/0/0.0", "peerHostname": "spine01", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "xe-0/0/1.0", "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir":
-    true, "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "em1.0", "peerHostname": "169.254.0.1", "vrf": "default", "arpnd": true, "arpndBidir":
-    false, "polled": true}, {"namespace": "junos", "hostname": "exit01", "ifname":
-    "xe-0/0/3.0", "peerHostname": "dcedge01", "vrf": "internet-vrf", "arpnd": true,
-    "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname": "exit01",
-    "ifname": "xe-0/0/2.2", "peerHostname": "firewall01", "vrf": "default", "arpnd":
-    true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit01", "ifname": "xe-0/0/2.3", "peerHostname": "firewall01", "vrf": "evpn-vrf",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit01", "ifname": "xe-0/0/2.4", "peerHostname": "firewall01", "vrf": "internet-vrf",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "xe-0/0/3", "peerHostname": "server102", "vrf": "evpn-vrf",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "irb.30", "peerHostname": "server202", "vrf": "evpn-vrf",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd":
-    true, "arpndBidir": false, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "em1.0", "peerHostname": "169.254.0.1", "vrf": "default",
-    "arpnd": true, "arpndBidir": false, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "xe-0/0/2", "peerHostname": "server101", "vrf": "evpn-vrf",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "dcedge01", "ifname": "em0.0", "peerHostname": "10.255.5.1", "vrf": "default",
-    "arpnd": true, "arpndBidir": false, "polled": true}, {"namespace": "junos", "hostname":
-    "dcedge01", "ifname": "em1.0", "peerHostname": "169.254.0.1", "vrf": "default",
-    "arpnd": true, "arpndBidir": false, "polled": true}, {"namespace": "junos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/0.0", "peerHostname": "exit01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "dcedge01", "ifname": "xe-0/0/1.0", "peerHostname": "exit02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "xe-0/0/2.3", "peerHostname": "firewall01", "vrf": "evpn-vrf",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "xe-0/0/2.2", "peerHostname": "firewall01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "xe-0/0/2.4", "peerHostname": "firewall01", "vrf": "internet-vrf",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "em1.0", "peerHostname": "169.254.0.1", "vrf": "default",
-    "arpnd": true, "arpndBidir": false, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "em0.0", "peerHostname": "10.255.5.1", "vrf": "default", "arpnd":
-    true, "arpndBidir": false, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "junos", "hostname":
-    "exit02", "ifname": "xe-0/0/3.0", "peerHostname": "dcedge01", "vrf": "internet-vrf",
-    "arpnd": true, "arpndBidir": true, "polled": true}]'
+  output: '[{"namespace": "junos", "hostname": "server102", "peerHostname": "server202",
+    "ifname": "eth1", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "server102", "peerHostname": "leaf02",
+    "ifname": "eth1", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "server102", "peerHostname": "leaf01",
+    "ifname": "eth1", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "server201", "peerHostname": "leaf02",
+    "ifname": "eth1", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "exit02",
+    "ifname": "eth2.3", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "exit02",
+    "ifname": "eth2.4", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "exit02",
+    "ifname": "eth2.2", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "server101", "peerHostname": "leaf01",
+    "ifname": "eth1", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "exit01",
+    "ifname": "eth1.3", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "exit01",
+    "ifname": "eth1.2", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "exit01",
+    "ifname": "eth1.4", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "server102",
+    "ifname": "eth0", "vrf": "default", "arpndBidir": false, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "server101",
+    "ifname": "eth0", "vrf": "default", "arpndBidir": false, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "server201",
+    "ifname": "eth0", "vrf": "default", "arpndBidir": false, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "server202",
+    "ifname": "eth0", "vrf": "default", "arpndBidir": false, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "server202", "peerHostname": "server102",
+    "ifname": "eth1", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "server202", "peerHostname": "leaf02",
+    "ifname": "eth1", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "server202", "peerHostname": "leaf01",
+    "ifname": "eth1", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname": "server202",
+    "ifname": "xe-0/0/3", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname": "server102",
+    "ifname": "irb.30", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname": "server201",
+    "ifname": "xe-0/0/2", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname": "spine01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine02", "peerHostname": "exit02",
+    "ifname": "xe-0/0/3.0", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine02", "peerHostname": "exit01",
+    "ifname": "xe-0/0/2.0", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "spine01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "arpndBidir": true, "arpnd": true, "polled":
+    true}, {"namespace": "junos", "hostname": "exit01", "peerHostname": "dcedge01",
+    "ifname": "xe-0/0/3.0", "vrf": "internet-vrf", "arpndBidir": true, "arpnd": true,
+    "polled": true}, {"namespace": "junos", "hostname": "exit01", "peerHostname":
+    "firewall01", "ifname": "xe-0/0/2.2", "vrf": "default", "arpndBidir": true, "arpnd":
+    true, "polled": true}, {"namespace": "junos", "hostname": "exit01", "peerHostname":
+    "firewall01", "ifname": "xe-0/0/2.3", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
+    true, "polled": true}, {"namespace": "junos", "hostname": "exit01", "peerHostname":
+    "firewall01", "ifname": "xe-0/0/2.4", "vrf": "internet-vrf", "arpndBidir": true,
+    "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "spine02",
+    "peerHostname": "leaf01", "ifname": "xe-0/0/0.0", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "spine01",
+    "peerHostname": "exit02", "ifname": "xe-0/0/3.0", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "spine01",
+    "peerHostname": "exit01", "ifname": "xe-0/0/2.0", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "spine01",
+    "peerHostname": "leaf02", "ifname": "xe-0/0/1.0", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "server102", "ifname": "xe-0/0/3", "vrf": "evpn-vrf", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "server202", "ifname": "irb.30", "vrf": "evpn-vrf", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "dcedge01",
+    "peerHostname": "exit01", "ifname": "xe-0/0/0.0", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "dcedge01",
+    "peerHostname": "exit02", "ifname": "xe-0/0/1.0", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "spine02", "ifname": "xe-0/0/1.0", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "spine01", "ifname": "xe-0/0/0.0", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "server101", "ifname": "xe-0/0/2", "vrf": "evpn-vrf", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "exit02",
+    "peerHostname": "firewall01", "ifname": "xe-0/0/2.3", "vrf": "evpn-vrf", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "exit02",
+    "peerHostname": "firewall01", "ifname": "xe-0/0/2.2", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "exit02",
+    "peerHostname": "firewall01", "ifname": "xe-0/0/2.4", "vrf": "internet-vrf", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "exit02",
+    "peerHostname": "spine02", "ifname": "xe-0/0/1.0", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "exit02",
+    "peerHostname": "spine01", "ifname": "xe-0/0/0.0", "vrf": "default", "arpndBidir":
+    true, "arpnd": true, "polled": true}, {"namespace": "junos", "hostname": "exit02",
+    "peerHostname": "dcedge01", "ifname": "xe-0/0/3.0", "vrf": "internet-vrf", "arpndBidir":
+    true, "arpnd": true, "polled": true}]'
 - command: topology show --hostname=leaf01 --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
-  output: '[{"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/1", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/0", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/3", "peerHostname":
-    "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "irb.30", "peerHostname": "server202", "vrf": "evpn-vrf",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "junos", "hostname": "leaf01", "ifname": "em0.0",
-    "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir": false,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "em1.0", "peerHostname": "169.254.0.1", "vrf":
-    "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf":
-    false, "polled": true}, {"namespace": "junos", "hostname": "leaf01", "ifname":
-    "xe-0/0/2", "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
-    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}]'
+  output: '[{"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1", "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd":
+    "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled":
+    true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd":
+    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf":
+    true, "polled": true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "arpndBidir":
+    "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "",
+    "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "server102", "ifname": "xe-0/0/3", "vrf": "evpn-vrf", "lldp":
+    "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area":
+    "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "server202", "ifname": "irb.30", "vrf": "evpn-vrf", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area":
+    "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "server101", "ifname": "xe-0/0/2", "vrf": "evpn-vrf", "lldp":
+    "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area":
+    "", "ospf": "", "polled": true}]'
 - command: topology show --hostname=leaf01 --via=lldp --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
-  output: '[{"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/1", "peerHostname":
-    "spine02", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "xe-0/0/0", "peerHostname": "spine01", "vrf":
-    "default", "lldp": true, "polled": true}]'
-- command: topology show --hostname=leaf01 --ifname=xe-0/0/1 --via=lldp --format=json --namespace=junos
+  output: '[{"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "junos", "hostname": "leaf01", "peerHostname": "spine01", "ifname": "xe-0/0/0",
+    "vrf": "default", "lldp": true, "polled": true}]'
+- command: topology show --hostname=leaf01 --ifname=xe-0/0/1 --via=lldp --format=json
+    --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
-  output: '[{"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/1", "peerHostname":
-    "spine02", "vrf": "default", "lldp": true, "polled": true}]'
+  output: '[{"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1", "vrf": "default", "lldp": true, "polled": true}]'
 - command: topology show --hostname=leaf01 --polled=True --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
-  output: '[{"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/1", "peerHostname":
-    "spine02", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "xe-0/0/1.0", "peerHostname": "spine02", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/0", "peerHostname":
-    "spine01", "vrf": "default", "arpnd": false, "arpndBidir": false, "bgp": true,
-    "lldp": true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "vrf": "default",
-    "arpnd": true, "arpndBidir": true, "bgp": true, "lldp": false, "ospf": true, "polled":
-    true}, {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/3", "peerHostname":
-    "server102", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true, "bgp": false,
-    "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
-    "leaf01", "ifname": "irb.30", "peerHostname": "server202", "vrf": "evpn-vrf",
-    "arpnd": true, "arpndBidir": true, "bgp": false, "lldp": false, "ospf": false,
-    "polled": true}, {"namespace": "junos", "hostname": "leaf01", "ifname": "em0.0",
-    "peerHostname": "10.255.5.1", "vrf": "default", "arpnd": true, "arpndBidir": false,
-    "bgp": false, "lldp": false, "ospf": false, "polled": true}, {"namespace": "junos",
-    "hostname": "leaf01", "ifname": "em1.0", "peerHostname": "169.254.0.1", "vrf":
-    "default", "arpnd": true, "arpndBidir": false, "bgp": false, "lldp": false, "ospf":
-    false, "polled": true}, {"namespace": "junos", "hostname": "leaf01", "ifname":
-    "xe-0/0/2", "peerHostname": "server101", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
-    true, "bgp": false, "lldp": false, "ospf": false, "polled": true}]'
+  output: '[{"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1", "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd":
+    "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled":
+    true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine02",
+    "ifname": "xe-0/0/1.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd":
+    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf":
+    true, "polled": true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "arpndBidir":
+    "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "",
+    "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "server102", "ifname": "xe-0/0/3", "vrf": "evpn-vrf", "lldp":
+    "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area":
+    "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "server202", "ifname": "irb.30", "vrf": "evpn-vrf", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area":
+    "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "server101", "ifname": "xe-0/0/2", "vrf": "evpn-vrf", "lldp":
+    "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area":
+    "", "ospf": "", "polled": true}]'
 - command: topology show --hostname=leaf01 --polled=False --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology show junos
@@ -624,13 +591,17 @@ tests:
 - command: topology summarize --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology summarize junos
-  output: '[{"junos": ["10.255.5.1"]}, {"junos": "..."}, {"junos": true}, {"junos":
-    1}, {"junos": 43}, {"junos": 15}, {"junos": []}, {"junos": ["spine01", "spine02",
-    "exit02", "exit01"]}, {"junos": [0, 0, 4, 0, 4]}, {"junos": true}, {"junos": 1},
-    {"junos": 12}, {"junos": 8}, {"junos": []}, {"junos": ["spine01", "spine02"]},
-    {"junos": [0, 0, 3, 2, 2]}, {"junos": true}, {"junos": 1}, {"junos": 10}, {"junos":
-    7}, {"junos": []}, {"junos": ["spine01", "spine02"]}, {"junos": [0, 0, 4, 0, 2]},
-    {"junos": true}, {"junos": 1}, {"junos": 8}, {"junos": 6}, {"junos": []}]'
+  output: '{"junos": {"arpnd_center": ["firewall01"], "arpnd_degree_histogram": "...",
+    "arpnd_is_fully_connected": true, "arpnd_number_of_disjoint_sets": 1, "arpnd_number_of_edges":
+    23, "arpnd_number_of_nodes": 12, "arpnd_self_loops": [], "bgp_center": ["spine01",
+    "exit01", "exit02", "spine02"], "bgp_degree_histogram": [0, 0, 4, 0, 4], "bgp_is_fully_connected":
+    true, "bgp_number_of_disjoint_sets": 1, "bgp_number_of_edges": 12, "bgp_number_of_nodes":
+    8, "bgp_self_loops": [], "lldp_center": ["spine01", "spine02"], "lldp_degree_histogram":
+    [0, 0, 3, 2, 2], "lldp_is_fully_connected": true, "lldp_number_of_disjoint_sets":
+    1, "lldp_number_of_edges": 10, "lldp_number_of_nodes": 7, "lldp_self_loops": [],
+    "ospf_center": ["spine01", "spine02"], "ospf_degree_histogram": [0, 0, 4, 0, 2],
+    "ospf_is_fully_connected": true, "ospf_number_of_disjoint_sets": 1, "ospf_number_of_edges":
+    8, "ospf_number_of_nodes": 6, "ospf_self_loops": []}}'
 - command: topology unique --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology unique junos
@@ -641,9 +612,417 @@ tests:
 - command: topology unique --count=True --format=json --namespace=junos
   data-directory: tests/data/parquet/
   marks: topology unique junos
-  output: '[{"hostname": "server101", "numRows": 2}, {"hostname": "server201", "numRows":
-    2}, {"hostname": "server102", "numRows": 4}, {"hostname": "server202", "numRows":
-    4}, {"hostname": "dcedge01", "numRows": 6}, {"hostname": "leaf01", "numRows":
-    9}, {"hostname": "leaf02", "numRows": 9}, {"hostname": "spine01", "numRows": 10},
-    {"hostname": "spine02", "numRows": 10}, {"hostname": "exit01", "numRows": 11},
-    {"hostname": "exit02", "numRows": 11}, {"hostname": "firewall01", "numRows": 12}]'
+  output: '[{"hostname": "server101", "numRows": 1}, {"hostname": "server201", "numRows":
+    1}, {"hostname": "server102", "numRows": 3}, {"hostname": "server202", "numRows":
+    3}, {"hostname": "dcedge01", "numRows": 4}, {"hostname": "leaf01", "numRows":
+    7}, {"hostname": "leaf02", "numRows": 7}, {"hostname": "spine01", "numRows": 8},
+    {"hostname": "spine02", "numRows": 8}, {"hostname": "exit01", "numRows": 9}, {"hostname":
+    "exit02", "numRows": 9}, {"hostname": "firewall01", "numRows": 10}]'
+- command: topology show --vrf=default --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology show junos
+  output: '[{"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf01",
+    "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd":
+    "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled":
+    true}, {"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd":
+    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf":
+    true, "polled": true}, {"namespace": "junos", "hostname": "spine01", "peerHostname":
+    "exit01", "ifname": "xe-0/0/2", "vrf": "default", "lldp": true, "arpndBidir":
+    "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "",
+    "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "spine01", "peerHostname":
+    "exit01", "ifname": "xe-0/0/2.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine01",
+    "peerHostname": "leaf02", "ifname": "xe-0/0/1", "vrf": "default", "lldp": true,
+    "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "spine01",
+    "peerHostname": "leaf02", "ifname": "xe-0/0/1.0", "vrf": "default", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
+    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine01", "peerHostname": "exit02", "ifname": "xe-0/0/3", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "spine01", "peerHostname": "exit02", "ifname": "xe-0/0/3.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "spine01", "ifname": "xe-0/0/0",
+    "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "spine01", "ifname": "xe-0/0/0.0",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "junos", "hostname": "exit01", "peerHostname": "dcedge01", "ifname":
+    "xe-0/0/3", "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn":
+    "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "spine02", "ifname": "xe-0/0/1",
+    "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "spine02", "ifname": "xe-0/0/1.0",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf01", "ifname":
+    "xe-0/0/0", "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn":
+    64520.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled": true},
+    {"namespace": "junos", "hostname": "spine02", "peerHostname": "leaf01", "ifname":
+    "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true,
+    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true,
+    "polled": true}, {"namespace": "junos", "hostname": "spine02", "peerHostname":
+    "leaf02", "ifname": "xe-0/0/1", "vrf": "default", "lldp": true, "arpndBidir":
+    "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "",
+    "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "spine02", "peerHostname":
+    "leaf02", "ifname": "xe-0/0/1.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine02",
+    "peerHostname": "exit02", "ifname": "xe-0/0/3", "vrf": "default", "lldp": true,
+    "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "spine02",
+    "peerHostname": "exit02", "ifname": "xe-0/0/3.0", "vrf": "default", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
+    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "peerHostname": "exit01", "ifname": "xe-0/0/2", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "peerHostname": "exit01", "ifname": "xe-0/0/2.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "leaf01", "peerHostname": "spine02", "ifname": "xe-0/0/1",
+    "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace":
+    "junos", "hostname": "leaf01", "peerHostname": "spine02", "ifname": "xe-0/0/1.0",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine01", "ifname":
+    "xe-0/0/0", "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn":
+    64520.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "", "polled": true},
+    {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine01", "ifname":
+    "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true,
+    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true,
+    "polled": true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0", "vrf": "default", "lldp": true, "arpndBidir":
+    "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "",
+    "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "leaf02", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "leaf02",
+    "peerHostname": "spine02", "ifname": "xe-0/0/1", "vrf": "default", "lldp": true,
+    "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "leaf02",
+    "peerHostname": "spine02", "ifname": "xe-0/0/1.0", "vrf": "default", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
+    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "peerHostname": "exit01", "ifname": "xe-0/0/0", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 65534.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "peerHostname": "exit01", "ifname": "xe-0/0/0.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 65534.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "peerHostname": "exit02", "ifname": "xe-0/0/1", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 65534.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "peerHostname": "exit02", "ifname": "xe-0/0/1.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 65534.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "spine02", "ifname": "xe-0/0/1", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "spine02", "ifname": "xe-0/0/1.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "exit02", "peerHostname": "dcedge01", "ifname": "xe-0/0/3",
+    "vrf": "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": "", "peerAsn":
+    "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "spine01", "ifname": "xe-0/0/0", "vrf":
+    "default", "lldp": true, "arpndBidir": "", "arpnd": "", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "exit02", "peerHostname": "spine01", "ifname": "xe-0/0/0.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "server102", "peerHostname": "server202", "ifname": "eth1",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn":
+    "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "server102", "peerHostname": "leaf02", "ifname": "eth1", "vrf": "default",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "server102", "peerHostname": "leaf01", "ifname": "eth1", "vrf": "default", "lldp":
+    "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area":
+    "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname": "server201",
+    "peerHostname": "leaf02", "ifname": "eth1", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "exit02", "ifname": "eth2.3", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "exit02", "ifname": "eth2.4", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "exit02", "ifname": "eth2.2", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "server101", "peerHostname":
+    "leaf01", "ifname": "eth1", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "exit01",
+    "ifname": "eth1.3", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd":
+    true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf": "",
+    "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "exit01", "ifname": "eth1.2", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "exit01", "ifname": "eth1.4", "vrf": "default", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 65533.0, "peerAsn": 64520.0, "bgp": true, "area": "", "ospf":
+    "", "polled": true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname":
+    "server102", "ifname": "eth0", "vrf": "default", "lldp": "", "arpndBidir": false,
+    "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled":
+    true}, {"namespace": "junos", "hostname": "firewall01", "peerHostname": "server101",
+    "ifname": "eth0", "vrf": "default", "lldp": "", "arpndBidir": false, "arpnd":
+    true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true},
+    {"namespace": "junos", "hostname": "firewall01", "peerHostname": "server201",
+    "ifname": "eth0", "vrf": "default", "lldp": "", "arpndBidir": false, "arpnd":
+    true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true},
+    {"namespace": "junos", "hostname": "firewall01", "peerHostname": "server202",
+    "ifname": "eth0", "vrf": "default", "lldp": "", "arpndBidir": false, "arpnd":
+    true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true},
+    {"namespace": "junos", "hostname": "server202", "peerHostname": "server102", "ifname":
+    "eth1", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn":
+    "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace":
+    "junos", "hostname": "server202", "peerHostname": "leaf02", "ifname": "eth1",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn":
+    "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos",
+    "hostname": "server202", "peerHostname": "leaf01", "ifname": "eth1", "vrf": "default",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "exit01", "peerHostname": "firewall01", "ifname": "xe-0/0/2.2", "vrf": "default",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0,
+    "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "junos", "hostname":
+    "exit02", "peerHostname": "firewall01", "ifname": "xe-0/0/2.2", "vrf": "default",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0,
+    "bgp": true, "area": "", "ospf": "", "polled": true}]'
+- command: topology show --vrf=internet-vrf --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology show junos
+  output: '[{"namespace": "junos", "hostname": "exit01", "peerHostname": "dcedge01",
+    "ifname": "xe-0/0/3.0", "vrf": "internet-vrf", "lldp": "", "arpndBidir": true,
+    "arpnd": true, "asn": 64520.0, "peerAsn": 65534.0, "bgp": true, "ospf": false,
+    "polled": true}, {"namespace": "junos", "hostname": "exit01", "peerHostname":
+    "firewall01", "ifname": "xe-0/0/2.4", "vrf": "internet-vrf", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0, "bgp": true, "ospf":
+    false, "polled": true}, {"namespace": "junos", "hostname": "exit02", "peerHostname":
+    "firewall01", "ifname": "xe-0/0/2.4", "vrf": "internet-vrf", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0, "bgp": true, "ospf":
+    false, "polled": true}, {"namespace": "junos", "hostname": "exit02", "peerHostname":
+    "dcedge01", "ifname": "xe-0/0/3.0", "vrf": "internet-vrf", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 65534.0, "bgp": true, "ospf":
+    false, "polled": true}]'
+- command: topology show --vrf='internet-vrf evpn-vrf' --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology show junos
+  output: '[{"namespace": "junos", "hostname": "leaf02", "peerHostname": "server202",
+    "ifname": "xe-0/0/3", "vrf": "evpn-vrf", "lldp": "", "arpndBidir": true, "arpnd":
+    true, "asn": "", "peerAsn": "", "bgp": "", "ospf": false, "polled": true}, {"namespace":
+    "junos", "hostname": "leaf02", "peerHostname": "server102", "ifname": "irb.30",
+    "vrf": "evpn-vrf", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn":
+    "", "bgp": "", "ospf": false, "polled": true}, {"namespace": "junos", "hostname":
+    "leaf02", "peerHostname": "server201", "ifname": "xe-0/0/2", "vrf": "evpn-vrf",
+    "lldp": "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp":
+    "", "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "exit01",
+    "peerHostname": "dcedge01", "ifname": "xe-0/0/3.0", "vrf": "internet-vrf", "lldp":
+    "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65534.0, "bgp":
+    true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "exit01",
+    "peerHostname": "firewall01", "ifname": "xe-0/0/2.3", "vrf": "evpn-vrf", "lldp":
+    "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0, "bgp":
+    true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "exit01",
+    "peerHostname": "firewall01", "ifname": "xe-0/0/2.4", "vrf": "internet-vrf", "lldp":
+    "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 65533.0, "bgp":
+    true, "ospf": false, "polled": true}, {"namespace": "junos", "hostname": "leaf01",
+    "peerHostname": "server102", "ifname": "xe-0/0/3", "vrf": "evpn-vrf", "lldp":
+    "", "arpndBidir": true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "ospf":
+    false, "polled": true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname":
+    "server202", "ifname": "irb.30", "vrf": "evpn-vrf", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": "", "peerAsn": "", "bgp": "", "ospf": false, "polled":
+    true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname": "server101",
+    "ifname": "xe-0/0/2", "vrf": "evpn-vrf", "lldp": "", "arpndBidir": true, "arpnd":
+    true, "asn": "", "peerAsn": "", "bgp": "", "ospf": false, "polled": true}, {"namespace":
+    "junos", "hostname": "exit02", "peerHostname": "firewall01", "ifname": "xe-0/0/2.3",
+    "vrf": "evpn-vrf", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 65533.0, "bgp": true, "ospf": false, "polled": true}, {"namespace":
+    "junos", "hostname": "exit02", "peerHostname": "firewall01", "ifname": "xe-0/0/2.4",
+    "vrf": "internet-vrf", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 65533.0, "bgp": true, "ospf": false, "polled": true}, {"namespace":
+    "junos", "hostname": "exit02", "peerHostname": "dcedge01", "ifname": "xe-0/0/3.0",
+    "vrf": "internet-vrf", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 65534.0, "bgp": true, "ospf": false, "polled": true}]'
+- command: topology summarize --vrf='internet-vrf evpn-vrf' --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology summaarize junos
+  output: '{"junos": {"arpnd_center": false, "arpnd_degree_histogram": [0, 2, 6, 2],
+    "arpnd_is_fully_connected": false, "arpnd_number_of_disjoint_sets": 2, "arpnd_number_of_edges":
+    10, "arpnd_number_of_nodes": 10, "arpnd_self_loops": [], "bgp_center": ["exit01",
+    "dcedge01", "firewall01", "exit02"], "bgp_degree_histogram": [0, 0, 4], "bgp_is_fully_connected":
+    true, "bgp_number_of_disjoint_sets": 1, "bgp_number_of_edges": 4, "bgp_number_of_nodes":
+    4, "bgp_self_loops": [], "lldp_center": null, "lldp_degree_histogram": null, "lldp_is_fully_connected":
+    null, "lldp_number_of_disjoint_sets": null, "lldp_number_of_edges": null, "lldp_number_of_nodes":
+    null, "lldp_self_loops": null, "ospf_center": null, "ospf_degree_histogram": null,
+    "ospf_is_fully_connected": null, "ospf_number_of_disjoint_sets": null, "ospf_number_of_edges":
+    null, "ospf_number_of_nodes": null, "ospf_self_loops": null}}'
+- command: topology summarize --vrf='default' --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology summarize junos
+  output: '{"junos": {"arpnd_center": ["firewall01"], "arpnd_degree_histogram": "...",
+    "arpnd_is_fully_connected": true, "arpnd_number_of_disjoint_sets": 1, "arpnd_number_of_edges":
+    23, "arpnd_number_of_nodes": 12, "arpnd_self_loops": [], "bgp_center": ["spine01",
+    "exit01", "exit02", "spine02"], "bgp_degree_histogram": [0, 0, 4, 0, 4], "bgp_is_fully_connected":
+    true, "bgp_number_of_disjoint_sets": 1, "bgp_number_of_edges": 12, "bgp_number_of_nodes":
+    8, "bgp_self_loops": [], "lldp_center": ["spine01", "spine02"], "lldp_degree_histogram":
+    [0, 0, 3, 2, 2], "lldp_is_fully_connected": true, "lldp_number_of_disjoint_sets":
+    1, "lldp_number_of_edges": 10, "lldp_number_of_nodes": 7, "lldp_self_loops": [],
+    "ospf_center": ["spine01", "spine02"], "ospf_degree_histogram": [0, 0, 4, 0, 2],
+    "ospf_is_fully_connected": true, "ospf_number_of_disjoint_sets": 1, "ospf_number_of_edges":
+    8, "ospf_number_of_nodes": 6, "ospf_self_loops": []}}'
+- command: topology unique --vrf='default' --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology unique junos
+  output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
+    {"hostname": "firewall01"}, {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname":
+    "server101"}, {"hostname": "server102"}, {"hostname": "server201"}, {"hostname":
+    "server202"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
+- command: topology unique --vrf='default' --format=json --namespace=junos --columns=asn
+  data-directory: tests/data/parquet/
+  marks: topology unique junos
+  output: '[{"asn": 64520}, {"asn": 65533}, {"asn": 65534}]'
+- command: topology unique --vrf='default' --format=json --namespace=junos --columns=area
+  data-directory: tests/data/parquet/
+  marks: topology unique junos
+  output: '[{"area": ""}, {"area": "0.0.0.0"}]'
+- command: topology unique --vrf='evpn-vrf' --format=json --namespace=junos --columns=asn
+  data-directory: tests/data/parquet/
+  marks: topology unique junos
+  output: '[{"asn": 64520}]'
+- command: topology unique --vrf='evpn-vrf' --format=json --namespace=junos --columns=area
+  data-directory: tests/data/parquet/
+  marks: topology unique junos
+  output: '[]'
+- command: topology show --asn=64520 --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology show junos
+  output: '[]'
+- command: topology summarize --asn=64520 --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology summarize junos
+  output: '{"namespace": {}, "hostname": {}, "peerHostname": {}, "vrf": {}, "asn":
+    {}, "peerAsn": {}, "bgp": {}, "polled": {}}'
+- command: topology unique --asn=64520 --format=json --namespace=junos --columns=hostname
+  data-directory: tests/data/parquet/
+  marks: topology unique junos
+  output: '[]'
+- command: topology summarize --vrf=default --asn=64520 --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology summarize junos
+  output: '{"namespace": {}, "hostname": {}, "peerHostname": {}, "vrf": {}, "asn":
+    {}, "peerAsn": {}, "bgp": {}, "polled": {}}'
+- command: topology summarize --vrf=default --via=lldp --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology summarize junos
+  output: '{"junos": {"lldp_center": ["spine01", "spine02"], "lldp_degree_histogram":
+    [0, 0, 3, 2, 2], "lldp_is_fully_connected": true, "lldp_number_of_disjoint_sets":
+    1, "lldp_number_of_edges": 10, "lldp_number_of_nodes": 7, "lldp_self_loops": []}}'
+- command: topology unique --vrf=default --via=lldp --format=json --columns=asn --namespace=junos
+  data-directory: tests/data/parquet/
+  error:
+    error: '[{"error": "ERROR: Cannot provide any via except bgp with asn"}]'
+  marks: topology unique junos
+- command: topology unique --vrf=evpn-vrf --via=bgp --format=json --columns=asn --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology unique junos
+  output: '[{"asn": 64520}]'
+- command: topology unique --vrf=default --via=bgp --format=json --columns=asn --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology unique junos
+  output: '[{"asn": 64520}, {"asn": 65533}, {"asn": 65534}]'
+- command: topology unique --vrf=evpn-vrf --via=ospf --format=json --columns=area
+    --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology summarize junos
+  output: '[]'
+- command: topology summarize --vrf=internet-vrf --asn=64520 --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology summarize junos
+  output: '{"namespace": {}, "hostname": {}, "peerHostname": {}, "vrf": {}, "asn":
+    {}, "peerAsn": {}, "bgp": {}, "polled": {}}'
+- command: topology show --area=0.0.0.0 --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology show junos
+  output: '[{"namespace": "junos", "hostname": "spine01", "peerHostname": "leaf01",
+    "ifname": "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd":
+    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf":
+    true, "polled": true}, {"namespace": "junos", "hostname": "spine01", "peerHostname":
+    "exit01", "ifname": "xe-0/0/2.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine01",
+    "peerHostname": "leaf02", "ifname": "xe-0/0/1.0", "vrf": "default", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
+    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine01", "peerHostname": "exit02", "ifname": "xe-0/0/3.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "exit01", "peerHostname": "spine01", "ifname": "xe-0/0/0.0",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "junos", "hostname": "exit01", "peerHostname": "spine02", "ifname":
+    "xe-0/0/1.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true,
+    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true,
+    "polled": true}, {"namespace": "junos", "hostname": "spine02", "peerHostname":
+    "leaf01", "ifname": "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "spine02",
+    "peerHostname": "leaf02", "ifname": "xe-0/0/1.0", "vrf": "default", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
+    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos",
+    "hostname": "spine02", "peerHostname": "exit02", "ifname": "xe-0/0/3.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "spine02", "peerHostname": "exit01", "ifname": "xe-0/0/2.0",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "junos", "hostname": "leaf01", "peerHostname": "spine02", "ifname":
+    "xe-0/0/1.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true,
+    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true,
+    "polled": true}, {"namespace": "junos", "hostname": "leaf01", "peerHostname":
+    "spine01", "ifname": "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir":
+    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
+    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos", "hostname": "leaf02",
+    "peerHostname": "spine01", "ifname": "xe-0/0/0.0", "vrf": "default", "lldp": "",
+    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
+    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "junos",
+    "hostname": "leaf02", "peerHostname": "spine02", "ifname": "xe-0/0/1.0", "vrf":
+    "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
+    "junos", "hostname": "exit02", "peerHostname": "spine02", "ifname": "xe-0/0/1.0",
+    "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true, "asn": 64520.0,
+    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "junos", "hostname": "exit02", "peerHostname": "spine01", "ifname":
+    "xe-0/0/0.0", "vrf": "default", "lldp": "", "arpndBidir": true, "arpnd": true,
+    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true,
+    "polled": true}]'
+- command: topology summarize --area=0.0.0.0 --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology show junos
+  output: '{"junos": {"arpnd_center": ["spine01", "spine02"], "arpnd_degree_histogram":
+    [0, 0, 4, 0, 2], "arpnd_is_fully_connected": true, "arpnd_number_of_disjoint_sets":
+    1, "arpnd_number_of_edges": 8, "arpnd_number_of_nodes": 6, "arpnd_self_loops":
+    [], "bgp_center": ["spine01", "spine02"], "bgp_degree_histogram": [0, 0, 4, 0,
+    2], "bgp_is_fully_connected": true, "bgp_number_of_disjoint_sets": 1, "bgp_number_of_edges":
+    8, "bgp_number_of_nodes": 6, "bgp_self_loops": [], "lldp_center": null, "lldp_degree_histogram":
+    null, "lldp_is_fully_connected": null, "lldp_number_of_disjoint_sets": null, "lldp_number_of_edges":
+    null, "lldp_number_of_nodes": null, "lldp_self_loops": null, "ospf_center": ["spine01",
+    "spine02"], "ospf_degree_histogram": [0, 0, 4, 0, 2], "ospf_is_fully_connected":
+    true, "ospf_number_of_disjoint_sets": 1, "ospf_number_of_edges": 8, "ospf_number_of_nodes":
+    6, "ospf_self_loops": []}}'
+- command: topology show --via=ospf --area=0.0.0.1 --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology show junos
+  output: '[]'
+- command: topology unique --via=ospf --area=0.0.0.0 --format=json --namespace=junos
+  data-directory: tests/data/parquet/
+  marks: topology show junos
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'

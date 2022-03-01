@@ -10,10 +10,10 @@ class TopologyObj(SqObject):
         self._sort_fields = ["namespace", "hostname", "ifname"]
         self._cat_fields = []
         self._valid_get_args = ['namespace', 'hostname', 'columns',
-                                'polled', 'ifname', 'via', 'peerHostname',
-                                'query_str']
-        self._valid_summarize_args = ['namespace', 'hostname', 'via',
-                                      'query_str']
+                                'polled', 'ifname', 'via', 'vrf', 'asn',
+                                'area', 'peerHostname', 'query_str']
+        self._valid_summarize_args = ['namespace', 'hostname', 'via', 'vrf',
+                                      'asn', 'area', 'query_str']
         self._valid_arg_vals = {
             'polled': ['True', 'False', 'true', 'false', '']
         }
