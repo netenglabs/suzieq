@@ -3,12 +3,36 @@ devices credentials
 """
 import logging
 from abc import abstractmethod
-from typing import Dict, List, Type
+from typing import Dict, List
 
-from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
+from suzieq.poller.controller.base_controller_plugin import \
+    InventoryPluginModel, ControllerPlugin
 from suzieq.shared.exceptions import InventorySourceError
 
 logger = logging.getLogger(__name__)
+
+
+def check_credentials(inventory: Dict):
+    """Checks if all the credentials are set
+    """
+
+    # check if all devices has credentials
+    no_cred_nodes = [
+        f"{d.get('namespace')}.{d.get('address')}"
+        for d in inventory.values()
+        if not d.get('username', None) or
+        not (d.get('password') or d.get('ssh_keyfile'))
+    ]
+    if no_cred_nodes:
+        raise InventorySourceError(
+            'No credentials to log into the following nodes: '
+            f'{no_cred_nodes}'
+        )
+
+
+class CredentialLoaderModel(InventoryPluginModel):
+    """Model for credential loader validation
+    """
 
 
 class CredentialLoader(ControllerPlugin):
@@ -16,33 +40,50 @@ class CredentialLoader(ControllerPlugin):
     sources
     """
 
-    def __init__(self, init_data: Dict) -> None:
-        super().__init__()
+    def __init__(self, init_data: Dict, validate: bool = True) -> None:
+        super().__init__(init_data, validate)
 
         self._cred_format = [
             'username',
             'password',
             'ssh_keyfile',
-            'passphrase'
+            'passphrase',
+            'enable_password'
         ]
 
-        # load auth parameters
-
-        self._name = init_data.get('name')
-
-        self._valid_fields = ['name', 'type']
-
-        self._validate_config(init_data)
-
+        self._data: CredentialLoaderModel = None
         self.init(init_data)
 
-    @abstractmethod
-    def init(self, init_data: Type):
+    @property
+    def name(self) -> str:
+        """Name of the source set in the inventory file
+
+        Returns:
+            str: name of the source
+        """
+        return self._data.name
+
+    @classmethod
+    def default_type(cls) -> str:
+        return 'static'
+
+    @classmethod
+    def get_data_model(cls):
+        return CredentialLoaderModel
+
+    def init(self, init_data: Dict):
         """Initialize the object
 
         Args:
-            init_data (Type): data used to initialize the object
+            init_data (Dict): data used to initialize the object
         """
+        if self._validate:
+            self._data = self.get_data_model()(**init_data)
+        else:
+            self._data = self.get_data_model().construct(**init_data)
+        if not self._data:
+            raise InventorySourceError(
+                'input_data was not loaded correctly')
 
     @abstractmethod
     def load(self, inventory: Dict[str, Dict]):
@@ -51,19 +92,6 @@ class CredentialLoader(ControllerPlugin):
         Args:
             inventory (Dict[str, Dict]): inventory to update
         """
-
-    def _validate_config(self, config: Dict):
-        """Validate configuration
-
-        Reads the valid fields from
-
-        Args:
-            config (Dict): configuration dictionary
-        """
-        inv_fields = [x for x in config if x not in self._valid_fields]
-        if inv_fields:
-            raise InventorySourceError(
-                f'{self._name}: unknown fields {inv_fields}')
 
     def write_credentials(self, device: Dict, credentials: Dict[str, Dict]):
         """write and validate input credentials for a device

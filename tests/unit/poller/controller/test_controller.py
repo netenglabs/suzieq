@@ -242,7 +242,7 @@ def mock_plugins():
     async def mock_mng_run(self):
         pass
 
-    def mock_src_init(self, inv):
+    def mock_src_init(self, inv, validate=False):
         """This function mocks sources __init__
 
         It contains the call to set_device. By default it
@@ -694,8 +694,8 @@ async def test_controller_empty_inventory(inv_file: str, mock_plugins,
 
     c = generate_controller(args=default_args, inv_file=inv_file)
 
-    with patch.multiple(SqNativeFile, set_device=mock_set_device):
-        with patch.multiple(Netbox, set_device=mock_set_device):
+    with patch.multiple(SqNativeFile, set_device=mock_set_device, name='n'):
+        with patch.multiple(Netbox, set_device=mock_set_device, name='n'):
             c.init()
             with pytest.raises(InventorySourceError,
                                match='No devices to poll'):
@@ -727,6 +727,6 @@ async def test_controller_run_timeout_error(inv_file: str, config_file: str,
 
     c = generate_controller(default_args, inv_file, config_file)
     c.init()
-    with patch.multiple(Netbox, run=mock_netbox_run):
+    with patch.multiple(Netbox, run=mock_netbox_run, name='n'):
         with pytest.raises(InventorySourceError):
             await c.run()

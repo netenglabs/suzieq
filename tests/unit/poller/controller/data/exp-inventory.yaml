@@ -1,0 +1,61 @@
+auths:
+  auth0:
+    keyfile: null
+    name: auth0
+    password: strong-passoword
+    ssh-passphrase: null
+    type: null
+    username: null
+devices:
+  dev0:
+    devtype: null
+    ignore-known-hosts: false
+    jump-host: null
+    jump-host-key-file: null
+    name: dev0
+    port: null
+    transport: ssh
+namespaces:
+  native-ns:
+    auth: auth0
+    device: dev0
+    name: native-ns
+    source: native0
+  netbox-ns:
+    auth: auth0
+    device: null
+    name: netbox-ns
+    source: netbox0
+sources:
+  native0:
+    hosts:
+    - address: 192.168.123.164
+      devtype: eos
+      keyfile: null
+      password: null
+      port: 443
+      transport: https
+      url: https://vagrant@192.168.123.164 devtype=eos
+      username: vagrant
+    - address: 192.168.123.70
+      devtype: null
+      keyfile: null
+      password: null
+      port: 22
+      transport: ssh
+      url: ssh://192.168.123.70 username=admin
+      username: admin
+    name: native0
+    type: null
+  netbox0:
+    name: netbox0
+    period: 3600
+    run_once: false
+    ssl-verify: false
+    tag: suzieq
+    token: MY-TOKEN
+    type: netbox
+    url:
+      host: localhost
+      port: '8000'
+      protocol: http

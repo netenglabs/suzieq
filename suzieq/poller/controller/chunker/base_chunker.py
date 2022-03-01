@@ -11,6 +11,7 @@ from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 class Chunker(ControllerPlugin):
     """Abstract class for a Chunker
     """
+
     @abstractmethod
     def chunk(self, glob_inv, n_chunks, **addl_params):
         """Split the global inventory in <n_chunks> chunks
@@ -21,3 +22,14 @@ class Chunker(ControllerPlugin):
             addl_parameters ([type]): custom parameters that each Chunker
                                       plugin can define
         """
+
+    @classmethod
+    def default_type(cls) -> str:
+        return 'static'
+
+    @classmethod
+    def get_data_model(cls):
+        """This is only temporary. In future release I will add chunker
+        validation via pydantic
+        """
+        raise NotImplementedError

@@ -84,6 +84,7 @@ def get_src_sample_config(src_type: str) -> Dict:
             'tag': 'suzieq',
             'run_once': True,
             'auth': StaticLoader({
+                'name': 'static0',
                 'username': 'username',
                 'password': 'plain:password'
             }),

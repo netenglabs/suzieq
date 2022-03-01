@@ -1,8 +1,9 @@
 from typing import Dict
+from pydantic import ValidationError
 
 import pytest
-from suzieq.poller.controller.credential_loader.static import StaticLoader
-from suzieq.shared.exceptions import InventorySourceError
+from suzieq.poller.controller.credential_loader.static import (StaticLoader,
+                                                               StaticModel)
 from tests.unit.poller.shared.utils import read_yaml_file
 
 _DATA_PATH = [
@@ -34,19 +35,22 @@ def test_load(data_path: Dict):
     """
     # the username will be overrided by the content of the inventory
     init_data = {
+        'name': 'n',
         'username': 'user-to-override',
         'ssh-passphrase': 'plain:my-pass',
         'password': 'plain:password',
         'keyfile': 'my/keyfile'
     }
 
-    sl = StaticLoader(init_data)
+    valid_data = StaticModel(**init_data).dict(by_alias=True)
+
+    sl = StaticLoader(valid_data)
 
     # pylint: disable=protected-access
-    assert sl._username == init_data['username']
-    assert sl._passphrase == init_data['ssh-passphrase'].split(':')[1]
-    assert sl._password == init_data['password'].split(':')[1]
-    assert sl._keyfile == init_data['keyfile']
+    assert sl._data.username == init_data['username']
+    assert sl._data.ssh_passphrase == init_data['ssh-passphrase'].split(':')[1]
+    assert sl._data.password == init_data['password'].split(':')[1]
+    assert sl._data.keyfile == init_data['keyfile']
 
     inv = read_yaml_file(data_path['inventory'])
     sl.load(inv)
@@ -63,12 +67,9 @@ def test_load(data_path: Dict):
 def test_no_env_var():
     """Testing a password retrieved from an unexisting env var
     """
-    init_data = {
-        'password': 'env:WRONG_ENV',
-    }
 
-    with pytest.raises(InventorySourceError):
-        StaticLoader(init_data)
+    with pytest.raises(ValidationError):
+        StaticModel(**{'name': 'n', 'password': 'env:WRONG_ENV'})
 
 
 @pytest.mark.poller
@@ -87,35 +88,32 @@ def test_variables_init(monkeypatch):
 
     # 'env' and 'plain' values
     init_data = {
+        'name': 'n',
         'ssh-passphrase': f'plain:{plain_passphrase}',
         'password': 'env:SUZIEQ_ENV_PASSWORD'
     }
     monkeypatch.setenv('SUZIEQ_ENV_PASSWORD', env_password)
-    sl = StaticLoader(init_data)
+    sl = StaticModel(**init_data)
 
-    assert sl._passphrase == plain_passphrase
-    assert sl._password == env_password
+    assert sl.ssh_passphrase == plain_passphrase
+    assert sl.password == env_password
 
     # 'ask' values
     init_data = {
+        'name': 'n',
         'password': 'ask'
     }
+    valid_data = StaticModel(**init_data).dict(by_alias=True)
     monkeypatch.setattr('getpass.getpass', lambda x: ask_password)
-    sl = StaticLoader(init_data)
+    sl = StaticLoader(valid_data)
 
-    assert sl._password == ask_password
-
-    # unsupported method
-    init_data = {
-        'password': 'uns-method'
-    }
-    with pytest.raises(InventorySourceError):
-        StaticLoader(init_data)
+    assert sl._data.password == ask_password
 
     # unknown parameter
     init_data = {
+        'name': 'n',
         'username': 'user',
         'unknown': 'parameter'
     }
-    with pytest.raises(InventorySourceError):
-        StaticLoader(init_data)
+    with pytest.raises(ValidationError):
+        StaticModel(**init_data)

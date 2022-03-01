@@ -22,7 +22,8 @@ class StaticChunker(Chunker):
     - namespace: splits the global inventory without splitting namespaces
     """
 
-    def __init__(self, config_data: dict = None):
+    def __init__(self, config_data: dict = None, validate: bool = True):
+        super().__init__(config_data, validate)
 
         self.policies_list = ['sequential', 'namespace']
         self.policies_fn = {}
@@ -40,6 +41,13 @@ class StaticChunker(Chunker):
             self.policy = policy
         else:
             self.policy = self.policies_list[0]
+
+    @classmethod
+    def get_data_model(cls):
+        """This is only temporary. In future release I will add chunker
+        validation via pydantic
+        """
+        raise NotImplementedError
 
     def chunk(self, glob_inv: dict, n_chunks: int, **kwargs) -> List[Dict]:
 

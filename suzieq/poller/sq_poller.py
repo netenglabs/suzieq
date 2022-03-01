@@ -16,6 +16,7 @@ from suzieq.shared.exceptions import InventorySourceError, PollingError, \
     SqPollerConfError
 from suzieq.shared.utils import (poller_log_params, init_logger,
                                  load_sq_config, print_version)
+from suzieq.poller.controller.utils.inventory_utils import read_inventory
 
 
 async def start_controller(user_args: argparse.Namespace, config_data: Dict):
@@ -35,11 +36,21 @@ async def start_controller(user_args: argparse.Namespace, config_data: Dict):
                          loglevel, logsize, log_stdout)
 
     try:
+        if user_args.syntax_check:
+            if not user_args.inventory:
+                raise SqPollerConfError(
+                    'With the --syntax-check option the user must specify '
+                    'the inventory file via the -I option')
+            # perform inventory validation and return
+            read_inventory(user_args.inventory)
+            print('Inventory syntax check passed')
+            return
         controller = Controller(user_args, config_data)
         controller.init()
         await controller.run()
     except (SqPollerConfError, InventorySourceError, PollingError) as error:
-        print(f"ERROR: {error}")
+        if not log_stdout:
+            print(f"ERROR: {error}")
         logger.error(error)
         sys.exit(-1)
 
@@ -163,6 +174,12 @@ def controller_main():
         '--version',
         action='store_true',
         help='Print suzieq version'
+    )
+
+    parser.add_argument(
+        '--syntax-check',
+        action='store_true',
+        help='Check inventory file syntax and return'
     )
 
     args = parser.parse_args()

@@ -126,6 +126,7 @@ class Node:
         self.port = kwargs.get("port", 0)
         self.devtype = None
         self.ssh_config_file = kwargs.get("ssh_config_file", None)
+        self.enable_password = kwargs.get('enable_password')
 
         passphrase = kwargs.get("passphrase", None)
         jump_host = kwargs.get("jump_host", "")

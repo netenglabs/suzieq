@@ -6,20 +6,94 @@ and retrieve the devices inventory
 Classes:
     Netbox: this class dinamically retrieve the inventory from Netbox
 """
+# pylint: disable=no-name-in-module
+# pylint: disable=no-self-argument
+
 import asyncio
 import logging
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
+
+from pydantic import BaseModel, validator, Field
 
 import aiohttp
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
-from suzieq.poller.controller.source.base_source import Source
+from suzieq.poller.controller.source.base_source import Source, SourceModel
+from suzieq.poller.controller.utils.inventory_utils import get_sensitive_data
 from suzieq.shared.exceptions import InventorySourceError
 
 _DEFAULT_PORTS = {'http': 80, 'https': 443}
 
 logger = logging.getLogger(__name__)
+
+
+class NetboxServerModel(BaseModel):
+    """Model containing data to connect with Netbox server
+    """
+    host: str
+    protocol: str
+    port: str
+
+    class Config:
+        """pydantic configuration
+        """
+        extra = 'forbid'
+
+
+class NetboxSourceModel(SourceModel):
+    """Netbox source validation model
+    """
+    tag: Optional[str] = Field(default='suzieq')
+    period: Optional[int] = Field(default=3600)
+    token: str
+    ssl_verify: Optional[bool] = Field(alias='ssl-verify')
+    server: Union[str, NetboxServerModel] = Field(alias='url')
+    run_once: Optional[bool] = Field(default=False, alias='run_once')
+
+    @validator('server', pre=True)
+    def validate_and_set(cls, url, values):
+        """Validate the field 'url' and set the correct parameters
+        """
+        if isinstance(url, str):
+            url_data = urlparse(url)
+            host = url_data.hostname
+            if not host:
+                raise ValueError(f'Unable to parse hostname {url}')
+            protocol = url_data.scheme or 'http'
+            if protocol not in _DEFAULT_PORTS:
+                raise ValueError(f'Unknown protocol {protocol}')
+            port = url_data.port or _DEFAULT_PORTS.get(protocol)
+            if not port:
+                raise ValueError(f'Unable to parse port {url}')
+            server = NetboxServerModel(host=host, port=port, protocol=protocol)
+            ssl_verify = values['ssl_verify']
+            if ssl_verify is None:
+                if server.protocol == 'http':
+                    ssl_verify = False
+                else:
+                    ssl_verify = True
+            else:
+                if server.protocol == 'http' and ssl_verify:
+                    raise ValueError(
+                        'Cannot use ssl_verify=True with http host')
+            values['ssl_verify'] = ssl_verify
+            return server
+        elif isinstance(url, NetboxServerModel):
+            return url
+        else:
+            raise ValueError('Unknown input type')
+
+    @validator('token')
+    def validate_token(cls, token):
+        """checks if the token can be load as sensible data
+        """
+        try:
+            if token == 'ask':
+                return token
+            return get_sensitive_data(token)
+        except InventorySourceError as e:
+            raise ValueError(e)
 
 
 class Netbox(Source, InventoryAsyncPlugin):
@@ -28,87 +102,33 @@ class Netbox(Source, InventoryAsyncPlugin):
 
     """
 
-    def __init__(self, config_data: dict) -> None:
+    def __init__(self, config_data: dict, validate: bool = True) -> None:
         self._status = 'init'
         self._session: aiohttp.ClientSession = None
-        self._tag = ''
-        self._host = ''
-        self._namespace = ''
-        self._period = 3600
-        self._run_once = ''
-        self._token = ''
-        self._ssl_verify = None
+        self._server: NetboxServerModel = None
 
-        super().__init__(config_data)
+        super().__init__(config_data, validate)
 
-    def _load(self, input_data: dict):
-        """Load the configuration data in the object
+    @classmethod
+    def get_data_model(cls):
+        return NetboxSourceModel
 
-        Args:
-            input_data ([dict]): Input configuration data
-
-        Raises:
-            InventorySourceError: invalid config
-        """
-
-        if not input_data:
-            raise InventorySourceError('no netbox_config provided')
-
-        url = input_data.get('url')
-
-        url_data = urlparse(url)
-        self._protocol = url_data.scheme or 'http'
-        self._port = url_data.port or _DEFAULT_PORTS.get(self._protocol, None)
-        self._host = url_data.hostname
-
-        if not self._protocol or not self._port or not self._host:
-            raise InventorySourceError(f'{self._name}: invalid url provided')
-
-        self._tag = input_data.get('tag', 'null')
-        self._namespace = input_data.get('namespace')
-        self._period = input_data.get('period', 3600)
-        self._run_once = input_data.get('run_once', False)
-        self._token = input_data.get('token')
-        self._ssl_verify = input_data.get('ssl-verify', None)
-        if self._ssl_verify is None:
-            if self._protocol == 'http':
-                self._ssl_verify = False
-            elif self._protocol == 'https':
-                self._ssl_verify = True
-        else:
-            if not isinstance(self._ssl_verify, bool):
-                raise InventorySourceError(
-                    f'{self.name} ssl-verify parameter must be a boolean')
-            if self._ssl_verify and self._protocol == 'http':
-                raise InventorySourceError(
-                    f"{self._name}: ssl-verify can be use only with https"
-                )
-
-        logger.debug(f"Source {self._name} load completed")
-
-    def _validate_config(self, input_data) -> list:
-        """Validates the loaded configuration
-
-        Returns:
-            list: the list of errors
-        """
-        self._valid_fields.extend(
-            ['token', 'url', 'tag', 'period', 'ssl-verify'])
-
-        if not self._auth:
-            raise InventorySourceError(
-                f"{self._name} Netbox must have an 'auth' set in the "
-                "'namespaces' section")
-
-        super()._validate_config(input_data)
-
-        miss_fields = [x for x in ['token', 'url', 'namespace']
-                       if x not in input_data]
-
-        if miss_fields:
-            raise InventorySourceError(
-                f'{self._name} Invalid config missing fields {miss_fields}'
+    def _load(self, input_data):
+        # load the server class from the dictionary
+        if not self._validate:
+            input_data['server'] = NetboxServerModel.construct(
+                **input_data.pop('url', {}))
+            input_data['ssl_verify'] = input_data.pop('ssl-verify', False)
+        super()._load(input_data)
+        if self._data.token == 'ask':
+            self._data.token = get_sensitive_data(
+                'ask', f'{self.name} Insert netbox API token: '
             )
+        self._server = self._data.server
+        if not self._auth:
+            raise InventorySourceError(f"{self.name} Netbox must have an "
+                                       "'auth' set in the 'namespaces' section"
+                                       )
 
     def _init_session(self, headers: dict):
         """Initialize the session property
@@ -117,7 +137,7 @@ class Netbox(Source, InventoryAsyncPlugin):
             headers ([dict]): headers to initialize the session
         """
         if not self._session:
-            ssl_option = None if self._ssl_verify else False
+            ssl_option = None if self._data.ssl_verify else False
             self._session = aiohttp.ClientSession(
                 headers=headers,
                 connector=aiohttp.TCPConnector(ssl=ssl_option)
@@ -129,7 +149,7 @@ class Netbox(Source, InventoryAsyncPlugin):
         Returns:
             Dict: token authorization header
         """
-        return {'Authorization': f'Token {self._token}'}
+        return {'Authorization': f'Token {self._data.token}'}
 
     async def get_inventory_list(self) -> List:
         """Contact netbox to retrieve the inventory.
@@ -140,8 +160,8 @@ class Netbox(Source, InventoryAsyncPlugin):
         Returns:
             List: inventory list
         """
-        url = f'{self._protocol}://{self._host}:{self._port}'\
-            f'/api/dcim/devices/?tag={self._tag}'
+        url = f'{self._server.protocol}://{self._server.host}:'\
+            f'{self._server.port}/api/dcim/devices/?tag={self._data.tag}'
         if not self._session:
             headers = self._token_auth_header()
             self._init_session(headers)
@@ -151,7 +171,7 @@ class Netbox(Source, InventoryAsyncPlugin):
                 cur_devices, next_url = await self._get_devices(next_url)
                 devices.extend(cur_devices)
         except Exception as e:
-            raise InventorySourceError(f'{self._name}: error while '
+            raise InventorySourceError(f'{self.name}: error while '
                                        f'getting devices: {e}')
         return devices
 
@@ -174,7 +194,7 @@ class Netbox(Source, InventoryAsyncPlugin):
                 return res.get('results', []), res.get('next')
             else:
                 raise InventorySourceError(
-                    f'{self._name}: error in inventory get '
+                    f'{self.name}: error in inventory get '
                     f'{await response.text()}')
 
     def parse_inventory(self, inventory_list: list) -> Dict:
@@ -241,8 +261,8 @@ class Netbox(Source, InventoryAsyncPlugin):
         while True:
             inventory_list = await self.get_inventory_list()
             logger.debug(
-                f"Received netbox inventory from {self._protocol}"
-                f"://{self._host}:{self._port}")
+                f"Received netbox inventory from {self._server.protocol}"
+                f"://{self._server.host}:{self._server.port}")
             tmp_inventory = self.parse_inventory(inventory_list)
             # Write the inventory and remove the tmp one
             self.set_inventory(tmp_inventory)
@@ -250,7 +270,7 @@ class Netbox(Source, InventoryAsyncPlugin):
             if self._run_once:
                 break
 
-            await asyncio.sleep(self._period)
+            await asyncio.sleep(self._data.period)
 
     async def _stop(self):
         if self._session:

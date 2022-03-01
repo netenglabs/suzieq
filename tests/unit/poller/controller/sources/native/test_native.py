@@ -1,9 +1,9 @@
 import asyncio
 from typing import Dict
+from pydantic import ValidationError
 
 import pytest
 from suzieq.poller.controller.source.native import SqNativeFile
-from suzieq.shared.exceptions import InventorySourceError
 from tests.unit.poller.shared.utils import (get_src_sample_config,
                                             read_yaml_file)
 
@@ -46,7 +46,7 @@ async def test_valid_config(data_path: str, default_config):
     config = default_config
     config['hosts'] = read_yaml_file(data_path['hosts'])
 
-    src = SqNativeFile(config)
+    src = SqNativeFile(config.copy(), validate=True)
 
     assert src.name == config['name']
     cur_inv = await asyncio.wait_for(src.get_inventory(), 5)
@@ -64,46 +64,28 @@ async def test_invalid_hosts(default_config):
     """Test invalid hosts param
     """
 
-    config = default_config
+    config = default_config.copy()
 
     # empty hosts
     config['hosts'] = []
 
-    with pytest.raises(InventorySourceError):
-        SqNativeFile(config)
+    with pytest.raises(ValidationError):
+        SqNativeFile(config, validate=True)
 
     # 'hosts' not a list
+    config = default_config.copy()
     config['hosts'] = {'not': 'valid'}
-    with pytest.raises(InventorySourceError):
-        SqNativeFile(config)
+    with pytest.raises(ValidationError):
+        SqNativeFile(config, validate=True)
 
     # hosts field not set
+    config = default_config.copy()
     config.pop('hosts')
-    with pytest.raises(InventorySourceError):
-        SqNativeFile(config)
+    with pytest.raises(ValidationError):
+        SqNativeFile(config, validate=True)
 
-    # invalid hosts. Only the last host will be loaded
-    exp_inventory = {
-        'native-ns.192.168.0.1.22': {
-            'address': '192.168.0.1',
-            'devtype': None,
-            'hostname': None,
-            'ignore_known_hosts': False,
-            'jump_host': None,
-            'jump_host_key_file': None,
-            'namespace': 'native-ns',
-            'password': 'my-password',
-            'port': 22,
-            'ssh_keyfile': None,
-            'transport': 'ssh',
-            'username': 'vagrant'
-        }
-    }
-    host = exp_inventory['native-ns.192.168.0.1.22']
-    valid_url = {
-        'url': f"{host['transport']}://{host['address']}:{host['port']} "
-        f"password={host['password']} username={host['username']} wrong=field"
-    }
+    # invalid hosts
+    config = default_config.copy()
     config['hosts'] = [
         # no 'url' key
         {'not-url': 'ssh://vagrant@192.168.0.1 password=my-password'},
@@ -113,13 +95,12 @@ async def test_invalid_hosts(default_config):
         "url= ssh://vagrant@192.168.0.1 password=my-password",
         # key doesn't exists
         {'url': 'ssh://vagrant@192.168.0.1 keyfile=wrong/key/path'},
-        # ignore a parameter
-        valid_url
     ]
-
-    src = SqNativeFile(config)
-    inv = await asyncio.wait_for(src.get_inventory(), 5)
-    assert inv == exp_inventory
+    try:
+        SqNativeFile(config, validate=True)
+    except ValidationError as e:
+        # each invalid host will raise an exception
+        assert len(e.errors()) == len(config['hosts'])
 
 
 @pytest.mark.controller_source
@@ -138,12 +119,33 @@ def test_validate_inventory(default_config):
     config['hosts'] = [
         {'url': 'wrong://vagrant@192.168.0.1 password=my-password'}
     ]
-    with pytest.raises(InventorySourceError):
-        SqNativeFile(config)
+    with pytest.raises(ValidationError, match=r".*'wrong' not supported.*"):
+        SqNativeFile(config.copy(), validate=True)
 
-    # wrong ip address
+
+@pytest.mark.controller_source
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_native
+@pytest.mark.asyncio
+@pytest.mark.parametrize('address', [
+    '192.168.0',
+    '192.168.00.1',
+    '10.0.1.9000',
+    'not_a_domain.com'
+])
+def test_wrong_addresses(address: str, default_config):
+    """Validate wrong addresses formats
+
+    Args:
+        address (str): wrong address to validate
+    """
+    config = default_config
     config['hosts'] = [
-        {'url': 'ssh://vagrant@192_168_0_1 password=my-password'}
+        {'url': f'ssh://vagrant@{address} password=my-password'}
     ]
-    with pytest.raises(InventorySourceError):
-        SqNativeFile(config)
+    with pytest.raises(ValidationError,
+                       match=r'.*Invalid hostname or address.*'):
+        SqNativeFile(config.copy(), validate=True)

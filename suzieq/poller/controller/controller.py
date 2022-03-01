@@ -75,7 +75,8 @@ class Controller:
         self._period = args.update_period or \
             self._config.get('update-period', 3600)
         self._inventory_timeout = self._config.get('inventory-timeout', 10)
-        self._n_workers = args.workers or self._config.get('workers', 1)
+        self._n_workers = args.workers or self._config.get(
+            'manager', {}).get('workers', 1)
 
         # Validate the arguments
         self._validate_controller_args(args, config_data)

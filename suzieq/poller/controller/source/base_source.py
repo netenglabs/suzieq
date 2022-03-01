@@ -1,33 +1,42 @@
 """Module containing base class for inventorySource plugins
 """
 import asyncio
-from abc import abstractmethod
 from copy import copy
 from os.path import isfile
 from pathlib import Path
 from typing import Dict, List
 
-from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
+
+from suzieq.poller.controller.base_controller_plugin import \
+    ControllerPlugin, InventoryPluginModel
 from suzieq.poller.controller.credential_loader.base_credential_loader import \
-    CredentialLoader
+    CredentialLoader, check_credentials
 from suzieq.poller.controller.utils.inventory_utils import read_inventory
 from suzieq.shared.exceptions import InventorySourceError
+
+
+class SourceModel(InventoryPluginModel):
+    """Model for inventory source validation
+
+    IMPORTANT:
+    do not use namespace, device and auth as field names
+    """
 
 
 class Source(ControllerPlugin):
     """Base class for plugins which reads inventories"""
 
-    def __init__(self, input_data) -> None:
-        super().__init__()
+    def __init__(self, input_data, validate: bool = True) -> None:
+        super().__init__(input_data, validate)
 
         self._inventory = {}
         self._inv_is_set = False
         self._inv_is_set_event = asyncio.Event()
-        self._name = input_data.get('name')
-        self._auth = input_data.get('auth')  # auth object
-        self._device = input_data.get('device') or {}
-        self._valid_fields = ['name', 'type', 'auth',
-                              'device', 'namespace', 'run_once']
+        self._auth = input_data.pop('auth', None)  # auth object
+        self._device = input_data.pop('device', {})
+        self._namespace = input_data.pop('namespace')
+        self._run_once = input_data.pop('run_once', False)
+        self._data = None
 
         self._inv_format = [
             'address',
@@ -41,9 +50,6 @@ class Source(ControllerPlugin):
             'ignore_known_hosts'
         ]
 
-        self._validate_config(input_data)
-        self._validate_device()
-
         self._load(input_data)
 
     @property
@@ -53,19 +59,25 @@ class Source(ControllerPlugin):
         Returns:
             str: name of the source
         """
-        return self._name
+        return self._data.name
 
-    @abstractmethod
+    @classmethod
+    def default_type(cls) -> str:
+        return 'native'
+
+    @classmethod
+    def get_data_model(cls):
+        return SourceModel
+
     def _load(self, input_data):
         """Store informations from raw data"""
-        raise NotImplementedError
-
-    def _validate_config(self, input_data: dict):
-        """Checks if the loaded data is valid or not"""
-        inv_fields = [x for x in input_data if x not in self._valid_fields]
-        if inv_fields:
+        if self._validate:
+            self._data = self.get_data_model()(**input_data)
+        else:
+            self._data = self.get_data_model().construct(**input_data)
+        if not self._data:
             raise InventorySourceError(
-                f'{self._name}: unknown fields {inv_fields}')
+                'input_data was not loaded correctly')
 
     async def get_inventory(self) -> Dict:
         """Retrieve the inventory from the source. If the inventory is not
@@ -95,11 +107,13 @@ class Source(ControllerPlugin):
         """
         if self._auth:
             self._auth.load(new_inventory)
+        else:
+            check_credentials(new_inventory)
         self.set_device(new_inventory)
         missing_keys = self._is_invalid_inventory(new_inventory)
         if missing_keys:
             raise InventorySourceError(
-                f'{self._name} missing informations: {missing_keys}')
+                f'{self.name} missing informations: {missing_keys}')
 
         self._inventory = new_inventory
 
@@ -140,7 +154,8 @@ class Source(ControllerPlugin):
         return []
 
     @classmethod
-    def init_plugins(cls, plugin_conf: Dict) -> List[Dict]:
+    def init_plugins(cls, plugin_conf: Dict, validate: bool = False)\
+            -> List[Dict]:
         """This method is overrided because sources is different from other
         plugins.
         From the fields 'path', this function is going to load more than
@@ -167,14 +182,14 @@ class Source(ControllerPlugin):
         src_confs = _load_inventory(plugin_conf.get('path'))
         run_once = plugin_conf.get('single-run-mode', None)
         for src_conf in src_confs:
-            ptype = src_conf.get('type') or 'native'
+            ptype = src_conf.get('type') or Source.default_type()
 
             if ptype not in plugin_classes:
                 raise RuntimeError(
                     f'Unknown plugin called {ptype}'
                 )
             src_conf.update({'run_once': run_once})
-            src_plugins.append(plugin_classes[ptype](src_conf))
+            src_plugins.append(plugin_classes[ptype](src_conf, validate))
         return src_plugins
 
     def set_device(self, inventory: Dict[str, Dict]):
@@ -197,7 +212,7 @@ class Source(ControllerPlugin):
             jump_host_key_file = self._device.get('jump-host-key-file')
             if jump_host_key_file and \
                     not Path(jump_host_key_file).is_file():
-                raise InventorySourceError(f'{self._name} Jump host key file'
+                raise InventorySourceError(f'{self.name} Jump host key file'
                                            f" at {jump_host_key_file} doesn't"
                                            " exists")
             transport = self._device.get('transport')
@@ -246,22 +261,20 @@ def _load_inventory(source_file: str) -> List[dict]:
 
     inventory = read_inventory(source_file)
 
-    ns_list = inventory.get('namespaces')
-
-    sources_list = inventory.get('sources')
+    ns_dict = inventory.get('namespaces')
+    sources_dict = inventory.get('sources')
+    auths_dict = inventory.get('auths', {})
+    devs_dict = inventory.get('devices', {})
 
     sources = []
-    for ns in ns_list:
-        source = None
-        namespace = ns.get('name')
-
+    for namespace, ns in ns_dict.items():
         source_name = ns.get('source')
 
-        source = sources_list.get(source_name)
+        source = sources_dict.get(source_name)
 
         if ns.get('auth'):
-            auth = inventory.get('auths', []).get(ns['auth'])
-            auth_type = auth.get('type') or 'static'
+            auth = auths_dict.get(ns['auth'])
+            auth_type = auth.get('type') or CredentialLoader.default_type()
             if "-" in auth_type:
                 auth_type = auth_type.replace("-", "_")
             auth['type'] = auth_type
@@ -270,7 +283,7 @@ def _load_inventory(source_file: str) -> List[dict]:
             source['auth'] = None
 
         if ns.get('device'):
-            device = inventory.get('devices', []).get(ns['device'])
+            device = devs_dict.get(ns['device'])
             source['device'] = device
         else:
             source['device'] = None
