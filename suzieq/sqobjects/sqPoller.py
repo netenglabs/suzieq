@@ -9,5 +9,5 @@ class SqPollerObj(SqObject):
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'service',
                                 'status', 'pollExcdPeriodCount', 'query_str']
         self._valid_arg_vals = {
-            'status': ['all', 'pass', 'fail'],
+            'status': ['', 'all', 'pass', 'fail'],
         }

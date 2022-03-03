@@ -82,6 +82,7 @@ class TopologyObj(SqPandasEngine):
         area = kwargs.pop('area', '')
         vrf = kwargs.pop('vrf', '')
         addnl_fields = kwargs.pop('addnl_fields', [])
+        afi_safi = kwargs.pop('afiSafi', '')
 
         self._init_dfs(self._namespaces)
         self.lsdb = pd.DataFrame()
@@ -95,7 +96,11 @@ class TopologyObj(SqPandasEngine):
         if peerHostname and 'peerHostname' not in fields:
             addnl_fields.append('peerHostname')
 
-        if 'asn' in columns or asn:
+        if (asn or afi_safi) and area:
+            raise AttributeError(
+                'Cannot provide asn/afiSafi and area at the same time')
+
+        if any(x in columns for x in ['asn', 'afiSafi']) or asn or afi_safi:
             # When you don't constrain the via to bgp when asn is explicitly
             # requested, we can have some issues. unique or any sort of sorting
             # on the asn column will fail because all rows without BGP == true
@@ -107,6 +112,12 @@ class TopologyObj(SqPandasEngine):
                     'Cannot provide any via except bgp with asn')
             via = ['bgp']
 
+        if area or 'area' in columns:
+            if via and via != ['ospf']:
+                raise AttributeError(
+                    'Cannot provide any via except ospf with area')
+            via = ['ospf']
+
         self.services = [
             Services('lldp', {}, ['ifname', 'vrf'],
                      self._augment_lldp_show),
@@ -114,7 +125,8 @@ class TopologyObj(SqPandasEngine):
                      ['ipAddress', 'macaddr', 'ifname', 'vrf', 'arpndBidir'],
                      self._augment_arpnd_show),
             Services('bgp', {'state': 'Established', 'asn': asn,
-                             'vrf': vrf, 'columns': ['*']},
+                             'afiSafi': afi_safi, 'vrf': vrf,
+                             'columns': ['*']},
                      ['vrf', 'asn', 'peerAsn'],
                      self._augment_bgp_show),
             # Services('evpnVni', {}, 'peerHostname',
@@ -136,7 +148,6 @@ class TopologyObj(SqPandasEngine):
                 **kwargs,
                 **srv.extra_args
             )
-
             if not df.empty:
                 if srv.augment:
                     df = srv.augment(df)

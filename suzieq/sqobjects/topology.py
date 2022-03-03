@@ -11,7 +11,7 @@ class TopologyObj(SqObject):
         self._cat_fields = []
         self._valid_get_args = ['namespace', 'hostname', 'columns',
                                 'polled', 'ifname', 'via', 'vrf', 'asn',
-                                'area', 'peerHostname', 'query_str']
+                                'area', 'peerHostname', 'afiSafi', 'query_str']
         self._valid_summarize_args = ['namespace', 'hostname', 'via', 'vrf',
                                       'asn', 'area', 'query_str']
         self._valid_arg_vals = {

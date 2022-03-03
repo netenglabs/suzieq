@@ -1237,7 +1237,7 @@ tests:
 - command: topology unique --vrf='default' --format=json --namespace=eos --columns=area
   data-directory: tests/data/parquet/
   marks: topology unique eos
-  output: '[{"area": ""}, {"area": "0.0.0.0"}]'
+  output: '[{"area": "0.0.0.0"}]'
 - command: topology unique --vrf='evpn-vrf' --format=json --namespace=eos --columns=asn
   data-directory: tests/data/parquet/
   marks: topology unique eos
@@ -1295,93 +1295,58 @@ tests:
 - command: topology show --area=0.0.0.0 --format=json --namespace=eos
   data-directory: tests/data/parquet/
   marks: topology show eos
-  output: '[{"namespace": "eos", "hostname": "leaf01", "peerHostname": "spine02",
-    "ifname": "Ethernet2", "vrf": "default", "lldp": true, "arpndBidir": true, "arpnd":
-    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf":
-    true, "polled": true}, {"namespace": "eos", "hostname": "leaf01", "peerHostname":
-    "spine01", "ifname": "Ethernet1", "vrf": "default", "lldp": true, "arpndBidir":
-    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
-    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "eos", "hostname": "leaf02",
-    "peerHostname": "spine01", "ifname": "Ethernet1", "vrf": "default", "lldp": true,
-    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "eos", "hostname":
-    "leaf02", "peerHostname": "spine02", "ifname": "Ethernet2", "vrf": "default",
-    "lldp": true, "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0,
-    "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "eos",
-    "hostname": "spine01", "peerHostname": "leaf01", "ifname": "Ethernet1", "vrf":
-    "default", "lldp": true, "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
-    "eos", "hostname": "spine01", "peerHostname": "leaf03", "ifname": "Ethernet3",
-    "vrf": "default", "lldp": true, "arpndBidir": true, "arpnd": true, "asn": 64520.0,
-    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+  output: '[{"namespace": "eos", "hostname": "spine01", "peerHostname": "leaf01",
+    "ifname": "Ethernet1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
+    true}, {"namespace": "eos", "hostname": "spine01", "peerHostname": "leaf03", "ifname":
+    "Ethernet3", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
     {"namespace": "eos", "hostname": "spine01", "peerHostname": "leaf02", "ifname":
-    "Ethernet2", "vrf": "default", "lldp": true, "arpndBidir": true, "arpnd": true,
-    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true,
-    "polled": true}, {"namespace": "eos", "hostname": "spine01", "peerHostname": "leaf04",
-    "ifname": "Ethernet4", "vrf": "default", "lldp": true, "arpndBidir": true, "arpnd":
-    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf":
-    true, "polled": true}, {"namespace": "eos", "hostname": "spine01", "peerHostname":
-    "exit01", "ifname": "Ethernet5", "vrf": "default", "lldp": true, "arpndBidir":
-    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
-    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "eos", "hostname": "spine01",
-    "peerHostname": "exit02", "ifname": "Ethernet6", "vrf": "default", "lldp": true,
-    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "eos", "hostname":
-    "leaf03", "peerHostname": "spine02", "ifname": "Ethernet2", "vrf": "default",
-    "lldp": true, "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0,
-    "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "eos",
-    "hostname": "leaf03", "peerHostname": "spine01", "ifname": "Ethernet1", "vrf":
-    "default", "lldp": true, "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
-    "eos", "hostname": "spine02", "peerHostname": "leaf02", "ifname": "Ethernet2",
-    "vrf": "default", "lldp": true, "arpndBidir": true, "arpnd": true, "asn": 64520.0,
-    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    "Ethernet2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "spine01", "peerHostname": "exit02", "ifname":
+    "Ethernet6", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "spine01", "peerHostname": "leaf04", "ifname":
+    "Ethernet4", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "spine01", "peerHostname": "exit01", "ifname":
+    "Ethernet5", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "leaf02", "peerHostname": "spine02", "ifname":
+    "Ethernet2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "leaf02", "peerHostname": "spine01", "ifname":
+    "Ethernet1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "leaf03", "peerHostname": "spine02", "ifname":
+    "Ethernet2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "leaf03", "peerHostname": "spine01", "ifname":
+    "Ethernet1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "spine02", "peerHostname": "leaf02", "ifname":
+    "Ethernet2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
     {"namespace": "eos", "hostname": "spine02", "peerHostname": "leaf03", "ifname":
-    "Ethernet3", "vrf": "default", "lldp": true, "arpndBidir": true, "arpnd": true,
-    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true,
-    "polled": true}, {"namespace": "eos", "hostname": "spine02", "peerHostname": "leaf01",
-    "ifname": "Ethernet1", "vrf": "default", "lldp": true, "arpndBidir": true, "arpnd":
-    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf":
-    true, "polled": true}, {"namespace": "eos", "hostname": "spine02", "peerHostname":
-    "exit02", "ifname": "Ethernet6", "vrf": "default", "lldp": true, "arpndBidir":
-    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
-    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "eos", "hostname": "spine02",
-    "peerHostname": "exit01", "ifname": "Ethernet5", "vrf": "default", "lldp": true,
-    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "eos", "hostname":
-    "spine02", "peerHostname": "leaf04", "ifname": "Ethernet4", "vrf": "default",
-    "lldp": true, "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0,
-    "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "eos",
-    "hostname": "exit02", "peerHostname": "spine01", "ifname": "Ethernet1", "vrf":
-    "default", "lldp": true, "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
-    "eos", "hostname": "exit02", "peerHostname": "spine02", "ifname": "Ethernet2",
-    "vrf": "default", "lldp": true, "arpndBidir": true, "arpnd": true, "asn": 64520.0,
-    "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true},
+    "Ethernet3", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "spine02", "peerHostname": "leaf01", "ifname":
+    "Ethernet1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "spine02", "peerHostname": "exit02", "ifname":
+    "Ethernet6", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "spine02", "peerHostname": "exit01", "ifname":
+    "Ethernet5", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "spine02", "peerHostname": "leaf04", "ifname":
+    "Ethernet4", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "exit02", "peerHostname": "spine01", "ifname":
+    "Ethernet1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "exit02", "peerHostname": "spine02", "ifname":
+    "Ethernet2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
     {"namespace": "eos", "hostname": "exit01", "peerHostname": "spine01", "ifname":
-    "Ethernet1", "vrf": "default", "lldp": true, "arpndBidir": true, "arpnd": true,
-    "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true,
-    "polled": true}, {"namespace": "eos", "hostname": "exit01", "peerHostname": "spine02",
-    "ifname": "Ethernet2", "vrf": "default", "lldp": true, "arpndBidir": true, "arpnd":
-    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf":
-    true, "polled": true}, {"namespace": "eos", "hostname": "leaf04", "peerHostname":
-    "spine01", "ifname": "Ethernet1", "vrf": "default", "lldp": true, "arpndBidir":
-    true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
-    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "eos", "hostname": "leaf04",
-    "peerHostname": "spine02", "ifname": "Ethernet2", "vrf": "default", "lldp": true,
-    "arpndBidir": true, "arpnd": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "area": "0.0.0.0", "ospf": true, "polled": true}]'
+    "Ethernet1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "exit01", "peerHostname": "spine02", "ifname":
+    "Ethernet2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "leaf01", "peerHostname": "spine01", "ifname":
+    "Ethernet1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "leaf01", "peerHostname": "spine02", "ifname":
+    "Ethernet2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "leaf04", "peerHostname": "spine01", "ifname":
+    "Ethernet1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "eos", "hostname": "leaf04", "peerHostname": "spine02", "ifname":
+    "Ethernet2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true}]'
 - command: topology summarize --area=0.0.0.0 --format=json --namespace=eos
   data-directory: tests/data/parquet/
   marks: topology show eos
-  output: '{"eos": {"arpnd_center": ["spine02", "spine01"], "arpnd_degree_histogram":
-    "...", "arpnd_is_fully_connected": true, "arpnd_number_of_disjoint_sets": 1, "arpnd_number_of_edges":
-    12, "arpnd_number_of_nodes": 8, "arpnd_self_loops": [], "bgp_center": ["spine02",
-    "spine01"], "bgp_degree_histogram": "...", "bgp_is_fully_connected": true, "bgp_number_of_disjoint_sets":
-    1, "bgp_number_of_edges": 12, "bgp_number_of_nodes": 8, "bgp_self_loops": [],
-    "lldp_center": ["spine02", "spine01"], "lldp_degree_histogram": "...", "lldp_is_fully_connected":
-    true, "lldp_number_of_disjoint_sets": 1, "lldp_number_of_edges": 12, "lldp_number_of_nodes":
-    8, "lldp_self_loops": [], "ospf_center": ["spine02", "spine01"], "ospf_degree_histogram":
+  output: '{"eos": {"ospf_center": ["spine01", "spine02"], "ospf_degree_histogram":
     "...", "ospf_is_fully_connected": true, "ospf_number_of_disjoint_sets": 1, "ospf_number_of_edges":
     12, "ospf_number_of_nodes": 8, "ospf_self_loops": []}}'
 - command: topology show --via=ospf --area=0.0.0.1 --format=json --namespace=eos
@@ -1394,3 +1359,127 @@ tests:
   output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
     {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
     "spine01"}, {"hostname": "spine02"}]'
+- command: topology show --afiSafi='ipv4 unicast' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
+  marks: topology show eos
+  output: '[{"namespace": "eos", "hostname": "leaf03", "peerHostname": "spine02",
+    "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true},
+    {"namespace": "eos", "hostname": "leaf03", "peerHostname": "spine01", "vrf": "default",
+    "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos",
+    "hostname": "spine01", "peerHostname": "exit01", "vrf": "default", "asn": 64520,
+    "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "spine01", "peerHostname": "leaf04", "vrf": "default", "asn": 64520, "peerAsn":
+    64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "spine01",
+    "peerHostname": "leaf03", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp":
+    true, "polled": true}, {"namespace": "eos", "hostname": "spine01", "peerHostname":
+    "leaf01", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
+    true}, {"namespace": "eos", "hostname": "spine01", "peerHostname": "exit02", "vrf":
+    "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "eos", "hostname": "spine01", "peerHostname": "leaf02", "vrf": "default", "asn":
+    64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "leaf02", "peerHostname": "spine02", "vrf": "default", "asn": 64520, "peerAsn":
+    64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "leaf02",
+    "peerHostname": "spine01", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp":
+    true, "polled": true}, {"namespace": "eos", "hostname": "leaf04", "peerHostname":
+    "spine02", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
+    true}, {"namespace": "eos", "hostname": "leaf04", "peerHostname": "spine01", "vrf":
+    "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "eos", "hostname": "exit02", "peerHostname": "firewall01", "vrf": "evpn-vrf",
+    "asn": 65521, "peerAsn": 65533, "bgp": true, "polled": true}, {"namespace": "eos",
+    "hostname": "exit02", "peerHostname": "dcedge01", "vrf": "internet-vrf", "asn":
+    65522, "peerAsn": 65534, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "exit02", "peerHostname": "firewall01", "vrf": "default", "asn": 65520, "peerAsn":
+    65533, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "exit02",
+    "peerHostname": "spine02", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp":
+    true, "polled": true}, {"namespace": "eos", "hostname": "exit02", "peerHostname":
+    "spine01", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
+    true}, {"namespace": "eos", "hostname": "exit02", "peerHostname": "firewall01",
+    "vrf": "internet-vrf", "asn": 65522, "peerAsn": 65533, "bgp": true, "polled":
+    true}, {"namespace": "eos", "hostname": "exit01", "peerHostname": "spine01", "vrf":
+    "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "eos", "hostname": "exit01", "peerHostname": "firewall01", "vrf": "internet-vrf",
+    "asn": 65522, "peerAsn": 65533, "bgp": true, "polled": true}, {"namespace": "eos",
+    "hostname": "exit01", "peerHostname": "firewall01", "vrf": "evpn-vrf", "asn":
+    65521, "peerAsn": 65533, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "exit01", "peerHostname": "spine02", "vrf": "default", "asn": 64520, "peerAsn":
+    64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "exit01",
+    "peerHostname": "firewall01", "vrf": "default", "asn": 65520, "peerAsn": 65533,
+    "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "exit01", "peerHostname":
+    "dcedge01", "vrf": "internet-vrf", "asn": 65522, "peerAsn": 65534, "bgp": true,
+    "polled": true}, {"namespace": "eos", "hostname": "spine02", "peerHostname": "leaf02",
+    "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true},
+    {"namespace": "eos", "hostname": "spine02", "peerHostname": "leaf03", "vrf": "default",
+    "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos",
+    "hostname": "spine02", "peerHostname": "leaf04", "vrf": "default", "asn": 64520,
+    "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "spine02", "peerHostname": "exit01", "vrf": "default", "asn": 64520, "peerAsn":
+    64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "spine02",
+    "peerHostname": "exit02", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp":
+    true, "polled": true}, {"namespace": "eos", "hostname": "spine02", "peerHostname":
+    "leaf01", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
+    true}, {"namespace": "eos", "hostname": "leaf01", "peerHostname": "spine02", "vrf":
+    "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "eos", "hostname": "leaf01", "peerHostname": "spine01", "vrf": "default", "asn":
+    64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "firewall01", "peerHostname": "exit02", "vrf": "default", "asn": 65533, "peerAsn":
+    65522, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "firewall01",
+    "peerHostname": "exit02", "vrf": "default", "asn": 65533, "peerAsn": 65521, "bgp":
+    true, "polled": true}, {"namespace": "eos", "hostname": "firewall01", "peerHostname":
+    "exit02", "vrf": "default", "asn": 65533, "peerAsn": 65520, "bgp": true, "polled":
+    true}, {"namespace": "eos", "hostname": "firewall01", "peerHostname": "exit01",
+    "vrf": "default", "asn": 65533, "peerAsn": 65522, "bgp": true, "polled": true},
+    {"namespace": "eos", "hostname": "firewall01", "peerHostname": "exit01", "vrf":
+    "default", "asn": 65533, "peerAsn": 65521, "bgp": true, "polled": true}, {"namespace":
+    "eos", "hostname": "firewall01", "peerHostname": "exit01", "vrf": "default", "asn":
+    65533, "peerAsn": 65520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "dcedge01", "peerHostname": "exit02", "vrf": "default", "asn": 65534, "peerAsn":
+    65522, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "dcedge01",
+    "peerHostname": "exit01", "vrf": "default", "asn": 65534, "peerAsn": 65522, "bgp":
+    true, "polled": true}]'
+- command: topology show --afiSafi='l2vpn evpn' --format=json --namespace=eos
+  data-directory: tests/data/parquet/
+  marks: topology show eos
+  output: '[{"namespace": "eos", "hostname": "leaf03", "peerHostname": "spine02",
+    "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true},
+    {"namespace": "eos", "hostname": "leaf03", "peerHostname": "spine01", "vrf": "default",
+    "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos",
+    "hostname": "spine01", "peerHostname": "exit01", "vrf": "default", "asn": 64520,
+    "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "spine01", "peerHostname": "leaf04", "vrf": "default", "asn": 64520, "peerAsn":
+    64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "spine01",
+    "peerHostname": "leaf03", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp":
+    true, "polled": true}, {"namespace": "eos", "hostname": "spine01", "peerHostname":
+    "leaf02", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
+    true}, {"namespace": "eos", "hostname": "spine01", "peerHostname": "exit02", "vrf":
+    "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "eos", "hostname": "spine01", "peerHostname": "leaf01", "vrf": "default", "asn":
+    64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "leaf02", "peerHostname": "spine01", "vrf": "default", "asn": 64520, "peerAsn":
+    64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "leaf02",
+    "peerHostname": "spine02", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp":
+    true, "polled": true}, {"namespace": "eos", "hostname": "leaf04", "peerHostname":
+    "spine02", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
+    true}, {"namespace": "eos", "hostname": "leaf04", "peerHostname": "spine01", "vrf":
+    "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "eos", "hostname": "exit02", "peerHostname": "spine02", "vrf": "default", "asn":
+    64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "exit02", "peerHostname": "spine01", "vrf": "default", "asn": 64520, "peerAsn":
+    64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "exit01",
+    "peerHostname": "spine02", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp":
+    true, "polled": true}, {"namespace": "eos", "hostname": "exit01", "peerHostname":
+    "spine01", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
+    true}, {"namespace": "eos", "hostname": "spine02", "peerHostname": "leaf02", "vrf":
+    "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "eos", "hostname": "spine02", "peerHostname": "leaf03", "vrf": "default", "asn":
+    64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "spine02", "peerHostname": "leaf04", "vrf": "default", "asn": 64520, "peerAsn":
+    64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname": "spine02",
+    "peerHostname": "exit01", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp":
+    true, "polled": true}, {"namespace": "eos", "hostname": "spine02", "peerHostname":
+    "leaf01", "vrf": "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled":
+    true}, {"namespace": "eos", "hostname": "spine02", "peerHostname": "exit02", "vrf":
+    "default", "asn": 64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace":
+    "eos", "hostname": "leaf01", "peerHostname": "spine02", "vrf": "default", "asn":
+    64520, "peerAsn": 64520, "bgp": true, "polled": true}, {"namespace": "eos", "hostname":
+    "leaf01", "peerHostname": "spine01", "vrf": "default", "asn": 64520, "peerAsn":
+    64520, "bgp": true, "polled": true}]'

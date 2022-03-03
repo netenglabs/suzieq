@@ -15,6 +15,7 @@ from suzieq.sqobjects.topology import TopologyObj
 @argument("vrf", description="VRF(s), space separated")
 @argument("asn", description="BGP ASN(s), space separated")
 @argument("area", description="OSPF Area(s), space separated")
+@argument("afiSafi", description="BGP AFI SAFI lens to filter the topology")
 @ argument("peerHostname",
            description="Peer hostname(s), space separated, "
            "space separated")
@@ -38,7 +39,8 @@ class TopologyCmd(SqCommand):
             vrf: str = '',
             asn: str = '',
             area: str = '',
-            peerHostname: str = ''
+            peerHostname: str = '',
+            afiSafi: str = ''
     ) -> None:
         super().__init__(
             engine=engine,
@@ -59,5 +61,6 @@ class TopologyCmd(SqCommand):
             'area': area.split(),
             'via': via.split(),
             'vrf': vrf.split(),
-            'peerHostname': peerHostname.split()
+            'peerHostname': peerHostname.split(),
+            'afiSafi': afiSafi,
         }

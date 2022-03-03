@@ -27,7 +27,7 @@ class SqPollerCmd(SqCommand):
             query_str: str = "",
             columns: str = "default",
             service: str = '',
-            status: str = 'all',
+            status: str = '',
             poll_period_exceeded: str = '',
     ) -> None:
         super().__init__(
@@ -58,7 +58,7 @@ class SqPollerCmd(SqCommand):
             'service': [],
             'status': 'all',
             'pollExcdPeriodCount': '0'
-            }
+        }
 
         # check if lvars are the default args,
         # if yes clean before calling super

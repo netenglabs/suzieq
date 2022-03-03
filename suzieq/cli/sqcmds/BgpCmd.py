@@ -16,6 +16,7 @@ from suzieq.sqobjects.bgp import BgpObj
 @argument("peer",
           description=("IP address(es), in quotes, or the interface name(s), "
                        "space separated"))
+@argument("afiSafi", description="AFI SAFI string to filter by")
 class BgpCmd(SqCommand):
     """BGP protocol information"""
 
@@ -32,7 +33,8 @@ class BgpCmd(SqCommand):
             query_str: str = ' ',
             vrf: str = '',
             state: str = '',
-            peer: str = ''
+            peer: str = '',
+            afiSafi: str = '',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -50,6 +52,7 @@ class BgpCmd(SqCommand):
             'vrf': vrf.split(),
             'state': state,
             'peer': peer.split(),
+            'afiSafi': afiSafi,
         }
 
     def _clean_output(self, df) -> pd.DataFrame:

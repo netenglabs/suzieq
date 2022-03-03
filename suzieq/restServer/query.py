@@ -325,6 +325,7 @@ async def query_bgp(verb: CommonExtraVerbs, request: Request,
                     vrf: List[str] = Query(None),
                     asn: List[str] = Query(None),
                     result: AssertResultValue = Query(None),
+                    afiSafi: str = Query(None),
                     query_str: str = None, what: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
@@ -632,6 +633,7 @@ async def query_topology(verb: CommonVerbs, request: Request,
                          asn: List[str] = Query(None),
                          area: List[str] = Query(None),
                          vrf: List[str] = Query(None),
+                         afiSafi: str = Query(None),
                          query_str: str = None, what: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name
