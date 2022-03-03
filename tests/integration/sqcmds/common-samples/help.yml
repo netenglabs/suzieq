@@ -170,24 +170,26 @@ tests:
   format: text
   marks: bgp help
   output: "bgp aver: \e[36mAssert BGP is functioning properly\e[0m\n\e[33m\nUse quotes\
-    \ when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns:\
-    \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e\
-    [36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e\
-    [1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
-    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
-    [0m\n - peer: \e[36m\e[1mIP address(es), in quotes, or the interface name(s),\
-    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - result: \e[36m\e[1mShow only\
-    \ assert that matches this value\e[0m\n - start_time: \e[36m\e[1mStart of time\
-    \ window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to\
-    \ query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
-    \ vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
+    \ when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - afiSafi:\
+    \ \e[36m\e[1mBGP AFI SAFI lens to filter the topology\e[0m\n - columns: \e[36m\e\
+    [1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - peer: \e\
+    [36m\e[1mIP address(es), in quotes, or the interface name(s), space separated\e\
+    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
+    \ further filter the output\e[0m\n - result: \e[36m\e[1mShow only assert that\
+    \ matches this value\e[0m\n - start_time: \e[36m\e[1mStart of time window, try\
+    \ natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n\
+    \ - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e\
+    [1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=show
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help command
   output: "bgp show: \e[36mShow BGP info\e[0m\n\e[33m\nUse quotes when providing more\
-    \ than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated\
+    \ than one value\e[0m\n\e[33m\nArguments:\e[0m\n - afiSafi: \e[36m\e[1mBGP AFI\
+    \ SAFI lens to filter the topology\e[0m\n - columns: \e[36m\e[1mSpace separated\
     \ list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window,\
     \ try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of\
     \ the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
@@ -204,50 +206,53 @@ tests:
   marks: bgp help command
   output: "bgp summarize: \e[36mSummarize relevant information about the table\e[0m\n\
     \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
-    \ space separated\e[0m\n - peer: \e[36m\e[1mIP address(es), in quotes, or the\
-    \ interface name(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank\
-    \ terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
-    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
-    \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
+    [0m\n - afiSafi: \e[36m\e[1mBGP AFI SAFI lens to filter the topology\e[0m\n -\
+    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - peer: \e[36m\e[1mIP address(es), in quotes, or the interface name(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of\
+    \ VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help command
   output: "bgp unique: \e[36mGet unique values (and counts) associated with requested\
     \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
-    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
-    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
-    \ space separated\e[0m\n - peer: \e[36m\e[1mIP address(es), in quotes, or the\
-    \ interface name(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank\
-    \ terminated pandas query format to further filter the output\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
-    [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
-    \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
+    Arguments:\e[0m\n - afiSafi: \e[36m\e[1mBGP AFI SAFI lens to filter the topology\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - peer: \e[36m\e[1mIP address(es), in quotes, or the interface name(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of\
+    \ VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=top
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help command
   output: "bgp top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
     [33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
-    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
-    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
-    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - peer: \e\
-    [36m\e[1mIP address(es), in quotes, or the interface name(s), space separated\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView\
-    \ all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
+    [0m\n - afiSafi: \e[36m\e[1mBGP AFI SAFI lens to filter the topology\e[0m\n -\
+    \ columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - count:\
+    \ \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - peer: \e[36m\e\
+    [1mIP address(es), in quotes, or the interface name(s), space separated\e[0m\n\
+    \ - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to further\
+    \ filter the output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n\
+    \ - start_time: \e[36m\e[1mStart of time window, try natural language spec\e[0m\n\
+    \ - state: \e[36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
     [0m\n - what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: devconfig help
   data-directory: tests/data/eos/parquet-out/
@@ -1082,7 +1087,7 @@ tests:
   marks: ospf help command
   output: "ospf describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
     \ quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n -\
-    \ area: \e[36m\e[1mArea(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace\
+    \ area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace\
     \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
     \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
     \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
@@ -1098,11 +1103,11 @@ tests:
   marks: ospf help command
   output: "ospf aver: \e[36mTest OSPF runtime state is without errors\e[0m\n\e[33m\n\
     Use quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n\
-    \ - area: \e[36m\e[1mArea(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace\
-    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
-    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
-    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
-    \ - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
+    \ - area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - columns: \e[36m\e\
+    [1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
     \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
     \ blank terminated pandas query format to further filter the output\e[0m\n - result:\
     \ \e[36m\e[1mShow only assert that matches this value\e[0m\n - start_time: \e\
@@ -1114,12 +1119,12 @@ tests:
   format: text
   marks: ospf help command
   output: "ospf show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
-    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - area: \e[36m\e[1mArea(s),\
-    \ space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
-    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e\
-    [1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - area: \e[36m\e[1mOSPF\
+    \ Area(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list of\
+    \ columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
+    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
+    [0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e\
+    [36m\e[1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
     \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
     \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
     \ of time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of\
@@ -1131,11 +1136,11 @@ tests:
   marks: ospf help command
   output: "ospf summarize: \e[36mSummarize relevant information about the table\e\
     [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - area: \e[36m\e[1mArea(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace\
-    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
-    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
-    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
-    \ - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
+    [0m\n - area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - columns: \e[36m\e\
+    [1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace:\
     \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
     \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
     \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
@@ -1147,12 +1152,12 @@ tests:
   marks: ospf help command
   output: "ospf top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
     [33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - area: \e[36m\e[1mArea(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace\
-    \ separated list of columns, * for all\e[0m\n - count: \e[36m\e[1mnumber of rows\
-    \ to return\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
-    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
-    \ hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e\
-    [1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    [0m\n - area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - columns: \e[36m\e\
+    [1mSpace separated list of columns, * for all\e[0m\n - count: \e[36m\e[1mnumber\
+    \ of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
+    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
+    [0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e\
+    [36m\e[1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
     \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
     \ query format to further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn\
     \ bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural\
@@ -1166,7 +1171,7 @@ tests:
   marks: ospf help command
   output: "ospf unique: \e[36mGet unique values (and counts) associated with requested\
     \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
-    Arguments:\e[0m\n - area: \e[36m\e[1mArea(s), space separated\e[0m\n - columns:\
+    Arguments:\e[0m\n - area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - columns:\
     \ \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - count: \e[36m\e\
     [1minclude count of times a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of\
     \ time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the\
@@ -1311,12 +1316,13 @@ tests:
   marks: topology help command
   output: "topology describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\n\
     Use quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n\
-    \ - area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - asn: \e[36m\e[1mBGP\
-    \ ASN(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list of\
-    \ columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e\
-    [36m\e[1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ - afiSafi: \e[36m\e[1mBGP AFI SAFI lens to filter the topology\e[0m\n - area:\
+    \ \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - asn: \e[36m\e[1mBGP ASN(s),\
+    \ space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
+    \ * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
+    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
+    \ hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e\
+    [1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
     \ space separated\e[0m\n - peerHostname: \e[36m\e[1mPeer hostname(s), space separated,\
     \ space separated\e[0m\n - polled: \e[36m\e[1mIs the device polled by Suzieq\e\
     [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
@@ -1329,32 +1335,34 @@ tests:
   format: text
   marks: topology help command
   output: "topology show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
-    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - area: \e[36m\e[1mOSPF\
-    \ Area(s), space separated\e[0m\n - asn: \e[36m\e[1mBGP ASN(s), space separated\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s),\
-    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
-    [0m\n - peerHostname: \e[36m\e[1mPeer hostname(s), space separated, space separated\e\
-    [0m\n - polled: \e[36m\e[1mIs the device polled by Suzieq\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - via: \e[36m\e[1mProtocol(s) via which nodes are connected, space\
-    \ separated\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
-    \ - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - afiSafi: \e[36m\e[1mBGP\
+    \ AFI SAFI lens to filter the topology\e[0m\n - area: \e[36m\e[1mOSPF Area(s),\
+    \ space separated\e[0m\n - asn: \e[36m\e[1mBGP ASN(s), space separated\e[0m\n\
+    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - peerHostname:\
+    \ \e[36m\e[1mPeer hostname(s), space separated, space separated\e[0m\n - polled:\
+    \ \e[36m\e[1mIs the device polled by Suzieq\e[0m\n - query_str: \e[36m\e[1mTrailing\
+    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - via: \e\
+    [36m\e[1mProtocol(s) via which nodes are connected, space separated\e[0m\n - view:\
+    \ \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
+    \ space separated\e[0m\n"
 - command: topology help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: topology help command
   output: "topology summarize: \e[36mSummarize relevant information about the table\e\
     [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - asn: \e[36m\e\
-    [1mBGP ASN(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list\
-    \ of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try\
-    \ natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the\
-    \ output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname:\
-    \ \e[36m\e[1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    [0m\n - afiSafi: \e[36m\e[1mBGP AFI SAFI lens to filter the topology\e[0m\n -\
+    \ area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - asn: \e[36m\e[1mBGP\
+    \ ASN(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list of\
+    \ columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
+    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
+    [0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e\
+    [36m\e[1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
     \ space separated\e[0m\n - peerHostname: \e[36m\e[1mPeer hostname(s), space separated,\
     \ space separated\e[0m\n - polled: \e[36m\e[1mIs the device polled by Suzieq\e\
     [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
@@ -1368,35 +1376,37 @@ tests:
   marks: topology help command
   output: "topology top: \e[36mReturn the top n values for a field in a table\e[0m\n\
     \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - asn: \e[36m\e\
-    [1mBGP ASN(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list\
-    \ of columns, * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e\
-    [0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e\
-    [0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
-    \ \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface\
-    \ name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space\
-    \ separated\e[0m\n - peerHostname: \e[36m\e[1mPeer hostname(s), space separated,\
-    \ space separated\e[0m\n - polled: \e[36m\e[1mIs the device polled by Suzieq\e\
-    [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
-    \ further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e\
-    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
-    [0m\n - via: \e[36m\e[1mProtocol(s) via which nodes are connected, space separated\e\
-    [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e\
-    [36m\e[1mVRF(s), space separated\e[0m\n - what: \e[36m\e[1mnumeric field to get\
-    \ top values for\e[0m\n"
+    [0m\n - afiSafi: \e[36m\e[1mBGP AFI SAFI lens to filter the topology\e[0m\n -\
+    \ area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - asn: \e[36m\e[1mBGP\
+    \ ASN(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list of\
+    \ columns, * for all\e[0m\n - count: \e[36m\e[1mnumber of rows to return\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s),\
+    \ space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    [0m\n - peerHostname: \e[36m\e[1mPeer hostname(s), space separated, space separated\e\
+    [0m\n - polled: \e[36m\e[1mIs the device polled by Suzieq\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - via: \e\
+    [36m\e[1mProtocol(s) via which nodes are connected, space separated\e[0m\n - view:\
+    \ \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
+    \ space separated\e[0m\n - what: \e[36m\e[1mnumeric field to get top values for\e\
+    [0m\n"
 - command: topology help --command=unique
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: topology help command
   output: "topology unique: \e[36mGet unique values (and counts) associated with requested\
     \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
-    Arguments:\e[0m\n - area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - asn:\
-    \ \e[36m\e[1mBGP ASN(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace separated\
-    \ list of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times\
-    \ a value is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural\
-    \ language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e\
-    [0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e\
-    [36m\e[1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    Arguments:\e[0m\n - afiSafi: \e[36m\e[1mBGP AFI SAFI lens to filter the topology\e\
+    [0m\n - area: \e[36m\e[1mOSPF Area(s), space separated\e[0m\n - asn: \e[36m\e\
+    [1mBGP ASN(s), space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list\
+    \ of columns, * for all\e[0m\n - count: \e[36m\e[1minclude count of times a value\
+    \ is seen\e[0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language\
+    \ spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n -\
+    \ hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e\
+    [1mInterface name(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
     \ space separated\e[0m\n - peerHostname: \e[36m\e[1mPeer hostname(s), space separated,\
     \ space separated\e[0m\n - polled: \e[36m\e[1mIs the device polled by Suzieq\e\
     [0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query format to\
