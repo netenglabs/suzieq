@@ -1,8 +1,9 @@
 from typing import Dict
 import pytest
+from suzieq.shared.utils import get_sensitive_data
 from suzieq.poller.controller.utils.inventory_utils import (
     read_inventory, validate_raw_inventory,
-    get_sensitive_data, copy_inventory_item)
+    copy_inventory_item)
 from suzieq.shared.exceptions import InventorySourceError
 from tests.unit.poller.shared.utils import read_yaml_file
 # pylint: disable=redefined-outer-name
