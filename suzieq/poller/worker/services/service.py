@@ -25,7 +25,7 @@ from suzieq.version import SUZIEQ_VERSION
 # How long b4 declaring node dead
 HOLD_TIME_IN_MSECS = 60000
 # How many unsuccessful polls before marking records with active=false
-HYSTERESIS_FAILURE_CNT = 2
+HYSTERESIS_FAILURE_CNT = 3
 
 
 @dataclass
