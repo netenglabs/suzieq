@@ -39,7 +39,8 @@ def test_load(data_path: Dict):
         'username': 'user-to-override',
         'ssh-passphrase': 'plain:my-pass',
         'password': 'plain:password',
-        'keyfile': 'my/keyfile'
+        'keyfile': 'my/keyfile',
+        'enable-password': 'my-password'
     }
 
     valid_data = StaticModel(**init_data).dict(by_alias=True)
@@ -51,6 +52,7 @@ def test_load(data_path: Dict):
     assert sl._data.ssh_passphrase == init_data['ssh-passphrase'].split(':')[1]
     assert sl._data.password == init_data['password'].split(':')[1]
     assert sl._data.keyfile == init_data['keyfile']
+    assert sl._data.enable_password == init_data['enable-password']
 
     inv = read_yaml_file(data_path['inventory'])
     sl.load(inv)

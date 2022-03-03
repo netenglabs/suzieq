@@ -12,6 +12,7 @@ _VALID_OUTPUT_FORMATS = ["json"]
 _BASE_INVENTORY_DEVICE = {
     'address': '',
     'devtype': None,
+    'enable_password': None,
     'hostname': '',
     'ignore_known_hosts': False,
     'jump_host': None,
