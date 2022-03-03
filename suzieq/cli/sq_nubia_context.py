@@ -39,11 +39,11 @@ class NubiaSuzieqContext(context.Context):
             # See if we can extract the REST info from the REST part
             restcfg = cfg.get('rest', {})
             self.ctxt.rest_server_ip = restcfg.get('address', '127.0.0.1')
-            self.ctxt.reset_server_port = restcfg.get('address', '80')
-            if restcfg.get('no-https', 'False') == 'False':
-                self.ctxt.transport = 'https'
+            self.ctxt.rest_server_port = restcfg.get('port', '80')
+            if restcfg.get('no-https', False):
+                self.ctxt.rest_transport = 'http'
             else:
-                self.ctxt.transport = 'http'
+                self.ctxt.rest_transport = 'https'
             self.ctxt.rest_api_key = restcfg.get('API_KEY', '')
 
     def on_cli(self, cmd, args):
