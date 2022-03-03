@@ -55,7 +55,6 @@ class NubiaSuzieqContext(context.Context):
         if ret:
             raise exceptions.CommandError("Failed starting interactive mode")
         # dispatch the on connected message
-        self.registry.dispatch_message(eventbus.Message.CONNECTED)
 
     def change_engine(self, engine: str):
         '''Change the backend engine'''
