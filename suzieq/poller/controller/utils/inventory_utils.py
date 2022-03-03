@@ -3,12 +3,10 @@ This module contains the logic needed to parse the Suzieq native inventory
 file
 """
 
-import getpass
 import re
 import sys
 from dataclasses import dataclass
 from ipaddress import ip_address
-from os import getenv
 from pathlib import Path
 from typing import Dict, List
 
@@ -283,41 +281,6 @@ def copy_inventory_item(orig: Dict, dest: Dict) -> Dict:
     if 'copy' in dest:
         dest.pop('copy')
     return dest
-
-
-def get_sensitive_data(input_method: str, ask_message: str = '') -> str:
-    """This function is used by the inventory to specify sensitive data
-
-    The valid methods are:
-        - 'plain:' (default): copy the content of input (can be omitted)
-        - 'env:': get the information from an environment variable
-        - 'ask': write the information on the stdin
-
-    Args:
-        input_method (str): string with info for the sensitive value
-        ask_message (str): message to prompt for the 'ask' method
-
-    Raises:
-        InventorySourceError: environment variable not found
-
-    Returns:
-        str: sensitive data
-    """
-    if not input_method:
-        return input_method
-    sens_data = input_method
-    if input_method.startswith('env:'):
-        input_method = input_method.split('env:')[1].strip()
-        sens_data = getenv(input_method, '')
-        if not sens_data:
-            raise InventorySourceError(
-                f'No environment variable called '
-                f"'{input_method}'")
-    elif input_method.startswith('plain:'):
-        sens_data = input_method.split("plain:")[1].strip()
-    elif input_method.startswith('ask'):
-        sens_data = getpass.getpass(ask_message)
-    return sens_data
 
 
 def validate_hostname(in_hostname: str) -> bool:

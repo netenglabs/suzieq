@@ -5,8 +5,8 @@ from pydantic import Field, validator
 
 from suzieq.poller.controller.credential_loader.base_credential_loader import \
     CredentialLoader, CredentialLoaderModel, check_credentials
-from suzieq.poller.controller.utils.inventory_utils import get_sensitive_data
-from suzieq.shared.exceptions import InventorySourceError
+from suzieq.shared.utils import get_sensitive_data
+from suzieq.shared.exceptions import SensitiveLoadError, InventorySourceError
 
 
 class StaticModel(CredentialLoaderModel):
@@ -27,7 +27,7 @@ class StaticModel(CredentialLoaderModel):
                 # the field is valid, but I cannot ask here the value
                 return field
             return get_sensitive_data(field)
-        except InventorySourceError as e:
+        except SensitiveLoadError as e:
             raise ValueError(e)
 
 
@@ -62,7 +62,7 @@ class StaticLoader(CredentialLoader):
                 self._data.password = get_sensitive_data(
                     self._data.password,
                     f'{self.name} Password to login to device: ')
-            except InventorySourceError as e:
+            except SensitiveLoadError as e:
                 raise InventorySourceError(f'{self.name} {e}')
 
         if self._data.ssh_passphrase == 'ask':
@@ -71,7 +71,7 @@ class StaticLoader(CredentialLoader):
                     self._data.ssh_passphrase,
                     f'{self.name} Passphrase to decode private key file: '
                 )
-            except InventorySourceError as e:
+            except SensitiveLoadError as e:
                 raise InventorySourceError(f'{self.name} {e}')
 
         if self._data.enable_password == 'ask':
@@ -80,7 +80,7 @@ class StaticLoader(CredentialLoader):
                     self._data.enable_password,
                     f'{self.name} Insert enable password: '
                 )
-            except InventorySourceError as e:
+            except SensitiveLoadError as e:
                 raise InventorySourceError(f'{self.name} {e}')
 
     def load(self, inventory: Dict[str, Dict]):

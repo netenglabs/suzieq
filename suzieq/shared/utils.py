@@ -1,7 +1,7 @@
 import os
 import re
 import sys
-from typing import List
+from typing import Dict, List
 import logging
 from logging.handlers import RotatingFileHandler
 from datetime import datetime
@@ -10,6 +10,8 @@ from importlib.util import find_spec
 from itertools import groupby
 from ipaddress import ip_network
 import errno
+from os import getenv
+import getpass
 
 import json
 import yaml
@@ -19,6 +21,7 @@ from pytz import all_timezones
 from dateparser import parse
 
 import pandas as pd
+from suzieq.shared.exceptions import SensitiveLoadError
 
 from suzieq.version import SUZIEQ_VERSION
 
@@ -103,6 +106,10 @@ def validate_sq_config(cfg):
         if knob in cfg:
             cfg['rest'][knob] = cfg[knob]
 
+    error = _load_rest_api_key(cfg)
+    if error:
+        return error
+
     # Verify timezone if present is valid
     def_tz = get_localzone().zone
     reader = cfg.get('analyzer', {})
@@ -116,6 +123,29 @@ def validate_sq_config(cfg):
         cfg['analyzer'] = {'timezone': def_tz}
 
     return None
+
+
+def _load_rest_api_key(cfg: Dict) -> str:
+    """Loads the rest api key into the config
+
+    Args:
+        cfg (Dict): SuzieQ config
+
+    Returns:
+        str: Empty if the variable was loaded correctly,
+        the error otherwise
+    """
+    if 'rest' in cfg and 'API_KEY' in cfg['rest']:
+        api_key = cfg['rest']['API_KEY']
+        if api_key == 'ask':
+            # this function is called during the on_connect of the cli
+            # Nubia doesn't allow the user to prompt anything at that point
+            return "'ask' option is not available for REST API KEY"
+        try:
+            cfg['rest']['API_KEY'] = get_sensitive_data(api_key)
+        except SensitiveLoadError as e:
+            return f'Cannot load REST API KEY: {e}'
+    return ''
 
 
 def load_sq_config(validate=True, config_file=None):
@@ -145,8 +175,16 @@ def load_sq_config(validate=True, config_file=None):
         if validate:
             error_str = validate_sq_config(cfg)
             if error_str:
-                print(f'ERROR: Invalid config file: {config_file}')
+                print(f'ERROR: Invalid config file: {cfgfile}')
                 print(error_str)
+                sys.exit(1)
+        else:
+            # also without validation, I need to load the REST API key and,
+            # if necessary, raise an error
+            error = _load_rest_api_key(cfg)
+            if error:
+                print(f'ERROR: Invalid config file: {cfgfile}')
+                print(error)
                 sys.exit(1)
 
     if not cfg:
@@ -155,6 +193,41 @@ def load_sq_config(validate=True, config_file=None):
         sys.exit(1)
 
     return cfg
+
+
+def get_sensitive_data(input_method: str, ask_message: str = '') -> str:
+    """This function is used by the inventory to specify sensitive data
+
+    The valid methods are:
+        - 'plain:' (default): copy the content of input (can be omitted)
+        - 'env:': get the information from an environment variable
+        - 'ask': write the information on the stdin
+
+    Args:
+        input_method (str): string with info for the sensitive value
+        ask_message (str): message to prompt for the 'ask' method
+
+    Raises:
+        EnvVarLoadError: environment variable not found
+
+    Returns:
+        str: sensitive data
+    """
+    if not input_method:
+        return input_method
+    sens_data = input_method
+    if input_method.startswith('env:'):
+        input_method = input_method.split('env:')[1].strip()
+        sens_data = getenv(input_method, '')
+        if not sens_data:
+            raise SensitiveLoadError(
+                f'No environment variable called '
+                f"'{input_method}'")
+    elif input_method.startswith('plain:'):
+        sens_data = input_method.split("plain:")[1].strip()
+    elif input_method.startswith('ask'):
+        sens_data = getpass.getpass(ask_message)
+    return sens_data
 
 
 def sq_get_config_file(config_file):
