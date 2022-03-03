@@ -22,6 +22,7 @@ class BgpObj(SqPandasEngine):
         peer = kwargs.pop('peer', None)
         hostname = kwargs.pop('hostname', None)
         user_query = kwargs.pop('query_str', None)
+        afi_safi = kwargs.pop('afiSafi', '')
 
         addnl_fields.extend(['origPeer'])
         sch = self.schema
@@ -35,6 +36,9 @@ class BgpObj(SqPandasEngine):
                     'peer', 'hostname']:
             if col not in fields:
                 addnl_fields.append(col)
+
+        if afi_safi and afi_safi not in fields:
+            addnl_fields.append('afiSafi')
 
         try:
             df = super().get(addnl_fields=addnl_fields, **kwargs)
@@ -50,10 +54,10 @@ class BgpObj(SqPandasEngine):
             # augmented columns yet and so can fail.
             return df
 
-        if 'afiSafi' in columns or (columns == ['*']):
+        if afi_safi or 'afiSafi' in fields or (columns == ['*']):
             df['afiSafi'] = df['afi'] + ' ' + df['safi']
         query_str = build_query_str([], sch, vrf=vrf, peer=peer,
-                                    hostname=hostname,
+                                    hostname=hostname, afiSafi=afi_safi,
                                     ignore_regex=False)
         if 'peer' in df.columns:
             df['peer'] = np.where(df['origPeer'] != "",
