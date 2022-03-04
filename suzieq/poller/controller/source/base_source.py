@@ -261,14 +261,15 @@ def _load_inventory(source_file: str) -> List[dict]:
 
     inventory = read_inventory(source_file)
 
-    ns_dict = inventory.get('namespaces')
+    ns_list = inventory.get('namespaces')
     sources_dict = inventory.get('sources')
     auths_dict = inventory.get('auths', {})
     devs_dict = inventory.get('devices', {})
 
     sources = []
-    for namespace, ns in ns_dict.items():
+    for ns in ns_list:
         source_name = ns.get('source')
+        namespace = ns.get('name')
 
         source = sources_dict.get(source_name)
 
