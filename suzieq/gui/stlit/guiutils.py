@@ -180,7 +180,7 @@ def sq_gui_style(df, table, is_assert=False):
 
     if is_assert:
         if not df.empty:
-            return df.style.apply(color_row, axis=1, field='status',
+            return df.style.apply(color_row, axis=1, field='result',
                                   fieldval=['fail'], bgcolor='darkred',
                                   color='white')
         else:
