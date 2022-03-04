@@ -12,8 +12,6 @@ import operator
 from urllib.parse import urlparse
 import asyncio
 from asyncio.subprocess import PIPE, DEVNULL
-# pylint: disable=redefined-builtin
-from concurrent.futures._base import TimeoutError
 
 from packaging import version as version_parse
 import yaml
@@ -24,6 +22,7 @@ from dateparser import parse
 
 
 from suzieq.poller.worker.services.service import RsltToken
+from suzieq.shared.status import EXCEPTIONS_AUTHN_ERROR, EXCEPTIONS_CONNECTION_ERROR
 from suzieq.shared.utils import get_timestamp_from_junos_time, known_devtypes
 from suzieq.shared.exceptions import SqPollerConfError, UnknownDevtypeError
 
@@ -260,7 +259,7 @@ class Node:
         if self.jump_host_key:
             jump_host_options = asyncssh.SSHClientConnectionOptions(
                 client_keys=self.jump_host_key,
-                login_timeout=self.connect_timeout,
+                connect_timeout=self.connect_timeout,
             )
 
             if self.ignore_known_hosts:
@@ -309,7 +308,7 @@ class Node:
             asyncssh.SSHClientConnectionOptions: [description]
         """
         options = asyncssh.SSHClientConnectionOptions(
-            login_timeout=self.connect_timeout,
+            connect_timeout=self.connect_timeout,
             username=self.username,
             agent_identities=self.pvtkey if self.pvtkey else None,
             client_keys=self.pvtkey if self.pvtkey else None,
@@ -379,9 +378,10 @@ class Node:
 
     def _create_error(self, cmd) -> dict:
         data = {'error': str(self.current_exception)}
-        if isinstance(self.current_exception, TimeoutError):
+        if isinstance(self.current_exception, EXCEPTIONS_CONNECTION_ERROR):
             status = HTTPStatus.REQUEST_TIMEOUT
-        elif isinstance(self.current_exception, asyncssh.misc.ProtocolError):
+        elif isinstance(self.current_exception, EXCEPTIONS_AUTHN_ERROR):
+        # elif isinstance(self.current_exception, asyncssh.misc.ProtocolError):
             status = HTTPStatus.FORBIDDEN
         elif hasattr(self.current_exception, 'code'):
             status = self.current_exception.code
@@ -732,8 +732,8 @@ class Node:
                 if self.sigend:
                     await self._terminate()
                     return
-                result.append(self._create_error(cmd))
                 self.current_exception = e
+                result.append(self._create_error(cmd))
                 if not isinstance(e, asyncio.TimeoutError):
                     self.logger.error(
                         "%s output for %s failed due to %s", cmd,
