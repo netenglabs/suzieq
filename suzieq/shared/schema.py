@@ -285,6 +285,7 @@ class SchemaForTable:
                 fields.insert(0, "namespace")
         elif columns == ["*"]:
             fields = self.sorted_display_fields(getall=True)
+            fields.remove('sqvers')
         else:
             fields = [f for f in columns if f in self.fields]
 
