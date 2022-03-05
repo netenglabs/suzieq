@@ -13,16 +13,13 @@ class MacsObj(SqPandasEngine):
         if not self.iobj.table:
             raise NotImplementedError
 
-        columns = kwargs.get('columns', ['default'])
+        columns = kwargs.pop('columns', ['default'])
         moveCount = kwargs.pop('moveCount', None)
         view = kwargs.pop('view', self.iobj.view)
         remoteOnly = False
         localOnly = kwargs.pop('local', False)
         user_query = kwargs.pop('query_str', '')
         vtep = kwargs.get('remoteVtepIp', [])
-
-        # Always remove mackey because it is an internal column
-        drop_cols = []
 
         if vtep:
             if kwargs['remoteVtepIp'] == ['any']:
@@ -36,16 +33,16 @@ class MacsObj(SqPandasEngine):
         else:
             compute_moves = False
 
-        if columns in [['default'], ['*']] or 'mackey' not in columns:
-            drop_cols.append('mackey')
+        fields = self.schema.get_display_fields(columns)
 
-        df = self.get_valid_df(self.iobj.table, view=view, **kwargs)
+        addnl_fields = self._get_user_query_cols(user_query)
+
+        df = super().get(view=view, columns=fields, addnl_fields=addnl_fields,
+                         **kwargs)
 
         if compute_moves and not df.empty:
             df = df.set_index('namespace hostname mackey macaddr'.split()) \
                    .sort_values(by=['timestamp'])
-
-            drop_cols.extend('eoif neoif moved'.split())
 
             # enhanced OIF, capturing both OIF and remoteVtep to capture moves
             # across local and remote
@@ -61,9 +58,6 @@ class MacsObj(SqPandasEngine):
                 'moved'].cumsum()
             df = df.reset_index()
 
-            if 'moveCount' in columns:
-                df = df[columns]
-
             if moveCount:
                 try:
                     moveCount = int(moveCount)
@@ -74,15 +68,16 @@ class MacsObj(SqPandasEngine):
                         f'moveCount {moveCount}').reset_index(drop=True)
 
         df = self._handle_user_query_str(df, user_query)
-        if drop_cols:
-            df = df.drop(columns=drop_cols,
-                         errors='ignore').reset_index(drop=True)
         if remoteOnly:
             df = df.query("remoteVtepIp != ''").reset_index(drop=True)
         elif localOnly:
             df = df.query("remoteVtepIp == ''").reset_index(drop=True)
 
-        return df
+        if columns in [['default'], ['*']] or 'mackey' not in columns:
+            if 'mackey' in fields:
+                fields.remove('mackey')
+
+        return df[fields]
 
     def summarize(self, **kwargs):
         """Summarize the MAC table info"""

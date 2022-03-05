@@ -16,22 +16,18 @@ class VlanObj(SqPandasEngine):
         # vlanName is the correct fieldname. SO we need to do magic
         # to fix this. And thats why this routine exists
 
-        dropcols = []
-        addnl_fields = kwargs.pop('addnl_fields', [])
         columns = kwargs.pop('columns', [])
-        if (columns != ['*'] and (columns == ['default'] or
-                                  'ifname' not in columns)):
+
+        addnl_fields = []
+        fields = self.schema.get_display_fields(columns)
+        if 'ifname' not in fields:
             if 'ifname' not in addnl_fields:
                 addnl_fields.append('ifname')
-                dropcols.append('ifname')
 
-        df = super().get(addnl_fields=addnl_fields, columns=columns,
+        df = super().get(addnl_fields=addnl_fields, columns=fields,
                          merge_fields={'ifname': 'vlanName'},
                          **kwargs)
-        if not df.empty:
-            df.drop(columns=dropcols, errors='ignore', inplace=True)
-
-        return df
+        return df[fields]
 
     def summarize(self, **kwargs):
         """Describe the IP Address data"""

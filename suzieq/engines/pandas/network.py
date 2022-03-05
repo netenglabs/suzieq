@@ -28,21 +28,14 @@ class NetworkObj(SqPandasEngine):
         namespace = kwargs.pop('namespace', [])
 
         drop_cols = []
-        show_cols = self.schema.get_display_fields(columns)
-        if columns != '*' and 'sqvers' in show_cols:
-            # Behavior in engineobj.py
-            show_cols.remove('sqvers')
+        fields = self.schema.get_display_fields(columns)
 
         if os or model or vendor or os_version:
             df = self._get_table_sqobj('device').get(
                 columns=['namespace', 'hostname', 'os', 'model', 'vendor',
                          'version'],
-                os=os,
-                model=model,
-                vendor=vendor,
-                version=os_version,
-                namespace=namespace,
-                **kwargs)
+                os=os, model=model, vendor=vendor, version=os_version,
+                namespace=namespace, **kwargs)
         else:
             df = self._get_table_sqobj('device').get(
                 columns=['namespace', 'hostname'], namespace=namespace,
@@ -95,7 +88,7 @@ class NetworkObj(SqPandasEngine):
                 lambda x, y: x.namespace in y,
                 axis=1, args=(gotns,))
 
-        if 'sqvers' in show_cols:
+        if 'sqvers' in fields:
             newdf['sqvers'] = self.schema.version
         newdf['active'] = True
         newdf = self._handle_user_query_str(newdf, user_query)
@@ -104,7 +97,8 @@ class NetworkObj(SqPandasEngine):
         newdf['lastUpdate'] = nsgrp['timestamp'].max() \
             .reset_index()['timestamp']
 
-        return newdf.drop(columns=drop_cols)[show_cols]
+        newdf = self._handle_user_query_str(newdf, user_query)
+        return newdf.drop(columns=drop_cols)[fields]
 
     def find(self, **kwargs):
         '''Find the information requsted:

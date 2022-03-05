@@ -15,14 +15,12 @@ class LldpObj(SqPandasEngine):
     def get(self, **kwargs):
         '''A separate get to handle JunOS MACaddr as peer'''
 
-        addnl_fields = kwargs.pop('addnl_fields', [])
         namespace = kwargs.get('namespace', [])
-        columns = kwargs.get('columns', [])
+        columns = kwargs.pop('columns', [])
         use_bond = kwargs.pop('use_bond', "False")
+        query_str = kwargs.pop('query_str', '')
 
         cols = self.schema.get_display_fields(columns)
-        if columns == ['*']:
-            cols.remove('sqvers')
         if columns == ['default']:
             needed_fields = ['subtype', 'peerMacaddr', 'peerIfindex']
         elif 'peerIfname' in columns:
@@ -33,7 +31,10 @@ class LldpObj(SqPandasEngine):
 
         addnl_fields = [f for f in needed_fields if f not in cols]
 
-        df = super().get(addnl_fields=addnl_fields, **kwargs)
+        user_query_cols = self._get_user_query_cols(query_str)
+        addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
+
+        df = super().get(addnl_fields=addnl_fields, columns=cols, **kwargs)
         if df.empty or (not needed_fields and columns != ['*']):
             return df
 
@@ -77,10 +78,11 @@ class LldpObj(SqPandasEngine):
                 df['peerIfname'] = np.where(df['peerIfname'] == '-',
                                             df['ifname_y'], df['peerIfname'])
 
-        if use_bond.lower() != "true":
-            return df[cols]
-        else:
-            return self._resolve_to_bond(df)[cols]
+        if use_bond.lower() == "true":
+            df = self._resolve_to_bond(df)[cols]
+
+        df = self._handle_user_query_str(df, query_str)
+        return df.reset_index(drop=True)[cols]
 
     def summarize(self, **kwargs):
         '''Summarize LLDP info'''

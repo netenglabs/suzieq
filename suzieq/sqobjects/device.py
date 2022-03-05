@@ -1,4 +1,5 @@
 import pandas as pd
+from pandas.core.dtypes.dtypes import DatetimeTZDtype
 
 from suzieq.sqobjects.basicobj import SqObject
 from suzieq.shared.utils import humanize_timestamp
@@ -25,8 +26,9 @@ class DeviceObj(SqObject):
 
         # Convert the bootup timestamp into a time delta
         if 'bootupTimestamp' in df.columns:
-            df['bootupTimestamp'] = humanize_timestamp(
-                df['bootupTimestamp']*1000,
-                self.cfg.get('analyzer', {}).get('timezone', None))
+            if not isinstance(df.bootupTimestamp.dtype, DatetimeTZDtype):
+                df['bootupTimestamp'] = humanize_timestamp(
+                    df['bootupTimestamp']*1000,
+                    self.cfg.get('analyzer', {}).get('timezone', None))
 
         return super().humanize_fields(df)

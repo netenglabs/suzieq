@@ -25,32 +25,30 @@ class InterfacesObj(SqPandasEngine):
         ifname = kwargs.get('ifname', '')
         vrf = kwargs.pop('vrf', '')
         master = kwargs.pop('master', [])
-        columns = kwargs.get('columns', [])
+        columns = kwargs.pop('columns', [])
         user_query = kwargs.pop('query_str', '')
         vlan = kwargs.pop('vlan', '')
         portmode = kwargs.pop('portmode', '')
 
-        addnl_fields = kwargs.get('addnl_fields', [])
-
+        addnl_fields = []
         if vrf:
             master.extend(vrf)
 
         fields = self.schema.get_display_fields(columns)
-        # path passes additional fields
-        for f in addnl_fields:
-            if f not in fields:
-                fields.append(f)
-
-        if columns == ['*']:
-            fields.remove('sqvers')
 
         drop_cols = []
+        user_query_cols = self._get_user_query_cols(user_query)
+        addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
+
         if not ifname and iftype and iftype != ["all"]:
-            df = super().get(type=iftype, master=master, **kwargs)
+            df = super().get(type=iftype, master=master, columns=fields,
+                             addnl_fields=addnl_fields, **kwargs)
         elif not ifname and iftype != ['all']:
-            df = super().get(master=master, type=['!internal'], **kwargs)
+            df = super().get(master=master, type=['!internal'], columns=fields,
+                             addnl_fields=addnl_fields, **kwargs)
         else:
-            df = super().get(master=master, **kwargs)
+            df = super().get(master=master, columns=fields,
+                             addnl_fields=addnl_fields, **kwargs)
 
         if df.empty:
             return df

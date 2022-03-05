@@ -70,17 +70,6 @@ class BgpCmd(SqCommand):
 
         return df.dropna(how='any')
 
-    @command("show")
-    def show(self):
-        """Show BGP info
-        """
-
-        if (self.columns != ['default'] and self.columns != ['*'] and
-                'state' not in self.columns):
-            self.lvars['addnl_fields'] = ['state']
-
-        return super().show()
-
     @command("assert")
     @argument("result", description="Show only assert that matches this value",
               choices=["all", "fail", "pass"])

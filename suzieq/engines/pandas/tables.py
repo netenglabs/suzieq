@@ -36,7 +36,7 @@ class TableObj(SqPandasEngine):
 
             info = {'table': table}
             info.update(table_inst.get_table_info(
-                table, columns=['namespace', 'hostname', 'timestamp'],
+                columns=['namespace', 'hostname', 'timestamp'],
                 **kwargs))
             tables.append(info)
 

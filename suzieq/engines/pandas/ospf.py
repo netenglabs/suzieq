@@ -23,16 +23,12 @@ class OspfObj(SqPandasEngine):
 
         columns = kwargs.pop('columns', ['default'])
         state = kwargs.pop('state', '')
-        addnl_fields = kwargs.pop('addnl_fields', self.iobj.addnl_fields)
-        addnl_nbr_fields = getattr(
-            self.iobj, '._addnl_nbr_fields', ['state'])
         user_query = kwargs.pop('query_str', '')
         hostname = kwargs.pop('hostname', [])
 
         cols = self.schema.get_display_fields(columns)
 
-        if columns == ['*']:
-            cols.remove('sqvers')
+        user_query_cols = self._get_user_query_cols(user_query)
 
         ifschema = SchemaForTable('ospfIf', schema=self.all_schemas)
         nbrschema = SchemaForTable('ospfNbr', schema=self.all_schemas)
@@ -50,10 +46,18 @@ class OspfObj(SqPandasEngine):
                     ifcols.append(fld)
                 elif fld in nbr_flds and fld not in nbrcols:
                     nbrcols.append(fld)
+                if 'state' not in nbrcols:
+                    nbrcols.append('state')
+                ifcols += [x for x in ['area', 'state', 'passive']
+                           if x not in ifcols]
         else:
             ifcols = ifschema.get_display_fields(columns)
             nbrcols = nbrschema.get_display_fields(columns)
 
+        ifcols += [x for x in user_query_cols if (x in ifschema.fields
+                                                  and x not in ifcols)]
+        nbrcols += [x for x in user_query_cols if (x in nbrschema.fields
+                                                   and x not in nbrcols)]
         state_query_dict = {
             'full': '(adjState == "full" or adjState == "passive")',
             'passive': '(adjState == "passive")',
@@ -75,10 +79,10 @@ class OspfObj(SqPandasEngine):
         if host_query_str:
             query_str += f'{cond_prefix}{host_query_str}'
 
-        df = self.get_valid_df('ospfIf', addnl_fields=addnl_fields,
-                               columns=ifcols, **kwargs)
-        nbr_df = self.get_valid_df('ospfNbr', addnl_fields=addnl_nbr_fields,
-                                   columns=nbrcols, **kwargs)
+        df = self._get_table_sqobj('ospfIf') \
+                 .get(columns=ifcols, **kwargs)
+        nbr_df = self._get_table_sqobj('ospfNbr') \
+                     .get(columns=nbrcols, **kwargs)
         if nbr_df.empty:
             return df
 
@@ -112,18 +116,26 @@ class OspfObj(SqPandasEngine):
                                     'state_y': 'adjState',
                                     'timestamp_x': 'timestamp'})
             df = df.drop(list(df.filter(regex='_y$')), axis=1) \
-                   .drop(['ipAddress_x'], axis=1, errors='ignore') \
+                   .drop(columns=['ipAddress_x'], errors='ignore') \
                    .fillna({'peerIP': '-', 'numChanges': 0,
                             'lastChangeTime': 0})
-
         if df.empty:
             return df
 
+        if 'state' in df.columns:
+            # Need this logic if the user specfies only one of adjState
+            # or ifState in the columns field. The above renaming of state_x
+            # and state_y will not work in that case, and this is what we
+            # have to do.
+            if 'ifState' in cols:
+                df = df.rename(columns={'state': 'ifState'})
+            else:
+                df = df.rename(columns={'state': 'adjState'})
         if 'lastChangeTime' in df.columns:
             df['lastChangeTime'] = np.where(df.lastChangeTime == '-',
                                             0, df.lastChangeTime)
         # Fill the adjState column with passive if passive
-        if 'passive' in df.columns:
+        if 'passive' in df.columns and 'adjState' in df.columns:
             df.loc[df['adjState'].isnull(), 'adjState'] = df['passive']
             df.loc[df['adjState'].eq(True), 'adjState'] = 'passive'
             df.loc[df['adjState'].eq(False), 'adjState'] = 'fail'
@@ -133,14 +145,16 @@ class OspfObj(SqPandasEngine):
             df.drop(columns=['passive'], inplace=True)
 
         df.bfill(axis=0, inplace=True)
-
-        final_df = self._get_peernames(df, cols)
+        final_df = df
+        if 'peerHostname' in cols or 'peerIfname' in cols:
+            final_df = self._get_peernames(df, cols)
         if query_str:
             final_df = final_df.query(query_str).reset_index(drop=True)
 
         if user_query and not final_df.empty:
             final_df = self._handle_user_query_str(final_df, user_query)
         # Move the timestamp column to the end
+
         return final_df.reset_index(drop=True)[cols]
 
     def get(self, **kwargs):
@@ -205,26 +219,7 @@ class OspfObj(SqPandasEngine):
         """Assert that the OSPF state is OK"""
 
         kwargs.pop('columns', [])
-        columns = [
-            "namespace",
-            "hostname",
-            "vrf",
-            "ifname",
-            "ifState",
-            "adjState",
-            "routerId",
-            "helloTime",
-            "deadTime",
-            "passive",
-            "peerIP",
-            "ipAddress",
-            "isUnnumbered",
-            "areaStub",
-            "networkType",
-            "timestamp",
-            "area",
-            "nbrCount",
-        ]
+        columns = ['*']
 
         result = kwargs.pop('result', 'all')
         kwargs.pop('state', '')

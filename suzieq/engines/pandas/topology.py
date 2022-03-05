@@ -81,7 +81,6 @@ class TopologyObj(SqPandasEngine):
         asn = kwargs.pop('asn', '')
         area = kwargs.pop('area', '')
         vrf = kwargs.pop('vrf', '')
-        addnl_fields = kwargs.pop('addnl_fields', [])
         afi_safi = kwargs.pop('afiSafi', '')
 
         self._init_dfs(self._namespaces)
@@ -90,11 +89,6 @@ class TopologyObj(SqPandasEngine):
         self._ip_table = pd.DataFrame()
 
         fields = self.schema.get_display_fields(columns)
-        if columns == ['*']:
-            fields.remove('sqvers')
-
-        if peerHostname and 'peerHostname' not in fields:
-            addnl_fields.append('peerHostname')
 
         if (asn or afi_safi) and area:
             raise AttributeError(
@@ -139,11 +133,10 @@ class TopologyObj(SqPandasEngine):
             self.services = [x for x in self.services if x.name in via]
         key = 'peerHostname'
 
-        kwargs['addnl_fields'] = addnl_fields
         for srv in self.services:
             if 'columns' not in srv.extra_args:
                 srv.extra_args['columns'] = ['default']
-            extra_cols = [x for x in srv.extra_cols if x not in addnl_fields]
+            extra_cols = list(srv.extra_cols)
             df = self._get_table_sqobj(srv.name).get(
                 **kwargs,
                 **srv.extra_args

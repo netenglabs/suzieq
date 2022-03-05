@@ -33,7 +33,7 @@ class AddressObj(SqPandasEngine):
 
         addr = kwargs.pop("address", [])
         prefix = kwargs.pop("prefix", [])
-        columns = kwargs.get("columns", [])
+        columns = kwargs.pop("columns", [])
         ipvers = kwargs.pop("ipvers", "")
         user_query = kwargs.pop("query_str", "")
 
@@ -42,8 +42,8 @@ class AddressObj(SqPandasEngine):
                 user_query = user_query[1:-1]
 
         vrf = kwargs.pop("vrf", "")
-        addnl_fields = ['master']
-        drop_cols = []
+
+        fields = self.schema.get_display_fields(columns)
 
         if prefix:
             addr_types = self.addr_type(prefix)
@@ -53,23 +53,27 @@ class AddressObj(SqPandasEngine):
         # Always include ip or mac addresses in the dataframe
         # if there is a filter on them
 
-        if columns not in [['default'], ['*']]:
-            for x in ['ipAddressList', 'ip6AddressList', 'macaddr']:
-                if x not in columns:
-                    addnl_fields.append(x)
-                    drop_cols.append(x)
+        addnl_fields = []
+        for x in ['ipAddressList', 'ip6AddressList', 'macaddr']:
+            if x not in fields:
+                addnl_fields.append(x)
 
-        df = self.get_valid_df("address", addnl_fields=addnl_fields, **kwargs)
+        user_query_cols = self._get_user_query_cols(user_query)
+        addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
+
+        df = super().get(addnl_fields=addnl_fields, columns=fields,
+                         **kwargs)
 
         if df.empty:
             return df
 
-        df = df.rename({'master': 'vrf'}, axis=1) \
-            .replace({'vrf': {'': 'default'}})
-
-        df.loc[(df.vrf == 'bridge') | ((df.ipAddressList.str.len() == 0)
-                                       & (df.ip6AddressList.str.len() == 0)),
-               'vrf'] = ''
+        if 'master' in df.columns:
+            df = df.rename({'master': 'vrf'}, axis=1) \
+                   .replace({'vrf': {'': 'default'}})
+            df.loc[(df.vrf == 'bridge') |
+                   ((df.ipAddressList.str.len() == 0)
+                    & (df.ip6AddressList.str.len() == 0)),
+                   'vrf'] = ''
 
         query_str = build_query_str([], self.schema, vrf=vrf)
 
@@ -159,7 +163,7 @@ class AddressObj(SqPandasEngine):
             df = df.query(query_str)
 
         df = self._handle_user_query_str(df, user_query)
-        return df.drop(columns=drop_cols, errors='ignore')
+        return df.reset_index(drop=True)[fields]
 
     def unique(self, **kwargs) -> pd.DataFrame:
         """Specific here only if columns=vrf to filter out non-routed if"""

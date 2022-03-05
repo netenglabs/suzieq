@@ -51,7 +51,7 @@ class NetworkCmd(SqCommand):
         df = self._invoke_sqobj(self.sqobj.get,
                                 namespace=self.namespace, os=os.split(),
                                 vendor=vendor.split(), model=model.split(),
-                                version=version,
+                                version=version, query_str=self.query_str,
                                 hostname=self.hostname)
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
