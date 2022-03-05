@@ -51,18 +51,3 @@ class SqPollerCmd(SqCommand):
             'status': status,
             'pollExcdPeriodCount': poll_period_exceeded,
         }
-
-    @command("describe", help="describe the table and its fields")
-    def describe(self):
-        default_lvars = {
-            'service': [],
-            'status': 'all',
-            'pollExcdPeriodCount': '0'
-        }
-
-        # check if lvars are the default args,
-        # if yes clean before calling super
-        if self.lvars == default_lvars:
-            self.lvars = {}
-
-        return super().describe()
