@@ -16,38 +16,36 @@ class DeviceObj(SqPandasEngine):
         '''Table name'''
         return 'device'
 
-    # pylint: disable=too-many-statements
     def get(self, **kwargs):
         """Get the information requested"""
         view = kwargs.get('view', self.iobj.view)
-        columns = kwargs.get('columns', ['default'])
-        addnl_fields = kwargs.pop('addnl_fields', [])
+        columns = kwargs.pop('columns', ['default'])
         user_query = kwargs.pop('query_str', '')
         status = kwargs.pop('status', '')
         os_version = kwargs.pop('version', '')
         os = kwargs.get('os', '')
 
-        if 'active' not in addnl_fields+columns and columns != ['*']:
+        addnl_fields = []
+        fields = self.schema.get_display_fields(columns)
+        if 'active' not in addnl_fields+fields:
             addnl_fields.append('active')
 
-        fields = self.iobj.schema.get_display_fields(columns)
-        if columns == ['*']:
-            fields.remove('sqvers')
-
         # os is not included in the default column list. Why? I was dumb
-        if (columns == ['default'] and os) or (os and 'os' not in columns):
+        if os and 'os' not in fields:
             addnl_fields.append('os')
 
         for col in ['namespace', 'hostname', 'status', 'address']:
-            if columns not in [['default'], ['*']] and col not in columns:
+            if col not in fields:
                 addnl_fields.append(col)
 
-        if columns == ['*'] or 'uptime' in columns:
-            if columns != ['*'] and 'bootupTimestamp' not in columns:
-                addnl_fields.append('bootupTimestamp')
+        if 'uptime' in fields and 'bootupTimestamp' not in fields:
+            addnl_fields.append('bootupTimestamp')
+
+        user_query_cols = self._get_user_query_cols(user_query)
+        addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
 
         df = super().get(active_only=False, addnl_fields=addnl_fields,
-                         **kwargs)
+                         columns=fields, **kwargs)
         if view == 'latest' and 'status' in df.columns:
             df['status'] = np.where(df.active, df['status'], 'dead')
 
@@ -55,7 +53,7 @@ class DeviceObj(SqPandasEngine):
             namespace=kwargs.get('namespace', []),
             hostname=kwargs.get('hostname', []),
             service='device',
-            columns='namespace hostname status'.split())
+            columns='namespace hostname status timestamp'.split())
 
         if not poller_df.empty:
             # Identify the address to namespace/hostname mapping
@@ -122,7 +120,7 @@ class DeviceObj(SqPandasEngine):
         df = self._handle_user_query_str(df, user_query)
 
         # if poller has failed completely, Can mess up the order of columns
-        return df[fields]
+        return df.reset_index(drop=True)[fields]
 
     def summarize(self, **kwargs):
         """Summarize device information across namespace"""
@@ -147,8 +145,6 @@ class DeviceObj(SqPandasEngine):
             ('archCnt', 'architecture'),
             ('versionCnt', 'version'),
         ]
-
-        self.summary_df = self.iobj.humanize_fields(self.summary_df)
 
         self._summarize_on_add_stat = [
             ('upTimeStat', 'status != "neverpoll"', 'uptime')

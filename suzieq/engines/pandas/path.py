@@ -40,7 +40,9 @@ class PathObj(SqPandasEngine):
         try:
             self._if_df = self._get_table_sqobj('interfaces') \
                 .get(namespace=namespace, state='up',
-                     addnl_fields=['macaddr']) \
+                     columns=['namespace', 'hostname', 'ifname', 'mtu', 'type',
+                              'ipAddressList', 'ip6AddressList', 'state',
+                              'vlan', 'master', 'macaddr', 'timestamp']) \
                 .explode('ipAddressList') \
                 .fillna({'ipAddressList': ''}) \
                 .explode('ip6AddressList') \

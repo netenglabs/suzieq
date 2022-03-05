@@ -1,3 +1,5 @@
+from typing import List
+import re
 from ipaddress import ip_address, ip_network
 
 import dateparser
@@ -81,7 +83,7 @@ class SqPandasEngine(SqEngineObj):
         """
         if query_str:
             try:
-                df = df.query(query_str).reset_index(drop=True)
+                df = df.query(query_str)
             except Exception as ex:
                 raise UserQueryError(ex) from Exception
 
@@ -125,11 +127,11 @@ class SqPandasEngine(SqEngineObj):
         return addr.apply(lambda a: (self._get_ipvers(a) == version))
 
     # pylint: disable=too-many-statements
-    def get_valid_df(self, table: str, **kwargs) -> pd.DataFrame:
+    def get_valid_df(self, **kwargs) -> pd.DataFrame:
         """The heart of the engine: retrieving the data from the backing store
 
         Args:
-            table (str): Name of the table to retrieve the data for
+            kwargs: keyword args passed by caller, varies depending on table
 
         Returns:
             pd.DataFrame: The data as a pandas dataframe
@@ -139,7 +141,7 @@ class SqPandasEngine(SqEngineObj):
             return pd.DataFrame(columns=["namespace", "hostname"])
 
         # Thanks to things like OSPF, we cannot use self.schema here
-        sch = SchemaForTable(table, self.all_schemas)
+        sch = self.schema
         phy_table = sch.get_phy_table_for_table()
 
         columns = kwargs.pop('columns', ['default'])
@@ -147,13 +149,19 @@ class SqPandasEngine(SqEngineObj):
         view = kwargs.pop('view', self.iobj.view)
         active_only = kwargs.pop('active_only', True)
         hostname = kwargs.pop('hostname', [])
+        query_str = kwargs.pop('query_str', '')
 
         fields = sch.get_display_fields(columns)
         key_fields = sch.key_fields()
-        drop_cols = []
 
-        if columns == ['*']:
-            drop_cols.append('sqvers')
+        # Lets also get the fields required to satisfy user-specified filters
+        # We cannot use sets because we want to preserve the order of fields
+        filter_fields = [x for x in self.iobj.get_filter_fields
+                         if x not in addnl_fields]
+        user_query_cols = [x for x in self._get_user_query_cols(query_str)
+                           if x not in addnl_fields]
+        fields += [x for x in user_query_cols+filter_fields+addnl_fields
+                   if x not in fields]
 
         aug_fields = sch.get_augmented_fields(fields)
 
@@ -162,13 +170,13 @@ class SqPandasEngine(SqEngineObj):
 
         if 'active' not in fields+addnl_fields:
             addnl_fields.append('active')
-            if view != 'all':
-                drop_cols.append('active')
 
         # Order matters. Don't put this before the missing key fields insert
         for f in aug_fields:
             dep_fields = sch.get_parent_fields(f)
-            dep_fields = [x for x in dep_fields if x not in aug_fields]
+            dep_fields = [x for x in dep_fields if x not in aug_fields and
+                          x not in fields]
+            fields += dep_fields
             addnl_fields += dep_fields
 
         # Remove augmented fields from being passed to DB read.
@@ -178,12 +186,8 @@ class SqPandasEngine(SqEngineObj):
         for fld in key_fields:
             if fld not in fields+addnl_fields:
                 addnl_fields.insert(0, fld)
-                drop_cols.append(fld)
 
-        for f in addnl_fields:
-            if f not in fields:
-                # timestamp is always the last field
-                fields.insert(-1, f)
+        getcols = list(set(fields+addnl_fields))
 
         if self.iobj.start_time:
             try:
@@ -226,7 +230,7 @@ class SqPandasEngine(SqEngineObj):
             'pandas',
             start_time=start_time,
             end_time=end_time,
-            columns=fields,
+            columns=getcols,
             view=view,
             key_fields=key_fields,
             **kwargs
@@ -248,18 +252,18 @@ class SqPandasEngine(SqEngineObj):
                 else:
                     return pd.DataFrame(columns=table_df.columns.tolist())
 
-            if view == "all" or not active_only:
-                table_df = table_df.drop(columns=drop_cols, errors='ignore')
-            else:
-                table_df = table_df.query('active') \
-                    .drop(columns=drop_cols, errors='ignore')
+            if view != "all" and not active_only:
+                table_df = table_df.query('active')
 
             if 'timestamp' in table_df.columns and not table_df.empty:
                 table_df['timestamp'] = humanize_timestamp(
                     table_df.timestamp, self.cfg.get('analyzer', {})
                     .get('timezone', None))
 
-        return table_df.reset_index(drop=True)
+            if query_str:
+                table_df = self._handle_user_query_str(table_df, query_str)
+
+        return table_df.reset_index(drop=True)[fields]
 
     def get(self, **kwargs) -> pd.DataFrame:
         """The default get method for all tables
@@ -276,20 +280,16 @@ class SqPandasEngine(SqEngineObj):
         if not self.iobj.table:
             raise NotImplementedError
 
-        user_query = kwargs.pop('query_str', '')
-
-        df = self.get_valid_df(self.iobj.table, **kwargs)
-
-        df = self._handle_user_query_str(df, user_query)
+        df = self.get_valid_df(**kwargs)
 
         return df
 
-    def get_table_info(self, table: str, **kwargs) -> dict:
+    def get_table_info(self, **kwargs) -> dict:
         """Returns information about the data available for a table
 
         Used by table show command exclusively.
         Args:
-            table (str): Name of the table about which info is desired
+            kwargs: keyword args passed by caller, varies depending on table
 
         Returns:
             dict: The desired data as a dictionary
@@ -298,7 +298,7 @@ class SqPandasEngine(SqEngineObj):
         # to compute data required.
         kwargs.pop('view', None)
 
-        all_time_df = self.get_valid_df(table, view='all', **kwargs)
+        all_time_df = self.get_valid_df(view='all', **kwargs)
         times = all_time_df['timestamp'].unique()
         ret = {'firstTime': all_time_df.timestamp.min(),
                'latestTime': all_time_df.timestamp.max(),
@@ -408,8 +408,7 @@ class SqPandasEngine(SqEngineObj):
         if what not in columns:
             columns.insert(-1, what)
 
-        df = self.get(addnl_fields=self.iobj.addnl_fields, columns=columns,
-                      **kwargs)
+        df = self.get(columns=columns, **kwargs)
         if df.empty or ('error' in df.columns):
             return df
 
@@ -629,3 +628,19 @@ class SqPandasEngine(SqEngineObj):
             _ = {self.ns[i][fieldname].append(med_field[i])
                  if i in med_field else self.ns[i][fieldname].append(0)
                  for i in self.ns.keys()}
+
+    def _get_user_query_cols(self, query_str: str) -> List[str]:
+        """Returns the list of fields inside the query_str
+
+        Args:
+            query_str (str): query string
+            table (str): table from which get the fields
+
+        Returns:
+            List[str]: list of fields inside the query string
+        """
+        if query_str:
+            table_fields = self.schema.fields
+            return [f for f in table_fields if re.search(rf'\b{f}\b',
+                                                         query_str)]
+        return []

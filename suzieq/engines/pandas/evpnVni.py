@@ -17,24 +17,25 @@ class EvpnvniObj(SqPandasEngine):
     def get(self, **kwargs) -> pd.DataFrame:
         """Class-specific to extract info from addnl tables"""
 
-        drop_cols = []
-        addnl_fields = kwargs.pop('addnl_fields', [])
-        columns = kwargs.get('columns', [])
-        if (columns != ['*'] and 'ifname' not in columns and
-                'ifname' not in addnl_fields):
-            addnl_fields.append('ifname')
-            drop_cols.append('ifname')
+        columns = kwargs.pop('columns', [])
+        query_str = kwargs.pop('query_str', [])
 
-        if (columns == ['default'] or columns == ['*'] or
-                'remoteVtepCnt' in columns):
+        addnl_fields = []
+        fields = self.schema.get_display_fields(columns)
+        if 'ifname' not in fields+addnl_fields:
+            addnl_fields.append('ifname')
+
+        if 'remoteVtepCnt' in fields:
             getVtepCnt = True
-            if columns != ['*'] and 'remoteVtepList' not in columns:
+            if 'remoteVtepList' not in fields:
                 addnl_fields.append('remoteVtepList')
-                drop_cols.append('remoteVtepList')
         else:
             getVtepCnt = False
 
-        df = super().get(addnl_fields=addnl_fields, **kwargs)
+        user_query_cols = self._get_user_query_cols(query_str)
+        addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
+
+        df = super().get(addnl_fields=addnl_fields, columns=fields, **kwargs)
         if df.empty:
             return df
 
@@ -46,7 +47,7 @@ class EvpnvniObj(SqPandasEngine):
         # See if we can retrieve the info to fill out the rest of the data
         # Start with VLAN values
         if 'vlan' not in df.columns and 'vrf' not in df.columns:
-            return df.drop(columns=drop_cols, errors='ignore')
+            return df.reset_index(drop=True)[fields]
 
         iflist = [x for x in df[df.vlan == 0]['ifname'].to_list()
                   if x and x != 'None']
@@ -106,11 +107,8 @@ class EvpnvniObj(SqPandasEngine):
                         .rename(columns={'macaddr': 'numMacs'}) \
                         .fillna({'numMacs': 0})
 
-        df = df.drop(columns=drop_cols, errors='ignore')
-        col_list = [x for x in self.schema.get_display_fields(columns)
-                    if x in df.columns]
-
-        return df[col_list]
+        df = self._handle_user_query_str(df, query_str)
+        return df.reset_index(drop=True)[fields]
 
     def _count_macs(self, x, df):
         return df[(df.namespace == x['namespace']) & (df.vlan == x['vlan']) &

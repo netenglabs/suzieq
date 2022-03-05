@@ -12,7 +12,8 @@ class InventoryObj(SqPandasEngine):
         '''Table name'''
         return 'inventory'
 
-    def _common_get_exit_fn(self, df: pd.DataFrame, **kwargs) -> pd.DataFrame:
+    def _common_get_exit_fn(self, df: pd.DataFrame, query_str,
+                            fields) -> pd.DataFrame:
         """Common exit work to be done on returning from get
 
         Args:
@@ -25,11 +26,10 @@ class InventoryObj(SqPandasEngine):
         if df.empty:
             return df
 
-        query_str = kwargs.get('query_str')
         if query_str:
-            df = df.query(query_str)
+            df = self._handle_user_query_str(df, query_str)
 
-        return df
+        return df.reset_index(drop=True)[fields]
 
     def get(self, **kwargs):
         '''Specific get to replace interface names'''
@@ -48,7 +48,11 @@ class InventoryObj(SqPandasEngine):
                     x = x.split('Ethernet')[1]
             return x
 
-        df = super().get(**kwargs)
+        columns = kwargs.pop('columns', ['default'])
+
+        fields = self.schema.get_display_fields(columns)
+
+        df = super().get(columns=fields, **kwargs)
 
         if df.empty:
             return df
@@ -57,8 +61,7 @@ class InventoryObj(SqPandasEngine):
             # Lets see if we can name the ports properly
             df1 = df.query('type == "xcvr"').reset_index(drop=True)
             if df1.empty:
-                return self._common_get_exit_fn(df, query_str=user_query,
-                                                **kwargs)
+                return self._common_get_exit_fn(df, user_query, fields)
             # Lets see if we can name the ports properly
             namespaces = kwargs.get('namespace', [])
             hostnames = kwargs.get('hostname', [])
@@ -67,8 +70,7 @@ class InventoryObj(SqPandasEngine):
                      columns=['namespace', 'hostname', 'ifname'],
                      type=['ethernet', 'flexible-ethernet', 'bond_slave'])
             if ifdf.empty:
-                return self._common_get_exit_fn(df, query_str=user_query,
-                                                **kwargs)
+                return self._common_get_exit_fn(df, user_query, fields)
             df1['portNum'] = df1.name.str.split('port-').str[1].fillna('')
             ifdf['portNum'] = ifdf.ifname.apply(_get_inv_ifnum)
             # The idea is to provide sensible interface names. Most platforms
@@ -92,4 +94,4 @@ class InventoryObj(SqPandasEngine):
             df['name'] = np.where(df.ifname != "", df.ifname, df.name)
             df = df.drop(['ifname'], axis=1, errors='ignore')
 
-        return self._common_get_exit_fn(df, query_str=user_query, **kwargs)
+        return self._common_get_exit_fn(df, user_query, fields)

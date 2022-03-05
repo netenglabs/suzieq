@@ -15,8 +15,7 @@ class SqpollerObj(SqPandasEngine):
         status = kwargs.pop('status', '')
         poll_period_exceeded = kwargs.pop('pollExcdPeriodCount', '')
         columns = kwargs.pop('columns', [])
-
-        drop_cols = []
+        addnl_fields = kwargs.pop('addnl_fields', [])
 
         if status == "pass":
             add_filter = 'status == 0 or status == 200'
@@ -41,24 +40,16 @@ class SqpollerObj(SqPandasEngine):
 
         fields = self.schema.get_display_fields(columns)
         if status and 'status' not in fields:
-            fields.append('status')
-            drop_cols.append('status')
+            addnl_fields.append('status')
 
         if poll_period_exceeded and 'pollExcdPeriodCount' not in fields:
-            fields.append('pollExcdPeriodCount')
-            drop_cols.append('pollExcdPeriodCount')
-
-        if columns == ['*']:
-            drop_cols.append('sqvers')
+            addnl_fields.append('pollExcdPeriodCount')
 
         df = super().get(add_filter=add_filter, columns=fields, **kwargs)
         if not df.empty and add_filter:
             df = df.query(add_filter).reset_index(drop=True)
 
-        if drop_cols:
-            df = df.drop(drop_cols, axis=1, errors='ignore')
-
-        return df
+        return df.reset_index(drop=True)[fields]
 
     def summarize(self, **kwargs):
         '''Summarize poller operational state data'''

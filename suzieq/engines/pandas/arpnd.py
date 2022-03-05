@@ -15,19 +15,19 @@ class ArpndObj(SqPandasEngine):
         """Retrieve the arpnd table info providing address prefix filtering"""
 
         prefix = kwargs.pop('prefix', [])
-        columns = kwargs.get('columns', [])
+        columns = kwargs.pop('columns', [])
         user_query = kwargs.pop('query_str', '')
-        addnl_fields = kwargs.pop('addnl_fields', [])
 
-        drop_cols = []
-
+        addnl_fields = []
         # Always get the ipAddress if there is a filter prefix
-        if columns != ['default'] and columns != ['*'] and \
-           'ipAddress' not in columns:
+        fields = self.schema.get_display_fields(columns)
+        if 'ipAddress' not in fields:
             addnl_fields.append('ipAddress')
 
-        df = self.get_valid_df(self.iobj.table,
-                               addnl_fields=addnl_fields, **kwargs)
+        user_query_cols = self._get_user_query_cols(user_query)
+        addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
+
+        df = super().get(addnl_fields=addnl_fields, columns=fields, **kwargs)
 
         query_str = ''
         filter_prefix = ''
@@ -42,7 +42,7 @@ class ArpndObj(SqPandasEngine):
 
         df = self._handle_user_query_str(df, user_query)
 
-        return df.drop(columns=drop_cols)
+        return df.reset_index(drop=True)[fields]
 
     def summarize(self, **kwargs):
         """Summarize ARPND info across namespace"""

@@ -16,20 +16,18 @@ class BgpObj(SqPandasEngine):
     def get(self, **kwargs):
         """Replacing the original interface name in returned result"""
 
-        addnl_fields = kwargs.pop('addnl_fields', [])
-        columns = kwargs.get('columns', ['default'])
+        columns = kwargs.pop('columns', ['default'])
         vrf = kwargs.pop('vrf', None)
         peer = kwargs.pop('peer', None)
         hostname = kwargs.pop('hostname', None)
         user_query = kwargs.pop('query_str', None)
         afi_safi = kwargs.pop('afiSafi', '')
 
-        addnl_fields.extend(['origPeer'])
+        addnl_fields = ['origPeer']
         sch = self.schema
         fields = sch.get_display_fields(columns)
 
         if columns == ['*']:
-            fields.remove('sqvers')
             fields.remove('origPeer')
 
         for col in ['peerIP', 'updateSource', 'state', 'namespace', 'vrf',
@@ -40,8 +38,12 @@ class BgpObj(SqPandasEngine):
         if afi_safi and afi_safi not in fields:
             addnl_fields.append('afiSafi')
 
+        user_query_cols = self._get_user_query_cols(user_query)
+        addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
+
         try:
-            df = super().get(addnl_fields=addnl_fields, **kwargs)
+            df = super().get(addnl_fields=addnl_fields, columns=fields,
+                             **kwargs)
         except KeyError as ex:
             if ('afi' in str(ex)) or ('safi' in str(ex)):
                 df = pd.DataFrame(
@@ -79,9 +81,9 @@ class BgpObj(SqPandasEngine):
         mdf = self._handle_user_query_str(mdf, user_query)
 
         if query_str:
-            return mdf.query(query_str)[fields]
+            return mdf.query(query_str).reset_index(drop=True)[fields]
         else:
-            return mdf[fields]
+            return mdf.reset_index(drop=True)[fields]
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         """Summarize key information about BGP"""

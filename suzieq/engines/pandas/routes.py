@@ -1,4 +1,4 @@
-from typing import Tuple
+from typing import List
 from ipaddress import ip_address, ip_network
 from collections import defaultdict
 
@@ -16,29 +16,24 @@ class RoutesObj(SqPandasEngine):
         '''Table name'''
         return 'routes'
 
-    def _cons_addnl_fields(self, columns: list, addnl_fields: list,
-                           add_prefixlen: bool) -> Tuple[list, list]:
+    def _cons_addnl_fields(self, columns: List[str], addnl_fields: List[str],
+                           add_prefixlen: bool) -> List[str]:
         '''get all the additional columns we need'''
-
-        drop_cols = []
 
         if columns == ['default']:
             # Thanks to Linux, we need metric and weed out some routes
             addnl_fields.append('metric')
-            drop_cols.append('metric')
         elif columns != ['*']:
             for col in ['metric', 'ipvers', 'protocol', 'prefix']:
                 if col not in columns:
                     addnl_fields.append(col)
-                    drop_cols += [col]
 
         if add_prefixlen:
             if columns != ['*'] and all('prefixlen' not in x
                                         for x in [columns, addnl_fields]):
                 addnl_fields.append('prefixlen')
-                drop_cols.append('prefixlen')
 
-        return addnl_fields, drop_cols
+        return addnl_fields
 
     def get(self, **kwargs):
         '''Return the routes table for the given filters'''
@@ -46,11 +41,13 @@ class RoutesObj(SqPandasEngine):
         prefixlen = kwargs.pop('prefixlen', '')
         prefix = kwargs.pop('prefix', [])
         ipvers = kwargs.pop('ipvers', '')
-        addnl_fields = kwargs.pop('addnl_fields', [])
         user_query = kwargs.pop('query_str', '')
 
-        columns = kwargs.get('columns', ['default'])
-        addnl_fields, drop_cols = self._cons_addnl_fields(
+        columns = kwargs.pop('columns', ['default'])
+        fields = self.schema.get_display_fields(columns)
+
+        addnl_fields = []
+        addnl_fields = self._cons_addnl_fields(
             columns, addnl_fields, prefixlen != '')
 
         # /32 routes are stored with the /32 prefix, so if user doesn't specify
@@ -67,8 +64,11 @@ class RoutesObj(SqPandasEngine):
 
             newpfx.append(item)
 
+        user_query_cols = self._get_user_query_cols(user_query)
+        addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
+
         df = super().get(addnl_fields=addnl_fields, prefix=newpfx,
-                         ipvers=ipvers, **kwargs)
+                         ipvers=ipvers, columns=fields, **kwargs)
 
         if not df.empty and 'prefix' in df.columns:
             df = df.loc[df['prefix'] != "127.0.0.0/8"]
@@ -93,24 +93,17 @@ class RoutesObj(SqPandasEngine):
                 # drop in reset_index to not add an additional index col
                 df = df.query(query_str).reset_index(drop=True)
 
-            if (columns != ['*'] and
-                all('prefixlen' not in x
-                    for x in [columns, addnl_fields])):
-                drop_cols.append('prefixlen')
-
         if not df.empty and ('numNexthops' in columns or (columns == ['*'])):
             srs_oif = df['oifs'].str.len()
             srs_hops = df['nexthopIps'].str.len()
             srs = np.array(list(zip(srs_oif, srs_hops)))
             srs_max = np.amax(srs, 1)
-            df.insert(len(df.columns)-1, 'numNexthops', srs_max)
+            df['numNexthops'] = srs_max
 
         if user_query:
             df = self._handle_user_query_str(df, user_query)
-        if drop_cols:
-            df.drop(columns=drop_cols, inplace=True, errors='ignore')
 
-        return df
+        return df.reset_index(drop=True)[fields]
 
     def summarize(self, **kwargs):
         '''Summarize routing table info'''
@@ -173,11 +166,12 @@ class RoutesObj(SqPandasEngine):
         addr = kwargs.pop('address')
         kwargs.pop('ipvers', None)
         df = kwargs.pop('cached_df', pd.DataFrame())
-        addnl_fields = kwargs.pop('addnl_fields', [])
 
+        addnl_fields = []
         ipaddr = ip_address(addr)
         ipvers = ipaddr._version  # pylint: disable=protected-access
 
+        # User may specify a different set of columns than what we're after
         usercols = kwargs.pop('columns', ['default'])
         if usercols == ['default']:
             usercols = self.schema.get_display_fields(usercols)
@@ -190,16 +184,14 @@ class RoutesObj(SqPandasEngine):
             if col not in cols:
                 cols.append(col)
 
-        # We call it here, and not use the one in get because we don't
-        # want them dropped
-        addnl_fields, _ = self._cons_addnl_fields(
+        addnl_fields = self._cons_addnl_fields(
             cols, addnl_fields, True)
+        cols += addnl_fields
         rslt = pd.DataFrame()
 
         # if not using a pre-populated dataframe
         if df.empty:
-            df = self.get(ipvers=ipvers, columns=cols,
-                          addnl_fields=addnl_fields, **kwargs)
+            df = self.get(ipvers=ipvers, columns=cols, **kwargs)
         else:
             df = df.query(f'ipvers=={ipvers}')
 

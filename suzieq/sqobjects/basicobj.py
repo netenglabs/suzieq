@@ -1,5 +1,6 @@
 import typing
 import pandas as pd
+from pandas.core.dtypes.dtypes import DatetimeTZDtype
 
 from suzieq.shared.utils import load_sq_config, humanize_timestamp
 from suzieq.shared.schema import Schema, SchemaForTable
@@ -63,7 +64,7 @@ class SqObject(SqPlugin):
 
         self.summarize_df = pd.DataFrame()
 
-        self._addnl_filter = self._addnl_fields = []
+        self._addnl_filter = []
         self._valid_get_args = self._valid_assert_args = []
         self._valid_arg_vals = self._valid_find_args = []
         self._valid_summarize_args = []
@@ -89,14 +90,14 @@ class SqObject(SqPlugin):
         return self._table
 
     @property
-    def addnl_fields(self):
-        '''Return the additional fields field'''
-        return self._addnl_fields
-
-    @property
     def sort_fields(self):
         '''Return default list of fields to sort by'''
         return self._sort_fields
+
+    @property
+    def get_filter_fields(self):
+        '''Return the set of fields in table that are specified as filters'''
+        return [x for x in self._valid_get_args if x in self.schema.fields]
 
     def _check_input_for_valid_args(self, good_arg_list, **kwargs,):
         '''Check that the provided set of kwargs is valid for the table'''
@@ -104,7 +105,7 @@ class SqObject(SqPlugin):
             return
 
         # add standard args that are always
-        good_arg_list = good_arg_list + (['namespace', 'addnl_fields'])
+        good_arg_list = good_arg_list + (['namespace'])
 
         for arg in kwargs:
             if arg not in good_arg_list:
@@ -283,9 +284,6 @@ class SqObject(SqPlugin):
                                  [f'{what} not numeric; top can be used with'
                                   f' numeric fields only']})
 
-        if what not in columns:
-            self._addnl_fields.append(what)
-
         return self.engine.top(what=what, count=count, reverse=reverse,
                                **kwargs)
 
@@ -322,11 +320,11 @@ class SqObject(SqPlugin):
 
         return df
 
-    def get_table_info(self, table: str, **kwargs) -> pd.DataFrame:
+    def get_table_info(self, **kwargs) -> pd.DataFrame:
         """Get some basic stats about the table from the database
 
         Args:
-            table (str): The table to get stats for
+            kwargs: keyword args passed by caller, varies depending on table
 
         Returns:
             pd.DataFrame: A dataframe with the stats
@@ -334,7 +332,7 @@ class SqObject(SqPlugin):
         # This raises ValueError if it fails
         self.validate_columns(kwargs.get('columns', ['default']))
 
-        return self.engine.get_table_info(table, **kwargs)
+        return self.engine.get_table_info(**kwargs)
 
     def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the fields for human consumption.
@@ -343,6 +341,8 @@ class SqObject(SqPlugin):
         routine is just a placeholder for all those with nothing to modify.
         '''
         if 'timestamp' in df.columns and not df.empty:
+            if isinstance(df.timestamp.dtype, DatetimeTZDtype):
+                return df
             df['timestamp'] = humanize_timestamp(df.timestamp,
                                                  self.cfg.get('analyzer', {})
                                                  .get('timezone', None))

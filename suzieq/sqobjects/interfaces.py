@@ -1,4 +1,5 @@
 import pandas as pd
+from pandas.core.dtypes.dtypes import DatetimeTZDtype
 
 from suzieq.sqobjects.basicobj import SqObject
 from suzieq.shared.utils import humanize_timestamp
@@ -27,8 +28,9 @@ class InterfacesObj(SqObject):
             return df
 
         if 'statusChangeTimestamp' in df.columns:
-            df['statusChangeTimestamp'] = humanize_timestamp(
-                df.statusChangeTimestamp,
-                self.cfg.get('analyzer', {}).get('timezone', None))
+            if not isinstance(df.statusChangeTimestamp.dtype, DatetimeTZDtype):
+                df['statusChangeTimestamp'] = humanize_timestamp(
+                    df.statusChangeTimestamp,
+                    self.cfg.get('analyzer', {}).get('timezone', None))
 
         return super().humanize_fields(df)
