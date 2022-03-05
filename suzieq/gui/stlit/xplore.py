@@ -613,8 +613,8 @@ class XplorePage(SqGuiPage):
         stime = kwargs.pop('start_time', '')
         etime = kwargs.pop('end_time', '')
         df = sqobject(start_time=stime, end_time=etime) \
-            .aver(status="fail", **kwargs)
+            .aver(result="fail", **kwargs)
         if not df.empty:
-            df.rename(columns={'assert': 'status'},
+            df.rename(columns={'assert': 'result'},
                       inplace=True, errors='ignore')
         return df
