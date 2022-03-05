@@ -1,0 +1,162 @@
+description: Testing top verb for bgp, interface and device
+tests:
+- command: device top --what=uptime --format=json --namespace='junos'
+  data-directory: tests/data/parquet/
+  marks: device top junos
+  output: '[{"namespace": "junos", "hostname": "server202", "model": "vm", "version":
+    "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "10.255.5.71", "bootupTimestamp": 1622997902000, "uptime": 27893928,
+    "timestamp": 1623025795928}, {"namespace": "junos", "hostname": "server101", "model":
+    "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "10.255.5.72", "bootupTimestamp": 1622997922000,
+    "uptime": 27873928, "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
+    "firewall01", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "10.255.5.40", "bootupTimestamp": 1622997934000,
+    "uptime": 27862138, "timestamp": 1623025796138}, {"namespace": "junos", "hostname":
+    "server201", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "10.255.5.49", "bootupTimestamp": 1622997945000,
+    "uptime": 27850928, "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
+    "server102", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "10.255.5.169", "bootupTimestamp": 1622997951000,
+    "uptime": 27844928, "timestamp": 1623025795928}]'
+- command: device top --what=bootupTimestamp --format=json --namespace='junos'
+  data-directory: tests/data/parquet/
+  marks: device top junos
+  output: '[{"namespace": "junos", "hostname": "leaf02", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.185", "bootupTimestamp": 1622998018407, "timestamp": 1623025799407},
+    {"namespace": "junos", "hostname": "dcedge01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.250", "bootupTimestamp": 1622998015405, "timestamp": 1623025800405},
+    {"namespace": "junos", "hostname": "exit02", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.252", "bootupTimestamp": 1622998009947, "timestamp": 1623025800947},
+    {"namespace": "junos", "hostname": "exit01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.251", "bootupTimestamp": 1622998009512, "timestamp": 1623025799512},
+    {"namespace": "junos", "hostname": "spine02", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
+    "10.255.5.118", "bootupTimestamp": 1622998003357, "timestamp": 1623025799357}]'
+- command: bgp top --what=estdTime --format=json --namespace='junos'
+  data-directory: tests/data/parquet/
+  marks: bgp top junos
+  output: '[{"namespace": "junos", "hostname": "spine01", "vrf": "default", "peer":
+    "10.0.0.32", "peerHostname": "exit02", "state": "Established", "afi": "l2vpn",
+    "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 2, "pfxTx": 24, "numChanges":
+    137, "estdTime": 1623025778800, "timestamp": 1623025797800}, {"namespace": "junos",
+    "hostname": "exit02", "vrf": "default", "peer": "10.0.0.21", "peerHostname": "spine01",
+    "state": "Established", "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn":
+    64520, "pfxRx": 0, "pfxTx": 0, "numChanges": 137, "estdTime": 1623025778028, "timestamp":
+    1623025798028}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "peer": "10.0.0.31", "peerHostname": "exit01", "state": "Established", "afi":
+    "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520, "pfxRx": 2, "pfxTx":
+    24, "numChanges": 216, "estdTime": 1623025762800, "timestamp": 1623025797800},
+    {"namespace": "junos", "hostname": "exit01", "vrf": "default", "peer": "10.0.0.21",
+    "peerHostname": "spine01", "state": "Established", "afi": "l2vpn", "safi": "evpn",
+    "asn": 64520, "peerAsn": 64520, "pfxRx": 0, "pfxTx": 0, "numChanges": 216, "estdTime":
+    1623025762026, "timestamp": 1623025798026}, {"namespace": "junos", "hostname":
+    "spine02", "vrf": "default", "peer": "10.0.0.32", "peerHostname": "exit02", "state":
+    "Established", "afi": "l2vpn", "safi": "evpn", "asn": 64520, "peerAsn": 64520,
+    "pfxRx": 2, "pfxTx": 24, "numChanges": 282, "estdTime": 1623025725030, "timestamp":
+    1623025798030}]'
+- command: interface top --what=statusChangeTimestamp --format=json --namespace='junos'
+  data-directory: tests/data/parquet/
+  marks: interface top junos
+  output: '[{"namespace": "junos", "hostname": "spine01", "ifname": "vtep", "state":
+    "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1623025803099,
+    "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname":
+    "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface", "mtu":
+    65536, "vlan": 16385, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "statusChangeTimestamp": 1623025803099, "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "bme0.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 1986, "vlan": 0, "master": "", "ipAddressList":
+    ["128.0.0.1/2", "128.0.0.4/2", "128.0.0.16/2", "128.0.0.63/2"], "ip6AddressList":
+    [], "statusChangeTimestamp": 1623025803099, "timestamp": 1623025803099}, {"namespace":
+    "junos", "hostname": "spine01", "ifname": "jsrv.1", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 1514, "vlan": 1, "master": "", "ipAddressList":
+    ["128.0.0.127/2"], "ip6AddressList": [], "statusChangeTimestamp": 1623025803099,
+    "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "spine01", "ifname":
+    "lo0.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": ["10.0.0.21/32"], "ip6AddressList":
+    ["fe80::205:860f:fc71:2e00/128"], "statusChangeTimestamp": 1623025803099, "timestamp":
+    1623025803099}]'
+- command: ospf top --what=lastChangeTime --format=json --namespace='junos'
+  data-directory: tests/data/parquet/
+  marks: ospf top junos
+  output: '[{"namespace": "junos", "hostname": "spine02", "vrf": "default", "ifname":
+    "xe-0/0/1.0", "peerHostname": "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1.0, "adjState": "full", "peerIP": "10.0.0.12", "numChanges": 0.0, "lastChangeTime":
+    1622998742688, "timestamp": 1623025799761}, {"namespace": "junos", "hostname":
+    "spine01", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname": "leaf02",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1.0, "adjState": "full", "peerIP":
+    "10.0.0.12", "numChanges": 0.0, "lastChangeTime": 1622998742428, "timestamp":
+    1623025798027}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1.0, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1622998742098, "timestamp": 1623025798026}, {"namespace":
+    "junos", "hostname": "leaf02", "vrf": "default", "ifname": "xe-0/0/1.0", "peerHostname":
+    "spine02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1.0, "adjState": "full",
+    "peerIP": "10.0.0.22", "numChanges": 0.0, "lastChangeTime": 1622998742098, "timestamp":
+    1623025798026}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "ifname": "xe-0/0/0.0", "peerHostname": "spine01", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1.0, "adjState": "full", "peerIP": "10.0.0.21", "numChanges":
+    0.0, "lastChangeTime": 1622998720890, "timestamp": 1623025798813}]'
+- command: route top --what=numNexthops --format=json --namespace='junos'
+  data-directory: tests/data/parquet/
+  marks: route top junos
+  output: '[{"namespace": "junos", "hostname": "spine02", "vrf": "default", "prefix":
+    "10.0.0.21/32", "nexthopIps": ["10.0.0.11", "10.0.0.12", "10.0.0.31", "10.0.0.32"],
+    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0", "xe-0/0/2.0", "xe-0/0/3.0"], "protocol":
+    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward", "numNexthops":
+    4, "timestamp": 1623025802688}, {"namespace": "junos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.11", "10.0.0.12",
+    "10.0.0.31", "10.0.0.32"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0", "xe-0/0/2.0",
+    "xe-0/0/3.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "numNexthops": 4, "timestamp": 1623025802890}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
+    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward", "numNexthops":
+    2, "timestamp": 1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf":
+    "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "forward", "numNexthops": 2, "timestamp": 1623025801173},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.32/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "numNexthops": 2, "timestamp": 1623025801173}]'
+- command: mac top --what=moveCount --format=json --namespace='junos'
+  data-directory: tests/data/parquet/
+  marks: mac top junos
+  output: '[{"namespace": "junos", "hostname": "firewall01", "vlan": 0, "macaddr":
+    "01:00:5e:00:00:01", "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "moveCount": 0, "timestamp": 1623025795510}, {"namespace": "junos", "hostname":
+    "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif": "eth1.4", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1623025795510},
+    {"namespace": "junos", "hostname": "firewall01", "vlan": 0, "macaddr": "33:33:00:00:00:01",
+    "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount":
+    0, "timestamp": 1623025795510}, {"namespace": "junos", "hostname": "firewall01",
+    "vlan": 0, "macaddr": "33:33:00:00:00:02", "oif": "eth1", "remoteVtepIp": "",
+    "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1623025795510}, {"namespace":
+    "junos", "hostname": "firewall01", "vlan": 0, "macaddr": "01:00:5e:00:00:01",
+    "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount":
+    0, "timestamp": 1623025795510}]'
+- command: route top --what=prefixlen --format=json --namespace='junos'
+  data-directory: tests/data/parquet/
+  marks: route top junos
+  output: '[{"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix":
+    "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "",
+    "preference": 0, "ipvers": 6, "action": "multirecv", "prefixlen": 128, "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
+    "", "preference": 0, "ipvers": 6, "action": "multirecv", "prefixlen": 128, "timestamp":
+    1623025801173}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
+    "prefix": "fe80::205:860f:fc71:ad00/128", "nexthopIps": [], "oifs": ["lo0.0"],
+    "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action": "forward",
+    "prefixlen": 128, "timestamp": 1623025801173}, {"namespace": "junos", "hostname":
+    "leaf02", "vrf": "default", "prefix": "fe80::205:860f:fc71:5500/128", "nexthopIps":
+    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    6, "action": "forward", "prefixlen": 128, "timestamp": 1623025802263}, {"namespace":
+    "junos", "hostname": "leaf02", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
+    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
+    6, "action": "multirecv", "prefixlen": 128, "timestamp": 1623025802263}]'
