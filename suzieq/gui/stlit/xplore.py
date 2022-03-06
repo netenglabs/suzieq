@@ -207,12 +207,14 @@ class XplorePage(SqGuiPage):
         if not state.table:
             return
         sqobj = get_sqobject(state.table)
+        query_str = state.query
         try:
             df = gui_get_df(state.table,
                             namespace=state.namespace.split(),
                             start_time=state.start_time,
                             end_time=state.end_time,
-                            view=state.view, columns=state.columns)
+                            view=state.view, columns=state.columns,
+                            query_str=query_str)
         except Exception as e:  # pylint: disable=broad-except
             st.error(e)
             st.stop()
@@ -229,23 +231,11 @@ class XplorePage(SqGuiPage):
             st.stop()
             return
 
-        if state.query:
-            try:
-                show_df = df.query(state.query).reset_index(drop=True)
-                query_str = state.query
-            except Exception as ex:  # pylint: disable=broad-except
-                st.error(f'Invalid query string: {ex}')
-                st.stop()
-                query_str = ''
-        else:
-            show_df = df
-            query_str = ''
-
-        if not show_df.empty:
+        if not df.empty:
             self._draw_summary_df(layout, sqobj, query_str)
             self._draw_assert_df(layout, sqobj)
 
-        self._draw_table_df(layout, show_df)
+        self._draw_table_df(layout, df)
 
     def _sync_state(self) -> None:
         wsstate = st.session_state
