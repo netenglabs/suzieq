@@ -78,11 +78,9 @@ class InterfacesObj(SqPandasEngine):
         if vlan:
             # vlan needs to be looked at even in vlanList
             vlan = [int(x) for x in vlan]
-            query_str = f' (vlan == {vlan} or vlanList == {vlan})'
-            df_exp = df.explode('vlanList').query(query_str)
-            df = df[df.namespace.isin(df_exp.namespace.unique()) &
-                    df.hostname.isin(df_exp.hostname.unique()) &
-                    df.ifname.isin(df_exp.ifname.unique())]
+            query_str = f' (vlan.isin({vlan}) or ' \
+                f'@self._is_any_in_list(vlanList, {vlan}))'
+            df = df.query(query_str)
 
         if user_query:
             df = self._handle_user_query_str(df, user_query)
@@ -575,6 +573,7 @@ class InterfacesObj(SqPandasEngine):
                            hostname=df.hostname.unique().tolist())
 
         if vlan_df.empty:
+            df['vlanList'] = [[] for _ in range(len(df))]
             return df
 
         # Transform the list of VLANs from VLAN-oriented to interface oriented

@@ -89,6 +89,17 @@ class SqPandasEngine(SqEngineObj):
 
         return df
 
+    def _is_any_in_list(self, column: pd.Series, values: List) -> pd.Series:
+        """Given a column of arrays, check if any of the values is present in
+        the list.
+        Args:
+            column (pd.Series): pandas dataframe column of lists
+            values (List): list of values representing the filtering values
+        Returns:
+            pd.Series: A collection of bool reporting the filtered result
+        """
+        return column.apply(lambda x: any(v in x for v in values))
+
     def _is_in_subnet(self, addr: pd.Series, net: str) -> pd.Series:
         """Check if the IP addresses in a Pandas dataframe
         belongs to the given subnet
