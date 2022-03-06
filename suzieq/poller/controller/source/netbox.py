@@ -20,8 +20,8 @@ import aiohttp
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
 from suzieq.poller.controller.source.base_source import Source, SourceModel
-from suzieq.poller.controller.utils.inventory_utils import get_sensitive_data
-from suzieq.shared.exceptions import InventorySourceError
+from suzieq.shared.utils import get_sensitive_data
+from suzieq.shared.exceptions import InventorySourceError, SensitiveLoadError
 
 _DEFAULT_PORTS = {'http': 80, 'https': 443}
 
@@ -92,7 +92,7 @@ class NetboxSourceModel(SourceModel):
             if token == 'ask':
                 return token
             return get_sensitive_data(token)
-        except InventorySourceError as e:
+        except SensitiveLoadError as e:
             raise ValueError(e)
 
 

@@ -39,3 +39,7 @@ class InventorySourceError(Exception):
 
 class PollingError(Exception):
     """Exception raised every time there is an error while polling"""
+
+
+class SensitiveLoadError(Exception):
+    """Sensitive informarmation isn't loaded correctly"""
