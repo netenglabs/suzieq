@@ -51,6 +51,10 @@ class CredentialLoader(ControllerPlugin):
             'enable_password'
         ]
 
+        self._optional_cred_keys = [
+            'enable_password',
+        ]
+
         self._data: CredentialLoaderModel = None
         self.init(init_data)
 
@@ -148,5 +152,7 @@ class CredentialLoader(ControllerPlugin):
 
         if 'ssh_keyfile' in cred_keys:
             cred_keys.remove('ssh_keyfile')
+
+        cred_keys = [x for x in cred_keys if x not in self._optional_cred_keys]
 
         return list(cred_keys)
