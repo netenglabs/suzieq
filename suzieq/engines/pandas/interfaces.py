@@ -78,11 +78,9 @@ class InterfacesObj(SqPandasEngine):
         if vlan:
             # vlan needs to be looked at even in vlanList
             vlan = [int(x) for x in vlan]
-            query_str = f' (vlan == {vlan} or vlanList == {vlan})'
-            df_exp = df.explode('vlanList').query(query_str)
-            df = df[df.namespace.isin(df_exp.namespace.unique()) &
-                    df.hostname.isin(df_exp.hostname.unique()) &
-                    df.ifname.isin(df_exp.ifname.unique())]
+            query_str = f' (vlan.isin({vlan}) or ' \
+                f'@self._is_any_in_list(vlanList, {vlan}))'
+            df = df.query(query_str)
 
         if user_query:
             df = self._handle_user_query_str(df, user_query)
@@ -532,18 +530,16 @@ class InterfacesObj(SqPandasEngine):
 
         pm_df = pd.DataFrame(pm_list)
 
-        if pm_df.empty:
-            df['portmode'] = np.where(df.ipAddressList.str.len() == 0,
-                                      'unknown',
-                                      'routed')
-            df['portmode'] = np.where(df.ip6AddressList.str.len() != 0,
-                                      'routed', df.portmode)
-            return df
+        if not pm_df.empty:
+            df = df.merge(pm_df, how='left', on=[
+                'namespace', 'hostname', 'ifname'],
+                suffixes=['', '_y'])
 
-        df = df.merge(pm_df, how='left', on=[
-                      'namespace', 'hostname', 'ifname'],
-                      suffixes=['', '_y']) \
-            .fillna({'portmode': 'routed', 'vlan': 0})
+        df['portmode'] = np.where(df.ipAddressList.str.len() == 0,
+                                  'unknown',
+                                  'routed')
+        df['portmode'] = np.where(df.ip6AddressList.str.len() != 0,
+                                  'routed', df.portmode)
 
         df.loc[df.ifname == "bridge", 'portmode'] = ''
         if 'vlan_y' in df.columns:
