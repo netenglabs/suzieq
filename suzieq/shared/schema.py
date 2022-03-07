@@ -287,7 +287,11 @@ class SchemaForTable:
             fields = self.sorted_display_fields(getall=True)
             fields.remove('sqvers')
         else:
-            fields = [f for f in columns if f in self.fields]
+            wrong_fields = [f for f in columns if f not in self.fields]
+            if wrong_fields:
+                raise ValueError(
+                    f'Unknown fields {wrong_fields} in {self._table}')
+            fields = columns.copy()
 
         return fields
 
