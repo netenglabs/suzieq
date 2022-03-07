@@ -778,22 +778,23 @@ tests:
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1639476254854}, {"namespace": "panos", "hostname":
       "firewall01", "ifname": "ethernet1/1", "state": "up", "peerHostname": "exit01",
-      "peerIfname": "swp3", "result": "fail", "assertReason": ["MTU mismatch"], "timestamp":
-      1639476254171}, {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/2",
-      "state": "up", "peerHostname": "exit02", "peerIfname": "swp3", "result": "fail",
-      "assertReason": ["MTU mismatch"], "timestamp": 1639476254171}, {"namespace":
-      "panos", "hostname": "dcedge01", "ifname": "swp1", "state": "up", "peerHostname":
-      "exit01", "peerIfname": "swp4", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254659}, {"namespace": "panos", "hostname": "dcedge01", "ifname": "swp2",
-      "state": "up", "peerHostname": "exit02", "peerIfname": "swp4", "result": "pass",
-      "assertReason": "-", "timestamp": 1639476254659}, {"namespace": "panos", "hostname":
-      "exit02", "ifname": "swp4", "state": "up", "peerHostname": "dcedge01", "peerIfname":
-      "swp2", "result": "pass", "assertReason": "-", "timestamp": 1639476254817},
-      {"namespace": "panos", "hostname": "exit01", "ifname": "swp1", "state": "up",
-      "peerHostname": "spine01", "peerIfname": "swp5", "result": "pass", "assertReason":
-      "-", "timestamp": 1639476254817}, {"namespace": "panos", "hostname": "exit01",
-      "ifname": "swp3", "state": "up", "peerHostname": "firewall01", "peerIfname":
-      "ethernet1/1", "result": "fail", "assertReason": ["MTU mismatch"], "timestamp":
+      "peerIfname": "swp3", "result": "fail", "assertReason": ["MTU mismatch", "portMode
+      Mismatch"], "timestamp": 1639476254171}, {"namespace": "panos", "hostname":
+      "firewall01", "ifname": "ethernet1/2", "state": "up", "peerHostname": "exit02",
+      "peerIfname": "swp3", "result": "fail", "assertReason": ["MTU mismatch", "portMode
+      Mismatch"], "timestamp": 1639476254171}, {"namespace": "panos", "hostname":
+      "dcedge01", "ifname": "swp1", "state": "up", "peerHostname": "exit01", "peerIfname":
+      "swp4", "result": "pass", "assertReason": "-", "timestamp": 1639476254659},
+      {"namespace": "panos", "hostname": "dcedge01", "ifname": "swp2", "state": "up",
+      "peerHostname": "exit02", "peerIfname": "swp4", "result": "pass", "assertReason":
+      "-", "timestamp": 1639476254659}, {"namespace": "panos", "hostname": "exit02",
+      "ifname": "swp4", "state": "up", "peerHostname": "dcedge01", "peerIfname": "swp2",
+      "result": "pass", "assertReason": "-", "timestamp": 1639476254817}, {"namespace":
+      "panos", "hostname": "exit01", "ifname": "swp1", "state": "up", "peerHostname":
+      "spine01", "peerIfname": "swp5", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254817}, {"namespace": "panos", "hostname": "exit01", "ifname": "swp3",
+      "state": "up", "peerHostname": "firewall01", "peerIfname": "ethernet1/1", "result":
+      "fail", "assertReason": ["MTU mismatch", "portMode Mismatch"], "timestamp":
       1639476254817}, {"namespace": "panos", "hostname": "exit01", "ifname": "swp2",
       "state": "up", "peerHostname": "spine02", "peerIfname": "swp5", "result": "pass",
       "assertReason": "-", "timestamp": 1639476254817}, {"namespace": "panos", "hostname":
@@ -803,77 +804,78 @@ tests:
       "peerHostname": "spine02", "peerIfname": "swp6", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254817}, {"namespace": "panos", "hostname": "exit02",
       "ifname": "swp3", "state": "up", "peerHostname": "firewall01", "peerIfname":
-      "ethernet1/2", "result": "fail", "assertReason": ["MTU mismatch"], "timestamp":
-      1639476254817}, {"namespace": "panos", "hostname": "exit01", "ifname": "swp4",
-      "state": "up", "peerHostname": "dcedge01", "peerIfname": "swp1", "result": "pass",
-      "assertReason": "-", "timestamp": 1639476254817}, {"namespace": "panos", "hostname":
-      "leaf04", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "swp4", "result": "pass", "assertReason": "-", "timestamp": 1639476254836},
-      {"namespace": "panos", "hostname": "leaf04", "ifname": "swp2", "state": "up",
-      "peerHostname": "spine02", "peerIfname": "swp4", "result": "pass", "assertReason":
+      "ethernet1/2", "result": "fail", "assertReason": ["MTU mismatch", "portMode
+      Mismatch"], "timestamp": 1639476254817}, {"namespace": "panos", "hostname":
+      "exit01", "ifname": "swp4", "state": "up", "peerHostname": "dcedge01", "peerIfname":
+      "swp1", "result": "pass", "assertReason": "-", "timestamp": 1639476254817},
+      {"namespace": "panos", "hostname": "leaf04", "ifname": "swp1", "state": "up",
+      "peerHostname": "spine01", "peerIfname": "swp4", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254836}, {"namespace": "panos", "hostname": "leaf04",
-      "ifname": "swp6", "state": "up", "peerHostname": "leaf03", "peerIfname": "swp6",
+      "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname": "swp4",
       "result": "pass", "assertReason": "-", "timestamp": 1639476254836}, {"namespace":
-      "panos", "hostname": "leaf04", "ifname": "swp5", "state": "up", "peerHostname":
-      "leaf03", "peerIfname": "swp5", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254836}, {"namespace": "panos", "hostname": "leaf02", "ifname": "swp6",
-      "state": "up", "peerHostname": "leaf01", "peerIfname": "swp6", "result": "pass",
+      "panos", "hostname": "leaf04", "ifname": "swp6", "state": "up", "peerHostname":
+      "leaf03", "peerIfname": "swp6", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254836}, {"namespace": "panos", "hostname": "leaf04", "ifname": "swp5",
+      "state": "up", "peerHostname": "leaf03", "peerIfname": "swp5", "result": "pass",
       "assertReason": "-", "timestamp": 1639476254836}, {"namespace": "panos", "hostname":
-      "leaf02", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
-      "swp2", "result": "pass", "assertReason": "-", "timestamp": 1639476254836},
-      {"namespace": "panos", "hostname": "leaf02", "ifname": "swp1", "state": "up",
-      "peerHostname": "spine01", "peerIfname": "swp2", "result": "pass", "assertReason":
+      "leaf02", "ifname": "swp6", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "swp6", "result": "pass", "assertReason": "-", "timestamp": 1639476254836},
+      {"namespace": "panos", "hostname": "leaf02", "ifname": "swp2", "state": "up",
+      "peerHostname": "spine02", "peerIfname": "swp2", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254836}, {"namespace": "panos", "hostname": "leaf02",
-      "ifname": "swp5", "state": "up", "peerHostname": "leaf01", "peerIfname": "swp5",
+      "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname": "swp2",
       "result": "pass", "assertReason": "-", "timestamp": 1639476254836}, {"namespace":
-      "panos", "hostname": "spine02", "ifname": "swp1", "state": "up", "peerHostname":
-      "leaf01", "peerIfname": "swp2", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254844}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp2",
-      "state": "up", "peerHostname": "leaf02", "peerIfname": "swp2", "result": "pass",
+      "panos", "hostname": "leaf02", "ifname": "swp5", "state": "up", "peerHostname":
+      "leaf01", "peerIfname": "swp5", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254836}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp1",
+      "state": "up", "peerHostname": "leaf01", "peerIfname": "swp2", "result": "pass",
       "assertReason": "-", "timestamp": 1639476254844}, {"namespace": "panos", "hostname":
-      "spine02", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "spine02", "ifname": "swp2", "state": "up", "peerHostname": "leaf02", "peerIfname":
       "swp2", "result": "pass", "assertReason": "-", "timestamp": 1639476254844},
-      {"namespace": "panos", "hostname": "spine02", "ifname": "swp4", "state": "up",
-      "peerHostname": "leaf04", "peerIfname": "swp2", "result": "pass", "assertReason":
+      {"namespace": "panos", "hostname": "spine02", "ifname": "swp3", "state": "up",
+      "peerHostname": "leaf03", "peerIfname": "swp2", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254844}, {"namespace": "panos", "hostname": "spine02",
-      "ifname": "swp5", "state": "up", "peerHostname": "exit01", "peerIfname": "swp2",
+      "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname": "swp2",
       "result": "pass", "assertReason": "-", "timestamp": 1639476254844}, {"namespace":
-      "panos", "hostname": "spine02", "ifname": "swp6", "state": "up", "peerHostname":
-      "exit02", "peerIfname": "swp2", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254844}, {"namespace": "panos", "hostname": "leaf03", "ifname": "swp5",
-      "state": "up", "peerHostname": "leaf04", "peerIfname": "swp5", "result": "pass",
+      "panos", "hostname": "spine02", "ifname": "swp5", "state": "up", "peerHostname":
+      "exit01", "peerIfname": "swp2", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254844}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp6",
+      "state": "up", "peerHostname": "exit02", "peerIfname": "swp2", "result": "pass",
       "assertReason": "-", "timestamp": 1639476254844}, {"namespace": "panos", "hostname":
-      "leaf03", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
-      "swp3", "result": "pass", "assertReason": "-", "timestamp": 1639476254844},
-      {"namespace": "panos", "hostname": "leaf03", "ifname": "swp1", "state": "up",
-      "peerHostname": "spine01", "peerIfname": "swp3", "result": "pass", "assertReason":
+      "leaf03", "ifname": "swp5", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "swp5", "result": "pass", "assertReason": "-", "timestamp": 1639476254844},
+      {"namespace": "panos", "hostname": "leaf03", "ifname": "swp2", "state": "up",
+      "peerHostname": "spine02", "peerIfname": "swp3", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254844}, {"namespace": "panos", "hostname": "leaf03",
-      "ifname": "swp6", "state": "up", "peerHostname": "leaf04", "peerIfname": "swp6",
+      "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname": "swp3",
       "result": "pass", "assertReason": "-", "timestamp": 1639476254844}, {"namespace":
-      "panos", "hostname": "spine01", "ifname": "swp2", "state": "up", "peerHostname":
-      "leaf02", "peerIfname": "swp1", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254852}, {"namespace": "panos", "hostname": "spine01", "ifname": "swp6",
-      "state": "up", "peerHostname": "exit02", "peerIfname": "swp1", "result": "pass",
+      "panos", "hostname": "leaf03", "ifname": "swp6", "state": "up", "peerHostname":
+      "leaf04", "peerIfname": "swp6", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254844}, {"namespace": "panos", "hostname": "spine01", "ifname": "swp2",
+      "state": "up", "peerHostname": "leaf02", "peerIfname": "swp1", "result": "pass",
       "assertReason": "-", "timestamp": 1639476254852}, {"namespace": "panos", "hostname":
-      "spine01", "ifname": "swp5", "state": "up", "peerHostname": "exit01", "peerIfname":
+      "spine01", "ifname": "swp6", "state": "up", "peerHostname": "exit02", "peerIfname":
       "swp1", "result": "pass", "assertReason": "-", "timestamp": 1639476254852},
-      {"namespace": "panos", "hostname": "spine01", "ifname": "swp4", "state": "up",
-      "peerHostname": "leaf04", "peerIfname": "swp1", "result": "pass", "assertReason":
+      {"namespace": "panos", "hostname": "spine01", "ifname": "swp5", "state": "up",
+      "peerHostname": "exit01", "peerIfname": "swp1", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254852}, {"namespace": "panos", "hostname": "spine01",
-      "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname": "swp1",
+      "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname": "swp1",
       "result": "pass", "assertReason": "-", "timestamp": 1639476254852}, {"namespace":
-      "panos", "hostname": "spine01", "ifname": "swp1", "state": "up", "peerHostname":
-      "leaf01", "peerIfname": "swp1", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254852}, {"namespace": "panos", "hostname": "leaf01", "ifname": "swp1",
-      "state": "up", "peerHostname": "spine01", "peerIfname": "swp1", "result": "pass",
-      "assertReason": "-", "timestamp": 1639476254854}, {"namespace": "panos", "hostname":
-      "leaf01", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "panos", "hostname": "spine01", "ifname": "swp3", "state": "up", "peerHostname":
+      "leaf03", "peerIfname": "swp1", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254852}, {"namespace": "panos", "hostname": "spine01", "ifname": "swp1",
+      "state": "up", "peerHostname": "leaf01", "peerIfname": "swp1", "result": "pass",
+      "assertReason": "-", "timestamp": 1639476254852}, {"namespace": "panos", "hostname":
+      "leaf01", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
       "swp1", "result": "pass", "assertReason": "-", "timestamp": 1639476254854},
-      {"namespace": "panos", "hostname": "leaf01", "ifname": "swp5", "state": "up",
-      "peerHostname": "leaf02", "peerIfname": "swp5", "result": "pass", "assertReason":
+      {"namespace": "panos", "hostname": "leaf01", "ifname": "swp2", "state": "up",
+      "peerHostname": "spine02", "peerIfname": "swp1", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254854}, {"namespace": "panos", "hostname": "leaf01",
-      "ifname": "swp6", "state": "up", "peerHostname": "leaf02", "peerIfname": "swp6",
-      "result": "pass", "assertReason": "-", "timestamp": 1639476254854}]'
+      "ifname": "swp5", "state": "up", "peerHostname": "leaf02", "peerIfname": "swp5",
+      "result": "pass", "assertReason": "-", "timestamp": 1639476254854}, {"namespace":
+      "panos", "hostname": "leaf01", "ifname": "swp6", "state": "up", "peerHostname":
+      "leaf02", "peerIfname": "swp6", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254854}]'
   marks: interface assert panos
 - command: interface top --what='statusChangeTimestamp' --format=json --namespace=panos
   data-directory: tests/data/parquet/
@@ -1167,15 +1169,16 @@ tests:
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1639476254854},
       {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/1", "state":
       "up", "peerHostname": "exit01", "peerIfname": "swp3", "result": "fail", "assertReason":
-      ["MTU mismatch"], "timestamp": 1639476254171}, {"namespace": "panos", "hostname":
-      "firewall01", "ifname": "ethernet1/2", "state": "up", "peerHostname": "exit02",
-      "peerIfname": "swp3", "result": "fail", "assertReason": ["MTU mismatch"], "timestamp":
-      1639476254171}, {"namespace": "panos", "hostname": "exit01", "ifname": "swp3",
-      "state": "up", "peerHostname": "firewall01", "peerIfname": "ethernet1/1", "result":
-      "fail", "assertReason": ["MTU mismatch"], "timestamp": 1639476254817}, {"namespace":
-      "panos", "hostname": "exit02", "ifname": "swp3", "state": "up", "peerHostname":
-      "firewall01", "peerIfname": "ethernet1/2", "result": "fail", "assertReason":
-      ["MTU mismatch"], "timestamp": 1639476254817}]'
+      ["MTU mismatch", "portMode Mismatch"], "timestamp": 1639476254171}, {"namespace":
+      "panos", "hostname": "firewall01", "ifname": "ethernet1/2", "state": "up", "peerHostname":
+      "exit02", "peerIfname": "swp3", "result": "fail", "assertReason": ["MTU mismatch",
+      "portMode Mismatch"], "timestamp": 1639476254171}, {"namespace": "panos", "hostname":
+      "exit01", "ifname": "swp3", "state": "up", "peerHostname": "firewall01", "peerIfname":
+      "ethernet1/1", "result": "fail", "assertReason": ["MTU mismatch", "portMode
+      Mismatch"], "timestamp": 1639476254817}, {"namespace": "panos", "hostname":
+      "exit02", "ifname": "swp3", "state": "up", "peerHostname": "firewall01", "peerIfname":
+      "ethernet1/2", "result": "fail", "assertReason": ["MTU mismatch", "portMode
+      Mismatch"], "timestamp": 1639476254817}]'
   marks: interface assert panos
 - command: interface assert --result=all --format=json --namespace=panos
   data-directory: tests/data/parquet/
@@ -1363,22 +1366,23 @@ tests:
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1639476254854}, {"namespace": "panos", "hostname":
       "firewall01", "ifname": "ethernet1/1", "state": "up", "peerHostname": "exit01",
-      "peerIfname": "swp3", "result": "fail", "assertReason": ["MTU mismatch"], "timestamp":
-      1639476254171}, {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/2",
-      "state": "up", "peerHostname": "exit02", "peerIfname": "swp3", "result": "fail",
-      "assertReason": ["MTU mismatch"], "timestamp": 1639476254171}, {"namespace":
-      "panos", "hostname": "dcedge01", "ifname": "swp1", "state": "up", "peerHostname":
-      "exit01", "peerIfname": "swp4", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254659}, {"namespace": "panos", "hostname": "dcedge01", "ifname": "swp2",
-      "state": "up", "peerHostname": "exit02", "peerIfname": "swp4", "result": "pass",
-      "assertReason": "-", "timestamp": 1639476254659}, {"namespace": "panos", "hostname":
-      "exit02", "ifname": "swp4", "state": "up", "peerHostname": "dcedge01", "peerIfname":
-      "swp2", "result": "pass", "assertReason": "-", "timestamp": 1639476254817},
-      {"namespace": "panos", "hostname": "exit01", "ifname": "swp1", "state": "up",
-      "peerHostname": "spine01", "peerIfname": "swp5", "result": "pass", "assertReason":
-      "-", "timestamp": 1639476254817}, {"namespace": "panos", "hostname": "exit01",
-      "ifname": "swp3", "state": "up", "peerHostname": "firewall01", "peerIfname":
-      "ethernet1/1", "result": "fail", "assertReason": ["MTU mismatch"], "timestamp":
+      "peerIfname": "swp3", "result": "fail", "assertReason": ["MTU mismatch", "portMode
+      Mismatch"], "timestamp": 1639476254171}, {"namespace": "panos", "hostname":
+      "firewall01", "ifname": "ethernet1/2", "state": "up", "peerHostname": "exit02",
+      "peerIfname": "swp3", "result": "fail", "assertReason": ["MTU mismatch", "portMode
+      Mismatch"], "timestamp": 1639476254171}, {"namespace": "panos", "hostname":
+      "dcedge01", "ifname": "swp1", "state": "up", "peerHostname": "exit01", "peerIfname":
+      "swp4", "result": "pass", "assertReason": "-", "timestamp": 1639476254659},
+      {"namespace": "panos", "hostname": "dcedge01", "ifname": "swp2", "state": "up",
+      "peerHostname": "exit02", "peerIfname": "swp4", "result": "pass", "assertReason":
+      "-", "timestamp": 1639476254659}, {"namespace": "panos", "hostname": "exit02",
+      "ifname": "swp4", "state": "up", "peerHostname": "dcedge01", "peerIfname": "swp2",
+      "result": "pass", "assertReason": "-", "timestamp": 1639476254817}, {"namespace":
+      "panos", "hostname": "exit01", "ifname": "swp1", "state": "up", "peerHostname":
+      "spine01", "peerIfname": "swp5", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254817}, {"namespace": "panos", "hostname": "exit01", "ifname": "swp3",
+      "state": "up", "peerHostname": "firewall01", "peerIfname": "ethernet1/1", "result":
+      "fail", "assertReason": ["MTU mismatch", "portMode Mismatch"], "timestamp":
       1639476254817}, {"namespace": "panos", "hostname": "exit01", "ifname": "swp2",
       "state": "up", "peerHostname": "spine02", "peerIfname": "swp5", "result": "pass",
       "assertReason": "-", "timestamp": 1639476254817}, {"namespace": "panos", "hostname":
@@ -1388,77 +1392,78 @@ tests:
       "peerHostname": "spine02", "peerIfname": "swp6", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254817}, {"namespace": "panos", "hostname": "exit02",
       "ifname": "swp3", "state": "up", "peerHostname": "firewall01", "peerIfname":
-      "ethernet1/2", "result": "fail", "assertReason": ["MTU mismatch"], "timestamp":
-      1639476254817}, {"namespace": "panos", "hostname": "exit01", "ifname": "swp4",
-      "state": "up", "peerHostname": "dcedge01", "peerIfname": "swp1", "result": "pass",
-      "assertReason": "-", "timestamp": 1639476254817}, {"namespace": "panos", "hostname":
-      "leaf04", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
-      "swp4", "result": "pass", "assertReason": "-", "timestamp": 1639476254836},
-      {"namespace": "panos", "hostname": "leaf04", "ifname": "swp2", "state": "up",
-      "peerHostname": "spine02", "peerIfname": "swp4", "result": "pass", "assertReason":
+      "ethernet1/2", "result": "fail", "assertReason": ["MTU mismatch", "portMode
+      Mismatch"], "timestamp": 1639476254817}, {"namespace": "panos", "hostname":
+      "exit01", "ifname": "swp4", "state": "up", "peerHostname": "dcedge01", "peerIfname":
+      "swp1", "result": "pass", "assertReason": "-", "timestamp": 1639476254817},
+      {"namespace": "panos", "hostname": "leaf04", "ifname": "swp1", "state": "up",
+      "peerHostname": "spine01", "peerIfname": "swp4", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254836}, {"namespace": "panos", "hostname": "leaf04",
-      "ifname": "swp6", "state": "up", "peerHostname": "leaf03", "peerIfname": "swp6",
+      "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname": "swp4",
       "result": "pass", "assertReason": "-", "timestamp": 1639476254836}, {"namespace":
-      "panos", "hostname": "leaf04", "ifname": "swp5", "state": "up", "peerHostname":
-      "leaf03", "peerIfname": "swp5", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254836}, {"namespace": "panos", "hostname": "leaf02", "ifname": "swp6",
-      "state": "up", "peerHostname": "leaf01", "peerIfname": "swp6", "result": "pass",
+      "panos", "hostname": "leaf04", "ifname": "swp6", "state": "up", "peerHostname":
+      "leaf03", "peerIfname": "swp6", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254836}, {"namespace": "panos", "hostname": "leaf04", "ifname": "swp5",
+      "state": "up", "peerHostname": "leaf03", "peerIfname": "swp5", "result": "pass",
       "assertReason": "-", "timestamp": 1639476254836}, {"namespace": "panos", "hostname":
-      "leaf02", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
-      "swp2", "result": "pass", "assertReason": "-", "timestamp": 1639476254836},
-      {"namespace": "panos", "hostname": "leaf02", "ifname": "swp1", "state": "up",
-      "peerHostname": "spine01", "peerIfname": "swp2", "result": "pass", "assertReason":
+      "leaf02", "ifname": "swp6", "state": "up", "peerHostname": "leaf01", "peerIfname":
+      "swp6", "result": "pass", "assertReason": "-", "timestamp": 1639476254836},
+      {"namespace": "panos", "hostname": "leaf02", "ifname": "swp2", "state": "up",
+      "peerHostname": "spine02", "peerIfname": "swp2", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254836}, {"namespace": "panos", "hostname": "leaf02",
-      "ifname": "swp5", "state": "up", "peerHostname": "leaf01", "peerIfname": "swp5",
+      "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname": "swp2",
       "result": "pass", "assertReason": "-", "timestamp": 1639476254836}, {"namespace":
-      "panos", "hostname": "spine02", "ifname": "swp1", "state": "up", "peerHostname":
-      "leaf01", "peerIfname": "swp2", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254844}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp2",
-      "state": "up", "peerHostname": "leaf02", "peerIfname": "swp2", "result": "pass",
+      "panos", "hostname": "leaf02", "ifname": "swp5", "state": "up", "peerHostname":
+      "leaf01", "peerIfname": "swp5", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254836}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp1",
+      "state": "up", "peerHostname": "leaf01", "peerIfname": "swp2", "result": "pass",
       "assertReason": "-", "timestamp": 1639476254844}, {"namespace": "panos", "hostname":
-      "spine02", "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname":
+      "spine02", "ifname": "swp2", "state": "up", "peerHostname": "leaf02", "peerIfname":
       "swp2", "result": "pass", "assertReason": "-", "timestamp": 1639476254844},
-      {"namespace": "panos", "hostname": "spine02", "ifname": "swp4", "state": "up",
-      "peerHostname": "leaf04", "peerIfname": "swp2", "result": "pass", "assertReason":
+      {"namespace": "panos", "hostname": "spine02", "ifname": "swp3", "state": "up",
+      "peerHostname": "leaf03", "peerIfname": "swp2", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254844}, {"namespace": "panos", "hostname": "spine02",
-      "ifname": "swp5", "state": "up", "peerHostname": "exit01", "peerIfname": "swp2",
+      "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname": "swp2",
       "result": "pass", "assertReason": "-", "timestamp": 1639476254844}, {"namespace":
-      "panos", "hostname": "spine02", "ifname": "swp6", "state": "up", "peerHostname":
-      "exit02", "peerIfname": "swp2", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254844}, {"namespace": "panos", "hostname": "leaf03", "ifname": "swp5",
-      "state": "up", "peerHostname": "leaf04", "peerIfname": "swp5", "result": "pass",
+      "panos", "hostname": "spine02", "ifname": "swp5", "state": "up", "peerHostname":
+      "exit01", "peerIfname": "swp2", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254844}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp6",
+      "state": "up", "peerHostname": "exit02", "peerIfname": "swp2", "result": "pass",
       "assertReason": "-", "timestamp": 1639476254844}, {"namespace": "panos", "hostname":
-      "leaf03", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
-      "swp3", "result": "pass", "assertReason": "-", "timestamp": 1639476254844},
-      {"namespace": "panos", "hostname": "leaf03", "ifname": "swp1", "state": "up",
-      "peerHostname": "spine01", "peerIfname": "swp3", "result": "pass", "assertReason":
+      "leaf03", "ifname": "swp5", "state": "up", "peerHostname": "leaf04", "peerIfname":
+      "swp5", "result": "pass", "assertReason": "-", "timestamp": 1639476254844},
+      {"namespace": "panos", "hostname": "leaf03", "ifname": "swp2", "state": "up",
+      "peerHostname": "spine02", "peerIfname": "swp3", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254844}, {"namespace": "panos", "hostname": "leaf03",
-      "ifname": "swp6", "state": "up", "peerHostname": "leaf04", "peerIfname": "swp6",
+      "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname": "swp3",
       "result": "pass", "assertReason": "-", "timestamp": 1639476254844}, {"namespace":
-      "panos", "hostname": "spine01", "ifname": "swp2", "state": "up", "peerHostname":
-      "leaf02", "peerIfname": "swp1", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254852}, {"namespace": "panos", "hostname": "spine01", "ifname": "swp6",
-      "state": "up", "peerHostname": "exit02", "peerIfname": "swp1", "result": "pass",
+      "panos", "hostname": "leaf03", "ifname": "swp6", "state": "up", "peerHostname":
+      "leaf04", "peerIfname": "swp6", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254844}, {"namespace": "panos", "hostname": "spine01", "ifname": "swp2",
+      "state": "up", "peerHostname": "leaf02", "peerIfname": "swp1", "result": "pass",
       "assertReason": "-", "timestamp": 1639476254852}, {"namespace": "panos", "hostname":
-      "spine01", "ifname": "swp5", "state": "up", "peerHostname": "exit01", "peerIfname":
+      "spine01", "ifname": "swp6", "state": "up", "peerHostname": "exit02", "peerIfname":
       "swp1", "result": "pass", "assertReason": "-", "timestamp": 1639476254852},
-      {"namespace": "panos", "hostname": "spine01", "ifname": "swp4", "state": "up",
-      "peerHostname": "leaf04", "peerIfname": "swp1", "result": "pass", "assertReason":
+      {"namespace": "panos", "hostname": "spine01", "ifname": "swp5", "state": "up",
+      "peerHostname": "exit01", "peerIfname": "swp1", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254852}, {"namespace": "panos", "hostname": "spine01",
-      "ifname": "swp3", "state": "up", "peerHostname": "leaf03", "peerIfname": "swp1",
+      "ifname": "swp4", "state": "up", "peerHostname": "leaf04", "peerIfname": "swp1",
       "result": "pass", "assertReason": "-", "timestamp": 1639476254852}, {"namespace":
-      "panos", "hostname": "spine01", "ifname": "swp1", "state": "up", "peerHostname":
-      "leaf01", "peerIfname": "swp1", "result": "pass", "assertReason": "-", "timestamp":
-      1639476254852}, {"namespace": "panos", "hostname": "leaf01", "ifname": "swp1",
-      "state": "up", "peerHostname": "spine01", "peerIfname": "swp1", "result": "pass",
-      "assertReason": "-", "timestamp": 1639476254854}, {"namespace": "panos", "hostname":
-      "leaf01", "ifname": "swp2", "state": "up", "peerHostname": "spine02", "peerIfname":
+      "panos", "hostname": "spine01", "ifname": "swp3", "state": "up", "peerHostname":
+      "leaf03", "peerIfname": "swp1", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254852}, {"namespace": "panos", "hostname": "spine01", "ifname": "swp1",
+      "state": "up", "peerHostname": "leaf01", "peerIfname": "swp1", "result": "pass",
+      "assertReason": "-", "timestamp": 1639476254852}, {"namespace": "panos", "hostname":
+      "leaf01", "ifname": "swp1", "state": "up", "peerHostname": "spine01", "peerIfname":
       "swp1", "result": "pass", "assertReason": "-", "timestamp": 1639476254854},
-      {"namespace": "panos", "hostname": "leaf01", "ifname": "swp5", "state": "up",
-      "peerHostname": "leaf02", "peerIfname": "swp5", "result": "pass", "assertReason":
+      {"namespace": "panos", "hostname": "leaf01", "ifname": "swp2", "state": "up",
+      "peerHostname": "spine02", "peerIfname": "swp1", "result": "pass", "assertReason":
       "-", "timestamp": 1639476254854}, {"namespace": "panos", "hostname": "leaf01",
-      "ifname": "swp6", "state": "up", "peerHostname": "leaf02", "peerIfname": "swp6",
-      "result": "pass", "assertReason": "-", "timestamp": 1639476254854}]'
+      "ifname": "swp5", "state": "up", "peerHostname": "leaf02", "peerIfname": "swp5",
+      "result": "pass", "assertReason": "-", "timestamp": 1639476254854}, {"namespace":
+      "panos", "hostname": "leaf01", "ifname": "swp6", "state": "up", "peerHostname":
+      "leaf02", "peerIfname": "swp6", "result": "pass", "assertReason": "-", "timestamp":
+      1639476254854}]'
   marks: interface assert panos
 - command: interface assert --result=whatever --format=json --namespace=panos
   data-directory: tests/data/parquet/
