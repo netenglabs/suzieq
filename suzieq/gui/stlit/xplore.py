@@ -129,8 +129,6 @@ class XplorePage(SqGuiPage):
             col_ok = st.sidebar.checkbox('Column Selection Done',
                                          key='xplore_col_done',
                                          value=col_sel_val)
-            if not col_ok:
-                columns = ['default']
         else:
             col_ok = True
             columns = ['default']
