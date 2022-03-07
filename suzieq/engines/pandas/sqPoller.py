@@ -17,16 +17,25 @@ class SqpollerObj(SqPandasEngine):
         columns = kwargs.pop('columns', [])
         addnl_fields = kwargs.pop('addnl_fields', [])
 
+        fields = self.schema.get_display_fields(columns)
+        if status and 'status' not in fields:
+            addnl_fields.append('status')
+
+        if poll_period_exceeded and 'pollExcdPeriodCount' not in fields:
+            addnl_fields.append('pollExcdPeriodCount')
+
+        df = super().get(columns=fields, **kwargs)
+
+        # Additionally filter by status or exceeded polling period. We need to
+        # filter after getting the data because otherwise the parquet filter
+        # will pick the last entry which was not 0, for example, even if it
+        # is not the latest, which is incorrect. Just like status=down
+        add_filter = ''
         if status == "pass":
             add_filter = 'status == 0 or status == 200'
         elif status == "fail":
             add_filter = 'status != 0 and status != 200'
-        else:
-            add_filter = ''
 
-        # We have to do this logic, otherwise the parquet filter will
-        # pick the last entry which was not 0, for example, even if it
-        # is not the latest, which is incorrect. Just like status=down
         if add_filter:
             add_prefix = ' and '
         else:
@@ -38,14 +47,6 @@ class SqpollerObj(SqPandasEngine):
             else:
                 add_filter += f'{add_prefix}pollExcdPeriodCount == 0'
 
-        fields = self.schema.get_display_fields(columns)
-        if status and 'status' not in fields:
-            addnl_fields.append('status')
-
-        if poll_period_exceeded and 'pollExcdPeriodCount' not in fields:
-            addnl_fields.append('pollExcdPeriodCount')
-
-        df = super().get(add_filter=add_filter, columns=fields, **kwargs)
         if not df.empty and add_filter:
             df = df.query(add_filter).reset_index(drop=True)
 

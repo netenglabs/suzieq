@@ -42,10 +42,13 @@ class SqPollerCmd(SqCommand):
             query_str=query_str,
             sqobj=SqPollerObj,
         )
+
+        poll_period_exceeded = str(poll_period_exceeded)
         if poll_period_exceeded == "False":
             poll_period_exceeded = "0"
-        elif poll_period_exceeded == "True":
+        elif poll_period_exceeded:
             poll_period_exceeded = "!0"
+
         self.lvars = {
             'service': service.split(),
             'status': status,
