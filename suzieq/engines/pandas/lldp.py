@@ -36,7 +36,8 @@ class LldpObj(SqPandasEngine):
 
         df = super().get(addnl_fields=addnl_fields, columns=cols, **kwargs)
         if df.empty or (not needed_fields and columns != ['*']):
-            return df
+            df = self._handle_user_query_str(df, query_str)
+            return df.reset_index(drop=True)[cols]
 
         macdf = df.query('subtype.isin(["", "mac address"])')
         if not macdf.empty:
