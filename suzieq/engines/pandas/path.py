@@ -55,7 +55,9 @@ class PathObj(SqPandasEngine):
                 f"No interface information found for {namespace}")
 
         # Need this in determining L2 peer
-        mlag_df = self._get_table_sqobj('mlag').get(namespace=namespace)
+        mlag_df = self._get_table_sqobj('mlag') \
+            .get(columns=['hostname', 'systemId', 'peerLink'],
+                 namespace=namespace)
         mlag_peers = defaultdict(str)
         mlag_peerlink = defaultdict(str)
         if not mlag_df.empty:
@@ -363,7 +365,8 @@ class PathObj(SqPandasEngine):
         if macaddr:
             mac_df = self._macsobj.get(namespace=[rslt.iloc[0]['namespace']],
                                        hostname=[device], macaddr=[macaddr],
-                                       vlan=[str(vlan)])
+                                       columns=['timestamp', 'remoteVtepIp',
+                                       'oif'], vlan=[str(vlan)])
 
             if mac_df.empty:
                 # On servers there's no bridge and thus no MAC table entry
@@ -754,7 +757,7 @@ class PathObj(SqPandasEngine):
         dstvers = ip_network(dest, strict=False)._version
         if srcvers != dstvers:
             raise AttributeError(
-                "Source and Dest MUST belong to same address familt")
+                "Source and Dest MUST belong to same address family")
         # All exceptions in the initial data gathering will happen in this init
         # After this, at least we know we have the data to work on
         self._init_dfs(self.namespace, src, dest)
@@ -1192,6 +1195,7 @@ class PathObj(SqPandasEngine):
         paths_df = pd.DataFrame(df_plist)
         if not paths_df.empty and not any(paths_df.error):
             paths_df.drop(columns=['error'], inplace=True)
+        paths_df.drop(columns=['timestamp'], inplace=True)
         return paths_df.drop_duplicates()
 
     def summarize(self, **kwargs):

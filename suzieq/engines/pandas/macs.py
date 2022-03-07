@@ -28,23 +28,25 @@ class MacsObj(SqPandasEngine):
                 del kwargs['remoteVtepIp']
                 remoteOnly = True
 
-        if 'moveCount' in columns or (columns == ['*']) or moveCount:
-            if view == 'latest':
-                view = 'hour'   # compute mac moves only for the last hour
-            compute_moves = True
-        else:
-            compute_moves = False
-
         fields = self.schema.get_display_fields(columns)
 
         user_query_cols = self._get_user_query_cols(user_query)
         addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
 
+        if 'moveCount' in fields or moveCount:
+            if view == 'latest':
+                view = 'hour'   # compute mac moves only for the last hour
+            if 'timestamp' not in fields+addnl_fields:
+                addnl_fields.append('timestamp')
+            compute_moves = True
+        else:
+            compute_moves = False
+
         df = super().get(view=view, columns=fields, addnl_fields=addnl_fields,
                          **kwargs)
 
         if compute_moves and not df.empty:
-            df = df.set_index('namespace hostname mackey macaddr'.split()) \
+            df = df.set_index(['namespace', 'hostname', 'mackey', 'macaddr']) \
                    .sort_values(by=['timestamp'])
 
             # enhanced OIF, capturing both OIF and remoteVtep to capture moves

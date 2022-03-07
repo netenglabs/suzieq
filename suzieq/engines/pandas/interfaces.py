@@ -467,7 +467,7 @@ class InterfacesObj(SqPandasEngine):
 
         return combined_df[['namespace', 'hostname', 'ifname', 'state',
                             'peerHostname', 'peerIfname', 'result',
-                            'assertReason', 'timestamp']]
+                            'assertReason']]
 
     def _add_portmode(self, df: pd.DataFrame):
         """Add the switchport-mode i.e. acceess/trunk/routed'''
@@ -552,7 +552,7 @@ class InterfacesObj(SqPandasEngine):
         # as a trunk port, as opposed to the access port mode of
         # the upto Cumulus 4.2.x Vxlan ports
         vxlan_ports = df.type == "vxlan"
-        df.loc[vxlan_ports, 'portmode'] = df.loc[vxlan_ports] \
+        df.loc[vxlan_ports, ['portmode']] = df.loc[vxlan_ports] \
             .apply(lambda x: 'trunk' if x['portmode'] == 'routed'
                    else x['portmode'], axis=1)
         return df.drop(columns=['portmode_y', 'vlan_y'],

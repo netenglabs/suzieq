@@ -16,6 +16,7 @@ class DeviceObj(SqPandasEngine):
         '''Table name'''
         return 'device'
 
+    # pylint: disable=too-many-statements
     def get(self, **kwargs):
         """Get the information requested"""
         view = kwargs.get('view', self.iobj.view)
@@ -41,6 +42,9 @@ class DeviceObj(SqPandasEngine):
         if 'uptime' in fields and 'bootupTimestamp' not in fields:
             addnl_fields.append('bootupTimestamp')
 
+        if 'timestamp' not in columns and columns not in [['*'], ['default']]:
+            addnl_fields.append('timestamp')
+
         user_query_cols = self._get_user_query_cols(user_query)
         addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
 
@@ -53,7 +57,7 @@ class DeviceObj(SqPandasEngine):
             namespace=kwargs.get('namespace', []),
             hostname=kwargs.get('hostname', []),
             service='device',
-            columns='namespace hostname status timestamp'.split())
+            columns=['namespace', 'hostname', 'status', 'timestamp'])
 
         if not poller_df.empty:
             # Identify the address to namespace/hostname mapping

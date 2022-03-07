@@ -25,6 +25,15 @@ class EvpnvniObj(SqPandasEngine):
         if 'ifname' not in fields+addnl_fields:
             addnl_fields.append('ifname')
 
+        if 'vlan' not in fields+addnl_fields:
+            addnl_fields.append('vlan')
+
+        if 'namespace' not in fields+addnl_fields:
+            addnl_fields.append('namespace')
+
+        if 'hostname' not in fields+addnl_fields:
+            addnl_fields.append('hostname')
+
         if 'remoteVtepCnt' in fields:
             getVtepCnt = True
             if 'remoteVtepList' not in fields:
@@ -46,16 +55,13 @@ class EvpnvniObj(SqPandasEngine):
 
         # See if we can retrieve the info to fill out the rest of the data
         # Start with VLAN values
-        if 'vlan' not in df.columns and 'vrf' not in df.columns:
-            return df.reset_index(drop=True)[fields]
-
         iflist = [x for x in df[df.vlan == 0]['ifname'].to_list()
                   if x and x != 'None']
         if iflist:
             ifdf = self._get_table_sqobj('interfaces').get(
                 namespace=kwargs.get('namespace', []), ifname=iflist,
                 columns=['namespace', 'hostname', 'ifname', 'state', 'vlan',
-                         'vni'])
+                         'vni', 'timestamp'])
 
             if not ifdf.empty:
                 df = df.merge(ifdf, on=['namespace', 'hostname', 'ifname'],
@@ -72,7 +78,8 @@ class EvpnvniObj(SqPandasEngine):
         # Now we try to see if we can get the VRF info for all L2 VNIs as well
         ifdf = self._get_table_sqobj('interfaces') \
             .get(namespace=kwargs.get('namespace', []), type=['vlan'],
-                 columns=['namespace', 'hostname', 'vlan', 'master']) \
+                 columns=['namespace', 'hostname', 'vlan', 'master',
+                          'timestamp']) \
             .query('master != ""') \
             .reset_index(drop=True)
         if not ifdf.empty and not df.empty and 'vrf' in df.columns:
@@ -175,7 +182,7 @@ class EvpnvniObj(SqPandasEngine):
         assert_cols = ["namespace", "hostname", "vni", "vlan",
                        "remoteVtepList", "vrf", "mcastGroup", "type",
                        "priVtepIp", "state", "l2VniList", "ifname",
-                       "secVtepIp", "timestamp"]
+                       "secVtepIp"]
 
         kwargs.pop("columns", None)  # Loose whatever's passed
         result = kwargs.pop('result', 'all')
@@ -208,6 +215,10 @@ class EvpnvniObj(SqPandasEngine):
                 (her_df.remoteVtepList.str.len() != 0).any()):
             # Check if every VTEP we know is reachable
             rdf = self._get_table_sqobj('routes').get(
+                columns=['hostname', 'namespace', 'vrf', 'prefix',
+                         'prefixlen', 'ipvers', 'nexthopIps', 'oifs',
+                         'protocol', 'source', 'preference', 'action',
+                         'timestamp'],
                 namespace=kwargs.get('namespace'), vrf='default')
             if not rdf.empty:
                 rdf['prefixlen'] = rdf['prefix'].str.split('/') \
@@ -280,7 +291,7 @@ class EvpnvniObj(SqPandasEngine):
             df = df.query('assertReason.str.len() == 0')
 
         return df[['namespace', 'hostname', 'vni', 'type',
-                   'assertReason', 'result', 'timestamp']] \
+                   'assertReason', 'result']] \
             .explode(column='assertReason') \
             .fillna({'assertReason': '-'})
 

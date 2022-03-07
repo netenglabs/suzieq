@@ -254,7 +254,8 @@ class BgpObj(SqPandasEngine):
             namespace=failed_df.namespace.unique().tolist(),
             hostname=failed_df.hostname.unique().tolist(),
             ifname=failed_df.ifname.unique().tolist(),
-            columns=['namespace', 'hostname', 'ifname', 'state', 'adminState']
+            columns=['namespace', 'hostname', 'ifname', 'state', 'adminState',
+                     'timestamp']
         )
 
         failed_df['assertReason'] = [[] for _ in range(len(failed_df))]
@@ -297,7 +298,7 @@ class BgpObj(SqPandasEngine):
 
         result_df = df[['namespace', 'hostname', 'vrf', 'peer', 'asn',
                         'peerAsn', 'state', 'peerHostname', 'result',
-                        'assertReason', 'timestamp']] \
+                        'assertReason']] \
             .explode(column="assertReason") \
             .fillna({'assertReason': '-'})
 

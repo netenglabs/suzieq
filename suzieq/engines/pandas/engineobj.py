@@ -176,7 +176,8 @@ class SqPandasEngine(SqEngineObj):
 
         aug_fields = sch.get_augmented_fields(fields)
 
-        if 'timestamp' not in fields:
+        if 'timestamp' not in fields and \
+                (self.iobj.start_time or self.iobj.end_time):
             fields.append('timestamp')
 
         if 'active' not in fields+addnl_fields:

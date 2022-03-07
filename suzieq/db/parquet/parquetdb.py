@@ -145,6 +145,10 @@ class SqParquetDB(SqDB):
 
             avail_fields = list(filter(lambda x: x in master_schema.names,
                                        fields))
+
+            if 'timestamp' not in avail_fields:
+                avail_fields.append('timestamp')
+
             filters = self.build_ds_filters(
                 start, end, master_schema, merge_fields=merge_fields, **kwargs)
 
