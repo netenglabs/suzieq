@@ -374,7 +374,8 @@ class OspfObj(SqPandasEngine):
                     "adjState_x": "adjState",
                 },
             )[["namespace", "hostname", "ifname", "vrf", "adjState",
-               "assertReason", "timestamp"]]
+               "assertReason", "timestamp"]].explode(column='assertReason')
+            .fillna({'assertReason': ''})
         )
 
         return self._create_aver_result([pasv_df, ifdown_df, result_df],
@@ -485,5 +486,5 @@ class OspfObj(SqPandasEngine):
         return ospf_df[['namespace', 'hostname', 'vrf', 'ifname', 'adjState',
                         'assertReason', 'result']] \
             .explode('assertReason') \
-            .fillna('') \
+            .fillna('-') \
             .reset_index(drop=True)
