@@ -446,10 +446,6 @@ class SqCommand(SqPlugin):
             for row in df.itertuples():
                 self._pager_print(row.config)
         else:
-            if (not (self.start_time or self.end_time) and
-                'timestamp' not in self.columns and not dont_strip_cols and
-                    'timestamp' in df.columns and 'timestamp' in cols):
-                cols.remove('timestamp')
             with pd.option_context('precision', 3,
                                    'display.max_colwidth', max_colwidth,
                                    'display.max_rows', 256):
