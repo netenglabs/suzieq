@@ -577,6 +577,7 @@ class InterfacesObj(SqPandasEngine):
                            hostname=df.hostname.unique().tolist())
 
         if vlan_df.empty:
+            df['vlanList'] = [[] for _ in range(len(df))]
             return df
 
         # Transform the list of VLANs from VLAN-oriented to interface oriented

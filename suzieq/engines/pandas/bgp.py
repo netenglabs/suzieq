@@ -302,8 +302,8 @@ class BgpObj(SqPandasEngine):
             .fillna({'assertReason': '-'})
 
         if result == "fail":
-            return result_df.query('assertReason != "-"')
+            result_df = result_df.query('assertReason != "-"')
         elif result == "pass":
-            return result_df.query('assertReason == "-"')
+            result_df = result_df.query('assertReason == "-"')
 
-        return result_df
+        return result_df.reset_index(drop=True)

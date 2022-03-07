@@ -21,6 +21,8 @@ class MacsObj(SqPandasEngine):
         user_query = kwargs.pop('query_str', '')
         vtep = kwargs.get('remoteVtepIp', [])
 
+        addnl_fields = []
+
         if vtep:
             if kwargs['remoteVtepIp'] == ['any']:
                 del kwargs['remoteVtepIp']
@@ -35,7 +37,8 @@ class MacsObj(SqPandasEngine):
 
         fields = self.schema.get_display_fields(columns)
 
-        addnl_fields = self._get_user_query_cols(user_query)
+        user_query_cols = self._get_user_query_cols(user_query)
+        addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
 
         df = super().get(view=view, columns=fields, addnl_fields=addnl_fields,
                          **kwargs)
