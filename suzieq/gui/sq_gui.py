@@ -5,7 +5,7 @@ from importlib.util import find_spec
 from pathlib import Path
 
 from colorama import init, Fore, Style
-from suzieq.shared.utils import print_version
+from suzieq.shared.utils import load_sq_config, print_version
 
 
 def gui_main(*args):
@@ -54,6 +54,9 @@ def gui_main(*args):
 
     if userargs.config:
         thisprog += f' -c {userargs.config}'
+
+    # validate the config file before starting the gui
+    load_sq_config(config_file=userargs.config)
 
     init()
     with subprocess.Popen(['streamlit', 'run', thisprog,
