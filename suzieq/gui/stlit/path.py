@@ -35,6 +35,7 @@ class PathPage(SqGuiPage):
     _failed_dfs = {}
     _pathobj = None
     _path_df: pd.DataFrame = None
+    _config_file: str = st.session_state.get('config_file', '')
 
     @property
     def add_to_menu(self) -> bool:
@@ -71,7 +72,8 @@ class PathPage(SqGuiPage):
     def _create_sidebar(self) -> None:
 
         state = self._state
-        devdf = gui_get_df('device', columns=['namespace'])
+        devdf = gui_get_df('device', config_file=self._config_file,
+                           columns=['namespace'])
         if devdf.empty:
             st.error('Unable to retrieve any namespace info')
             st.stop()
@@ -147,7 +149,7 @@ class PathPage(SqGuiPage):
 
         layout['pgbar'].progress(0)
         self._pathobj = get_sqobject(
-            'path')(config_file=st.session_state.config_file,
+            'path')(config_file=self._config_file,
                     start_time=state.start_time,
                     end_time=state.end_time)
         try:
@@ -278,7 +280,8 @@ class PathPage(SqGuiPage):
                 {'name': 'ospf', 'query': 'adjState == "other"'},
                 {'name': 'bgp', 'query': 'state == "NotEstd"'}
         ]):
-            df = gui_get_df(entry['name'], namespace=[namespace])
+            df = gui_get_df(entry['name'], config_file=self._config_file,
+                            namespace=[namespace])
             if not df.empty and (entry.get('query', '')):
                 df = df.query(entry['query']).reset_index(drop=True)
                 self._failed_dfs[entry['name']] = df

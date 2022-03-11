@@ -20,6 +20,7 @@ class StatusPage(SqGuiPage):
     '''Page for Main status page'''
     _title: str = SuzieqMainPages.STATUS.value
     _state: StatusSessionState = StatusSessionState()
+    _config_file: str = st.session_state.get('config_file', '')
 
     @property
     def add_to_menu(self):
@@ -36,7 +37,8 @@ class StatusPage(SqGuiPage):
 
         do_refresh = st.sidebar.button('Refresh')
 
-        devdf = gui_get_df('device', columns=['namespace', 'hostname'])
+        devdf = gui_get_df('device', self._config_file,
+                           columns=['namespace', 'hostname'])
         if devdf.empty:
             st.error('Unable to retrieve any namespace info')
             st.stop()
@@ -116,7 +118,8 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the
     def _chart_dev(self, layout: dict, ns_list: List[str]) -> None:
         '''Chart the devices table status'''
 
-        dev_df = gui_get_df('device', namespace=ns_list, columns=['*'])
+        dev_df = gui_get_df('device', self._config_file,
+                            namespace=ns_list, columns=['*'])
         if dev_df.empty:
             layout['dev_chart'].warning('No device info found')
             return
@@ -141,7 +144,8 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the
     def _chart_interface(self, layout: dict, ns_list: List[str]) -> None:
         '''Chart the interfaces table status'''
 
-        if_df = gui_get_df('interfaces', namespace=ns_list,
+        if_df = gui_get_df('interfaces', self._config_file,
+                           namespace=ns_list,
                            columns=['default'])
         if if_df.empty:
             layout['if_chart'].warning('No Interface info found')
@@ -170,7 +174,8 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the
     def _chart_bgp(self, layout: dict, ns_list: List[str]) -> None:
         '''Chart the BGP table status'''
 
-        bgp_df = gui_get_df('bgp', namespace=ns_list, columns=['default'])
+        bgp_df = gui_get_df('bgp', self._config_file,
+                            namespace=ns_list, columns=['default'])
 
         if bgp_df.empty:
             return
@@ -195,7 +200,8 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the
     def _chart_ospf(self, layout: dict, ns_list: List[str]) -> None:
         '''Chart OSPF status'''
 
-        ospf_df = gui_get_df('ospf', namespace=ns_list, columns=['default'])
+        ospf_df = gui_get_df('ospf', self._config_file,
+                             namespace=ns_list, columns=['default'])
         if ospf_df.empty:
             return
 
@@ -224,6 +230,7 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the
         '''Display poller status'''
 
         sqdf = gui_get_df('sqPoller',
+                          self._config_file,
                           columns=['namespace', 'hostname', 'timestamp'],
                           service='device', namespace=ns_list)
         if sqdf.empty:
