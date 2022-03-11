@@ -1,5 +1,5 @@
+import os
 import sys
-import argparse
 from collections import defaultdict
 import base64
 from typing import Dict
@@ -155,15 +155,8 @@ def apprun(*args):
     if not args:
         args = sys.argv
 
-    parser = argparse.ArgumentParser(args)
-    parser.add_argument(
-        "-c",
-        "--config",
-        type=str, help="alternate config file",
-        default=None
-    )
-    userargs = parser.parse_args()
-    config_file = sq_get_config_file(userargs.config)
+    config_file = os.environ.get('SQ_GUI_CONFIG_FILE', '')
+    config_file = sq_get_config_file(config_file)
 
     state = st.session_state
     state.config_file = config_file

@@ -1,3 +1,4 @@
+import os
 import sys
 import subprocess
 import argparse
@@ -52,11 +53,11 @@ def gui_main(*args):
                 'stlit' / 'suzieq-gui.py'
             thisprog = str(thisprog)
 
-    if userargs.config:
-        thisprog += f' -c {userargs.config}'
-
     # validate the config file before starting the gui
     load_sq_config(config_file=userargs.config)
+
+    # write the sq_config file path inside an environment variable
+    os.environ['SQ_GUI_CONFIG_FILE'] = userargs.config or ''
 
     init()
     with subprocess.Popen(['streamlit', 'run', thisprog,
