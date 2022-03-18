@@ -47,7 +47,8 @@ class Source(ControllerPlugin):
             'hostname',
             'jump_host',
             'jump_host_key_file',
-            'ignore_known_hosts'
+            'ignore_known_hosts',
+            'slow_host',
         ]
 
         self._load(input_data)
@@ -202,6 +203,7 @@ class Source(ControllerPlugin):
         jump_host_key_file = None
         transport = None
         ignore_known_hosts = False
+        slow_host = False
         port = None
         devtype = None
 
@@ -217,6 +219,7 @@ class Source(ControllerPlugin):
                                            " exists")
             transport = self._device.get('transport')
             ignore_known_hosts = self._device.get('ignore-known-hosts', False)
+            slow_host = self._device.get('slow-host', False)
             port = self._device.get('port')
             devtype = self._device.get('devtype')
 
@@ -229,13 +232,15 @@ class Source(ControllerPlugin):
                 or ignore_known_hosts,
                 'transport': node.get('transport') or transport or 'ssh',
                 'port': node.get('port') or port or 22,
-                'devtype': node.get('devtype') or devtype
+                'devtype': node.get('devtype') or devtype,
+                'slow_host': node.get('slow_host', '') or slow_host,
             })
 
     def _validate_device(self):
         if self._device:
             dev_fields = ['name', 'jump-host', 'jump-host-key-file',
-                          'ignore-known-hosts', 'transport', 'port', 'devtype']
+                          'ignore-known-hosts', 'transport', 'port',
+                          'slow-host', 'devtype']
             inv_fields = [x for x in self._device if x not in dev_fields]
             if inv_fields:
                 raise InventorySourceError(

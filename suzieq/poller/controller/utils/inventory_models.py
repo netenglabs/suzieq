@@ -26,6 +26,7 @@ class DeviceModel(BaseModel):
     jump_host_key_file: Optional[str] = Field(alias='jump-host-key-file')
     ignore_known_hosts: Optional[bool] = Field(
         alias='ignore-known-hosts', default=False)
+    slow_host: Optional[bool] = Field(alias='slow-host', default=False)
     transport: Optional[str]
     port: Optional[str]
     devtype: Optional[str]

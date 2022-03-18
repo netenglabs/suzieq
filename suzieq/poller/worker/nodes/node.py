@@ -28,6 +28,7 @@ from suzieq.shared.utils import get_timestamp_from_junos_time, known_devtypes
 from suzieq.shared.exceptions import SqPollerConfError, UnknownDevtypeError
 
 logger = logging.getLogger(__name__)
+IOS_SLEEP_BET_CMDS = 5          # in seconds
 
 # pylint: disable=broad-except, attribute-defined-outside-init
 
@@ -152,6 +153,7 @@ class Node:
             self.jump_host_key = None
 
         self.ignore_known_hosts = kwargs.get('ignore_known_hosts', False)
+        self.slow_host = kwargs.get('slow_host', False)
         pvtkey_file = kwargs.get("ssh_keyfile", None)
         if pvtkey_file:
             self.pvtkey = self._decrypt_pvtkey(pvtkey_file, passphrase)
@@ -1188,7 +1190,8 @@ class IosXRNode(Node):
 class IosXENode(Node):
     '''IOS-XE Node-sepcific telemetry gather implementation'''
 
-    async def _init_ssh(self, init_boot_time=True, rel_lock: bool = True) -> None:
+    async def _init_ssh(self, init_boot_time=True,
+                        rel_lock: bool = False) -> None:
         '''Need to start an interactive session for XE
 
         Many IOSXE devices cannot accept commands as fast as we can fire them.
@@ -1197,7 +1200,7 @@ class IosXENode(Node):
         authenticated, not just the main SSH connection.
         '''
         backoff_period = 1
-        self.WAITFOR = r'.*[>#]\s*$'
+        self.WAITFOR = r'.*[>#]$'
 
         while not self._conn:
             await super()._init_ssh(init_boot_time=False, rel_lock=False)
@@ -1318,6 +1321,8 @@ class IosXENode(Node):
         timeout = timeout or self.cmd_timeout
         for cmd in cmd_list:
             try:
+                if self.slow_host:
+                    await asyncio.sleep(IOS_SLEEP_BET_CMDS)
                 self._stdin.write(cmd + '\n')
                 output = await self.wait_for_prompt()
                 if 'Invalid input detected' in output or 'timeout' in output:
