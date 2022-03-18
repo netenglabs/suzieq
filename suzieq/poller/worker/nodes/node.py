@@ -1126,9 +1126,13 @@ class IosXRNode(Node):
         while not self._conn:
             await super()._init_ssh(init_boot_time=False, rel_lock=False)
 
+            if self._conn:
+                break
+
             await asyncio.sleep(backoff_period)
             backoff_period *= 2
             backoff_period = min(backoff_period, 120)
+
         if self._conn:
             try:
                 self._long_proc = await self._conn.create_process(
@@ -1200,17 +1204,17 @@ class IosXENode(Node):
         authenticated, not just the main SSH connection.
         '''
         backoff_period = 1
-        self.WAITFOR = r'.*[>#]$'
+        self.WAITFOR = r'.*[>#]\s*$'
 
         while not self._conn:
             await super()._init_ssh(init_boot_time=False, rel_lock=False)
-            if not self._conn:
-                await asyncio.sleep(backoff_period)
-                backoff_period *= 2
-                backoff_period = min(backoff_period, 120)
-                if rel_lock:
-                    self.ssh_ready.release()
-                return
+
+            if self._conn:
+                break
+
+            await asyncio.sleep(backoff_period)
+            backoff_period *= 2
+            backoff_period = min(backoff_period, 120)
 
         if self._conn:
             try:
@@ -1222,8 +1226,8 @@ class IosXENode(Node):
                 output = await self.wait_for_prompt()
                 if output.strip().endswith('>'):
                     # We're not in enable mode and cannot function
-                    self.logger.warning(
-                        'Privilege escalation required. Trying')
+                    self.logger.info(
+                        f'Privilege escalation required for {self.hostname}')
                     self._stdin.write('enable\n')
                     output = await self.wait_for_prompt()
                     if self.enable_password:
@@ -1235,14 +1239,17 @@ class IosXENode(Node):
                     if (output in ['timeout', 'Password:'] or
                             output.strip().endswith('>')):
                         self.logger.error(
-                            'Invalid enable password, commands may fail')
+                            f'Privilege escalation failed for {self.hostname}'
+                            ', Aborting connection')
                         await self._conn.terminate()
                         self._conn = None
                         if rel_lock:
                             self.ssh_ready.release()
                         return
                     else:
-                        self.logger.warning('Privilege escalation succeeded')
+                        self.logger.info(
+                            'Privilege escalation succeeded for '
+                            f'{self.hostname}')
             except Exception:
                 self._conn = None
                 return
