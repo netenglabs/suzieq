@@ -22,7 +22,10 @@ from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.utils import known_devtypes
 from suzieq.version import SUZIEQ_VERSION
 
-HOLD_TIME_IN_MSECS = 60000  # How long b4 declaring node dead
+# How long b4 declaring node dead
+HOLD_TIME_IN_MSECS = 60000
+# How many unsuccessful polls before marking records with active=false
+HYSTERESIS_FAILURE_CNT = 3
 
 
 @dataclass
@@ -88,6 +91,7 @@ class Service(SqPlugin):
         self._poller_schema = {}
         self.node_boot_times = defaultdict(int)
         self._failed_node_set = set()
+        self._consecutive_failures = defaultdict(int)
 
         self.poller_schema = property(
             self.get_poller_schema, self.set_poller_schema)
@@ -598,7 +602,7 @@ class Service(SqPlugin):
         """Write the result data out"""
         # pylint: disable=protected-access
         records = []
-        key = f'{namespace}-{hostname}'
+        key = f'{namespace}.{hostname}'
         prev_res = self.previous_results.get(key, None)
         # No data previously polled with this service from the the
         # current namespace and hostname. Check if the datastore contains some
@@ -712,6 +716,12 @@ class Service(SqPlugin):
 
         return write_stat
 
+    def is_first_run(self, key: str) -> bool:
+        '''Boolean indicating wether the current run
+           is the first since the service is running.
+        '''
+        return not self.previous_results.get(key, None)
+
     # pylint: disable=too-many-statements
     async def run(self):
         """Start the service"""
@@ -747,6 +757,27 @@ class Service(SqPlugin):
 
             if output:
                 ostatus = [x.get('status', -1) for x in output]
+
+                should_commit = True
+
+                # we should always commit during the first run of the service
+                # for each node regardless their status.
+                if not self.is_first_run(token.nodename):
+                    # If it's not the first run and some command did fail,
+                    # increment the count to be used in hysteresis.
+                    # The info will be committed in a future run.
+                    if any((not Service.is_status_ok(x) for x in ostatus)):
+                        self._consecutive_failures[token.nodename] += 1
+                    # otherwise reset the counter.
+                    else:
+                        self._consecutive_failures[token.nodename] = 0
+
+                if 0 < self._consecutive_failures[token.nodename] < \
+                        HYSTERESIS_FAILURE_CNT:
+                    self.logger.info(
+                        f"{self.name} {token.nodename} node failure hysteresis"
+                        ", skipping data commit")
+                    should_commit = False
 
                 # pylint: disable=use-a-generator
                 write_poller_stat = not all([Service.is_status_ok(x)
@@ -799,7 +830,6 @@ class Service(SqPlugin):
 
                 # If a node from init state to good state, hostname will change
                 # So fix that in the node list
-                hostname = output[0]["hostname"]
                 if self.run_once == "process":
                     if self.is_status_ok(status):
                         self._post_work_to_writer(json.dumps(result, indent=4))
@@ -808,13 +838,9 @@ class Service(SqPlugin):
                         return
                     continue
 
-                # Check if a node has rebooted
-                if token.bootupTimestamp != self.node_boot_times[hostname]:
-                    self.node_boot_times[hostname] = token.bootupTimestamp
-                    # Flush the prev results data for this node
-                    self.previous_results[hostname] = []
-                await self.commit_data(result, output[0]["namespace"],
-                                       hostname)
+                if should_commit:
+                    await self.commit_data(result, output[0]["namespace"],
+                                           output[0]["hostname"])
             elif self.run_once in ["gather", "process", "update"]:
                 total_nodes -= 1
                 if total_nodes <= 0:
@@ -826,14 +852,13 @@ class Service(SqPlugin):
             total_time = int(time.time()*1000) - token.start_time
 
             if output:
-                statskey = output[0]["namespace"] + '/' + output[0]["hostname"]
 
-                stats = pernode_stats[statskey]
+                stats = pernode_stats[token.nodename]
                 write_poller_stat = (self.update_stats(
                     stats, total_time, gather_time, qsize,
                     self.writer_queue.qsize(), token.nodeQsize, rxBytes) or
                     write_poller_stat)
-                pernode_stats[statskey] = stats
+                pernode_stats[token.nodename] = stats
                 if write_poller_stat:
                     poller_stat = [
                         {"hostname": (output[0]["hostname"] or
@@ -863,7 +888,7 @@ class Service(SqPlugin):
                             "schema": self.poller_schema,
                             "partition_cols": self.partition_cols
                         })
-                    self.reset_stats(pernode_stats[statskey])
+                    self.reset_stats(pernode_stats[token.nodename])
 
             # Post a cmd to fire up the next poll after the specified period
             if self.run_once == "update":
