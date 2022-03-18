@@ -41,7 +41,7 @@ class InterfaceService(Service):
         '''
         Return the correct value for an interface without a valid speed
         '''
-        if entry['type'] not in MISSING_SPEED_IF_TYPES:
+        if entry.get('type', '') not in MISSING_SPEED_IF_TYPES:
             return NO_SPEED
         return MISSING_SPEED
 

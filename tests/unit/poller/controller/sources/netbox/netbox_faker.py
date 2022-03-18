@@ -21,6 +21,7 @@ _BASE_INVENTORY_DEVICE = {
     'passphrase': None,
     'password': 'password',
     'port': 22,
+    'slow_host': False,
     'ssh_keyfile': None,
     'transport': 'ssh',
     'username': 'username'
