@@ -1,7 +1,7 @@
 """Module containing base class for inventorySource plugins
 """
 import asyncio
-from copy import copy
+from copy import copy, deepcopy
 from os.path import isfile
 from pathlib import Path
 from typing import Dict, List
@@ -261,19 +261,22 @@ def _load_inventory(source_file: str) -> List[dict]:
 
     inventory = read_inventory(source_file)
 
-    ns_dict = inventory.get('namespaces')
+    ns_list = inventory.get('namespaces')
     sources_dict = inventory.get('sources')
     auths_dict = inventory.get('auths', {})
     devs_dict = inventory.get('devices', {})
 
     sources = []
-    for namespace, ns in ns_dict.items():
+    for ns in ns_list:
         source_name = ns.get('source')
+        namespace = ns.get('name')
 
         source = sources_dict.get(source_name)
 
         if ns.get('auth'):
-            auth = auths_dict.get(ns['auth'])
+            # this is only a temporary fix, in future releases I will move the
+            # credential loader initialization outside of this function.
+            auth = deepcopy(auths_dict.get(ns['auth']))
             auth_type = auth.get('type') or CredentialLoader.default_type()
             if "-" in auth_type:
                 auth_type = auth_type.replace("-", "_")

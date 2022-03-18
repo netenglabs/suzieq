@@ -199,7 +199,7 @@ def validate_raw_inventory(inventory: dict) -> Dict:
                              for name, g in global_specs.items()}
 
     # validate 'namespaces'
-    global_specs = {}
+    global_ns_specs = []
     for ns_specs in inv_model.namespaces:
         try:
             ns = NamespaceModel(**ns_specs)
@@ -232,8 +232,8 @@ def validate_raw_inventory(inventory: dict) -> Dict:
                     )
                 )
 
-        global_specs[ns.name] = ns.dict(by_alias=True)
-    new_inventory['namespaces'] = global_specs
+        global_ns_specs.append(ns.dict(by_alias=True))
+    new_inventory['namespaces'] = global_ns_specs
 
     if errors:
         output_inv_errors(errors)
