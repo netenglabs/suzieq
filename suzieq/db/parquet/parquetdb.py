@@ -510,7 +510,7 @@ class SqParquetDB(SqDB):
         folder = self._get_table_directory(table_name, True)
 
         # pylint: disable=simplifiable-if-statement
-        if (start_time and end_time) or (view == "all"):
+        if not (start_time or end_time) and (view == "all"):
             # Enforcing the logic we have: if both start_time & end_time
             # are given, return all files since the model is that the user is
             # expecting to see all changes in the time window. Otherwise, user
