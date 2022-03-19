@@ -17,6 +17,7 @@ from suzieq.sqobjects import get_sqobject
 from suzieq.shared.utils import (load_sq_config, get_sq_install_dir,
                                  get_log_params, sq_get_config_file,
                                  print_version)
+from suzieq.shared.exceptions import UserQueryError
 
 API_KEY_NAME = 'access_token'
 
@@ -215,11 +216,18 @@ class DeviceStatus(str, Enum):
     alive = "alive"
     dead = "dead"
     neverpoll = "neverpoll"
+    notalive = "!alive"
+    notdead = "!dead"
+    notneverpoll = "!neverpoll"
 
 
 class BgpStateValues(str, Enum):
     ESTABLISHED = "Established"
     NOTESTD = "NotEstd"
+    DYNAMIC = "dynamic"
+    NOTESTABLISHED = "!Established"
+    NOTNOTESTD = "!NotEstd"
+    NOTDYNAMIC = "!dynamic"
 
 
 class IfStateValues(str, Enum):
@@ -227,12 +235,19 @@ class IfStateValues(str, Enum):
     DOWN = "down"
     ERRDISABLED = "errDisabled"
     NOTCONNECTED = "notConnected"
+    NOTUP = "!up"
+    NOTDOWN = "!down"
+    NOTERRDISABLED = "!errDisabled"
+    CONNECTED = "!notConnected"
 
 
 class OspfStateValues(str, Enum):
     FULL = "full"
     PASSIVE = "passive"
     OTHER = "other"
+    NOTFULL = "!full"
+    NOTPASSIVE = "!passive"
+    NOTOTHER = "!other"
 
 
 class ViewValues(str, Enum):
@@ -287,6 +302,7 @@ async def query_address(verb: CommonVerbs, request: Request,
                         prefix: List[str] = Query(None),
                         ipvers: str = None, what: str = None,
                         vrf: str = None, query_str: str = None,
+                        count: str = None, reverse: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -306,6 +322,7 @@ async def query_arpnd(verb: CommonVerbs, request: Request,
                       prefix: List[str] = Query(None),
                       oif: List[str] = Query(None),
                       query_str: str = None, what: str = None,
+                      count: str = None, reverse: str = None,
                       ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -327,6 +344,7 @@ async def query_bgp(verb: CommonExtraVerbs, request: Request,
                     result: AssertResultValue = Query(None),
                     afiSafi: str = Query(None),
                     query_str: str = None, what: str = None,
+                    count: str = None, reverse: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -345,8 +363,10 @@ async def query_device(verb: CommonVerbs, request: Request,
                        os: List[str] = Query(None),
                        vendor: List[str] = Query(None),
                        model: List[str] = Query(None),
-                       version: str = "", what: str = None,
+                       version: List[str] = Query(None),
+                       what: str = None,
                        status: List[DeviceStatus] = Query(None),
+                       count: str = None, reverse: str = None,
                        ):
     function_name = inspect.currentframe().f_code.co_name
     if status:
@@ -364,6 +384,7 @@ async def query_devconfig(verb: CommonVerbs, request: Request,
                           namespace: List[str] = Query(None),
                           columns: List[str] = Query(default=["default"]),
                           query_str: str = None,
+                          count: str = None, reverse: str = None,
                           ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -382,6 +403,7 @@ async def query_evpnVni(verb: CommonExtraVerbs, request: Request,
                         priVtepIp: List[str] = Query(None),
                         result: AssertResultValue = None,
                         query_str: str = None, what: str = None,
+                        count: str = None, reverse: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -398,6 +420,7 @@ async def query_fs(verb: CommonVerbs, request: Request,
                    columns: List[str] = Query(default=["default"]),
                    mountPoint: List[str] = Query(None), what: str = None,
                    usedPercent: str = None, query_str: str = None,
+                   count: str = None, reverse: str = None,
                    ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -425,6 +448,7 @@ async def query_interface(verb: CommonExtraVerbs, request: Request,
                           vlan: List[str] = Query(None),
                           portmode: List[str] = Query(None),
                           query_str: str = None,
+                          count: str = None, reverse: str = None,
                           ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -445,6 +469,7 @@ async def query_inventory(verb: CommonVerbs, request: Request,
                           model: List[str] = Query(None),
                           vendor: List[str] = Query(None), what: str = None,
                           status: InventoryStatusValues = Query(None),
+                          count: str = None, reverse: str = None,
                           ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -464,6 +489,7 @@ async def query_lldp(verb: CommonVerbs, request: Request,
                      ifname: List[str] = Query(None),
                      use_bond: TruthasStrings = Query(None),
                      query_str: str = None, what: str = None,
+                     count: str = None, reverse: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -484,7 +510,8 @@ async def query_mac(verb: CommonVerbs, request: Request,
                     remoteVtepIp: List[str] = Query(None),
                     vlan: List[str] = Query(None),
                     query_str: str = None, what: str = None,
-                    moveCount: str = None,
+                    moveCount: str = None, count: str = None,
+                    reverse: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -500,6 +527,7 @@ async def query_mlag(verb: CommonVerbs, request: Request,
                      namespace: List[str] = Query(None),
                      columns: List[str] = Query(default=["default"]),
                      query_str: str = None, what: str = None,
+                     count: str = None, reverse: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -536,6 +564,7 @@ async def query_network(verb: CommonVerbs, request: Request,
                         vendor: List[str] = Query(None),
                         os: List[str] = Query(None),
                         query_str: str = None, what: str = None,
+                        count: str = None, reverse: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -556,6 +585,7 @@ async def query_ospf(verb: CommonExtraVerbs, request: Request,
                      vrf: List[str] = Query(None),
                      result: AssertResultValue = None,
                      query_str: str = None, what: str = None,
+                     count: str = None, reverse: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -574,6 +604,7 @@ async def query_path(verb: CommonVerbs, request: Request,
                      dest: str = Query(None),
                      source: str = Query(None, alias='src'),
                      query_str: str = None, what: str = None,
+                     count: str = None, reverse: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -594,6 +625,7 @@ async def query_route(verb: RouteVerbs, request: Request,
                       prefixlen: str = None, ipvers: str = None,
                       add_filter: str = None, address: str = None,
                       query_str: str = None, what: str = None,
+                      count: str = None, reverse: str = None,
                       ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -612,6 +644,7 @@ async def query_sqPoller(verb: CommonVerbs, request: Request,
                          status: SqPollerStatus = Query(None),
                          query_str: str = None, what: str = None,
                          pollExcdPeriodCount: str = None,
+                         count: str = None, reverse: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -635,6 +668,7 @@ async def query_topology(verb: CommonVerbs, request: Request,
                          vrf: List[str] = Query(None),
                          afiSafi: str = Query(None),
                          query_str: str = None, what: str = None,
+                         count: str = None, reverse: str = None,
                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -651,7 +685,7 @@ async def query_table_describe(
     return read_shared(function_name, 'describe', request, locals())
 
 
-@ app.get("/api/v2/table/{verb}")
+@app.get("/api/v2/table/{verb}")
 async def query_table(
         verb: CommonVerbs, request: Request,
         token: str = Depends(get_api_key),
@@ -661,6 +695,7 @@ async def query_table(
         view: ViewValues = "latest", namespace: List[str] = Query(None),
         columns: List[str] = Query(default=["default"]),
         query_str: str = None, table: str = None,
+        count: str = None,
 ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -679,6 +714,7 @@ async def query_vlan(verb: CommonVerbs, request: Request,
                      state: str = None,
                      vlanName: List[str] = Query(None),
                      query_str: str = None, what: str = None,
+                     count: str = None, reverse: str = None,
                      ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -707,7 +743,7 @@ def create_filters(function_name, command, request, local_vars):
     remove_args = ['verb', 'token', 'format', 'request', 'access_token']
     all_cmd_args = ['namespace', 'hostname',
                     'start_time', 'end_time', 'view', 'columns', 'format']
-    both_verb_and_command = ['namespace', 'hostname', ]
+    both_verb_and_command = ['namespace', 'hostname', 'columns']
     alias_args = {'src': 'source'}
 
     query_ks = request.query_params
@@ -777,8 +813,7 @@ def run_command_verb(command, verb, command_args, verb_args,
 
     except AttributeError as err:
         return_error(
-            404, (f"{verb} not supported for {command} or "
-                  f"missing arguement: {err}"))
+            404, (f"{err}"))
 
     except NotImplementedError as err:
         return_error(404, f"{verb} not supported for {command}: {err}")
@@ -789,18 +824,16 @@ def run_command_verb(command, verb, command_args, verb_args,
     except ValueError as err:
         return_error(405, f"bad keyword/filter for {command} {verb}: {err}")
 
+    except UserQueryError as err:
+        return_error(500, f'UserQueryError: {err}')
     except Exception as err:
         return_error(
             500,
-            f"{command}:{verb} got an exception {type(err)}: {err}")
+            f"{err}")
 
     if df.columns.to_list() == ['error']:
         return_error(
             405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
-
-    if columns != ['default'] and columns != ['*'] and columns is not None:
-        if all(x in df.columns for x in columns):
-            df = df[columns]
 
     if format == 'markdown':
         # have to return a Reponse so that it won't turn the markdown into JSON
