@@ -49,6 +49,12 @@ class SqRestEngine(SqEngineObj):
     def top(self, **kwargs):
         return self._get_response('top', **kwargs)
 
+    def find(self, **kwargs):
+        return self._get_response('find', **kwargs)
+
+    def lpm(self, **kwargs):
+        return self._get_response('lpm', **kwargs)
+
     def _get_response(self, verb: str, **kwargs) -> pd.DataFrame:
         """The work horse engine implementing the basic REST API query
 
@@ -74,6 +80,9 @@ class SqRestEngine(SqEngineObj):
         table = self.table_name()
         if table in ['routes', 'macs', 'interfaces']:
             table = table[:-1]
+        if table == "tables":
+            # Screwup on our side in naming the API
+            table = "table"
         url = (
             f'{self.ctxt.rest_transport}://{self.ctxt.rest_server_ip}'
             f':{self.ctxt.rest_server_port}'
@@ -84,7 +93,14 @@ class SqRestEngine(SqEngineObj):
 
         response = requests.get(url, verify=False, )
         if response.status_code != 200:
-            return pd.DataFrame({'errpr': [f'{response.status_code}']})
+            if response.text:
+                msg = response.json().get("detail", str(response.status_code))
+                # Strip out the "ID=" part of the message
+                msg = msg.rsplit('id=', 1)[0].strip()
+                return pd.DataFrame(
+                    {'error': [f'ERROR: {msg}']})
+
+            return pd.DataFrame({'error': [f'{response.status_code}']})
 
         df = pd.DataFrame(response.json())
         return df
