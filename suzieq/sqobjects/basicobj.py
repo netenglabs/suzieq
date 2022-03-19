@@ -231,6 +231,7 @@ class SqObject(SqPlugin):
             raise AttributeError('No analysis engine specified')
 
         columns = kwargs.pop('columns', self.columns)
+        count = kwargs.pop('count', 'False')
 
         if columns is None or columns == ['default']:
             columns = self._unique_def_column
@@ -241,7 +242,7 @@ class SqObject(SqPlugin):
         # This raises ValueError if it fails
         self.validate_columns(columns)
         self._check_input_for_valid_vals(self._valid_arg_vals, **kwargs)
-        return self.engine.unique(**kwargs, columns=columns)
+        return self.engine.unique(**kwargs, count=str(count), columns=columns)
 
     def aver(self, **kwargs):
         '''Assert one or more checks on table'''
@@ -284,7 +285,7 @@ class SqObject(SqPlugin):
                                  [f'{what} not numeric; top can be used with'
                                   f' numeric fields only']})
 
-        return self.engine.top(what=what, count=count, reverse=reverse,
+        return self.engine.top(what=what, count=int(count), reverse=reverse,
                                **kwargs)
 
     def describe(self, **kwargs):

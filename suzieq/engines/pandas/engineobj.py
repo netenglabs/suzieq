@@ -361,7 +361,7 @@ class SqPandasEngine(SqEngineObj):
         Returns:
             pd.DataFrame: Pandas dataframe of unique values for given column
         """
-        count = kwargs.pop("count", 0)
+        count = kwargs.pop("count", 'False') == 'True'
         query_str = kwargs.pop('query_str', '')
         get_query_str = kwargs.pop('get_query_str', '')
 
@@ -429,6 +429,16 @@ class SqPandasEngine(SqEngineObj):
         else:
             return df.nlargest(sqTopCount, columns=what, keep="all") \
                      .head(sqTopCount)
+
+    def lpm(self, **kwargs):
+        '''Default implementation to return not supported'''
+        return pd.Dataframe(
+            {'error': [f'Unsupported verb "lpm" for {self.iobj.table}']})
+
+    def find(self, **kwargs):
+        '''Default implementation to return not supported'''
+        return pd.Dataframe(
+            {'error': [f'Unsupported verb "find" for {self.iobj.table}']})
 
     def _get_table_sqobj(self, table: str, start_time: str = None,
                          end_time: str = None, view=None):

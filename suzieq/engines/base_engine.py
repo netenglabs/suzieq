@@ -32,3 +32,13 @@ class SqEngineObj(SqPlugin, ABC):
     def top(self, **kwargs):
         '''Return top values associated with a numeric column'''
         raise NotImplementedError
+
+    @abstractmethod
+    def lpm(self, **kwargs):
+        '''Run IP LPM algorithm for given address'''
+        raise NotImplementedError
+
+    @abstractmethod
+    def find(self, **kwargs):
+        '''Return endpoint tracker info'''
+        raise NotImplementedError

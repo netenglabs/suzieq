@@ -197,7 +197,7 @@ class TopologyObj(SqPandasEngine):
                 self.lsdb = self.lsdb.query(query_str)
 
         if user_query and not self.lsdb.empty:
-            self.lsdb = self.lsdb.query(user_query)
+            self.lsdb = self._handle_user_query_str(self.lsdb, user_query)
 
         fields = [x for x in self.lsdb.columns if x in fields]
         return self.lsdb[fields].reset_index(drop=True)
