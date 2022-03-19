@@ -136,7 +136,8 @@ class EvpnvniObj(SqPandasEngine):
         self._summarize_on_add_with_query = [
             ('uniqueL3VniCnt', 'type == "L3" and vni != 0', 'vrf', 'nunique'),
             ('uniqueL2VniCnt', 'type == "L2"', 'vni', 'nunique'),
-            ('uniqueMulticastGroups', 'mcastGroup != "0.0.0.0"', 'mcastGroup',
+            ('uniqueMulticastGroups',
+             'mcastGroup != "0.0.0.0" and mcastGroup != ""', 'mcastGroup',
              'nunique'),
             ('vnisUsingMulticast',
              'type == "L2" and replicationType == "multicast"',
