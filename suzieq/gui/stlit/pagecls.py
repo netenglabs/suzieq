@@ -18,6 +18,8 @@ class SqGuiPage(ABC, SqPlugin):
     _state = {}  # Set it to a dataclass specific to the page
     _title: str = None  # Initialized by each page
     _first_time: bool = True
+    _URL_PARAMS_BLACKLIST = ['get_clicked', 'uniq_clicked', 'tables_obj']
+    _LIST_URL_PARAMS = ['columns']
 
     @property
     @abstractmethod
@@ -53,7 +55,11 @@ class SqGuiPage(ABC, SqPlugin):
 
             if url_params and not all(not x for x in url_params.values()):
                 for key, val in url_params.items():
-                    if isinstance(val, list):
+                    # Do not add the params that are in the blacklist
+                    if key in self._URL_PARAMS_BLACKLIST:
+                        continue
+                    if (isinstance(val, list) and
+                            key not in self._LIST_URL_PARAMS):
                         val = val[0].strip()
                     if not val:
                         continue
@@ -89,4 +95,7 @@ class SqGuiPage(ABC, SqPlugin):
 
     def _save_page_url(self) -> None:
         '''Save the page params as an URL for sharing'''
-        st.experimental_set_query_params(**asdict(self._state))
+        state = asdict(self._state)
+        for param in self._URL_PARAMS_BLACKLIST:
+            state.pop(param, None)
+        st.experimental_set_query_params(**state)

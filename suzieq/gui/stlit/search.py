@@ -6,7 +6,8 @@ from random import randint
 import streamlit as st
 from pandas.core.frame import DataFrame
 from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
-from suzieq.gui.stlit.guiutils import SuzieqMainPages, gui_get_df
+from suzieq.gui.stlit.guiutils import (SuzieqMainPages, gui_get_df,
+                                       set_def_aggrid_options)
 from suzieq.gui.stlit.pagecls import SqGuiPage
 from suzieq.shared.utils import (convert_macaddr_format_to_colon,
                                  validate_macaddr)
@@ -192,7 +193,7 @@ When specifying a table, you can specify multiple addresses to look for by
 
                 gb.configure_grid_options(
                     domLayout='normal', preventDefaultOnContextMenu=True)
-                gridOptions = gb.build()
+                gridOptions = set_def_aggrid_options(gb.build())
 
                 if df.shape[0] == 1:
                     height = 150

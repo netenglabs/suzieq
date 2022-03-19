@@ -164,10 +164,11 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the
                       .encode(y='state', x='count:Q', row='namespace',
                               color=alt.Color(
                                   'state',
-                                  scale=alt.Scale(domain=['up', 'adminDown',
-                                                          'down'],
-                                                  range=['green', 'orange',
-                                                         'red']))
+                                  scale=alt.Scale(domain=['up', 'errDisabled',
+                                                          'down', 'notPresent',
+                                                          'notConnected'],
+                                                  range=['green', 'darkred',
+                                                         'red', 'grey', 'darkgray']))
                               )
         layout['if_chart'].altair_chart(if_chart)
 

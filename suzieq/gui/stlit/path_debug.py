@@ -153,6 +153,17 @@ class PathDebugPage(SqGuiPage):
         st.header(f'Debug Tables for Path from {state.source} to '
                   f'{state.dest}')
 
+        failed_dfs = getattr(self._state, '_failed_dfs', None)
+        for tbl, fdf in failed_dfs.items():
+            if not fdf.empty:
+                this_df = fdf.query(f'namespace=="{namespace}" and '
+                                    f'hostname=="{hostname}"')
+                if this_df.empty:
+                    continue
+                table_expander = st.expander(
+                    f'Failed {tbl} Table', expanded=not fdf.empty)
+                table_expander.dataframe(fdf)
+
         pathobj = getattr(self._state, '_pathobj', None)
         df = getattr(self._state, '_path_df', None)
         engobj = pathobj.engine
