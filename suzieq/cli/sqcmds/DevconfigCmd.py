@@ -11,7 +11,7 @@ class DevconfigCmd(SqCommand):
 
     def __init__(
             self,
-            engine: str = "pandas",
+            engine: str = "",
             hostname: str = "",
             start_time: str = "",
             end_time: str = "",
