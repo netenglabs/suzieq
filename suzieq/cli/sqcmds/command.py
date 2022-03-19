@@ -276,15 +276,16 @@ class SqCommand(SqPlugin):
 
         if not df.empty:
             df = self.sqobj.humanize_fields(df)
-            return self._gen_output(df.sort_values(by=[what], ascending=False),
-                                    dont_strip_cols=True, sort=False)
+            return self._gen_output(df.sort_values(
+                by=[what], ascending=(reverse == "True")),
+                dont_strip_cols=True, sort=False)
         else:
             return self._gen_output(df)
 
-    @command("help", help="show help for a command")
-    @argument("command", description="command to show help for",
-              choices=['show', 'unique', 'summarize', 'assert', 'describe',
-                       'top', "find", "lpm"])
+    @ command("help", help="show help for a command")
+    @ argument("command", description="command to show help for",
+               choices=['show', 'unique', 'summarize', 'assert', 'describe',
+                        'top', "find", "lpm"])
     # pylint: disable=redefined-outer-name
     def help(self, command: str = ''):
         """Show help for a command
