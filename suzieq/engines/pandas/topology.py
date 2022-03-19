@@ -112,6 +112,9 @@ class TopologyObj(SqPandasEngine):
                     'Cannot provide any via except ospf with area')
             via = ['ospf']
 
+        if not via:
+            via = ['lldp', 'bgp', 'ospf']
+
         self.services = [
             Services('lldp', {}, ['ifname', 'vrf'],
                      self._augment_lldp_show),
