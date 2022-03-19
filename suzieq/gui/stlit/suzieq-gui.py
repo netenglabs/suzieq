@@ -143,6 +143,7 @@ def build_pages() -> Dict:
 
     for obj in pages.values():
         page = obj()
+        # pylint: disable=protected-access
         page_tbl[page._title] = page
 
     return page_tbl

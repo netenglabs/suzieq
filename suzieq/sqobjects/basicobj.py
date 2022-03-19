@@ -99,6 +99,11 @@ class SqObject(SqPlugin):
         '''Return the set of fields in table that are specified as filters'''
         return [x for x in self._valid_get_args if x in self.schema.fields]
 
+    @property
+    def unique_default_column(self):
+        '''Return the default unique column for this table'''
+        return self._unique_def_column
+
     def _check_input_for_valid_args(self, good_arg_list, **kwargs,):
         '''Check that the provided set of kwargs is valid for the table'''
         if not good_arg_list:

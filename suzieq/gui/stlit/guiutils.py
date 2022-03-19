@@ -6,7 +6,6 @@ from importlib.util import find_spec
 import pandas as pd
 import streamlit as st
 from IPython.display import Markdown
-from streamlit.report_thread import get_report_ctx
 from streamlit.server.server import Server
 try:
     from streamlit.script_run_context import get_script_run_ctx
@@ -118,6 +117,7 @@ def get_base_url():
     URL for use with links on various pages.
     '''
     session_id = get_script_run_ctx().session_id
+    # pylint: disable=protected-access
     session_info = Server.get_current()._get_session_info(session_id)
 
     if session_info:
