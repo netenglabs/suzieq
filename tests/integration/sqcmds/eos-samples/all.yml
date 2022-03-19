@@ -2537,8 +2537,8 @@ tests:
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025175798,
     "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "52:54:00:f4:5f:c4",
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": -1, "innerVlan":
-    0, "vlanName": "", "vlanList": [30], "srcVtepIp": "None", "statusChangeTimestamp":
-    0.0, "vni": 0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
+    0, "vlanName": "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp":
+    0.0, "vni": 0, "lacpBypass": false, "portmode": "access", "active": true}, {"namespace":
     "eos", "hostname": "leaf02", "ifname": "Ethernet1", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["10.0.0.12/32"], "ip6AddressList": [], "timestamp": 1623025175798, "ifindex":
@@ -2566,7 +2566,7 @@ tests:
     "", "macaddr": "48:47:00:89:27:93", "interfaceMac": "", "description": "", "numChanges":
     0, "speed": -1, "innerVlan": 0, "vlanName": "", "vlanList": [1, 10, 30, 1006,
     4094], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass":
-    false, "portmode": "unknown", "active": true}, {"namespace": "eos", "hostname":
+    false, "portmode": "trunk", "active": true}, {"namespace": "eos", "hostname":
     "leaf02", "ifname": "Ethernet5", "state": "up", "adminState": "up", "type": "bond_slave",
     "mtu": 9214, "vlan": 0, "master": "Port-Channel1", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025175798, "ifindex": 0, "reason": "", "routeDistinguisher":
@@ -2654,24 +2654,24 @@ tests:
     [], "ip6AddressList": [], "timestamp": 1623025175798, "ifindex": 0, "reason":
     "", "routeDistinguisher": "", "macaddr": "52:54:00:f5:5a:b1", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": -1, "innerVlan": 0, "vlanName":
-    "", "vlanList": [10], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
-    0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
-    "eos", "hostname": "leaf04", "ifname": "Vlan30", "state": "up", "adminState":
-    "up", "type": "vlan", "mtu": 9164, "vlan": 30, "master": "evpn-vrf", "ipAddressList":
-    ["0.0.0.0/0", "172.16.3.254/24"], "ip6AddressList": [], "timestamp": 1623025176018,
-    "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "00:00:00:11:12:10",
-    "interfaceMac": "", "description": "", "numChanges": 0, "speed": 0, "innerVlan":
-    0, "vlanName": "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp":
-    0.0, "vni": 0, "lacpBypass": false, "portmode": "routed", "active": true}, {"namespace":
-    "eos", "hostname": "leaf04", "ifname": "Vlan20", "state": "up", "adminState":
-    "up", "type": "vlan", "mtu": 9164, "vlan": 20, "master": "evpn-vrf", "ipAddressList":
-    ["0.0.0.0/0", "172.16.2.254/24"], "ip6AddressList": [], "timestamp": 1623025176018,
-    "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "00:00:00:11:12:10",
-    "interfaceMac": "", "description": "", "numChanges": 0, "speed": 0, "innerVlan":
-    0, "vlanName": "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp":
-    0.0, "vni": 0, "lacpBypass": false, "portmode": "routed", "active": true}, {"namespace":
-    "eos", "hostname": "leaf04", "ifname": "Vlan1006", "state": "up", "adminState":
-    "up", "type": "vlan", "mtu": 9164, "vlan": 1006, "master": "evpn-vrf", "ipAddressList":
+    "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
+    0, "lacpBypass": false, "portmode": "access", "active": true}, {"namespace": "eos",
+    "hostname": "leaf04", "ifname": "Vlan30", "state": "up", "adminState": "up", "type":
+    "vlan", "mtu": 9164, "vlan": 30, "master": "evpn-vrf", "ipAddressList": ["0.0.0.0/0",
+    "172.16.3.254/24"], "ip6AddressList": [], "timestamp": 1623025176018, "ifindex":
+    0, "reason": "", "routeDistinguisher": "", "macaddr": "00:00:00:11:12:10", "interfaceMac":
+    "", "description": "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName":
+    "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
+    0, "lacpBypass": false, "portmode": "routed", "active": true}, {"namespace": "eos",
+    "hostname": "leaf04", "ifname": "Vlan20", "state": "up", "adminState": "up", "type":
+    "vlan", "mtu": 9164, "vlan": 20, "master": "evpn-vrf", "ipAddressList": ["0.0.0.0/0",
+    "172.16.2.254/24"], "ip6AddressList": [], "timestamp": 1623025176018, "ifindex":
+    0, "reason": "", "routeDistinguisher": "", "macaddr": "00:00:00:11:12:10", "interfaceMac":
+    "", "description": "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName":
+    "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
+    0, "lacpBypass": false, "portmode": "routed", "active": true}, {"namespace": "eos",
+    "hostname": "leaf04", "ifname": "Vlan1006", "state": "up", "adminState": "up",
+    "type": "vlan", "mtu": 9164, "vlan": 1006, "master": "evpn-vrf", "ipAddressList":
     ["0.0.0.0/0"], "ip6AddressList": [], "timestamp": 1623025176018, "ifindex": 0,
     "reason": "", "routeDistinguisher": "", "macaddr": "44:38:39:81:30:22", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName":
@@ -2730,50 +2730,50 @@ tests:
     [], "ip6AddressList": [], "timestamp": 1623025176018, "ifindex": 0, "reason":
     "", "routeDistinguisher": "", "macaddr": "52:54:00:f3:a7:85", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": -1, "innerVlan": 0, "vlanName":
-    "", "vlanList": [20], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
-    0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
-    "eos", "hostname": "leaf04", "ifname": "Loopback0", "state": "up", "adminState":
-    "up", "type": "loopback", "mtu": 65535, "vlan": 0, "master": "", "ipAddressList":
-    ["10.0.0.14/32"], "ip6AddressList": [], "timestamp": 1623025176018, "ifindex":
-    0, "reason": "", "routeDistinguisher": "", "macaddr": "00:00:00:00:00:00", "interfaceMac":
-    "", "description": "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName":
     "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
-    0, "lacpBypass": false, "portmode": "routed", "active": true}, {"namespace": "eos",
-    "hostname": "leaf04", "ifname": "Loopback1", "state": "up", "adminState": "up",
-    "type": "loopback", "mtu": 65535, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.134/32"],
+    0, "lacpBypass": false, "portmode": "access", "active": true}, {"namespace": "eos",
+    "hostname": "leaf04", "ifname": "Loopback0", "state": "up", "adminState": "up",
+    "type": "loopback", "mtu": 65535, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.14/32"],
     "ip6AddressList": [], "timestamp": 1623025176018, "ifindex": 0, "reason": "",
     "routeDistinguisher": "", "macaddr": "00:00:00:00:00:00", "interfaceMac": "",
     "description": "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName": "",
     "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass":
     false, "portmode": "routed", "active": true}, {"namespace": "eos", "hostname":
-    "leaf04", "ifname": "Ethernet6", "state": "up", "adminState": "up", "type": "bond_slave",
-    "mtu": 9214, "vlan": 0, "master": "Port-Channel1", "ipAddressList": [], "ip6AddressList":
+    "leaf04", "ifname": "Loopback1", "state": "up", "adminState": "up", "type": "loopback",
+    "mtu": 65535, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.134/32"], "ip6AddressList":
     [], "timestamp": 1623025176018, "ifindex": 0, "reason": "", "routeDistinguisher":
-    "", "macaddr": "48:47:00:28:cc:b4", "interfaceMac": "", "description": "", "numChanges":
-    0, "speed": -1, "innerVlan": 0, "vlanName": "", "vlanList": [], "srcVtepIp": "None",
-    "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass": false, "portmode": "unknown",
-    "active": true}, {"namespace": "eos", "hostname": "leaf04", "ifname": "Port-Channel1",
-    "state": "up", "adminState": "up", "type": "bond", "mtu": 9214, "vlan": "1", "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025176018,
-    "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "48:47:00:28:cc:b4",
-    "interfaceMac": "", "description": "", "numChanges": 0, "speed": -1, "innerVlan":
-    0, "vlanName": "", "vlanList": [1, 20, 30, 1006, 4094], "srcVtepIp": "None", "statusChangeTimestamp":
+    "", "macaddr": "00:00:00:00:00:00", "interfaceMac": "", "description": "", "numChanges":
+    0, "speed": 0, "innerVlan": 0, "vlanName": "", "vlanList": [], "srcVtepIp": "None",
+    "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass": false, "portmode": "routed",
+    "active": true}, {"namespace": "eos", "hostname": "leaf04", "ifname": "Ethernet6",
+    "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9214, "vlan":
+    0, "master": "Port-Channel1", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1623025176018, "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr":
+    "48:47:00:28:cc:b4", "interfaceMac": "", "description": "", "numChanges": 0, "speed":
+    -1, "innerVlan": 0, "vlanName": "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp":
     0.0, "vni": 0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
+    "eos", "hostname": "leaf04", "ifname": "Port-Channel1", "state": "up", "adminState":
+    "up", "type": "bond", "mtu": 9214, "vlan": "1", "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1623025176018, "ifindex": 0, "reason":
+    "", "routeDistinguisher": "", "macaddr": "48:47:00:28:cc:b4", "interfaceMac":
+    "", "description": "", "numChanges": 0, "speed": -1, "innerVlan": 0, "vlanName":
+    "", "vlanList": [1, 20, 30, 1006, 4094], "srcVtepIp": "None", "statusChangeTimestamp":
+    0.0, "vni": 0, "lacpBypass": false, "portmode": "trunk", "active": true}, {"namespace":
     "eos", "hostname": "leaf04", "ifname": "Port-Channel4", "state": "up", "adminState":
     "up", "type": "bond", "mtu": 9214, "vlan": "30", "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025176018, "ifindex": 0, "reason":
     "", "routeDistinguisher": "", "macaddr": "52:54:00:0e:a0:be", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": -1, "innerVlan": 0, "vlanName":
-    "", "vlanList": [30], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
-    0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
-    "eos", "hostname": "leaf04", "ifname": "evpn-vrf", "state": "up", "adminState":
-    "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [],
-    "ip6AddressList": [], "timestamp": 1623025176018, "ifindex": 0, "reason": "",
-    "routeDistinguisher": "10.0.0.14:999", "macaddr": "00:00:00:00:00:00", "interfaceMac":
-    "", "description": "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName":
-    "", "vlanList": [], "srcVtepIp": "", "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass":
-    false, "portmode": "unknown", "active": true}, {"namespace": "eos", "hostname":
-    "leaf04", "ifname": "Ethernet3", "state": "up", "adminState": "up", "type": "bond_slave",
+    "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
+    0, "lacpBypass": false, "portmode": "access", "active": true}, {"namespace": "eos",
+    "hostname": "leaf04", "ifname": "evpn-vrf", "state": "up", "adminState": "up",
+    "type": "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025176018, "ifindex": 0, "reason": "", "routeDistinguisher":
+    "10.0.0.14:999", "macaddr": "00:00:00:00:00:00", "interfaceMac": "", "description":
+    "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName": "", "vlanList": [],
+    "srcVtepIp": "", "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass": false,
+    "portmode": "unknown", "active": true}, {"namespace": "eos", "hostname": "leaf04",
+    "ifname": "Ethernet3", "state": "up", "adminState": "up", "type": "bond_slave",
     "mtu": 9214, "vlan": 0, "master": "Port-Channel3", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025176018, "ifindex": 0, "reason": "", "routeDistinguisher":
     "", "macaddr": "52:54:00:f3:a7:85", "interfaceMac": "", "description": "", "numChanges":
@@ -3077,8 +3077,8 @@ tests:
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025176023,
     "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "52:54:00:9c:2a:2f",
     "interfaceMac": "", "description": "", "numChanges": 0, "speed": -1, "innerVlan":
-    0, "vlanName": "", "vlanList": [20], "srcVtepIp": "None", "statusChangeTimestamp":
-    0.0, "vni": 0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
+    0, "vlanName": "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp":
+    0.0, "vni": 0, "lacpBypass": false, "portmode": "access", "active": true}, {"namespace":
     "eos", "hostname": "spine02", "ifname": "Ethernet6", "state": "up", "adminState":
     "up", "type": "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
     ["10.0.0.22/32"], "ip6AddressList": [], "timestamp": 1623025176023, "ifindex":
@@ -3139,15 +3139,15 @@ tests:
     [], "ip6AddressList": [], "timestamp": 1623025176023, "ifindex": 0, "reason":
     "", "routeDistinguisher": "", "macaddr": "52:54:00:ba:e3:79", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": -1, "innerVlan": 0, "vlanName":
-    "", "vlanList": [30], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
-    0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
-    "eos", "hostname": "leaf03", "ifname": "Port-Channel1", "state": "up", "adminState":
+    "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
+    0, "lacpBypass": false, "portmode": "access", "active": true}, {"namespace": "eos",
+    "hostname": "leaf03", "ifname": "Port-Channel1", "state": "up", "adminState":
     "up", "type": "bond", "mtu": 9214, "vlan": "1", "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025176023, "ifindex": 0, "reason":
     "", "routeDistinguisher": "", "macaddr": "48:47:00:1b:ec:0f", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": -1, "innerVlan": 0, "vlanName":
     "", "vlanList": [1, 20, 30, 1006, 4094], "srcVtepIp": "None", "statusChangeTimestamp":
-    0.0, "vni": 0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
+    0.0, "vni": 0, "lacpBypass": false, "portmode": "trunk", "active": true}, {"namespace":
     "eos", "hostname": "leaf03", "ifname": "Ethernet6", "state": "up", "adminState":
     "up", "type": "bond_slave", "mtu": 9214, "vlan": 0, "master": "Port-Channel1",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025176023, "ifindex":
@@ -3201,36 +3201,35 @@ tests:
     [], "ip6AddressList": [], "timestamp": 1623025176024, "ifindex": 0, "reason":
     "", "routeDistinguisher": "", "macaddr": "52:54:00:ae:83:2c", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": -1, "innerVlan": 0, "vlanName":
-    "", "vlanList": [30], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
-    0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
-    "eos", "hostname": "leaf01", "ifname": "evpn-vrf", "state": "up", "adminState":
-    "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [],
-    "ip6AddressList": [], "timestamp": 1623025176024, "ifindex": 0, "reason": "",
-    "routeDistinguisher": "10.0.0.11:999", "macaddr": "00:00:00:00:00:00", "interfaceMac":
-    "", "description": "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName":
-    "", "vlanList": [], "srcVtepIp": "", "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass":
-    false, "portmode": "unknown", "active": true}, {"namespace": "eos", "hostname":
-    "leaf01", "ifname": "Management1", "state": "up", "adminState": "up", "type":
-    "ethernet", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.2.184/24"],
-    "ip6AddressList": [], "timestamp": 1623025176024, "ifindex": 0, "reason": "",
-    "routeDistinguisher": "", "macaddr": "44:38:39:01:02:01", "interfaceMac": "",
-    "description": "", "numChanges": 0, "speed": 1000, "innerVlan": 0, "vlanName":
     "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
-    0, "lacpBypass": false, "portmode": "routed", "active": true}, {"namespace": "eos",
-    "hostname": "leaf01", "ifname": "Vlan10", "state": "up", "adminState": "up", "type":
-    "vlan", "mtu": 9164, "vlan": 10, "master": "evpn-vrf", "ipAddressList": ["0.0.0.0/0",
-    "172.16.1.254/24"], "ip6AddressList": [], "timestamp": 1623025176024, "ifindex":
-    0, "reason": "", "routeDistinguisher": "", "macaddr": "00:00:00:11:12:10", "interfaceMac":
-    "", "description": "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName":
-    "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
-    0, "lacpBypass": false, "portmode": "routed", "active": true}, {"namespace": "eos",
-    "hostname": "leaf01", "ifname": "Port-Channel3", "state": "up", "adminState":
-    "up", "type": "bond", "mtu": 9214, "vlan": "10", "master": "bridge", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1623025176024, "ifindex": 0, "reason":
-    "", "routeDistinguisher": "", "macaddr": "52:54:00:af:a8:a6", "interfaceMac":
-    "", "description": "", "numChanges": 0, "speed": -1, "innerVlan": 0, "vlanName":
-    "", "vlanList": [10], "srcVtepIp": "None", "statusChangeTimestamp": 0.0, "vni":
-    0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
+    0, "lacpBypass": false, "portmode": "access", "active": true}, {"namespace": "eos",
+    "hostname": "leaf01", "ifname": "evpn-vrf", "state": "up", "adminState": "up",
+    "type": "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1623025176024, "ifindex": 0, "reason": "", "routeDistinguisher":
+    "10.0.0.11:999", "macaddr": "00:00:00:00:00:00", "interfaceMac": "", "description":
+    "", "numChanges": 0, "speed": 0, "innerVlan": 0, "vlanName": "", "vlanList": [],
+    "srcVtepIp": "", "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass": false,
+    "portmode": "unknown", "active": true}, {"namespace": "eos", "hostname": "leaf01",
+    "ifname": "Management1", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.255.2.184/24"], "ip6AddressList":
+    [], "timestamp": 1623025176024, "ifindex": 0, "reason": "", "routeDistinguisher":
+    "", "macaddr": "44:38:39:01:02:01", "interfaceMac": "", "description": "", "numChanges":
+    0, "speed": 1000, "innerVlan": 0, "vlanName": "", "vlanList": [], "srcVtepIp":
+    "None", "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass": false, "portmode":
+    "routed", "active": true}, {"namespace": "eos", "hostname": "leaf01", "ifname":
+    "Vlan10", "state": "up", "adminState": "up", "type": "vlan", "mtu": 9164, "vlan":
+    10, "master": "evpn-vrf", "ipAddressList": ["0.0.0.0/0", "172.16.1.254/24"], "ip6AddressList":
+    [], "timestamp": 1623025176024, "ifindex": 0, "reason": "", "routeDistinguisher":
+    "", "macaddr": "00:00:00:11:12:10", "interfaceMac": "", "description": "", "numChanges":
+    0, "speed": 0, "innerVlan": 0, "vlanName": "", "vlanList": [], "srcVtepIp": "None",
+    "statusChangeTimestamp": 0.0, "vni": 0, "lacpBypass": false, "portmode": "routed",
+    "active": true}, {"namespace": "eos", "hostname": "leaf01", "ifname": "Port-Channel3",
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 9214, "vlan": "10",
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025176024,
+    "ifindex": 0, "reason": "", "routeDistinguisher": "", "macaddr": "52:54:00:af:a8:a6",
+    "interfaceMac": "", "description": "", "numChanges": 0, "speed": -1, "innerVlan":
+    0, "vlanName": "", "vlanList": [], "srcVtepIp": "None", "statusChangeTimestamp":
+    0.0, "vni": 0, "lacpBypass": false, "portmode": "access", "active": true}, {"namespace":
     "eos", "hostname": "leaf01", "ifname": "Vxlan1", "state": "up", "adminState":
     "up", "type": "vxlan", "mtu": -1, "vlan": 0, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025176024, "ifindex": 0, "reason":
@@ -3314,7 +3313,7 @@ tests:
     "", "routeDistinguisher": "", "macaddr": "48:47:00:4e:45:a3", "interfaceMac":
     "", "description": "", "numChanges": 0, "speed": -1, "innerVlan": 0, "vlanName":
     "", "vlanList": [1, 10, 30, 1006, 4094], "srcVtepIp": "None", "statusChangeTimestamp":
-    0.0, "vni": 0, "lacpBypass": false, "portmode": "unknown", "active": true}, {"namespace":
+    0.0, "vni": 0, "lacpBypass": false, "portmode": "trunk", "active": true}, {"namespace":
     "eos", "hostname": "dcedge01", "ifname": "dsc", "state": "up", "adminState": "up",
     "type": "null", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025179345, "ifindex": 5, "reason": "", "routeDistinguisher":
