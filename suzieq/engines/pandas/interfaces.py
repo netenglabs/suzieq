@@ -530,16 +530,18 @@ class InterfacesObj(SqPandasEngine):
 
         pm_df = pd.DataFrame(pm_list)
 
-        if not pm_df.empty:
-            df = df.merge(pm_df, how='left', on=[
-                'namespace', 'hostname', 'ifname'],
-                suffixes=['', '_y'])
-
         df['portmode'] = np.where(df.ipAddressList.str.len() == 0,
                                   'unknown',
                                   'routed')
         df['portmode'] = np.where(df.ip6AddressList.str.len() != 0,
                                   'routed', df.portmode)
+
+        if not pm_df.empty:
+            df = df.merge(pm_df, how='left', on=[
+                'namespace', 'hostname', 'ifname'],
+                suffixes=['', '_y'])
+            df['portmode'] = np.where(df.portmode_y.isnull(), df.portmode,
+                                      df.portmode_y)
 
         df.loc[df.ifname == "bridge", 'portmode'] = ''
         if 'vlan_y' in df.columns:
