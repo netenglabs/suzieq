@@ -35,6 +35,7 @@ class XplorePage(SqGuiPage):
     _title: str = SuzieqMainPages.XPLORE.value
     _state: XploreSessionState = XploreSessionState()
     _reload_data: bool = False
+    _config_file: str = st.session_state.get('config_file', '')
 
     @property
     def add_to_menu(self) -> bool:
@@ -69,7 +70,8 @@ class XplorePage(SqGuiPage):
             tblidx = table_vals.index('network')  # Default starting table
         view_idx = 1 if state.view == 'all' else 0
 
-        devdf = gui_get_df('device', columns=['namespace', 'hostname'])
+        devdf = gui_get_df('device', self._config_file,
+                           columns=['namespace', 'hostname'])
         if devdf.empty:
             st.error('Unable to retrieve any namespace info')
             st.stop()
@@ -115,7 +117,8 @@ class XplorePage(SqGuiPage):
             state.namespace = namespace
 
         if state.table:
-            state.tables_obj = get_sqobject(state.table)()
+            state.tables_obj = \
+                get_sqobject(state.table)(config_file=self._config_file)
             fields = state.tables_obj.describe()
             colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                     fields.name.tolist())))
@@ -208,6 +211,7 @@ class XplorePage(SqGuiPage):
         query_str = state.query
         try:
             df = gui_get_df(state.table,
+                            self._config_file,
                             namespace=state.namespace.split(),
                             start_time=state.start_time,
                             end_time=state.end_time,
@@ -562,8 +566,10 @@ class XplorePage(SqGuiPage):
         view = kwargs.pop('view', 'latest')
         stime = kwargs.pop('start_time', '')
         etime = kwargs.pop('end_time', '')
-        df = sqobject(view=view, start_time=stime,
-                      end_time=etime).summarize(**kwargs)
+        df = sqobject(view=view,
+                      start_time=stime,
+                      end_time=etime,
+                      config_file=self._config_file).summarize(**kwargs)
         # Leaving this commented to avoid future heartburn in case someone
         # tries to do this. It didn't fix the Timedelta being added to display
         # if not df.empty:

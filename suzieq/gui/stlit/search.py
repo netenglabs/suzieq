@@ -29,6 +29,7 @@ class SearchPage(SqGuiPage):
     '''Page for Path trace page'''
     _title: str = SuzieqMainPages.SEARCH.value
     _state = SearchSessionState()
+    _config_file = st.session_state.get('config_file', '')
 
     @property
     def add_to_menu(self):
@@ -44,7 +45,8 @@ class SearchPage(SqGuiPage):
     def _create_sidebar(self) -> None:
 
         state = self._state
-        devdf = gui_get_df('device', columns=['namespace', 'hostname'])
+        devdf = gui_get_df('device', self._config_file,
+                           columns=['namespace', 'hostname'])
         if devdf.empty:
             st.error('Unable to retrieve any namespace info')
             st.stop()
@@ -124,12 +126,14 @@ When specifying a table, you can specify multiple addresses to look for by
         if query_str:
             if state.table == "network":
                 df = gui_get_df(state.table,
+                                self._config_file,
                                 verb='find',
                                 namespace=query_ns,
                                 view="latest", columns=columns,
                                 address=query_str.split())
             else:
                 df = gui_get_df(state.table,
+                                self._config_file,
                                 namespace=query_ns, query_str=query_str,
                                 view="latest", columns=columns)
                 if not df.empty:
@@ -143,7 +147,7 @@ When specifying a table, you can specify multiple addresses to look for by
 
         elif uniq_dict:
             columns = ['namespace'] + uniq_dict['column']
-            df = gui_get_df(uniq_dict['table'],
+            df = gui_get_df(uniq_dict['table'], self._config_file,
                             namespace=query_ns, view='latest', columns=columns)
             if not df.empty:
                 df = df.groupby(by=columns).first().reset_index()

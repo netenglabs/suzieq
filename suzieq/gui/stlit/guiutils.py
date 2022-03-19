@@ -53,13 +53,16 @@ def display_help_icon(url: str):
 
 @st.cache(ttl=90, allow_output_mutation=True, show_spinner=False,
           max_entries=20)
-def gui_get_df(table: str, verb: str = 'get', **kwargs) -> pd.DataFrame:
+def gui_get_df(table: str,
+               config_file: str,
+               verb: str = 'get', **kwargs) -> pd.DataFrame:
     """Get the cached value of the table provided
 
     The only verbs supported are get and find.
 
     Args:
         table ([str]): The table for which to get the data
+        config_file ([str]): The config file for the sqobject
         verb (str, optional): . Defaults to 'get'.
 
     Returns:
@@ -73,7 +76,8 @@ def gui_get_df(table: str, verb: str = 'get', **kwargs) -> pd.DataFrame:
     stime = kwargs.pop('start_time', '')
     etime = kwargs.pop('end_time', '')
 
-    sqobject = get_sqobject(table)(view=view, start_time=stime, end_time=etime)
+    sqobject = get_sqobject(table)(view=view, start_time=stime, end_time=etime,
+                                   config_file=config_file)
     if columns == ['all']:
         columns = ['*']
     if verb == 'get':
