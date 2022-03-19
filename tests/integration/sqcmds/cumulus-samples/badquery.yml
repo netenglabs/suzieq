@@ -81,7 +81,7 @@ tests:
     --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   error:
-    error: '[{"error": "ERROR: name ''vendor'' is not defined"}]'
+    error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: topology show badquery cumulus
 - command: address summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --namespace='ospf-single dual-evpn ospf-ibgp'
