@@ -107,6 +107,11 @@ class EvpnvniObj(SqPandasEngine):
                         .rename(columns={'macaddr': 'numMacs'}) \
                         .fillna({'numMacs': 0})
 
+        for x in ['vlan', 'vni']:
+            if x in df.columns:
+                df[x] = np.where(df[x].isnull(), 0,
+                                 df[x].astype(int))
+
         df = self._handle_user_query_str(df, query_str)
         return df.reset_index(drop=True)[fields]
 
@@ -258,7 +263,7 @@ class EvpnvniObj(SqPandasEngine):
         # We ensure this is true artificially for NXOS, ignored for JunOS.
         df["assertReason"] += df.apply(
             lambda x: ['vni not in bridge']
-            if (x['type'] == "L2" and x['ifname'] != '-'
+            if (x['type'] == "L2" and x['ifname'] != ''
                 and x['master'] != "bridge") else [],
             axis=1)
 
@@ -277,7 +282,8 @@ class EvpnvniObj(SqPandasEngine):
                                 axis=1)
 
         # Force VNI to be an int
-        df['vni'] = df.vni.astype(int)
+        df['vni'] = np.where(df.vni.isnull(), 0,
+                             df.vni.astype(int))
 
         if result == 'fail':
             df = df.query('assertReason.str.len() != 0')
