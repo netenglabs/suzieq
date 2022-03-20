@@ -40,12 +40,16 @@ class EvpnVniService(Service):
 
             vtepMap = entry.get('_vlan2VtepMap', {})
             replType = entry.get('replicationType')
+            mcastGroup = entry.get('mcastGroup', '')
             if replType == 'headendVcs':
                 replType = 'ingressBGP'
-            elif entry.get('mcastGroup', '') != "0.0.0.0":
+                entry['mcastGroup'] = '0.0.0.0'
+            elif mcastGroup and mcastGroup != "0.0.0.0":
                 replType = "multicast"
             else:
                 replType = ''
+                entry['mcastGroup'] = '0.0.0.0'
+
             for vlan in entry['_vlan2VniMap']:
                 new_entry = {}
                 vni = entry['_vlan2VniMap'][vlan].get('vni', 0)
