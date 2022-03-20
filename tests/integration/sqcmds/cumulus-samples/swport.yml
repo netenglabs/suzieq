@@ -67,7 +67,7 @@ tests:
     "type": "vlan", "portmode": "routed", "master": "evpn-vrf"}, {"hostname": "exit01",
     "ifname": "internet-vrf", "state": "up", "adminState": "up", "type": "vrf", "portmode":
     "routed", "master": ""}, {"hostname": "exit01", "ifname": "vxlan4001", "state":
-    "up", "adminState": "up", "type": "vxlan", "portmode": "unknown", "master": "bridge"},
+    "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master": "bridge"},
     {"hostname": "exit01", "ifname": "swp6", "state": "up", "adminState": "up", "type":
     "ethernet", "portmode": "routed", "master": "internet-vrf"}, {"hostname": "exit01",
     "ifname": "swp1", "state": "up", "adminState": "up", "type": "ethernet", "portmode":
@@ -112,7 +112,7 @@ tests:
     "ethernet", "portmode": "routed", "master": ""}, {"hostname": "exit02", "ifname":
     "swp2", "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed",
     "master": ""}, {"hostname": "exit02", "ifname": "vxlan4001", "state": "up", "adminState":
-    "up", "type": "vxlan", "portmode": "unknown", "master": "bridge"}, {"hostname":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
     "exit02", "ifname": "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf",
     "portmode": "routed", "master": ""}, {"hostname": "exit02", "ifname": "swp5.3",
     "state": "up", "adminState": "up", "type": "vlan", "portmode": "routed", "master":
@@ -124,7 +124,7 @@ tests:
     "internet-vrf"}, {"hostname": "exit02", "ifname": "swp5.2", "state": "up", "adminState":
     "up", "type": "vlan", "portmode": "routed", "master": ""}, {"hostname": "leaf02",
     "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan", "portmode":
-    "unknown", "master": "bridge"}, {"hostname": "leaf02", "ifname": "evpn-vrf", "state":
+    "access", "master": "bridge"}, {"hostname": "leaf02", "ifname": "evpn-vrf", "state":
     "up", "adminState": "up", "type": "vrf", "portmode": "unknown", "master": ""},
     {"hostname": "leaf02", "ifname": "vlan13", "state": "up", "adminState": "up",
     "type": "vlan", "portmode": "routed", "master": "evpn-vrf"}, {"hostname": "leaf02",
@@ -135,22 +135,22 @@ tests:
     "up", "type": "vlan", "portmode": "routed", "master": "evpn-vrf"}, {"hostname":
     "leaf02", "ifname": "mgmt", "state": "up", "adminState": "up", "type": "vrf",
     "portmode": "routed", "master": ""}, {"hostname": "leaf02", "ifname": "vni24",
-    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "unknown", "master":
+    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master":
     "bridge"}, {"hostname": "leaf02", "ifname": "vlan24-v0", "state": "up", "adminState":
     "up", "type": "macvlan", "portmode": "routed", "master": "evpn-vrf"}, {"hostname":
     "leaf02", "ifname": "vni13", "state": "up", "adminState": "up", "type": "vxlan",
-    "portmode": "unknown", "master": "bridge"}, {"hostname": "leaf02", "ifname": "vlan13-v0",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf02", "ifname": "vlan13-v0",
     "state": "up", "adminState": "up", "type": "macvlan", "portmode": "routed", "master":
     "evpn-vrf"}, {"hostname": "leaf02", "ifname": "swp5", "state": "up", "adminState":
     "up", "type": "bond_slave", "portmode": "unknown", "master": "bond01"}, {"hostname":
     "leaf02", "ifname": "bond02", "state": "up", "adminState": "up", "type": "bond",
-    "portmode": "unknown", "master": "bridge"}, {"hostname": "leaf02", "ifname": "bond01",
-    "state": "up", "adminState": "up", "type": "bond", "portmode": "unknown", "master":
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf02", "ifname": "bond01",
+    "state": "up", "adminState": "up", "type": "bond", "portmode": "access", "master":
     "bridge"}, {"hostname": "leaf02", "ifname": "bridge", "state": "up", "adminState":
     "up", "type": "bridge", "portmode": "", "master": ""}, {"hostname": "leaf02",
     "ifname": "lo", "state": "up", "adminState": "up", "type": "loopback", "portmode":
     "routed", "master": ""}, {"hostname": "leaf02", "ifname": "peerlink", "state":
-    "up", "adminState": "up", "type": "bond", "portmode": "unknown", "master": "bridge"},
+    "up", "adminState": "up", "type": "bond", "portmode": "trunk", "master": "bridge"},
     {"hostname": "leaf02", "ifname": "swp6", "state": "up", "adminState": "up", "type":
     "bond_slave", "portmode": "unknown", "master": "bond02"}, {"hostname": "leaf02",
     "ifname": "swp1", "state": "up", "adminState": "up", "type": "ethernet", "portmode":
@@ -180,17 +180,17 @@ tests:
     "portmode": "unknown", "master": ""}, {"hostname": "leaf03", "ifname": "vlan24-v0",
     "state": "up", "adminState": "up", "type": "macvlan", "portmode": "routed", "master":
     "evpn-vrf"}, {"hostname": "leaf03", "ifname": "vxlan4001", "state": "up", "adminState":
-    "up", "type": "vxlan", "portmode": "unknown", "master": "bridge"}, {"hostname":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
     "leaf03", "ifname": "vlan13", "state": "up", "adminState": "up", "type": "vlan",
     "portmode": "routed", "master": "evpn-vrf"}, {"hostname": "leaf03", "ifname":
-    "vni13", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "unknown",
+    "vni13", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access",
     "master": "bridge"}, {"hostname": "leaf03", "ifname": "bond01", "state": "up",
-    "adminState": "up", "type": "bond", "portmode": "unknown", "master": "bridge"},
+    "adminState": "up", "type": "bond", "portmode": "access", "master": "bridge"},
     {"hostname": "leaf03", "ifname": "bond02", "state": "up", "adminState": "up",
-    "type": "bond", "portmode": "unknown", "master": "bridge"}, {"hostname": "leaf03",
+    "type": "bond", "portmode": "access", "master": "bridge"}, {"hostname": "leaf03",
     "ifname": "lo", "state": "up", "adminState": "up", "type": "loopback", "portmode":
     "routed", "master": ""}, {"hostname": "leaf03", "ifname": "peerlink", "state":
-    "up", "adminState": "up", "type": "bond", "portmode": "unknown", "master": "bridge"},
+    "up", "adminState": "up", "type": "bond", "portmode": "trunk", "master": "bridge"},
     {"hostname": "leaf03", "ifname": "peerlink.4094", "state": "up", "adminState":
     "up", "type": "vlan", "portmode": "routed", "master": ""}, {"hostname": "leaf03",
     "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge", "portmode":
@@ -205,7 +205,7 @@ tests:
     "portmode": "unknown", "master": "bond02"}, {"hostname": "leaf03", "ifname": "swp1",
     "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed", "master":
     ""}, {"hostname": "leaf03", "ifname": "vni24", "state": "up", "adminState": "up",
-    "type": "vxlan", "portmode": "unknown", "master": "bridge"}, {"hostname": "leaf04",
+    "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname": "leaf04",
     "ifname": "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf", "portmode":
     "unknown", "master": ""}, {"hostname": "leaf04", "ifname": "mgmt", "state": "up",
     "adminState": "up", "type": "vrf", "portmode": "routed", "master": ""}, {"hostname":
@@ -220,20 +220,20 @@ tests:
     "routed", "master": "evpn-vrf"}, {"hostname": "leaf04", "ifname": "vlan13", "state":
     "up", "adminState": "up", "type": "vlan", "portmode": "routed", "master": "evpn-vrf"},
     {"hostname": "leaf04", "ifname": "vni24", "state": "up", "adminState": "up", "type":
-    "vxlan", "portmode": "unknown", "master": "bridge"}, {"hostname": "leaf04", "ifname":
-    "vni13", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "unknown",
+    "vxlan", "portmode": "access", "master": "bridge"}, {"hostname": "leaf04", "ifname":
+    "vni13", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access",
     "master": "bridge"}, {"hostname": "leaf04", "ifname": "bond02", "state": "up",
-    "adminState": "up", "type": "bond", "portmode": "unknown", "master": "bridge"},
+    "adminState": "up", "type": "bond", "portmode": "access", "master": "bridge"},
     {"hostname": "leaf04", "ifname": "bond01", "state": "up", "adminState": "up",
-    "type": "bond", "portmode": "unknown", "master": "bridge"}, {"hostname": "leaf04",
+    "type": "bond", "portmode": "access", "master": "bridge"}, {"hostname": "leaf04",
     "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge", "portmode":
     "", "master": ""}, {"hostname": "leaf04", "ifname": "lo", "state": "up", "adminState":
     "up", "type": "loopback", "portmode": "routed", "master": ""}, {"hostname": "leaf04",
     "ifname": "peerlink", "state": "up", "adminState": "up", "type": "bond", "portmode":
-    "unknown", "master": "bridge"}, {"hostname": "leaf04", "ifname": "peerlink.4094",
+    "trunk", "master": "bridge"}, {"hostname": "leaf04", "ifname": "peerlink.4094",
     "state": "up", "adminState": "up", "type": "vlan", "portmode": "routed", "master":
     ""}, {"hostname": "leaf04", "ifname": "vxlan4001", "state": "up", "adminState":
-    "up", "type": "vxlan", "portmode": "unknown", "master": "bridge"}, {"hostname":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
     "leaf04", "ifname": "swp2", "state": "up", "adminState": "up", "type": "ethernet",
     "portmode": "routed", "master": ""}, {"hostname": "leaf04", "ifname": "swp3",
     "state": "up", "adminState": "up", "type": "bond_slave", "portmode": "unknown",
@@ -274,27 +274,27 @@ tests:
     "up", "adminState": "up", "type": "vlan", "portmode": "routed", "master": "evpn-vrf"},
     {"hostname": "leaf01", "ifname": "evpn-vrf", "state": "up", "adminState": "up",
     "type": "vrf", "portmode": "unknown", "master": ""}, {"hostname": "leaf01", "ifname":
-    "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "unknown",
+    "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access",
     "master": "bridge"}, {"hostname": "leaf01", "ifname": "swp6", "state": "up", "adminState":
     "up", "type": "bond_slave", "portmode": "unknown", "master": "bond02"}, {"hostname":
     "leaf01", "ifname": "vni24", "state": "up", "adminState": "up", "type": "vxlan",
-    "portmode": "unknown", "master": "bridge"}, {"hostname": "leaf01", "ifname": "bond01",
-    "state": "up", "adminState": "up", "type": "bond", "portmode": "unknown", "master":
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf01", "ifname": "bond01",
+    "state": "up", "adminState": "up", "type": "bond", "portmode": "access", "master":
     "bridge"}, {"hostname": "leaf01", "ifname": "bond02", "state": "up", "adminState":
-    "up", "type": "bond", "portmode": "unknown", "master": "bridge"}, {"hostname":
+    "up", "type": "bond", "portmode": "access", "master": "bridge"}, {"hostname":
     "leaf01", "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge",
     "portmode": "", "master": ""}, {"hostname": "leaf01", "ifname": "lo", "state":
     "up", "adminState": "up", "type": "loopback", "portmode": "routed", "master":
     ""}, {"hostname": "leaf01", "ifname": "peerlink", "state": "up", "adminState":
-    "up", "type": "bond", "portmode": "unknown", "master": "bridge"}, {"hostname":
-    "leaf01", "ifname": "peerlink.4094", "state": "up", "adminState": "up", "type":
-    "vlan", "portmode": "routed", "master": ""}, {"hostname": "leaf01", "ifname":
-    "swp1", "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed",
-    "master": ""}, {"hostname": "leaf01", "ifname": "swp2", "state": "up", "adminState":
-    "up", "type": "ethernet", "portmode": "routed", "master": ""}, {"hostname": "leaf01",
+    "up", "type": "bond", "portmode": "trunk", "master": "bridge"}, {"hostname": "leaf01",
+    "ifname": "peerlink.4094", "state": "up", "adminState": "up", "type": "vlan",
+    "portmode": "routed", "master": ""}, {"hostname": "leaf01", "ifname": "swp1",
+    "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed", "master":
+    ""}, {"hostname": "leaf01", "ifname": "swp2", "state": "up", "adminState": "up",
+    "type": "ethernet", "portmode": "routed", "master": ""}, {"hostname": "leaf01",
     "ifname": "swp3", "state": "up", "adminState": "up", "type": "bond_slave", "portmode":
     "unknown", "master": "peerlink"}, {"hostname": "leaf01", "ifname": "vni13", "state":
-    "up", "adminState": "up", "type": "vxlan", "portmode": "unknown", "master": "bridge"},
+    "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master": "bridge"},
     {"hostname": "leaf01", "ifname": "swp5", "state": "up", "adminState": "up", "type":
     "bond_slave", "portmode": "unknown", "master": "bond01"}]'
 - command: interface show --columns='hostname ifname state adminState type portmode
@@ -369,7 +369,7 @@ tests:
     "vlanList": []}, {"hostname": "exit01", "ifname": "internet-vrf", "state": "up",
     "adminState": "up", "type": "vrf", "portmode": "routed", "vlan": 0, "vlanList":
     []}, {"hostname": "exit01", "ifname": "vxlan4001", "state": "up", "adminState":
-    "up", "type": "vxlan", "portmode": "unknown", "vlan": "4001", "vlanList": [4001]},
+    "up", "type": "vxlan", "portmode": "access", "vlan": "4001", "vlanList": []},
     {"hostname": "exit01", "ifname": "swp6", "state": "up", "adminState": "up", "type":
     "ethernet", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "exit01",
     "ifname": "swp1", "state": "up", "adminState": "up", "type": "ethernet", "portmode":
@@ -418,7 +418,7 @@ tests:
     "vlanList": []}, {"hostname": "exit02", "ifname": "swp2", "state": "up", "adminState":
     "up", "type": "ethernet", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname":
     "exit02", "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan",
-    "portmode": "unknown", "vlan": "4001", "vlanList": [4001]}, {"hostname": "exit02",
+    "portmode": "access", "vlan": "4001", "vlanList": []}, {"hostname": "exit02",
     "ifname": "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf", "portmode":
     "routed", "vlan": 0, "vlanList": []}, {"hostname": "exit02", "ifname": "swp5.3",
     "state": "up", "adminState": "up", "type": "vlan", "portmode": "routed", "vlan":
@@ -430,80 +430,79 @@ tests:
     "portmode": "routed", "vlan": 4, "vlanList": []}, {"hostname": "exit02", "ifname":
     "swp5.2", "state": "up", "adminState": "up", "type": "vlan", "portmode": "routed",
     "vlan": 2, "vlanList": []}, {"hostname": "leaf02", "ifname": "vxlan4001", "state":
-    "up", "adminState": "up", "type": "vxlan", "portmode": "unknown", "vlan": "4001",
-    "vlanList": [4001]}, {"hostname": "leaf02", "ifname": "evpn-vrf", "state": "up",
-    "adminState": "up", "type": "vrf", "portmode": "unknown", "vlan": 0, "vlanList":
-    []}, {"hostname": "leaf02", "ifname": "vlan13", "state": "up", "adminState": "up",
-    "type": "vlan", "portmode": "routed", "vlan": 13, "vlanList": []}, {"hostname":
-    "leaf02", "ifname": "vlan24", "state": "up", "adminState": "up", "type": "vlan",
-    "portmode": "routed", "vlan": 24, "vlanList": []}, {"hostname": "leaf02", "ifname":
-    "eth0", "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed",
-    "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname": "vlan4001", "state":
-    "up", "adminState": "up", "type": "vlan", "portmode": "routed", "vlan": 4001,
-    "vlanList": []}, {"hostname": "leaf02", "ifname": "mgmt", "state": "up", "adminState":
-    "up", "type": "vrf", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname":
-    "leaf02", "ifname": "vni24", "state": "up", "adminState": "up", "type": "vxlan",
-    "portmode": "unknown", "vlan": "24", "vlanList": [24]}, {"hostname": "leaf02",
-    "ifname": "vlan24-v0", "state": "up", "adminState": "up", "type": "macvlan", "portmode":
-    "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname": "vni13",
-    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "unknown", "vlan":
-    "13", "vlanList": [13]}, {"hostname": "leaf02", "ifname": "vlan13-v0", "state":
-    "up", "adminState": "up", "type": "macvlan", "portmode": "routed", "vlan": 0,
-    "vlanList": []}, {"hostname": "leaf02", "ifname": "swp5", "state": "up", "adminState":
-    "up", "type": "bond_slave", "portmode": "unknown", "vlan": 0, "vlanList": []},
-    {"hostname": "leaf02", "ifname": "bond02", "state": "up", "adminState": "up",
-    "type": "bond", "portmode": "unknown", "vlan": "24", "vlanList": [24]}, {"hostname":
-    "leaf02", "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond",
-    "portmode": "unknown", "vlan": "13", "vlanList": [13]}, {"hostname": "leaf02",
-    "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge", "portmode":
-    "", "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname": "lo", "state":
-    "up", "adminState": "up", "type": "loopback", "portmode": "routed", "vlan": 0,
-    "vlanList": []}, {"hostname": "leaf02", "ifname": "peerlink", "state": "up", "adminState":
-    "up", "type": "bond", "portmode": "unknown", "vlan": "1", "vlanList": [1, 13,
-    24]}, {"hostname": "leaf02", "ifname": "swp6", "state": "up", "adminState": "up",
-    "type": "bond_slave", "portmode": "unknown", "vlan": 0, "vlanList": []}, {"hostname":
-    "leaf02", "ifname": "swp1", "state": "up", "adminState": "up", "type": "ethernet",
-    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname":
-    "swp2", "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed",
-    "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname": "swp4", "state":
-    "up", "adminState": "up", "type": "bond_slave", "portmode": "unknown", "vlan":
-    0, "vlanList": []}, {"hostname": "leaf02", "ifname": "swp3", "state": "up", "adminState":
-    "up", "type": "bond_slave", "portmode": "unknown", "vlan": 0, "vlanList": []},
-    {"hostname": "leaf02", "ifname": "peerlink.4094", "state": "up", "adminState":
-    "up", "type": "vlan", "portmode": "routed", "vlan": 4094, "vlanList": []}, {"hostname":
-    "internet", "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet",
-    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "internet", "ifname":
-    "swp2", "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed",
-    "vlan": 0, "vlanList": []}, {"hostname": "internet", "ifname": "swp1", "state":
-    "up", "adminState": "up", "type": "ethernet", "portmode": "routed", "vlan": 0,
-    "vlanList": []}, {"hostname": "internet", "ifname": "lo", "state": "up", "adminState":
-    "up", "type": "loopback", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname":
-    "leaf03", "ifname": "vlan13-v0", "state": "up", "adminState": "up", "type": "macvlan",
-    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf03", "ifname":
+    "up", "adminState": "up", "type": "vxlan", "portmode": "access", "vlan": "4001",
+    "vlanList": []}, {"hostname": "leaf02", "ifname": "evpn-vrf", "state": "up", "adminState":
+    "up", "type": "vrf", "portmode": "unknown", "vlan": 0, "vlanList": []}, {"hostname":
+    "leaf02", "ifname": "vlan13", "state": "up", "adminState": "up", "type": "vlan",
+    "portmode": "routed", "vlan": 13, "vlanList": []}, {"hostname": "leaf02", "ifname":
     "vlan24", "state": "up", "adminState": "up", "type": "vlan", "portmode": "routed",
-    "vlan": 24, "vlanList": []}, {"hostname": "leaf03", "ifname": "mgmt", "state":
-    "up", "adminState": "up", "type": "vrf", "portmode": "routed", "vlan": 0, "vlanList":
-    []}, {"hostname": "leaf03", "ifname": "vlan4001", "state": "up", "adminState":
+    "vlan": 24, "vlanList": []}, {"hostname": "leaf02", "ifname": "eth0", "state":
+    "up", "adminState": "up", "type": "ethernet", "portmode": "routed", "vlan": 0,
+    "vlanList": []}, {"hostname": "leaf02", "ifname": "vlan4001", "state": "up", "adminState":
     "up", "type": "vlan", "portmode": "routed", "vlan": 4001, "vlanList": []}, {"hostname":
-    "leaf03", "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet",
-    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf03", "ifname":
-    "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf", "portmode": "unknown",
-    "vlan": 0, "vlanList": []}, {"hostname": "leaf03", "ifname": "vlan24-v0", "state":
+    "leaf02", "ifname": "mgmt", "state": "up", "adminState": "up", "type": "vrf",
+    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname":
+    "vni24", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access",
+    "vlan": "24", "vlanList": []}, {"hostname": "leaf02", "ifname": "vlan24-v0", "state":
     "up", "adminState": "up", "type": "macvlan", "portmode": "routed", "vlan": 0,
-    "vlanList": []}, {"hostname": "leaf03", "ifname": "vxlan4001", "state": "up",
-    "adminState": "up", "type": "vxlan", "portmode": "unknown", "vlan": "4001", "vlanList":
-    [4001]}, {"hostname": "leaf03", "ifname": "vlan13", "state": "up", "adminState":
-    "up", "type": "vlan", "portmode": "routed", "vlan": 13, "vlanList": []}, {"hostname":
-    "leaf03", "ifname": "vni13", "state": "up", "adminState": "up", "type": "vxlan",
-    "portmode": "unknown", "vlan": "13", "vlanList": [13]}, {"hostname": "leaf03",
-    "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond", "portmode":
-    "unknown", "vlan": "13", "vlanList": [13]}, {"hostname": "leaf03", "ifname": "bond02",
-    "state": "up", "adminState": "up", "type": "bond", "portmode": "unknown", "vlan":
-    "24", "vlanList": [24]}, {"hostname": "leaf03", "ifname": "lo", "state": "up",
-    "adminState": "up", "type": "loopback", "portmode": "routed", "vlan": 0, "vlanList":
-    []}, {"hostname": "leaf03", "ifname": "peerlink", "state": "up", "adminState":
-    "up", "type": "bond", "portmode": "unknown", "vlan": "1", "vlanList": [1, 13,
-    24]}, {"hostname": "leaf03", "ifname": "peerlink.4094", "state": "up", "adminState":
+    "vlanList": []}, {"hostname": "leaf02", "ifname": "vni13", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "vlan": "13", "vlanList": []}, {"hostname":
+    "leaf02", "ifname": "vlan13-v0", "state": "up", "adminState": "up", "type": "macvlan",
+    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname":
+    "swp5", "state": "up", "adminState": "up", "type": "bond_slave", "portmode": "unknown",
+    "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname": "bond02", "state":
+    "up", "adminState": "up", "type": "bond", "portmode": "access", "vlan": "24",
+    "vlanList": []}, {"hostname": "leaf02", "ifname": "bond01", "state": "up", "adminState":
+    "up", "type": "bond", "portmode": "access", "vlan": "13", "vlanList": []}, {"hostname":
+    "leaf02", "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge",
+    "portmode": "", "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname": "lo",
+    "state": "up", "adminState": "up", "type": "loopback", "portmode": "routed", "vlan":
+    0, "vlanList": []}, {"hostname": "leaf02", "ifname": "peerlink", "state": "up",
+    "adminState": "up", "type": "bond", "portmode": "trunk", "vlan": "1", "vlanList":
+    [1, 13, 24]}, {"hostname": "leaf02", "ifname": "swp6", "state": "up", "adminState":
+    "up", "type": "bond_slave", "portmode": "unknown", "vlan": 0, "vlanList": []},
+    {"hostname": "leaf02", "ifname": "swp1", "state": "up", "adminState": "up", "type":
+    "ethernet", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf02",
+    "ifname": "swp2", "state": "up", "adminState": "up", "type": "ethernet", "portmode":
+    "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname": "swp4",
+    "state": "up", "adminState": "up", "type": "bond_slave", "portmode": "unknown",
+    "vlan": 0, "vlanList": []}, {"hostname": "leaf02", "ifname": "swp3", "state":
+    "up", "adminState": "up", "type": "bond_slave", "portmode": "unknown", "vlan":
+    0, "vlanList": []}, {"hostname": "leaf02", "ifname": "peerlink.4094", "state":
+    "up", "adminState": "up", "type": "vlan", "portmode": "routed", "vlan": 4094,
+    "vlanList": []}, {"hostname": "internet", "ifname": "eth0", "state": "up", "adminState":
+    "up", "type": "ethernet", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname":
+    "internet", "ifname": "swp2", "state": "up", "adminState": "up", "type": "ethernet",
+    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "internet", "ifname":
+    "swp1", "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed",
+    "vlan": 0, "vlanList": []}, {"hostname": "internet", "ifname": "lo", "state":
+    "up", "adminState": "up", "type": "loopback", "portmode": "routed", "vlan": 0,
+    "vlanList": []}, {"hostname": "leaf03", "ifname": "vlan13-v0", "state": "up",
+    "adminState": "up", "type": "macvlan", "portmode": "routed", "vlan": 0, "vlanList":
+    []}, {"hostname": "leaf03", "ifname": "vlan24", "state": "up", "adminState": "up",
+    "type": "vlan", "portmode": "routed", "vlan": 24, "vlanList": []}, {"hostname":
+    "leaf03", "ifname": "mgmt", "state": "up", "adminState": "up", "type": "vrf",
+    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf03", "ifname":
+    "vlan4001", "state": "up", "adminState": "up", "type": "vlan", "portmode": "routed",
+    "vlan": 4001, "vlanList": []}, {"hostname": "leaf03", "ifname": "eth0", "state":
+    "up", "adminState": "up", "type": "ethernet", "portmode": "routed", "vlan": 0,
+    "vlanList": []}, {"hostname": "leaf03", "ifname": "evpn-vrf", "state": "up", "adminState":
+    "up", "type": "vrf", "portmode": "unknown", "vlan": 0, "vlanList": []}, {"hostname":
+    "leaf03", "ifname": "vlan24-v0", "state": "up", "adminState": "up", "type": "macvlan",
+    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf03", "ifname":
+    "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access",
+    "vlan": "4001", "vlanList": []}, {"hostname": "leaf03", "ifname": "vlan13", "state":
+    "up", "adminState": "up", "type": "vlan", "portmode": "routed", "vlan": 13, "vlanList":
+    []}, {"hostname": "leaf03", "ifname": "vni13", "state": "up", "adminState": "up",
+    "type": "vxlan", "portmode": "access", "vlan": "13", "vlanList": []}, {"hostname":
+    "leaf03", "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond",
+    "portmode": "access", "vlan": "13", "vlanList": []}, {"hostname": "leaf03", "ifname":
+    "bond02", "state": "up", "adminState": "up", "type": "bond", "portmode": "access",
+    "vlan": "24", "vlanList": []}, {"hostname": "leaf03", "ifname": "lo", "state":
+    "up", "adminState": "up", "type": "loopback", "portmode": "routed", "vlan": 0,
+    "vlanList": []}, {"hostname": "leaf03", "ifname": "peerlink", "state": "up", "adminState":
+    "up", "type": "bond", "portmode": "trunk", "vlan": "1", "vlanList": [1, 13, 24]},
+    {"hostname": "leaf03", "ifname": "peerlink.4094", "state": "up", "adminState":
     "up", "type": "vlan", "portmode": "routed", "vlan": 4094, "vlanList": []}, {"hostname":
     "leaf03", "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge",
     "portmode": "", "vlan": 0, "vlanList": []}, {"hostname": "leaf03", "ifname": "swp2",
@@ -518,53 +517,52 @@ tests:
     "vlan": 0, "vlanList": []}, {"hostname": "leaf03", "ifname": "swp1", "state":
     "up", "adminState": "up", "type": "ethernet", "portmode": "routed", "vlan": 0,
     "vlanList": []}, {"hostname": "leaf03", "ifname": "vni24", "state": "up", "adminState":
-    "up", "type": "vxlan", "portmode": "unknown", "vlan": "24", "vlanList": [24]},
-    {"hostname": "leaf04", "ifname": "evpn-vrf", "state": "up", "adminState": "up",
-    "type": "vrf", "portmode": "unknown", "vlan": 0, "vlanList": []}, {"hostname":
-    "leaf04", "ifname": "mgmt", "state": "up", "adminState": "up", "type": "vrf",
-    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname":
-    "eth0", "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed",
-    "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname": "vlan4001", "state":
-    "up", "adminState": "up", "type": "vlan", "portmode": "routed", "vlan": 4001,
-    "vlanList": []}, {"hostname": "leaf04", "ifname": "vlan24-v0", "state": "up",
-    "adminState": "up", "type": "macvlan", "portmode": "routed", "vlan": 0, "vlanList":
-    []}, {"hostname": "leaf04", "ifname": "vlan24", "state": "up", "adminState": "up",
-    "type": "vlan", "portmode": "routed", "vlan": 24, "vlanList": []}, {"hostname":
-    "leaf04", "ifname": "vlan13-v0", "state": "up", "adminState": "up", "type": "macvlan",
-    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname":
-    "vlan13", "state": "up", "adminState": "up", "type": "vlan", "portmode": "routed",
-    "vlan": 13, "vlanList": []}, {"hostname": "leaf04", "ifname": "vni24", "state":
-    "up", "adminState": "up", "type": "vxlan", "portmode": "unknown", "vlan": "24",
-    "vlanList": [24]}, {"hostname": "leaf04", "ifname": "vni13", "state": "up", "adminState":
-    "up", "type": "vxlan", "portmode": "unknown", "vlan": "13", "vlanList": [13]},
-    {"hostname": "leaf04", "ifname": "bond02", "state": "up", "adminState": "up",
-    "type": "bond", "portmode": "unknown", "vlan": "24", "vlanList": [24]}, {"hostname":
-    "leaf04", "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond",
-    "portmode": "unknown", "vlan": "13", "vlanList": [13]}, {"hostname": "leaf04",
-    "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge", "portmode":
-    "", "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname": "lo", "state":
-    "up", "adminState": "up", "type": "loopback", "portmode": "routed", "vlan": 0,
-    "vlanList": []}, {"hostname": "leaf04", "ifname": "peerlink", "state": "up", "adminState":
-    "up", "type": "bond", "portmode": "unknown", "vlan": "1", "vlanList": [1, 13,
-    24]}, {"hostname": "leaf04", "ifname": "peerlink.4094", "state": "up", "adminState":
-    "up", "type": "vlan", "portmode": "routed", "vlan": 4094, "vlanList": []}, {"hostname":
-    "leaf04", "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan",
-    "portmode": "unknown", "vlan": "4001", "vlanList": [4001]}, {"hostname": "leaf04",
-    "ifname": "swp2", "state": "up", "adminState": "up", "type": "ethernet", "portmode":
-    "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname": "swp3",
-    "state": "up", "adminState": "up", "type": "bond_slave", "portmode": "unknown",
-    "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname": "swp4", "state":
-    "up", "adminState": "up", "type": "bond_slave", "portmode": "unknown", "vlan":
-    0, "vlanList": []}, {"hostname": "leaf04", "ifname": "swp5", "state": "up", "adminState":
-    "up", "type": "bond_slave", "portmode": "unknown", "vlan": 0, "vlanList": []},
-    {"hostname": "leaf04", "ifname": "swp6", "state": "up", "adminState": "up", "type":
-    "bond_slave", "portmode": "unknown", "vlan": 0, "vlanList": []}, {"hostname":
-    "leaf04", "ifname": "swp1", "state": "up", "adminState": "up", "type": "ethernet",
-    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "spine02", "ifname":
-    "swp5", "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed",
-    "vlan": 0, "vlanList": []}, {"hostname": "spine02", "ifname": "swp4", "state":
+    "up", "type": "vxlan", "portmode": "access", "vlan": "24", "vlanList": []}, {"hostname":
+    "leaf04", "ifname": "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf",
+    "portmode": "unknown", "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname":
+    "mgmt", "state": "up", "adminState": "up", "type": "vrf", "portmode": "routed",
+    "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname": "eth0", "state":
     "up", "adminState": "up", "type": "ethernet", "portmode": "routed", "vlan": 0,
-    "vlanList": []}, {"hostname": "spine02", "ifname": "swp3", "state": "up", "adminState":
+    "vlanList": []}, {"hostname": "leaf04", "ifname": "vlan4001", "state": "up", "adminState":
+    "up", "type": "vlan", "portmode": "routed", "vlan": 4001, "vlanList": []}, {"hostname":
+    "leaf04", "ifname": "vlan24-v0", "state": "up", "adminState": "up", "type": "macvlan",
+    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname":
+    "vlan24", "state": "up", "adminState": "up", "type": "vlan", "portmode": "routed",
+    "vlan": 24, "vlanList": []}, {"hostname": "leaf04", "ifname": "vlan13-v0", "state":
+    "up", "adminState": "up", "type": "macvlan", "portmode": "routed", "vlan": 0,
+    "vlanList": []}, {"hostname": "leaf04", "ifname": "vlan13", "state": "up", "adminState":
+    "up", "type": "vlan", "portmode": "routed", "vlan": 13, "vlanList": []}, {"hostname":
+    "leaf04", "ifname": "vni24", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "vlan": "24", "vlanList": []}, {"hostname": "leaf04", "ifname":
+    "vni13", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access",
+    "vlan": "13", "vlanList": []}, {"hostname": "leaf04", "ifname": "bond02", "state":
+    "up", "adminState": "up", "type": "bond", "portmode": "access", "vlan": "24",
+    "vlanList": []}, {"hostname": "leaf04", "ifname": "bond01", "state": "up", "adminState":
+    "up", "type": "bond", "portmode": "access", "vlan": "13", "vlanList": []}, {"hostname":
+    "leaf04", "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge",
+    "portmode": "", "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname": "lo",
+    "state": "up", "adminState": "up", "type": "loopback", "portmode": "routed", "vlan":
+    0, "vlanList": []}, {"hostname": "leaf04", "ifname": "peerlink", "state": "up",
+    "adminState": "up", "type": "bond", "portmode": "trunk", "vlan": "1", "vlanList":
+    [1, 13, 24]}, {"hostname": "leaf04", "ifname": "peerlink.4094", "state": "up",
+    "adminState": "up", "type": "vlan", "portmode": "routed", "vlan": 4094, "vlanList":
+    []}, {"hostname": "leaf04", "ifname": "vxlan4001", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "vlan": "4001", "vlanList": []},
+    {"hostname": "leaf04", "ifname": "swp2", "state": "up", "adminState": "up", "type":
+    "ethernet", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf04",
+    "ifname": "swp3", "state": "up", "adminState": "up", "type": "bond_slave", "portmode":
+    "unknown", "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname": "swp4",
+    "state": "up", "adminState": "up", "type": "bond_slave", "portmode": "unknown",
+    "vlan": 0, "vlanList": []}, {"hostname": "leaf04", "ifname": "swp5", "state":
+    "up", "adminState": "up", "type": "bond_slave", "portmode": "unknown", "vlan":
+    0, "vlanList": []}, {"hostname": "leaf04", "ifname": "swp6", "state": "up", "adminState":
+    "up", "type": "bond_slave", "portmode": "unknown", "vlan": 0, "vlanList": []},
+    {"hostname": "leaf04", "ifname": "swp1", "state": "up", "adminState": "up", "type":
+    "ethernet", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "spine02",
+    "ifname": "swp5", "state": "up", "adminState": "up", "type": "ethernet", "portmode":
+    "routed", "vlan": 0, "vlanList": []}, {"hostname": "spine02", "ifname": "swp4",
+    "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed", "vlan":
+    0, "vlanList": []}, {"hostname": "spine02", "ifname": "swp3", "state": "up", "adminState":
     "up", "type": "ethernet", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname":
     "spine02", "ifname": "swp2", "state": "up", "adminState": "up", "type": "ethernet",
     "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "spine02", "ifname":
@@ -593,29 +591,29 @@ tests:
     "vlan": 13, "vlanList": []}, {"hostname": "leaf01", "ifname": "evpn-vrf", "state":
     "up", "adminState": "up", "type": "vrf", "portmode": "unknown", "vlan": 0, "vlanList":
     []}, {"hostname": "leaf01", "ifname": "vxlan4001", "state": "up", "adminState":
-    "up", "type": "vxlan", "portmode": "unknown", "vlan": "4001", "vlanList": [4001]},
+    "up", "type": "vxlan", "portmode": "access", "vlan": "4001", "vlanList": []},
     {"hostname": "leaf01", "ifname": "swp6", "state": "up", "adminState": "up", "type":
     "bond_slave", "portmode": "unknown", "vlan": 0, "vlanList": []}, {"hostname":
     "leaf01", "ifname": "vni24", "state": "up", "adminState": "up", "type": "vxlan",
-    "portmode": "unknown", "vlan": "24", "vlanList": [24]}, {"hostname": "leaf01",
-    "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond", "portmode":
-    "unknown", "vlan": "13", "vlanList": [13]}, {"hostname": "leaf01", "ifname": "bond02",
-    "state": "up", "adminState": "up", "type": "bond", "portmode": "unknown", "vlan":
-    "24", "vlanList": [24]}, {"hostname": "leaf01", "ifname": "bridge", "state": "up",
-    "adminState": "up", "type": "bridge", "portmode": "", "vlan": 0, "vlanList": []},
-    {"hostname": "leaf01", "ifname": "lo", "state": "up", "adminState": "up", "type":
-    "loopback", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf01",
-    "ifname": "peerlink", "state": "up", "adminState": "up", "type": "bond", "portmode":
-    "unknown", "vlan": "1", "vlanList": [1, 13, 24]}, {"hostname": "leaf01", "ifname":
-    "peerlink.4094", "state": "up", "adminState": "up", "type": "vlan", "portmode":
-    "routed", "vlan": 4094, "vlanList": []}, {"hostname": "leaf01", "ifname": "swp1",
-    "state": "up", "adminState": "up", "type": "ethernet", "portmode": "routed", "vlan":
-    0, "vlanList": []}, {"hostname": "leaf01", "ifname": "swp2", "state": "up", "adminState":
-    "up", "type": "ethernet", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname":
+    "portmode": "access", "vlan": "24", "vlanList": []}, {"hostname": "leaf01", "ifname":
+    "bond01", "state": "up", "adminState": "up", "type": "bond", "portmode": "access",
+    "vlan": "13", "vlanList": []}, {"hostname": "leaf01", "ifname": "bond02", "state":
+    "up", "adminState": "up", "type": "bond", "portmode": "access", "vlan": "24",
+    "vlanList": []}, {"hostname": "leaf01", "ifname": "bridge", "state": "up", "adminState":
+    "up", "type": "bridge", "portmode": "", "vlan": 0, "vlanList": []}, {"hostname":
+    "leaf01", "ifname": "lo", "state": "up", "adminState": "up", "type": "loopback",
+    "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname": "leaf01", "ifname":
+    "peerlink", "state": "up", "adminState": "up", "type": "bond", "portmode": "trunk",
+    "vlan": "1", "vlanList": [1, 13, 24]}, {"hostname": "leaf01", "ifname": "peerlink.4094",
+    "state": "up", "adminState": "up", "type": "vlan", "portmode": "routed", "vlan":
+    4094, "vlanList": []}, {"hostname": "leaf01", "ifname": "swp1", "state": "up",
+    "adminState": "up", "type": "ethernet", "portmode": "routed", "vlan": 0, "vlanList":
+    []}, {"hostname": "leaf01", "ifname": "swp2", "state": "up", "adminState": "up",
+    "type": "ethernet", "portmode": "routed", "vlan": 0, "vlanList": []}, {"hostname":
     "leaf01", "ifname": "swp3", "state": "up", "adminState": "up", "type": "bond_slave",
     "portmode": "unknown", "vlan": 0, "vlanList": []}, {"hostname": "leaf01", "ifname":
-    "vni13", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "unknown",
-    "vlan": "13", "vlanList": [13]}, {"hostname": "leaf01", "ifname": "swp5", "state":
+    "vni13", "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access",
+    "vlan": "13", "vlanList": []}, {"hostname": "leaf01", "ifname": "swp5", "state":
     "up", "adminState": "up", "type": "bond_slave", "portmode": "unknown", "vlan":
     0, "vlanList": []}]'
 - command: interface show --columns='hostname ifname state adminState type vlanList'
@@ -675,7 +673,7 @@ tests:
     "state": "up", "adminState": "up", "type": "vlan", "vlanList": []}, {"hostname":
     "exit01", "ifname": "internet-vrf", "state": "up", "adminState": "up", "type":
     "vrf", "vlanList": []}, {"hostname": "exit01", "ifname": "vxlan4001", "state":
-    "up", "adminState": "up", "type": "vxlan", "vlanList": [4001]}, {"hostname": "exit01",
+    "up", "adminState": "up", "type": "vxlan", "vlanList": []}, {"hostname": "exit01",
     "ifname": "swp6", "state": "up", "adminState": "up", "type": "ethernet", "vlanList":
     []}, {"hostname": "exit01", "ifname": "swp1", "state": "up", "adminState": "up",
     "type": "ethernet", "vlanList": []}, {"hostname": "exit01", "ifname": "swp5.4",
@@ -713,7 +711,7 @@ tests:
     "swp5", "state": "up", "adminState": "up", "type": "ethernet", "vlanList": []},
     {"hostname": "exit02", "ifname": "swp2", "state": "up", "adminState": "up", "type":
     "ethernet", "vlanList": []}, {"hostname": "exit02", "ifname": "vxlan4001", "state":
-    "up", "adminState": "up", "type": "vxlan", "vlanList": [4001]}, {"hostname": "exit02",
+    "up", "adminState": "up", "type": "vxlan", "vlanList": []}, {"hostname": "exit02",
     "ifname": "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf", "vlanList":
     []}, {"hostname": "exit02", "ifname": "swp5.3", "state": "up", "adminState": "up",
     "type": "vlan", "vlanList": []}, {"hostname": "exit02", "ifname": "vlan4001",
@@ -723,7 +721,7 @@ tests:
     "adminState": "up", "type": "vlan", "vlanList": []}, {"hostname": "exit02", "ifname":
     "swp5.2", "state": "up", "adminState": "up", "type": "vlan", "vlanList": []},
     {"hostname": "leaf02", "ifname": "vxlan4001", "state": "up", "adminState": "up",
-    "type": "vxlan", "vlanList": [4001]}, {"hostname": "leaf02", "ifname": "evpn-vrf",
+    "type": "vxlan", "vlanList": []}, {"hostname": "leaf02", "ifname": "evpn-vrf",
     "state": "up", "adminState": "up", "type": "vrf", "vlanList": []}, {"hostname":
     "leaf02", "ifname": "vlan13", "state": "up", "adminState": "up", "type": "vlan",
     "vlanList": []}, {"hostname": "leaf02", "ifname": "vlan24", "state": "up", "adminState":
@@ -732,15 +730,15 @@ tests:
     "leaf02", "ifname": "vlan4001", "state": "up", "adminState": "up", "type": "vlan",
     "vlanList": []}, {"hostname": "leaf02", "ifname": "mgmt", "state": "up", "adminState":
     "up", "type": "vrf", "vlanList": []}, {"hostname": "leaf02", "ifname": "vni24",
-    "state": "up", "adminState": "up", "type": "vxlan", "vlanList": [24]}, {"hostname":
+    "state": "up", "adminState": "up", "type": "vxlan", "vlanList": []}, {"hostname":
     "leaf02", "ifname": "vlan24-v0", "state": "up", "adminState": "up", "type": "macvlan",
     "vlanList": []}, {"hostname": "leaf02", "ifname": "vni13", "state": "up", "adminState":
-    "up", "type": "vxlan", "vlanList": [13]}, {"hostname": "leaf02", "ifname": "vlan13-v0",
+    "up", "type": "vxlan", "vlanList": []}, {"hostname": "leaf02", "ifname": "vlan13-v0",
     "state": "up", "adminState": "up", "type": "macvlan", "vlanList": []}, {"hostname":
     "leaf02", "ifname": "swp5", "state": "up", "adminState": "up", "type": "bond_slave",
     "vlanList": []}, {"hostname": "leaf02", "ifname": "bond02", "state": "up", "adminState":
-    "up", "type": "bond", "vlanList": [24]}, {"hostname": "leaf02", "ifname": "bond01",
-    "state": "up", "adminState": "up", "type": "bond", "vlanList": [13]}, {"hostname":
+    "up", "type": "bond", "vlanList": []}, {"hostname": "leaf02", "ifname": "bond01",
+    "state": "up", "adminState": "up", "type": "bond", "vlanList": []}, {"hostname":
     "leaf02", "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge",
     "vlanList": []}, {"hostname": "leaf02", "ifname": "lo", "state": "up", "adminState":
     "up", "type": "loopback", "vlanList": []}, {"hostname": "leaf02", "ifname": "peerlink",
@@ -769,90 +767,90 @@ tests:
     "up", "type": "vrf", "vlanList": []}, {"hostname": "leaf03", "ifname": "vlan24-v0",
     "state": "up", "adminState": "up", "type": "macvlan", "vlanList": []}, {"hostname":
     "leaf03", "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan",
-    "vlanList": [4001]}, {"hostname": "leaf03", "ifname": "vlan13", "state": "up",
-    "adminState": "up", "type": "vlan", "vlanList": []}, {"hostname": "leaf03", "ifname":
-    "vni13", "state": "up", "adminState": "up", "type": "vxlan", "vlanList": [13]},
-    {"hostname": "leaf03", "ifname": "bond01", "state": "up", "adminState": "up",
-    "type": "bond", "vlanList": [13]}, {"hostname": "leaf03", "ifname": "bond02",
-    "state": "up", "adminState": "up", "type": "bond", "vlanList": [24]}, {"hostname":
-    "leaf03", "ifname": "lo", "state": "up", "adminState": "up", "type": "loopback",
-    "vlanList": []}, {"hostname": "leaf03", "ifname": "peerlink", "state": "up", "adminState":
-    "up", "type": "bond", "vlanList": [1, 13, 24]}, {"hostname": "leaf03", "ifname":
-    "peerlink.4094", "state": "up", "adminState": "up", "type": "vlan", "vlanList":
-    []}, {"hostname": "leaf03", "ifname": "bridge", "state": "up", "adminState": "up",
-    "type": "bridge", "vlanList": []}, {"hostname": "leaf03", "ifname": "swp2", "state":
-    "up", "adminState": "up", "type": "ethernet", "vlanList": []}, {"hostname": "leaf03",
-    "ifname": "swp3", "state": "up", "adminState": "up", "type": "bond_slave", "vlanList":
-    []}, {"hostname": "leaf03", "ifname": "swp4", "state": "up", "adminState": "up",
-    "type": "bond_slave", "vlanList": []}, {"hostname": "leaf03", "ifname": "swp5",
-    "state": "up", "adminState": "up", "type": "bond_slave", "vlanList": []}, {"hostname":
-    "leaf03", "ifname": "swp6", "state": "up", "adminState": "up", "type": "bond_slave",
-    "vlanList": []}, {"hostname": "leaf03", "ifname": "swp1", "state": "up", "adminState":
-    "up", "type": "ethernet", "vlanList": []}, {"hostname": "leaf03", "ifname": "vni24",
-    "state": "up", "adminState": "up", "type": "vxlan", "vlanList": [24]}, {"hostname":
-    "leaf04", "ifname": "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf",
-    "vlanList": []}, {"hostname": "leaf04", "ifname": "mgmt", "state": "up", "adminState":
-    "up", "type": "vrf", "vlanList": []}, {"hostname": "leaf04", "ifname": "eth0",
-    "state": "up", "adminState": "up", "type": "ethernet", "vlanList": []}, {"hostname":
-    "leaf04", "ifname": "vlan4001", "state": "up", "adminState": "up", "type": "vlan",
-    "vlanList": []}, {"hostname": "leaf04", "ifname": "vlan24-v0", "state": "up",
-    "adminState": "up", "type": "macvlan", "vlanList": []}, {"hostname": "leaf04",
-    "ifname": "vlan24", "state": "up", "adminState": "up", "type": "vlan", "vlanList":
-    []}, {"hostname": "leaf04", "ifname": "vlan13-v0", "state": "up", "adminState":
-    "up", "type": "macvlan", "vlanList": []}, {"hostname": "leaf04", "ifname": "vlan13",
-    "state": "up", "adminState": "up", "type": "vlan", "vlanList": []}, {"hostname":
-    "leaf04", "ifname": "vni24", "state": "up", "adminState": "up", "type": "vxlan",
-    "vlanList": [24]}, {"hostname": "leaf04", "ifname": "vni13", "state": "up", "adminState":
-    "up", "type": "vxlan", "vlanList": [13]}, {"hostname": "leaf04", "ifname": "bond02",
-    "state": "up", "adminState": "up", "type": "bond", "vlanList": [24]}, {"hostname":
-    "leaf04", "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond",
-    "vlanList": [13]}, {"hostname": "leaf04", "ifname": "bridge", "state": "up", "adminState":
-    "up", "type": "bridge", "vlanList": []}, {"hostname": "leaf04", "ifname": "lo",
+    "vlanList": []}, {"hostname": "leaf03", "ifname": "vlan13", "state": "up", "adminState":
+    "up", "type": "vlan", "vlanList": []}, {"hostname": "leaf03", "ifname": "vni13",
+    "state": "up", "adminState": "up", "type": "vxlan", "vlanList": []}, {"hostname":
+    "leaf03", "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond",
+    "vlanList": []}, {"hostname": "leaf03", "ifname": "bond02", "state": "up", "adminState":
+    "up", "type": "bond", "vlanList": []}, {"hostname": "leaf03", "ifname": "lo",
     "state": "up", "adminState": "up", "type": "loopback", "vlanList": []}, {"hostname":
-    "leaf04", "ifname": "peerlink", "state": "up", "adminState": "up", "type": "bond",
-    "vlanList": [1, 13, 24]}, {"hostname": "leaf04", "ifname": "peerlink.4094", "state":
-    "up", "adminState": "up", "type": "vlan", "vlanList": []}, {"hostname": "leaf04",
-    "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan", "vlanList":
-    [4001]}, {"hostname": "leaf04", "ifname": "swp2", "state": "up", "adminState":
-    "up", "type": "ethernet", "vlanList": []}, {"hostname": "leaf04", "ifname": "swp3",
+    "leaf03", "ifname": "peerlink", "state": "up", "adminState": "up", "type": "bond",
+    "vlanList": [1, 13, 24]}, {"hostname": "leaf03", "ifname": "peerlink.4094", "state":
+    "up", "adminState": "up", "type": "vlan", "vlanList": []}, {"hostname": "leaf03",
+    "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge", "vlanList":
+    []}, {"hostname": "leaf03", "ifname": "swp2", "state": "up", "adminState": "up",
+    "type": "ethernet", "vlanList": []}, {"hostname": "leaf03", "ifname": "swp3",
     "state": "up", "adminState": "up", "type": "bond_slave", "vlanList": []}, {"hostname":
-    "leaf04", "ifname": "swp4", "state": "up", "adminState": "up", "type": "bond_slave",
-    "vlanList": []}, {"hostname": "leaf04", "ifname": "swp5", "state": "up", "adminState":
-    "up", "type": "bond_slave", "vlanList": []}, {"hostname": "leaf04", "ifname":
+    "leaf03", "ifname": "swp4", "state": "up", "adminState": "up", "type": "bond_slave",
+    "vlanList": []}, {"hostname": "leaf03", "ifname": "swp5", "state": "up", "adminState":
+    "up", "type": "bond_slave", "vlanList": []}, {"hostname": "leaf03", "ifname":
     "swp6", "state": "up", "adminState": "up", "type": "bond_slave", "vlanList": []},
-    {"hostname": "leaf04", "ifname": "swp1", "state": "up", "adminState": "up", "type":
-    "ethernet", "vlanList": []}, {"hostname": "spine02", "ifname": "swp5", "state":
-    "up", "adminState": "up", "type": "ethernet", "vlanList": []}, {"hostname": "spine02",
-    "ifname": "swp4", "state": "up", "adminState": "up", "type": "ethernet", "vlanList":
-    []}, {"hostname": "spine02", "ifname": "swp3", "state": "up", "adminState": "up",
-    "type": "ethernet", "vlanList": []}, {"hostname": "spine02", "ifname": "swp2",
-    "state": "up", "adminState": "up", "type": "ethernet", "vlanList": []}, {"hostname":
-    "spine02", "ifname": "swp1", "state": "up", "adminState": "up", "type": "ethernet",
-    "vlanList": []}, {"hostname": "spine02", "ifname": "lo", "state": "up", "adminState":
-    "up", "type": "loopback", "vlanList": []}, {"hostname": "spine02", "ifname": "eth0",
-    "state": "up", "adminState": "up", "type": "ethernet", "vlanList": []}, {"hostname":
-    "spine02", "ifname": "swp6", "state": "up", "adminState": "up", "type": "ethernet",
-    "vlanList": []}, {"hostname": "spine02", "ifname": "mgmt", "state": "up", "adminState":
-    "up", "type": "vrf", "vlanList": []}, {"hostname": "leaf01", "ifname": "swp4",
-    "state": "up", "adminState": "up", "type": "bond_slave", "vlanList": []}, {"hostname":
-    "leaf01", "ifname": "mgmt", "state": "up", "adminState": "up", "type": "vrf",
-    "vlanList": []}, {"hostname": "leaf01", "ifname": "eth0", "state": "up", "adminState":
-    "up", "type": "ethernet", "vlanList": []}, {"hostname": "leaf01", "ifname": "vlan4001",
+    {"hostname": "leaf03", "ifname": "swp1", "state": "up", "adminState": "up", "type":
+    "ethernet", "vlanList": []}, {"hostname": "leaf03", "ifname": "vni24", "state":
+    "up", "adminState": "up", "type": "vxlan", "vlanList": []}, {"hostname": "leaf04",
+    "ifname": "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf", "vlanList":
+    []}, {"hostname": "leaf04", "ifname": "mgmt", "state": "up", "adminState": "up",
+    "type": "vrf", "vlanList": []}, {"hostname": "leaf04", "ifname": "eth0", "state":
+    "up", "adminState": "up", "type": "ethernet", "vlanList": []}, {"hostname": "leaf04",
+    "ifname": "vlan4001", "state": "up", "adminState": "up", "type": "vlan", "vlanList":
+    []}, {"hostname": "leaf04", "ifname": "vlan24-v0", "state": "up", "adminState":
+    "up", "type": "macvlan", "vlanList": []}, {"hostname": "leaf04", "ifname": "vlan24",
     "state": "up", "adminState": "up", "type": "vlan", "vlanList": []}, {"hostname":
-    "leaf01", "ifname": "vlan24-v0", "state": "up", "adminState": "up", "type": "macvlan",
-    "vlanList": []}, {"hostname": "leaf01", "ifname": "vlan24", "state": "up", "adminState":
-    "up", "type": "vlan", "vlanList": []}, {"hostname": "leaf01", "ifname": "vlan13-v0",
+    "leaf04", "ifname": "vlan13-v0", "state": "up", "adminState": "up", "type": "macvlan",
+    "vlanList": []}, {"hostname": "leaf04", "ifname": "vlan13", "state": "up", "adminState":
+    "up", "type": "vlan", "vlanList": []}, {"hostname": "leaf04", "ifname": "vni24",
+    "state": "up", "adminState": "up", "type": "vxlan", "vlanList": []}, {"hostname":
+    "leaf04", "ifname": "vni13", "state": "up", "adminState": "up", "type": "vxlan",
+    "vlanList": []}, {"hostname": "leaf04", "ifname": "bond02", "state": "up", "adminState":
+    "up", "type": "bond", "vlanList": []}, {"hostname": "leaf04", "ifname": "bond01",
+    "state": "up", "adminState": "up", "type": "bond", "vlanList": []}, {"hostname":
+    "leaf04", "ifname": "bridge", "state": "up", "adminState": "up", "type": "bridge",
+    "vlanList": []}, {"hostname": "leaf04", "ifname": "lo", "state": "up", "adminState":
+    "up", "type": "loopback", "vlanList": []}, {"hostname": "leaf04", "ifname": "peerlink",
+    "state": "up", "adminState": "up", "type": "bond", "vlanList": [1, 13, 24]}, {"hostname":
+    "leaf04", "ifname": "peerlink.4094", "state": "up", "adminState": "up", "type":
+    "vlan", "vlanList": []}, {"hostname": "leaf04", "ifname": "vxlan4001", "state":
+    "up", "adminState": "up", "type": "vxlan", "vlanList": []}, {"hostname": "leaf04",
+    "ifname": "swp2", "state": "up", "adminState": "up", "type": "ethernet", "vlanList":
+    []}, {"hostname": "leaf04", "ifname": "swp3", "state": "up", "adminState": "up",
+    "type": "bond_slave", "vlanList": []}, {"hostname": "leaf04", "ifname": "swp4",
+    "state": "up", "adminState": "up", "type": "bond_slave", "vlanList": []}, {"hostname":
+    "leaf04", "ifname": "swp5", "state": "up", "adminState": "up", "type": "bond_slave",
+    "vlanList": []}, {"hostname": "leaf04", "ifname": "swp6", "state": "up", "adminState":
+    "up", "type": "bond_slave", "vlanList": []}, {"hostname": "leaf04", "ifname":
+    "swp1", "state": "up", "adminState": "up", "type": "ethernet", "vlanList": []},
+    {"hostname": "spine02", "ifname": "swp5", "state": "up", "adminState": "up", "type":
+    "ethernet", "vlanList": []}, {"hostname": "spine02", "ifname": "swp4", "state":
+    "up", "adminState": "up", "type": "ethernet", "vlanList": []}, {"hostname": "spine02",
+    "ifname": "swp3", "state": "up", "adminState": "up", "type": "ethernet", "vlanList":
+    []}, {"hostname": "spine02", "ifname": "swp2", "state": "up", "adminState": "up",
+    "type": "ethernet", "vlanList": []}, {"hostname": "spine02", "ifname": "swp1",
+    "state": "up", "adminState": "up", "type": "ethernet", "vlanList": []}, {"hostname":
+    "spine02", "ifname": "lo", "state": "up", "adminState": "up", "type": "loopback",
+    "vlanList": []}, {"hostname": "spine02", "ifname": "eth0", "state": "up", "adminState":
+    "up", "type": "ethernet", "vlanList": []}, {"hostname": "spine02", "ifname": "swp6",
+    "state": "up", "adminState": "up", "type": "ethernet", "vlanList": []}, {"hostname":
+    "spine02", "ifname": "mgmt", "state": "up", "adminState": "up", "type": "vrf",
+    "vlanList": []}, {"hostname": "leaf01", "ifname": "swp4", "state": "up", "adminState":
+    "up", "type": "bond_slave", "vlanList": []}, {"hostname": "leaf01", "ifname":
+    "mgmt", "state": "up", "adminState": "up", "type": "vrf", "vlanList": []}, {"hostname":
+    "leaf01", "ifname": "eth0", "state": "up", "adminState": "up", "type": "ethernet",
+    "vlanList": []}, {"hostname": "leaf01", "ifname": "vlan4001", "state": "up", "adminState":
+    "up", "type": "vlan", "vlanList": []}, {"hostname": "leaf01", "ifname": "vlan24-v0",
     "state": "up", "adminState": "up", "type": "macvlan", "vlanList": []}, {"hostname":
-    "leaf01", "ifname": "vlan13", "state": "up", "adminState": "up", "type": "vlan",
-    "vlanList": []}, {"hostname": "leaf01", "ifname": "evpn-vrf", "state": "up", "adminState":
+    "leaf01", "ifname": "vlan24", "state": "up", "adminState": "up", "type": "vlan",
+    "vlanList": []}, {"hostname": "leaf01", "ifname": "vlan13-v0", "state": "up",
+    "adminState": "up", "type": "macvlan", "vlanList": []}, {"hostname": "leaf01",
+    "ifname": "vlan13", "state": "up", "adminState": "up", "type": "vlan", "vlanList":
+    []}, {"hostname": "leaf01", "ifname": "evpn-vrf", "state": "up", "adminState":
     "up", "type": "vrf", "vlanList": []}, {"hostname": "leaf01", "ifname": "vxlan4001",
-    "state": "up", "adminState": "up", "type": "vxlan", "vlanList": [4001]}, {"hostname":
+    "state": "up", "adminState": "up", "type": "vxlan", "vlanList": []}, {"hostname":
     "leaf01", "ifname": "swp6", "state": "up", "adminState": "up", "type": "bond_slave",
     "vlanList": []}, {"hostname": "leaf01", "ifname": "vni24", "state": "up", "adminState":
-    "up", "type": "vxlan", "vlanList": [24]}, {"hostname": "leaf01", "ifname": "bond01",
-    "state": "up", "adminState": "up", "type": "bond", "vlanList": [13]}, {"hostname":
+    "up", "type": "vxlan", "vlanList": []}, {"hostname": "leaf01", "ifname": "bond01",
+    "state": "up", "adminState": "up", "type": "bond", "vlanList": []}, {"hostname":
     "leaf01", "ifname": "bond02", "state": "up", "adminState": "up", "type": "bond",
-    "vlanList": [24]}, {"hostname": "leaf01", "ifname": "bridge", "state": "up", "adminState":
+    "vlanList": []}, {"hostname": "leaf01", "ifname": "bridge", "state": "up", "adminState":
     "up", "type": "bridge", "vlanList": []}, {"hostname": "leaf01", "ifname": "lo",
     "state": "up", "adminState": "up", "type": "loopback", "vlanList": []}, {"hostname":
     "leaf01", "ifname": "peerlink", "state": "up", "adminState": "up", "type": "bond",
@@ -863,13 +861,49 @@ tests:
     "type": "ethernet", "vlanList": []}, {"hostname": "leaf01", "ifname": "swp3",
     "state": "up", "adminState": "up", "type": "bond_slave", "vlanList": []}, {"hostname":
     "leaf01", "ifname": "vni13", "state": "up", "adminState": "up", "type": "vxlan",
-    "vlanList": [13]}, {"hostname": "leaf01", "ifname": "swp5", "state": "up", "adminState":
+    "vlanList": []}, {"hostname": "leaf01", "ifname": "swp5", "state": "up", "adminState":
     "up", "type": "bond_slave", "vlanList": []}]'
 - command: interface show --columns='hostname ifname state adminState type portmode
     master' --format=json --namespace=ospf-ibgp --portmode='access'
   data-directory: tests/data/parquet/
   marks: interface show cumulus switchport
-  output: '[]'
+  output: '[{"hostname": "exit01", "ifname": "vxlan4001", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
+    "exit02", "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf02", "ifname": "vxlan4001",
+    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf02", "ifname": "vni24", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf02", "ifname": "vni13", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf02", "ifname": "bond02",
+    "state": "up", "adminState": "up", "type": "bond", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf02", "ifname": "bond01", "state": "up", "adminState":
+    "up", "type": "bond", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf03", "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf03", "ifname": "vni13",
+    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf03", "ifname": "bond01", "state": "up", "adminState":
+    "up", "type": "bond", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf03", "ifname": "bond02", "state": "up", "adminState": "up", "type": "bond",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf03", "ifname": "vni24",
+    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf04", "ifname": "vni24", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf04", "ifname": "vni13", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf04", "ifname": "bond02",
+    "state": "up", "adminState": "up", "type": "bond", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf04", "ifname": "bond01", "state": "up", "adminState":
+    "up", "type": "bond", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf04", "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf01", "ifname": "vxlan4001",
+    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf01", "ifname": "vni24", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf01", "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf01", "ifname": "bond02",
+    "state": "up", "adminState": "up", "type": "bond", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf01", "ifname": "vni13", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}]'
 - command: interface show --columns='hostname ifname state adminState type portmode
     master' --format=json --namespace=dual-bgp
   data-directory: tests/data/parquet/
@@ -1546,12 +1580,54 @@ tests:
     master' --format=json --namespace=ospf-ibgp --portmode='access'
   data-directory: tests/data/parquet/
   marks: interface show cumulus switchport
-  output: '[]'
+  output: '[{"hostname": "exit01", "ifname": "vxlan4001", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
+    "exit02", "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf02", "ifname": "vxlan4001",
+    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf02", "ifname": "vni24", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf02", "ifname": "vni13", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf02", "ifname": "bond02",
+    "state": "up", "adminState": "up", "type": "bond", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf02", "ifname": "bond01", "state": "up", "adminState":
+    "up", "type": "bond", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf03", "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf03", "ifname": "vni13",
+    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf03", "ifname": "bond01", "state": "up", "adminState":
+    "up", "type": "bond", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf03", "ifname": "bond02", "state": "up", "adminState": "up", "type": "bond",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf03", "ifname": "vni24",
+    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf04", "ifname": "vni24", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf04", "ifname": "vni13", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf04", "ifname": "bond02",
+    "state": "up", "adminState": "up", "type": "bond", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf04", "ifname": "bond01", "state": "up", "adminState":
+    "up", "type": "bond", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf04", "ifname": "vxlan4001", "state": "up", "adminState": "up", "type": "vxlan",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf01", "ifname": "vxlan4001",
+    "state": "up", "adminState": "up", "type": "vxlan", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf01", "ifname": "vni24", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}, {"hostname":
+    "leaf01", "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond",
+    "portmode": "access", "master": "bridge"}, {"hostname": "leaf01", "ifname": "bond02",
+    "state": "up", "adminState": "up", "type": "bond", "portmode": "access", "master":
+    "bridge"}, {"hostname": "leaf01", "ifname": "vni13", "state": "up", "adminState":
+    "up", "type": "vxlan", "portmode": "access", "master": "bridge"}]'
 - command: interface show --columns='hostname ifname state adminState type portmode
     master' --format=json --namespace=ospf-ibgp --portmode='trunk'
   data-directory: tests/data/parquet/
   marks: interface show cumulus switchport
-  output: '[]'
+  output: '[{"hostname": "leaf02", "ifname": "peerlink", "state": "up", "adminState":
+    "up", "type": "bond", "portmode": "trunk", "master": "bridge"}, {"hostname": "leaf03",
+    "ifname": "peerlink", "state": "up", "adminState": "up", "type": "bond", "portmode":
+    "trunk", "master": "bridge"}, {"hostname": "leaf04", "ifname": "peerlink", "state":
+    "up", "adminState": "up", "type": "bond", "portmode": "trunk", "master": "bridge"},
+    {"hostname": "leaf01", "ifname": "peerlink", "state": "up", "adminState": "up",
+    "type": "bond", "portmode": "trunk", "master": "bridge"}]'
 - command: interface show --columns='hostname ifname state adminState type portmode
     master' --format=json --namespace=os<pf-ibgp --portmode='!routed !unknown'
   data-directory: tests/data/parquet/
@@ -1575,17 +1651,19 @@ tests:
 - command: interface unique --columns='portmode' --format=json --namespace=ospf-ibgp
   data-directory: tests/data/parquet/
   marks: interface unique cumulus switchport
-  output: '[{"portmode": ""}, {"portmode": "routed"}, {"portmode": "unknown"}]'
+  output: '[{"portmode": ""}, {"portmode": "access"}, {"portmode": "routed"}, {"portmode":
+    "trunk"}, {"portmode": "unknown"}]'
 - command: interface unique --columns='portmode' --count=True --format=json --namespace=ospf-ibgp
   data-directory: tests/data/parquet/
   marks: interface unique cumulus switchport
-  output: '[{"portmode": "", "numRows": 10}, {"portmode": "unknown", "numRows": 60},
+  output: '[{"portmode": "trunk", "numRows": 4}, {"portmode": "", "numRows": 10},
+    {"portmode": "access", "numRows": 22}, {"portmode": "unknown", "numRows": 34},
     {"portmode": "routed", "numRows": 108}]'
 - command: interface unique --columns='vlanList' --count=True --format=json --namespace=ospf-ibgp
   data-directory: tests/data/parquet/
   marks: interface unique cumulus switchport
-  output: '[{"vlanList": 1, "numRows": 4}, {"vlanList": 4001, "numRows": 6}, {"vlanList":
-    13, "numRows": 12}, {"vlanList": 24, "numRows": 12}]'
+  output: '[{"vlanList": 1, "numRows": 4}, {"vlanList": 13, "numRows": 4}, {"vlanList":
+    24, "numRows": 4}]'
 - command: interface unique --columns='vlanList' --portmode=access --count=True --format=json
     --namespace=ospf-ibgp
   data-directory: tests/data/parquet/

@@ -96,10 +96,7 @@ class BgpService(Service):
                         new_entry['communityTypes'] = ['standard', 'extended']
                 else:
                     new_entry['communityTypes'] = ['standard']
-                if entry.get('hopsMax', '').isnumeric():
-                    # Older versions of EOS don't provide this field
-                    new_entry['hopsMax'] = int(entry.get('hopsMax', 255))-255
-                else:
+                if not entry.get('hopsMax', '').isnumeric():
                     new_entry['hopsMax'] = -1
                 try:
                     afidx = entry.get('iMapafisafi', []).index(afi)

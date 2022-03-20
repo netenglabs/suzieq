@@ -200,10 +200,14 @@ class SqPandasEngine(SqEngineObj):
 
         getcols = list(set(fields+addnl_fields))
 
+        tz = self.ctxt.cfg.get('analyzer', {}).get('timezone', 'UTC')
+        settings = {'TIMEZONE': tz, 'TO_TIMEZONE': 'UTC'}
+
         if self.iobj.start_time:
             try:
                 start_time = int(dateparser.parse(
-                    self.iobj.start_time.replace('last night', 'yesterday'))
+                    self.iobj.start_time.replace('last night', 'yesterday'),
+                    settings=settings)
                     .timestamp()*1000)
             except Exception:
                 # pylint disable=raise-missing-from
@@ -221,7 +225,8 @@ class SqPandasEngine(SqEngineObj):
         if self.iobj.end_time:
             try:
                 end_time = int(dateparser.parse(
-                    self.iobj.end_time.replace('last night', 'yesterday'))
+                    self.iobj.end_time.replace('last night', 'yesterday'),
+                    settings=settings)
                     .timestamp()*1000)
             except Exception:
                 # pylint disable=raise-missing-from
