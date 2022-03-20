@@ -9,7 +9,7 @@ from st_aggrid import (GridOptionsBuilder, AgGrid, GridUpdateMode,
                        JsCode)
 
 from suzieq.sqobjects import get_sqobject
-from suzieq.gui.stlit.guiutils import (gui_get_df,
+from suzieq.gui.stlit.guiutils import (gui_get_df, set_def_aggrid_options,
                                        display_help_icon, get_base_url,
                                        get_session_id, SuzieqMainPages)
 from suzieq.gui.stlit.pagecls import SqGuiPage
@@ -194,14 +194,6 @@ class PathPage(SqGuiPage):
         layout['fw_path'].graphviz_chart(g, use_container_width=True)
         # rev_ph.graphviz_chart(rev_g, use_container_width=True)
 
-        with layout['failed_tables']:
-            for tbl, fdf in self._failed_dfs.items():
-                if not fdf.empty:
-                    table_expander = st.expander(
-                        f'Failed {tbl} Table', expanded=not fdf.empty)
-                    with table_expander:
-                        st.dataframe(fdf)
-
         with layout['table']:
             table_expander = st.expander('Path Table', expanded=True)
             with table_expander:
@@ -222,6 +214,7 @@ class PathPage(SqGuiPage):
             domLayout='normal', preventDefaultOnContextMenu=True)
 
         gridOptions = gb.build()
+        gridOptions = set_def_aggrid_options(gridOptions)
         gridOptions['getRowStyle'] = self._aggrid_style_rows(df)
 
         _ = AgGrid(
@@ -274,14 +267,16 @@ class PathPage(SqGuiPage):
         progress = 40
         for i, entry in enumerate([
                 {'name': 'device', 'query': 'status == "dead"'},
-                {'name': 'interfaces', 'query': 'state == "down"'},
+                {'name': 'interfaces',
+                 'query': 'state == "down" and adminState == "up"'},
                 {'name': 'mlag',
-                 'query': 'mlagSinglePortsCnt != 0 or mlagErrorPortsCnt != 0'},
+                 'query': '(state != "active") or (mlagSinglePortsCnt != 0 or '
+                 'mlagErrorPortsCnt != 0)'},
                 {'name': 'ospf', 'query': 'adjState == "other"'},
                 {'name': 'bgp', 'query': 'state == "NotEstd"'}
         ]):
-            df = gui_get_df(entry['name'], config_file=self._config_file,
-                            namespace=[namespace])
+            df = gui_get_df(
+                entry['name'], self._config_file, namespace=[namespace])
             if not df.empty and (entry.get('query', '')):
                 df = df.query(entry['query']).reset_index(drop=True)
                 self._failed_dfs[entry['name']] = df

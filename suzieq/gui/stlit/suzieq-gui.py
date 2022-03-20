@@ -113,7 +113,7 @@ def display_title(page: str):
         st.text(' ')
         set_horizontal_radio()
         st.radio('Page', sel_menulist, key='sq_page',
-                 index=sel_menulist.index('Status'),
+                 index=sel_menulist.index(page or 'Status'),
                  on_change=main_sync_state)
         page = state.sq_page
 
@@ -130,7 +130,7 @@ def main_sync_state():
 
     if wsstate.page != wsstate.sq_page:
         wsstate.page = wsstate.sq_page
-        st.experimental_set_query_params(**{'Page': wsstate.page})
+        st.experimental_set_query_params(**{'page': wsstate.page})
         if wsstate.page != 'Search':
             wsstate.search_text = ''
 
@@ -143,7 +143,8 @@ def build_pages() -> Dict:
 
     for obj in pages.values():
         page = obj()
-        page_tbl[page.title] = page
+        # pylint: disable=protected-access
+        page_tbl[page._title] = page
 
     return page_tbl
 

@@ -159,16 +159,18 @@ __Caching is enabled by default for 90 secs on all pages__. You can clear the
                          .reset_index() \
                          .rename({'hostname': 'count'}, axis=1)
 
-        if_chart = alt.Chart(if_status, title='Interfaces') \
-                      .mark_bar(tooltip=True) \
-                      .encode(y='state', x='count:Q', row='namespace',
-                              color=alt.Color(
-                                  'state',
-                                  scale=alt.Scale(domain=['up', 'adminDown',
-                                                          'down'],
-                                                  range=['green', 'orange',
-                                                         'red']))
-                              )
+        if_chart = alt \
+            .Chart(if_status, title='Interfaces') \
+            .mark_bar(tooltip=True) \
+            .encode(y='state', x='count:Q', row='namespace',
+                    color=alt.Color(
+                        'state',
+                        scale=alt.Scale(domain=['up', 'errDisabled',
+                                                'down', 'notPresent',
+                                                'notConnected'],
+                                        range=['green', 'darkred',
+                                               'red', 'grey', 'darkgray']))
+                    )
         layout['if_chart'].altair_chart(if_chart)
 
     def _chart_bgp(self, layout: dict, ns_list: List[str]) -> None:

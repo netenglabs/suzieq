@@ -1,4 +1,4 @@
-from dataclasses import asdict, dataclass, field
+from dataclasses import dataclass, field
 from typing import Any, List
 
 import altair as alt
@@ -8,7 +8,7 @@ import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode
 from suzieq.gui.stlit.guiutils import (SUZIEQ_COLOR, SuzieqMainPages,
                                        gui_get_df, pandas_df_to_markdown_table,
-                                       sq_gui_style)
+                                       set_def_aggrid_options, sq_gui_style)
 from suzieq.gui.stlit.pagecls import SqGuiPage
 from suzieq.sqobjects import get_sqobject, get_tables
 
@@ -26,7 +26,9 @@ class XploreSessionState:
     columns:  List[str] = field(default_factory=list)
     uniq_clicked: str = '-'
     assert_clicked: bool = False
-    experimental_ok: bool = False
+    get_clicked: bool = False
+    col_sel_done: bool = False
+    experimental_ok: bool = True
     tables_obj: Any = None
 
 
@@ -61,6 +63,10 @@ class XplorePage(SqGuiPage):
             get_tables()
         )
         table_vals = [''] + sorted(tables)
+        if state.table and state.table not in table_vals:
+            st.error(f'Unknown table {state.table}, ignoring')
+            state.table = ''
+
         if state.table:
             if isinstance(state.table, list):
                 tblidx = table_vals.index(state.table[0])
@@ -113,35 +119,43 @@ class XplorePage(SqGuiPage):
                                       index=view_idx, key='xplore_view')
                 st.form_submit_button('Get', on_click=self._fetch_data)
 
+            if state.table:
+                state.tables_obj = get_sqobject(state.table)()
+                fields = state.tables_obj.describe()
+                colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
+                                        fields.name.tolist())))
+                colist = ['default', 'all'] + colist
+                # remove invalid columns from the state
+                state.columns = [c for c in state.columns if c in colist]
+                with st.form('Columns'):
+                    state.columns = st.multiselect(
+                        'Pick columns', colist,
+                        key='xplore_columns', default=state.columns)
+                    st.form_submit_button('Selection Done',
+                                          on_click=self._update_cols)
+
+        col_ok = True
+        if ((('default' in state.columns) or ('*' in state.columns))
+                and len(state.columns) != 1):
+            self._save_page_url()
+            st.info('You cannot select default/all with other columns')
+            st.stop()
+
+        if not state.columns:
+            self._save_page_url()
+            st.info('Please select some columns to continue')
+            st.stop()
+
         if namespace != state.namespace:
             state.namespace = namespace
 
-        if state.table:
-            state.tables_obj = \
-                get_sqobject(state.table)(config_file=self._config_file)
-            fields = state.tables_obj.describe()
-            colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
-                                    fields.name.tolist())))
-            columns = st.sidebar.multiselect('Pick columns',
-                                             ['default', 'all'] + colist,
-                                             key='xplore_columns',
-                                             default=state.columns)
-            col_sel_val = (('default' in columns or 'all' in columns)
-                           and len(columns) == 1)
+        if state.columns == ['all']:
+            state.columns = ['*']
+        columns = state.columns
 
-            col_ok = st.sidebar.checkbox('Column Selection Done',
-                                         key='xplore_col_done',
-                                         value=col_sel_val)
-        else:
-            col_ok = True
-            columns = ['default']
-
-        if not columns:
-            columns = ['default']
-
-        state.columns = columns
         state.experimental_ok = st.sidebar.checkbox(
             'Enable Experimental Features',
+            value=state.experimental_ok,
             key='xplore_exp',
             on_change=self._sync_state)
         if state.table in ['interfaces', 'ospf', 'bgp', 'evpnVni']:
@@ -159,20 +173,20 @@ class XplorePage(SqGuiPage):
             "[query syntax help]"
             "(https://suzieq.readthedocs.io/en/latest/pandas-query-examples/)")
 
-        if columns == ['all']:
-            columns = ['*']
-
-        if not col_ok:
-            st.experimental_set_query_params(**asdict(state))
+        if state.get_clicked:
+            state.get_clicked = False
+        elif not col_ok and not self._first_time:
+            self._save_page_url()
+            st.info("Click 'Get' button to show the data")
             st.stop()
         if ('default' in columns or 'all' in columns) and len(columns) != 1:
             st.error('Cannot select default/all with any other columns')
-            st.experimental_set_query_params(**asdict(state))
             st.stop()
         elif not columns:
             st.error('Columns cannot be empty')
-            st.experimental_set_query_params(**asdict(state))
             st.stop()
+        if self._first_time:
+            self._first_time = False
 
     def _create_layout(self) -> None:
         grid1 = st.container()
@@ -207,7 +221,6 @@ class XplorePage(SqGuiPage):
 
         if not state.table:
             return
-        sqobj = get_sqobject(state.table)
         query_str = state.query
         try:
             df = gui_get_df(state.table,
@@ -224,18 +237,18 @@ class XplorePage(SqGuiPage):
         if not df.empty:
             if 'error' in df.columns:
                 st.error(df.iloc[0].error)
-                st.experimental_set_query_params(**asdict(state))
+                self._save_page_url()
                 st.stop()
                 return
         else:
             st.info('No data returned by the table')
-            st.experimental_set_query_params(**asdict(state))
+            self._save_page_url()
             st.stop()
             return
 
         if not df.empty:
-            self._draw_summary_df(layout, sqobj, query_str)
-            self._draw_assert_df(layout, sqobj)
+            self._draw_summary_df(layout, query_str)
+            self._draw_assert_df(layout)
 
         self._draw_table_df(layout, df)
 
@@ -252,22 +265,18 @@ class XplorePage(SqGuiPage):
             state.end_time = wsstate.xplore_etime
         if wsstate.xplore_view != state.view:
             state.view = wsstate.xplore_view
-        xplore_col_done = wsstate.get('xplore_col_done', False)
-        if xplore_col_done and (wsstate.xplore_columns != state.columns):
-            state.columns = wsstate.xplore_columns
         if wsstate.xplore_query != state.query:
             state.query = wsstate.xplore_query
         assert_clicked = wsstate.get('xplore_assert', '')
         if assert_clicked and (assert_clicked != state.assert_clicked):
             state.assert_clicked = wsstate.xplore_assert
-        uniq_sel = wsstate.get('xplore_uniq_col', '')
-        if uniq_sel and (state.uniq_clicked != uniq_sel):
-            state.uniq_clicked = uniq_sel
         if wsstate.xplore_exp != state.experimental_ok:
             state.experimental_ok = wsstate.xplore_exp
 
         if wsstate.xplore_table != state.table:
             # Reset all dependent vars when table changes
+            if f'xplore_show_{state.table}' in wsstate:
+                wsstate[f'xplore_show_{state.table}'] = pd.DataFrame()
             state.table = wsstate.xplore_table
             state.query = ''
             state.assert_clicked = False
@@ -275,43 +284,49 @@ class XplorePage(SqGuiPage):
             state.columns = ['default']
         self._save_page_url()
 
+    def _update_cols(self):
+        wsstate = st.session_state
+        state = self._state
+
+        state.columns = wsstate.xplore_columns
+        self._save_page_url()
+
     def _fetch_data(self):
         '''Called when the Get button is pressed, refresh data'''
-        self._reload_data = True
-        if 'xplore_show_tbl' in st.session_state:
-            del st.session_state['xplore_show_tbl']
+        table = getattr(self._state, 'table', 'network')
+        if f'xplore_show_{table}' in st.session_state:
+            del st.session_state[f'xplore_show_{table}']
+        self._state.get_clicked = True
         self._sync_state()
+
+    def _sync_uniq_col(self):
+        state = self._state
+        uniq_sel = st.session_state.get(f'xplore_uniq_col_{state.table}',
+                                        '')
+        if uniq_sel and (state.uniq_clicked != uniq_sel):
+            state.uniq_clicked = uniq_sel
 
     def _draw_table_df(self, layout, show_df):
         '''Display the table dataframe'''
-        expander = layout['table'].expander('Table', expanded=True)
 
-        with expander:
-            if not show_df.empty:
-                if self._reload_data and 'xplore_show_tbl' in st.session_state:
-                    agdf = pd.DataFrame(
-                        st.session_state['xplore_show_tbl']['rowData'])
-                else:
-                    agdf = show_df
-                ag = self._draw_aggrid_df(agdf)
-                self._reload_data = False
-                selected = ag['data']
-                selected_df = pd.DataFrame(selected)
-                if not selected_df.empty:
-                    self._draw_uniq_histogram(layout, selected_df)
-                else:
-                    self._draw_uniq_histogram(layout, agdf)
+        if not show_df.empty:
+            agdf = show_df
+            ag = self._draw_aggrid_df(agdf)
+            selected = ag['data']
+            selected_df = pd.DataFrame(selected)
+            st.session_state['xplore_show_df'] = selected_df
+            self._draw_uniq_histogram(layout, selected_df)
 
-                help_df = self._state.tables_obj \
-                    .describe() \
-                    .query('name != "sqvers"') \
-                    .drop(['key', 'display'], axis=1) \
-                    .reset_index(drop=True)
+            help_df = self._state.tables_obj \
+                .describe() \
+                .query('name != "sqvers"') \
+                .drop(['key', 'display'], axis=1) \
+                .reset_index(drop=True)
 
-                help_table = pandas_df_to_markdown_table(help_df)
-                st.button("?", help=help_table)
-            else:
-                st.warning('No Data from query')
+            help_table = pandas_df_to_markdown_table(help_df)
+            st.button("?", help=help_table)
+        else:
+            st.warning('No Data from query')
 
     def _draw_aggrid_df(self, df) -> AgGrid:
 
@@ -323,7 +338,7 @@ class XplorePage(SqGuiPage):
         gb.configure_grid_options(domLayout='normal')
 
         gridOptions = gb.build()
-        gridOptions['rowStyle'] = {'background': 'white'}
+        gridOptions = set_def_aggrid_options(gridOptions)
         jscode = self._aggrid_style_rows()
         gridOptions['getRowStyle'] = jscode
 
@@ -333,14 +348,16 @@ class XplorePage(SqGuiPage):
         else:
             retmode = 'AS_INPUT'
             upd8_mode = GridUpdateMode.VALUE_CHANGED
+
+        fit_columns = (len(df.columns) < 12)
         grid_response = AgGrid(
             df,
             gridOptions=gridOptions,
             allow_unsafe_jscode=True,
             data_return_mode=retmode,
             update_mode=upd8_mode,
+            fit_columns_on_grid_load=fit_columns,
             theme='streamlit',
-            key='xplore_show_tbl',
         )
         return grid_response
 
@@ -450,10 +467,9 @@ class XplorePage(SqGuiPage):
 
         return JsCode(a)
 
-    def _draw_summary_df(self, layout, sqobj, query_str):
+    def _draw_summary_df(self, layout, query_str):
         '''Display the summary dataframe'''
         summ_df = self._run_summarize(
-            sqobj,
             namespace=self._state.namespace.split(),
             start_time=self._state.start_time,
             end_time=self._state.end_time,
@@ -474,21 +490,30 @@ class XplorePage(SqGuiPage):
     def _draw_uniq_histogram(self, layout, show_df):
         '''Display the unique histogram'''
 
+        uniq_col = layout['uniq_col']
+        if show_df.empty:
+            uniq_col.info('No data to choose from')
+            return
+
         state = self._state
         dfcols = show_df.columns.tolist()
         if (state.table == 'routes' and 'prefix' in dfcols and
                 'prefixlen' not in dfcols):
             dfcols.append('prefixlen')
 
-        uniq_col = layout['uniq_col']
         dfcols = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                 dfcols)))
-        uniq_clicked = '-'
+        uniq_clicked = get_sqobject(state.table)().unique_default_column[0]
+        if 'state' in dfcols:
+            uniq_clicked = 'state'
+        elif 'status' in dfcols:
+            uniq_clicked = 'status'
         with uniq_col:
-            if (state.uniq_clicked == '-' or
-                    state.uniq_clicked not in dfcols):
-                if 'hostname' in dfcols:
-                    selindex = dfcols.index('hostname')+1
+            if state.uniq_clicked not in dfcols:
+                if uniq_clicked in dfcols:
+                    selindex = dfcols.index(uniq_clicked)+1
+                elif 'hostname' in dfcols:
+                    selindex = dfcols.index('hostname') + 1
                 else:
                     selindex = 1
             elif state.uniq_clicked in dfcols:
@@ -498,8 +523,8 @@ class XplorePage(SqGuiPage):
 
             uniq_clicked = st.selectbox(
                 'Distribution Count of', options=['-'] + dfcols,
-                index=selindex, key='xplore_uniq_col',
-                on_change=self._sync_state)
+                index=selindex, key=f'xplore_uniq_col_{state.table}',
+                on_change=self._sync_uniq_col)
 
         scol2 = layout['uniq']
 
@@ -532,11 +557,10 @@ class XplorePage(SqGuiPage):
 
             scol2.altair_chart(chart)
 
-    def _draw_assert_df(self, layout, sqobj):
+    def _draw_assert_df(self, layout):
         '''Display the assert dataframe'''
         if self._state.assert_clicked:
             assert_df = self._run_assert(
-                sqobj,
                 start_time=self._state.start_time,
                 end_time=self._state.end_time,
                 namespace=self._state.namespace.split())
@@ -561,15 +585,10 @@ class XplorePage(SqGuiPage):
                     st.info('Assert not run')
 
     @st.cache(ttl=90)
-    def _run_summarize(self, sqobject, **kwargs):
+    def _run_summarize(self, **kwargs):
         '''Get summarize dataframe for the object in question'''
-        view = kwargs.pop('view', 'latest')
-        stime = kwargs.pop('start_time', '')
-        etime = kwargs.pop('end_time', '')
-        df = sqobject(view=view,
-                      start_time=stime,
-                      end_time=etime,
-                      config_file=self._config_file).summarize(**kwargs)
+        df = gui_get_df(self._state.table, self._config_file, verb='summarize',
+                        **kwargs)
         # Leaving this commented to avoid future heartburn in case someone
         # tries to do this. It didn't fix the Timedelta being added to display
         # if not df.empty:
@@ -601,13 +620,15 @@ class XplorePage(SqGuiPage):
                     .sort_values(by=['numRows'], ascending=False))
         return pd.DataFrame()
 
-    @st.cache(ttl=90)
-    def _run_assert(self, sqobject, **kwargs):
-        kwargs.pop('view', 'latest')
-        stime = kwargs.pop('start_time', '')
-        etime = kwargs.pop('end_time', '')
-        df = sqobject(start_time=stime, end_time=etime) \
-            .aver(result="fail", **kwargs)
+    def _run_assert(self, **kwargs):
+        table = self._state.table
+        if table.startswith('interface'):
+            df = gui_get_df(table, self._config_file, 'aver',
+                            ignore_missing_peer=True,
+                            result='fail', **kwargs)
+        else:
+            df = gui_get_df(table, self._config_file,
+                            'aver', result='fail', **kwargs)
         if not df.empty:
             df.rename(columns={'assert': 'result'},
                       inplace=True, errors='ignore')

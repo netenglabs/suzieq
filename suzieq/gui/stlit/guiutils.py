@@ -6,8 +6,14 @@ from importlib.util import find_spec
 import pandas as pd
 import streamlit as st
 from IPython.display import Markdown
-from streamlit.report_thread import get_report_ctx
 from streamlit.server.server import Server
+try:
+    from streamlit.script_run_context import get_script_run_ctx
+except ModuleNotFoundError:
+    # streamlit < 1.4
+    from streamlit.report_thread import (  # type: ignore
+        get_report_ctx as get_script_run_ctx,
+    )
 from suzieq.sqobjects import get_sqobject
 
 SUZIEQ_COLOR = "#68279D"
@@ -80,12 +86,14 @@ def gui_get_df(table: str,
                                    config_file=config_file)
     if columns == ['all']:
         columns = ['*']
-    if verb == 'get':
-        df = sqobject.get(columns=columns, **kwargs)
-    elif verb == 'find':
-        df = sqobject.find(**kwargs)
-    else:
+    fn = getattr(sqobject, verb, None)
+    if not fn or not callable(fn):
         raise ValueError(f'Unsupported verb {verb}')
+
+    if verb not in ['assert', 'find']:
+        df = fn(columns=columns, **kwargs)
+    else:
+        df = fn(**kwargs)
 
     if not df.empty:
         df = sqobject.humanize_fields(df)
@@ -94,6 +102,9 @@ def gui_get_df(table: str,
                 df = df.explode('ipAddressList').fillna('')
             if 'ip6AddressList' in df.columns:
                 df = df.explode('ip6AddressList').fillna('')
+
+    if verb == 'summarize':
+        return df
     if columns not in [['*'], ['default']]:
         return df[columns].reset_index(drop=True)
     return df.reset_index(drop=True)
@@ -105,7 +116,7 @@ def get_base_url():
     or it can be a remote connection. And so, its useful to get the base
     URL for use with links on various pages.
     '''
-    session_id = get_report_ctx().session_id
+    session_id = get_script_run_ctx().session_id
     # pylint: disable=protected-access
     session_info = Server.get_current()._get_session_info(session_id)
 
@@ -117,7 +128,10 @@ def get_base_url():
 
 def get_session_id():
     '''Return Streamlit's session ID'''
-    return get_report_ctx().session_id
+    ctx = get_script_run_ctx()
+    if ctx is None:
+        raise Exception("Failed to get the thread context")
+    return ctx.session_id
 
 
 def get_main_session_by_id(session_id):
@@ -137,6 +151,20 @@ def get_main_session_by_id(session_id):
         return session.session.session_state
 
     return None
+
+
+def set_def_aggrid_options(grid_options: dict):
+    '''Set default grid options for aggrid tables
+
+    Invoke this function by passing it the output pf gb.build
+    '''
+    grid_options['rowStyle'] = {'background': 'white'}
+    grid_options['cacheQuickFilter'] = True
+    grid_options['suppressDragLeaveHidesColumns'] = True
+    grid_options['enableCellTextSelection'] = True
+    grid_options['ensureDomOrder'] = True
+
+    return grid_options
 
 
 def get_image_dir():
@@ -192,8 +220,8 @@ def sq_gui_style(df, table, is_assert=False):
 
     if table == 'bgp' and 'state' in df.columns:
         return df.style.hide_index() \
-            .applymap(color_element_red, fieldval=['Established'],
-                      subset=pd.IndexSlice[:, ['state']])
+                       .applymap(color_element_red, fieldval=['Established'],
+                                 subset=pd.IndexSlice[:, ['state']])
     elif table == 'ospf' and 'adjState' in df.columns:
         return df.style.hide_index() \
             .applymap(color_element_red,
