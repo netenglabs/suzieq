@@ -743,14 +743,14 @@ class InterfaceService(Service):
                 entry['speed'] = NO_SPEED
                 continue
 
-            if not 'type' in entry:
+            if 'type' not in entry:
                 # We have some weird outputs when some ephemeral interfaces
                 # such as NDE_0 popup between the commands we run causing us
                 # to not have full data about this interface. Drop such
                 # interfaces. If they're not ephemeral, we'll get them in the
                 # next run
                 drop_indices.append(i)
-                return
+                continue
 
             if entry.get('_bondMbrs', ''):
                 bond_mbrs = ' '.join(entry['_bondMbrs'])
