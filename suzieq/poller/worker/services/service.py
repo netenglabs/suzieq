@@ -206,9 +206,10 @@ class Service(SqPlugin):
         koldkeys = []
         knewkeys = []
 
+        fieldsToCheck = set()
         # keys that start with _ are transient and must be ignored
         # from comparison
-        for elem in old:
+        for elem in new:
             # Checking the __iter__ attribute to check if it is iterable
             # is not pythonic but much faster, we need to be fast since this
             # piece of code is executed tons of times
@@ -219,19 +220,23 @@ class Service(SqPlugin):
                     if k not in self.ignore_fields and not k.startswith('_')
                     and k in self.schema_table.fields}
             kvals = {v for k, v in elem.items() if k in self.keys}
-            koldvals.append(vals)
-            koldkeys.append(kvals)
+            knewvals.append(vals)
+            knewkeys.append(kvals)
+            fieldsToCheck.update(vals.keys())
 
-        for elem in new:
+        for elem in old:
+            # Get from the old records only the fields there are in new records
+            # since we want to compare what we have, also excluding all the
+            # derived derived colums, which are not explicitly written in
+            # the data.
             vals = {k: set(v) if hasattr(v, '__iter__') and
                     not isinstance(v, str) and
                     not isinstance(v, dict) else str(v)
                     for k, v in elem.items()
-                    if k not in self.ignore_fields and not k.startswith('_')
-                    and k in self.schema_table.fields}
+                    if k in fieldsToCheck}
             kvals = {v for k, v in elem.items() if k in self.keys}
-            knewvals.append(vals)
-            knewkeys.append(kvals)
+            koldvals.append(vals)
+            koldkeys.append(kvals)
 
         adds = [new[k] for k, v in enumerate(knewvals) if v not in koldvals]
         dels = [old[k] for k, v in enumerate(koldvals)

@@ -2,6 +2,7 @@ from typing import List
 import re
 from ipaddress import ip_address, ip_network
 
+from pytz import all_timezones
 import dateparser
 import numpy as np
 import pandas as pd
@@ -201,7 +202,7 @@ class SqPandasEngine(SqEngineObj):
         getcols = list(set(fields+addnl_fields))
 
         tz = self.ctxt.cfg.get('analyzer', {}).get('timezone', 'UTC')
-        settings = {'TIMEZONE': tz, 'TO_TIMEZONE': 'UTC'}
+        settings = {'TIMEZONE': tz}
 
         if self.iobj.start_time:
             try:
@@ -268,8 +269,8 @@ class SqPandasEngine(SqEngineObj):
                 else:
                     return pd.DataFrame(columns=table_df.columns.tolist())
 
-            if view != "all" and not active_only:
-                table_df = table_df.query('active')
+            if view != "all" or active_only:
+                table_df = table_df.query('active').reset_index(drop=True)
 
             if 'timestamp' in table_df.columns and not table_df.empty:
                 table_df['timestamp'] = humanize_timestamp(

@@ -730,8 +730,9 @@ class InterfaceService(Service):
 
         entry_dict = {}
         devtype = raw_data[0].get('devtype', 'iosxr')
+        drop_indices = []
 
-        for _, entry in enumerate(processed_data):
+        for i, entry in enumerate(processed_data):
 
             if entry.get('_entryType', '') == 'vrf':
                 entry['master'] = ''
@@ -740,6 +741,15 @@ class InterfaceService(Service):
                 entry['state'] = entry['adminState'] = 'up'
                 entry['macaddr'] = "00:00:00:00:00:00"
                 entry['speed'] = NO_SPEED
+                continue
+
+            if 'type' not in entry:
+                # We have some weird outputs when some ephemeral interfaces
+                # such as NDE_0 popup between the commands we run causing us
+                # to not have full data about this interface. Drop such
+                # interfaces. If they're not ephemeral, we'll get them in the
+                # next run
+                drop_indices.append(i)
                 continue
 
             if entry.get('_bondMbrs', ''):
@@ -858,6 +868,10 @@ class InterfaceService(Service):
                 entry['type'] = add_info.get('type', '')
             else:
                 entry_dict[entry['ifname']] = entry
+
+        if drop_indices:
+            processed_data = np.delete(processed_data, drop_indices).tolist()
+
         return processed_data
 
     def _clean_iosxe_data(self, processed_data, raw_data):
