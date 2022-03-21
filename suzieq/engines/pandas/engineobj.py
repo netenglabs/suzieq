@@ -202,9 +202,6 @@ class SqPandasEngine(SqEngineObj):
         getcols = list(set(fields+addnl_fields))
 
         tz = self.ctxt.cfg.get('analyzer', {}).get('timezone', 'UTC')
-        if tz not in all_timezones:
-            raise AttributeError(f'Invalid Timezone {tz} specified in config')
-
         settings = {'TIMEZONE': tz}
 
         if self.iobj.start_time:
