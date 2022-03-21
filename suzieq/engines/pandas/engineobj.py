@@ -2,7 +2,6 @@ from typing import List
 import re
 from ipaddress import ip_address, ip_network
 
-from pytz import all_timezones
 import dateparser
 import numpy as np
 import pandas as pd
