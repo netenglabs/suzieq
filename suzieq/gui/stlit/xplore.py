@@ -255,16 +255,23 @@ class XplorePage(SqGuiPage):
     def _sync_state(self) -> None:
         wsstate = st.session_state
         state = self._state
+        change_view = False
 
         if wsstate.xplore_namespace != state.namespace:
             state.namespace = wsstate.xplore_namespace
 
+        if ((wsstate.xplore_stime != state.start_time) or
+                (wsstate.xplore_etime != state.end_time)):
+            if not (wsstate.xplore_stime and wsstate.xplore_etime):
+                change_view = True
         if wsstate.xplore_stime != state.start_time:
             state.start_time = wsstate.xplore_stime
         if wsstate.xplore_etime != state.end_time:
             state.end_time = wsstate.xplore_etime
         if wsstate.xplore_view != state.view:
             state.view = wsstate.xplore_view
+        if change_view:
+            state.view = 'latest'
         if wsstate.xplore_query != state.query:
             state.query = wsstate.xplore_query
         assert_clicked = wsstate.get('xplore_assert', '')
