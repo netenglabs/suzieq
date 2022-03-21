@@ -159,7 +159,12 @@ class SqPandasEngine(SqEngineObj):
         columns = kwargs.pop('columns', ['default'])
         addnl_fields = kwargs.pop('addnl_fields', [])
         view = kwargs.pop('view', self.iobj.view)
-        active_only = kwargs.pop('active_only', True)
+        # active_only tells the db to get only the active records (discarding
+        # everything have been deleted).
+        # If view=all, by default, we would like to show all the records,
+        # included the ones that have been deleted, in all the other cases
+        # we want to see only the active records.
+        active_only = kwargs.pop('active_only', view != 'all')
         hostname = kwargs.pop('hostname', [])
         query_str = kwargs.pop('query_str', '')
 
@@ -269,7 +274,7 @@ class SqPandasEngine(SqEngineObj):
                 else:
                     return pd.DataFrame(columns=table_df.columns.tolist())
 
-            if view != "all" or active_only:
+            if active_only:
                 table_df = table_df.query('active').reset_index(drop=True)
 
             if 'timestamp' in table_df.columns and not table_df.empty:
