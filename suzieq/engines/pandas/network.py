@@ -26,6 +26,7 @@ class NetworkObj(SqPandasEngine):
         vendor = kwargs.pop('vendor', [])
         os_version = kwargs.pop('version', [])
         namespace = kwargs.pop('namespace', [])
+        hostname = kwargs.get('hostname', [])
 
         drop_cols = []
         fields = self.schema.get_display_fields(columns)
@@ -44,15 +45,13 @@ class NetworkObj(SqPandasEngine):
         if df.empty:
             return pd.DataFrame()
 
-        namespace = df.namespace.unique().tolist()
-        hosts = df.hostname.unique().tolist()
         dev_nsgrp = df.groupby(['namespace'])
 
         # Get list of namespaces we're polling
         pollerdf = self._get_table_sqobj('sqPoller') \
             .get(columns=['namespace', 'hostname', 'service', 'status',
                           'timestamp'],
-                 namespace=namespace, hostname=hosts)
+                 namespace=namespace, hostname=hostname)
 
         if pollerdf.empty:
             return pd.DataFrame()
@@ -77,7 +76,7 @@ class NetworkObj(SqPandasEngine):
         for table, fld in [('ospf', 'hasOspf'), ('bgp', 'hasBgp'),
                            ('evpnVni', 'hasVxlan'), ('mlag', 'hasMlag')]:
             df = self._get_table_sqobj(table) \
-                .get(namespace=pollerns, hostname=hosts,
+                .get(namespace=pollerns, hostname=hostname,
                      columns=['namespace'])
             if df.empty:
                 newdf[fld] = False

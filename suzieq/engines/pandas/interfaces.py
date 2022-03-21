@@ -1,4 +1,5 @@
 from ipaddress import ip_network
+from typing import List
 
 import numpy as np
 import pandas as pd
@@ -29,6 +30,8 @@ class InterfacesObj(SqPandasEngine):
         user_query = kwargs.pop('query_str', '')
         vlan = kwargs.pop('vlan', '')
         portmode = kwargs.pop('portmode', '')
+        hostname = kwargs.get('hostname', [])
+        namespace = kwargs.get('namespace', [])
 
         addnl_fields = []
         if vrf:
@@ -58,7 +61,7 @@ class InterfacesObj(SqPandasEngine):
                 if x in columns or '*' in columns:
                     continue
                 drop_cols.append(x)
-            df = self._add_portmode(df)
+            df = self._add_portmode(df, hostname, namespace)
 
         if vlan or "vlanList" in columns or '*' in columns:
             if 'portmode' not in columns and '*' not in columns:
@@ -66,8 +69,8 @@ class InterfacesObj(SqPandasEngine):
                     if x in columns:
                         continue
                     drop_cols.append(x)
-                df = self._add_portmode(df)
-            df = self._add_vlanlist(df)
+                df = self._add_portmode(df, hostname, namespace)
+            df = self._add_vlanlist(df, hostname, namespace)
 
         if state or portmode:
             query_str = build_query_str([], self.schema, state=state,
@@ -469,7 +472,8 @@ class InterfacesObj(SqPandasEngine):
                             'peerHostname', 'peerIfname', 'result',
                             'assertReason', 'timestamp']]
 
-    def _add_portmode(self, df: pd.DataFrame):
+    def _add_portmode(self, df: pd.DataFrame, hostname: List[str],
+                      namespace: List[str]):
         """Add the switchport-mode i.e. acceess/trunk/routed'''
 
         :param df[pd.Dataframe]: The dataframe to add vlanList to
@@ -480,12 +484,10 @@ class InterfacesObj(SqPandasEngine):
             return df
 
         conf_df = self._get_table_sqobj('devconfig') \
-            .get(namespace=df.namespace.unique().tolist(),
-                 hostname=df.hostname.unique().tolist())
+            .get(namespace=namespace, hostname=hostname)
 
         devdf = self._get_table_sqobj('device') \
-            .get(namespace=df.namespace.unique().tolist(),
-                 hostname=df.hostname.unique().tolist(),
+            .get(namespace=namespace, hostname=hostname,
                  columns=['namespace', 'hostname', 'os', 'status', 'vendor'])
 
         pm_df = pd.DataFrame({'namespace': [], 'hostname': [],
@@ -560,7 +562,8 @@ class InterfacesObj(SqPandasEngine):
         return df.drop(columns=['portmode_y', 'vlan_y'],
                        errors='ignore')
 
-    def _add_vlanlist(self, df: pd.DataFrame):
+    def _add_vlanlist(self, df: pd.DataFrame, hostname: List[str],
+                      namespace: List[str]):
         """Add list of active, unpruned VLANs on trunked ports
 
         :param df[pd.Dataframe]: The dataframe to add vlanList to
@@ -571,8 +574,7 @@ class InterfacesObj(SqPandasEngine):
             return df
 
         vlan_df = self._get_table_sqobj('vlan') \
-                      .get(namespace=df.namespace.unique().tolist(),
-                           hostname=df.hostname.unique().tolist())
+                      .get(namespace=namespace, hostname=hostname)
 
         if vlan_df.empty:
             df['vlanList'] = [[] for _ in range(len(df))]

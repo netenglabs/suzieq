@@ -1,3 +1,4 @@
+from typing import List
 import numpy as np
 import pandas as pd
 
@@ -16,6 +17,7 @@ class LldpObj(SqPandasEngine):
         '''A separate get to handle JunOS MACaddr as peer'''
 
         namespace = kwargs.get('namespace', [])
+        hostname = kwargs.get('hostname', [])
         columns = kwargs.pop('columns', [])
         use_bond = kwargs.pop('use_bond', "False")
         query_str = kwargs.pop('query_str', '')
@@ -80,7 +82,7 @@ class LldpObj(SqPandasEngine):
                                             df['ifname_y'], df['peerIfname'])
 
         if use_bond.lower() == "true":
-            df = self._resolve_to_bond(df)[cols]
+            df = self._resolve_to_bond(df, hostname, namespace)[cols]
 
         df = self._handle_user_query_str(df, query_str)
         return df.reset_index(drop=True)[cols]
@@ -100,7 +102,8 @@ class LldpObj(SqPandasEngine):
 
         return super().summarize(**kwargs)
 
-    def _resolve_to_bond(self, df: pd.DataFrame) -> pd.DataFrame:
+    def _resolve_to_bond(self, df: pd.DataFrame, hostname: List[str],
+                         namespace: List[str]) -> pd.DataFrame:
         """Change bond/channel member ports into bond name
 
         With normal port channels or bond interfaces, this routine
@@ -117,9 +120,7 @@ class LldpObj(SqPandasEngine):
         iflist = df.ifname.unique().tolist() + \
             df.peerIfname.unique().tolist()
         ifdf = self._get_table_sqobj('interfaces').get(
-            namespace=df.namespace.unique().tolist(),
-            hostname=df.hostname.unique().tolist(),
-            ifname=iflist,
+            namespace=namespace, hostname=hostname, ifname=iflist,
             columns=['namespace', 'hostname', 'ifname', 'adminState',
                      'ipAddressList', 'master', 'mtu'])
 
