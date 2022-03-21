@@ -31,32 +31,32 @@ class NetworkObj(SqPandasEngine):
         fields = self.schema.get_display_fields(columns)
 
         if os or model or vendor or os_version:
-            df = self._get_table_sqobj('device').get(
+            devdf = self._get_table_sqobj('device').get(
                 columns=['namespace', 'hostname', 'os', 'model', 'vendor',
                          'version'],
                 os=os, model=model, vendor=vendor, version=os_version,
                 namespace=namespace, **kwargs)
         else:
-            df = self._get_table_sqobj('device').get(
+            devdf = self._get_table_sqobj('device').get(
                 columns=['namespace', 'hostname'], namespace=namespace,
                 **kwargs)
 
-        if df.empty:
+        if devdf.empty:
             return pd.DataFrame()
 
-        namespace = df.namespace.unique().tolist()
-        hosts = df.hostname.unique().tolist()
-        dev_nsgrp = df.groupby(['namespace'])
+        namespace = devdf.namespace.unique().tolist()
+        dev_nsgrp = devdf.groupby(['namespace'])
 
         # Get list of namespaces we're polling
         pollerdf = self._get_table_sqobj('sqPoller') \
             .get(columns=['namespace', 'hostname', 'service', 'status',
                           'timestamp'],
-                 namespace=namespace, hostname=hosts)
+                 namespace=namespace)
 
         if pollerdf.empty:
             return pd.DataFrame()
 
+        pollerdf = pollerdf.merge(devdf, on=['namespace', 'hostname'])
         nsgrp = pollerdf.groupby(by=['namespace'])
         pollerns = sorted(pollerdf.namespace.unique().tolist())
         newdf = pd.DataFrame({
@@ -77,8 +77,12 @@ class NetworkObj(SqPandasEngine):
         for table, fld in [('ospf', 'hasOspf'), ('bgp', 'hasBgp'),
                            ('evpnVni', 'hasVxlan'), ('mlag', 'hasMlag')]:
             df = self._get_table_sqobj(table) \
-                .get(namespace=pollerns, hostname=hosts,
-                     columns=['namespace'])
+                .get(namespace=pollerns, columns=['namespace', 'hostname'])
+            if df.empty:
+                newdf[fld] = False
+                continue
+
+            df = df.merge(devdf, on=['namespace', 'hostname'])
             if df.empty:
                 newdf[fld] = False
                 continue

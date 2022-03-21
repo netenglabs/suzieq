@@ -147,7 +147,8 @@ class OspfObj(SqPandasEngine):
         df.bfill(axis=0, inplace=True)
         final_df = df
         if 'peerHostname' in cols or 'peerIfname' in cols:
-            final_df = self._get_peernames(df, cols)
+            final_df = self._get_peernames(df, cols, hostname=hostname,
+                                           **kwargs)
         if query_str:
             final_df = final_df.query(query_str).reset_index(drop=True)
 
@@ -380,8 +381,8 @@ class OspfObj(SqPandasEngine):
         return self._create_aver_result([pasv_df, ifdown_df, result_df],
                                         result)
 
-    def _get_peernames(self, df: pd.DataFrame,
-                       columns: List[str]) -> pd.DataFrame:
+    def _get_peernames(self, df: pd.DataFrame, columns: List[str],
+                       **kwargs) -> pd.DataFrame:
         """Fill in columns of peerhostname and peerifname if requested
 
         Using a combination of LLDP info, if available and without it,
@@ -393,6 +394,7 @@ class OspfObj(SqPandasEngine):
         Args:
             df: The OSPF dataframe with the relevant dependent cols
             columns: List of column names provided by user
+            kwargs: User specified list for hostname/namespace etc.
 
         Returns:
             The OSPF dataframe with the peerHostname and peerifname
@@ -414,8 +416,8 @@ class OspfObj(SqPandasEngine):
             return df
 
         lldp_df = self._get_table_sqobj('lldp').get(
-            namespace=newdf.namespace.unique().tolist(),
-            hostname=newdf.hostname.unique().tolist(),
+            namespace=kwargs.get('namespace', []),
+            hostname=kwargs.get('hostname', []),
             use_bond='True')
 
         if lldp_df.empty:
