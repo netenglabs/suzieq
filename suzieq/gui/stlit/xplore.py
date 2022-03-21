@@ -12,6 +12,9 @@ from suzieq.gui.stlit.guiutils import (SUZIEQ_COLOR, SuzieqMainPages,
 from suzieq.gui.stlit.pagecls import SqGuiPage
 from suzieq.sqobjects import get_sqobject, get_tables
 
+DEF_MAX_ROW = 10000
+MAX_ROW_WARN = 50000
+
 
 @dataclass
 class XploreSessionState:
@@ -29,6 +32,8 @@ class XploreSessionState:
     get_clicked: bool = False
     col_sel_done: bool = False
     experimental_ok: bool = True
+    start_row: int = 0
+    end_row: int = DEF_MAX_ROW
     tables_obj: Any = None
 
 
@@ -38,6 +43,7 @@ class XplorePage(SqGuiPage):
     _state: XploreSessionState = XploreSessionState()
     _reload_data: bool = False
     _config_file: str = st.session_state.get('config_file', '')
+    _cached_df: pd.DataFrame = pd.DataFrame()
 
     @property
     def add_to_menu(self) -> bool:
@@ -133,6 +139,21 @@ class XplorePage(SqGuiPage):
                         key='xplore_columns', default=state.columns)
                     st.form_submit_button('Selection Done',
                                           on_click=self._update_cols)
+
+            state.start_row = st.number_input('Start Row Index',
+                                              value=int(state.start_row),
+                                              min_value=0,
+                                              step=1,
+                                              key='xplore_start_row',
+                                              on_change=self._update_row_sel)
+            state.start_row = int(state.start_row)
+
+            state.end_row = st.number_input('End Row Index',
+                                            value=int(state.end_row),
+                                            key='xplore_end_row',
+                                            step=1,
+                                            on_change=self._update_row_sel)
+            state.end_row = int(state.end_row)
 
         col_ok = True
         if ((('default' in state.columns) or ('*' in state.columns))
@@ -289,6 +310,8 @@ class XplorePage(SqGuiPage):
             state.assert_clicked = False
             state.uniq_clicked = '-'
             state.columns = ['default']
+            state.start_row = 0
+            state.end_row = DEF_MAX_ROW
         self._save_page_url()
 
     def _update_cols(self):
@@ -296,6 +319,18 @@ class XplorePage(SqGuiPage):
         state = self._state
 
         state.columns = wsstate.xplore_columns
+        self._save_page_url()
+
+    def _update_row_sel(self):
+        wsstate = st.session_state
+        state = self._state
+
+        if int(wsstate.xplore_start_row) != state.start_row:
+            state.start_row = int(wsstate.xplore_start_row)
+
+        if int(wsstate.xplore_end_row) != state.end_row:
+            state.end_row = int(wsstate.xplore_end_row)
+
         self._save_page_url()
 
     def _fetch_data(self):
@@ -349,6 +384,18 @@ class XplorePage(SqGuiPage):
         jscode = self._aggrid_style_rows()
         gridOptions['getRowStyle'] = jscode
 
+        start_row = self._state.start_row
+        end_row = self._state.end_row
+        if end_row > df.shape[0]:
+            end_row = df.shape[0]
+
+        if end_row - start_row > MAX_ROW_WARN:
+            st.warning('Printing too many rows can fail or be very slow')
+
+        if (end_row - start_row) < df.shape[0]:
+            st.info(f'Displaying rows {start_row} to {end_row} of '
+                    f'{df.shape[0]} rows')
+
         if self._state.experimental_ok:
             retmode = 'FILTERED'
             upd8_mode = GridUpdateMode.FILTERING_CHANGED
@@ -358,7 +405,7 @@ class XplorePage(SqGuiPage):
 
         fit_columns = (len(df.columns) < 12)
         grid_response = AgGrid(
-            df,
+            df.iloc[start_row:end_row],
             gridOptions=gridOptions,
             allow_unsafe_jscode=True,
             data_return_mode=retmode,
