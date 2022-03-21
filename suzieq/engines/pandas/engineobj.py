@@ -272,8 +272,8 @@ class SqPandasEngine(SqEngineObj):
                 else:
                     return pd.DataFrame(columns=table_df.columns.tolist())
 
-            if view != "all" and not active_only:
-                table_df = table_df.query('active')
+            if view != "all" or active_only:
+                table_df = table_df.query('active').reset_index(drop=True)
 
             if 'timestamp' in table_df.columns and not table_df.empty:
                 table_df['timestamp'] = humanize_timestamp(
