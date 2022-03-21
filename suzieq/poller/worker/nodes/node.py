@@ -1283,7 +1283,8 @@ class IosXENode(Node):
         except asyncio.TimeoutError:
             self.logger.error(f'{self.address}.{self.port} '
                               'Timed out waiting for expected prompt')
-            return 'timeout'
+            # Return something that won't ever be in real output
+            return 'suzieq timeout'
 
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
@@ -1332,7 +1333,8 @@ class IosXENode(Node):
                     await asyncio.sleep(IOS_SLEEP_BET_CMDS)
                 self._stdin.write(cmd + '\n')
                 output = await self.wait_for_prompt()
-                if 'Invalid input detected' in output or 'timeout' in output:
+                if ('Invalid input detected' in output or
+                        'suzieq timeout' in output):
                     status = -1
                 else:
                     status = 0
