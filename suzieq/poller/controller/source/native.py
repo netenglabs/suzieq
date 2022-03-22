@@ -5,11 +5,10 @@ from pathlib import Path
 from typing import Dict, List, Optional
 from urllib.parse import urlparse
 
-from pydantic import Field, validator, BaseModel
-
+from pydantic import BaseModel, Field, validator
 from suzieq.poller.controller.source.base_source import Source, SourceModel
 from suzieq.poller.controller.utils.inventory_utils import validate_hostname
-from suzieq.shared.utils import SUPPORTED_POLLER_TRANSPORTS
+from suzieq.shared.utils import PollerTransport
 
 logger = logging.getLogger(__name__)
 
@@ -42,8 +41,10 @@ class HostModel(BaseModel):
         address = decoded_url.hostname
         if not validate_hostname(address):
             raise ValueError(f'Invalid hostname or address {address}')
-        transport = decoded_url.scheme or "http"
-        if transport not in SUPPORTED_POLLER_TRANSPORTS:
+        transport = decoded_url.scheme or "https"
+        try:
+            PollerTransport[transport]
+        except KeyError:
             raise ValueError(
                 f"Transport '{transport}' not supported for host {address}")
         port = decoded_url.port or _DEFAULT_PORTS.get(transport)
