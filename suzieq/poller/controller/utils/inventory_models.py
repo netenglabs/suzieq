@@ -3,6 +3,8 @@
 from typing import Dict, List, Optional
 from pydantic import BaseModel, Field
 
+from suzieq.shared.utils import PollerTransport
+
 
 class InventoryModel(BaseModel):
     """Model for the inventory validation
@@ -27,7 +29,7 @@ class DeviceModel(BaseModel):
     ignore_known_hosts: Optional[bool] = Field(
         alias='ignore-known-hosts', default=False)
     slow_host: Optional[bool] = Field(alias='slow-host', default=False)
-    transport: Optional[str]
+    transport: Optional[PollerTransport]
     port: Optional[str]
     devtype: Optional[str]
 

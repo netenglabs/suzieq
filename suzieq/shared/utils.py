@@ -1,28 +1,27 @@
+import errno
+import fcntl
+import getpass
+import json
+import logging
 import os
 import re
 import sys
-from typing import Dict, List
-import logging
-from logging.handlers import RotatingFileHandler
 from datetime import datetime
-import fcntl
+from enum import Enum
 from importlib.util import find_spec
-from itertools import groupby
 from ipaddress import ip_network
-import errno
+from itertools import groupby
+from logging.handlers import RotatingFileHandler
 from os import getenv
-import getpass
-
-import json
-import yaml
-from dateutil.relativedelta import relativedelta
+from typing import Dict, List
 from tzlocal import get_localzone
-from pytz import all_timezones
-from dateparser import parse
 
 import pandas as pd
+import yaml
+from dateparser import parse
+from dateutil.relativedelta import relativedelta
+from pytz import all_timezones
 from suzieq.shared.exceptions import SensitiveLoadError
-
 from suzieq.version import SUZIEQ_VERSION
 
 logger = logging.getLogger(__name__)
@@ -36,8 +35,13 @@ MAX_MTU = 9216
 MISSING_SPEED = -1
 NO_SPEED = 0
 MISSING_SPEED_IF_TYPES = ['ethernet', 'bond', 'bond_slave']
-SUPPORTED_POLLER_TRANSPORTS = ['ssh', 'https']
 SUPPORTED_ENGINES = ['pandas', 'rest']
+
+
+class PollerTransport(str, Enum):
+    """Supported poller transoport enum"""
+    ssh = 'ssh'
+    https = 'https'
 
 
 def validate_sq_config(cfg):
