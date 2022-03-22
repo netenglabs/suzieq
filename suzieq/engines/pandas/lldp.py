@@ -114,12 +114,9 @@ class LldpObj(SqPandasEngine):
             The LLDP dataframe with the appropriate substitution
         """
 
-        iflist = df.ifname.unique().tolist() + \
-            df.peerIfname.unique().tolist()
         ifdf = self._get_table_sqobj('interfaces').get(
             namespace=df.namespace.unique().tolist(),
             hostname=df.hostname.unique().tolist(),
-            ifname=iflist,
             columns=['namespace', 'hostname', 'ifname', 'adminState',
                      'ipAddressList', 'master', 'mtu'])
 

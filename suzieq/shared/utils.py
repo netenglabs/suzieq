@@ -531,9 +531,17 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
     query_str = ''
     prefix = ''
 
-    def _build_query_str(fld, val, fldtype) -> str:
-        """Builds the string from the provided user input"""
+    def _build_query_str(fld, val, fldtype) -> List[str]:
+        """Builds the string from the provided user input
 
+        Besides handling operators and regexp, the function returns what
+        the subsequent match within this list needs to be. If the ! operator
+        is used, we have to switch to AND, else we can be at OR. For
+        example. it makes no sense to say !leaf01 OR !leaf02 as this will
+        include both leaf01 and leaf02.
+        """
+
+        cond = 'or'
         num_type = ["long", "float", "int"]
         if ((fldtype in num_type) and not
                 isinstance(val, str)):
@@ -541,6 +549,7 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
 
         elif val.startswith('!'):
             val = val[1:]
+            cond = 'and'
             if fldtype in num_type:
                 result = f'{fld} != {val}'
             else:
@@ -549,35 +558,50 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
             result = val
         elif val.startswith('~'):
             val = val[1:]
-            result = f'{fld}.str.match("{val}")'
+            if val.startswith('!'):
+                val = val[1:]
+                cond = 'and'
+                result = f'~{fld}.str.match("{val}")'
+            else:
+                result = f'{fld}.str.match("{val}")'
         else:
             if fldtype in num_type:
                 result = f'{fld} == {val}'
             else:
                 result = f'{fld} == "{val}"'
 
-        return result
+        return result, cond
 
     for f, v in kwargs.items():
         if not v or f in skip_fields or f in ["groupby"]:
             continue
+
         stype = schema.field(f).get('type', 'string')
         if isinstance(v, list) and len(v):
+            notlist = [x for x in v
+                       if x.startswith('!') or x.startswith('~!')]
+            if notlist != v:
+                newv = [x for x in v
+                        if not x.startswith('!') and not x.startswith('~!')]
+            else:
+                newv = v
             subq = ''
             subcond = ''
-            if ignore_regex and [x for x in v
+            if ignore_regex and [x for x in newv
                                  if isinstance(x, str) and
                                  x.startswith('~')]:
                 continue
 
-            for elem in v:
-                subq += f'{subcond} {_build_query_str(f, elem, stype)} '
-                subcond = 'or'
+            for elem in newv:
+                intq, nextcond = _build_query_str(f, elem, stype)
+                subq += f'{subcond} {intq} '
+                subcond = nextcond
             query_str += '{} ({})'.format(prefix, subq)
             prefix = "and"
         else:
-            query_str += f'{prefix} {_build_query_str(f, v, stype)} '
-            prefix = "and"
+            intq, nextcond = _build_query_str(f, v, stype)
+            query_str += f'{prefix} {intq} '
+            prefix = nextcond
 
     return query_str
 
