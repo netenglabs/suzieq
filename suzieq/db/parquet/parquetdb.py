@@ -83,7 +83,7 @@ class SqParquetDB(SqDB):
         key_fields = kwargs.pop("key_fields")
         addnl_filter = kwargs.pop("add_filter", None)
         merge_fields = kwargs.pop('merge_fields', {})
-        hostname = kwargs.pop('hostname', [])
+        _ = kwargs.pop('hostname', [])  # This should never be passed
         namespace = kwargs.pop('namespace', [])
 
         folder = self._get_table_directory(table_name, False)
@@ -149,7 +149,7 @@ class SqParquetDB(SqDB):
                 start, end, master_schema, merge_fields=merge_fields, **kwargs)
 
             filtered_datasets = self._get_filtered_fileset(
-                datasets, namespace, hostname)
+                datasets, namespace)
 
             final_df = filtered_datasets \
                 .to_table(filter=filters, columns=avail_fields) \
@@ -600,16 +600,14 @@ class SqParquetDB(SqDB):
 
         return msch
 
-    def _get_filtered_fileset(self, datasets: list, namespace: list,
-                              hostname: list) -> ds:
-        """Filter the dataset based on the namespace and hostname
+    def _get_filtered_fileset(self, datasets: list, namespace: list) -> ds:
+        """Filter the dataset based on the namespace
 
         We can use this method to filter out namespaces and hostnames based
         on regexes as well just regular strings.
         Args:
             datasets (list)): The datasets list incl coalesced and not files
             namespace (list): list of namespace strings
-            hostname (list): list of hostname strings
 
         Returns:
             ds: pyarrow dataset of only the files that match filter
@@ -618,38 +616,42 @@ class SqParquetDB(SqDB):
         for dataset in datasets:
             if not namespace:
                 filelist.extend(dataset.files)
+                continue
+
+            notlist = [x for x in namespace
+                       if x.startswith('!') or x.startswith('~!')]
+            if notlist != namespace:
+                newns = [x for x in namespace
+                         if not x.startswith('!') and not x.startswith('~!')]
             else:
-                ns_filelist = []
-                for ns in namespace or []:
+                newns = namespace
+            ns_filelist = []
+            chklist = dataset.files
+            for ns in newns or []:
+                if ns.startswith('!'):
+                    ns = ns[1:]
+                    ns_filelist = \
+                        [x for x in chklist
+                         if not re.search(f'namespace={ns}/', x)]
+                    chklist = ns_filelist
+                elif ns.startswith('~'):
+                    ns = ns[1:]
                     if ns.startswith('!'):
                         ns = ns[1:]
-                        ns_filelist.extend(
-                            [x for x in dataset.files
-                             if not re.search(f'namespace={ns}/',
-                                              x)])
+                        ns_filelist = \
+                            [x for x in chklist
+                             if not re.search(f'namespace={ns}/', x)]
+                        chklist = ns_filelist
                     else:
-                        if ns.startswith('~'):
-                            ns = ns[1:]
                         ns_filelist.extend(
                             [x for x in dataset.files
                              if re.search(f'namespace={ns}/', x)])
-                filelist.extend(ns_filelist)
-
-            host_filelist = []
-            for hn in hostname or []:
-                if hn.startswith('!'):
-                    hn = hn[1:]
-                    host_filelist.extend(
-                        [x for x in filelist
-                         if 'coalesced' in x or
-                         (not re.search(f'hostname={hn}/', x))])
                 else:
-                    host_filelist.extend(
-                        [x for x in filelist
-                         if 'coalesced' in x or
-                         re.search(f'hostname={hn}/', x)])
-            if hostname:
-                filelist = host_filelist
+                    ns_filelist.extend(
+                        [x for x in dataset.files
+                         if re.search(f'namespace={ns}/', x)])
+
+            filelist.extend(ns_filelist)
 
         return ds.dataset(filelist, format='parquet', partitioning='hive')
 

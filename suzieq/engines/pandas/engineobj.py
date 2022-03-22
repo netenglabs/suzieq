@@ -261,12 +261,33 @@ class SqPandasEngine(SqEngineObj):
             # hostname may not have been filtered if using regex
             if hostname:
                 hdf_list = []
-                for hn in hostname:
+                notlist = [x for x in hostname if '!' in x]
+                if len(notlist) != len(hostname):
+                    hnlist = [x for x in hostname if '!' not in x]
+                else:
+                    hnlist = hostname
+                for hn in hnlist:
+                    use_not = False
                     if hn.startswith('~'):
                         hn = hn[1:]
-                    df1 = table_df.query(f"hostname.str.match('{hn}')")
-                    if not df1.empty:
-                        hdf_list.append(df1)
+                        if hn.startswith('!'):
+                            use_not = True
+                            hn = hn[1:]
+                    elif hn.startswith('!'):
+                        hn = hn[1:]
+                        use_not = True
+
+                    if use_not:
+                        df1 = table_df.query(f'~hostname.str.match("{hn}")')
+                        hdf_list = [df1]
+                    else:
+                        df1 = table_df.query(f"hostname.str.match('{hn}')")
+                        if not df1.empty:
+                            hdf_list.append(df1)
+
+                    if use_not:
+                        # With not, the list of hostnames becomes an and
+                        table_df = df1
 
                 if hdf_list:
                     table_df = pd.concat(hdf_list)
