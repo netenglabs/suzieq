@@ -66,19 +66,19 @@ tests:
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: interface top numChanges
-  output: '[{"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "bond01", "state":
+  output: '[{"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "bond02", "state":
     "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822941},
-    {"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "bond02", "state":
+    {"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "bond01", "state":
     "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822941},
-    {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "bond01", "state":
-    "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822983},
     {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "bond02", "state":
     "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822983},
-    {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "bond01", "state":
+    {"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "bond01", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822983},
+    {"namespace": "dual-evpn", "hostname": "leaf01", "ifname": "bond02", "state":
     "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644823051}]'
 - command: bgp top --what="estdTime" --format=json --namespace='ospf-single dual-evpn
@@ -151,24 +151,24 @@ tests:
   data-directory: tests/data/parquet/
   marks: bgp top
   output: '[{"namespace": "dual-evpn", "hostname": "exit01", "vrf": "default", "peer":
-    "swp1", "peerHostname": "spine01", "state": "Established", "afi": "ipv4", "safi":
-    "unicast", "asn": 65201, "peerAsn": 65000, "pfxRx": 8, "pfxTx": 0, "numChanges":
+    "swp2", "peerHostname": "spine02", "state": "Established", "afi": "l2vpn", "safi":
+    "evpn", "asn": 65201, "peerAsn": 65000, "pfxRx": 38, "pfxTx": 0, "numChanges":
     1, "estdTime": 1616644608000, "updatesRx": 55, "timestamp": 1616644822941}, {"namespace":
     "dual-evpn", "hostname": "exit01", "vrf": "default", "peer": "swp2", "peerHostname":
-    "spine02", "state": "Established", "afi": "l2vpn", "safi": "evpn", "asn": 65201,
-    "peerAsn": 65000, "pfxRx": 38, "pfxTx": 0, "numChanges": 1, "estdTime": 1616644608000,
+    "spine02", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65201,
+    "peerAsn": 65000, "pfxRx": 8, "pfxTx": 0, "numChanges": 1, "estdTime": 1616644608000,
     "updatesRx": 55, "timestamp": 1616644822941}, {"namespace": "dual-evpn", "hostname":
-    "exit01", "vrf": "default", "peer": "swp2", "peerHostname": "spine02", "state":
-    "Established", "afi": "ipv4", "safi": "unicast", "asn": 65201, "peerAsn": 65000,
-    "pfxRx": 8, "pfxTx": 0, "numChanges": 1, "estdTime": 1616644608000, "updatesRx":
+    "exit01", "vrf": "default", "peer": "swp1", "peerHostname": "spine01", "state":
+    "Established", "afi": "l2vpn", "safi": "evpn", "asn": 65201, "peerAsn": 65000,
+    "pfxRx": 38, "pfxTx": 0, "numChanges": 1, "estdTime": 1616644608000, "updatesRx":
     55, "timestamp": 1616644822941}, {"namespace": "dual-evpn", "hostname": "exit01",
     "vrf": "default", "peer": "swp1", "peerHostname": "spine01", "state": "Established",
-    "afi": "l2vpn", "safi": "evpn", "asn": 65201, "peerAsn": 65000, "pfxRx": 38, "pfxTx":
-    0, "numChanges": 1, "estdTime": 1616644608000, "updatesRx": 55, "timestamp": 1616644822941},
-    {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default", "peer": "swp1",
-    "peerHostname": "spine01", "state": "Established", "afi": "ipv4", "safi": "unicast",
-    "asn": 65202, "peerAsn": 65000, "pfxRx": 12, "pfxTx": 0, "numChanges": 1, "estdTime":
-    1616644607000, "updatesRx": 55, "timestamp": 1616644822972}]'
+    "afi": "ipv4", "safi": "unicast", "asn": 65201, "peerAsn": 65000, "pfxRx": 8,
+    "pfxTx": 0, "numChanges": 1, "estdTime": 1616644608000, "updatesRx": 55, "timestamp":
+    1616644822941}, {"namespace": "dual-evpn", "hostname": "exit02", "vrf": "default",
+    "peer": "swp2", "peerHostname": "spine02", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 65202, "peerAsn": 65000, "pfxRx": 12, "pfxTx": 0, "numChanges":
+    1, "estdTime": 1616644607000, "updatesRx": 55, "timestamp": 1616644822972}]'
 - command: bgp top --what="updatesTx" --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/
@@ -177,21 +177,21 @@ tests:
     "swp2", "peerHostname": "leaf02", "state": "Established", "afi": "l2vpn", "safi":
     "evpn", "asn": 65000, "peerAsn": 65102, "pfxRx": 8, "pfxTx": 0, "numChanges":
     1, "estdTime": 1616644607000, "updatesTx": 55, "timestamp": 1616644822793}, {"namespace":
-    "dual-evpn", "hostname": "spine02", "vrf": "default", "peer": "swp3", "peerHostname":
-    "leaf03", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65000,
-    "peerAsn": 65103, "pfxRx": 2, "pfxTx": 0, "numChanges": 1, "estdTime": 1616644608000,
+    "dual-evpn", "hostname": "spine02", "vrf": "default", "peer": "swp2", "peerHostname":
+    "leaf02", "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65000,
+    "peerAsn": 65102, "pfxRx": 2, "pfxTx": 0, "numChanges": 1, "estdTime": 1616644607000,
     "updatesTx": 55, "timestamp": 1616644822793}, {"namespace": "dual-evpn", "hostname":
-    "spine02", "vrf": "default", "peer": "swp3", "peerHostname": "leaf03", "state":
-    "Established", "afi": "l2vpn", "safi": "evpn", "asn": 65000, "peerAsn": 65103,
-    "pfxRx": 8, "pfxTx": 0, "numChanges": 1, "estdTime": 1616644608000, "updatesTx":
+    "spine02", "vrf": "default", "peer": "swp1", "peerHostname": "leaf01", "state":
+    "Established", "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn": 65101,
+    "pfxRx": 2, "pfxTx": 0, "numChanges": 1, "estdTime": 1616644608000, "updatesTx":
     55, "timestamp": 1616644822793}, {"namespace": "dual-evpn", "hostname": "spine02",
-    "vrf": "default", "peer": "swp4", "peerHostname": "leaf04", "state": "Established",
-    "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn": 65104, "pfxRx": 2,
-    "pfxTx": 0, "numChanges": 1, "estdTime": 1616644608000, "updatesTx": 55, "timestamp":
-    1616644822793}, {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default",
-    "peer": "swp5", "peerHostname": "exit02", "state": "Established", "afi": "l2vpn",
-    "safi": "evpn", "asn": 65000, "peerAsn": 65202, "pfxRx": 10, "pfxTx": 0, "numChanges":
-    1, "estdTime": 1616644608000, "updatesTx": 55, "timestamp": 1616644822793}]'
+    "vrf": "default", "peer": "swp1", "peerHostname": "leaf01", "state": "Established",
+    "afi": "l2vpn", "safi": "evpn", "asn": 65000, "peerAsn": 65101, "pfxRx": 8, "pfxTx":
+    0, "numChanges": 1, "estdTime": 1616644608000, "updatesTx": 55, "timestamp": 1616644822793},
+    {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default", "peer": "swp3",
+    "peerHostname": "leaf03", "state": "Established", "afi": "ipv4", "safi": "unicast",
+    "asn": 65000, "peerAsn": 65103, "pfxRx": 2, "pfxTx": 0, "numChanges": 1, "estdTime":
+    1616644608000, "updatesTx": 55, "timestamp": 1616644822793}]'
 - command: bgp top --what="numChanges" --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/
@@ -200,19 +200,19 @@ tests:
     "eth1.2", "peerHostname": "exit01", "state": "Established", "afi": "ipv4", "safi":
     "unicast", "asn": 65530, "peerAsn": 65201, "pfxRx": 10, "pfxTx": 16, "numChanges":
     1, "estdTime": 1616644608000, "timestamp": 1616644822492}, {"namespace": "dual-evpn",
-    "hostname": "edge01", "vrf": "default", "peer": "eth1.3", "peerHostname": "exit01",
+    "hostname": "edge01", "vrf": "default", "peer": "eth2.4", "peerHostname": "exit02",
     "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65530, "peerAsn":
-    65201, "pfxRx": 3, "pfxTx": 16, "numChanges": 1, "estdTime": 1616644608000, "timestamp":
+    65202, "pfxRx": 4, "pfxTx": 16, "numChanges": 1, "estdTime": 1616644608000, "timestamp":
     1616644822492}, {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default",
-    "peer": "eth1.4", "peerHostname": "exit01", "state": "Established", "afi": "ipv4",
-    "safi": "unicast", "asn": 65530, "peerAsn": 65201, "pfxRx": 4, "pfxTx": 16, "numChanges":
+    "peer": "eth2.3", "peerHostname": "exit02", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 65530, "peerAsn": 65202, "pfxRx": 2, "pfxTx": 16, "numChanges":
     1, "estdTime": 1616644608000, "timestamp": 1616644822492}, {"namespace": "dual-evpn",
     "hostname": "edge01", "vrf": "default", "peer": "eth2.2", "peerHostname": "exit02",
     "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65530, "peerAsn":
     65202, "pfxRx": 9, "pfxTx": 16, "numChanges": 1, "estdTime": 1616644608000, "timestamp":
     1616644822492}, {"namespace": "dual-evpn", "hostname": "edge01", "vrf": "default",
-    "peer": "eth2.3", "peerHostname": "exit02", "state": "Established", "afi": "ipv4",
-    "safi": "unicast", "asn": 65530, "peerAsn": 65202, "pfxRx": 2, "pfxTx": 16, "numChanges":
+    "peer": "eth1.4", "peerHostname": "exit01", "state": "Established", "afi": "ipv4",
+    "safi": "unicast", "asn": 65530, "peerAsn": 65201, "pfxRx": 4, "pfxTx": 16, "numChanges":
     1, "estdTime": 1616644608000, "timestamp": 1616644822492}]'
 - command: device top --what="bootupTimestamp" --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
@@ -405,7 +405,7 @@ tests:
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   mark: interface top
-  output: '[{"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "bond01", "state":
+  output: '[{"namespace": "dual-evpn", "hostname": "leaf03", "ifname": "bond02", "state":
     "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822941}]'
 - command: network top --what=deviceCnt --count=1 --format=json --namespace='ospf-single
@@ -595,21 +595,21 @@ tests:
     ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: route top
-  output: '[{"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "prefix":
-    "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
+  output: '[{"namespace": "ospf-single", "hostname": "leaf04", "vrf": "default", "prefix":
+    "10.0.0.102/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
     "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
     "prefixlen": 32, "timestamp": 1616352402798}, {"namespace": "ospf-single", "hostname":
-    "leaf02", "vrf": "default", "prefix": "10.0.0.13/32", "nexthopIps": ["10.0.0.21",
-    "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference":
-    20, "ipvers": 4, "action": "forward", "prefixlen": 32, "timestamp": 1616352402798},
-    {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "prefix":
-    "10.0.0.14/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"],
-    "protocol": "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward",
-    "prefixlen": 32, "timestamp": 1616352402798}, {"namespace": "ospf-single", "hostname":
-    "leaf02", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"],
-    "oifs": ["swp1"], "protocol": "ospf", "source": "", "preference": 20, "ipvers":
+    "leaf04", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"],
+    "oifs": ["swp2"], "protocol": "ospf", "source": "", "preference": 20, "ipvers":
     4, "action": "forward", "prefixlen": 32, "timestamp": 1616352402798}, {"namespace":
-    "ospf-single", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.22/32",
-    "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf", "source": "",
-    "preference": 20, "ipvers": 4, "action": "forward", "prefixlen": 32, "timestamp":
-    1616352402798}]'
+    "ospf-single", "hostname": "leaf04", "vrf": "default", "prefix": "10.0.0.101/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["swp1", "swp2"], "protocol":
+    "ospf", "source": "", "preference": 20, "ipvers": 4, "action": "forward", "prefixlen":
+    32, "timestamp": 1616352402798}, {"namespace": "ospf-single", "hostname": "exit02",
+    "vrf": "default", "prefix": "10.0.0.101/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["swp1", "swp2"], "protocol": "ospf", "source": "", "preference": 20,
+    "ipvers": 4, "action": "forward", "prefixlen": 32, "timestamp": 1616352402798},
+    {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "prefix":
+    "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["swp2"], "protocol": "ospf",
+    "source": "", "preference": 20, "ipvers": 4, "action": "forward", "prefixlen":
+    32, "timestamp": 1616352402798}]'
