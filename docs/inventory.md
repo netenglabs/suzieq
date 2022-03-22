@@ -41,7 +41,7 @@ devices:
   devtype: eos
 
 - name: devices-using-rest
-  transport: rest
+  transport: https
 
 auths:
 - name: credentials-from-file-0
@@ -214,6 +214,8 @@ For example, if a set of devices is only reachable with a ssh jump, in `devices`
   jump-host-key-file: /path/to/jump/key
   port: 22
 ```
+
+The supported transport methods are `https` and `ssh`.
 
 In case you want to ignore the check of the device's key against the `known_hosts` file you can set:
 
