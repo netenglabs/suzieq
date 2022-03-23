@@ -20,6 +20,7 @@ from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
 from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.poller.worker.services.service_manager import ServiceManager
+from suzieq.shared.context import SqContext
 from suzieq.shared.schema import Schema
 from suzieq.shared.utils import load_sq_config
 from suzieq.sqobjects import get_sqobject, get_tables
@@ -159,7 +160,7 @@ def create_context():
     '''Create a SqContext object'''
     config = load_sq_config(config_file=create_dummy_config_file())
     context = NubiaSuzieqContext()
-    context.ctxt.cfg = config
+    context.ctxt = SqContext(cfg=config)
     context.ctxt.schemas = Schema(config["schema-directory"])
     return context
 
