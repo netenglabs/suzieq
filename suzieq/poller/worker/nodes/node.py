@@ -1263,13 +1263,13 @@ class IosXENode(Node):
             self.ssh_ready.release()
         return
 
-    async def wait_for_prompt(self, timeout: int = 10) -> str:
+    async def wait_for_prompt(self, timeout: int = 90) -> str:
         """Wait for specified prompt upto timeout duration
 
         Since we're waiting for a prompt, we want to not wait forever.
         asyncssh's readuntil doesn't take a timeout parameter as of
         2.9.0. So, instead of adding a asyncio.waitfor everywhere, we
-        just call this routine.
+        just call this routine. By default, we wait for 90s
 
         Args:
             timeout[int]: How long to wait in secs
