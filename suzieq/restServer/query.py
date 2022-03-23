@@ -808,7 +808,9 @@ def run_command_verb(command, verb, command_args, verb_args,
     """
     svc = get_svc(command)
     try:
-        svc_inst = svc(**command_args, config_file=app.cfg_file)
+        svc_inst = svc(**command_args,
+                       config_file=app.cfg_file,
+                       engine_name="pandas")
         df = getattr(svc_inst, verb)(**verb_args)
 
     except AttributeError as err:
