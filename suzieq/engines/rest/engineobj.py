@@ -15,6 +15,10 @@ class SqRestEngine(SqEngineObj):
         self.ctxt = baseobj.ctxt
         self.iobj = baseobj
 
+    @property
+    def name(self):
+        return 'rest'
+
     def table_name(self):
         '''table name, retrieved from sqobject
 

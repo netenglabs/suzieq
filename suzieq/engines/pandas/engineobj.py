@@ -41,19 +41,23 @@ class SqPandasEngine(SqEngineObj):
         return self.ctxt.schemas
 
     @property
-    def schema(self) -> SchemaForTable:
-        '''Return schema for this table'''
-        return self.iobj.schema
-
-    @property
     def cfg(self):
         '''Return config dicttionary'''
         return self.iobj.cfg
 
     @property
+    def name(self):
+        return 'pandas'
+
+    @property
     def table(self):
         '''Table name'''
         return self.iobj.table
+
+    @property
+    def schema(self) -> SchemaForTable:
+        '''Return schema for this table'''
+        return self.iobj.schema
 
     def _get_ipvers(self, value: str) -> int:
         """Return the IP version in use"""
@@ -486,6 +490,7 @@ class SqPandasEngine(SqEngineObj):
         """
 
         return get_sqobject(table)(
+            engine_name=self.iobj.engine.name,
             context=self.ctxt,
             start_time=start_time or self.iobj.start_time,
             end_time=end_time or self.iobj.end_time,

@@ -54,13 +54,9 @@ class SqObject(SqPlugin):
         self.columns = columns or ['default']
         self._unique_def_column = ['hostname']
 
-        if engine_name and engine_name != '':
-            self.engine = get_sqengine(engine_name, self._table)(self)
-        elif self.ctxt.engine:
-            self.engine = get_sqengine(self.ctxt.engine, self._table)(self)
-
-        if not self.engine:
-            raise ValueError('Unknown analysis engine')
+        # Init the engine
+        engine_to_use = engine_name if engine_name else self.ctxt.engine
+        self.engine = get_sqengine(engine_to_use, self._table)(self)
 
         self.summarize_df = pd.DataFrame()
 
