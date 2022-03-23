@@ -8,6 +8,12 @@ class SqEngineObj(SqPlugin, ABC):
     def __init__(self):
         pass
 
+    @property
+    @abstractmethod
+    def name(self):
+        '''Get the name of the engine obj'''
+        raise NotImplementedError
+
     @abstractmethod
     def get(self, **kwargs):
         '''Retrieve the data given the constraints provided for the table'''
