@@ -258,24 +258,24 @@ tests:
 - command: ospf top --what=numChanges --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: ospf top nxos
-  output: '[{"namespace": "nxos", "hostname": "leaf03", "vrf": "default", "ifname":
-    "Ethernet1/2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState": "up",
-    "nbrCount": 1.0, "adjState": "full", "peerIP": "10.0.0.22", "numChanges": 7.0,
-    "lastChangeTime": 1619045052091, "timestamp": 1619275260398}, {"namespace": "nxos",
-    "hostname": "leaf03", "vrf": "default", "ifname": "Ethernet1/1", "peerHostname":
-    "spine01", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1.0, "adjState": "full",
-    "peerIP": "10.0.0.21", "numChanges": 7.0, "lastChangeTime": 1619045052091, "timestamp":
-    1619275260398}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
-    "ifname": "Ethernet1/3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState":
-    "up", "nbrCount": 1.0, "adjState": "full", "peerIP": "10.0.0.13", "numChanges":
-    7.0, "lastChangeTime": 1619014447056, "timestamp": 1619275260613}, {"namespace":
-    "nxos", "hostname": "spine02", "vrf": "default", "ifname": "Ethernet1/2", "peerHostname":
-    "leaf02", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1.0, "adjState": "full",
-    "peerIP": "10.0.0.12", "numChanges": 7.0, "lastChangeTime": 1619014447056, "timestamp":
+  output: '[{"namespace": "nxos", "hostname": "spine02", "vrf": "default", "ifname":
+    "Ethernet1/3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount":
+    1.0, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 7.0, "lastChangeTime":
+    1619014447056, "timestamp": 1619275260613}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "ifname": "Ethernet1/2", "peerHostname": "leaf02",
+    "area": "0.0.0.0", "ifState": "up", "nbrCount": 1.0, "adjState": "full", "peerIP":
+    "10.0.0.12", "numChanges": 7.0, "lastChangeTime": 1619014447056, "timestamp":
     1619275260613}, {"namespace": "nxos", "hostname": "spine02", "vrf": "default",
     "ifname": "Ethernet1/1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState":
     "up", "nbrCount": 1.0, "adjState": "full", "peerIP": "10.0.0.11", "numChanges":
-    7.0, "lastChangeTime": 1619014447056, "timestamp": 1619275260613}]'
+    7.0, "lastChangeTime": 1619014447056, "timestamp": 1619275260613}, {"namespace":
+    "nxos", "hostname": "spine01", "vrf": "default", "ifname": "Ethernet1/3", "peerHostname":
+    "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount": 1.0, "adjState": "full",
+    "peerIP": "10.0.0.13", "numChanges": 7.0, "lastChangeTime": 1619014444515, "timestamp":
+    1619275262040}, {"namespace": "nxos", "hostname": "leaf03", "vrf": "default",
+    "ifname": "Ethernet1/2", "peerHostname": "spine02", "area": "0.0.0.0", "ifState":
+    "up", "nbrCount": 1.0, "adjState": "full", "peerIP": "10.0.0.22", "numChanges":
+    7.0, "lastChangeTime": 1619045052091, "timestamp": 1619275260398}]'
 - command: ospf show --ifname=Ethernet1/2 --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: ospf show nxos filter

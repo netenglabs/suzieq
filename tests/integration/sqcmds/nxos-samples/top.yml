@@ -65,24 +65,24 @@ tests:
 - command: interface top --what=statusChangeTimestamp --format=json --namespace='nxos'
   data-directory: tests/data/parquet/
   marks: interface top nxos
-  output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "gr-0/0/0", "state":
-    "up", "adminState": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master": "",
+  output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "vtep", "state":
+    "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "",
     "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1619275258985,
     "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "lo0.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536,
-    "vlan": 0, "master": "", "ipAddressList": ["10.0.0.41/32"], "ip6AddressList":
-    ["fe80::205:860f:fc71:3c00/128"], "statusChangeTimestamp": 1619275258985, "timestamp":
-    1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "vtep",
-    "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1619275258985,
-    "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "bme0.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1986,
-    "vlan": 0, "master": "", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2", "128.0.0.16/2",
-    "128.0.0.63/2"], "ip6AddressList": [], "statusChangeTimestamp": 1619275258985,
-    "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "jsrv.1", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514,
-    "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
-    [], "statusChangeTimestamp": 1619275258985, "timestamp": 1619275258985}]'
+    "vme", "state": "down", "adminState": "up", "type": "mgmt-vlan", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1619275258985, "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
+    "dcedge01", "ifname": "lo0.16385", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "statusChangeTimestamp": 1619275258985, "timestamp": 1619275258985},
+    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "lo0.0", "state": "up",
+    "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.41/32"], "ip6AddressList": ["fe80::205:860f:fc71:3c00/128"],
+    "statusChangeTimestamp": 1619275258985, "timestamp": 1619275258985}, {"namespace":
+    "nxos", "hostname": "dcedge01", "ifname": "lo0", "state": "up", "adminState":
+    "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "statusChangeTimestamp": 1619275258985, "timestamp":
+    1619275258985}]'
 - command: ospf top --what=lastChangeTime --format=json --namespace='nxos'
   data-directory: tests/data/parquet/
   marks: ospf top nxos
@@ -117,33 +117,22 @@ tests:
     "10.0.0.14", "10.0.0.31", "10.0.0.32"], "oifs": ["Ethernet1/1", "Ethernet1/2",
     "Ethernet1/3", "Ethernet1/4", "Ethernet1/5", "Ethernet1/6"], "protocol": "ospf",
     "source": "", "preference": 110, "ipvers": 4, "action": "forward", "numNexthops":
-    6, "timestamp": 1619275257467}, {"namespace": "nxos", "hostname": "firewall01",
-    "vrf": "default", "prefix": "169.254.127.2/31", "nexthopIps": ["169.254.253.9",
-    "169.254.254.9"], "oifs": ["eth2.4", "eth1.4"], "protocol": "bgp", "source": "10.0.0.200",
-    "preference": 20, "ipvers": 4, "action": "forward", "numNexthops": 2, "timestamp":
-    1619275256109}, {"namespace": "nxos", "hostname": "firewall01", "vrf": "default",
-    "prefix": "169.254.127.0/31", "nexthopIps": ["169.254.253.9", "169.254.254.9"],
-    "oifs": ["eth2.4", "eth1.4"], "protocol": "bgp", "source": "10.0.0.200", "preference":
-    20, "ipvers": 4, "action": "forward", "numNexthops": 2, "timestamp": 1619275256109},
-    {"namespace": "nxos", "hostname": "firewall01", "vrf": "default", "prefix": "169.254.0.0/24",
-    "nexthopIps": ["169.254.253.9", "169.254.254.9"], "oifs": ["eth2.4", "eth1.4"],
-    "protocol": "bgp", "source": "10.0.0.200", "preference": 20, "ipvers": 4, "action":
-    "forward", "numNexthops": 2, "timestamp": 1619275256109}]'
+    6, "timestamp": 1619275257467}, {"namespace": "nxos", "hostname": "spine02", "vrf":
+    "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22", "10.0.0.22"],
+    "oifs": ["Lo0", "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "numNexthops": 2, "timestamp": 1619275257123}, {"namespace":
+    "nxos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
+    ["10.0.0.13", "10.0.0.14"], "oifs": ["Ethernet1/3", "Ethernet1/4"], "protocol":
+    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "numNexthops":
+    2, "timestamp": 1619275257123}, {"namespace": "nxos", "hostname": "spine02", "vrf":
+    "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"],
+    "oifs": ["Ethernet1/1", "Ethernet1/2"], "protocol": "ospf", "source": "", "preference":
+    110, "ipvers": 4, "action": "forward", "numNexthops": 2, "timestamp": 1619275257123}]'
 - command: mac top --what=moveCount --format=json --namespace='nxos'
   data-directory: tests/data/parquet/
+  error:
+    error: '[{"error": "ERROR: ''mackey''"}]'
   marks: mac top nxos
-  output: '[{"namespace": "nxos", "hostname": "server101", "vlan": 0, "macaddr": "33:33:00:00:00:01",
-    "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount":
-    0, "timestamp": 1619275256085}, {"namespace": "nxos", "hostname": "server102",
-    "vlan": 0, "macaddr": "01:00:5e:00:00:01", "oif": "eth2", "remoteVtepIp": "",
-    "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1619275256085}, {"namespace":
-    "nxos", "hostname": "server102", "vlan": 0, "macaddr": "01:80:c2:00:00:02", "oif":
-    "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp":
-    1619275256085}, {"namespace": "nxos", "hostname": "server102", "vlan": 0, "macaddr":
-    "01:80:c2:00:00:00", "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
-    "moveCount": 0, "timestamp": 1619275256085}, {"namespace": "nxos", "hostname":
-    "server102", "vlan": 0, "macaddr": "01:80:c2:00:00:03", "oif": "eth2", "remoteVtepIp":
-    "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1619275256085}]'
 - command: route top --what=prefixlen --format=json --namespace='nxos'
   data-directory: tests/data/parquet/
   marks: route top nxos
@@ -154,13 +143,13 @@ tests:
     "prefix": "fe80::205:860f:fc71:3c00/128", "nexthopIps": [], "oifs": ["lo0.0"],
     "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action": "forward",
     "prefixlen": 128, "timestamp": 1619275257671}, {"namespace": "nxos", "hostname":
-    "server101", "vrf": "default", "prefix": "10.255.2.1/32", "nexthopIps": [""],
-    "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.204", "preference":
-    20, "ipvers": 4, "action": "forward", "prefixlen": 32, "timestamp": 1619275256085},
-    {"namespace": "nxos", "hostname": "server102", "vrf": "default", "prefix": "10.255.2.1/32",
-    "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp", "source": "10.255.2.39",
-    "preference": 20, "ipvers": 4, "action": "forward", "prefixlen": 32, "timestamp":
-    1619275256085}, {"namespace": "nxos", "hostname": "server301", "vrf": "default",
-    "prefix": "10.255.2.1/32", "nexthopIps": [""], "oifs": ["eth0"], "protocol": "dhcp",
-    "source": "10.255.2.140", "preference": 20, "ipvers": 4, "action": "forward",
-    "prefixlen": 32, "timestamp": 1619275256093}]'
+    "spine02", "vrf": "management", "prefix": "10.255.2.120/32", "nexthopIps": ["10.255.2.120"],
+    "oifs": ["mgmt0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "prefixlen": 32, "timestamp": 1619275257123}, {"namespace":
+    "nxos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
+    ["10.0.0.32"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source": "", "preference":
+    110, "ipvers": 4, "action": "forward", "prefixlen": 32, "timestamp": 1619275257123},
+    {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.31/32",
+    "nexthopIps": ["10.0.0.31"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source":
+    "", "preference": 110, "ipvers": 4, "action": "forward", "prefixlen": 32, "timestamp":
+    1619275257123}]'
