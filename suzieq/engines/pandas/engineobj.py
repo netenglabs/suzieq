@@ -458,12 +458,10 @@ class SqPandasEngine(SqEngineObj):
         if df.empty or ('error' in df.columns):
             return df
 
-        if reverse:
-            return df.nsmallest(sqTopCount, columns=what, keep="all") \
-                     .head(sqTopCount)
-        else:
-            return df.nlargest(sqTopCount, columns=what, keep="all") \
-                     .head(sqTopCount)
+        columns_by = [what] + self.schema.key_fields()
+
+        return df.sort_values(by=columns_by, ascending=reverse) \
+                 .head(sqTopCount)
 
     def lpm(self, **kwargs):
         '''Default implementation to return not supported'''
