@@ -41,7 +41,7 @@ class LldpObj(SqPandasEngine):
 
         macdf = df.query('subtype.isin(["", "mac address"])')
         if not macdf.empty:
-            macs = df.peerMacaddr.unique().tolist()
+            macs = macdf.peerMacaddr.unique().tolist()
             addrdf = self._get_table_sqobj('address').get(
                 namespace=namespace, address=macs,
                 columns=['namespace', 'hostname', 'ifname', 'macaddr'])
