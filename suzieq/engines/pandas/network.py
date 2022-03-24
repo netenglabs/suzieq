@@ -56,7 +56,7 @@ class NetworkObj(SqPandasEngine):
         if pollerdf.empty:
             return pd.DataFrame()
 
-        pollerdf = pollerdf.merge(devdf, on=['namespace', 'hostname'])
+        pollerdf = devdf.merge(pollerdf, on=['namespace', 'hostname'])
         nsgrp = pollerdf.groupby(by=['namespace'])
         pollerns = sorted(pollerdf.namespace.unique().tolist())
         newdf = pd.DataFrame({
