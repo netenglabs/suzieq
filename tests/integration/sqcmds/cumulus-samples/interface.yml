@@ -2255,16 +2255,16 @@ tests:
     "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond", "mtu":
     9000, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
     "statusChangeTimestamp": 1616677646390, "timestamp": 1616681582391}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf03", "ifname": "swp6", "state": "up", "adminState":
-    "up", "type": "bond_slave", "mtu": 9000, "vlan": 0, "master": "bond02", "ipAddressList":
+    "ospf-ibgp", "hostname": "leaf04", "ifname": "bond02", "state": "up", "adminState":
+    "up", "type": "bond", "mtu": 9000, "vlan": 0, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "statusChangeTimestamp": 1616677646340, "timestamp":
-    1616681582391}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "ifname": "bond02",
-    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 0, "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
-    1616677646340, "timestamp": 1616681582523}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf03", "ifname": "swp5", "state": "up", "adminState": "up", "type": "bond_slave",
-    "mtu": 9000, "vlan": 0, "master": "bond01", "ipAddressList": [], "ip6AddressList":
-    [], "statusChangeTimestamp": 1616677646330, "timestamp": 1616681582391}]'
+    1616681582523}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp6",
+    "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9000, "vlan":
+    0, "master": "bond02", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1616677646340, "timestamp": 1616681582391}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf04", "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond",
+    "mtu": 9000, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "statusChangeTimestamp": 1616677646330, "timestamp": 1616681582523}]'
 - command: interface assert --result=pass --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/

@@ -2242,24 +2242,24 @@ tests:
 - command: interface top --what=statusChangeTimestamp --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: interface top nxos
-  output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "gr-0/0/0", "state":
-    "up", "adminState": "up", "type": "gre", "mtu": 65536, "vlan": 0, "master": "",
+  output: '[{"namespace": "nxos", "hostname": "dcedge01", "ifname": "vtep", "state":
+    "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "",
     "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1619275258985,
     "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "lo0.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536,
-    "vlan": 0, "master": "", "ipAddressList": ["10.0.0.41/32"], "ip6AddressList":
-    ["fe80::205:860f:fc71:3c00/128"], "statusChangeTimestamp": 1619275258985, "timestamp":
-    1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname": "vtep",
-    "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master":
-    "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1619275258985,
-    "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "bme0.0", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1986,
-    "vlan": 0, "master": "", "ipAddressList": ["128.0.0.1/2", "128.0.0.4/2", "128.0.0.16/2",
-    "128.0.0.63/2"], "ip6AddressList": [], "statusChangeTimestamp": 1619275258985,
-    "timestamp": 1619275258985}, {"namespace": "nxos", "hostname": "dcedge01", "ifname":
-    "jsrv.1", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 1514,
-    "vlan": 1, "master": "", "ipAddressList": ["128.0.0.127/2"], "ip6AddressList":
-    [], "statusChangeTimestamp": 1619275258985, "timestamp": 1619275258985}]'
+    "vme", "state": "down", "adminState": "up", "type": "mgmt-vlan", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1619275258985, "timestamp": 1619275258985}, {"namespace": "nxos", "hostname":
+    "dcedge01", "ifname": "lo0.16385", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 65536, "vlan": 16385, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "statusChangeTimestamp": 1619275258985, "timestamp": 1619275258985},
+    {"namespace": "nxos", "hostname": "dcedge01", "ifname": "lo0.0", "state": "up",
+    "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.41/32"], "ip6AddressList": ["fe80::205:860f:fc71:3c00/128"],
+    "statusChangeTimestamp": 1619275258985, "timestamp": 1619275258985}, {"namespace":
+    "nxos", "hostname": "dcedge01", "ifname": "lo0", "state": "up", "adminState":
+    "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "statusChangeTimestamp": 1619275258985, "timestamp":
+    1619275258985}]'
 - command: interface show --ifname="Ethernet1/1" --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: interface show nxos
