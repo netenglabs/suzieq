@@ -8,7 +8,7 @@ from suzieq.sqobjects import get_sqobject
 from suzieq.cli.sqcmds.command import SqCommand
 
 
-@command("interface", help="Act on Interface data", aliases=['interfaces'])
+@command("interface", help="Act on Interface data")
 @argument("ifname", description="interface name(s), space separated")
 @argument("type", description="interface type(s), space separated")
 @argument("vrf", description="VRF(s), space separated")

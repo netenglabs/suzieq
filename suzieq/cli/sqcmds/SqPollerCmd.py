@@ -5,7 +5,7 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.sqPoller import SqPollerObj
 
 
-@command("sqPoller", help="Act on SqPoller data", aliases=['sqpoller'])
+@command("sqPoller", help="Act on SqPoller data")
 @argument("service", description="Service(s), space separated")
 @argument("status", description="status of service to match",
           choices=["all", "pass", "fail"])

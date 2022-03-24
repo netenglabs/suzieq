@@ -5,7 +5,7 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.macs import MacsObj
 
 
-@command("mac", help="Act on MAC Table data", aliases=['macs'])
+@command("mac", help="Act on MAC Table data")
 @argument("vlan", description="VLAN(s). space separated")
 @argument("macaddr",
           description="MAC address(es), in quotes, space separated")

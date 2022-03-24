@@ -9,7 +9,7 @@ from suzieq.cli.sqcmds.command import SqCommand
 from suzieq.sqobjects.routes import RoutesObj
 
 
-@command("route", help="Act on Routes", aliases=['routes'])
+@command("route", help="Act on Routes")
 @argument("vrf", description="VRF(s), space separated")
 @argument("protocol", description="Routing protocol(s), space separated")
 @argument("prefix", description="Prefix(es), in quotes, space separated")
