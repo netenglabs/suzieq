@@ -54,28 +54,10 @@ class SqObject(SqPlugin):
         self.columns = columns or ['default']
         self._unique_def_column = ['hostname']
 
-        cfg_engine = self.ctxt.cfg.get('ux', {}).get('engine', 'pandas')
-
-        if not engine_name:
-            engine_name = cfg_engine
-
-        self.ctxt.engine = get_sqengine(cfg_engine, self._table)(self)
-
-        if engine_name == 'rest':
-            # Initialize the parameters needed for REST
-            restcfg = self.ctxt.cfg.get('rest', {})
-            self.ctxt.rest_server_ip = restcfg.get('address', '127.0.0.1')
-            self.ctxt.rest_server_port = restcfg.get('port', '8000')
-            self.ctxt.rest_api_key = restcfg.get('API_KEY', '')
-            if not self.ctxt.rest_api_key:
-                raise ValueError('Missing API_KEY value to use REST engine.'
-                                 ' Provide this in the config file')
-            if restcfg.get('no-https', False):
-                self.ctxt.rest_transport = 'http'
-            else:
-                self.ctxt.rest_transport = 'https'
-
-        self.engine = self.ctxt.engine
+        if engine_name and engine_name != '':
+            self.engine = get_sqengine(engine_name, self._table)(self)
+        elif self.ctxt.engine:
+            self.engine = get_sqengine(self.ctxt.engine, self._table)(self)
 
         if not self.engine:
             raise ValueError('Unknown analysis engine')
