@@ -310,7 +310,9 @@ class OspfObj(SqPandasEngine):
             return self._create_aver_result([pasv_df, ifdown_df, failed_df],
                                             result)
 
-        peer_df["assertReason"] = [[] for _ in range(len(peer_df))]
+        peer_df = peer_df.rename(columns={
+            'assertReason_x': 'assertReason'
+        }).drop(columns=['assertReason_y'])
 
         # Now start comparing the various parameters
         peer_df["assertReason"] += peer_df.apply(
