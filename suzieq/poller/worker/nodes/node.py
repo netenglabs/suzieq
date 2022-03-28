@@ -118,6 +118,7 @@ class Node:
         self.sigend = False
         self.api_key = None
         self._stdin = self._stdout = None
+        self._retry = True      # set to False if authentication fails
 
         self.address = kwargs["address"]
         self.hostname = kwargs["address"]  # default till we get hostname
@@ -241,6 +242,7 @@ class Node:
 
         self._conn = None
         self._tunnel = None
+        self._stdin = self._stdout = self._stderr = None
 
     async def _terminate(self):
         self.logger.warning(
@@ -334,9 +336,9 @@ class Node:
         return options
 
     async def _init_ssh(self, init_boot_time=True, rel_lock=True) -> None:
-        await self.ssh_ready.acquire()
-        if not self._conn:
+        if self._retry and not self._conn:
 
+            await self.ssh_ready.acquire()
             options = self._init_ssh_options()
             if self.jump_host and not self._tunnel:
                 await self._init_jump_host_connection(options)
@@ -372,6 +374,12 @@ class Node:
                         'host key is unknown. If you do not need to verify '
                         'the host identity, add "ignore-known-hosts: True" in '
                         'the device section of the inventory')
+                elif isinstance(e, asyncssh.misc.PermissionDenied):
+                    self.logger.error(
+                        f'Authentication failed to {self.address}. '
+                        'Not retrying to avoid locking out user. Please '
+                        'restart poller with proper authentication')
+                    self._retry = False
                 else:
                     self.logger.error('Unable to connect to '
                                       f'{self.address}:{self.port}, {e}')
@@ -737,8 +745,8 @@ class Node:
                 if self.sigend:
                     await self._terminate()
                     return
-                result.append(self._create_error(cmd))
                 self.current_exception = e
+                result.append(self._create_error(cmd))
                 if not isinstance(e, asyncio.TimeoutError):
                     self.logger.error(
                         "%s output for %s failed due to %s", cmd,
@@ -1124,6 +1132,10 @@ class IosXRNode(Node):
         '''
         backoff_period = 1
         while not self._conn:
+
+            if not self._retry:
+                break
+
             await super()._init_ssh(init_boot_time=False, rel_lock=False)
 
             if self._conn:
@@ -1144,8 +1156,8 @@ class IosXRNode(Node):
                 self._conn = None
                 return
 
-        if not self.hostname:
-            await self.init_boot_time()
+            if not self.hostname:
+                await self.init_boot_time()
 
     async def init_boot_time(self):
         """Fill in the boot time of the node by running requisite cmd"""
@@ -1206,6 +1218,9 @@ class IosXENode(Node):
         backoff_period = 1
         self.WAITFOR = r'.*[>#]\s*$'
 
+        if not self._retry:
+            return
+
         while not self._conn:
             await super()._init_ssh(init_boot_time=False, rel_lock=False)
 
@@ -1229,20 +1244,21 @@ class IosXENode(Node):
                     self.logger.info(
                         f'Privilege escalation required for {self.hostname}')
                     self._stdin.write('enable\n')
-                    output = await self.wait_for_prompt()
+                    output = await self.wait_for_prompt(r'Password:\s*')
                     if self.enable_password:
                         self._stdin.write(self.enable_password + '\n')
                     else:
                         self._stdin.write(self.password + '\n')
 
                     output = await self.wait_for_prompt()
-                    if (output in ['timeout', 'Password:'] or
+                    if (output in ['suzieq timeout', 'Password:'] or
                             output.strip().endswith('>')):
                         self.logger.error(
                             f'Privilege escalation failed for {self.hostname}'
                             ', Aborting connection')
-                        await self._conn.terminate()
+                        await self._close_connection()
                         self._conn = None
+                        self._retry = False
                         if rel_lock:
                             self.ssh_ready.release()
                         return
@@ -1251,19 +1267,23 @@ class IosXENode(Node):
                             'Privilege escalation succeeded for '
                             f'{self.hostname}')
             except Exception:
-                self._conn = None
+                self._conn = self._stdin = None
+                if rel_lock:
+                    self.ssh_ready.release()
                 return
 
-        # Set the terminal length to 0 to avoid paging
-        self._stdin.write('terminal length 0\n')
-        output = await self._stdout.readuntil(self.WAITFOR)
-        if not self.hostname:
-            await self.init_boot_time()
+            # Set the terminal length to 0 to avoid paging
+            self._stdin.write('terminal length 0\n')
+            output = await self._stdout.readuntil(self.WAITFOR)
+            if not self.hostname:
+                await self.init_boot_time()
+
         if rel_lock:
             self.ssh_ready.release()
         return
 
-    async def wait_for_prompt(self, timeout: int = 90) -> str:
+    async def wait_for_prompt(self, prompt: str = None,
+                              timeout: int = 90) -> str:
         """Wait for specified prompt upto timeout duration
 
         Since we're waiting for a prompt, we want to not wait forever.
@@ -1272,15 +1292,19 @@ class IosXENode(Node):
         just call this routine. By default, we wait for 90s
 
         Args:
+            prompt[str]: The prompt string to wait for
             timeout[int]: How long to wait in secs
         Returns:
             the output data or 'timeout'
         """
-        coro = self._stdout.readuntil(self.WAITFOR)
+        if prompt is None:
+            prompt = self.WAITFOR
+        coro = self._stdout.readuntil(prompt)
         try:
             output = await asyncio.wait_for(coro, timeout=timeout)
             return output
         except asyncio.TimeoutError:
+            self.current_exception = asyncio.TimeoutError
             self.logger.error(f'{self.address}.{self.port} '
                               'Timed out waiting for expected prompt')
             # Return something that won't ever be in real output
@@ -1318,12 +1342,14 @@ class IosXENode(Node):
         result = []
         if cmd_list is None:
             await service_callback({}, cb_token)
+            return
 
-        if not self._stdin:
+        if not self._conn or not self._stdin:
             await self._init_ssh()
 
         if not self._stdin:
             self.logger.error(f'Not connected to {self.address}"{self.port}')
+            await service_callback({}, cb_token)
             return
 
         timeout = timeout or self.cmd_timeout
@@ -1333,9 +1359,10 @@ class IosXENode(Node):
                     await asyncio.sleep(IOS_SLEEP_BET_CMDS)
                 self._stdin.write(cmd + '\n')
                 output = await self.wait_for_prompt()
-                if ('Invalid input detected' in output or
-                        'suzieq timeout' in output):
+                if 'Invalid input detected' in output:
                     status = -1
+                elif 'suzieq timeout' in output:
+                    status = HTTPStatus.REQUEST_TIMEOUT
                 else:
                     status = 0
                 if isinstance(cb_token, RsltToken):
