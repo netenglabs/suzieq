@@ -49,10 +49,14 @@ poller:
   #   policy: sequential
 
 coalescer:
-  # valid suffixes are h for hour, d for day and w for week
-  # 1h is 1 hour, 2w is 2 weeks and so on. y for year and m for month
-  # don't make sense because those are not fixed units. We don't yet support
-  # periods less than an hour.
+  # The coalescer has the role to group the single parquet files into a bigger
+  # one which represent a snapshot of the entire network, which is performed at
+  # every coalescing period. This value can be expressed using the following
+  # notation <value><m,h,d,w>, where:
+  # m: minutes (i.e. 30m )
+  # h: hours (i.e. 12h )
+  # d: days (i.e. 1d )
+  # w: weeks (i.e. 3w )
   period: 1h
   # Comment the next line if you don't want the archive directory. This dir is
   # purely to save the uncoalesced data in raw format to avoid data loss in case
