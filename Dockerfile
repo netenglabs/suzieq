@@ -1,32 +1,26 @@
 ARG version
 
-FROM suzieq-base:$version AS compiler
+FROM suzieq-base:$version
 
 ARG version
+ARG username=suzieq
+ARG user_id=1000
 
-RUN mkdir -p /suzieq/
-WORKDIR /suzieq
-
+RUN useradd $username -u $user_id --create-home --user-group
 
 COPY ./dist/suzieq-$version-py3-none-any.whl  /tmp/
-RUN pip install /tmp//suzieq-$version-py3-none-any.whl
-COPY suzieq/config/etc/suzieq-cfg.yml /root/.suzieq/suzieq-cfg.yml
-RUN sed -i 's/127.0.0.1/0.0.0.0/' /root/.suzieq/suzieq-cfg.yml
 
-# Certificates and such for REST server
-#COPY logo-small.jpg /suzieq
-
-# Copy parquet files for demo
-# COPY ./parquet /suzieq/parquet
-
-WORKDIR /suzieq
-
+RUN pip install --upgrade pip
+RUN pip install /tmp/suzieq-$version-py3-none-any.whl
+RUN rm /tmp/suzieq-$version-py3-none-any.whl
+COPY --chown=$username suzieq/config/etc/suzieq-cfg.yml /home/$username/.suzieq/suzieq-cfg.yml
+RUN sed -i 's/127.0.0.1/0.0.0.0/' /home/$username/.suzieq/suzieq-cfg.yml
+ 
 ENV PATH=/root/.local/bin:$PATH:/root/.local/lib/python3.7/site-packages/suzieq/cli/:/root/.local/lib/python3.7/site-packages/suzieq/poller/:/root/.local/lib/python3.7/site-packages/suzieq/restServer
 
-#ENV PYTHONPATH=/src/python-nubia
+USER $username
+WORKDIR /home/$username
 ENTRYPOINT ["/bin/bash"]
-
-# USER 1001
 
 LABEL name=suzieq
 LABEL version=$version
