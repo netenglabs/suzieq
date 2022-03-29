@@ -1,6 +1,8 @@
 FROM netenglabs/suzieq:latest
 
-COPY ./parquet /suzieq/parquet
+ARG username=suzieq
+
+COPY ./tests/data/parquet /home/$username/parquet
 
 LABEL name=suzieq-demo
 LABEL version=$version
