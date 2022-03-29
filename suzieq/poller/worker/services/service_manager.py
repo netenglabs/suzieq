@@ -137,13 +137,17 @@ class ServiceManager:
         Returns:
             List[str]: the list of services to executed in the poller
         """
+
+        BLACKLIST_SERVICES = ['ifCounters', 'topmem', 'topcpu']
+
         if not os.path.isdir(service_directory):
             raise SqPollerConfError(
                 'The service directory provided is not a directory'
             )
 
         svcs = list(Path(service_directory).glob('*.yml'))
-        allsvcs = [os.path.basename(x).split('.')[0] for x in svcs]
+        allsvcs = [os.path.basename(x).split('.')[0] for x in svcs
+                   if x not in BLACKLIST_SERVICES]
         svclist = None
 
         if service_only:
