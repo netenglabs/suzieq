@@ -336,8 +336,8 @@ class Node:
         return options
 
     async def _init_ssh(self, init_boot_time=True, rel_lock=True) -> None:
-        if self._retry and not self._conn:
 
+        if self._retry and not self._conn:
             await self.ssh_ready.acquire()
             options = self._init_ssh_options()
             if self.jump_host and not self._tunnel:
@@ -1266,7 +1266,10 @@ class IosXENode(Node):
                         self.logger.info(
                             'Privilege escalation succeeded for '
                             f'{self.hostname}')
-            except Exception:
+            except Exception as e:
+                self.current_exception = e
+                self.logger.error('Unable to create persistent SSH session'
+                                  f' for {self.hostname} due to {str(e)}')
                 self._conn = self._stdin = None
                 if rel_lock:
                     self.ssh_ready.release()
@@ -1348,7 +1351,7 @@ class IosXENode(Node):
             await self._init_ssh()
 
         if not self._stdin:
-            self.logger.error(f'Not connected to {self.address}"{self.port}')
+            self.logger.error(f'Not connected to {self.address}:{self.port}')
             await service_callback({}, cb_token)
             return
 
