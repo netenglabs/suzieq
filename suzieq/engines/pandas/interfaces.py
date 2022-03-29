@@ -499,7 +499,11 @@ class InterfacesObj(SqPandasEngine):
             # TBD: SONIC support
             if not devdf.empty:
                 nos = devdf[(devdf.namespace == row.namespace) &
-                            (devdf.hostname == row.hostname)]['os'].tolist()[0]
+                            (devdf.hostname == row.hostname)]['os'].tolist()
+                if not nos:
+                    continue
+
+                nos = nos[0]
                 if any(x in nos for x in ['junos', 'panos']):
                     syntax = 'junos'
                 else:
