@@ -267,8 +267,7 @@ class BgpObj(SqPandasEngine):
 
             failed_df['assertReason'] += failed_df.apply(
                 lambda x: ["asn mismatch"]
-                if (x['peerHostname'] and ((x["asn"] != x["peerAsn_y"]) or
-                                           (x['asn_y'] != x['peerAsn'])))
+                if (x['peerHostname'] and (x["asn"] != x['peerAsn']))
                 else [], axis=1)
 
             failed_df['assertReason'] += failed_df.apply(
