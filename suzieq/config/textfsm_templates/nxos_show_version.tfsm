@@ -1,0 +1,29 @@
+Value Required version (\S+)
+Value model (\w+\s+\w+)
+Value architecture (.*)
+Value memory (\d+)
+Value serialNumber (\S+)
+Value kern_uptm_days (\d+)
+Value kern_uptm_hrs (\d+)
+Value kern_uptm_mins (\d+)
+Value kern_uptm_secs (\d+)
+Value reason (.*)
+Value hostname (\S+)
+
+Start
+  ^\s+(NXOS: version|system:\s+version)\s+${version}\s*$$
+  ^Hardware -> Hardware
+  
+Hardware
+  ^\s+cisco\s*${model}.*$$ 
+  ^\s*${architecture}\s+with\s+${memory}\s+kB.*$$
+  ^\s+Processor\s*[Bb]oard\s+ID\s+${serialNumber}
+  ^\s+Device\s+[Nn]ame:\s+${hostname}.*$$
+  ^Kernel\s+uptime\s+is\s+${kern_uptm_days}\s+day -> Continue
+  ^Kernel\s+uptime\s+is.* ${kern_uptm_hrs}\s+hour -> Continue
+  ^Kernel\s+uptime\s+is.* ${kern_uptm_mins}\s+minute -> Continue  
+  ^Kernel\s+uptime\s+is.* ${kern_uptm_secs}\s+second
+  ^Last\s+[rR]eset -> LastReset
+
+LastReset
+  ^\s+Reason:\s+${reason}
