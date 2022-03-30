@@ -92,25 +92,32 @@ apply:
     copy: junos-qfx
 
   nxos:
-    version: all
-    command:
-      - command: show ip arp detail vrf all | json native
-        normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_adj/ROW_adj/*?/[
-        "intf-out: oif",
-        "ip-addr-out: ipAddress",
-        "flags: flags",
-        "incomplete: state?|reachable",
-        "mac: macaddr"
-        ]'
+     - version: < 9.3.0
+       command:
+         - command: show ip arp detail vrf all
+           textfsm: textfsm_templates/nxos_show_ip_arp.tfsm
+         - command: show ipv6 neighbor detail
+           textfsm: textfsm_templates/nxos_show_ip_arp.tfsm
+           
+     - version: all
+       command:
+         - command: show ip arp detail vrf all | json native
+           normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_adj/ROW_adj/*?/[
+           "intf-out: oif",
+           "ip-addr-out: ipAddress",
+           "flags: flags",
+           "incomplete: state?|reachable",
+           "mac: macaddr?|"
+           ]'
 
-      - command: show ipv6 neighbor detail | json native
-        normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_afi/ROW_afi/*?/[
-        "intf-out: oif",
-        "ip-addr-out: ipAddress",
-        "flags: flags",
-        "incomplete: state?|reachable",
-        "mac: macaddr"
-        ]'
+         - command: show ipv6 neighbor detail | json native
+           normalize: 'TABLE_vrf/ROW_vrf/*:vrf-name-out:vrf|TABLE_afi/ROW_afi/*?/[
+           "intf-out: oif",
+           "ip-addr-out: ipAddress",
+           "flags: flags",
+           "incomplete: state?|reachable",
+           "mac: macaddr?|"
+           ]'
 
   panos:
     version: all

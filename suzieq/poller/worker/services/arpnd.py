@@ -64,12 +64,19 @@ class ArpndService(Service):
                 drop_indices.append(i)
                 continue
 
-            if entry['macaddr'] is None:
+            if 'state' not in entry:
+                # textfsm version handling
+                entry['state'] = 'reachable'
+
+            macaddr = entry.get('macaddr', '')
+            if macaddr:
+                macaddr = macaddr.lower()
+            if macaddr in ['', 'incomplete']:
                 entry['state'] = "failed"
                 entry['macaddr'] = '00:00:00:00:00:00'
             else:
                 entry['macaddr'] = convert_macaddr_format_to_colon(
-                    entry.get('macaddr', '0000.0000.0000'))
+                    macaddr or '0000.0000.0000')
 
         processed_data = np.delete(processed_data,
                                    drop_indices).tolist()
@@ -77,7 +84,10 @@ class ArpndService(Service):
 
     def _clean_common_ios_data(self, processed_data, _):
         for entry in processed_data:
-            if entry['macaddr'] is None:
+            macaddr = entry.get('macaddr', '')
+            if macaddr:
+                macaddr = macaddr.lower()
+            if macaddr in ['', 'incomplete']:
                 entry['state'] = "failed"
                 entry['macaddr'] = '00:00:00:00:00:00'
             else:
