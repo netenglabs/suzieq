@@ -19,7 +19,7 @@ This patch release for version 0.17.0 fixes a bunch of deployment issues that 0.
 * Bug fix to handle interface assert: Interface assert was incorrectly removing certain interfaces for interfaces associated with Junos-based devices.
 * Bug fix to set VLAN correctly for Junos-based devices: The poller incorrectly marked the VLAN as 16285 for interfaces such as lo0.16385. We now ensure that the VLAN is never > 4095, and set it to zero if it is.
 * Bug fix in filtering with remote DB: Namespace/hostname filters weren't working correctly when used with the remote DB.
-* Bug fix in passphrase keyword assumed and documented: The correct keyword is key-passphrase.
+* Bug fix in passphrase keyword assumed and documented: The correct keyword is key-passphras
 * Bug fix for jumphosts when jump host key was not specified
 * Added code to notify users with a proper message due to permission problems inside the container.
 * Updated documents to reflect the reality of 0.17.1.
