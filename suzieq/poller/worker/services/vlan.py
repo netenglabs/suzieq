@@ -1,5 +1,5 @@
 import numpy as np
-from suzieq.shared.utils import expand_ios_ifname
+from suzieq.shared.utils import expand_ios_ifname, expand_nxos_ifname
 from suzieq.poller.worker.services.service import Service
 
 
@@ -64,6 +64,19 @@ class VlanService(Service):
             if (entry['vlanName'].startswith('VLAN') or
                     entry['vlanName'] == "default"):
                 entry['vlanName'] = f'vlan{entry["vlan"]}'
+
+            if '_entryType' in entry:
+                # This is a textfsm parsed entry, the interfaces list needs to
+                # be massaged
+                iflist = entry.get('interfaces', [])
+                newlist = []
+                for ele in iflist:
+                    newlist.extend([expand_nxos_ifname(x)
+                                   for x in ele.split(', ')])
+
+                entry['interfaces'] = newlist
+                continue
+
             if isinstance(entry['interfaces'], str):
                 entry['interfaces'] = entry['interfaces'].split(',')
             else:
