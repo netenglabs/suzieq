@@ -14,11 +14,11 @@ class StaticModel(CredentialLoaderModel):
     """
     username: Optional[str]
     password: Optional[str]
-    ssh_passphrase: Optional[str] = Field(alias='ssh-passphrase')
+    key_passphrase: Optional[str] = Field(alias='key-passphrase')
     keyfile: Optional[str]
     enable_password: Optional[str] = Field(alias='enable-password')
 
-    @validator('password', 'ssh_passphrase', 'enable_password')
+    @validator('password', 'key_passphrase', 'enable_password')
     def validate_sens_field(cls, field):
         """Validate if the sensitive var was passed correctly
         """
@@ -52,9 +52,9 @@ class StaticLoader(CredentialLoader):
         """
         if not self._validate:
             # fix pydantic alias
-            init_data['ssh_passphrase'] = init_data.pop('ssh-passphrase', None)
             init_data['enable_password'] = \
                 init_data.pop('enable-password', None)
+            init_data['key_passphrase'] = init_data.pop('key-passphrase', None)
         super().init(init_data)
 
         if self._data.password == 'ask':
@@ -62,15 +62,6 @@ class StaticLoader(CredentialLoader):
                 self._data.password = get_sensitive_data(
                     self._data.password,
                     f'{self.name} Password to login to device: ')
-            except SensitiveLoadError as e:
-                raise InventorySourceError(f'{self.name} {e}')
-
-        if self._data.ssh_passphrase == 'ask':
-            try:
-                self._data.ssh_passphrase = get_sensitive_data(
-                    self._data.ssh_passphrase,
-                    f'{self.name} Passphrase to decode private key file: '
-                )
             except SensitiveLoadError as e:
                 raise InventorySourceError(f'{self.name} {e}')
 
@@ -83,6 +74,15 @@ class StaticLoader(CredentialLoader):
             except SensitiveLoadError as e:
                 raise InventorySourceError(f'{self.name} {e}')
 
+        if self._data.key_passphrase == 'ask':
+            try:
+                self._data.key_passphrase = get_sensitive_data(
+                    self._data.key_passphrase,
+                    f'{self.name} Passphrase to decode private key file: '
+                )
+            except SensitiveLoadError as e:
+                raise InventorySourceError(f'{self.name} {e}')
+
     def load(self, inventory: Dict[str, Dict]):
 
         for device in inventory.values():
@@ -91,7 +91,7 @@ class StaticLoader(CredentialLoader):
                 'password': device.get('password') or self._data.password,
                 'username': device.get('username') or self._data.username,
                 'passphrase': device.get('passphrase')
-                or self._data.ssh_passphrase,
+                or self._data.key_passphrase,
                 'enable_password': self._data.enable_password
             }
 
