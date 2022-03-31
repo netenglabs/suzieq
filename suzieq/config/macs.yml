@@ -65,16 +65,20 @@ apply:
     copy: junos-qfx
 
   nxos:
-    version: all
-    command: show mac address-table | json native
-    normalize: 'TABLE_mac_address/ROW_mac_address/*?/[
-    "disp_mac_addr: macaddr",
-    "disp_port: oif?|",
-    "disp_vlan: vlan?|0",
-    "disp_is_secure: isSecure?|",
-    "disp_type: flags",
-    "disp_is_static: _isStatic?|disabled",
-    ]'
+    - version: < 9.3.0
+      command: show mac address-table
+      textfsm: textfsm_templates/nxos_show_mac.tfsm
+
+    - version: all
+      command: show mac address-table | json native
+      normalize: 'TABLE_mac_address/ROW_mac_address/*?/[
+      "disp_mac_addr: macaddr",
+      "disp_port: oif?|",
+      "disp_vlan: vlan?|0",
+      "disp_is_secure: isSecure?|",
+      "disp_type: flags",
+      "disp_is_static: _isStatic?|disabled",
+      ]'
 
   eos:
     command:
