@@ -431,6 +431,8 @@ class Service(SqPlugin):
                             'textfsm', None)
                         entry_type = nfn.get('command', [])[elem_num].get(
                             '_entryType', None)
+                    else:
+                        entry_type = nfn.get('_entryType', None)
 
                     if not tfsm_template:
                         return result
