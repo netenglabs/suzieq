@@ -4,7 +4,8 @@ ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONPATH=/root/.local/lib
 
 RUN apt-get update && \
-    pip install --upgrade pip
+    python3 -m pip install--upgrade pip
 
 COPY build/requirements.txt /requirements.txt
-RUN pip install --disable-pip-version-check -r /requirements.txt
+RUN python3 -m pip install --disable-pip-version-check -r /requirements.txt
+

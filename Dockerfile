@@ -10,8 +10,8 @@ RUN useradd $username -u $user_id --create-home --user-group
 
 COPY ./dist/suzieq-$version-py3-none-any.whl  /tmp/
 
-RUN pip install --upgrade pip
-RUN pip install /tmp/suzieq-$version-py3-none-any.whl
+RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install /tmp/suzieq-$version-py3-none-any.whl
 RUN rm /tmp/suzieq-$version-py3-none-any.whl
 COPY --chown=$username suzieq/config/etc/suzieq-cfg.yml /home/$username/.suzieq/suzieq-cfg.yml
 RUN sed -i 's/127.0.0.1/0.0.0.0/' /home/$username/.suzieq/suzieq-cfg.yml
