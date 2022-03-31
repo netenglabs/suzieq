@@ -37,7 +37,7 @@ def test_load(data_path: Dict):
     init_data = {
         'name': 'n',
         'username': 'user-to-override',
-        'ssh-passphrase': 'plain:my-pass',
+        'key-passphrase': 'plain:my-pass',
         'password': 'plain:password',
         'keyfile': 'my/keyfile',
         'enable-password': 'my-password'
@@ -49,7 +49,7 @@ def test_load(data_path: Dict):
 
     # pylint: disable=protected-access
     assert sl._data.username == init_data['username']
-    assert sl._data.ssh_passphrase == init_data['ssh-passphrase'].split(':')[1]
+    assert sl._data.key_passphrase == init_data['key-passphrase'].split(':')[1]
     assert sl._data.password == init_data['password'].split(':')[1]
     assert sl._data.keyfile == init_data['keyfile']
     assert sl._data.enable_password == init_data['enable-password']
@@ -91,13 +91,13 @@ def test_variables_init(monkeypatch):
     # 'env' and 'plain' values
     init_data = {
         'name': 'n',
-        'ssh-passphrase': f'plain:{plain_passphrase}',
+        'key-passphrase': f'plain:{plain_passphrase}',
         'password': 'env:SUZIEQ_ENV_PASSWORD'
     }
     monkeypatch.setenv('SUZIEQ_ENV_PASSWORD', env_password)
     sl = StaticModel(**init_data)
 
-    assert sl.ssh_passphrase == plain_passphrase
+    assert sl.key_passphrase == plain_passphrase
     assert sl.password == env_password
 
     # 'ask' values
