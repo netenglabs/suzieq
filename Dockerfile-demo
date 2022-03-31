@@ -2,7 +2,7 @@ FROM netenglabs/suzieq:latest
 
 ARG username=suzieq
 
-COPY ./tests/data/parquet /home/$username/parquet
+COPY --chown=$username ./tests/data/parquet /home/$username/parquet
 
 LABEL name=suzieq-demo
 LABEL version=$version

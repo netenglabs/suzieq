@@ -15,6 +15,8 @@ RUN pip install /tmp/suzieq-$version-py3-none-any.whl
 RUN rm /tmp/suzieq-$version-py3-none-any.whl
 COPY --chown=$username suzieq/config/etc/suzieq-cfg.yml /home/$username/.suzieq/suzieq-cfg.yml
 RUN sed -i 's/127.0.0.1/0.0.0.0/' /home/$username/.suzieq/suzieq-cfg.yml
+RUN mkdir /home/$username/parquet 
+VOLUME [ "/home/$username/parquet" ]
  
 ENV PATH=/root/.local/bin:$PATH:/root/.local/lib/python3.7/site-packages/suzieq/cli/:/root/.local/lib/python3.7/site-packages/suzieq/poller/:/root/.local/lib/python3.7/site-packages/suzieq/restServer
 
