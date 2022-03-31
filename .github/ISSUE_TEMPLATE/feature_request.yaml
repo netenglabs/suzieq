@@ -1,0 +1,62 @@
+---
+name: ✨ Feature Request
+description: Suggest an idea for this project
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        **NOTE:** This form is only for submitting well-formed proposals to extend or modify
+        Suzieq in some way.
+  - type: input
+    attributes:
+      label: Suzieq version
+      description: What version of Suzieq are you currently running?
+      placeholder: 0.17.0
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Install Type
+      description: How are you running Suzieq
+      options:
+        - "container"
+        - "hand deployed python"
+  - type: dropdown
+    attributes:
+      label: Feature type
+      options:
+        - "New component"
+        - "Extend sq-poller"
+        - "sq-rest-server"
+        - "suzieq-gui"
+        - "other"
+        - "no clue"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Use case
+      description: >
+        Explain how adding this functionality would benefit Suzieq users. What need does it address?
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Proposed functionality/solution
+      description: A clear and concise description of what you want to happen.
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: External dependencies
+      description: >
+        List any new dependencies on external libraries or services that this new feature would
+        introduce. For example, does the proposal require the installation of a new Python package?
+        (Not all new features introduce new dependencies.)
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here.
+      value:  <!--- Replace with Additional Context -->
