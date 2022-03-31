@@ -1,16 +1,58 @@
-- namespace: eos
+---
+# SAMPLE ONLY!!!
+# Container will crash if it cannot
+sources:
+- name: netbox-instance-123
+  token: af8717c89ec0ff420c19d89e6c20646ad55dd54e
+  url: http://127.0.0.1:8000
+  tag: suzieq-demo
+  type: netbox
+  period: 3600
+
+- name: dc-02-suzieq-native
   hosts:
-    - url: https://vagrant@192.168.123.252 devtype=eos
-    - url: https://vagrant@192.168.123.213 devtype=eos
-    - url: https://vagrant@192.168.123.141 devtype=eos
-    - url: ssh://vagrant@192.168.123.232  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
-    - url: https://vagrant@192.168.123.164 devtype=eos
-    - url: ssh://vagrant@192.168.123.70  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server103/libvirt/private_key
-    - url: https://vagrant@192.168.123.78 devtype=eos
-    - url: ssh://vagrant@192.168.123.230  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
-    - url: ssh://vagrant@192.168.123.54  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
-    - url: ssh://vagrant@192.168.123.111  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server102/libvirt/private_key
-    - url: https://vagrant@192.168.123.163 devtype=eos
-    - url: https://vagrant@192.168.123.185 devtype=eos
-    - url: ssh://vagrant@192.168.123.7  keyfile=/home/ddutt/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/edge01/libvirt/private_key
-    - url: https://vagrant@192.168.123.123 devtype=eos
+  - url: ssh://vagrant@10.0.0.1:22 keyfile=/path/to/private_key
+  - url: ssh://vagrant@10.0.0.2:22 devtype=eos keyfile=/path/to/private_key
+
+- name: ansible-01
+  type: ansible
+  path: /path/to/ansible/list
+
+devices:
+- name: devices-with-jump-hosts
+  transport: ssh
+  jump-host: 127.0.0.1
+  jump-host-key-file: /path/to/jump/key
+  ignore-known-hosts: true
+  port: 22
+  devtype: eos
+
+- name: devices-using-rest
+  transport: https
+
+auths:
+- name: credentials-from-file-0
+  type: cred-file
+  path: /path/to/device/credentials.yaml
+
+- name: suzieq-user-01
+  username: suzieq
+  password: plain:pass
+
+- name: suzieq-user-02
+  username: suzieq
+  password: env:PASSWORD_ENV_VAR
+
+- name: suzieq-user-03
+  username: suzieq
+  password: ask
+
+- name: suzieq-user-04
+  key-passphrase: ask
+  keyfile: path/to/key
+
+namespaces:
+- name: testing
+  source: netbox-instance-123
+  device: devices-with-jump-hosts
+  auth: credentials-from-file-0
