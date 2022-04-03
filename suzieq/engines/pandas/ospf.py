@@ -425,12 +425,15 @@ class OspfObj(SqPandasEngine):
         if newdf.empty:
             return df
 
-        lldp_df = self._get_table_sqobj('lldp').get(
+        addr_df = self._get_table_sqobj('address').get(
             namespace=kwargs.get('namespace', []),
-            hostname=kwargs.get('hostname', []),
-            use_bond='True')
+            hostname=kwargs.get('hostname', []))
+        if not addr_df.empty:
+            addr_df = addr_df.query('ipAddressList.str.len() != 0')
+            addr_df = addr_df.explode('ipAddressList') \
+                .reset_index(drop=True)
 
-        if lldp_df.empty:
+        if addr_df.empty:
             # Try a match entirely within ospf, but we can't
             # get ifname effectively in cases of unnumbered
             newdf['matchIP'] = newdf.ipAddress.str.split('/').str[0]
@@ -448,21 +451,16 @@ class OspfObj(SqPandasEngine):
             if 'peerIfname' in columns:
                 newdf['peerIfname'] = ''
         else:
-            # In case of Junos, the OSPF interface name is a subif of
-            # the interface name. So, create a new column with the
-            # orignal interface name.
-            newdf['lldpIfname'] = newdf['ifname'].str.split('.').str[0]
-
+            addr_df['ipAddressList'] = addr_df.ipAddressList.str.split(
+                '/').str[0]
             newdf = newdf.merge(
-                lldp_df[['namespace', 'hostname', 'ifname',
-                         'peerHostname', 'peerIfname']],
-                left_on=['namespace', 'hostname', 'lldpIfname'],
-                right_on=['namespace', 'hostname', 'ifname'],
-                how='outer', suffixes=('', '_y')) \
-                .drop(columns=['ifname_y', 'lldpIfname', 'peerIfname']) \
-                .rename(columns={'peerIfname_y': 'peerIfname'}) \
-                .dropna(subset=['hostname', 'vrf', 'ifname'], how='any')\
-                .fillna('')
+                addr_df[['namespace', 'hostname', 'vrf', 'ipAddressList']],
+                left_on=['namespace', 'vrf', 'peerIP'],
+                right_on=['namespace', 'vrf', 'ipAddressList'],
+                how='outer', suffixes=['', '_y']) \
+                .dropna(subset=['hostname']) \
+                .fillna({'hostname_y': ''}) \
+                .rename(columns={'hostname_y': 'peerHostname'})
 
         if newdf.empty:
             newdf = df.query('adjState != "passive"').reset_index()

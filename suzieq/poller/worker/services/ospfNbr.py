@@ -122,7 +122,10 @@ class OspfNbrService(Service):
     def _clean_nxos_data(self, processed_data, raw_data):
         for entry in processed_data:
             entry['state'] = entry['state'].lower()
-            entry['numChanges'] = int(entry['numChanges'])
+            if entry['numChanges'] == '':
+                entry['numChanges'] = 0
+            else:
+                entry['numChanges'] = int(entry['numChanges'])
             # Cisco's format examples are PT7H28M21S, P1DT4H9M46S
             entry['lastChangeTime'] = get_timestamp_from_cisco_time(
                 entry['lastChangeTime'], raw_data[0]['timestamp']/1000)

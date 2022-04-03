@@ -11,12 +11,12 @@ def _validate_estd_ospf_data(df: pd.DataFrame):
 
     assert (df.areaStub.isin(valid_bools)).all()
     assert (df.adjState.isin(['full', 'passive'])).all()
-    assert (df.ifState.isin(["up", "down"])).all()
+    assert (df.ifState.isin(["up", "down", "adminDown"])).all()
 
     npsv_df = df.query('adjState != "passive"')
     if not npsv_df.empty:
         assert (npsv_df.peerIP != '').all()
-        assert (npsv_df.peerHostname != '').all()
+        # assert (npsv_df.peerHostname != '').all()
         assert (npsv_df.peerRouterId != '').all()
         assert (npsv_df.nbrCount != 0).all()
         assert (npsv_df.bfdStatus.isin(['unknown', 'disabled',

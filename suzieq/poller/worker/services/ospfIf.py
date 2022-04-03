@@ -125,7 +125,13 @@ class OspfIfService(Service):
                     continue
 
                 for j, area in enumerate(entry['ifname']):
+                    # NXOS doesn't provide the three pieces of data below
+                    # in the same command, and so we have to stitch it
+                    # together via two diff command outputs. The area and
+                    # vrf are the keys we use to tie the records together.
                     for ifentry in areas.get(area, []):
+                        if ifentry['vrf'] != entry['vrf']:
+                            continue
                         ifentry['routerId'] = entry['routerId']
                         ifentry['authType'] = entry['authType'][j]
                         ifentry['isBackbone'] = area == "0.0.0.0"
@@ -147,6 +153,8 @@ class OspfIfService(Service):
             if area and area.isdecimal():
                 entry['area'] = str(ip_address(int(area)))
             entry["networkType"] = entry["networkType"].lower()
+            entry['networkType'] = entry['networkType'] \
+                .replace('point_to_point', 'p2p')
             entry["passive"] = entry["passive"] == "stub"
             entry["isUnnumbered"] = entry["isUnnumbered"] == "yes"
             entry['areaStub'] = entry['areaStub'] == "yes"
@@ -162,7 +170,7 @@ class OspfIfService(Service):
                 entry['nbrCount']) if entry['nbrCount'] else 0
             entry['noSummary'] = entry.get('noSummary', False)
             if entry['state'] == "administratively down":
-                entry['state'] = "down"
+                entry['state'] = "adminDown"
             else:
                 entry['state'] = entry['state'].lower()
 
