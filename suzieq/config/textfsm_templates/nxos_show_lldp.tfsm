@@ -1,0 +1,11 @@
+Value Required peerHostname (\S+)
+Value Required ifname (\S+)
+Value peerIfname (\S+)
+
+Start
+  ^Device\s+ID.* -> StartRecord
+
+StartRecord
+  ^${peerHostname}$$
+  ^${peerHostname}\s+${ifname}\s+\d+\s+(\w+?\s)+\s+${peerIfname} -> Record
+  ^\s+${ifname}\s+\d+\s+(\w+?\s)+\s+${peerIfname} -> Record
