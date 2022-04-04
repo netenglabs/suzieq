@@ -21,7 +21,7 @@ def test_server_exec():
     port = randint(9000, 10000)
     # We need to change the port used to avoid conflicts
     cfgfile = create_dummy_config_file()
-    sqcfg = load_sq_config(cfgfile)
+    sqcfg = load_sq_config(config_file=cfgfile)
 
     if 'rest' not in sqcfg:
         sqcfg['rest'] = {'port': port}
