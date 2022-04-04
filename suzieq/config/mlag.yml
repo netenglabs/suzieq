@@ -67,45 +67,62 @@ apply:
         ]'
 
   nxos:
-    version: all
-    command:
-      - command: show vpc | json native
-        normalize: '[
-        "vpc-domain-id: domainId?|",
-        "vpc-peer-status: state",
-        "vpc-role: role",
-        "vpc-peer-status-reason: _reason",
-        "vpc-peer-consistency: configSanity", 
-        "vpc-per-vlan-peer-consistency: _globalVlanConsistency", 
-        "vpc-type-2-consistency: _globalType2Consistency ",
-        "virtual-peer-link: _virtualPeerlink",
-        "TABLE_peerlink/ROW_peerlink/[0]/peerlink-ifindex: peerLink",
-        "TABLE_peerlink/ROW_peerlink/[0]/peer-link-port-state: peerLinkStatus?|",
-        "TABLE_vpc/ROW_vpc/[*]?/vpc-ifindex: _portList?|[]",
-        "TABLE_vpc/ROW_vpc/[*]?/vpc-port-state: _portStateList",
-        "TABLE_vpc/ROW_vpc/[*]?/vpc-thru-peerlink: _forwardViaPeerLinkList",
-        "TABLE_vpc/ROW_vpc/[*]?/vpc-consistency: _portConfigSanityList",
-        ]'
+    - version: < 9.3.0
+      command:
+        - command: show vpc
+          textfsm: textfsm_templates/nxos_show_vpc.tfsm
 
-      - command: show vpc peer-keepalive | json native
-        normalize: '[
-        "vpc-keepalive-dest: peerAddress",
-        ]'
+        - command: show vpc peer-keepalive
+          textfsm: textfsm_templates/nxos_show_vpc_ka.tfsm
 
-      - command: show vpc role | json native
-        normalize: '[
-        "vpc-system-mac: systemId",
-        "vpc-peer-system-mac: peerMacAddress",
-        ]'
+        - command: show vpc role
+          textfsm: textfsm_templates/nxos_show_vpc_role.tfsm
 
-      - command: show nve interface nve 1 | json native
-        normalize: 'TABLE_nve_if/ROW_nve_if/*?/[
-        "secondary-ip: vtepIP",
-        ]'
+        - command: show nve interface nve 1
+          textfsm: textfsm_templates/nxos_show_nve_ifname.tfsm
+        
+        - command: show vpc orphan-ports
+          textfsm: textfsm_templates/nxos_show_vpc_orphans.tfsm
+        
+    - version: all
+      command:
+        - command: show vpc | json native
+          normalize: '[
+          "vpc-domain-id: domainId?|",
+          "vpc-peer-status: state",
+          "vpc-role: role",
+          "vpc-peer-status-reason: _reason",
+          "vpc-peer-consistency: configSanity", 
+          "vpc-per-vlan-peer-consistency: _globalVlanConsistency", 
+          "vpc-type-2-consistency: _globalType2Consistency ",
+          "virtual-peer-link: _virtualPeerlink",
+          "TABLE_peerlink/ROW_peerlink/[0]/peerlink-ifindex: peerLink",
+          "TABLE_peerlink/ROW_peerlink/[0]/peer-link-port-state: peerLinkStatus?|",
+          "TABLE_vpc/ROW_vpc/[*]?/vpc-ifindex: _portList?|[]",
+          "TABLE_vpc/ROW_vpc/[*]?/vpc-port-state: _portStateList",
+          "TABLE_vpc/ROW_vpc/[*]?/vpc-thru-peerlink: _forwardViaPeerLinkList",
+          "TABLE_vpc/ROW_vpc/[*]?/vpc-consistency: _portConfigSanityList",
+          ]'
 
-      - command: show vpc orphan-ports | json native
-        normalize: '[
-        "TABLE_orphan_ports/ROW_orphan_ports/[*]?/vpc-orphan-ports: _orphanPortList",
-        ]'
+        - command: show vpc peer-keepalive | json native
+          normalize: '[
+          "vpc-keepalive-dest: peerAddress",
+          ]'
+
+        - command: show vpc role | json native
+          normalize: '[
+          "vpc-system-mac: systemId",
+          "vpc-peer-system-mac: peerMacAddress",
+          ]'
+
+        - command: show nve interface nve 1 | json native
+          normalize: 'TABLE_nve_if/ROW_nve_if/*?/[
+          "secondary-ip: vtepIP",
+          ]'
+
+        - command: show vpc orphan-ports | json native
+          normalize: '[
+          "TABLE_orphan_ports/ROW_orphan_ports/[*]?/vpc-orphan-ports: _orphanPortList",
+          ]'
 
         

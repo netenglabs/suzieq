@@ -1,0 +1,9 @@
+Value role (\s+)
+Value operRole (\s+)
+Value systemId ([a-fA-f0-9:]+)
+Value peerMacAddress ([a-fA-f0-9:]+)
+
+Start
+ ^vPC\s+Role\s+:\s+${role},\s+operational\s+${operRole}
+ ^vPC\s+system-mac\s+:\s+${systemId}
+ ^vPC\s+peer\s+system-mac\s+:\s+${peerSystemId}
