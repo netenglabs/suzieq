@@ -56,7 +56,7 @@ def test_config_validation(monkeypatch):
     """Test the sq config validation
     """
 
-    base_cfg = load_sq_config(create_dummy_config_file())
+    base_cfg = load_sq_config(config_file=create_dummy_config_file())
 
     # not a dict
     cfg = []
