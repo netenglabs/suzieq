@@ -82,7 +82,7 @@ async def run_worker_with_mocks(poller: Worker) -> Dict[str, MagicMock]:
 def test_worker_object_init_validation(poller_args):
     """Test Poller object user_args validation
     """
-    cfg = load_sq_config(poller_args.config)
+    cfg = load_sq_config(config_file=poller_args.config)
 
     # Test invalid ssh config file
     poller_args.ssh_config_file = 'invalid'
@@ -98,7 +98,7 @@ def test_worker_object_init_validation(poller_args):
 async def test_add_pop_worker_task(poller_args):
     """Test the methods for adding and removing the poller tasks
     """
-    cfg = load_sq_config(poller_args.config)
+    cfg = load_sq_config(config_file=poller_args.config)
     poller = Worker(poller_args, cfg)
     # Test add_poller_task()
     tasks = [asyncio.Future(), asyncio.Future()]
@@ -122,7 +122,7 @@ async def test_add_pop_worker_task(poller_args):
 async def test_poller_worker_run(poller_args):
     """Check if all the services are launched after calling Poller.run()
     """
-    cfg = load_sq_config(poller_args.config)
+    cfg = load_sq_config(config_file=poller_args.config)
     poller = Worker(poller_args, cfg)
 
     mks = await run_worker_with_mocks(poller)
@@ -138,7 +138,7 @@ async def test_poller_worker_run(poller_args):
 def test_worker_inventory_init(poller_args):
     """Test if all the parameters are correctly passed to the Inventory
     """
-    cfg = load_sq_config(poller_args.config)
+    cfg = load_sq_config(config_file=poller_args.config)
     poller_args.ssh_config_file = 'config/file'
     cfg['poller']['connect-timeout'] = 30
     with patch.multiple(Worker, _validate_worker_args=MagicMock()):
@@ -158,7 +158,7 @@ def test_worker_inventory_init_addnl_args(poller_args):
     """Test if all the additional params are actually passed to the
     Inventory class init function
     """
-    cfg = load_sq_config(poller_args.config)
+    cfg = load_sq_config(config_file=poller_args.config)
     poller_args.ssh_config_file = 'config/file'
     cfg['poller']['connect-timeout'] = 30
     dummy_inventory_class = MagicMock()
@@ -202,7 +202,7 @@ def test_worker_inventory_init_addnl_args(poller_args):
 def test_worker_service_manager_init(poller_args):
     """Test if all the parameters are correctly passed to the ServiceManager
     """
-    cfg = load_sq_config(poller_args.config)
+    cfg = load_sq_config(config_file=poller_args.config)
     poller_args.run_once = 'gather'
     cfg['poller']['period'] = 30
     poller = Worker(poller_args, cfg)

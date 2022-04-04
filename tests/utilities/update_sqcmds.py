@@ -15,7 +15,7 @@ def create_config(testvar):
     if 'data-directory' in testvar:
         # We need to create a tempfile to hold the config
         tf = conftest.create_dummy_config_file()
-        tmpconfig = load_sq_config(tf)
+        tmpconfig = load_sq_config(config_file=tf)
         tmpconfig['data-directory'] = testvar['data-directory']
 
         with open(tf, 'w') as f:

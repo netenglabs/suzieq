@@ -46,7 +46,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
 def create_config(t_dir, suzieq_dir):
     '''Create dummy config'''
     # We need to create a tempfile to hold the config
-    tmpconfig = load_sq_config(conftest.create_dummy_config_file())
+    tmpconfig = load_sq_config(config_file=conftest.create_dummy_config_file())
     tmpconfig['data-directory'] = f"{t_dir}/parquet"
     tmpconfig['service-directory'] = \
         f"{suzieq_dir}/{tmpconfig['service-directory']}"
@@ -453,7 +453,8 @@ def _test_data(topology, proto, scenario, testvar):
     # pylint: disable=redefined-outer-name
     name = f'{topology}_{proto}_{scenario}'
     testvar['data-directory'] = f"{parquet_dir}/{name}/parquet-out"
-    dummy_config = load_sq_config(conftest.create_dummy_config_file())
+    dummy_config = load_sq_config(
+        config_file=conftest.create_dummy_config_file())
     _test_sqcmds(dummy_config, testvar)
 
 
