@@ -1,4 +1,5 @@
 from ipaddress import ip_network
+import re
 
 import numpy as np
 import pandas as pd
@@ -260,12 +261,12 @@ class InterfacesObj(SqPandasEngine):
             if x.type in ['subinterface', 'vlan']
             else x['ifname'], axis=1)
 
-        # Thanks for Junos, remove all the useless parent interfaces
-        # if we have a .0 interface since thats the real deal
-        del_iflist = if_df.apply(lambda x: x.pifname
-                                 if x['ifname'].endswith('.0') else '',
-                                 axis=1) \
-            .unique().tolist()
+        # filter out loopback subinterfaces
+        if 'loopback' not in iftype:
+            lo_pattern = r'^(lo.*)|(.*oopback.*)$'
+            if_df = if_df[if_df.apply(
+                lambda x: re.match(lo_pattern, x.ifname) is None,
+                axis=1)]
 
         if_df['type'] = if_df.apply(lambda x: 'ethernet'
                                     if x['ifname'].endswith('.0')
