@@ -137,6 +137,7 @@ class Node:
             jump_result = urlparse(jump_host)
             self.jump_user = jump_result.username or self.username
             self.jump_host = jump_result.hostname
+            self.jump_host_key = None
             if jump_result.port:
                 self.jump_port = jump_result.port
             else:
