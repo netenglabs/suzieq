@@ -34,7 +34,7 @@ sources:
 devices:
 - name: devices-with-jump-hosts
   transport: ssh
-  jump-host: 127.0.0.1
+  jump-host: username@127.0.0.1
   jump-host-key-file: /path/to/jump/key
   ignore-known-hosts: true
   port: 22
@@ -210,7 +210,7 @@ For example, if a set of devices is only reachable with a ssh jump, in `devices`
 ```yaml
 - name: devices-with-jump-hosts
   transport: ssh
-  jump-host: 10.0.0.1
+  jump-host: username@10.0.0.1
   jump-host-key-file: /path/to/jump/key
   port: 22
 ```
