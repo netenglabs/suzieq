@@ -1,37 +1,40 @@
-data-directory: ./parquet
+---
+data-directory: /home/suzieq/parquet
 temp-directory: /tmp/
 
 rest:
-# Uncomment these lines if you're using your own files for the REST server
-# The certificates listed below are provided purely to get started, In any
-# secure deployment, these must be generated specifically for the site and
-# these lines uncommented and containing the location of the site-specific file.
-# rest_certfile: /suzieq/cert.pem
-# rest_keyfile: /suzieq/key.pem
-#
+  # Uncomment these lines if you're using your own files for the REST server
+  # The certificates listed below are provided purely to get started, In any
+  # secure deployment, these must be generated specifically for the site and
+  # these lines uncommented and containing the location of the site-specific file.
+  # rest_certfile: /suzieq/cert.pem
+  # rest_keyfile: /suzieq/key.pem
+  #
   API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
   address: 0.0.0.0
-  port: 8000
-  # logfile: /tmp/sq-rest-server.log
+  logfile: /tmp/sq-rest-server.log
   logging-level: WARNING
   no-https: True # required for single HTTPS reverse proxy via Caddy
-# This is only for the fastapi/restserver process.  Skip if using Caddy
-  # rest-certfile: /secrets/cert.pem
-  # rest-keyfile: /secrets/key.pem
+  port: 8000
 
 poller:
-  # logfile: /tmp/sq-poller.log
+  connect-timeout: 15
+  logfile: /tmp/sq-poller.log
   logging-level: WARNING
   period: 60
 
 coalescer:
-  period: 1h
-# Comment the next line if you don't want the archive directory. This dir is
-# purely to save the uncoalesced data in raw format to avoid data loss in case
-# of a bug in the coalescer.
+  # Comment the next line if you don't want the archive directory. This dir is
+  # purely to save the uncoalesced data in raw format to avoid data loss in case
+  # of a bug in the coalescer.
   archive-directory:
-  # logfile: /tmp/sq-coalescer.log
+  logfile: /tmp/sq-coalescer.log
   logging-level: WARNING
+  # valid suffixes are h for hour, d for day and w for week
+  # 1h is 1 hour, 2w is 2 weeks and so on. y for year and m for month
+  # don't make sense because those are not fixed units. We don't yet support
+  # periods less than an hour.
+  period: 1h
 
 analyzer:
   # By default, the timezone is set to the local timezone. Uncomment
