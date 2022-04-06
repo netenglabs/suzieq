@@ -1,47 +1,47 @@
+---
 version: '3.2'
+
+x-suzieq_service: &suzieq_service
+    #image: netenglabs/suzieq:0.17.0
+    image: suzieq:demo
+    stdin_open: true
+    tty: true
+    restart: unless-stopped
+
 services:
     suzieq_poller:
-        restart: unless-stopped
-        image: &suzieqImage netenglabs/suzieq:0.13.0
+        <<: *suzieq_service
         container_name: suzieq_poller
-        command: -D /suzieq/inventory.yml -k
-        stdin_open: true
-        tty: true
+        command: -I .suzieq/inventory.yml
         volumes:
-            - "parquet-db:/suzieq/parquet"
-            - "./inventory.yml:/suzieq/inventory.yml:ro"
-            - "./suzieq-cfg.yml:/root/.suzieq/suzieq-cfg.yml:ro"
+            - "parquet-db:/home/suzieq/parquet"
+            - "./inventory.yml:/home/suzieq/.suzieq/inventory.yml:ro"
+            - "./suzieq-cfg.yml:/home/suzieq/.suzieq/suzieq-cfg.yml:ro"
         entrypoint:
             - sq-poller
     suzieq_restserver:
-        restart: unless-stopped
-        image: *suzieqImage
+        <<: *suzieq_service
         container_name: suzieq_restserver
         depends_on:
             - suzieq_poller
-        stdin_open: true
-        tty: true
         environment:
             - FORWARDED_ALLOW_IPS=*
-        volumes:
-            - "parquet-db:/suzieq/parquet"
-            - "./suzieq-cfg.yml:/root/.suzieq/suzieq-cfg.yml:ro"
         expose:
             - 8000
+        volumes:
+            - "parquet-db:/home/suzieq/parquet"
+            - "./suzieq-cfg.yml:/home/suzieq/.suzieq/suzieq-cfg.yml:ro"
         entrypoint: "sq-rest-server"
     suzieq_gui:
-        restart: unless-stopped
-        image: *suzieqImage
+        <<: *suzieq_service
         container_name: suzieq_gui
         depends_on:
             - suzieq_poller
-        stdin_open: true
-        tty: true
-        volumes:
-            - "parquet-db:/suzieq/parquet"
-            - "./suzieq-cfg.yml:/root/.suzieq/suzieq-cfg.yml:ro"
         expose:
             - 8501
+        volumes:
+            - "parquet-db:/home/suzieq/parquet"
+            - "./suzieq-cfg.yml:/home/suzieq/.suzieq/suzieq-cfg.yml:ro"
         entrypoint:
             - suzieq-gui
     caddy:
@@ -57,7 +57,7 @@ services:
             #- "./secrets/cert.crt:/root/certs/cert.crt:z,ro"
             #- "./secrets/cert.key:/root/certs/cert.key:z,ro"
         ports:
-            - "80:80" # Allow Caddy to rederict to HTTPS
+            #- "80:80" # Allow Caddy to rederict to HTTPS
             - "443:443"
 
 volumes:
