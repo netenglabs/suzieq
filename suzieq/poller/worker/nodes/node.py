@@ -299,8 +299,7 @@ class Node:
                 await self._terminate()
                 return
             self.logger.error(
-                "ERROR: Cannot connect to jump host: %s (%e)",
-                self.jump_host, e)
+                f'Cannot connect to jump host: {self.jump_host} ({e})')
             self.current_exception = e
             self._conn = None
             self._tunnel = None
