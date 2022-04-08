@@ -12,11 +12,18 @@ COPY ./dist/suzieq-$version-py3-none-any.whl  /tmp/
 
 COPY --chown=$username suzieq/config/etc/suzieq-cfg.yml /home/$username/.suzieq/suzieq-cfg.yml
 
-RUN python3 -m pip install --upgrade pip && \
-    python3 -m pip install /tmp/suzieq-$version-py3-none-any.whl && \
-    rm /tmp/suzieq-$version-py3-none-any.whl && \
-    mkdir /home/$username/parquet && \ 
+RUN python3 -m pip install --upgrade pip
+
+COPY --chown=$username suzieq/config/etc/suzieq-cfg.yml /home/$username/.suzieq/suzieq-cfg.yml
+
+RUN mkdir /home/$username/parquet && \
+    chown $user_id:$user_id /home/$username/parquet && \
     sed -i 's/127.0.0.1/0.0.0.0/' /home/$username/.suzieq/suzieq-cfg.yml
+
+COPY ./dist/suzieq-$version-py3-none-any.whl  /tmp/
+
+RUN python3 -m pip install /tmp/suzieq-$version-py3-none-any.whl && \
+    rm /tmp/suzieq-$version-py3-none-any.whl
 
 VOLUME [ "/home/$username/parquet" ]
  
