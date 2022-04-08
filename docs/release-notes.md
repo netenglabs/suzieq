@@ -1,5 +1,31 @@
 # Release Notes
 
+## 0.17.0 (Mar 29, 2022)
+
+The 17th release of SuzieQ comes with the following new features and bug fixes. The main improvements are in the area of more accurate database records, improved user experience via GUI and remote DB, imrpvoed platform support for IOSXE, NXOS and EOS, and a significant code refactoring to make the codebase consistent and simple. This is in addition to numerous bug fixes, and the addition of numerous tests. You can say this is the first release that starts to target segments outside the datacenter, specifically the campus.
+
+* **Stable, Powerful GUI**: The GUI features the easily filterable and searchable tabular display based on the popular ag-grid framework. The version introduced in 0.16.0 was unstable. With this release, use the GUI to easily spot errors, search and analyze data.
+* **No duplicate records on poller restart**: Till this release, whenever the poller was restarted, the poller added new records that were duplicates of the existing records, because we didn't compare the state of what we have in the database on poller restart. This release fixes this major annoyance, allowing people to look at changes much more easily. Snapshots now only record changes from the existing data in persistent storage, making looking for changes easier.
+* **Improved IOSXE Support**: This version has been tested on many different versions of IOSXE on platforms ranging from Cat4K and 6K to Cat 3850 and Cat9K. There are many versions and platforms that support IOSXE, so support continues to evolve and improve. If you run into any pronlems, please report them. We also support looking at the inventory on IOSXE devices. Thanks to Andrea FLorio and Claudia de Luna for this and other IOSXE fixes.
+* switchport support** SuzieQ's use is spreading beyond the datacenter into campus. As such, users requested the ability to see the switchport mode--access, trunk etc.--of an interface along with the native VLAN and the list of active, allowed VLANs on an interface. This is now supported. Use column names portmode and vlanList to see the switchport mode and list of allowed, active Vlans on a trunk interface. For example, interface show columns='hostname ifname state portmode vlan vlanList'
+* **Support for Privilege Escalation**: In keeping with the campus use and support for older devices, escalation privielege support is an important feature. This involves using the command enable and a password to run in a privileged mode to execute any commands. This is now supported for IOSXE. Use the keyword enable-password with the same available options (plain and env) to provide the password.
+* **Support for slower devices** Many older devices, running IOS/XE, run relatively slowly compared to the more modern OSes such as NXOS, EOS and Cumulus. To support such devices, we support a keyword, 'slow-host' which is defined under the devices section of the inventory and if set to True, SuzieQ poller throttles the rate at which it sends commands to the device.
+* **Netbox API token as Environment Variable**: Many users consider the Netbox API token as a secret and do not wish to provide it in clearcase. So like other passwords 
+* **4b ASN Support**: We didn't handle 4B ASNs provided in asdot format. We can now display the ASNs in asdot format. Use the column name asdot to see this.
+* **Improved Topology**: You can now view the topology for a given VRF, an AFI-SAFI, an area and so on. Look at the supported keywords via ``help topology show``
+* **Remote DB Improvements**: Many commands didn't work correctly when using a remote database. This is now fixed largely due to the testing by Rick Donato. Thanks Rick.
+* **Improved EOS support**: We improved the support for EOS by fixing a bunch of parser errors with newer versions, and some older uncaught bugs. We now support EOS versions from 4.20 all the way to the latest 4.27.1
+* **Improved asserts**: All asserts have been improved with additional functionality and bug fixes.
+* **Scale testing**: Much of the code from the poller to analysis has been tested at scale, with over a 1000 devices.
+* **Faster Route**: Very large route tables can be operated upon much more quickly, the difference can be several orders of magnitude depending on the routing table.
+* **Path trace Improvements**: Path trace supports destination address not being in the network tables. We'll trace as far as we can.
+* **Inventory Validation**: We now validate the inventory and print out helpful error messages about the errors.
+* Blacklisted services topmem, topcpu and ifCounters: These three tables were not being used anyway. We'll reintroduce support when we can do something useful with them. 
+* Fix sqpoller stats and description: We now show the poller stats with the max and min updated for every poller write period, which is either 5 min or the poll period, whichever is longer.
+* Massive technical debt fix to ensure we don't suffer from inconsistencies when users use different filters, columns and so on. There are an enormous number of features supported in SuzieQ, and ensuring consistent operations across all of them when the code evolved organically meant we had to do a massive refactoring to make the code base simpler and consistent.
+* We added hysterisis to marking a record dead. If we cannot reach a device today on a poll, we promptly mark all the records as deleted. This can cause unnecessary fluctuations in the records due to temporary network glitches. To avoid this, we mark a record as deleted only if we're unable to communicate with the device for 3 consecutive times. This naturally does not apply to marking non-existent records dead on poller restarts.
+* Rename assert result field: The field called status in the assert output is now called result to avoid conflicts with fields called status in tables such as device. This is a __breaking change__.
+
 ## 0.16.0 (Jan 15, 2022)
 
 This is the 16th release of Suzieq, with many new and useful features. Refer to the release notes for 0.16.0b1 and 0.16.0a1 for details. In addition to those features and bug fixes, this release has the following changes compared to 0.16.0b1:
