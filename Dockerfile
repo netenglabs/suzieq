@@ -9,7 +9,6 @@ ARG user_id=1000
 RUN useradd $username -u $user_id --create-home --user-group
 
 
-COPY --chown=$username suzieq/config/etc/suzieq-cfg.yml /home/$username/.suzieq/suzieq-cfg.yml
 
 RUN python3 -m pip install --upgrade pip
 
