@@ -3,8 +3,10 @@ FROM python:3.7.11-slim-buster AS sqbase
 ENV PATH=/root/.local/bin:$PATH
 ENV PYTHONPATH=/root/.local/lib
 
-COPY build/requirements.txt /requirements.txt
+COPY build/requirements.txt /tmp/requirements.txt
 
 RUN apt-get update && \
-    python -m pip install --upgrade pip && \
-    python -m pip install --disable-pip-version-check -r /requirements.txt
+    python -m pip install --upgrade --no-cache-dir pip && \
+    python -m pip install --disable-pip-version-check --no-cache-dir -r /tmp/requirements.txt && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*

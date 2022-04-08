@@ -8,9 +8,7 @@ ARG user_id=1000
 
 RUN useradd $username -u $user_id --create-home --user-group
 
-
-
-RUN python3 -m pip install --upgrade pip
+RUN python3 -m pip install --upgrade --no-cache-dir pip
 
 COPY --chown=$username suzieq/config/etc/suzieq-cfg.yml /home/$username/.suzieq/suzieq-cfg.yml
 
@@ -20,8 +18,8 @@ RUN mkdir /home/$username/parquet && \
 
 COPY ./dist/suzieq-$version-py3-none-any.whl  /tmp/
 
-RUN python3 -m pip install /tmp/suzieq-$version-py3-none-any.whl && \
-    rm /tmp/suzieq-$version-py3-none-any.whl
+RUN python3 -m pip install --no-cache-dir /tmp/suzieq-$version-py3-none-any.whl && \
+    rm -rf /tmp/* /var/tmp/*
 
 VOLUME [ "/home/$username/parquet" ]
  
@@ -32,5 +30,5 @@ WORKDIR /home/$username
 ENTRYPOINT ["/bin/bash"]
 
 LABEL name=suzieq
-LABEL version=$version
 LABEL description="Network Observability Tool"
+LABEL version=$version
