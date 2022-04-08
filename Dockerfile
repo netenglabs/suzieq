@@ -8,7 +8,6 @@ ARG user_id=1000
 
 RUN useradd $username -u $user_id --create-home --user-group
 
-COPY ./dist/suzieq-$version-py3-none-any.whl  /tmp/
 
 COPY --chown=$username suzieq/config/etc/suzieq-cfg.yml /home/$username/.suzieq/suzieq-cfg.yml
 
