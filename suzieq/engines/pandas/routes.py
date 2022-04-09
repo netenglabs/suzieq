@@ -50,6 +50,9 @@ class RoutesObj(SqPandasEngine):
         addnl_fields = self._cons_addnl_fields(
             columns, addnl_fields, prefixlen != '')
 
+        self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
+                                   addnl_fields)
+
         # /32 routes are stored with the /32 prefix, so if user doesn't specify
         # prefix as some folks do, assume /32
         newpfx = []

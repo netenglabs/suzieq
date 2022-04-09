@@ -27,6 +27,8 @@ class BgpObj(SqPandasEngine):
         sch = self.schema
         fields = sch.get_display_fields(columns)
 
+        self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
+                                   addnl_fields)
         if columns == ['*']:
             fields.remove('origPeer')
 

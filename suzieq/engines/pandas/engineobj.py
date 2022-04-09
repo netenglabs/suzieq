@@ -188,9 +188,7 @@ class SqPandasEngine(SqEngineObj):
         if 'timestamp' not in fields:
             fields.append('timestamp')
 
-        if 'active' not in fields+addnl_fields:
-            addnl_fields.append('active')
-
+        self._add_active_to_fields(view, fields, addnl_fields)
         # Order matters. Don't put this before the missing key fields insert
         for f in aug_fields:
             dep_fields = sch.get_parent_fields(f)
@@ -699,3 +697,27 @@ class SqPandasEngine(SqEngineObj):
             return [f for f in table_fields if re.search(rf'\b{f}\b',
                                                          query_str)]
         return []
+
+    def _add_active_to_fields(self, view: str, fields: List[str],
+                              addnl_fields: List[str]) -> None:
+        """Add 'active' field to returned cols
+
+        Depending on the user specification, if we have to return all
+        records within a time window or if view=all, we must also
+        return the active field because it marks if the record was
+        added or deleted
+
+        Args:
+            view(str): value of view specified by user
+            fields(List[str]): the columns to be returned so far
+            addnl_fields(List[str]): the addnl fields to be retrieved so far
+
+        Returns:
+            None
+        """
+
+        if view == "all" or (self.iobj.start_time and self.iobj.end_time):
+            if 'active' not in fields:
+                fields.insert(0, 'active')
+        elif addnl_fields is not None:
+            addnl_fields.append('active')

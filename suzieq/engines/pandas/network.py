@@ -266,6 +266,7 @@ class NetworkObj(SqPandasEngine):
 
         result = []
         for row in arpdf.itertuples():
+            tmpres = {}
             if getattr(row, 'error', None):
                 continue
             if row.oif.endswith('-v0'):
@@ -273,6 +274,24 @@ class NetworkObj(SqPandasEngine):
                 oif = row.oif[:-3]
             else:
                 oif = row.oif
+
+            active = getattr(row, 'active', True)
+            if not active:
+                result.append({
+                    'active': False,
+                    'namespace': row.namespace,
+                    'hostname': row.hostname,
+                    'vrf': '-',
+                    'ipAddress': row.ipAddress,
+                    'vlan': '-',
+                    'macaddr': row.macaddr,
+                    'ifname': row.oif,
+                    'type': 'bridged',
+                    'l2miss': False,
+                    'timestamp': row.timestamp
+                })
+                continue
+
             ifdf = self._get_table_sqobj('interfaces') \
                 .get(namespace=[row.namespace], hostname=[row.hostname],
                      ifname=[oif])
@@ -280,7 +299,10 @@ class NetworkObj(SqPandasEngine):
             if not ifdf.empty:
                 if 'vlan' not in ifdf.type.unique():
                     # Routed interface
-                    result.append({
+                    if hasattr(row, 'active'):
+                        tmpres['active'] = True  # False case handled above
+
+                    tmpres.update({
                         'namespace': row.namespace,
                         'hostname': row.hostname,
                         'vrf': ifdf.master.unique().tolist()[0] or 'default',
@@ -292,6 +314,7 @@ class NetworkObj(SqPandasEngine):
                         'l2miss': False,
                         'timestamp': row.timestamp
                     })
+                    result.append(tmpres)
                     continue
 
                 macdf = self._get_table_sqobj('macs') \
@@ -305,7 +328,9 @@ class NetworkObj(SqPandasEngine):
                             "vPC Peer-Link"]
                     if not oifs:
                         continue
-                    result.append({
+                    if hasattr(row, 'active'):
+                        tmpres['active'] = True
+                    tmpres.update({
                         'namespace': row.namespace,
                         'hostname': row.hostname,
                         'vrf': ifdf.master.unique().tolist()[0] or 'default',
@@ -317,8 +342,12 @@ class NetworkObj(SqPandasEngine):
                         'l2miss': False,
                         'timestamp': row.timestamp
                     })
+                    result.append(tmpres)
                 else:
-                    result.append({
+                    if hasattr(row, 'active'):
+                        tmpres['active'] = True
+
+                    tmpres.update({
                         'namespace': row.namespace,
                         'hostname': row.hostname,
                         'vrf': ifdf.master.unique().tolist()[0] or 'default',
@@ -330,6 +359,7 @@ class NetworkObj(SqPandasEngine):
                         'l2miss': True,
                         'timestamp': row.timestamp
                     })
+                    result.append(tmpres)
 
         return pd.DataFrame(result)
 
@@ -350,6 +380,26 @@ class NetworkObj(SqPandasEngine):
 
         result = []
         for row in l2_addr_df.itertuples():
+            tmpres = {}
+
+            active = getattr(row, 'active', True)
+            if not active:
+                result.append({
+                    'active': False,
+                    'namespace': row.namespace,
+                    'hostname': row.hostname,
+                    'vrf': row.vrf,
+                    'ipAddress': row.ipAddress,
+                    'vlan': row.vlan,
+                    'macaddr': row.macaddr,
+                    'ifname': row.ifname,
+                    'bondMembers': '-',
+                    'type': row.type,
+                    'l2miss': row.l2miss,
+                    'timestamp': row.timestamp
+                })
+                continue
+
             match_ifname = row.ifname.split('.')[0]
             match_hostname = row.hostname
             match_namespace = row.namespace
@@ -410,7 +460,11 @@ class NetworkObj(SqPandasEngine):
 
             if match_ifname in mbr_ports:
                 mbr_ports = ''
-            result.append({
+
+            if 'active' in addr_df.columns:
+                tmpres['active'] = True  # False has been handled already
+
+            tmpres.update({
                 'namespace': row.namespace,
                 'hostname': match_hostname,
                 'vrf': match_vrf,
@@ -423,6 +477,7 @@ class NetworkObj(SqPandasEngine):
                 'l2miss': row.l2miss,
                 'timestamp': row.timestamp
             })
+            result.append(tmpres)
 
         if result:
             return pd.DataFrame(result)
