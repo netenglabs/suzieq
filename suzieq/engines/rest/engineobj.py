@@ -70,8 +70,9 @@ class SqRestEngine(SqEngineObj):
         cmd_params = {'start_time': self.iobj.start_time,
                       'end_time': self.iobj.end_time,
                       'view': self.iobj.view,
-                      'namespace': self.iobj.namespace,
-                      'hostname': self.iobj.hostname}
+                      'namespace': kwargs.get('namespace',
+                                              self.iobj.namespace),
+                      'hostname': kwargs.get('hostname', self.iobj.hostname)}
         kwargs.update(cmd_params)
         kwargs = {k: v for k, v in kwargs.items() if v}
 
