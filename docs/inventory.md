@@ -20,6 +20,7 @@ sources:
   token: af8717c89ec0ff420c19d89e6c20646ad55dd54e
   url: http://127.0.0.1:8000
   tag: suzieq-demo
+  type: netbox
   period: 3600
 
 - name: dc-02-suzieq-native
@@ -67,7 +68,7 @@ auths:
 namespaces:
 - name: testing
   source: netbox-instance-123
-  device: devices-00
+  device: devices-with-jump-hosts
   auth: credentials-from-file-0
 ```
 
