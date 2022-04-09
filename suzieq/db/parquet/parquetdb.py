@@ -509,17 +509,6 @@ class SqParquetDB(SqDB):
 
         folder = self._get_table_directory(table_name, True)
 
-        # pylint: disable=simplifiable-if-statement
-        if not (start_time or end_time) and (view == "all"):
-            # Enforcing the logic we have: if both start_time & end_time
-            # are given, return all files since the model is that the user is
-            # expecting to see all changes in the time window. Otherwise, user
-            # expecting to see only the latest before an end_time OR after a
-            # start_time.
-            all_files = True
-        else:
-            all_files = False
-
         # We need to iterate otherwise the differing schema from different dirs
         # causes the read to abort.
         dirs = Path(folder)
@@ -539,10 +528,8 @@ class SqParquetDB(SqDB):
                     max_vers = vers
 
             dataset = ds.dataset(elem, format='parquet', partitioning='hive')
-            # total_files = len(dataset.files)# used for a diff algorithm
 
-            # 100 is an arbitrary number, trying to reduce file I/O
-            if all_files:
+            if view == "all" and not (start_time or end_time):
                 files = dataset.files
             else:
                 lists = defaultdict(list)
@@ -552,6 +539,8 @@ class SqParquetDB(SqDB):
 
                 files = []
                 for ele in lists:
+                    # We've to account for the set from each namespace
+                    thislist_files = []
                     lists[ele].sort()
                     if not start_time and not end_time:
                         files.append(lists[ele][-1])
@@ -567,11 +556,27 @@ class SqParquetDB(SqDB):
                             if not end_time:
                                 files.extend(lists[ele][i:])
                                 break
-                            if thistime[0] < end_time:
-                                files.append(file)
-                                start_selected = True
+                            if thistime[0] <= end_time:
+                                if start_time or start_selected:
+                                    files.append(file)
+                                    start_selected = True
+                                else:
+                                    # When we're only operating on end-time,
+                                    # we need at most 2 files as a specified
+                                    # end time can at best straddle two files
+                                    # because the time provided falls between
+                                    # the end of one file and the end time of
+                                    # the next file. That is what we're doing
+                                    # here.
+                                    if len(thislist_files) > 1:
+                                        thislist_files[0] = thislist_files[1]
+                                        thislist_files[1] = file
+                                    else:
+                                        thislist_files.append(file)
                             else:
                                 break
+                    if thislist_files:
+                        files.extend(thislist_files)
             if files:
                 filelist.extend(files)
 
