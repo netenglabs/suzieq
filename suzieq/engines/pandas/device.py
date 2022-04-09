@@ -27,8 +27,7 @@ class DeviceObj(SqPandasEngine):
 
         addnl_fields = []
         fields = self.schema.get_display_fields(columns)
-        if 'active' not in addnl_fields+fields:
-            addnl_fields.append('active')
+        self._add_active_to_fields(view, fields, addnl_fields)
 
         # os is not included in the default column list. Why? I was dumb
         if os and 'os' not in fields:
