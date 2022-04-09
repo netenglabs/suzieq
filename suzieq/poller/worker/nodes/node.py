@@ -137,6 +137,7 @@ class Node:
             jump_result = urlparse(jump_host)
             self.jump_user = jump_result.username or self.username
             self.jump_host = jump_result.hostname
+            self.jump_host_key = None
             if jump_result.port:
                 self.jump_port = jump_result.port
             else:
@@ -298,8 +299,7 @@ class Node:
                 await self._terminate()
                 return
             self.logger.error(
-                "ERROR: Cannot connect to jump host: %s (%e)",
-                self.jump_host, e)
+                f'Cannot connect to jump host: {self.jump_host} ({e})')
             self.current_exception = e
             self._conn = None
             self._tunnel = None
