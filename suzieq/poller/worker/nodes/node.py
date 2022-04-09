@@ -1632,7 +1632,14 @@ class IosXENode(Node):
                     self.logger.error(
                         f"Unable to connect to {self.hostname} for {cmd} "
                         f"due to {e}")
-                    await self._close_connection()
+                    try:
+                        await self._close_connection()
+                        self.logger.debug(
+                            f"Closed conn successfully for {self.hostname}")
+                    except Exception as e1:
+                        self.logger.error(
+                            f"Caught an exception closing {self.hostname} for "
+                            f"{cmd}: {e1}")
                 else:
                     self.logger.error(
                         f"Unable to connect to {self.hostname} {cmd} "
