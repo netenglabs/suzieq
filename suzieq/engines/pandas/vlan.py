@@ -20,6 +20,8 @@ class VlanObj(SqPandasEngine):
 
         addnl_fields = []
         fields = self.schema.get_display_fields(columns)
+        self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
+                                   addnl_fields)
         if 'ifname' not in fields:
             if 'ifname' not in addnl_fields:
                 addnl_fields.append('ifname')

@@ -35,6 +35,8 @@ class InterfacesObj(SqPandasEngine):
             master.extend(vrf)
 
         fields = self.schema.get_display_fields(columns)
+        self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
+                                   addnl_fields)
 
         drop_cols = []
         user_query_cols = self._get_user_query_cols(user_query)

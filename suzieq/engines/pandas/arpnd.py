@@ -17,6 +17,7 @@ class ArpndObj(SqPandasEngine):
         prefix = kwargs.pop('prefix', [])
         columns = kwargs.pop('columns', [])
         user_query = kwargs.pop('query_str', '')
+        view = kwargs.get('view', self.iobj.view)
 
         addnl_fields = []
         # Always get the ipAddress if there is a filter prefix
@@ -24,6 +25,7 @@ class ArpndObj(SqPandasEngine):
         if 'ipAddress' not in fields:
             addnl_fields.append('ipAddress')
 
+        self._add_active_to_fields(view, fields, addnl_fields)
         user_query_cols = self._get_user_query_cols(user_query)
         addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
 

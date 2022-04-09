@@ -5,6 +5,7 @@ import inspect
 from io import StringIO
 import shutil
 
+import numpy as np
 import pandas as pd
 from nubia import command, context
 
@@ -447,6 +448,8 @@ class SqCommand(SqPlugin):
             for row in df.itertuples():
                 self._pager_print(row.config)
         else:
+            if 'active' in df.columns:
+                df['active'] = np.where(df.active, '+', '-')
             if (not (self.start_time or self.end_time) and
                 'timestamp' not in self.columns and not dont_strip_cols and
                     'timestamp' in df.columns and 'timestamp' in cols):

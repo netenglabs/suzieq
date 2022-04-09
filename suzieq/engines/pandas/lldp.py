@@ -21,7 +21,11 @@ class LldpObj(SqPandasEngine):
         use_bond = kwargs.pop('use_bond', "False")
         query_str = kwargs.pop('query_str', '')
 
+        addnl_fields = []
         cols = self.schema.get_display_fields(columns)
+        self._add_active_to_fields(kwargs.get('view', self.iobj.view), cols,
+                                   addnl_fields)
+
         if columns == ['default']:
             needed_fields = ['subtype', 'peerMacaddr', 'peerIfindex']
         elif 'peerIfname' in columns:
@@ -30,7 +34,7 @@ class LldpObj(SqPandasEngine):
         else:
             needed_fields = []
 
-        addnl_fields = [f for f in needed_fields if f not in cols]
+        addnl_fields += [f for f in needed_fields if f not in cols]
 
         user_query_cols = self._get_user_query_cols(query_str)
         addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
