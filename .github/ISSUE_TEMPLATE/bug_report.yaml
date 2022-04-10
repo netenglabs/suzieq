@@ -1,0 +1,98 @@
+---
+name: 🐛 Bug Report
+description: Create a report to help us improve
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: >
+        **NOTE:** This form is only for reporting _reproducible bugs_ in a current Suzieq installation. 
+        
+        - See the latest documentation:
+          https://suzieq.readthedocs.io/en/latest/
+        - Check the release notes:
+          https://suzieq.readthedocs.io/en/latest/release-notes/
+        - Look through the issues already resolved:
+          https://github.com/netenglabs/suzieq/issues?q=is%3Aclosed
+        - Join the conversation in our Slack:
+          https://join.slack.com/t/netenglabs/shared_invite/zt-g64xa6lc-SeP2OAj~3uLbgOWJniLslA
+
+  - type: input
+    attributes:
+      label: Suzieq version
+      description: What version of Suzieq are you currently running?
+      placeholder: 0.17.0
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Install Type
+      description: How are you running Suzieq
+      options:
+        - "container"
+        - "hand deployed python"
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Python version
+      description: What version of Python are you currently running?
+      options:
+        - "whatever is bundled with your container"
+        - "3.8"
+        - "3.9"
+        - "3.10"
+    validations:
+      required: true
+  - type: dropdown
+    attributes:
+      label: Impacted component
+      description: What part of Suzieq is impacted?
+      options:
+        - "sq-poller"
+        - "sq-rest-server"
+        - "suzieq-gui"
+        - "multiple components"
+        - "other"
+        - "no clue"
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Steps to Reproduce
+      description: >
+        Describe in detail the exact steps that someone else can take to
+        reproduce this bug using the current stable release of the Suzieq.
+        Include as much info as you can.
+      placeholder: >
+        <!-- 1. Go to '...'
+             2. Click on '....'
+             3. Scroll down to '....'
+             4. See error --!>
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: What did you expect to happen?
+      placeholder: <!--- Replace with Expected Behavior -->
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Observed Behavior
+      description: What happened instead?
+      placeholder: <!--- Replace with Observed Behavior -->
+    validations:
+      required: true
+  - type: textarea
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+      value:  <!--- Replace with Screenshots -->
+  - type: textarea
+    attributes:
+      label: Additional Context
+      description: Add any other context about the problem here.
+      value:  <!--- Replace with Additional Context -->
