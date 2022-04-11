@@ -530,35 +530,36 @@ class SqParquetDB(SqDB):
             dataset = ds.dataset(elem, format='parquet', partitioning='hive')
 
             if view == "all" and not (start_time or end_time):
-                files = dataset.files
+                selected_in_dir = dataset.files
             else:
-                lists = defaultdict(list)
+                files_per_ns = defaultdict(list)
                 for f in dataset.files:
                     nsp = os.path.dirname(f).split('namespace=')[-1]
-                    lists[nsp].append(f)
+                    files_per_ns[nsp].append(f)
 
-                files = []
-                for ele in lists:
+                selected_in_dir = []
+                for ele in files_per_ns:
                     # We've to account for the set from each namespace
-                    thislist_files = []
-                    lists[ele].sort()
+                    selected_in_ns = []
+                    files_per_ns[ele].sort()
                     if not start_time and not end_time:
-                        files.append(lists[ele][-1])
+                        selected_in_dir.append(files_per_ns[ele][-1])
                         continue
 
                     start_selected = False
-                    for i, file in enumerate(lists[ele]):
+                    for i, file in enumerate(files_per_ns[ele]):
                         thistime = os.path.basename(file).split('.')[0] \
                             .split('-')[-2:]
                         thistime = [int(x)*1000 for x in thistime]  # to msec
                         if (not start_time) or start_selected or (
                                 thistime[0] <= start_time <= thistime[1]):
                             if not end_time:
-                                files.extend(lists[ele][i:])
+                                selected_in_dir.extend(files_per_ns[ele][i:])
                                 break
                             if thistime[0] <= end_time:
-                                if start_time or start_selected:
-                                    files.append(file)
+                                if (start_time or start_selected or
+                                        view == "all"):
+                                    selected_in_dir.append(file)
                                     start_selected = True
                                 else:
                                     # When we're only operating on end-time,
@@ -567,18 +568,20 @@ class SqParquetDB(SqDB):
                                     # because the time provided falls between
                                     # the end of one file and the end time of
                                     # the next file. That is what we're doing
-                                    # here.
-                                    if len(thislist_files) > 1:
-                                        thislist_files[0] = thislist_files[1]
-                                        thislist_files[1] = file
+                                    # here. As the coalescer keeps all the
+                                    # the unique records, according to their
+                                    # keys
+                                    if len(selected_in_ns) > 1:
+                                        selected_in_ns[0] = selected_in_ns[1]
+                                        selected_in_ns[1] = file
                                     else:
-                                        thislist_files.append(file)
+                                        selected_in_ns.append(file)
                             else:
                                 break
-                    if thislist_files:
-                        files.extend(thislist_files)
-            if files:
-                filelist.extend(files)
+                    if selected_in_ns:
+                        selected_in_dir.extend(selected_in_ns)
+            if selected_in_dir:
+                filelist.extend(selected_in_dir)
 
         if filelist:
             return ds.dataset(filelist, format='parquet', partitioning='hive')
