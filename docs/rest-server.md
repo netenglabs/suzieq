@@ -13,16 +13,16 @@ You must launch the Suzieq docker container as follows:
 ```
 This assumes that you're using port 8000 to connect to the REST server. If you wish to use a different port for the REST server, say 7000, you can launch it as ```docker run -itd -p 7000:8000 --name suzieq netenglabs/suzieq:latest```.
 
-You then connect to the container with ```docker attach suzieq```, and launch the server with ```sq-rest-server.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running. 
+You then connect to the container with ```docker attach suzieq```, and launch the server with ```sq-rest-server.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running.
 
 The server is now accessible via [https://localhost:8000/api/docs](https://localhost:8000/api/docs) (or whatever port you've mapped the server to on the host). You need to pass the API_KEY in the request to be able to access the server. A simple example using the default API key and certificate is to use curl as follows:
 ```
     curl --insecure 'https://localhost:8000/api/v2/device/show?&access_token=496157e6e869ef7f3d6ecb24a6f6d847b224ee4f'
 ```
 
-The Suzieq docker container of course serves the data available under /suzieq/parquet inside the container. You can mount the parquet data you've already gathered via the `-v` option. So an example of mounting the parquet directory with data would be to launch the container as follows:
+The Suzieq docker container of course serves the data available under `/home/suzieq/parquet` inside the container. You can mount the parquet data you've already gathered via the `-v` option. So an example of mounting the parquet directory with data would be to launch the container as follows:
 ```
-    docker run -itd -p 8000:8000 -v/home/netenglabs/work/suzieq/tests/data/multidc/parquet-out:/suzieq/parquet --name suzieq netenglabs/suzieq:latest
+    docker run -itd -p 8000:8000 -v /path/to/you/suzieq-data:/home/suzieq/parquet --name suzieq netenglabs/suzieq:latest
 ```
 
 The REST server has been implemented using the [fastapi](https://fastapi.tiangolo.com/) server.
@@ -35,9 +35,9 @@ If you do decide to try out the API from within the browser, you need to authent
 
 ## Creating Your Specific Key and SSL Certificate
 
-If you wish to create your own self-signed certificate and API key, you can do so using the instructions in this section, in case you don't already know how to do so. 
+If you wish to create your own self-signed certificate and API key, you can do so using the instructions in this section, in case you don't already know how to do so.
 
-### SSL 
+### SSL
 
 ### Create a self signed cert
 
@@ -68,17 +68,11 @@ openssl rand -hex 20
 
 ### Changing the Location And Name of the Key/Cert Files
 
-The default location for the key and certificate files needed for REST is ~/.suzieq, and the file names are key,pem and cert.pem. If you wish these to be different, you can specify the full path of each of the files (or any one) via the ```rest_keyfile``` and ```rest_certfile``` variables in the suzieq config file, typically at ~/.suzieq/suzieq-cfg.yml. Here is an example of a config file with these two parameters defined:
-```
+The default location for the key and certificate files needed for REST is `~/.suzieq`, and the file names are `key.pem` and `cert.pem`. If you wish these to be different, you can specify the full path of each of the files (or any one) via the ```rest_keyfile``` and ```rest_certfile``` variables under the `rest` section of the suzieq config file, typically at ~/.suzieq/suzieq-cfg.yml. Here is an example of a config file with these two parameters defined:
 
-data-directory: /suzieq/parquet
-service-directory: /suzieq/config
-schema-directory: /suzieq/config/schema
-temp-directory: /tmp/
-# kafka-servers: localhost:9093
-logging-level: WARNING
-period: 15
-API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
-rest_certfile: /suzieq/cert.pem
-rest_keyfile: /suzieq/cert.pem
+```
+rest:
+    API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
+    rest_certfile: /suzieq/cert.pem
+    rest_keyfile: /suzieq/cert.pem
 ```

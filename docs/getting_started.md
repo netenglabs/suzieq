@@ -14,7 +14,7 @@ When you're within the suzieq-cli, you can run device unique columns=namespace t
 
 To start collecting data for your network, create an inventory file to gather the data from following the instructions here. Decide the directory where the data will be stored (ensure you have sufficient available space if you're going to be running the poller, say 100 MB at least). Lets call this dbdir. Now launch the suzieq docker container as follows:
 ```
-    docker run -it -vdbdir:/suzieq/parquet --name sq-poller netenglabs/suzieq
+    docker run -it -v dbdir:/home/suzieq/parquet --name sq-poller netenglabs/suzieq
     docker attach sq-poller # connect to the container
 ```
 
