@@ -7,7 +7,7 @@ In case you don't have a Suzieq REST server running yet, follow the [guide](./re
 Both for the Suzieq REST server and CLI you can use the same configuration file. You will need to add just 2 lines at the bottom of the configuration file to enable remote data access:
 
 ```yaml
-ux: 
+ux:
   engine: rest
 ```
 
@@ -16,7 +16,7 @@ ux:
 
 If you are using the docker container to use the CLI you need to mount the new configuration file inside the container. To do so:
 ```bash
-docker run -it -v suzieq-cfg.yml:~/.suzieq/suzieq-cfg.yml
+docker run -it -v suzieq-cfg.yml:/home/suzieq/.suzieq/suzieq-cfg.yml
 ```
 
 If you are using Suzieq as a Python package, place the configuration file in the folder where you launch the cli  `suzieq-cfg.yml` or, for a global configuration, in `~/.suzieq/suzieq-cfg.yml`.
