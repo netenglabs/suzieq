@@ -25,6 +25,8 @@ VOLUME [ "/home/$username/parquet" ]
  
 ENV PATH=/root/.local/bin:$PATH:/root/.local/lib/python3.7/site-packages/suzieq/cli/:/root/.local/lib/python3.7/site-packages/suzieq/poller/:/root/.local/lib/python3.7/site-packages/suzieq/restServer
 
+ENV SQENV=docker
+
 USER $username
 WORKDIR /home/$username
 ENTRYPOINT ["/bin/bash"]
