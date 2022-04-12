@@ -1,4 +1,5 @@
 from ipaddress import ip_network
+import re
 
 import numpy as np
 import pandas as pd
@@ -254,27 +255,15 @@ class InterfacesObj(SqPandasEngine):
 
         if_df = if_df.drop(columns=['description', 'routeDistinguisher',
                                     'interfaceMac'], errors='ignore')
-        # Map subinterface into parent interface
-        if_df['pifname'] = if_df.apply(
-            lambda x: x['ifname'].split('.')[0]
-            if x.type in ['subinterface', 'vlan']
-            else x['ifname'], axis=1)
 
-        # Thanks for Junos, remove all the useless parent interfaces
-        # if we have a .0 interface since thats the real deal
-        del_iflist = if_df.apply(lambda x: x.pifname
-                                 if x['ifname'].endswith('.0') else '',
-                                 axis=1) \
-            .unique().tolist()
+        # filter out loopback subinterfaces
+        if 'loopback' not in iftype:
+            lo_pattern = r'^(lo.*)|(.*oopback.*)$'
+            if_df = if_df[if_df.apply(
+                lambda x: re.match(lo_pattern, x.ifname) is None,
+                axis=1)]
 
-        if_df['type'] = if_df.apply(lambda x: 'ethernet'
-                                    if x['ifname'].endswith('.0')
-                                    else x['type'], axis=1)
-
-        if_df = if_df.query(f'~ifname.isin({del_iflist})').reset_index()
-        if_df['ifname'] = if_df.apply(
-            lambda x: x['ifname'] if not x['ifname'].endswith('.0')
-            else x['pifname'], axis=1)
+        if_df = self._drop_junos_pifnames(if_df).reset_index()
 
         lldpobj = self._get_table_sqobj('lldp')
         mlagobj = self._get_table_sqobj('mlag')
@@ -471,7 +460,61 @@ class InterfacesObj(SqPandasEngine):
                             'peerHostname', 'peerIfname', 'result',
                             'assertReason', 'timestamp']]
 
-    def _add_portmode(self, df: pd.DataFrame, **kwargs) -> pd.DataFrame:
+    def _drop_junos_pifnames(self, if_df: pd.DataFrame) -> pd.DataFrame:
+        """This function drops parent interfaces of Junos subinterfaces ending
+        with .0 and rename them as the parent interface
+
+        Args:
+            if_df (pd.DataFrame): interface dataframe
+
+        Returns:
+            pd.DataFrame: updated dataframe
+        """
+        # save the parent interface name in pifname column
+        if_df['pifname'] = if_df.apply(
+            lambda x: x['ifname'].split('.')[0]
+            if x.type in ['subinterface', 'vlan']
+            else x['ifname'], axis=1)
+
+        # save the parent interface for .0 in a different column
+        # this column will be used in the final merge
+        if_df['pifname_0'] = if_df.apply(
+            lambda x: x.ifname.split('.')[0] if x.ifname.endswith('.0')
+            else x.ifname, axis=1
+        )
+
+        # Thanks for Junos, remove all the useless parent interfaces
+        # if we have a .0 interface since thats the real deal
+
+        # remove parent interfaces of .0 from dataframe
+        parent_0_df = if_df.groupby(by=['namespace', 'hostname', 'pifname_0'])\
+            .size().reset_index(name='counts')
+
+        parent_0_df = parent_0_df[parent_0_df
+                                  .apply(lambda x: x.counts > 1, axis=1)] \
+            .rename(columns={'pifname_0': 'ifname'}) \
+            .drop(columns=['counts'])
+
+        res_df = pd.concat([if_df[['namespace', 'hostname', 'ifname']],
+                            parent_0_df]).drop_duplicates(keep=False)
+
+        if_df = if_df.merge(
+            res_df,
+            on=['namespace', 'hostname', 'ifname']
+        )
+
+        if_df['type'] = if_df.apply(lambda x: 'ethernet'
+                                    if x['ifname'].endswith('.0')
+                                    else x['type'], axis=1)
+
+        # map subinterface into parent interface
+        if_df['ifname'] = if_df.apply(
+            lambda x: x['ifname'] if not x['ifname'].endswith('.0')
+            else x['pifname'], axis=1)
+
+        return if_df
+
+    def _add_portmode(self, df: pd.DataFrame, **kwargs):
         """Add the switchport-mode i.e. acceess/trunk/routed'''
 
         :param df[pd.Dataframe]: The dataframe to add vlanList to
