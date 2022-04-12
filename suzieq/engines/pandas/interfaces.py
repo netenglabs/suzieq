@@ -56,20 +56,15 @@ class InterfacesObj(SqPandasEngine):
         if df.empty:
             return df
 
-        if portmode or 'portmode' in columns or '*' in columns:
+        if portmode or any(x in fields
+                           for x in ['vlan', 'vlanList', 'portmode']):
             for x in ['ipAddressList', 'ip6AddressList']:
                 if x in columns or '*' in columns:
                     continue
                 drop_cols.append(x)
             df = self._add_portmode(df, **kwargs)
 
-        if vlan or "vlanList" in columns or '*' in columns:
-            if 'portmode' not in columns and '*' not in columns:
-                for x in ['ipAddressList', 'ip6AddressList']:
-                    if x in columns:
-                        continue
-                    drop_cols.append(x)
-                df = self._add_portmode(df, **kwargs)
+        if vlan or "vlanList" in fields:
             df = self._add_vlanlist(df)
 
         if state or portmode:
@@ -598,6 +593,7 @@ class InterfacesObj(SqPandasEngine):
         if 'vlan_y' in df.columns:
             df['vlan'] = np.where(df.vlan_y.isnull(), df.vlan,
                                   df.vlan_y)
+        df['vlan'] = df.vlan.astype(int)
 
         df['portmode'] = np.where(df.adminState != 'up', '',
                                   df.portmode)
