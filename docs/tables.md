@@ -1,7 +1,7 @@
 ## Tables
 
 Tables are the most basic structure we store in the suzieq database.
-A table is the data that is gathered by a service, for instance BGP 
+A table is the data that is gathered by a service, for instance BGP
 is the BGP data
 that the bgp service collects from routers. To see what information is collected for each table, you can use the ```table describe table=<table name>``` via suzieq-cli to get the details. To see the list of tables, you can type ```help``` in suzieq-cli or run ```suzieq-cli --help```.
 
@@ -27,4 +27,5 @@ that the bgp service collects from routers. To see what information is collected
 | Topmem | yes | yes | yes | no | no | yes | no | no | no | no |
 | VLAN | yes | yes | yes | yes | yes | yes | no | yes | yes | no |
 
-\* - EVPN support for NXOS requires version 9.3.3 or above
+!!!Important
+    EVPN support for NXOS requires version 9.3.3 or above

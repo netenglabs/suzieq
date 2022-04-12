@@ -76,3 +76,4 @@ rest:
     rest_certfile: /suzieq/cert.pem
     rest_keyfile: /suzieq/cert.pem
 ```
+For more details about the configuration file, check the [Configuration](config_file.md) page
