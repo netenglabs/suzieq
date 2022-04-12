@@ -52,22 +52,22 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * ~~Anonymizing data -- almost done, needs tests, docs, and moved to master~~
 * ~~Junos support for qfx/mx~~
 * Building a reference topology to test all NOS (75% done)
-* --Topology as a first class property--
-  * draw a map for physical and logical layers, including routing protocols
-  * neighbor discovery
-    * --show neighbors that we know about but aren't polling--
-    * maybe be able to just start with one IP address and then discover 
+~~* Topology as a first class property~~
+    ~~* draw a map for physical and logical layers, including routing protocols~~
+* neighbor discovery
+    ~~* show neighbors that we know about but aren't polling~~
+~~    * maybe be able to just start with one IP address and then discover 
       everything that must be polled by suzieq
 * ~~support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP)~~
 * change gen_schema to ignore _ fields
 * ~~make column manipulation at higher level than engine.py~~
 * ~~Schema evolution and versioning to make suzieq less brittle to changes in the schema~~
 * Network wide summarize to take advantage of data across all commands
-~~* Web-based GUI
-  * Do you have a framework you'd like the GUI to use? 
-  * For what functions would you use a GUI?
+~~* Web-based GUI--
+--  * ~Do you have a framework you'd like the GUI to use?~~
+--  * For what functions would you use a GUI?~~
   * caching and performance
-~~* suzieq as a daemon
+~~* suzieq as a daemon--
   * do we need suzieq as a daemon -- what are the use cases
 * ~~REST API~~
 * Create tags or other ways to group  in a hierarchical way
@@ -85,11 +85,11 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
   * slack   * ???
 * ~~Users can do their own queries~~
   * ~~pandas or pandas sql query~~
-* --Great expectations or some other way of better verifying data output <https://docs.greatexpectations.io/en/latest/>--
-* --Better database abstractions so that we can more easily add new databases--
+~~* Great expectations or some other way of better verifying data output
+~~* Better database abstractions so that we can more easily add new databases~~
 * ~~Support for SONIC~~
   * This includes SONIC-specific stuff only. Linux-specific and FRR are already supported.
-* --Support for Cisco's CSR1000--
+~~* Support for Cisco's CSR1000~~
 * ~~Support for Cisco's IOS-XR~~
 * Temperature and power collection 
 * Cloud integration such as VPC from cloud providers

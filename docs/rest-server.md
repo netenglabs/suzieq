@@ -9,11 +9,11 @@ is via an API key and all access to the API is via SSL.
 
 You must launch the Suzieq docker container as follows:
 ```
-    docker run -itd -p 8000:8000 --name suzieq netenglabs/suzieq:latest
+    docker run -it -p 8000:8000 --name suzieq netenglabs/suzieq:latest
 ```
-This assumes that you're using port 8000 to connect to the REST server. If you wish to use a different port for the REST server, say 7000, you can launch it as ```docker run -itd -p 7000:8000 --name suzieq netenglabs/suzieq:latest```.
+This assumes that you're using port 8000 to connect to the REST server. If you wish to use a different port for the REST server, say 7000, you can launch it as ```docker run -it -p 7000:8000 --name suzieq netenglabs/suzieq:latest```.
 
-You then connect to the container with ```docker attach suzieq```, and launch the server with ```sq-rest-server.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running.
+You then launch the server with ```sq-rest-server.py &```. You can then exit the container using the usual Docker container escape sequence CTRL-p CTRL-q to leave the docker container running.
 
 The server is now accessible via [https://localhost:8000/api/docs](https://localhost:8000/api/docs) (or whatever port you've mapped the server to on the host). You need to pass the API_KEY in the request to be able to access the server. A simple example using the default API key and certificate is to use curl as follows:
 ```
@@ -22,7 +22,7 @@ The server is now accessible via [https://localhost:8000/api/docs](https://local
 
 The Suzieq docker container of course serves the data available under `/home/suzieq/parquet` inside the container. You can mount the parquet data you've already gathered via the `-v` option. So an example of mounting the parquet directory with data would be to launch the container as follows:
 ```
-    docker run -itd -p 8000:8000 -v /path/to/you/suzieq-data:/home/suzieq/parquet --name suzieq netenglabs/suzieq:latest
+    docker run -it -p 8000:8000 -v /path/to/you/suzieq-data:/home/suzieq/parquet --name suzieq netenglabs/suzieq:latest
 ```
 
 The REST server has been implemented using the [fastapi](https://fastapi.tiangolo.com/) server.
@@ -76,3 +76,4 @@ rest:
     rest_certfile: /suzieq/cert.pem
     rest_keyfile: /suzieq/cert.pem
 ```
+For more details about the configuration file, check the [Configuration](config_file.md) page

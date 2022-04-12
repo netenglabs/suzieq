@@ -5,8 +5,7 @@ To gather data from your network, you need to run the poller. We support gatheri
 To start, launch the docker container, **netenglabs/suzieq:latest** and attach to it via the following steps:
 
 ```
-  docker run -itd -v /home/${USER}/parquet-out:/home/suzieq/parquet -v /home/${USER}/<inventory-file>:/home/suzieq/inventory.yml --name sq-poller netenglabs/suzieq:latest
-  docker attach sq-poller
+  docker run -it -v /home/${USER}/parquet-out:/home/suzieq/parquet -v /home/${USER}/<inventory-file>:/home/suzieq/inventory.yml --name sq-poller netenglabs/suzieq:latest
 ```
 
 In the docker run command above, the two `-v` options provide host file/directory access to (I) store the parquet output files (the first `-v` option), and (II) the inventory file (the second `-v` option). The inventory file is the list of devices and their IP address that you wish to gather data from.
