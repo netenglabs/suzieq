@@ -68,7 +68,16 @@ def validate_sq_config(cfg):
 
     if (not os.path.isdir(ddir) or not (os.access(ddir, os.R_OK | os.W_OK |
                                                   os.EX_OK))):
-        return f'FATAL: Data directory {ddir} is not an acceesible dir'
+        if os.getenv('SQENV', None) == 'docker':
+            return f'FATAL: Data directory {ddir} is not an accessible ' \
+                'dir.\nIt looks like you are using docker, make sure that ' \
+                'the mounted volume has the proper permissions.\nYou can ' \
+                'update the permissions using the following command:\n\n' \
+                'docker run --user root -v samples_parquet-db:/home/suzieq'\
+                '/parquet --rm netenglabs/suzieq -c "chown -R ' \
+                '1000:1000 parquet"'
+        else:
+            return f'FATAL: Data directory {ddir} is not an accessible dir'
 
     # Locate the service and schema directories
     svcdir = cfg.get('service-directory', None)
