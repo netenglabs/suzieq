@@ -14,4 +14,4 @@ The SuzieQ GUI can be simply started, as shown above, typing the command `suzieq
 Some additional arguments are allowed to set up the GUI:
 
 - `-p --port`: defines in which port the GUI is going to run. By default is `8501`
-- `-c --config`: SuzieQ configuration file to use. Check the [Configuration](config_file.md#use-config-file) page to check the default configuration file location.
+- `-c --config`: SuzieQ configuration file to use. Check the [Configuration](config_file.md) page to check the default configuration file location.

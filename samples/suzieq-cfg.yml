@@ -1,4 +1,4 @@
-data-directory: ./parquet
+data-directory: /home/suzieq/parquet
 temp-directory: /tmp/
 
 rest:
@@ -6,16 +6,14 @@ rest:
   # The certificates listed below are provided purely to get started, In any
   # secure deployment, these must be generated specifically for the site and
   # these lines uncommented and containing the location of the site-specific file.
-  # rest_certfile: /suzieq/cert.pem
-  # rest_keyfile: /suzieq/key.pem
+  # rest_certfile: /secrets/cert.pem
+  # rest_keyfile: /secrets/key.pem
   #
   API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
   logging-level: WARNING
-  address: 127.0.0.1
+  address: 0.0.0.0
   port: 8000
-  # no-https: True
-  # rest-certfile: /secrets/cert.pem
-  # rest-keyfile: /secrets/key.pem
+  no-https: True # No need of HTTPS as we configured Caddy as ingress
   # logfile: /tmp/sq-rest-server.log
   # logsize is in bytes
   # logsize: 10000000
