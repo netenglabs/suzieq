@@ -24,12 +24,10 @@ Let's jump into what you can do with Suzieq now.
 
 We focus on the use of the analyzer via the CLI, suzieq-cli. You launch the CLI inside the docker image. You startup the docker image as described before, via the command:
 ```
-docker run -itd -v <parquet-out-local-dir>:/home/suzieq/parquet --name suzieq netenglabs/suzieq:latest
+docker run -it -v <parquet-out-local-dir>:/home/suzieq/parquet --name suzieq netenglabs/suzieq:latest
 ```
 
-You then attach to it via ```docker attach suzieq```.
-
-Once inside the Docker container, you can launch the CLI via the command `python3 suzieq/cli/suzieq-cli`.
+Once inside the Docker container, you can launch the CLI via the command `suzieq-cli`.
 
 There is a command prompt and at the bottom of the screen are some indicators of what Suzieq is up to:
 ![Suzieq Start](images/suzieq-start.png)
