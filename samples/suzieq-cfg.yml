@@ -1,5 +1,4 @@
----
-data-directory: /home/suzieq/parquet
+data-directory: ./parquet
 temp-directory: /tmp/
 
 rest:
@@ -11,34 +10,72 @@ rest:
   # rest_keyfile: /suzieq/key.pem
   #
   API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
-  address: 0.0.0.0
-  logfile: /tmp/sq-rest-server.log
   logging-level: WARNING
-  no-https: True # required for single HTTPS reverse proxy via Caddy
+  address: 127.0.0.1
   port: 8000
+  # no-https: True
+  # rest-certfile: /secrets/cert.pem
+  # rest-keyfile: /secrets/key.pem
+  # logfile: /tmp/sq-rest-server.log
+  # logsize is in bytes
+  # logsize: 10000000
+  # log-stdout: True
 
 poller:
-  connect-timeout: 15
-  logfile: /tmp/sq-poller.log
   logging-level: WARNING
   period: 60
+  connect-timeout: 15
+  # logfile: /tmp/sq-poller.log
+  # logsize is in bytes
+  # logsize: 10000000
+  # log-stdout: True
+  # inventory-file: "suzieq/conf/etc/inventory/inventory.yaml"  # Inventory file to use if it is not specified
+  # inventory-timeout: 10                                       # The maximum time in seconds for a source to
+                                                                # return its node list to the poller
+  # update-period: 3600                                         # The update period of the inventory in seconds
+
+  # The manager is the component of the poller producing the final inventory
+  # and launching the workers (the components in charge of polling the nodes)
+  # Uncomment these lines to customize its behaviour
+  #
+  # manager:
+  #   workers: 1  # Number of workers polling the nodes
+
+  # The chunker is the component of the poller in charge of splitting the
+  # final inventory into a number of chunks equal to the number of workers
+  # Uncomment these lines to customize its behaviour
+  #
+  # chunker:
+  #   policy: sequential
 
 coalescer:
+  # The coalescer has the role to group the single parquet files into a bigger
+  # one which represent a snapshot of the entire network, which is performed at
+  # every coalescing period. This value can be expressed using the following
+  # notation <value><m,h,d,w>, where:
+  # m: minutes (i.e. 30m )
+  # h: hours (i.e. 12h )
+  # d: days (i.e. 1d )
+  # w: weeks (i.e. 3w )
+  period: 1h
   # Comment the next line if you don't want the archive directory. This dir is
   # purely to save the uncoalesced data in raw format to avoid data loss in case
   # of a bug in the coalescer.
-  archive-directory:
-  logfile: /tmp/sq-coalescer.log
+  # archive-directory:
   logging-level: WARNING
-  # valid suffixes are h for hour, d for day and w for week
-  # 1h is 1 hour, 2w is 2 weeks and so on. y for year and m for month
-  # don't make sense because those are not fixed units. We don't yet support
-  # periods less than an hour.
-  period: 1h
+  # logfile: /tmp/sq-coalescer.log
+  # logsize is specified in bytes
+  # logsize: 10000000
+  # log-stdout: True
 
 analyzer:
   # By default, the timezone is set to the local timezone. Uncomment
   # this line if you want the analyzer (CLI/GUI/REST) to display the time
   # in a different timezone than the local time. The timestamp stored in
   # the database is always in UTC.
-  timezone: America/New_York
+  # Check all the supported values at the "TZ database name" columns of the
+  # table at this link: https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List
+  # timezone: America/Los_Angeles
+
+# ux:             # used for remote CLI
+#   engine: rest
