@@ -27,7 +27,7 @@ class NetworkObj(SqObject):
             raise AttributeError('No analysis engine specified')
 
         if not addresses:
-            raise AttributeError('Must specify address or asn')
+            raise AttributeError('Must specify address')
 
         for addr in addresses:
             try:

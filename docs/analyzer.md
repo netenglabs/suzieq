@@ -18,19 +18,16 @@ This document provides a preliminary overview of the features offered by the Suz
     - [Interface Assert](#interface-assert)
     - [OSPF Assert](#ospf-assert)
 - [Summarize](#summarize)
-    - [TODO](#todo)
 
 ##  1. <a name='analysis'></a>Analysis
 Let's jump into what you can do with Suzieq now.
 
 We focus on the use of the analyzer via the CLI, suzieq-cli. You launch the CLI inside the docker image. You startup the docker image as described before, via the command:
 ```
-docker run -itd -v <parquet-out-local-dir>:/home/suzieq/parquet --name suzieq netenglabs/suzieq:latest
+docker run -it -v <parquet-out-local-dir>:/home/suzieq/parquet --name suzieq netenglabs/suzieq:latest
 ```
 
-You then attach to it via ```docker attach suzieq```.
-
-Once inside the Docker container, you can launch the CLI via the command `python3 suzieq/cli/suzieq-cli`.
+Once inside the Docker container, you can launch the CLI via the command `suzieq-cli`.
 
 There is a command prompt and at the bottom of the screen are some indicators of what Suzieq is up to:
 ![Suzieq Start](images/suzieq-start.png)
@@ -276,49 +273,79 @@ some number of checks are made to ensure that the network is setup correctly. Fo
 you get an output that shows all the data necessary for the checks, a pass/fail column, and
 a reason column for any failed checks.
 
-Also, as mentioned before, if you run an assert from your
+Only Interface, BGP, OSPF and EVPN tables have predefined asserts defined. In each case, the check is performed for consistency across each end of a resource: for example between the two interface ends of a link, or the peers of a routing protocol. These asserts are a big aid in validating the network after using network automation tools such as Ansible to configure the network.
+
+As mentioned before, if you run an assert from your
 shell and check the return code, a failure of the assert will
 be a non-zero value, usually 255.
 
 ###  2.1. <a name='bgp-assert'></a>BGP Assert
-As shown above in the README
+The checks that are run in the BGP assert are:
+
+- The BGP peers on both ends are configured with the expected ASN of the peer (we handle FRR’s remote-as external/internal model as well)
+- The BGP peers on both ends are configured with the same set of AFI/SAFI
+- For unestablished BGP sessions, we check if the reason is that either a peer is misconfigured, or if the expected peer is not even configured (we identify the owner of the peer IP address, and check if that peer has any failed session or not).
+
+Dynamic BGP session mismatches are not yet handled.
+
+
+Here an example result of `bgp assert` command:
 ![Suzieq_bgp_assert](images/suzieq-bgp-assert.png)
 
-The checks that are run in the BGP assert are:
- * outgoing link down
- * no route to peer
- * asn mismatch
- * not established -- it gets the error that the device reported
-in the notifcnReason
-
 ###  2.2. <a name='evpnvni-assert'></a>EvpnVni Assert
+The following checks are performed as part of the evpnVni assert:
+
+- If multicast is used for replication, the multicast group to VNI mapping is consistent throughout the network
+- Any VTEP with a locally attached VNI is known to all other VTEPs that have the same VNI
+- The local VXLAN interface(s) are up
+- For FRR-based network OS, verify that the head-end replication entry is configured correctly
+- For FRR-based network OS, verify that the Vxlan interface is part of the bridge
+
+Currently, evpnVni assertion does not support a single Vxlan interface for all VNI model
+
+Here an example result of `evpnVni assert` command:
 ![Suzieq_evpnvni_assert](images/suzieq-evpnVni-assert.png)
 
-The checks in EvpnVni Assert are:
- * interface is down
- * some remote VTEPs missing
- * a VTEP is not reachable
- * a VTEP is reachable via default
- * HER is missing VTEPs
-
 ###  2.3. <a name='interface-assert'></a>Interface Assert
+
+The following checks are performed on each appropriate pair of interfaces in the SuzieQ database:
+
+- Match MTU: Verify that the MTU on both ends of the link are the same
+- Match Speed: Verify that the speed on both ends of the link are the same
+- Match portmode: Verify that the switchport mode (access, trunk, routed) on both ends of the link are the same
+- Match PVID: Verify that the default VLAN on both ends of a link are the same. In case of access links, this is the only allowed VLAN on the link
+- Match VLAN set: Verify that the set of active VLANs on both ends of a link are the same
+- Match IP address: Verify that either the link is an unnumbered link (/32 or /128) or they both belong the same subnet
+
+Here an example result of `interface assert` command:
 ![Suzieq_interface_assert](images/suzieq-interface-assert.png)
 
-The checks in Interface Assert are:
- * mtu match on both sides of a connection
-
 ###  2.4. <a name='ospf-assert'></a>OSPF Assert
+The following checks are performed as part of the OSPF assert:
+
+- No duplicate router IDs configured across all OSPF routers in a namespace
+- The peers of an OSPF interface are either unnumbered or belong to the same subnet
+- The peers of an OSPF session have the same MTU
+- The peers of an OSPF session have the same timers: hello and dead times
+- The peers of an OSPF session have the same area
+- The peers of an OSPF session have the same are stubbiness
+- The peers of an OSPF session have the same network type
+- The peers of an OSPF session belong to the same VRF
+- Loopback interfaces are of the OSPF network type loopback
+
+Here an example result of `ospf assert` command:
 ![Suzieq_ospf_assert](images/suzieq-ospf-assert.png)
 
-The checks in OSPF Assert are:
- * duplicate routerId
- * subnet mismatch
- * area mismatch
- * Hello timers mismatch
- * Dead timer mismatch
- * network type mismatch
- * passive config mismatch
- * vrf mismatch
-
 ##  3. <a name='summarize'></a>Summarize
-###  3.1. <a name='todo'></a>TODO
+
+For each table, there is a `summarize` command.
+This command gives an overview of the state of each namespace.
+
+![Suzieq_interface_summarize](images/if-summarize.png)
+
+As the other commands, also on the summarize command it's possible to define a subset of the network to summarize.
+For example it is possible to get data of a subset of the namespaces, filter only a subset of the hosts etc.
+
+![Suzieq_interface_filtered_summarize](images/filt-if-summarize.png)
+
+In this example, it's shown the summary of spine nodes inside the `dual-bgp` namespace.
