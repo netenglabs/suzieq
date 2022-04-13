@@ -382,11 +382,17 @@ class InterfaceService(Service):
                     continue
                 if '.' in lifname:
                     _, vlan = lifname.split('.')
+                    # This order is important, don't change; irb is an internal
+                    # interface
                     if ifname == "irb":
                         iftype = 'vlan'
+                    elif entry['type'] == 'internal':
+                        iftype = 'internal'
                     else:
                         iftype = 'subinterface'
                     vlan = int(vlan)
+                    if vlan > 4095:
+                        vlan = 0
                 else:
                     vlan = 0
                     iftype = entry['type']
