@@ -78,6 +78,8 @@ if __name__ == '__main__':
     parser.add_argument('--data_dir', '-d', type=str)
     parser.add_argument('--overwrite', '-o', action='store_true')
     parser.add_argument('--namespace', '-n', type=str)
+    parser.add_argument('--verb', '-v', type=str)
+    parser.add_argument('--service', '-s', type=str)
     parser.add_argument('--reset', '-r', action='store_true')
     userargs = parser.parse_args()
     logger = logging.getLogger('update_sqcmds')
@@ -104,6 +106,12 @@ if __name__ == '__main__':
                     test['command'] = \
                         f"{test['command']} --namespace={userargs.namespace}"
                     changes += 1
+
+            if userargs.verb and userargs.verb not in test['command']:
+                continue
+
+            if userargs.service and userargs.service not in test['command']:
+                continue
 
             if (result not in test or test[result] is None or
                     userargs.overwrite):
