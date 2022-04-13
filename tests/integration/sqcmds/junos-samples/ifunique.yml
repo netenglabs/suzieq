@@ -52,10 +52,10 @@ tests:
 - command: interface unique --count=True --format=json --namespace=junos --columns=vlan
   data-directory: tests/data/parquet/
   marks: interface unique junos
-  output: '[{"vlan": 10, "numRows": 1}, {"vlan": 20, "numRows": 1}, {"vlan": 30, "numRows":
-    2}, {"vlan": 2, "numRows": 4}, {"vlan": 3, "numRows": 4}, {"vlan": 4, "numRows":
+  output: '[{"vlan": 10, "numRows": 2}, {"vlan": 20, "numRows": 2}, {"vlan": 2, "numRows":
+    4}, {"vlan": 3, "numRows": 4}, {"vlan": 4, "numRows": 4}, {"vlan": 30, "numRows":
     4}, {"vlan": 999, "numRows": 4}, {"vlan": 1, "numRows": 7}, {"vlan": 16385, "numRows":
-    7}, {"vlan": 32768, "numRows": 14}, {"vlan": 0, "numRows": 312}]'
+    7}, {"vlan": 32768, "numRows": 14}, {"vlan": 0, "numRows": 308}]'
 - command: interface unique --count=True --format=json --namespace=junos --columns=speed
   data-directory: tests/data/parquet/
   marks: interface unique junos
@@ -71,13 +71,13 @@ tests:
   data-directory: tests/data/parquet/
   marks: interface unique junos
   output: '[{"reason": "", "numRows": 360}]'
-- command: interface unique --count=True --format=json --namespace=junos --query-str='macaddr == ""
-    ' --columns=macaddr
+- command: interface unique --count=True --format=json --namespace=junos --query-str='macaddr
+    == "" ' --columns=macaddr
   data-directory: tests/data/parquet/
   marks: interface unique junos
   output: '[]'
-- command: interface unique --count=True --format=json --namespace=junos --query-str='macaddr == "None"
-    ' --columns=macaddr
+- command: interface unique --count=True --format=json --namespace=junos --query-str='macaddr
+    == "None" ' --columns=macaddr
   data-directory: tests/data/parquet/
   marks: interface unique junos
   output: '[]'
