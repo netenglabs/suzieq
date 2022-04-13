@@ -1,5 +1,21 @@
 # Release Notes
 
+## 0.17.1 (Apr 12, 2022)
+
+This patch release for version 0.17.0 fixes a bunch of deployment issues that 0.17.0 introduced due to changing the default user inside the container from root to suzieq. Besides this, the following bug fixes and an enhancement are part of this release:
+
+* **Active column displayed with +/-**: Whenever you request data between two time periods or request all records via view='all' option, the active column was not displayed/returned. This meant, a user couldn't figure out if a record was added or deleted. We now return the active column and in the CLI, we display the active column as '+' (for added) or '-' (for deleted) with each record. The REST, JSON, non-human as well pythonic API return True (for records added i.e. active) and False for deleted (or not active) records.
+* Bug fix to improve query response with time: Due to a bug in the code, the queries were very slow in returning the data when asked for data back in time.
+* Bug fix to display VLAN info consistently: Not every NOS returns the native VLAN (or PVID) of a port with the same command. Therefore, we weren't displaying the correct VLAN info even though we had it.
+* Bug fix to handle interface assert: Interface assert was incorrectly removing certain interfaces for interfaces associated with Junos-based devices.
+* Bug fix to set VLAN correctly for Junos-based devices: The poller incorrectly marked the VLAN as 16285 for interfaces such as lo0.16385. We now ensure that the VLAN is never > 4095, and set it to zero if it is.
+* Bug fix in filtering with remote DB: Namespace/hostname filters weren't working correctly when used with the remote DB.
+* Bug fix in passphrase keyword assumed and documented: The correct keyword is key-passphrase.
+* Bug fix for jumphosts when jump host key was not specified
+* Added code to notify users with a proper message due to permission problems inside the container.
+* Updated documents to reflect the reality of 0.17.1.
+* Improved tests 
+
 ## 0.17.0 (Mar 29, 2022)
 
 The 17th release of SuzieQ comes with the following new features and bug fixes. The main improvements are in the area of more accurate database records, improved user experience via GUI and remote DB, imrpvoed platform support for IOSXE, NXOS and EOS, and a significant code refactoring to make the codebase consistent and simple. This is in addition to numerous bug fixes, and the addition of numerous tests. You can say this is the first release that starts to target segments outside the datacenter, specifically the campus.
