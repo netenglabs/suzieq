@@ -541,7 +541,6 @@ tests:
     "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "timestamp": 1616352404640}]'
 - command: path show --src=172.16.1.101 --dest=172.16.253.1 --namespace=dual-evpn
     --format=json
-  marks: path show cumulus
   data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "dual-evpn", "hostname": "server101",
@@ -800,6 +799,7 @@ tests:
       "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu":
       1500, "outMtu": 65536, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup":
       "", "nexthopIp": "", "error": "Dst MTU != Src MTU", "timestamp": 1616644823003}]'
+  marks: path show cumulus
 - command: path summarize --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
     --format=json
   data-directory: tests/data/parquet/
@@ -1663,7 +1663,8 @@ tests:
       "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "error": "", "timestamp":
       1616644822254}]'
   marks: path show cumulus bridged
-- command: path show --src=172.16.1.101 --dest=172.16.253.1 --namespace=ospf-ibgp --format=json
+- command: path show --src=172.16.1.101 --dest=172.16.253.1 --namespace=ospf-ibgp
+    --format=json
   data-directory: tests/data/parquet/
   error:
     error: '[{"pathid": 1, "hopCount": 0, "namespace": "ospf-ibgp", "hostname": "server101",
@@ -1933,7 +1934,7 @@ tests:
     "mtuMatch": true, "inMtu": 9000, "outMtu": 9000, "protocol": "l2", "ipLookup":
     "172.16.1.103", "vtepLookup": "", "macLookup": "52:54:00:24:64:ca", "nexthopIp":
     "172.16.1.103", "timestamp": null}, {"pathid": 1, "hopCount": 1, "namespace":
-    "ospf-ibgp", "hostname": "leaf01", "iif": "bond01", "oif": "swp1", "vrf": "default",
+    "ospf-ibgp", "hostname": "leaf01", "iif": "bond01", "oif": "swp1", "vrf": "evpn-vrf",
     "isL2": true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216,
     "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.134", "macLookup": "",
     "nexthopIp": "10.0.0.22", "timestamp": 1616681581705}, {"pathid": 1, "hopCount":
@@ -1942,7 +1943,7 @@ tests:
     "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
     "macLookup": "", "nexthopIp": "10.0.0.13", "timestamp": 1616681581652}, {"pathid":
     1, "hopCount": 3, "namespace": "ospf-ibgp", "hostname": "leaf03", "iif": "swp1",
-    "oif": "bond01", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    "oif": "bond01", "vrf": "evpn-vrf", "isL2": true, "overlay": true, "mtuMatch":
     true, "inMtu": 9216, "outMtu": 9000, "protocol": "l2", "ipLookup": "172.16.1.103",
     "vtepLookup": "", "macLookup": null, "nexthopIp": "", "timestamp": 1616681581517},
     {"pathid": 1, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "server103",
@@ -1954,7 +1955,7 @@ tests:
     "mtuMatch": true, "inMtu": 9000, "outMtu": 9000, "protocol": "l2", "ipLookup":
     "172.16.1.103", "vtepLookup": "", "macLookup": "52:54:00:24:64:ca", "nexthopIp":
     "172.16.1.103", "timestamp": null}, {"pathid": 2, "hopCount": 1, "namespace":
-    "ospf-ibgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp1", "vrf": "default",
+    "ospf-ibgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp1", "vrf": "evpn-vrf",
     "isL2": true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216,
     "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.134", "macLookup": "",
     "nexthopIp": "10.0.0.22", "timestamp": 1616681581651}, {"pathid": 2, "hopCount":
@@ -1963,7 +1964,7 @@ tests:
     "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
     "macLookup": "", "nexthopIp": "10.0.0.13", "timestamp": 1616681581652}, {"pathid":
     2, "hopCount": 3, "namespace": "ospf-ibgp", "hostname": "leaf03", "iif": "swp1",
-    "oif": "bond01", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    "oif": "bond01", "vrf": "evpn-vrf", "isL2": true, "overlay": true, "mtuMatch":
     true, "inMtu": 9216, "outMtu": 9000, "protocol": "l2", "ipLookup": "172.16.1.103",
     "vtepLookup": "", "macLookup": null, "nexthopIp": "", "timestamp": 1616681581517},
     {"pathid": 2, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "server103",
@@ -1975,7 +1976,7 @@ tests:
     "mtuMatch": true, "inMtu": 9000, "outMtu": 9000, "protocol": "l2", "ipLookup":
     "172.16.1.103", "vtepLookup": "", "macLookup": "52:54:00:24:64:ca", "nexthopIp":
     "172.16.1.103", "timestamp": null}, {"pathid": 3, "hopCount": 1, "namespace":
-    "ospf-ibgp", "hostname": "leaf01", "iif": "bond01", "oif": "swp2", "vrf": "default",
+    "ospf-ibgp", "hostname": "leaf01", "iif": "bond01", "oif": "swp2", "vrf": "evpn-vrf",
     "isL2": true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216,
     "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.134", "macLookup": "",
     "nexthopIp": "10.0.0.21", "timestamp": 1616681581705}, {"pathid": 3, "hopCount":
@@ -1984,7 +1985,7 @@ tests:
     "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
     "macLookup": "", "nexthopIp": "10.0.0.13", "timestamp": 1616681581652}, {"pathid":
     3, "hopCount": 3, "namespace": "ospf-ibgp", "hostname": "leaf03", "iif": "swp2",
-    "oif": "bond01", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    "oif": "bond01", "vrf": "evpn-vrf", "isL2": true, "overlay": true, "mtuMatch":
     true, "inMtu": 9216, "outMtu": 9000, "protocol": "l2", "ipLookup": "172.16.1.103",
     "vtepLookup": "", "macLookup": null, "nexthopIp": "", "timestamp": 1616681581517},
     {"pathid": 3, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "server103",
@@ -1996,7 +1997,7 @@ tests:
     "mtuMatch": true, "inMtu": 9000, "outMtu": 9000, "protocol": "l2", "ipLookup":
     "172.16.1.103", "vtepLookup": "", "macLookup": "52:54:00:24:64:ca", "nexthopIp":
     "172.16.1.103", "timestamp": null}, {"pathid": 4, "hopCount": 1, "namespace":
-    "ospf-ibgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp2", "vrf": "default",
+    "ospf-ibgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp2", "vrf": "evpn-vrf",
     "isL2": true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216,
     "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.134", "macLookup": "",
     "nexthopIp": "10.0.0.21", "timestamp": 1616681581651}, {"pathid": 4, "hopCount":
@@ -2005,7 +2006,7 @@ tests:
     "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
     "macLookup": "", "nexthopIp": "10.0.0.13", "timestamp": 1616681581652}, {"pathid":
     4, "hopCount": 3, "namespace": "ospf-ibgp", "hostname": "leaf03", "iif": "swp2",
-    "oif": "bond01", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    "oif": "bond01", "vrf": "evpn-vrf", "isL2": true, "overlay": true, "mtuMatch":
     true, "inMtu": 9216, "outMtu": 9000, "protocol": "l2", "ipLookup": "172.16.1.103",
     "vtepLookup": "", "macLookup": null, "nexthopIp": "", "timestamp": 1616681581517},
     {"pathid": 4, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "server103",
@@ -2017,7 +2018,7 @@ tests:
     "mtuMatch": true, "inMtu": 9000, "outMtu": 9000, "protocol": "l2", "ipLookup":
     "172.16.1.103", "vtepLookup": "", "macLookup": "52:54:00:24:64:ca", "nexthopIp":
     "172.16.1.103", "timestamp": null}, {"pathid": 5, "hopCount": 1, "namespace":
-    "ospf-ibgp", "hostname": "leaf01", "iif": "bond01", "oif": "swp1", "vrf": "default",
+    "ospf-ibgp", "hostname": "leaf01", "iif": "bond01", "oif": "swp1", "vrf": "evpn-vrf",
     "isL2": true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216,
     "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.134", "macLookup": "",
     "nexthopIp": "10.0.0.22", "timestamp": 1616681581705}, {"pathid": 5, "hopCount":
@@ -2026,7 +2027,7 @@ tests:
     "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
     "macLookup": "", "nexthopIp": "10.0.0.14", "timestamp": 1616681581652}, {"pathid":
     5, "hopCount": 3, "namespace": "ospf-ibgp", "hostname": "leaf04", "iif": "swp1",
-    "oif": "bond01", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    "oif": "bond01", "vrf": "evpn-vrf", "isL2": true, "overlay": true, "mtuMatch":
     true, "inMtu": 9216, "outMtu": 9000, "protocol": "l2", "ipLookup": "172.16.1.103",
     "vtepLookup": "", "macLookup": null, "nexthopIp": "", "timestamp": 1616681581649},
     {"pathid": 5, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "server103",
@@ -2038,7 +2039,7 @@ tests:
     "mtuMatch": true, "inMtu": 9000, "outMtu": 9000, "protocol": "l2", "ipLookup":
     "172.16.1.103", "vtepLookup": "", "macLookup": "52:54:00:24:64:ca", "nexthopIp":
     "172.16.1.103", "timestamp": null}, {"pathid": 6, "hopCount": 1, "namespace":
-    "ospf-ibgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp1", "vrf": "default",
+    "ospf-ibgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp1", "vrf": "evpn-vrf",
     "isL2": true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216,
     "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.134", "macLookup": "",
     "nexthopIp": "10.0.0.22", "timestamp": 1616681581651}, {"pathid": 6, "hopCount":
@@ -2047,7 +2048,7 @@ tests:
     "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
     "macLookup": "", "nexthopIp": "10.0.0.14", "timestamp": 1616681581652}, {"pathid":
     6, "hopCount": 3, "namespace": "ospf-ibgp", "hostname": "leaf04", "iif": "swp1",
-    "oif": "bond01", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    "oif": "bond01", "vrf": "evpn-vrf", "isL2": true, "overlay": true, "mtuMatch":
     true, "inMtu": 9216, "outMtu": 9000, "protocol": "l2", "ipLookup": "172.16.1.103",
     "vtepLookup": "", "macLookup": null, "nexthopIp": "", "timestamp": 1616681581649},
     {"pathid": 6, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "server103",
@@ -2059,7 +2060,7 @@ tests:
     "mtuMatch": true, "inMtu": 9000, "outMtu": 9000, "protocol": "l2", "ipLookup":
     "172.16.1.103", "vtepLookup": "", "macLookup": "52:54:00:24:64:ca", "nexthopIp":
     "172.16.1.103", "timestamp": null}, {"pathid": 7, "hopCount": 1, "namespace":
-    "ospf-ibgp", "hostname": "leaf01", "iif": "bond01", "oif": "swp2", "vrf": "default",
+    "ospf-ibgp", "hostname": "leaf01", "iif": "bond01", "oif": "swp2", "vrf": "evpn-vrf",
     "isL2": true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216,
     "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.134", "macLookup": "",
     "nexthopIp": "10.0.0.21", "timestamp": 1616681581705}, {"pathid": 7, "hopCount":
@@ -2068,7 +2069,7 @@ tests:
     "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
     "macLookup": "", "nexthopIp": "10.0.0.14", "timestamp": 1616681581652}, {"pathid":
     7, "hopCount": 3, "namespace": "ospf-ibgp", "hostname": "leaf04", "iif": "swp2",
-    "oif": "bond01", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    "oif": "bond01", "vrf": "evpn-vrf", "isL2": true, "overlay": true, "mtuMatch":
     true, "inMtu": 9216, "outMtu": 9000, "protocol": "l2", "ipLookup": "172.16.1.103",
     "vtepLookup": "", "macLookup": null, "nexthopIp": "", "timestamp": 1616681581649},
     {"pathid": 7, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "server103",
@@ -2080,7 +2081,7 @@ tests:
     "mtuMatch": true, "inMtu": 9000, "outMtu": 9000, "protocol": "l2", "ipLookup":
     "172.16.1.103", "vtepLookup": "", "macLookup": "52:54:00:24:64:ca", "nexthopIp":
     "172.16.1.103", "timestamp": null}, {"pathid": 8, "hopCount": 1, "namespace":
-    "ospf-ibgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp2", "vrf": "default",
+    "ospf-ibgp", "hostname": "leaf02", "iif": "bond01", "oif": "swp2", "vrf": "evpn-vrf",
     "isL2": true, "overlay": false, "mtuMatch": true, "inMtu": 9000, "outMtu": 9216,
     "protocol": "ospf", "ipLookup": "", "vtepLookup": "10.0.0.134", "macLookup": "",
     "nexthopIp": "10.0.0.21", "timestamp": 1616681581651}, {"pathid": 8, "hopCount":
@@ -2089,7 +2090,7 @@ tests:
     "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
     "macLookup": "", "nexthopIp": "10.0.0.14", "timestamp": 1616681581652}, {"pathid":
     8, "hopCount": 3, "namespace": "ospf-ibgp", "hostname": "leaf04", "iif": "swp2",
-    "oif": "bond01", "vrf": "default", "isL2": true, "overlay": true, "mtuMatch":
+    "oif": "bond01", "vrf": "evpn-vrf", "isL2": true, "overlay": true, "mtuMatch":
     true, "inMtu": 9216, "outMtu": 9000, "protocol": "l2", "ipLookup": "172.16.1.103",
     "vtepLookup": "", "macLookup": null, "nexthopIp": "", "timestamp": 1616681581649},
     {"pathid": 8, "hopCount": 4, "namespace": "ospf-ibgp", "hostname": "server103",

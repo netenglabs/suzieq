@@ -54,11 +54,11 @@ tests:
 - command: interface unique --count=True --format=json --columns=vlan --namespace=eos
   data-directory: tests/data/parquet/
   marks: interface unique eos
-  output: '[{"vlan": 1, "numRows": 1}, {"vlan": 16385, "numRows": 1}, {"vlan": 2,
-    "numRows": 2}, {"vlan": 3, "numRows": 2}, {"vlan": 4, "numRows": 2}, {"vlan":
-    10, "numRows": 2}, {"vlan": 20, "numRows": 2}, {"vlan": 32768, "numRows": 2},
-    {"vlan": 30, "numRows": 4}, {"vlan": 1006, "numRows": 4}, {"vlan": 4094, "numRows":
-    6}, {"vlan": 0, "numRows": 160}]'
+  output: '[{"vlan": 16385, "numRows": 1}, {"vlan": 2, "numRows": 2}, {"vlan": 3,
+    "numRows": 2}, {"vlan": 4, "numRows": 2}, {"vlan": 32768, "numRows": 2}, {"vlan":
+    10, "numRows": 4}, {"vlan": 20, "numRows": 4}, {"vlan": 1006, "numRows": 4}, {"vlan":
+    1, "numRows": 5}, {"vlan": 4094, "numRows": 6}, {"vlan": 30, "numRows": 8}, {"vlan":
+    0, "numRows": 148}]'
 - command: interface unique --count=True --format=json --columns=speed --namespace=eos
   data-directory: tests/data/parquet/
   marks: interface unique eos
@@ -75,11 +75,13 @@ tests:
   data-directory: tests/data/parquet/
   marks: interface unique eos
   output: '[{"reason": "", "numRows": 188}]'
-- command: interface unique --count=True --format=json --query-str='macaddr == ""' --columns=macaddr --namespace=eos
+- command: interface unique --count=True --format=json --query-str='macaddr == ""'
+    --columns=macaddr --namespace=eos
   data-directory: tests/data/parquet/
   marks: interface unique eos
   output: '[]'
-- command: interface unique --count=True --format=json --query-str='macaddr == "None"' --columns=macaddr --namespace=eos
+- command: interface unique --count=True --format=json --query-str='macaddr == "None"'
+    --columns=macaddr --namespace=eos
   data-directory: tests/data/parquet/
   marks: interface unique eos
   output: '[]'
