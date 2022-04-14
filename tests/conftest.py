@@ -11,7 +11,6 @@ from unittest.mock import MagicMock, Mock
 import pandas as pd
 import pytest
 import yaml
-from _pytest.mark.structures import Mark, MarkDecorator
 from filelock import FileLock
 
 from nubia import Nubia
@@ -41,7 +40,7 @@ cli_commands = [(v.__command['name'])
                 for k, v in SqCommand.get_plugins().items()
                 if k not in ['TopmemCmd', 'TopcpuCmd']]
 
-tables = get_tables()
+tables = [t for t in get_tables() if t not in ['topmem', 'topcpu']]
 
 
 @pytest.fixture(scope='session')
@@ -209,7 +208,7 @@ def load_up_the_tests(folder):
                     # the marks MUST be registered in pytest.ini
                     markers = []
                     if 'marks' in t:
-                        markers = [MarkDecorator(Mark(x, [], {}))
+                        markers = [getattr(pytest.mark, x)
                                    for x in t['marks'].split()]
                     if 'xfail' in t:
                         except_err = None
