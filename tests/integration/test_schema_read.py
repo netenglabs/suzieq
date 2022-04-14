@@ -1,15 +1,14 @@
 import pytest
-from _pytest.mark.structures import Mark, MarkDecorator
 
-from tests.conftest import DATADIR
-from suzieq.sqobjects import get_tables, get_sqobject
+from tests.conftest import DATADIR, tables
+from suzieq.sqobjects import get_sqobject
 
 
 @ pytest.mark.schema
 @ pytest.mark.parametrize('table',
                           [pytest.param(x,
-                                        marks=MarkDecorator(Mark(x, [], {})))
-                           for x in get_tables()])
+                                        marks=getattr(pytest.mark, x))
+                           for x in tables])
 @ pytest.mark.parametrize('datadir', DATADIR)
 @pytest.mark.parametrize('columns', [['*'], ['default']])
 def test_schema_data_consistency(table, datadir, columns, get_table_data_cols):
