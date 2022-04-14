@@ -7,7 +7,6 @@ import subprocess
 from pathlib import Path
 
 import pytest
-from _pytest.mark.structures import Mark, MarkDecorator
 
 from nubia import context
 import pandas as pd
@@ -15,7 +14,7 @@ import pandas as pd
 from tests.conftest import (load_up_the_tests, tables, DATADIR,
                             setup_sqcmds, cli_commands,
                             create_dummy_config_file)
-from suzieq.sqobjects import get_sqobject, get_tables
+from suzieq.sqobjects import get_sqobject
 from suzieq.cli.sqcmds import *  # noqa
 from suzieq.version import SUZIEQ_VERSION
 from suzieq.shared.utils import get_sq_install_dir
@@ -28,10 +27,10 @@ verbs = ['show', 'summarize', 'describe', 'help']
 @pytest.mark.sqcmds
 @pytest.mark.slow
 @pytest.mark.parametrize("command",  [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 @pytest.mark.parametrize("verb", [
-    pytest.param(verb, marks=MarkDecorator(Mark(verb, [], {})))
+    pytest.param(verb, marks=getattr(pytest.mark, verb))
     for verb in verbs])
 def test_commands(setup_nubia, get_cmd_object_dict, command, verb):
     """ runs through all of the commands for each of the sqcmds
@@ -67,7 +66,7 @@ def test_summary_exception(setup_nubia):
 
 @pytest.mark.sqcmds
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_all_columns(setup_nubia, get_cmd_object_dict, cmd):
     s = _test_command(get_cmd_object_dict[cmd], 'show', None,
@@ -78,7 +77,7 @@ def test_all_columns(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_hostname_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     if cmd != "table":
@@ -90,7 +89,7 @@ def test_hostname_show_filter(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_engine_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     s = _test_command(get_cmd_object_dict[cmd], 'show', None,
@@ -101,7 +100,7 @@ def test_engine_show_filter(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_namespace_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     s = _test_command(get_cmd_object_dict[cmd], 'show', None,
@@ -112,7 +111,7 @@ def test_namespace_show_filter(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_view_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     s = _test_command(get_cmd_object_dict[cmd], 'show', None, {'view': 'all'})
@@ -122,7 +121,7 @@ def test_view_show_filter(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_start_time_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     s = _test_command(get_cmd_object_dict[cmd], 'show', None, {
@@ -134,7 +133,7 @@ def test_start_time_show_filter(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.filter
 @pytest.mark.fast
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_columns_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     if cmd != "table":
@@ -146,7 +145,7 @@ def test_columns_show_filter(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_bad_show_hostname_filter(setup_nubia, get_cmd_object_dict, cmd):
     options = {'hostname': 'unknown'}
@@ -156,7 +155,7 @@ def test_bad_show_hostname_filter(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_bad_show_engine_filter(setup_nubia, get_cmd_object_dict, cmd):
     options = {'engine': 'unknown'}
@@ -166,7 +165,7 @@ def test_bad_show_engine_filter(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_bad_start_time_filter(setup_nubia, get_cmd_object_dict, cmd):
     options = {'start_time': 'unknown'}
@@ -178,7 +177,7 @@ def test_bad_start_time_filter(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize("cmd", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_bad_show_namespace_filter(setup_nubia, get_cmd_object_dict, cmd):
     options = {'namespace': 'unknown'}
@@ -214,7 +213,7 @@ good_filters = [{'hostname': ['leaf01']}]
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize('cmd', [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_context_filtering(setup_nubia, get_cmd_object_dict, cmd):
     for options in good_filters:
@@ -225,7 +224,7 @@ def test_context_filtering(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize('cmd', [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_context_namespace_filtering(setup_nubia, get_cmd_object_dict, cmd):
     s = _test_context_filtering(get_cmd_object_dict[cmd],
@@ -238,7 +237,7 @@ def test_context_namespace_filtering(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.filter
 @pytest.mark.parametrize('cmd', [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_context_engine_filtering(setup_nubia, get_cmd_object_dict, cmd):
     s = _test_context_filtering(get_cmd_object_dict[cmd], {'engine': 'pandas'})
@@ -248,7 +247,7 @@ def test_context_engine_filtering(setup_nubia, get_cmd_object_dict, cmd):
 @pytest.mark.sqcmds
 @pytest.mark.fast
 @pytest.mark.parametrize('cmd', [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_context_start_time_filtering(setup_nubia, get_cmd_object_dict, cmd):
     # before the latest data, so might be more data than the default
@@ -268,8 +267,8 @@ def test_table_describe(setup_nubia, table):
 @ pytest.mark.parametrize('table',
                           [pytest.param(
                               x,
-                              marks=MarkDecorator(Mark(x, [], {})))
-                           for x in get_tables()
+                              marks=getattr(pytest.mark, x))
+                           for x in tables
                            if x not in ['path', 'topmem', 'topcpu',
                                         'topmem', 'time', 'ifCounters',
                                         'ospfIf', 'ospfNbr',
@@ -307,8 +306,8 @@ def test_sqcmds_regex_hostname(table, datadir):
 @ pytest.mark.parametrize('table',
                           [pytest.param(
                               x,
-                              marks=MarkDecorator(Mark(x, [], {})))
-                           for x in get_tables()
+                              marks=getattr(pytest.mark, x))
+                           for x in tables
                            if x not in ['path', 'inventory']
                            ])
 @ pytest.mark.parametrize('datadir', ['tests/data/parquet/'])

@@ -4,15 +4,14 @@ import inspect
 import warnings
 
 import pytest
-from _pytest.mark.structures import Mark, MarkDecorator
 import pandas as pd
 from fastapi.testclient import TestClient
 
-from tests.conftest import cli_commands, create_dummy_config_file
+from tests.conftest import cli_commands, create_dummy_config_file, tables
 
 from suzieq.restServer.query import (app, get_configured_api_key,
                                      API_KEY_NAME)
-from suzieq.sqobjects import get_tables, get_sqobject
+from suzieq.sqobjects import get_sqobject
 from suzieq.restServer import query
 
 ENDPOINT = "http://localhost:8000/api/v2"
@@ -389,10 +388,10 @@ def get(endpoint, service, verb, args):
 
 @ pytest.mark.rest
 @ pytest.mark.parametrize("service", [
-    pytest.param(cmd, marks=MarkDecorator(Mark(cmd, [], {})))
+    pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 @pytest.mark.parametrize("verb", [
-    pytest.param(verb, marks=MarkDecorator(Mark(verb, [], {})))
+    pytest.param(verb, marks=getattr(pytest.mark, verb))
     for verb in VERBS])
 @pytest.mark.parametrize("arg", FILTERS)
 # pylint: disable=redefined-outer-name, unused-argument
@@ -403,7 +402,7 @@ def test_rest_services(app_initialize, service, verb, arg):
 
 @ pytest.mark.rest
 @ pytest.mark.parametrize("service, verb", [
-    (cmd, verb) for cmd in get_tables() for verb in VERBS])
+    (cmd, verb) for cmd in tables for verb in VERBS])
 def test_rest_arg_consistency(service, verb):
     '''check that the arguments used in REST match whats in sqobjects'''
 
