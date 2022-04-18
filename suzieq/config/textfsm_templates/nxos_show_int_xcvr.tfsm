@@ -1,0 +1,53 @@
+Value Required name (\S+)
+Value status (present|not present)
+Value partType (\S+)
+Value vendor (\S+)
+Value partNum (\S+)
+Value version (\S+)
+Value serial (\S+)
+Value productId (\S+)
+
+Start
+  ^\S -> Continue.Record
+  ^${name}\s*$$
+  ^\s+transceiver\s+is\s+${status}\s*$$
+  ^\s+type\s+is\s+${partType}\s*$$
+  ^\s+name\s+is\s+${vendor}\s*$$
+  ^\s+part\s+number\s+is\s+${partNum}
+  ^\s+revision\s+is\s+${version}
+  ^\s+serial\s+number\s+is\s+${serial}
+  ^\s+[cC]isco\s+product\s+id\s+is\s+${productId}
+  ^\s+[cC]isco\s+part\s+number\s+is\s+${partNum}
+
+#Ethernet1/1
+#    transceiver is present
+#    type is 1000base-T
+#    name is CISCO
+#    part number is SBCU-5740ARZ-CS3
+#    revision is G3.2
+#    serial number is A123456B
+#    nominal bitrate is 1300 MBit/sec
+#    Link length supported for copper is 100 m
+#    cisco id is 3
+#    cisco extended id number is 4
+#
+#Ethernet1/2
+#    transceiver is not present
+#
+#Ethernet1/3
+#    transceiver is present
+#    type is 10Gbase-SR
+#    name is CISCO-JDSU
+#    part number is PLRXPL-SC-S43-CS
+#    revision is 1
+#    serial number is 123456
+#    nominal bitrate is 10300 MBit/sec
+#    Link length supported for 50/125um OM2 fiber is 82 m
+#    Link length supported for 62.5/125um fiber is 26 m
+#    Link length supported for 50/125um OM3 fiber is 300 m
+#    cisco id is 3
+#    cisco extended id number is 4
+#    cisco part number is 10-2415-03
+#    cisco product id is SFP-10G-SR
+#    cisco vendor id is V03
+#
