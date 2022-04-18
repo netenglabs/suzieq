@@ -378,11 +378,19 @@ def get_timestamp_from_cisco_time(in_data, timestamp) -> int:
     """Get timestamp in ms from the Cisco-specific timestamp string
     Examples of Cisco timestamp str are P2DT14H45M16S, P1M17DT4H49M50S etc.
     """
-    if not in_data.startswith('P'):
+    if in_data and not in_data.startswith('P'):
+        in_data = in_data.replace('y', 'years')
+        in_data = in_data.replace('w', 'weeks')
+        in_data = in_data.replace('d', 'days')
+
         other_time = parse(in_data,
                            settings={'RELATIVE_BASE':
                                      datetime.utcfromtimestamp(timestamp)})
-        return int(other_time.timestamp()*1000)
+        if other_time:
+            return int(other_time.timestamp()*1000)
+        else:
+            logger.error(f'Unable to parse relative time string, {in_data}')
+            return 0
 
     months = days = hours = mins = secs = 0
 
