@@ -106,6 +106,11 @@ def validate_raw_inventory(inventory: dict) -> Dict:
     if not inventory:
         raise InventorySourceError('The inventory is empty')
 
+    if not isinstance(inventory, dict):
+        raise InventorySourceError(
+            'Expected mapping instead of list. Check the docs to know how to '
+            'build the inventory file')
+
     try:
         inv_model = InventoryModel(**inventory)
     except ValidationError as e:
