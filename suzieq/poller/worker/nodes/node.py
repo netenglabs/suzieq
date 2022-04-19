@@ -479,32 +479,37 @@ class Node:
                 if hmatch:
                     hostname = hmatch.group(1)
             elif devtype == "nxos":
-                data = output[3]["data"]
-                hostname = data.strip()
+                hgrp = re.search(r'[Dd]evice\s+name:\s+(\S+)', data)
+                if hgrp:
+                    hostname = hgrp.group(1)
+                else:
+                    hostname = self.address
             elif devtype == "eos":
-                data = output[3]['data']
-                lines = data.split('\n')
-                hostname = lines[1].split('FQDN:')[1].strip()
+                # We'll fill in the hostname when the node gets re-init
+                hostname = None
             elif devtype in ["iosxe", "ios"]:
                 matchval = re.search(r'(\S+)\s+uptime', output[0]['data'])
                 if matchval:
                     hostname = matchval.group(1).strip()
                 else:
                     hostname = self.address
-            elif devtype != "iosxr" and output[3]["status"] == 0:
-                hostname = output[3]["data"].strip()
+            elif devtype != "iosxr":
+                hgrp = re.search(r'(\S+)\s+uptime\s+is', data)
+                if hgrp:
+                    hostname = hgrp.group(1)
+                else:
+                    hostname = self.address
 
-        elif output[2]["status"] == 0:
-            data = output[2]["data"]
+        elif output[1]["status"] == 0:
+            data = output[1]["data"]
             if "Cumulus Linux" in data:
                 devtype = "cumulus"
             else:
                 devtype = "linux"
 
             version_str = data
-            if output[1]['status'] == 0:
-                # Hostname is the only line of /bin/hostname
-                hostname = output[1]['data'].strip()
+            # Hostname is the last line of the output
+            hostname = data.splitlines()[-1].strip()
 
             self._extract_nos_version(data)
 
@@ -520,6 +525,10 @@ class Node:
                 f'Detected {devtype} for {self.address}:{self.port},'
                 f' {hostname}')
             self.set_devtype(devtype, version_str)
+            if devtype == 'eos' and not hostname:
+                # Arista doesn't provide hostname in initial cmd set
+                # unlike other NOS
+                await self.get_device_boottime_hostname()
             self.set_hostname(hostname)
             self.current_exception = None
 
@@ -575,9 +584,13 @@ class Node:
         # setup time. show version works on most networking boxes and
         # hostnamectl on Linux systems. That's all we support today.
         await self.exec_cmd(self._parse_device_type_hostname,
-                            ["show version", "hostname",
-                             "cat /etc/os-release", "show hostname"], None,
-                            'text')
+                            ["show version",
+                             "cat /etc/os-release && hostname"],
+                            None, 'text', only_one=True)
+
+    async def get_device_boottime_hostname():
+        '''Not implemented'''
+        raise NotImplementedError
 
     def set_devtype(self, devtype: str, version_str: str) -> None:
         """Change the class based on the device type"""
@@ -708,7 +721,7 @@ class Node:
 
     # pylint: disable=unused-argument
     async def ssh_gather(self, service_callback, cmd_list, cb_token, oformat,
-                         timeout):
+                         timeout, only_one=False):
         """Run ssh for cmd in cmdlist and place output on service callback"""
 
         result = []
@@ -741,6 +754,8 @@ class Node:
                     self.current_exception = None
                 result.append(self._create_result(
                     cmd, output.exit_status, output.stdout))
+                if (output.exit_status == 0) and only_one:
+                    break
             except Exception as e:
                 if self.sigend:
                     await self._terminate()
@@ -767,12 +782,16 @@ class Node:
         raise NotImplementedError
 
     async def exec_cmd(self, service_callback, cmd_list, cb_token,
-                       oformat='json', timeout=None):
-        '''Routine to execute a given set of commands on device'''
+                       oformat='json', timeout=None, only_one=False):
+        '''Routine to execute a given set of commands on device
+
+        if only_one is True, commands are executed until the first one that
+        succeeds, and the rest are ignored.
+        '''
 
         if self.transport == "ssh":
             await self.ssh_gather(service_callback, cmd_list, cb_token,
-                                  oformat, timeout)
+                                  oformat, timeout, only_one)
         elif self.transport == "https":
             await self.rest_gather(service_callback, cmd_list,
                                    cb_token, oformat, timeout)
@@ -934,7 +953,7 @@ class EosNode(Node):
             self._status = "good"
 
     async def ssh_gather(self, service_callback, cmd_list, cb_token, oformat,
-                         timeout):
+                         timeout, only_one=False):
         """Run ssh and place output on service callback for dict of cmds"""
 
         # We need to add the JSON option for all commands that support JSON
@@ -947,7 +966,7 @@ class EosNode(Node):
             newcmd_list.append(cmd)
 
         return await super().ssh_gather(service_callback, newcmd_list,
-                                        cb_token, oformat, timeout)
+                                        cb_token, oformat, timeout, only_one)
 
     async def rest_gather(self, service_callback, cmd_list, cb_token,
                           oformat="json", timeout=None):
@@ -1337,7 +1356,7 @@ class IosXENode(Node):
             self._extract_nos_version(data)
 
     async def ssh_gather(self, service_callback, cmd_list, cb_token, oformat,
-                         timeout):
+                         timeout, only_one=False):
         """Run ssh for cmd in cmdlist and place output on service callback
            This is different from IOSXE to avoid reinit node info each time
         """
