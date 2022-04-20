@@ -336,9 +336,23 @@ class Node:
         return options
 
     async def _init_ssh(self, init_boot_time=True, rel_lock=True) -> None:
+        '''Setup a persistent SSH connection to our node.
 
+        In some cases such as IOSXE/XR, this may not actually setup a
+        persistent SSH session, but does the basics of setting one up.
+
+        rel_lock is a critical parameter to avoid deadlocks. If too
+        many services attempt to init_ssh at the same time, we'll cause
+        much heartache. So, we acquire a lock to ensure this is done only
+        once.
+
+        However, when the calling party has additional work to do, the
+        caller MUST acquire the lock and pass rel_lock=False. And the
+        caller MUST ensure they release the lock.
+        '''
         if self._retry and not self._conn:
-            await self.ssh_ready.acquire()
+            if rel_lock:
+                await self.ssh_ready.acquire()
             options = self._init_ssh_options()
             if self.jump_host and not self._tunnel:
                 await self._init_jump_host_connection(options)
@@ -1150,6 +1164,7 @@ class IosXRNode(Node):
         of retries to enable things like run-once=gather to work.
         '''
         backoff_period = 1
+        await self.ssh_ready.acquire()
         while not self._conn:
 
             if not self._retry:
@@ -1226,7 +1241,7 @@ class IosXENode(Node):
     '''IOS-XE Node-sepcific telemetry gather implementation'''
 
     async def _init_ssh(self, init_boot_time=True,
-                        rel_lock: bool = False) -> None:
+                        rel_lock: bool = True) -> None:
         '''Need to start an interactive session for XE
 
         Many IOSXE devices cannot accept commands as fast as we can fire them.
@@ -1240,10 +1255,14 @@ class IosXENode(Node):
         self.logger.info(
             f'Trying to reconnect via SSH for {self.hostname}')
 
-        if not self._retry:
+        if not self._retry or (self._conn and self._stdin):
             return
 
+        if rel_lock:
+            await self.ssh_ready.acquire()
+
         while not self._conn:
+            # Don't release rel lock here
             await super()._init_ssh(init_boot_time=False, rel_lock=False)
 
             if self._conn:
