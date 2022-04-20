@@ -25,7 +25,7 @@ class MroutesService(Service):
 
     def _fix_ipvers(self, entry):
         '''Fix IP version of entry'''
-        if ':' in entry['prefix']:
+        if ':' in entry['group']:
             entry['ipvers'] = 6
         else:
             entry['ipvers'] = 4
@@ -36,22 +36,22 @@ class MroutesService(Service):
 
         return processed_data
 
-    def _clean_eos_data(self, processed_data, _):
-        '''Massage EVPN routes'''
-        for entry in processed_data:
-            if entry['nexthopIps']:
-                nexthop = entry['nexthopIps'][0]
-                if 'vtepAddr' in nexthop:
-                    nexthop = entry['nexthopIps'][0]
-                    entry['nexthopIps'] = [nexthop['vtepAddr']]
-                    entry['oifs'] = ['_nexthopVrf:default']
-            elif entry.get('_vtepAddr', []):
-                entry['nexthopIps'] = entry['_vtepAddr']
-                entry['oifs'] = len(entry['nexthopIps']) * \
-                    ['_nexthopVrf:default']
-            entry['protocol'] = entry['protocol'].lower()
-            entry['preference'] = int(entry.get('preference', 0))
-            entry['metric'] = int(entry.get('metric', 0))
-            self._fix_ipvers(entry)
+    # def _clean_eos_data(self, processed_data, _):
+    #     '''Massage EVPN routes'''
+    #     for entry in processed_data:
+    #         if entry['nexthopIps']:
+    #             nexthop = entry['nexthopIps'][0]
+    #             if 'vtepAddr' in nexthop:
+    #                 nexthop = entry['nexthopIps'][0]
+    #                 entry['nexthopIps'] = [nexthop['vtepAddr']]
+    #                 entry['oifs'] = ['_nexthopVrf:default']
+    #         elif entry.get('_vtepAddr', []):
+    #             entry['nexthopIps'] = entry['_vtepAddr']
+    #             entry['oifs'] = len(entry['nexthopIps']) * \
+    #                 ['_nexthopVrf:default']
+    #         entry['protocol'] = entry['protocol'].lower()
+    #         entry['preference'] = int(entry.get('preference', 0))
+    #         entry['metric'] = int(entry.get('metric', 0))
+    #         self._fix_ipvers(entry)
 
-        return processed_data
+    #     return processed_data

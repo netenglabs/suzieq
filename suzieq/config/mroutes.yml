@@ -1,29 +1,29 @@
 service: mroutes
 keys:
+  - source
+  - group
   - vrf
-  - sourceGroup
 ignore-fields:
   - statusChangeTimestamp
 show-fields:
-  - sourceGroup
-  - incomingInterface
+  - source
+  - group
+  - rpfInterface
   - oifList
   - vrf
   - ipvers
+  - rp
+  - rpfneighbor
   
 
 apply:
   eos:
     version: all
-    command: show ip mroute vrf all
-    normalize: 'vrfs/*:vrf/routes/*:prefix/[
-        "routeType: protocol",
-        "metric: metric?|0",
-        "preference: preference?|0",
-        "routeAction": "action?|forward",
-        "hardwareProgrammed: hardwareProgrammed?|unknown",
-        "vias/*/nexthopAddr: nexthopIps?|[]",
-        "vias/*/interface: oifs?|[]",
-        "vias/*/vtepAddr: _vtepAddr?|[]",
-        "vias/*/vni: _vnis?|[]"
-        ]'
+    command: show ip mroute
+    normalize: '*:protocol/groups/*:group/groupSources/*:source/[
+    "rp: rp",
+    "rpfInterface: rpfInterface",
+    "rpf/rpfNeighbor: rpfneighbor",
+    "oifList: oifList",
+    "vrf: vrf|default"
+    ]'

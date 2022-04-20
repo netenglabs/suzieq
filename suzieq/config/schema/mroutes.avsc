@@ -4,18 +4,29 @@
     "type": "record",
     "fields": [
         {
-            "name": "vrf",
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
+        {
+            "name": "source",
             "type": "string",
             "key": 2,
-            "display": 5
+            "display": 2
         },
         {
-            "name": "protocol",
-            "type": "string"
+            "name": "rp",
+            "type": "string",
+            "display": 8
         },
         {
-            "name": "prefix",
-            "type": "string"
+            "name": "group",
+            "type": "string",
+            "key": 3,
+            "display": 3
         },
         {
             "name": "hostname",
