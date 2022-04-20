@@ -262,40 +262,7 @@ class SqPandasEngine(SqEngineObj):
         if not table_df.empty:
             # hostname may not have been filtered if using regex
             if hostname:
-                hdf_list = []
-                notlist = [x for x in hostname if '!' in x]
-                if len(notlist) != len(hostname):
-                    hnlist = [x for x in hostname if '!' not in x]
-                else:
-                    hnlist = hostname
-                for hn in hnlist:
-                    use_not = False
-                    if hn.startswith('~'):
-                        hn = hn[1:]
-                        if hn.startswith('!'):
-                            use_not = True
-                            hn = hn[1:]
-                    elif hn.startswith('!'):
-                        hn = hn[1:]
-                        use_not = True
-
-                    if use_not:
-                        df1 = table_df.query(f'~hostname.str.match("{hn}")')
-                        hdf_list = [df1]
-                    else:
-                        df1 = table_df.query(f"hostname.str.match('{hn}')")
-                        if not df1.empty:
-                            hdf_list.append(df1)
-
-                    if use_not:
-                        # With not, the list of hostnames becomes an and
-                        table_df = df1
-
-                if hdf_list:
-                    table_df = pd.concat(hdf_list)
-                else:
-                    return pd.DataFrame(columns=table_df.columns.tolist())
-
+                table_df = self._filter_hostname(table_df, hostname)
             if active_only:
                 table_df = table_df.query('active').reset_index(drop=True)
 
@@ -308,6 +275,53 @@ class SqPandasEngine(SqEngineObj):
                 table_df = self._handle_user_query_str(table_df, query_str)
 
         return table_df.reset_index(drop=True)[fields]
+
+    def _filter_hostname(self, df: pd.DataFrame, hostname: List[str]) \
+            -> pd.DataFrame:
+        """filter dataframe with the input hostnames
+
+        Args:
+            hostname (List[str]): hostname used for filter df
+            df (pd.Dataframe): input dataframe
+
+        Returns:
+            pd.DataFrame: filtered dataframe
+        """
+        if hostname and not df.empty:
+            hdf_list = []
+            notlist = [x for x in hostname if '!' in x]
+            if len(notlist) != len(hostname):
+                hnlist = [x for x in hostname if '!' not in x]
+            else:
+                hnlist = hostname
+            for hn in hnlist:
+                use_not = False
+                if hn.startswith('~'):
+                    hn = hn[1:]
+                    if hn.startswith('!'):
+                        use_not = True
+                        hn = hn[1:]
+                elif hn.startswith('!'):
+                    hn = hn[1:]
+                    use_not = True
+
+                if use_not:
+                    df1 = df.query(f'~hostname.str.match("{hn}")')
+                    hdf_list = [df1]
+                else:
+                    df1 = df.query(f"hostname.str.match('{hn}')")
+                    if not df1.empty:
+                        hdf_list.append(df1)
+
+                if use_not:
+                    # With not, the list of hostnames becomes an and
+                    df = df1
+
+            if hdf_list:
+                df = pd.concat(hdf_list)
+            else:
+                return pd.DataFrame(columns=df.columns.tolist())
+        return df
 
     def get(self, **kwargs) -> pd.DataFrame:
         """The default get method for all tables

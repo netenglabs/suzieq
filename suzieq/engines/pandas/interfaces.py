@@ -206,6 +206,7 @@ class InterfacesObj(SqPandasEngine):
         state = kwargs.pop('state', '')
         iftype = kwargs.pop('type', [])
         ifname = kwargs.pop('ifname', [])
+        hostname = kwargs.pop('hostname', [])
 
         def _check_field(x, fld1, fld2, reason):
             if x.skipIfCheck or x.indexPeer < 0:
@@ -274,7 +275,6 @@ class InterfacesObj(SqPandasEngine):
         # can't pass all kwargs, because lldp acceptable arguements are
         # different than interface
         namespace = kwargs.get('namespace', [])
-        hostname = kwargs.get('hostname', [])
         lldp_df = lldpobj.get(namespace=namespace, hostname=hostname) \
                          .query('peerIfname != "-"')
 
@@ -341,6 +341,9 @@ class InterfacesObj(SqPandasEngine):
                            "mgmtIP", "description"]) \
             .dropna(subset=['hostname', 'ifname']) \
             .drop_duplicates(subset=['namespace', 'hostname', 'ifname'])
+
+        if not combined_df.empty and hostname:
+            combined_df = self._filter_hostname(combined_df, hostname)
 
         if not combined_df.empty and ifname:
             combined_df = combined_df.query(f'ifname.isin({ifname})')
