@@ -1237,6 +1237,9 @@ class IosXENode(Node):
         backoff_period = 1
         self.WAITFOR = r'.*[>#]\s*$'
 
+        self.logger.info(
+            f'Trying to reconnect via SSH for {self.hostname}')
+
         if not self._retry:
             return
 
@@ -1244,6 +1247,8 @@ class IosXENode(Node):
             await super()._init_ssh(init_boot_time=False, rel_lock=False)
 
             if self._conn:
+                self.logger.info(
+                    f'Reconnect succeeded via SSH for {self.hostname}')
                 break
 
             await asyncio.sleep(backoff_period)
@@ -1251,6 +1256,8 @@ class IosXENode(Node):
             backoff_period = min(backoff_period, 120)
 
         if self._conn:
+            self.logger.info(
+                f'Trying to create Persistent SSH for {self.hostname}')
             try:
                 self._stdin, self._stdout, self._stderr = \
                     await self._conn.open_session(term_type='xterm')
@@ -1340,6 +1347,10 @@ class IosXENode(Node):
     # pylint: disable=unused-argument
     async def _parse_boottime_hostname(self, output, cb_token) -> None:
         '''Parse the version for uptime and hostname'''
+        if not isinstance(output, list):
+            self.bootupTimestamp = -1
+            return
+
         if output[0]["status"] == 0:
             data = output[0]['data']
             hostupstr = re.search(r'(\S+)\s+uptime is (.*)\n', data)
