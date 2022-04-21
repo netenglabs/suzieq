@@ -16,12 +16,11 @@ class FileNode:
     '''Class using run-once=gather snapshot output as mock device input'''
 
     # pylint: disable=attribute-defined-outside-init
-    async def _init(self, datadir: str):
-
+    async def initialize(self, datadir: str):
+        '''Load the data to be read from files'''
         self.logger = logging.getLogger(__name__)
         self.data = {}          # The dict of command to output entries
         self.hostname = '_filedata'  # Need this for the services
-        self.sigend = False
 
         self._service_queue = asyncio.Queue()
 
@@ -121,9 +120,6 @@ class FileNode:
         '''Main workhorse routine, serving data from files based on command'''
 
         while True:
-            if self.sigend:
-                return
-
             request = await self._service_queue.get()
             # request consists of callback fn, service_defn string, cb_token
             if request:
