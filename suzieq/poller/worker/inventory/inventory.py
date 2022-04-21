@@ -104,7 +104,8 @@ class Inventory(SqPlugin):
                                 for node in self._nodes}
             await self.add_task_fn(list(self._node_tasks.values()))
 
-    async def _init_nodes(self, inventory_list: List[Dict]) -> Dict[str, Node]:
+    async def _init_nodes(self, inventory_list:
+                          List[Dict]) -> Dict[str, Node]:
         """Initialize the Node objects given the of credentials of the nodes.
         After this function is called, a connection with the nodes in the list
         is performed.
@@ -117,8 +118,7 @@ class Inventory(SqPlugin):
 
         for host in inventory_list:
             new_node = Node()
-            # pylint: disable=protected-access
-            init_tasks += [new_node._init(
+            init_tasks += [new_node.initialize(
                 **host,
                 connect_timeout=self.connect_timeout,
                 ssh_config_file=self.ssh_config_file
@@ -126,14 +126,18 @@ class Inventory(SqPlugin):
 
         for n in asyncio.as_completed(init_tasks):
             newnode = await n
-            if newnode.devtype is None:
+            if newnode.devtype == "unsupported":
                 logger.error(
-                    f'Unable to determine device type for '
+                    f'Unsupported device type for '
                     f'{newnode.address}.{newnode.port}'
                 )
+            elif not newnode.devtype:
+                logger.warning('Unable to determine device type for '
+                               f'{newnode.address}. Will retry')
             else:
-                logger.info(f"Added node {newnode.hostname}:{newnode.port}")
-                nodes_list.update({self.get_node_key(newnode): newnode})
+                logger.info(f'Added node {newnode.hostname}:{newnode.port} '
+                            f'of type {newnode.devtype}')
+            nodes_list.update({self.get_node_key(newnode): newnode})
 
         return nodes_list
 
