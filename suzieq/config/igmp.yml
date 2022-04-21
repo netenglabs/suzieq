@@ -1,0 +1,26 @@
+service: igmp
+keys:
+  - interface
+ignore-fields:
+  - statusChangeTimestamp
+show-fields:
+  - igmpVersion
+  - joinedGroupList
+  - querier
+  - igmpEnabled
+  - multicastRouting
+  - vrf
+
+  
+
+apply:
+  eos:
+    version: all
+    command: show ip igmp interface
+    normalize: 'IgmpInterfaces/*:interface/[
+      "igmpEnabled: igmpEnabled",
+      "routerVersion: igmpVersion",
+      "igmpQuerier: querier",
+      "multicastRoutingEnabled: multicastRouting",
+      "multicastGroups: joinedGroupList",
+    ]'
