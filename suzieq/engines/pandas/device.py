@@ -16,6 +16,7 @@ class DeviceObj(SqPandasEngine):
         '''Table name'''
         return 'device'
 
+    # pylint: disable=too-many-statements
     def get(self, **kwargs):
         """Get the information requested"""
         view = kwargs.get('view', self.iobj.view)
@@ -80,6 +81,15 @@ class DeviceObj(SqPandasEngine):
                 (df['status_y'] != 0) & (df['status_y'] != 200) &
                 (df['status'] == "N/A"),
                 'neverpoll', df['status'])
+            if 'version' in df.columns:
+                df['version'] = np.where(df.status_y == 418, 'unsupported',
+                                         df.version)
+            if 'os' in df.columns:
+                df['os'] = np.where(df.status_y == 418, 'unsupported',
+                                    df.os)
+            if 'model' in df.columns:
+                df['model'] = np.where(df.status_y == 418, 'unsupported',
+                                       df.model)
             df = df[df.status != 'N/A']
             df.timestamp = np.where(df['timestamp'] == 0,
                                     df['timestamp_y'], df['timestamp'])
