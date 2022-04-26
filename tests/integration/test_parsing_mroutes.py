@@ -6,7 +6,7 @@ import pandas as pd
 from tests.conftest import DATADIR, validate_host_shape
 
 
-def validate_routes(df: pd.DataFrame):
+def validate_mroutes(df: pd.DataFrame):
     '''Validate the routes table for all values'''
 
     # assert (df.vrf != '').all()
@@ -47,11 +47,11 @@ def validate_routes(df: pd.DataFrame):
 
 
 @ pytest.mark.parsing
-@ pytest.mark.route
-@ pytest.mark.parametrize('table', ['routes'])
+@ pytest.mark.mroutes
+@ pytest.mark.parametrize('table', ['mroutes'])
 @ pytest.mark.parametrize('datadir', DATADIR)
 # pylint: disable=unused-argument
-def test_routes_parsing(table, datadir, get_table_data):
+def test_mroutes_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for Routes'''
 
     df = get_table_data
@@ -66,4 +66,4 @@ def test_routes_parsing(table, datadir, get_table_data):
 
     assert not df.empty
     validate_host_shape(df, ns_dict)
-    validate_routes(df)
+    validate_mroutes(df)
