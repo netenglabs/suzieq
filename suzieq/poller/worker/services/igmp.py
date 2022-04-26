@@ -11,7 +11,7 @@ from suzieq.shared.utils import (expand_nxos_ifname,
 
 
 class IgmpService(Service):
-    """Mroutes servers."""
+    """Igmp Service."""
 
     def clean_json_input(self, data):
         """Junos JSON data for some older ver needs some work"""
