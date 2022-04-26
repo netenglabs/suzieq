@@ -30,9 +30,15 @@ class MroutesService(Service):
         else:
             entry['ipvers'] = 4
 
+    def _fix_star_source(self, entry):
+        '''Make 0.0.0.0 source a * as convention.'''
+        if '0.0.0.0' in entry['source']:
+            entry['source'] = '*'
+
     def _common_data_cleaner(self, processed_data, _):
         for entry in processed_data:
             self._fix_ipvers(entry)
+            self._fix_star_source(entry)
 
         return processed_data
 
