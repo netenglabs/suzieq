@@ -217,7 +217,7 @@ class Source(ControllerPlugin):
                 raise InventorySourceError(f'{self.name} Jump host key file'
                                            f" at {jump_host_key_file} doesn't"
                                            " exists")
-            transport = self._device.get('transport')
+            transport = self._device.get('transport').value
             ignore_known_hosts = self._device.get('ignore-known-hosts', False)
             slow_host = self._device.get('slow-host', False)
             port = self._device.get('port')
