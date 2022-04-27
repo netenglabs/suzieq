@@ -5,8 +5,8 @@ from pydantic import ValidationError
 
 import pytest
 from suzieq.poller.controller.source.base_source import Source
-from suzieq.shared.exceptions import InventorySourceError
 from suzieq.poller.controller.utils.inventory_utils import DeviceModel
+from suzieq.shared.utils import PollerTransport
 
 # pylint: disable=protected-access
 
@@ -66,7 +66,7 @@ async def test_devices_set(inventory: Dict):
             'jump-host': None,
             'jump-host-key-file': None,
             'devtype': 'panos',
-            'transport': 'ssh',
+            'transport': PollerTransport.ssh,
 
         }
     }
