@@ -173,6 +173,9 @@ class Netbox(Source, InventoryAsyncPlugin):
         except Exception as e:
             raise InventorySourceError(f'{self.name}: error while '
                                        f'getting devices: {e}')
+
+        logger.info(
+            f'Netbox: Retrieved inventory list of {len(devices)} devices')
         return devices
 
     async def _get_devices(self, url: str) -> Tuple[List, str]:
@@ -224,6 +227,7 @@ class Netbox(Source, InventoryAsyncPlugin):
             return cur_field
 
         inventory = {}
+        ignored_device_count = 0
 
         for device in inventory_list:
             ipv4 = get_field_value(device, 'primary_ip4.address')
@@ -245,6 +249,7 @@ class Netbox(Source, InventoryAsyncPlugin):
                 logger.warning(
                     f"Skipping {namespace}.{hostname}: doesn't have a "
                     "management IP")
+                ignored_device_count += 1
                 continue
 
             address = address.split("/")[0]
@@ -254,6 +259,10 @@ class Netbox(Source, InventoryAsyncPlugin):
                 'namespace': namespace,
                 'hostname': hostname,
             }
+
+        logger.info(
+            f'Netbox: Acting on inventory of {len(inventory)} devices, '
+            f'ignoring {ignored_device_count} devices')
 
         return inventory
 
