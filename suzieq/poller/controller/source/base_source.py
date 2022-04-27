@@ -247,7 +247,7 @@ class Source(ControllerPlugin):
             inv_fields = [x for x in self._device if x not in dev_fields]
             if inv_fields:
                 raise InventorySourceError(
-                    f'{self._device.get("name")}: Unknow fields called '
+                    f'{self._device.get("name")}: Unknown fields called '
                     f'{inv_fields}')
 
 
