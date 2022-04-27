@@ -118,64 +118,75 @@ apply:
     copy: linux
 
   nxos:
-    version: all
-    command:
-      - command: show bgp all neighbors vrf all | json native
-        normalize: 'TABLE_neighbor/ROW_neighbor/*?/[
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxtreataswithdrawn: pfxWithdrawn?|0",
-        "neighbor: peer",
-        "neighbor: origPeer",
-        "ipv4prefixneighbor: _dynPeer",
-        "remoteas: peerAsn?|0",
-        "remote-id: peerRouterId",
-        "vrf: vrf?|default",
-        "sourceif: ifname",
-        "ttllimit: hopsMax",
-        "connectedif: ifname?|ifname",
-        "passiveonly: passive?|False",
-        "state: state?Established|NotEstd",
-        "holdtime: holdTime?|0",
-        "keepalivetime: keepaliveTime?|0",
-        "connsestablished: numChanges?|0",
-        "connsdropped: numChanges+numChanges",
-        "elapsedtime: estdTime?|",
-        "resetreason: reason",
-        "bfd: bfdStatus?|disabled",
-        "peerresetreason: "notificnReason?|",
-        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-name: afiSafi?|[]",
-        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-recvd: afRcvd?|[]",
-        "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-advertised: afAdvertised?|[]",
-        "capextendednhadvertised: extnhAdvertised",
-        "capextendednhrecvd: extnhReceived",
-        "updatessent: updatesTx?|0",
-        "updatesrecvd: updatesRx?|0",
-        "TABLE_peer/ROW_peer/[*]?/peer: _dynamicPeers",
-        "activepeers: _activePeers",
-        "maxconcurrentpeers: _maxconcurrentpeers",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/per-af-name: afiPrefix?|",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxrecvd: pfxRcvd?|0",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxsent: pfxSent?|0",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: extendComm?|",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: sendComm?|",
-        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/rrconfigured: rrclient?|",
-        "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/firstconvgtime: _firstconvgtime",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/defaultoriginate: defaultOrig",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/insoftreconfigallowed: softReconfig",
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/TABLE_inpolicy/ROW_inpolicy/[*]/inpolicyname: ingressRmap",        
-        "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/TABLE_outpolicy/ROW_outpolicy/[*]/outpolicyname: egressRmap?|",        
-        "localaddr: updateSource?|",
-        "remoteaddr: peerIP?|",
-        "entry-type: _entryType?|neighbors",
-        ]'
+    - version: < 9.3(0)
+      command:
+        - command: show bgp all neighbors vrf all
+          textfsm: textfsm_templates/nxos_show_bgp_nbr.tfsm
 
-      - command: show bgp all summary vrf all | json native
-        normalize: 'TABLE_vrf/ROW_vrf/*?/[
-        "vrf-name-out: vrf",
-        "vrf-name-out: peer",
-        "vrf-local-as: asn",
-        "vrf-router-id: routerId",
-        "entry-type: _entryType?|summary"
-        ]'
+        - command: show bgp all summary vrf all
+          textfsm: textfsm_templates/nxos_show_bgp_summ.tfsm
+          _entryType: summary
+
+    - version: all
+      command:
+        - command: show bgp all neighbors vrf all | json native
+          normalize: 'TABLE_neighbor/ROW_neighbor/*?/[
+          "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxtreataswithdrawn: pfxWithdrawn?|0",
+          "neighbor: peer",
+          "neighbor: origPeer",
+          "ipv4prefixneighbor: _dynPeer",
+          "remoteas: peerAsn?|0",
+          "remote-id: peerRouterId",
+          "vrf: vrf?|default",
+          "sourceif: ifname?|",
+          "ttllimit: hopsMax",
+          "connectedif: ifname?|ifname",
+          "passiveonly: passive?|False",
+          "state: state?Established|NotEstd",
+          "holdtime: holdTime?|0",
+          "keepalivetime: keepaliveTime?|0",
+          "connsestablished: numChanges?|0",
+          "connsdropped: numChanges+numChanges",
+          "elapsedtime: estdTime?|",
+          "resetreason: reason",
+          "bfd: bfdStatus?|disabled",
+          "peerresetreason: "notificnReason?|",
+          "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-name: afiSafi?|[]",
+          "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-recvd: afRcvd?|[]",
+          "TABLE_af/ROW_af/[*]?/TABLE_saf/ROW_saf/[*]/af-advertised: afAdvertised?|[]",
+          "capextendednhadvertised: extnhAdvertised",
+          "capextendednhrecvd: extnhReceived",
+          "updatessent: updatesTx?|0",
+          "updatesrecvd: updatesRx?|0",
+          "TABLE_peer/ROW_peer/[*]?/peer: _dynamicPeers",
+          "activepeers: _activePeers",
+          "maxconcurrentpeers: _maxconcurrentpeers",
+          "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/per-af-name: afiPrefix?|",
+          "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxrecvd: pfxRcvd?|0",
+          "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxsent: pfxSent?|0",
+          "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: extendComm?|",
+          "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: sendComm?|",
+          "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/rrconfigured: rrclient?|",
+          "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/firstconvgtime: _firstconvgtime",
+          "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/defaultoriginate: defaultOrig",
+          "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/insoftreconfigallowed: softReconfig",
+          "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/TABLE_inpolicy/ROW_inpolicy/[*]/inpolicyname: ingressRmap",        
+          "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/TABLE_outpolicy/ROW_outpolicy/[*]/outpolicyname: egressRmap?|",        
+          "localaddr: updateSource?|",
+          "remoteaddr: peerIP?|",
+          "entry-type: _entryType?|neighbors",
+          ]'
+
+        - command: show bgp all summary vrf all | json native
+          normalize: 'TABLE_vrf/ROW_vrf/*?/[
+          "vrf-name-out: vrf",
+          "vrf-name-out: peer",
+          "vrf-local-as: asn",
+          "vrf-router-id: routerId",
+          "entry-type: _entryType?|summary"
+          ]'
+
+        
 
   junos-qfx:
     version: all
