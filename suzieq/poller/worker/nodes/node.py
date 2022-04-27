@@ -184,11 +184,11 @@ class Node:
 
         # Now we know the dev type, fetch the data we need about the
         # device to get cracking
-        if not self.devtype:
+        if not self.devtype and self._retry:
             self.backoff = min(600, self.backoff * 2) + \
                 (random.randint(0, 1000) / 1000)
             self.init_again_at = time.time() + self.backoff
-        elif self.devtype != 'unsupported':
+        elif self.devtype not in ['unsupported', None] and self._retry:
             # OK, we know the devtype, now initialize the info we need
             # to start proper operation
 
@@ -270,6 +270,9 @@ class Node:
         if isinstance(self.current_exception, TimeoutError):
             status = HTTPStatus.REQUEST_TIMEOUT
         elif isinstance(self.current_exception, asyncssh.misc.ProtocolError):
+            status = HTTPStatus.FORBIDDEN
+        elif isinstance(self.current_exception,
+                        asyncssh.misc.PermissionDenied):
             status = HTTPStatus.FORBIDDEN
         elif hasattr(self.current_exception, 'code'):
             status = self.current_exception.code
@@ -631,6 +634,7 @@ class Node:
                                       f'{self.address}:{self.port}, {e}')
                 self.current_exception = e
                 await self._close_connection()
+                self._conn = None
             finally:
                 if use_lock:
                     self.ssh_ready.release()
@@ -638,7 +642,8 @@ class Node:
     @abstractmethod
     async def _init_rest(self):
         '''Check that connectivity exists and works'''
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     # pylint: disable=unused-argument
     async def _local_gather(self, service_callback: Callable,
@@ -789,7 +794,7 @@ class Node:
         if not svc_defn:
             return result
 
-        if not self.devtype:
+        if not self.devtype and self._retry:
             if self.init_again_at < time.time():
                 await self._detect_node_type()
 
@@ -882,7 +887,8 @@ class Node:
         This is where the list of commands specific to the device for
         extracting the said info is specified.
         """
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: initing base Node class')
 
     @abstractmethod
     async def _parse_init_dev_data(self, output: List,
@@ -897,7 +903,8 @@ class Node:
             output: The list of outputs, one per command specified
             cb_token: The callback token we passed to the data fetcher function
         """
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: parsing init base Node class')
 
     @abstractmethod
     def _extract_nos_version(self, data: str) -> str:
@@ -910,7 +917,8 @@ class Node:
         Returns:
             The version as a string
         """
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: extracting NOS in init base Node class')
 
     @abstractmethod
     async def _rest_gather(self, service_callback: Callable,
@@ -932,7 +940,8 @@ class Node:
             only_one: Run till the first command in the list succeeds and
                 then return
         """
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     def post_commands(self, service_callback: Callable, svc_defn: Dict,
                       cb_token: RsltToken):
@@ -1148,7 +1157,7 @@ class EosNode(Node):
                 self.logger.error(f'nodeinit: Error getting version for '
                                   f'{self.address}: {self.port}')
 
-        if output[1]["status"] == 0 or output[1]["status"] == 200:
+        if (len(output) > 1) and (output[1]["status"] in [0, 200]):
             if self.transport == 'ssh':
                 try:
                     data = json.loads(output[1]["data"])
@@ -1192,12 +1201,12 @@ class CumulusNode(Node):
             upsecs = output[0]["data"].split()[0]
             self.bootupTimestamp = int(int(time.time()*1000)
                                        - float(upsecs)*1000)
-        if output[1]["status"] == 0:
+        if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1].get("data", '')
             hostname = data.splitlines()[0].strip()
             self.hostname = hostname
 
-        if output[2]["status"] == 0:
+        if (len(output) > 2) and (output[2]["status"] == 0):
             data = output[2].get("data", '')
             self._extract_nos_version(data)
 
@@ -1291,11 +1300,13 @@ class IosXRNode(Node):
     '''IOSXR Node specific implementation'''
 
     async def _init_rest(self):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
                            oformat='json', timeout=None):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _fetch_init_dev_data(self):
         """Fill in the boot time of the node by executing certain cmds"""
@@ -1363,7 +1374,7 @@ class IosXRNode(Node):
 
             self._extract_nos_version(data)
 
-        if output[1]["status"] == 0:
+        if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1]['data']
             hostname = re.search(r'hostname (\S+)', data.strip())
             if hostname:
@@ -1385,11 +1396,13 @@ class IosXENode(Node):
     '''IOS-XE Node-sepcific telemetry gather implementation'''
 
     async def _init_rest(self):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
                            oformat='json', timeout=None):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _fetch_init_dev_data(self):
         """Fill in the boot time of the node by executing certain cmds"""
@@ -1610,22 +1623,26 @@ class IOSNode(IosXENode):
     '''Classic IOS Node-specific implementation'''
 
     async def _init_rest(self):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
                            oformat='json', timeout=None):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
 
 class JunosNode(Node):
     '''Juniper's Junos node-specific implementation'''
 
     async def _init_rest(self):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
                            oformat='json', timeout=None):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _fetch_init_dev_data(self):
         """Fill in the boot time of the node by running requisite cmd"""
@@ -1653,7 +1670,7 @@ class JunosNode(Node):
             self.bootupTimestamp = (get_timestamp_from_junos_time(
                 timestr, output[0]['timestamp']/1000)/1000)
 
-        if output[1]["status"] == 0:
+        if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1]["data"]
             hmatch = re.search(r'\nHostname:\s+(\S+)\n', data)
             if hmatch:
@@ -1676,12 +1693,14 @@ class NxosNode(Node):
     '''Cisco's NXOS Node-specific implementation'''
 
     async def _init_rest(self):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
                            oformat="json", timeout=None):
         '''Gather data for service via device REST API'''
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _fetch_init_dev_data(self):
         """Fill in the boot time of the node by running requisite cmd"""
@@ -1731,12 +1750,14 @@ class SonicNode(Node):
     '''SONiC Node-specific implementtaion'''
 
     async def _init_rest(self):
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
                            oformat="json", timeout=None):
         '''Gather data for service via device REST API'''
-        raise NotImplementedError
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _fetch_init_dev_data(self):
         """Fill in the boot time of the node by running requisite cmd"""
@@ -1751,9 +1772,9 @@ class SonicNode(Node):
             upsecs = output[0]["data"].split()[0]
             self.bootupTimestamp = int(int(time.time()*1000)
                                        - float(upsecs)*1000)
-        if output[1]["status"] == 0:
+        if (len(output) > 1) and (output[1]["status"] == 0):
             self.hostname = output[1]["data"].strip()
-        if output[2]["status"] == 0:
+        if (len(output) > 2) and (output[2]["status"] == 0):
             self._extract_nos_version(output[1]["data"])
 
     def _extract_nos_version(self, data: str) -> None:

@@ -125,7 +125,12 @@ class Inventory(SqPlugin):
             )]
 
         for n in asyncio.as_completed(init_tasks):
-            newnode = await n
+            try:
+                newnode = await n
+            except Exception as e:  # pylint: disable=broad-except
+                logger.error(
+                    f'Encountered error {e} in initializing node')
+                continue
             if newnode.devtype == "unsupported":
                 logger.error(
                     f'Unsupported device type for '
