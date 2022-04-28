@@ -159,28 +159,32 @@ class Node:
 
         self._init_service_queue()
 
+        devtype = kwargs.get("devtype", None)
+        if devtype:
+            self._set_devtype(devtype, '')
+            self.logger.warning(
+                f'{devtype} supplied for {self.address}:{self.port}')
+
         if self.transport == "ssh":
             self.port = self.port or 22
             await self._init_ssh(init_dev_data=False)
         elif self.transport == "https":
             self.port = self.port or 443
-
-        devtype = kwargs.get("devtype", None)
-        if devtype:
-            self._set_devtype(devtype, '')
-            if self.transport == 'https':
+            if self.devtype:
+                # Checking devtype to ensure we didn't get a REST transport
+                # without also providing the device type.
                 await self._init_rest()
-            self.logger.warning(
-                f'{devtype} supplied for {self.address}:{self.port}')
-        elif self.transport != 'ssh':
-            self.logger.error(
-                'devtype MUST be specified in inventory file if transport'
-                f'is not ssh for {self.address}')
-            return self
-        elif self.is_connected:
-            # So we have a connection, lets figure out if we know what
-            # to do with this device
-            await self._detect_node_type()
+
+        if not devtype:
+            if self.transport != 'ssh':
+                self.logger.error(
+                    'devtype MUST be specified in inventory file if transport'
+                    f'is not ssh for {self.address}')
+                return self
+            elif self.is_connected:
+                # So we have a connection, lets figure out if we know what
+                # to do with this device
+                await self._detect_node_type()
 
         # Now we know the dev type, fetch the data we need about the
         # device to get cracking
@@ -1434,7 +1438,7 @@ class IosXENode(Node):
             # Don't release rel lock here
             await super()._init_ssh(init_dev_data=False, use_lock=False)
 
-            if not self.is_connected:
+            if self.is_connected:
                 self.logger.info(
                     f'Reconnect succeeded via SSH for {self.hostname}')
                 break
@@ -1454,7 +1458,7 @@ class IosXENode(Node):
 
                 output = await self.wait_for_prompt()
                 if output.strip().endswith('>'):
-                    if not self._handle_privilege_escalation():
+                    if await self._handle_privilege_escalation() == -1:
                         await self._close_connection()
                         self._conn = None
                         self._stdin = None
