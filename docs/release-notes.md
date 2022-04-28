@@ -1,5 +1,14 @@
 # Release Notes
 
+## 0.17.2 (Apr 28, 2022)
+
+This is the second patch release of the 17th release. The main issues that are fixed in this release are:
+
+* A thorough refactoring of how communication with devices is done to enable proper support of the various options of connecting to devices. For example, we did not handle inactivity timeouts with IOSXE devices correctly, nor did we appropriately flag the specification of REST transport without specifying device type, or handle IOS/XE devices if privilege escalation was required even to do show version. IOS/XE devices that do not support running show version without privilege escalation require users to specify the device type via devtype= parameter against the device.
+* In some situations, path would crash or the GUI status page wouldn't come up due to a bug in how the VLAN was determined for an interface. 
+* For netbox inventory type, specifying the transport type would cause a crash.
+* We now display an unsupported device type via device show.
+
 ## 0.17.1 (Apr 12, 2022)
 
 This patch release for version 0.17.0 fixes a bunch of deployment issues that 0.17.0 introduced due to changing the default user inside the container from root to suzieq. Besides this, the following bug fixes and an enhancement are part of this release:
