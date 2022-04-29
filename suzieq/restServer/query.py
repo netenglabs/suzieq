@@ -388,6 +388,7 @@ async def query_devconfig(verb: CommonVerbs, request: Request,
                           namespace: List[str] = Query(None),
                           columns: List[str] = Query(default=["default"]),
                           query_str: str = None,
+                          what: str = None,
                           count: str = None, reverse: str = None,
                           ):
     function_name = inspect.currentframe().f_code.co_name
@@ -699,7 +700,8 @@ async def query_table(
         view: ViewValues = "latest", namespace: List[str] = Query(None),
         columns: List[str] = Query(default=["default"]),
         query_str: str = None, table: str = None,
-        count: str = None,
+        what: str = None,
+        count: str = None, reverse: str = None,
 ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
