@@ -607,7 +607,7 @@ async def query_path(verb: CommonVerbs, request: Request,
                      columns: List[str] = Query(default=["default"]),
                      vrf: str = Query(None),
                      dest: str = Query(None),
-                     source: str = Query(None, alias='src'),
+                     src: str = Query(None),
                      query_str: str = None, what: str = None,
                      count: str = None, reverse: str = None,
                      ):
@@ -750,24 +750,19 @@ def create_filters(function_name, command, request, local_vars):
     all_cmd_args = ['namespace', 'hostname',
                     'start_time', 'end_time', 'view', 'columns', 'format']
     both_verb_and_command = ['namespace', 'hostname', 'columns']
-    alias_args = {'src': 'source'}
 
     query_ks = request.query_params
     for arg in query_ks.keys():
         if arg in remove_args:
             continue
-        if arg in alias_args:
-            tryarg = alias_args[arg]
-        else:
-            tryarg = arg
         if arg in all_cmd_args:
             if query_ks.get(arg) is not None:
-                command_args[tryarg] = local_vars.get(tryarg, None)
+                command_args[arg] = local_vars.get(arg, None)
                 if arg in both_verb_and_command:
-                    verb_args[tryarg] = command_args[arg]
+                    verb_args[arg] = command_args[arg]
         else:
             if query_ks.get(arg) is not None:
-                verb_args[arg] = local_vars.get(tryarg, None)
+                verb_args[arg] = local_vars.get(arg, None)
 
     return command_args, verb_args
 
