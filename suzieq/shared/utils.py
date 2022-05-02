@@ -36,6 +36,7 @@ MISSING_SPEED = -1
 NO_SPEED = 0
 MISSING_SPEED_IF_TYPES = ['ethernet', 'bond', 'bond_slave']
 SUPPORTED_ENGINES = ['pandas', 'rest']
+DATA_FORMATS = ["text", "json", "csv", "markdown"]
 
 
 class PollerTransport(str, Enum):

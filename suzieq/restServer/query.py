@@ -1,23 +1,22 @@
-from typing import List
-import os
 import argparse
-import json
-import sys
-from enum import Enum
-from fastapi import FastAPI, HTTPException, Query, Depends, Security, Request
-from fastapi.security.api_key import APIKeyQuery, APIKeyHeader
-from fastapi.responses import Response
-from starlette import status
-import uuid
 import inspect
 import logging
-import uvicorn
+import os
+import sys
+import uuid
+from enum import Enum
+from typing import List
 
-from suzieq.sqobjects import get_sqobject
-from suzieq.shared.utils import (load_sq_config, get_sq_install_dir,
-                                 get_log_params, sq_get_config_file,
-                                 print_version)
+import uvicorn
+from fastapi import Depends, FastAPI, HTTPException, Query, Request, Security
+from fastapi.responses import Response
+from fastapi.security.api_key import APIKeyHeader, APIKeyQuery
+from starlette import status
 from suzieq.shared.exceptions import UserQueryError
+from suzieq.shared.utils import (DATA_FORMATS, get_log_params,
+                                 get_sq_install_dir, load_sq_config,
+                                 print_version, sq_get_config_file)
+from suzieq.sqobjects import get_sqobject
 
 API_KEY_NAME = 'access_token'
 
@@ -737,6 +736,11 @@ def read_shared(function_name, verb, request, local_variables=None):
 
     columns = local_variables.get('columns', None)
     format = local_variables.get('format', None)
+    if not format:
+        format = 'json'
+    if format not in DATA_FORMATS:
+        return_error(405, f"Unsupported output format '{format}'")
+
     ret, svc_inst = run_command_verb(
         command, verb, command_args, verb_args, columns, format)
 
@@ -838,15 +842,26 @@ def run_command_verb(command, verb, command_args, verb_args,
         return_error(
             405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
 
+    res_content = None
+    media_type = None
     if format == 'markdown':
         # have to return a Reponse so that it won't turn the markdown into JSON
-        return Response(content=df.to_markdown()), svc_inst
-
-    if verb == 'summarize':
-        json_orient = 'columns'
-    else:
-        json_orient = 'records'
-    return json.loads(df.to_json(orient=json_orient)), svc_inst
+        res_content = df.to_markdown()
+        media_type = 'text/plain'
+    elif format == 'csv':
+        res_content = df.to_csv()
+        media_type = 'text/csv'
+    elif format == 'text':
+        res_content = df.to_string()
+        media_type = 'text/plain'
+    elif format == 'json':
+        if verb == 'summarize':
+            json_orient = 'columns'
+        else:
+            json_orient = 'records'
+        media_type = 'application/json'
+        res_content = df.to_json(orient=json_orient)
+    return Response(content=res_content, media_type=media_type), svc_inst
 
 
 def return_error(code: int, msg: str):
