@@ -31,7 +31,7 @@ show-fields:
     '''
 
     def __init__(self, **kwargs):
-        super().__init__(table='mroutes', **kwargs)
+        super().__init__(table='routes', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'source', 'group', 'vrf', 'rpfInterface', 
                                 'oifList', 'ipvers', 'rp', 'rpfneighbor']
         # self._valid_arg_vals = {'state': ['active', 'suspended', '']}
