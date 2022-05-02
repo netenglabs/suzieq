@@ -43,7 +43,7 @@ def manager_cfg():
     """
     args = {}
     args['config'] = create_dummy_config_file()
-    args['config-dict'] = load_sq_config(args['config'])
+    args['config-dict'] = load_sq_config(config_file=args['config'])
     yield args
     os.remove(args['config'])
 

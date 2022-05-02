@@ -36,6 +36,7 @@ class MacsObj(SqPandasEngine):
             compute_moves = False
 
         fields = self.schema.get_display_fields(columns)
+        self._add_active_to_fields(view, fields, addnl_fields)
 
         user_query_cols = self._get_user_query_cols(user_query)
         addnl_fields += [x for x in user_query_cols if x not in addnl_fields]

@@ -17,6 +17,7 @@ class InputDirInventory(Inventory):
     create fake nodes returning the content of the input
     directory
     """
+
     def __init__(self, add_task_fn, **kwargs) -> None:
         self.input_dir = kwargs.pop('input_dir', None)
         super().__init__(add_task_fn, **kwargs)
@@ -31,8 +32,7 @@ class InputDirInventory(Inventory):
         """
 
         node = FileNode()
-        # pylint: disable=protected-access
-        await node._init(self.input_dir)
+        await node.initialize(self.input_dir)
         self._nodes = {node.hostname: node}
 
         return self._nodes

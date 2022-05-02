@@ -14,7 +14,7 @@ from suzieq.poller.controller.manager.static import StaticManager
 from suzieq.poller.controller.source.native import SqNativeFile
 from suzieq.poller.controller.source.netbox import Netbox
 from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
-from suzieq.shared.utils import load_sq_config, sq_get_config_file
+from suzieq.shared.utils import load_sq_config
 from tests.conftest import create_dummy_config_file, get_async_task_mock
 
 # pylint: disable=protected-access
@@ -184,7 +184,7 @@ _INVALID_ARGS = [
 
 
 def generate_controller(args: Dict, inv_file: str = None,
-                        conf_file: str = '') -> Controller:
+                        conf_file: str = None) -> Controller:
     """Generate a Controller object
 
     Args:
@@ -195,7 +195,7 @@ def generate_controller(args: Dict, inv_file: str = None,
     Returns:
         Controller: the newly created Controller
     """
-    if conf_file == '':
+    if not conf_file:
         conf_file = create_dummy_config_file()
     config = load_sq_config(config_file=conf_file)
     args = update_args(args, inv_file, conf_file)
@@ -401,7 +401,7 @@ def test_missing_default_inventory(default_args):
     with patch.multiple(controller_module,
                         DEFAULT_INVENTORY_PATH='/not/a/path'):
         with pytest.raises(SqPollerConfError):
-            generate_controller(args=args, conf_file=None)
+            generate_controller(args=args)
 
 
 @pytest.mark.poller
@@ -416,11 +416,10 @@ def test_default_controller_config(default_args):
     with NamedTemporaryFile(suffix='yml') as tmpfile:
         with patch.multiple(controller_module,
                             DEFAULT_INVENTORY_PATH=tmpfile.name):
-            c = generate_controller(args=args, conf_file=None)
+            c = generate_controller(args=args)
             assert c._config['source']['path'] == tmpfile.name
             assert c._input_dir is None
             assert c._no_coalescer is False
-            assert c._config['manager']['config'] == sq_get_config_file(None)
             assert c._config['manager']['workers'] == 1
             assert c.period == 3600
             assert c._single_run_mode is None

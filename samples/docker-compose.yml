@@ -2,8 +2,10 @@
 version: '3.2'
 
 x-suzieq_service: &suzieq_service
-    #image: netenglabs/suzieq:0.17.0
-    image: suzieq:demo
+    # We strongly recommend not to use latest in production but to fix the
+    # version of the docker image
+    #image: netenglabs/suzieq:0.17.1
+    image: netenglabs/suzieq:latest
     stdin_open: true
     tty: true
     restart: unless-stopped

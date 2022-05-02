@@ -267,7 +267,7 @@ tests:
     "ifname": "xe-0/0/1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
     9214, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/3",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 30,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
     {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/4", "state": "up",
     "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
@@ -290,7 +290,7 @@ tests:
     "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace":
     "junos", "hostname": "leaf02", "ifname": "xe-0/0/2", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "bridge", "ipAddressList":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 20, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025801371}, {"namespace": "junos",
     "hostname": "leaf02", "ifname": "fti0", "state": "up", "adminState": "up", "type":
     "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
@@ -1022,7 +1022,7 @@ tests:
     "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace":
     "junos", "hostname": "leaf01", "ifname": "xe-0/0/3", "state": "up", "adminState":
-    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "bridge", "ipAddressList":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 30, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos",
     "hostname": "leaf01", "ifname": "xe-0/0/1", "state": "up", "adminState": "up",
     "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "", "ipAddressList": [],
@@ -1042,7 +1042,7 @@ tests:
     "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "", "ipAddressList": [],
     "ip6AddressList": [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
     "leaf01", "ifname": "xe-0/0/2", "state": "up", "adminState": "up", "type": "ethernet",
-    "mtu": 1514, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    "mtu": 1514, "vlan": 10, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01",
     "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
     "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
@@ -1253,108 +1253,78 @@ tests:
       {"namespace": "junos", "hostname": "leaf01", "ifname": "em4.32768", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "exit01", "ifname": "lo0.16385", "state": "up", "peerHostname": "", "peerIfname":
+      "exit01", "ifname": "jsrv.1", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801370},
-      {"namespace": "junos", "hostname": "leaf02", "ifname": "lo0.16385", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
-      "exit02", "ifname": "lo0.16385", "state": "up", "peerHostname": "", "peerIfname":
+      {"namespace": "junos", "hostname": "leaf02", "ifname": "jsrv.1", "state": "up",
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
+      Peer Found"], "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
+      "exit02", "ifname": "jsrv.1", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
-      {"namespace": "junos", "hostname": "spine02", "ifname": "lo0.16385", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
-      "dcedge01", "ifname": "lo0.16385", "state": "up", "peerHostname": "", "peerIfname":
+      {"namespace": "junos", "hostname": "spine02", "ifname": "jsrv.1", "state": "up",
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
+      Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
+      "dcedge01", "ifname": "jsrv.1", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025802054},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "lo0.16385", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "spine01", "ifname": "lo0.16385", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "exit01", "ifname": "lo0.999", "state": "up",
-      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
-      "leaf02", "ifname": "lo0.999", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801371},
-      {"namespace": "junos", "hostname": "exit02", "ifname": "lo0.999", "state": "up",
-      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
-      "leaf01", "ifname": "lo0.999", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "exit01", "ifname": "jsrv.1", "state": "up",
-      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
-      "leaf02", "ifname": "jsrv.1", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801371},
-      {"namespace": "junos", "hostname": "exit02", "ifname": "jsrv.1", "state": "up",
-      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
-      "spine02", "ifname": "jsrv.1", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801643},
-      {"namespace": "junos", "hostname": "dcedge01", "ifname": "jsrv.1", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025802054}, {"namespace": "junos", "hostname":
-      "spine01", "ifname": "jsrv.1", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "jsrv.1", "state": "up",
+      {"namespace": "junos", "hostname": "spine01", "ifname": "jsrv.1", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "leaf02", "ifname": "irb.30", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "pass", "assertReason": "-", "timestamp": 1623025801371}, {"namespace":
-      "junos", "hostname": "leaf01", "ifname": "irb.30", "state": "up", "peerHostname":
-      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf02", "ifname": "irb.20", "state": "up",
+      "leaf01", "ifname": "jsrv.1", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
+      {"namespace": "junos", "hostname": "leaf02", "ifname": "irb.30", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason": "-",
       "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf01", "ifname":
-      "irb.10", "state": "up", "peerHostname": "", "peerIfname": "", "result": "pass",
+      "irb.30", "state": "up", "peerHostname": "", "peerIfname": "", "result": "pass",
       "assertReason": "-", "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "server201", "ifname": "eth1", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025795928},
-      {"namespace": "junos", "hostname": "server201", "ifname": "eth0", "state": "up",
+      "leaf02", "ifname": "irb.20", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1623025801371}, {"namespace":
+      "junos", "hostname": "leaf01", "ifname": "irb.10", "state": "up", "peerHostname":
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1623025803099},
+      {"namespace": "junos", "hostname": "server201", "ifname": "eth1", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
-      "server101", "ifname": "eth1", "state": "up", "peerHostname": "", "peerIfname":
+      "server201", "ifname": "eth0", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025795928},
-      {"namespace": "junos", "hostname": "server202", "ifname": "eth0", "state": "up",
+      {"namespace": "junos", "hostname": "server101", "ifname": "eth1", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
-      "server202", "ifname": "eth1", "state": "up", "peerHostname": "", "peerIfname":
+      "server202", "ifname": "eth0", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025795928},
-      {"namespace": "junos", "hostname": "server101", "ifname": "eth0", "state": "up",
+      {"namespace": "junos", "hostname": "server202", "ifname": "eth1", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
-      "firewall01", "ifname": "eth2", "state": "up", "peerHostname": "", "peerIfname":
+      "server101", "ifname": "eth0", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025795928},
-      {"namespace": "junos", "hostname": "server102", "ifname": "eth1", "state": "up",
-      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
-      "firewall01", "ifname": "eth1", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025795928},
-      {"namespace": "junos", "hostname": "firewall01", "ifname": "eth0", "state":
+      {"namespace": "junos", "hostname": "firewall01", "ifname": "eth2", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
-      "server102", "ifname": "eth0", "state": "up", "peerHostname": "", "peerIfname":
+      "server102", "ifname": "eth1", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025795928},
-      {"namespace": "junos", "hostname": "exit01", "ifname": "em6", "state": "up",
-      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
-      "exit01", "ifname": "em2", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801370},
-      {"namespace": "junos", "hostname": "exit01", "ifname": "em4", "state": "up",
-      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
-      "exit01", "ifname": "em5", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801370},
-      {"namespace": "junos", "hostname": "exit01", "ifname": "xe-0/0/6", "state":
+      {"namespace": "junos", "hostname": "firewall01", "ifname": "eth1", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
-      "exit01", "ifname": "em3", "state": "up", "peerHostname": "", "peerIfname":
+      ["No Peer Found"], "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
+      "firewall01", "ifname": "eth0", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025795928},
+      {"namespace": "junos", "hostname": "server102", "ifname": "eth0", "state": "up",
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
+      Peer Found"], "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
+      "exit01", "ifname": "em6", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801370},
-      {"namespace": "junos", "hostname": "exit01", "ifname": "bme0", "state": "up",
+      {"namespace": "junos", "hostname": "exit01", "ifname": "em2", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
-      "exit01", "ifname": "lsi", "state": "up", "peerHostname": "", "peerIfname":
+      "exit01", "ifname": "em4", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801370},
-      {"namespace": "junos", "hostname": "exit01", "ifname": "lo0", "state": "up",
+      {"namespace": "junos", "hostname": "exit01", "ifname": "em5", "state": "up",
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
+      Peer Found"], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
+      "exit01", "ifname": "xe-0/0/6", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801370},
+      {"namespace": "junos", "hostname": "exit01", "ifname": "em3", "state": "up",
+      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
+      Peer Found"], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
+      "exit01", "ifname": "bme0", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801370},
+      {"namespace": "junos", "hostname": "exit01", "ifname": "lsi", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
       "exit01", "ifname": "em1", "state": "up", "peerHostname": "", "peerIfname":
@@ -1379,20 +1349,22 @@ tests:
       Peer Found"], "timestamp": 1623025801370}, {"namespace": "junos", "hostname":
       "exit01", "ifname": "xe-0/0/5", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801370},
-      {"namespace": "junos", "hostname": "leaf02", "ifname": "lo0", "state": "up",
+      {"namespace": "junos", "hostname": "leaf02", "ifname": "lsi", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
-      "leaf02", "ifname": "lsi", "state": "up", "peerHostname": "", "peerIfname":
+      "leaf02", "ifname": "em5", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801371},
-      {"namespace": "junos", "hostname": "leaf02", "ifname": "em5", "state": "up",
+      {"namespace": "junos", "hostname": "leaf02", "ifname": "em4", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
-      "leaf02", "ifname": "em4", "state": "up", "peerHostname": "", "peerIfname":
+      "leaf02", "ifname": "em2", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801371},
-      {"namespace": "junos", "hostname": "leaf02", "ifname": "em2", "state": "up",
-      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025801371}, {"namespace": "junos", "hostname":
-      "leaf02", "ifname": "em6", "state": "up", "peerHostname": "", "peerIfname":
+      {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/2", "state":
+      "up", "peerHostname": "", "peerIfname": "", "result": "pass", "assertReason":
+      "-", "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02",
+      "ifname": "xe-0/0/3", "state": "up", "peerHostname": "", "peerIfname": "", "result":
+      "pass", "assertReason": "-", "timestamp": 1623025801371}, {"namespace": "junos",
+      "hostname": "leaf02", "ifname": "em6", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801371},
       {"namespace": "junos", "hostname": "leaf02", "ifname": "em3", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
@@ -1432,79 +1404,74 @@ tests:
       {"namespace": "junos", "hostname": "exit02", "ifname": "em4", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
-      "exit02", "ifname": "lo0", "state": "up", "peerHostname": "", "peerIfname":
+      "exit02", "ifname": "lsi", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
-      {"namespace": "junos", "hostname": "exit02", "ifname": "lsi", "state": "up",
+      {"namespace": "junos", "hostname": "exit02", "ifname": "em0", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
-      "exit02", "ifname": "em0", "state": "up", "peerHostname": "", "peerIfname":
+      "exit02", "ifname": "bme0", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
-      {"namespace": "junos", "hostname": "exit02", "ifname": "bme0", "state": "up",
+      {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/10", "state":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
+      ["No Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
+      "exit02", "ifname": "xe-0/0/11", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
+      {"namespace": "junos", "hostname": "exit02", "ifname": "em3", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
-      "exit02", "ifname": "xe-0/0/10", "state": "up", "peerHostname": "", "peerIfname":
+      "exit02", "ifname": "em5", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
-      {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/11", "state":
+      {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/9", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
-      "exit02", "ifname": "em3", "state": "up", "peerHostname": "", "peerIfname":
+      "exit02", "ifname": "xe-0/0/8", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
-      {"namespace": "junos", "hostname": "exit02", "ifname": "em5", "state": "up",
+      {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/7", "state":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
+      ["No Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
+      "exit02", "ifname": "xe-0/0/6", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
+      {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/4", "state":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
+      ["No Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
+      "exit02", "ifname": "xe-0/0/5", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
+      {"namespace": "junos", "hostname": "exit02", "ifname": "em6", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
-      "exit02", "ifname": "xe-0/0/9", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
-      {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/8", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
-      "exit02", "ifname": "xe-0/0/7", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
-      {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/6", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
-      "exit02", "ifname": "xe-0/0/4", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
-      {"namespace": "junos", "hostname": "exit02", "ifname": "xe-0/0/5", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025801614}, {"namespace": "junos", "hostname":
-      "exit02", "ifname": "em6", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801614},
-      {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/8", "state":
+      "spine02", "ifname": "xe-0/0/8", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801643},
+      {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/4", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
-      "spine02", "ifname": "xe-0/0/4", "state": "up", "peerHostname": "", "peerIfname":
+      "spine02", "ifname": "xe-0/0/5", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801643},
-      {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/5", "state":
+      {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/6", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
-      "spine02", "ifname": "xe-0/0/6", "state": "up", "peerHostname": "", "peerIfname":
+      "spine02", "ifname": "xe-0/0/7", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801643},
-      {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/7", "state":
+      {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/9", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
-      "spine02", "ifname": "xe-0/0/9", "state": "up", "peerHostname": "", "peerIfname":
+      "spine02", "ifname": "em2", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801643},
-      {"namespace": "junos", "hostname": "spine02", "ifname": "em2", "state": "up",
+      {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/11", "state":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
+      ["No Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
+      "spine02", "ifname": "bme0", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801643},
+      {"namespace": "junos", "hostname": "spine02", "ifname": "em0", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
-      "spine02", "ifname": "xe-0/0/11", "state": "up", "peerHostname": "", "peerIfname":
+      "spine02", "ifname": "em1", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801643},
-      {"namespace": "junos", "hostname": "spine02", "ifname": "bme0", "state": "up",
+      {"namespace": "junos", "hostname": "spine02", "ifname": "em4", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
-      "spine02", "ifname": "em0", "state": "up", "peerHostname": "", "peerIfname":
+      "spine02", "ifname": "xe-0/0/10", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801643},
-      {"namespace": "junos", "hostname": "spine02", "ifname": "em1", "state": "up",
-      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
-      "spine02", "ifname": "em4", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801643},
-      {"namespace": "junos", "hostname": "spine02", "ifname": "xe-0/0/10", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
-      "spine02", "ifname": "em5", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025801643},
-      {"namespace": "junos", "hostname": "spine02", "ifname": "lo0", "state": "up",
+      {"namespace": "junos", "hostname": "spine02", "ifname": "em5", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025801643}, {"namespace": "junos", "hostname":
       "spine02", "ifname": "em3", "state": "up", "peerHostname": "", "peerIfname":
@@ -1544,39 +1511,34 @@ tests:
       Peer Found"], "timestamp": 1623025802054}, {"namespace": "junos", "hostname":
       "dcedge01", "ifname": "em4", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025802054},
-      {"namespace": "junos", "hostname": "dcedge01", "ifname": "lo0", "state": "up",
-      "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025802054}, {"namespace": "junos", "hostname":
-      "dcedge01", "ifname": "xe-0/0/2", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025802054},
-      {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/5", "state":
+      {"namespace": "junos", "hostname": "dcedge01", "ifname": "xe-0/0/2", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025802054}, {"namespace": "junos", "hostname":
-      "dcedge01", "ifname": "em3", "state": "up", "peerHostname": "", "peerIfname":
+      "dcedge01", "ifname": "xe-0/0/5", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025802054},
-      {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/10", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "spine01", "ifname": "xe-0/0/4", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/5", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "spine01", "ifname": "xe-0/0/6", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/7", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "spine01", "ifname": "xe-0/0/8", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/9", "state":
-      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
-      ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "spine01", "ifname": "xe-0/0/11", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "lo0", "state": "up",
+      {"namespace": "junos", "hostname": "dcedge01", "ifname": "em3", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
-      Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
+      Peer Found"], "timestamp": 1623025802054}, {"namespace": "junos", "hostname":
+      "spine01", "ifname": "xe-0/0/10", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
+      {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/4", "state":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
+      ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
+      "spine01", "ifname": "xe-0/0/5", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
+      {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/6", "state":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
+      ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
+      "spine01", "ifname": "xe-0/0/7", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
+      {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/8", "state":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
+      ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
+      "spine01", "ifname": "xe-0/0/9", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
+      {"namespace": "junos", "hostname": "spine01", "ifname": "xe-0/0/11", "state":
+      "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
+      ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
       "spine01", "ifname": "em0", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
       {"namespace": "junos", "hostname": "spine01", "ifname": "em1", "state": "up",
@@ -1587,58 +1549,60 @@ tests:
       {"namespace": "junos", "hostname": "spine01", "ifname": "em4", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "spine01", "ifname": "lo0", "state": "up", "peerHostname": "", "peerIfname":
+      "spine01", "ifname": "bme0", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "spine01", "ifname": "bme0", "state": "up",
+      {"namespace": "junos", "hostname": "spine01", "ifname": "em6", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "spine01", "ifname": "em6", "state": "up", "peerHostname": "", "peerIfname":
+      "leaf01", "ifname": "em2", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "em2", "state": "up",
+      {"namespace": "junos", "hostname": "leaf01", "ifname": "em3", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "leaf01", "ifname": "em3", "state": "up", "peerHostname": "", "peerIfname":
+      "leaf01", "ifname": "em4", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "em4", "state": "up",
+      {"namespace": "junos", "hostname": "leaf01", "ifname": "em5", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "leaf01", "ifname": "em5", "state": "up", "peerHostname": "", "peerIfname":
+      "leaf01", "ifname": "xe-0/0/4", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/4", "state":
+      {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/5", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "leaf01", "ifname": "xe-0/0/5", "state": "up", "peerHostname": "", "peerIfname":
+      "leaf01", "ifname": "xe-0/0/6", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/6", "state":
+      {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/7", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "leaf01", "ifname": "xe-0/0/7", "state": "up", "peerHostname": "", "peerIfname":
+      "leaf01", "ifname": "xe-0/0/8", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/8", "state":
+      {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/9", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "leaf01", "ifname": "xe-0/0/9", "state": "up", "peerHostname": "", "peerIfname":
+      "leaf01", "ifname": "xe-0/0/10", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/10", "state":
+      {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/11", "state":
       "up", "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason":
       ["No Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "leaf01", "ifname": "xe-0/0/11", "state": "up", "peerHostname": "", "peerIfname":
+      "leaf01", "ifname": "bme0", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "bme0", "state": "up",
+      {"namespace": "junos", "hostname": "leaf01", "ifname": "em0", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "leaf01", "ifname": "em0", "state": "up", "peerHostname": "", "peerIfname":
+      "leaf01", "ifname": "em1", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "leaf01", "ifname": "em1", "state": "up",
+      {"namespace": "junos", "hostname": "spine01", "ifname": "em5", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "spine01", "ifname": "em5", "state": "up", "peerHostname": "", "peerIfname":
+      "spine01", "ifname": "em3", "state": "up", "peerHostname": "", "peerIfname":
       "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
-      {"namespace": "junos", "hostname": "spine01", "ifname": "em3", "state": "up",
+      {"namespace": "junos", "hostname": "leaf01", "ifname": "lsi", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
-      "leaf01", "ifname": "lsi", "state": "up", "peerHostname": "", "peerIfname":
-      "", "result": "fail", "assertReason": ["No Peer Found"], "timestamp": 1623025803099},
+      "leaf01", "ifname": "xe-0/0/2", "state": "up", "peerHostname": "", "peerIfname":
+      "", "result": "pass", "assertReason": "-", "timestamp": 1623025803099}, {"namespace":
+      "junos", "hostname": "leaf01", "ifname": "xe-0/0/3", "state": "up", "peerHostname":
+      "", "peerIfname": "", "result": "pass", "assertReason": "-", "timestamp": 1623025803099},
       {"namespace": "junos", "hostname": "leaf01", "ifname": "em6", "state": "up",
       "peerHostname": "", "peerIfname": "", "result": "fail", "assertReason": ["No
       Peer Found"], "timestamp": 1623025803099}, {"namespace": "junos", "hostname":
@@ -2089,9 +2053,9 @@ tests:
     "mtu": 9214, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
     "timestamp": 1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname":
     "xe-0/0/2", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
-    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    "vlan": 20, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1623025801371}, {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/3",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 30,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025801371},
     {"namespace": "junos", "hostname": "leaf02", "ifname": "xe-0/0/4", "state": "up",
     "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
@@ -3046,9 +3010,9 @@ tests:
     "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
     "timestamp": 1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname":
     "xe-0/0/3", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
-    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    "vlan": 30, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1623025803099}, {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/2",
-    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0,
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 10,
     "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099},
     {"namespace": "junos", "hostname": "leaf01", "ifname": "xe-0/0/1", "state": "up",
     "adminState": "up", "type": "ethernet", "mtu": 9214, "vlan": 0, "master": "",

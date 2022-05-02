@@ -21,6 +21,9 @@ class SqpollerObj(SqPandasEngine):
         if status and 'status' not in fields:
             addnl_fields.append('status')
 
+        self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
+                                   addnl_fields)
+
         if poll_period_exceeded and 'pollExcdPeriodCount' not in fields:
             addnl_fields.append('pollExcdPeriodCount')
 

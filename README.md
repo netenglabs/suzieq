@@ -1,4 +1,4 @@
-[![integration-tests](https://github.com/netenglabs/suzieq/workflows/integration-tests/badge.svg)](https://github.com/netenglabs/suzieq/actions/workflows/integration-tests.yml)
+[![integration-tests](https://github.com/netenglabs/suzieq/workflows/integration-tests/badge.svg?branch=master)](https://github.com/netenglabs/suzieq/actions/workflows/integration-tests.yml)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/netenglabs/suzieq?logo=github&color=success)](https://github.com/netenglabs/suzieq/releases/latest)
 [![GitHub](https://img.shields.io/github/license/netenglabs/suzieq?logo=github&color=success)](LICENSE)
 [![Docker Image Version (latest by date)](https://img.shields.io/docker/v/netenglabs/suzieq?logo=docker&color=blue)](https://hub.docker.com/r/netenglabs/suzieq/tags?page=1&ordering=last_updated)
@@ -35,8 +35,7 @@ the official [documentation page](https://suzieq.readthedocs.io/en/latest/).
 
 To start collecting data for your network, create an inventory file to gather the data from following the instructions [here](https://suzieq.readthedocs.io/en/latest/poller/). Decide the directory where the data will be stored (ensure you have sufficient available space if you're going to be running the poller, say 100 MB at least). Lets call this dbdir. Now launch the suzieq docker container as follows:
 
-* ```docker run -itd -v <parquet-out-local-dir>:/suzieq/parquet -v <inventory-file>:/suzieq/inventory.yml --name sq-poller netenglabs/suzieq:latest```
-* Connect to the container via ```docker attach sq-poller```
+* ```docker run -it -v <parquet-out-local-dir>:/home/suzieq/parquet -v <inventory-file>:/home/suzieq/inventory.yml --name sq-poller netenglabs/suzieq:latest```
 * Launch the poller with the appropriate options. For example, ```sq-poller -D inventory.yml -n mydatacenter``` where mydatacenter is the name of the namespace where the data associated with the inventory is stored and inventory.yml is the inventory file in Suzieq poller native format (Use -a instead of -D if you're using Ansible inventory file format).
 
 ### Using Python Packaging

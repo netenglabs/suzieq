@@ -27,6 +27,8 @@ class OspfObj(SqPandasEngine):
         hostname = kwargs.pop('hostname', [])
 
         cols = self.schema.get_display_fields(columns)
+        self._add_active_to_fields(kwargs.get('view', self.iobj.view), cols,
+                                   None)
 
         user_query_cols = self._get_user_query_cols(user_query)
 
@@ -56,8 +58,12 @@ class OspfObj(SqPandasEngine):
 
         ifcols += [x for x in user_query_cols if (x in ifschema.fields
                                                   and x not in ifcols)]
+        self._add_active_to_fields(kwargs.get('view', 'latest'), ifcols,
+                                   None)
         nbrcols += [x for x in user_query_cols if (x in nbrschema.fields
                                                    and x not in nbrcols)]
+        self._add_active_to_fields(kwargs.get('view', 'latest'), nbrcols,
+                                   None)
         state_query_dict = {
             'full': '(adjState == "full" or adjState == "passive")',
             'passive': '(adjState == "passive")',
@@ -146,8 +152,10 @@ class OspfObj(SqPandasEngine):
 
         df.bfill(axis=0, inplace=True)
         final_df = df
+        if 'active_x' in final_df.columns:
+            final_df = final_df.rename(columns={'active_x': 'active'})
         if 'peerHostname' in cols or 'peerIfname' in cols:
-            final_df = self._get_peernames(df, cols, hostname=hostname,
+            final_df = self._get_peernames(final_df, cols, hostname=hostname,
                                            **kwargs)
         if query_str:
             final_df = final_df.query(query_str).reset_index(drop=True)

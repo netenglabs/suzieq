@@ -1,6 +1,7 @@
 import os
 import glob
 import shutil
+from pathlib import Path
 import sys
 from subprocess import check_output, check_call, CalledProcessError, STDOUT
 import time
@@ -46,7 +47,7 @@ def copytree(src, dst, symlinks=False, ignore=None):
 def create_config(t_dir, suzieq_dir):
     '''Create dummy config'''
     # We need to create a tempfile to hold the config
-    tmpconfig = load_sq_config(conftest.create_dummy_config_file())
+    tmpconfig = load_sq_config(config_file=conftest.create_dummy_config_file())
     tmpconfig['data-directory'] = f"{t_dir}/parquet"
     tmpconfig['service-directory'] = \
         f"{suzieq_dir}/{tmpconfig['service-directory']}"
@@ -193,13 +194,23 @@ def vagrant_setup():
     vagrant_down()
 
 
-def git_del_dir(folder):
-    '''Del git dir'''
-    if os.path.isdir(folder):
+def git_rm_old_files(namespace):
+    '''Del old files from namespace'''
+    nsdirs = Path('tests/data/parquet/').glob(f'**/namespace={namespace}')
+    for folder in nsdirs:
         try:
-            check_call(['git', 'rm', '-rf', folder])
+            check_call(['git', 'rm', '-rf', str(folder)])
         except CalledProcessError:
-            shutil.rmtree(folder)
+            shutil.rmtree(str(folder))
+
+
+def git_rm_input_dir(dstdir):
+    '''Delete the input dir provided'''
+    if os.path.isdir(dstdir):
+        try:
+            check_call(['git', 'rm', '-rf', dstdir])
+        except CalledProcessError:
+            shutil.rmtree(dstdir)
 
 
 def update_sqcmds(files, data_dir=None, namespace=None):
@@ -219,7 +230,7 @@ def update_sqcmds(files, data_dir=None, namespace=None):
 def update_input_data(root_dir, nos, scenario, input_path):
     '''Update collected raw data used for tests'''
     dst_dir = f'{root_dir}/tests/integration/sqcmds/{nos}-input/{scenario}/'
-    git_del_dir(dst_dir)
+    git_rm_input_dir(dst_dir)
     copytree(f'{input_path}/suzieq-input', dst_dir)
 
 
@@ -275,9 +286,11 @@ class TestUpdate:
             orig_dir, tmp_path)
 
         dst_dir = f'{orig_dir}/tests/data/parquet'
-        git_del_dir(dst_dir)
-        copytree(f'{tmp_path}/parquet-out', dst_dir)
-        shutil.rmtree(f'{tmp_path}/parquet-out')
+        git_rm_old_files('ospf-ibgp')
+        git_rm_old_files('dual-evpn')
+        git_rm_old_files('ospf-single')
+        copytree(f'{tmp_path}/parquet', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet')
 
         update_data(
             'dual-bgp',
@@ -285,10 +298,10 @@ class TestUpdate:
             orig_dir, tmp_path)
 
         dst_dir = f'{orig_dir}/tests/data/parquet'
-        git_del_dir(dst_dir)
+        git_rm_old_files('dual-bgp')
 
-        copytree(f'{tmp_path}/parquet-out', dst_dir)
-        shutil.rmtree(f'{tmp_path}/parquet-out')
+        copytree(f'{tmp_path}/parquet', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet')
 
         # update the samples data with updates from the newly collected data
 
@@ -303,9 +316,9 @@ class TestUpdate:
                     orig_dir, tmp_path, number_of_devices=device_cnt)
 
         dst_dir = f'{orig_dir}/tests/data/parquet'
-        git_del_dir(dst_dir)
-        copytree(f'{tmp_path}/parquet-out', dst_dir)
-        shutil.rmtree(f'{tmp_path}/parquet-out')
+        git_rm_old_files(nos)
+        copytree(f'{tmp_path}/parquet', dst_dir)
+        shutil.rmtree(f'{tmp_path}/parquet')
 
         # update the samples data with updates from the newly collected data
 
@@ -356,6 +369,15 @@ class TestUpdate:
     def test_update_vmx_data(self, tmp_path):
         '''Update test data for VMX'''
         self._update_test_data_common_fn('vmx', tmp_path, '5')
+
+    @pytest.mark.test_update
+    @pytest.mark.update_data
+    @pytest.mark.broken
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_broken_data(self, tmp_path):
+        '''Update test data for mixed sim, from Rick'''
+        self._update_test_data_common_fn('broken', tmp_path, '14')
 
 
 tests = [
@@ -421,7 +443,7 @@ def _gather_cndcn_data(topology, proto, scenario, input_path):
     os.chdir(path + '/topologies')
     dst_dir = f'{orig_dir}/tests/integration/all_cndcn/{name}-input'
     gather_data(topology, proto, scenario, name, orig_dir, input_path)
-    git_del_dir(dst_dir)
+    git_rm_input_dir(dst_dir)
     copytree(f'{input_path}/suzieq-input', dst_dir)
     os.chdir(orig_dir)
 
@@ -440,20 +462,21 @@ def _update_cndcn_data(topology, proto, scenario, tmp_path):
     if not os.path.isdir(f'{parquet_dir}/{name}'):
         os.mkdir(f'{parquet_dir}/{name}')
 
-    copytree(f"{tmp_path}/parquet-out",
-             f"{parquet_dir}/{name}/parquet-out/")
+    copytree(f"{tmp_path}/parquet",
+             f"{parquet_dir}/{name}/parquet/")
 
     if os.environ.get('UPDATE_SQCMDS', None):
         update_sqcmds(glob.glob(f'{cndcn_samples_dir}/{name}-samples/*.yml'),
-                      data_dir=f"{parquet_dir}/{name}/parquet-out",
+                      data_dir=f"{parquet_dir}/{name}/parquet",
                       namespace=name)
 
 
 def _test_data(topology, proto, scenario, testvar):
     # pylint: disable=redefined-outer-name
     name = f'{topology}_{proto}_{scenario}'
-    testvar['data-directory'] = f"{parquet_dir}/{name}/parquet-out"
-    dummy_config = load_sq_config(conftest.create_dummy_config_file())
+    testvar['data-directory'] = f"{parquet_dir}/{name}/parquet"
+    dummy_config = load_sq_config(
+        config_file=conftest.create_dummy_config_file())
     _test_sqcmds(dummy_config, testvar)
 
 

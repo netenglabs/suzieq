@@ -1,7 +1,8 @@
 # pylint: disable=no-name-in-module
 
+import re
 from typing import Dict, List, Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 
 from suzieq.shared.utils import PollerTransport
 
@@ -32,6 +33,14 @@ class DeviceModel(BaseModel):
     transport: Optional[PollerTransport]
     port: Optional[str]
     devtype: Optional[str]
+
+    @validator('jump_host')
+    def jump_host_validator(cls, value):
+        jump_host = value[2:] if value.startswith('//') else value
+        pattern = '([a-zA-Z0-9-.]{1,253})@([a-zA-Z0-9-.]{1,253})'
+        assert re.fullmatch(pattern, jump_host), \
+               'format username@jumphost required'
+        return value
 
     class Config:
         """pydantic configuration

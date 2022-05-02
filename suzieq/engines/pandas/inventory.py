@@ -51,6 +51,8 @@ class InventoryObj(SqPandasEngine):
         columns = kwargs.pop('columns', ['default'])
 
         fields = self.schema.get_display_fields(columns)
+        self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
+                                   None)
 
         df = super().get(columns=fields, **kwargs)
 

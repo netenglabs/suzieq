@@ -43,7 +43,10 @@ class AddressObj(SqPandasEngine):
 
         vrf = kwargs.pop("vrf", "")
 
+        addnl_fields = []
         fields = self.schema.get_display_fields(columns)
+        self._add_active_to_fields(kwargs.get('view', self.iobj.view),
+                                   fields, addnl_fields)
 
         if prefix:
             addr_types = self.addr_type(prefix)
@@ -53,7 +56,6 @@ class AddressObj(SqPandasEngine):
         # Always include ip or mac addresses in the dataframe
         # if there is a filter on them
 
-        addnl_fields = []
         for x in ['ipAddressList', 'ip6AddressList', 'macaddr']:
             if x not in fields:
                 addnl_fields.append(x)

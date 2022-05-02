@@ -24,7 +24,7 @@ def service_for_diff():
     """Init the service for testing the get_diff() function
     """
     cfg_file = create_dummy_config_file()
-    cfg = load_sq_config(cfg_file)
+    cfg = load_sq_config(config_file=cfg_file)
     # Build the shema
     schema_dir = cfg['schema-directory']
     schema = Schema(schema_dir)

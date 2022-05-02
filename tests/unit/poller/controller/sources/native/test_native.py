@@ -109,7 +109,6 @@ async def test_invalid_hosts(default_config):
 @pytest.mark.poller_unit_tests
 @pytest.mark.controller_unit_tests
 @pytest.mark.controller_source_native
-@pytest.mark.asyncio
 def test_validate_inventory(default_config):
     """Check that validate_inventory raise correctly
     """
@@ -129,7 +128,6 @@ def test_validate_inventory(default_config):
 @pytest.mark.poller_unit_tests
 @pytest.mark.controller_unit_tests
 @pytest.mark.controller_source_native
-@pytest.mark.asyncio
 @pytest.mark.parametrize('address', [
     '192.168.0',
     '192.168.00.1',

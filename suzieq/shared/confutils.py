@@ -1,10 +1,12 @@
 '''
 Parsing Configuration utilities
 '''
+from typing import Dict
 from ciscoconfparse import CiscoConfParse
 
 
-def get_access_port_interfaces(conf: CiscoConfParse, nos: str) -> dict:
+def get_access_port_interfaces(conf: CiscoConfParse,
+                               nos: str) -> Dict[str, int]:
     '''For various NOS return the list of access port interfaces.
 
     This module uses the CiscoConfParse to extract the interface names.
@@ -19,7 +21,8 @@ def get_access_port_interfaces(conf: CiscoConfParse, nos: str) -> dict:
     return ifmap
 
 
-def get_trunk_port_interfaces(conf: CiscoConfParse, nos: str) -> dict:
+def get_trunk_port_interfaces(conf: CiscoConfParse,
+                              nos: str) -> Dict[str, int]:
     '''For various NOS return the list of access port interfaces.
 
     This module uses the CiscoConfParse to extract the interface names.
@@ -35,12 +38,13 @@ def get_trunk_port_interfaces(conf: CiscoConfParse, nos: str) -> dict:
 
 
 # Do not invoke these functions directly, the implementation can change
-def _get_swport_interfaces_junos(conf: CiscoConfParse, what: str) -> dict:
+def _get_swport_interfaces_junos(conf: CiscoConfParse,
+                                 what: str) -> Dict[str, int]:
     '''Return interfaces that match the requested info for Junos.
 
     This involves parsing the Junos config looking for the relevant info.
-    what can be access or trunk. For access ports, we return a dict of
-    interfaces that are access ports with the value that is the access vlan.
+    what can be access or trunk. For access ports, we return a Dict[str, int]
+    of interfaces that are access ports with the value that is the access vlan.
     '''
 
     pm_dict = {}
@@ -58,12 +62,16 @@ def _get_swport_interfaces_junos(conf: CiscoConfParse, what: str) -> dict:
                        if 'members' in line.text]
             if vlan_ln:
                 vlan = vlan_ln[0].text.split('members')[1].strip()
-            pm_dict[ifname] = vlan
+                if vlan.isnumeric():
+                    pm_dict[ifname] = int(vlan)
+                else:
+                    vlan = 0
 
     return pm_dict
 
 
-def _get_swport_interfaces_cls(conf: CiscoConfParse, what: str) -> dict:
+def _get_swport_interfaces_cls(conf: CiscoConfParse,
+                               what: str) -> Dict[str, int]:
     '''Return interfaces that match the requested info for Cumulus.
 
     This involves parsing the ifupdown2 config looking for the relevant info.
@@ -76,7 +84,10 @@ def _get_swport_interfaces_cls(conf: CiscoConfParse, what: str) -> dict:
                 '^iface ', ['bridge-access']):
             ifname = intf.text.split('iface')[1].strip()
             acc_vlan = intf.re_match_iter_typed(r'^.*bridge-access\s+(\d+)')
-            pm_dict[ifname] = acc_vlan
+            if acc_vlan.isnumeric():
+                pm_dict[ifname] = int(acc_vlan)
+            else:
+                pm_dict[ifname] = 0
     if what == "trunk":
         acc_ports = []
         for intf in conf.find_objects_w_all_children(
@@ -99,15 +110,18 @@ def _get_swport_interfaces_cls(conf: CiscoConfParse, what: str) -> dict:
         for intf in conf.find_objects_w_child('iface ', 'bridge-pvid'):
             port = intf.text.split('iface')[1].strip()
             if port not in pm_dict:
-                pm_dict[port] = intf.re_match_iter_typed(
-                    r'bridge-pvid\s+(\d+)')
+                vlan = intf.re_match_iter_typed(r'bridge-pvid\s+(\d+)')
             else:
-                pm_dict['port'] = intf.re_match_iter_typed(
-                    r'bridge-pvid\s+(\d+)')
+                vlan = intf.re_match_iter_typed(r'bridge-pvid\s+(\d+)')
+            if vlan.isnumeric():
+                pm_dict['port'] = int(vlan)
+            else:
+                pm_dict['port'] = 0
     return pm_dict
 
 
-def _get_swport_interfaces_iosy(conf: CiscoConfParse, what: str) -> dict:
+def _get_swport_interfaces_iosy(conf: CiscoConfParse,
+                                what: str) -> Dict[str, int]:
     '''Return interfaces that match the requested info for IOSy NOS.
 
     This involves parsing the config looking for the relevant info. This is
@@ -121,13 +135,19 @@ def _get_swport_interfaces_iosy(conf: CiscoConfParse, what: str) -> dict:
         for intf in conf.find_objects_w_child('^interface ', '.*access'):
             ifname = intf.text.split('interface')[1].strip()
             acc_vlan = intf.re_match_iter_typed(r'^.*vlan\s+(\d+)')
-            pm_dict[ifname] = acc_vlan
+            if acc_vlan.isnumeric():
+                pm_dict[ifname] = int(acc_vlan)
+            else:
+                pm_dict[ifname] = 0
 
     if what == 'trunk':
         for intf in conf.find_objects_w_child('^interface', '.*trunk'):
             ifname = intf.text.split('interface')[1].strip()
             nvlan = intf.re_match_iter_typed(r'.*native vlan\s+(\d+)',
                                              default='1')
-            pm_dict[ifname] = nvlan
+            if nvlan.isnumeric():
+                pm_dict[ifname] = int(nvlan)
+            else:
+                pm_dict[ifname] = 0
 
     return pm_dict

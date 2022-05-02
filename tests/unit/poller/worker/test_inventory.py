@@ -65,7 +65,7 @@ async def ready_inventory():
     """
     inv = _init_inventory()
     with patch.multiple(Node, _init_ssh=get_async_task_mock(),
-                        init_node=get_async_task_mock()):
+                        _fetch_init_dev_data=get_async_task_mock()):
         await inv.build_inventory()
     return inv
 
@@ -100,7 +100,7 @@ async def test_inventory_build():
     inv = _init_inventory()
 
     with patch.multiple(Node, _init_ssh=get_async_task_mock(),
-                        init_node=get_async_task_mock()):
+                        _fetch_init_dev_data=get_async_task_mock()):
         nodes = await inv.build_inventory()
 
     # Check if nodes are registered in the inventory
