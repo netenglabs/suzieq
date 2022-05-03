@@ -126,4 +126,3 @@ class NamespaceObj(SqPandasEngine):
 
         # At this point we have a single row with index 0, so rename
         return self.ns.T.rename(columns={0: 'summary'})
-
