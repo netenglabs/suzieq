@@ -8,7 +8,7 @@ from suzieq.sqobjects.network import NetworkObj
 
 @command("network", help="Act on network-wide data")
 class NetworkCmd(SqCommand):
-    """Overall network information such as namespaces present etc."""
+    """Advanced commands across all the network"""
 
     def __init__(
             self,
@@ -35,29 +35,6 @@ class NetworkCmd(SqCommand):
             sqobj=NetworkObj,
         )
 
-    @command("show", help="Show device information")
-    @argument("model", description="model(s), space separated")
-    @argument("os", description='NOS(es), space separated')
-    @argument('vendor', description='Vendor(s), space separated')
-    @argument('version', description='NOS version(s), space separated')
-    # pylint: disable=arguments-differ
-    def show(self, os: str = "", vendor: str = "", model: str = "",
-             version: str = "") -> int:
-        """Show network info
-        """
-
-        now = time.time()
-
-        df = self._invoke_sqobj(self.sqobj.get,
-                                namespace=self.namespace, os=os.split(),
-                                vendor=vendor.split(), model=model.split(),
-                                version=version, query_str=self.query_str,
-                                hostname=self.hostname)
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-
-        return self._gen_output(df)
-
     @command("find", help="find where an IP/MAC address is attached")
     @argument("address", type=str,
               description="IP/MAC addresses, in quotes, space separated")
@@ -83,3 +60,10 @@ class NetworkCmd(SqCommand):
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
 
         return self._gen_output(df)
+
+    @ command("help", help="show help for a command")
+    @ argument("command", description="command to show help for",
+               choices=['find'])
+    # pylint: disable=redefined-outer-name
+    def help(self, command: str = ''):
+        return super().help(command)
