@@ -467,7 +467,7 @@ class Service(SqPlugin):
         do_merge = True
         for i, item in enumerate(data):
             nfn = self._get_device_normalizer(item)
-            do_merge = do_merge and nfn.get('merge', True)
+            do_merge = do_merge and nfn and nfn.get('merge', True)
             tmpres = self._process_each_output(i, item, nfn)
             result_list.append(tmpres)
 

@@ -889,7 +889,10 @@ class Node:
                 cmd = use.get("command", None)
 
         if not cmd:
-            return result
+            result.append(self._create_result(
+                svc_defn, HTTPStatus.NOT_FOUND, "No service definition"))
+            self.error_svcs_proc.add(svc_defn.get("service"))
+            return await service_callback(result, cb_token)
 
         oformat = use.get('format', 'json')
         if not isinstance(cmd, list):
