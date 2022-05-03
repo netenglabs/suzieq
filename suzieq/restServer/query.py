@@ -212,6 +212,10 @@ class RouteVerbs(str, Enum):
     top = "top"
 
 
+class NetworkVerbs(str, Enum):
+    find = "find"
+
+
 class DeviceStatus(str, Enum):
     alive = "alive"
     dead = "dead"
@@ -533,8 +537,8 @@ async def query_mlag(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@app.get("/api/v2/network/find")
-async def query_network_find(request: Request,
+@app.get("/api/v2/network/{verb}")
+async def query_network_find(verb: NetworkVerbs, request: Request,
                              token: str = Depends(get_api_key),
                              format: str = None,
                              columns: List[str] = Query(default=["default"]),
@@ -547,25 +551,25 @@ async def query_network_find(request: Request,
                              query_str: str = None,
                              ):
     function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, "find", request, locals())
+    return read_shared(function_name, verb, request, locals())
 
 
-@app.get("/api/v2/network/{verb}")
-async def query_network(verb: CommonVerbs, request: Request,
-                        token: str = Depends(get_api_key),
-                        format: str = None,
-                        columns: List[str] = Query(default=["default"]),
-                        namespace: List[str] = Query(None),
-                        hostname: List[str] = Query(None),
-                        start_time: str = "", end_time: str = "",
-                        version: str = "",
-                        view: ViewValues = "latest",
-                        model: List[str] = Query(None),
-                        vendor: List[str] = Query(None),
-                        os: List[str] = Query(None),
-                        query_str: str = None, what: str = None,
-                        count: str = None, reverse: str = None,
-                        ):
+@app.get("/api/v2/namespace/{verb}")
+async def query_namespace(verb: CommonVerbs, request: Request,
+                          token: str = Depends(get_api_key),
+                          format: str = None,
+                          columns: List[str] = Query(default=["default"]),
+                          namespace: List[str] = Query(None),
+                          hostname: List[str] = Query(None),
+                          start_time: str = "", end_time: str = "",
+                          version: str = "",
+                          view: ViewValues = "latest",
+                          model: List[str] = Query(None),
+                          vendor: List[str] = Query(None),
+                          os: List[str] = Query(None),
+                          query_str: str = None, what: str = None,
+                          count: str = None, reverse: str = None,
+                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
