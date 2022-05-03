@@ -1,7 +1,7 @@
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.arpnd import ArpndObj
 
 
@@ -14,7 +14,7 @@ from suzieq.sqobjects.arpnd import ArpndObj
 @argument("macaddr",
           description="MAC address(es), in quotes, space separated")
 @argument("oif", description="Outgoing interface(s), space separated")
-class ArpndCmd(SqCommand):
+class ArpndCmd(SqTableCommand):
     """ARP/Neighbor Discovery information"""
 
     def __init__(

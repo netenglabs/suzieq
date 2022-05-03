@@ -5,7 +5,7 @@ import pandas as pd
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.routes import RoutesObj
 
 
@@ -15,7 +15,7 @@ from suzieq.sqobjects.routes import RoutesObj
 @argument("prefix", description="Prefix(es), in quotes, space separated")
 @argument("prefixlen", description="must be of the form "
           "[<|<=|>=|>|!] length")
-class RouteCmd(SqCommand):
+class RouteCmd(SqTableCommand):
     """Routing table information"""
 
     def __init__(

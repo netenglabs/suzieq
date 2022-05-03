@@ -1,7 +1,7 @@
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.topology import TopologyObj
 
 
@@ -19,7 +19,7 @@ from suzieq.sqobjects.topology import TopologyObj
 @ argument("peerHostname",
            description="Peer hostname(s), space separated, "
            "space separated")
-class TopologyCmd(SqCommand):
+class TopologyCmd(SqTableCommand):
     """Information about the topology constructed from various protocols"""
 
     def __init__(
