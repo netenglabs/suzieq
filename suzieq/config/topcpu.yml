@@ -29,15 +29,3 @@ apply:
 
   sonic:
     copy: linux
-
-  eos:
-    version: all
-    command: bash timeout 5 top -bn 1 | head -17
-    format: text
-    textfsm: textfsm_templates/cl_top.tfsm
-
-  # nxos:
-  #   version: all
-  #   command: run bash top -bn 1 | head -17
-  #   format: text
-  #   textfsm: textfsm_templates/cl_top.tfsm
