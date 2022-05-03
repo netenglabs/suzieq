@@ -6230,9 +6230,9 @@ tests:
     "active", "interfaces": [], "vlan": 1, "timestamp": 1623025174550, "active": true},
     {"namespace": "eos", "hostname": "dcedge01", "vlanName": "vlan1", "state": "active",
     "interfaces": [], "vlan": 1, "timestamp": 1623025176433, "active": true}]'
-- command: network show --columns='*' --format=json --namespace=eos
+- command: namespace show --columns='*' --format=json --namespace=eos
   data-directory: tests/data/parquet
-  marks: network show all eos
+  marks: namespace show all eos
   output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
     1639161231163, "active": true}]'

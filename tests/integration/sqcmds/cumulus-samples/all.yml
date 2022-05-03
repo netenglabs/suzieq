@@ -5363,10 +5363,10 @@ tests:
     true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "vlanName": "vlan4001",
     "state": "active", "interfaces": ["vxlan4001"], "vlan": 4001, "timestamp": 1616681582524,
     "active": true}]'
-- command: network show --columns='*' --format=json --namespace='ospf-single dual-evpn
+- command: namespace show --columns='*' --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet
-  marks: network show all cumulus
+  marks: namespace show all cumulus
   output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
     0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
     1639161298729, "active": true}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt":

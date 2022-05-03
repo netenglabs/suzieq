@@ -1,31 +1,5 @@
 description: Testing network table for panos
 tests:
-- command: network show --format=json --namespace=panos
-  data-directory: tests/data/parquet
-  marks: network show panos
-  output: '[{"namespace": "panos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
-    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639498880095}]'
-- command: network show --format=json --namespace=panos --os=panos
-  data-directory: tests/data/parquet
-  marks: network show  panos
-  output: '[{"namespace": "panos", "deviceCnt": 1, "serviceCnt": 7, "errSvcCnt": 0,
-    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639498880046}]'
-- command: network show --columns='namespace' --format=json --namespace=panos
-  data-directory: tests/data/parquet
-  marks: network show panos
-  output: '[{"namespace": "panos"}]'
-- command: network show --columns='hasOspf hasBgp' --format=json --namespace=panos
-  data-directory: tests/data/parquet
-  marks: network show panos
-  output: '[{"hasOspf": true, "hasBgp": true}]'
-- command: network show --columns='*' --format=json --namespace=panos
-  data-directory: tests/data/parquet
-  marks: network show panos
-  output: '[{"namespace": "panos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
-    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639498880095, "active": true}]'
 - command: network find --address="172.16.1.101" --format=json --namespace=panos
   data-directory: tests/data/parquet
   marks: network find panos
@@ -46,12 +20,6 @@ tests:
   data-directory: tests/data/parquet
   marks: network find panos
   output: '[]'
-- command: network summarize --format=json --namespace=panos
-  data-directory: tests/data/parquet
-  marks: network summarize panos
-  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [18, 18, 18.0], "nsWithMlagCnt":
-    1, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
-    0}}'
 - command: network find --address="10.0.0.11" --format=json --namespace=panos
   data-directory: tests/data/parquet
   marks: network find panos
@@ -94,11 +62,3 @@ tests:
     "panos", "hostname": "leaf04", "vrf": "evpn-vrf", "ipAddress": "10.0.0.32", "vlan":
     "999", "macaddr": "44:39:39:ff:41:96", "ifname": "vlan999", "bondMembers": "",
     "type": "bridged", "l2miss": true, "timestamp": 1639476254425}]'
-- command: network unique --format=json --namespace=panos
-  data-directory: tests/data/parquet/
-  marks: network unique
-  output: '[{"namespace": "panos"}]'
-- command: network unique --count=True --format=json --namespace=panos
-  data-directory: tests/data/parquet/
-  marks: network unique
-  output: '[{"namespace": "panos", "numRows": 1}]'

@@ -271,8 +271,8 @@ def test_table_describe(setup_nubia, table):
                            for x in tables
                            if x not in ['path', 'topmem', 'topcpu',
                                         'topmem', 'time', 'ifCounters',
-                                        'ospfIf', 'ospfNbr',
-                                        'network', 'inventory']
+                                        'ospfIf', 'ospfNbr', 'network',
+                                        'namespace', 'inventory']
                            ])
 @ pytest.mark.parametrize('datadir', DATADIR)
 def test_sqcmds_regex_hostname(table, datadir):
@@ -308,7 +308,7 @@ def test_sqcmds_regex_hostname(table, datadir):
                               x,
                               marks=getattr(pytest.mark, x))
                            for x in tables
-                           if x not in ['path', 'inventory']
+                           if x not in ['path', 'inventory', 'network']
                            ])
 @ pytest.mark.parametrize('datadir', ['tests/data/parquet/'])
 def test_sqcmds_regex_namespace(table, datadir):
@@ -329,8 +329,8 @@ def test_sqcmds_regex_namespace(table, datadir):
     else:
         assert set(df.namespace.unique()) == set(['ospf-ibgp', 'ospf-single'])
 
-    if table in ['network']:
-        # network show has no hostname
+    if table in ['namespace']:
+        # namespace show has no hostname
         return
 
     if table not in ['mlag']:
