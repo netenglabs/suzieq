@@ -2,7 +2,7 @@ from nubia import command
 import pandas as pd
 
 from suzieq.cli.nubia_patch import argument
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.fs import FsObj
 
 
@@ -10,7 +10,7 @@ from suzieq.sqobjects.fs import FsObj
 @argument("used_percent", description="must be of the form "
           "[<|<=|>=|>|!]value. Eg: '<=20'")
 @argument("mountPoint", description="Mount point(s), space separated")
-class FsCmd(SqCommand):
+class FsCmd(SqTableCommand):
     """Filesystem information such as total disk space, filesystems etc"""
 
     def __init__(

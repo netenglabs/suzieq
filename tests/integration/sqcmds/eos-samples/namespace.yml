@@ -1,0 +1,42 @@
+description: Testing namespace table for EOS
+tests:
+- command: namespace show --format=json --namespace=eos
+  data-directory: tests/data/parquet
+  marks: namespace show eos
+  output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1639161231163}]'
+- command: namespace show --format=json --namespace=eos --os=eos
+  data-directory: tests/data/parquet
+  marks: namespace show  eos
+  output: '[{"namespace": "eos", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1639161231158}]'
+- command: namespace show --columns='namespace' --format=json --namespace=eos
+  data-directory: tests/data/parquet
+  marks: namespace show eos
+  output: '[{"namespace": "eos"}]'
+- command: namespace show --columns='hasOspf hasBgp' --format=json --namespace=eos
+  data-directory: tests/data/parquet
+  marks: namespace show eos
+  output: '[{"hasOspf": true, "hasBgp": true}]'
+- command: namespace show --columns='*' --format=json --namespace=eos
+  data-directory: tests/data/parquet
+  marks: namespace show eos
+  output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1639161231163, "active": true}]'
+- command: namespace unique --format=json --namespace=eos
+  data-directory: tests/data/parquet
+  marks: namespace unique eos
+  output: '[{"namespace": "eos"}]'
+- command: namespace unique --count=True --format=json --namespace=eos
+  data-directory: tests/data/parquet
+  marks: namespace unique eos
+  output: '[{"namespace": "eos", "numRows": 1}]'
+- command: namespace summarize --format=json --namespace=eos
+  data-directory: tests/data/parquet
+  marks: namespace summarize eos
+  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [18, 18, 18.0], "nsWithMlagCnt":
+    1, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
+    0}}'

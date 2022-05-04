@@ -1,50 +1,5 @@
 description: Testing network table for Cumulus
 tests:
-- command: network show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-  data-directory: tests/data/parquet
-  marks: network show cumulus
-  output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
-    0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161298729}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
-    "errSvcCnt": 0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag":
-    true, "lastUpdate": 1641830465167}, {"namespace": "ospf-single", "deviceCnt":
-    14, "serviceCnt": 16, "errSvcCnt": 0, "hasOspf": true, "hasBgp": false, "hasVxlan":
-    false, "hasMlag": false, "lastUpdate": 1639161366022}]'
-- command: network show --format=json --os=cumulus --namespace='ospf-single dual-evpn
-    ospf-ibgp'
-  data-directory: tests/data/parquet
-  marks: network show  cumulus
-  output: '[{"namespace": "dual-evpn", "deviceCnt": 9, "serviceCnt": 17, "errSvcCnt":
-    0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161298729}, {"namespace": "ospf-ibgp", "deviceCnt": 9, "serviceCnt": 18, "errSvcCnt":
-    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1641830465166}, {"namespace": "ospf-single", "deviceCnt": 9, "serviceCnt": 16,
-    "errSvcCnt": 0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag":
-    false, "lastUpdate": 1639161366022}]'
-- command: network show --columns='namespace' --format=json --namespace='ospf-single
-    dual-evpn ospf-ibgp'
-  data-directory: tests/data/parquet
-  marks: network show cumulus
-  output: '[{"namespace": "dual-evpn"}, {"namespace": "ospf-ibgp"}, {"namespace":
-    "ospf-single"}]'
-- command: network show --columns='hasOspf hasBgp' --format=json --namespace='ospf-single
-    dual-evpn ospf-ibgp'
-  data-directory: tests/data/parquet
-  marks: network show cumulus
-  output: '[{"hasOspf": false, "hasBgp": true}, {"hasOspf": true, "hasBgp": true},
-    {"hasOspf": true, "hasBgp": false}]'
-- command: network show --columns='*' --format=json --namespace='ospf-single dual-evpn
-    ospf-ibgp'
-  data-directory: tests/data/parquet
-  marks: network show cumulus
-  output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
-    0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161298729, "active": true}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt":
-    18, "errSvcCnt": 0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag":
-    true, "lastUpdate": 1641830465167, "active": true}, {"namespace": "ospf-single",
-    "deviceCnt": 14, "serviceCnt": 16, "errSvcCnt": 0, "hasOspf": true, "hasBgp":
-    false, "hasVxlan": false, "hasMlag": false, "lastUpdate": 1639161366022, "active":
-    true}]'
 - command: network find --address="172.16.1.101" --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet
@@ -152,12 +107,6 @@ tests:
     {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": "13", "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01",
     "bondMembers": "swp5", "type": "bridged", "l2miss": false, "timestamp": 1616681581182}]'
-- command: network summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-  data-directory: tests/data/parquet
-  marks: network summarize cumulus
-  output: '{"summary": {"namespacesCnt": 3, "servicePerNsStat": [16, 18, 17.0], "nsWithMlagCnt":
-    2, "nsWithBgpCnt": 2, "nsWithOspfCnt": 2, "nsWithVxlanCnt": 2, "nsWithErrsvcCnt":
-    0}}'
 - command: network find --address="10.0.0.11" --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet
@@ -203,17 +152,6 @@ tests:
   data-directory: tests/data/parquet
   marks: network find cumulus
   output: '[]'
-- command: network unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-  data-directory: tests/data/parquet/
-  marks: network unique
-  output: '[{"namespace": "dual-evpn"}, {"namespace": "ospf-ibgp"}, {"namespace":
-    "ospf-single"}]'
-- command: network unique --count=True --format=json --namespace='ospf-single dual-evpn
-    ospf-ibgp'
-  data-directory: tests/data/parquet/
-  marks: network unique
-  output: '[{"namespace": "dual-evpn", "numRows": 1}, {"namespace": "ospf-ibgp", "numRows":
-    1}, {"namespace": "ospf-single", "numRows": 1}]'
 - command: network find --address='foobar' --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet

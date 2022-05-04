@@ -5,7 +5,7 @@ import pandas as pd
 
 from suzieq.cli.nubia_patch import argument
 from suzieq.sqobjects import get_sqobject
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 
 
 @command("interface", help="Act on Interface data")
@@ -20,7 +20,7 @@ from suzieq.cli.sqcmds.command import SqCommand
                    "!notConnected"])
 @argument("mtu",
           description="MTU(s), space separated, can use <, >, <=, >=, !")
-class InterfaceCmd(SqCommand):
+class InterfaceCmd(SqTableCommand):
     """Device interface information including MTU, Speed, IP address etc"""
 
     # pylint: disable=redefined-builtin

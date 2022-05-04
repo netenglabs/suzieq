@@ -1,52 +1,11 @@
 description: Testing network table
 tests:
-- command: network show --format=json --namespace=junos
-  data-directory: tests/data/parquet
-  marks: network show junos
-  output: '[{"namespace": "junos", "deviceCnt": 12, "serviceCnt": 17, "errSvcCnt":
-    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
-    1644069801736}]'
-- command: network show --format=json --namespace=junos --model=vmx
-  data-directory: tests/data/parquet
-  marks: network show junos
-  output: '[]'
-- command: network show --format=json --namespace=junos --os=junos-qfx
-  data-directory: tests/data/parquet
-  marks: network show junos
-  output: '[{"namespace": "junos", "deviceCnt": 7, "serviceCnt": 13, "errSvcCnt":
-    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
-    1644069801736}]'
-- command: network show --format=json --namespace=junos --vendor=Juniper
-  data-directory: tests/data/parquet
-  output: '[{"namespace": "junos", "deviceCnt": 7, "serviceCnt": 13, "errSvcCnt":
-    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
-    1644069801736}]'
-- command: network show --columns='namespace' --format=json --namespace=junos
-  data-directory: tests/data/parquet
-  marks: network show junos
-  output: '[{"namespace": "junos"}]'
-- command: network show --columns='hasOspf hasBgp' --format=json --namespace=junos
-  data-directory: tests/data/parquet
-  marks: network show junos
-  output: '[{"hasOspf": true, "hasBgp": true}]'
-- command: network show --columns='*' --format=json --namespace=junos
-  data-directory: tests/data/parquet
-  marks: network show junos
-  output: '[{"namespace": "junos", "deviceCnt": 12, "serviceCnt": 17, "errSvcCnt":
-    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
-    1644069801736, "active": true}]'
 - command: network find --address="172.16.1.101" --format=json --namespace=junos
   data-directory: tests/data/parquet
   marks: network find junos
   output: '[{"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": "10", "macaddr": "28:b7:ad:3c:81:d0", "ifname": "xe-0/0/2",
     "bondMembers": "", "type": "bridged", "l2miss": false, "timestamp": 1623025797193}]'
-- command: network summarize --format=json --namespace=junos
-  data-directory: tests/data/parquet
-  marks: network summarize junos
-  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [17, 17, 17.0], "nsWithMlagCnt":
-    0, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
-    0}}'
 - command: network find --address="10.0.0.11" --format=json --namespace=junos
   data-directory: tests/data/parquet
   marks: network find junos
@@ -75,11 +34,3 @@ tests:
   data-directory: tests/data/parquet
   marks: network find junos
   output: '[]'
-- command: network unique --format=json --namespace=junos
-  data-directory: tests/data/parquet
-  marks: network unique junos
-  output: '[{"namespace": "junos"}]'
-- command: network unique --count=True --format=json --namespace=junos
-  data-directory: tests/data/parquet
-  marks: network unique junos
-  output: '[{"namespace": "junos", "numRows": 1}]'

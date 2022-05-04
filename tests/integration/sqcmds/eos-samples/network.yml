@@ -1,31 +1,5 @@
 description: Testing network table for EOS
 tests:
-- command: network show --format=json --namespace=eos
-  data-directory: tests/data/parquet
-  marks: network show eos
-  output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
-    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161231163}]'
-- command: network show --format=json --namespace=eos --os=eos
-  data-directory: tests/data/parquet
-  marks: network show  eos
-  output: '[{"namespace": "eos", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt": 0,
-    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161231158}]'
-- command: network show --columns='namespace' --format=json --namespace=eos
-  data-directory: tests/data/parquet
-  marks: network show eos
-  output: '[{"namespace": "eos"}]'
-- command: network show --columns='hasOspf hasBgp' --format=json --namespace=eos
-  data-directory: tests/data/parquet
-  marks: network show eos
-  output: '[{"hasOspf": true, "hasBgp": true}]'
-- command: network show --columns='*' --format=json --namespace=eos
-  data-directory: tests/data/parquet
-  marks: network show eos
-  output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
-    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161231163, "active": true}]'
 - command: network find --address="172.16.1.101" --format=json --namespace=eos
   data-directory: tests/data/parquet
   marks: network find eos
@@ -62,12 +36,6 @@ tests:
     {"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
     "vlan": "10", "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
     "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177688}]'
-- command: network summarize --format=json --namespace=eos
-  data-directory: tests/data/parquet
-  marks: network summarize eos
-  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [18, 18, 18.0], "nsWithMlagCnt":
-    1, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
-    0}}'
 - command: network find --address="10.0.0.11" --format=json --namespace=eos
   data-directory: tests/data/parquet
   marks: network find eos
@@ -98,14 +66,6 @@ tests:
   output: '[{"namespace": "eos", "hostname": "exit02", "vrf": "default", "ipAddress":
     "10.0.0.32", "vlan": "0", "macaddr": "44:38:39:c3:55:cb", "ifname": "Ethernet1",
     "bondMembers": "", "type": "routed", "l2miss": false, "timestamp": 1623025177202}]'
-- command: network unique --format=json --namespace=eos
-  data-directory: tests/data/parquet
-  marks: network unique eos
-  output: '[{"namespace": "eos"}]'
-- command: network unique --count=True --format=json --namespace=eos
-  data-directory: tests/data/parquet
-  marks: network unique eos
-  output: '[{"namespace": "eos", "numRows": 1}]'
 - command: network find --address='foobar' --format=json --namespace=eos
   data-directory: tests/data/parquet
   error:

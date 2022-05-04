@@ -9,7 +9,7 @@ from fastapi.testclient import TestClient
 
 from tests.conftest import cli_commands, create_dummy_config_file, tables
 
-from suzieq.restServer.query import (app, get_configured_api_key,
+from suzieq.restServer.query import (NetworkVerbs, app, get_configured_api_key,
                                      API_KEY_NAME)
 from suzieq.sqobjects import get_sqobject
 from suzieq.restServer import query
@@ -407,6 +407,9 @@ def test_rest_arg_consistency(service, verb):
     '''check that the arguments used in REST match whats in sqobjects'''
 
     alias_args = {'path': {'source': 'src'}}
+
+    if service == 'network' and verb not in [e.value for e in NetworkVerbs]:
+        return
 
     if verb == "describe" and not service == "tables":
         return

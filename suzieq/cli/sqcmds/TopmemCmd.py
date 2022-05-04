@@ -1,11 +1,11 @@
 from nubia import command
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.topmem import TopmemObj
 
 
 @command("topmem", help="Act on topmem data")
-class TopmemCmd(SqCommand):
+class TopmemCmd(SqTableCommand):
     '''The CLI command providing access to the topmem table'''
 
     def __init__(

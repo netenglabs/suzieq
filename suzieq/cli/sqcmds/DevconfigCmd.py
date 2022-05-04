@@ -1,12 +1,12 @@
 from nubia import command
 import pandas as pd
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.devconfig import DevconfigObj
 
 
 @command("devconfig", help="Act on device data")
-class DevconfigCmd(SqCommand):
+class DevconfigCmd(SqTableCommand):
     """Device configurations"""
 
     def __init__(

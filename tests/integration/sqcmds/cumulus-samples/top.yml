@@ -374,10 +374,10 @@ tests:
     "ospf-ibgp", "hostname": "exit02", "vni": 104001, "type": "L3", "vlan": 4001,
     "state": "up", "mcastGroup": "0.0.0.0", "remoteVtepCnt": 0, "priVtepIp": "10.0.0.102",
     "secVtepIp": "", "timestamp": 1616681582523}]'
-- command: network top --what=deviceCnt --format=json --namespace='ospf-single dual-evpn
+- command: namespace top --what=deviceCnt --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/
-  marks: network top
+  marks: namespace top
   output: '[{"namespace": "ospf-single", "deviceCnt": 14, "serviceCnt": 16, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1639161366022}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
@@ -408,10 +408,10 @@ tests:
   output: '[{"namespace": "dual-evpn", "hostname": "leaf04", "ifname": "bond02", "state":
     "up", "adminState": "up", "type": "bond", "mtu": 1500, "vlan": 0, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "numChanges": 9, "timestamp": 1616644822983}]'
-- command: network top --what=deviceCnt --count=1 --format=json --namespace='ospf-single
+- command: namespace top --what=deviceCnt --count=1 --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
-  marks: network top
+  marks: namespace top
   output: '[{"namespace": "ospf-single", "deviceCnt": 14, "serviceCnt": 16, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1639161366022}]'

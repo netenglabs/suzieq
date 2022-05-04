@@ -6557,9 +6557,9 @@ tests:
     "interfaces": [], "vlan": 1, "timestamp": 1623025797192, "active": true}, {"namespace":
     "junos", "hostname": "exit02", "vlanName": "vlan1", "state": "active", "interfaces":
     [], "vlan": 1, "timestamp": 1623025797193, "active": true}]'
-- command: network show --columns='*' --format=json --namespace=junos
+- command: namespace show --columns='*' --format=json --namespace=junos
   data-directory: tests/data/parquet
-  marks: network show all junos
+  marks: namespace show all junos
   output: '[{"namespace": "junos", "deviceCnt": 12, "serviceCnt": 17, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
     1644069801736, "active": true}]'

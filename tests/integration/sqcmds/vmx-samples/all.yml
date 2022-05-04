@@ -2396,9 +2396,9 @@ tests:
   data-directory: tests/data/parquet
   marks: mlag show junos all vmx
   output: '[]'
-- command: network show --columns=* --format=json --namespace=vmx
+- command: namespace show --columns=* --format=json --namespace=vmx
   data-directory: tests/data/parquet
-  marks: network show vmx all vmx
+  marks: namespace show vmx all vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1639161230623, "active": true}]'
@@ -2822,9 +2822,9 @@ tests:
     "CRP-DIS-SW01", "name": "midplane", "model": "", "status": "present", "vendor":
     "Juniper", "type": "midplane", "version": "", "partType": "", "timestamp": 1631009090098,
     "serial": "", "partNum": "", "active": true}]'
-- command: network show --columns='*' --format=json --namespace=vmx
+- command: namespace show --columns='*' --format=json --namespace=vmx
   data-directory: tests/data/parquet
-  marks: network show all junos vmx
+  marks: namespace show all junos vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1639161230623, "active": true}]'
