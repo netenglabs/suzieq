@@ -65,7 +65,7 @@ class XplorePage(SqGuiPage):
         tables = filter(
             lambda x: x not in ['path', 'tables', 'ospfIf', 'ospfNbr',
                                 'devconfig', 'topmem', 'topcpu', 'ifCounters',
-                                'time'],
+                                'time', 'network'],
             get_tables()
         )
         table_vals = [''] + sorted(tables)
@@ -79,7 +79,7 @@ class XplorePage(SqGuiPage):
             else:
                 tblidx = table_vals.index(state.table)
         else:
-            tblidx = table_vals.index('network')  # Default starting table
+            tblidx = table_vals.index('namespace')  # Default starting table
         view_idx = 1 if state.view == 'all' else 0
 
         devdf = gui_get_df('device', self._config_file,
@@ -335,7 +335,7 @@ class XplorePage(SqGuiPage):
 
     def _fetch_data(self):
         '''Called when the Get button is pressed, refresh data'''
-        table = getattr(self._state, 'table', 'network')
+        table = getattr(self._state, 'table', 'namespace')
         if f'xplore_show_{table}' in st.session_state:
             del st.session_state[f'xplore_show_{table}']
         self._state.get_clicked = True
