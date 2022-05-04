@@ -10,6 +10,7 @@ def validate_mroutes(df: pd.DataFrame):
     '''Validate the routes table for all values'''
 
     # assert (df.vrf != '').all()
+    print(df.columns)
     assert (df.group != '').all()
     assert (df.source != '').all()
     # assert (df.action.isin(

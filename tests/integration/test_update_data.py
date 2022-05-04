@@ -379,6 +379,15 @@ class TestUpdate:
         '''Update test data for mixed sim, from Rick'''
         self._update_test_data_common_fn('broken', tmp_path, '14')
 
+    @pytest.mark.test_update
+    @pytest.mark.update_data
+    @pytest.mark.mroutes
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_mroutes(self, tmp_path):
+        '''Update test data for multicast.'''
+        self._update_test_data_common_fn('mroutes', tmp_path, '2')
+
 
 tests = [
     ['bgp', 'numbered'],
