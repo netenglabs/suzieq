@@ -58,11 +58,7 @@ def test_mroutes_parsing(table, datadir, get_table_data):
     df = get_table_data
 
     ns_dict = {
-        'eos': 14,
-        'junos': 12,
-        'nxos': 14,
-        'ospf-ibgp': 14,
-        'vmx': 5,
+        'eos': 2
     }
 
     assert not df.empty
