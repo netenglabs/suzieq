@@ -6,9 +6,9 @@ from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.namespace import NamespaceObj
 
 
-@command("namespace", help="Summarize network-wide data")
+@command("namespace", help="Summarize namespace-wide network data")
 class NamespaceCmd(SqTableCommand):
-    """Overall network information such as namespaces present etc."""
+    """Overall network information such as device count, bgp enabled etc."""
 
     def __init__(
             self,
@@ -35,15 +35,15 @@ class NamespaceCmd(SqTableCommand):
             sqobj=NamespaceObj,
         )
 
-    @command("show", help="Show device information")
-    @argument("model", description="model(s), space separated")
-    @argument("os", description='NOS(es), space separated')
-    @argument('vendor', description='Vendor(s), space separated')
-    @argument('version', description='NOS version(s), space separated')
+    @command("show", help="Show namespace information")
+    @argument("model", description="Device model(s), space separated")
+    @argument("os", description='Device NOS(es), space separated')
+    @argument('vendor', description='Device vendor(s), space separated')
+    @argument('version', description='Device NOS version(s), space separated')
     # pylint: disable=arguments-differ
     def show(self, os: str = "", vendor: str = "", model: str = "",
              version: str = "") -> int:
-        """Show network info
+        """Show namespace info
         """
 
         now = time.time()

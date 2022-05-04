@@ -879,13 +879,13 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: namespace help
-  output: "namespace: \e[36mOverall network information such as namespaces present\
-    \ etc.\e[0m\n\nSupported verbs are: \n - describe: \e[36mDisplay the schema of\
-    \ the table\e[0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow\
-    \ network info\e[0m\n - summarize: \e[36mSummarize relevant information about\
-    \ the table\e[0m\n - top: \e[36mReturn the top n values for a field in a table\e\
-    [0m\n - unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n"
+  output: "namespace: \e[36mOverall network information such as device count, bgp\
+    \ enabled etc.\e[0m\n\nSupported verbs are: \n - describe: \e[36mDisplay the schema\
+    \ of the table\e[0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e\
+    [36mShow namespace info\e[0m\n - summarize: \e[36mSummarize relevant information\
+    \ about the table\e[0m\n - top: \e[36mReturn the top n values for a field in a\
+    \ table\e[0m\n - unique: \e[36mGet unique values (and counts) associated with\
+    \ requested field\e[0m\n"
 - command: namespace help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -904,18 +904,19 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: namespace help command
-  output: "namespace show: \e[36mShow network info\e[0m\n\e[33m\nUse quotes when providing\
-    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
-    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
-    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
-    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
-    \ - model: \e[36m\e[1mmodel(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
-    \ space separated\e[0m\n - os: \e[36m\e[1mNOS(es), space separated\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - vendor: \e[36m\e[1mVendor(s), space separated\e[0m\n - version:\
-    \ \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e[36m\e[1mView all\
-    \ records or just the latest\e[0m\n"
+  output: "namespace show: \e[36mShow namespace info\e[0m\n\e[33m\nUse quotes when\
+    \ providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e\
+    [36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e\
+    [1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - model: \e[36m\e[1mDevice model(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - os: \e[36m\e[1mDevice NOS(es),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - vendor: \e[36m\e[1mDevice\
+    \ vendor(s), space separated\e[0m\n - version: \e[36m\e[1mDevice NOS version(s),\
+    \ space separated\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n"
 - command: namespace help --command=summarize
   data-directory: tests/data/eos/parquet-out/
   format: text
