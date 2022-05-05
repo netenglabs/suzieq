@@ -294,6 +294,10 @@ class SqObject(SqPlugin):
 
         table = kwargs.get('table', self.table)
 
+        if table in ['interface', 'route', 'mac', 'table']:
+            # Handle singular/plural conversion
+            table += 's'
+
         cols = kwargs.get('columns', ['default'])
         if cols not in [['default'], ['*']]:
             df = pd.DataFrame(
