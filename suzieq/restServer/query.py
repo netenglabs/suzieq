@@ -304,7 +304,7 @@ async def query_address(verb: CommonVerbs, request: Request,
                         ifname: List[str] = Query(None),
                         prefix: List[str] = Query(None),
                         ipvers: str = None, what: str = None,
-                        vrf: str = None, query_str: str = None,
+                        vrf: List[str] = None, query_str: str = None,
                         count: str = None, reverse: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
