@@ -6,7 +6,6 @@ class MroutesObj(SqObject):
     keys:
         - source
         - group
-        - vrf
     ignore-fields:
         - statusChangeTimestamp
     show-fields:
@@ -34,5 +33,4 @@ show-fields:
         super().__init__(table='mroutes', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'source', 'group', 'vrf', 'rpfInterface', 
                                 'oifList', 'ipvers', 'rp', 'rpfneighbor']
-        # self._valid_arg_vals = {'state': ['active', 'suspended', '']}
-        # self._unique_def_column = ['source']
+
