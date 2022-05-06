@@ -619,7 +619,10 @@ class Node:
                 self.logger.info(
                     f"Connected to {self.address}:{self.port} at "
                     f"{time.time()}")
-                if init_dev_data:
+
+                # Check if we already have the devtype, as otherwise we are
+                # not able get device data
+                if init_dev_data and self.devtype:
                     await self._fetch_init_dev_data()
             except Exception as e:  # pylint: disable=broad-except
                 if isinstance(e, asyncssh.HostKeyNotVerifiable):
