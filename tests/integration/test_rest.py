@@ -346,6 +346,16 @@ def get_app_routes(sq_app: FastAPI) -> Dict:
         except Exception:
             assert False, error_msg
 
+    def check_func_name(route: APIRoute, table: str):
+        """ Check the function is called <something>_<table>.
+        If not, the read_shared function won't work correctly
+        """
+        fun_name = route.dependant.call.__name__
+        assert fun_name.split('_')[1] == table, \
+            (f'Wrong function name for {route.path}. It should be similar to '
+             f'query_{table}'
+             )
+
     app_routes = {}
     for route in sq_app.routes:
         path = route.path
@@ -357,6 +367,7 @@ def get_app_routes(sq_app: FastAPI) -> Dict:
         check_token(route)
         path = path.split('/api/v2/')[1]
         table, verbs = path.split('/')
+        check_func_name(route, table)
         if verbs == '{verb}':
             verb_model = route.dependant.path_params[0]
             verbs = extract_verbs_from_model(verb_model)
