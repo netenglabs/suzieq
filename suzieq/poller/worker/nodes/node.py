@@ -189,9 +189,8 @@ class Node:
         # Now we know the dev type, fetch the data we need about the
         # device to get cracking
         if not self.devtype and self._retry:
-            self.backoff = min(600, self.backoff * 2) + \
-                (random.randint(0, 1000) / 1000)
-            self.init_again_at = time.time() + self.backoff
+            # Unable to connect to the node, schedule later another attempt
+            self._schedule_discovery_attempt()
         elif self.devtype not in ['unsupported', None] and self._retry:
             # OK, we know the devtype, now initialize the info we need
             # to start proper operation
@@ -411,7 +410,7 @@ class Node:
         devtype = None
         hostname = None
 
-        if self.transport in ["ssh", "local"]:
+        if self.transport in ['ssh', 'local']:
             try:
                 await self._get_device_type_hostname()
                 # The above fn calls results in invoking a callback fn
@@ -422,7 +421,9 @@ class Node:
 
             if not devtype:
                 self.logger.debug(
-                    f"no devtype for {self.hostname} {self.current_exception}")
+                    f'No devtype for {self.hostname} {self.current_exception}')
+                # We were not able to do the discovery, schedule a new attempt
+                self._schedule_discovery_attempt()
                 return
             else:
                 self._set_devtype(devtype, '')
@@ -691,6 +692,20 @@ class Node:
                 result.append(self._create_error(cmd))
 
         await service_callback(result, cb_token)
+
+    def _schedule_discovery_attempt(self):
+        """Schedule a new attempt for the node discovery
+        """
+        # Add an additional offset to avoid all the nodes retry all together
+        offset = (random.randint(0, 1000) / 1000)
+        self.backoff = min(600, self.backoff * 2) + offset
+        self.init_again_at = time.time() + self.backoff
+
+        next_time = datetime.fromtimestamp(self.init_again_at)
+        logger.info(
+            f'Discovery of {self.address}:{self.port} will be retried '
+            f'from {next_time}'
+        )
 
     # pylint: disable=unused-argument
     async def _ssh_gather(self, service_callback: Callable,
