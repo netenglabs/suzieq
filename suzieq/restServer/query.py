@@ -538,18 +538,18 @@ async def query_mlag(verb: CommonVerbs, request: Request,
 
 
 @app.get("/api/v2/network/{verb}")
-async def query_network_find(verb: NetworkVerbs, request: Request,
-                             token: str = Depends(get_api_key),
-                             format: str = None,
-                             columns: List[str] = Query(default=["default"]),
-                             namespace: List[str] = Query(None),
-                             hostname: List[str] = Query(None),
-                             start_time: str = "", end_time: str = "",
-                             view: ViewValues = "latest",
-                             address: List[str] = Query(None),
-                             vlan: str = '', vrf: str = '',
-                             query_str: str = None,
-                             ):
+async def query_network(verb: NetworkVerbs, request: Request,
+                        token: str = Depends(get_api_key),
+                        format: str = None,
+                        columns: List[str] = Query(default=["default"]),
+                        namespace: List[str] = Query(None),
+                        hostname: List[str] = Query(None),
+                        start_time: str = "", end_time: str = "",
+                        view: ViewValues = "latest",
+                        address: List[str] = Query(None),
+                        vlan: str = '', vrf: str = '',
+                        query_str: str = None,
+                        ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
