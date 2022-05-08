@@ -10,8 +10,9 @@ Value reason (\S+)
 Start
   ^Cisco IOS Software.*, Version ${version}.*$$
   ^Cisco IOS Software.*, Version ${version},.*$$  
-  ^${hostname}\s+uptime\s+is\s+${bootupTimestamp}$$
+  ^\s*${hostname}\s+uptime\s+is\s+${bootupTimestamp}$$
   ^[Cc]isco\s+${model}\s+\(${architecture}\)\s+processor.*with\s+${memory}K/?.*$$
+  ^[Cc]isco\s+${model}\s+.*with\s+${memory}K/?.*$$
   ^Processor\s+board\s+ID\s+${serialNumber}.*$$
   ^System\s+returned\s+to\s+ROM\s+by\s+${reason}
 
