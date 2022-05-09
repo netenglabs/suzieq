@@ -41,6 +41,24 @@ class StaticManager(Manager, InventoryAsyncPlugin):
 
         self._workers_count = config_data.get("workers", 1)
 
+        # We need a pipeline thats at least as big as the number of workers
+        max_cmd_pipeline = config_data['config-dict'] \
+            .get('poller', {}) \
+            .get('max-cmd-pipeline', 0)
+        if ((max_cmd_pipeline != 0) and
+                (max_cmd_pipeline % self._workers_count != 0)):
+            raise SqPollerConfError(
+                f'max-cmd-pipeline({max_cmd_pipeline}) has to be a multiple '
+                f'of the number of workers({self._workers_count})')
+
+        if max_cmd_pipeline:
+            if config_data is None:
+                config_data = {}
+
+            if config_data:
+                config_data.update({'worker-cmd-pipeline':
+                                    int(max_cmd_pipeline/self._workers_count)})
+
         # Workers we are already monitoring
         self._running_workers = defaultdict(None)
 
@@ -86,7 +104,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             self._inventory_file_name = 'inv'
 
         # Define poller parameters
-        allowed_args = ['run-once', 'exclude-services',
+        allowed_args = ['run-once', 'exclude-services', 'worker-cmd-pipeline',
                         'outputs', 'output-dir', 'service-only',
                         'ssh-config-file', 'config', 'input-dir']
 
@@ -204,6 +222,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
             )
             tasks.append(coalescer_task)
 
+        # pylint: disable=too-many-nested-blocks
         while self._waiting_workers or self._running_workers:
             if self._waiting_workers:
                 # The list of tasks might contain some already terminated
@@ -246,8 +265,24 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                             # Worker natural death
                             del self._running_workers[poller_id]
                         else:
-                            raise PollingError(f'Unexpected worker {poller_id}'
-                                               f' death')
+                            try:
+                                d.result()
+                                err = None
+                            # pylint: disable=broad-except
+                            except Exception as e:
+                                err = str(e)
+
+                            if self._single_run_mode:
+                                logger.error(
+                                    f'Unexpected worker {poller_id} death: '
+                                    f'{err}')
+                                del self._running_workers[poller_id]
+                            else:
+                                # We want gray failures to be hard failures in
+                                # non-run-once mode
+                                raise PollingError(
+                                    f'Unexpected worker {poller_id} death:'
+                                    f'{err}')
                 else:
                     # Someone else died
                     raise PollingError('Unexpected task death')
