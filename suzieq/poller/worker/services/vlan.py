@@ -120,6 +120,7 @@ class VlanService(Service):
             if entry.get('_entryType', '') == 'vlan':
                 if entry['vlanName'] == 'default':
                     entry['vlanName'] = f'vlan{entry["vlan"]}'
+                entry['vlanName'] = entry['vlanName'].strip()
                 if entry['interfaces']:
                     newiflist = []
                     for ifname in entry['interfaces'].split(','):

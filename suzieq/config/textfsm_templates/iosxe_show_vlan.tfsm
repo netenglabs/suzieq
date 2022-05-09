@@ -1,6 +1,6 @@
 Value Required vlan (\d+)
-Value Required vlanName (\S+)
-Value Required state (\S+)
+Value Required vlanName (.*)
+Value Required state (active|act/unsup)
 Value interfaces (.*)
 
 Start
@@ -14,7 +14,7 @@ End
 #---- -------------------------------- --------- -------------------------------
 #1    default                          active    
 #10   localServer                      active    Gi0/3, Gi1/0
-#1002 fddi-default                     act/unsup 
+#1002 fddi default                     act/unsup 
 #1003 token-ring-default               act/unsup 
 #1004 fddinet-default                  act/unsup 
 #1005 trnet-default                    act/unsup 
