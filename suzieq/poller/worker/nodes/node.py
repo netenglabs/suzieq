@@ -110,6 +110,7 @@ class Node:
         self.api_key = None
         self._stdin = self._stdout = self._long_proc = None
         self._retry = True      # set to False if authentication fails
+        self._discovery_lock = asyncio.Lock()
 
         self.address = kwargs["address"]
         self.hostname = kwargs["address"]  # default till we get hostname
@@ -816,9 +817,14 @@ class Node:
         if not svc_defn:
             return result
 
-        if not self.devtype and self._retry:
-            if self.init_again_at < time.time():
-                await self._detect_node_type()
+        if (not self.devtype and self._retry
+                and self.init_again_at < time.time()):
+            # When we issue bunch of commands multiple tasks might try to
+            # perform the discovery all together, we need only one of them
+            # trying to perform the discovery, all the others can fail
+            if not self._discovery_lock.locked():
+                async with self._discovery_lock:
+                    await self._detect_node_type()
 
         if not self.devtype:
             result.append(self._create_error(svc_defn.get("service", "-")))
