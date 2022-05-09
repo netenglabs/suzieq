@@ -111,12 +111,20 @@ def worker_main():
     )
 
     parser.add_argument(
+        '-n',
         '--worker-id',
         type=str,
         default='0',
         help=argparse.SUPPRESS,
     )
 
+    parser.add_argument(
+        '-p',
+        '--worker-cmd-pipeline',
+        type=int,
+        default=0,
+        help=argparse.SUPPRESS,
+    )
     userargs = parser.parse_args()
 
     uvloop.install()

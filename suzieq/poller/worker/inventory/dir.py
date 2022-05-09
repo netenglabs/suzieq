@@ -22,7 +22,7 @@ class InputDirInventory(Inventory):
         self.input_dir = kwargs.pop('input_dir', None)
         super().__init__(add_task_fn, **kwargs)
 
-    async def build_inventory(self) -> Dict[str, FileNode]:
+    async def build_inventory(self, _) -> Dict[str, FileNode]:
         """Returns a list containing a single fake node
         returning the data contained in the input directory
 
