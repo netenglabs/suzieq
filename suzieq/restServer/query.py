@@ -211,6 +211,10 @@ class RouteVerbs(str, Enum):
     lpm = "lpm"
     top = "top"
 
+class MrouteVerbs(str, Enum):
+    show = "show"
+    summarize = "summarize"
+
 
 class DeviceStatus(str, Enum):
     alive = "alive"
@@ -532,6 +536,24 @@ async def query_mlag(verb: CommonVerbs, request: Request,
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
+@app.get("/api/v2/mroute/{verb}")
+async def query_mroutes(verb: CommonVerbs, request: Request,
+                      token: str = Depends(get_api_key),
+                      format: str = None,
+                      hostname: List[str] = Query(None),
+                      start_time: str = "", end_time: str = "",
+                      view: ViewValues = "latest",
+                      namespace: List[str] = Query(None),
+                      columns: List[str] = Query(default=["default"]),
+                      source: List[str] = Query(None),
+                      vrf: List[str] = Query(None),
+                      group: str = None, ipvers: str = None,
+                      add_filter: str = None,
+                      query_str: str = None, what: str = None,
+                      count: str = None, reverse: str = None,
+                      ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
 
 @app.get("/api/v2/network/find")
 async def query_network_find(request: Request,
