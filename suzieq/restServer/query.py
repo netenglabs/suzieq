@@ -537,6 +537,99 @@ async def query_mlag(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
+@app.get("/api/v2/network/show", deprecated=True)
+async def query_network_depr_show(request: Request,
+                                  token: str = Depends(get_api_key),
+                                  format: str = None,
+                                  columns: List[str] = Query(
+                                      default=["default"]),
+                                  namespace: List[str] = Query(None),
+                                  hostname: List[str] = Query(None),
+                                  start_time: str = "", end_time: str = "",
+                                  version: str = "",
+                                  view: ViewValues = "latest",
+                                  model: List[str] = Query(None),
+                                  vendor: List[str] = Query(None),
+                                  os: List[str] = Query(None),
+                                  query_str: str = None, what: str = None,
+                                  count: str = None, reverse: str = None,
+                                  ):
+    function_name = 'query_namespace'
+    verb = 'show'
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/network/summarize", deprecated=True)
+async def query_network_depr_summarize(request: Request,
+                                       token: str = Depends(get_api_key),
+                                       format: str = None,
+                                       columns: List[str] = Query(
+                                           default=["default"]),
+                                       namespace: List[str] = Query(None),
+                                       hostname: List[str] = Query(None),
+                                       start_time: str = "",
+                                       end_time: str = "",
+                                       version: str = "",
+                                       view: ViewValues = "latest",
+                                       model: List[str] = Query(None),
+                                       vendor: List[str] = Query(None),
+                                       os: List[str] = Query(None),
+                                       query_str: str = None,
+                                       what: str = None,
+                                       count: str = None,
+                                       reverse: str = None,
+                                       ):
+    function_name = 'query_namespace'
+    verb = 'summarize'
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/network/unique", deprecated=True)
+async def query_network_depr_unique(request: Request,
+                                    token: str = Depends(get_api_key),
+                                    format: str = None,
+                                    columns: List[str] = Query(
+                                        default=["default"]),
+                                    namespace: List[str] = Query(None),
+                                    hostname: List[str] = Query(None),
+                                    start_time: str = "",
+                                    end_time: str = "",
+                                    version: str = "",
+                                    view: ViewValues = "latest",
+                                    model: List[str] = Query(None),
+                                    vendor: List[str] = Query(None),
+                                    os: List[str] = Query(None),
+                                    query_str: str = None,
+                                    what: str = None,
+                                    count: str = None, reverse: str = None,
+                                    ):
+    function_name = 'query_namespace'
+    verb = 'unique'
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/network/top", deprecated=True)
+async def query_network_depr_top(request: Request,
+                                 token: str = Depends(get_api_key),
+                                 format: str = None,
+                                 columns: List[str] = Query(
+                                     default=["default"]),
+                                 namespace: List[str] = Query(None),
+                                 hostname: List[str] = Query(None),
+                                 start_time: str = "", end_time: str = "",
+                                 version: str = "",
+                                 view: ViewValues = "latest",
+                                 model: List[str] = Query(None),
+                                 vendor: List[str] = Query(None),
+                                 os: List[str] = Query(None),
+                                 query_str: str = None, what: str = None,
+                                 count: str = None, reverse: str = None,
+                                 ):
+    function_name = 'query_namespace'
+    verb = 'top'
+    return read_shared(function_name, verb, request, locals())
+
+
 @app.get("/api/v2/network/{verb}")
 async def query_network(verb: NetworkVerbs, request: Request,
                         token: str = Depends(get_api_key),
