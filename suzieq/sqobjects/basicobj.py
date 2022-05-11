@@ -3,7 +3,7 @@ import pandas as pd
 from pandas.core.dtypes.dtypes import DatetimeTZDtype
 
 from suzieq.shared.utils import (load_sq_config, humanize_timestamp,
-                                 depracated_table_function_warning)
+                                 deprecated_table_function_warning)
 from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines import get_sqengine
 from suzieq.shared.sq_plugin import SqPlugin
@@ -453,7 +453,7 @@ class SqObject(SqPlugin):
                 raise RuntimeError(f'unsupported function {command} '
                                    f'for {table}')
             if not ignore_warning:
-                print(depracated_table_function_warning(
+                print(deprecated_table_function_warning(
                     dep_table, dep_command, table, command
                 ))
             return func(**kwargs)

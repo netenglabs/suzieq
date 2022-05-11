@@ -921,7 +921,7 @@ def print_version():
     print(SUZIEQ_VERSION)
 
 
-def depracated_table_function_warning(dep_table: str, dep_command: str,
+def deprecated_table_function_warning(dep_table: str, dep_command: str,
                                       table: str = None,
                                       command: str = None) -> str:
     """Return the string of the warning for a deprecated function
@@ -960,5 +960,5 @@ def deprecated_command_warning(dep_command: str, dep_sub_command: str,
         str: deprecated command warning message
     """
 
-    return depracated_table_function_warning(dep_command, dep_sub_command,
+    return deprecated_table_function_warning(dep_command, dep_sub_command,
                                              command, sub_command)
