@@ -941,3 +941,24 @@ def depracated_table_function_warning(dep_table: str, dep_command: str,
     if dep_table and dep_command:
         warning_str += f" Use '{table} {command}' instead."
     return warning_str
+
+
+def deprecated_command_warning(dep_command: str, dep_sub_command: str,
+                               command: str = None,
+                               sub_command: str = None) -> str:
+    """It's a wrapper for the deprecated_table_function_warning. It is used to
+    display a message when the user writes a deprecated command.
+
+    Args:
+        dep_command (str): deprecated command
+        dep_sub_command (str): deprecated sub command
+        command (str, optional): command to use instead. Defaults to None.
+        sub_command (str, optional): subcommand to use instead.
+        Defaults to None.
+
+    Returns:
+        str: deprecated command warning message
+    """
+
+    return depracated_table_function_warning(dep_command, dep_sub_command,
+                                             command, sub_command)
