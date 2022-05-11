@@ -44,6 +44,24 @@ class NetworkObj(SqObject):
 
         return self.engine.find(**kwargs)
 
+    def get(self, **kwargs) -> pd.DataFrame:
+        return self._run_deprecated_function(table='namespace', command='get',
+                                             **kwargs)
+
+    def summarize(self, **kwargs) -> pd.DataFrame:
+        return self._run_deprecated_function(table='namespace',
+                                             command='summarize', **kwargs)
+
+    def top(self, what: str = '', count: int = 5, reverse: bool = False,
+            **kwargs) -> pd.DataFrame:
+        return self._run_deprecated_function(table='namespace', command='top',
+                                             what=what, count=count,
+                                             reverse=reverse, **kwargs)
+
+    def unique(self, **kwargs) -> pd.DataFrame:
+        return self._run_deprecated_function(table='namespace',
+                                             command='unique', **kwargs)
+
     def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the timestamp fields'''
         if df.empty:

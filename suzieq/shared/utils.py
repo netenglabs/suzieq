@@ -919,3 +919,25 @@ def convert_asndot_to_asn(asn: str) -> int:
 def print_version():
     '''Print the suzieq version and return'''
     print(SUZIEQ_VERSION)
+
+
+def depracated_table_function_warning(dep_table: str, dep_command: str,
+                                      table: str = None,
+                                      command: str = None) -> str:
+    """Return the string of the warning for a deprecated function
+
+    If both table and command aren't provided, the warning will only
+    return that the function is deprecated.
+    If instead we provide them, the warning will also contain the new command
+    to call
+
+    Args:
+        table (str): correct table to run the command
+        command (str): correct command to call
+        dep_table (str): deprecated table command
+        dep_command (str): deprecated command
+    """
+    warning_str = f"WARNING: '{dep_table} {dep_command}' is deprecated."
+    if dep_table and dep_command:
+        warning_str += f" Use '{table} {command}' instead."
+    return warning_str
