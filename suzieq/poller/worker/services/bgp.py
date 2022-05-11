@@ -582,6 +582,8 @@ class BgpService(Service):
             if entry.get('state', '') != 'Established':
                 entry['state'] = 'NotEstd'
 
+            if entry.get('_adminDown', ''):
+                entry['state'] = 'adminDown'
             entry['communityTypes'] = []  # We don't parse this yet
             entry['numChanges'] = (int(entry.get('_numConnEstd', 0) or 0) +
                                    int(entry.get('_numConnDropped', 0) or 0))
@@ -600,13 +602,8 @@ class BgpService(Service):
                     estdTime = estdTime.split(':')
                     estdTime = (f'{estdTime[0]} hour '
                                 '{estdTime[1]}:{estdTime[2]} mins ago')
-                estdTime = parse(
-                    estdTime,
-                    settings={'RELATIVE_BASE':
-                              datetime.fromtimestamp(
-                                  (raw_data[0]['timestamp'])/1000), })
-            if estdTime and estdTime != ['']:
-                entry['estdTime'] = int(estdTime.timestamp()*1000)
+                entry['estdTime'] = get_timestamp_from_cisco_time(
+                    estdTime, raw_data[0]['timestamp']/1000)
             if entry.get('rrclient', '') == '':
                 entry['rrclient'] = 'False'
             else:
