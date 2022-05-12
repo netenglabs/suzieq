@@ -1,25 +1,93 @@
 [
     {
         "status": 0,
-        "timestamp": 1651843149880,
-        "cmd": "show ip igmp interface| json",
+        "timestamp": 1652300396699,
+        "cmd": "show ip igmp groups| json",
         "devtype": "eos",
         "namespace": "mroutes",
         "hostname": "leaf2",
-        "address": "172.22.0.7",
+        "address": "172.20.20.3",
         "version": "4.25.4M-22402993.4254M (engineering build)",
-        "data": "{\n    \"IgmpInterfaces\": {\n        \"Ethernet1\": {\n            \"routerAlert\": \"routerAlertOptionalConnected\",\n            \"startupQueryCount\": 2,\n            \"lastMemberQueryResponseCount\": 2,\n            \"igmpEnabled\": true,\n            \"startupQueryInterval\": 31.25,\n            \"maxQueryResponse\": 10.0,\n            \"routerVersion\": \"3\",\n            \"generalQueryExpiryTime\": 7558099.493235,\n            \"lastMemberQueryResponseInterval\": 1.0,\n            \"robustness\": 2,\n            \"multicastTTL\": 0,\n            \"igmpQuerier\": \"10.0.0.6\",\n            \"igmpQueryInterval\": 125,\n            \"interfaceAddress\": \"10.0.0.6\",\n            \"multicastRoutingEnabled\": true,\n            \"multicastGroups\": []\n        }\n    }\n}\n"
+        "data": "{\n    \"groupList\": []\n}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1652300396850,
+        "cmd": "show ip igmp static-groups| json",
+        "devtype": "eos",
+        "namespace": "mroutes",
+        "hostname": "leaf2",
+        "address": "172.20.20.3",
+        "version": "4.25.4M-22402993.4254M (engineering build)",
+        "data": "{\n    \"intfAddrs\": {\n        \"Ethernet1\": {\n            \"groupAddrsList\": [\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"225.0.0.1\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"225.0.0.6\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.1\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.2\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.3\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.4\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.5\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.6\"\n                }\n            ],\n            \"aclInfo\": {}\n        }\n    }\n}\n"
     }
 ][
     {
         "status": 0,
-        "timestamp": 1651843149948,
-        "cmd": "show ip igmp interface| json",
+        "timestamp": 1652300396699,
+        "cmd": "show ip igmp groups| json",
         "devtype": "eos",
         "namespace": "mroutes",
         "hostname": "leaf1",
-        "address": "172.22.0.5",
+        "address": "172.20.20.2",
         "version": "4.25.4M-22402993.4254M (engineering build)",
-        "data": "{\n    \"IgmpInterfaces\": {\n        \"Ethernet1\": {\n            \"routerAlert\": \"routerAlertOptionalConnected\",\n            \"startupQueryCount\": 2,\n            \"lastMemberQueryResponseCount\": 2,\n            \"igmpEnabled\": true,\n            \"startupQueryInterval\": 31.25,\n            \"maxQueryResponse\": 10.0,\n            \"routerVersion\": \"3\",\n            \"generalQueryExpiryTime\": 7558040.458878,\n            \"lastMemberQueryResponseInterval\": 1.0,\n            \"robustness\": 2,\n            \"multicastTTL\": 0,\n            \"igmpQuerier\": \"10.0.0.2\",\n            \"igmpQueryInterval\": 125,\n            \"interfaceAddress\": \"10.0.0.2\",\n            \"multicastRoutingEnabled\": true,\n            \"multicastGroups\": []\n        }\n    }\n}\n"
+        "data": "{\n    \"groupList\": []\n}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1652300396858,
+        "cmd": "show ip igmp static-groups| json",
+        "devtype": "eos",
+        "namespace": "mroutes",
+        "hostname": "leaf1",
+        "address": "172.20.20.2",
+        "version": "4.25.4M-22402993.4254M (engineering build)",
+        "data": "{\n    \"intfAddrs\": {\n        \"Ethernet1\": {\n            \"groupAddrsList\": [\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"225.0.0.1\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"225.0.0.6\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.1\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.2\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.3\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.4\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.5\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.6\"\n                }\n            ],\n            \"aclInfo\": {}\n        }\n    }\n}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1652300926337,
+        "cmd": "show ip igmp groups| json",
+        "devtype": "eos",
+        "namespace": "mroutes",
+        "hostname": "leaf1",
+        "address": "172.20.20.2",
+        "version": "4.25.4M-22402993.4254M (engineering build)",
+        "data": "{\n    \"groupList\": []\n}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1652300926481,
+        "cmd": "show ip igmp static-groups| json",
+        "devtype": "eos",
+        "namespace": "mroutes",
+        "hostname": "leaf1",
+        "address": "172.20.20.2",
+        "version": "4.25.4M-22402993.4254M (engineering build)",
+        "data": "{\n    \"intfAddrs\": {\n        \"Ethernet1\": {\n            \"groupAddrsList\": [\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"225.0.0.1\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"225.0.0.6\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.1\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.2\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.3\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.4\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.5\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.6\"\n                }\n            ],\n            \"aclInfo\": {}\n        }\n    }\n}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1652300926337,
+        "cmd": "show ip igmp groups| json",
+        "devtype": "eos",
+        "namespace": "mroutes",
+        "hostname": "leaf2",
+        "address": "172.20.20.3",
+        "version": "4.25.4M-22402993.4254M (engineering build)",
+        "data": "{\n    \"groupList\": []\n}\n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1652300926485,
+        "cmd": "show ip igmp static-groups| json",
+        "devtype": "eos",
+        "namespace": "mroutes",
+        "hostname": "leaf2",
+        "address": "172.20.20.3",
+        "version": "4.25.4M-22402993.4254M (engineering build)",
+        "data": "{\n    \"intfAddrs\": {\n        \"Ethernet1\": {\n            \"groupAddrsList\": [\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"225.0.0.1\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"225.0.0.6\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.1\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.2\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.3\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.4\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.5\"\n                },\n                {\n                    \"sourceAddr\": \"0.0.0.0\",\n                    \"groupAddr\": \"233.0.0.6\"\n                }\n            ],\n            \"aclInfo\": {}\n        }\n    }\n}\n"
     }
 ]

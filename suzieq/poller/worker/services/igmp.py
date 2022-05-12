@@ -4,10 +4,10 @@ from datetime import datetime
 from dateparser import parse
 import numpy as np
 
+import json
+
 from suzieq.poller.worker.services.service import Service
-from suzieq.shared.utils import (expand_nxos_ifname,
-                                 get_timestamp_from_cisco_time,
-                                 get_timestamp_from_junos_time)
+
 
 
 class IgmpService(Service):
@@ -20,27 +20,33 @@ class IgmpService(Service):
         if devtype.startswith('junos'):
             data['data'] = data['data'].replace('}, \n    }\n', '} \n    }\n')
             return data['data']
-        print(data)
         return data['data']
 
+    def _clean_eos_data(self, processed_data, raw_data):
 
+        pre_processed_data = {}
+        # This handles the static group command output only
+        # will update once some dynamic group output is available
+        for data in raw_data:
+            json_data = json.loads(data['data'])
+            for interface in json_data['intfAddrs']:
+                for s_g in interface['groupAddrsList']:
+                    sg = '-'.join(s_g['sourceAddr'],s_g['groupAddr'])
+                    if pre_processed_data.get(sg):
+                        pre_processed_data.get(sg).append(interface)
+                    else:
+                        pre_processed_data[sg] = [interface]
 
-    # def _clean_eos_data(self, processed_data, _):
-    #     '''Massage EVPN routes'''
-    #     for entry in processed_data:
-    #         if entry['nexthopIps']:
-    #             nexthop = entry['nexthopIps'][0]
-    #             if 'vtepAddr' in nexthop:
-    #                 nexthop = entry['nexthopIps'][0]
-    #                 entry['nexthopIps'] = [nexthop['vtepAddr']]
-    #                 entry['oifs'] = ['_nexthopVrf:default']
-    #         elif entry.get('_vtepAddr', []):
-    #             entry['nexthopIps'] = entry['_vtepAddr']
-    #             entry['oifs'] = len(entry['nexthopIps']) * \
-    #                 ['_nexthopVrf:default']
-    #         entry['protocol'] = entry['protocol'].lower()
-    #         entry['preference'] = int(entry.get('preference', 0))
-    #         entry['metric'] = int(entry.get('metric', 0))
-    #         self._fix_ipvers(entry)
+        processed_data = []
+        for k, v in pre_processed_data.items():
+            s_g = k.split('-')
+            processed_data.append(
+                'source': s_g[0],
+                'group': s_g[1],
+                'interfaceList': v,
+                'flag': 'Static',
+            )
 
-    #     return processed_data
+        breakpoint()
+
+        return processed_data

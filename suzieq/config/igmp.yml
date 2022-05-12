@@ -1,23 +1,20 @@
 service: igmp
 keys:
-  - interface
+  - source
+  - group
 show-fields:
-  - igmpVersion
-  - joinedGroupList
+  - interfaceList
   - querier
-  - igmpEnabled
-  - multicastRouting
-
-  
+  - flag
 
 apply:
   eos:
     version: all
-    command: show ip igmp interface
-    normalize: 'IgmpInterfaces/*:interface/[
-      "igmpEnabled: igmpEnabled",
-      "routerVersion: igmpVersion",
-      "igmpQuerier: querier",
-      "multicastRoutingEnabled: multicastRouting",
-      "multicastGroups: joinedGroupList",
-    ]'
+    command:
+      - command: show ip igmp groups
+        normalize: 'IgmpInterfaces/*:interface/[
+        ]'
+      - command: show ip igmp static-groups
+        normalize: 'intfAddrs/*:interface/groupAddrsList/[
+          "flag: flag?|Static",
+        ]'
