@@ -42,22 +42,19 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         self._workers_count = config_data.get("workers", 1)
 
         # We need a pipeline thats at least as big as the number of workers
-        max_cmd_pipeline = config_data['config-dict'] \
+        self._max_cmd_pipeline = config_data['config-dict'] \
             .get('poller', {}) \
             .get('max-cmd-pipeline', 0)
-        if ((max_cmd_pipeline != 0) and
-                (max_cmd_pipeline % self._workers_count != 0)):
+        if ((self._max_cmd_pipeline != 0) and
+                (self._max_cmd_pipeline % self._workers_count != 0)):
             raise SqPollerConfError(
-                f'max-cmd-pipeline({max_cmd_pipeline}) has to be a multiple '
-                f'of the number of workers({self._workers_count})')
+                f'max-cmd-pipeline ({self._max_cmd_pipeline}) has to be a '
+                'multiple of be a multiple of the number of worker '
+                f'({self._workers_count})')
 
-        if max_cmd_pipeline:
-            if config_data is None:
-                config_data = {}
-
-            if config_data:
-                config_data.update({'worker-cmd-pipeline':
-                                    int(max_cmd_pipeline/self._workers_count)})
+        if self._max_cmd_pipeline:
+            worker_cmd = int(self._max_cmd_pipeline / self._workers_count)
+            os.environ['SQ_MAX_OUTSTANDING_CMD'] = str(worker_cmd)
 
         # Workers we are already monitoring
         self._running_workers = defaultdict(None)
@@ -375,6 +372,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
                 print()  # Print an empty line
                 env_to_print = ['SQ_CONTROLLER_POLLER_CRED',
                                 'SQ_INVENTORY_PATH']
+                if self._max_cmd_pipeline:
+                    env_to_print.append('SQ_MAX_OUTSTANDING_CMD')
                 for e in env_to_print:
                     print(f'export {e}={os.environ[e]}')
 
