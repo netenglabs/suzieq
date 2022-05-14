@@ -87,7 +87,7 @@ class TableObj(SqPandasEngine):
         if not what:
             return pd.DataFrame()
 
-        df = self.get(addnl_fields=self.iobj.addnl_fields, **kwargs)
+        df = self.get(**kwargs)
         if df.empty or ('error' in df.columns):
             return df
 

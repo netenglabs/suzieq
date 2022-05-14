@@ -17,7 +17,7 @@ from colorama import Fore, Style
 from suzieq.cli.nubia_patch import argument
 from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.exceptions import UserQueryError
-from suzieq.shared.utils import SUPPORTED_ENGINES
+from suzieq.shared.utils import DATA_FORMATS, SUPPORTED_ENGINES
 
 
 def colorize(x, color):
@@ -51,7 +51,7 @@ def colorize(x, color):
 @argument(
     "format",
     description="Select the pformat of the output",
-    choices=["text", "json", "csv", "markdown"],
+    choices=DATA_FORMATS,
 )
 @argument(
     "query_str",

@@ -1,5 +1,4 @@
 from nubia import command
-import pandas as pd
 
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.devconfig import DevconfigObj
@@ -41,13 +40,3 @@ class DevconfigCmd(SqTableCommand):
         if not self.format or (self.format == 'text'):
             self.format = 'devconfig'
         return super().show()
-
-    @command("unique", help="Show unique information about columns")
-    def unique(self, **kwargs):  # pylint: disable=arguments-differ
-        """
-        Unique device config info
-        """
-
-        df = pd.DataFrame(
-            {'error': ['Unique not supported for Device Config']})
-        return self._gen_output(df)
