@@ -385,7 +385,7 @@ def _test_sqcmds(testvar, context_config):
     else:
         ignore_cols = []
 
-    if 'output' in testvar:
+    if 'output' in testvar and not error:
         if testvar.get('format', '') == "text":
             assert output.decode('utf8') == testvar['output']
             return
