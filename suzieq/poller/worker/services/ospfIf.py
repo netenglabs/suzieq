@@ -9,13 +9,21 @@ class OspfIfService(Service):
     """OSPF Interface service. Output needs to be munged"""
 
     def _clean_linux_data(self, processed_data, _):
+        vrf_loip = {}
+
         for entry in processed_data:
-            entry["vrf"] = "default"
+            if entry.get('vrf', '') == '':
+                entry['vrf'] = 'default'
+            if entry['ifname'] == "lo":
+                vrf_loip[entry['vrf']] = entry.get('ipAddress')
             entry["networkType"] = entry["networkType"].lower()
             if entry['networkType'] == 'pointopoint':
                 entry['networkType'] = 'p2p'
             entry["passive"] = entry["passive"] == "Passive"
-            entry["isUnnumbered"] = entry["isUnnumbered"] == "UNNUMBERED"
+            unnumbered = entry["isUnnumbered"] == "UNNUMBERED"
+            if unnumbered:
+                entry["isUnnumbered"] = True
+                entry['ipAddress'] = vrf_loip.get(entry['vrf'], '')
 
         return processed_data
 
@@ -44,9 +52,12 @@ class OspfIfService(Service):
                 continue
 
             vrf = entry.get('vrf', '')
+            ip_addr = entry.get('ipAddress', '') + '/' + \
+                str(entry.get('maskLen', ''))
+            entry['ipAddress'] = ip_addr
             if entry['ifname'].startswith("Loopback"):
                 if vrf not in vrf_loip or not vrf_loip[vrf]:
-                    vrf_loip[vrf] = entry.get('ipAddress', '')
+                    vrf_loip[vrf] = ip_addr
             if entry.get('passive', False):
                 entry['bfdStatus'] = "invalid"
             entry["networkType"] = entry["networkType"].lower()
