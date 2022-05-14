@@ -1005,27 +1005,28 @@ class Node:
         '''
 
         tasks = []
-        while True:
-            while len(tasks) < self.batch_size:
-                try:
+        try:
+            while True:
+                while len(tasks) < self.batch_size:
+
                     request = await self._service_queue.get()
-                except asyncio.CancelledError:
-                    await self._terminate()
-                    return
 
-                if request:
-                    tasks.append(self._exec_service(
-                        request[0], request[1], request[2]))
-                    self.logger.debug(
-                        f"Scheduling {request[2].service} for execution")
-                if self._service_queue.empty():
-                    break
+                    if request:
+                        tasks.append(self._exec_service(
+                            request[0], request[1], request[2]))
+                        self.logger.debug(
+                            f"Scheduling {request[2].service} for execution")
+                    if self._service_queue.empty():
+                        break
 
-            if tasks:
-                _, pending = await asyncio.wait(
-                    tasks, return_when=asyncio.FIRST_COMPLETED)
+                if tasks:
+                    _, pending = await asyncio.wait(
+                        tasks, return_when=asyncio.FIRST_COMPLETED)
 
-                tasks = list(pending)
+                    tasks = list(pending)
+        except asyncio.CancelledError:
+            await self._terminate()
+            return
 
 
 class EosNode(Node):
