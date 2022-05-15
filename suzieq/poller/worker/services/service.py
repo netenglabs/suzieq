@@ -848,7 +848,7 @@ class Service(SqPlugin):
                 if should_commit:
                     await self.commit_data(result, output[0]["namespace"],
                                            output[0]["hostname"])
-            elif self.run_once in ["gather", "process"]:
+            elif self.run_once in ["gather", "process", "update"]:
                 total_nodes -= 1
                 if total_nodes <= 0:
                     self.logger.info(f'Service: {self.name}: Finished '
@@ -864,7 +864,8 @@ class Service(SqPlugin):
                 write_poller_stat = (self.update_stats(
                     stats, total_time, gather_time, qsize,
                     self.writer_queue.qsize(), token.nodeQsize, rxBytes) or
-                    write_poller_stat)
+                    write_poller_stat or
+                    self.is_first_run(token.nodename))
                 pernode_stats[token.nodename] = stats
                 if write_poller_stat:
                     poller_stat = [
