@@ -49,10 +49,6 @@ def create_config(t_dir, suzieq_dir):
     # We need to create a tempfile to hold the config
     tmpconfig = load_sq_config(config_file=conftest.create_dummy_config_file())
     tmpconfig['data-directory'] = f"{t_dir}/parquet"
-    tmpconfig['service-directory'] = \
-        f"{suzieq_dir}/{tmpconfig['service-directory']}"
-    tmpconfig['schema-directory'] = \
-        f"{suzieq_dir}/{tmpconfig['schema-directory']}"
 
     fname = f'{t_dir}/suzieq-cfg.yml'
 
@@ -363,21 +359,21 @@ class TestUpdate:
 
     @pytest.mark.test_update
     @pytest.mark.update_data
+    @pytest.mark.panos
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_panos_data(self, tmp_path):
+        '''Update test data for Palo Alto Firewall'''
+        self._update_test_data_common_fn('panos', tmp_path, '14')
+
+    @pytest.mark.test_update
+    @pytest.mark.update_data
     @pytest.mark.vmx
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
     def test_update_vmx_data(self, tmp_path):
         '''Update test data for VMX'''
         self._update_test_data_common_fn('vmx', tmp_path, '5')
-
-    @pytest.mark.test_update
-    @pytest.mark.update_data
-    @pytest.mark.broken
-    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
-                        reason='Not updating data')
-    def test_update_broken_data(self, tmp_path):
-        '''Update test data for mixed sim, from Rick'''
-        self._update_test_data_common_fn('broken', tmp_path, '14')
 
 
 tests = [
