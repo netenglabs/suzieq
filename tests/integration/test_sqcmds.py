@@ -80,7 +80,7 @@ def test_all_columns(setup_nubia, get_cmd_object_dict, cmd):
     pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_hostname_show_filter(setup_nubia, get_cmd_object_dict, cmd):
-    if cmd != "table":
+    if cmd not in ["table", "namespace"]:
         s = _test_command(get_cmd_object_dict[cmd], 'show', None,
                           {'hostname': 'leaf01'})
         assert s == 0
