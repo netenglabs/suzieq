@@ -21,6 +21,7 @@ class ArpndService(Service):
                 entry['remote'] = True
             if not entry.get('macaddr', None):
                 entry['macaddr'] = '00:00:00:00:00:00'
+                entry['state'] = 'failed'
         return processed_data
 
     def _clean_cumulus_data(self, processed_data, raw_data):
