@@ -848,11 +848,11 @@ class Service(SqPlugin):
                 if should_commit:
                     await self.commit_data(result, output[0]["namespace"],
                                            output[0]["hostname"])
-            elif self.run_once in ["gather", "process", "update"]:
+            elif self.run_once in ["gather", "process"]:
                 total_nodes -= 1
                 if total_nodes <= 0:
-                    self.logger.info(
-                        f'Service: {self.name}: Finished gathering data')
+                    self.logger.info(f'Service: {self.name}: Finished '
+                                     f'{self.run_once}ing data')
                     return
                 continue
 
@@ -901,6 +901,8 @@ class Service(SqPlugin):
             if self.run_once == "update":
                 total_nodes -= 1
                 if total_nodes <= 0:
+                    self.logger.info(
+                        f'Service: {self.name}: Finished updating data')
                     return
                 continue
             self.logger.debug(
