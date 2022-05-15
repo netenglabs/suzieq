@@ -6,7 +6,7 @@ Value speed (\S+)
 Value mtu (\d+)
 Value vlan (\d+|--)
 Value type (\S+)
-Value mode (routed|access|trunk|pvlan|fabric)
+Value _portmode (routed|access|trunk|pvlan|fabric)
 Value reason (\S+((\s\w+)+)?)
 Value _portchannel (\S+)
 Value peerIP ([0-9.]+)
@@ -26,7 +26,7 @@ Mgmt
   ^Ethernet\s+VLAN\s+Type\s+Mode\s+Status\s+Reason\s+Speed\s+Port -> Start
 
 Ethernet
-  ^${ifname}\s+${vlan}\s+${type}\s+${mode}\s+${state}\s+${reason}\s+${speed}\S*\s+${_portchannel} -> Record
+  ^${ifname}\s+${vlan}\s+${type}\s+${_portmode}\s+${state}\s+${reason}\s+${speed}\S*\s+${_portchannel} -> Record
   ^Interface\s+Status\s+Description -> Loopback
   ^Interface\s+Secondary\s+VLAN -> Vlan
   ^Interface\s+Status\s+Peer\s+IP -> PW
