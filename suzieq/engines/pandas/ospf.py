@@ -104,10 +104,8 @@ class OspfObj(SqPandasEngine):
         # interface table. Nbr table wins over interface table if present
         if 'ipAddress_y' in df:
             df['ipAddress'] = np.where(
-                df['ipAddress_y'] == "",
-                df['ipAddress_x'], df['ipAddress_y'])
-            df['ipAddress'] = np.where(df['ipAddress'], df['ipAddress'],
-                                       df['ipAddress_x'])
+                df['ipAddress_x'] == "",
+                df['ipAddress_y'], df['ipAddress_x'])
 
         if columns == ['*']:
             df = df.drop(columns=['area_y', 'instance_y', 'vrf_y',
