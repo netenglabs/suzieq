@@ -881,22 +881,22 @@ tests:
   data-directory: tests/data/parquet/
   marks: interface top panos
   output: '[{"namespace": "panos", "hostname": "leaf04", "ifname": "bond02", "state":
-    "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": "30", "master":
+    "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 30, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1639499137400,
+    "timestamp": 1639476254836}, {"namespace": "panos", "hostname": "leaf04", "ifname":
+    "bond01", "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan":
+    20, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
+    1639499137400, "timestamp": 1639476254836}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bond02", "state": "up", "adminState": "up", "type": "bond",
+    "mtu": 9000, "vlan": 30, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "statusChangeTimestamp": 1639499137200, "timestamp": 1639476254836}, {"namespace":
+    "panos", "hostname": "leaf02", "ifname": "bond01", "state": "up", "adminState":
+    "up", "type": "bond", "mtu": 9000, "vlan": 10, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "statusChangeTimestamp": 1639499137190, "timestamp":
+    1639476254836}, {"namespace": "panos", "hostname": "leaf01", "ifname": "bond02",
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 30, "master":
     "bridge", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
-    1639466737400, "timestamp": 1639476254836}, {"namespace": "panos", "hostname":
-    "leaf04", "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond",
-    "mtu": 9000, "vlan": "20", "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "statusChangeTimestamp": 1639466737400, "timestamp": 1639476254836}, {"namespace":
-    "panos", "hostname": "leaf02", "ifname": "bond02", "state": "up", "adminState":
-    "up", "type": "bond", "mtu": 9000, "vlan": "30", "master": "bridge", "ipAddressList":
-    [], "ip6AddressList": [], "statusChangeTimestamp": 1639466737200, "timestamp":
-    1639476254836}, {"namespace": "panos", "hostname": "leaf02", "ifname": "bond01",
-    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": "10",
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
-    1639466737190, "timestamp": 1639476254836}, {"namespace": "panos", "hostname":
-    "leaf01", "ifname": "bond02", "state": "up", "adminState": "up", "type": "bond",
-    "mtu": 9000, "vlan": "30", "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "statusChangeTimestamp": 1639466736510, "timestamp": 1639476254854}]'
+    1639499136510, "timestamp": 1639476254854}]'
 - command: interface assert --result=pass --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: interface assert panos

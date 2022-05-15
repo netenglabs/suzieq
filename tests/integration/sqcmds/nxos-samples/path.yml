@@ -693,13 +693,15 @@ tests:
 - command: path summarize --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: path summarize nxos
-  output: '[{"nxos": 8}, {"nxos": [2, 2, 2, 1]}, {"nxos": 4}, {"nxos": 4.0}, {"nxos":
-    8}, {"nxos": 9216}, {"nxos": true}, {"nxos": false}]'
+  output: '{"nxos": {"totalPaths": 8, "perHopEcmp": [2, 2, 2, 1], "maxPathLength":
+    4, "avgPathLength": 4.0, "uniqueDevices": 8, "pathMtu": 9216, "usesOverlay": true,
+    "mtuMismatch": false}}'
 - command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: path summarize nxos
-  output: '[{"nxos": 2}, {"nxos": [2, 1]}, {"nxos": 2}, {"nxos": 2.0}, {"nxos": 4},
-    {"nxos": 1500}, {"nxos": false}, {"nxos": false}]'
+  output: '{"nxos": {"totalPaths": 2, "perHopEcmp": [2, 1], "maxPathLength": 2, "avgPathLength":
+    2.0, "uniqueDevices": 4, "pathMtu": 1500, "usesOverlay": false, "mtuMismatch":
+    false}}'
 - command: path unique --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: path unique nxos

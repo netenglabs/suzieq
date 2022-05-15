@@ -5,13 +5,13 @@ tests:
   marks: namespace show panos
   output: '[{"namespace": "panos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639498880095}]'
+    1652587501957}]'
 - command: namespace show --format=json --namespace=panos --os=panos
   data-directory: tests/data/parquet
   marks: namespace show  panos
-  output: '[{"namespace": "panos", "deviceCnt": 1, "serviceCnt": 7, "errSvcCnt": 0,
+  output: '[{"namespace": "panos", "deviceCnt": 1, "serviceCnt": 6, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639498880046}]'
+    1652587501214}]'
 - command: namespace show --columns='namespace' --format=json --namespace=panos
   data-directory: tests/data/parquet
   marks: namespace show panos
@@ -25,7 +25,7 @@ tests:
   marks: namespace show panos
   output: '[{"namespace": "panos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639498880095, "active": true}]'
+    1652587501957, "active": true}]'
 - command: namespace summarize --format=json --namespace=panos
   data-directory: tests/data/parquet
   marks: namespace summarize panos

@@ -3343,20 +3343,12 @@ tests:
     "routesperVrfStat": [10, 121, 25.0], "deviceWithNoDefRoute": true}}'
 - command: route lpm --address 2001:db8::11 --format=json --namespace=panos
   data-directory: tests/data/parquet/
-  error:
-    error: '[{"error": "ERROR: \"None of [Index([''namespace'', ''hostname'', ''vrf'',
-      ''prefix'', ''nexthopIps'', ''oifs'',\\n       ''protocol'', ''source'', ''preference'',
-      ''ipvers'', ''action'', ''timestamp''],\\n      dtype=''object'')] are in the
-      [columns]\""}]'
   marks: route lpm
+  output: '[]'
 - command: route lpm --address 2001:db:0:2::102 --format=json --namespace=panos
   data-directory: tests/data/parquet/
-  error:
-    error: '[{"error": "ERROR: \"None of [Index([''namespace'', ''hostname'', ''vrf'',
-      ''prefix'', ''nexthopIps'', ''oifs'',\\n       ''protocol'', ''source'', ''preference'',
-      ''ipvers'', ''action'', ''timestamp''],\\n      dtype=''object'')] are in the
-      [columns]\""}]'
   marks: route lpm panos
+  output: '[]'
 - command: route unique --columns=prefixlen --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: route unique panos

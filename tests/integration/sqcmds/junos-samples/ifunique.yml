@@ -13,18 +13,18 @@ tests:
     6}, {"type": "flexible-tunnel-interface", "numRows": 7}, {"type": "gre", "numRows":
     7}, {"type": "mgmt-vlan", "numRows": 7}, {"type": "null", "numRows": 7}, {"type":
     "vlan", "numRows": 10}, {"type": "loopback", "numRows": 12}, {"type": "vtep",
-    "numRows": 14}, {"type": "ethernet", "numRows": 140}, {"type": "subinterface",
-    "numRows": 148}]'
+    "numRows": 14}, {"type": "subinterface", "numRows": 130}, {"type": "ethernet",
+    "numRows": 140}]'
 - command: interface unique --count=True --format=json --namespace=junos --columns=hostname
   data-directory: tests/data/parquet/
   marks: interface unique junos
   output: '[{"hostname": "server101", "numRows": 3}, {"hostname": "server102", "numRows":
     3}, {"hostname": "server201", "numRows": 3}, {"hostname": "server202", "numRows":
     3}, {"hostname": "firewall01", "numRows": 10}, {"hostname": "dcedge01", "numRows":
-    44}, {"hostname": "spine01", "numRows": 46}, {"hostname": "spine02", "numRows":
-    46}, {"hostname": "leaf01", "numRows": 49}, {"hostname": "leaf02", "numRows":
-    49}, {"hostname": "exit01", "numRows": 52}, {"hostname": "exit02", "numRows":
-    52}]'
+    42}, {"hostname": "spine01", "numRows": 44}, {"hostname": "spine02", "numRows":
+    44}, {"hostname": "leaf01", "numRows": 46}, {"hostname": "leaf02", "numRows":
+    46}, {"hostname": "exit01", "numRows": 49}, {"hostname": "exit02", "numRows":
+    49}]'
 - command: interface unique --count=True --format=json --namespace=junos --columns=type
   data-directory: tests/data/parquet/
   marks: interface unique junos
@@ -32,45 +32,43 @@ tests:
     6}, {"type": "flexible-tunnel-interface", "numRows": 7}, {"type": "gre", "numRows":
     7}, {"type": "mgmt-vlan", "numRows": 7}, {"type": "null", "numRows": 7}, {"type":
     "vlan", "numRows": 10}, {"type": "loopback", "numRows": 12}, {"type": "vtep",
-    "numRows": 14}, {"type": "ethernet", "numRows": 140}, {"type": "subinterface",
-    "numRows": 148}]'
+    "numRows": 14}, {"type": "subinterface", "numRows": 130}, {"type": "ethernet",
+    "numRows": 140}]'
 - command: interface unique --count=True --format=json --namespace=junos --columns=mtu
   data-directory: tests/data/parquet/
   marks: interface unique junos
-  output: '[{"mtu": 9194, "numRows": 6}, {"mtu": 9216, "numRows": 6}, {"mtu": 1986,
-    "numRows": 7}, {"mtu": 9200, "numRows": 16}, {"mtu": 9214, "numRows": 16}, {"mtu":
-    65536, "numRows": 69}, {"mtu": 1500, "numRows": 113}, {"mtu": 1514, "numRows":
-    127}]'
+  output: '[{"mtu": 9194, "numRows": 6}, {"mtu": 9216, "numRows": 6}, {"mtu": 9200,
+    "numRows": 16}, {"mtu": 9214, "numRows": 16}, {"mtu": 65536, "numRows": 65}, {"mtu":
+    1500, "numRows": 113}, {"mtu": 1514, "numRows": 120}]'
 - command: interface unique --count=True --format=json --namespace=junos --columns=state
   data-directory: tests/data/parquet/
   marks: interface unique junos
-  output: '[{"state": "down", "numRows": 7}, {"state": "up", "numRows": 353}]'
+  output: '[{"state": "down", "numRows": 7}, {"state": "up", "numRows": 335}]'
 - command: interface unique --count=True --format=json --namespace=junos --columns=adminState
   data-directory: tests/data/parquet/
   marks: interface unique junos
-  output: '[{"adminState": "up", "numRows": 360}]'
+  output: '[{"adminState": "up", "numRows": 342}]'
 - command: interface unique --count=True --format=json --namespace=junos --columns=vlan
   data-directory: tests/data/parquet/
   marks: interface unique junos
   output: '[{"vlan": 10, "numRows": 2}, {"vlan": 20, "numRows": 2}, {"vlan": 2, "numRows":
     4}, {"vlan": 3, "numRows": 4}, {"vlan": 4, "numRows": 4}, {"vlan": 30, "numRows":
-    4}, {"vlan": 999, "numRows": 4}, {"vlan": 1, "numRows": 7}, {"vlan": 16385, "numRows":
-    7}, {"vlan": 32768, "numRows": 14}, {"vlan": 0, "numRows": 308}]'
+    4}, {"vlan": 999, "numRows": 4}, {"vlan": 0, "numRows": 318}]'
 - command: interface unique --count=True --format=json --namespace=junos --columns=speed
   data-directory: tests/data/parquet/
   marks: interface unique junos
   output: '[{"speed": 800, "numRows": 7}, {"speed": -1, "numRows": 11}, {"speed":
-    1000, "numRows": 86}, {"speed": 0, "numRows": 88}, {"speed": 10000, "numRows":
+    0, "numRows": 77}, {"speed": 1000, "numRows": 79}, {"speed": 10000, "numRows":
     168}]'
 - command: interface unique --count=True --format=json --namespace=junos --columns=master
   data-directory: tests/data/parquet/
   marks: interface unique junos
   output: '[{"master": "internet-vrf", "numRows": 4}, {"master": "bridge", "numRows":
-    6}, {"master": "evpn-vrf", "numRows": 10}, {"master": "", "numRows": 340}]'
+    6}, {"master": "evpn-vrf", "numRows": 10}, {"master": "", "numRows": 322}]'
 - command: interface unique --count=True --format=json --namespace=junos --columns=reason
   data-directory: tests/data/parquet/
   marks: interface unique junos
-  output: '[{"reason": "", "numRows": 360}]'
+  output: '[{"reason": "", "numRows": 342}]'
 - command: interface unique --count=True --format=json --namespace=junos --query-str='macaddr
     == "" ' --columns=macaddr
   data-directory: tests/data/parquet/

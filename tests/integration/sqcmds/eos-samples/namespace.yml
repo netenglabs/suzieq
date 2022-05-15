@@ -5,13 +5,13 @@ tests:
   marks: namespace show eos
   output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161231163}]'
+    1652587501207}]'
 - command: namespace show --format=json --namespace=eos --os=eos
   data-directory: tests/data/parquet
   marks: namespace show  eos
-  output: '[{"namespace": "eos", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt": 0,
+  output: '[{"namespace": "eos", "deviceCnt": 8, "serviceCnt": 15, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161231158}]'
+    1652587501184}]'
 - command: namespace show --columns='namespace' --format=json --namespace=eos
   data-directory: tests/data/parquet
   marks: namespace show eos
@@ -25,7 +25,7 @@ tests:
   marks: namespace show eos
   output: '[{"namespace": "eos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt": 0,
     "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161231163, "active": true}]'
+    1652587501207, "active": true}]'
 - command: namespace unique --format=json --namespace=eos
   data-directory: tests/data/parquet
   marks: namespace unique eos
