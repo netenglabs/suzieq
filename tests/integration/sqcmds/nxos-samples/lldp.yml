@@ -206,24 +206,24 @@ tests:
     "mgmtIP": "", "timestamp": 1619275257671}, {"namespace": "nxos", "hostname": "exit01",
     "ifname": "Ethernet1/1", "peerHostname": "spine01", "peerIfname": "Ethernet1/5",
     "description": "N9K-C9300v", "mgmtIP": "10.255.2.119", "timestamp": 1619275257671},
-    {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/1", "peerHostname":
-    "spine01", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v", "mgmtIP":
-    "10.255.2.119", "timestamp": 1619275257674}, {"namespace": "nxos", "hostname":
-    "leaf02", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname": "mgmt0",
-    "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257674}, {"namespace":
-    "nxos", "hostname": "leaf03", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname":
-    "mgmt0", "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257705},
-    {"namespace": "nxos", "hostname": "leaf03", "ifname": "Ethernet1/1", "peerHostname":
-    "spine01", "peerIfname": "Ethernet1/3", "description": "N9K-C9300v", "mgmtIP":
-    "10.255.2.119", "timestamp": 1619275257705}]'
+    {"namespace": "nxos", "hostname": "leaf02", "ifname": "mgmt0", "peerHostname":
+    "spine01", "peerIfname": "mgmt0", "description": "N9K-C9300v", "mgmtIP": "", "timestamp":
+    1619275257674}, {"namespace": "nxos", "hostname": "leaf02", "ifname": "Ethernet1/1",
+    "peerHostname": "spine01", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v",
+    "mgmtIP": "10.255.2.119", "timestamp": 1619275257674}, {"namespace": "nxos", "hostname":
+    "leaf03", "ifname": "mgmt0", "peerHostname": "spine01", "peerIfname": "mgmt0",
+    "description": "N9K-C9300v", "mgmtIP": "", "timestamp": 1619275257705}, {"namespace":
+    "nxos", "hostname": "leaf03", "ifname": "Ethernet1/1", "peerHostname": "spine01",
+    "peerIfname": "Ethernet1/3", "description": "N9K-C9300v", "mgmtIP": "10.255.2.119",
+    "timestamp": 1619275257705}]'
 - command: lldp show --peerHostname='leaf01 exit01' --format=json --namespace=nxos
   data-directory: tests/data/parquet
   marks: lldp show nxos
-  output: '[{"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/5",
-    "peerHostname": "exit01", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v",
-    "mgmtIP": "10.255.2.253", "timestamp": 1619275257130}, {"namespace": "nxos", "hostname":
-    "spine02", "ifname": "Ethernet1/1", "peerHostname": "leaf01", "peerIfname": "Ethernet1/2",
-    "description": "N9K-C9300v", "mgmtIP": "10.255.2.189", "timestamp": 1619275257130},
+  output: '[{"namespace": "nxos", "hostname": "spine02", "ifname": "Ethernet1/1",
+    "peerHostname": "leaf01", "peerIfname": "Ethernet1/2", "description": "N9K-C9300v",
+    "mgmtIP": "10.255.2.189", "timestamp": 1619275257130}, {"namespace": "nxos", "hostname":
+    "spine02", "ifname": "Ethernet1/5", "peerHostname": "exit01", "peerIfname": "Ethernet1/2",
+    "description": "N9K-C9300v", "mgmtIP": "10.255.2.253", "timestamp": 1619275257130},
     {"namespace": "nxos", "hostname": "dcedge01", "ifname": "xe-0/0/0", "peerHostname":
     "exit01", "peerIfname": "Ethernet1/4", "description": "Cisco Nexus Operating System
     (NX-OS) Software 9.3(4)\nTAC support: http://www.cisco.com/tac\nCopyright (c)

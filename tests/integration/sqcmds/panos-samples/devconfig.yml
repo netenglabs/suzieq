@@ -3,155 +3,19 @@ tests:
 - command: devconfig show --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: devconfig show panos
-  output: '[{"namespace": "panos", "config": "{''@version'': ''8.0.0'', ''@urldb'':
-    ''paloaltonetworks'', ''mgt-config'': {''users'': {''entry'': [{''@name'': ''admin'',
-    ''phash'': ''fnRL/G5lXVMug'', ''permissions'': {''role-based'': {''superuser'':
-    ''yes''}}}, {''@name'': ''vagrant'', ''phash'': ''$1$xmwgwrun$ya6mnrsnoJrgAvdSKM8Fe0'',
-    ''permissions'': {''role-based'': {''superuser'': ''yes''}}, ''public-key'': ''c3NoLXJzYSBBQUFBQjNOemFDMXljMkVBQUFBQkl3QUFBUUVBNk5GOGlhbGx2UVZwMjJXRGtUa3lydHZwOWVXVzZBOFlWcitrejRUakdZZTdnSHpJdytuaU5sdEdFRkh6RDgrdjFJMllKNm9YZXZjdDFZZVMwbzlIWnlOMVE5cWdDZ3pVRnRkT0tMdjZJZWRwbHFvUGtjbUYwYVlldDJQa0VEbzNNbFRCY2tGWFBJVEFNekY4ZEpTSUZvOUQ4SGZkT1YwSUFkeDRPN1B0aXhXS241eTJoTU5HMHpRUHlVZWNwNHB6QzZraXZBSWh5ZkhpbEZSNjFSR0wrR1BYUTJNV1pXRlliQUdqeWlZSm5BbUNQM05PVGQwak1aRW5Ea2JVdnhoTW1CWVNkRVRrMXJSZ20rUjRMT3pGVUdhSHFIRExLTFgrRklQS2NGOTZocnVjWHpjV3lMYkliRWdFOThPSGxuVllDelJkSzhqbHFtOHRlaFVjOWM5V2hRPT0=''}]}},
-    ''shared'': {''application'': None, ''application-group'': None, ''service'':
-    None, ''service-group'': None, ''botnet'': {''configuration'': {''http'': {''dynamic-dns'':
-    {''enabled'': ''yes'', ''threshold'': ''5''}, ''malware-sites'': {''enabled'':
-    ''yes'', ''threshold'': ''5''}, ''recent-domains'': {''enabled'': ''yes'', ''threshold'':
-    ''5''}, ''ip-domains'': {''enabled'': ''yes'', ''threshold'': ''10''}, ''executables-from-unknown-sites'':
-    {''enabled'': ''yes'', ''threshold'': ''5''}}, ''other-applications'': {''irc'':
-    ''yes''}, ''unknown-applications'': {''unknown-tcp'': {''destinations-per-hour'':
-    ''10'', ''sessions-per-hour'': ''10'', ''session-length'': {''maximum-bytes'':
-    ''100'', ''minimum-bytes'': ''50''}}, ''unknown-udp'': {''destinations-per-hour'':
-    ''10'', ''sessions-per-hour'': ''10'', ''session-length'': {''maximum-bytes'':
-    ''100'', ''minimum-bytes'': ''50''}}}}, ''report'': {''topn'': ''100'', ''scheduled'':
-    ''yes''}}}, ''devices'': {''entry'': {''@name'': ''localhost.localdomain'', ''network'':
-    {''interface'': {''ethernet'': {''entry'': [{''@name'': ''ethernet1/1'', ''layer3'':
-    {''units'': {''entry'': [{''@name'': ''ethernet1/1.2'', ''tag'': ''2'', ''ip'':
-    {''entry'': {''@name'': ''169.254.254.2/30''}}, ''ipv6'': {''neighbor-discovery'':
-    {''router-advertisement'': {''enable'': ''yes''}, ''enable-dad'': ''yes''}, ''enabled'':
-    ''yes'', ''address'': {''entry'': {''@name'': ''2001:1::1/127''}}}, ''ndp-proxy'':
-    {''enabled'': ''no''}, ''adjust-tcp-mss'': {''enable'': ''no''}}, {''@name'':
-    ''ethernet1/1.3'', ''tag'': ''3'', ''ip'': {''entry'': {''@name'': ''169.254.254.6/30''}}},
-    {''@name'': ''ethernet1/1.4'', ''tag'': ''4'', ''ip'': {''entry'': {''@name'':
-    ''169.254.254.10/30''}}}]}, ''lldp'': {''enable'': ''yes'', ''profile'': ''deflldp''}}},
-    {''@name'': ''ethernet1/2'', ''layer3'': {''lldp'': {''enable'': ''yes'', ''profile'':
-    ''deflldp''}, ''units'': {''entry'': [{''@name'': ''ethernet1/2.2'', ''tag'':
-    ''2'', ''ip'': {''entry'': {''@name'': ''169.254.253.2/30''}}, ''ipv6'': {''enabled'':
-    ''yes'', ''address'': {''entry'': {''@name'': ''2001:2::1/127''}}, ''neighbor-discovery'':
-    {''router-advertisement'': {''enable'': ''yes''}}}}, {''@name'': ''ethernet1/2.3'',
-    ''tag'': ''3'', ''ip'': {''entry'': {''@name'': ''169.254.253.6/30''}}}, {''@name'':
-    ''ethernet1/2.4'', ''tag'': ''4'', ''ip'': {''entry'': {''@name'': ''169.254.253.10/30''}}}]}}}]},
-    ''loopback'': {''ip'': {''entry'': {''@name'': ''10.0.0.200/32''}}}}, ''profiles'':
-    {''monitor-profile'': {''entry'': {''@name'': ''default'', ''interval'': ''3'',
-    ''threshold'': ''5'', ''action'': ''wait-recover''}}, ''interface-management-profile'':
-    {''entry'': {''@name'': ''ifdef'', ''ping'': ''yes''}}, ''lldp-profile'': {''entry'':
-    {''@name'': ''deflldp'', ''mode'': ''transmit-receive'', ''option-tlvs'': {''system-name'':
-    ''yes'', ''management-address'': {''enabled'': ''yes''}, ''system-description'':
-    ''yes''}}}, ''bfd-profile'': {''entry'': {''@name'': ''test'', ''multihop'': {''min-received-ttl'':
-    ''5''}}}}, ''ike'': {''crypto-profiles'': {''ike-crypto-profiles'': {''entry'':
-    [{''@name'': ''default'', ''encryption'': {''member'': [''aes-128-cbc'', ''3des'']},
-    ''hash'': {''member'': ''sha1''}, ''dh-group'': {''member'': ''group2''}, ''lifetime'':
-    {''hours'': ''8''}}, {''@name'': ''Suite-B-GCM-128'', ''encryption'': {''member'':
-    ''aes-128-cbc''}, ''hash'': {''member'': ''sha256''}, ''dh-group'': {''member'':
-    ''group19''}, ''lifetime'': {''hours'': ''8''}}, {''@name'': ''Suite-B-GCM-256'',
-    ''encryption'': {''member'': ''aes-256-cbc''}, ''hash'': {''member'': ''sha384''},
-    ''dh-group'': {''member'': ''group20''}, ''lifetime'': {''hours'': ''8''}}]},
-    ''ipsec-crypto-profiles'': {''entry'': [{''@name'': ''default'', ''esp'': {''encryption'':
-    {''member'': [''aes-128-cbc'', ''3des'']}, ''authentication'': {''member'': ''sha1''}},
-    ''dh-group'': ''group2'', ''lifetime'': {''hours'': ''1''}}, {''@name'': ''Suite-B-GCM-128'',
-    ''esp'': {''encryption'': {''member'': ''aes-128-gcm''}, ''authentication'': {''member'':
-    ''none''}}, ''dh-group'': ''group19'', ''lifetime'': {''hours'': ''1''}}, {''@name'':
-    ''Suite-B-GCM-256'', ''esp'': {''encryption'': {''member'': ''aes-256-gcm''},
-    ''authentication'': {''member'': ''none''}}, ''dh-group'': ''group20'', ''lifetime'':
-    {''hours'': ''1''}}]}, ''global-protect-app-crypto-profiles'': {''entry'': {''@name'':
-    ''default'', ''encryption'': {''member'': ''aes-128-cbc''}, ''authentication'':
-    {''member'': ''sha1''}}}}}, ''qos'': {''profile'': {''entry'': {''@name'': ''default'',
-    ''class'': {''entry'': [{''@name'': ''class1'', ''priority'': ''real-time''},
-    {''@name'': ''class2'', ''priority'': ''high''}, {''@name'': ''class3'', ''priority'':
-    ''high''}, {''@name'': ''class4'', ''priority'': ''medium''}, {''@name'': ''class5'',
-    ''priority'': ''medium''}, {''@name'': ''class6'', ''priority'': ''low''}, {''@name'':
-    ''class7'', ''priority'': ''low''}, {''@name'': ''class8'', ''priority'': ''low''}]}}}},
-    ''virtual-router'': {''entry'': {''@name'': ''default'', ''protocol'': {''bgp'':
-    {''enable'': ''yes'', ''dampening-profile'': {''entry'': {''@name'': ''default'',
-    ''cutoff'': ''1.25'', ''reuse'': ''0.5'', ''max-hold-time'': ''900'', ''decay-half-life-reachable'':
-    ''300'', ''decay-half-life-unreachable'': ''900'', ''enable'': ''yes''}}, ''router-id'':
-    ''10.0.0.200'', ''local-as'': ''65533'', ''peer-group'': {''entry'': {''@name'':
-    ''EXIT'', ''type'': {''ebgp'': {''remove-private-as'': ''no'', ''import-nexthop'':
-    ''original'', ''export-nexthop'': ''resolve''}}, ''peer'': {''entry'': [{''@name'':
-    ''169.254.254.5'', ''connection-options'': {''incoming-bgp-connection'': {''remote-port'':
-    ''0'', ''allow'': ''yes''}, ''outgoing-bgp-connection'': {''local-port'': ''0'',
-    ''allow'': ''yes''}, ''multihop'': ''0'', ''keep-alive-interval'': ''3'', ''open-delay-time'':
-    ''0'', ''hold-time'': ''9'', ''idle-hold-time'': ''15''}, ''subsequent-address-family-identifier'':
-    {''unicast'': ''yes'', ''multicast'': ''no''}, ''local-address'': {''interface'':
-    ''ethernet1/1.3''}, ''peer-address'': {''ip'': ''169.254.254.5''}, ''bfd'': {''profile'':
-    ''Inherit-vr-global-setting''}, ''max-prefixes'': ''5000'', ''peer-as'': ''65521'',
-    ''enable-mp-bgp'': ''no'', ''address-family-identifier'': ''ipv4'', ''enable'':
-    ''yes'', ''enable-sender-side-loop-detection'': ''yes'', ''reflector-client'':
-    ''non-client'', ''peering-type'': ''unspecified''}, {''@name'': ''169.254.254.9'',
-    ''connection-options'': {''incoming-bgp-connection'': {''remote-port'': ''0'',
-    ''allow'': ''yes''}, ''outgoing-bgp-connection'': {''local-port'': ''0'', ''allow'':
-    ''yes''}, ''multihop'': ''0'', ''keep-alive-interval'': ''3'', ''open-delay-time'':
-    ''0'', ''hold-time'': ''9'', ''idle-hold-time'': ''15''}, ''subsequent-address-family-identifier'':
-    {''unicast'': ''yes'', ''multicast'': ''no''}, ''local-address'': {''interface'':
-    ''ethernet1/1.4''}, ''peer-address'': {''ip'': ''169.254.254.9''}, ''bfd'': {''profile'':
-    ''Inherit-vr-global-setting''}, ''max-prefixes'': ''5000'', ''peer-as'': ''65522'',
-    ''enable-mp-bgp'': ''no'', ''address-family-identifier'': ''ipv4'', ''enable'':
-    ''yes'', ''enable-sender-side-loop-detection'': ''yes'', ''reflector-client'':
-    ''non-client'', ''peering-type'': ''unspecified''}, {''@name'': ''169.254.254.1'',
-    ''connection-options'': {''incoming-bgp-connection'': {''remote-port'': ''0'',
-    ''allow'': ''yes''}, ''outgoing-bgp-connection'': {''local-port'': ''0'', ''allow'':
-    ''yes''}, ''multihop'': ''0'', ''keep-alive-interval'': ''3'', ''open-delay-time'':
-    ''0'', ''hold-time'': ''9'', ''idle-hold-time'': ''15''}, ''subsequent-address-family-identifier'':
-    {''unicast'': ''yes'', ''multicast'': ''no''}, ''local-address'': {''interface'':
-    ''ethernet1/1.2''}, ''peer-address'': {''ip'': ''169.254.254.1''}, ''bfd'': {''profile'':
-    ''Inherit-vr-global-setting''}, ''max-prefixes'': ''5000'', ''peer-as'': ''65520'',
-    ''enable-mp-bgp'': ''no'', ''address-family-identifier'': ''ipv4'', ''enable'':
-    ''yes'', ''enable-sender-side-loop-detection'': ''yes'', ''reflector-client'':
-    ''non-client'', ''peering-type'': ''unspecified''}, {''@name'': ''169.254.253.1'',
-    ''peer-as'': ''65520'', ''local-address'': {''interface'': ''ethernet1/2.2''},
-    ''peer-address'': {''ip'': ''169.254.253.1''}}, {''@name'': ''169.254.253.5'',
-    ''peer-as'': ''65521'', ''local-address'': {''interface'': ''ethernet1/2.3''},
-    ''peer-address'': {''ip'': ''169.254.253.5''}}, {''@name'': ''169.254.253.9'',
-    ''peer-as'': ''65522'', ''local-address'': {''interface'': ''ethernet1/2.4''},
-    ''peer-address'': {''ip'': ''169.254.253.9''}}]}, ''aggregated-confed-as-path'':
-    ''yes'', ''soft-reset-with-stored-info'': ''yes'', ''enable'': ''yes''}}, ''install-route'':
-    ''yes'', ''ecmp-multi-as'': ''yes'', ''reject-default-route'': ''no'', ''allow-redist-default-route'':
-    ''yes'', ''policy'': {''export'': {''rules'': {''entry'': {''@name'': ''LBACK'',
-    ''action'': {''allow'': {''update'': {''origin'': ''incomplete''}}}, ''match'':
-    {''address-prefix'': {''entry'': {''@name'': ''10.0.0.200/32'', ''exact'': ''yes''}},
-    ''route-table'': ''unicast''}, ''enable'': ''yes'', ''used-by'': {''member'':
-    ''EXIT''}}}}}, ''redist-rules'': {''entry'': [{''@name'': ''LOOPBACK'', ''address-family-identifier'':
-    ''ipv4'', ''route-table'': ''unicast'', ''enable'': ''yes'', ''set-origin'': ''incomplete''},
-    {''@name'': ''10.0.0.200/32'', ''address-family-identifier'': ''ipv4'', ''route-table'':
-    ''unicast'', ''enable'': ''yes'', ''set-origin'': ''incomplete''}]}, ''routing-options'':
-    {''graceful-restart'': {''enable'': ''yes''}}, ''global-bfd'': {''profile'': ''default''}},
-    ''redist-profile'': {''entry'': {''@name'': ''LOOPBACK'', ''filter'': {''interface'':
-    {''member'': ''loopback''}}, ''priority'': ''10'', ''action'': {''redist'': None}}}},
-    ''interface'': {''member'': [''ethernet1/1.2'', ''ethernet1/1.3'', ''ethernet1/1.4'',
-    ''ethernet1/2.2'', ''ethernet1/2.3'', ''ethernet1/2.4'', ''loopback'']}, ''ecmp'':
-    {''algorithm'': {''ip-hash'': {''use-port'': ''yes''}}, ''enable'': ''yes'', ''max-path'':
-    ''4''}}}, ''lldp'': {''enable'': ''yes''}}, ''deviceconfig'': {''system'': {''type'':
-    {''dhcp-client'': {''send-hostname'': ''yes'', ''send-client-id'': ''no'', ''accept-dhcp-hostname'':
-    ''no'', ''accept-dhcp-domain'': ''no''}}, ''update-server'': ''updates.paloaltonetworks.com'',
-    ''update-schedule'': {''threats'': {''recurring'': {''weekly'': {''day-of-week'':
-    ''wednesday'', ''at'': ''01:02'', ''action'': ''download-only''}}}}, ''timezone'':
-    ''US/Pacific'', ''service'': {''disable-telnet'': ''yes'', ''disable-http'': ''yes''},
-    ''hostname'': ''firewall01''}, ''setting'': {''config'': {''rematch'': ''yes''},
-    ''management'': {''hostname-type-in-syslog'': ''FQDN''}, ''auto-mac-detect'':
-    ''yes''}}, ''vsys'': {''entry'': {''@name'': ''vsys1'', ''application'': None,
-    ''application-group'': None, ''zone'': {''entry'': {''@name'': ''default'', ''network'':
-    {''layer3'': {''member'': [''ethernet1/1.2'', ''ethernet1/1.3'', ''ethernet1/2.2'',
-    ''ethernet1/2.3'', ''ethernet1/2.4'', ''ethernet1/1.4'', ''loopback'']}}}}, ''service'':
-    None, ''service-group'': None, ''schedule'': None, ''rulebase'': None, ''import'':
-    {''network'': {''interface'': {''member'': ''ethernet1/1.2''}}}}}}}}", "hostname":
-    "firewall01", "timestamp": 1639476253357}, {"namespace": "panos", "config": "#
-    hostname\nexit01\n# interfaces\n# This file describes the network interfaces available
-    on your system\n# and how to activate them. For more information, see interfaces(5).\n\nsource
-    /etc/network/interfaces.d/*.intf\n\n# The loopback network interface\nauto lo\niface
-    lo inet loopback\n\n# The primary network interface\nauto eth0\niface eth0 inet
-    dhcp\n    vrf mgmt\n\nauto mgmt\niface mgmt\n    address 127.0.0.1/8\n    address
-    ::1/128\n    vrf-table auto\n# BEGIN lo\nauto lo\niface lo inet loopback\n   address
-    10.0.0.31/32\n   vxlan-local-tunnelip 10.0.0.31/32\n   \n# END lo\n# BEGIN swp1\nauto
-    swp1\niface swp1 inet manual\n  address 10.0.0.31/32\n  mtu 9216\n# END swp1\n#
-    BEGIN swp2\nauto swp2\niface swp2 inet manual\n  address 10.0.0.31/32\n  mtu 9216\n#
-    END swp2\n# BEGIN bridge\nauto bridge\niface bridge\n  bridge-vlan-aware yes\n  bridge-ports    vni999\n  bridge-vids
-    999 999\n# END bridge\n# BEGIN evpn-vrf\nauto evpn-vrf\niface evpn-vrf\n  vrf-table
-    auto\n# END evpn-vrf\n# BEGIN {''vlan'': 999, ''vnid'': 999, ''vlanif'': ''vlan999'',
+  output: '[{"namespace": "panos", "config": "# hostname\nexit01\n# interfaces\n#
+    This file describes the network interfaces available on your system\n# and how
+    to activate them. For more information, see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n#
+    The loopback network interface\nauto lo\niface lo inet loopback\n\n# The primary
+    network interface\nauto eth0\niface eth0 inet dhcp\n    vrf mgmt\n\nauto mgmt\niface
+    mgmt\n    address 127.0.0.1/8\n    address ::1/128\n    vrf-table auto\n# BEGIN
+    lo\nauto lo\niface lo inet loopback\n   address 10.0.0.31/32\n   vxlan-local-tunnelip
+    10.0.0.31/32\n   \n# END lo\n# BEGIN swp1\nauto swp1\niface swp1 inet manual\n  address
+    10.0.0.31/32\n  mtu 9216\n# END swp1\n# BEGIN swp2\nauto swp2\niface swp2 inet
+    manual\n  address 10.0.0.31/32\n  mtu 9216\n# END swp2\n# BEGIN bridge\nauto bridge\niface
+    bridge\n  bridge-vlan-aware yes\n  bridge-ports    vni999\n  bridge-vids 999 999\n#
+    END bridge\n# BEGIN evpn-vrf\nauto evpn-vrf\niface evpn-vrf\n  vrf-table auto\n#
+    END evpn-vrf\n# BEGIN {''vlan'': 999, ''vnid'': 999, ''vlanif'': ''vlan999'',
     ''junos_vrf_loopback_ip'': {''leaf01'': ''10.0.0.101/32'', ''leaf02'': ''10.0.0.102/32'',
     ''exit01'': ''10.0.0.121/32'', ''exit02'': ''10.0.0.122/32''}, ''vrf'': ''evpn-vrf''}\nauto
     vni999\niface vni999\n  mtu 9216\n  vxlan-id 999\n  mstpctl-bpduguard yes\n  mstpctl-portbpdufilter
@@ -820,7 +684,7 @@ tests:
 - command: devconfig summarize --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: devconfig summarize panos
-  output: '{"panos": {"deviceCnt": 10}}'
+  output: '{"panos": {"deviceCnt": 9}}'
 - command: devconfig summarize --hostname='leaf01 spine01' --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: devconfig summarize panos

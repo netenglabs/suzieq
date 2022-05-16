@@ -276,6 +276,9 @@ class RoutesService(Service):
             else:
                 entry['action'] = entry.get('action', '').lower()
 
+            if raw_data[0]['devtype'] != 'iosxr':
+                # IOS/XE parsing of change timestamp is different
+                continue
             lastchange = entry.get('statusChangeTimestamp', '')
             if lastchange:
                 if re.match(r'^\d{2}:\d{2}:\d{2}$', lastchange):
@@ -301,7 +304,10 @@ class RoutesService(Service):
         #  * lowercasing IPv6 addresses
         #  * adding / to host prefixes
         #  * adding IPv4 netmask if not included in the prefix
+        #  * Handling status change timestamp
         for entry in processed_data:
+            entry['statusChangeTimestamp'] = get_timestamp_from_cisco_time(
+                entry['statusChangeTimestamp'], raw_data[0]['timestamp']/1000)
             if ':' in entry['prefix']:
                 entry['prefix'] = entry['prefix'].lower()
                 if '/' not in entry['prefix']:

@@ -136,6 +136,12 @@ class MacsService(Service):
             else:
                 entry['oif'] = expand_nxos_ifname(entry['oif'])
                 entry['remoteVtepIp'] = ''
+
+            oif = entry.get('oif', '')
+            if oif and '(R)' in oif:
+                entry['oif'] = oif.split('(R)')[0]
+                entry['flags'] = 'router'
+
             if entry.get('vlan', '-') == '-':
                 entry['vlan'] = 0
             # Handling old NXOS

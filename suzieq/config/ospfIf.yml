@@ -96,34 +96,45 @@ apply:
     copy: junos-qfx
 
   nxos:
-    version: all
-    command:
-      - command: show ip ospf interface vrf all | json native
-        normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*?/[
-        "ifname: ifname?|",
-        "proto_status: state?|",
-        "admin_status: _adminState?|",
-        "addr: ipAddress?|",
-        "masklen: maskLen?|32",
-        "area: area?|",
-        "type_str: networkType?|",
-        "nbr_adjs: nbrCount?|0",
-        "hello_interval: helloTime?|10",
-        "dead_interval: deadTime?|40",
-        "rxmt_interval: retxTime?|5",
-        "cost: cost?|1",
-        "passive: passive?|False",
-        "unnumbered: isUnnumbered?|False",
-        "_entryType: _entryType?|interfaces",
+    - version: < 9.3(0)
+      command:
+        - command: show ip ospf interface vrf all
+          textfsm: textfsm_templates/nxos_show_ip_ospfif.tfsm
+          _entryType: "interfaces"
+
+        - command: show ip ospf vrf all
+          textfsm: textfsm_templates/nxos_show_ip_ospf.tfsm
+          _entryType: "areas"
+          
+    - version: all
+      command:
+        - command: show ip ospf interface vrf all | json native
+          normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_intf/ROW_intf/*?/[
+          "ifname: ifname?|",
+          "proto_status: state?|",
+          "admin_status: _adminState?|",
+          "addr: ipAddress?|",
+          "masklen: maskLen?|32",
+          "area: area?|",
+          "type_str: networkType?|",
+          "nbr_adjs: nbrCount?|0",
+          "hello_interval: helloTime?|10",
+          "dead_interval: deadTime?|40",
+          "rxmt_interval: retxTime?|5",
+          "cost: cost?|1",
+          "passive: passive?|False",
+          "unnumbered: isUnnumbered?|False",
+          "_entryType: _entryType?|interfaces",
         ]'
 
-      - command: show ip ospf vrf all | json native
-        normalize: 'TABLE_ctx/ROW_ctx/*?/[
-        "rid: routerId?|",
-        "TABLE_area/ROW_area/[*]?/aname: ifname?|",
-        "TABLE_area/ROW_area/[*]?/stub: _stub",
-        "TABLE_area/ROW_area/[*]?/no_summary: _no_summary",
-        "TABLE_area/ROW_area/[*]?/nssa: _nssa",
-        "TABLE_area/ROW_area/[*]?/auth_type: authType",
-        "_entryType: _entryType?|areas",
-        ]'
+        - command: show ip ospf vrf all | json native
+          normalize: 'TABLE_ctx/ROW_ctx/*?/[
+          "rid: routerId?|",
+          "cname: vrf?|",
+          "TABLE_area/ROW_area/[*]?/aname: ifname?|",
+          "TABLE_area/ROW_area/[*]?/stub: _stub",
+          "TABLE_area/ROW_area/[*]?/no_summary: _no_summary",
+          "TABLE_area/ROW_area/[*]?/nssa: _nssa",
+          "TABLE_area/ROW_area/[*]?/auth_type: authType",
+          "_entryType: _entryType?|areas",
+          ]'

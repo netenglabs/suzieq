@@ -1409,7 +1409,8 @@ tests:
   data-directory: tests/data/parquet/
   marks: address show junos filter
   output: '[]'
-- command: address show --prefix="2001:db8:0:1::/64 169.254.253.0/30" --format=json --namespace=junos
+- command: address show --prefix="2001:db8:0:1::/64 169.254.253.0/30" --format=json
+    --namespace=junos
   data-directory: tests/data/parquet/
   marks: address show junos filter
   output: '[{"namespace": "junos", "hostname": "firewall01", "ifname": "eth2.2", "ipAddressList":
@@ -1508,7 +1509,8 @@ tests:
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: address show junos filter
-- command: address show --prefix="10.0.0.0/24" --address="192.168.1.2" --format=json --namespace=junos
+- command: address show --prefix="10.0.0.0/24" --address="192.168.1.2" --format=json
+    --namespace=junos
   data-directory: tests/data/parquet/
   error:
     error: '[{"error": "Cannot specify address and prefix together"}]'

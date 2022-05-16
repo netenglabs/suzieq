@@ -889,7 +889,10 @@ class Node:
                 cmd = use.get("command", None)
 
         if not cmd:
-            return result
+            result.append(self._create_result(
+                svc_defn, HTTPStatus.NOT_FOUND, "No service definition"))
+            self.error_svcs_proc.add(svc_defn.get("service"))
+            return await service_callback(result, cb_token)
 
         oformat = use.get('format', 'json')
         if not isinstance(cmd, list):
@@ -1468,6 +1471,9 @@ class IosXENode(Node):
                     f'Reconnect succeeded via SSH for {self.hostname}')
                 break
 
+            if not self._retry:
+                break
+
             await asyncio.sleep(backoff_period)
             backoff_period *= 2
             backoff_period = min(backoff_period, 120)
@@ -1629,7 +1635,14 @@ class IosXENode(Node):
                     self.logger.error(
                         f"Unable to connect to {self.hostname} for {cmd} "
                         f"due to {e}")
-                    await self._close_connection()
+                    try:
+                        await self._close_connection()
+                        self.logger.debug(
+                            f"Closed conn successfully for {self.hostname}")
+                    except Exception as e1:
+                        self.logger.error(
+                            f"Caught an exception closing {self.hostname} for "
+                            f"{cmd}: {e1}")
                 else:
                     self.logger.error(
                         f"Unable to connect to {self.hostname} {cmd} "
@@ -1734,26 +1747,21 @@ class NxosNode(Node):
     async def _fetch_init_dev_data(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self._exec_cmd(self._parse_init_dev_data,
-                             ["show version|json", "show hostname"], None,
+                             ["show version", "show hostname"], None,
                              'mixed')
 
     async def _parse_init_dev_data(self, output, cb_token) -> None:
         """Parse the uptime command output"""
 
         hostname = ''
+
         if output[0]["status"] == 0:
-            data = json.loads(output[0]["data"])
-            upsecs = (24*3600*int(data.get('kern_uptm_days', 0)) +
-                      3600*int(data.get('kern_uptm_hrs', 0)) +
-                      60*int(data.get('kern_uptm_mins', 0)) +
-                      int(data.get('kern_uptm_secs', 0)))
-            if upsecs:
-                self.bootupTimestamp = int(int(time.time()*1000)
-                                           - float(upsecs)*1000)
-            self.version = data.get('nxos_ver_str', '')
-            if not self.version:
-                self.logger.error(
-                    f'Cannot extract version from {self.address}:{self.port}')
+            data = output[0]["data"]
+
+            self._extract_nos_version(data)
+            uptime_grp = re.search(r'Kernel\s+uptime\s+is\s+([^\n]+)', data)
+            if uptime_grp:
+                self.bootupTimestamp = parse(uptime_grp.group(1)).timestamp()
 
         if len(output) > 1:
             if output[1]["status"] == 0:
@@ -1766,13 +1774,21 @@ class NxosNode(Node):
             self._set_hostname(hostname)
 
     def _extract_nos_version(self, data: str) -> None:
-        match = re.search(r'NXOS:\s+version\s+(\S+)', data)
-        if match:
-            self.version = match.group(1).strip()
+
+        version = ''
+        vgrp = re.search(r'system:\s+version\s+([^\n]+)', data)
+        if vgrp:
+            version = vgrp.group(1)
         else:
+            vgrp = re.search(r'NXOS:\s+version\s+(\S+)', data)
+            if vgrp:
+                version = vgrp.group(1)
+        if not version:
             self.logger.warning(
                 f'Cannot parse version from {self.address}:{self.port}')
             self.version = "all"
+        else:
+            self.version = version
 
 
 class SonicNode(Node):

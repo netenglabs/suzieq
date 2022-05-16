@@ -1,0 +1,68 @@
+Value Filldown vrf (\S+)
+Value Required routerId ([0-9.]+)
+Value Required asn ([0-9.]+)
+Value _entryType (summary)
+
+Start
+ ^BGP\s+${_entryType} -> Continue.Record
+ ^BGP\s+summary\s+information\s+for\s+VRF\s+${vrf},.*
+ ^BGP\s+router\s+identifier\s+${routerId},\s+local\s+AS\s+number\s+${asn}
+
+
+#BGP summary information for VRF default, address family IPv4 Unicast
+#BGP router identifier 10.0.0.31, local AS number 64520
+#BGP table version is 2, IPv4 Unicast config peers 1, capable peers 0
+#0 network entries and 0 paths using 0 bytes of memory
+#BGP attribute entries [0/0], BGP AS path entries [0/0]
+#BGP community entries [0/0], BGP clusterlist entries [10/40]
+#
+#Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+#169.254.254.2   4 65533       0       0        0    0    0 17:13:49 Idle     
+#
+#BGP summary information for VRF default, address family IPv6 Unicast
+#
+#BGP summary information for VRF default, address family VPNv4 Unicast
+#
+#BGP summary information for VRF default, address family VPNv6 Unicast
+#
+#BGP summary information for VRF default, address family IPv4 MVPN
+#
+#BGP summary information for VRF default, address family IPv6 MVPN
+#
+#BGP summary information for VRF default, address family L2VPN EVPN
+#BGP router identifier 10.0.0.31, local AS number 64520
+#BGP table version is 72, L2VPN EVPN config peers 2, capable peers 2
+#26 network entries and 60 paths using 8040 bytes of memory
+#BGP attribute entries [35/5880], BGP AS path entries [0/0]
+#BGP community entries [0/0], BGP clusterlist entries [10/40]
+#
+#Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+#10.0.0.21       4 64520    1391    1040       72    0    0 17:14:17 19        
+#10.0.0.22       4 64520    1398    1040       72    0    0 17:14:14 19        
+#
+#BGP summary information for VRF evpn-vrf, address family IPv4 Unicast
+#BGP router identifier 169.254.254.5, local AS number 64520
+#BGP table version is 45, IPv4 Unicast config peers 1, capable peers 0
+#7 network entries and 22 paths using 1200 bytes of memory
+#BGP attribute entries [14/2352], BGP AS path entries [0/0]
+#BGP community entries [0/0], BGP clusterlist entries [10/40]
+#
+#Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+#169.254.254.6   4 65533       0       0        0    0    0 17:13:37 Idle     
+#
+#BGP summary information for VRF evpn-vrf, address family IPv6 Unicast
+#
+#BGP summary information for VRF internet-vrf, address family IPv4 Unicast
+#BGP router identifier 169.254.254.9, local AS number 64520
+#BGP table version is 15, IPv4 Unicast config peers 2, capable peers 1
+#6 network entries and 6 paths using 1440 bytes of memory
+#BGP attribute entries [2/336], BGP AS path entries [1/6]
+#BGP community entries [0/0], BGP clusterlist entries [10/40]
+#6 received paths for inbound soft reconfiguration
+#6 identical, 0 modified, 0 filtered received paths using 0 bytes
+#
+#Neighbor        V    AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
+#169.254.127.0   4 65534    2295    2069       15    0    0 17:13:05 6         
+#169.254.254.10  4 65533       0       0        0    0    0 17:13:34 Idle     
+#
+#BGP summary information for VRF internet-vrf, address family IPv6 Unicast

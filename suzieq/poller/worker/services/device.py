@@ -133,6 +133,12 @@ class DeviceService(Service):
                 entry['bootupTimestamp'] = int(
                     int(raw_data[0]["timestamp"])/1000 - upsecs)
 
+            # Needed for textfsm parsed data
+            entry['vendor'] = 'Cisco'
+            entry['os'] = 'nxos'
+            entry['model'] = entry.get('model', '').strip()
+            entry['architecture'] = entry.get('architecture', '').strip()
+
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_panos_data(self, processed_data, raw_data):

@@ -5,19 +5,19 @@ tests:
   marks: namespace show junos vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639161230623}]'
+    1652587499544}]'
 - command: namespace show --format=json --namespace=vmx --model=vmx
   data-directory: tests/data/parquet
   marks: namespace show junos vmx
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639161230623}]'
+    1652587499544}]'
 - command: namespace show --columns='*' --os=junos --format=json --namespace=vmx
   data-directory: tests/data/parquet
   marks: namespace show vmx junos
   output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
     "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639161230623, "active": true}]'
+    1652587499544, "active": true}]'
 - command: namespace summarize --namespace=vmx --format=json --namespace=vmx
   data-directory: tests/data/parquet
   marks: namespace summarize junos vmx

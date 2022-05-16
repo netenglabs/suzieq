@@ -73,7 +73,10 @@ class RoutesObj(SqPandasEngine):
         df = super().get(addnl_fields=addnl_fields, prefix=newpfx,
                          ipvers=ipvers, columns=fields, **kwargs)
 
-        if not df.empty and 'prefix' in df.columns:
+        if df.empty:
+            return df
+
+        if 'prefix' in df.columns:
             df = df.loc[df['prefix'] != "127.0.0.0/8"]
             df['prefix'].replace('default', '0.0.0.0/0', inplace=True)
 
@@ -96,7 +99,7 @@ class RoutesObj(SqPandasEngine):
                 # drop in reset_index to not add an additional index col
                 df = df.query(query_str).reset_index(drop=True)
 
-        if not df.empty and ('numNexthops' in columns or (columns == ['*'])):
+        if 'numNexthops' in columns or (columns == ['*']):
             srs_oif = df['oifs'].str.len()
             srs_hops = df['nexthopIps'].str.len()
             srs = np.array(list(zip(srs_oif, srs_hops)))
@@ -230,4 +233,7 @@ class RoutesObj(SqPandasEngine):
             else:
                 rslt = pd.DataFrame()
 
-        return rslt[usercols]
+        if not rslt.empty:
+            return rslt[usercols]
+
+        return rslt

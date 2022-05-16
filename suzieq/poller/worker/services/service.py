@@ -431,6 +431,8 @@ class Service(SqPlugin):
                             'textfsm', None)
                         entry_type = nfn.get('command', [])[elem_num].get(
                             '_entryType', None)
+                    else:
+                        entry_type = nfn.get('_entryType', None)
 
                     if not tfsm_template:
                         return result
@@ -465,7 +467,7 @@ class Service(SqPlugin):
         do_merge = True
         for i, item in enumerate(data):
             nfn = self._get_device_normalizer(item)
-            do_merge = do_merge and nfn.get('merge', True)
+            do_merge = do_merge and nfn and nfn.get('merge', True)
             tmpres = self._process_each_output(i, item, nfn)
             result_list.append(tmpres)
 
@@ -849,8 +851,8 @@ class Service(SqPlugin):
             elif self.run_once in ["gather", "process", "update"]:
                 total_nodes -= 1
                 if total_nodes <= 0:
-                    self.logger.info(
-                        f'Service: {self.name}: Finished gathering data')
+                    self.logger.info(f'Service: {self.name}: Finished '
+                                     f'{self.run_once}ing data')
                     return
                 continue
 
@@ -862,7 +864,8 @@ class Service(SqPlugin):
                 write_poller_stat = (self.update_stats(
                     stats, total_time, gather_time, qsize,
                     self.writer_queue.qsize(), token.nodeQsize, rxBytes) or
-                    write_poller_stat)
+                    write_poller_stat or
+                    self.is_first_run(token.nodename))
                 pernode_stats[token.nodename] = stats
                 if write_poller_stat:
                     poller_stat = [
@@ -899,6 +902,8 @@ class Service(SqPlugin):
             if self.run_once == "update":
                 total_nodes -= 1
                 if total_nodes <= 0:
+                    self.logger.info(
+                        f'Service: {self.name}: Finished updating data')
                     return
                 continue
             self.logger.debug(

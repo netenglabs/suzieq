@@ -80,7 +80,7 @@ def test_all_columns(setup_nubia, get_cmd_object_dict, cmd):
     pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_hostname_show_filter(setup_nubia, get_cmd_object_dict, cmd):
-    if cmd != "table":
+    if cmd not in ["table", "namespace"]:
         s = _test_command(get_cmd_object_dict[cmd], 'show', None,
                           {'hostname': 'leaf01'})
         assert s == 0
@@ -385,7 +385,7 @@ def _test_sqcmds(testvar, context_config):
     else:
         ignore_cols = []
 
-    if 'output' in testvar:
+    if 'output' in testvar and not error:
         if testvar.get('format', '') == "text":
             assert output.decode('utf8') == testvar['output']
             return

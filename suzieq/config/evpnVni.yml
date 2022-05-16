@@ -98,36 +98,36 @@ apply:
     copy: junos-qfx
 
   nxos:
-    version: all
-    command:
-      - command: show nve vni all detail | json native
-        normalize: 'TABLE_nve_vni/ROW_nve_vni/*?/[
-        "if-name: ifname",
-        "vni: vni",
-        "type: type",
-        "vni-state: state",
-        "vlan-bd: vlan?|0",
-        "svi-state: _sviState",
-        "mcast: replicationType",
-        "_entryType: _entryType?|VNI",
-        ]'
+    - version: '> 9.3(0)'
+      command:
+       - command: show nve vni all detail | json native
+         normalize: 'TABLE_nve_vni/ROW_nve_vni/*?/[
+         "if-name: ifname",
+         "vni: vni",
+         "type: type",
+         "vni-state: state",
+         "vlan-bd: vlan?|0",
+         "svi-state: _sviState",
+         "mcast: replicationType",
+         "_entryType: _entryType?|VNI",
+         ]'
 
-      - command: show nve interface nve 1 | json native
-        normalize: 'TABLE_nve_if/ROW_nve_if/*?/[
-        "primary-ip: priVtepIp",
-        "encap-type: encapType",
-        "source-if: vni",
-        "if-name: ifname",
-        "vpc-capability: _vpcCap?|",
-        "secondary-ip: secVtepIp?|",
-        "local-rmac: routerMac",
-        "_entryType: _entryType?|iface",
-        ]'
+       - command: show nve interface nve 1 | json native
+         normalize: 'TABLE_nve_if/ROW_nve_if/*?/[
+         "primary-ip: priVtepIp",
+         "encap-type: encapType",
+         "source-if: vni",
+         "if-name: ifname",
+         "vpc-capability: _vpcCap?|",
+         "secondary-ip: secVtepIp?|",
+         "local-rmac: routerMac",
+         "_entryType: _entryType?|iface",
+         ]'
 
-      - command: show nve peers detail | json native
-        normalize: 'TABLE_nve_peers/ROW_nve_peers/*?/[
-        "peer-ip: vni",
-        "config-vnis: _configVnis",
-        "cp-vni: _vniList?|",
-        "_entryType: _entryType?|peers",
-        ]'
+       - command: show nve peers detail | json native
+         normalize: 'TABLE_nve_peers/ROW_nve_peers/*?/[
+         "peer-ip: vni",
+         "config-vnis: _configVnis",
+         "cp-vni: _vniList?|",
+         "_entryType: _entryType?|peers",
+         ]'

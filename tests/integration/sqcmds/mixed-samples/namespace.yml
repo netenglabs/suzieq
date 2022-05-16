@@ -3,21 +3,21 @@ tests:
 - command: namespace show --format=json --namespace=mixed
   data-directory: tests/data/parquet/
   marks: namespace show mixed
-  output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt":
+  output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 16, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639161233280}]'
+    1652587500852}]'
 - command: namespace show --format=json --namespace=mixed --os=nxos
   data-directory: tests/data/parquet/
   marks: namespace show mixed
   output: '[{"namespace": "mixed", "deviceCnt": 2, "serviceCnt": 10, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639161233279}]'
+    1652587500835}]'
 - command: namespace show --format=json --namespace=mixed --os='nxos eos'
   data-directory: tests/data/parquet/
   marks: namespace show mixed
-  output: '[{"namespace": "mixed", "deviceCnt": 4, "serviceCnt": 18, "errSvcCnt":
+  output: '[{"namespace": "mixed", "deviceCnt": 4, "serviceCnt": 15, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639161233280}]'
+    1652587500835}]'
 - command: namespace show --columns='namespace' --format=json --namespace=mixed
   data-directory: tests/data/parquet/
   marks: namespace show mixed
@@ -29,9 +29,9 @@ tests:
 - command: namespace show --columns='*' --format=json --namespace=mixed
   data-directory: tests/data/parquet/
   marks: namespace show mixed
-  output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 18, "errSvcCnt":
+  output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 16, "errSvcCnt":
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639161233280, "active": true}]'
+    1652587500852, "active": true}]'
 - command: namespace unique --format=json --namespace=mixed
   data-directory: tests/data/parquet/
   marks: namespace unique mixed

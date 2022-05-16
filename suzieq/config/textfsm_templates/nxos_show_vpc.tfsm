@@ -1,0 +1,30 @@
+Value domainId (\d+)
+Value state (.*)
+Value role (\w+)
+Value operRole (\w+)
+Value configSanity (\w+)
+Value _globalVlanConsistency (\w+)
+Value _globalType2Consistency (\w+)
+Value _virtualPeerlink (\S+)
+Value peerLinkStatus (\w+)
+Value peerLink (\S+)
+Value List _portList (\S+)
+Value List _portStateList (\w+)
+Value List _portStateReason (\w+)
+Value List _portConfigSanityList (\w+)
+
+Start
+ ^vPC\s+domain\s+id\s+:\s+${domainId}
+ ^Peer\s+status\s+:\s+${state}$$
+ ^vPC\s+role\s+:\s+${role},\s+operational\s+${operRole}
+ ^Configuration\s+consistency\s+status\s+:\s+${configSanity}
+ ^Per-vlan\s+consistency\s+status\s+:\s+${_globalVlanConsistency}\s*$$
+ ^Type-2\s+consistency\s+status\s+:\s+${_globalType2Consistency}\s*$$
+ ^vPC\s+Peer-link\s+status -> PeerLink
+
+PeerLink
+ ^\d+\s+${peerLink}\s+${peerLinkStatus}
+ ^vPC\s+status -> vpcStatus
+
+vpcStatus
+ ^\d+\s+${_portList}\s+${_portStateList}\s+${_portConfigSanityList}\s+${_portStateReason}

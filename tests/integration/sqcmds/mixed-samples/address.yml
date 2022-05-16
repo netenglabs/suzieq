@@ -222,10 +222,10 @@ tests:
     {"namespace": "mixed", "hostname": "spine1-nxos", "ifname": "loopback100", "ipAddressList":
     [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
     "", "timestamp": 1627395435116}, {"namespace": "mixed", "hostname": "spine1-nxos",
-    "ifname": "Vlan1", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    "ifname": "Vlan1", "ipAddressList": [], "macaddr": "50:0b:00:00:1b:08", "ip6AddressList":
     [], "state": "down", "vrf": "", "timestamp": 1627395435116}, {"namespace": "mixed",
     "hostname": "spine1-nxos", "ifname": "Vlan100", "ipAddressList": [], "macaddr":
-    "00:00:00:00:00:00", "ip6AddressList": [], "state": "down", "vrf": "", "timestamp":
+    "50:0b:00:00:1b:08", "ip6AddressList": [], "state": "down", "vrf": "", "timestamp":
     1627395435116}, {"namespace": "mixed", "hostname": "spine1-nxos", "ifname": "default",
     "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
     "up", "vrf": "", "timestamp": 1627395435116}, {"namespace": "mixed", "hostname":
@@ -991,7 +991,8 @@ tests:
   data-directory: tests/data/parquet//
   marks: address show mixed filter
   output: '[]'
-- command: address show --prefix="2001:db8:0:1::/64 172.29.151.0/24" --format=json --namespace=mixed
+- command: address show --prefix="2001:db8:0:1::/64 172.29.151.0/24" --format=json
+    --namespace=mixed
   data-directory: tests/data/parquet//
   marks: address show mixed filter
   output: '[{"namespace": "mixed", "hostname": "leaf6-eos", "ifname": "Management1",
@@ -1093,7 +1094,8 @@ tests:
   error:
     error: '[{"error": "Invalid prefix specified"}]'
   marks: address show mixed filter
-- command: address show --prefix="10.1.0.0/16" --address="192.168.1.2" --format=json --namespace=mixed
+- command: address show --prefix="10.1.0.0/16" --address="192.168.1.2" --format=json
+    --namespace=mixed
   data-directory: tests/data/parquet//
   error:
     error: '[{"error": "Cannot specify address and prefix together"}]'
