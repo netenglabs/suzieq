@@ -55,8 +55,7 @@ class Inventory(SqPlugin):
         """
         return self._node_tasks
 
-    async def build_inventory(self, cmd_sem: asyncio.locks.Semaphore) \
-            -> Dict[str, Node]:
+    async def build_inventory(self) -> Dict[str, Node]:
         """Retrieve the list of nodes to poll and instantiate
         all the Nodes objects in the retrieved inventory.
 
@@ -73,7 +72,7 @@ class Inventory(SqPlugin):
             raise SqPollerConfError('The inventory source returned no hosts')
 
         # Initialize the nodes in the inventory
-        self._nodes = await self._init_nodes(inventory_list, cmd_sem)
+        self._nodes = await self._init_nodes(inventory_list)
         return self._nodes
 
     def get_node_callq(self) -> Dict[str, Dict]:
@@ -105,8 +104,8 @@ class Inventory(SqPlugin):
                                 for node in self._nodes}
             await self.add_task_fn(list(self._node_tasks.values()))
 
-    async def _init_nodes(self, inventory_list: List[Dict],
-                          cmd_sem) -> Dict[str, Node]:
+    async def _init_nodes(self, inventory_list:
+                          List[Dict]) -> Dict[str, Node]:
         """Initialize the Node objects given the of credentials of the nodes.
         After this function is called, a connection with the nodes in the list
         is performed.
@@ -122,8 +121,7 @@ class Inventory(SqPlugin):
             init_tasks += [new_node.initialize(
                 **host,
                 connect_timeout=self.connect_timeout,
-                ssh_config_file=self.ssh_config_file,
-                cmd_sem=cmd_sem,
+                ssh_config_file=self.ssh_config_file
             )]
 
         for n in asyncio.as_completed(init_tasks):

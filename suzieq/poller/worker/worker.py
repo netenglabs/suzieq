@@ -35,11 +35,6 @@ class Worker:
         # Setup poller tasks list
         self.waiting_tasks = []
         self.waiting_tasks_lock = asyncio.Lock()
-        if userargs.worker_cmd_pipeline:
-            self.outstanding_cmds = asyncio.Semaphore(
-                value=userargs.worker_cmd_pipeline)
-        else:
-            self.outstanding_cmds = None
 
         # Setup poller writers
 
@@ -98,8 +93,7 @@ class Worker:
                 s, lambda s=s: asyncio.create_task(self._stop()))
 
         init_tasks = []
-        init_tasks.append(
-            self.inventory.build_inventory(self.outstanding_cmds))
+        init_tasks.append(self.inventory.build_inventory())
         init_tasks.append(self.service_manager.init_services())
 
         nodes, services = await asyncio.gather(*init_tasks)
