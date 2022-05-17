@@ -25,7 +25,7 @@ sample_inventory = [
         'jump_host': '//jump@host1',
         'jump_host_key_file': 'tests/unit/poller/shared/sample_key',
         'ignore_known_hosts': True,
-        'passphrase': 'passphrase'
+        'passphrase': 'passphrase',
     },
     {
         'address': '192.168.0.2',
@@ -39,7 +39,7 @@ sample_inventory = [
         'jump_host': '//jump@host2',
         'jump_host_key_file': 'tests/unit/poller/shared/sample_key',
         'ignore_known_hosts': True,
-        'passphrase': 'passphrase'
+        'passphrase': 'passphrase',
     }
 ]
 
@@ -66,7 +66,7 @@ async def ready_inventory():
     inv = _init_inventory()
     with patch.multiple(Node, _init_ssh=get_async_task_mock(),
                         _fetch_init_dev_data=get_async_task_mock()):
-        await inv.build_inventory()
+        await inv.build_inventory(None)
     return inv
 
 
@@ -80,7 +80,7 @@ def test_inventory_init():
     inventory_args = {
         'add_task_fn': get_async_task_mock(),
         'ssh_config_file': 'config/file',
-        'connect_timeout': 30
+        'connect_timeout': 30,
     }
 
     inv = _init_inventory(**inventory_args)
@@ -101,7 +101,7 @@ async def test_inventory_build():
 
     with patch.multiple(Node, _init_ssh=get_async_task_mock(),
                         _fetch_init_dev_data=get_async_task_mock()):
-        nodes = await inv.build_inventory()
+        nodes = await inv.build_inventory(None)
 
     # Check if nodes are registered in the inventory
     assert set(nodes) == set(inv.nodes)
