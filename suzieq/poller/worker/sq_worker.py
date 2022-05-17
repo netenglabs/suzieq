@@ -111,6 +111,7 @@ def worker_main():
     )
 
     parser.add_argument(
+        '-n',
         '--worker-id',
         type=str,
         default='0',

@@ -37,7 +37,6 @@ class TableCmd(SqTableCommand):
 
     @ command("describe")
     @ argument("table", description="interface name to qualify")
-    # pylint: disable=arguments-differ
     def describe(self, table: str = "tables"):
         """
         Describe fields in table

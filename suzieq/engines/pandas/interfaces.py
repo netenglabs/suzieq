@@ -89,7 +89,6 @@ class InterfacesObj(SqPandasEngine):
         else:
             return df.reset_index(drop=True)[fields]
 
-    # pylint: disable=arguments-differ
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
 

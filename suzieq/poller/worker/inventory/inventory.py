@@ -31,6 +31,8 @@ class Inventory(SqPlugin):
         self._nodes = {}
         self._node_tasks = {}
         self.add_task_fn = add_task_fn
+        self._max_outstanding_cmd = 0
+        self._cmd_semaphore = None
 
         self.connect_timeout = kwargs.pop('connect_timeout', 15)
         self.ssh_config_file = kwargs.pop('ssh_config_file', None)
@@ -70,6 +72,9 @@ class Inventory(SqPlugin):
         inventory_list = await self._get_device_list()
         if not inventory_list:
             raise SqPollerConfError('The inventory source returned no hosts')
+
+        if self._max_outstanding_cmd:
+            self._cmd_semaphore = asyncio.Semaphore(self._max_outstanding_cmd)
 
         # Initialize the nodes in the inventory
         self._nodes = await self._init_nodes(inventory_list)
@@ -120,6 +125,7 @@ class Inventory(SqPlugin):
             new_node = Node()
             init_tasks += [new_node.initialize(
                 **host,
+                cmd_sem=self._cmd_semaphore,
                 connect_timeout=self.connect_timeout,
                 ssh_config_file=self.ssh_config_file
             )]

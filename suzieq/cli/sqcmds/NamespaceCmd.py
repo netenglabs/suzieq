@@ -40,7 +40,6 @@ class NamespaceCmd(SqTableCommand):
     @argument("os", description='Device NOS(es), space separated')
     @argument('vendor', description='Device vendor(s), space separated')
     @argument('version', description='Device NOS version(s), space separated')
-    # pylint: disable=arguments-differ
     def show(self, os: str = "", vendor: str = "", model: str = "",
              version: str = "") -> int:
         """Show namespace info
