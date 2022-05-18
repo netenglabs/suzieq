@@ -128,7 +128,8 @@ def init_static_manager(manager_cfg: Dict,
 @pytest.mark.controller
 @pytest.mark.controller_manager
 @pytest.mark.controller_manager_static
-def test_static_manager_init(monkeypatch, manager_cfg):
+@pytest.mark.parametrize("max_outstanding_cmds", [0, 5])
+def test_static_manager_init(monkeypatch, manager_cfg, max_outstanding_cmds):
     """Test the initialization of the static manager
     """
     fake_environ = {}
@@ -137,6 +138,12 @@ def test_static_manager_init(monkeypatch, manager_cfg):
     manager_args['exclude-services'] = ['arpn']
     manager_args['service-only'] = ['interfaces', 'ospf']
     manager_args['ssh-config-file'] = 'ssh_config_file'
+
+    # Set the poller settings
+    poller_cfg = manager_cfg['config-dict']['poller']
+    poller_cfg['max-cmd-pipeline'] = max_outstanding_cmds
+
+    # Init manager
     static_manager = init_static_manager(manager_cfg, manager_args)
 
     # Check if the evironment variables have been set
@@ -146,6 +153,14 @@ def test_static_manager_init(monkeypatch, manager_cfg):
         'Inventory path not set in environment'
     assert Path(fake_environ['SQ_INVENTORY_PATH']).exists(), \
         'Inventory path not correctly created'
+
+    # Check if the proper value of max outstanding commands is provided
+    max_cmds_env = fake_environ.get('SQ_MAX_OUTSTANDING_CMD')
+    expected_max_cmds = (str(max_outstanding_cmds)
+                         if max_outstanding_cmds
+                         else None)
+    assert max_cmds_env == expected_max_cmds, \
+        'The value of max outstanding commands is not the expected one'
 
     # Check if the parameters construction is valid
     allowed_args = ['run-once', 'exclude-services',
