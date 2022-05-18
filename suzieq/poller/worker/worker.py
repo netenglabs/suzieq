@@ -142,7 +142,6 @@ class Worker:
                         tasks, return_when=asyncio.FIRST_COMPLETED)
                     tasks = list(pending)
                     running_svcs = self.service_manager.running_services
-                    # pylint: disable=protected-access
                     if tasks and any(i._coro in running_svcs
                                      for i in tasks):
                         continue

@@ -22,7 +22,7 @@ class AddressObj(SqPandasEngine):
         for a in addr:
             try:
                 ipa = ip_interface(a)
-                rslt.append(ipa._version)  # pylint: disable=protected-access
+                rslt.append(ipa._version)
             except ValueError:
                 rslt.append(0)
         return rslt

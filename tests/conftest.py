@@ -43,7 +43,6 @@ def get_sqcmds() -> Dict:
 
 commands = [(x) for x in get_sqcmds()]
 
-# pylint: disable=protected-access
 cli_commands = [(v.__command['name'])
                 for k, v in get_sqcmds().items()]
 

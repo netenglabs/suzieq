@@ -93,7 +93,6 @@ def argument(
         # We use __annotations__ to allow the usage of python 3 typing
         function.__annotations__.setdefault(arg, type)
 
-        # pylint: disable=protected-access
         function.__arguments_decorator_specs[arg] = _ArgDecoratorSpec(
             arg=arg,
             description=description,

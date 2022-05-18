@@ -47,7 +47,6 @@ def test_load(data_path: Dict):
 
     sl = StaticLoader(valid_data)
 
-    # pylint: disable=protected-access
     assert sl._data.username == init_data['username']
     assert sl._data.key_passphrase == init_data['key-passphrase'].split(':')[1]
     assert sl._data.password == init_data['password'].split(':')[1]
@@ -83,7 +82,6 @@ def test_no_env_var():
 def test_variables_init(monkeypatch):
     """Test parameters are correctly set up
     """
-    # pylint: disable=protected-access
     ask_password = 'ask_password'
     env_password = 'env_password'
     plain_passphrase = 'my-pass'

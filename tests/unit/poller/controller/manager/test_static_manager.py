@@ -1,6 +1,5 @@
 """This module contains the tests to for the poller controller static manager
 """
-# pylint: disable=protected-access
 # pylint: disable=dangerous-default-value
 # pylint: disable=consider-using-enumerate
 # pylint: disable=redefined-outer-name
