@@ -1,0 +1,103 @@
+Value Required _processId (\d+)
+Value routerId ([0-9.]+)
+Value vrf (\S+)
+
+Start
+  ^\s+Routing\s+ -> Continue.Record
+  ^\s+Routing\s+Process\s+"ospf\s+${_processId}"\s+with\s+ID\s+${routerId}
+  ^\s+Connected\s+to\s+MPLS\s+VPN\s+Superbackbone,\s+VRF\s+${vrf}
+  
+
+# Routing Process "ospf 1" with ID 10.0.0.1
+# Start time: 02:30:01.979, Time elapsed: 00:10:30.285
+# Supports only single TOS(TOS0) routes
+# Supports opaque LSA
+# Supports Link-local Signaling (LLS)
+# Supports area transit capability
+# Supports NSSA (compatible with RFC 3101)
+# Supports Database Exchange Summary List Optimization (RFC 5243)
+# Event-log enabled, Maximum number of events: 1000, Mode: cyclic
+# Router is not originating router-LSAs with maximum metric
+# Initial SPF schedule delay 50 msecs
+# Minimum hold time between two consecutive SPFs 200 msecs
+# Maximum wait time between two consecutive SPFs 5000 msecs
+# Incremental-SPF disabled
+# Initial LSA throttle delay 50 msecs
+# Minimum hold time for LSA throttle 200 msecs
+# Maximum wait time for LSA throttle 5000 msecs
+# Minimum LSA arrival 100 msecs
+# LSA group pacing timer 240 secs
+# Interface flood pacing timer 33 msecs
+# Retransmission pacing timer 66 msecs
+# EXCHANGE/LOADING adjacency limit: initial 300, process maximum 300
+# Number of external LSA 0. Checksum Sum 0x000000
+# Number of opaque AS LSA 0. Checksum Sum 0x000000
+# Number of DCbitless external and opaque AS LSA 0
+# Number of DoNotAge external and opaque AS LSA 0
+# Number of areas in this router is 1. 1 normal 0 stub 0 nssa
+# Number of areas transit capable is 0
+# External flood list length 0
+# IETF NSF helper support enabled
+# Cisco NSF helper support enabled
+# Reference bandwidth unit is 100 mbps
+#    Area BACKBONE(0.0.0.0)
+#        Number of interfaces in this area is 3 (1 loopback)
+#	Area has no authentication
+#	SPF algorithm last executed 00:09:40.920 ago
+#	SPF algorithm executed 7 times
+#	Area ranges are
+#	Number of LSA 3. Checksum Sum 0x011041
+#	Number of opaque link LSA 0. Checksum Sum 0x000000
+#	Number of DCbitless LSA 0
+#	Number of indication LSA 0
+#	Number of DoNotAge LSA 0
+#	Flood list length 0
+#
+# Routing Process "ospf 100" with ID 10.0.0.1
+#   Domain ID type 0x0005, value 0.0.0.100
+# Start time: 02:30:05.462, Time elapsed: 00:10:26.803
+# Supports only single TOS(TOS0) routes
+# Supports opaque LSA
+# Supports Link-local Signaling (LLS)
+# Supports area transit capability
+# Supports NSSA (compatible with RFC 3101)
+# Supports Database Exchange Summary List Optimization (RFC 5243)
+# Connected to MPLS VPN Superbackbone, VRF blue
+# Event-log disabled
+# It is an area border router
+# Router is not originating router-LSAs with maximum metric
+# Initial SPF schedule delay 50 msecs
+# Minimum hold time between two consecutive SPFs 200 msecs
+# Maximum wait time between two consecutive SPFs 5000 msecs
+# Incremental-SPF disabled
+# Initial LSA throttle delay 50 msecs
+# Minimum hold time for LSA throttle 200 msecs
+# Maximum wait time for LSA throttle 5000 msecs
+# Minimum LSA arrival 100 msecs
+# LSA group pacing timer 240 secs
+# Interface flood pacing timer 33 msecs
+# Retransmission pacing timer 66 msecs
+# EXCHANGE/LOADING adjacency limit: initial 300, process maximum 300
+# Number of external LSA 0. Checksum Sum 0x000000
+# Number of opaque AS LSA 0. Checksum Sum 0x000000
+# Number of DCbitless external and opaque AS LSA 0
+# Number of DoNotAge external and opaque AS LSA 0
+# Number of areas in this router is 1. 1 normal 0 stub 0 nssa
+# Number of areas transit capable is 0
+# External flood list length 0
+# IETF NSF helper support enabled
+# Cisco NSF helper support enabled
+# Reference bandwidth unit is 100 mbps
+#    Area BACKBONE(0.0.0.0)
+#        Number of interfaces in this area is 1
+#	Area has no authentication
+#	SPF algorithm last executed 00:10:16.911 ago
+#	SPF algorithm executed 4 times
+#	Area ranges are
+#	Number of LSA 3. Checksum Sum 0x026FF1
+#	Number of opaque link LSA 0. Checksum Sum 0x000000
+#	Number of DCbitless LSA 0
+#	Number of indication LSA 0
+#	Number of DoNotAge LSA 0
+#	Flood list length 0
+#

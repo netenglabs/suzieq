@@ -509,8 +509,8 @@ class OspfObj(SqPandasEngine):
                                                   .str.split('/').str[0]
                 nopeer_df = nopeer_df.merge(
                     addr_df,
-                    left_on=['namespace', 'vrf', 'peerIP'],
-                    right_on=['namespace', 'vrf', 'ipAddressList'],
+                    left_on=['namespace', 'peerIP'],
+                    right_on=['namespace', 'ipAddressList'],
                     suffixes=['', '_y'], how='left') \
                     .rename(columns={'hostname_y': 'peerHostname',
                                      'ifname_y': 'peerIfname'}) \
