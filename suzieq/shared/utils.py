@@ -765,6 +765,8 @@ def expand_nxos_ifname(ifname: str) -> str:
         return ifname.replace('Eth', 'Ethernet')
     elif ifname.startswith('Po') and 'port' not in ifname:
         return ifname.replace('Po', 'port-channel')
+    elif ifname.startswith('Lo') and 'loop' not in ifname:
+        return ifname.replace('Lo', 'loopback')
     return ifname
 
 
@@ -830,8 +832,11 @@ def expand_ios_ifname(ifname: str) -> str:
     :rtype: str
     """
 
-    ifmap = {'BE': 'Bundle-Ether',
+    ifmap = {'Ap': 'AppGigabitEthernet',
+             'BE': 'Bundle-Ether',
              'BV': 'BVI',
+             'Fas': 'FastEthernet',
+             'Fa': 'FastEthernet',
              'Fi': 'FiftyGigE',
              'Fo': 'FortyGigE',
              'FH': 'FourHundredGigE',
@@ -847,6 +852,8 @@ def expand_ios_ifname(ifname: str) -> str:
              'Ten': 'TenGigabitEthernet',
              'TF': 'TwentyFiveGigE',
              'TH': 'TwoHundredGigE',
+             'Two': 'TwoGigabitEthernet',
+             'Tw': 'TwoGigabitEthernet',
              'tsec': 'tunnel-ipsec',
              'tmte': 'tunnel-mte',
              'tt': 'tunnel-te',

@@ -4,6 +4,8 @@ Value routeDistinguisher ([0-9.:]+)
 Start
  ^VRF\s+${ifname}\s+\(VRF Id = \d+\);\s+default\s+RD\s+${routeDistinguisher};.*$$ -> Record
  ^VRF\s+${ifname}\s+\(VRF Id = \d+\);\s+default\s+RD\s+<not set>;.*$$ -> Record
+ ^VRF\s+${ifname};default\s+RD\s+${routeDistinguisher};.*$$ -> Record
+ ^VRF\s+${ifname};\s+default\s+RD\s+<not set>;.*$$ -> Record 
  
 #VRF BLUE (VRF Id = 2); default RD 65000:20; default VPNID <not set>
 #  New CLI format, supports multiple address-families

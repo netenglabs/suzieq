@@ -7,7 +7,7 @@ import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (get_timestamp_from_junos_time,
-                                 expand_ios_ifname)
+                                 expand_ios_ifname, expand_nxos_ifname)
 from suzieq.shared.utils import convert_macaddr_format_to_colon
 from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
@@ -294,6 +294,7 @@ class InterfaceService(Service):
             entry['type'] = entry.get('type', '').lower()
 
             if entry['type'] in ['vrf', 'virtual-router']:
+                entry['type'] = 'vrf'
                 self._assign_vrf(entry, entry_dict)
                 entry['state'] = entry['adminState'] = 'up'
                 entry['mtu'] = 1500
@@ -539,6 +540,8 @@ class InterfaceService(Service):
                     speed = int(speed[:-1])*1000
                 elif speed.endswith('Kbit'):
                     speed = int(speed.split()[0])/1000
+                elif speed == '--':
+                    speed = 0
                 else:
                     speed = int(speed or 0)
 
@@ -547,16 +550,15 @@ class InterfaceService(Service):
         new_entries = []
         unnum_intf = {}
         drop_indices = []
-        entry_dict = defaultdict(dict)
+        entry_dict = {}
 
         unnum_intf_entry_idx = []  # backtrack to interface to fix
 
         for entry_idx, entry in enumerate(processed_data):
-            # if its the Linux ip link command output, massage the ifname
-            # and copy over the values and drop the entry_dict
             if entry.get('_entryType', '') == 'mtumac':
-                old_entry = entry_dict[entry['ifname']]
-                if old_entry:
+                old_entry_idx = entry_dict.get(entry['ifname'], None)
+                if old_entry_idx is not None:
+                    old_entry = processed_data[old_entry_idx]
                     admin_state = entry['adminState'].lower()
                     if admin_state:
                         if admin_state == "administratively":
@@ -590,7 +592,9 @@ class InterfaceService(Service):
                     else:
                         old_entry['statusChangeTimestamp'] = 0
                     old_entry['description'] = entry.get('description', '')
-
+                else:
+                    self.logger.error(f'{raw_data[0]["hostname"]}: Unable to '
+                                      f'find entry for {entry["ifname"]}')
                 drop_indices.append(entry_idx)
                 continue
 
@@ -601,16 +605,11 @@ class InterfaceService(Service):
                 entry['mtu'] = 1500
                 entry['vni'] = 0
 
-            ifname = entry['ifname']
-            if ifname.startswith('Po'):
-                ifname = ifname.replace('Po', 'port-channel')
-                entry['ifname'] = ifname
-            elif not entry.get('type', '') and ifname.startswith('Lo'):
-                ifname = ifname.replace('Lo', 'loopback')
-                entry['ifname'] = ifname
-                entry['type'] = 'loopback'
+            ifname = expand_nxos_ifname(entry['ifname'])
+            entry['ifname'] = ifname
 
-            if entry.get('ipAddressList', None):
+            ipaddresses = entry.get('ipAddressList', None)
+            if ipaddresses and ipaddresses != "--":
                 pri_ipaddr = f"{entry['ipAddressList']}/{entry['_maskLen']}"
                 ipaddr = [pri_ipaddr]
                 for i, elem in enumerate(entry.get('_secIPs', [])):
@@ -631,15 +630,15 @@ class InterfaceService(Service):
                 # with shortened names such as Lo0 while the IP addr section
                 # lists them with full status such as loopback0. We have to
                 # therefore manually merge them
-                ifentry = entry_dict[ifname]
+                ifentry = processed_data[entry_dict[ifname]]
                 if ifentry.get('type', '') == 'loopback':
                     ifentry['ipAddressList'] = entry['ipAddressList']
+                    ifentry['master'] = entry['vrf']
+                    ifentry['mtu'] = entry['mtu']
                 if entry.get('_child_intf', []):
                     unnum_intf[ifname] = [pri_ipaddr]
                 drop_indices.append(entry_idx)
                 continue
-
-            entry_dict[ifname] = entry
 
             entry["statusChangeTimestamp1"] = entry.get(
                 "statusChangeTimestamp", '')
@@ -654,6 +653,8 @@ class InterfaceService(Service):
                 entry['state'] = entry.get('state', 'down').lower()
                 entry['speed'] = 0
                 continue
+
+            entry_dict[ifname] = entry_idx
 
             if 'reason' in entry:
                 if entry['reason'] is not None:
@@ -716,6 +717,8 @@ class InterfaceService(Service):
             if 'ethernet' in entry.get('type', ''):
                 entry['type'] = 'ethernet'
 
+            if entry.get('vlan', '') in ["monitor", "--"]:
+                entry['vlan'] = 0
             if ifname.startswith('Vlan'):
                 entry['type'] = 'vlan'
             elif re.search(r'\.\d+$', ifname):
@@ -911,6 +914,9 @@ class InterfaceService(Service):
 
             if entry['ifname'].endswith('.0'):
                 entry['vlan'] = 0
+            elif entry.get('vlan', '') == '':
+                if entry['ipAddressList'] == entry['ip6AddressList'] == []:
+                    entry['vlan'] = 1
 
             if entry['ipAddressList'] == 'Unknown':
                 entry['ipAddressList'] = []
