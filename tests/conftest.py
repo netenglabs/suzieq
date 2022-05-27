@@ -73,6 +73,13 @@ def create_context_config(datadir: str =
 
 @pytest.fixture()
 def get_table_data(table: str, datadir: str):
+    '''Fixture to get all fields in table.
+
+    This includes sqvers and any suppress field for DB check'''
+    return _get_table_data(table, datadir)
+
+
+def _get_table_data(table: str, datadir: str):
     '''Get all fields including sqvers and any suppress field for DB check'''
     if table in ['path', 'ospfIf', 'ospfNbr']:
         return pd.DataFrame()
@@ -81,7 +88,10 @@ def get_table_data(table: str, datadir: str):
     sqobj = get_sqobject(table)(config_file=cfgfile)
     cols = sqobj.schema.get_display_fields(['*'])
 
-    df = sqobj.get(columns=cols)
+    if table == "interface":
+        df = sqobj.get(columns=cols, type=["all"])
+    else:
+        df = sqobj.get(columns=cols)
 
     if not df.empty and (table not in ['device', 'tables', 'network']):
         device_df = get_sqobject('device')(config_file=cfgfile) \
