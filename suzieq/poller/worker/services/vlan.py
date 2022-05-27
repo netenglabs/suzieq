@@ -123,8 +123,11 @@ class VlanService(Service):
                 entry['vlanName'] = entry['vlanName'].strip()
                 if entry['interfaces']:
                     newiflist = []
-                    for ifname in entry['interfaces'].split(','):
-                        newiflist.append(expand_ios_ifname(ifname.strip()))
+                    for ifname in entry['interfaces']:
+                        newiflist.extend([expand_ios_ifname(x.strip())
+                                          for x in ifname.split(',')])
+                    if newiflist == ['']:
+                        newiflist = []
                     entry['interfaces'] = newiflist
                 else:
                     entry['interfaces'] = []
