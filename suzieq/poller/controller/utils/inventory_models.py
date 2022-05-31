@@ -30,10 +30,14 @@ class DeviceModel(BaseModel):
     ignore_known_hosts: Optional[bool] = Field(
         alias='ignore-known-hosts', default=False)
     slow_host: Optional[bool] = Field(alias='slow-host', default=False)
+    per_cmd_auth: Optional[bool] = Field(alias='per-cmd-auth', default=True)
+    retries_on_auth_fail: Optional[int] = Field(alias='retries-on-auth-fail',
+                                                default=1)
     transport: Optional[PollerTransport]
     port: Optional[str]
     devtype: Optional[str]
 
+    # pylint: disable=no-self-argument
     @validator('jump_host')
     def jump_host_validator(cls, value):
         '''Validate jump host format'''

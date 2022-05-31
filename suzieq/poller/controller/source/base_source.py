@@ -49,6 +49,7 @@ class Source(ControllerPlugin):
             'jump_host_key_file',
             'ignore_known_hosts',
             'slow_host',
+            'per_cmd_auth',
         ]
 
         self._load(input_data)
@@ -204,6 +205,8 @@ class Source(ControllerPlugin):
         transport = None
         ignore_known_hosts = False
         slow_host = False
+        per_cmd_auth = True
+        retries_on_auth_fail = 0
         port = None
         devtype = None
 
@@ -223,6 +226,8 @@ class Source(ControllerPlugin):
                 transport = transport.value
             ignore_known_hosts = self._device.get('ignore-known-hosts', False)
             slow_host = self._device.get('slow-host', False)
+            per_cmd_auth = self._device.get('per-cmd-auth', True)
+            retries_on_auth_fail = self._device.get('retries-on-auth-fail', 0)
             port = self._device.get('port')
             devtype = self._device.get('devtype')
 
@@ -237,13 +242,19 @@ class Source(ControllerPlugin):
                 'port': node.get('port') or port or 22,
                 'devtype': node.get('devtype') or devtype,
                 'slow_host': node.get('slow_host', '') or slow_host,
+                'per_cmd_auth': ((node.get('per_cmd_auth', '') != '')
+                                 or per_cmd_auth),
+                'retries_on_auth_fail': ((node.get('retries_on_auth_fail',
+                                                   -1) != -1) or
+                                         retries_on_auth_fail)
             })
 
     def _validate_device(self):
         if self._device:
             dev_fields = ['name', 'jump-host', 'jump-host-key-file',
                           'ignore-known-hosts', 'transport', 'port',
-                          'slow-host', 'devtype']
+                          'slow-host', 'per_cmd_auth', 'retries_on_auth_fail',
+                          'devtype']
             inv_fields = [x for x in self._device if x not in dev_fields]
             if inv_fields:
                 raise InventorySourceError(
