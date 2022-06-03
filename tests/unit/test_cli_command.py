@@ -1,7 +1,7 @@
 import pytest
 import pandas as pd
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.path import PathObj
 
 # valid dataframe extracted from test data
@@ -68,7 +68,7 @@ df = pd.DataFrame({
 def test_cli_outputs_with_error(output_format, setup_nubia):
     '''Test output generation with errors'''
 
-    sqcmd = SqCommand(format=output_format, sqobj=PathObj)
+    sqcmd = SqTableCommand(format=output_format, sqobj=PathObj)
     # pylint: disable=protected-access
     assert sqcmd._gen_output(df) == 1
 
@@ -80,6 +80,6 @@ def test_cli_outputs_with_error(output_format, setup_nubia):
 def test_cli_outputs_without_error(output_format, setup_nubia):
     '''Test output generation without errors'''
 
-    sqcmd = SqCommand(format=output_format, sqobj=PathObj)
+    sqcmd = SqTableCommand(format=output_format, sqobj=PathObj)
     # pylint: disable=protected-access
     assert sqcmd._gen_output(df.drop(columns=['error'])) == 0

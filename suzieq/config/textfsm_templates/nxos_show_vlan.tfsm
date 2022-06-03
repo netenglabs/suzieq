@@ -1,0 +1,14 @@
+Value Required vlan (\d+)
+Value vlanName (\S+)
+Value state (\S+)
+Value List interfaces (.+)
+
+Start
+  ^VLAN\s+Name\s+Status\s+Ports -> StartRecord
+
+StartRecord
+  ^\d+ -> Continue.Record
+  ^${vlan}\s+${vlanName}\s+${state}\s*$$
+  ^${vlan}\s+${vlanName}\s+${state}\s+${interfaces} -> Continue
+  ^\s+${interfaces} -> Continue
+  ^[- ]*$$

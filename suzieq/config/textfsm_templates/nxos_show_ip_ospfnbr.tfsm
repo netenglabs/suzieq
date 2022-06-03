@@ -1,0 +1,16 @@
+Value Required peerIP ([0-9.]+)
+Value Required ifname (\S+)
+Value vrf (\S+)
+Value Required peerRouterId ([0-9.]+)
+Value area ([0-9.]+)
+Value nbrPrio (\d+)
+Value lastChangeTime (.*)
+Value state (\S+)
+Value numChanges (\d+)
+
+Start
+  ^\s+Neighbor\s+priority\s+is\s+${nbrPrio}
+  ^\s+Neighbor -> Continue.Record
+  ^\s+Neighbor\s+${peerRouterId},\s+interface\s+address\s+${peerIP}
+  ^\s+Process\s+ID.*VRF\s+${vrf},\s+in\s+area\s+${area}\s+via\s+interface\s+${ifname}
+  ^\s+State\s+is\s+${state},\s+${numChanges}\s+state\s+changes,\s+last\s+change\s+${lastChangeTime}

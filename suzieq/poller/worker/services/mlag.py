@@ -81,14 +81,14 @@ class MlagService(Service):
                 lambda x: x == '1',
                 entry.get('_forwardViaPeerLinkList', []) or []))
             mlagErrorPorts = list(filter(
-                lambda x: x != 'consistent',
+                lambda x: x not in ['consistent', 'success'],
                 entry.get('_portConfigSanityList', []) or []))
             mlagDualPorts = entry.get('_portList', []) or []
             mlagDualPorts = list(filter(
                 lambda x: x not in mlagSinglePorts and x not in mlagErrorPorts,
                 mlagDualPorts))
 
-            if entry.get('peerLinkStatus', '') == 1:
+            if entry.get('peerLinkStatus', '') in [1, "up"]:
                 entry['peerLinkStatus'] = 'up'
             else:
                 entry['peerLinkStatus'] = 'down'
@@ -100,10 +100,15 @@ class MlagService(Service):
             entry['mlagSinglePortsCnt'] = len(mlagSinglePorts)
             entry['mlagErrorPortsList'] = mlagErrorPorts
             entry['mlagErrorPortsCnt'] = len(mlagErrorPorts)
-            entry['state'] = 'active' if entry['state'] == 'peer-ok' \
+            entry['state'] = 'active' \
+                if entry['state'].strip() in ['peer-ok',
+                                              'peer adjacency formed ok'] \
                 else 'dead'
-            if entry['configSanity'] != 'consistent':
-                entry['configSanity'] = entry['_reason']
+            if entry['configSanity'] == "success":
+                entry['configSanity'] = 'consistent'
+            if entry['configSanity'] not in ['consistent', 'success']:
+                if 'reason' in entry:
+                    entry['configSanity'] = entry.get('_reason', '')
 
         return processed_data
 

@@ -152,11 +152,13 @@ tests:
     {"name": "architecture", "type": "string", "key": "", "display": 5, "description":
     ""}, {"name": "bootupTimestamp", "type": "double", "key": "", "display": 9, "description":
     ""}, {"name": "hostname", "type": "string", "key": 1, "display": 1, "description":
-    "Hostname associated with this record"}, {"name": "model", "type": "string", "key":
+    "Hostname associated with this record"}, {"name": "memory", "type": "int", "key":
+    "", "display": "", "description": ""}, {"name": "model", "type": "string", "key":
     "", "display": 2, "description": ""}, {"name": "namespace", "type": "string",
     "key": 0, "display": 0, "description": "Namespace associated with this record"},
     {"name": "os", "type": "string", "key": "", "display": "", "description": ""},
-    {"name": "serialNumber", "type": "string", "key": "", "display": "", "description":
+    {"name": "reason", "type": "string", "key": "", "display": "", "description":
+    ""}, {"name": "serialNumber", "type": "string", "key": "", "display": "", "description":
     ""}, {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
     "Schema version, not selectable"}, {"name": "status", "type": "string", "key":
     "", "display": 6, "description": "Status of device: alive/dead/neverpoll"}, {"name":
@@ -376,9 +378,9 @@ tests:
     "True if this device uses link-local address to peer"}, {"name": "vtepIP", "type":
     "string", "key": "", "display": "", "description": "Anycast VTEP IP address, if
     appropriate"}]'
-- command: network describe --format=json
+- command: namespace describe --format=json
   data-directory: tests/data/eos/parquet-out/
-  marks: network describe
+  marks: namespace describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     ""}, {"name": "deviceCnt", "type": "long", "key": "", "display": 1, "description":
     "Number of devices in inventory in this namespace"}, {"name": "errSvcCnt", "type":
@@ -597,3 +599,19 @@ tests:
     {"type": "array", "items": {"type": "float", "name": "wrQsize"}}, "key": "", "display":
     7, "description": "[min, max, avg] of write queue size, computed over the greater
     between the last 5 mins and the polling period"}]'
+- command: table describe --table=network --format=json
+  data-directory: tests/data/parquet-out/
+  marks: table network describe
+  output: '[{"name": "bondMembers", "type": "string", "key": "", "display": 7, "description":
+    "Member ports of a bond interface"}, {"name": "hostname", "type": "string", "key":
+    "", "display": 1, "description": "Hostname associated with this record"}, {"name":
+    "ifname", "type": "string", "key": "", "display": 6, "description": "Interface
+    name"}, {"name": "ipAddress", "type": "string", "key": "", "display": 3, "description":
+    "Interface IP address"}, {"name": "l2miss", "type": "boolean", "key": "", "display":
+    9, "description": "MAC address not found for address"}, {"name": "macaddr", "type":
+    "string", "key": "", "display": 5, "description": "Interface mac address"}, {"name":
+    "namespace", "type": "string", "key": "", "display": 0, "description": "Namespace
+    associated with this record"}, {"name": "type", "type": "string", "key": "", "display":
+    8, "description": "Type of interface"}, {"name": "vlan", "type": "float", "key":
+    "", "display": 4, "description": "Interface vlan"}, {"name": "vrf", "type": "string",
+    "key": "", "display": 2, "description": "VRF associated with session"}]'

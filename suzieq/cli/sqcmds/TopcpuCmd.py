@@ -1,11 +1,11 @@
 from nubia import command
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.topcpu import TopcpuObj
 
 
 @command("topcpu", help="Act on topcpu data")
-class TopcpuCmd(SqCommand):
+class TopcpuCmd(SqTableCommand):
     """Information about Top CPU users"""
 
     def __init__(

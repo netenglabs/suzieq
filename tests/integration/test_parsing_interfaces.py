@@ -62,11 +62,12 @@ def _validate_bond_if(df: pd.DataFrame, full_df: pd.DataFrame):
 
     # for every bond interface, verify we have info about its members
     for row in df.itertuples():
-        if row.type != 'bond':
+        if row.type != 'bond' or row.state != "up":
             continue
-        assert not full_df.query(f'namespace=="{row.namespace}" and '
-                                 f'hostname=="{row.hostname}" and '
-                                 f'master == "{row.ifname}"').empty
+        if full_df.query(f'namespace=="{row.namespace}" and '
+                         f'hostname=="{row.hostname}" and '
+                         f'master == "{row.ifname}"').empty:
+            warnings.warn("{} has no members".format(row.ifname))
 
 
 def _validate_vrf_if(df: pd.DataFrame, _):
@@ -77,8 +78,7 @@ def _validate_vrf_if(df: pd.DataFrame, _):
     if not cldf.empty:
         assert (cldf.macaddr != "00:00:00:00:00:00").all()
 
-    nxosdf = df.query('os == "nxos" and namespace != "mixed"') \
-        .reset_index(drop=True)
+    nxosdf = df.query('namespace == "nxos"').reset_index(drop=True)
     if not nxosdf.empty:
         assert not nxosdf.query('ifname != "management" and '
                                 'routeDistinguisher != ""').empty
@@ -155,6 +155,7 @@ def test_interfaces(table, datadir, get_table_data):
     df = get_table_data
 
     validation_fns = {'adaptive-services': None,
+                      'async-serial-grp': None,
                       'bond': _validate_bond_if,
                       'bond_slave': _validate_bond_if,
                       'bridge': None,
@@ -177,10 +178,12 @@ def test_interfaces(table, datadir, get_table_data):
                       'pim-decapsulator': None,
                       'pim-encapsulator': None,
                       'pppoe': None,
+                      'pseudowire': None,
                       'remote-beb': None,
                       'secure-tunnel': None,
                       'software-pseudo': None,
                       'subinterface': None,
+                      'svc-engine': None,
                       'tap': None,
                       'tunnel': None,
                       'tunnel-te': _validate_tunnel_te_if,
@@ -208,7 +211,7 @@ def test_interfaces(table, datadir, get_table_data):
     assert df.state.isin(['up', 'down', 'notPresent', 'notConnected',
                           'errDisabled']).all()
     # EOS uses disabled admin state on interfaces that have no XCVR
-    assert df.adminState.isin(['up', 'down', 'disabled']).all()
+    assert df.adminState.isin(['up', 'down', 'disabled', 'deleted']).all()
 
     assert (df.type != "").all()
     assert df.type.isin(validation_fns.keys()).all()

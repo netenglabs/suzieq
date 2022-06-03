@@ -1,53 +1,5 @@
 description: Testing network table
 tests:
-- command: network show --format=json --namespace=nxos
-  data-directory: tests/data/parquet
-  marks: network show nxos
-  output: '[{"namespace": "nxos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
-    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161231216}]'
-- command: network show --format=json --namespace=nxos --model=vmx
-  data-directory: tests/data/parquet
-  marks: network show nxos
-  output: '[]'
-- command: network show --format=json --namespace=nxos --os=nxos
-  data-directory: tests/data/parquet
-  marks: network show nxos
-  output: '[{"namespace": "nxos", "deviceCnt": 8, "serviceCnt": 15, "errSvcCnt": 0,
-    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161231211}]'
-- command: network show --format=json --namespace=nxos --vendor=Juniper
-  data-directory: tests/data/parquet
-  marks: network show nxos
-  output: '[{"namespace": "nxos", "deviceCnt": 1, "serviceCnt": 13, "errSvcCnt": 0,
-    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639161231216}]'
-- command: network show --columns='namespace' --format=json --namespace=nxos
-  data-directory: tests/data/parquet
-  marks: network show nxos
-  output: '[{"namespace": "nxos"}]'
-- command: network show --columns='hasOspf hasBgp' --format=json --namespace=nxos
-  data-directory: tests/data/parquet
-  marks: network show nxos
-  output: '[{"hasOspf": true, "hasBgp": true}]'
-- command: network show --columns='*' --format=json --namespace=nxos
-  data-directory: tests/data/parquet
-  marks: network show nxos
-  output: '[{"namespace": "nxos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
-    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161231216, "active": true}]'
-- command: network show --columns='*' --os=nxos --format=json --namespace=nxos
-  data-directory: tests/data/parquet
-  marks: network show nxos
-  output: '[{"namespace": "nxos", "deviceCnt": 8, "serviceCnt": 15, "errSvcCnt": 0,
-    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
-    1639161231211, "active": true}]'
-- command: network show --columns='*' --vendor=Juniper --format=json --namespace=nxos
-  data-directory: tests/data/parquet
-  marks: network show nxos
-  output: '[{"namespace": "nxos", "deviceCnt": 1, "serviceCnt": 13, "errSvcCnt": 0,
-    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
-    1639161231216, "active": true}]'
 - command: network find --address="172.16.1.101" --format=json --namespace=nxos
   data-directory: tests/data/parquet
   marks: network find nxos
@@ -58,12 +10,6 @@ tests:
     "ipAddress": "172.16.1.101", "vlan": "10", "macaddr": "32:bb:c5:b5:3a:20", "ifname":
     "port-channel3", "bondMembers": "Ethernet1/3", "type": "bridged", "l2miss": false,
     "timestamp": 1619275264429}]'
-- command: network summarize --format=json --namespace=nxos
-  data-directory: tests/data/parquet
-  marks: network summarize nxos
-  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [18, 18, 18.0], "nsWithMlagCnt":
-    1, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
-    0}}'
 - command: network find --address="10.0.0.11" --format=json --namespace=nxos
   data-directory: tests/data/parquet
   marks: network find nxos
@@ -94,14 +40,6 @@ tests:
   data-directory: tests/data/parquet
   marks: network find nxos
   output: '[]'
-- command: network unique --format=json --namespace=nxos
-  data-directory: tests/data/parquet
-  marks: network unique nxos
-  output: '[{"namespace": "nxos"}]'
-- command: network unique --count=True --format=json --namespace=nxos
-  data-directory: tests/data/parquet
-  marks: network unique nxos
-  output: '[{"namespace": "nxos", "numRows": 1}]'
 - command: network find --address='foobar' --format=json --namespace=nxos
   data-directory: tests/data/parquet
   error:

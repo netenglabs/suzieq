@@ -2,7 +2,7 @@ import re
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.inventory import InventoryObj
 
 
@@ -15,7 +15,7 @@ from suzieq.sqobjects.inventory import InventoryObj
 @argument("model", description="Filter by model")
 @argument("serial", description="Serial number(s), space separated")
 @argument("vendor", description="Vendor(s), space separated")
-class InventoryCmd(SqCommand):
+class InventoryCmd(SqTableCommand):
     """Device inventory information such as serial number, cable info etc"""
 
     def __init__(

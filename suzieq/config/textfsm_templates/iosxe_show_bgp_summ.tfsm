@@ -3,8 +3,8 @@ Value Filldown afi (\w+)
 Value Filldown safi (\w+)
 Value Required peer ([0-9A-Fa-f.:]+)
 Value Required peerAsn (\d+)
-Value statePfx (\d+|\w+)
-Value routerId ([0-9.]+)
+Value statePfx (.*)
+Value Filldown routerId ([0-9.]+)
 
 Start
   ^For\s+address\s+family:\s+${afi}\s+${safi}\s*$$
@@ -14,6 +14,7 @@ Start
 Nbrs
   ^${peer}\s+\d+\s+${peerAsn}\s+\d+.*\s+${statePfx}\s*$$ -> Record
   ^\s*$$ -> Start
+
 
 #For address family: IPv4 Unicast
 #BGP router identifier 10.0.0.12, local AS number 65000

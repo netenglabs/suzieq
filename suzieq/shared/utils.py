@@ -36,6 +36,7 @@ MISSING_SPEED = -1
 NO_SPEED = 0
 MISSING_SPEED_IF_TYPES = ['ethernet', 'bond', 'bond_slave']
 SUPPORTED_ENGINES = ['pandas', 'rest']
+DATA_FORMATS = ["text", "json", "csv", "markdown"]
 
 
 class PollerTransport(str, Enum):
@@ -373,12 +374,24 @@ def calc_avg(oldval, newval):
     return float((oldval+newval)/2)
 
 
-def get_timestamp_from_cisco_time(in_data, timestamp):
+def get_timestamp_from_cisco_time(in_data, timestamp) -> int:
     """Get timestamp in ms from the Cisco-specific timestamp string
     Examples of Cisco timestamp str are P2DT14H45M16S, P1M17DT4H49M50S etc.
     """
-    if not in_data.startswith('P'):
-        return 0
+    if in_data and not in_data.startswith('P'):
+        in_data = in_data.replace('y', 'years')
+        in_data = in_data.replace('w', 'weeks')
+        in_data = in_data.replace('d', 'days')
+
+        other_time = parse(in_data,
+                           settings={'RELATIVE_BASE':
+                                     datetime.utcfromtimestamp(timestamp)})
+        if other_time:
+            return int(other_time.timestamp()*1000)
+        else:
+            logger.error(f'Unable to parse relative time string, {in_data}')
+            return 0
+
     months = days = hours = mins = secs = 0
 
     if 'T' in in_data:

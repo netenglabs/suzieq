@@ -44,7 +44,8 @@ def poller_args(monkeypatch):
         'config': cfg_file,
         'run_once': None,
         'ssh_config_file': None,
-        'worker_id': '0'
+        'worker_id': '0',
+        'worker_cmd_pipeline': 0,
     }
     userargs = argparse.Namespace(**userargs_dict)
     yield userargs

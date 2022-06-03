@@ -187,9 +187,9 @@ tests:
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: bgp help command
-  output: "bgp show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing more\
-    \ than one value\e[0m\n\e[33m\nArguments:\e[0m\n - afiSafi: \e[36m\e[1mBGP AFI\
-    \ SAFI lens to filter the topology\e[0m\n - columns: \e[36m\e[1mSpace separated\
+  output: "bgp show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - afiSafi: \e[36m\e[1mBGP\
+    \ AFI SAFI lens to filter the topology\e[0m\n - columns: \e[36m\e[1mSpace separated\
     \ list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window,\
     \ try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of\
     \ the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
@@ -262,8 +262,8 @@ tests:
     \ - describe: \e[36mDisplay the schema of the table\e[0m\n - help: \e[36mShow\
     \ help for a command\e[0m\n - show: \e[36mShow device config info\e[0m\n - summarize:\
     \ \e[36mSummarize relevant information about the table\e[0m\n - top: \e[36mReturn\
-    \ the top n values for a field in a table\e[0m\n - unique: \e[36mUnique device\
-    \ config info\e[0m\n"
+    \ the top n values for a field in a table\e[0m\n - unique: \e[36mGet unique values\
+    \ (and counts) associated with requested field\e[0m\n"
 - command: device help
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -875,22 +875,22 @@ tests:
     \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
     \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
     \ records or just the latest\e[0m\n"
-- command: network help
+- command: namespace help
   data-directory: tests/data/eos/parquet-out/
   format: text
-  marks: network help
-  output: "network: \e[36mOverall network information such as namespaces present etc.\e\
-    [0m\n\nSupported verbs are: \n - describe: \e[36mDisplay the schema of the table\e\
-    [0m\n - find: \e[36mFind the network attach point of a given IP or MAC address.\e\
-    [0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e[36mShow network\
-    \ info\e[0m\n - summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n - top: \e[36mReturn the top n values for a field in a table\e[0m\n - unique:\
-    \ \e[36mGet unique values (and counts) associated with requested field\e[0m\n"
-- command: network help --command=describe
+  marks: namespace help
+  output: "namespace: \e[36mOverall network information such as device count, bgp\
+    \ enabled etc.\e[0m\n\nSupported verbs are: \n - describe: \e[36mDisplay the schema\
+    \ of the table\e[0m\n - help: \e[36mShow help for a command\e[0m\n - show: \e\
+    [36mShow namespace info\e[0m\n - summarize: \e[36mSummarize relevant information\
+    \ about the table\e[0m\n - top: \e[36mReturn the top n values for a field in a\
+    \ table\e[0m\n - unique: \e[36mGet unique values (and counts) associated with\
+    \ requested field\e[0m\n"
+- command: namespace help --command=describe
   data-directory: tests/data/eos/parquet-out/
   format: text
-  marks: network help command
-  output: "network describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\n\
+  marks: namespace help command
+  output: "namespace describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\n\
     Use quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n\
     \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
     \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
@@ -900,22 +900,76 @@ tests:
     \ further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of time window,\
     \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
     \ the latest\e[0m\n"
-- command: network help --command=show
+- command: namespace help --command=show
+  data-directory: tests/data/eos/parquet-out/
+  format: text
+  marks: namespace help command
+  output: "namespace show: \e[36mShow namespace info\e[0m\n\e[33m\nUse quotes when\
+    \ providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e\
+    [36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e\
+    [1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - model: \e[36m\e[1mDevice model(s), space separated\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - os: \e[36m\e[1mDevice NOS(es),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - vendor: \e[36m\e[1mDevice\
+    \ vendor(s), space separated\e[0m\n - version: \e[36m\e[1mDevice NOS version(s),\
+    \ space separated\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n"
+- command: namespace help --command=summarize
+  data-directory: tests/data/eos/parquet-out/
+  format: text
+  marks: namespace help command
+  output: "namespace summarize: \e[36mSummarize relevant information about the table\e\
+    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
+    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
+    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n"
+- command: namespace help --command=top
+  data-directory: tests/data/eos/parquet-out/
+  format: text
+  marks: namespace help command
+  output: "namespace top: \e[36mReturn the top n values for a field in a table\e[0m\n\
+    \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
+    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str:\
+    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
+    \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\
+    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
+    [36m\e[1mView all records or just the latest\e[0m\n - what: \e[36m\e[1mnumeric\
+    \ field to get top values for\e[0m\n"
+- command: namespace help --command=unique
+  data-directory: tests/data/eos/parquet-out/
+  format: text
+  marks: namespace help command
+  output: "namespace unique: \e[36mGet unique values (and counts) associated with\
+    \ requested field\e[0m\n\e[33m\nUse quotes when providing more than one value\e\
+    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
+    \ * for all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e\
+    [0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e\
+    [0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
+    \ \e[36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
+    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
+    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
+    \ records or just the latest\e[0m\n"
+- command: network help
   data-directory: tests/data/eos/parquet-out/
   format: text
   marks: network help command
-  output: "network show: \e[36mShow network info\e[0m\n\e[33m\nUse quotes when providing\
-    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
-    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
-    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
-    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
-    \ - model: \e[36m\e[1mmodel(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
-    \ space separated\e[0m\n - os: \e[36m\e[1mNOS(es), space separated\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - vendor: \e[36m\e[1mVendor(s), space separated\e[0m\n - version:\
-    \ \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e[36m\e[1mView all\
-    \ records or just the latest\e[0m\n"
+  output: "network: \e[36mAdvanced commands across all the network\e[0m\n\nSupported\
+    \ verbs are: \n - describe: \e[36mDisplay the schema of the table\e[0m\n - find:\
+    \ \e[36mFind the network attach point of a given IP or MAC address.\e[0m\n - help:\
+    \ \e[36mShow help for a command\e[0m\n"
 - command: network help --command=find
   data-directory: tests/data/eos/parquet-out/
   format: text
@@ -932,51 +986,6 @@ tests:
     \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
     \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mFind MAC within this VLAN\e\
     [0m\n - vrf: \e[36m\e[1mFind within this VRF, used for IP addr\e[0m\n"
-- command: network help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
-  format: text
-  marks: network help command
-  output: "network summarize: \e[36mSummarize relevant information about the table\e\
-    [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
-    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
-    \ records or just the latest\e[0m\n"
-- command: network help --command=top
-  data-directory: tests/data/eos/parquet-out/
-  format: text
-  marks: network help command
-  output: "network top: \e[36mReturn the top n values for a field in a table\e[0m\n\
-    \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
-    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
-    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
-    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\
-    \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
-    [36m\e[1mView all records or just the latest\e[0m\n - what: \e[36m\e[1mnumeric\
-    \ field to get top values for\e[0m\n"
-- command: network help --command=unique
-  data-directory: tests/data/eos/parquet-out/
-  format: text
-  marks: network help command
-  output: "network unique: \e[36mGet unique values (and counts) associated with requested\
-    \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
-    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
-    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mHostname(s), space separated\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
-    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
-    \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
-    \ records or just the latest\e[0m\n"
 - command: path help
   data-directory: tests/data/eos/parquet-out/
   format: text

@@ -1,0 +1,8 @@
+Value Required ifname (\S+)
+Value state (\S+)
+Value routeDistinguisher ([0-9:]+)
+
+Start
+  ^VRF-Name: -> Continue.Record
+  ^VRF-Name:\s+${ifname},\s+VRF-ID:\s+\d+,\s+State:\s+${state}\s*$$
+  ^\s+RD: ${routeDistinguisher}

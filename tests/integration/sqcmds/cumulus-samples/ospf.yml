@@ -284,196 +284,217 @@ tests:
     "spine01"}, {"hostname": "spine02"}]'
 - command: ospf assert --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
+  error:
+    error: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default",
+      "ifname": "lo", "adjState": "passive", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
+      "vlan10", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf03", "vrf": "default", "ifname": "vlan10", "adjState":
+      "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "exit01", "vrf": "default", "ifname": "lo", "adjState": "passive",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "leaf03", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf":
+      "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default",
+      "ifname": "lo", "adjState": "passive", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname":
+      "vlan10", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf04", "vrf": "default", "ifname": "lo", "adjState":
+      "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "leaf04", "vrf": "default", "ifname": "vlan10", "adjState": "passive",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf03", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf":
+      "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default",
+      "ifname": "lo", "adjState": "passive", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname":
+      "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "lo", "adjState":
+      "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp",
+      "hostname": "leaf01", "vrf": "default", "ifname": "lo", "adjState": "passive",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "spine02", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "vrf":
+      "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
+      "ifname": "swp4", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default", "ifname":
+      "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "spine02", "vrf": "default", "ifname": "swp5", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "spine02", "vrf": "default", "ifname": "swp3", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "spine02", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
+      "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default",
+      "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
+      "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf03", "vrf": "default", "ifname": "swp2", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "leaf03", "vrf": "default", "ifname": "swp1", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "exit01", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "exit01", "vrf":
+      "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default",
+      "ifname": "swp2", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "ifname":
+      "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "spine01", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "spine01", "vrf": "default", "ifname": "swp2", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "spine01", "vrf": "default", "ifname": "swp3", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf":
+      "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default",
+      "ifname": "swp5", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default", "ifname":
+      "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "leaf02", "vrf": "default", "ifname": "swp2", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "leaf04", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf04", "vrf":
+      "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default",
+      "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname":
+      "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname": "swp3", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "spine01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf":
+      "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default",
+      "ifname": "swp5", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+      "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf02", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf":
+      "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default",
+      "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname":
+      "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "exit01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf":
+      "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default",
+      "ifname": "swp2", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
+      "swp5", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "spine02", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf":
+      "default", "ifname": "swp3", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default",
+      "ifname": "swp4", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
+      "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "leaf04", "vrf": "default", "ifname": "swp2", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf04", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
+      "default", "ifname": "lo", "adjState": "fail", "assertReason": "Loopback not
+      configured passive", "result": "fail"}, {"namespace": "ospf-single", "hostname":
+      "spine01", "vrf": "default", "ifname": "lo", "adjState": "fail", "assertReason":
+      "Loopback not configured passive", "result": "fail"}]'
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert
-  output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
-    "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname": "vlan10", "adjState":
-    "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "vrf": "default", "ifname": "vlan10", "adjState": "passive",
-    "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "exit01", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf03", "vrf":
-    "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default",
-    "ifname": "lo", "adjState": "passive", "assertReason": "", "result": "pass"},
-    {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname":
-    "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname": "vlan10", "adjState":
-    "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
-    "hostname": "leaf04", "vrf": "default", "ifname": "lo", "adjState": "passive",
-    "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vrf": "default", "ifname": "vlan10", "adjState": "passive", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf":
-    "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
-    "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname": "lo", "adjState":
-    "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf":
-    "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "ifname":
-    "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname": "lo", "adjState":
-    "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
-    "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
-    "ifname": "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "spine02", "vrf": "default", "ifname": "swp5", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp3", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
-    "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
-    "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "leaf01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf03", "vrf":
-    "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "leaf03", "vrf": "default",
-    "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "exit01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "exit01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf":
-    "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default",
-    "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "spine01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf":
-    "default", "ifname": "swp3", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default",
-    "ifname": "swp4", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "spine01", "vrf": "default", "ifname": "swp5", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp6", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf02", "vrf":
-    "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default",
-    "ifname": "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf04", "vrf": "default", "ifname": "swp2", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf":
-    "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname":
-    "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname": "swp3", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf":
-    "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
-    "swp5", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname": "swp6", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf":
-    "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname":
-    "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf":
-    "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname":
-    "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf":
-    "default", "ifname": "swp5", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
-    "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname": "swp2", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp3", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf":
-    "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
-    "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf04", "vrf": "default", "ifname": "swp2", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
-    "", "result": "pass"}]'
 - command: ospf assert --namespace=ospf-single --format=json
   data-directory: tests/data/parquet
+  error:
+    error: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default",
+      "ifname": "lo", "adjState": "passive", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
+      "vlan10", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf03", "vrf": "default", "ifname": "lo", "adjState":
+      "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "exit01", "vrf": "default", "ifname": "lo", "adjState": "passive",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "leaf03", "vrf": "default", "ifname": "vlan10", "adjState": "passive", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf":
+      "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default",
+      "ifname": "vlan10", "adjState": "passive", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname":
+      "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf04", "vrf": "default", "ifname": "vlan10", "adjState":
+      "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "leaf04", "vrf": "default", "ifname": "lo", "adjState": "passive",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "spine02", "vrf": "default", "ifname": "swp6", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
+      "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
+      "ifname": "swp3", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default", "ifname":
+      "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "spine02", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "leaf01", "vrf": "default", "ifname": "swp1", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "leaf01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
+      "default", "ifname": "swp5", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "leaf03", "vrf": "default",
+      "ifname": "swp2", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "leaf03", "vrf": "default", "ifname":
+      "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "exit01", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "exit01", "vrf": "default", "ifname": "swp2", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "exit02", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf":
+      "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default",
+      "ifname": "swp6", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default", "ifname":
+      "swp5", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "spine01", "vrf": "default", "ifname": "swp4", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "spine01", "vrf": "default", "ifname": "swp3", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "spine01", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf":
+      "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default",
+      "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname":
+      "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf04", "vrf": "default", "ifname": "swp2", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "leaf04", "vrf": "default", "ifname": "swp1", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "spine02", "vrf": "default", "ifname": "lo", "adjState": "fail", "assertReason":
+      "Loopback not configured passive", "result": "fail"}, {"namespace": "ospf-single",
+      "hostname": "spine01", "vrf": "default", "ifname": "lo", "adjState": "fail",
+      "assertReason": "Loopback not configured passive", "result": "fail"}]'
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert
-  output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
-    "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname": "vlan10", "adjState":
-    "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "vrf": "default", "ifname": "lo", "adjState": "passive",
-    "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "exit01", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf03", "vrf":
-    "default", "ifname": "vlan10", "adjState": "passive", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default",
-    "ifname": "lo", "adjState": "passive", "assertReason": "", "result": "pass"},
-    {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname":
-    "vlan10", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname": "lo", "adjState":
-    "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
-    "hostname": "leaf04", "vrf": "default", "ifname": "vlan10", "adjState": "passive",
-    "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
-    "default", "ifname": "swp6", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
-    "ifname": "swp4", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "spine02", "vrf": "default", "ifname": "swp3", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
-    "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default",
-    "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname": "swp2", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp5", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf03", "vrf":
-    "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "leaf03", "vrf": "default",
-    "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "exit01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "exit01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf":
-    "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default",
-    "ifname": "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "spine01", "vrf": "default", "ifname": "swp6", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp5", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf":
-    "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default",
-    "ifname": "swp3", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "spine01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf02", "vrf":
-    "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default",
-    "ifname": "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf04", "vrf": "default", "ifname": "swp2", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
-    "", "result": "pass"}]'
 - command: ospf assert --result=fail --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/
+  error:
+    error: '[{"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
+      "ifname": "lo", "adjState": "fail", "assertReason": "Loopback not configured
+      passive", "result": "fail"}, {"namespace": "ospf-single", "hostname": "spine01",
+      "vrf": "default", "ifname": "lo", "adjState": "fail", "assertReason": "Loopback
+      not configured passive", "result": "fail"}]'
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert cumulus
-  output: '[]'
 - command: ospf assert --result=pass --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/
@@ -599,125 +620,134 @@ tests:
 - command: ospf assert --result=all --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/
+  error:
+    error: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default",
+      "ifname": "lo", "adjState": "passive", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
+      "vlan10", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf03", "vrf": "default", "ifname": "vlan10", "adjState":
+      "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "exit01", "vrf": "default", "ifname": "lo", "adjState": "passive",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "leaf03", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf":
+      "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default",
+      "ifname": "lo", "adjState": "passive", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname":
+      "vlan10", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf04", "vrf": "default", "ifname": "lo", "adjState":
+      "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "leaf04", "vrf": "default", "ifname": "vlan10", "adjState": "passive",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf03", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf":
+      "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default",
+      "ifname": "lo", "adjState": "passive", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname":
+      "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "lo", "adjState":
+      "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp",
+      "hostname": "leaf01", "vrf": "default", "ifname": "lo", "adjState": "passive",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "spine02", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "vrf":
+      "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
+      "ifname": "swp4", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default", "ifname":
+      "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "spine02", "vrf": "default", "ifname": "swp5", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "spine02", "vrf": "default", "ifname": "swp3", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "spine02", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
+      "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default",
+      "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
+      "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf03", "vrf": "default", "ifname": "swp2", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "leaf03", "vrf": "default", "ifname": "swp1", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "exit01", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "exit01", "vrf":
+      "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default",
+      "ifname": "swp2", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default", "ifname":
+      "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "spine01", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "spine01", "vrf": "default", "ifname": "swp2", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "spine01", "vrf": "default", "ifname": "swp3", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf":
+      "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default",
+      "ifname": "swp5", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default", "ifname":
+      "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
+      "hostname": "leaf02", "vrf": "default", "ifname": "swp2", "adjState": "full",
+      "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
+      "leaf04", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf04", "vrf":
+      "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default",
+      "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname":
+      "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname": "swp3", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "spine01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf":
+      "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default",
+      "ifname": "swp5", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
+      "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf02", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf":
+      "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default",
+      "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname":
+      "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "exit01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf":
+      "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default",
+      "ifname": "swp2", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
+      "swp5", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname": "swp1", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "spine02", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf":
+      "default", "ifname": "swp3", "adjState": "full", "assertReason": "", "result":
+      "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default",
+      "ifname": "swp4", "adjState": "full", "assertReason": "", "result": "pass"},
+      {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
+      "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
+      "ospf-ibgp", "hostname": "leaf04", "vrf": "default", "ifname": "swp2", "adjState":
+      "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
+      "leaf04", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
+      "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
+      "default", "ifname": "lo", "adjState": "fail", "assertReason": "Loopback not
+      configured passive", "result": "fail"}, {"namespace": "ospf-single", "hostname":
+      "spine01", "vrf": "default", "ifname": "lo", "adjState": "fail", "assertReason":
+      "Loopback not configured passive", "result": "fail"}]'
   ignore-columns: lastChangeTime timestamp
   marks: ospf assert cumulus
-  output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname":
-    "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname": "vlan10", "adjState":
-    "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
-    "hostname": "leaf03", "vrf": "default", "ifname": "vlan10", "adjState": "passive",
-    "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "exit01", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf03", "vrf":
-    "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default",
-    "ifname": "lo", "adjState": "passive", "assertReason": "", "result": "pass"},
-    {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname":
-    "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf02", "vrf": "default", "ifname": "vlan10", "adjState":
-    "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single",
-    "hostname": "leaf04", "vrf": "default", "ifname": "lo", "adjState": "passive",
-    "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vrf": "default", "ifname": "vlan10", "adjState": "passive", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf":
-    "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
-    "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf02", "vrf": "default", "ifname": "lo", "adjState":
-    "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "exit01", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf":
-    "default", "ifname": "lo", "adjState": "passive", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "ifname":
-    "lo", "adjState": "passive", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname": "lo", "adjState":
-    "passive", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "vrf": "default", "ifname": "lo", "adjState": "passive", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
-    "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
-    "ifname": "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "spine02", "vrf": "default", "ifname": "swp5", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp3", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf":
-    "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "spine02", "vrf": "default",
-    "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "leaf01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf03", "vrf":
-    "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "leaf03", "vrf": "default",
-    "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "exit01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "exit01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf":
-    "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "exit02", "vrf": "default",
-    "ifname": "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "spine01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf":
-    "default", "ifname": "swp3", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default",
-    "ifname": "swp4", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "spine01", "vrf": "default", "ifname": "swp5", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp6", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-single", "hostname": "leaf02", "vrf":
-    "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-single", "hostname": "leaf02", "vrf": "default",
-    "ifname": "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-single", "hostname": "leaf04", "vrf": "default", "ifname": "swp2", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf":
-    "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "vrf": "default", "ifname":
-    "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname": "swp3", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf":
-    "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname":
-    "swp5", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "spine01", "vrf": "default", "ifname": "swp6", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "spine01", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf":
-    "default", "ifname": "swp2", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf": "default", "ifname":
-    "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit02", "vrf":
-    "default", "ifname": "swp1", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "exit01", "vrf": "default", "ifname":
-    "swp2", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "ifname": "swp1", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf01", "vrf": "default", "ifname": "swp2", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf":
-    "default", "ifname": "swp5", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
-    "swp1", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname": "swp2", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp3", "adjState": "full", "assertReason":
-    "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf":
-    "default", "ifname": "swp4", "adjState": "full", "assertReason": "", "result":
-    "pass"}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
-    "swp6", "adjState": "full", "assertReason": "", "result": "pass"}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf04", "vrf": "default", "ifname": "swp2", "adjState":
-    "full", "assertReason": "", "result": "pass"}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "vrf": "default", "ifname": "swp1", "adjState": "full", "assertReason":
-    "", "result": "pass"}]'
 - command: ospf assert --result=whatever --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/

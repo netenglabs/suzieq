@@ -1,0 +1,13 @@
+Value Required ipAddress (\d+\.\d+\.\d+\.\d+)
+Value Required _age (\S+)
+Value Required macaddr (\S+)
+Value oif (\S+)
+
+Start
+  ^Address\s+Age\s+MAC Address\s+Interface -> StartRecord
+
+StartRecord
+  ^${ipAddress}\s+${_age}\s+${macaddr}\s+${oif} -> Record
+  ^\s+$$
+  ^$$
+  ^.* -> Error "Unrecognized Line"

@@ -89,7 +89,6 @@ class InterfacesObj(SqPandasEngine):
         else:
             return df.reset_index(drop=True)[fields]
 
-    # pylint: disable=arguments-differ
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
 
@@ -585,13 +584,14 @@ class InterfacesObj(SqPandasEngine):
         if not pm_df.empty:
             df = df.merge(pm_df, how='left', on=[
                 'namespace', 'hostname', 'ifname'],
-                suffixes=['', '_y'])
+                suffixes=['', '_y']) \
+                .fillna({'vlan_y': 0})
             df['portmode'] = np.where(df.portmode_y.isnull(), df.portmode,
                                       df.portmode_y)
 
         df.loc[df.ifname == "bridge", 'portmode'] = ''
         if 'vlan_y' in df.columns:
-            df['vlan'] = np.where(df.vlan_y.isnull(), df.vlan,
+            df['vlan'] = np.where(df.vlan != 0, df.vlan,
                                   df.vlan_y)
         df['vlan'] = df.vlan.astype(int)
 

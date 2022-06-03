@@ -4,12 +4,12 @@ import pandas as pd
 from nubia import command
 
 from suzieq.cli.nubia_patch import argument
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.tables import TablesObj
 
 
 @command('table', help='get data about data captured for various tables')
-class TableCmd(SqCommand):
+class TableCmd(SqTableCommand):
     """Meta information about the various data gathered"""
 
     def __init__(
@@ -37,7 +37,6 @@ class TableCmd(SqCommand):
 
     @ command("describe")
     @ argument("table", description="interface name to qualify")
-    # pylint: disable=arguments-differ
     def describe(self, table: str = "tables"):
         """
         Describe fields in table

@@ -95,16 +95,17 @@ class OspfObj(SqPandasEngine):
         merge_cols = [x for x in ['namespace', 'hostname', 'ifname']
                       if x in nbr_df.columns]
         # Merge the two tables
-        df = df.merge(nbr_df, on=merge_cols, how='left')
+        df = df.merge(nbr_df, on=merge_cols, how='left') \
+               .fillna({'peerIP': '-', 'numChanges': 0,
+                        'lastChangeTime': 0}) \
+               .fillna('')
 
         # This is because some NOS have the ipAddress in nbr table and some in
         # interface table. Nbr table wins over interface table if present
         if 'ipAddress_y' in df:
             df['ipAddress'] = np.where(
-                df['ipAddress_y'] == "",
-                df['ipAddress_x'], df['ipAddress_y'])
-            df['ipAddress'] = np.where(df['ipAddress'], df['ipAddress'],
-                                       df['ipAddress_x'])
+                df['ipAddress_x'] == "",
+                df['ipAddress_y'], df['ipAddress_x'])
 
         if columns == ['*']:
             df = df.drop(columns=['area_y', 'instance_y', 'vrf_y',
@@ -115,7 +116,9 @@ class OspfObj(SqPandasEngine):
                     'instance_x': 'instance', 'areaStub_x': 'areaStub',
                     'area_x': 'area', 'vrf_x': 'vrf',
                     'state_x': 'ifState', 'state_y': 'adjState',
-                    'active_x': 'active', 'timestamp_x': 'timestamp'})
+                    'active_x': 'active', 'timestamp_x': 'timestamp'}) \
+                .fillna({'peerIP': '-', 'numChanges': 0,
+                         'lastChangeTime': 0})
         else:
             df = df.rename(columns={'vrf_x': 'vrf', 'area_x': 'area',
                                     'state_x': 'ifState',
@@ -142,7 +145,7 @@ class OspfObj(SqPandasEngine):
                                             0, df.lastChangeTime)
         # Fill the adjState column with passive if passive
         if 'passive' in df.columns and 'adjState' in df.columns:
-            df.loc[df['adjState'].isnull(), 'adjState'] = df['passive']
+            df.loc[df['adjState'] == '', 'adjState'] = df['passive']
             df.loc[df['adjState'].eq(True), 'adjState'] = 'passive'
             df.loc[df['adjState'].eq(False), 'adjState'] = 'fail'
             df.loc[df['adjState'] == 'passive', 'peerIP'] = ''
@@ -150,7 +153,6 @@ class OspfObj(SqPandasEngine):
 
             df.drop(columns=['passive'], inplace=True)
 
-        df.bfill(axis=0, inplace=True)
         final_df = df
         if 'active_x' in final_df.columns:
             final_df = final_df.rename(columns={'active_x': 'active'})
@@ -247,7 +249,7 @@ class OspfObj(SqPandasEngine):
         columns.extend(['peerHostname', 'peerIfname'])
         ospf_df = self._get_peernames(ospf_df, columns)
 
-        ospf_df["assertReason"] = [[] for _ in range(len(ospf_df))]
+        ospf_df["assertReason"] = [[]]*ospf_df.shape[0]
         df = (
             ospf_df[ospf_df["routerId"] != ""]
             .groupby(["routerId", "namespace"], as_index=False)[["hostname",
@@ -267,11 +269,11 @@ class OspfObj(SqPandasEngine):
                     if (x["hostname_y"] is not np.nan and
                         len(x['hostname_y']) != 1) else [], axis=1))
 
-        pasv_df = ospf_df \
-            .query('adjState == "passive"') \
+        ok_df = ospf_df \
+            .query('adjState.isin(["passive", "full"])') \
             .reset_index(drop=True)
         failed_df = ospf_df \
-            .query('~adjState.isin(["passive"]) and '
+            .query('~adjState.isin(["passive", "full"]) and '
                    'ifState != "down"') \
             .reset_index(drop=True)
         ifdown_df = ospf_df \
@@ -282,24 +284,27 @@ class OspfObj(SqPandasEngine):
             ifdown_df.ifState.apply(lambda x: ['ifdown'])
 
         # Validate loopback interfaces are of the right network type
-        pasv_df['assertReason'] += pasv_df.apply(
-            lambda x: ['network type !loopback']
-            if (any(ele in x.ifname for ele in ['lo', 'oopbac']) and
-                x.networkType != "loopback") else [], axis=1)
+        if not ok_df.empty:
+            ok_df['assertReason'] += ok_df.apply(
+                lambda x: ['network type !loopback']
+                if (any(ele in x.ifname for ele in ['lo', 'oopbac']) and
+                    x.networkType != "loopback") else [], axis=1)
 
         if failed_df.empty:
-            return self._create_aver_result([pasv_df, ifdown_df], result)
+            return self._create_aver_result([ok_df, ifdown_df], result)
 
         # We have the MTU mismatch which requires us to pull the MTU from the
         # interfaces table
         ifdf = self._get_table_sqobj('interfaces').get(
-            namespace=failed_df.namespace.unique().tolist(),
-            hostname=failed_df.hostname.unique().tolist(),
-            ifname=failed_df.ifname.unique().tolist(),
+            namespace=kwargs.get('namespace', []),
+            hostname=kwargs.get('hostname', []),
             columns=['namespace', 'hostname', 'ifname', 'mtu',
-                     'ipAddressList'])
+                     'ipAddressList'],
+            query_str='ipAddressList.str.len() != 0')
 
         if not ifdf.empty:
+            ifdf = ifdf.explode('ipAddressList')
+            ifdf['ipAddressList'] = ifdf.ipAddressList.str.split('/').str[0]
             failed_df = failed_df.merge(
                 ifdf, how='left',
                 on=['namespace', 'hostname', 'ifname'],
@@ -309,28 +314,35 @@ class OspfObj(SqPandasEngine):
             check_mtu = False
 
         peer_df = failed_df.merge(
-            failed_df,
+            failed_df, how='left',
             left_on=["namespace", "hostname", "ifname"],
             right_on=["namespace", "peerHostname", "peerIfname"]) \
-            .dropna(how="any")
+            .rename(columns={'assertReason_x': 'assertReason'}) \
+            .dropna(subset=['ipAddress_x', 'index_x', 'ipAddress_y']) \
+            .fillna({'isUnnumbered_y': False})
 
         if peer_df.empty:
-            return self._create_aver_result([pasv_df, ifdown_df, failed_df],
+            # We're unable to find a peer but the sessions have failed
+            failed_df['assertReason'] = failed_df.apply(
+                lambda x: 'Loopback not configured passive'
+                if x['networkType'] == 'loopback' else 'No Peer Found',
+                axis=1)
+
+            return self._create_aver_result([ok_df, ifdown_df, failed_df],
                                             result)
 
-        peer_df = peer_df.rename(columns={
-            'assertReason_x': 'assertReason'
-        }).drop(columns=['assertReason_y'])
+        peer_df = peer_df.drop(columns=['assertReason_y'])
 
         # Now start comparing the various parameters
+        # pylint: disable=condition-evals-to-constant
         peer_df["assertReason"] += peer_df.apply(
             lambda x: ["subnet mismatch"]
             if (
                 (x["isUnnumbered_x"] != x["isUnnumbered_y"])
-                and (
-                    IPv4Network(x["ipAddress_x"], strict=False)
-                    != IPv4Network(x["ipAddress_y"], strict=False)
-                )
+                or (
+                    (('ipAddress_y == ""') or
+                     ((IPv4Network(x["ipAddress_x"], strict=False)
+                       != IPv4Network(x["ipAddress_y"], strict=False)))))
             )
             else [],
             axis=1,
@@ -374,6 +386,15 @@ class OspfObj(SqPandasEngine):
                 axis=1,
             )
 
+        # Now walk through and label all the failed sessions for
+        # which we have no reason
+        peer_df['assertReason'] += peer_df.apply(
+            lambda x: ["No Peer Found"]
+            if (x['adjState_x'] == "fail" and
+                x['assertReason'].str.len() == 0)
+            else [],
+            axis=1)
+
         result_df = (
             peer_df.rename(
                 index=str,
@@ -388,7 +409,7 @@ class OspfObj(SqPandasEngine):
                "assertReason", "timestamp"]]
         )
 
-        return self._create_aver_result([pasv_df, ifdown_df, result_df],
+        return self._create_aver_result([ok_df, ifdown_df, result_df],
                                         result)
 
     def _get_peernames(self, df: pd.DataFrame, columns: List[str],
@@ -465,9 +486,42 @@ class OspfObj(SqPandasEngine):
                 .fillna('')
 
         if newdf.empty:
-            newdf = df.query('adjState != "passive"').reset_index()
+            newdf = df.query('adjState != "passive"').reset_index(drop=True)
             newdf['peerHostname'] = ''
-        final_df = pd.concat([nfdf, newdf])
+
+        # Lets find the rows without peerHostnames
+        nopeer_df = newdf.query('peerHostname == ""')
+        if not nopeer_df.empty:
+            peerdf = newdf.query('peerHostname != ""')
+            nopeer_df = nopeer_df.drop(columns=['peerHostname', 'peerIfname'],
+                                       errors='ignore')
+            # We need to look deeper to see if we can figure out the peers
+            addr_df = self._get_table_sqobj('address').get(
+                namespace=kwargs.get('namespace', []),
+                hostname=kwargs.get('hostname', []),
+                type='!loopback',
+                columns=['namespace', 'hostname', 'vrf', 'ifname', 'state',
+                         'ipAddressList'],
+                query_str='ipAddressList.str.len() != 0')
+            if not addr_df.empty:
+                addr_df = addr_df.explode('ipAddressList')
+                addr_df['ipAddressList'] = addr_df.ipAddressList \
+                                                  .str.split('/').str[0]
+                nopeer_df = nopeer_df.merge(
+                    addr_df,
+                    left_on=['namespace', 'vrf', 'peerIP'],
+                    right_on=['namespace', 'vrf', 'ipAddressList'],
+                    suffixes=['', '_y'], how='left') \
+                    .rename(columns={'hostname_y': 'peerHostname',
+                                     'ifname_y': 'peerIfname'}) \
+                    .drop(columns=['state', 'ipAddressList'],
+                          errors='ignore') \
+                    .fillna('')
+
+        if not nopeer_df.empty:
+            final_df = pd.concat([nfdf, peerdf, nopeer_df])
+        else:
+            final_df = pd.concat([nfdf, newdf])
 
         return final_df
 

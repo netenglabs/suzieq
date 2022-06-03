@@ -49,19 +49,22 @@ def _validate_estd_bgp_data(df: pd.DataFrame):
 
 def _validate_notestd_bgp_data(df: pd.DataFrame):
     '''Validate the fields in established sessions'''
-    assert(df.query('~os.str.contains("junos")').keepaliveTime != 0).all()
+    assert(
+        df.query('~os.isin(["junos", "iosxe", "ios"])').keepaliveTime != 0) \
+        .all()
 
 
 def validate_bgp_data(df: pd.DataFrame):
     '''Validate the dataframe for all BGP values'''
 
     # First validate that all entries have a state thats known
-    assert (df.state.isin(['Established', 'NotEstd', 'dynamic'])).all()
+    assert (df.state.isin(['Established', 'NotEstd', 'dynamic',
+                           'adminDown'])).all()
     assert (df.peer != '').all() and (df.peer.str.lower() != 'none').all()
     assert (df.query('namespace != "nsdevlab"').routerId != '').all()
     assert (df.asn != 0).all()
 
-    assert (df.query('state != "dynamic"').holdTime != 0).all()
+    assert (df.query('state == "Established"').holdTime != 0).all()
 
     estd_df = df.query('state == "Established"').reset_index(drop=True)
     notestd_df = df.query('state == "NotEstd"').reset_index(drop=True)

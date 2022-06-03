@@ -11,19 +11,20 @@ def _validate_estd_ospf_data(df: pd.DataFrame):
 
     assert (df.areaStub.isin(valid_bools)).all()
     assert (df.adjState.isin(['full', 'passive'])).all()
-    assert (df.ifState.isin(["up", "down"])).all()
+    assert (df.ifState.isin(["up", "down", "adminDown"])).all()
+    assert (df.ipAddress.str.contains('/')).all()
 
     npsv_df = df.query('adjState != "passive"')
     if not npsv_df.empty:
         assert (npsv_df.peerIP != '').all()
-        assert (npsv_df.peerHostname != '').all()
+        # assert (npsv_df.peerHostname != '').all()
         assert (npsv_df.peerRouterId != '').all()
         assert (npsv_df.nbrCount != 0).all()
         assert (npsv_df.bfdStatus.isin(['unknown', 'disabled',
                                         'up', 'down'])).all()
 
 
-def _validate_notestd_ospf_data(_):
+def _validate_notestd_ospf_data(df: pd.DataFrame):
     '''Validate data for those sessions not in neighbor output'''
     # Commenting out this check because in some cases, this can happen as in
     # when we captured the ospf output for mixed namespace. Due to the way
@@ -31,6 +32,7 @@ def _validate_notestd_ospf_data(_):
     # neighbor while the ospfnbr output for that interface is still blank. So
     # commenting out this check.
     # assert (df.nbrCount == 0).all()
+    assert (df.ipAddress.str.contains('/')).all()
 
 
 def _validate_common_ospf_data(df: pd.DataFrame):

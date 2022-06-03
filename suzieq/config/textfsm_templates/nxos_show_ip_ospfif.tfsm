@@ -1,0 +1,62 @@
+Value Required ifname (\S+)
+Value protoState (\S+)
+Value state (\S+)
+Value adminState (\S+)
+Value ipAddress ([0-9.]+)
+Value maskLen (\d+)
+Value vrf (\S+)
+Value area ([0-9.]+)
+Value areaStub ((\[Stub\])?)
+Value isUnnumbered (UNNUMBERED)
+Value networkType (\w+)
+Value cost (\d+)
+Value helloTime (\d+)
+Value deadTime (\d+)
+Value retxTime (\d+)
+Value wait (\d+)
+Value nbrCount (\d+)
+Value passive (\w+)
+Value designatedRtrId ([0-9.]+)
+Value backupDesignatedRtrId ([0-9.]+)
+Value authType (\S+)
+
+Start
+  ^\S+\s+is.*$$ -> Continue.Record
+  ^\s+${ifname}\s+is\s+${adminState}.\s+line\s+protocol\s+is\s+${state}\s*$$
+  ^\s+IP\s+address\s+${ipAddress}/${maskLen}\s*$$
+  ^\s+Process\s+ID\s+\d+\s+VRF\s+${vrf},\s+area\s+${area}\s*$$
+  ^\s+State\s+${protoState},\s+Network\s+[tT]ype\s+${networkType},\s+cost\s+${cost}.*$$
+  ^\s+Designated\s+Router\s+ID:\s+${designatedRtrId},.*$$
+  ^\s+Backup\s+Designated\s+Router\s+ID:\s+${backupDesignatedRtrId}.*$$
+  ^\s+${nbrCount}\s+Neighbors,.*$$
+  ^\s+Timer intervals:\s+Hello ${helloTime},\s+Dead\s+${deadTime},\s+Wait\s+${wait},\s+Retransmit ${retxTime}\s*$$
+  ^\s+${authType}\s+[Aa]uthentication\s*$$
+
+
+# Vlan128 is up, line protocol is up
+#    IP address 10.100.1.237/28
+#    Process ID 200 VRF Test, area 0.0.0.1
+#    Enabled by interface configuration
+#    State DR, Network type BROADCAST, cost 5
+#    Index 2, Transmit delay 1 sec, Router Priority 1
+#    Designated Router ID: 10.100.1.2, address: 10.100.1.237
+#    Backup Designated Router ID: 10.100.1.7, address: 10.100.1.235
+#    3 Neighbors, flooding to 3, adjacent with 3
+#    Timer intervals: Hello 10, Dead 40, Wait 40, Retransmit 5
+#      Hello timer due in 00:00:06
+#    Simple authentication
+#    Number of opaque link LSAs: 0, checksum sum 0
+# Vlan35 is up, line protocol is up
+#    IP address 10.100.10.221/28
+#    Process ID 200 VRF Test, area 0.0.0.0
+#    Enabled by interface configuration
+#    State DR, Network type BROADCAST, cost 5
+#    Index 1, Transmit delay 1 sec, Router Priority 1
+#    Designated Router ID: 10.100.10.2, address: 10.100.10.221
+#    Backup Designated Router ID: 10.100.10.243, address: 10.100.10.219
+#    3 Neighbors, flooding to 3, adjacent with 3
+#    Timer intervals: Hello 10, Dead 40, Wait 40, Retransmit 5
+#      Hello timer due in 00:00:00
+#    Simple authentication
+#    Number of opaque link LSAs: 0, checksum sum 0
+#

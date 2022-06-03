@@ -86,7 +86,7 @@ class LldpObj(SqPandasEngine):
 
         if use_bond.lower() == "true":
             df = self._resolve_to_bond(
-                df, hostname=kwargs.get('hostname', []))[cols]
+                df[cols], hostname=kwargs.get('hostname', []))[cols]
 
         df = self._handle_user_query_str(df, query_str)
         return df.reset_index(drop=True)[cols]

@@ -8,7 +8,7 @@ import streamlit as st
 from IPython.display import Markdown
 from streamlit.server.server import Server
 try:
-    from streamlit.script_run_context import get_script_run_ctx
+    from streamlit.scriptrunner.script_run_context import get_script_run_ctx
 except ModuleNotFoundError:
     # streamlit < 1.4
     from streamlit.report_thread import (  # type: ignore

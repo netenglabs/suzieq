@@ -1,0 +1,34 @@
+description: Testing namespace table
+tests:
+- command: namespace show --format=json --namespace=vmx
+  data-directory: tests/data/parquet
+  marks: namespace show junos vmx
+  output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1652587499544}]'
+- command: namespace show --format=json --namespace=vmx --model=vmx
+  data-directory: tests/data/parquet
+  marks: namespace show junos vmx
+  output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1652587499544}]'
+- command: namespace show --columns='*' --os=junos --format=json --namespace=vmx
+  data-directory: tests/data/parquet
+  marks: namespace show vmx junos
+  output: '[{"namespace": "vmx", "deviceCnt": 5, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1652587499544, "active": true}]'
+- command: namespace summarize --namespace=vmx --format=json --namespace=vmx
+  data-directory: tests/data/parquet
+  marks: namespace summarize junos vmx
+  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [13, 13, 13.0], "nsWithMlagCnt":
+    0, "nsWithBgpCnt": 1, "nsWithOspfCnt": 0, "nsWithVxlanCnt": 0, "nsWithErrsvcCnt":
+    0}}'
+- command: namespace unique --namespace=vmx --format=json --namespace=vmx
+  data-directory: tests/data/parquet
+  marks: namespace unique junos vmx
+  output: '[{"namespace": "vmx"}]'
+- command: namespace unique --count=True --namespace=vmx --format=json --namespace=vmx
+  data-directory: tests/data/parquet
+  marks: namespace unique junos vmx
+  output: '[{"namespace": "vmx", "numRows": 1}]'

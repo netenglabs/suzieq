@@ -274,14 +274,26 @@ class BgpService(Service):
             elif bfd_status != "disabled":
                 entry['bfdStatus'] = 'down'
 
-            if (entry.get('extnhAdvertised', False) == "true" and
-                    entry.get('extnhReceived', False) == "true"):
-                entry['extnhEnabled'] = True
-            else:
-                entry['extnhEnabled'] = False
+            # Handle old NXOS textfsm for state:
+            if entry.get('state', '') != 'Established':
+                entry['state'] = 'NotEstd'
 
+            entry['extnhAdvertised'] = \
+                entry.get('extnhAdvertised', '') in ["true", "advertised"]
+            entry['extnhReceived'] = \
+                entry.get('extnhReceived', False) in ["true", "received"]
+            entry['extnhEnabled'] = \
+                entry['extnhReceived'] and entry['extnhAdvertised']
+
+            if entry.get('_connEstd', ''):
+                # Older NXOS
+                entry['numChanges'] = (int(entry['_connEstd']) +
+                                       int(entry['_connDrop']))
             entry['estdTime'] = get_timestamp_from_cisco_time(
                 entry['estdTime'], raw_data[0]['timestamp']/1000)
+            vrf = entry.get('vrf', '')
+            if not vrf:
+                entry['vrf'] = 'default'
             if entry['vrf'] not in entries_by_vrf:
                 entries_by_vrf[entry['vrf']] = []
 
@@ -289,38 +301,43 @@ class BgpService(Service):
                 if not entry.get('_dynPeer', None):
                     drop_indices.append(j)
                     continue
+                # Dynamic peer
+                if not entry.get('vrf', ''):
+                    entry['vrf'] = 'default'
                 entry['peer'] = entry['_dynPeer'].replace('/', '-')
                 entry['origPeer'] = entry['_dynPeer']
                 entry['state'] = 'dynamic'
                 entry['pfxRx'] = entry['_activePeers']
                 entry['pfxTx'] = entry['_maxconcurrentpeers']
                 entry['afi'] = entry['safi'] = 'dynamic'
-                entry['estdTime'] = entry['_firstconvgtime']
+                if '_firstconvgtime' in entry:
+                    entry['estdTime'] = entry['_firstconvgtime']
 
             if entry['state'] != 'Established':
-                entry.pop('afiPrefix')
-                entry.pop('pfxRcvd')
-                entry.pop('pfxSent')
-                entry.pop('sendComm')
-                entry.pop('extendComm')
-                entry.pop('defaultOrig')
-                entry.pop('afiSafi')
+                entry.pop('afiPrefix', '')
+                entry.pop('pfxRcvd', '')
+                entry.pop('pfxSent', '')
+                entry.pop('sendComm', '')
+                entry.pop('extendComm', '')
+                entry.pop('defaultOrig', '')
+                entry.pop('afiSafi', '')
                 entry['afi'] = entry['safi'] = ''
                 entries_by_vrf[entry['vrf']].append(entry)
                 continue
 
-            entry['afisAdvOnly'] = []
-            entry['afisRcvOnly'] = []
-            for i, item in enumerate(entry['afiSafi']):
-                if entry['afAdvertised'][i] != entry['afRcvd'][i]:
-                    if entry['afAdvertised'][i] == 'true':
-                        entry['afisAdvOnly'].append(entry['afiSafi'])
-                    else:
-                        entry['afisRcvOnly'].append(entry['afiSafi'])
+            if 'afiSafi' in entry:
+                entry['afisAdvOnly'] = []
+                entry['afisRcvOnly'] = []
+                for i, item in enumerate(entry['afiSafi']):
+                    if entry['afAdvertised'][i] != entry['afRcvd'][i]:
+                        if entry['afAdvertised'][i] == 'true':
+                            entry['afisAdvOnly'].append(entry['afiSafi'])
+                        else:
+                            entry['afisRcvOnly'].append(entry['afiSafi'])
 
-            entry.pop('afiSafi')
-            entry.pop('afAdvertised')
-            entry.pop('afRcvd')
+                entry.pop('afiSafi')
+                entry.pop('afAdvertised')
+                entry.pop('afRcvd')
 
             if entry.get('rrclient', ''):
                 entry['rrclient'] = 'True'
@@ -330,9 +347,11 @@ class BgpService(Service):
             defint_list = [0]*len(entry.get('afiPrefix', []))
             defbool_list = [False]*len(entry.get('afiPrefix', []))
             defstr_list = [""]*len(entry.get('afiPrefix', []))
+            defcomm_list = []*len(entry.get('afiPrefix', []))
             pfxRx_list = entry.get('pfxRcvd', []) or defint_list
             pfxTx_list = entry.get('pfxSent', []) or defint_list
             deforig_list = entry.get('defaultOrig', []) or defbool_list
+            comm_types = entry.get('communityTypes', []) or defcomm_list
             extcomm_list = entry.get('extendComm', []) or defbool_list
             comm_list = entry.get('sendComm', []) or defbool_list
             withdrawn_list = entry.get('pfxWithdrawn', []) or defint_list
@@ -349,22 +368,35 @@ class BgpService(Service):
                 new_entry['pfxWithdrawn'] = withdrawn_list[i]
                 new_entry['softReconfig'] = softrecon_list[i]
                 new_entry['defOriginate'] = deforig_list[i]
-                new_entry['communityTypes'] = []
-                if comm_list[i]:
-                    new_entry['communityTypes'].append('standard')
-                if extcomm_list[i] == "true":
-                    new_entry['communityTypes'].append('extended')
+                if comm_types:
+                    # Old school NXOS textfsm parsing
+                    if len(comm_types) >= 2*i:
+                        if comm_types[i].lower() == "community":
+                            new_entry['communityTypes'] = ['standard']
+                        if len(comm_types) > 2*i+1:
+                            new_entry['communityTypes'] = \
+                                new_entry['communityTypes'].append(
+                                    comm_types[i+1].lower())
+                    else:
+                        new_entry['communityTypes'] = []
+                else:
+                    new_entry['communityTypes'] = []
+                    if comm_list[i]:
+                        new_entry['communityTypes'].append('standard')
+                    if extcomm_list[i] == "true":
+                        new_entry['communityTypes'].append('extended')
                 new_entry['ingressRmap'] = irmap_list[i]
                 new_entry['egressRmap'] = ermap_list[i]
-                new_entry.pop('afiPrefix')
-                new_entry.pop('pfxRcvd')
-                new_entry.pop('pfxSent')
-                new_entry.pop('sendComm')
-                new_entry.pop('extendComm')
-                new_entry.pop('defaultOrig')
+                new_entry.pop('afiPrefix', '')
+                new_entry.pop('pfxRcvd', '')
+                new_entry.pop('pfxSent', '')
+                new_entry.pop('sendComm', '')
+                new_entry.pop('extendComm',  '')
+                new_entry.pop('defaultOrig', '')
 
                 new_entries.append(new_entry)
                 entries_by_vrf[new_entry['vrf']].append(new_entry)
+
             drop_indices.append(j)
 
         processed_data += new_entries
@@ -550,6 +582,8 @@ class BgpService(Service):
             if entry.get('state', '') != 'Established':
                 entry['state'] = 'NotEstd'
 
+            if entry.get('_adminDown', ''):
+                entry['state'] = 'adminDown'
             entry['communityTypes'] = []  # We don't parse this yet
             entry['numChanges'] = (int(entry.get('_numConnEstd', 0) or 0) +
                                    int(entry.get('_numConnDropped', 0) or 0))
@@ -568,13 +602,8 @@ class BgpService(Service):
                     estdTime = estdTime.split(':')
                     estdTime = (f'{estdTime[0]} hour '
                                 '{estdTime[1]}:{estdTime[2]} mins ago')
-                estdTime = parse(
-                    estdTime,
-                    settings={'RELATIVE_BASE':
-                              datetime.fromtimestamp(
-                                  (raw_data[0]['timestamp'])/1000), })
-            if estdTime and estdTime != ['']:
-                entry['estdTime'] = int(estdTime.timestamp()*1000)
+                entry['estdTime'] = get_timestamp_from_cisco_time(
+                    estdTime, raw_data[0]['timestamp']/1000)
             if entry.get('rrclient', '') == '':
                 entry['rrclient'] = 'False'
             else:

@@ -1,7 +1,7 @@
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.vlan import VlanObj
 
 
@@ -12,7 +12,7 @@ from suzieq.sqobjects.vlan import VlanObj
           description="VLAN(s), space separated, can use <, >, <=, >=, !")
 @argument('vlanName',
           description="VLAN name(s), space separated")
-class VlanCmd(SqCommand):
+class VlanCmd(SqTableCommand):
     """Information about VLANs including interfaces belonging to a VLAN"""
 
     # pylint: disable=redefined-builtin

@@ -1,0 +1,45 @@
+description: Testing namespace table
+tests:
+- command: namespace show --format=json --namespace=junos --model=vmx
+  data-directory: tests/data/parquet
+  marks: namespace show junos
+  output: '[]'
+- command: namespace show --format=json --namespace=junos --os=junos-qfx
+  data-directory: tests/data/parquet
+  marks: namespace show junos
+  output: '[{"namespace": "junos", "deviceCnt": 7, "serviceCnt": 13, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
+    1652587501227}]'
+- command: namespace show --format=json --namespace=junos --vendor=Juniper
+  data-directory: tests/data/parquet
+  output: '[{"namespace": "junos", "deviceCnt": 7, "serviceCnt": 13, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
+    1652587501227}]'
+- command: namespace show --columns='namespace' --format=json --namespace=junos
+  data-directory: tests/data/parquet
+  marks: namespace show junos
+  output: '[{"namespace": "junos"}]'
+- command: namespace show --columns='hasOspf hasBgp' --format=json --namespace=junos
+  data-directory: tests/data/parquet
+  marks: namespace show junos
+  output: '[{"hasOspf": true, "hasBgp": true}]'
+- command: namespace show --columns='*' --format=json --namespace=junos
+  data-directory: tests/data/parquet
+  marks: namespace show junos
+  output: '[{"namespace": "junos", "deviceCnt": 12, "serviceCnt": 17, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": false, "lastUpdate":
+    1652587501227, "active": true}]'
+- command: namespace summarize --format=json --namespace=junos
+  data-directory: tests/data/parquet
+  marks: namespace summarize junos
+  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [17, 17, 17.0], "nsWithMlagCnt":
+    0, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
+    0}}'
+- command: namespace unique --format=json --namespace=junos
+  data-directory: tests/data/parquet
+  marks: namespace unique junos
+  output: '[{"namespace": "junos"}]'
+- command: namespace unique --count=True --format=json --namespace=junos
+  data-directory: tests/data/parquet
+  marks: namespace unique junos
+  output: '[{"namespace": "junos", "numRows": 1}]'

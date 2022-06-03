@@ -1,0 +1,64 @@
+description: Testing namespace table for Cumulus
+tests:
+- command: namespace show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet
+  marks: namespace show cumulus
+  output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
+    0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1652587570720}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
+    "errSvcCnt": 0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag":
+    true, "lastUpdate": 1652587500802}, {"namespace": "ospf-single", "deviceCnt":
+    14, "serviceCnt": 16, "errSvcCnt": 0, "hasOspf": true, "hasBgp": false, "hasVxlan":
+    false, "hasMlag": false, "lastUpdate": 1652587637124}]'
+- command: namespace show --format=json --os=cumulus --namespace='ospf-single dual-evpn
+    ospf-ibgp'
+  data-directory: tests/data/parquet
+  marks: namespace show  cumulus
+  output: '[{"namespace": "dual-evpn", "deviceCnt": 9, "serviceCnt": 17, "errSvcCnt":
+    0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1652587570704}, {"namespace": "ospf-ibgp", "deviceCnt": 9, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1652587500802}, {"namespace": "ospf-single", "deviceCnt": 9, "serviceCnt": 16,
+    "errSvcCnt": 0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag":
+    false, "lastUpdate": 1652587637101}]'
+- command: namespace show --columns='namespace' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet
+  marks: namespace show cumulus
+  output: '[{"namespace": "dual-evpn"}, {"namespace": "ospf-ibgp"}, {"namespace":
+    "ospf-single"}]'
+- command: namespace show --columns='hasOspf hasBgp' --format=json --namespace='ospf-single
+    dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet
+  marks: namespace show cumulus
+  output: '[{"hasOspf": false, "hasBgp": true}, {"hasOspf": true, "hasBgp": true},
+    {"hasOspf": true, "hasBgp": false}]'
+- command: namespace show --columns='*' --format=json --namespace='ospf-single dual-evpn
+    ospf-ibgp'
+  data-directory: tests/data/parquet
+  marks: namespace show cumulus
+  output: '[{"namespace": "dual-evpn", "deviceCnt": 14, "serviceCnt": 17, "errSvcCnt":
+    0, "hasOspf": false, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1652587570720, "active": true}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt":
+    18, "errSvcCnt": 0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag":
+    true, "lastUpdate": 1652587500802, "active": true}, {"namespace": "ospf-single",
+    "deviceCnt": 14, "serviceCnt": 16, "errSvcCnt": 0, "hasOspf": true, "hasBgp":
+    false, "hasVxlan": false, "hasMlag": false, "lastUpdate": 1652587637124, "active":
+    true}]'
+- command: namespace summarize --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet
+  marks: namespace summarize cumulus
+  output: '{"summary": {"namespacesCnt": 3, "servicePerNsStat": [16, 18, 17.0], "nsWithMlagCnt":
+    2, "nsWithBgpCnt": 2, "nsWithOspfCnt": 2, "nsWithVxlanCnt": 2, "nsWithErrsvcCnt":
+    0}}'
+- command: namespace unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+  data-directory: tests/data/parquet/
+  marks: namespace unique
+  output: '[{"namespace": "dual-evpn"}, {"namespace": "ospf-ibgp"}, {"namespace":
+    "ospf-single"}]'
+- command: namespace unique --count=True --format=json --namespace='ospf-single dual-evpn
+    ospf-ibgp'
+  data-directory: tests/data/parquet/
+  marks: namespace unique
+  output: '[{"namespace": "dual-evpn", "numRows": 1}, {"namespace": "ospf-ibgp", "numRows":
+    1}, {"namespace": "ospf-single", "numRows": 1}]'

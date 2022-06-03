@@ -1,7 +1,7 @@
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.macs import MacsObj
 
 
@@ -15,7 +15,7 @@ from suzieq.sqobjects.macs import MacsObj
 @argument("local", type=bool,
           description="filter entries with no remoteVtep")
 @argument("moveCount", description="num of times this MAC has moved")
-class MacCmd(SqCommand):
+class MacCmd(SqTableCommand):
     """MAC address table information"""
 
     def __init__(

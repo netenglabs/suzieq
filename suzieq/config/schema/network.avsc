@@ -3,82 +3,70 @@
     "name": "network",
     "type": "derivedRecord",
     "depends": [
-        "device",
         "interfaces",
-        "routes",
         "macs",
-        "bgp",
-        "ospf",
-        "evpnVni",
-        "vlan"
+        "bgp"
     ],
     "fields": [
         {
-            "name": "sqvers",
+            "name": "bondMembers",
             "type": "string",
-            "partition": 0,
-            "default": "2.0",
-            "suppress": true,
-            "description": "Schema version, not selectable"
-        },
-        {
-            "name": "deviceCnt",
-            "type": "long",
-            "display": 1,
-            "description": "Number of devices in inventory in this namespace"
-        },
-        {
-            "name": "serviceCnt",
-            "type": "long",
-            "display": 2,
-            "description": "Number of services polled in this namespace"
-        },
-        {
-            "name": "errSvcCnt",
-            "type": "long",
-            "display": 3,
-            "description": "Number of services with errors in this namespace"
-        },
-        {
-            "name": "hasOspf",
-            "type": "boolean",
-            "display": 4,
-            "description": "Is OSPF used in this namespace"
-        },
-        {
-            "name": "hasBgp",
-            "type": "boolean",
-            "display": 5,
-            "description": "Is BGP used in this namespace"
-        },
-        {
-            "name": "hasVxlan",
-            "type": "boolean",
-            "display": 6,
-            "description": "Is VXLAN used in this namespace"
-        },
-        {
-            "name": "hasMlag",
-            "type": "boolean",
             "display": 7,
-            "description": "Is MLAG used in this namespace"
+            "description": "Member ports of a bond interface"
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "display": 1,
+            "description": "Hostname associated with this record"
+        },
+        {
+            "name": "ifname",
+            "type": "string",
+            "display": 6,
+            "description": "Interface name"
+        },
+        {
+            "name": "ipAddress",
+            "type": "string",
+            "display":3,
+            "description": "Interface IP address"
+        },
+        {
+            "name": "l2miss",
+            "type": "boolean",
+            "display": 9,
+            "description": "MAC address not found for address"
+        },
+        {
+            "name": "macaddr",
+            "type": "string",
+            "display": 5,
+            "description": "Interface mac address"
         },
         {
             "name": "namespace",
             "type": "string",
-            "key": 0,
             "display": 0,
             "description": "Namespace associated with this record"
         },
         {
-            "name": "lastUpdate",
-            "type": "timestamp",
+            "name": "type",
+            "type": "string",
             "display": 8,
-            "description": "Time when any service was last polled"
+            "description": "Type of interface"
         },
         {
-            "name": "active",
-            "type": "boolean"
+            "name": "vlan",
+            "type": "float",
+            "display": 4,
+            "description": "Interface vlan"
+        },
+        {
+            "name": "vrf",
+            "type": "string",
+            "display": 2,
+            "description": "VRF associated with session"
         }
     ]
 }

@@ -53,7 +53,7 @@ class StatusPage(SqGuiPage):
                                          on_change=self._sync_state)
 
         if do_refresh:
-            st.caching.clear_memo_cache()
+            st.experimental_memo.clear()
 
         st.sidebar.markdown(
             '''This page provides an overview of the overall network status

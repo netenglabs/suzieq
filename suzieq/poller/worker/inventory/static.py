@@ -52,6 +52,9 @@ class StaticManagerInventory(Inventory):
 
         super().__init__(add_task_fn, **kwargs)
 
+        self._max_outstanding_cmd = int(
+            os.environ.get('SQ_MAX_OUTSTANDING_CMD', 0))
+
     async def _get_device_list(self) -> List[Dict]:
 
         async with aiofiles.open(str(self._inventory_file), "r") as out_file:
