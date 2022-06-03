@@ -1,36 +1,40 @@
-ARG version
+ARG version=1.0
 
-FROM suzieq-base:$version
+FROM python:3.7.11-buster AS base
 
-ARG version
-ARG username=suzieq
-ARG user_id=1000
+ENV PATH=/root/.local/bin:$PATH
+ENV PYTHONPATH=/root/.local/lib
 
-RUN useradd $username -u $user_id --create-home --user-group
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    apt-get install -y curl && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    python -m pip install --upgrade --no-cache-dir pip wheel
 
-RUN python3 -m pip install --upgrade --no-cache-dir pip
 
-COPY --chown=$username suzieq/config/etc/suzieq-cfg.yml /home/$username/.suzieq/suzieq-cfg.yml
+RUN curl -sSL https://install.python-poetry.org -o /tmp/install-poetry.py && \
+    python /tmp/install-poetry.py && \
+    rm -f /tmp/install-poetry.py
 
-RUN mkdir /home/$username/parquet && \
-    chown $user_id:$user_id /home/$username/parquet && \
-    sed -i 's/127.0.0.1/0.0.0.0/' /home/$username/.suzieq/suzieq-cfg.yml
+ENV PATH="${PATH}:/root/.local/bin"
 
-COPY ./dist/suzieq-$version-py3-none-any.whl  /tmp/
+RUN poetry config virtualenvs.create false && \
+    poetry config installer.parallel false
 
-RUN python3 -m pip install --no-cache-dir /tmp/suzieq-$version-py3-none-any.whl && \
-    rm -rf /tmp/* /var/tmp/*
 
-VOLUME [ "/home/$username/parquet" ]
- 
-ENV PATH=/root/.local/bin:$PATH:/root/.local/lib/python3.7/site-packages/suzieq/cli/:/root/.local/lib/python3.7/site-packages/suzieq/poller/:/root/.local/lib/python3.7/site-packages/suzieq/restServer
+COPY poetry.lock pyproject.toml /source/
+
+WORKDIR /source/
+
+RUN poetry install --no-interaction --no-ansi --no-root 
+
+COPY ./ ./
+
+RUN poetry install --no-interaction --no-ansi
 
 ENV SQENV=docker
 
-USER $username
-WORKDIR /home/$username
-ENTRYPOINT ["/bin/bash"]
+ENTRYPOINT ["tail", "-f", "/dev/null"]
 
-LABEL name=suzieq
-LABEL description="Network Observability Tool"
-LABEL version=$version
