@@ -35,7 +35,14 @@ class MroutesService(Service):
         if '0.0.0.0' in entry['source']:
             entry['source'] = '*'
 
+    # def _clean_nxos_data(self, processed_data, _):
+    #     print(processed_data)
+
+    #     return processed_data
+
     def _common_data_cleaner(self, processed_data, _):
+
+        print(processed_data)
         for entry in processed_data:
             self._fix_ipvers(entry)
             self._fix_star_source(entry)
