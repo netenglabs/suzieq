@@ -6,15 +6,22 @@ show-fields:
   - interfaceList
   - querier
   - flag
+  - vrf
 
 apply:
   eos:
     version: all
     command:
-      - command: show ip igmp groups
-        normalize: 'IgmpInterfaces/*:interface/[
+      - command: show ip igmp vrf Zone2 groups
+        normalize: 'groupList/*/[
+          "groupAddress: group",
+          "interfaceName: interfaceList",
+          "lastReporter: querier",
+          "vrf: vrf?|Default",
         ]'
-      - command: show ip igmp static-groups
-        normalize: 'intfAddrs/*:interface/groupAddrsList/[
+      - command: show ip igmp vrf Zone2 static-groups
+        normalize: 'intfAddrs/*:interface/[
+          "groupAddrsList: group",
           "flag: flag?|Static",
+          "vrf: vrf?|Default"
         ]'

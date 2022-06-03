@@ -28,25 +28,29 @@ class IgmpService(Service):
         # This handles the static group command output only
         # will update once some dynamic group output is available
         for data in raw_data:
-            json_data = json.loads(data['data'])
-            for interface in json_data['intfAddrs']:
-                for s_g in interface['groupAddrsList']:
-                    sg = '-'.join(s_g['sourceAddr'],s_g['groupAddr'])
-                    if pre_processed_data.get(sg):
-                        pre_processed_data.get(sg).append(interface)
-                    else:
-                        pre_processed_data[sg] = [interface]
+            json_data = json.loads(data.get('data'))
+            
+            if json_data:
+                if json_data.get('intfAddrs'):
+                    for interface in json_data['intfAddrs']:
+                        print(interface)
+                        if json_data['intfAddrs'][interface]['groupAddrsList']:
+                            for s_g in json_data['intfAddrs'][interface]['groupAddrsList']:
+                                sg = '-'.join(s_g['sourceAddr'],s_g['groupAddr'])
+                                if pre_processed_data.get(sg):
+                                    pre_processed_data.get(sg).append(interface)
+                                else:
+                                    pre_processed_data[sg] = [interface]
 
-        processed_data = []
         for k, v in pre_processed_data.items():
             s_g = k.split('-')
-            processed_data.append(
+            processed_data.append({
                 'source': s_g[0],
                 'group': s_g[1],
                 'interfaceList': v,
-                'flag': 'Static',
+                'flag': 'Static',}
             )
 
-        breakpoint()
+
 
         return processed_data
