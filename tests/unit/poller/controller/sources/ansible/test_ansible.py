@@ -52,7 +52,6 @@ async def test_valid_inventory(data_path: Dict, default_config):
         inv_path (str): path to add in the configuration
         result_path (str): path with result to compare
     """
-    # pylint: disable=protected-access
     config = default_config
     config['path'] = data_path['inventory']
 

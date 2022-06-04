@@ -175,7 +175,7 @@ class RoutesObj(SqPandasEngine):
 
         addnl_fields = []
         ipaddr = ip_address(addr)
-        ipvers = ipaddr._version  # pylint: disable=protected-access
+        ipvers = ipaddr._version
 
         # User may specify a different set of columns than what we're after
         usercols = kwargs.pop('columns', ['default'])
@@ -212,7 +212,7 @@ class RoutesObj(SqPandasEngine):
                                    16))
             netmask = df.prefixlen \
                 .map(lambda x: (0xffffffff << (32 - x)) & 0xffffffff)
-            # pylint: disable=protected-access
+
             match = (ipaddr._ip & netmask) == (intaddr & netmask)
             rslt = df.loc[match.loc[match].index] \
                 .sort_values('prefixlen', ascending=False) \

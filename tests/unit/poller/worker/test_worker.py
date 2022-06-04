@@ -2,7 +2,6 @@
 Poller component unit tests
 """
 # pylint: disable=redefined-outer-name
-# pylint: disable=protected-access
 
 import argparse
 import asyncio

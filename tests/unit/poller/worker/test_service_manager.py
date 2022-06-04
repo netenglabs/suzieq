@@ -14,7 +14,6 @@ from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.shared.exceptions import SqPollerConfError
 from tests.conftest import get_async_task_mock, suzieq_test_svc_dir
 
-# pylint: disable=protected-access
 
 SERVICE_DIR = './suzieq/config'
 SCHEMA_DIR = f'{SERVICE_DIR}/schema'

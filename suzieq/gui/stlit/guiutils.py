@@ -117,7 +117,6 @@ def get_base_url():
     URL for use with links on various pages.
     '''
     session_id = get_script_run_ctx().session_id
-    # pylint: disable=protected-access
     session_info = Server.get_current()._get_session_info(session_id)
 
     if session_info:
@@ -145,7 +144,6 @@ def get_main_session_by_id(session_id):
     Returns:
         [type]: session state associated with session or None
     """
-    # pylint: disable=protected-access
     session = Server.get_current()._session_info_by_id.get(session_id, None)
     if session:
         return session.session.session_state

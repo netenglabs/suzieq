@@ -17,7 +17,6 @@ from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
 from suzieq.shared.utils import load_sq_config
 from tests.conftest import create_dummy_config_file, get_async_task_mock
 
-# pylint: disable=protected-access
 # pylint: disable=unused-argument
 # pylint: disable=redefined-outer-name
 

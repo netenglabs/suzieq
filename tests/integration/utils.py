@@ -128,7 +128,6 @@ def assert_df_equal(expected_df, got_df, ignore_cols) -> None:
             # the failure. Pass if the problem is the order but they're
             # equal
             for row in rslt_df.itertuples():
-                # pylint: disable=protected-access
                 # Not really a protected member, its a col name
                 if isinstance(row._1, list) and isinstance(row._2, list):
                     if set(row._1) != set(row._2):

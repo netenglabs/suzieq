@@ -69,7 +69,6 @@ def test_cli_outputs_with_error(output_format, setup_nubia):
     '''Test output generation with errors'''
 
     sqcmd = SqTableCommand(format=output_format, sqobj=PathObj)
-    # pylint: disable=protected-access
     assert sqcmd._gen_output(df) == 1
 
 
@@ -81,5 +80,4 @@ def test_cli_outputs_without_error(output_format, setup_nubia):
     '''Test output generation without errors'''
 
     sqcmd = SqTableCommand(format=output_format, sqobj=PathObj)
-    # pylint: disable=protected-access
     assert sqcmd._gen_output(df.drop(columns=['error'])) == 0

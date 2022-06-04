@@ -607,7 +607,6 @@ class Service(SqPlugin):
 
     async def commit_data(self, result: Dict, namespace: str, hostname: str):
         """Write the result data out"""
-        # pylint: disable=protected-access
         records = []
         key = f'{namespace}.{hostname}'
         prev_res = self.previous_results.get(key, None)

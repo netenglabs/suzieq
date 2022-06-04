@@ -19,7 +19,6 @@ class PathDebugPage(SqGuiPage):
         self._create_sidebar()
         self._render(None)
 
-    # pylint: disable=protected-access
     def set_path_state(self, state):
         '''Save the path state from the Path window'''
         try:
@@ -137,8 +136,7 @@ class PathDebugPage(SqGuiPage):
                 st.dataframe(data=pathobj.engine._macsobj.get(
                     namespace=namespace, hostname=hostname, macaddr=macaddr))
 
-    # pylint: disable=protected-access, too-many-statements
-
+    # pylint: disable=too-many-statements
     def _handle_hop_url(self, url_params):
         '''Handle table display associated with hop'''
 
@@ -191,7 +189,6 @@ class PathDebugPage(SqGuiPage):
                              f'{row.hopCount}', expanded=True):
                 if row.macaddr:
                     st.info(f'MAC Table on {hostname}, MAC addr {row.macaddr}')
-                    # pylint: disable=protected-access
                     st.dataframe(data=engobj._macsobj.get(namespace=namespace,
                                                           hostname=hostname,
                                                           macaddr=row.macaddr))
@@ -199,14 +196,12 @@ class PathDebugPage(SqGuiPage):
 
                 if (row.ipLookup != row.vtepLookup):
                     st.info(f'Route Lookup on {hostname}')
-                    # pylint: disable=protected-access
                     st.dataframe(data=engobj._rdf.query(
                         f'hostname=="{hostname}" and vrf=="{row.vrf}"'))
 
                 if row.vtepLookup:
                     st.info(
                         f'Underlay Lookup on {hostname} for {row.vtepLookup}')
-                    # pylint: disable=protected-access
                     vtepdf = engobj._underlay_dfs.get(row.vtepLookup,
                                                       pd.DataFrame())
                     if not vtepdf.empty:

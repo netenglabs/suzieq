@@ -749,7 +749,6 @@ class PathObj(SqPandasEngine):
         if not src or not dest:
             raise AttributeError("Must specify trace source and dest")
 
-        # pylint: disable=protected-access
         srcvers = ip_network(src, strict=False)._version
         dstvers = ip_network(dest, strict=False)._version
         if srcvers != dstvers:

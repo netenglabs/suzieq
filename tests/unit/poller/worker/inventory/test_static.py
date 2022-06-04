@@ -2,7 +2,6 @@
 This module contains the tests for the StaticManagerInventory class, the
 one allowing to comunicate with the StaticManager in the controller side
 """
-# pylint: disable=protected-access
 # pylint: disable=redefined-outer-name
 from unittest.mock import MagicMock
 
