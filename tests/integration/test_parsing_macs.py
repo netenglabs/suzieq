@@ -1,8 +1,9 @@
 import re
 
 import pytest
+import numpy as np
 import pandas as pd
-from tests.conftest import DATADIR, validate_host_shape
+from tests.conftest import DATADIR, validate_host_shape, _get_table_data
 
 
 def validate_macs(df: pd.DataFrame):
@@ -30,6 +31,54 @@ def validate_macs(df: pd.DataFrame):
                                 ['flags'].unique())])
 
 
+def validate_interfaces(df: pd.DataFrame, datadir: str):
+    '''Validate that each VLAN/interface list is in interfaces table.
+
+    This is to catch problems in parsing interfaces such that the different
+    tables contain a different interface name than face table itself.
+    For example, in parsing older NXOS, we got iftable with Eth1/1 and the
+    mac table with Ethernet1/1. The logic of ensuring this also ensures that
+    the VLAN table is also validated as need to access it for trunk ports.
+    '''
+
+    # Create a new df of namespace/hostname/vrf to oif mapping
+    # exclude interfaces such as cpu/sup-eth1/vtep.* etc. as well
+    # as routed interfaces that have a VLAN of 0
+    only_oifs = df.query('~oif.isin(["bridge", "sup-eth1", '
+                         '"vPC Peer-Link", "nve1", "Router"])') \
+        .query('~oif.str.startswith("vtep.")') \
+        .query('vlan != 0') \
+        .groupby(by=['namespace', 'hostname', 'vlan'])['oif'] \
+        .unique() \
+        .reset_index() \
+        .explode('oif') \
+        .rename(columns={'oif': 'ifname'}) \
+        .reset_index(drop=True)
+
+    # Fetch the address table
+    if_df = _get_table_data('interface', datadir) \
+        .explode('vlanList') \
+        .reset_index(drop=True)
+
+    assert not if_df.empty, 'unexpected empty interfaces table'
+
+    if_df['vlan'] = np.where(~if_df.vlanList.isnull(), if_df.vlanList,
+                             if_df.vlan)
+
+    if_oifs = if_df[['namespace', 'hostname', 'vlan', 'ifname']] \
+        .groupby(by=['namespace', 'hostname', 'vlan'])['ifname'] \
+        .unique() \
+        .reset_index() \
+        .explode('ifname') \
+        .reset_index(drop=True)
+
+    merge_df = only_oifs.merge(if_oifs, how='left', indicator=True)
+    # Verify we have no rows where the route table OIF has no corresponding
+    # interface table info
+    assert merge_df.query('_merge != "both"').empty, \
+        'unknown interfaces in mac table'
+
+
 @ pytest.mark.parsing
 @ pytest.mark.mac
 @ pytest.mark.parametrize('table', ['macs'])
@@ -51,3 +100,4 @@ def test_macs_parsing(table, datadir, get_table_data):
     assert not df.empty
     validate_host_shape(df, ns_dict)
     validate_macs(df)
+    validate_interfaces(df, datadir)

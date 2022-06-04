@@ -25,18 +25,29 @@ apply:
 
   cumulus:
     version: all
-    command: net show system json
-    normalize: '[
-    "os-version: version",
-    "vendor: vendor?|Cumulus",
-    "uptime: _uptime",
-    "os: os?|cumulus",
-    "memory: memory?|0",
-    "platform/info/model_name: _modelName",
-    "platform/model: model",
-    "eeprom/Serial Number/value: serialNumber",
-    "platform/info/cpu/summary: architecture?|x86_64",
-    ]'
+    merge: False
+    command:
+      - command: net show system json
+        normalize: '[
+        "os-version: version",
+        "vendor: vendor?|Cumulus",
+        "uptime: _uptime",
+        "os: os?|cumulus",
+        "memory: memory?|0",
+        "platform/info/model_name: _modelName?|",
+        "platform/model: model?|",
+        "eeprom/Serial Number/value: serialNumber?|",
+        "platform/info/cpu/summary: architecture?|x86_64",
+        "_entryType: _entryType?|json"
+        ]'
+
+      - command: decode-syseeprom; cat /etc/os-release; cat /proc/meminfo
+        textfsm: textfsm_templates/cls_model_rel.tfsm
+        _entryType: model
+
+      - command: cat /proc/uptime; hostname
+        textfsm: textfsm_templates/cls_uptime_hostname.tfsm
+        _entryType: uptime
 
   iosxe:
     version: all

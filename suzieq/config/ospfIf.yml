@@ -51,9 +51,14 @@ apply:
 
   iosxe:
     version: all
-    command: show ip ospf interface
-    textfsm: textfsm_templates/iosxe_show_ip_ospfif.tfsm
-      
+    merge: False
+    command:
+      - command: show ip ospf
+        textfsm: textfsm_templates/iosxe_show_ip_ospf.tfsm
+        _entryType: process
+      - command: show ip ospf interface
+        textfsm: textfsm_templates/iosxe_show_ip_ospfif.tfsm
+
   ios:
     copy: iosxe
 

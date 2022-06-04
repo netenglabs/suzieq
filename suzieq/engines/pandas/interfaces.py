@@ -65,7 +65,7 @@ class InterfacesObj(SqPandasEngine):
             df = self._add_portmode(df, **kwargs)
 
         if vlan or "vlanList" in fields:
-            df = self._add_vlanlist(df)
+            df = self._add_vlanlist(df, **kwargs)
 
         if state or portmode:
             query_str = build_query_str([], self.schema, state=state,
@@ -591,8 +591,8 @@ class InterfacesObj(SqPandasEngine):
 
         df.loc[df.ifname == "bridge", 'portmode'] = ''
         if 'vlan_y' in df.columns:
-            df['vlan'] = np.where(df.vlan != 0, df.vlan,
-                                  df.vlan_y)
+            df['vlan'] = np.where(df.vlan_y != 0, df.vlan_y,
+                                  df.vlan)
         df['vlan'] = df.vlan.astype(int)
 
         df['portmode'] = np.where(df.adminState != 'up', '',
@@ -632,6 +632,7 @@ class InterfacesObj(SqPandasEngine):
                             .reset_index() \
                             .rename(columns={'interfaces': 'ifname',
                                              'vlan': 'vlanList'})
+        vlan_if_df = vlan_if_df.dropna(subset=['namespace', 'hostname'])
 
         vlan_if_df['vlanList'] = vlan_if_df.vlanList.apply(sorted)
 

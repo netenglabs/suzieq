@@ -13,74 +13,122 @@ Value deadTime (\d+)
 Value retxTime (\d+)
 Value nbrCount (\d+)
 Value passive (\w+)
+Value _processId (\d+)
 
 Start
   ^\S+ is.*$$ -> Continue.Record
   ^${ifname} is ${state}.*$$
   ^\s+Internet Address ${ipAddress},.*Area ${area}\s?${areaStub}.*$$
   ^\s+This interface is ${isUnnumbered}, Area ${area}\s?${areaStub}.*$$
-  ^\s+.*,\s+Router ID ${routerId}, Network Type ${networkType}, Cost:\s+${cost}.*$$
+  ^\s+Process\s+ID\s+${_processId},\s+Router ID ${routerId}, Network Type ${networkType}, Cost:\s+${cost}.*$$
   ^\s+Timer intervals configured, Hello ${helloTime}.*, Dead ${deadTime}.*, Retransmit ${retxTime}.*$$
   ^\s+No Hellos \(${passive} interface\).*$$
   ^\s+Neighbor Count.*, Adjacent neighbor count is ${nbrCount}.*$$
   ^\s+.*treated\s+as\s+a\s+${passive}\s+Host.*$$
 
 #Loopback0 is up, line protocol is up 
-#  Internet Address 1.1.1.1/32, Area 0, Attached via Network Statement
-#  Process ID 1, Router ID 1.1.1.1, Network Type LOOPBACK, Cost: 1
+#  Internet Address 10.0.0.1/32, Interface ID 12, Area 0.0.0.0
+#  Attached via Interface Enable
+#  Process ID 1, Router ID 10.0.0.1, Network Type LOOPBACK, Cost: 1
 #  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
 #        0           1         no          no            Base
+#  Enabled by interface config, including secondary ip addresses
 #  Loopback interface is treated as a stub Host
-#GigabitEthernet0/1 is up, line protocol is up 
-#  Internet Address 10.2.1.2/30, Area 0, Attached via Network Statement
-#  Process ID 1, Router ID 1.1.1.1, Network Type BROADCAST, Cost: 1
+#GigabitEthernet4 is up, line protocol is up 
+#  Internet Address 172.16.0.1/24, Interface ID 10, Area 0.0.0.0
+#  Attached via Interface Enable
+#  Process ID 1, Router ID 10.0.0.1, Network Type BROADCAST, Cost: 1
 #  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
 #        0           1         no          no            Base
+#  Enabled by interface config, including secondary ip addresses
 #  Transmit Delay is 1 sec, State DR, Priority 1
-#  Designated Router (ID) 1.1.1.1, Interface address 10.2.1.2
-#  Backup Designated router (ID) 22.22.22.22, Interface address 10.2.1.1
+#  Designated Router (ID) 10.0.0.1, Interface address 172.16.0.1
+#  No backup designated router on this network
 #  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
 #    oob-resync timeout 40
-#    Hello due in 00:00:06
+#    No Hellos (Passive interface) 
 #  Supports Link-local Signaling (LLS)
 #  Cisco NSF helper support enabled
 #  IETF NSF helper support enabled
+#  Can be protected by per-prefix Loop-Free FastReroute
+#  Can be used for per-prefix Loop-Free FastReroute repair paths
+#  Not Protected by per-prefix TI-LFA
 #  Index 1/3/3, flood queue length 0
 #  Next 0x0(0)/0x0(0)/0x0(0)
-#  Last flood scan length is 1, maximum is 7
-#  Last flood scan time is 0 msec, maximum is 7 msec
-#  Neighbor Count is 1, Adjacent neighbor count is 1 
-#    Adjacent with neighbor 22.22.22.22  (Backup Designated Router)
+#  Last flood scan length is 0, maximum is 0
+#  Last flood scan time is 0 msec, maximum is 0 msec
+#  Neighbor Count is 0, Adjacent neighbor count is 0 
 #  Suppress hello for 0 neighbor(s)
-#GigabitEthernet0/0 is up, line protocol is up 
-#  Internet Address 10.1.1.2/30, Area 0, Attached via Network Statement
-#  Process ID 1, Router ID 1.1.1.1, Network Type BROADCAST, Cost: 1
+#GigabitEthernet3 is up, line protocol is up 
+#  Internet Address 10.1.0.10/30, Interface ID 9, Area 0.0.0.0
+#  Attached via Interface Enable
+#  Process ID 1, Router ID 10.0.0.1, Network Type POINT_TO_POINT, Cost: 1
 #  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
 #        0           1         no          no            Base
-#  Transmit Delay is 1 sec, State DR, Priority 1
-#  Designated Router (ID) 1.1.1.1, Interface address 10.1.1.2
-#  Backup Designated router (ID) 11.11.11.11, Interface address 10.1.1.1
+#  Enabled by interface config, including secondary ip addresses
+#  Transmit Delay is 1 sec, State POINT_TO_POINT
 #  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
 #    oob-resync timeout 40
 #    Hello due in 00:00:08
 #  Supports Link-local Signaling (LLS)
 #  Cisco NSF helper support enabled
 #  IETF NSF helper support enabled
+#  Can be protected by per-prefix Loop-Free FastReroute
+#  Can be used for per-prefix Loop-Free FastReroute repair paths
+#  Not Protected by per-prefix TI-LFA
 #  Index 1/2/2, flood queue length 0
 #  Next 0x0(0)/0x0(0)/0x0(0)
-#  Last flood scan length is 0, maximum is 7
-#  Last flood scan time is 0 msec, maximum is 8 msec
+#  Last flood scan length is 1, maximum is 1
+#  Last flood scan time is 0 msec, maximum is 0 msec
 #  Neighbor Count is 1, Adjacent neighbor count is 1 
-#    Adjacent with neighbor 11.11.11.11  (Backup Designated Router)
+#    Adjacent with neighbor 10.0.0.4
 #  Suppress hello for 0 neighbor(s)
-#GigabitEthernet0/0 is administratively down, line protocol is down 
-#  Internet Address 10.1.1.2/30, Area 0, Attached via Network Statement
-#  Process ID 1, Router ID 1.1.1.1, Network Type BROADCAST, Cost: 1
+#GigabitEthernet2 is up, line protocol is up 
+#  Internet Address 10.1.0.2/30, Interface ID 8, Area 0.0.0.0
+#  Attached via Interface Enable
+#  Process ID 100, Router ID 10.0.0.1, Network Type POINT_TO_POINT, Cost: 1
 #  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
 #        0           1         no          no            Base
-#  Transmit Delay is 1 sec, State DOWN, Priority 1
-#  No designated router on this network
-#  No backup designated router on this network
+#  Enabled by interface config, including secondary ip addresses
+#  Transmit Delay is 1 sec, State POINT_TO_POINT
 #  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
 #    oob-resync timeout 40
+#    Hello due in 00:00:08
+#  Supports Link-local Signaling (LLS)
+#  Cisco NSF helper support enabled
+#  IETF NSF helper support enabled
+#  Can be protected by per-prefix Loop-Free FastReroute
+#  Can be used for per-prefix Loop-Free FastReroute repair paths
+#  Not Protected by per-prefix TI-LFA
+#  Index 1/2/2, flood queue length 0
+#  Next 0x0(0)/0x0(0)/0x0(0)
+#  Last flood scan length is 1, maximum is 1
+#  Last flood scan time is 0 msec, maximum is 0 msec
+#  Neighbor Count is 1, Adjacent neighbor count is 1 
+#    Adjacent with neighbor 10.0.0.4
+#  Suppress hello for 0 neighbor(s)
+#GigabitEthernet2 is up, line protocol is up 
+#  Internet Address 10.1.0.2/30, Interface ID 8, Area 0.0.0.0
+#  Attached via Interface Enable
+#  Process ID 100, Router ID 10.0.0.1, Network Type POINT_TO_POINT, Cost: 1
+#  Topology-MTID    Cost    Disabled    Shutdown      Topology Name
+#        0           1         no          no            Base
+#  Enabled by interface config, including secondary ip addresses
+#  Transmit Delay is 1 sec, State POINT_TO_POINT
+#  Timer intervals configured, Hello 10, Dead 40, Wait 40, Retransmit 5
+#    oob-resync timeout 40
+#    Hello due in 00:00:08
+#  Supports Link-local Signaling (LLS)
+#  Cisco NSF helper support enabled
+#  IETF NSF helper support enabled
+#  Can be protected by per-prefix Loop-Free FastReroute
+#  Can be used for per-prefix Loop-Free FastReroute repair paths
+#  Not Protected by per-prefix TI-LFA
+#  Index 1/1/1, flood queue length 0
+#  Next 0x0(0)/0x0(0)/0x0(0)
+#  Last flood scan length is 1, maximum is 1
+#  Last flood scan time is 0 msec, maximum is 0 msec
+#  Neighbor Count is 1, Adjacent neighbor count is 1 
+#    Adjacent with neighbor 10.0.0.3
+#  Suppress hello for 0 neighbor(s)
 #

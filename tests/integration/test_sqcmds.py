@@ -181,7 +181,11 @@ def test_bad_start_time_filter(setup_nubia, get_cmd_object_dict, cmd):
     for cmd in cli_commands])
 def test_bad_show_namespace_filter(setup_nubia, get_cmd_object_dict, cmd):
     options = {'namespace': 'unknown'}
-    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], options)
+    if cmd == "topology":
+        assert_error = True
+    else:
+        assert_error = False
+    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], options, assert_error)
 
 
 def _test_bad_show_filter(cmd, options, assert_error=False):

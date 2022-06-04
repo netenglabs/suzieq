@@ -1,0 +1,249 @@
+Value memory (\d+)
+Value vendor (\S+)
+Value serialNumber (\S+)
+Value model (.*)
+Value version ([0-9.]+)
+
+Start
+  ^Vendor\s+Name\s+.*\s+\d+\s+${vendor}\s+
+  ^Product\s+Name\s+.*\s+\d+\s+${model}
+  ^Serial\s+Number\s+.*\s+\d+\s+${serialNumber}
+  ^VERSION_ID=${version}
+  ^MemTotal:\s+${memory}\s+kB
+  
+#TlvInfo Header:
+#   Id String:    TlvInfo
+#   Version:      1
+#   Total Length: 69
+#TLV Name             Code Len Value
+#-------------------- ---- --- -----
+#Vendor Name          0x2D  16 Cumulus Networks
+#Product Name         0x21   2 VX
+#Device Version       0x26   1 3
+#Part Number          0x22   5 4.4.0
+#MAC Addresses        0x2A   2 7
+#Base MAC Address     0x24   6 44:38:39:01:02:01
+#Serial Number        0x23  17 44:38:39:01:02:01
+#CRC-32               0xFE   4 0xC38EB5C2
+#(checksum valid)
+#NAME="Cumulus Linux"
+#VERSION_ID=4.4.0
+#VERSION="Cumulus Linux 4.4.0"
+#PRETTY_NAME="Cumulus Linux"
+#ID=cumulus-linux
+#ID_LIKE=debian
+#CPE_NAME=cpe:/o:cumulusnetworks:cumulus_linux:4.4.0
+#HOME_URL="http://www.cumulusnetworks.com/"
+#SUPPORT_URL="http://support.cumulusnetworks.com/"
+#MemTotal:         685540 kB
+#MemFree:          109752 kB
+#MemAvailable:     226144 kB
+#Buffers:           24860 kB
+#Cached:           170544 kB
+#SwapCached:            0 kB
+#Active:           392652 kB
+#Inactive:          77196 kB
+#Active(anon):     277764 kB
+#Inactive(anon):     9188 kB
+#Active(file):     114888 kB
+#Inactive(file):    68008 kB
+#Unevictable:           0 kB
+#Mlocked:               0 kB
+#SwapTotal:             0 kB
+#SwapFree:              0 kB
+#Dirty:                 4 kB
+#Writeback:             0 kB
+#AnonPages:        274476 kB
+#Mapped:            56596 kB
+#Shmem:             12512 kB
+#Slab:              74636 kB
+#SReclaimable:      55148 kB
+#SUnreclaim:        19488 kB
+#KernelStack:        2444 kB
+#PageTables:         3056 kB
+#NFS_Unstable:          0 kB
+#Bounce:                0 kB
+#WritebackTmp:          0 kB
+#CommitLimit:      342768 kB
+#Committed_AS:     879348 kB
+#VmallocTotal:   34359738367 kB
+#VmallocUsed:           0 kB
+#VmallocChunk:          0 kB
+#Percpu:             1716 kB
+#HardwareCorrupted:     0 kB
+#AnonHugePages:         0 kB
+#ShmemHugePages:        0 kB
+#ShmemPmdMapped:        0 kB
+#HugePages_Total:       0
+#HugePages_Free:        0
+#HugePages_Rsvd:        0
+#HugePages_Surp:        0
+#Hugepagesize:       2048 kB
+#Hugetlb:               0 kB
+#DirectMap4k:       77676 kB
+#DirectMap2M:      708608 kB
+#DirectMap1G:           0 kB
+#66973.84 66142.72
+#vagrant@leaf01:mgmt:~$ 
+#vagrant@leaf01:mgmt:~$ decode-syseeprom && cat /etc/os-release && cat /proc/meminfo && cat /proc/uptime && cat /etc/hostname
+#TlvInfo Header:
+#   Id String:    TlvInfo
+#   Version:      1
+#   Total Length: 69
+#TLV Name             Code Len Value
+#-------------------- ---- --- -----
+#Vendor Name          0x2D  16 Cumulus Networks
+#Product Name         0x21   2 VX
+#Device Version       0x26   1 3
+#Part Number          0x22   5 4.4.0
+#MAC Addresses        0x2A   2 7
+#Base MAC Address     0x24   6 44:38:39:01:02:01
+#Serial Number        0x23  17 44:38:39:01:02:01
+#CRC-32               0xFE   4 0xC38EB5C2
+#(checksum valid)
+#NAME="Cumulus Linux"
+#VERSION_ID=4.4.0
+#VERSION="Cumulus Linux 4.4.0"
+#PRETTY_NAME="Cumulus Linux"
+#ID=cumulus-linux
+#ID_LIKE=debian
+#CPE_NAME=cpe:/o:cumulusnetworks:cumulus_linux:4.4.0
+#HOME_URL="http://www.cumulusnetworks.com/"
+#SUPPORT_URL="http://support.cumulusnetworks.com/"
+#MemTotal:         685540 kB
+#MemFree:          110388 kB
+#MemAvailable:     226868 kB
+#Buffers:           24944 kB
+#Cached:           170548 kB
+#SwapCached:            0 kB
+#Active:           392292 kB
+#Inactive:          77208 kB
+#Active(anon):     277324 kB
+#Inactive(anon):     9192 kB
+#Active(file):     114968 kB
+#Inactive(file):    68016 kB
+#Unevictable:           0 kB
+#Mlocked:               0 kB
+#SwapTotal:             0 kB
+#SwapFree:              0 kB
+#Dirty:                 0 kB
+#Writeback:             0 kB
+#AnonPages:        274000 kB
+#Mapped:            56612 kB
+#Shmem:             12512 kB
+#Slab:              74528 kB
+#SReclaimable:      55152 kB
+#SUnreclaim:        19376 kB
+#KernelStack:        2412 kB
+#PageTables:         2964 kB
+#NFS_Unstable:          0 kB
+#Bounce:                0 kB
+#WritebackTmp:          0 kB
+#CommitLimit:      342768 kB
+#Committed_AS:     875532 kB
+#VmallocTotal:   34359738367 kB
+#VmallocUsed:           0 kB
+#VmallocChunk:          0 kB
+#Percpu:             1716 kB
+#HardwareCorrupted:     0 kB
+#AnonHugePages:         0 kB
+#ShmemHugePages:        0 kB
+#ShmemPmdMapped:        0 kB
+#HugePages_Total:       0
+#HugePages_Free:        0
+#HugePages_Rsvd:        0
+#HugePages_Surp:        0
+#Hugepagesize:       2048 kB
+#Hugetlb:               0 kB
+#DirectMap4k:       77676 kB
+#DirectMap2M:      708608 kB
+#DirectMap1G:           0 kB
+#68255.48 67410.21
+#leaf01
+#vagrant@leaf01:mgmt:~$ hostna
+#hostname     hostnamectl  
+#vagrant@leaf01:mgmt:~$ hostnamectl 
+#   Static hostname: leaf01
+#         Icon name: computer-vm
+#           Chassis: vm
+#        Machine ID: 1c2b8c45a8b84106a655a360de11f57a
+#           Boot ID: 3274ff6d2031495eaab2374c8d3fba91
+#    Virtualization: kvm
+#  Operating System: Cumulus Linux
+#       CPE OS Name: cpe:/o:cumulusnetworks:cumulus_linux:4.4.0
+#            Kernel: Linux 4.19.0-cl-1-amd64
+#      Architecture: x86-64
+#vagrant@leaf01:mgmt:~$ decode-syseeprom && cat /etc/os-release && cat /proc/meminfo && cat /proc/uptime && cat /etc/hostname
+#TlvInfo Header:
+#   Id String:    TlvInfo
+#   Version:      1
+#   Total Length: 69
+#TLV Name             Code Len Value
+#-------------------- ---- --- -----
+#Vendor Name          0x2D  16 Cumulus Networks
+#Product Name         0x21   2 VX
+#Device Version       0x26   1 3
+#Part Number          0x22   5 4.4.0
+#MAC Addresses        0x2A   2 7
+#Base MAC Address     0x24   6 44:38:39:01:02:01
+#Serial Number        0x23  17 44:38:39:01:02:01
+#CRC-32               0xFE   4 0xC38EB5C2
+#(checksum valid)
+#NAME="Cumulus Linux"
+#VERSION_ID=4.4.0
+#VERSION="Cumulus Linux 4.4.0"
+#PRETTY_NAME="Cumulus Linux"
+#ID=cumulus-linux
+#ID_LIKE=debian
+#CPE_NAME=cpe:/o:cumulusnetworks:cumulus_linux:4.4.0
+#HOME_URL="http://www.cumulusnetworks.com/"
+#SUPPORT_URL="http://support.cumulusnetworks.com/"
+#MemTotal:         685540 kB
+#MemFree:          108696 kB
+#MemAvailable:     225284 kB
+#Buffers:           24952 kB
+#Cached:           170612 kB
+#SwapCached:            0 kB
+#Active:           393272 kB
+#Inactive:          77156 kB
+#Active(anon):     278184 kB
+#Inactive(anon):     9200 kB
+#Active(file):     115088 kB
+#Inactive(file):    67956 kB
+#Unevictable:           0 kB
+#Mlocked:               0 kB
+#SwapTotal:             0 kB
+#SwapFree:              0 kB
+#Dirty:                48 kB
+#Writeback:             0 kB
+#AnonPages:        274884 kB
+#Mapped:            56660 kB
+#Shmem:             12516 kB
+#Slab:              75188 kB
+#SReclaimable:      55244 kB
+#SUnreclaim:        19944 kB
+#KernelStack:        2428 kB
+#PageTables:         3012 kB
+#NFS_Unstable:          0 kB
+#Bounce:                0 kB
+#WritebackTmp:          0 kB
+#CommitLimit:      342768 kB
+#Committed_AS:     877148 kB
+#VmallocTotal:   34359738367 kB
+#VmallocUsed:           0 kB
+#VmallocChunk:          0 kB
+#Percpu:             1740 kB
+#HardwareCorrupted:     0 kB
+#AnonHugePages:         0 kB
+#ShmemHugePages:        0 kB
+#ShmemPmdMapped:        0 kB
+#HugePages_Total:       0
+#HugePages_Free:        0
+#HugePages_Rsvd:        0
+#HugePages_Surp:        0
+#Hugepagesize:       2048 kB
+#Hugetlb:               0 kB
+#DirectMap4k:       77676 kB
+#DirectMap2M:      708608 kB
+#DirectMap1G:           0 kB
+#
