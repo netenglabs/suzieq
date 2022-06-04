@@ -94,14 +94,25 @@ def test_inventory_init():
 @pytest.mark.poller_worker
 @pytest.mark.poller_inventory
 @pytest.mark.asyncio
-async def test_inventory_build():
+@pytest.mark.parametrize("max_outstanding_cmds", [0, 5])
+async def test_inventory_build(max_outstanding_cmds):
     """Test inventory build
     """
     inv = _init_inventory()
+    inv._max_outstanding_cmd = max_outstanding_cmds
 
     with patch.multiple(Node, _init_ssh=get_async_task_mock(),
                         _fetch_init_dev_data=get_async_task_mock()):
         nodes = await inv.build_inventory()
+
+    # Check if a semaphore with the proper initial value have been created
+    if max_outstanding_cmds:
+        assert inv._cmd_semaphore, 'Command semaphore should be initialized'
+        assert inv._cmd_semaphore._value == max_outstanding_cmds, \
+            'Command semaphore has not the expected initial value'
+    else:
+        assert inv._cmd_semaphore is None, \
+            'Command semaphore created but max_outstanding_commands not set'
 
     # Check if nodes are registered in the inventory
     assert set(nodes) == set(inv.nodes)
@@ -115,6 +126,9 @@ async def test_inventory_build():
         assert inv.connect_timeout == invnode.connect_timeout
         assert node['jump_host'].split("@")[1] == invnode.jump_host
         assert invnode.jump_host_key
+        if max_outstanding_cmds:
+            assert invnode._cmd_sem == inv._cmd_semaphore, \
+                'Semaphore not provided to nodes'
 
         for arg, arg_value in node.items():
             if arg in ['namespace', 'ssh_keyfile', 'jump_host',
