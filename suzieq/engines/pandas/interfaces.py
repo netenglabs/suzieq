@@ -204,6 +204,8 @@ class InterfacesObj(SqPandasEngine):
         result = kwargs.pop('result', 'all')
         state = kwargs.pop('state', '')
         iftype = kwargs.pop('type', [])
+        ifname = kwargs.pop('ifname', [])
+        hostname = kwargs.pop('hostname', [])
 
         def _check_field(x, fld1, fld2, reason):
             if x.skipIfCheck or x.indexPeer < 0:
@@ -259,13 +261,19 @@ class InterfacesObj(SqPandasEngine):
 
         if_df = self._drop_junos_pifnames(if_df).reset_index()
 
+        if if_df.empty:
+            if result != 'pass':
+                if_df['result'] = 'fail'
+                if_df['assertReason'] = 'No data'
+
+            return if_df
+
         lldpobj = self._get_table_sqobj('lldp')
         mlagobj = self._get_table_sqobj('mlag')
 
         # can't pass all kwargs, because lldp acceptable arguements are
         # different than interface
         namespace = kwargs.get('namespace', [])
-        hostname = kwargs.get('hostname', [])
         lldp_df = lldpobj.get(namespace=namespace, hostname=hostname) \
                          .query('peerIfname != "-"')
 
@@ -332,6 +340,12 @@ class InterfacesObj(SqPandasEngine):
                            "mgmtIP", "description"]) \
             .dropna(subset=['hostname', 'ifname']) \
             .drop_duplicates(subset=['namespace', 'hostname', 'ifname'])
+
+        if not combined_df.empty and hostname:
+            combined_df = self._filter_hostname(combined_df, hostname)
+
+        if not combined_df.empty and ifname:
+            combined_df = combined_df.query(f'ifname.isin({ifname})')
 
         if combined_df.empty:
             if result != 'pass':
@@ -464,6 +478,9 @@ class InterfacesObj(SqPandasEngine):
         Returns:
             pd.DataFrame: updated dataframe
         """
+        if if_df.empty:
+            return if_df
+
         # save the parent interface name in pifname column
         if_df['pifname'] = if_df.apply(
             lambda x: x['ifname'].split('.')[0]
