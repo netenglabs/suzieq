@@ -926,3 +926,46 @@ def convert_asndot_to_asn(asn: str) -> int:
 def print_version():
     '''Print the suzieq version and return'''
     print(SUZIEQ_VERSION)
+
+
+def deprecated_table_function_warning(dep_table: str, dep_command: str,
+                                      table: str = None,
+                                      command: str = None) -> str:
+    """Return the string of the warning for a deprecated function
+
+    If both table and command aren't provided, the warning will only
+    return that the function is deprecated.
+    If instead we provide them, the warning will also contain the new command
+    to call
+
+    Args:
+        table (str): correct table to run the command
+        command (str): correct command to call
+        dep_table (str): deprecated table command
+        dep_command (str): deprecated command
+    """
+    warning_str = f"WARNING: '{dep_table} {dep_command}' is deprecated."
+    if dep_table and dep_command:
+        warning_str += f" Use '{table} {command}' instead."
+    return warning_str
+
+
+def deprecated_command_warning(dep_command: str, dep_sub_command: str,
+                               command: str = None,
+                               sub_command: str = None) -> str:
+    """It's a wrapper for the deprecated_table_function_warning. It is used to
+    display a message when the user writes a deprecated command.
+
+    Args:
+        dep_command (str): deprecated command
+        dep_sub_command (str): deprecated sub command
+        command (str, optional): command to use instead. Defaults to None.
+        sub_command (str, optional): subcommand to use instead.
+        Defaults to None.
+
+    Returns:
+        str: deprecated command warning message
+    """
+
+    return deprecated_table_function_warning(dep_command, dep_sub_command,
+                                             command, sub_command)

@@ -14,10 +14,12 @@ from prompt_toolkit import prompt
 from natsort import natsort_keygen
 from colorama import Fore, Style
 
+from termcolor import cprint, colored
 from suzieq.cli.nubia_patch import argument
 from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.exceptions import UserQueryError
-from suzieq.shared.utils import DATA_FORMATS, SUPPORTED_ENGINES
+from suzieq.shared.utils import (DATA_FORMATS, SUPPORTED_ENGINES,
+                                 deprecated_command_warning)
 
 
 def colorize(x, color):
@@ -399,6 +401,26 @@ class SqCommand(SqPlugin):
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(df)
+
+    def _print_depracation_command_warning(self,
+                                           new_command: str,
+                                           sub_command: str,
+                                           dep_sub_command: str = None):
+        """Print depracation command warning
+
+        Args:
+            new_command (str): command
+            command (str): _description_
+            dep_command (str, optional): _description_. Defaults to None.
+        """
+        if not dep_sub_command:
+            dep_sub_command = sub_command
+        dep_command = self.sqobj.table
+        warning_msg = deprecated_command_warning(dep_command,
+                                                 dep_sub_command,
+                                                 new_command,
+                                                 sub_command)
+        cprint(colored(warning_msg, 'yellow'))
 
 
 class SqTableCommand(SqCommand):

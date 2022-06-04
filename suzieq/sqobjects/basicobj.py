@@ -1,8 +1,9 @@
-import typing
+from typing import List
 import pandas as pd
 from pandas.core.dtypes.dtypes import DatetimeTZDtype
 
-from suzieq.shared.utils import load_sq_config, humanize_timestamp
+from suzieq.shared.utils import (load_sq_config, humanize_timestamp,
+                                 deprecated_table_function_warning)
 from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines import get_sqengine
 from suzieq.shared.sq_plugin import SqPlugin
@@ -13,10 +14,10 @@ class SqObject(SqPlugin):
     '''The base class for accessing the backend independent of the engine'''
 
     def __init__(self, engine_name: str = '',
-                 hostname: typing.List[str] = None,
+                 hostname: List[str] = None,
                  start_time: str = '', end_time: str = '',
-                 view: str = '', namespace: typing.List[str] = None,
-                 columns: typing.List[str] = None,
+                 view: str = '', namespace: List[str] = None,
+                 columns: List[str] = None,
                  context=None, table: str = '', config_file=None) -> None:
 
         if not context:
@@ -106,7 +107,7 @@ class SqObject(SqPlugin):
             return
 
         # add standard args that are always
-        good_arg_list = good_arg_list + (['namespace'])
+        good_arg_list = good_arg_list + (['namespace', 'ignore_warning'])
 
         for arg in kwargs:
             if arg not in good_arg_list:
@@ -146,7 +147,7 @@ class SqObject(SqPlugin):
         '''Validate the values of the summarize function'''
         self._check_input_for_valid_args(self._valid_get_args, **kwargs)
 
-    def validate_columns(self, columns: typing.List[str]) -> bool:
+    def validate_columns(self, columns: List[str]) -> bool:
         """Validate that the provided columns are valid for the table
 
         Args:
@@ -169,6 +170,7 @@ class SqObject(SqPlugin):
 
     def get(self, **kwargs) -> pd.DataFrame:
         '''Return the data for this table given a set of attributes'''
+        kwargs.pop('ignore_warning', None)
         if not self._table:
             raise NotImplementedError
 
@@ -207,6 +209,7 @@ class SqObject(SqPlugin):
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         '''Summarize the data from specific table'''
+        kwargs.pop('ignore_warning', None)
         if self.columns != ["default"]:
             self.summarize_df = pd.DataFrame(
                 {'error':
@@ -225,6 +228,7 @@ class SqObject(SqPlugin):
 
     def unique(self, **kwargs) -> pd.DataFrame:
         '''Identify unique values and value counts for a column in table'''
+        kwargs.pop('ignore_warning', None)
         if not self._table:
             raise NotImplementedError
 
@@ -247,6 +251,7 @@ class SqObject(SqPlugin):
 
     def aver(self, **kwargs):
         '''Assert one or more checks on table'''
+        kwargs.pop('ignore_warning', None)
         if self._valid_assert_args:
             return self._assert_if_supported(**kwargs)
 
@@ -255,7 +260,7 @@ class SqObject(SqPlugin):
     def top(self, what: str = '', count: int = 5, reverse: bool = False,
             **kwargs) -> pd.DataFrame:
         """Get the list of top/bottom entries of "what" field"""
-
+        kwargs.pop('ignore_warning', None)
         columns = kwargs.get('columns', ['default'])
         # This raises ValueError if it fails
         self.validate_columns(columns)
@@ -291,7 +296,7 @@ class SqObject(SqPlugin):
 
     def describe(self, **kwargs):
         """Describes the fields for a given table"""
-
+        kwargs.pop('ignore_warning', None)
         table = kwargs.get('table', self.table)
 
         if table in ['interface', 'route', 'mac', 'table']:
@@ -406,3 +411,51 @@ class SqObject(SqPlugin):
             df = df[req_cols]
 
         return df
+
+    def _run_deprecated_function(self, table: str, command: str,
+                                 dep_command: str = None,
+                                 ignore_warning: str = False,
+                                 **kwargs):
+        """ This function is in charge of running a deprecated function.
+        First, it initializes a new sqobject using the same parameters used to
+        initialize the sqobject calling this function. Then it checks if the
+        command exists and run it setting the kwargs as arguments.
+
+        Args:
+            table (str): table to run the command
+            command (str): command to run
+            dep_command (str, optional): deprecated command.
+            ignore_warning (str, optional): do not print the warning message.
+
+        Raises:
+            RuntimeError: unknown table or command
+        """
+        try:
+            init_args = {
+                'hostname': self.hostname,
+                'start_time': self.start_time,
+                'end_time': self.end_time,
+                'view': self.view,
+                'namespace': self.namespace,
+                'columns': self.columns,
+                'context': self.ctxt
+            }
+            if not dep_command:
+                dep_command = command
+            dep_table = self.table
+
+            sqobjs = SqObject.get_plugins()
+            if table not in sqobjs:
+                raise RuntimeError(f'unknown table {table}')
+            sqobj = sqobjs[table](**init_args)
+            func = getattr(sqobj, command, None)
+            if func is None or not callable(func):
+                raise RuntimeError(f'unsupported function {command} '
+                                   f'for {table}')
+            if not ignore_warning:
+                print(deprecated_table_function_warning(
+                    dep_table, dep_command, table, command
+                ))
+            return func(**kwargs)
+        except RuntimeError as e:
+            return pd.DataFrame({'error': [str(e)]})

@@ -37,6 +37,7 @@ class RoutesObj(SqObject):
 
     def lpm(self, **kwargs) -> pd.DataFrame:
         '''Get the lpm for the given address'''
+        kwargs.pop('ignore_warning', None)
         if not kwargs.get("address", None):
             raise AttributeError('ip address is mandatory parameter')
         if isinstance(kwargs['address'], list):
