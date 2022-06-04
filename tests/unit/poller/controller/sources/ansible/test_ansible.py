@@ -61,7 +61,12 @@ async def test_valid_inventory(data_path: Dict, default_config):
     assert inv._namespace == config['namespace']
 
     cur_inv = await asyncio.wait_for(inv.get_inventory(), 5)
-    assert cur_inv == read_yaml_file(data_path['results'])
+    for key, item in read_yaml_file(data_path['results']).items():
+        assert key in cur_inv, f'Missing expected node {key} in inventory'
+        got_data = cur_inv[key]
+        for k, v in item.items():
+            assert k in got_data, f'Missing key {k} in for node {key}'
+            assert v == got_data[k], f'Mismatch result for {k} for node {key}'
 
 
 @pytest.mark.controller_source_ansible

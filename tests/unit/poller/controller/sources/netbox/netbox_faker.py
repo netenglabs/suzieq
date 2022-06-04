@@ -22,6 +22,8 @@ _BASE_INVENTORY_DEVICE = {
     'password': 'password',
     'port': 22,
     'slow_host': False,
+    'per_cmd_auth': True,
+    'retries_on_auth_fail': 0,
     'ssh_keyfile': None,
     'transport': 'ssh',
     'username': 'username'
@@ -32,6 +34,7 @@ class NetboxFaker:
     """This class generates fake data for Netbox REST server and create
     the expected inventory file
     """
+
     def __init__(self, config_data: dict) -> None:
         """ config_data is the following:
 
