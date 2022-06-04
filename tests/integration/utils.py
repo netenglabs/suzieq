@@ -1,6 +1,8 @@
 import pandas as pd
 import yaml
 
+from tests.conftest import _get_table_data
+
 
 class Dict2Class:
     '''Convert dict to class to enable use of "." to access mbrs'''
@@ -196,3 +198,30 @@ def _list_columns_to_str(col):
         else:
             res.append(str(el))
     return res
+
+
+def validate_vrfs(df: pd.DataFrame, table: str, datadir: str):
+    '''Validate that each VRF has a valid entry in the interfaces table'''
+
+    only_vrfs = df.groupby(by=['namespace', 'hostname'])['vrf'] \
+        .unique() \
+        .reset_index() \
+        .explode('vrf') \
+        .query('~vrf.isin(["default", ":vxlan"])') \
+        .rename(columns={'vrf': 'ifname'}) \
+        .reset_index(drop=True)
+
+    if_df = _get_table_data('interface', datadir) \
+        .query('type=="vrf"')
+
+    assert not if_df.empty, 'unexpected empty interfaces table'
+
+    vrf_oifs = if_df.groupby(by=['namespace', 'hostname'])['ifname'] \
+        .unique() \
+        .reset_index() \
+        .explode('ifname') \
+        .reset_index(drop=True)
+
+    m_df = only_vrfs.merge(vrf_oifs, how='left', indicator=True)
+    assert m_df.query('_merge != "both"').empty, \
+        'Unexpected VRF names in {table} table'

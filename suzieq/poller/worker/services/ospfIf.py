@@ -154,8 +154,14 @@ class OspfIfService(Service):
     def _clean_ios_data(self, processed_data, _):
 
         drop_indices = []
+        proc_vrf_map = {}
 
         for i, entry in enumerate(processed_data):
+            if entry.get('_entryType', ''):
+                proc_vrf_map[entry.get('_processId', '')] = entry['vrf']
+                drop_indices.append(i)
+                continue
+
             if not entry.get('ifname', ''):
                 drop_indices.append(i)
                 continue
@@ -175,7 +181,12 @@ class OspfIfService(Service):
                 entry['deadTime']) if entry['deadTime'] else 40  # def value
             entry['retxTime'] = int(
                 entry['retxTime']) if entry['retxTime'] else 5  # def value
-            entry['vrf'] = 'default'  # IOS doesn't provide this info
+            proc_id = entry.get('_processId', '')
+            if proc_id:
+                entry['vrf'] = proc_vrf_map.get(proc_id, 'default')
+            if not entry.get('vrf', ''):
+                entry['vrf'] = 'default'
+
             entry['authType'] = entry.get('authType', '').lower()
             entry['nbrCount'] = int(
                 entry['nbrCount']) if entry['nbrCount'] else 0

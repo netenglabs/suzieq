@@ -2,6 +2,7 @@ import re
 from datetime import timedelta, datetime
 from dateparser import parse
 
+import numpy as np
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import get_timestamp_from_junos_time
 
@@ -57,24 +58,60 @@ class DeviceService(Service):
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_cumulus_data(self, processed_data, raw_data):
-        for entry in processed_data:
-            model = entry.get('_modelName', '')
-            if model:
-                entry['model'] = model
-            uptime = entry.get('_uptime', '').split()
-            if uptime:
-                hr, mins, secs = uptime[-1].split(':')
-                if len(uptime) > 1:
-                    days = int(uptime[0])
-                else:
-                    days = 0
-                uptime_delta = timedelta(days=days, hours=int(hr),
-                                         minutes=int(mins),
-                                         seconds=int(secs.split('.')[0]))
-                entry['bootupTimestamp'] = int(
-                    (int(raw_data[0]["timestamp"])/1000) -
-                    uptime_delta.total_seconds())
 
+        drop_indices = []
+        drop_rest = False
+        for i, entry in enumerate(processed_data):
+            etype = entry.get('_entryType', '')
+            if etype == 'json':
+                model = entry.get('_modelName', '')
+                if model:
+                    entry['model'] = model
+                uptime = entry.get('_uptime', '').split()
+                if uptime:
+                    hr, mins, secs = uptime[-1].split(':')
+                    if len(uptime) > 1:
+                        days = int(uptime[0])
+                    else:
+                        days = 0
+                    uptime_delta = timedelta(days=days, hours=int(hr),
+                                             minutes=int(mins),
+                                             seconds=int(secs.split('.')[0]))
+                    entry['bootupTimestamp'] = int(
+                        (int(raw_data[0]["timestamp"])/1000) -
+                        uptime_delta.total_seconds())
+                drop_rest = True
+                continue
+
+            if drop_rest:
+                drop_indices.append(i)
+                continue
+
+            if etype == 'uptime':
+                entry["bootupTimestamp"] = int(
+                    int(raw_data[0]["timestamp"])/1000 -
+                    float(entry.pop("_sysUptime", 0))
+                )
+                if entry["bootupTimestamp"] < 0:
+                    entry["bootupTimestamp"] = 0
+
+                continue
+
+            if etype == 'model':
+                mem = entry['memory'] or 0
+                entry['mem'] = int(int(mem)/1024)
+                if not entry.get('vendor', ''):
+                    entry['vendor'] = 'Cumulus'
+                entry['os'] = 'cumulus'
+                continue
+
+        processed_data = np.delete(processed_data, drop_indices).tolist()
+
+        new_entries = {}
+        for entry in processed_data:
+            new_entries.update(entry)
+
+        processed_data = [new_entries]
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_sonic_data(self, processed_data, raw_data):

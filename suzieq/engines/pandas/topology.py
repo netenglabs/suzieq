@@ -84,6 +84,8 @@ class TopologyObj(SqPandasEngine):
         afi_safi = kwargs.pop('afiSafi', '')
 
         self._init_dfs(self._namespaces)
+        if self._if_df.empty:
+            return pd.DataFrame({'error': ['No interfaces data found']})
         self.lsdb = pd.DataFrame()
         self._a_df = pd.DataFrame()
         self._ip_table = pd.DataFrame()
@@ -239,7 +241,7 @@ class TopologyObj(SqPandasEngine):
         return df
 
     def _augment_lldp_show(self, df):
-        if not df.empty:
+        if not df.empty and not self._if_df.empty:
             df = df[df.peerHostname != '']
             df = df.merge(
                 self._if_df[['namespace', 'hostname', 'ifname', 'vrf']],
