@@ -449,11 +449,15 @@ class PathObj(SqPandasEngine):
         for row in df.itertuples():
             oifs = []
             nhops = []
-            for nhop in row.nexthopIps:
+            for i, nhop in enumerate(row.nexthopIps):
+                if row.oifs and '_nexthopVrf:' in row.oifs[i]:
+                    vrf = row.oifs[i].split('_nexthopVrf:')[1]
+                else:
+                    vrf = row.vrf
                 rrdf = self._get_table_sqobj('routes') \
                            .lpm(namespace=[row.namespace],
                                 hostname=[row.hostname], address=[nhop],
-                                vrf=[row.vrf])
+                                vrf=[vrf])
 
                 if not rrdf.empty:
                     if not rrdf.oifs.size:
@@ -462,10 +466,13 @@ class PathObj(SqPandasEngine):
                                                             max_recurse-1)
                     oif = rrdf.oifs.tolist()[0]
                     oifs.extend(oif)
-                    if isinstance(oif, np.ndarray):
-                        oif = oif.tolist()[0]
-                    if oif.startswith('_nexthopVrf:'):
-                        # We need to change the nhop too
+                    # Not all NOS fill in usable values for nexthop for a
+                    # connected route. So don't copy nexthop IP if the result
+                    # of this lookup was a connected route. It also doesn't
+                    # matter if we've a connected route because recursive
+                    # resolution is over when we hit a connected route.
+                    if ~rrdf.protocol.isin(['direct', 'local', 'connected',
+                                            'kernel']).all():
                         nhops.extend(rrdf.nexthopIps.tolist()[0])
 
             df.at[row.Index, 'oifs'] = np.array(oifs)
