@@ -27,7 +27,15 @@ apply:
     version: all
     merge: False
     command:
-      - command: net show system json
+      - command: cat /proc/uptime; hostname
+        textfsm: textfsm_templates/cls_uptime_hostname.tfsm
+        _entryType: uptime
+
+      - command: /usr/cumulus/bin/decode-syseeprom; cat /etc/os-release; cat /proc/meminfo
+        textfsm: textfsm_templates/cls_model_rel.tfsm
+        _entryType: model
+
+      - command: net show foo json
         normalize: '[
         "os-version: version",
         "vendor: vendor?|Cumulus",
@@ -40,14 +48,6 @@ apply:
         "platform/info/cpu/summary: architecture?|x86_64",
         "_entryType: _entryType?|json"
         ]'
-
-      - command: decode-syseeprom; cat /etc/os-release; cat /proc/meminfo
-        textfsm: textfsm_templates/cls_model_rel.tfsm
-        _entryType: model
-
-      - command: cat /proc/uptime; hostname
-        textfsm: textfsm_templates/cls_uptime_hostname.tfsm
-        _entryType: uptime
 
   iosxe:
     version: all
