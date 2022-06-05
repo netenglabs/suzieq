@@ -1,5 +1,5 @@
 Value Required peerHostname (\S+)
-Value Required ifname (\S+)
+Value ifname (\S+)
 Value peerIfname (\S+)
 
 Start
@@ -8,4 +8,5 @@ Start
 StartRecord
   ^${peerHostname}$$
   ^${peerHostname}\s+${ifname}\s+\d+\s+(\w+?\s)+\s+${peerIfname} -> Record
+  ^${peerHostname}\s+\d+\s+(\w+?\s)+\s+${peerIfname} -> Record  
   ^\s+${ifname}\s+\d+\s+(\w+?\s)+\s+${peerIfname} -> Record
