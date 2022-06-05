@@ -601,7 +601,7 @@ class BgpService(Service):
                 if re.match(r'^\d{2}:\d{2}:\d{2}$', estdTime):
                     estdTime = estdTime.split(':')
                     estdTime = (f'{estdTime[0]} hour '
-                                '{estdTime[1]}:{estdTime[2]} mins ago')
+                                f'{estdTime[1]}:{estdTime[2]} mins ago')
                 entry['estdTime'] = get_timestamp_from_cisco_time(
                     estdTime, raw_data[0]['timestamp']/1000)
             if entry.get('rrclient', '') == '':

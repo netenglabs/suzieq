@@ -835,6 +835,7 @@ def expand_ios_ifname(ifname: str) -> str:
     ifmap = {'Ap': 'AppGigabitEthernet',
              'BE': 'Bundle-Ether',
              'BV': 'BVI',
+             'Eth': 'Ethernet',
              'Fas': 'FastEthernet',
              'Fa': 'FastEthernet',
              'Fi': 'FiftyGigE',
