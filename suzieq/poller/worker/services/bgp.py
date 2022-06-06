@@ -88,7 +88,7 @@ class BgpService(Service):
                     new_entry['pfxBestRx'] = entry['pfxBestRx'][i]
 
                 new_entry['defOriginate'] = False
-                if 'safi' == 'evpn':
+                if entry['safi'][i] == 'evpn':
                     if ('Sending extended community not configured' in
                             entry.get('errorMsg', '')):
                         new_entry['communityTypes'] = []

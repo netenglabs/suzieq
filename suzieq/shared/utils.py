@@ -712,7 +712,7 @@ def init_logger(logname: str,
         sh = logging.StreamHandler(sys.stdout)
 
     formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
     if fh:
         fh.setFormatter(formatter)

@@ -1,3 +1,6 @@
+# pylint: disable=unused-argument,missing-function-docstring
+# pylint: disable=redefined-outer-name, unused-variable
+# pylint: disable=redefined-builtin, missing-class-docstring,
 import argparse
 import inspect
 import logging
@@ -40,6 +43,8 @@ app = FastAPI(on_startup=[check_config_file],
 
 def app_init(cfg_file):
     '''This is the actual API initilaizer'''
+    # pylint: disable=global-variable-not-assigned
+
     global app
 
     app.cfg_file = cfg_file
@@ -161,7 +166,7 @@ def rest_main(*args) -> None:
         _ = cfg['rest']['API_KEY']
     except KeyError:
         print('missing API_KEY in config file')
-        exit(1)
+        sys.exit(1)
 
     logcfg, loglevel = get_log_config_level(cfg)
 
@@ -178,14 +183,6 @@ def rest_main(*args) -> None:
         uvicorn.run(app, host=srvr_addr, port=srvr_port,
                     ssl_keyfile=ssl_keyfile,
                     ssl_certfile=ssl_certfile)
-
-
-"""
-each of these read functions behaves the same, it gets the arguments
-puts them into dicts and passes them to sqobjects
-
-assume that all API functions are named read_*
-"""
 
 
 class CommonVerbs(str, Enum):
@@ -894,7 +891,7 @@ def get_svc(command):
 
 
 def run_command_verb(command, verb, command_args, verb_args,
-                     columns=['default'], format=None):
+                     columns=None, format=None):
     """
     Runs the command and verb with the command_args and verb_args
 
@@ -904,6 +901,10 @@ def run_command_verb(command, verb, command_args, verb_args,
         422 -- FastAPI validation errors
         500 -- Exceptions
     """
+
+    if columns is None:
+        columns = ['default']
+
     svc = get_svc(command)
     try:
         svc_inst = svc(**command_args,

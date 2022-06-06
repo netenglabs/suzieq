@@ -18,7 +18,7 @@ Argument = namedtuple(
 Command = namedtuple("Command", "name help aliases exclusive_arguments")
 
 FunctionInspection = namedtuple(
-    "FunctionInspection", "arguments " "command subcommands"
+    "FunctionInspection", "arguments command subcommands"
 )
 _ArgDecoratorSpec = namedtuple(
     "_ArgDecoratorSpec", "arg name aliases description positional choices"
@@ -87,7 +87,7 @@ def argument(
         # reject positional=True if we are applied over a class
         if isclass(function) and positional:
             raise ValueError(
-                "Cannot set positional arguments for super " "commands"
+                "Cannot set positional arguments for super commands"
             )
 
         # We use __annotations__ to allow the usage of python 3 typing

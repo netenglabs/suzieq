@@ -741,7 +741,7 @@ class PathObj(SqPandasEngine):
 
         if not self.ctxt.engine:
             raise AttributeError(
-                "Specify an analysis engine using set engine " "command"
+                "Specify an analysis engine using 'set engine' command"
             )
 
         namespaces = kwargs.get("namespace", self.ctxt.namespace)

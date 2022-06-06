@@ -790,7 +790,7 @@ class Service(SqPlugin):
                                              for x in ostatus])
                 status = ostatus[0]
                 if (status in [0, 200]):
-                    rxBytes = len(output.__str__())
+                    rxBytes = len(str(output))
 
                 # We don't expect the output from two different hostnames
                 nodename = output[0]["hostname"]
