@@ -68,23 +68,23 @@ tests:
   marks: network show deprecated
   output: "WARNING: 'network show' is deprecated. Use 'namespace show' instead.\n\
     \     namespace  deviceCnt  ...  hasMlag                       lastUpdate\n0 \
-    \    dual-bgp         14  ...     True 2021-12-10 18:37:11.921000+00:00\n1   \
-    \ dual-evpn         14  ...     True 2021-12-10 18:34:58.729000+00:00\n2     \
-    \     eos         14  ...     True 2021-12-10 18:33:51.163000+00:00\n3       \
-    \ junos         12  ...    False 2022-02-05 14:03:21.736000+00:00\n4        mixed\
-    \          8  ...    False 2021-12-10 18:33:53.280000+00:00\n5         nxos  \
-    \       14  ...     True 2021-12-10 18:33:51.216000+00:00\n6    ospf-ibgp    \
-    \     14  ...     True 2022-01-10 16:01:05.167000+00:00\n7  ospf-single      \
-    \   14  ...    False 2021-12-10 18:36:06.022000+00:00\n8        panos        \
-    \ 14  ...     True 2021-12-14 16:21:20.095000+00:00\n9          vmx          5\
-    \  ...    False 2021-12-10 18:33:50.623000+00:00\n\n[10 rows x 9 columns]\n"
+    \    dual-bgp         14  ...     True 2022-05-15 04:08:24.070000+00:00\n1   \
+    \ dual-evpn         14  ...     True 2022-05-15 04:06:10.720000+00:00\n2     \
+    \     eos         14  ...     True 2022-05-15 04:05:01.207000+00:00\n3       \
+    \ junos         12  ...    False 2022-05-15 04:05:01.227000+00:00\n4        mixed\
+    \          8  ...    False 2022-05-15 04:05:00.852000+00:00\n5         nxos  \
+    \       14  ...     True 2022-05-15 13:25:17.544000+00:00\n6    ospf-ibgp    \
+    \     14  ...     True 2022-05-15 04:05:00.802000+00:00\n7  ospf-single      \
+    \   14  ...    False 2022-05-15 04:07:17.124000+00:00\n8        panos        \
+    \ 14  ...     True 2022-05-15 04:05:01.957000+00:00\n9          vmx          5\
+    \  ...    False 2022-05-15 04:04:59.544000+00:00\n\n[10 rows x 9 columns]\n"
 - command: network summarize
   data-directory: tests/data/parquet/
   format: text
   marks: network summarize deprecated
   output: "WARNING: 'network summarize' is deprecated. Use 'namespace summarize' instead.\n\
     \                         summary\nnamespacesCnt                 10\nservicePerNsStat\
-    \  [13, 18, 17.5]\nnsWithMlagCnt                  6\nnsWithBgpCnt            \
+    \  [13, 18, 17.0]\nnsWithMlagCnt                  6\nnsWithBgpCnt            \
     \       8\nnsWithOspfCnt                  7\nnsWithVxlanCnt                 6\n\
     nsWithErrsvcCnt                0\n"
 - command: network top --what=deviceCnt
@@ -93,11 +93,11 @@ tests:
   marks: network top deprecated
   output: "WARNING: 'network top' is deprecated. Use 'namespace top' instead.\n  \
     \   namespace  deviceCnt  ...  hasMlag                       lastUpdate\n0   \
-    \     panos         14  ...     True 2021-12-14 16:21:20.095000+00:00\n1  ospf-single\
-    \         14  ...    False 2021-12-10 18:36:06.022000+00:00\n2    ospf-ibgp  \
-    \       14  ...     True 2022-01-10 16:01:05.167000+00:00\n3         nxos    \
-    \     14  ...     True 2021-12-10 18:33:51.216000+00:00\n4          eos      \
-    \   14  ...     True 2021-12-10 18:33:51.163000+00:00\n\n[5 rows x 9 columns]\n"
+    \     panos         14  ...     True 2022-05-15 04:05:01.957000+00:00\n1  ospf-single\
+    \         14  ...    False 2022-05-15 04:07:17.124000+00:00\n2    ospf-ibgp  \
+    \       14  ...     True 2022-05-15 04:05:00.802000+00:00\n3         nxos    \
+    \     14  ...     True 2022-05-15 13:25:17.544000+00:00\n4          eos      \
+    \   14  ...     True 2022-05-15 04:05:01.207000+00:00\n\n[5 rows x 9 columns]\n"
 - command: network unique
   data-directory: tests/data/parquet/
   format: text

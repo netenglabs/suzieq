@@ -397,8 +397,6 @@ def get_args_to_match(sqobj: SqObject, verbs: List[str]) -> List[str]:
 def get_supported_verbs(sqobj: SqObject) -> List[str]:
     if sqobj.table == 'routes':
         supported_verbs = [e.value for e in RouteVerbs]
-    elif sqobj.table == 'network':
-        supported_verbs = [e.value for e in NetworkVerbs]
     else:
         if sqobj._valid_assert_args:
             # the assertion is supported for this class
@@ -407,6 +405,9 @@ def get_supported_verbs(sqobj: SqObject) -> List[str]:
             supported_verbs = [e.value for e in CommonVerbs]
         if sqobj.table == 'tables':
             supported_verbs.append('describe')
+
+    if sqobj.table == 'network':
+        supported_verbs += [e.value for e in NetworkVerbs]
 
     return supported_verbs
 
@@ -685,6 +686,9 @@ def test_routes_sqobj_consistency():
                 assert_missing_args(top_args, query_params, 'top', table)
             query_params = query_params.difference(top_args)
 
+            if table == 'network' and 'find' not in route.verbs:
+                # do not check deprecated commands. They are already checked
+                continue
             args_to_match = get_args_to_match(sqobj, route.verbs)
             args_to_match = {a for a in args_to_match
                              if a not in common_args.union(top_args)}
