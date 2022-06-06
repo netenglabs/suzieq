@@ -207,6 +207,16 @@ class LldpService(Service):
                                            entry['peerHostname'])
             if not entry['ifname']:
                 drop_indices.append(i)
+
+            # IOS can have the last 2 columns of its output as either
+            # Gig 0/1/2 or N5K Gig 0/1/2 or N5K mgmt0. In this last
+            # case we accidentally assume N5kmgmt0 as the peer interface
+            # name. The following code tries to fix that.
+            pif = entry.get('peerIfname', '')
+            if pif:
+                words = pif.split()
+                if words[-1] == "mgmt0":
+                    entry['peerIfname'] = "mgmt0"
             for field in ['ifname', 'peerIfname']:
                 entry[field] = expand_ios_ifname(entry[field])
                 if ' ' in entry.get(field, ''):
