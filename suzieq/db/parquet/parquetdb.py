@@ -88,6 +88,9 @@ class SqParquetDB(SqDB):
 
         folder = self._get_table_directory(table_name, False)
 
+        if not all(x in fields for x in key_fields):
+            raise ValueError('Key fields MUST be included in columns list')
+
         if addnl_filter:
             # This is for special cases that are specific to an object
             query_str = addnl_filter
@@ -108,7 +111,7 @@ class SqParquetDB(SqDB):
 
         # If requesting a specific version of the data, handle that diff too
         sqvers = kwargs.pop('sqvers', None)
-        datasets = []
+        final_df = pd.DataFrame()
         try:
             dirs = Path(folder)
             try:
@@ -123,64 +126,43 @@ class SqParquetDB(SqDB):
                         if vers > max_vers:
                             max_vers = vers
 
-                    datasets.append(ds.dataset(elem, format='parquet',
-                                               partitioning='hive'))
+                    dataset = ds.dataset(elem, format='parquet',
+                                         partitioning='hive')
+
+                    if not dataset:
+                        continue
+
+                    tmp_df = self._process_dataset(dataset, namespace, start,
+                                                   end, fields, merge_fields,
+                                                   query_str, **kwargs)
+                    if not tmp_df.empty:
+                        final_df = pd.concat([final_df, tmp_df])
             except FileNotFoundError:
                 pass
             except Exception as e:
                 raise e
 
-            # Now find the exact set of files we need to go over
+            # Now operate on the coalesced data set
             cp_dataset = self._get_cp_dataset(table_name, need_sqvers, sqvers,
                                               view, start, end)
             if cp_dataset:
-                datasets.append(cp_dataset)
-
-            if not datasets:
-                datasets = [ds.dataset(folder, format='parquet',
-                                       partitioning='hive')]
-
-            # Build the filters for predicate pushdown
-            master_schema = self._build_master_schema(datasets)
-
-            avail_fields = list(filter(lambda x: x in master_schema.names,
-                                       fields))
-            filters = self.build_ds_filters(
-                start, end, master_schema, merge_fields=merge_fields, **kwargs)
-
-            filtered_datasets = self._get_filtered_fileset(
-                datasets, namespace)
-
-            final_df = filtered_datasets \
-                .to_table(filter=filters, columns=avail_fields) \
-                .to_pandas(self_destruct=True) \
-                .query(query_str) \
-                .sort_values(by='timestamp')
-
-            if merge_fields:
-                # These are key fields that need to be set right before we do
-                # the drop duplicates to avoid missing out all the data
-                for field in merge_fields:
-                    newfld = merge_fields[field]
-                    if (field in final_df.columns and
-                            newfld in final_df.columns):
-                        final_df[newfld] = np.where(final_df[newfld],
-                                                    final_df[newfld],
-                                                    final_df[field])
-                    elif (field in final_df.columns and
-                          newfld not in final_df.columns):
-                        final_df = final_df.rename(columns={field: newfld})
+                tmp_df = self._process_dataset(cp_dataset, namespace, start,
+                                               end, fields, merge_fields,
+                                               query_str, **kwargs)
+                if not tmp_df.empty:
+                    final_df = pd.concat([final_df, tmp_df])
 
             # Because of how coalescing works, we can have multiple duplicated
             # entries with same timestamp. Remove them
-            dupts_keys = key_fields + ['timestamp']
-            final_df = final_df.set_index(dupts_keys) \
-                .query('~index.duplicated(keep="last")') \
-                .reset_index()
-            if (not final_df.empty and (view == 'latest') and
-                    all(x in final_df.columns for x in key_fields)):
-                final_df = final_df.set_index(key_fields) \
-                    .query('~index.duplicated(keep="last")')
+            if not final_df.empty:
+                final_df = final_df.sort_values(by=['timestamp'])
+                dupts_keys = key_fields + ['timestamp']
+                final_df = final_df.set_index(dupts_keys) \
+                    .query('~index.duplicated(keep="last")') \
+                    .reset_index()
+                if not final_df.empty and (view == 'latest'):
+                    final_df = final_df.set_index(key_fields) \
+                        .query('~index.duplicated(keep="last")')
         except (pa.lib.ArrowInvalid, OSError):
             return pd.DataFrame(columns=fields)
 
@@ -483,6 +465,46 @@ class SqParquetDB(SqDB):
 
         return sqvers_list
 
+    def _process_dataset(self, dataset: ds.Dataset, namespace: List[str],
+                         start: str, end: str, fields: List[str],
+                         merge_fields: List[str], query_str: str,
+                         **kwargs) -> pd.DataFrame:
+        '''Process provided dataset and return a pandas DF'''
+
+        # Build the filters for predicate pushdown
+        master_schema = dataset.schema
+
+        avail_fields = [f for f in fields if f in master_schema.names]
+        filters = self.build_ds_filters(
+            start, end, master_schema, merge_fields=merge_fields,
+            **kwargs)
+
+        filtered_dataset = self._get_filtered_fileset(dataset, namespace)
+
+        if not filtered_dataset.files:
+            return pd.DataFrame()
+
+        tmp_df = filtered_dataset \
+            .to_table(filter=filters, columns=avail_fields) \
+            .to_pandas(self_destruct=True) \
+            .query(query_str)
+
+        if merge_fields and not tmp_df.empty:
+            # These are key fields that need to be set right before we do
+            # the drop duplicates to avoid missing out all the data
+            for field in merge_fields:
+                newfld = merge_fields[field]
+                if (field in tmp_df.columns and
+                        newfld in tmp_df.columns):
+                    tmp_df[newfld] = np.where(tmp_df[newfld],
+                                              tmp_df[newfld],
+                                              tmp_df[field])
+                elif (field in tmp_df.columns and
+                      newfld not in tmp_df.columns):
+                    tmp_df = tmp_df.rename(columns={field: newfld})
+
+        return tmp_df
+
     def _get_cp_dataset(self, table_name: str, need_sqvers: bool,
                         sqvers: str, view: str, start_time: float,
                         end_time: float) -> ds.dataset:
@@ -608,7 +630,7 @@ class SqParquetDB(SqDB):
 
         return msch
 
-    def _get_filtered_fileset(self, datasets: list, namespace: list) -> ds:
+    def _get_filtered_fileset(self, dataset: ds, namespace: list) -> ds:
         """Filter the dataset based on the namespace
 
         We can use this method to filter out namespaces and hostnames based
@@ -620,48 +642,44 @@ class SqParquetDB(SqDB):
         Returns:
             ds: pyarrow dataset of only the files that match filter
         """
-        filelist = []
-        for dataset in datasets:
-            if not namespace:
-                filelist.extend(dataset.files)
-                continue
+        if not namespace:
+            return dataset
 
-            notlist = [x for x in namespace
+        # Exclude not and regexp operators as they're handled elsewhere.
+        excluded_ns = [x for x in namespace
                        if x.startswith('!') or x.startswith('~!')]
-            if notlist != namespace:
-                newns = [x for x in namespace
-                         if not x.startswith('!') and not x.startswith('~!')]
-            else:
-                newns = namespace
-            ns_filelist = []
-            chklist = dataset.files
-            for ns in newns or []:
+        if excluded_ns != namespace:
+            ns_filters = [x for x in namespace
+                          if not x.startswith('!') and not x.startswith('~!')]
+        else:
+            ns_filters = namespace
+        ns_filelist = []
+        chklist = dataset.files
+        for ns in ns_filters or []:
+            if ns.startswith('!'):
+                ns = ns[1:]
+                ns_filelist = \
+                    [x for x in chklist
+                     if not re.search(f'namespace={ns}/', x)]
+                chklist = ns_filelist
+            elif ns.startswith('~'):
+                ns = ns[1:]
                 if ns.startswith('!'):
                     ns = ns[1:]
                     ns_filelist = \
                         [x for x in chklist
                          if not re.search(f'namespace={ns}/', x)]
                     chklist = ns_filelist
-                elif ns.startswith('~'):
-                    ns = ns[1:]
-                    if ns.startswith('!'):
-                        ns = ns[1:]
-                        ns_filelist = \
-                            [x for x in chklist
-                             if not re.search(f'namespace={ns}/', x)]
-                        chklist = ns_filelist
-                    else:
-                        ns_filelist.extend(
-                            [x for x in dataset.files
-                             if re.search(f'namespace={ns}/', x)])
                 else:
                     ns_filelist.extend(
                         [x for x in dataset.files
                          if re.search(f'namespace={ns}/', x)])
+            else:
+                ns_filelist.extend(
+                    [x for x in dataset.files
+                     if re.search(f'namespace={ns}/', x)])
 
-            filelist.extend(ns_filelist)
-
-        return ds.dataset(filelist, format='parquet', partitioning='hive')
+        return ds.dataset(ns_filelist, format='parquet', partitioning='hive')
 
     def _cons_int_filter(self, keyfld: str, filter_str: str) -> ds.Expression:
         '''Construct Integer filters with arithmetic operations'''
