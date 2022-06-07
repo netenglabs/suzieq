@@ -50,7 +50,7 @@ class DeviceObj(SqPandasEngine):
         if view == 'latest' and 'status' in df.columns:
             df['status'] = np.where(df.active, df['status'], 'dead')
 
-        poller_df = None
+        poller_df = pd.DataFrame()
         if not ignore_neverpoll:
             poller_df = self._get_table_sqobj('sqPoller').get(
                 namespace=kwargs.get('namespace', []),
@@ -58,7 +58,7 @@ class DeviceObj(SqPandasEngine):
                 service='device',
                 columns='namespace hostname status timestamp'.split())
 
-        if poller_df is not None and not poller_df.empty:
+        if not poller_df.empty:
             # Identify the address to namespace/hostname mapping
             addr_dict = {f"{x['namespace']}-{x['address']}": x['hostname']
                          for x in df[['namespace', 'address', 'hostname']]
