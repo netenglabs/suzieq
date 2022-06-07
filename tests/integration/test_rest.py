@@ -573,6 +573,9 @@ def test_rest_arg_consistency(service, verb):
 
         valid_args = set(arglist)
 
+        if service == 'device':
+            valid_args.remove('ignore_neverpoll')
+
         # In the tests below, we warn when we don't have the exact
         # {service}_{verb} REST function, which prevents us from picking the
         # correct set of args.
