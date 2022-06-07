@@ -544,7 +544,8 @@ class InterfacesObj(SqPandasEngine):
 
         devdf = self._get_table_sqobj('device') \
             .get(namespace=namespace, hostname=hostname,
-                 columns=['namespace', 'hostname', 'os', 'status', 'vendor'])
+                 columns=['namespace', 'hostname', 'os'],
+                 ignore_neverpoll=True)
 
         pm_df = pd.DataFrame({'namespace': [], 'hostname': [],
                               'ifname': [], 'portmode': []})

@@ -573,6 +573,9 @@ def test_rest_arg_consistency(service, verb):
 
         valid_args = set(arglist)
 
+        if service == 'device':
+            valid_args.remove('ignore_neverpoll')
+
         # In the tests below, we warn when we don't have the exact
         # {service}_{verb} REST function, which prevents us from picking the
         # correct set of args.
@@ -692,6 +695,8 @@ def test_routes_sqobj_consistency():
             args_to_match = get_args_to_match(sqobj, route.verbs)
             args_to_match = {a for a in args_to_match
                              if a not in common_args.union(top_args)}
+            if table == 'device':
+                args_to_match.remove('ignore_neverpoll')
             if args_to_match != query_params:
                 assert False, (f'different query params for {table}: expected '
                                f'{args_to_match}. Got {query_params}')
