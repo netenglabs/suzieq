@@ -129,7 +129,7 @@ class SqParquetDB(SqDB):
                     dataset = ds.dataset(elem, format='parquet',
                                          partitioning='hive')
 
-                    if not dataset:
+                    if not dataset.files:
                         continue
 
                     tmp_df = self._process_dataset(dataset, namespace, start,
