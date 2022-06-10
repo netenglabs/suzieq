@@ -1,0 +1,15 @@
+Value Filldown group ((\d{1,3}\.?){4})
+Value Filldown vrf (\S+)
+Value Required interface (\S+)
+
+Start
+  ^IGMP\s+Connected\s+Group\s+Membership\s+for\s+VRF\s+"${vrf}".*
+  ^${group}\s?$$
+  ^\s+(\d{1,3}\.?){4}\s+\S\s+${interface}.* -> Record
+  ^${group}\s+\S\s+${interface}.* -> Record
+  ^Type:.*
+  ^\s+.*Cache\sOnly
+  ^Group\s+Address
+  ^. -> Error
+
+EOF
