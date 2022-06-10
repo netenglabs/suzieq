@@ -18,6 +18,8 @@ class SqContext:
     exec_time: str = ''
     engine: str = None
     col_width: int = 50
+    max_rows: int = 256
+    all_columns: bool = False
     debug: bool = False
     sort_fields: List[str] = field(default_factory=list)
     view: str = None

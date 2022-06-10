@@ -160,14 +160,26 @@ class MacsService(Service):
         for entry in processed_data:
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
+            oiflist = []
             oifs = ''
-            for oif in entry.get('oif', '').split(','):
-                # Handle multicast entries
+            oif = entry.get('oif', '').strip()
+            if oif:
+                oiflist = oif.split(',')
+            if not oiflist:
+                # Some versions of IOS/XE have a different output
+                # format and we capture that in a different var
+                oif = entry.get('_ports', '')
+                if oif:
+                    for ele in oif:
+                        oiflist.extend(ele.split(','))
+            for oif in oiflist:
+                # Handles multicast entries
                 oifs += f'{expand_ios_ifname(oif)} '
             if oifs:
                 entry['oif'] = oifs.strip()
             else:
-                entry['oif'] = expand_ios_ifname(entry['oif'])
+                entry['oif'] = ''
+
             entry['remoteVtepIp'] = ''
             if entry.get('vlan', ' ').strip() == "All":
                 entry['vlan'] = 0

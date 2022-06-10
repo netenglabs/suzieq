@@ -274,6 +274,7 @@ class SqCommand(SqPlugin):
         else:
             print(df)
 
+    # pylint: disable=too-many-statements
     def _gen_output(self, df: pd.DataFrame, json_orient: str = "records",
                     dont_strip_cols: bool = False, sort: bool = True):
 
@@ -290,6 +291,9 @@ class SqCommand(SqPlugin):
             else:
                 cols = df.columns.tolist()
             is_error = False
+
+        max_rows = self.ctxt.max_rows
+        all_columns = self.ctxt.all_columns
 
         if dont_strip_cols or not all(item in df.columns for item in cols):
             cols = df.columns.tolist()
@@ -317,9 +321,11 @@ class SqCommand(SqPlugin):
                 'timestamp' not in self.columns and not dont_strip_cols and
                     'timestamp' in df.columns and 'timestamp' in cols):
                 cols.remove('timestamp')
-            with pd.option_context('precision', 3,
-                                   'display.max_colwidth', max_colwidth,
-                                   'display.max_rows', 256):
+            with pd.option_context(
+                    'precision', 3,
+                    'display.max_colwidth', max_colwidth,
+                    'display.max_rows', max_rows,
+                    'display.expand_frame_repr', not all_columns):
                 df = self.sqobj.humanize_fields(df)
                 if df.empty:
                     print(df)

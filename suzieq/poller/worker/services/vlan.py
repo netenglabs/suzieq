@@ -6,6 +6,15 @@ from suzieq.poller.worker.services.service import Service
 class VlanService(Service):
     """Vlan service. Different class because Vlan is not right type for EOS"""
 
+    def clean_json_input(self, data):
+        """evpnVni JSON output is busted across many NOS. Fix it"""
+
+        devtype = data.get("devtype", None)
+        if devtype == 'junos-mx':
+            data['data'] = data['data'].replace('}, \n    }\n', '} \n    }\n')
+
+        return data['data']
+
     def _clean_eos_data(self, processed_data, _):
         '''Massage the interface output'''
 
