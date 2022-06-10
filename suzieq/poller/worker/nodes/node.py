@@ -693,7 +693,9 @@ class Node:
                         self.ssh_ready.release()
 
             # Release here because init_dev_data uses this lock as well
-            if init_dev_data:
+            # We need to be sure that devtype is set, otherwise the
+            # _fetch_dev_data function is not implemented and will raise.
+            if init_dev_data and self.devtype:
                 await self._fetch_init_dev_data()
 
     @abstractmethod
