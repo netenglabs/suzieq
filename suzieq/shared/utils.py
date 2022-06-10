@@ -460,11 +460,26 @@ def convert_macaddr_format_to_colon(macaddr: str) -> str:
 
     """
     if isinstance(macaddr, str):
-        if re.match(r'[0-9a-zA-Z]{4}.[0-9a-zA-Z]{4}.[0-9a-zA-Z]{4}', macaddr):
+        macaddr = macaddr.lower()
+        if re.match(r'[0-9a-f]{4}\.[0-9a-f]{4}\.[0-9a-f]{4}', macaddr):
             return (':'.join([f'{x[:2]}:{x[2:]}'
-                              for x in macaddr.split('.')])).lower()
-        else:
-            return macaddr.lower()
+                              for x in macaddr.split('.')]))
+        if re.match(r'[0-9a-f]{2}-[0-9a-f]{2}-[0-9a-f]{2}-'
+                    r'[0-9a-f]{2}-[0-9a-f]{2}-[0-9a-f]{2}',
+                    macaddr):
+            return macaddr.replace('-', ':')
+        if re.match(r'[0-9a-f]{4}:[0-9a-f]{4}:[0-9a-f]{4}', macaddr):
+            return (':'.join([f'{x[:2]}:{x[2:]}'
+                              for x in macaddr.split(':')]))
+        if re.match(r'[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}', macaddr):
+            return (':'.join([f'{x[:2]}:{x[2:]}'
+                              for x in macaddr.split('-')]))
+        if ':' not in macaddr and re.match(r'[0-9a-f]{12}', macaddr):
+            newmac = ''
+            for i in range(0, 12, 2):
+                newmac += f'{macaddr[i:i+2]}:'
+            newmac = newmac[:-1]  # remove the trailing ':'
+            return newmac
 
     return '00:00:00:00:00:00'
 
