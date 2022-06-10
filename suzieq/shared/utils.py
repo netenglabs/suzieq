@@ -518,8 +518,8 @@ def validate_macaddr(macaddr: str) -> bool:
 
     """
     if isinstance(macaddr, str):
-        if re.fullmatch(r'([0-9a-fA-F]{4}.){2}[0-9a-fA-F]{4}', macaddr) or \
-           re.fullmatch(r'([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}', macaddr):
+        macaddr = convert_macaddr_format_to_colon(macaddr)
+        if re.fullmatch(r'([0-9a-f]{2}:){5}[0-9a-f]{2}', macaddr):
             return True
 
     return False

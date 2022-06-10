@@ -4,6 +4,7 @@ import re
 import pytest
 
 import pandas as pd
+from suzieq.shared.utils import validate_macaddr
 from tests.conftest import validate_host_shape, DATADIR, _get_table_data
 
 
@@ -15,9 +16,7 @@ def validate_arpnd_tbl(df: pd.DataFrame):
     assert (df.state.isin(["permanent", 'reachable', 'router', 'noarp',
                            'failed'])).all()
     pass_df = df.query('state != "failed"')
-    assert pass_df.macaddr.apply(
-        lambda x: re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$",
-                           x) is not None).all()
+    assert pass_df.macaddr.apply(validate_macaddr).all()
     assert not (pass_df.oif.isin(["", "None"])).all()  # noqa
     assert (pass_df.remote.isin([True, False])).all()
 

@@ -78,9 +78,7 @@ class NetworkObj(SqPandasEngine):
 
         # Convert Cisco-style MAC address to standard MAC addr format,
         # and lowercase all letters of the alphabet
-        if '.' in addr:
-            addr = convert_macaddr_format_to_colon(addr)
-        addr = addr.lower()
+        addr = convert_macaddr_format_to_colon(addr)
 
         addr_df = self._find_addr_arp(addr, **kwargs)
         if addr_df.empty:

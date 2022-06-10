@@ -104,9 +104,8 @@ class AddressObj(SqPandasEngine):
             for i, a in enumerate(addr):
                 if addr_types[i] == 0:
                     # convert the macaddr format to internal format
-                    if '.' in a:
-                        a = convert_macaddr_format_to_colon(a)
-                    macaddr.append(a.lower())
+                    a = convert_macaddr_format_to_colon(a)
+                    macaddr.append(a)
                 elif addr_types[i] == 4:
                     if '/' not in a:
                         a += '/'

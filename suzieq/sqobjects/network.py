@@ -3,7 +3,7 @@ import re
 import pandas as pd
 
 from suzieq.sqobjects.basicobj import SqObject
-from suzieq.shared.utils import (humanize_timestamp,
+from suzieq.shared.utils import (humanize_timestamp, validate_macaddr,
                                  convert_macaddr_format_to_colon)
 
 
@@ -31,9 +31,7 @@ class NetworkObj(SqObject):
                 ip_address(addr)
             except ValueError:
                 addr = convert_macaddr_format_to_colon(addr)
-                if not re.match(
-                        "[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$",
-                        addr):
+                if not validate_macaddr(addr):
                     return pd.DataFrame(
                         {'error': [f'Not valid IP or MAC address: {addr}']})
         try:

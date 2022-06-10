@@ -3,6 +3,7 @@ import re
 import pytest
 import numpy as np
 import pandas as pd
+from suzieq.shared.utils import validate_macaddr
 from tests.conftest import DATADIR, validate_host_shape, _get_table_data
 
 
@@ -13,9 +14,7 @@ def validate_macs(df: pd.DataFrame):
     assert (df.oif != '').all()
     assert (df.mackey != '').all()
     # Validate that the only MAC addresses there are fit the macaddr format
-    assert df.macaddr.apply(
-        lambda x: re.match("[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$",
-                           x) is not None).all()
+    assert df.macaddr.apply(validate_macaddr).all()
     # Ignore Linux HER entries and interface MAC entries, and some NXOS entries
     assert (df.query(
         'macaddr != "00:00:00:00:00:00" and flags != "permanent" and '
@@ -46,14 +45,14 @@ def validate_interfaces(df: pd.DataFrame, datadir: str):
     # as routed interfaces that have a VLAN of 0
     only_oifs = df.query('~oif.isin(["bridge", "sup-eth1", '
                          '"vPC Peer-Link", "nve1", "Router"])') \
-        .query('~oif.str.startswith("vtep.")') \
-        .query('vlan != 0') \
-        .groupby(by=['namespace', 'hostname', 'vlan'])['oif'] \
-        .unique() \
-        .reset_index() \
-        .explode('oif') \
-        .rename(columns={'oif': 'ifname'}) \
-        .reset_index(drop=True)
+                  .query('~oif.str.startswith("vtep.")') \
+                  .query('vlan != 0') \
+                  .groupby(by=['namespace', 'hostname', 'vlan'])['oif'] \
+                  .unique() \
+                  .reset_index() \
+                  .explode('oif') \
+                  .rename(columns={'oif': 'ifname'}) \
+                  .reset_index(drop=True) \
 
     # Fetch the address table
     if_df = _get_table_data('interface', datadir) \
