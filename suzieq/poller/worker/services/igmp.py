@@ -15,42 +15,87 @@ class IgmpService(Service):
 
     def clean_json_input(self, data):
         """Junos JSON data for some older ver needs some work"""
+        pass
 
-        devtype = data.get("devtype", None)
-        if devtype.startswith('junos'):
-            data['data'] = data['data'].replace('}, \n    }\n', '} \n    }\n')
-            return data['data']
-        return data['data']
-
-    def _clean_eos_data(self, processed_data, raw_data):
-
+    def _clean_eos_data(self, _, raw_data):
+        processed_data = []
         pre_processed_data = {}
         # This handles the static group command output only
         # will update once some dynamic group output is available
         for data in raw_data:
-            json_data = json.loads(data.get('data'))
-            
+            if 'vrf' in data.get('cmd'):
+                cmd = data['cmd'].split()
+                vrf = cmd[cmd.index('vrf')+1]
+            else:
+                vrf = 'n/a'
+            if vrf not in pre_processed_data.keys():
+                pre_processed_data.update({vrf: {}})
+            if isinstance(data['data'], str):
+                json_data = json.loads(data.get('data'))
+            else:
+                json_data = None
             if json_data:
                 if json_data.get('intfAddrs'):
                     for interface in json_data['intfAddrs']:
-                        print(interface)
                         if json_data['intfAddrs'][interface]['groupAddrsList']:
                             for s_g in json_data['intfAddrs'][interface]['groupAddrsList']:
-                                sg = '-'.join(s_g['sourceAddr'],s_g['groupAddr'])
-                                if pre_processed_data.get(sg):
-                                    pre_processed_data.get(sg).append(interface)
+                                group = s_g['groupAddr']
+                                if pre_processed_data[vrf].get(group):
+                                    pre_processed_data[vrf].get(group).append(interface)
                                 else:
-                                    pre_processed_data[sg] = [interface]
+                                    pre_processed_data[vrf][group] = [interface]
+                if json_data.get('groupList'):
+                    for group in json_data['groupList']:
+                        
+                        group_address = group['groupAddress']
+                        interface = group['interfaceName']
+                        if pre_processed_data[vrf].get(group_address):
+                            pre_processed_data[vrf].append(interface)
+                        else:
+                            pre_processed_data[vrf][group_address] = [interface]
+                        processed_data.append({
+                            'group': group['groupAddress'],
+                            'interfaceList': [],
+                            'flag': 'Dynamic'
+                        })
 
-        for k, v in pre_processed_data.items():
-            s_g = k.split('-')
-            processed_data.append({
-                'source': s_g[0],
-                'group': s_g[1],
-                'interfaceList': v,
-                'flag': 'Static',}
-            )
+        for vrf, groups in pre_processed_data.items():
+            for group in groups.keys():
+                processed_data.append({
+                    'vrf': vrf,
+                    'group': group,
+                    'interfaceList': groups[group],
+                    'flag': '',
+                })
+        return processed_data
 
+    def _clean_nxos_data(self, processed_data, _):
+        
+        pre_processed_data = {}
 
+        breakpoint()
+        for item in processed_data:
+            if item['vrf'] in pre_processed_data:
+                if item['group'] in pre_processed_data[item['vrf']]:
+                    pre_processed_data[item['vrf']][item['group']].append(item['interface'])
+                else:
+                    pre_processed_data[item['vrf']].update({
+                        item['group']: [item['interface']]
+                    })
+            else:
+                pre_processed_data.update({
+                    item['vrf']: {item['group']: [item['interface']]}
+                })
 
+        breakpoint()
+        processed_data = []
+
+        for vrf, groups in pre_processed_data.items():
+            for group in pre_processed_data[vrf]:
+                processed_data.append({
+                    'vrf': vrf,
+                    'group': group,
+                    'interfaceList': pre_processed_data[vrf][group],
+                })
+        breakpoint()
         return processed_data

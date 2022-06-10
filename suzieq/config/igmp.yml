@@ -1,10 +1,8 @@
 service: igmp
 keys:
-  - source
   - group
 show-fields:
   - interfaceList
-  - querier
   - flag
   - vrf
 
@@ -25,3 +23,9 @@ apply:
           "flag: flag?|Static",
           "vrf: vrf?|Default"
         ]'
+  nxos:
+    version: all
+    command: show ip igmp groups vrf all
+    textfsm: textfsm_templates/nxos_show_ip_igmp_groups_vrf_all.tfsm
+    merge: False
+
