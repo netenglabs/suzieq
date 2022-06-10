@@ -1051,5 +1051,6 @@ class InterfaceService(Service):
                     entry["type"] = "subinterface"
 
         # remove mtu data cmd
-        processed_data.pop(0)
+        if len(processed_data) > 1:
+            processed_data.pop(0)
         return processed_data

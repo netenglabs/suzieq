@@ -693,7 +693,9 @@ class Node:
                         self.ssh_ready.release()
 
             # Release here because init_dev_data uses this lock as well
-            if init_dev_data:
+            # We need to be sure that devtype is set, otherwise the
+            # _fetch_dev_data function is not implemented and will raise.
+            if init_dev_data and self.devtype:
                 await self._fetch_init_dev_data()
 
     @abstractmethod
@@ -1904,13 +1906,11 @@ class PanosNode(Node):
                         password=self.password, known_hosts=None) as conn:
                     async with conn.create_process() as process:
                         process.stdin.write("show system info\n")
-                        recv_chars = False
                         output = ""
-                        if not recv_chars:
-                            output += await process.stdout.read(1)
+                        output += await process.stdout.read(1)
                         try:
                             await asyncio.wait_for(
-                                process.wait_closed(), timeout=0.01)
+                                process.wait_closed(), timeout=0.1)
                         except asyncio.TimeoutError:
                             pass
 
@@ -1927,8 +1927,13 @@ class PanosNode(Node):
             )
             if self.api_key is None:
                 await self.get_api_key()
+        except asyncssh.misc.PermissionDenied:
+            self.logger.error(
+                f'Permission denied for {self.address}:{self.port}')
+            self._retry -= 1
         except Exception:
-            pass
+            self.logger.warning(
+                f'Cannot parse device data from {self.address}:{self.port}')
 
     async def get_api_key(self):
         """Authenticate to get the api key needed in all cmd requests"""
@@ -1936,13 +1941,24 @@ class PanosNode(Node):
             f"{self.username}&password={self.password}"
 
         async with self.cmd_pacer(self.per_cmd_auth):
+            if not self._retry:
+                return
             async with self._session.get(url, timeout=self.connect_timeout) \
                     as response:
                 status, xml = response.status, await response.text()
                 if status == 200:
                     data = xmltodict.parse(xml)
                     self.api_key = data["response"]["result"]["key"]
-                # need to manage errors
+                    # reset retry count, just in case.
+                    self._retry = self._max_retries_on_auth_fail
+                elif status == 403:
+                    self.logger.error('Invalid credentials, could not get api '
+                                      f'key for {self.address}:{self.port}.')
+                    self._retry -= 1
+                else:
+                    self.logger.error('Unknown error, could not get '
+                                      'api key for '
+                                      f'{self.address}:{self.port}.')
 
     async def _parse_init_dev_data(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -1995,6 +2011,12 @@ class PanosNode(Node):
                     )
                     if self.api_key is None:
                         await self.get_api_key()
+                    # If the api_key is still None we can't gather any data.
+                    # Ensure that the connection pool is closed and set it to
+                    # None so that _rest_gather can fail gracefully.
+                    if self.api_key is None:
+                        self._session.close()
+                        self._session = None
                 except Exception as e:
                     self.logger.error(
                         f'{self.transport}://{self.hostname}:{self.port}, '
@@ -2011,12 +2033,15 @@ class PanosNode(Node):
 
         now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
 
-        port = self.port or 443
-
-        url = f"https://{self.address}:{port}/api/"
+        url = f"https://{self.address}:{self.port}/api/"
 
         status = 200  # status OK
 
+        # if there's no session we have failed to get init dev data
+        if not self._session and self._retry:
+            self._fetch_init_dev_data()
+
+        # if there's still no session, we need to create an error
         if not self._session:
             for cmd in cmd_list:
                 result.append(self._create_error(cmd))
@@ -2030,19 +2055,26 @@ class PanosNode(Node):
                     async with self._session.get(
                             url_cmd, timeout=timeout) as response:
                         status, xml = response.status, await response.text()
-                        json_out = json.dumps(
-                            xmltodict.parse(xml))
-
-                        result.append({
-                            "status": status,
-                            "timestamp": now,
-                            "cmd": cmd,
-                            "devtype": self.devtype,
-                            "namespace": self.nsname,
-                            "hostname": self.hostname,
-                            "address": self.address,
-                            "data": json_out,
-                        })
+                        if status == 200:
+                            json_out = json.dumps(
+                                xmltodict.parse(xml))
+                            self.logger.info(f"{cmd} {status}")
+                            result.append({
+                                "status": status,
+                                "timestamp": now,
+                                "cmd": cmd,
+                                "devtype": self.devtype,
+                                "namespace": self.nsname,
+                                "hostname": self.hostname,
+                                "address": self.address,
+                                "data": json_out,
+                            })
+                        else:
+                            result.append(self._create_error(cmd))
+                            self.logger.error(
+                                f'{self.transport}://{self.hostname}:'
+                                f'{self.port}: Command {cmd} failed with '
+                                f'status {response.status}')
             except Exception as e:
                 self.current_exception = e
                 for cmd in cmd_list:
