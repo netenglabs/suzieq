@@ -70,10 +70,9 @@ class IgmpService(Service):
         return processed_data
 
     def _clean_nxos_data(self, processed_data, _):
-        
+        """NXOS data returned from the textfsm template must be munged to a different format"""
         pre_processed_data = {}
-
-        breakpoint()
+        
         for item in processed_data:
             if item['vrf'] in pre_processed_data:
                 if item['group'] in pre_processed_data[item['vrf']]:
@@ -87,7 +86,6 @@ class IgmpService(Service):
                     item['vrf']: {item['group']: [item['interface']]}
                 })
 
-        breakpoint()
         processed_data = []
 
         for vrf, groups in pre_processed_data.items():
@@ -97,5 +95,5 @@ class IgmpService(Service):
                     'group': group,
                     'interfaceList': pre_processed_data[vrf][group],
                 })
-        breakpoint()
+
         return processed_data
