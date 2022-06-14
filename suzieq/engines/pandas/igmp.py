@@ -19,17 +19,16 @@ class IgmpObj(SqPandasEngine):
     def get(self, **kwargs):
         '''Return the igmp table for the given filters'''
 
-        source = kwargs.pop('source', '')
         group = kwargs.pop('group', '')
         vrf = kwargs.pop('vrf', '')
         user_query = kwargs.pop('query_str', '')
         columns = kwargs.pop('columns', ['default'])
         fields = self.schema.get_display_fields(columns)
 
-        addnl_fields = ['source', 'group', 'interfaceList', 'querier', 'vrf']
+        addnl_fields = ['group', 'interfaceList', 'vrf']
 
-        df = super().get(addnl_fields=addnl_fields, source=source,
-                         ipvers=ipvers, columns=fields, **kwargs)
+        df = super().get(addnl_fields=addnl_fields,
+                         columns=fields, **kwargs)
 
         if user_query:
             df = self._handle_user_query_str(df, user_query)
