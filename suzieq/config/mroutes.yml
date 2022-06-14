@@ -11,7 +11,6 @@ show-fields:
   - oifList
   - vrf
   - ipvers
-  - rp
   - rpfNeighbor
   
 
@@ -20,7 +19,6 @@ apply:
     version: all
     command: show ip mroute vrf Zone2
     normalize: '*:protocol/groups/*:group/groupSources/*:source/[
-    "rp: rp",
     "rpfInterface: rpfInterface",
     "rpf/rpfNeighbor: rpfNeighbor",
     "oifList: oifList",
@@ -29,10 +27,6 @@ apply:
 
   nxos:
     version: all
-    command: show ip mroute vrf all | json
-    normalize: 'TABLE_vrf/ROW_vrf/vrf-name:vrf|[
-      "TABLE_one_route/ROW_one_route/[*]?/source_addrs: source",
-      "TABLE_one_route/ROW_one_route/[*]?/group_addrs: group",
-      "TABLE_one_route/ROW_one_route/[*]?/rpf-nbr": rpfNeighbor",
-      "TABLE_one_route/ROW_one_route/[*]?/TABLE_oif/ROW_oif/[*]?/oif-name: oifList"
-    ]'
+    command: show ip mroute vrf all
+    textfsm: textfsm_templates/nexus_show_ip_mroute_vrf_all.tfsm
+    merge: False

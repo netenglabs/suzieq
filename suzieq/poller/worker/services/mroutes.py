@@ -32,19 +32,38 @@ class MroutesService(Service):
 
     def _fix_star_source(self, entry):
         '''Make 0.0.0.0 source a * as convention.'''
-        if '0.0.0.0' in entry['source']:
+        if entry['source'] and '0.0.0.0' in entry['source']:
             entry['source'] = '*'
-
-    # def _clean_nxos_data(self, processed_data, _):
-    #     print(processed_data)
-
-    #     return processed_data
 
     def _common_data_cleaner(self, processed_data, _):
 
-        print(processed_data)
         for entry in processed_data:
             self._fix_ipvers(entry)
             self._fix_star_source(entry)
 
         return processed_data
+
+    def _clean_nxos_data(self, processed_data, raw_data):
+        reprocessed_data = {}
+        for entry in processed_data:
+            unique = '-'.join([entry['vrf'],entry['group']])
+            if unique in reprocessed_data.keys():
+                reprocessed_data[unique]['oifList'].append(entry['oifList'])
+                
+            else:
+                if not isinstance(entry['oifList'], list):
+                    entry['oifList'] = [entry['oifList']]
+                reprocessed_data.update({
+                    unique: {
+                        'oifList': entry['oifList'],
+                        'group': entry['vrf'],
+                        'source': entry['source'],
+                        'vrf': entry['vrf'],
+                        'incomingIf': entry['incomingIf'],
+                        'rpfNeighbor': entry['rpfNeighbor']
+                    }
+                })
+
+                processed_data = list(reprocessed_data.values())
+
+                return processed_data
