@@ -5,15 +5,14 @@ import pandas as pd
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.igmp import IgmpObj
 
 
 @command("igmp", help="Act on Igmp")
 @argument("vrf", description="VRF(s), space separated")
-@argument("source", description="Source(s), in quotes, space separated")
 @argument("group", description="Group(s), in quotes, space separated")
-class IgmpCmd(SqCommand):
+class IgmpCmd(SqTableCommand):
     """IGMP table information"""
 
     def __init__(
@@ -28,8 +27,7 @@ class IgmpCmd(SqCommand):
             query_str: str = ' ',
             columns: str = "default",
             vrf: str = "",
-            source: str = '',
-            group: str = '',
+            group: str = "",
     ) -> None:
         super().__init__(
             engine=engine,
@@ -45,7 +43,6 @@ class IgmpCmd(SqCommand):
         )
         self.lvars = {
             'vrf': vrf.split(),
-            'source': source.split(),
             'group': group.split()
         }
 

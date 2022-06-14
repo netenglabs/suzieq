@@ -5,7 +5,7 @@ import pandas as pd
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.mroutes import MroutesObj
 
 
@@ -13,7 +13,7 @@ from suzieq.sqobjects.mroutes import MroutesObj
 @argument("vrf", description="VRF(s), space separated")
 @argument("source", description="Source(s), in quotes, space separated")
 @argument("group", description="Group(s), in quotes, space separated")
-class MrouteCmd(SqCommand):
+class MrouteCmd(SqTableCommand):
     """Multicast Routing table information"""
 
     def __init__(
