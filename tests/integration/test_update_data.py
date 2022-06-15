@@ -384,6 +384,15 @@ class TestUpdate:
         '''Update test data for multicast.'''
         self._update_test_data_common_fn('mroutes', tmp_path, '2')
 
+    @pytest.mark.test_update
+    @pytest.mark.update_data
+    @pytest.mark.igmp
+    @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
+                        reason='Not updating data')
+    def test_update_igmp(self, tmp_path):
+        '''Update test data for igmp.'''
+        self._update_test_data_common_fn('igmp', tmp_path, '4')
+
 
 tests = [
     ['bgp', 'numbered'],
