@@ -52,7 +52,12 @@ async def start_controller(user_args: argparse.Namespace, config_data: Dict):
         if not log_stdout:
             print(f"ERROR: {error}")
         logger.error(error)
-        sys.exit(-1)
+        sys.exit(1)
+    except Exception as error:
+        if not log_stdout:
+            traceback.print_exc()
+        logger.critical(f'{error}\n{traceback.format_exc()}')
+        sys.exit(1)
 
 
 def controller_main():
@@ -198,8 +203,6 @@ def controller_main():
         asyncio.run(start_controller(args, cfg))
     except (KeyboardInterrupt, RuntimeError):
         pass
-    except Exception:  # pylint: disable=broad-except
-        traceback.print_exc()
 
 
 if __name__ == '__main__':
