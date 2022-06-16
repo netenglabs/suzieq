@@ -463,6 +463,15 @@ class Node:
                 # that sets the device type
                 devtype = self.devtype
             except Exception:
+                self.logger.exception(f'{self.address}:{self.port}: Node '
+                                      'discovery failed due to exception')
+                # All the exceptions related to timeouts and authentication
+                # problems are already catched inside. If we get an
+                # exception here, this is unexpected and most likely something
+                # went wrong with the command output parsing.
+                # In this case there is not point in retrying discovery, it is
+                # likely a bug.
+                self._retry = 0
                 devtype = None
 
             if not devtype:
