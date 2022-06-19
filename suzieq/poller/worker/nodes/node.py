@@ -1897,6 +1897,7 @@ class PanosNode(Node):
     '''Node object representing access to a Palo Alto Networks FW'''
 
     async def _fetch_init_dev_data(self):
+        discovery_cmd = 'show system info'
         try:
             res = []
             # temporary hack to detect device info using ssh
@@ -1905,7 +1906,7 @@ class PanosNode(Node):
                         self.address, port=22, username=self.username,
                         password=self.password, known_hosts=None) as conn:
                     async with conn.create_process() as process:
-                        process.stdin.write("show system info\n")
+                        process.stdin.write(f'{discovery_cmd}\n')
                         output = ""
                         output += await process.stdout.read(1)
                         try:
@@ -1929,20 +1930,21 @@ class PanosNode(Node):
                 await self.get_api_key()
         except asyncssh.misc.PermissionDenied:
             self.logger.error(
-                f'Permission denied for {self.address}:{self.port}')
+                f'{self.address}:{self.port}: permission denied')
             self._retry -= 1
-        except Exception:
-            self.logger.warning(
-                f'Cannot parse device data from {self.address}:{self.port}')
+        except Exception as e:
+            self.logger.error(
+                f'{self.hostname}:{self.port}: Command "{discovery_cmd}" '
+                f'failed due to {e}')
 
     async def get_api_key(self):
         """Authenticate to get the api key needed in all cmd requests"""
         url = f"https://{self.address}:{self.port}/api/?type=keygen&user=" \
             f"{self.username}&password={self.password}"
 
+        if not self._retry:
+            return
         async with self.cmd_pacer(self.per_cmd_auth):
-            if not self._retry:
-                return
             async with self._session.get(url, timeout=self.connect_timeout) \
                     as response:
                 status, xml = response.status, await response.text()
@@ -2058,7 +2060,6 @@ class PanosNode(Node):
                         if status == 200:
                             json_out = json.dumps(
                                 xmltodict.parse(xml))
-                            self.logger.info(f"{cmd} {status}")
                             result.append({
                                 "status": status,
                                 "timestamp": now,
