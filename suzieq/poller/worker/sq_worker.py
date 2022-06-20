@@ -8,11 +8,10 @@ import traceback
 from typing import Dict
 
 import uvloop
-
 from suzieq.poller.worker.worker import Worker
 from suzieq.poller.worker.writers.output_worker import OutputWorker
 from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
-from suzieq.shared.utils import poller_log_params, init_logger, load_sq_config
+from suzieq.shared.utils import init_logger, load_sq_config, poller_log_params
 
 
 async def start_worker(userargs: argparse.Namespace, cfg: Dict):
@@ -36,8 +35,14 @@ async def start_worker(userargs: argparse.Namespace, cfg: Dict):
         await worker.init_worker()
         await worker.run()
     except (SqPollerConfError, InventorySourceError) as error:
+        if not log_stdout:
+            print(error)
         logger.error(error)
-        print(error)
+        sys.exit(1)
+    except Exception as error:
+        if not log_stdout:
+            traceback.print_exc()
+        logger.critical(f'{error}\n{traceback.format_exc()}')
         sys.exit(1)
 
 
@@ -130,8 +135,6 @@ def worker_main():
         asyncio.run(start_worker(userargs, cfg))
     except (KeyboardInterrupt, RuntimeError):
         pass
-    except Exception:  # pylint: disable=broad-except
-        traceback.print_exc()
 
     sys.exit(0)
 

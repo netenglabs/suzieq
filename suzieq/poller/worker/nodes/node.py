@@ -146,8 +146,7 @@ class Node:
                                                           passphrase)
                 if not self.jump_host_key:
                     raise SqPollerConfError('Unable to read private key file'
-                                            f' at {pvtkey_file}'
-                                            )
+                                            f' at {pvtkey_file}')
         else:
             self.jump_host = None
             self.jump_host_key = None
@@ -463,6 +462,15 @@ class Node:
                 # that sets the device type
                 devtype = self.devtype
             except Exception:
+                self.logger.exception(f'{self.address}:{self.port}: Node '
+                                      'discovery failed due to exception')
+                # All the exceptions related to timeouts and authentication
+                # problems are already catched inside. If we get an
+                # exception here, this is unexpected and most likely something
+                # went wrong with the command output parsing.
+                # In this case there is not point in retrying discovery, it is
+                # likely a bug.
+                self._retry = 0
                 devtype = None
 
             if not devtype:
@@ -840,7 +848,6 @@ class Node:
         if only_one is True, commands are executed until the first one that
         succeeds, and the rest are ignored.
         '''
-
         if self.transport == "ssh":
             await self._ssh_gather(service_callback, cmd_list, cb_token,
                                    oformat, timeout, only_one)
@@ -1220,7 +1227,7 @@ class EosNode(Node):
                     result.append(self._create_error(cmd))
                 self.logger.error(
                     f"{self.transport}://{self.hostname}:{self.port}: Unable "
-                    "to communicate with node due to str(e)")
+                    f"to communicate with node due to {str(e)}")
 
         await service_callback(result, cb_token)
 
@@ -1331,8 +1338,8 @@ class CumulusNode(Node):
             except Exception as e:
                 self.current_exception = e
                 self.logger.error(
-                    "{self.transport}://{self.hostname}:{self.port}: Unable to"
-                    " communicate with node due to {str(e)}")
+                    f"{self.transport}://{self.hostname}:{self.port}: Unable "
+                    f"to communicate with node due to {str(e)}")
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
                            oformat='json', timeout=None):
@@ -1372,8 +1379,8 @@ class CumulusNode(Node):
                 self.current_exception = e
                 result.append(self._create_error(cmd_list))
                 self.logger.error(
-                    "{self.transport}://{self.hostname}:{self.port}: Unable "
-                    "to communicate with node due to {str(e)}")
+                    f"{self.transport}://{self.hostname}:{self.port}: Unable "
+                    f"to communicate with node due to {str(e)}")
 
         await service_callback(result, cb_token)
 
@@ -1700,10 +1707,10 @@ class IosXENode(Node):
                             await self._close_connection()
                             self.logger.debug("Closed conn successfully for "
                                               f"{self.hostname}")
-                        except Exception as e1:
+                        except Exception as close_exc:
                             self.logger.error(
                                 f"Caught an exception closing {self.hostname}"
-                                f" for {cmd}: {e1}")
+                                f" for {cmd}: {close_exc}")
                     else:
                         self.logger.error(
                             f"Unable to connect to {self.hostname} {cmd} "
