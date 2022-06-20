@@ -1,5 +1,4 @@
 from ipaddress import ip_address
-import re
 import pandas as pd
 
 from suzieq.sqobjects.basicobj import SqObject
