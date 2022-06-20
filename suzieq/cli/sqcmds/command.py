@@ -274,7 +274,6 @@ class SqCommand(SqPlugin):
         else:
             print(df)
 
-    # pylint: disable=too-many-statements
     def _gen_output(self, df: pd.DataFrame, json_orient: str = "records",
                     dont_strip_cols: bool = False, sort: bool = True):
 
