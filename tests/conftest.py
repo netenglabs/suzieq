@@ -17,7 +17,7 @@ from nubia import Nubia
 from suzieq.cli.sq_nubia_plugin import NubiaSuzieqPlugin
 
 from suzieq.cli.sq_nubia_context import NubiaSuzieqContext
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.shared.context import SqContext
 from suzieq.shared.schema import Schema
@@ -32,13 +32,19 @@ DATA_TO_STORE_FILE = 'tests/unit/poller/worker/utils/data_to_store.pickle'
 
 DATADIR = ['tests/data/parquet']
 
-commands = [(x) for x in SqCommand.get_plugins()
-            if x not in ['TopmemCmd', 'TopcpuCmd']]
+IGNORE_SQCMDS = ['TopmemCmd', 'TopcpuCmd']
 
-# pylint: disable=protected-access
+
+def get_sqcmds() -> Dict:
+    sqcmds = SqTableCommand.get_plugins()
+    sqcmds = {k: v for k, v in sqcmds.items() if k not in IGNORE_SQCMDS}
+    return sqcmds
+
+
+commands = [(x) for x in get_sqcmds()]
+
 cli_commands = [(v.__command['name'])
-                for k, v in SqCommand.get_plugins().items()
-                if k not in ['TopmemCmd', 'TopcpuCmd']]
+                for k, v in get_sqcmds().items()]
 
 tables = [t for t in get_tables() if t not in ['topmem', 'topcpu']]
 
@@ -47,8 +53,7 @@ tables = [t for t in get_tables() if t not in ['topmem', 'topcpu']]
 def get_cmd_object_dict() -> Dict:
     '''Get dict of command to cli_command object'''
     return {v.__command['name']: k
-            for k, v in SqCommand.get_plugins().items()
-            if k not in ['TopmemCmd', 'TopcpuCmd']}
+            for k, v in get_sqcmds().items()}
 
 
 @pytest.fixture(scope='function')
@@ -67,6 +72,13 @@ def create_context_config(datadir: str =
 
 @pytest.fixture()
 def get_table_data(table: str, datadir: str):
+    '''Fixture to get all fields in table.
+
+    This includes sqvers and any suppress field for DB check'''
+    return _get_table_data(table, datadir)
+
+
+def _get_table_data(table: str, datadir: str):
     '''Get all fields including sqvers and any suppress field for DB check'''
     if table in ['path', 'ospfIf', 'ospfNbr']:
         return pd.DataFrame()
@@ -75,7 +87,10 @@ def get_table_data(table: str, datadir: str):
     sqobj = get_sqobject(table)(config_file=cfgfile)
     cols = sqobj.schema.get_display_fields(['*'])
 
-    df = sqobj.get(columns=cols)
+    if table == "interface":
+        df = sqobj.get(columns=cols, type=["all"])
+    else:
+        df = sqobj.get(columns=cols)
 
     if not df.empty and (table not in ['device', 'tables', 'network']):
         device_df = get_sqobject('device')(config_file=cfgfile) \
@@ -96,7 +111,7 @@ def get_table_data_cols(table: str, datadir: str, columns: List[str]):
     '''
     For the table and columns specified, get data, used for schema validation
     '''
-    if table in ['path', 'ospfIf', 'ospfNbr']:
+    if table in ['path', 'ospfIf', 'ospfNbr', 'network']:
         return pd.DataFrame()
 
     cfgfile = create_dummy_config_file(datadir=datadir)

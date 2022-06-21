@@ -65,7 +65,7 @@ class InterfacesObj(SqPandasEngine):
             df = self._add_portmode(df, **kwargs)
 
         if vlan or "vlanList" in fields:
-            df = self._add_vlanlist(df)
+            df = self._add_vlanlist(df, **kwargs)
 
         if state or portmode:
             query_str = build_query_str([], self.schema, state=state,
@@ -89,7 +89,6 @@ class InterfacesObj(SqPandasEngine):
         else:
             return df.reset_index(drop=True)[fields]
 
-    # pylint: disable=arguments-differ
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""
 
@@ -205,6 +204,8 @@ class InterfacesObj(SqPandasEngine):
         result = kwargs.pop('result', 'all')
         state = kwargs.pop('state', '')
         iftype = kwargs.pop('type', [])
+        ifname = kwargs.pop('ifname', [])
+        hostname = kwargs.pop('hostname', [])
 
         def _check_field(x, fld1, fld2, reason):
             if x.skipIfCheck or x.indexPeer < 0:
@@ -260,13 +261,19 @@ class InterfacesObj(SqPandasEngine):
 
         if_df = self._drop_junos_pifnames(if_df).reset_index()
 
+        if if_df.empty:
+            if result != 'pass':
+                if_df['result'] = 'fail'
+                if_df['assertReason'] = 'No data'
+
+            return if_df
+
         lldpobj = self._get_table_sqobj('lldp')
         mlagobj = self._get_table_sqobj('mlag')
 
         # can't pass all kwargs, because lldp acceptable arguements are
         # different than interface
         namespace = kwargs.get('namespace', [])
-        hostname = kwargs.get('hostname', [])
         lldp_df = lldpobj.get(namespace=namespace, hostname=hostname) \
                          .query('peerIfname != "-"')
 
@@ -333,6 +340,12 @@ class InterfacesObj(SqPandasEngine):
                            "mgmtIP", "description"]) \
             .dropna(subset=['hostname', 'ifname']) \
             .drop_duplicates(subset=['namespace', 'hostname', 'ifname'])
+
+        if not combined_df.empty and hostname:
+            combined_df = self._filter_hostname(combined_df, hostname)
+
+        if not combined_df.empty and ifname:
+            combined_df = combined_df.query(f'ifname.isin({ifname})')
 
         if combined_df.empty:
             if result != 'pass':
@@ -465,6 +478,9 @@ class InterfacesObj(SqPandasEngine):
         Returns:
             pd.DataFrame: updated dataframe
         """
+        if if_df.empty:
+            return if_df
+
         # save the parent interface name in pifname column
         if_df['pifname'] = if_df.apply(
             lambda x: x['ifname'].split('.')[0]
@@ -528,7 +544,8 @@ class InterfacesObj(SqPandasEngine):
 
         devdf = self._get_table_sqobj('device') \
             .get(namespace=namespace, hostname=hostname,
-                 columns=['namespace', 'hostname', 'os', 'status', 'vendor'])
+                 columns=['namespace', 'hostname', 'os'],
+                 ignore_neverpoll=True)
 
         pm_df = pd.DataFrame({'namespace': [], 'hostname': [],
                               'ifname': [], 'portmode': []})
@@ -585,14 +602,15 @@ class InterfacesObj(SqPandasEngine):
         if not pm_df.empty:
             df = df.merge(pm_df, how='left', on=[
                 'namespace', 'hostname', 'ifname'],
-                suffixes=['', '_y'])
+                suffixes=['', '_y']) \
+                .fillna({'vlan_y': 0})
             df['portmode'] = np.where(df.portmode_y.isnull(), df.portmode,
                                       df.portmode_y)
 
         df.loc[df.ifname == "bridge", 'portmode'] = ''
         if 'vlan_y' in df.columns:
-            df['vlan'] = np.where(df.vlan_y.isnull(), df.vlan,
-                                  df.vlan_y)
+            df['vlan'] = np.where(df.vlan_y != 0, df.vlan_y,
+                                  df.vlan)
         df['vlan'] = df.vlan.astype(int)
 
         df['portmode'] = np.where(df.adminState != 'up', '',
@@ -632,6 +650,7 @@ class InterfacesObj(SqPandasEngine):
                             .reset_index() \
                             .rename(columns={'interfaces': 'ifname',
                                              'vlan': 'vlanList'})
+        vlan_if_df = vlan_if_df.dropna(subset=['namespace', 'hostname'])
 
         vlan_if_df['vlanList'] = vlan_if_df.vlanList.apply(sorted)
 

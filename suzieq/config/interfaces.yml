@@ -143,57 +143,79 @@ apply:
     copy: junos-qfx
 
   nxos:
-    version: all
-    command:
-      - command: show interface brief | json native
-        normalize: 'TABLE_interface/ROW_interface/*?/[
-        "interface: ifname",
-        "state: state",
-        "oper_state: state?|state",
-        "svi_admin_state: state?|state",
-        "speed: speed?|0",
-        "mtu: mtu?|0",
-        "portmode: portmode?|routed",
-        "portchan: _portchannel?|0",
-        "type: type?|",
-        "vlan: vlan?|0",
-        "state_rsn_desc: reason",
-        "svi_reason_desc: reason?|reason",
-        ]'
+    - version: < 9.3(0)
+      command:
+        - command: show interface brief
+          textfsm: textfsm_templates/nxos_show_int_brief.tfsm
 
-      - command: show ip interface vrf all | json native
-        normalize: 'TABLE_intf/ROW_intf/*?/[
-        "vrf-name-out: vrf",
-        "intf-name: ifname",
-        "proto-state: state",
-        "prefix: ipAddressList",
-        "masklen: _maskLen",
-        "admin-state: adminState",
-        "mtu: mtu?|0",
-        "unnum-intf: _unnum_intf?|",
-        "TABLE_unnuminf/ROW_unnuminf/[*]?/unnum-child-inf: _child_intf?|[]",
-        "TABLE_secondary_address/ROW_secondary_address/[*]?/prefix1: _secIPs?|[]",
-        "TABLE_secondary_address/ROW_secondary_address/[*]?/masklen1: _secmasklens?|[]",
-        ]'
+        - command: show ip interface vrf all
+          textfsm: textfsm_templates/nxos_show_ip_int.tfsm
 
-      - command: show ipv6 interface vrf all | json native
-        normalize: 'TABLE_intf/ROW_intf/*?/[
-        "vrf-name-out: vrf",
-        "intf-name: ifname",
-        "admin-state: adminState",
-        "TABLE_addr/ROW_addr/[*]?/addr: ip6AddressList?|[]",
-        "linklocal-addr: _linklocal"
-        ]'
+        - command: show ipv6 interface vrf all
+          textfsm: textfsm_templates/nxos_show_ipv6_int.tfsm
 
-      - command: show interface | egrep '^\w|Hardware|MTU|reset|Description'
-        textfsm: textfsm_templates/nxos_show_int_grep.tfsm
-        _entryType: mtumac
+        - command: show interface | egrep '^\w|Hardware|MTU|reset|Description'
+          textfsm: textfsm_templates/nxos_show_int_grep.tfsm
+          _entryType: mtumac
 
-      - command: show fabric forwarding internal svi-info
-        textfsm: textfsm_templates/nxos_if_fabric.tfsm
+        - command: show fabric forwarding internal svi-info
+          textfsm: textfsm_templates/nxos_if_fabric.tfsm
+          
+        - command: show vrf detail
+          textfsm: textfsm_templates/nxos_show_vrf.tfsm
+          _entryType: vrf
+            
+    - version: all
+      command:
+        - command: show interface brief | json native
+          normalize: 'TABLE_interface/ROW_interface/*?/[
+           "interface: ifname",
+           "state: state",
+           "oper_state: state?|state",
+           "svi_admin_state: state?|state",
+           "speed: speed?|0",
+           "mtu: mtu?|0",
+           "portmode: _portmode?|routed",
+           "portchan: _portchannel?|0",
+           "type: type?|",
+           "vlan: vlan?|0",
+           "state_rsn_desc: reason",
+           "svi_reason_desc: reason?|reason",
+           ]'
 
-      - command: show vrf detail | json native
-        normalize: 'TABLE_vrf/ROW_vrf/*/[
+        - command: show ip interface vrf all | json native
+          normalize: 'TABLE_intf/ROW_intf/*?/[
+          "vrf-name-out: vrf",
+          "intf-name: ifname",
+          "proto-state: state",
+          "prefix: ipAddressList",
+          "masklen: _maskLen",
+          "admin-state: adminState",
+          "mtu: mtu?|0",
+          "unnum-intf: _unnum_intf?|",
+          "TABLE_unnuminf/ROW_unnuminf/[*]?/unnum-child-inf: _child_intf?|[]",
+          "TABLE_secondary_address/ROW_secondary_address/[*]?/prefix1: _secIPs?|[]",
+          "TABLE_secondary_address/ROW_secondary_address/[*]?/masklen1: _secmasklens?|[]",
+          ]'
+
+        - command: show ipv6 interface vrf all | json native
+          normalize: 'TABLE_intf/ROW_intf/*?/[
+          "vrf-name-out: vrf",
+          "intf-name: ifname",
+          "admin-state: adminState",
+          "TABLE_addr/ROW_addr/[*]?/addr: ip6AddressList?|[]",
+          "linklocal-addr: _linklocal"
+          ]'
+
+        - command: show interface | egrep '^\w|Hardware|MTU|reset|Description'
+          textfsm: textfsm_templates/nxos_show_int_grep.tfsm
+          _entryType: mtumac
+
+        - command: show fabric forwarding internal svi-info
+          textfsm: textfsm_templates/nxos_if_fabric.tfsm
+
+        - command: show vrf detail | json native
+          normalize: 'TABLE_vrf/ROW_vrf/*/[
           "vrf_name: ifname?|",
           "vrf_state: state",
           "type: type?|vrf",

@@ -4,7 +4,7 @@ import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (convert_macaddr_format_to_colon,
-                                 expand_ios_ifname)
+                                 expand_ios_ifname, expand_nxos_ifname)
 
 
 class LldpService(Service):
@@ -71,8 +71,22 @@ class LldpService(Service):
         for i, entry in enumerate(processed_data):
             entry['peerHostname'] = re.sub(r'\(.*\)', '',
                                            entry['peerHostname'])
-            entry['ifname'] = re.sub(
-                r'^Eth?(\d)', r'Ethernet\g<1>', entry['ifname'])
+            if not entry.get('ifname', ''):
+                # This is a case where NXOS version 7.0.7 has a bug with longer
+                # hostnames where it squishes the hostname and ifname into a
+                # single string without even a single space between them.
+                val = entry.get('peerHostname', '')
+                res = val.split('mgmt')
+                if len(res) == 2:
+                    entry['peerHostname'] = res[0]
+                    entry['ifname'] = f'mgmt{res[1]}'
+                elif '/' in val:  # hostnames can't have / as per standards
+                    res = val.split('Eth')
+                    if len(res) == 2:
+                        entry['peerHostname'] = res[0]
+                        entry['ifname'] = f'Eth{res[1]}'
+
+            entry['ifname'] = expand_nxos_ifname(entry['ifname'])
 
             if entry['ifname'] in entries:
                 # Description is sometimes filled in with CDP, but not LLDP
@@ -189,9 +203,20 @@ class LldpService(Service):
 
         drop_indices = []
         for i, entry in enumerate(processed_data):
-
+            entry['peerHostname'] = re.sub(r'\(.*\)', '',
+                                           entry['peerHostname'])
             if not entry['ifname']:
                 drop_indices.append(i)
+
+            # IOS can have the last 2 columns of its output as either
+            # Gig 0/1/2 or N5K Gig 0/1/2 or N5K mgmt0. In this last
+            # case we accidentally assume N5kmgmt0 as the peer interface
+            # name. The following code tries to fix that.
+            pif = entry.get('peerIfname', '')
+            if pif:
+                words = pif.split()
+                if words[-1] == "mgmt0":
+                    entry['peerIfname'] = "mgmt0"
             for field in ['ifname', 'peerIfname']:
                 entry[field] = expand_ios_ifname(entry[field])
                 if ' ' in entry.get(field, ''):

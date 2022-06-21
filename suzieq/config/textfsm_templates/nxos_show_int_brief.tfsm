@@ -1,0 +1,51 @@
+Value Required ifname (\S+)
+Value state (up|down)
+Value IP ((\d+\.\d+\.\d+\.\d+)|--)
+Value speed (\S+)
+Value mtu (\d+)
+Value vlan (\d+|--|monitor)
+Value type (\S+)
+Value _portmode (routed|access|trunk|pvlan|fabric)
+Value reason (\S+((\s\w+)+)?)
+Value _portchannel (\S+)
+Value peerIP ([0-9.]+)
+Value vcid (\d+)
+Value description (.*)
+
+Start
+  ^Port\s+VRF\s+Status\s+IP\s+Address\s+Speed\s+MTU -> Mgmt
+  ^Interface\s+Ch\s+ -> Ethernet 
+  ^Interface\s+Status\s+Description -> Loopback
+  ^Interface\s+Secondary\s+VLAN\(Type\)\s+Status\s+Reason -> Vlan
+  ^Port-channel\s+VLAN\s+ -> Ethernet
+  ^Port\s+Status -> Tunnel
+
+Mgmt
+  ^Ethernet\s+VLAN\s+Type\s+Mode\s+Status\s+Reason\s+Speed\s+Port -> Start
+  ^${ifname}\s+\S+\s+${state}\s+${IP}\s+${speed}\s+${mtu} -> Record
+
+Ethernet
+  ^Interface\s+Status\s+Description -> Loopback
+  ^Interface\s+Secondary\s+VLAN -> Vlan
+  ^Interface\s+Status\s+Peer\s+IP -> PW
+  ^${ifname}\s+${vlan}\s+${type}\s+${_portmode}\s+${state}\s+${reason}\s+${speed}\S*\s+${_portchannel} -> Record
+
+Loopback
+  ^Interface\s+Secondary\s+VLAN\(Type\)\s+Status\s+Reason -> Vlan
+  ^Ethernet\s+VLAN\s+Type\s+Mode\s+Status\s+Reason\s+Speed\s+Port -> Ethernet
+  ^${ifname}\s+${state}\s+${description} -> Record
+
+Vlan
+  ^Interface\s+Status\s+Peer -> PW
+  ^Port\s+Status\s+Reason -> Tunnel
+  ^Ethernet\s+VLAN\s+Type\s+Mode\s+Status\s+Reason\s+Speed\s+Port -> Ethernet
+  ^${ifname}\s+${type}\s+${state}\s+${reason} -> Record
+
+Tunnel
+  ^Interface\s+Status -> PW
+  ^Ethernet\s+VLAN\s+Type\s+Mode\s+Status\s+Reason\s+Speed\s+Port -> Ethernet
+  ^${ifname}\s+${state}\s+{reason}\s+${mtu} -> Record
+
+PW
+  ^Ethernet\s+VLAN\s+Type\s+Mode\s+Status\s+Reason\s+Speed\s+Port -> Ethernet
+  ^${ifname}\s+${state}\s+${peerIP}\s+${vcid} -> Record

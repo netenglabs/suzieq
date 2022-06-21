@@ -1,7 +1,7 @@
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.address import AddressObj
 
 
@@ -18,7 +18,7 @@ from suzieq.sqobjects.address import AddressObj
           description=("Show all the addresses in this "
                        "subnet prefix (in quotes)"))
 @command("address", help="Act on interface addresses")
-class AddressCmd(SqCommand):
+class AddressCmd(SqTableCommand):
     """IP and MAC addresses associated with interfaces"""
 
     def __init__(

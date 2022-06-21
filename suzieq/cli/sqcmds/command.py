@@ -14,10 +14,12 @@ from prompt_toolkit import prompt
 from natsort import natsort_keygen
 from colorama import Fore, Style
 
+from termcolor import cprint, colored
 from suzieq.cli.nubia_patch import argument
 from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.exceptions import UserQueryError
-from suzieq.shared.utils import SUPPORTED_ENGINES
+from suzieq.shared.utils import (DATA_FORMATS, SUPPORTED_ENGINES,
+                                 deprecated_command_warning)
 
 
 def colorize(x, color):
@@ -51,7 +53,7 @@ def colorize(x, color):
 @argument(
     "format",
     description="Select the pformat of the output",
-    choices=["text", "json", "csv", "markdown"],
+    choices=DATA_FORMATS,
 )
 @argument(
     "query_str",
@@ -59,20 +61,20 @@ def colorize(x, color):
     "further filter the output"
 )
 class SqCommand(SqPlugin):
-    """Base Command Class for use with all verbs"""
+    """Base Command Class for SuzieQ commands"""
 
     def __init__(
-            self,
-            engine: str = "",
-            hostname: str = "",
-            start_time: str = "",
-            end_time: str = "",
-            view: str = "",
-            namespace: str = "",
-            format: str = "",  # pylint: disable=redefined-builtin
-            columns: str = "default",
-            query_str: str = " ",
-            sqobj=None,
+        self,
+        engine: str = "",
+        hostname: str = "",
+        start_time: str = "",
+        end_time: str = "",
+        view: str = "",
+        namespace: str = "",
+        format: str = "",  # pylint: disable=redefined-builtin
+        columns: str = "default",
+        query_str: str = " ",
+        sqobj=None,
     ) -> None:
         self.ctxt = context.get_context().ctxt
         self._cfg = self.ctxt.cfg
@@ -146,147 +148,8 @@ class SqCommand(SqPlugin):
         '''Return the schemas'''
         return self._schemas
 
-    @command("summarize", help='produce a summarize of the data')
-    def summarize(self, **kwargs):
-        """Summarize relevant information about the table"""
-        now = time.time()
-
-        summarize_df = self._invoke_sqobj(
-            self.sqobj.summarize, namespace=self.namespace,
-            hostname=self.hostname, query_str=self.query_str,
-            **self.lvars,
-            **kwargs
-        )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(summarize_df, json_orient='columns')
-
-    @command("show")
-    def show(self):
-        """Show address info
-        """
-        # Get the default display field names
-        now = time.time()
-        if self.columns != ["default"]:
-            self.ctxt.sort_fields = None
-        else:
-            self.ctxt.sort_fields = []
-
-        df = self._invoke_sqobj(self.sqobj.get,
-                                hostname=self.hostname,
-                                columns=self.columns,
-                                query_str=self.query_str,
-                                namespace=self.namespace,
-                                **self.lvars,
-                                )
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
-
-    @command("unique", help="find the list of unique items in a column")
-    @argument("count", description="include count of times a value is seen",
-              choices=['True'])
-    def unique(self, count='', **kwargs):
-        """Get unique values (and counts) associated with requested field"""
-        now = time.time()
-
-        df = self._invoke_sqobj(self.sqobj.unique,
-                                hostname=self.hostname,
-                                namespace=self.namespace,
-                                query_str=self.query_str,
-                                count=count,
-                                **self.lvars,
-                                **kwargs,
-                                )
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if 'error' in df.columns:
-            return self._gen_output(df)
-
-        if df.empty:
-            return df
-
-        if not count:
-            return self._gen_output(df.sort_values(by=[df.columns[0]]),
-                                    dont_strip_cols=True)
-        else:
-            return self._gen_output(
-                df.sort_values(by=['numRows', df.columns[0]]),
-                dont_strip_cols=True)
-
-    @command("describe", help="describe the table and its fields")
-    def describe(self):
-        """Display the schema of the table
-
-        Returns:
-            [type]: 0 or error
-        """
-        now = time.time()
-
-        for x in list(filter(lambda x: not x.startswith('_') and
-                             x not in ['ctxt', 'sqobj', 'query_str',
-                                       'format', 'columns', 'lvars'],
-                             self.__dict__)):
-            if getattr(self, x):
-                print(Fore.RED + "Error: No arguments allowed for describe")
-                return 1
-
-        if any(x for x in self.lvars.values()):
-            print(Fore.RED + "Error: No arguments allowed for describe")
-            return 1
-
-        df = self._invoke_sqobj(self.sqobj.describe,
-                                hostname=self.hostname,
-                                namespace=self.namespace,
-                                query_str=self.query_str,
-                                )
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        return self._gen_output(df)
-
-    @ command("top", help="find the top n values for a field")
-    @ argument("count", description="number of rows to return")
-    @ argument("what", description="numeric field to get top values for")
-    @ argument("reverse", description="return bottom n values",
-               choices=['True', 'False'])
-    def top(self, count: int = 5, what: str = '', reverse: str = 'False',
-            **kwargs) -> int:
-        """Return the top n values for a field in a table
-
-        Args:
-            count (int, optional): Number of entries to return. Defaults to 5
-            what (str, optional): Field name to use for largest/smallest val
-            reverse (bool, optional): Reverse and return n smallest
-
-        Returns:
-            int: 0 or error code
-        """
-        now = time.time()
-
-        df = self._invoke_sqobj(self.sqobj.top,
-                                hostname=self.hostname,
-                                namespace=self.namespace,
-                                query_str=self.query_str,
-                                what=what, count=count,
-                                reverse=ast.literal_eval(reverse),
-                                **self.lvars,
-                                **kwargs,
-                                )
-
-        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if 'error' in df.columns:
-            return self._gen_output(df)
-
-        if not df.empty:
-            df = self.sqobj.humanize_fields(df)
-            return self._gen_output(df.sort_values(
-                by=[what], ascending=(reverse == "True")),
-                dont_strip_cols=True, sort=False)
-        else:
-            return self._gen_output(df)
-
     @ command("help", help="show help for a command")
-    @ argument("command", description="command to show help for",
-               choices=['show', 'unique', 'summarize', 'assert', 'describe',
-                        'top', "find", "lpm"])
+    @ argument("command", description="command to show help for")
     # pylint: disable=redefined-outer-name
     def help(self, command: str = ''):
         """Show help for a command
@@ -428,6 +291,9 @@ class SqCommand(SqPlugin):
                 cols = df.columns.tolist()
             is_error = False
 
+        max_rows = self.ctxt.max_rows
+        all_columns = self.ctxt.all_columns
+
         if dont_strip_cols or not all(item in df.columns for item in cols):
             cols = df.columns.tolist()
 
@@ -454,9 +320,11 @@ class SqCommand(SqPlugin):
                 'timestamp' not in self.columns and not dont_strip_cols and
                     'timestamp' in df.columns and 'timestamp' in cols):
                 cols.remove('timestamp')
-            with pd.option_context('precision', 3,
-                                   'display.max_colwidth', max_colwidth,
-                                   'display.max_rows', 256):
+            with pd.option_context(
+                    'precision', 3,
+                    'display.max_colwidth', max_colwidth,
+                    'display.max_rows', max_rows,
+                    'display.expand_frame_repr', not all_columns):
                 df = self.sqobj.humanize_fields(df)
                 if df.empty:
                     print(df)
@@ -508,3 +376,172 @@ class SqCommand(SqPlugin):
                 df = pd.DataFrame({'error': [f'ERROR: {ex}']})
 
         return df
+
+    @command("describe", help="describe the table and its fields")
+    def describe(self):
+        """Display the schema of the table
+
+        Returns:
+            [type]: 0 or error
+        """
+        now = time.time()
+
+        for x in list(filter(lambda x: not x.startswith('_') and
+                             x not in ['ctxt', 'sqobj', 'query_str',
+                                       'format', 'columns', 'lvars'],
+                             self.__dict__)):
+            if getattr(self, x):
+                print(Fore.RED + "Error: No arguments allowed for describe")
+                return 1
+
+        if any(x for x in self.lvars.values()):
+            print(Fore.RED + "Error: No arguments allowed for describe")
+            return 1
+
+        df = self._invoke_sqobj(self.sqobj.describe,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                )
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        return self._gen_output(df)
+
+    def _print_depracation_command_warning(self,
+                                           new_command: str,
+                                           sub_command: str,
+                                           dep_sub_command: str = None):
+        """Print depracation command warning
+
+        Args:
+            new_command (str): command
+            command (str): _description_
+            dep_command (str, optional): _description_. Defaults to None.
+        """
+        if not dep_sub_command:
+            dep_sub_command = sub_command
+        dep_command = self.sqobj.table
+        warning_msg = deprecated_command_warning(dep_command,
+                                                 dep_sub_command,
+                                                 new_command,
+                                                 sub_command)
+        cprint(colored(warning_msg, 'yellow'))
+
+
+class SqTableCommand(SqCommand):
+    """Base Command Class for table commands"""
+
+    @command("summarize", help='produce a summarize of the data')
+    def summarize(self, **kwargs):
+        """Summarize relevant information about the table"""
+        now = time.time()
+
+        summarize_df = self._invoke_sqobj(
+            self.sqobj.summarize, namespace=self.namespace,
+            hostname=self.hostname, query_str=self.query_str,
+            **self.lvars,
+            **kwargs
+        )
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        return self._gen_output(summarize_df, json_orient='columns')
+
+    @command("show")
+    def show(self):
+        """Show address info
+        """
+        # Get the default display field names
+        now = time.time()
+        if self.columns != ["default"]:
+            self.ctxt.sort_fields = None
+        else:
+            self.ctxt.sort_fields = []
+
+        df = self._invoke_sqobj(self.sqobj.get,
+                                hostname=self.hostname,
+                                columns=self.columns,
+                                query_str=self.query_str,
+                                namespace=self.namespace,
+                                **self.lvars,
+                                )
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        return self._gen_output(df)
+
+    @command("unique", help="find the list of unique items in a column")
+    @argument("count", description="include count of times a value is seen",
+              choices=['True'])
+    def unique(self, count='', **kwargs):
+        """Get unique values (and counts) associated with requested field"""
+        now = time.time()
+
+        df = self._invoke_sqobj(self.sqobj.unique,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                count=count,
+                                **self.lvars,
+                                **kwargs,
+                                )
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        if 'error' in df.columns:
+            return self._gen_output(df)
+
+        if df.empty:
+            return df
+
+        if not count:
+            return self._gen_output(df.sort_values(by=[df.columns[0]]),
+                                    dont_strip_cols=True)
+        else:
+            return self._gen_output(
+                df.sort_values(by=['numRows', df.columns[0]]),
+                dont_strip_cols=True)
+
+    @ command("top", help="find the top n values for a field")
+    @ argument("count", description="number of rows to return")
+    @ argument("what", description="numeric field to get top values for")
+    @ argument("reverse", description="return bottom n values",
+               choices=['True', 'False'])
+    def top(self, count: int = 5, what: str = '', reverse: str = 'False',
+            **kwargs) -> int:
+        """Return the top n values for a field in a table
+
+        Args:
+            count (int, optional): Number of entries to return. Defaults to 5
+            what (str, optional): Field name to use for largest/smallest val
+            reverse (bool, optional): Reverse and return n smallest
+
+        Returns:
+            int: 0 or error code
+        """
+        now = time.time()
+
+        df = self._invoke_sqobj(self.sqobj.top,
+                                hostname=self.hostname,
+                                namespace=self.namespace,
+                                query_str=self.query_str,
+                                what=what, count=count,
+                                reverse=ast.literal_eval(reverse),
+                                **self.lvars,
+                                **kwargs,
+                                )
+
+        self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
+        if 'error' in df.columns:
+            return self._gen_output(df)
+
+        if not df.empty:
+            df = self.sqobj.humanize_fields(df)
+            return self._gen_output(df.sort_values(
+                by=[what], ascending=(reverse == "True")),
+                dont_strip_cols=True, sort=False)
+        else:
+            return self._gen_output(df)
+
+    @ command("help", help="show help for a command")
+    @ argument("command", description="command to show help for",
+               choices=['show', 'unique', 'summarize', 'assert', 'describe',
+                        'top', "lpm"])
+    # pylint: disable=redefined-outer-name
+    def help(self, command: str = ''):
+        return super().help(command)

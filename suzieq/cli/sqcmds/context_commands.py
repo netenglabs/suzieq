@@ -22,6 +22,11 @@ from suzieq.shared.utils import SUPPORTED_ENGINES, print_version
 @argument("pager", description="Enable pagination prompt on longer outputs",
           choices=['on', 'off'])
 @argument('col_width', description='Max Width of each column in table display')
+@argument('max_rows',
+          description='Max rows to display before ellipsis is shown')
+@argument('all_columns',
+          description='Display all columns wrapping around if necessary',
+          choices=['yes', 'no'])
 @argument(
     "engine",
     choices=SUPPORTED_ENGINES,
@@ -57,6 +62,8 @@ def set_ctxt(
         datadir: str = "",
         debug: str = '',
         col_width: int = 50,
+        max_rows: int = None,
+        all_columns: str = None,
         rest_server_ip: str = "",
         rest_server_port: str = "",
         rest_api_key: str = "",
@@ -92,6 +99,15 @@ def set_ctxt(
 
     if col_width:
         ctxt.col_width = int(col_width)
+
+    if max_rows is not None:
+        if max_rows == 0:
+            ctxt.max_rows = None
+        else:
+            ctxt.max_rows = max_rows
+
+    if all_columns is not None:
+        ctxt.all_columns = all_columns == "yes"
 
     if pager == 'on':
         ctxt.pager = True

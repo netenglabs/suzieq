@@ -14,6 +14,7 @@ import asyncio
 from asyncio.subprocess import PIPE, DEVNULL
 # pylint: disable=redefined-builtin
 from concurrent.futures._base import TimeoutError
+from contextlib import asynccontextmanager
 
 from packaging import version as version_parse
 import xmltodict
@@ -94,7 +95,6 @@ class Node:
         self.init_again_at = 0  # after this epoch secs, try init again
         self.connect_timeout = kwargs.get('connect_timeout', 15)
         self.cmd_timeout = 10  # default command timeout in seconds
-        self.batch_size = 4    # Number of commands to issue in parallel
         self.bootupTimestamp = 0
         self.version = "all"   # OS Version to pick the right defn
         self._service_queue = None
@@ -109,7 +109,14 @@ class Node:
         self._current_exception = None
         self.api_key = None
         self._stdin = self._stdout = self._long_proc = None
-        self._retry = True      # set to False if authentication fails
+        self._max_retries_on_auth_fail = (kwargs.get('retries_on_auth_fail')
+                                          or 0) + 1
+        self._retry = self._max_retries_on_auth_fail
+        self._discovery_lock = asyncio.Lock()
+        self._cmd_sem = kwargs.get('cmd_sem', None)
+        self._cmd_mutex = kwargs.get('cmd_mutex', None)
+        self._cmd_pacer_sleep = kwargs.get('cmd_pacer_sleep', None)
+        self.per_cmd_auth = kwargs.get('per_cmd_auth', True)
 
         self.address = kwargs["address"]
         self.hostname = kwargs["address"]  # default till we get hostname
@@ -139,14 +146,21 @@ class Node:
                                                           passphrase)
                 if not self.jump_host_key:
                     raise SqPollerConfError('Unable to read private key file'
-                                            f' at {pvtkey_file}'
-                                            )
+                                            f' at {pvtkey_file}')
         else:
             self.jump_host = None
             self.jump_host_key = None
 
         self.ignore_known_hosts = kwargs.get('ignore_known_hosts', False)
         self.slow_host = kwargs.get('slow_host', False)
+        # Number of commands to issue in parallel
+        if self._cmd_sem:
+            # Limit the num of parallel cmds we can issue when we have limits
+            self.batch_size = 1
+        else:
+            # 4 is a number we picked to limit using up too many SSH sessions
+            # Many newer implementations allow upto 5 simultaneous SSH sessions
+            self.batch_size = 4
         pvtkey_file = kwargs.get("ssh_keyfile", None)
         if pvtkey_file:
             self.pvtkey = self._decrypt_pvtkey(pvtkey_file, passphrase)
@@ -189,9 +203,8 @@ class Node:
         # Now we know the dev type, fetch the data we need about the
         # device to get cracking
         if not self.devtype and self._retry:
-            self.backoff = min(600, self.backoff * 2) + \
-                (random.randint(0, 1000) / 1000)
-            self.init_again_at = time.time() + self.backoff
+            # Unable to connect to the node, schedule later another attempt
+            self._schedule_discovery_attempt()
         elif self.devtype not in ['unsupported', None] and self._retry:
             # OK, we know the devtype, now initialize the info we need
             # to start proper operation
@@ -231,6 +244,37 @@ class Node:
     def is_connected(self):
         '''Is there connectivity to the device at the transport level'''
         return self._conn is not None
+
+    @asynccontextmanager
+    async def cmd_pacer(self, use_sem: bool = True):
+        '''Context Manager to implement throttling of commands.
+
+        In many networks, backend authentication servers such as TACACS which
+        handle authentication of logins and even command execution, cannot
+        large volumes of authentication requests. Thanks to our use of
+        asyncio, we can easily sends hundreds of connection requests to such
+        servers, which effectively turns into authentication failures. To
+        handle this, we add a user-specified maximum of rate of cmds/sec
+        that the authentication can handle, and we pace it out. This code
+        implements that pacer.
+
+        Some networks communicate with a backend authentication server only
+        on login while others contact it for authorization of a command as
+        well. Its to handle this difference that we pass use_sem. Users set
+        the per_cmd_auth to True if authorization is used. The caller of this
+        function sets the use_sem apppropriately depending on when the context
+        is invoked.
+
+        Args:
+          use_sem(bool): True if you want to use the pacer
+        '''
+        if self._cmd_sem and use_sem:
+            async with self._cmd_sem:
+                async with self._cmd_mutex:
+                    await asyncio.sleep(self._cmd_pacer_sleep)
+                yield
+        else:
+            yield
 
     def _decrypt_pvtkey(self, pvtkey_file: str, passphrase: str) -> str:
         """Decrypt private key file"""
@@ -411,18 +455,29 @@ class Node:
         devtype = None
         hostname = None
 
-        if self.transport in ["ssh", "local"]:
+        if self.transport in ['ssh', 'local']:
             try:
                 await self._get_device_type_hostname()
                 # The above fn calls results in invoking a callback fn
                 # that sets the device type
                 devtype = self.devtype
             except Exception:
+                self.logger.exception(f'{self.address}:{self.port}: Node '
+                                      'discovery failed due to exception')
+                # All the exceptions related to timeouts and authentication
+                # problems are already catched inside. If we get an
+                # exception here, this is unexpected and most likely something
+                # went wrong with the command output parsing.
+                # In this case there is not point in retrying discovery, it is
+                # likely a bug.
+                self._retry = 0
                 devtype = None
 
             if not devtype:
                 self.logger.debug(
-                    f"no devtype for {self.hostname} {self.current_exception}")
+                    f'No devtype for {self.hostname} {self.current_exception}')
+                # We were not able to do the discovery, schedule a new attempt
+                self._schedule_discovery_attempt()
                 return
             else:
                 self._set_devtype(devtype, '')
@@ -603,45 +658,53 @@ class Node:
                         self.ssh_ready.release()
                     return
 
-            try:
-                if self._tunnel:
-                    self._conn = await self._tunnel.connect_ssh(
-                        self.address, port=self.port,
-                        username=self.username,
-                        options=options)
-                else:
-                    self._conn = await asyncssh.connect(
-                        self.address,
-                        username=self.username,
-                        port=self.port,
-                        options=options)
-                self.logger.info(
-                    f"Connected to {self.address}:{self.port} at "
-                    f"{time.time()}")
-                if init_dev_data:
-                    await self._fetch_init_dev_data()
-            except Exception as e:  # pylint: disable=broad-except
-                if isinstance(e, asyncssh.HostKeyNotVerifiable):
-                    self.logger.error(
-                        f'Unable to connect to {self.address}: {self.port}, '
-                        'host key is unknown. If you do not need to verify '
-                        'the host identity, add "ignore-known-hosts: True" in '
-                        'the device section of the inventory')
-                elif isinstance(e, asyncssh.misc.PermissionDenied):
-                    self.logger.error(
-                        f'Authentication failed to {self.address}. '
-                        'Not retrying to avoid locking out user. Please '
-                        'restart poller with proper authentication')
-                    self._retry = False
-                else:
-                    self.logger.error('Unable to connect to '
-                                      f'{self.address}:{self.port}, {e}')
-                self.current_exception = e
-                await self._close_connection()
-                self._conn = None
-            finally:
-                if use_lock:
-                    self.ssh_ready.release()
+            async with self.cmd_pacer():
+                try:
+                    if self._tunnel:
+                        self._conn = await self._tunnel.connect_ssh(
+                            self.address, port=self.port,
+                            username=self.username,
+                            options=options)
+                    else:
+                        self._conn = await asyncssh.connect(
+                            self.address,
+                            username=self.username,
+                            port=self.port,
+                            options=options)
+                    self.logger.info(
+                        f"Connected to {self.address}:{self.port} at "
+                        f"{time.time()}")
+                    # Reset authentication fail attempt on success
+                    self._retry = self._max_retries_on_auth_fail
+                except Exception as e:  # pylint: disable=broad-except
+                    if isinstance(e, asyncssh.HostKeyNotVerifiable):
+                        self.logger.error(
+                            f'Unable to connect to {self.address}: {self.port}'
+                            ', host key is unknown. If you do not need to '
+                            ' verify the host identity, add '
+                            '"ignore-known-hosts: True" in the device section '
+                            'of the inventory')
+                    elif isinstance(e, asyncssh.misc.PermissionDenied):
+                        self.logger.error(
+                            f'Authentication failed to {self.address}. '
+                            'Not retrying to avoid locking out user. Please '
+                            'restart poller with proper authentication')
+                        self._retry -= 1
+                    else:
+                        self.logger.error('Unable to connect to '
+                                          f'{self.address}:{self.port}, {e}')
+                    self.current_exception = e
+                    await self._close_connection()
+                    self._conn = None
+                finally:
+                    if use_lock:
+                        self.ssh_ready.release()
+
+            # Release here because init_dev_data uses this lock as well
+            # We need to be sure that devtype is set, otherwise the
+            # _fetch_dev_data function is not implemented and will raise.
+            if init_dev_data and self.devtype:
+                await self._fetch_init_dev_data()
 
     @abstractmethod
     async def _init_rest(self):
@@ -692,6 +755,20 @@ class Node:
 
         await service_callback(result, cb_token)
 
+    def _schedule_discovery_attempt(self):
+        """Schedule a new attempt for the node discovery
+        """
+        # Add an additional offset to avoid all the nodes retry all together
+        offset = (random.randint(0, 1000) / 1000)
+        self.backoff = min(600, self.backoff * 2) + offset
+        self.init_again_at = time.time() + self.backoff
+
+        next_time = datetime.fromtimestamp(self.init_again_at)
+        logger.info(
+            f'Discovery of {self.address}:{self.port} will be retried '
+            f'from {next_time}'
+        )
+
     # pylint: disable=unused-argument
     async def _ssh_gather(self, service_callback: Callable,
                           cmd_list: List[str], cb_token: RsltToken,
@@ -715,7 +792,7 @@ class Node:
         result = []
 
         if cmd_list is None:
-            await service_callback({}, cb_token)
+            await service_callback(result, cb_token)
 
         if not self._conn:
             await self._init_ssh()
@@ -732,32 +809,34 @@ class Node:
             cb_token.node_token = self.bootupTimestamp
 
         timeout = timeout or self.cmd_timeout
-        for cmd in cmd_list:
-            try:
-                output = await asyncio.wait_for(self._conn.run(cmd),
-                                                timeout=timeout)
-                if self.current_exception:
-                    self.logger.info(
-                        '%s recovered from previous exception', self.hostname)
-                    self.current_exception = None
-                result.append(self._create_result(
-                    cmd, output.exit_status, output.stdout))
-                if (output.exit_status == 0) and only_one:
-                    break
-            except Exception as e:
-                self.current_exception = e
-                result.append(self._create_error(cmd))
-                if not isinstance(e, asyncio.TimeoutError):
-                    self.logger.error(
-                        "%s output for %s failed due to %s", cmd,
-                        self.hostname, e)
-                    await self._close_connection()
-                else:
-                    self.logger.error(
-                        "%s output for %s failed due to timeout", cmd,
-                        self.hostname)
+        async with self.cmd_pacer(self.per_cmd_auth):
+            for cmd in cmd_list:
+                try:
+                    output = await asyncio.wait_for(self._conn.run(cmd),
+                                                    timeout=timeout)
+                    if self.current_exception:
+                        self.logger.info(
+                            '%s recovered from previous exception',
+                            self.hostname)
+                        self.current_exception = None
+                    result.append(self._create_result(
+                        cmd, output.exit_status, output.stdout))
+                    if (output.exit_status == 0) and only_one:
+                        break
+                except Exception as e:
+                    self.current_exception = e
+                    result.append(self._create_error(cmd))
+                    if not isinstance(e, asyncio.TimeoutError):
+                        self.logger.error(
+                            "%s output for %s failed due to %s", cmd,
+                            self.hostname, e)
+                        await self._close_connection()
+                    else:
+                        self.logger.error(
+                            "%s output for %s failed due to timeout", cmd,
+                            self.hostname)
 
-                break
+                    break
 
         await service_callback(result, cb_token)
 
@@ -769,7 +848,6 @@ class Node:
         if only_one is True, commands are executed until the first one that
         succeeds, and the rest are ignored.
         '''
-
         if self.transport == "ssh":
             await self._ssh_gather(service_callback, cmd_list, cb_token,
                                    oformat, timeout, only_one)
@@ -798,9 +876,14 @@ class Node:
         if not svc_defn:
             return result
 
-        if not self.devtype and self._retry:
-            if self.init_again_at < time.time():
-                await self._detect_node_type()
+        if (not self.devtype and self._retry
+                and self.init_again_at < time.time()):
+            # When we issue bunch of commands multiple tasks might try to
+            # perform the discovery all together, we need only one of them
+            # trying to perform the discovery, all the others can fail
+            if not self._discovery_lock.locked():
+                async with self._discovery_lock:
+                    await self._detect_node_type()
 
         if not self.devtype:
             result.append(self._create_error(svc_defn.get("service", "-")))
@@ -865,7 +948,10 @@ class Node:
                 cmd = use.get("command", None)
 
         if not cmd:
-            return result
+            result.append(self._create_result(
+                svc_defn, HTTPStatus.NOT_FOUND, "No service definition"))
+            self.error_svcs_proc.add(svc_defn.get("service"))
+            return await service_callback(result, cb_token)
 
         oformat = use.get('format', 'json')
         if not isinstance(cmd, list):
@@ -981,27 +1067,28 @@ class Node:
         '''
 
         tasks = []
-        while True:
-            while len(tasks) < self.batch_size:
-                try:
+        try:
+            while True:
+                while len(tasks) < self.batch_size:
+
                     request = await self._service_queue.get()
-                except asyncio.CancelledError:
-                    await self._terminate()
-                    return
 
-                if request:
-                    tasks.append(self._exec_service(
-                        request[0], request[1], request[2]))
-                    self.logger.debug(
-                        f"Scheduling {request[2].service} for execution")
-                if self._service_queue.empty():
-                    break
+                    if request:
+                        tasks.append(self._exec_service(
+                            request[0], request[1], request[2]))
+                        self.logger.debug(
+                            f"Scheduling {request[2].service} for execution")
+                    if self._service_queue.empty():
+                        break
 
-            if tasks:
-                _, pending = await asyncio.wait(
-                    tasks, return_when=asyncio.FIRST_COMPLETED)
+                if tasks:
+                    _, pending = await asyncio.wait(
+                        tasks, return_when=asyncio.FIRST_COMPLETED)
 
-                tasks = list(pending)
+                    tasks = list(pending)
+        except asyncio.CancelledError:
+            await self._terminate()
+            return
 
 
 class EosNode(Node):
@@ -1093,52 +1180,54 @@ class EosNode(Node):
         output = []
         status = 200  # status OK
 
-        try:
-            async with aiohttp.ClientSession(
-                    auth=auth, conn_timeout=self.connect_timeout,
-                    read_timeout=timeout,
-                    connector=aiohttp.TCPConnector(ssl=False)) as session:
-                async with session.post(url, json=data,
-                                        timeout=timeout,
-                                        headers=headers) as response:
-                    status = response.status
-                    if status == HTTPStatus.OK:
-                        json_out = await response.json()
-                        if "result" in json_out:
-                            output.extend(json_out["result"])
-                        else:
-                            output.extend(
-                                json_out["error"].get('data', []))
+        async with self.cmd_pacer(self.per_cmd_auth):
+            try:
+                async with aiohttp.ClientSession(
+                        auth=auth, conn_timeout=self.connect_timeout,
+                        read_timeout=timeout,
+                        connector=aiohttp.TCPConnector(ssl=False)) as session:
+                    async with session.post(url, json=data,
+                                            timeout=timeout,
+                                            headers=headers) as response:
+                        status = response.status
+                        if status == HTTPStatus.OK:
+                            json_out = await response.json()
+                            if "result" in json_out:
+                                output.extend(json_out["result"])
+                            else:
+                                output.extend(
+                                    json_out["error"].get('data', []))
 
-                        for i, cmd in enumerate(cmd_list):
-                            result.append(
-                                {
-                                    "status": status,
-                                    "timestamp": now,
-                                    "cmd": cmd,
-                                    "devtype": self.devtype,
-                                    "namespace": self.nsname,
-                                    "hostname": self.hostname,
-                                    "address": self.address,
-                                    "data":
-                                    output[i]
-                                    if isinstance(output, list) else output,
-                                }
-                            )
-                    else:
-                        for cmd in cmd_list:
-                            result.append(self._create_error(cmd))
-                        self.logger.error(
-                            '(REST), Communication with %s:%s failed'
-                            ' due to %s', self.address, self.port,
-                            response.status)
-        except Exception as e:
-            self.current_exception = e
-            for cmd in cmd_list:
-                result.append(self._create_error(cmd))
-            self.logger.error("ERROR: (REST) Unable to communicate with node "
-                              "%s:%d due to %s", self.address, self.port,
-                              e)
+                            for i, cmd in enumerate(cmd_list):
+                                result.append(
+                                    {
+                                        "status": status,
+                                        "timestamp": now,
+                                        "cmd": cmd,
+                                        "devtype": self.devtype,
+                                        "namespace": self.nsname,
+                                        "hostname": self.hostname,
+                                        "address": self.address,
+                                        "data":
+                                        output[i]
+                                        if isinstance(output, list)
+                                        else output,
+                                    }
+                                )
+                        else:
+                            for cmd in cmd_list:
+                                result.append(self._create_error(cmd))
+                            self.logger.error(
+                                f'{self.transport}://{self.hostname}:'
+                                f'{self.port}: Commands failed due to '
+                                f'{response.status}')
+            except Exception as e:
+                self.current_exception = e
+                for cmd in cmd_list:
+                    result.append(self._create_error(cmd))
+                self.logger.error(
+                    f"{self.transport}://{self.hostname}:{self.port}: Unable "
+                    f"to communicate with node due to {str(e)}")
 
         await service_callback(result, cb_token)
 
@@ -1238,18 +1327,19 @@ class CumulusNode(Node):
         url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
         headers = {"Content-Type": "application/json"}
 
-        try:
-            async with aiohttp.ClientSession(
-                    auth=auth, timeout=self.cmd_timeout,
-                    connector=aiohttp.TCPConnector(ssl=False),
-            ) as session:
-                async with session.post(url, headers=headers) as response:
-                    _ = response.status
-        except Exception as e:
-            self.current_exception = e
-            self.logger.error("ERROR: (REST) Unable to communicate with node "
-                              "%s:%d due to %s", self.address, self.port,
-                              e)
+        async with self.cmd_pacer(self.per_cmd_auth):
+            try:
+                async with aiohttp.ClientSession(
+                        auth=auth, timeout=self.cmd_timeout,
+                        connector=aiohttp.TCPConnector(ssl=False),
+                ) as session:
+                    async with session.post(url, headers=headers) as response:
+                        _ = response.status
+            except Exception as e:
+                self.current_exception = e
+                self.logger.error(
+                    f"{self.transport}://{self.hostname}:{self.port}: Unable "
+                    f"to communicate with node due to {str(e)}")
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
                            oformat='json', timeout=None):
@@ -1262,19 +1352,19 @@ class CumulusNode(Node):
         url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
         headers = {"Content-Type": "application/json"}
 
-        try:
-            async with aiohttp.ClientSession(
-                    auth=auth,
-                    timeout=timeout or self.cmd_timeout,
-                    connector=aiohttp.TCPConnector(ssl=False),
-            ) as session:
-                for cmd in cmd_list:
-                    data = {"cmd": cmd}
-                    async with session.post(
-                            url, json=data, headers=headers
-                    ) as response:
-                        result.append(
-                            {
+        async with self.cmd_pacer(self.per_cmd_auth):
+            try:
+                async with aiohttp.ClientSession(
+                        auth=auth,
+                        timeout=timeout or self.cmd_timeout,
+                        connector=aiohttp.TCPConnector(ssl=False),
+                ) as session:
+                    for cmd in cmd_list:
+                        data = {"cmd": cmd}
+                        async with session.post(
+                                url, json=data, headers=headers
+                        ) as response:
+                            result.append({
                                 "status": response.status,
                                 "timestamp": int(datetime.now(tz=timezone.utc)
                                                  .timestamp() * 1000),
@@ -1284,14 +1374,13 @@ class CumulusNode(Node):
                                 "hostname": self.hostname,
                                 "address": self.address,
                                 "data": await response.text(),
-                            }
-                        )
-        except Exception as e:
-            self.current_exception = e
-            result.append(self._create_error(cmd_list))
-            self.logger.error("ERROR: (REST) Unable to communicate with node "
-                              "%s:%d due to %s", self.address, self.port,
-                              e)
+                            })
+            except Exception as e:
+                self.current_exception = e
+                result.append(self._create_error(cmd_list))
+                self.logger.error(
+                    f"{self.transport}://{self.hostname}:{self.port}: Unable "
+                    f"to communicate with node due to {str(e)}")
 
         await service_callback(result, cb_token)
 
@@ -1443,6 +1532,9 @@ class IosXENode(Node):
                     f'Reconnect succeeded via SSH for {self.hostname}')
                 break
 
+            if not self._retry:
+                break
+
             await asyncio.sleep(backoff_period)
             backoff_period *= 2
             backoff_period = min(backoff_period, 120)
@@ -1450,35 +1542,41 @@ class IosXENode(Node):
         if self.is_connected and not self._stdin:
             self.logger.info(
                 f'Trying to create Persistent SSH for {self.hostname}')
-            try:
-                self._stdin, self._stdout, self._stderr = \
-                    await self._conn.open_session(term_type='xterm')
-                self.logger.info(
-                    f'Persistent SSH created for {self.hostname}')
+            async with self.cmd_pacer(self.per_cmd_auth):
+                try:
+                    self._stdin, self._stdout, self._stderr = \
+                        await self._conn.open_session(term_type='xterm')
+                    self.logger.info(
+                        f'Persistent SSH created for {self.hostname}')
 
-                output = await self.wait_for_prompt()
-                if output.strip().endswith('>'):
-                    if await self._handle_privilege_escalation() == -1:
-                        await self._close_connection()
-                        self._conn = None
-                        self._stdin = None
-                        self._retry = False  # No retry if escalation fails
-                        if use_lock:
-                            self.ssh_ready.release()
-                        return
-            except Exception as e:
-                self.current_exception = e
-                self.logger.error('Unable to create persistent SSH session'
-                                  f' for {self.hostname} due to {str(e)}')
-                self._conn = None
-                self._stdin = None
-                if use_lock:
-                    self.ssh_ready.release()
-                return
+                    output = await self.wait_for_prompt()
+                    if output.strip().endswith('>'):
+                        if await self._handle_privilege_escalation() == -1:
+                            await self._close_connection()
+                            self._conn = None
+                            self._stdin = None
+                            self._retry -= 1
+                            if use_lock:
+                                self.ssh_ready.release()
+                            return
+                    # Reset number of retries on successful auth
+                    self._retry = self._max_retries_on_auth_fail
+                except Exception as e:
+                    if isinstance(e, asyncssh.misc.PermissionDenied):
+                        self._retry -= 1
+                    self.current_exception = e
+                    self.logger.error('Unable to create persistent SSH session'
+                                      f' for {self.hostname} due to {str(e)}')
+                    self._conn = None
+                    self._stdin = None
+                    if use_lock:
+                        self.ssh_ready.release()
+                    return
 
-            # Set the terminal length to 0 to avoid paging
-            self._stdin.write('terminal length 0\n')
-            output = await self._stdout.readuntil(self.WAITFOR)
+                # Set the terminal length to 0 to avoid paging
+                self._stdin.write('terminal length 0\n')
+                output = await self._stdout.readuntil(self.WAITFOR)
+
             if init_dev_data:
                 await self._fetch_init_dev_data()
 
@@ -1569,7 +1667,7 @@ class IosXENode(Node):
 
         result = []
         if cmd_list is None:
-            await service_callback({}, cb_token)
+            await service_callback(result, cb_token)
             return
 
         if not self._conn or not self._stdin:
@@ -1581,35 +1679,43 @@ class IosXENode(Node):
             return
 
         timeout = timeout or self.cmd_timeout
-        for cmd in cmd_list:
-            try:
-                if self.slow_host:
-                    await asyncio.sleep(IOS_SLEEP_BET_CMDS)
-                self._stdin.write(cmd + '\n')
-                output = await self.wait_for_prompt()
-                if 'Invalid input detected' in output:
-                    status = -1
-                elif 'suzieq timeout' in output:
-                    status = HTTPStatus.REQUEST_TIMEOUT
-                else:
-                    status = 0
-                if isinstance(cb_token, RsltToken):
-                    cb_token.node_token = self.bootupTimestamp
-                result.append(self._create_result(cmd, status, output))
-                continue
-            except Exception as e:
-                self.current_exception = e
-                result.append(self._create_error(cmd))
-                if not isinstance(e, asyncio.TimeoutError):
-                    self.logger.error(
-                        f"Unable to connect to {self.hostname} for {cmd} "
-                        f"due to {e}")
-                    await self._close_connection()
-                else:
-                    self.logger.error(
-                        f"Unable to connect to {self.hostname} {cmd} "
-                        "due to timeout")
-                break
+        async with self.cmd_pacer(self.per_cmd_auth):
+            for cmd in cmd_list:
+                try:
+                    if self.slow_host:
+                        await asyncio.sleep(IOS_SLEEP_BET_CMDS)
+                    self._stdin.write(cmd + '\n')
+                    output = await self.wait_for_prompt()
+                    if 'Invalid input detected' in output:
+                        status = -1
+                    elif 'suzieq timeout' in output:
+                        status = HTTPStatus.REQUEST_TIMEOUT
+                    else:
+                        status = 0
+                    if isinstance(cb_token, RsltToken):
+                        cb_token.node_token = self.bootupTimestamp
+                    result.append(self._create_result(cmd, status, output))
+                    continue
+                except Exception as e:
+                    self.current_exception = e
+                    result.append(self._create_error(cmd))
+                    if not isinstance(e, asyncio.TimeoutError):
+                        self.logger.error(
+                            f"Unable to connect to {self.hostname} for {cmd} "
+                            f"due to {e}")
+                        try:
+                            await self._close_connection()
+                            self.logger.debug("Closed conn successfully for "
+                                              f"{self.hostname}")
+                        except Exception as close_exc:
+                            self.logger.error(
+                                f"Caught an exception closing {self.hostname}"
+                                f" for {cmd}: {close_exc}")
+                    else:
+                        self.logger.error(
+                            f"Unable to connect to {self.hostname} {cmd} "
+                            "due to timeout")
+                    break
 
         await service_callback(result, cb_token)
 
@@ -1709,26 +1815,21 @@ class NxosNode(Node):
     async def _fetch_init_dev_data(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self._exec_cmd(self._parse_init_dev_data,
-                             ["show version|json", "show hostname"], None,
+                             ["show version", "show hostname"], None,
                              'mixed')
 
     async def _parse_init_dev_data(self, output, cb_token) -> None:
         """Parse the uptime command output"""
 
         hostname = ''
+
         if output[0]["status"] == 0:
-            data = json.loads(output[0]["data"])
-            upsecs = (24*3600*int(data.get('kern_uptm_days', 0)) +
-                      3600*int(data.get('kern_uptm_hrs', 0)) +
-                      60*int(data.get('kern_uptm_mins', 0)) +
-                      int(data.get('kern_uptm_secs', 0)))
-            if upsecs:
-                self.bootupTimestamp = int(int(time.time()*1000)
-                                           - float(upsecs)*1000)
-            self.version = data.get('nxos_ver_str', '')
-            if not self.version:
-                self.logger.error(
-                    f'Cannot extract version from {self.address}:{self.port}')
+            data = output[0]["data"]
+
+            self._extract_nos_version(data)
+            uptime_grp = re.search(r'Kernel\s+uptime\s+is\s+([^\n]+)', data)
+            if uptime_grp:
+                self.bootupTimestamp = parse(uptime_grp.group(1)).timestamp()
 
         if len(output) > 1:
             if output[1]["status"] == 0:
@@ -1741,13 +1842,21 @@ class NxosNode(Node):
             self._set_hostname(hostname)
 
     def _extract_nos_version(self, data: str) -> None:
-        match = re.search(r'NXOS:\s+version\s+(\S+)', data)
-        if match:
-            self.version = match.group(1).strip()
+
+        version = ''
+        vgrp = re.search(r'system:\s+version\s+([^\n]+)', data)
+        if vgrp:
+            version = vgrp.group(1)
         else:
+            vgrp = re.search(r'NXOS:\s+version\s+(\S+)', data)
+            if vgrp:
+                version = vgrp.group(1)
+        if not version:
             self.logger.warning(
                 f'Cannot parse version from {self.address}:{self.port}')
             self.version = "all"
+        else:
+            self.version = version
 
 
 class SonicNode(Node):
@@ -1795,50 +1904,70 @@ class PanosNode(Node):
     '''Node object representing access to a Palo Alto Networks FW'''
 
     async def _fetch_init_dev_data(self):
+        discovery_cmd = 'show system info'
         try:
             res = []
             # temporary hack to detect device info using ssh
-            async with asyncssh.connect(
-                    self.address, port=22, username=self.username,
-                    password=self.password, known_hosts=None) as conn:
-                async with conn.create_process() as process:
-                    process.stdin.write("show system info\n")
-                    recv_chars = False
-                    output = ""
-                    if not recv_chars:
+            async with self.cmd_pacer():
+                async with asyncssh.connect(
+                        self.address, port=22, username=self.username,
+                        password=self.password, known_hosts=None) as conn:
+                    async with conn.create_process() as process:
+                        process.stdin.write(f'{discovery_cmd}\n')
+                        output = ""
                         output += await process.stdout.read(1)
-                    try:
-                        await asyncio.wait_for(
-                            process.wait_closed(), timeout=0.01)
-                    except asyncio.TimeoutError:
-                        pass
+                        try:
+                            await asyncio.wait_for(
+                                process.wait_closed(), timeout=0.1)
+                        except asyncio.TimeoutError:
+                            pass
 
-                    stdout, _ = process.collect_output()
-                    output += stdout
-                    res = [{
-                        "status": 0,
-                        "data": output}]
-                    await self._parse_init_dev_data(res, None)
+                        stdout, _ = process.collect_output()
+                        output += stdout
+                        res = [{
+                            "status": 0,
+                            "data": output}]
+
+            await self._parse_init_dev_data(res, None)
             self._session = aiohttp.ClientSession(
                 conn_timeout=self.connect_timeout,
                 connector=aiohttp.TCPConnector(ssl=False),
             )
             if self.api_key is None:
                 await self.get_api_key()
-        except Exception:
-            pass
+        except asyncssh.misc.PermissionDenied:
+            self.logger.error(
+                f'{self.address}:{self.port}: permission denied')
+            self._retry -= 1
+        except Exception as e:
+            self.logger.error(
+                f'{self.hostname}:{self.port}: Command "{discovery_cmd}" '
+                f'failed due to {e}')
 
     async def get_api_key(self):
         """Authenticate to get the api key needed in all cmd requests"""
         url = f"https://{self.address}:{self.port}/api/?type=keygen&user=" \
             f"{self.username}&password={self.password}"
-        async with self._session.get(url, timeout=self.connect_timeout) \
-                as response:
-            status, xml = response.status, await response.text()
-            if status == 200:
-                data = xmltodict.parse(xml)
-                self.api_key = data["response"]["result"]["key"]
-            # need to manage errors
+
+        if not self._retry:
+            return
+        async with self.cmd_pacer(self.per_cmd_auth):
+            async with self._session.get(url, timeout=self.connect_timeout) \
+                    as response:
+                status, xml = response.status, await response.text()
+                if status == 200:
+                    data = xmltodict.parse(xml)
+                    self.api_key = data["response"]["result"]["key"]
+                    # reset retry count, just in case.
+                    self._retry = self._max_retries_on_auth_fail
+                elif status == 403:
+                    self.logger.error('Invalid credentials, could not get api '
+                                      f'key for {self.address}:{self.port}.')
+                    self._retry -= 1
+                else:
+                    self.logger.error('Unknown error, could not get '
+                                      'api key for '
+                                      f'{self.address}:{self.port}.')
 
     async def _parse_init_dev_data(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -1883,17 +2012,24 @@ class PanosNode(Node):
     async def _init_rest(self):
         # In case of PANOS, getting here means REST is up
         if not self._session:
-            try:
-                self._session = aiohttp.ClientSession(
-                    conn_timeout=self.connect_timeout,
-                    connector=aiohttp.TCPConnector(ssl=False),
-                )
-                if self.api_key is None:
-                    await self.get_api_key()
-            except Exception as e:
-                self.logger.error(
-                    f'Unable to connect to {self.address}:{self.port}, '
-                    f'error: {str(e)}')
+            async with self.cmd_pacer(self.per_cmd_auth):
+                try:
+                    self._session = aiohttp.ClientSession(
+                        conn_timeout=self.connect_timeout,
+                        connector=aiohttp.TCPConnector(ssl=False),
+                    )
+                    if self.api_key is None:
+                        await self.get_api_key()
+                    # If the api_key is still None we can't gather any data.
+                    # Ensure that the connection pool is closed and set it to
+                    # None so that _rest_gather can fail gracefully.
+                    if self.api_key is None:
+                        self._session.close()
+                        self._session = None
+                except Exception as e:
+                    self.logger.error(
+                        f'{self.transport}://{self.hostname}:{self.port}, '
+                        f'Unable to communicate due to error: {str(e)}')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
                            oformat="json", timeout=None):
@@ -1906,42 +2042,53 @@ class PanosNode(Node):
 
         now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
 
-        port = self.port or 443
-
-        url = f"https://{self.address}:{port}/api/"
+        url = f"https://{self.address}:{self.port}/api/"
 
         status = 200  # status OK
 
+        # if there's no session we have failed to get init dev data
+        if not self._session and self._retry:
+            self._fetch_init_dev_data()
+
+        # if there's still no session, we need to create an error
         if not self._session:
             for cmd in cmd_list:
                 result.append(self._create_error(cmd))
             await service_callback(result, cb_token)
             return
 
-        try:
-            for cmd in cmd_list:
-                url_cmd = f"{url}?type=op&cmd={cmd}&key={self.api_key}"
-                async with self._session.get(
-                        url_cmd, timeout=timeout) as response:
-                    status, xml = response.status, await response.text()
-                    json_out = json.dumps(
-                        xmltodict.parse(xml))
-
-                    result.append({
-                        "status": status,
-                        "timestamp": now,
-                        "cmd": cmd,
-                        "devtype": self.devtype,
-                        "namespace": self.nsname,
-                        "hostname": self.hostname,
-                        "address": self.address,
-                        "data": json_out,
-                    })
-        except Exception as e:
-            self.current_exception = e
-            for cmd in cmd_list:
-                result.append(self._create_error(cmd))
-            self.logger.error("ERROR: (REST) Unable to communicate with node "
-                              f"{self.address}:{self.port} due to {str(e)}")
+        async with self.cmd_pacer(self.per_cmd_auth):
+            try:
+                for cmd in cmd_list:
+                    url_cmd = f"{url}?type=op&cmd={cmd}&key={self.api_key}"
+                    async with self._session.get(
+                            url_cmd, timeout=timeout) as response:
+                        status, xml = response.status, await response.text()
+                        if status == 200:
+                            json_out = json.dumps(
+                                xmltodict.parse(xml))
+                            result.append({
+                                "status": status,
+                                "timestamp": now,
+                                "cmd": cmd,
+                                "devtype": self.devtype,
+                                "namespace": self.nsname,
+                                "hostname": self.hostname,
+                                "address": self.address,
+                                "data": json_out,
+                            })
+                        else:
+                            result.append(self._create_error(cmd))
+                            self.logger.error(
+                                f'{self.transport}://{self.hostname}:'
+                                f'{self.port}: Command {cmd} failed with '
+                                f'status {response.status}')
+            except Exception as e:
+                self.current_exception = e
+                for cmd in cmd_list:
+                    result.append(self._create_error(cmd))
+                self.logger.error(
+                    f"{self.transport}://{self.hostname}:{self.port} "
+                    f"Unable to communicate due to {str(e)}")
 
         await service_callback(result, cb_token)

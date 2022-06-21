@@ -35,26 +35,28 @@ Value passive (passive)
 Value extnhEnabled (\w+)
 Value _numConnEstd (\d+)
 Value _numConnDropped (\d+)
-Value Fillup peerIP (.*)
-Value Fillup updateSource ([^,]+)
-Value Fillup lastDownTime (.+?)
+Value peerIP (.*)
+Value updateSource ([^,]+)
+Value lastDownTime (.+?)
 Value softReconfig (\w+)
 Value reason (.+?)
-Value Fillup notificnReason (.+?)
-Value Fillup notificnReasonRx (.+?)
-Value Fillup hopsMax (\d+)
+Value notificnReason (.+?)
+Value notificnReasonRx (.+?)
+Value hopsMax (\d+)
 Value updatesRx (\d+)
 Value updatesTx (\d+)
 Value ifname (\S+)
+Value _adminDown (\S+)
 
 Start
-  ^For\s+address\s+family: -> Continue.Record
   ^For\s+address\s+family:\s+${afi}\s+${safi}\s*$$
-  ^BGP neighbor -> Continue.Record
+  ^For\s+address\s+family:\s+${afi}\s+${safi}\s*$$
   ^BGP neighbor is ${peer},\s+remote\s+AS\s+${peerAsn},.*$$
   ^BGP neighbor is ${peer},\s+vrf\s+${vrf},\s+remote\s+AS\s+${peerAsn},.*$$
   ^\s+.*,\s+remote\s+router\s+ID\s+${peerRouterId}\s*$$
   ^\s+BGP\s+state\s+=\s+${state},\s+up\s+for\s+${estdTime}\s*$$
+  ^\s+${_adminDown}\s+shut\s+down
+  ^\s+BGP\s+state\s+=\s+${state}\s*$$
   ^\s+Last\s+read.*,\s+hold\s+time\s+is\s+${holdTime},\s+keepalive\s+interval.*\s+${keepaliveTime}.*$$
   ^\s+Address\s+family\s+${afisAdvOnly}:\s+advertised\s*$$
   ^\s+Address\s+family\s+${afisRcvOnly}:\s+received\s*$$
@@ -64,10 +66,42 @@ Start
   ^\s+Last\s+reset\s+${lastDownTime},\s+${reason}\s*$$
   ^\s+Last\s+reset\s+${lastDownTime}\s*$$
   ^\s+Interface\s+associated:\s+${ifname}.*$$
-  ^Local\s+host:\s+${updateSource}.*$$
+  ^Local\s+host:\s+${updateSource}.*$$ -> Record
+  ^No\s+Active\s+TCP -> Record
+
 
 
 #For address family: IPv4 Unicast
+#BGP neighbor is 10.127.0.37,  remote AS 65121, external link
+#  BGP version 4, remote router ID 0.0.0.0
+#  BGP state = Active
+#  Neighbor sessions:
+#    0 active, is not multisession capable (disabled)
+#    Stateful switchover support enabled: NO for session 0
+#  Message statistics:
+#    InQ depth is 0
+#    OutQ depth is 0
+#    
+#                         Sent       Rcvd
+#    Opens:                  0          0
+#    Notifications:          0          0
+#    Updates:                0          0
+#    Keepalives:             0          0
+#    Route Refresh:          0          0
+#    Total:                  0          0
+#  Do log neighbor state changes (via global configuration)
+#  Default minimum time between advertisement runs is 30 seconds
+#
+#  Address tracking is enabled, the RIB does have a route to 10.127.0.37
+#  Connections established 2; dropped 2
+#  Last reset 20w2d, due to Active open failed
+#  External BGP neighbor configured for connected checks (single-hop no-disable-connected-check)
+#  Interface associated: GigabitEthernet0/1/0.234 (peering address in same link)
+#  Transport(tcp) path-mtu-discovery is enabled
+#  Graceful-Restart is enabled, restart-time 120 seconds, stalepath-time 360 seconds
+#  SSO is disabled
+#  No active TCP connection
+#
 #BGP neighbor is 10.127.0.1,  remote AS 65000, external link
 #  BGP version 4, remote router ID 10.0.0.12
 #  BGP state = Established, up for 00:08:04
@@ -376,6 +410,28 @@ Start
 # fast lock acquisition failures: 0, slow path: 0
 #TCP Semaphore      0x7F49584959F8  FREE 
 #
+#BGP neighbor is 10.168.212.34,  remote AS 64520, external link
+#  Administratively shut down
+#  BGP version 4, remote router ID 0.0.0.0
+#  BGP state = Idle
+#  Neighbor sessions:
+#    0 active, is not multisession capable (disabled)
+#    Stateful switchover support enabled: NO
+#  Do log neighbor state changes (via global configuration)
+#  Default minimum time between advertisement runs is 30 seconds
+#
+#  Address tracking is enabled, the RIB does have a route to 10.168.212.34
+#  Route to peer address reachability Up: 17; Down: 0
+#    Last notification 6w4d
+#  Connections established 4; dropped 4
+#  Last reset 1y0w, due to Active open failed
+#  External BGP neighbor not directly connected.
+#  External BGP neighbor configured for connected checks (single-hop no-disable-connected-check)
+#  Interface associated: Port-channel23.101 (peering address NOT in same link)
+#  Transport(tcp) path-mtu-discovery is enabled
+#  Graceful-Restart is enabled, restart-time 120 seconds, stalepath-time 360 seconds
+#  SSO is disabled
+#  No active TCP connection
 #
 #For address family: IPv4 Multicast
 #

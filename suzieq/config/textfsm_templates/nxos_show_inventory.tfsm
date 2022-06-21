@@ -1,0 +1,43 @@
+Value Required name (.*)
+Value model (.*)
+Value partNum (([\S+]+|.*))
+Value version (.*)
+Value serial ([\w+\d+]+) 
+
+Start
+  ^NAME:\s+"${name}",\s+DESCR:\s+"${model}"
+  ^PID:\s+${partNum}.*,.*VID:\s+${version},.*SN:\s+${serial} -> Record
+  ^PID:\s+,.*VID:\s+${version},.*SN: -> Record
+  ^PID:\s+${partNum}.*,.*VID:\s+${version},.*SN: -> Record
+  ^PID:\s+,.*VID:\s+${version},.*SN:\s+${serial} -> Record
+  ^PID:\s+${partNum}.*,.*VIDame:\s+${version}.*
+  ^PID:\s+,.*VID:\s+${version}.*
+  ^.*SN:\s+${serial} -> Record
+  ^.*SN: -> Record
+  # Capture time-stamp if vty line has command time-stamping turned on
+  ^Load\s+for\s+
+  ^Time\s+source\s+is
+
+#NAME: "Chassis",  DESCR: "Nexus3500 C3548P-10GX Chassis"         
+#PID: N3K-C3548P-10GX     ,  VID: V01 ,  SN: F123456
+#
+#NAME: "Slot 1",  DESCR: "48x10GE Supervisor"                    
+#PID: N3K-C3548P-10GX     ,  VID: V01 ,  SN: F678910          
+#
+#NAME: "Power Supply 1",  DESCR: "Nexus3500 C3548P-10GX Chassis Power Supply"
+#PID: N2200-PAC-400W-B    ,  VID: V02 ,  SN: L124567
+#
+#NAME: "Power Supply 2",  DESCR: "Nexus3500 C3548P-10GX Chassis Power Supply"
+#PID: N2200-PAC-400W-B    ,  VID: V02 ,  SN: L97654
+#
+#NAME: "Fan 1",  DESCR: "Nexus3500 C3548P-10GX Chassis Fan Module"
+#PID: NXA-FAN-30CFM-B     ,  VID: V00 ,  SN: N/A
+#
+#NAME: "Fan 2",  DESCR: "Nexus3500 C3548P-10GX Chassis Fan Module"
+#PID: NXA-FAN-30CFM-B     ,  VID: V00 ,  SN: N/A
+#
+#NAME: "Fan 3",  DESCR: "Nexus3500 C3548P-10GX Chassis Fan Module"
+#PID: NXA-FAN-30CFM-B     ,  VID: V00 ,  SN: N/A
+#
+#NAME: "Fan 4",  DESCR: "Nexus3500 C3548P-10GX Chassis Fan Module"
+#PID: NXA-FAN-30CFM-B     ,  VID: V00 ,  SN: N/A

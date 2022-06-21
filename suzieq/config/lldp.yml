@@ -108,27 +108,32 @@ apply:
     copy: junos-qfx
 
   nxos:
-    version: all
-    command:
-      - command: show cdp neighbors | json native
-        normalize: 'TABLE_cdp_neighbor_brief_info/ROW_cdp_neighbor_brief_info/*?/[
-        "interface: ifname?|",
-        "intf_id: ifname?|ifname",
-        "device_id: peerHostname?|",
-        "platform_id: description?|",
-        "port_id: peerIfname",
-        "protocol: protocol?|cdp",
-        ]'
+    - version: < 9.3(0)
+      command: show lldp neighbors
+      merge: False
+      textfsm: textfsm_templates/nxos_show_lldp.tfsm
+          
+    - version: all
+      command:
+        - command: show cdp neighbors | json native
+          normalize: 'TABLE_cdp_neighbor_brief_info/ROW_cdp_neighbor_brief_info/*?/[
+          "interface: ifname?|",
+          "intf_id: ifname?|ifname",
+          "device_id: peerHostname?|",
+          "platform_id: description?|",
+          "port_id: peerIfname",
+          "protocol: protocol?|cdp",
+          ]'
 
-      - command: show lldp neighbors | json native
-        normalize: 'TABLE_nbor/ROW_nbor/*?/[
-        "chassis_id: peerHostname?|",
-        "chassis_type: _chassisType",
-        "l_port_id: ifname?|",
-        "port_type: subtype?|",
-        "port_id: peerIfname?|",
-        "mgmt_addr: mgmtIP?|"
-        ]'
+        - command: show lldp neighbors | json native
+          normalize: 'TABLE_nbor/ROW_nbor/*?/[
+          "chassis_id: peerHostname?|",
+          "chassis_type: _chassisType",
+          "l_port_id: ifname?|",
+          "port_type: subtype?|",
+          "port_id: peerIfname?|",
+          "mgmt_addr: mgmtIP?|"
+          ]'
 
   panos:
     version: all

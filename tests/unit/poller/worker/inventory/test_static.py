@@ -2,7 +2,6 @@
 This module contains the tests for the StaticManagerInventory class, the
 one allowing to comunicate with the StaticManager in the controller side
 """
-# pylint: disable=protected-access
 # pylint: disable=redefined-outer-name
 from unittest.mock import MagicMock
 
@@ -83,18 +82,28 @@ def test_missing_inventory_path_or_key(monkeypatch):
 @pytest.mark.poller_worker
 @pytest.mark.poller_inventory
 @pytest.mark.asyncio
-async def test_get_device_list(monkeypatch, gen_random_inventory):
-    """Test if the device list is correctly received and reconstructed
+@pytest.mark.parametrize("n_commands", [0, 5])
+async def test_static_inventory_init(monkeypatch, gen_random_inventory,
+                                     n_commands):
+    """Test if the static inventory is properly initialized and the device
+    list is correctly received and reconstructed
     """
     expected_dict, inventory_path, key = gen_random_inventory
     monkeypatch.setenv('SQ_CONTROLLER_POLLER_CRED', key)
     monkeypatch.setenv('SQ_INVENTORY_PATH', str(inventory_path))
+    if n_commands:
+        monkeypatch.setenv('SQ_MAX_OUTSTANDING_CMD', str(n_commands))
+
     static_inv = StaticManagerInventory(MagicMock())
     # Check if the device list has been correctly obtained
     obtained_list = await static_inv._get_device_list()
     obtained_dict = {f"{o['namespace']}.{o['address']}.{o['port']}": o
                      for o in obtained_list}
-    assert expected_dict == obtained_dict
+    assert expected_dict == obtained_dict, 'Got unexpected device list'
+
+    # Check if the max outstanding commands has the expected value
+    assert static_inv._max_outstanding_cmd == n_commands, \
+        'max_outstanding_commands has not the expected value'
 
 
 @pytest.mark.poller

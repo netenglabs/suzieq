@@ -138,11 +138,13 @@ class Worker:
             tasks = await self._pop_waiting_worker_tasks()
             while tasks:
                 try:
-                    _, pending = await asyncio.wait(
+                    done, pending = await asyncio.wait(
                         tasks, return_when=asyncio.FIRST_COMPLETED)
+                    for d in done:
+                        if d.exception():
+                            raise d.exception()
                     tasks = list(pending)
                     running_svcs = self.service_manager.running_services
-                    # pylint: disable=protected-access
                     if tasks and any(i._coro in running_svcs
                                      for i in tasks):
                         continue

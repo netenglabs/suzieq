@@ -1,7 +1,7 @@
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.sqPoller import SqPollerObj
 
 
@@ -12,7 +12,7 @@ from suzieq.sqobjects.sqPoller import SqPollerObj
 @argument('poll_period_exceeded',
           description="filter if poll period exceeded",
           choices=['True', 'False'])
-class SqPollerCmd(SqCommand):
+class SqPollerCmd(SqTableCommand):
     """Information about the poller"""
 
     def __init__(

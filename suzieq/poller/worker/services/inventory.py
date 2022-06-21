@@ -104,8 +104,14 @@ class InventoryService(Service):
             entry['status'] = 'present'
             if name.find('Ethernet') != -1:
                 entry['type'] = 'xcvr'
-                if entry['_sfp'].startswith("not "):
+                if entry.get('_entryType', '') == '_textfsm':
+                    status = entry.get('status', '')
+                else:
+                    status = entry.get('_sfp', '')
+                if status.startswith("not "):
                     entry['status'] = 'absent'
+                else:
+                    entry['status'] = 'present'
             elif name.find('Chassis') != -1:
                 entry['type'] = 'chassis'
                 entry['name'] = name.lower()

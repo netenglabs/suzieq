@@ -1,11 +1,11 @@
 from nubia import command
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.mlag import MlagObj
 
 
 @command('mlag', help="Act on mlag data")
-class MlagCmd(SqCommand):
+class MlagCmd(SqTableCommand):
     """Multichassis LAG information (includes variants such as NXOX vPC)"""
 
     def __init__(self, engine: str = '', hostname: str = '',

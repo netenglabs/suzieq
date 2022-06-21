@@ -8,7 +8,7 @@ import streamlit as st
 from IPython.display import Markdown
 from streamlit.server.server import Server
 try:
-    from streamlit.script_run_context import get_script_run_ctx
+    from streamlit.scriptrunner.script_run_context import get_script_run_ctx
 except ModuleNotFoundError:
     # streamlit < 1.4
     from streamlit.report_thread import (  # type: ignore
@@ -117,7 +117,6 @@ def get_base_url():
     URL for use with links on various pages.
     '''
     session_id = get_script_run_ctx().session_id
-    # pylint: disable=protected-access
     session_info = Server.get_current()._get_session_info(session_id)
 
     if session_info:
@@ -145,7 +144,6 @@ def get_main_session_by_id(session_id):
     Returns:
         [type]: session state associated with session or None
     """
-    # pylint: disable=protected-access
     session = Server.get_current()._session_info_by_id.get(session_id, None)
     if session:
         return session.session.session_state

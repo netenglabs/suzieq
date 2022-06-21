@@ -1,10 +1,19 @@
 import numpy as np
-from suzieq.shared.utils import expand_ios_ifname
+from suzieq.shared.utils import expand_ios_ifname, expand_nxos_ifname
 from suzieq.poller.worker.services.service import Service
 
 
 class VlanService(Service):
     """Vlan service. Different class because Vlan is not right type for EOS"""
+
+    def clean_json_input(self, data):
+        """evpnVni JSON output is busted across many NOS. Fix it"""
+
+        devtype = data.get("devtype", None)
+        if devtype == 'junos-mx':
+            data['data'] = data['data'].replace('}, \n    }\n', '} \n    }\n')
+
+        return data['data']
 
     def _clean_eos_data(self, processed_data, _):
         '''Massage the interface output'''
@@ -64,6 +73,19 @@ class VlanService(Service):
             if (entry['vlanName'].startswith('VLAN') or
                     entry['vlanName'] == "default"):
                 entry['vlanName'] = f'vlan{entry["vlan"]}'
+
+            if '_entryType' in entry:
+                # This is a textfsm parsed entry, the interfaces list needs to
+                # be massaged
+                iflist = entry.get('interfaces', [])
+                newlist = []
+                for ele in iflist:
+                    newlist.extend([expand_nxos_ifname(x)
+                                   for x in ele.split(', ')])
+
+                entry['interfaces'] = newlist
+                continue
+
             if isinstance(entry['interfaces'], str):
                 entry['interfaces'] = entry['interfaces'].split(',')
             else:
@@ -107,10 +129,14 @@ class VlanService(Service):
             if entry.get('_entryType', '') == 'vlan':
                 if entry['vlanName'] == 'default':
                     entry['vlanName'] = f'vlan{entry["vlan"]}'
+                entry['vlanName'] = entry['vlanName'].strip()
                 if entry['interfaces']:
                     newiflist = []
-                    for ifname in entry['interfaces'].split(','):
-                        newiflist.append(expand_ios_ifname(ifname.strip()))
+                    for ifname in entry['interfaces']:
+                        newiflist.extend([expand_ios_ifname(x.strip())
+                                          for x in ifname.split(',')])
+                    if newiflist == ['']:
+                        newiflist = []
                     entry['interfaces'] = newiflist
                 else:
                     entry['interfaces'] = []

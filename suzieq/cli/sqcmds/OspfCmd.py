@@ -4,7 +4,7 @@ from nubia import command
 import pandas as pd
 
 from suzieq.cli.nubia_patch import argument
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.ospf import OspfObj
 
 
@@ -18,7 +18,7 @@ from suzieq.sqobjects.ospf import OspfObj
 @argument("state", description="Select view based on OSPF state",
           choices=["full", "other", "passive", "!full", "!passive",
                    "!other"])
-class OspfCmd(SqCommand):
+class OspfCmd(SqTableCommand):
     """OSPFv2 protocol information"""
 
     def __init__(

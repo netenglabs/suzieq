@@ -7,7 +7,7 @@ import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (get_timestamp_from_junos_time,
-                                 expand_ios_ifname)
+                                 expand_ios_ifname, expand_nxos_ifname)
 from suzieq.shared.utils import convert_macaddr_format_to_colon
 from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
@@ -294,6 +294,7 @@ class InterfaceService(Service):
             entry['type'] = entry.get('type', '').lower()
 
             if entry['type'] in ['vrf', 'virtual-router']:
+                entry['type'] = 'vrf'
                 self._assign_vrf(entry, entry_dict)
                 entry['state'] = entry['adminState'] = 'up'
                 entry['mtu'] = 1500
@@ -528,6 +529,8 @@ class InterfaceService(Service):
             speed = str(self._common_speed_field_value(entry))
             if isinstance(speed, str):
                 speed = speed.strip()
+                if speed.endswith('(D)') or speed.endswith('(I)'):
+                    speed = speed[:-3]
                 if speed.startswith("unknown enum") or (speed == "auto"):
                     speed = str(self._get_missing_speed_value(entry))
                 elif speed.startswith('a-'):
@@ -537,24 +540,25 @@ class InterfaceService(Service):
                     speed = int(speed[:-1])*1000
                 elif speed.endswith('Kbit'):
                     speed = int(speed.split()[0])/1000
+                elif speed == '--':
+                    speed = 0
                 else:
-                    speed = int(speed)
+                    speed = int(speed or 0)
 
             return speed
 
         new_entries = []
         unnum_intf = {}
         drop_indices = []
-        entry_dict = defaultdict(dict)
+        entry_dict = {}
 
         unnum_intf_entry_idx = []  # backtrack to interface to fix
 
         for entry_idx, entry in enumerate(processed_data):
-            # if its the Linux ip link command output, massage the ifname
-            # and copy over the values and drop the entry_dict
             if entry.get('_entryType', '') == 'mtumac':
-                old_entry = entry_dict[entry['ifname']]
-                if old_entry:
+                old_entry_idx = entry_dict.get(entry['ifname'], None)
+                if old_entry_idx is not None:
+                    old_entry = processed_data[old_entry_idx]
                     admin_state = entry['adminState'].lower()
                     if admin_state:
                         if admin_state == "administratively":
@@ -588,57 +592,24 @@ class InterfaceService(Service):
                     else:
                         old_entry['statusChangeTimestamp'] = 0
                     old_entry['description'] = entry.get('description', '')
-
+                else:
+                    self.logger.error(f'{raw_data[0]["hostname"]}: Unable to '
+                                      f'find entry for {entry["ifname"]}')
                 drop_indices.append(entry_idx)
                 continue
 
-            entry_dict[entry['ifname']] = entry
+            if entry.get('_entryType', '') == "vrf":
+                # VRF is not an interface on NXOS, we're doing this to keep
+                # it consistent with other NOS. So fill in dummy defaults.
+                entry['type'] = 'vrf'
+                entry['mtu'] = 1500
+                entry['vni'] = 0
 
-            entry["statusChangeTimestamp1"] = entry.get(
-                "statusChangeTimestamp", '')
+            ifname = expand_nxos_ifname(entry['ifname'])
+            entry['ifname'] = ifname
 
-            if entry.get('vrf', ''):
-                entry['master'] = entry['vrf']
-
-            if 'routeDistinguisher' in entry:
-                # This is a VRF entry
-                entry['macaddr'] = "00:00:00:00:00:00"
-                entry['adminState'] = entry.get("state", "up").lower()
-                entry['state'] = entry.get('state', 'down').lower()
-                entry['speed'] = 0
-                continue
-
-            if 'reason' in entry:
-                if entry['reason'] is not None:
-                    entry['reason'] = entry['reason'].lower()
-
-                if entry['reason'] == 'none' or not entry['reason']:
-                    entry['reason'] = ''
-
-                if entry['reason'] in ["link not connected",
-                                       "xcvr not inserted"]:
-                    entry['state'] = 'notConnected'
-
-            if entry['reason'] == 'administratively down':
-                entry['adminState'] = 'down'
-            else:
-                entry['adminState'] = 'up'
-            portmode = entry.get('_portmode', '')
-            if portmode in ['access', 'trunk']:
-                entry['master'] = 'bridge'
-
-            portchan = entry.get('_portchannel', 0)
-            if portchan:
-                entry['master'] = f'port-channel{portchan}'
-                entry['type'] = 'bond_slave'
-
-            if entry['ifname'].startswith('port-channel'):
-                entry['type'] = 'bond'
-
-            if not entry.get('macaddr', ''):
-                entry['macaddr'] = "00:00:00:00:00:00"
-
-            if entry.get('ipAddressList', None):
+            ipaddresses = entry.get('ipAddressList', None)
+            if ipaddresses and ipaddresses != "--":
                 pri_ipaddr = f"{entry['ipAddressList']}/{entry['_maskLen']}"
                 ipaddr = [pri_ipaddr]
                 for i, elem in enumerate(entry.get('_secIPs', [])):
@@ -654,6 +625,68 @@ class InterfaceService(Service):
             else:
                 entry['ip6AddressList'] = []
 
+            if ifname in entry_dict:
+                # Older NXOS has this issue of providing loopback interfaces
+                # with shortened names such as Lo0 while the IP addr section
+                # lists them with full status such as loopback0. We have to
+                # therefore manually merge them
+                ifentry = processed_data[entry_dict[ifname]]
+                if ifentry.get('type', '') == 'loopback':
+                    ifentry['ipAddressList'] = entry['ipAddressList']
+                    ifentry['master'] = entry['vrf']
+                    ifentry['mtu'] = entry['mtu']
+                if entry.get('_child_intf', []):
+                    unnum_intf[ifname] = [pri_ipaddr]
+                drop_indices.append(entry_idx)
+                continue
+
+            entry["statusChangeTimestamp1"] = entry.get(
+                "statusChangeTimestamp", '')
+
+            if entry.get('vrf', ''):
+                entry['master'] = entry['vrf']
+
+            if 'routeDistinguisher' in entry:
+                # This is a VRF entry
+                entry['macaddr'] = "00:00:00:00:00:00"
+                entry['adminState'] = entry.get("state", "up").lower()
+                entry['state'] = entry.get('state', 'down').lower()
+                entry['speed'] = 0
+                continue
+
+            entry_dict[ifname] = entry_idx
+
+            if 'reason' in entry:
+                if entry['reason'] is not None:
+                    entry['reason'] = entry['reason'].lower()
+
+                if entry['reason'] == 'none' or not entry['reason']:
+                    entry['reason'] = ''
+
+                if entry['reason'] in ["link not connected",
+                                       "xcvr not inserted"]:
+                    entry['state'] = 'notConnected'
+
+            if entry.get('reason', '') == 'administratively down':
+                entry['adminState'] = 'down'
+            else:
+                entry['adminState'] = 'up'
+            portmode = entry.get('_portmode', '')
+            if portmode in ['access', 'trunk']:
+                entry['master'] = 'bridge'
+
+            portchan = entry.get('_portchannel', 0)
+            if portchan and (isinstance(portchan, int) or
+                             portchan.isnumeric()):
+                entry['master'] = f'port-channel{portchan}'
+                entry['type'] = 'bond_slave'
+
+            if ifname.startswith('port-channel'):
+                entry['type'] = 'bond'
+
+            if not entry.get('macaddr', ''):
+                entry['macaddr'] = "00:00:00:00:00:00"
+
             if entry.get('_anycastMac', ''):
                 entry['interfaceMac'] = entry.get('macaddr', '')
                 entry['macaddr'] = entry['_anycastMac']
@@ -667,14 +700,14 @@ class InterfaceService(Service):
             if unnum_if_parent:
                 if unnum_if_parent in unnum_intf:
                     # IPv6 has link local, so unnumbered is a v4 construct
-                    entry['ipAddressList'] = [unnum_intf[unnum_if_parent]]
+                    entry['ipAddressList'] = unnum_intf[unnum_if_parent]
                 else:
                     unnum_intf_entry_idx.append(entry_idx)
 
             if entry.get('_child_intf', []):
-                unnum_intf[entry['ifname']] = [pri_ipaddr]
+                unnum_intf[ifname] = [pri_ipaddr]
 
-            if entry['ifname'] == "mgmt0":
+            if ifname == "mgmt0":
                 entry['type'] = "ethernet"
 
             entry['type'] = entry.get('type', '').lower()
@@ -684,15 +717,21 @@ class InterfaceService(Service):
             if 'ethernet' in entry.get('type', ''):
                 entry['type'] = 'ethernet'
 
-            if entry['ifname'].startswith('Vlan'):
+            if entry.get('vlan', '') in ["monitor", "--"]:
+                entry['vlan'] = 0
+            if ifname.startswith('Vlan'):
                 entry['type'] = 'vlan'
-            elif re.match(r'.\d+', entry['ifname']):
+            elif re.search(r'\.\d+$', ifname):
                 entry['type'] = 'subinterface'
-            elif entry['ifname'].startswith('nve'):
+            elif ifname.startswith('nve'):
                 entry['type'] = 'vxlan'
                 entry['master'] = 'bridge'
-            elif entry['ifname'].startswith('loopback'):
+            elif ifname.startswith('loopback'):
                 entry['type'] = 'loopback'
+            elif ifname.startswith('tunnel-te'):
+                entry['type'] = 'tunnel-te'
+            elif ifname.startswith('pw'):
+                entry['type'] = 'pseudowire'
 
             if entry['type'] == 'vlan' and entry['ifname'].startswith('Vlan'):
                 entry['vlan'] = int(entry['ifname'].split('Vlan')[1])
@@ -758,6 +797,7 @@ class InterfaceService(Service):
                 drop_indices.append(i)
                 continue
 
+            ifname = entry['ifname']
             if entry.get('_bondMbrs', ''):
                 bond_mbrs = ' '.join(entry['_bondMbrs'])
             else:
@@ -769,22 +809,24 @@ class InterfaceService(Service):
             elif 'down' in state:
                 if 'notconnect' in state:
                     entry['state'] = 'notConnected'
-                if 'Autostate Enabled' in state:
+                elif 'Autostate Enabled' in state:
                     entry['state'] = 'down'
                     entry['reason'] = state.split(',')[1].strip()
-                if 'err-disabled' in state:
+                elif 'disabled' in state:
                     entry['state'] = 'errDisabled'
+                elif 'monitoring' in state:
+                    entry['state'] = 'down'
+                elif 'suspended' in state:
+                    entry['state'] = 'down'
+                    if not entry.get('reason', ''):
+                        entry['reason'] = 'suspended'
 
             iftype = entry.get('type', 'ethernet').lower()
             if '.' in entry.get('ifname', ''):
                 iftype = 'subinterface'
-            elif iftype in ['aggregated ethernet', 'gechannel',
-                            'etherchannel']:
+            elif bond_mbrs or iftype == "etherchannel":
                 iftype = 'bond'
             elif iftype in ['ethernet', 'igbe', 'csr']:
-                iftype = 'ethernet'
-            elif any(x in iftype for x in ['gigabit ethernet',
-                                           'rp management']):
                 iftype = 'ethernet'
             elif iftype.endswith('gige'):
                 iftype = 'ethernet'
@@ -793,6 +835,18 @@ class InterfaceService(Service):
                 iftype = 'ethernet'
             elif iftype.endswith('ethernet'):
                 iftype = 'ethernet'
+            elif ifname.startswith('tunnel-te'):
+                iftype = 'tunnel-te'
+            elif ifname.startswith('pw'):
+                iftype = 'pseudowire'
+            elif ('10ge' in iftype or 'xge' in iftype or
+                  'ethernet' in iftype or 'mb 802.3' in iftype or
+                  'rp management' in iftype):
+                iftype = 'ethernet'
+            elif "embedded service engine" in iftype:
+                iftype = 'svc-engine'
+            elif "async group serial" in iftype:
+                iftype = 'async-serial-grp'
 
             # More iftype processing below before setting it in entry
             speed = self._textfsm_valid_speed_value(entry)
@@ -860,6 +914,9 @@ class InterfaceService(Service):
 
             if entry['ifname'].endswith('.0'):
                 entry['vlan'] = 0
+            elif entry.get('vlan', '') == '':
+                if entry['ipAddressList'] == entry['ip6AddressList'] == []:
+                    entry['vlan'] = 1
 
             if entry['ipAddressList'] == 'Unknown':
                 entry['ipAddressList'] = []
@@ -994,5 +1051,6 @@ class InterfaceService(Service):
                     entry["type"] = "subinterface"
 
         # remove mtu data cmd
-        processed_data.pop(0)
+        if len(processed_data) > 1:
+            processed_data.pop(0)
         return processed_data

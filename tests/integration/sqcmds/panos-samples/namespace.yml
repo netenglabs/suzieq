@@ -1,0 +1,42 @@
+description: Testing namespace table
+tests:
+- command: namespace show --format=json --namespace=panos
+  data-directory: tests/data/parquet
+  marks: namespace show panos
+  output: '[{"namespace": "panos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1652587501957}]'
+- command: namespace show --format=json --namespace=panos --os=panos
+  data-directory: tests/data/parquet
+  marks: namespace show  panos
+  output: '[{"namespace": "panos", "deviceCnt": 1, "serviceCnt": 6, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1652587501214}]'
+- command: namespace show --columns='namespace' --format=json --namespace=panos
+  data-directory: tests/data/parquet
+  marks: namespace show panos
+  output: '[{"namespace": "panos"}]'
+- command: namespace show --columns='hasOspf hasBgp' --format=json --namespace=panos
+  data-directory: tests/data/parquet
+  marks: namespace show panos
+  output: '[{"hasOspf": true, "hasBgp": true}]'
+- command: namespace show --columns='*' --format=json --namespace=panos
+  data-directory: tests/data/parquet
+  marks: namespace show panos
+  output: '[{"namespace": "panos", "deviceCnt": 14, "serviceCnt": 18, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1652587501957, "active": true}]'
+- command: namespace summarize --format=json --namespace=panos
+  data-directory: tests/data/parquet
+  marks: namespace summarize panos
+  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [18, 18, 18.0], "nsWithMlagCnt":
+    1, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
+    0}}'
+- command: namespace unique --format=json --namespace=panos
+  data-directory: tests/data/parquet/
+  marks: namespace unique
+  output: '[{"namespace": "panos"}]'
+- command: namespace unique --count=True --format=json --namespace=panos
+  data-directory: tests/data/parquet/
+  marks: namespace unique
+  output: '[{"namespace": "panos", "numRows": 1}]'

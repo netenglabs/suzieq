@@ -8,7 +8,6 @@ from suzieq.poller.controller.source.base_source import Source
 from suzieq.poller.controller.utils.inventory_utils import DeviceModel
 from suzieq.shared.utils import PollerTransport
 
-# pylint: disable=protected-access
 
 _INVENTORY = [{
     'native-ns.192.168.123.123.443':

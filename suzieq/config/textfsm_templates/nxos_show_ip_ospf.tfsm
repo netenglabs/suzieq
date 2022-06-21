@@ -1,0 +1,14 @@
+Value Filldown routerId ([0-9.]+)
+Value List ifname ([0-9.]+)
+Value List authType (\S+)
+Value Filldown vrf (\S+)
+
+Start
+  ^\s+Routing\s+Process -> Continue.Record
+  ^\s+Routing\s+Process\s+.*ID\s+${routerId}\s+VRF\s+${vrf}\s*$$
+  ^\s+Area\s+ranges
+  ^\s+Area\s+has\s+existed
+  ^\s+Area\s+\( -> Continue.Record
+  ^\s+Area\s+\(${ifname}\)
+  ^\s+Area\s+BACKBONE\(${ifname}\)  
+  ^\s+${authType}\s+[Aa]uthentication.*$$

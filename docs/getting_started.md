@@ -25,7 +25,7 @@ See section [Poller](./poller.md) and [Inventory file](./inventory.md) for furth
 
 ### As a Python Package
 
-Suzieq is also available as a standard Python package that you can install via pip. We strongly recommend the use of [Python virtual environment](https://docs.python.org/3.8/tutorial/venv.html). **Suzieq only works with Python versions 3.7.1 and above, and on Linux and MacOS**. The releases are always tested with Python versions 3.7 and 3.8.
+Suzieq is also available as a standard Python package that you can install via pip. We strongly recommend the use of [Python virtual environment](https://docs.python.org/3.8/tutorial/venv.html). **Suzieq only works with Python versions 3.8.1 and above, and on Linux and MacOS**. The releases are always tested with Python versions 3.8 and 3.9.
 
 To install suzieq via pip run:
 ```

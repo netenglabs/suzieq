@@ -1,0 +1,10 @@
+Value time ([0-9.:]+)
+Value timezone (\S+)
+Value ntpEnabled (\w+)
+
+Start
+  ^${time}\s+${timezone}\s+.*$$
+  ^Time\s+[sS]ource\s+is\s+${ntpEnabled}
+
+#13:56:23.593 UTC Mon Apr 18 2022
+#Time source is NTP

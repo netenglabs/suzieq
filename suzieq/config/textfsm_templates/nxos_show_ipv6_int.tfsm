@@ -1,0 +1,15 @@
+Value Required ifname (\S+)
+Value Filldown vrf (\S+)
+Value state (\S+)
+Value _operState (\S+)
+Value adminState (\S+)
+Value List ipAddressList ([0-9a-f:A-F]+)
+Value List maskLen (\d+)
+Value mtu (\d+)
+
+Start
+  ^\S+ -> Continue.Record
+  ^IP\s+Interface\s+Status\s+for\s+VRF\s+"${vrf}"
+  ^${ifname},\s+Interface\s+status:\s+protocol-${state}/link-${_operState}/admin-${adminState}
+  ^\s+IP\s+address:\s+${ipAddressList},\s+IP\s+subnet:\s+[0-9.]+/${maskLen}\s+
+  ^\s+IP\s+MTU:\s+${mtu}\s+bytes

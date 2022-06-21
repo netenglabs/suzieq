@@ -1,0 +1,48 @@
+Value Filldown vrf (\S+)
+Value protocol ([\w-]+)
+Value routeAction ([\w-]+)
+Value Required prefix ([0-9.\/]+)
+Value List preference (\d+)
+Value List metric (\d+)
+Value List nexthopIps (\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})
+Value List oifs ([\w\./-]+)
+Value statusChangeTimestamp ([\w:\.]+)
+Value List _nexthopVrf (\S+)
+Value routeTag (\d+( \(\w+\))?)
+Value _segmentId (\d+)
+Value _tunnelId (0x[a-f\d]+)
+Value _encap (\w+)
+
+Start
+  ^IP\s+Route\s+Table -> Continue.Record
+  ^\d+ -> Continue.Record
+  ^IP\s+Route\s+Table\s+for\s+VRF\s+"${vrf}"\s*$$
+  # Match the Network/Prefix Line
+  ^\s*${prefix}, ubest/mbest:
+  #
+  # Match VXLAN Route Entry
+  ^\s+\*+via ${nexthopIps}(%${_nexthopVrf})?, \[${preference}/${metric}\], ${statusChangeTimestamp}, ${protocol}, ${routeAction}, tag ${routeTag}\s+segid: ${_segmentId}\s+tunnelid: ${_tunnelId}\s+encap: ${_encap}
+  #
+  # Match routes with no type, but with a tag (e.g. statics out SVIs with a tag)
+  ^\s+\*+via ${nexthopIps}(%${_nexthopVrf})?, ${oifs}, \[${preference}\/${metric}\], ${statusChangeTimestamp}, ${protocol}, tag ${routeTag}
+  #
+  # Match standard dynamic route line (with or without tag)
+  ^\s+\*+via ${nexthopIps}(%${_nexthopVrf})?, ${oifs}, \[${preference}/${metric}\], ${statusChangeTimestamp}, ${protocol}, ${routeAction}, tag ${routeTag}?
+  #
+  # Match route without a type (e.g. direct, local)
+  ^\s+\*+via ${nexthopIps}(%${_nexthopVrf})?, ${oifs}, \[${preference}\/${metric}\], ${statusChangeTimestamp}, ${protocol}
+  #
+  # Match route without an outgoing interface (e.g. some statics) (with tag)
+  ^\s+\*+via ${nexthopIps}(%${_nexthopVrf})?, \[${preference}\/${metric}\], ${statusChangeTimestamp}, ${protocol}, tag ${routeTag}
+  #
+  # Match route without an outgoing interface (e.g. some statics) (without tag)
+  ^\s+\*+via ${nexthopIps}(%${_nexthopVrf})?, \[${preference}\/${metric}\], ${statusChangeTimestamp}, ${protocol}
+  #
+  # Match route without a nexthop IP, only nexthop interface (e.g. null routes)
+  ^\s+\*+via ${oifs}, \[${preference}\/${metric}\], ${statusChangeTimestamp}, ${protocol}
+  ^'\S+'\s+denotes\s
+  ^'%<string>'
+  ^\s*$$
+  ^. -> Error
+
+EOF

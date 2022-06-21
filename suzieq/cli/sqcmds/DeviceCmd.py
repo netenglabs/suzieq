@@ -2,7 +2,7 @@ import shlex
 from nubia import command
 from suzieq.cli.nubia_patch import argument
 
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.device import DeviceObj
 
 
@@ -12,7 +12,7 @@ from suzieq.sqobjects.device import DeviceObj
 @argument("version", description="NOS version(s), space separated")
 @argument("vendor", description="Vendor(s), space separated")
 @argument("model", description="Model(s), space separated")
-class DeviceCmd(SqCommand):
+class DeviceCmd(SqTableCommand):
     """Basic device information such as OS, version, model etc."""
 
     def __init__(

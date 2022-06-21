@@ -4,7 +4,8 @@ import pytest
 import pandas as pd
 import numpy as np
 
-from tests.conftest import DATADIR, validate_host_shape
+from tests.conftest import DATADIR, validate_host_shape, _get_table_data
+from tests.integration.utils import validate_vrfs
 
 
 def _validate_estd_bgp_data(df: pd.DataFrame):
@@ -49,25 +50,62 @@ def _validate_estd_bgp_data(df: pd.DataFrame):
 
 def _validate_notestd_bgp_data(df: pd.DataFrame):
     '''Validate the fields in established sessions'''
-    assert(df.query('~os.str.contains("junos")').keepaliveTime != 0).all()
+    assert(
+        df.query('~os.isin(["junos", "iosxe", "ios"])').keepaliveTime != 0) \
+        .all()
 
 
 def validate_bgp_data(df: pd.DataFrame):
     '''Validate the dataframe for all BGP values'''
 
     # First validate that all entries have a state thats known
-    assert (df.state.isin(['Established', 'NotEstd', 'dynamic'])).all()
+    assert (df.state.isin(['Established', 'NotEstd', 'dynamic',
+                           'adminDown'])).all()
     assert (df.peer != '').all() and (df.peer.str.lower() != 'none').all()
     assert (df.query('namespace != "nsdevlab"').routerId != '').all()
     assert (df.asn != 0).all()
 
-    assert (df.query('state != "dynamic"').holdTime != 0).all()
+    assert (df.query('state == "Established"').holdTime != 0).all()
 
     estd_df = df.query('state == "Established"').reset_index(drop=True)
     notestd_df = df.query('state == "NotEstd"').reset_index(drop=True)
 
     _validate_notestd_bgp_data(notestd_df)
     _validate_estd_bgp_data(estd_df)
+
+
+def validate_interfaces(df: pd.DataFrame, datadir: str):
+    '''Validate that each VRF/interface list is in interfaces table.
+
+    This is to catch problems in parsing interfaces such that the different
+    tables contain a different interface name than the interface table itself.
+    For example, in parsing older NXOS, we got iftable with Eth1/1 and the
+    route table with Ethernet1/1. The logic of ensuring this also ensures that
+    the VRFs in the route table are all known to the interface table.
+    '''
+
+    # Create a new df of namespace/hostname/vrf to oif mapping
+    only_oifs = df.groupby(by=['namespace', 'hostname'])['ifname'] \
+                  .unique() \
+                  .reset_index() \
+                  .explode('ifname') \
+                  .reset_index(drop=True)
+
+    # Fetch the address table
+    if_df = _get_table_data('address', datadir)
+    assert not if_df.empty, 'Unexpected empty address table'
+
+    addr_oifs = if_df.groupby(by=['namespace', 'hostname'])['ifname'] \
+                     .unique() \
+                     .reset_index() \
+                     .explode('ifname') \
+                     .reset_index(drop=True)
+
+    m_df = only_oifs.merge(addr_oifs, how='left')
+    # Verify we have no rows where the route table OIF has no corresponding
+    # interface table info
+    assert m_df.query('ifname.isna()').empty, \
+        'Unknown interfaces in BGP table'
 
 
 @ pytest.mark.parsing
@@ -92,3 +130,5 @@ def test_bgp_parsing(table, datadir, get_table_data):
     assert not df.empty
     validate_host_shape(df, ns_dict)
     validate_bgp_data(df)
+    validate_interfaces(df.query('ifname != ""').reset_index(), datadir)
+    validate_vrfs(df, 'bgp', datadir)

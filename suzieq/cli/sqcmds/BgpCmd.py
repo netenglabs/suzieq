@@ -5,7 +5,7 @@ from nubia import command
 import pandas as pd
 
 from suzieq.cli.nubia_patch import argument
-from suzieq.cli.sqcmds.command import SqCommand
+from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.bgp import BgpObj
 
 
@@ -17,7 +17,7 @@ from suzieq.sqobjects.bgp import BgpObj
           description=("IP address(es), in quotes, or the interface name(s), "
                        "space separated"))
 @argument("afiSafi", description="AFI SAFI string to filter by")
-class BgpCmd(SqCommand):
+class BgpCmd(SqTableCommand):
     """BGP protocol information"""
 
     def __init__(

@@ -146,8 +146,9 @@ class ServiceManager:
             )
 
         svcs = list(Path(service_directory).glob('*.yml'))
-        allsvcs = [os.path.basename(x).split('.')[0] for x in svcs
-                   if x not in BLACKLIST_SERVICES]
+        allsvcs = [s_name for s in svcs
+                   if (s_name := os.path.basename(s).split('.')[0])
+                   not in BLACKLIST_SERVICES]
         svclist = None
 
         if service_only:

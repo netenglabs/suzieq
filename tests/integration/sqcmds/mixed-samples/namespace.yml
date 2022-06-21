@@ -1,0 +1,42 @@
+description: Testing namespace table for Mixed
+tests:
+- command: namespace show --format=json --namespace=mixed
+  data-directory: tests/data/parquet/
+  marks: namespace show mixed
+  output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 16, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1652587500852}]'
+- command: namespace show --format=json --namespace=mixed --os=nxos
+  data-directory: tests/data/parquet/
+  marks: namespace show mixed
+  output: '[{"namespace": "mixed", "deviceCnt": 2, "serviceCnt": 10, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1652587500835}]'
+- command: namespace show --format=json --namespace=mixed --os='nxos eos'
+  data-directory: tests/data/parquet/
+  marks: namespace show mixed
+  output: '[{"namespace": "mixed", "deviceCnt": 4, "serviceCnt": 15, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1652587500835}]'
+- command: namespace show --columns='namespace' --format=json --namespace=mixed
+  data-directory: tests/data/parquet/
+  marks: namespace show mixed
+  output: '[{"namespace": "mixed"}]'
+- command: namespace show --columns='hasOspf hasBgp' --os='nxos' --format=json --namespace=mixed
+  data-directory: tests/data/parquet/
+  marks: namespace show mixed
+  output: '[{"hasOspf": true, "hasBgp": false}]'
+- command: namespace show --columns='*' --format=json --namespace=mixed
+  data-directory: tests/data/parquet/
+  marks: namespace show mixed
+  output: '[{"namespace": "mixed", "deviceCnt": 8, "serviceCnt": 16, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1652587500852, "active": true}]'
+- command: namespace unique --format=json --namespace=mixed
+  data-directory: tests/data/parquet/
+  marks: namespace unique mixed
+  output: '[{"namespace": "mixed"}]'
+- command: namespace unique --count=True --format=json --namespace=mixed
+  data-directory: tests/data/parquet/
+  marks: namespace unique mixed
+  output: '[{"namespace": "mixed", "numRows": 1}]'

@@ -7,6 +7,7 @@ ignore-fields:
 keys:
   - vrf
   - ifname
+  - peerIP
 show-fields:
   - vrf
   - ifname
@@ -90,14 +91,18 @@ apply:
     copy: junos-qfx
 
   nxos:
-    version: all
-    command: show ip ospf neighbor detail vrf all | json native
-    normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_nbr/ROW_nbr/*?/[
-    "rid: peerRouterId",
-    "addr: peerIP",
-    "area: area",
-    "intf: ifname",
-    "state: state",
-    "transition: numChanges?|0",
-    "lastnonhello: lastChangeTime"
-    ]'
+    - version: < 9.3(0)
+      command: show ip ospf neighbor detail vrf all
+      textfsm: textfsm_templates/nxos_show_ip_ospfnbr.tfsm
+      
+    - version: all
+      command: show ip ospf neighbor detail vrf all | json native
+      normalize: 'TABLE_ctx/ROW_ctx/*:cname:vrf|TABLE_nbr/ROW_nbr/*?/[
+      "rid: peerRouterId",
+      "addr: peerIP",
+      "area: area",
+      "intf: ifname",
+      "state: state",
+      "transition: numChanges?|0",
+      "lastnonhello: lastChangeTime"
+      ]'

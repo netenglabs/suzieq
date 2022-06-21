@@ -80,7 +80,7 @@ def test_all_columns(setup_nubia, get_cmd_object_dict, cmd):
     pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
 def test_hostname_show_filter(setup_nubia, get_cmd_object_dict, cmd):
-    if cmd != "table":
+    if cmd not in ["table", "namespace"]:
         s = _test_command(get_cmd_object_dict[cmd], 'show', None,
                           {'hostname': 'leaf01'})
         assert s == 0
@@ -181,7 +181,11 @@ def test_bad_start_time_filter(setup_nubia, get_cmd_object_dict, cmd):
     for cmd in cli_commands])
 def test_bad_show_namespace_filter(setup_nubia, get_cmd_object_dict, cmd):
     options = {'namespace': 'unknown'}
-    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], options)
+    if cmd == "topology":
+        assert_error = True
+    else:
+        assert_error = False
+    _ = _test_bad_show_filter(get_cmd_object_dict[cmd], options, assert_error)
 
 
 def _test_bad_show_filter(cmd, options, assert_error=False):
@@ -271,8 +275,8 @@ def test_table_describe(setup_nubia, table):
                            for x in tables
                            if x not in ['path', 'topmem', 'topcpu',
                                         'topmem', 'time', 'ifCounters',
-                                        'ospfIf', 'ospfNbr',
-                                        'network', 'inventory']
+                                        'ospfIf', 'ospfNbr', 'network',
+                                        'namespace', 'inventory']
                            ])
 @ pytest.mark.parametrize('datadir', DATADIR)
 def test_sqcmds_regex_hostname(table, datadir):
@@ -308,7 +312,7 @@ def test_sqcmds_regex_hostname(table, datadir):
                               x,
                               marks=getattr(pytest.mark, x))
                            for x in tables
-                           if x not in ['path', 'inventory']
+                           if x not in ['path', 'inventory', 'network']
                            ])
 @ pytest.mark.parametrize('datadir', ['tests/data/parquet/'])
 def test_sqcmds_regex_namespace(table, datadir):
@@ -329,8 +333,8 @@ def test_sqcmds_regex_namespace(table, datadir):
     else:
         assert set(df.namespace.unique()) == set(['ospf-ibgp', 'ospf-single'])
 
-    if table in ['network']:
-        # network show has no hostname
+    if table in ['namespace']:
+        # namespace show has no hostname
         return
 
     if table not in ['mlag']:
@@ -385,7 +389,7 @@ def _test_sqcmds(testvar, context_config):
     else:
         ignore_cols = []
 
-    if 'output' in testvar:
+    if 'output' in testvar and not error:
         if testvar.get('format', '') == "text":
             assert output.decode('utf8') == testvar['output']
             return

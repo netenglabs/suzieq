@@ -1,9 +1,8 @@
 from ipaddress import ip_address
-import re
 import pandas as pd
 
 from suzieq.sqobjects.basicobj import SqObject
-from suzieq.shared.utils import (humanize_timestamp,
+from suzieq.shared.utils import (humanize_timestamp, validate_macaddr,
                                  convert_macaddr_format_to_colon)
 
 
@@ -12,11 +11,8 @@ class NetworkObj(SqObject):
 
     def __init__(self, **kwargs):
         super().__init__(table='network', **kwargs)
-        self._valid_get_args = ['namespace', 'hostname', 'version', 'os',
-                                'model', 'vendor', 'columns', 'query_str']
         self._valid_find_args = ['namespace', 'hostname', 'vrf', 'vlan',
                                  'address', 'query_str']
-        self._unique_def_column = ['namespace']
 
     def find(self, **kwargs) -> pd.DataFrame():
         '''Find network attach point for a given address'''
@@ -34,9 +30,7 @@ class NetworkObj(SqObject):
                 ip_address(addr)
             except ValueError:
                 addr = convert_macaddr_format_to_colon(addr)
-                if not re.match(
-                        "[0-9a-f]{2}([-:]?)[0-9a-f]{2}(\\1[0-9a-f]{2}){4}$",
-                        addr):
+                if not validate_macaddr(addr):
                     return pd.DataFrame(
                         {'error': [f'Not valid IP or MAC address: {addr}']})
         try:
@@ -46,6 +40,24 @@ class NetworkObj(SqObject):
             return df
 
         return self.engine.find(**kwargs)
+
+    def get(self, **kwargs) -> pd.DataFrame:
+        return self._run_deprecated_function(table='namespace', command='get',
+                                             **kwargs)
+
+    def summarize(self, **kwargs) -> pd.DataFrame:
+        return self._run_deprecated_function(table='namespace',
+                                             command='summarize', **kwargs)
+
+    def top(self, what: str = '', count: int = 5, reverse: bool = False,
+            **kwargs) -> pd.DataFrame:
+        return self._run_deprecated_function(table='namespace', command='top',
+                                             what=what, count=count,
+                                             reverse=reverse, **kwargs)
+
+    def unique(self, **kwargs) -> pd.DataFrame:
+        return self._run_deprecated_function(table='namespace',
+                                             command='unique', **kwargs)
 
     def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the timestamp fields'''

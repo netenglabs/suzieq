@@ -1,0 +1,383 @@
+Value peer (\S+)
+Value Required peerAsn ([0-9.]+)
+Value asn ([0-9.]+)
+Value vrf ([^, ]+)
+Value description (.+?)
+Value peerRouterId ([0-9.]+)
+Value routerId ([0-9.]+)
+Value clusterId (\S+)
+Value state ([^,]+)
+Value estdTime (.+?)
+Value holdTime (\d+)
+Value keepaliveTime (\d+)
+Value configHoldtime (\d+)
+Value configKeepalive (\d+)
+Value _connEstd (\d+)
+Value _connDrop (\d+)
+Value bfdStatus (\w+)
+Value rrclient (Route reflector client)
+Value List afiPrefix (.+)
+Value List afisAdvOnly ([^:]+)
+Value List afisRcvOnly ([^:]+)
+Value _entryType (neighbor)
+Value List iMapafisafi (\w+ \w+)
+Value List oMapafisafi (\w+ \w+)
+Value List ingressRmap (\S+)
+Value List egressRmap (\S+)
+Value List pfxRcvd (\d+)
+Value List pfxBestRx (\d+)
+Value List pfxSent (\d+)
+Value List pfxSuppressTx (\d+)
+Value List pfxWithdrawnTx (\d+)
+Value List pfxWithdrawnRx (\d+)
+Value updatesTx (\d+)
+Value updatesRx (\d+)
+Value pfxMaxRx (\d+)
+Value defOriginate (.+?)
+Value nextHopSelf (\w+)
+Value List communityTypes (Extended|Community)
+Value passive (passive)
+Value numChanges (\d+)
+Value peerIP ([0-9A-Fa-f:.]+)
+Value updateSource (.*)
+Value lastDownTime (.+?)
+Value softReconfig (\w+)
+Value reason ([^,]+)
+Value errorMsg (.*)
+Value notificnReason (.+?)
+Value notificnReasonRx ([^,]+)
+Value hopsMax (\d+)
+Value ifname (\S+)
+Value _resetSelfTime (\S+)
+Value _resetPeerTime (\S+)
+Value extnhReceived (received)
+Value extnhAdvertised (advertised)
+Value _activePeers (\d+)
+Value _maxconcurrentpeers (\d+)
+Value _dynPeer (\S+)
+Value _firstconvgtime ([0-9.]+)
+
+Start
+  ^BGP\s+prefix\s+ -> Continue.Record
+  ^BGP\s+${_entryType} -> Continue.Record
+  ^BGP\s+neighbor\s+is\s+${peer},\s+remote\s+AS\s+${peerAsn},\s+local\s+AS\s+${asn},.*
+  ^BGP\s+neighbor\s+is\s+${peer},\s+remote\s+AS\s+${peerAsn},.*$$
+  ^\s+BGP\s+version\s+4, remote\s+router\s+ID\s+${peerRouterId}
+  ^\s+Description:\s+${description}\s*$$
+  ^\s+BGP\s+state\s+=\s+${state}(?:,\s+up\s+for\s+${estdTime})?\s*$$
+  ^\s+BGP\s+state\s+=\s+${state}(?:,\s+down\s+for\s+${estdTime})?\s*$$
+  ^\s+Neighbor\s+vrf:\s+${vrf}.*$$
+  ^\s+Using\s+${ifname}\s+as\s+update\s+source.*$$
+  ^\s+External\s+BGP\s+peer\s+might\s+be\s+up\s+to\s+${hopsMax}\s+hops
+  ^\s+Peer\s+is\s+directly\s+attached\s+,\s+interface\s+${ifname}.*$$
+  ^\s+Last\s+read.*,\s+hold\s+time\s+=\s+${holdTime},\s+keepalive\s+interval\s+is\s+${keepaliveTime}.*$$
+  ^\s+Connections\s+established\s+${_connEstd},\s+dropped\s+${_connDrop}.*$$
+  ^\s+Last\s+reset\s+by\s+us\s+${_resetSelfTime},\s+due\s+to\s+${reason}
+  ^\s+Last\s+reset\s+by\s+peer\s+${_resetPeerTime},\s+due\s+to\s+${notificnReasonRx}
+  ^\s+Address\s+[Ff]amily\s+${afisAdvOnly}:\s+advertised\s*$$
+  ^\s+Address\s+[Ff]amily\s+${afisRcvOnly}:\s+received
+  ^\s+Extended\s+Next\s+Hop\s+Encoding\s+Capability:\s+${extnhAdvertised}\s+${extnhReceived}
+  ^\s+Extended\s+Next\s+Hop\s+Encoding\s+Capability:\s+${extnhAdvertised}
+  ^\s+Extended\s+Next\s+Hop\s+Encoding\s+Capability:\s+${extnhReceived}
+  ^\s+Updates:\s+${updatesTx}\s+${updatesRx}\s*$$
+  ^\s+For\s+address\s+family:\s+${afiPrefix}\s*$$
+  ^\s+${pfxRcvd}\s+accepted\s+prefixes.*
+  ^\s+${pfxWithdrawnRx}\s+received\s+prefixes\s+treated\s+as\s+withdrawn.*$$
+  ^\s+${pfxSent}\s+sent\s+prefixes.*$$
+  ^\s+${communityTypes}\s+attribute\s+sent\s+.*
+  ^\s+${communityTypes}\s+community\s+attribute\s+sent\s+.*
+  ^\s+${rrclient}
+  ^\s+First\s+convergence\s+${_firstconvgtime}\s+after\s+session\s+start
+  ^\s+Local\s+host:\s+${updateSource},.*$$
+  ^\s+Foreign\s+host:\s+${peerIP},.*$$
+  ^BGP\s+prefix\s+peer\s+${_dynPeer},\s+remote\s+AS\s+${peerAsn},
+  ^\s+Active\s+peers\s+${_activePeers}.*,\s+Maximum\s+concurrent\s+peers\s+${_maxconcurrentpeers}
+
+#BGP neighbor is 10.0.0.11, remote AS 64520, ibgp link, Peer index 3
+#  Peer is an instance of prefix peering 10.0.0.0/24
+#  BGP version 4, remote router ID 10.0.0.11
+#  Neighbor previous state = OpenConfirm
+#  BGP state = Established, up for 08:14:02
+#  Neighbor vrf: default
+#  External BGP peer might be up to 3 hops away
+#  Enable logging neighbor events
+#  Last read 00:00:16, hold time = 180, keepalive interval is 60 seconds
+#  Last written 00:00:16, keepalive timer expiry due 00:00:43
+#  Received 538 messages, 0 notifications, 0 bytes in queue
+#  Sent 527 messages, 0 notifications, 0(0) bytes in queue
+#  Enhanced error processing: On
+#    0 discarded attributes
+#  Connections established 1, dropped 0
+#  Last reset by us never, due to No error
+#  Last error length sent: 0
+#  Reset error value sent: 0
+#  Reset error sent major: 0 minor: 0
+#  Notification data sent:
+#  Last reset by peer never, due to No error
+#  Last error length received: 0
+#  Reset error value received 0
+#  Reset error received major: 0 minor: 0
+#  Notification data received:
+#
+#  Neighbor capabilities:
+#  Dynamic capability: advertised (mp, refresh, gr) received (mp, refresh, gr)
+#  Dynamic capability (old): advertised received
+#  Route refresh capability (new): advertised received 
+#  Route refresh capability (old): advertised received 
+#  4-Byte AS capability: advertised received 
+#  Address family L2VPN EVPN: advertised received 
+#  Graceful Restart capability: advertised received
+#
+#  Graceful Restart Parameters:
+#  Address families advertised to peer:
+#    L2VPN EVPN  
+#  Address families received from peer:
+#    L2VPN EVPN  
+#  Forwarding state preserved by peer for:
+#  Restart time advertised to peer: 120 seconds
+#  Stale time for routes advertised by peer: 300 seconds
+#  Restart time advertised by peer: 120 seconds
+#  Extended Next Hop Encoding Capability: advertised received
+#  Receive IPv6 next hop encoding Capability for AF:
+#    IPv4 Unicast  VPNv4 Unicast  
+#
+#  Message statistics:
+#                              Sent               Rcvd
+#  Opens:                         1                  1  
+#  Notifications:                 0                  0
+#  Updates:                     135                 46  
+#  Keepalives:                  484                486  
+#  Route Refresh:                 0                  3  
+#  Capability:                    2                  2  
+#  Total:                       527                538  
+#  Total bytes:               25243              13936  
+#  Bytes in queue:                0                  0  
+#
+#  For address family: L2VPN EVPN
+#  BGP table version 236, neighbor version 236
+#  8 accepted prefixes (8 paths), consuming 1888 bytes of memory
+#  0 received prefixes treated as withdrawn
+#  30 sent prefixes (30 paths)
+#  Community attribute sent to this neighbor
+#  Extended community attribute sent to this neighbor
+#  Third-party Nexthop will not be computed.
+#  Advertise GW IP is enabled
+#  Route reflector client
+#  Last End-of-RIB received 00:00:01 after session start
+#  Last End-of-RIB sent 00:01:46 after session start
+#  First convergence 00:00:01 after session start with 0 routes sent
+#
+#  Local host: 10.0.0.21, Local port: 179
+#  Foreign host: 10.0.0.11, Foreign port: 42828
+#  fd = 76
+#
+#BGP neighbor is 10.0.0.21, remote AS 64520, ibgp link, Peer index 3
+#  Inherits peer configuration from peer-template VXLAN_SPINE
+#  BGP version 4, remote router ID 10.0.0.21
+#  Neighbor previous state = OpenConfirm
+#  BGP state = Established, up for 08:15:54
+#  Neighbor vrf: default
+#  Using loopback0 as update source for this peer
+#  Enable logging neighbor events
+#  Last read 00:00:08, hold time = 180, keepalive interval is 60 seconds
+#  Last written 00:00:45, keepalive timer expiry due 00:00:14
+#  Received 647 messages, 0 notifications, 0 bytes in queue
+#  Sent 501 messages, 0 notifications, 0(0) bytes in queue
+#  Enhanced error processing: On
+#    0 discarded attributes
+#  Connections established 1, dropped 0
+#  Last reset by us never, due to No error
+#  Last error length sent: 0
+#  Reset error value sent: 0
+#  Reset error sent major: 0 minor: 0
+#  Notification data sent:
+#  Last reset by peer never, due to No error
+#  Last error length received: 0
+#  Reset error value received 0
+#  Reset error received major: 0 minor: 0
+#  Notification data received:
+#
+#  Neighbor capabilities:
+#  Dynamic capability: advertised (mp, refresh, gr) received (mp, refresh, gr)
+#  Dynamic capability (old): advertised received
+#  Route refresh capability (new): advertised received 
+#  Route refresh capability (old): advertised received 
+#  4-Byte AS capability: advertised received 
+#  Address family L2VPN EVPN: advertised received 
+#  Graceful Restart capability: advertised received
+#
+#  Graceful Restart Parameters:
+#  Address families advertised to peer:
+#    L2VPN EVPN  
+#  Address families received from peer:
+#    L2VPN EVPN  
+#  Forwarding state preserved by peer for:
+#  Restart time advertised to peer: 120 seconds
+#  Stale time for routes advertised by peer: 300 seconds
+#  Restart time advertised by peer: 120 seconds
+#  Extended Next Hop Encoding Capability: advertised received
+#  Receive IPv6 next hop encoding Capability for AF:
+#    IPv4 Unicast  VPNv4 Unicast  
+#
+#  Message statistics:
+#                              Sent               Rcvd
+#  Opens:                         1                  1  
+#  Notifications:                 0                  0
+#  Updates:                       2                160  
+#  Keepalives:                  497                484  
+#  Route Refresh:                 0                  0  
+#  Capability:                    2                  2  
+#  Total:                       501                647  
+#  Total bytes:                9710              27667  
+#  Bytes in queue:                0                  0  
+#
+#  For address family: L2VPN EVPN
+#  BGP table version 72, neighbor version 72
+#  19 accepted prefixes (19 paths), consuming 4484 bytes of memory
+#  0 received prefixes treated as withdrawn
+#  3 sent prefixes (3 paths)
+#  Community attribute sent to this neighbor
+#  Extended community attribute sent to this neighbor
+#  Advertise GW IP is enabled
+#  Last End-of-RIB received 00:00:01 after session start
+#  Last End-of-RIB sent 00:00:01 after session start
+#  First convergence 00:00:01 after session start with 0 routes sent
+#
+#  Local host: 10.0.0.31, Local port: 53660
+#  Foreign host: 10.0.0.21, Foreign port: 179
+#  fd = 74
+#
+#BGP neighbor is 169.254.254.2, remote AS 65533, local AS 65520, ebgp link, Peer index 5
+#  Inherits peer configuration from peer-template FIREWALL
+#  BGP version 4, remote router ID 0.0.0.0
+#  Neighbor previous state = Idle
+#  BGP state = Idle, down for 08:17:23
+#  Neighbor vrf: default, retry in 00:00:45
+#  Peer is directly attached, interface Ethernet1/3.2
+#  Enable logging neighbor events
+#  Last read never, hold time = 180, keepalive interval is 60 seconds
+#  Last written never, keepalive timer not running
+#  Received 0 messages, 0 notifications, 0 bytes in queue
+#  Sent 0 messages, 0 notifications, 0(0) bytes in queue
+#  Enhanced error processing: On
+#    0 discarded attributes
+#  Connections established 0, dropped 0
+#  Connection attempts 385
+#  Last reset by us never, due to No error
+#  Last error length sent: 0
+#  Reset error value sent: 0
+#  Reset error sent major: 0 minor: 0
+#  Notification data sent:
+#  Last reset by peer never, due to No error
+#  Last error length received: 0
+#  Reset error value received 0
+#  Reset error received major: 0 minor: 0
+#  Notification data received:
+#
+#  Message statistics:
+#                              Sent               Rcvd
+#  Opens:                         0                  0  
+#  Notifications:                 0                  0  
+#  Updates:                       0                  0  
+#  Keepalives:                    0                  0  
+#  Route Refresh:                 0                  0  
+#  Capability:                    0                  0  
+#  Total:                         0                  0  
+#  Total bytes:                   0                  0  
+#  Bytes in queue:                0                  0  
+#
+#  For address family: IPv4 Unicast
+#  BGP table version 2, neighbor version 0
+#  0 accepted prefixes (0 paths), consuming 0 bytes of memory
+#  0 received prefixes treated as withdrawn
+#  0 sent prefixes (0 paths)
+#  Inbound soft reconfiguration allowed(always)
+#  Last End-of-RIB sent 0.000000 after session start
+#  First convergence 0.000000 after session start with 0 routes sent
+#
+#  No established BGP session with peer
+#
+#BGP neighbor is 169.254.127.0, remote AS 65534, local AS 65522, ebgp link, Peer index 4
+#  Inherits peer configuration from peer-template FIREWALL
+#  BGP version 4, remote router ID 10.0.0.41
+#  Neighbor previous state = OpenConfirm
+#  BGP state = Established, up for 08:16:39
+#  Neighbor vrf: internet-vrf
+#  Peer is directly attached, interface Ethernet1/4
+#  Last read 00:00:01, hold time = 90, keepalive interval is 30 seconds
+#  Last written 00:00:02, keepalive timer expiry due 00:00:27
+#  Received 1106 messages, 0 notifications, 0 bytes in queue
+#  Sent 997 messages, 0 notifications, 0(0) bytes in queue
+#  Enhanced error processing: On
+#    0 discarded attributes
+#  Connections established 1, dropped 0
+#  Last reset by us never, due to No error
+#  Last error length sent: 0
+#  Reset error value sent: 0
+#  Reset error sent major: 0 minor: 0
+#  Notification data sent:
+#  Last reset by peer never, due to No error
+#  Last error length received: 0
+#  Reset error value received 0
+#  Reset error received major: 0 minor: 0
+#  Notification data received:
+#
+#  Neighbor capabilities:
+#  Dynamic capability: advertised (mp, refresh, gr) 
+#  Dynamic capability (old): advertised 
+#  Route refresh capability (new): advertised received 
+#  Route refresh capability (old): advertised received 
+#  4-Byte AS capability: advertised received 
+#  Address family IPv4 Unicast: advertised received 
+#  Graceful Restart capability: advertised received
+#
+#  Graceful Restart Parameters:
+#  Address families advertised to peer:
+#    IPv4 Unicast  
+#  Address families received from peer:
+#  Forwarding state preserved by peer for:
+#  Restart time advertised to peer: 120 seconds
+#  Stale time for routes advertised by peer: 300 seconds
+#  Restart time advertised by peer: 120 seconds
+#  Extended Next Hop Encoding Capability: advertised 
+#
+#  Message statistics:
+#                              Sent               Rcvd
+#  Opens:                         1                  1  
+#  Notifications:                 0                  0  
+#  Updates:                       1                  3  
+#  Keepalives:                  995               1102  
+#  Route Refresh:                 0                  0  
+#  Capability:                    0                  0  
+#  Total:                       997               1106  
+#  Total bytes:               18909              21059  
+#  Bytes in queue:                0                  0  
+#
+#  For address family: IPv4 Unicast
+#  BGP table version 15, neighbor version 15
+#  6 accepted prefixes (6 paths), consuming 1416 bytes of memory
+#  0 received prefixes treated as withdrawn
+#  0 sent prefixes (0 paths)
+#  Inbound soft reconfiguration allowed(always)
+#  Last End-of-RIB sent 00:00:01 after session start
+#  First convergence 00:00:01 after session start with 0 routes sent
+#
+#  Local host: 169.254.127.1, Local port: 179
+#  Foreign host: 169.254.127.0, Foreign port: 56375
+#  fd = 80
+#
+#BGP prefix peer 10.0.0.0/24, remote AS 64520, ibgp link, Peer index 0
+#  Instances:     10.0.0.11          10.0.0.12          10.0.0.13          10.0.0.14      
+#    10.0.0.31          10.0.0.32      
+#  Only passive connection setup allowed
+#  Active peers 6 (0 closing), Maximum concurrent peers 6
+#  Total peers accepted 6
+#
+#  For address family: L2VPN EVPN
+#  Community attribute sent to this neighbor
+#  Extended community attribute sent to this neighbor
+#  Third-party Nexthop will not be computed.
+#  Advertise GW IP is enabled
+#  Route reflector client
+#  Last End-of-RIB sent 0.000000 after session start
+#  First convergence 0.000000 after session start with 0 routes sent

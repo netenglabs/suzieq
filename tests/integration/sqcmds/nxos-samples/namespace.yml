@@ -1,0 +1,64 @@
+description: Testing namespace table
+tests:
+- command: namespace show --format=json --namespace=nxos
+  data-directory: tests/data/parquet
+  marks: namespace show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 14, "serviceCnt": 16, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1652621117544}]'
+- command: namespace show --format=json --namespace=nxos --model=vmx
+  data-directory: tests/data/parquet
+  marks: namespace show nxos
+  output: '[]'
+- command: namespace show --format=json --namespace=nxos --os=nxos
+  data-directory: tests/data/parquet
+  marks: namespace show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 8, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1652621117530}]'
+- command: namespace show --format=json --namespace=nxos --vendor=Juniper
+  data-directory: tests/data/parquet
+  marks: namespace show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 1, "serviceCnt": 12, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1652621117544}]'
+- command: namespace show --columns='namespace' --format=json --namespace=nxos
+  data-directory: tests/data/parquet
+  marks: namespace show nxos
+  output: '[{"namespace": "nxos"}]'
+- command: namespace show --columns='hasOspf hasBgp' --format=json --namespace=nxos
+  data-directory: tests/data/parquet
+  marks: namespace show nxos
+  output: '[{"hasOspf": true, "hasBgp": true}]'
+- command: namespace show --columns='*' --format=json --namespace=nxos
+  data-directory: tests/data/parquet
+  marks: namespace show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 14, "serviceCnt": 16, "errSvcCnt":
+    0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1652621117544, "active": true}]'
+- command: namespace show --columns='*' --os=nxos --format=json --namespace=nxos
+  data-directory: tests/data/parquet
+  marks: namespace show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 8, "serviceCnt": 13, "errSvcCnt": 0,
+    "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag": true, "lastUpdate":
+    1652621117530, "active": true}]'
+- command: namespace show --columns='*' --vendor=Juniper --format=json --namespace=nxos
+  data-directory: tests/data/parquet
+  marks: namespace show nxos
+  output: '[{"namespace": "nxos", "deviceCnt": 1, "serviceCnt": 12, "errSvcCnt": 0,
+    "hasOspf": false, "hasBgp": true, "hasVxlan": false, "hasMlag": false, "lastUpdate":
+    1652621117544, "active": true}]'
+- command: namespace summarize --format=json --namespace=nxos
+  data-directory: tests/data/parquet
+  marks: namespace summarize nxos
+  output: '{"summary": {"namespacesCnt": 1, "servicePerNsStat": [16, 16, 16.0], "nsWithMlagCnt":
+    1, "nsWithBgpCnt": 1, "nsWithOspfCnt": 1, "nsWithVxlanCnt": 1, "nsWithErrsvcCnt":
+    0}}'
+- command: namespace unique --format=json --namespace=nxos
+  data-directory: tests/data/parquet
+  marks: namespace unique nxos
+  output: '[{"namespace": "nxos"}]'
+- command: namespace unique --count=True --format=json --namespace=nxos
+  data-directory: tests/data/parquet
+  marks: namespace unique nxos
+  output: '[{"namespace": "nxos", "numRows": 1}]'

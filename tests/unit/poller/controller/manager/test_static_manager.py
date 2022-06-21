@@ -1,6 +1,5 @@
 """This module contains the tests to for the poller controller static manager
 """
-# pylint: disable=protected-access
 # pylint: disable=dangerous-default-value
 # pylint: disable=consider-using-enumerate
 # pylint: disable=redefined-outer-name
@@ -51,6 +50,7 @@ def manager_cfg():
 class DummyCoalescerLauncher:
     """A dummy CoalescerLaucher to use as mock
     """
+
     def __init__(self) -> None:
         self.fut = asyncio.Future()
         self.monitor_called = False
@@ -127,7 +127,8 @@ def init_static_manager(manager_cfg: Dict,
 @pytest.mark.controller
 @pytest.mark.controller_manager
 @pytest.mark.controller_manager_static
-def test_static_manager_init(monkeypatch, manager_cfg):
+@pytest.mark.parametrize("max_outstanding_cmds", [0, 5])
+def test_static_manager_init(monkeypatch, manager_cfg, max_outstanding_cmds):
     """Test the initialization of the static manager
     """
     fake_environ = {}
@@ -136,6 +137,12 @@ def test_static_manager_init(monkeypatch, manager_cfg):
     manager_args['exclude-services'] = ['arpn']
     manager_args['service-only'] = ['interfaces', 'ospf']
     manager_args['ssh-config-file'] = 'ssh_config_file'
+
+    # Set the poller settings
+    poller_cfg = manager_cfg['config-dict']['poller']
+    poller_cfg['max-cmd-pipeline'] = max_outstanding_cmds
+
+    # Init manager
     static_manager = init_static_manager(manager_cfg, manager_args)
 
     # Check if the evironment variables have been set
@@ -145,6 +152,14 @@ def test_static_manager_init(monkeypatch, manager_cfg):
         'Inventory path not set in environment'
     assert Path(fake_environ['SQ_INVENTORY_PATH']).exists(), \
         'Inventory path not correctly created'
+
+    # Check if the proper value of max outstanding commands is provided
+    max_cmds_env = fake_environ.get('SQ_MAX_OUTSTANDING_CMD')
+    expected_max_cmds = (str(max_outstanding_cmds)
+                         if max_outstanding_cmds
+                         else None)
+    assert max_cmds_env == expected_max_cmds, \
+        'The value of max outstanding commands is not the expected one'
 
     # Check if the parameters construction is valid
     allowed_args = ['run-once', 'exclude-services',
@@ -339,7 +354,7 @@ async def test_launch_debug_mode(monkeypatch, manager_cfg, capsys):
     # We need to remove the very first line
     obtained_lines = len(worker_messages) - 1
     assert expected_lines == obtained_lines, \
-           f"Expected {expected_lines} commands, {obtained_lines} obtained"
+        f"Expected {expected_lines} commands, {obtained_lines} obtained"
 
 
 @pytest.mark.poller
@@ -472,7 +487,7 @@ async def test_write_chunk(monkeypatch, manager_cfg):
         obtained_inventory = yaml.safe_load(inventory_data)
 
     assert obtained_inventory == devices, \
-           'Device part of the inventory do not match'
+        'Device part of the inventory do not match'
 
     # Assert the credentials are the expexted ones
     with open(credentials_path, "r") as out_file:
@@ -484,7 +499,7 @@ async def test_write_chunk(monkeypatch, manager_cfg):
     cred_data = decryptor.decrypt(cred_enc_data.encode('utf-8'))
     obtained_credentials = yaml.safe_load(cred_data)
     assert obtained_credentials == credentials, \
-           'Credentials part of the inventory do not match'
+        'Credentials part of the inventory do not match'
 
 
 @pytest.mark.poller
@@ -508,9 +523,9 @@ async def test_launch_worker(monkeypatch, manager_cfg):
         # Check if the process have been correctly created
         create_subprocess_fn.assert_called()
         assert manager._waiting_workers.get(expected_worker_id), \
-               'Worker not placed in the waiting queue'
+            'Worker not placed in the waiting queue'
         assert manager._waiting_workers[expected_worker_id] == fake_process, \
-               'The worker process is not the expected one'
+            'The worker process is not the expected one'
 
         # Check the arguments passed to the worker
         call_args = list(list(create_subprocess_fn.call_args_list[0])[0])
@@ -519,7 +534,7 @@ async def test_launch_worker(monkeypatch, manager_cfg):
         except ValueError:
             pytest.fail('Worker id flag not provided')
         assert len(call_args) > worker_id_index, \
-               'Worker id value not provided to worker'
+            'Worker id value not provided to worker'
         assert call_args[worker_id_index] == str(expected_worker_id)
 
 
@@ -562,7 +577,7 @@ async def test_worker_replace(monkeypatch, manager_cfg):
 
     with patch.multiple(static_manager_module,
                         monitor_process=dummy_monitor_process), \
-         patch.object(manager, '_coalescer_launcher', coalescer_monitor_mock):
+            patch.object(manager, '_coalescer_launcher', coalescer_monitor_mock):
         execute_task = asyncio.create_task(manager._execute())
         try:
             injected_workers = {
@@ -578,7 +593,7 @@ async def test_worker_replace(monkeypatch, manager_cfg):
 
             # Check if the coalescer started
             assert coalescer_monitor_mock.monitor_called, \
-                   'Coalescer not launched'
+                'Coalescer not launched'
 
             # Replace one of the workers
             manager._poller_tasks_ready.clear()
@@ -631,7 +646,7 @@ async def test_unexpected_worker_death(monkeypatch, manager_cfg):
 
     with patch.multiple(static_manager_module,
                         monitor_process=dummy_monitor_process), \
-         patch.object(manager, '_coalescer_launcher', coalescer_monitor_mock):
+            patch.object(manager, '_coalescer_launcher', coalescer_monitor_mock):
         execute_task = asyncio.create_task(manager._execute())
 
         try:
@@ -648,7 +663,7 @@ async def test_unexpected_worker_death(monkeypatch, manager_cfg):
             await asyncio.sleep(0.1)
             injected_workers[1].set_result(None)
             with pytest.raises(PollingError,
-                               match='Unexpected worker 1 death'):
+                               match='Unexpected worker 1 death:.*'):
                 await asyncio.wait_for(execute_task, 2)
         finally:
             # Cancel the execute task
@@ -686,7 +701,7 @@ async def test_execute_run_once(monkeypatch, manager_cfg):
     manager = init_static_manager(manager_cfg, manager_args)
 
     assert not getattr(manager, '_coalescer_launcher', None), \
-           'Coalescer launcher initialized with run once mode'
+        'Coalescer launcher initialized with run once mode'
 
     with patch.multiple(static_manager_module,
                         monitor_process=dummy_monitor_process):

@@ -147,7 +147,6 @@ async def test_valid_config(server_conf: Dict, default_config):
     Args:
         server_conf(Dict): server configuration
     """
-    # pylint: disable=protected-access
     config = default_config
     config = update_config(server_conf, config)
 
@@ -295,7 +294,6 @@ async def test_ssl_misconfiguration(server_conf: Dict, default_config):
 def test_netbox_automatic_ssl_verify(default_config):
     """Test netbox ssl verify is set correctly if not specified
     """
-    # pylint: disable=protected-access
     config = default_config
     if 'ssl-verify' in config:
         config.pop('ssl-verify')

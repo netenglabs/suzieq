@@ -15,6 +15,7 @@ apply:
     command: show version
     normalize: '[
     "modelName: model",
+    "memTotal: memory?|0",
     "version: version",
     "vendor: vendor?|Arista",
     "os: os?|eos",
@@ -24,17 +25,29 @@ apply:
 
   cumulus:
     version: all
-    command: net show system json
-    normalize: '[
-    "os-version: version",
-    "vendor: vendor?|Cumulus",
-    "uptime: _uptime",
-    "os: os?|cumulus",
-    "platform/info/model_name: _modelName",
-    "platform/model: model",
-    "eeprom/Serial Number/value: serialNumber",
-    "platform/info/cpu/summary: architecture?|x86_64",
-    ]'
+    merge: False
+    command:
+      - command: cat /proc/uptime; hostname
+        textfsm: textfsm_templates/cls_uptime_hostname.tfsm
+        _entryType: uptime
+
+      - command: /usr/cumulus/bin/decode-syseeprom; cat /etc/os-release; cat /proc/meminfo
+        textfsm: textfsm_templates/cls_model_rel.tfsm
+        _entryType: model
+
+      - command: net show foo json
+        normalize: '[
+        "os-version: version",
+        "vendor: vendor?|Cumulus",
+        "uptime: _uptime",
+        "os: os?|cumulus",
+        "memory: memory?|0",
+        "platform/info/model_name: _modelName?|",
+        "platform/model: model?|",
+        "eeprom/Serial Number/value: serialNumber?|",
+        "platform/info/cpu/summary: architecture?|x86_64",
+        "_entryType: _entryType?|json"
+        ]'
 
   iosxe:
     version: all
@@ -60,20 +73,26 @@ apply:
     textfsm: textfsm_templates/sonic_showsys.tfsm
 
   nxos:
-    version: all
-    command: show version | json native
-    normalize: '[
-    "kickstart_ver_str: version",
-    "manufacturer: vendor?Cisco|Cisco",
-    "chassis_id: model",
-    "os: os?|nxos",
-    "kern_uptm_days: kern_uptm_days?|0",
-    "kern_uptm_hrs: kern_uptm_hrs?|0",
-    "kern_uptm_mins: kern_uptm_mins?|0",
-    "kern_uptm_secs: kern_uptm_secs?|0",
-    "proc_board_id: serialNumber",
-    "cpu_name: architecture"
-    ]'
+     - version: < 9.3(0)
+       command: show version
+       textfsm: textfsm_templates/nxos_show_version.tfsm
+       
+     - version: all
+       command: show version | json native
+       normalize: '[
+       "kickstart_ver_str: version",
+       "manufacturer: vendor?Cisco|Cisco",
+       "chassis_id: model?|",
+       "os: os?|nxos",
+       "kern_uptm_days: kern_uptm_days?|0",
+       "kern_uptm_hrs: kern_uptm_hrs?|0",
+       "kern_uptm_mins: kern_uptm_mins?|0",
+       "kern_uptm_secs: kern_uptm_secs?|0",
+       "proc_board_id: serialNumber?|",
+       "cpu_name: architecture",
+       "memory: memory?|0",
+       "rr_reason: reason?|",
+       ]'
 
   junos-qfx:
     version: all

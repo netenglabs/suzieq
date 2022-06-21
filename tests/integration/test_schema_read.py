@@ -39,6 +39,8 @@ def test_schema_data_consistency(table, datadir, columns, get_table_data_cols):
                     return
         elif table == "inventory" and 'vmx' not in datadir:
             return
+        elif table == 'network':
+            return
 
     assert not df.empty
 

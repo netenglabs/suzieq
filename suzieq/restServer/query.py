@@ -1,23 +1,25 @@
-from typing import List
-import os
+# pylint: disable=unused-argument,missing-function-docstring
+# pylint: disable=redefined-outer-name, unused-variable
+# pylint: disable=redefined-builtin, missing-class-docstring,
 import argparse
-import json
-import sys
-from enum import Enum
-from fastapi import FastAPI, HTTPException, Query, Depends, Security, Request
-from fastapi.security.api_key import APIKeyQuery, APIKeyHeader
-from fastapi.responses import Response
-from starlette import status
-import uuid
 import inspect
 import logging
-import uvicorn
+import os
+import sys
+import uuid
+from enum import Enum
+from typing import List
 
-from suzieq.sqobjects import get_sqobject
-from suzieq.shared.utils import (load_sq_config, get_sq_install_dir,
-                                 get_log_params, sq_get_config_file,
-                                 print_version)
+import uvicorn
+from fastapi import Depends, FastAPI, HTTPException, Query, Request, Security
+from fastapi.responses import Response
+from fastapi.security.api_key import APIKeyHeader, APIKeyQuery
+from starlette import status
 from suzieq.shared.exceptions import UserQueryError
+from suzieq.shared.utils import (DATA_FORMATS, get_log_params,
+                                 get_sq_install_dir, load_sq_config,
+                                 print_version, sq_get_config_file)
+from suzieq.sqobjects import get_sqobject
 
 API_KEY_NAME = 'access_token'
 
@@ -41,6 +43,8 @@ app = FastAPI(on_startup=[check_config_file],
 
 def app_init(cfg_file):
     '''This is the actual API initilaizer'''
+    # pylint: disable=global-variable-not-assigned
+
     global app
 
     app.cfg_file = cfg_file
@@ -162,7 +166,7 @@ def rest_main(*args) -> None:
         _ = cfg['rest']['API_KEY']
     except KeyError:
         print('missing API_KEY in config file')
-        exit(1)
+        sys.exit(1)
 
     logcfg, loglevel = get_log_config_level(cfg)
 
@@ -179,14 +183,6 @@ def rest_main(*args) -> None:
         uvicorn.run(app, host=srvr_addr, port=srvr_port,
                     ssl_keyfile=ssl_keyfile,
                     ssl_certfile=ssl_certfile)
-
-
-"""
-each of these read functions behaves the same, it gets the arguments
-puts them into dicts and passes them to sqobjects
-
-assume that all API functions are named read_*
-"""
 
 
 class CommonVerbs(str, Enum):
@@ -210,6 +206,10 @@ class RouteVerbs(str, Enum):
     unique = "unique"
     lpm = "lpm"
     top = "top"
+
+
+class NetworkVerbs(str, Enum):
+    find = "find"
 
 
 class DeviceStatus(str, Enum):
@@ -301,7 +301,7 @@ async def query_address(verb: CommonVerbs, request: Request,
                         ifname: List[str] = Query(None),
                         prefix: List[str] = Query(None),
                         ipvers: str = None, what: str = None,
-                        vrf: str = None, query_str: str = None,
+                        vrf: List[str] = Query(None), query_str: str = None,
                         count: str = None, reverse: str = None,
                         ):
     function_name = inspect.currentframe().f_code.co_name
@@ -384,6 +384,7 @@ async def query_devconfig(verb: CommonVerbs, request: Request,
                           namespace: List[str] = Query(None),
                           columns: List[str] = Query(default=["default"]),
                           query_str: str = None,
+                          what: str = None,
                           count: str = None, reverse: str = None,
                           ):
     function_name = inspect.currentframe().f_code.co_name
@@ -533,39 +534,132 @@ async def query_mlag(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@app.get("/api/v2/network/find")
-async def query_network_find(request: Request,
-                             token: str = Depends(get_api_key),
-                             format: str = None,
-                             columns: List[str] = Query(default=["default"]),
-                             namespace: List[str] = Query(None),
-                             hostname: List[str] = Query(None),
-                             start_time: str = "", end_time: str = "",
-                             view: ViewValues = "latest",
-                             address: List[str] = Query(None),
-                             vlan: str = '', vrf: str = '',
-                             query_str: str = None,
-                             ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, "find", request, locals())
+@app.get("/api/v2/network/show", deprecated=True)
+async def query_network_depr_show(request: Request,
+                                  token: str = Depends(get_api_key),
+                                  format: str = None,
+                                  columns: List[str] = Query(
+                                      default=["default"]),
+                                  namespace: List[str] = Query(None),
+                                  hostname: List[str] = Query(None),
+                                  start_time: str = "", end_time: str = "",
+                                  version: str = "",
+                                  view: ViewValues = "latest",
+                                  model: List[str] = Query(None),
+                                  vendor: List[str] = Query(None),
+                                  os: List[str] = Query(None),
+                                  query_str: str = None, what: str = None,
+                                  count: str = None, reverse: str = None,
+                                  ):
+    function_name = 'query_namespace'
+    verb = 'show'
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/network/summarize", deprecated=True)
+async def query_network_depr_summarize(request: Request,
+                                       token: str = Depends(get_api_key),
+                                       format: str = None,
+                                       columns: List[str] = Query(
+                                           default=["default"]),
+                                       namespace: List[str] = Query(None),
+                                       hostname: List[str] = Query(None),
+                                       start_time: str = "",
+                                       end_time: str = "",
+                                       version: str = "",
+                                       view: ViewValues = "latest",
+                                       model: List[str] = Query(None),
+                                       vendor: List[str] = Query(None),
+                                       os: List[str] = Query(None),
+                                       query_str: str = None,
+                                       what: str = None,
+                                       count: str = None,
+                                       reverse: str = None,
+                                       ):
+    function_name = 'query_namespace'
+    verb = 'summarize'
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/network/unique", deprecated=True)
+async def query_network_depr_unique(request: Request,
+                                    token: str = Depends(get_api_key),
+                                    format: str = None,
+                                    columns: List[str] = Query(
+                                        default=["default"]),
+                                    namespace: List[str] = Query(None),
+                                    hostname: List[str] = Query(None),
+                                    start_time: str = "",
+                                    end_time: str = "",
+                                    version: str = "",
+                                    view: ViewValues = "latest",
+                                    model: List[str] = Query(None),
+                                    vendor: List[str] = Query(None),
+                                    os: List[str] = Query(None),
+                                    query_str: str = None,
+                                    what: str = None,
+                                    count: str = None, reverse: str = None,
+                                    ):
+    function_name = 'query_namespace'
+    verb = 'unique'
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/network/top", deprecated=True)
+async def query_network_depr_top(request: Request,
+                                 token: str = Depends(get_api_key),
+                                 format: str = None,
+                                 columns: List[str] = Query(
+                                     default=["default"]),
+                                 namespace: List[str] = Query(None),
+                                 hostname: List[str] = Query(None),
+                                 start_time: str = "", end_time: str = "",
+                                 version: str = "",
+                                 view: ViewValues = "latest",
+                                 model: List[str] = Query(None),
+                                 vendor: List[str] = Query(None),
+                                 os: List[str] = Query(None),
+                                 query_str: str = None, what: str = None,
+                                 count: str = None, reverse: str = None,
+                                 ):
+    function_name = 'query_namespace'
+    verb = 'top'
+    return read_shared(function_name, verb, request, locals())
 
 
 @app.get("/api/v2/network/{verb}")
-async def query_network(verb: CommonVerbs, request: Request,
+async def query_network(verb: NetworkVerbs, request: Request,
                         token: str = Depends(get_api_key),
                         format: str = None,
                         columns: List[str] = Query(default=["default"]),
                         namespace: List[str] = Query(None),
                         hostname: List[str] = Query(None),
                         start_time: str = "", end_time: str = "",
-                        version: str = "",
                         view: ViewValues = "latest",
-                        model: List[str] = Query(None),
-                        vendor: List[str] = Query(None),
-                        os: List[str] = Query(None),
-                        query_str: str = None, what: str = None,
-                        count: str = None, reverse: str = None,
+                        address: List[str] = Query(None),
+                        vlan: str = '', vrf: str = '',
+                        query_str: str = None,
                         ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/namespace/{verb}")
+async def query_namespace(verb: CommonVerbs, request: Request,
+                          token: str = Depends(get_api_key),
+                          format: str = None,
+                          columns: List[str] = Query(default=["default"]),
+                          namespace: List[str] = Query(None),
+                          hostname: List[str] = Query(None),
+                          start_time: str = "", end_time: str = "",
+                          version: str = "",
+                          view: ViewValues = "latest",
+                          model: List[str] = Query(None),
+                          vendor: List[str] = Query(None),
+                          os: List[str] = Query(None),
+                          query_str: str = None, what: str = None,
+                          count: str = None, reverse: str = None,
+                          ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
@@ -602,7 +696,7 @@ async def query_path(verb: CommonVerbs, request: Request,
                      columns: List[str] = Query(default=["default"]),
                      vrf: str = Query(None),
                      dest: str = Query(None),
-                     source: str = Query(None, alias='src'),
+                     src: str = Query(None),
                      query_str: str = None, what: str = None,
                      count: str = None, reverse: str = None,
                      ):
@@ -695,7 +789,8 @@ async def query_table(
         view: ViewValues = "latest", namespace: List[str] = Query(None),
         columns: List[str] = Query(default=["default"]),
         query_str: str = None, table: str = None,
-        count: str = None,
+        what: str = None,
+        count: str = None, reverse: str = None,
 ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
@@ -731,6 +826,11 @@ def read_shared(function_name, verb, request, local_variables=None):
 
     columns = local_variables.get('columns', None)
     format = local_variables.get('format', None)
+    if not format:
+        format = 'json'
+    if format not in DATA_FORMATS:
+        return_error(405, f"Unsupported output format '{format}'")
+
     ret, svc_inst = run_command_verb(
         command, verb, command_args, verb_args, columns, format)
 
@@ -744,24 +844,19 @@ def create_filters(function_name, command, request, local_vars):
     all_cmd_args = ['namespace', 'hostname',
                     'start_time', 'end_time', 'view', 'columns', 'format']
     both_verb_and_command = ['namespace', 'hostname', 'columns']
-    alias_args = {'src': 'source'}
 
     query_ks = request.query_params
     for arg in query_ks.keys():
         if arg in remove_args:
             continue
-        if arg in alias_args:
-            tryarg = alias_args[arg]
-        else:
-            tryarg = arg
         if arg in all_cmd_args:
             if query_ks.get(arg) is not None:
-                command_args[tryarg] = local_vars.get(tryarg, None)
+                command_args[arg] = local_vars.get(arg, None)
                 if arg in both_verb_and_command:
-                    verb_args[tryarg] = command_args[arg]
+                    verb_args[arg] = command_args[arg]
         else:
             if query_ks.get(arg) is not None:
-                verb_args[arg] = local_vars.get(tryarg, None)
+                verb_args[arg] = local_vars.get(arg, None)
 
     return command_args, verb_args
 
@@ -796,7 +891,7 @@ def get_svc(command):
 
 
 def run_command_verb(command, verb, command_args, verb_args,
-                     columns=['default'], format=None):
+                     columns=None, format=None):
     """
     Runs the command and verb with the command_args and verb_args
 
@@ -806,6 +901,10 @@ def run_command_verb(command, verb, command_args, verb_args,
         422 -- FastAPI validation errors
         500 -- Exceptions
     """
+
+    if columns is None:
+        columns = ['default']
+
     svc = get_svc(command)
     try:
         svc_inst = svc(**command_args,
@@ -837,15 +936,26 @@ def run_command_verb(command, verb, command_args, verb_args,
         return_error(
             405, f"bad keyword/filter for {command} {verb}: {df['error'][0]}")
 
+    res_content = None
+    media_type = None
     if format == 'markdown':
         # have to return a Reponse so that it won't turn the markdown into JSON
-        return Response(content=df.to_markdown()), svc_inst
-
-    if verb == 'summarize':
-        json_orient = 'columns'
-    else:
-        json_orient = 'records'
-    return json.loads(df.to_json(orient=json_orient)), svc_inst
+        res_content = df.to_markdown()
+        media_type = 'text/plain'
+    elif format == 'csv':
+        res_content = df.to_csv()
+        media_type = 'text/csv'
+    elif format == 'text':
+        res_content = df.to_string()
+        media_type = 'text/plain'
+    elif format == 'json':
+        if verb == 'summarize':
+            json_orient = 'columns'
+        else:
+            json_orient = 'records'
+        media_type = 'application/json'
+        res_content = df.to_json(orient=json_orient)
+    return Response(content=res_content, media_type=media_type), svc_inst
 
 
 def return_error(code: int, msg: str):

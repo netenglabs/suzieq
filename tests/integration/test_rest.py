@@ -1,18 +1,23 @@
-import os
-import json
 import inspect
+import json
+import os
 import warnings
+from dataclasses import dataclass
+from typing import Dict, List
 
-import pytest
 import pandas as pd
+import pytest
+from fastapi import FastAPI
+from fastapi.routing import APIRoute
 from fastapi.testclient import TestClient
-
-from tests.conftest import cli_commands, create_dummy_config_file, tables
-
-from suzieq.restServer.query import (app, get_configured_api_key,
-                                     API_KEY_NAME)
-from suzieq.sqobjects import get_sqobject
+from pydantic.fields import ModelField
 from suzieq.restServer import query
+from suzieq.restServer.query import (API_KEY_NAME, CommonExtraVerbs,
+                                     CommonVerbs, NetworkVerbs, RouteVerbs,
+                                     app, cleanup_verb, get_configured_api_key)
+from suzieq.sqobjects import get_sqobject
+from suzieq.sqobjects.basicobj import SqObject
+from tests.conftest import cli_commands, create_dummy_config_file, tables
 
 ENDPOINT = "http://localhost:8000/api/v2"
 
@@ -319,6 +324,99 @@ VALIDATE_OUTPUT_FILTER = {
 ####
 
 
+@ dataclass
+class RouteSpecs:
+    verbs: List[str]
+    query_params: List[str]
+
+
+def get_app_routes(sq_app: FastAPI) -> Dict:
+    def extract_verbs_from_model(model: ModelField) -> List[str]:
+        verbs_enum = model.type_
+        return [e.value for e in verbs_enum]
+
+    def extract_query_params_from_models(models: List[ModelField]) \
+            -> List[str]:
+        return [m.name for m in models]
+
+    def check_token(route: APIRoute):
+        error_msg = f'Missing token in {route.path}'
+        try:
+            assert route.dependant.dependencies[0].name == 'token', error_msg
+        except Exception:
+            assert False, error_msg
+
+    def check_func_name(route: APIRoute, table: str):
+        """ Check the function is called <something>_<table>.
+        If not, the read_shared function won't work correctly
+        """
+        fun_name = route.dependant.call.__name__
+        assert fun_name.split('_')[1] == table, \
+            (f'Wrong function name for {route.path}. It should be similar to '
+             f'query_{table}'
+             )
+
+    app_routes = {}
+    for route in sq_app.routes:
+        path = route.path
+        if not path.startswith('/api/v2/'):
+            continue
+        if path == '/api/v2/{command}':
+            # reserved route for wrong params
+            continue
+        check_token(route)
+        path = path.split('/api/v2/')[1]
+        table, verbs = path.split('/')
+        check_func_name(route, table)
+        if verbs == '{verb}':
+            verb_model = route.dependant.path_params[0]
+            verbs = extract_verbs_from_model(verb_model)
+        else:
+            # the verb is explicitly written in the route
+            verbs = [verbs]
+        if table not in app_routes:
+            app_routes[table] = []
+        # append 'token' query_param
+        query_params = extract_query_params_from_models(
+            route.dependant.query_params)
+        app_routes[table].append(RouteSpecs(verbs, query_params))
+
+    return app_routes
+
+
+def get_args_to_match(sqobj: SqObject, verbs: List[str]) -> List[str]:
+    args = []
+    if sqobj.table == 'tables':
+        args += ['table']
+    if 'find' in verbs:
+        return sqobj._valid_find_args
+    return args + (sqobj._valid_assert_args if sqobj._valid_assert_args
+                   else sqobj._valid_get_args)
+
+
+def get_supported_verbs(sqobj: SqObject) -> List[str]:
+    if sqobj.table == 'routes':
+        supported_verbs = [e.value for e in RouteVerbs]
+    else:
+        if sqobj._valid_assert_args:
+            # the assertion is supported for this class
+            supported_verbs = [e.value for e in CommonExtraVerbs]
+        else:
+            supported_verbs = [e.value for e in CommonVerbs]
+        if sqobj.table == 'tables':
+            supported_verbs.append('describe')
+
+    if sqobj.table == 'network':
+        supported_verbs += [e.value for e in NetworkVerbs]
+
+    return supported_verbs
+
+
+def assert_missing_args(exp: set, got: set, set_name: str, table: str):
+    missing_args = list(exp.difference(got))
+    assert False, f'Missing {set_name} arguments {missing_args} from {table}'
+
+
 def get(endpoint, service, verb, args):
     '''Make the call'''
     api_key = get_configured_api_key()
@@ -390,10 +488,10 @@ def get(endpoint, service, verb, args):
 @ pytest.mark.parametrize("service", [
     pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
-@pytest.mark.parametrize("verb", [
+@ pytest.mark.parametrize("verb", [
     pytest.param(verb, marks=getattr(pytest.mark, verb))
     for verb in VERBS])
-@pytest.mark.parametrize("arg", FILTERS)
+@ pytest.mark.parametrize("arg", FILTERS)
 # pylint: disable=redefined-outer-name, unused-argument
 def test_rest_services(app_initialize, service, verb, arg):
     '''Main workhorse'''
@@ -407,6 +505,9 @@ def test_rest_arg_consistency(service, verb):
     '''check that the arguments used in REST match whats in sqobjects'''
 
     alias_args = {'path': {'source': 'src'}}
+
+    if service == 'network' and verb not in [e.value for e in NetworkVerbs]:
+        return
 
     if verb == "describe" and not service == "tables":
         return
@@ -472,6 +573,9 @@ def test_rest_arg_consistency(service, verb):
 
         valid_args = set(arglist)
 
+        if service == 'device':
+            valid_args.remove('ignore_neverpoll')
+
         # In the tests below, we warn when we don't have the exact
         # {service}_{verb} REST function, which prevents us from picking the
         # correct set of args.
@@ -517,6 +621,7 @@ def test_rest_server():
     # pylint: disable=import-outside-toplevel
     import subprocess
     from time import sleep
+
     import requests
 
     cfgfile = create_dummy_config_file(
@@ -542,3 +647,60 @@ def test_rest_server():
     sleep(5)
 
     os.remove(cfgfile)
+
+
+@ pytest.mark.rest
+def test_routes_sqobj_consistency():
+    """Checks if the app routes params are consistent with the sqobject
+       params"""
+    routes = get_app_routes(app)
+    config_file = create_dummy_config_file()
+    common_args = {'namespace', 'hostname', 'start_time', 'end_time',
+                   'format', 'view', 'columns', 'query_str'}
+    top_args = {'what', 'reverse', 'count'}
+    for table, table_routes in routes.items():
+        table_verbs = []
+        try:
+            sqobj = get_sqobject(table)(config_file=config_file)
+        except ModuleNotFoundError as e:
+            assert False, e
+
+        supported_verbs = get_supported_verbs(sqobj)
+        unsupported_verbs = [v for v in supported_verbs
+                             if not getattr(sqobj,  cleanup_verb(v), None)]
+        if unsupported_verbs:
+            # some of the verbs specified in the REST server aren't supported
+            # by the sqobject
+            assert False, f'{unsupported_verbs} verbs not supported by {table}'
+
+        for route in table_routes:
+            table_verbs += route.verbs
+            check_top = ('top' in route.verbs)
+            # for /api/v2/table/describe we do not have common_args
+            check_common = (table != 'table' or route.verbs != ['describe'])
+            query_params = set(route.query_params)
+
+            if check_common and not common_args.issubset(query_params):
+                assert_missing_args(common_args, query_params, 'mandatory',
+                                    table)
+            query_params = query_params.difference(common_args)
+
+            if check_top and not top_args.issubset(query_params):
+                assert_missing_args(top_args, query_params, 'top', table)
+            query_params = query_params.difference(top_args)
+
+            if table == 'network' and 'find' not in route.verbs:
+                # do not check deprecated commands. They are already checked
+                continue
+            args_to_match = get_args_to_match(sqobj, route.verbs)
+            args_to_match = {a for a in args_to_match
+                             if a not in common_args.union(top_args)}
+            if table == 'device':
+                args_to_match.remove('ignore_neverpoll')
+            if args_to_match != query_params:
+                assert False, (f'different query params for {table}: expected '
+                               f'{args_to_match}. Got {query_params}')
+
+        if set(table_verbs) != set(supported_verbs):
+            assert False, (f'different verbs for {table}: expected '
+                           f'{table_verbs}. Got {supported_verbs}')

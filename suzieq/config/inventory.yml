@@ -56,26 +56,35 @@ apply:
     copy: iosxe
 
   nxos:
-   version: all
-   command: 
-    - command: show inventory | json native
-      normalize: 'TABLE_inv/ROW_inv/*/[
-      "name: name?|",
-      "desc: model?|",
-      "serialnum: serial?|",
-      "vendorid: version?|",
-      "productid: productId?|",
-      "type: type?|",
-      ]'
+   - version: < 9.3(0)
+     command:
+       - command: show inventory
+         textfsm: textfsm_templates/nxos_show_inventory.tfsm
 
-    - command: show interface transceiver | json native
-      normalize: 'TABLE_interface/ROW_interface/*/[
-      "interface: name?|",
-      "sfp: _sfp?|",
-      "name: model?|",
-      "type: partType?|",
-      "rev: version?|",
-      "partnum: partNum?|",
-      "serialnum: serial?|",
-      "cisco_product_id: productId?|",
-      ]'
+       - command: show interface transceiver
+         textfsm: textfsm_templates/nxos_show_int_xcvr.tfsm
+         _entryType: _textfsm
+      
+   - version: all
+     command: 
+       - command: show inventory | json native
+         normalize: 'TABLE_inv/ROW_inv/*/[
+         "name: name?|",
+         "desc: model?|",
+         "serialnum: serial?|",
+         "vendorid: version?|",
+         "productid: productId?|",
+         "type: type?|",
+         ]'
+         
+       - command: show interface transceiver | json native
+         normalize: 'TABLE_interface/ROW_interface/*/[
+         "interface: name?|",
+         "sfp: _sfp?|",
+         "name: model?|",
+         "type: partType?|",
+         "rev: version?|",
+         "partnum: partNum?|",
+         "serialnum: serial?|",
+         "cisco_product_id: productId?|",
+         ]'

@@ -9,13 +9,21 @@ class OspfIfService(Service):
     """OSPF Interface service. Output needs to be munged"""
 
     def _clean_linux_data(self, processed_data, _):
+        vrf_loip = {}
+
         for entry in processed_data:
-            entry["vrf"] = "default"
+            if entry.get('vrf', '') == '':
+                entry['vrf'] = 'default'
+            if entry['ifname'] == "lo":
+                vrf_loip[entry['vrf']] = entry.get('ipAddress')
             entry["networkType"] = entry["networkType"].lower()
             if entry['networkType'] == 'pointopoint':
                 entry['networkType'] = 'p2p'
             entry["passive"] = entry["passive"] == "Passive"
-            entry["isUnnumbered"] = entry["isUnnumbered"] == "UNNUMBERED"
+            unnumbered = entry["isUnnumbered"] == "UNNUMBERED"
+            if unnumbered:
+                entry["isUnnumbered"] = True
+                entry['ipAddress'] = vrf_loip.get(entry['vrf'], '')
 
         return processed_data
 
@@ -44,9 +52,12 @@ class OspfIfService(Service):
                 continue
 
             vrf = entry.get('vrf', '')
+            ip_addr = entry.get('ipAddress', '') + '/' + \
+                str(entry.get('maskLen', ''))
+            entry['ipAddress'] = ip_addr
             if entry['ifname'].startswith("Loopback"):
                 if vrf not in vrf_loip or not vrf_loip[vrf]:
-                    vrf_loip[vrf] = entry.get('ipAddress', '')
+                    vrf_loip[vrf] = ip_addr
             if entry.get('passive', False):
                 entry['bfdStatus'] = "invalid"
             entry["networkType"] = entry["networkType"].lower()
@@ -125,7 +136,13 @@ class OspfIfService(Service):
                     continue
 
                 for j, area in enumerate(entry['ifname']):
+                    # NXOS doesn't provide the three pieces of data below
+                    # in the same command, and so we have to stitch it
+                    # together via two diff command outputs. The area and
+                    # vrf are the keys we use to tie the records together.
                     for ifentry in areas.get(area, []):
+                        if ifentry['vrf'] != entry['vrf']:
+                            continue
                         ifentry['routerId'] = entry['routerId']
                         ifentry['authType'] = entry['authType'][j]
                         ifentry['isBackbone'] = area == "0.0.0.0"
@@ -137,8 +154,14 @@ class OspfIfService(Service):
     def _clean_ios_data(self, processed_data, _):
 
         drop_indices = []
+        proc_vrf_map = {}
 
         for i, entry in enumerate(processed_data):
+            if entry.get('_entryType', ''):
+                proc_vrf_map[entry.get('_processId', '')] = entry['vrf']
+                drop_indices.append(i)
+                continue
+
             if not entry.get('ifname', ''):
                 drop_indices.append(i)
                 continue
@@ -147,6 +170,8 @@ class OspfIfService(Service):
             if area and area.isdecimal():
                 entry['area'] = str(ip_address(int(area)))
             entry["networkType"] = entry["networkType"].lower()
+            entry['networkType'] = entry['networkType'] \
+                .replace('point_to_point', 'p2p')
             entry["passive"] = entry["passive"] == "stub"
             entry["isUnnumbered"] = entry["isUnnumbered"] == "yes"
             entry['areaStub'] = entry['areaStub'] == "yes"
@@ -156,13 +181,18 @@ class OspfIfService(Service):
                 entry['deadTime']) if entry['deadTime'] else 40  # def value
             entry['retxTime'] = int(
                 entry['retxTime']) if entry['retxTime'] else 5  # def value
-            entry['vrf'] = 'default'  # IOS doesn't provide this info
+            proc_id = entry.get('_processId', '')
+            if proc_id:
+                entry['vrf'] = proc_vrf_map.get(proc_id, 'default')
+            if not entry.get('vrf', ''):
+                entry['vrf'] = 'default'
+
             entry['authType'] = entry.get('authType', '').lower()
             entry['nbrCount'] = int(
                 entry['nbrCount']) if entry['nbrCount'] else 0
             entry['noSummary'] = entry.get('noSummary', False)
             if entry['state'] == "administratively down":
-                entry['state'] = "down"
+                entry['state'] = "adminDown"
             else:
                 entry['state'] = entry['state'].lower()
 

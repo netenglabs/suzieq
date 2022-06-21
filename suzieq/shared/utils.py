@@ -36,6 +36,7 @@ MISSING_SPEED = -1
 NO_SPEED = 0
 MISSING_SPEED_IF_TYPES = ['ethernet', 'bond', 'bond_slave']
 SUPPORTED_ENGINES = ['pandas', 'rest']
+DATA_FORMATS = ["text", "json", "csv", "markdown"]
 
 
 class PollerTransport(str, Enum):
@@ -373,12 +374,24 @@ def calc_avg(oldval, newval):
     return float((oldval+newval)/2)
 
 
-def get_timestamp_from_cisco_time(in_data, timestamp):
+def get_timestamp_from_cisco_time(in_data, timestamp) -> int:
     """Get timestamp in ms from the Cisco-specific timestamp string
     Examples of Cisco timestamp str are P2DT14H45M16S, P1M17DT4H49M50S etc.
     """
-    if not in_data.startswith('P'):
-        return 0
+    if in_data and not in_data.startswith('P'):
+        in_data = in_data.replace('y', 'years')
+        in_data = in_data.replace('w', 'weeks')
+        in_data = in_data.replace('d', 'days')
+
+        other_time = parse(in_data,
+                           settings={'RELATIVE_BASE':
+                                     datetime.utcfromtimestamp(timestamp)})
+        if other_time:
+            return int(other_time.timestamp()*1000)
+        else:
+            logger.error(f'Unable to parse relative time string, {in_data}')
+            return 0
+
     months = days = hours = mins = secs = 0
 
     if 'T' in in_data:
@@ -439,7 +452,10 @@ def get_timestamp_from_junos_time(in_data, timestamp: int):
 
 
 def convert_macaddr_format_to_colon(macaddr: str) -> str:
-    """Convert NXOS/EOS . macaddr form to standard : format, lowecase
+    """Convert various macaddr forms to standard ':' format, lowecase
+
+    One unexpected side-effect, it'll convert the given string to lowercase
+    even if it doesn't match a macaddr.
 
     :param macaddr: str, the macaddr string to convert
     :returns: the converted macaddr string or all 0s string if arg not str
@@ -447,11 +463,27 @@ def convert_macaddr_format_to_colon(macaddr: str) -> str:
 
     """
     if isinstance(macaddr, str):
-        if re.match(r'[0-9a-zA-Z]{4}.[0-9a-zA-Z]{4}.[0-9a-zA-Z]{4}', macaddr):
+        macaddr = macaddr.lower()
+        if re.match(r'[0-9a-f]{4}\.[0-9a-f]{4}\.[0-9a-f]{4}', macaddr):
             return (':'.join([f'{x[:2]}:{x[2:]}'
-                              for x in macaddr.split('.')])).lower()
-        else:
-            return macaddr.lower()
+                              for x in macaddr.split('.')]))
+        if re.match(r'[0-9a-f]{2}-[0-9a-f]{2}-[0-9a-f]{2}-'
+                    r'[0-9a-f]{2}-[0-9a-f]{2}-[0-9a-f]{2}',
+                    macaddr):
+            return macaddr.replace('-', ':')
+        if re.match(r'[0-9a-f]{4}:[0-9a-f]{4}:[0-9a-f]{4}', macaddr):
+            return (':'.join([f'{x[:2]}:{x[2:]}'
+                              for x in macaddr.split(':')]))
+        if ':' not in macaddr and re.match(r'[0-9a-f]{12}', macaddr):
+            newmac = ''
+            for i in range(0, 12, 2):
+                newmac += f'{macaddr[i:i+2]}:'
+            newmac = newmac[:-1]  # remove the trailing ':'
+            return newmac
+        if re.match(r'[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}', macaddr):
+            return (':'.join([f'{x[:2]}:{x[2:]}'
+                              for x in macaddr.split('-')]))
+        return macaddr
 
     return '00:00:00:00:00:00'
 
@@ -486,8 +518,8 @@ def validate_macaddr(macaddr: str) -> bool:
 
     """
     if isinstance(macaddr, str):
-        if re.fullmatch(r'([0-9a-fA-F]{4}.){2}[0-9a-fA-F]{4}', macaddr) or \
-           re.fullmatch(r'([0-9a-fA-F]{2}:){5}[0-9a-fA-F]{2}', macaddr):
+        macaddr = convert_macaddr_format_to_colon(macaddr)
+        if re.fullmatch(r'([0-9a-f]{2}:){5}[0-9a-f]{2}', macaddr):
             return True
 
     return False
@@ -699,7 +731,7 @@ def init_logger(logname: str,
         sh = logging.StreamHandler(sys.stdout)
 
     formatter = logging.Formatter(
-        "%(asctime)s - %(name)s - %(levelname)s " "- %(message)s"
+        "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     )
     if fh:
         fh.setFormatter(formatter)
@@ -752,6 +784,8 @@ def expand_nxos_ifname(ifname: str) -> str:
         return ifname.replace('Eth', 'Ethernet')
     elif ifname.startswith('Po') and 'port' not in ifname:
         return ifname.replace('Po', 'port-channel')
+    elif ifname.startswith('Lo') and 'loop' not in ifname:
+        return ifname.replace('Lo', 'loopback')
     return ifname
 
 
@@ -817,8 +851,12 @@ def expand_ios_ifname(ifname: str) -> str:
     :rtype: str
     """
 
-    ifmap = {'BE': 'Bundle-Ether',
+    ifmap = {'Ap': 'AppGigabitEthernet',
+             'BE': 'Bundle-Ether',
              'BV': 'BVI',
+             'Eth': 'Ethernet',
+             'Fas': 'FastEthernet',
+             'Fa': 'FastEthernet',
              'Fi': 'FiftyGigE',
              'Fo': 'FortyGigE',
              'FH': 'FourHundredGigE',
@@ -834,6 +872,8 @@ def expand_ios_ifname(ifname: str) -> str:
              'Ten': 'TenGigabitEthernet',
              'TF': 'TwentyFiveGigE',
              'TH': 'TwoHundredGigE',
+             'Two': 'TwoGigabitEthernet',
+             'Tw': 'TwoGigabitEthernet',
              'tsec': 'tunnel-ipsec',
              'tmte': 'tunnel-mte',
              'tt': 'tunnel-te',
@@ -906,3 +946,46 @@ def convert_asndot_to_asn(asn: str) -> int:
 def print_version():
     '''Print the suzieq version and return'''
     print(SUZIEQ_VERSION)
+
+
+def deprecated_table_function_warning(dep_table: str, dep_command: str,
+                                      table: str = None,
+                                      command: str = None) -> str:
+    """Return the string of the warning for a deprecated function
+
+    If both table and command aren't provided, the warning will only
+    return that the function is deprecated.
+    If instead we provide them, the warning will also contain the new command
+    to call
+
+    Args:
+        table (str): correct table to run the command
+        command (str): correct command to call
+        dep_table (str): deprecated table command
+        dep_command (str): deprecated command
+    """
+    warning_str = f"WARNING: '{dep_table} {dep_command}' is deprecated."
+    if dep_table and dep_command:
+        warning_str += f" Use '{table} {command}' instead."
+    return warning_str
+
+
+def deprecated_command_warning(dep_command: str, dep_sub_command: str,
+                               command: str = None,
+                               sub_command: str = None) -> str:
+    """It's a wrapper for the deprecated_table_function_warning. It is used to
+    display a message when the user writes a deprecated command.
+
+    Args:
+        dep_command (str): deprecated command
+        dep_sub_command (str): deprecated sub command
+        command (str, optional): command to use instead. Defaults to None.
+        sub_command (str, optional): subcommand to use instead.
+        Defaults to None.
+
+    Returns:
+        str: deprecated command warning message
+    """
+
+    return deprecated_table_function_warning(dep_command, dep_sub_command,
+                                             command, sub_command)

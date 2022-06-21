@@ -1,0 +1,19 @@
+Value Required ifname (\S+)
+Value Filldown vrf (\S+)
+Value state (\S+)
+Value _operState (\S+)
+Value adminState (\S+)
+Value ipAddressList ([0-9.]+)
+Value _maskLen (\d+)
+Value mtu (\d+)
+Value _unnum_intf (\S+)
+Value _child_intf (Unnumbered\s+interfaces\s+of)
+
+Start
+  ^\S+.*[Ss]tatus -> Continue.Record
+  ^IP\s+Interface\s+Status\s+for\s+VRF\s+"${vrf}"
+  ^${ifname},\s+Interface\s+status:\s+protocol-${state}/link-${_operState}/admin-${adminState}
+  ^${_child_intf}\s+
+  ^\s+IP\s+address:\s+${ipAddressList},\s+IP\s+subnet:\s+[0-9.]+/${_maskLen}
+  ^\s+IP\s+unnumbered\s+interface\s+\(${_unnum_intf}\)
+  ^\s+IP\s+MTU:\s+${mtu}\s+bytes

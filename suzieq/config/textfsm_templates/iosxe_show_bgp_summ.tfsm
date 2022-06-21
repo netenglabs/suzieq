@@ -1,12 +1,14 @@
 Value Filldown asn (\d+)
+Value Filldown vrf (\S+)
 Value Filldown afi (\w+)
 Value Filldown safi (\w+)
 Value Required peer ([0-9A-Fa-f.:]+)
 Value Required peerAsn (\d+)
-Value statePfx (\d+|\w+)
-Value routerId ([0-9.]+)
+Value statePfx (.*)
+Value Filldown routerId ([0-9.]+)
 
 Start
+  ^BGP\s+summary\s+information\s+for\s+VRF\s+${vrf},address\s+family\s+${afi}\s+${safi}
   ^For\s+address\s+family:\s+${afi}\s+${safi}\s*$$
   ^BGP\s+router\s+identifier\s+${routerId},\s+local\s+AS\s+number\s+${asn}
   ^Neighbor\s+V\s+ -> Nbrs
@@ -15,6 +17,7 @@ Nbrs
   ^${peer}\s+\d+\s+${peerAsn}\s+\d+.*\s+${statePfx}\s*$$ -> Record
   ^\s*$$ -> Start
 
+#BGP summary information for VRF default, address family VPNv4 Unicast
 #For address family: IPv4 Unicast
 #BGP router identifier 10.0.0.12, local AS number 65000
 #BGP table version is 7, main routing table version 7
