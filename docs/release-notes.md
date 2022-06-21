@@ -1,5 +1,28 @@
 # Release Notes
 
+## 0.18.0 (June 21, 2022)
+
+This 18th release of SuzieQ contains significant improvements to all the various NOS parsers, but especially IOSXE (more versions and more platforms supported now) and versions of NXOS older than 9.3.x. We've also added support for throttling the rate of requests SuzieQ poller issues to prevent overrunning AAA Servers. A more detailed list of features and critical bug fixes follows:
+
+* **Improved support for IOSXE** (more versions, more platforms).
+* **Support for all NXOS versions**, those before 9.3.x which had no ```json native``` support.
+* **Improved parsing support for most NOS**.
+* **Support for rate limiting requests to AAA Servers**. See the poller documentation for details.
+* **Additional fields for device table added**. You can now get a distriubution of the common causes for device reboots.
+* **Fixed bug in supporting multiple schema versions of a table**. This was only a bug in reading, writing was correct.
+* **New command, namespace, to get information about namespaces**. This deprecates network show/summarize/unique/top. Endpoint tracker is still at network find.
+* **Improved OSPF assert**, to handle non-p2p interfaces better.
+* **Removed all commands that required use of Linux shell on NOS**. This is for NXOS and EOS.
+* **Vastly improved Node discovery**. We wouldn't reattempt node discovery if it failed more than twice, improved log messages and more.
+* **Improved Path Support**. We now handle recursive routes more effectively and so can be used in more than EVPN scenarios.
+* **Vastly faster endpoint tracker**.
+* Support accepting MAC in any format (such as 00-AA-BB-CC-DD-EE or 00AA:BBCC:DDEE etc.)
+* Added tons of new tests including importantly to catch more parsing errors
+* Updated libraries including those with security updates.
+
+The one person to thank from the user community for this release is Andy Miller. Thanks Andy, this release wouldn't have been what it is, if it wasn't for you.
+
+
 ## 0.17.2 (Apr 28, 2022)
 
 This is the second patch release of the 17th release. The main issues that are fixed in this release are:
