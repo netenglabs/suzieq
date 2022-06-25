@@ -56,8 +56,8 @@ class InterfacesObj(SqPandasEngine):
         if df.empty:
             return df
 
-        if portmode or any(x in fields
-                           for x in ['vlan', 'vlanList', 'portmode']):
+        if vlan or portmode or any(x in fields
+                                   for x in ['vlan', 'vlanList', 'portmode']):
             for x in ['ipAddressList', 'ip6AddressList']:
                 if x in columns or '*' in columns:
                     continue
