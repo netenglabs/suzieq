@@ -3667,3 +3667,19 @@ tests:
   data-directory: tests/data/parquet/
   marks: interface assert cumulus
   output: '[]'
+- command: interface unique --columns=hostname --vlan='13 24' --namespace=ospf-ibgp
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique cumulus
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}]'
+- command: interface unique --columns=hostname --vlan='24' --namespace=ospf-ibgp --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique cumulus
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}]'
+- command: interface unique --columns=hostname --vlan='540' --namespace=ospf-ibgp
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique cumulus
+  output: '[]'

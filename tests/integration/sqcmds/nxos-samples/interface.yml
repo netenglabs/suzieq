@@ -2662,3 +2662,21 @@ tests:
   data-directory: tests/data/parquet/
   marks: interface show nxos
   output: '[]'
+- command: interface unique --columns=hostname --vlan=10 --namespace=nxos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique nxos
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}]'
+- command: interface unique --columns=hostname --vlan='10 20' --namespace=nxos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique nxos
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}]'
+- command: interface unique --columns=hostname --vlan='30' --namespace=nxos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique nxos
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}]'
+- command: interface unique --columns=hostname --vlan='540' --namespace=nxos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique nxos
+  output: '[]'
