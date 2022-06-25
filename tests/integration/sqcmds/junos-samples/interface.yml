@@ -3271,3 +3271,19 @@ tests:
     {"namespace": "junos", "hostname": "leaf01", "ifname": "jsrv", "state": "up",
     "adminState": "up", "type": "internal", "mtu": 1514, "vlan": 0, "master": "",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1623025803099}]'
+- command: interface unique --columns=hostname --vlan=10 --namespace=junos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique junos
+  output: '[{"hostname": "leaf01"}]'
+- command: interface unique --columns=hostname --vlan='10 20' --namespace=junos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique junos
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}]'
+- command: interface unique --columns=hostname --vlan='30' --namespace=junos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique junos
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}]'
+- command: interface unique --columns=hostname --vlan='540' --namespace=junos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique junos
+  output: '[]'

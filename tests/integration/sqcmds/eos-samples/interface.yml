@@ -1011,3 +1011,21 @@ tests:
     "adminState": "up", "type": "vlan", "mtu": 9164, "vlan": 30, "master": "evpn-vrf",
     "ipAddressList": ["0.0.0.0/0", "172.16.3.254/24"], "ip6AddressList": [], "timestamp":
     1623025176024}]'
+- command: interface unique --columns=hostname --vlan=10 --namespace=eos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique eos
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}]'
+- command: interface unique --columns=hostname --vlan='10 20' --namespace=eos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique eos
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}]'
+- command: interface unique --columns=hostname --vlan='30' --namespace=eos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique eos
+  output: '[{"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"},
+    {"hostname": "leaf04"}]'
+- command: interface unique --columns=hostname --vlan='540' --namespace=eos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique eos
+  output: '[]'
