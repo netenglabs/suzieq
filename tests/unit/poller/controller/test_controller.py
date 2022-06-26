@@ -51,7 +51,7 @@ _VALID_ARGS = [
         'outputs': 'parquet',
         'output_dir': 'outdir',
         'run_once': None,
-        'service_only': 'topmem routes',
+        'service_only': 'bgp routes',
         'ssh_config_file': 'config/file',
         'update_period': 100,
         'workers': 3
@@ -66,7 +66,7 @@ _VALID_ARGS = [
         'outputs': 'parquet',
         'output_dir': 'outdir',
         'run_once': None,
-        'service_only': 'topmem routes',
+        'service_only': 'mlag routes',
         'ssh_config_file': 'config/file',
         'update_period': 100,
         'workers': 3
@@ -81,7 +81,7 @@ _VALID_ARGS = [
         'outputs': 'parquet',
         'output_dir': 'outdir',
         'run_once': 'gather',
-        'service_only': 'topmem routes',
+        'service_only': 'interfaces routes',
         'ssh_config_file': 'config/file',
         'update_period': 100,
         'workers': 3
@@ -96,7 +96,7 @@ _VALID_ARGS = [
         'outputs': 'parquet',
         'output_dir': 'outdir',
         'run_once': None,
-        'service_only': 'topmem routes',
+        'service_only': 'device routes',
         'ssh_config_file': 'config/file',
         'update_period': 100,
         'workers': 3
@@ -114,7 +114,7 @@ _INVALID_ARGS = [
         'outputs': 'parquet',
         'output_dir': 'outdir',
         'run_once': None,
-        'service_only': 'topmem routes',
+        'service_only': 'bgp routes',
         'ssh_config_file': 'config/file',
         'update_period': 100,
         'workers': 3
@@ -129,7 +129,7 @@ _INVALID_ARGS = [
         'outputs': 'parquet',
         'output_dir': 'outdir',
         'run_once': None,
-        'service_only': 'topmem routes',
+        'service_only': 'mlag routes',
         'ssh_config_file': 'config/file',
         'update_period': 100,
         'workers': 3
@@ -144,7 +144,7 @@ _INVALID_ARGS = [
         'outputs': 'parquet',
         'output_dir': 'outdir',
         'run_once': None,
-        'service_only': 'topmem routes',
+        'service_only': 'interfaces routes',
         'ssh_config_file': 'config/file',
         'update_period': 100,
         'workers': -1
@@ -159,7 +159,7 @@ _INVALID_ARGS = [
         'outputs': 'parquet',
         'output_dir': 'outdir',
         'run_once': None,
-        'service_only': 'topmem routes',
+        'service_only': 'device routes',
         'ssh_config_file': 'config/file',
         'update_period': -1,
         'workers': 3
@@ -174,7 +174,7 @@ _INVALID_ARGS = [
         'outputs': 'parquet',
         'output_dir': 'outdir',
         'run_once': None,
-        'service_only': 'topmem routes',
+        'service_only': 'bgp routes',
         'ssh_config_file': 'config/file',
         'update_period': 100,
         'workers': 4

@@ -2,7 +2,6 @@
 ServiceManager component unit tests
 """
 import asyncio
-import os
 from pathlib import Path
 from typing import Callable, Dict
 from unittest.mock import patch
@@ -17,13 +16,16 @@ from tests.conftest import get_async_task_mock, suzieq_test_svc_dir
 
 SERVICE_DIR = './suzieq/config'
 SCHEMA_DIR = f'{SERVICE_DIR}/schema'
+BLACKLIST_SERVICES = ['ifCounters', 'topmem', 'topcpu']
 
 
 def _get_services():
     """Get the entire list of available services
     """
     svcs = list(Path(SERVICE_DIR).glob('*.yml'))
-    all_svcs = [os.path.basename(x).split('.')[0] for x in svcs]
+    all_svcs = [svc_name for s in svcs
+                if (svc_name := Path(s).stem)
+                not in BLACKLIST_SERVICES]
     return all_svcs
 
 
