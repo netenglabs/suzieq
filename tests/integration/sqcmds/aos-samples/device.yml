@@ -1,0 +1,9 @@
+description: 'Testing verbs for device: show summarize unique'
+tests:
+- command: device show --format=json --namespace=aos
+  data-directory: tests/data/parquet/
+  marks: device show aos
+  output: '[{"namespace": "aos", "hostname": "NET-LAB-SWI-DIST", "model": "OS6860E-U28",
+    "version": "8.6.289.R01 GA", "vendor": "Alcatel-Lucent Enterprise", "architecture":
+    "", "status": "alive", "address": "10.20.99.10", "bootupTimestamp": 1656441951.0,
+    "timestamp": 1656603759419}]'
