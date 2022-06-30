@@ -326,9 +326,9 @@ class TestUpdate:
     @pytest.mark.aos
     @pytest.mark.skipif(not os.environ.get('SUZIEQ_POLLER', None),
                         reason='Not updating data')
-    def test_update_eos_data(self, tmp_path):
+    def test_update_aos_data(self, tmp_path):
         '''Update AOS test data'''
-        self._update_test_data_common_fn('aos', tmp_path, '1')
+        self._update_test_data_common_fn('aos', tmp_path, '2')
 
     @pytest.mark.test_update
     @pytest.mark.update_data
