@@ -1,0 +1,72 @@
+Value Key,Required chassis_slot_port (\d\/\d+\/\d+[\w]*)
+Value operation_status (up|down|dormant)
+Value port_down_violation_reason (.+\s*)
+Value last_time_link_changed (.+\s*)
+Value number_of_status_change (\d+)
+Value type (Ethernet|Fast Ethernet|Gigabit Ethernet)
+Value sfp_xfp (.+\s*)
+Value interface_type (Copper|Fiber|Combo-copper|Combo-Fiber)
+Value epp (Enabled|Disabled)
+Value link_quality (GOOD|FAIR|POOR|N/A)
+Value mac_address (([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]){2})
+Value bandwidth (\d+|-)
+Value duplex (Half|Full|Auto|-)
+Value autonegotiation (.+\s*)
+Value long_frame_size (\d+)
+Value inter_frame_gap (\d+)
+Value loopback_mode (N/A|SPB-VPN)
+Value bytes_received (\d+)
+Value rx_unicast_frames (\d+)
+Value rx_broadcast_frames (\d+)
+Value rx_mcast_frames (\d+)
+Value rx_undersize_frames (\d+)
+Value rx_oversize_frames (\d+)
+Value rx_lost_frames (\d+)
+Value rx_error_frames (\d+)
+Value rx_crc_error_frames (\d+)
+Value rx_alignments_err (\d+)
+Value bytes_xmitted (\d+)
+Value tx_unicast_frames (\d+)
+Value tx_broadcast_frames (\d+)
+Value tx_mcast_frames (\d+)
+Value tx_undersize_frames (\d+)
+Value tx_oversize_frames (\d+)
+Value tx_lost_frames (\d+)
+Value tx_collided_frames (\d+)
+Value tx_error_frames (\d+)
+Value collisions (\d+)
+Value late_collisions (\d+)
+Value exc_collisions (\d+)
+
+Start
+  ^Chassis\/Slot\/Port\s*:?\s${chassis_slot_port}\s+:?$$
+  ^\sOperational Status\s*:\s${operation_status},$$
+  ^\sPort-Down\/Violation Reason:\s${port_down_violation_reason},$$
+  ^\sLast Time Link Changed\s*:\s${last_time_link_changed},$$
+  ^\sNumber of Status Change\s*:\s${number_of_status_change},$$
+  ^\sType\s*:\s${type},$$
+  ^\sSFP/XFP\s*:\s${sfp_xfp},$$
+  ^\sInterface Type\s*:\s${interface_type},$$
+  ^\sEPP\s*:\s${epp},$$
+  ^\sLink-Quality\s*:\s${link_quality},$$
+  ^\sMAC address\s*:\s${mac_address},$$
+  ^\sBandWidth \(Megabits\)\s*:\s+${bandwidth}\s*,\s+Duplex\s+:\s${duplex}\s*,$$
+  ^\sAutonegotiation\s*:\s+${autonegotiation},$$
+  ^\sLong Frame Size\(Bytes\)\s*:\s${long_frame_size},$$
+  ^\sInter Frame Gap\(Bytes\)\s*:\s${inter_frame_gap},$$
+  ^\sloopback mode\s*:\s${loopback_mode},$$
+  ^\sRx\s*:$$
+  ^\sBytes Received\s*:\s+${bytes_received}, Unicast Frames\s*:\s+${rx_unicast_frames},$$
+  ^\sBroadcast Frames\s*:\s+${rx_broadcast_frames}, M-cast Frames\s*:\s+${rx_mcast_frames},$$
+  ^\sUnderSize Frames\s*:\s+${rx_undersize_frames}, OverSize Frames\s*:\s+${rx_oversize_frames},$$
+  ^\sLost Frames\s*:\s+${rx_lost_frames}, Error Frames\s*:\s+${rx_error_frames},$$
+  ^\sCRC Error Frames\s*:\s+${rx_crc_error_frames}, Alignments Err\s*:\s+${rx_alignments_err},$$
+  ^\sTx\s+:$$
+  ^\sBytes Xmitted\s*:\s+${bytes_xmitted},\s*Unicast Frames\s*:\s+${tx_unicast_frames},$$
+  ^\sBroadcast Frames\s*:\s+${tx_broadcast_frames}, M-cast Frames\s*:\s+${tx_mcast_frames},$$
+  ^\sUnderSize Frames\s*:\s+${tx_undersize_frames}, OverSize Frames\s*:\s+${tx_oversize_frames},$$
+  ^\sLost Frames\s*:\s+${tx_lost_frames},\s*Collided Frames\s*:\s+${tx_collided_frames},$$
+  ^\sError Frames\s*:\s+${tx_error_frames},\s*Collisions\s*:\s+${collisions},$$
+  ^\sError Frames\s*:\s+${tx_error_frames}\s*$$ -> Record Start
+  ^\sLate collisions\s*:\s+${late_collisions},\s*Exc-Collisions\s*:\s+${exc_collisions}$$ -> Record Start
+#  ^. -> Error
