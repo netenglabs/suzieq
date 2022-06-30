@@ -10,6 +10,16 @@ from suzieq.shared.utils import (
 class ArpndService(Service):
     """arpnd service. Different class because minor munging of output"""
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry, = processed_data
+
+        entry['ipAddress'] = entry.get('ip_address', '-1')
+        entry['macaddr'] = entry.get('hardware_addr', '-1')
+        entry['oif'] = entry.get('port', '-1') # or 'port' for physical interface
+
+        return processed_data
+
     def _clean_linux_data(self, processed_data, _):
         for entry in processed_data:
             entry["remote"] = entry["remote"] == "offload"

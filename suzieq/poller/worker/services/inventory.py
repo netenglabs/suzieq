@@ -11,6 +11,52 @@ class InventoryService(Service):
     def _clean_data_common(self, processed_data, _):
         return processed_data
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry_new = []
+        entry_chassis = []
+        entry_system = []
+
+        entry_chassis = [item for item in processed_data if item.get('_entryType') == 'chassis']
+        entry_system = [item for item in processed_data if item.get('_entryType') == 'system']
+
+        # extract single list item (dict)
+        system, = entry_system
+
+        for index, entry in enumerate(entry_chassis):
+
+            entry_dict = {}
+
+            model = entry.get('model_name', -1)
+            serial = entry.get('serial_number', -1)
+            partNum = entry.get('part_number', -1)
+            vendor = "Alcatel-Lucent Enterprise"
+            type = entry.get('description', -1)
+            partType = entry.get('model_type', -1)
+            
+            version_result = re.search('(\d+\.){3,}.*?(?=,)', system.get('description'))
+            version = version_result.group(0)
+
+            if entry.get('admin_status') == 'POWER ON' and entry.get('operational_status') == 'UP':
+                status = 'up'
+            else:
+                status = 'down'
+            
+            entry_dict = {
+                'model': model,
+                'status': status,
+                'serial': serial,
+                'partNum': partNum,
+                'vendor': vendor,
+                'type': type,
+                'partType': partType,
+                'version': version,
+            }
+
+            entry_new.append(entry_dict)
+
+        return entry_new
+
     def _clean_eos_data(self, processed_data, _):
         new_data = []
         for entry in processed_data:

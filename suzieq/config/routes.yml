@@ -16,6 +16,12 @@ show-fields:
   - action
 
 apply:
+  aos:
+    version: all
+    merge: False
+    command: show ip routes
+    textfsm: textfsm_templates/aos_show_ip_routes.tfsm
+
   cumulus:
     version: all
     command: ip route show table all

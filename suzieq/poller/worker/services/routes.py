@@ -36,6 +36,22 @@ class RoutesService(Service):
 
         return processed_data
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry_new = []
+
+        for entry in processed_data:
+
+            entry_dict = {
+                'prefix': entry['dest_addr'],
+                'nexthopIps': [entry['gateway_addr']],
+                'protocol': entry['protocol'],
+            }
+
+            entry_new.append(entry_dict)
+
+        return entry_new
+
     def _clean_eos_data(self, processed_data, _):
         '''Massage EVPN routes'''
         for entry in processed_data:

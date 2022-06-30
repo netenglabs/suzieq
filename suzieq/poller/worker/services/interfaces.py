@@ -65,6 +65,65 @@ class InterfaceService(Service):
         """Return speed value or a missing value for textfsm retrieved data"""
         return self._speed_field_check(entry, '')
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry_new = []
+        entry_interfaces_status = []
+        entry_interfaces = []
+        entry_vlan_members = []
+
+        entry_interfaces_status = [item for item in processed_data if item.get('_entryType') == 'interfaces_status']
+        entry_interfaces = [item for item in processed_data if item.get('_entryType') == 'interfaces']
+        entry_vlan_members = [item for item in processed_data if item.get('_entryType') == 'members']
+
+        for interfaces_status, interfaces in zip(entry_interfaces_status, entry_interfaces):
+
+            entry_dict = {}
+
+            adminState = interfaces_status.get('admin_status', -1)
+            ifname = interfaces_status.get('chassis_slot_port', -1)
+            interfaceMac = interfaces.get('mac_address', -1)
+            mtu = interfaces.get('long_frame_size', -1)
+            numChanges = interfaces.get('number_of_status_change', -1)
+            reason = interfaces.get('port_down_violation_reason', -1)
+            speed = interfaces_status.get('detected_speed', -1)
+            state = interfaces.get('operation_status', -1)
+            type = interfaces.get('type', -1)
+
+            vlans = [vlan_member['vlan'] for vlan_member in entry_vlan_members if vlan_member['port'] == ifname if vlan_member['type'] == 'default']
+            vlanList = [vlan_member['vlan'] for vlan_member in entry_vlan_members if vlan_member['port'] == ifname if vlan_member['type'] == 'unpUntag']
+
+            if len(vlans) < 1:
+                vlan = "None"
+            else:
+                vlan = vlans[0]
+            
+            if len(vlanList) < 1:
+                vlanList = "None"
+
+            if adminState == "en":
+                adminState = "up"
+            else:
+                adminState = "down"
+
+            entry_dict = {
+                'adminState': adminState,
+                'ifname': ifname,
+                'interfaceMac': interfaceMac,
+                'mtu': mtu,
+                'numChanges': numChanges,
+                'reason': reason,
+                'speed': speed,
+                'state': state,
+                'type': type,
+                'vlan': vlan,
+                'vlanList' : vlanList
+            }
+
+            entry_new.append(entry_dict)
+
+        return entry_new
+
     def _clean_eos_data(self, processed_data, _):
         """Clean up EOS interfaces output"""
 

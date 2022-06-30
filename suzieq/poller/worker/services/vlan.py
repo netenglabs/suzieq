@@ -15,6 +15,39 @@ class VlanService(Service):
 
         return data['data']
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry_new = []
+        entry_vlan = []
+        entry_vlan_members = []
+
+        entry_vlan = [item for item in processed_data if item.get('_entryType') == 'vlan']
+        entry_vlan_members = [item for item in processed_data if item.get('_entryType') == 'members']
+
+        for entry in entry_vlan:
+
+            entry_dict = {}
+
+            vlan = entry.get('vlannumber', -1)
+            vlanName =  entry.get('vlandescription', -1)
+            
+            interfaces = [member.get('port') for member in entry_vlan_members if member.get('vlan') == vlan]
+            
+            if entry.get('vlanadmstatus') == 'Ena' and entry.get('vlanoperstatus') == 'Ena':
+                state = 'active'
+            else:
+                state = 'suspended'
+            
+            entry_dict = {'vlanName': vlanName,
+                                 'state': state,
+                                 'vlan': vlan,
+                                 'interfaces': interfaces,
+                                 }
+
+            entry_new.append(entry_dict)
+
+        return entry_new
+
     def _clean_eos_data(self, processed_data, _):
         '''Massage the interface output'''
 

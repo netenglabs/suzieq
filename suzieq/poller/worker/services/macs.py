@@ -52,6 +52,40 @@ class MacsService(Service):
                     else:
                         entry['mackey'] = '0'
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry_new = []
+
+        for entry in processed_data:
+
+            entry_dict = {}
+
+            protocol = entry.get('domain', -1)
+            vlan = entry.get('id', -1)
+            macaddr = entry.get('mac_address', -1)
+            #Where does this parameter go?
+            entry.get('type', -1)
+            flags = entry.get('operation', -1)
+            oif = entry.get('interface', -1)
+            
+            if entry.get('vlanadmstatus') == 'Ena' and entry.get('vlanoperstatus') == 'Ena':
+                state = 'active'
+            else:
+                state = 'suspended'
+            
+            entry_dict = {
+                            'protocol': protocol,
+                            'vlan': vlan,
+                            'macaddr': macaddr,
+                            'flags': flags,
+                            'oif': oif,
+                            'type': type
+                         }
+
+            entry_new.append(entry_dict)
+
+        return entry_new
+
     def _clean_linux_data(self, processed_data, _):
         drop_indices = []
         macentries = {}
