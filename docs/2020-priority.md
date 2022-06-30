@@ -1,6 +1,6 @@
 # Suzieq Priorities
 
-(last updated August 2021)
+(last updated June 2022)
 
 This roadmap represents our best guess at broad priorities. 
 The point is to demonstrate what we think we should work on and the general
@@ -10,18 +10,6 @@ it more useful to you, please let us know. The best way is to
 
 We are trying to provide a mix of adding new collection, new analysis, and making Suzieq a better
 platform to build on.
-
-So far Suzieq is focused on datacenter, but we if we hear of 
-interest in the ISP/WAN space (or any other), then we can pivot
-towards that. There's nothing inherent in Suzieq that makes it just 
-for one part of the network than the others, we just started in the 
-datacenter. The current version will be useful anywhere, it's just 
-that we aren't collecting everything we'd need to do a great job
-in other places and we don't have asserts tuned towards other use cases.
-
-First release (0.1), was focused on good fundamentals and a good 
-representation of what Suzieq can be used for. Second release (0.2)
-was focused on NXOS and Junos support.
 
 ## Areas of Development
 
@@ -59,30 +47,17 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 ~~    * maybe be able to just start with one IP address and then discover 
       everything that must be polled by suzieq
 * ~~support augmenting columns (like adding peerHostname in OSPF when all we have is peerIP)~~
-* change gen_schema to ignore _ fields
 * ~~make column manipulation at higher level than engine.py~~
 * ~~Schema evolution and versioning to make suzieq less brittle to changes in the schema~~
-* Network wide summarize to take advantage of data across all commands
 ~~* Web-based GUI--
 --  * ~Do you have a framework you'd like the GUI to use?~~
---  * For what functions would you use a GUI?~~
-  * caching and performance
-~~* suzieq as a daemon--
-  * do we need suzieq as a daemon -- what are the use cases
 * ~~REST API~~
-* Create tags or other ways to group  in a hierarchical way
-  * possibly reuse ansible grouping
 * Kubernetes
   * understand topology, pod and cluster
   * calico, cilium, vxlan
   * asserts
 * Better unit tests with mocking instead of just end-to-end with real data.
-* Integration with performance analysis
-  * integration with prometheus and influxdb
-  * what do we want to be able to do with this?
 * ~~Arista EVPN~~
-* Integration with systems for notification of events
-  * slack   * ???
 * ~~Users can do their own queries~~
   * ~~pandas or pandas sql query~~
 ~~* Great expectations or some other way of better verifying data output
@@ -93,8 +68,6 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * ~~Support for Cisco's IOS-XR~~
 * Temperature and power collection 
 * Cloud integration such as VPC from cloud providers
-* Kafka integration for streaming telemetry
-* Redundancy -- some way of making sure that one poller is always running
 * BMP to collect BGP data for realtime BGP analysis
 * Understand BGP routing policy and route maps / etc
 * ISIS
