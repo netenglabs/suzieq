@@ -1,0 +1,22 @@
+description: 'Testing verbs for arpnd: show summarize unique'
+tests:
+- command: arpnd show --format=json --namespace=aos
+  data-directory: tests/data/parquet/
+  marks: arpnd show aos
+  output: '[{"namespace": "aos", "hostname": "net-lab-swi-001-1", "ipAddress": "10.20.99.1",
+    "oif": "0/1", "macaddr": "00:09:0f:09:01:26", "state": "", "remote": false, "timestamp":
+    1656609343895}, {"namespace": "aos", "hostname": "net-lab-swi-dist", "ipAddress":
+    "10.20.99.1", "oif": "0/19", "macaddr": "00:09:0f:09:01:26", "state": "", "remote":
+    false, "timestamp": 1656609344262}]'
+- command: arpnd summarize --format=json --namespace=aos
+  data-directory: tests/data/parquet/
+  marks: arpnd show aos
+  output: '{"aos": {"deviceCnt": 2, "arpNdEntriesCnt": 2, "uniqueArpEntriesCnt": 1,
+    "uniqueOifCnt": 2, "arpEntriesCnt": 2, "v6NDEntriesCnt": 0, "v6NDGlobalEntriesCnt":
+    0, "v6NDLLAEntriesCnt": 0, "remoteV4EntriesCnt": 0, "staticV4EntriesCnt": 0, "remoteV6EntriesCnt":
+    0, "staticV6EntriesCnt": 0, "failedEntriesCnt": 0, "failedV4EntriesCnt": 0, "failedV6EntriesCnt":
+    0}}'
+- command: arpnd unique --format=json --namespace=aos
+  data-directory: tests/data/parquet/
+  marks: arpnd show aos
+  output: '[{"hostname": "net-lab-swi-001-1"}, {"hostname": "net-lab-swi-dist"}]'
