@@ -1296,7 +1296,6 @@ class AosNode(Node):
             # Extract hostname
             hname = re.search('\s+Name:\s+(\S+),', data)
             hostname = hname.group(1)
-            self.logger.debug("AosNode hostname:\n %s", hostname)
 
             if hostname:
                 self._set_hostname(hostname)
@@ -1310,7 +1309,6 @@ class AosNode(Node):
                 60 * int(minutes) + int(seconds)
             self.bootupTimestamp = int(
                         int(time.time()*1000) - float(upsecs)*1000)
-            self.logger.debug("AosNode uptime:\n %s", self.bootupTimestamp)
 
             self._extract_nos_version(data)
 
@@ -1323,7 +1321,6 @@ class AosNode(Node):
         version_result = re.search('((\d+\.){3,}.*?(?=,))', data)
         version = version_result.group(1)
         self.version = version
-        self.logger.debug("AosNode version:\n %s", version)
 
 class CumulusNode(Node):
     '''Cumulus Node specific implementation'''
