@@ -357,7 +357,9 @@ class Node:
             data = output[0]["data"]
             version_str = data
 
-            if 'Arista' in data or 'vEOS' in data:
+            if 'Alcatel-Lucent' in data:
+                    devtype = "aos"
+            elif 'Arista' in data or 'vEOS' in data:
                 devtype = "eos"
             elif "JUNOS " in data:
                 model = re.search(r'Model:\s+(\S+)', data)
@@ -389,7 +391,10 @@ class Node:
                     f'{self.address}: Got unrecognized device show version: '
                     f'{data}')
 
-            if devtype.startswith("junos"):
+            if devtype == "aos":
+                # We'll fill in the hostname when the node gets re-init
+                hostname = None
+            elif devtype.startswith("junos"):
                 hmatch = re.search(r'Hostname:\s+(\S+)\n', data)
                 if hmatch:
                     hostname = hmatch.group(1)
@@ -494,7 +499,8 @@ class Node:
         # setup time. show version works on most networking boxes and
         # hostnamectl on Linux systems. That's all we support today.
         await self._exec_cmd(self._parse_device_type_hostname,
-                             ["show version",
+                             ["show system",
+                              "show version",
                               "cat /etc/os-release && hostname"],
                              None, 'text', only_one=True)
 
@@ -516,7 +522,9 @@ class Node:
 
         if self.devtype != devtype:
             self.devtype = devtype
-            if self.devtype == "cumulus":
+            if self.devtype == "aos":
+                self.__class__ = AosNode
+            elif self.devtype == "cumulus":
                 self.__class__ = CumulusNode
             elif self.devtype == "eos":
                 self.__class__ = EosNode
@@ -1277,6 +1285,45 @@ class EosNode(Node):
         else:
             self.version = data['version']
 
+class AosNode(Node):
+    '''Alcatel AOS Node-specific implementation'''
+
+    async def _parse_init_dev_data(self, output, cb_token) -> None:
+        
+        if output[0]['status'] == 0:
+            data = output[0]['data']
+
+            # Extract hostname
+            hname = re.search('\s+Name:\s+(\S+),', data)
+            hostname = hname.group(1)
+            self.logger.debug("AosNode hostname:\n %s", hostname)
+
+            if hostname:
+                self._set_hostname(hostname)
+
+            uptime_result = re.search('\s+Up Time:\s+(\d{1,3})\sdays\s(\d{1,2})\shours\s(\d{1,2})\sminutes\sand\s(\d{1,2})\sseconds,', data)
+            days = uptime_result.group(1).strip()
+            hours = uptime_result.group(2).strip()
+            minutes = uptime_result.group(3).strip()
+            seconds = uptime_result.group(4).strip()
+            upsecs = 86400 * int(days) + 3600 * int(hours) + \
+                60 * int(minutes) + int(seconds)
+            self.bootupTimestamp = int(
+                        int(time.time()*1000) - float(upsecs)*1000)
+            self.logger.debug("AosNode uptime:\n %s", self.bootupTimestamp)
+
+            self._extract_nos_version(data)
+
+    async def _fetch_init_dev_data(self):
+        """Fill in the boot time of the node by executing certain cmds"""
+        await self._exec_cmd(self._parse_init_dev_data,
+                             ["show system"], None, 'text')
+
+    def _extract_nos_version(self, data: str) -> None:
+        version_result = re.search('((\d+\.){3,}.*?(?=,))', data)
+        version = version_result.group(1)
+        self.version = version
+        self.logger.debug("AosNode version:\n %s", version)
 
 class CumulusNode(Node):
     '''Cumulus Node specific implementation'''
