@@ -153,7 +153,7 @@ class Inventory(SqPlugin):
             if newnode.devtype == "unsupported":
                 logger.error(
                     f'Unsupported device type for '
-                    f'{newnode.address}.{newnode.port}'
+                    f'{newnode.address}:{newnode.port}'
                 )
             elif not newnode.devtype:
                 logger.warning('Unable to determine device type for '
