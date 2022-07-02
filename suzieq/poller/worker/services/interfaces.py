@@ -1,3 +1,4 @@
+import contextlib
 import re
 from datetime import datetime
 from collections import defaultdict
@@ -951,6 +952,28 @@ class InterfaceService(Service):
             entry['state'] = entry['state'].lower()
 
         return processed_data
+
+    def _clean_fwsm_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            name = entry["ifname"]
+            if name.startswith("Vlan"):
+                with contextlib.suppress(Exception):
+                    vlan = int (name[4:])
+                    entry["vlan"] = vlan
+            if entry['ipAddressList'] == ['Not Configured']:
+                entry['ipAddressList'] = []
+        return self._clean_iosxr_data(processed_data, raw_data)
+
+    def _clean_cpgaia_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            name = entry["ifname"]
+            if dot := name.find("."):
+                with contextlib.suppress(Exception):
+                    vlan = int (name[dot+1:])
+                    entry["vlan"] = vlan
+            if entry['ipAddressList'] == ['Not Configured']:
+                entry['ipAddressList'] = []
+        return self._clean_iosxr_data(processed_data, raw_data)
 
     def _clean_panos_data(self, processed_data, _):
         mtu_data = {}

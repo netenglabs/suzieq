@@ -1,0 +1,20 @@
+Value Required ipAddress (\d+\.\d+\.\d+\.\d+)
+Value macaddr ([a-f0-9.:]+)
+Value type (\S+)
+Value oif (\S+)
+Value protocol (\S+)
+
+Start
+  ^${ipAddress}\s+${macaddr}.*$$ -> Record
+
+#Dynamic Arp Parameters
+#
+#IP Address                 Mac Address                
+#172.19.26.45   		00:00:0c:9f:f1:65
+#172.19.24.159  		00:00:0c:9f:f2:65
+#52.115.93.145  		00:00:0c:9f:f3:65
+#52.114.18.37   		00:00:0c:9f:f4:65
+#172.19.25.124  		00:00:0c:9f:f5:65
+#172.19.24.206  		00:00:0c:9f:f6:65
+#172.23.20.131  		00:1c:7f:bc:55:ff
+

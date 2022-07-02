@@ -62,6 +62,16 @@ apply:
   ios:
     copy: iosxe
 
+  fwsm:
+    version: all
+    command: show version
+    textfsm: textfsm_templates/fwsm_show_version.tfsm
+
+  cpgaia:
+    version: all
+    command: show version product
+    textfsm: textfsm_templates/cpgaia_show_version.tfsm
+
   linux:
     version: all
     command: cat /proc/uptime; hostnamectl

@@ -145,6 +145,19 @@ class DeviceService(Service):
 
         return self._common_data_cleaner(processed_data, raw_data)
 
+    def _clean_fwsm_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            self._clean_common_ios(entry, 'ios-fwsm')
+
+        return self._common_data_cleaner(processed_data, raw_data)
+
+    def _clean_cpgaia_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            entry['vendor']="CheckPoint"
+            entry['os']='GAIA'
+
+        return self._common_data_cleaner(processed_data, raw_data)
+
     def _clean_ios_data(self, processed_data, raw_data):
         for entry in processed_data:
             self._clean_common_ios(entry, 'ios')

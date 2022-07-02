@@ -1,4 +1,7 @@
+import contextlib
 import re
+import ipaddress
+import socket
 
 import numpy as np
 
@@ -109,6 +112,44 @@ class ArpndService(Service):
 
     def _clean_ios_data(self, processed_data, raw_data):
         return self._clean_common_ios_data(processed_data, raw_data)
+
+    def _clean_cpgaia_data(self, processed_data, raw_data):
+        for entry in processed_data:
+            if 'state' not in entry:
+                entry['state'] = 'reachable'
+            # FIX oif ?
+        return processed_data
+
+    def _clean_fwsm_data(self, processed_data, raw_data):
+        fakeaddress = ipaddress.ip_address("2.2.2.1")
+        lookup = {}
+
+        # Build a "dns" type lookup table from the "show names" command
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            if "alias" in entry:
+                lookup [entry['alias']] = entry['ipAddress']
+                drop_indices.append(i)
+        processed_data = np.delete(processed_data, drop_indices).tolist()
+
+        for entry in processed_data:
+            ip_address = entry['ipAddress']
+            try:
+                # check we have a valid address
+                _ = ipaddress.ip_address(ip_address)
+            except Exception:
+                if ip_address not in lookup:
+                    # This should never be needed....
+                    try:
+                        ip = socket.gethostbyname(ip_address)
+                    except Exception:
+                        ip = fakeaddress # fake it..
+                        fakeaddress += 1
+                    lookup[ip_address] = f'{ip}'
+                entry['ipAddress'] = lookup[ip_address]
+
+        return self._clean_common_ios_data(processed_data, raw_data)
+
 
     def _clean_panos_data(self, processed_data, _):
         for entry in processed_data:

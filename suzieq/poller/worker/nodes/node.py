@@ -2,7 +2,7 @@ from typing import TypeVar, Dict, Callable, List
 from abc import abstractmethod
 from collections import defaultdict
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timezone, timedelta
 import logging
 import random
 from http import HTTPStatus
@@ -382,6 +382,8 @@ class Node:
                 devtype = "iosxr"
             elif any(x in data for x in ["Cisco IOS XE", "Cisco IOS-XE"]):
                 devtype = "iosxe"
+            elif "FWSM Firewall" in data:
+                 devtype = "fwsm"
             elif "Cisco IOS Software" in data:
                 devtype = "ios"
             else:
@@ -406,6 +408,12 @@ class Node:
                 matchval = re.search(r'(\S+)\s+uptime', output[0]['data'])
                 if matchval:
                     hostname = matchval.group(1).strip()
+                else:
+                    hostname = self.address
+            elif devtype == "fwsm":
+                match = re.search(r'(\S+)\s+up.+days', data)
+                if match:
+                    hostname = match.group(1)
                 else:
                     hostname = self.address
             elif devtype != "iosxr":
@@ -526,6 +534,10 @@ class Node:
                 self.__class__ = IosXRNode
             elif self.devtype == "ios":
                 self.__class__ = IOSNode
+            elif self.devtype == "fwsm":
+                self.__class__ = FWSMNode
+            elif self.devtype == "cpgaia":
+                self.__class__ = CPGaia
             elif self.devtype.startswith("junos"):
                 self.__class__ = JunosNode
             elif self.devtype == "nxos":
@@ -684,6 +696,7 @@ class Node:
                             ' verify the host identity, add '
                             '"ignore-known-hosts: True" in the device section '
                             'of the inventory')
+                        self._retry = 0
                     elif isinstance(e, asyncssh.misc.PermissionDenied):
                         self.logger.error(
                             f'Authentication failed to {self.address}. '
@@ -693,6 +706,7 @@ class Node:
                     else:
                         self.logger.error('Unable to connect to '
                                           f'{self.address}:{self.port}, {e}')
+                        self._retry = 0
                     self.current_exception = e
                     await self._close_connection()
                     self._conn = None
@@ -1503,7 +1517,7 @@ class IosXENode(Node):
                              ["show version"], None, 'text')
 
     async def _init_ssh(self, init_dev_data=True,
-                        use_lock: bool = True) -> None:
+                        use_lock: bool = True, waitfor= r'.*[>#]\s*$', check_privledge = True) -> None:
         '''Need to start an interactive session for XE
 
         Many IOSXE devices cannot accept commands as fast as we can fire them.
@@ -1512,7 +1526,7 @@ class IosXENode(Node):
         authenticated, not just the main SSH connection.
         '''
         backoff_period = 1
-        self.WAITFOR = r'.*[>#]\s*$'
+        self.WAITFOR = waitfor
 
         self.logger.info(
             f'Trying to reconnect via SSH for {self.hostname}')
@@ -1550,15 +1564,16 @@ class IosXENode(Node):
                         f'Persistent SSH created for {self.hostname}')
 
                     output = await self.wait_for_prompt()
-                    if output.strip().endswith('>'):
-                        if await self._handle_privilege_escalation() == -1:
-                            await self._close_connection()
-                            self._conn = None
-                            self._stdin = None
-                            self._retry -= 1
-                            if use_lock:
-                                self.ssh_ready.release()
-                            return
+                    if check_privledge:
+                        if output.strip().endswith('>'):
+                            if await self._handle_privilege_escalation() == -1:
+                                await self._close_connection()
+                                self._conn = None
+                                self._stdin = None
+                                self._retry -= 1
+                                if use_lock:
+                                    self.ssh_ready.release()
+                                return
                     # Reset number of retries on successful auth
                     self._retry = self._max_retries_on_auth_fail
                 except Exception as e:
@@ -1857,6 +1872,116 @@ class NxosNode(Node):
             self.version = "all"
         else:
             self.version = version
+
+class FWSMNode(IOSNode):
+    '''Cisco FireWall Service Module Support'''
+
+    async def _fetch_init_dev_data(self):
+        # At this point we are in enable mode so prompt ends with a # and
+        # the show version command with have a line ending in '>' half way
+        # through that messes with the default IOS parsing
+        # ... FWSM Firewall Version 3.2(28) <context> ...
+        self.WAITFOR = r'.*#\s*$'
+
+        # Set the terminal length to 0 to avoid paging
+        await self._exec_cmd(self._null_callback,
+                             ["terminal pager 0"], None, 'text')
+
+        await self._exec_cmd(self._parse_init_dev_data,
+                             ["show version", "show context"], None, 'text')
+
+    async def _null_callback(self,output,cb_token)->None:
+        return
+
+    async def _parse_init_dev_data(self, output, cb_token) -> None:
+        '''Parse the version for uptime and hostname'''
+
+        self.bootupTimestamp = -1
+        if not isinstance(output, list):
+            return
+        if output[0]["status"] == 0:
+            data = output[0]['data']
+            if match := re.search(r'(\S+)\s+up.+day', data):
+                hostname = match[1]
+            else:
+                hostname=self.address
+            if hostupstr := re.search(r'up \s+(\d+)\s+days\s+(\d+)\s+hour', data):
+                days = hostupstr[1]
+                hours = hostupstr[2]
+                self.bootupTimestamp = datetime.now() - timedelta(days=days, hours=hours)
+            # add the context to the host name to ovoid conflicts
+            if len(output)>1 and output[1]["status"] == 0:
+                data = output[1]['data']
+                if match := re.search(r'^\s(\S+)\s+', data, re.MULTILINE): # need Multiline as using ^ in search pattern
+                    hostname += f"-{match[1]}"
+            self._set_hostname (hostname)   
+            self._extract_nos_version(data)
+
+    def _extract_nos_version(self, data: str) -> None:
+        if match := re.search(r'Firewall Version\s+([^ ,]+)', data):
+            self.version = match[1].strip()
+        else:
+            self.logger.warning(
+                f'Cannot parse version from {self.address}:{self.port}')
+            self.version = "all"
+
+
+class CPGaia(IOSNode):
+    '''CheckPoint Gaia Firewalls'''
+    async def _init_rest(self):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
+    async def _rest_gather(self, service_callback, cmd_list, cb_token,
+                           oformat='json', timeout=None):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
+    async def _init_ssh(self, init_dev_data=True,
+                        use_lock: bool = True) -> None:
+
+        # Need to start an interactive session for Checkpoint and the ISONode code works well
+        # except we don't need to switch to privledge mode..
+        await super()._init_ssh(init_dev_data=False, use_lock=False,
+            check_privledge=False)
+        return
+
+    async def _fetch_init_dev_data(self):
+        self.WAITFOR = r'.*>\s*$'
+        # set clienv rows 0
+        # Set the terminal length to 0 to avoid paging
+        await self._exec_cmd(self._null_callback,
+                             ["set clienv rows 0"], None, 'text')
+        await self._exec_cmd(self._parse_init_dev_data,
+                             ["show version product", "show hostname", "show uptime"], None, 'text')
+
+    async def _null_callback(self,output,cb_token)->None:
+        return
+
+    async def _parse_init_dev_data(self, output, cb_token) -> None:
+        '''Parse the version for uptime and hostname'''
+        if not isinstance(output, list):
+            # In some errors, the output returned is not a list
+            self.bootupTimestamp = -1
+            return
+
+        if output[0]["status"] == 0:
+            data = output[0]['data']
+            self._extract_nos_version(data)
+
+        if len(output) > 1:
+            if output[1]["status"] == 0:
+                hostname = output[1]['data'].split('\r\n')[1]
+                self._set_hostname(hostname)
+
+    def _extract_nos_version(self, data: str) -> None:
+        match = re.search(r'Product version Check Point Gaia R(.+)$', data)
+        if match:
+            self.version = match.group(1).strip()
+        else:
+            self.logger.warning(
+                f'Cannot parse version from {self.address}:{self.port}')
+            self.version = "all"
 
 
 class SonicNode(Node):

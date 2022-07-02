@@ -94,6 +94,18 @@ apply:
   ios:
     copy: iosxe
 
+  fwsm:
+    version: all
+    command:
+      - command: show interface
+        textfsm: textfsm_templates/fwsm_show_int.tfsm
+
+  cpgaia:
+    version: all
+    command:
+      - command: show interfaces all
+        textfsm: textfsm_templates/cpgaia_show_int.tfsm
+
   linux:
     version: all
     command: ip -d address show

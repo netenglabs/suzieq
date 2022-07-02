@@ -1,0 +1,30 @@
+Value Filldown vrf (\S+)
+Value protocol ([A-Zi]\*?|[A-Zio][\*\s][A-Z][1-2]|[A-Z][\*\s][A-Z][A-Z]|i ia|i su|LC)
+## Value Required prefix ([0-9./]+|[0-9A-F:./]+)
+Value Required prefix ([0-9./]+|[\S+]+)
+Value Filldown netmask (\d{1,2})
+Value preference (\d+|is)
+Value metric (\d+)
+Value List nexthopIps ([0-9.]+|[0-9A-F:.]+)
+Value List oifs (\S+)
+Value statusChangeTimestamp (\S+)
+Value nexthopvrf (\S+)
+Value subnet ([0-9.]+)
+
+Start
+  ^${protocol}\s+${prefix} ${subnet} is directly connected.*$$ -> Record
+  ^${protocol}\s+${prefix} ${subnet} \[${preference}/${metric}\]\s+via\s+${nexthopIps},\s+${oifs}\s*$$ -> Record
+  
+#S    192.168.128.0 255.255.255.0 [1/0] via 192.168.1.241, Inside_interface 
+#S    192.168.130.0 255.255.255.0 [1/0] via 192.168.1.254, Inside_interface 
+#C    192.168.131.0 255.255.255.0 is directly connected, VLAN136_int
+#C    192.168.132.0 255.255.255.0 is directly connected, Inside_interface
+#S    192.168.133.0 255.255.255.0 [1/0] via 192.168.1.241, Inside_interface 
+#S    172.21.1.0 255.255.255.0 [1/0] via 192.168.1.254, Inside_interface 
+#S    172.22.2.0 255.255.255.0 [1/0] via 192.168.1.254, Inside_interface 
+#S    HOSTNAME 255.255.255.255 [1/0] via 192.168.1.254, Inside_interface 
+#S    172.22.210.0 255.255.255.0 [1/0] via 192.168.1.254, Inside_interface 
+#C    172.22.211.0 255.255.255.0 is directly connected, Mgmt__Ser_Con
+#C    172.22.212.0 255.255.255.0 is directly connected, Zone__vmotion
+
+

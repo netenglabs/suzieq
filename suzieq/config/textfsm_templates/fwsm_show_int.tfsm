@@ -1,0 +1,57 @@
+Value Required ifname (\S+)
+Value state (.+?)
+Value adminState (.+?)
+Value type ([^,]+)
+Value macaddr ((?:\w{4}\.){2}\w{4})
+Value interfaceMac ((?:\w{4}\.){2}\w{4})
+Value description (.*?)
+Value List ipAddressList (.*)
+Value subnet (\S+)
+Value mtu (\d+)
+Value duplex (.+?)
+Value speed (\d+)
+Value bandwidth (\d+\s+\w+)
+Value ENCAPSULATION ([^,]+)
+Value statusChangeTimestamp (\S+)
+Value numChanges (\d+)
+Value vlan (\d+)
+Value innerVlan (\d+)
+Value _bondMbrCnt (\d+)
+Value List _bondMbrs ([^,]+)
+Value _switchport (Layer 2)
+
+Start
+  ^\S+\s+\S+\s+\S+, is -> Continue.Record
+  ^Interface ${ifname}\s+${description},\s+is\s+${adminState},\s+line\sprotocol\sis\s+${state}\s*$$
+  ^\s+MAC address\s+${macaddr},\s+MTU\s+${mtu}
+  ^\s+IP address\s+${ipAddressList},\s+subnet mask\s+${subnet}$$
+  ^\s+${_switchport} Transport Mode
+  ^\s+MTU\s+${mtu}.*BW\s+${speed}.*$$
+  ^\s+Encapsulation\s+${ENCAPSULATION},\s+VLAN\s+Id\s+${vlan},\s+2nd\s+VLAN\s+Id\s+${innerVlan}
+  ^\s+Encapsulation\s+${ENCAPSULATION},\s+VLAN\s+Id\s+${vlan},\s+loopback
+  ^\s+Encapsulation\s+${ENCAPSULATION},
+  ^\s+Outer Match:\s+Dot1Q VLAN\s+${vlan}.*$$
+  ^\s+loopback\s+not\s+set,
+  ^\s+{duplex}-?[Dd]uplex,.*$$
+  ^\s+Last\s+link\s+flapped\s+${statusChangeTimestamp}
+  ^\s+No\.\s+of\s+active\s+members\s+in\s+this\s+channel\s*:\s+${_bondMbrCnt}
+  ^\s+Members\s+in\s+this\s+channel:\s+${_bondMbrs}
+  ^\s+Member\s+\d+\s+:\s+${_bondMbrs}\s?,.*$$
+
+
+#Interface Vlan13 "MGMT-PRMT-APP", is up, line protocol is up
+#	MAC address 000d.6ff9.7aa0, MTU 1500
+#	IP address 192.168.6.254, subnet mask 255.255.255.0
+# Traffic Statistics for "MGMT-PRMT-APP":
+#	7690303118 packets input, 3535131176484 bytes
+#	2369589892 packets output, 2425947181417 bytes
+#	4303441 packets dropped
+#Interface Vlan15 "MGMT15", is up, line protocol is up
+#	MAC address 000d.6ab9.7cd80, MTU 1500
+#	IP address 192.168.155.254, subnet mask 255.255.255.0
+#  Traffic Statistics for "MGMT15":
+#	564320210 packets input, 168463347392 bytes
+#	495476429 packets output, 56716918539 bytes
+#	3429031 packets dropped
+
+

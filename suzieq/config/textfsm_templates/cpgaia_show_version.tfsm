@@ -1,0 +1,15 @@
+Value hostname (\S+)
+Value version ([^, ]+)
+Value bootupTimestamp (.*)
+Value model (\S+)
+Value architecture (\S+)
+Value memory (\d+)
+Value serialNumber (\w+)
+Value reason (.*)
+
+Start
+  ^Product version Check Point Gaia ${version}.*$$
+  ^${hostname}:.*$$
+#Product version Check Point Gaia R81.10
+#HOST-NAME-FW01:TACP-0>
+

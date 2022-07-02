@@ -1,6 +1,8 @@
 import re
 from datetime import datetime
 
+import ipaddress,socket
+
 from dateparser import parse
 import numpy as np
 
@@ -330,6 +332,46 @@ class RoutesService(Service):
 
     def _clean_ios_data(self, processed_data, raw_data):
         return self._clean_iosxe_data(processed_data, raw_data)
+
+    def _clean_fwsm_data(self, processed_data, raw_data):
+
+        fakeaddress = ipaddress.ip_address("2.2.2.1")
+        lookup = {}
+
+        # Build a "dns" type lookup table from the "show names" command
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            if "alias" in entry:
+                lookup [entry['alias']] = entry['prefix']
+                drop_indices.append(i)
+        processed_data = np.delete(processed_data, drop_indices).tolist()
+
+        # FWSM has routes with subnet(netmasks) instead of prefixes
+        for entry in processed_data:
+            try:
+                # check we have a valid address
+                _ = ipaddress.ip_address(entry['prefix'])
+            except Exception:
+                prefix = entry['prefix']
+                if prefix not in lookup:
+                    # This should never happen however if there is a 'non-IP' entry without an alais
+                    # we need to fix - will create a new IP address for each "host" we find
+                    try:
+                        # lets see if the default DNS will give use the real Ip address
+                        ip = socket.gethostbyname(entry['prefix'])
+                    except Exception:
+                        ip = fakeaddress # fake it..
+                        fakeaddress += 1
+                    lookup[prefix] = f'{ip}'
+                entry['prefix'] = lookup[prefix]
+            # convert subnet to proper prefix notation
+            entry['prefix'] += f"/{sum(bin(int(x)).count('1') for x in entry['subnet'].split('.'))}"
+
+        return self._clean_iosxe_data(processed_data, raw_data)
+
+    def _clean_cpgaia_data(self, processed_data, raw_data):
+        # fix blank vrf, and expande protocol fields
+        return self._clean_iosxr_data(processed_data, raw_data)
 
     def _clean_panos_data(self, processed_data, raw_data):
         drop_indices = []

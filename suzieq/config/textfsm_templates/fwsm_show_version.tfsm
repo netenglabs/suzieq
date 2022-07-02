@@ -1,0 +1,31 @@
+Value hostname (\S+)
+Value version ([^, ]+)
+Value bootupTimestamp (.*)
+Value model (\S+)
+Value architecture (\S+)
+Value memory (\d+)
+Value serialNumber (\w+)
+Value reason (.*)
+
+Start
+  ^FWSM Firewall Version ${version}.*$$
+  ^${hostname}\s+up.*$$
+
+#FWSM Firewall Version 3.2(28) <context>
+#Device Manager Version 6.2(3)F
+#
+#Compiled on Thu 23-Oct-13 09:55 by fwsmbld
+#
+#XXXX-FWSM01 up 2 days 3 hours
+#failover cluster up 4 years 15 days
+#
+#Hardware:   WS-SVC-FWM-1
+#
+#Licensed features for this user context:
+#Failover                    : Active/Active
+#VPN-DES                     : Enabled   
+#VPN-3DES-AES                : Enabled   
+#GTP/GPRS                    : Disabled  
+#BGP Stub                    : Disabled  
+#
+#Configuration last modified by xxxxxx at 14:10:12.493 XXXX Tue Jun 7 2000
