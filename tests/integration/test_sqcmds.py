@@ -441,6 +441,15 @@ def _test_sqcmds(testvar, context_config):
 @ pytest.mark.parametrize(
     "testvar",
     load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
+                                 '/tests/integration/sqcmds/aos-samples')))
+def test_aos_sqcmds(testvar, create_context_config):
+    _test_sqcmds(testvar, create_context_config)
+
+@ pytest.mark.smoke
+@ pytest.mark.sqcmds
+@ pytest.mark.parametrize(
+    "testvar",
+    load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                       '/tests/integration/sqcmds/cumulus-samples')))
 def test_cumulus_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
