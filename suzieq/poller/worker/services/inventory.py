@@ -34,7 +34,7 @@ class InventoryService(Service):
             type = entry['description']
             partType = entry['model_type']
             
-            version_result = re.search(r'(\d+\.){3,}.*?(?=,)', system.get('description'))
+            version_result = re.search('(\d+\.){3,}.*?(?=,)', system.get('description'))
             version = version_result.group(0)
 
             if entry.get('admin_status') == 'POWER ON' and entry.get('operational_status') == 'UP':
