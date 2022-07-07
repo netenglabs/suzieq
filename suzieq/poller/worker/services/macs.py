@@ -63,8 +63,6 @@ class MacsService(Service):
             protocol = entry['domain']
             vlan = entry['id']
             macaddr = entry['mac_address']
-            #Where does this parameter go?
-            entry['type']
             flags = entry['operation']
             oif = entry['interface']
             
@@ -79,7 +77,6 @@ class MacsService(Service):
                             'macaddr': macaddr,
                             'flags': flags,
                             'oif': oif,
-                            'type': type
                          }
 
             entry_new.append(entry_dict)
