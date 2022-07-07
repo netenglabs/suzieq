@@ -29,20 +29,20 @@ class VlanService(Service):
             entry_dict = {}
 
             vlan = entry['vlannumber']
-            vlanName =  entry['vlandescription']
-            
+            vlanName = entry['vlandescription']
+
             interfaces = [member.get('port') for member in entry_vlan_members if member.get('vlan') == vlan]
-            
+
             if entry.get('vlanadmstatus') == 'Ena' and entry.get('vlanoperstatus') == 'Ena':
                 state = 'active'
             else:
                 state = 'suspended'
-            
+
             entry_dict = {'vlanName': vlanName,
-                                 'state': state,
-                                 'vlan': vlan,
-                                 'interfaces': interfaces,
-                                 }
+                            'state': state,
+                            'vlan': vlan,
+                            'interfaces': interfaces,
+                         }
 
             entry_new.append(entry_dict)
 

@@ -23,7 +23,7 @@ class InventoryService(Service):
         # extract single list item (dict)
         system, = entry_system
 
-        for index, entry in enumerate(entry_chassis):
+        for entry in entry_chassis:
 
             entry_dict = {}
 
@@ -33,15 +33,15 @@ class InventoryService(Service):
             vendor = "Alcatel-Lucent Enterprise"
             type = entry['description']
             partType = entry['model_type']
-            
-            version_result = re.search('(\d+\.){3,}.*?(?=,)', system.get('description'))
+
+            version_result = re.search(r'(\d+\.){3,}.*?(?=,)', system.get('description'))
             version = version_result.group(0)
 
             if entry.get('admin_status') == 'POWER ON' and entry.get('operational_status') == 'UP':
                 status = 'up'
             else:
                 status = 'down'
-            
+
             entry_dict = {
                 'model': model,
                 'status': status,

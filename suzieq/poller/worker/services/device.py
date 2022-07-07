@@ -30,24 +30,22 @@ class DeviceService(Service):
 
         entry, = processed_data
 
-        description_result = re.search('^Alcatel-Lucent\sEnterprise\s(\S+)\s((\d+\.){3,}.*?(?=,)),\s\w+\s\d{1,2},\s\d{4,}.', entry['description'])
+        description_result = re.search(r'^Alcatel-Lucent\sEnterprise\s(\S+)\s((\d+\.){3,}.*?(?=,)),\s\w+\s\d{1,2},\s\d{4,}.' \
+            , entry['description'])
         model = description_result.group(1)
         version = description_result.group(2)
 
         # sample output: '0 days 0 hours 3 minutes and 28 seconds'
-        uptime_result = re.search('(\d+) days (\d{1,2}) hours (\d{1,2}) minutes and (\d{1,2}) seconds', entry['up_time'])
+        uptime_result = re.search(r'(\d+) days (\d{1,2}) hours (\d{1,2}) minutes and (\d{1,2}) seconds', entry['up_time'])
         days = uptime_result.group(1)
         hours = uptime_result.group(2)
         minutes = uptime_result.group(3)
         seconds = uptime_result.group(4)
 
-        upsecs = (24*3600*int(days) +
-                    3600*int(hours) +
-                    60*int(minutes) +
-                    int(seconds))
+        upsecs = 24 * 3600 * int(days) + 3600 * int(hours) + 60 * int(minutes) + int(seconds)
 
         if upsecs:
-            bootupTimestamp = int(int(raw_data[0]["timestamp"])/1000 - upsecs)
+            bootupTimestamp = int(int(raw_data[0]["timestamp"]) / 1000 - upsecs)
 
         entry['vendor'] = "Alcatel-Lucent Enterprise"
         entry['model'] = model

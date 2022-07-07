@@ -97,7 +97,7 @@ class InterfaceService(Service):
                 vlan = "None"
             else:
                 vlan = vlans[0]
-            
+
             if len(vlanList) < 1:
                 vlanList = "None"
 
@@ -117,7 +117,7 @@ class InterfaceService(Service):
                 'state': state,
                 'type': type,
                 'vlan': vlan,
-                'vlanList' : vlanList
+                'vlanList': vlanList
             }
 
             entry_new.append(entry_dict)

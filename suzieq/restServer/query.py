@@ -95,7 +95,7 @@ def get_cert_files(cfg):
         print(f"ERROR: Missing certificate file: {ssl_keyfile}")
         sys.exit(1)
 
-    return ssl_keyfile,  ssl_certfile
+    return ssl_keyfile,ssl_certfile
 
 
 def get_log_config_level(cfg):

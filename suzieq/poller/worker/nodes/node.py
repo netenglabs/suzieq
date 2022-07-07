@@ -358,7 +358,7 @@ class Node:
             version_str = data
 
             if 'Alcatel-Lucent' in data:
-                    devtype = "aos"
+                devtype = "aos"
             elif 'Arista' in data or 'vEOS' in data:
                 devtype = "eos"
             elif "JUNOS " in data:
@@ -1285,22 +1285,32 @@ class EosNode(Node):
         else:
             self.version = data['version']
 
+
 class AosNode(Node):
     '''Alcatel AOS Node-specific implementation'''
 
+    async def _init_rest(self):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
+    async def _rest_gather(self, service_callback, cmd_list, cb_token,
+                           oformat='json', timeout=None):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
     async def _parse_init_dev_data(self, output, cb_token) -> None:
-        
+
         if output[0]['status'] == 0:
             data = output[0]['data']
 
             # Extract hostname
-            hname = re.search('\s+Name:\s+(\S+),', data)
+            hname = re.search(r'\s+Name:\s+(\S+),', data)
             hostname = hname.group(1)
 
             if hostname:
                 self._set_hostname(hostname)
 
-            uptime_result = re.search('\s+Up Time:\s+(\d{1,3})\sdays\s(\d{1,2})\shours\s(\d{1,2})\sminutes\sand\s(\d{1,2})\sseconds,', data)
+            uptime_result = re.search(r'\s+Up Time:\s+(\d{1,3})\sdays\s(\d{1,2})\shours\s(\d{1,2})\sminutes\sand\s(\d{1,2})\sseconds,', data)
             days = uptime_result.group(1).strip()
             hours = uptime_result.group(2).strip()
             minutes = uptime_result.group(3).strip()
@@ -1318,9 +1328,10 @@ class AosNode(Node):
                              ["show system"], None, 'text')
 
     def _extract_nos_version(self, data: str) -> None:
-        version_result = re.search('((\d+\.){3,}.*?(?=,))', data)
+        version_result = re.search(r'((\d+\.){3,}.*?(?=,))', data)
         version = version_result.group(1)
         self.version = version
+
 
 class CumulusNode(Node):
     '''Cumulus Node specific implementation'''
