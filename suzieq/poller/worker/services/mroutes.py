@@ -56,7 +56,7 @@ class MroutesService(Service):
                 reprocessed_data.update({
                     unique: {
                         'oifList': entry['oifList'],
-                        'group': entry['vrf'],
+                        'group': entry['group'],
                         'source': entry['source'],
                         'vrf': entry['vrf'],
                         'incomingIf': entry['incomingIf'],
