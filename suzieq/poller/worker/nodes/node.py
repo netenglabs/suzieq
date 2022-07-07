@@ -1294,13 +1294,13 @@ class AosNode(Node):
             data = output[0]['data']
 
             # Extract hostname
-            hname = re.search('\s+Name:\s+(\S+),', data)
+            hname = re.search(r'\s+Name:\s+(\S+),', data)
             hostname = hname.group(1)
 
             if hostname:
                 self._set_hostname(hostname)
 
-            uptime_result = re.search('\s+Up Time:\s+(\d{1,3})\sdays\s(\d{1,2})\shours\s(\d{1,2})\sminutes\sand\s(\d{1,2})\sseconds,', data)
+            uptime_result = re.search(r'\s+Up Time:\s+(\d{1,3})\sdays\s(\d{1,2})\shours\s(\d{1,2})\sminutes\sand\s(\d{1,2})\sseconds,', data)
             days = uptime_result.group(1).strip()
             hours = uptime_result.group(2).strip()
             minutes = uptime_result.group(3).strip()
@@ -1318,7 +1318,7 @@ class AosNode(Node):
                              ["show system"], None, 'text')
 
     def _extract_nos_version(self, data: str) -> None:
-        version_result = re.search('((\d+\.){3,}.*?(?=,))', data)
+        version_result = re.search(r'((\d+\.){3,}.*?(?=,))', data)
         version = version_result.group(1)
         self.version = version
 
