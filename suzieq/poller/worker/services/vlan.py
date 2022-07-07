@@ -28,8 +28,8 @@ class VlanService(Service):
 
             entry_dict = {}
 
-            vlan = entry.get('vlannumber', -1)
-            vlanName =  entry.get('vlandescription', -1)
+            vlan = entry['vlannumber']
+            vlanName =  entry['vlandescription']
             
             interfaces = [member.get('port') for member in entry_vlan_members if member.get('vlan') == vlan]
             

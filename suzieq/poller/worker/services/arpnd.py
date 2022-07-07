@@ -14,9 +14,9 @@ class ArpndService(Service):
 
         entry, = processed_data
 
-        entry['ipAddress'] = entry.get('ip_address', '-1')
-        entry['macaddr'] = entry.get('hardware_addr', '-1')
-        entry['oif'] = entry.get('port', '-1') # or 'port' for physical interface
+        entry['ipAddress'] = entry['ip_address']
+        entry['macaddr'] = entry['hardware_addr']
+        entry['oif'] = entry['port']
 
         return processed_data
 

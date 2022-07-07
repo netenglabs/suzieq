@@ -80,15 +80,15 @@ class InterfaceService(Service):
 
             entry_dict = {}
 
-            adminState = interfaces_status.get('admin_status', -1)
-            ifname = interfaces_status.get('chassis_slot_port', -1)
-            interfaceMac = interfaces.get('mac_address', -1)
-            mtu = interfaces.get('long_frame_size', -1)
-            numChanges = interfaces.get('number_of_status_change', -1)
-            reason = interfaces.get('port_down_violation_reason', -1)
-            speed = interfaces_status.get('detected_speed', -1)
-            state = interfaces.get('operation_status', -1)
-            type = interfaces.get('type', -1)
+            adminState = interfaces_status['admin_status']
+            ifname = interfaces_status['chassis_slot_port']
+            interfaceMac = interfaces['mac_address']
+            mtu = interfaces['long_frame_size']
+            numChanges = interfaces['number_of_status_change']
+            reason = interfaces['port_down_violation_reason']
+            speed = self._textfsm_valid_speed_value(interfaces_status)
+            state = interfaces['operation_status']
+            type = interfaces['type']
 
             vlans = [vlan_member['vlan'] for vlan_member in entry_vlan_members if vlan_member['port'] == ifname if vlan_member['type'] == 'default']
             vlanList = [vlan_member['vlan'] for vlan_member in entry_vlan_members if vlan_member['port'] == ifname if vlan_member['type'] == 'unpUntag']

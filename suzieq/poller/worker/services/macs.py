@@ -60,13 +60,13 @@ class MacsService(Service):
 
             entry_dict = {}
 
-            protocol = entry.get('domain', -1)
-            vlan = entry.get('id', -1)
-            macaddr = entry.get('mac_address', -1)
+            protocol = entry['domain']
+            vlan = entry['id']
+            macaddr = entry['mac_address']
             #Where does this parameter go?
-            entry.get('type', -1)
-            flags = entry.get('operation', -1)
-            oif = entry.get('interface', -1)
+            entry['type']
+            flags = entry['operation']
+            oif = entry['interface']
             
             if entry.get('vlanadmstatus') == 'Ena' and entry.get('vlanoperstatus') == 'Ena':
                 state = 'active'

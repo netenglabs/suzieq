@@ -27,12 +27,12 @@ class InventoryService(Service):
 
             entry_dict = {}
 
-            model = entry.get('model_name', -1)
-            serial = entry.get('serial_number', -1)
-            partNum = entry.get('part_number', -1)
+            model = entry['model_name']
+            serial = entry['serial_number']
+            partNum = entry['part_number']
             vendor = "Alcatel-Lucent Enterprise"
-            type = entry.get('description', -1)
-            partType = entry.get('model_type', -1)
+            type = entry['description']
+            partType = entry['model_type']
             
             version_result = re.search(r'(\d+\.){3,}.*?(?=,)', system.get('description'))
             version = version_result.group(0)
