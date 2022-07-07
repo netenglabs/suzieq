@@ -15,7 +15,6 @@ class MroutesObj(SqObject):
         - oifList
         - vrf
         - ipvers
-        - rp
         - rpfneighbor
 
 
@@ -32,5 +31,5 @@ show-fields:
     def __init__(self, **kwargs):
         super().__init__(table='mroutes', **kwargs)
         self._valid_get_args = ['namespace', 'hostname', 'columns', 'source', 'group', 'vrf', 'rpfInterface', 
-                                'oifList', 'ipvers', 'rp', 'rpfneighbor', 'query_str']
+                                'oifList', 'ipvers', 'rpfneighbor', 'query_str']
 
