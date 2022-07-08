@@ -754,9 +754,9 @@ def init_logger(logname: str,
 
 def known_devtypes() -> list:
     """Returns the list of known dev types"""
-    return(['aos', 'cumulus', 'eos', 'iosxe', 'iosxr', 'ios', 'junos-mx', 'junos-qfx',
-            'junos-qfx10k', 'junos-ex', 'junos-es', 'linux', 'nxos', 'sonic',
-            'panos'])
+    return(['aos', 'cumulus', 'eos', 'iosxe', 'iosxr', 'ios', 'junos-mx',
+            'junos-qfx', 'junos-qfx10k', 'junos-ex', 'junos-es', 'linux',
+            'nxos', 'sonic', 'panos'])
 
 
 def humanize_timestamp(field: pd.Series, tz=None) -> pd.Series:

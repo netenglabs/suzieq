@@ -21,8 +21,12 @@ class VlanService(Service):
         entry_vlan = []
         entry_vlan_members = []
 
-        entry_vlan = [item for item in processed_data if item.get('_entryType') == 'vlan']
-        entry_vlan_members = [item for item in processed_data if item.get('_entryType') == 'members']
+        entry_vlan = [
+            item for item in processed_data if item.get("_entryType") == "vlan"
+        ]
+        entry_vlan_members = [
+            item for item in processed_data if item.get("_entryType") == "members"
+        ]
 
         for entry in entry_vlan:
 
@@ -38,11 +42,12 @@ class VlanService(Service):
             else:
                 state = 'suspended'
 
-            entry_dict = {'vlanName': vlanName,
-                            'state': state,
-                            'vlan': vlan,
-                            'interfaces': interfaces,
-                         }
+            entry_dict = {
+                "vlanName": vlanName,
+                "state": state,
+                "vlan": vlan,
+                "interfaces": interfaces,
+            }
 
             entry_new.append(entry_dict)
 
