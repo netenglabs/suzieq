@@ -35,7 +35,9 @@ class VlanService(Service):
             vlan = entry['vlannumber']
             vlanName = entry['vlandescription']
 
-            interfaces = [member.get('port') for member in entry_vlan_members if member.get('vlan') == vlan]
+            interfaces = [
+                member.get('port') for member in entry_vlan_members if member.get('vlan') == vlan
+            ]
 
             if entry.get('vlanadmstatus') == 'Ena' and entry.get('vlanoperstatus') == 'Ena':
                 state = 'active'
