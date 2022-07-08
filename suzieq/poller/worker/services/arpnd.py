@@ -14,6 +14,11 @@ class ArpndService(Service):
 
         entry, = processed_data
 
+        if entry["type"] == "STATIC":
+            entry["state"] = "permanent"
+        elif entry["type"] == "DYNAMIC":
+            entry["state"] = "reachable"
+
         entry['ipAddress'] = entry['ip_address']
         entry['macaddr'] = entry['hardware_addr']
         entry['oif'] = entry['port']
