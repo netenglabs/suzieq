@@ -79,6 +79,12 @@ class NetworkObj(SqPandasEngine):
         columns = kwargs.get('columns', ['default'])
         cols = self.schema.get_display_fields(columns)
 
+        if vlan:
+            try:
+                vlan = int(vlan)
+            except ValueError:
+                return pd.DataFrame({'error': ['vlan must be an integer']})
+
         # Convert Cisco-style MAC address to standard MAC addr format,
         # and lowercase all letters of the alphabet
         addr = convert_macaddr_format_to_colon(addr)
@@ -207,6 +213,15 @@ class NetworkObj(SqPandasEngine):
 
             if not ifdf.empty:
                 netaddr = ip_address(row.ipAddress)
+                vrf = ifdf.master.unique().tolist()[0] or 'default'
+                vlan_list = ifdf.vlan.astype(str).unique().tolist()
+                try:
+                    vlan = vlan_list[0]
+                    vlan = int(vlan)
+                except ValueError:
+                    # ignore if the conversion of the vlan to integer has
+                    # failed
+                    pass
                 # The code below checks if the provided address belongs to
                 # the interface subnet. If it does, its a bridged address
                 # else its a routed address i.e. you use routing to reach it.
@@ -223,9 +238,9 @@ class NetworkObj(SqPandasEngine):
                     tmpres.update({
                         'namespace': row.namespace,
                         'hostname': row.hostname,
-                        'vrf': ifdf.master.unique().tolist()[0] or 'default',
+                        'vrf': vrf,
                         'ipAddress': row.ipAddress,
-                        'vlan': ifdf.vlan.astype(str).unique().tolist()[0],
+                        'vlan': vlan,
                         'macaddr': row.macaddr,
                         'ifname': oif,
                         'type': 'routed',
@@ -244,7 +259,7 @@ class NetworkObj(SqPandasEngine):
                     continue
                 macdf = self._get_table_sqobj('macs') \
                     .get(namespace=[row.namespace], hostname=[row.hostname],
-                         vlan=ifdf.vlan.astype(str).unique().tolist(),
+                         vlan=vlan_list,
                          macaddr=[row.macaddr],
                          columns=['default'],
                          local=True)
@@ -258,9 +273,9 @@ class NetworkObj(SqPandasEngine):
                     tmpres.update({
                         'namespace': row.namespace,
                         'hostname': row.hostname,
-                        'vrf': ifdf.master.unique().tolist()[0] or 'default',
+                        'vrf': vrf,
                         'ipAddress': row.ipAddress,
-                        'vlan': ifdf.vlan.astype(str).unique().tolist()[0],
+                        'vlan': vlan,
                         'macaddr': row.macaddr,
                         'ifname': oifs[0],
                         'type': 'bridged',
@@ -275,9 +290,9 @@ class NetworkObj(SqPandasEngine):
                     tmpres.update({
                         'namespace': row.namespace,
                         'hostname': row.hostname,
-                        'vrf': ifdf.master.unique().tolist()[0] or 'default',
+                        'vrf': vrf,
                         'ipAddress': row.ipAddress,
-                        'vlan': ifdf.vlan.astype(str).unique().tolist()[0],
+                        'vlan': vlan,
                         'macaddr': row.macaddr,
                         'ifname': ' '.join(ifdf.ifname.unique().tolist()),
                         'type': 'bridged',
