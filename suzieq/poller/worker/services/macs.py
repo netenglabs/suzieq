@@ -66,11 +66,6 @@ class MacsService(Service):
             flags = entry['operation']
             oif = entry['interface']
 
-            # if entry.get('vlanadmstatus') == 'Ena' and entry.get('vlanoperstatus') == 'Ena':
-            #     state = 'active'
-            # else:
-            #     state = 'suspended'
-
             entry_dict = {
                 "protocol": protocol,
                 "vlan": vlan,
