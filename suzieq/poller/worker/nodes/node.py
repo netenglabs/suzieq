@@ -1310,7 +1310,9 @@ class AosNode(Node):
             if hostname:
                 self._set_hostname(hostname)
 
-            uptime_result = re.search(r'\s+Up Time:\s+(\d{1,3})\sdays\s(\d{1,2})\shours\s(\d{1,2})\sminutes\sand\s(\d{1,2})\sseconds,', data)
+            uptime_result = re.search(  r'\s+Up Time:\s+(\d{1,3})\sdays\s(\d{1,2})'
+                                        r'\shours\s(\d{1,2})\sminutes\sand\s(\d{1,2})\sseconds,'
+                                        , data)
             days = uptime_result.group(1).strip()
             hours = uptime_result.group(2).strip()
             minutes = uptime_result.group(3).strip()
