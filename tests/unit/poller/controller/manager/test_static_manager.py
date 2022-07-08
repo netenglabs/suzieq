@@ -137,10 +137,7 @@ def test_static_manager_init(monkeypatch, manager_cfg, max_outstanding_cmds):
     manager_args['exclude-services'] = ['arpn']
     manager_args['service-only'] = ['interfaces', 'ospf']
     manager_args['ssh-config-file'] = 'ssh_config_file'
-
-    # Set the poller settings
-    poller_cfg = manager_cfg['config-dict']['poller']
-    poller_cfg['max-cmd-pipeline'] = max_outstanding_cmds
+    manager_args['max-cmd-pipeline'] = max_outstanding_cmds
 
     # Init manager
     static_manager = init_static_manager(manager_cfg, manager_args)
@@ -577,7 +574,8 @@ async def test_worker_replace(monkeypatch, manager_cfg):
 
     with patch.multiple(static_manager_module,
                         monitor_process=dummy_monitor_process), \
-            patch.object(manager, '_coalescer_launcher', coalescer_monitor_mock):
+            patch.object(manager, '_coalescer_launcher',
+                         coalescer_monitor_mock):
         execute_task = asyncio.create_task(manager._execute())
         try:
             injected_workers = {
@@ -646,7 +644,8 @@ async def test_unexpected_worker_death(monkeypatch, manager_cfg):
 
     with patch.multiple(static_manager_module,
                         monitor_process=dummy_monitor_process), \
-            patch.object(manager, '_coalescer_launcher', coalescer_monitor_mock):
+            patch.object(manager, '_coalescer_launcher',
+                         coalescer_monitor_mock):
         execute_task = asyncio.create_task(manager._execute())
 
         try:
