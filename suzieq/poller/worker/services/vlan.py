@@ -22,10 +22,12 @@ class VlanService(Service):
         entry_vlan_members = []
 
         entry_vlan = [
-            item for item in processed_data if item.get("_entryType") == "vlan"
+            item for item in processed_data
+            if item.get("_entryType") == "vlan"
         ]
         entry_vlan_members = [
-            item for item in processed_data if item.get("_entryType") == "members"
+            item for item in processed_data
+            if item.get("_entryType") == "members"
         ]
 
         for entry in entry_vlan:
@@ -36,10 +38,12 @@ class VlanService(Service):
             vlanName = entry['vlandescription']
 
             interfaces = [
-                member.get('port') for member in entry_vlan_members if member.get('vlan') == vlan
+                member.get('port') for member in entry_vlan_members
+                if member.get('vlan') == vlan
             ]
 
-            if entry.get('vlanadmstatus') == 'Ena' and entry.get('vlanoperstatus') == 'Ena':
+            if entry.get('vlanadmstatus') == 'Ena' \
+                    and entry.get('vlanoperstatus') == 'Ena':
                 state = 'active'
             else:
                 state = 'suspended'

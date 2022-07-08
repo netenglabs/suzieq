@@ -17,8 +17,14 @@ class InventoryService(Service):
         entry_chassis = []
         entry_system = []
 
-        entry_chassis = [item for item in processed_data if item.get('_entryType') == 'chassis']
-        entry_system = [item for item in processed_data if item.get('_entryType') == 'system']
+        entry_chassis = [
+                        item for item in processed_data
+                        if item.get('_entryType') == 'chassis'
+                        ]
+        entry_system = [
+                        item for item in processed_data
+                        if item.get('_entryType') == 'system'
+                        ]
 
         # extract single list item (dict)
         system, = entry_system
@@ -34,10 +40,12 @@ class InventoryService(Service):
             type = entry['description']
             partType = entry['model_type']
 
-            version_result = re.search(r'(\d+\.){3,}.*?(?=,)', system.get('description'))
+            version_result = re.search(r'(\d+\.){3,}.*?(?=,)',
+                                       system.get('description'))
             version = version_result.group(0)
 
-            if entry.get('admin_status') == 'POWER ON' and entry.get('operational_status') == 'UP':
+            if entry.get('admin_status') == 'POWER ON' \
+                    and entry.get('operational_status') == 'UP':
                 status = 'up'
             else:
                 status = 'down'
