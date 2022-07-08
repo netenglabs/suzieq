@@ -1,0 +1,37 @@
+description: Testing network find generic filters
+tests:
+- command: network find --vlan=10 --address=172.16.1.101 --format=json
+  data-directory: tests/data/parquet/
+  format: json
+  marks: network find
+  output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "172.16.1.101", "vlan": 10, "macaddr": "00:03:00:11:11:01", "ifname": "swp5",
+    "bondMembers": "", "type": "bridged", "l2miss": false, "timestamp": 1616352402479},
+    {"namespace": "nxos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": 10, "macaddr": "32:bb:c5:b5:3a:20", "ifname": "port-channel3", "bondMembers":
+    "Ethernet1/3", "type": "bridged", "l2miss": false, "timestamp": 1619275264428},
+    {"namespace": "nxos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": 10, "macaddr": "32:bb:c5:b5:3a:20", "ifname": "port-channel3", "bondMembers":
+    "Ethernet1/3", "type": "bridged", "l2miss": false, "timestamp": 1619275264429},
+    {"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": 10, "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
+    "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177307},
+    {"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": 10, "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
+    "Ethernet3", "type": "bridged", "l2miss": false, "timestamp": 1623025177688},
+    {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "vlan": 10, "macaddr": "28:b7:ad:3c:81:d0", "ifname": "xe-0/0/2", "bondMembers":
+    "", "type": "bridged", "l2miss": false, "timestamp": 1623025797193}]'
+- command: network find --vlan=no-int --address=172.16.1.101 --format=json
+  data-directory: tests/data/parquet/
+  error:
+    error: '[{"error": "vlan must be an integer"}]'
+  format: json
+  marks: network find
+- command: network find --vlan=10 --vrf=default --address=172.16.1.101 --format=json
+  data-directory: tests/data/parquet/
+  format: json
+  marks: network find
+  output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "172.16.1.101", "vlan": 10, "macaddr": "00:03:00:11:11:01", "ifname": "swp5",
+    "bondMembers": "", "type": "bridged", "l2miss": false, "timestamp": 1616352402479}]'
