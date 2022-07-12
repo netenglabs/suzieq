@@ -98,7 +98,7 @@ class InterfaceService(Service):
             reason = interfaces['port_down_violation_reason']
             speed = self._textfsm_valid_speed_value(interfaces_status)
             state = interfaces['operation_status']
-            type = interfaces['type']
+            type_int = interfaces['type']
 
             vlans = [
                 vlan_member['vlan'] for vlan_member in entry_vlan_members
@@ -133,7 +133,7 @@ class InterfaceService(Service):
                 'reason': reason,
                 'speed': speed,
                 'state': state,
-                'type': type,
+                'type': type_int,
                 'vlan': vlan,
                 'vlanList': vlanList
             }
@@ -149,7 +149,7 @@ class InterfaceService(Service):
         drop_indices = []
         vlan_entries = {}       # Needed to fix the anycast MAC entries
 
-        # pylint: disable=too-many-nested-blocks
+        # pylint: disable=too-many-nested-blockss
         for i, entry in enumerate(processed_data):
 
             if entry['type'] == 'vrf':

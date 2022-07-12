@@ -37,7 +37,7 @@ class InventoryService(Service):
             serial = entry['serial_number']
             partNum = entry['part_number']
             vendor = "Alcatel-Lucent Enterprise"
-            type = entry['description']
+            type_inv = entry['description']
             partType = entry['model_type']
 
             version_result = re.search(r'(\d+\.){3,}.*?(?=,)',
@@ -56,7 +56,7 @@ class InventoryService(Service):
                 'serial': serial,
                 'partNum': partNum,
                 'vendor': vendor,
-                'type': type,
+                'type': type_inv,
                 'partType': partType,
                 'version': version,
             }
