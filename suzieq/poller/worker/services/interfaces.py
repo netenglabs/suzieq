@@ -957,9 +957,11 @@ class InterfaceService(Service):
         for entry in processed_data:
             name = entry["ifname"]
             if name.startswith("Vlan"):
-                with contextlib.suppress(Exception):
-                    vlan = int (name[4:])
+                try:
+                    vlan = int(name[4:])
                     entry["vlan"] = vlan
+                except Exception:
+                    self.logger.error("FWSM: Unable to extract vlan id from interface {name}.")
             if entry['ipAddressList'] == ['Not Configured']:
                 entry['ipAddressList'] = []
         return self._clean_iosxr_data(processed_data, raw_data)
@@ -969,7 +971,7 @@ class InterfaceService(Service):
             name = entry["ifname"]
             if dot := name.find("."):
                 with contextlib.suppress(Exception):
-                    vlan = int (name[dot+1:])
+                    vlan = int(name[dot+1:])
                     entry["vlan"] = vlan
             if entry['ipAddressList'] == ['Not Configured']:
                 entry['ipAddressList'] = []

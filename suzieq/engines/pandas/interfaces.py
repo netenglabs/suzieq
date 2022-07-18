@@ -38,7 +38,6 @@ class InterfacesObj(SqPandasEngine):
         fields = self.schema.get_display_fields(columns)
         self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
                                    addnl_fields)
-
         drop_cols = []
         user_query_cols = self._get_user_query_cols(user_query)
         addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
@@ -52,7 +51,6 @@ class InterfacesObj(SqPandasEngine):
         else:
             df = super().get(master=master, columns=fields,
                              addnl_fields=addnl_fields, **kwargs)
-
         if df.empty:
             return df
 
@@ -63,7 +61,6 @@ class InterfacesObj(SqPandasEngine):
                     continue
                 drop_cols.append(x)
             df = self._add_portmode(df, **kwargs)
-
         if vlan or "vlanList" in fields:
             df = self._add_vlanlist(df, **kwargs)
 

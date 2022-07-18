@@ -383,7 +383,7 @@ class Node:
             elif any(x in data for x in ["Cisco IOS XE", "Cisco IOS-XE"]):
                 devtype = "iosxe"
             elif "FWSM Firewall" in data:
-                 devtype = "fwsm"
+                devtype = "fwsm"
             elif "Cisco IOS Software" in data:
                 devtype = "ios"
             else:
@@ -696,7 +696,6 @@ class Node:
                             ' verify the host identity, add '
                             '"ignore-known-hosts: True" in the device section '
                             'of the inventory')
-                        self._retry = 0
                     elif isinstance(e, asyncssh.misc.PermissionDenied):
                         self.logger.error(
                             f'Authentication failed to {self.address}. '
@@ -706,7 +705,6 @@ class Node:
                     else:
                         self.logger.error('Unable to connect to '
                                           f'{self.address}:{self.port}, {e}')
-                        self._retry = 0
                     self.current_exception = e
                     await self._close_connection()
                     self._conn = None
@@ -1517,7 +1515,8 @@ class IosXENode(Node):
                              ["show version"], None, 'text')
 
     async def _init_ssh(self, init_dev_data=True,
-                        use_lock: bool = True, waitfor= r'.*[>#]\s*$', check_privledge = True) -> None:
+                        use_lock: bool = True, waitfor=r'.*[>#]\s*$',
+                        check_privledge=True) -> None:
         '''Need to start an interactive session for XE
 
         Many IOSXE devices cannot accept commands as fast as we can fire them.
@@ -1873,6 +1872,7 @@ class NxosNode(Node):
         else:
             self.version = version
 
+
 class FWSMNode(IOSNode):
     '''Cisco FireWall Service Module Support'''
 
@@ -1890,7 +1890,7 @@ class FWSMNode(IOSNode):
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version", "show context"], None, 'text')
 
-    async def _null_callback(self,output,cb_token)->None:
+    async def _null_callback(self, output, cb_token) -> None:
         return
 
     async def _parse_init_dev_data(self, output, cb_token) -> None:
@@ -1901,28 +1901,31 @@ class FWSMNode(IOSNode):
             return
         if output[0]["status"] == 0:
             data = output[0]['data']
+            self._extract_nos_version(data)
             if match := re.search(r'(\S+)\s+up.+day', data):
                 hostname = match[1]
             else:
-                hostname=self.address
+                hostname = self.address
             if hostupstr := re.search(r'up \s+(\d+)\s+days\s+(\d+)\s+hour', data):
                 days = hostupstr[1]
                 hours = hostupstr[2]
                 self.bootupTimestamp = datetime.now() - timedelta(days=days, hours=hours)
             # add the context to the host name to ovoid conflicts
-            if len(output)>1 and output[1]["status"] == 0:
-                data = output[1]['data']
-                if match := re.search(r'^\s(\S+)\s+', data, re.MULTILINE): # need Multiline as using ^ in search pattern
-                    hostname += f"-{match[1]}"
-            self._set_hostname (hostname)   
-            self._extract_nos_version(data)
+            if "<context>" in output[0]['data']:
+                if len(output) > 1 and output[1]["status"] == 0:
+                    data = output[1]['data']
+                    if match := re.search(r'^[\s\*]+(\S+)\s+', data, re.MULTILINE):  # need Multiline as using ^ in search pattern
+                        hostname += f"-{match[1]}"
+            self._set_hostname(hostname)
 
     def _extract_nos_version(self, data: str) -> None:
-        if match := re.search(r'Firewall Version\s+([^ ,]+)', data):
+        if match := re.search(r'Firewall Version\s+(\S+)', data):
+            self.version = match[1].strip()
+        elif match := re.search(r'Software Version\s+(\S+)', data):
             self.version = match[1].strip()
         else:
             self.logger.warning(
-                f'Cannot parse version from {self.address}:{self.port}')
+                f'Cannot parse FWSM/ASA version from {self.address}:{self.port} \n {data}')
             self.version = "all"
 
 
@@ -1943,7 +1946,7 @@ class CPGaia(IOSNode):
         # Need to start an interactive session for Checkpoint and the ISONode code works well
         # except we don't need to switch to privledge mode..
         await super()._init_ssh(init_dev_data=False, use_lock=False,
-            check_privledge=False)
+                                check_privledge=False)
         return
 
     async def _fetch_init_dev_data(self):
@@ -1955,7 +1958,7 @@ class CPGaia(IOSNode):
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version product", "show hostname", "show uptime"], None, 'text')
 
-    async def _null_callback(self,output,cb_token)->None:
+    async def _null_callback(self, output, cb_token) -> None:
         return
 
     async def _parse_init_dev_data(self, output, cb_token) -> None:

@@ -342,8 +342,6 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         # Launch the process
         process = await asyncio.create_subprocess_exec(
             *curr_args,
-            # Fix error - "Separator is not found, and chunk exceed the limit"
-            limit = 1024 * 128,  # 128 KB, default is 64KB
             stdout=asyncio.subprocess.PIPE,
             stderr=asyncio.subprocess.PIPE
         )

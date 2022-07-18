@@ -1,13 +1,14 @@
-import contextlib
 import re
 import ipaddress
-import socket
+import logging
 
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (
     convert_macaddr_format_to_colon, expand_ios_ifname)
+
+logger = logging.getLogger(__name__)
 
 
 class ArpndService(Service):
@@ -121,14 +122,13 @@ class ArpndService(Service):
         return processed_data
 
     def _clean_fwsm_data(self, processed_data, raw_data):
-        fakeaddress = ipaddress.ip_address("2.2.2.1")
         lookup = {}
 
         # Build a "dns" type lookup table from the "show names" command
         drop_indices = []
         for i, entry in enumerate(processed_data):
             if "alias" in entry:
-                lookup [entry['alias']] = entry['ipAddress']
+                lookup[entry['alias']] = entry['ipAddress']
                 drop_indices.append(i)
         processed_data = np.delete(processed_data, drop_indices).tolist()
 
@@ -138,18 +138,13 @@ class ArpndService(Service):
                 # check we have a valid address
                 _ = ipaddress.ip_address(ip_address)
             except Exception:
-                if ip_address not in lookup:
-                    # This should never be needed....
-                    try:
-                        ip = socket.gethostbyname(ip_address)
-                    except Exception:
-                        ip = fakeaddress # fake it..
-                        fakeaddress += 1
-                    lookup[ip_address] = f'{ip}'
-                entry['ipAddress'] = lookup[ip_address]
+                if ip_address in lookup:
+                    entry['ipAddress'] = lookup[ip_address]
+                else:
+                    # Should never reach here unless some strange issue with the device config
+                    logger.error(f"ERROR: FWSM has non IP address entry in APR table: {ip_address}")
 
         return self._clean_common_ios_data(processed_data, raw_data)
-
 
     def _clean_panos_data(self, processed_data, _):
         for entry in processed_data:

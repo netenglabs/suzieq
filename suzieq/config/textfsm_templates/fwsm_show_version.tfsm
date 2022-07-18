@@ -6,10 +6,13 @@ Value architecture (\S+)
 Value memory (\d+)
 Value serialNumber (\w+)
 Value reason (.*)
+Value _bootupTimestamp (.*)
 
 Start
   ^FWSM Firewall Version ${version}.*$$
-  ^${hostname}\s+up.*$$
+  ^Cisco Adaptive Security Appliance Software Version ${version}.*$$
+  ^${hostname} up ${_bootupTimestamp}.*$$
+
 
 #FWSM Firewall Version 3.2(28) <context>
 #Device Manager Version 6.2(3)F

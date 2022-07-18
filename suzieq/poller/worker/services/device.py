@@ -147,14 +147,24 @@ class DeviceService(Service):
 
     def _clean_fwsm_data(self, processed_data, raw_data):
         for entry in processed_data:
+            if entry["_bootupTimestamp"]:
+                years = days = hours = 0
+                if hostupstr := re.search(r'(\d+)\s+day[s]*\s+(\d+)\s+hour', entry["_bootupTimestamp"]):
+                    days = int(hostupstr[1])
+                    hours = int(hostupstr[2])
+                elif hostupstr := re.search(r'(\d+)\s+year[s]*\s+(\d+)\s+day', entry["_bootupTimestamp"]):
+                    years = int(hostupstr[1])
+                    days = int(hostupstr[2])
+                # note the approximation of years to days..
+                entry["bootupTimestamp"] = f"{datetime.now() - timedelta(days=days + (years*364), hours=hours)}"
             self._clean_common_ios(entry, 'ios-fwsm')
 
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_cpgaia_data(self, processed_data, raw_data):
         for entry in processed_data:
-            entry['vendor']="CheckPoint"
-            entry['os']='GAIA'
+            entry['vendor'] = "CheckPoint"
+            entry['os'] = 'GAIA'
 
         return self._common_data_cleaner(processed_data, raw_data)
 

@@ -25,6 +25,7 @@ class DeviceObj(SqPandasEngine):
         status = kwargs.pop('status', '')
         os_version = kwargs.pop('version', '')
         os = kwargs.get('os', '')
+
         ignore_neverpoll = kwargs.pop('ignore_neverpoll', False)
 
         addnl_fields = []

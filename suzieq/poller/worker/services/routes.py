@@ -1,7 +1,8 @@
 import re
 from datetime import datetime
 
-import ipaddress,socket
+import ipaddress
+import logging
 
 from dateparser import parse
 import numpy as np
@@ -10,6 +11,7 @@ from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (expand_nxos_ifname,
                                  get_timestamp_from_cisco_time,
                                  get_timestamp_from_junos_time)
+logger = logging.getLogger(__name__)
 
 
 class RoutesService(Service):
@@ -335,14 +337,13 @@ class RoutesService(Service):
 
     def _clean_fwsm_data(self, processed_data, raw_data):
 
-        fakeaddress = ipaddress.ip_address("2.2.2.1")
         lookup = {}
 
         # Build a "dns" type lookup table from the "show names" command
         drop_indices = []
         for i, entry in enumerate(processed_data):
             if "alias" in entry:
-                lookup [entry['alias']] = entry['prefix']
+                lookup[entry['alias']] = entry['prefix']
                 drop_indices.append(i)
         processed_data = np.delete(processed_data, drop_indices).tolist()
 
@@ -353,17 +354,11 @@ class RoutesService(Service):
                 _ = ipaddress.ip_address(entry['prefix'])
             except Exception:
                 prefix = entry['prefix']
-                if prefix not in lookup:
-                    # This should never happen however if there is a 'non-IP' entry without an alais
-                    # we need to fix - will create a new IP address for each "host" we find
-                    try:
-                        # lets see if the default DNS will give use the real Ip address
-                        ip = socket.gethostbyname(entry['prefix'])
-                    except Exception:
-                        ip = fakeaddress # fake it..
-                        fakeaddress += 1
-                    lookup[prefix] = f'{ip}'
-                entry['prefix'] = lookup[prefix]
+                if prefix in lookup:
+                    entry['prefix'] = lookup[prefix]
+                else:
+                    # Should never reach here unless some strange issue with the device config
+                    logger.error(f"ERROR: FWSM has non IP address entry in route table: {entry['prefix']}")
             # convert subnet to proper prefix notation
             entry['prefix'] += f"/{sum(bin(int(x)).count('1') for x in entry['subnet'].split('.'))}"
 
