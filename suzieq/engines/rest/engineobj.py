@@ -74,7 +74,8 @@ class SqRestEngine(SqEngineObj):
                                               self.iobj.namespace),
                       'hostname': kwargs.get('hostname', self.iobj.hostname)}
         kwargs.update(cmd_params)
-        kwargs = {k: v for k, v in kwargs.items() if v}
+        # Cannot drop values which are equal to 0 or False
+        kwargs = {k: v for k, v in kwargs.items() if v or v in [0, False]}
 
         query_params = urllib.parse.urlencode(kwargs, doseq=True)
 
