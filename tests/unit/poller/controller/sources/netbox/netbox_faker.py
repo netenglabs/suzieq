@@ -1,7 +1,7 @@
 import json
 from copy import deepcopy
 from pathlib import Path
-from typing import Any, Dict, Tuple
+from typing import Any, Dict, List, Tuple
 
 from faker import Faker
 
@@ -27,6 +27,15 @@ _BASE_INVENTORY_DEVICE = {
     'ssh_keyfile': None,
     'transport': 'ssh',
     'username': 'username'
+}
+
+_DEFAULT_TAG = {
+    'id': 1,
+    'url': 'http://127.0.0.1:800',
+    'display': 'suzieq',
+    'name': 'suzieq',
+    'slug': 'suzieq',
+    'color': '673ab7'
 }
 
 
@@ -62,9 +71,10 @@ class NetboxFaker:
 
         seed = config_data.get('seed')
         if seed:
-            self._fake.seed(seed)
+            Faker.seed(seed)
         self.device_count = config_data.get("count", 1)
-        self._dev_tag = config_data.get("tag-value", 'suzieq')
+        self._dev_tags = config_data.get("tag-value", ['suzieq'])
+        self._tag_values = self.create_tag_values()
         self._dev_tag_prob = config_data.get("tag-prob", 1)
         self._ip4_prob = config_data.get("ip4-prob", 1)
         self._ip6_prob = config_data.get("ip6-prob", 1)
@@ -79,6 +89,24 @@ class NetboxFaker:
         # The sort list is mandatory because otherwise the set -> list cast
         # can result in a different order every run of the code
         self._sites.sort()
+
+    def create_tag_values(self) -> List[Dict]:
+        """Create the tag part of the response
+
+        Returns:
+            List[Dict]: list of tag response body
+        """
+        tag_values = []
+        for i, tag in enumerate(self._dev_tags):
+            cur_tag = _DEFAULT_TAG.copy()
+            cur_tag.update({
+                'name': tag,
+                'display': tag,
+                'slug': tag.lower(),
+                'id': i
+            })
+            tag_values.append(cur_tag)
+        return tag_values
 
     def set_dev_attr(self, index: int, key: str, value):
         """Create or overwrite the content of <key> of device <index>
@@ -119,17 +147,15 @@ class NetboxFaker:
 
         self.set_dev_attr(index, ip_key, ip_dict)
 
-    def setTag(self, index: int, tag: str):
+    def setTag(self, index: int, tag_index: int):
         """Set device tag
 
         Args:
             index (int): index of device
-            tag (str): tag to set
+            tag_index (int): index of the tag to set
         """
         tag_list = self.devices[index].get("tags")
-        tag_list[0]["name"] = tag
-        tag_list[0]["display"] = tag
-        tag_list[0]["slug"] = tag.lower()
+        tag_list.append(self._tag_values[tag_index])
 
         self.set_dev_attr(index, "tags", tag_list)
 
@@ -193,6 +219,7 @@ class NetboxFaker:
             tag_set = False
             ip_set = False
             self.devices.append(deepcopy(self._base_device))
+            self.set_dev_attr(i, 'id', i)
 
             dev_name = self._fake.slug()
             self.set_hostname(i, dev_name)
@@ -222,9 +249,20 @@ class NetboxFaker:
             else:
                 self.set_dev_attr(i, "primary_ip4", None)
 
+            # tag
             if self._fake.pyfloat(min_value=0, max_value=1) \
-                    < self._dev_tag_prob and self._dev_tag:
-                self.setTag(i, self._dev_tag)
+                    < self._dev_tag_prob and self._dev_tags:
+                n_tags = self._fake.pyint(
+                    min_value=1, max_value=len(self._dev_tags))
+                tag_index_set = set()
+                for _ in range(n_tags):
+                    while True:
+                        tag_index = self._fake.pyint(
+                            min_value=0, max_value=len(self._dev_tags)-1)
+                        if tag_index not in tag_index_set:
+                            tag_index_set.add(tag_index)
+                            break
+                    self.setTag(i, tag_index)
                 tag_set = True
             else:
                 self.set_dev_attr(i, "tags", None)

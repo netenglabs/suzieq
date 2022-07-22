@@ -23,13 +23,13 @@ _SERVER_CONFIGS = [
     {
         'namespace': 'netbox-ns',
         'use_ssl': '',
-        'tag': 'suzieq',
+        'tag': ['suzieq'],
         'count': 20
     },
     {
         'namespace': 'netbox-sitename',
         'use_ssl': 'self-signed',
-        'tag': 'suzieq',
+        'tag': ['suzieq', 'suzieq-2'],
         'count': 90
     }
 ]
@@ -150,14 +150,19 @@ async def test_valid_config(server_conf: Dict, default_config):
     config = default_config
     config = update_config(server_conf, config)
 
+    exp_tags = []
+    for tags in config['tag']:
+        exp_tags.append([t.strip() for t in tags.split(',')])
+
     src = Netbox(config.copy())
-    assert src.name == config['name']
-    assert src._server.protocol == config['url'].split(':')[0]
-    assert src._server.host == '127.0.0.1'
-    assert src._server.port == str(server_conf['port'])
-    assert src._data.tag == config['tag']
-    assert src._data.token == config['token']
-    assert isinstance(src._auth, StaticLoader)
+    assert src.name == config['name'], 'wrong name'
+    assert src._server.protocol == config['url'].split(':')[0], \
+        'wrong server protocol'
+    assert src._server.host == '127.0.0.1', 'wrong server host'
+    assert src._server.port == str(server_conf['port']), 'wrong server port'
+    assert src._data.tag == exp_tags, 'wrong tag'
+    assert src._data.token == config['token'], 'wrong token'
+    assert isinstance(src._auth, StaticLoader), 'wrong auth object'
     if config.get('ssl-verify') is not None:
         assert src._data.ssl_verify == config['ssl-verify']
     else:
@@ -198,7 +203,7 @@ async def test_netbox_invalid_server_config(server_conf: Dict, default_config):
     config['url'] = old_url
 
     # set invalid tag
-    old_tag, config['tag'] = config['tag'], 'wrong_tag'
+    old_tag, config['tag'] = config['tag'], ['wrong_tag']
     src = Netbox(config.copy())
     await asyncio.wait_for(src.run(), 10)
     cur_inv = await asyncio.wait_for(src.get_inventory(), 5)
@@ -303,5 +308,40 @@ def test_netbox_automatic_ssl_verify(default_config):
     assert not n._data.ssl_verify
 
     config['url'] = 'https://127.0.0.1:22'
-    n = Netbox(config.copy(), validate=True)
-    assert n._data.ssl_verify
+
+
+@pytest.mark.controller_source
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_netbox
+def test_netbox_tags(default_config):
+    """Test netbox tags are correctly parsed
+    """
+    config = default_config
+
+    # test string tags are converted to list
+    config['tag'] = 'my-tag'
+
+    n = Netbox(config.copy())
+    assert n._data.tag == [['my-tag']], 'Single tag not converted in list'
+
+    # test and/or tag logic
+    config['tag'] = [
+        'alpha, bravo',
+        'charlie',
+        'delta, echo, foxtrot'
+    ]
+
+    n = Netbox(config.copy())
+    url_address = f'{n._server.protocol}://{n._server.host}:'\
+        f'{n._server.port}/api/dcim/devices/?'
+    exp_url_list = [
+        url_address + 'tag=alpha&tag=bravo',
+        url_address + 'tag=charlie',
+        url_address + 'tag=delta&tag=echo&tag=foxtrot'
+    ]
+    url_list = n._get_url_list()
+    assert sorted(url_list) == sorted(exp_url_list), \
+        f'Wrong url list {url_list}'
