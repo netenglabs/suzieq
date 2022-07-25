@@ -110,7 +110,8 @@ if __name__ == '__main__':
             if userargs.verb and userargs.verb not in test['command']:
                 continue
 
-            if userargs.service and userargs.service not in test['command']:
+            if (userargs.service and
+                    not test['command'].startswith(userargs.service)):
                 continue
 
             if (result not in test or test[result] is None or
