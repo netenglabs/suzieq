@@ -90,10 +90,11 @@ class XplorePage(SqGuiPage):
 
         namespaces = [""]
         namespaces.extend(sorted(devdf.namespace.unique().tolist()))
-        if state.namespace:
+
+        nsidx = 0
+        if state.namespace and state.namespace in namespaces:
             nsidx = namespaces.index(state.namespace)
-        else:
-            nsidx = 0
+
         with st.sidebar:
             with st.form('Xplore'):
                 namespace = st.selectbox('Namespace',
