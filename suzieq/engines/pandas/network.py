@@ -87,14 +87,13 @@ class NetworkObj(SqPandasEngine):
         if addr_df.empty:
             # Is this a locally attached interface IP to a device we're polling
             df = self._get_table_sqobj('address') \
-                .get(vrf=vrf, address=[addr], columns=['*'],
+                .get(vrf=vrf, address=[addr],
+                     columns=['namespace', 'hostname', 'ifname', 'vlan', 'vrf',
+                              'ipAddress', 'macaddr'],
                      **kwargs)
             if df.empty:
                 return addr_df
 
-            df = df.drop(columns=['ipAddressList', 'ip6AddressList',
-                                  'state', 'type'],
-                         errors='ignore')
             df['ipAddress'] = df.ipAddress.apply(
                 lambda x: ', '.join([y.split('/')[0] for y in x]))
 
@@ -102,6 +101,7 @@ class NetworkObj(SqPandasEngine):
             df['type'] = 'interface'
             df['l2miss'] = False
 
+            cols = [x for x in cols if x in df.columns]
             return df[cols]
 
         addr_df = self._find_first_hop_attach(addr_df)
@@ -213,7 +213,7 @@ class NetworkObj(SqPandasEngine):
                 if not ifdf.ipAddressList.apply(
                         lambda subnets, netaddr:
                         False if not subnets.any() else
-                        any(addr in ip_network(subnet, strict=False)
+                        any(netaddr in ip_network(subnet, strict=False)
                             for subnet in subnets),
                         args=(netaddr,)).any():
                     # Routed interface
