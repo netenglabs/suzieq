@@ -1,4 +1,5 @@
 from typing import List
+from ipaddress import ip_address, ip_network
 
 import pandas as pd
 
@@ -75,6 +76,8 @@ class NetworkObj(SqPandasEngine):
 
         vlan = kwargs.pop('vlan', '')
         vrf = kwargs.pop('vrf', '')
+        columns = kwargs.get('columns', ['default'])
+        cols = self.schema.get_display_fields(columns)
 
         # Convert Cisco-style MAC address to standard MAC addr format,
         # and lowercase all letters of the alphabet
@@ -82,7 +85,25 @@ class NetworkObj(SqPandasEngine):
 
         addr_df = self._find_addr_arp(addr, **kwargs)
         if addr_df.empty:
-            return addr_df
+            # Is this a locally attached interface IP to a device we're polling
+            df = self._get_table_sqobj('address') \
+                .get(vrf=vrf, address=[addr], columns=['*'],
+                     **kwargs)
+            if df.empty:
+                return addr_df
+
+            df = df.drop(columns=['ipAddressList', 'ip6AddressList',
+                                  'state', 'type'],
+                         errors='ignore')
+            df['ipAddress'] = df.ipAddress.apply(
+                lambda x: ', '.join([y.split('/')[0] for y in x]))
+
+            df['bondMembers'] = ''
+            df['type'] = 'interface'
+            df['l2miss'] = False
+
+            return df[cols]
+
         addr_df = self._find_first_hop_attach(addr_df)
         if vlan and not addr_df.empty:
             addr_df = addr_df.query(f'vlan == {vlan}')
@@ -92,17 +113,20 @@ class NetworkObj(SqPandasEngine):
         if addr_df.empty:
             return addr_df
 
-        # If routed interface and unnumbered interfaces are used, we need to
-        # identify the primary interface
-        addr_df = addr_df \
-            .dropna() \
-            .drop_duplicates(subset=['namespace', 'hostname', 'vrf']) \
-            .reset_index(drop=True)
-
         if addr_df.type.unique().tolist() == ['routed']:
             addr_df = self._find_primary_interface(addr_df, addr)
 
-        return addr_df
+        # Drop duplicates that can occur as a consequence of resolving the
+        # primary interface
+        if not addr_df.empty:
+            addr_df = addr_df \
+                .dropna() \
+                .drop_duplicates(subset=['namespace', 'hostname', 'vrf',
+                                         'ipAddress', 'ifname', 'macaddr',
+                                         'vlan']) \
+                .reset_index(drop=True)
+
+        return addr_df[cols]
 
     def _find_bond_members(self, namespace: str, hostname: str,
                            ifname: str, timestamp: int) -> List[str]:
@@ -151,6 +175,9 @@ class NetworkObj(SqPandasEngine):
             tmpres = {}
             if getattr(row, 'error', None):
                 continue
+            if row.remote:
+                # We're only looking for locally attached addresses
+                continue
             if row.oif.endswith('-v0'):
                 # Handle VRR interfaces in Cumulus
                 oif = row.oif[:-3]
@@ -179,7 +206,16 @@ class NetworkObj(SqPandasEngine):
                      ifname=[oif])
 
             if not ifdf.empty:
-                if 'vlan' not in ifdf.type.unique():
+                netaddr = ip_address(row.ipAddress)
+                # The code below checks if the provided address belongs to
+                # the interface subnet. If it does, its a bridged address
+                # else its a routed address i.e. you use routing to reach it.
+                if not ifdf.ipAddressList.apply(
+                        lambda subnets, netaddr:
+                        False if not subnets.any() else
+                        any(addr in ip_network(subnet, strict=False)
+                            for subnet in subnets),
+                        args=(netaddr,)).any():
                     # Routed interface
                     if hasattr(row, 'active'):
                         tmpres['active'] = True  # False case handled above
@@ -199,6 +235,13 @@ class NetworkObj(SqPandasEngine):
                     result.append(tmpres)
                     continue
 
+                # At this point, we're dealing with bridged addresses, and as
+                # an endpoint I'm expecting an SVI. Its possible its an
+                # interface address on a routed link, but we cover that above
+                # or via fetching the address table in the code that calls this
+                # function.
+                if 'vlan' not in ifdf.type.unique():
+                    continue
                 macdf = self._get_table_sqobj('macs') \
                     .get(namespace=[row.namespace], hostname=[row.hostname],
                          vlan=ifdf.vlan.astype(str).unique().tolist(),
@@ -384,27 +427,52 @@ class NetworkObj(SqPandasEngine):
             return addr_df
 
         # We have a set of duplicated interfaces, find the primary
-        df = self._get_table_sqobj('interfaces') \
+        vrf = addr_df.vrf[0]
+        if vrf == 'default':
+            # Handle older records which have an empty string as default
+            vrf = ['default', '']
+        else:
+            vrf = [vrf]
+        df = self._get_table_sqobj('address') \
             .get(namespace=[addr_df.namespace[0]],
                  hostname=[addr_df.hostname[0]],
-                 vrf=[addr_df.vrf[0]], type='loopback')
+                 vrf=vrf, type='loopback')
+
         if df.empty:
             return addr_df
+
+        if ((df.ipAddressList.str.len() == 0).all() and
+                (df.ip6AddressList.str.len() == 0).all()):
+            # Junos interfaces have IP address on the subinterface, and
+            # so look for that.
+            ifnames = [f'{x}.0' for x in df.ifname.unique()]
+            df = self._get_table_sqobj('address') \
+                     .get(namespace=[addr_df.namespace[0]],
+                          hostname=[addr_df.hostname[0]],
+                          vrf=vrf, ifname=ifnames)
 
         df = df.explode('ipAddressList').explode('ip6AddressList') \
             .query(f'ipAddressList.str.startswith("{addr}/") or '
                    f'ip6AddressList.str.startswith("{addr}/")') \
             .reset_index(drop=True)
 
-        if not df.empty:
-            addr_df['ifname'] = df.ifname.unique().tolist()[0]
-            if df.type[0] == "bond":
-                addr_df['bondMbrs'] = self._find_bond_members(
-                    addr_df.namespace[0], addr_df.hostname[0],
-                    addr_df.ifname[0], addr_df.timestamp[0].timestamp())
-            else:
-                addr_df['bondMbrs'] = ''
-
+        if df.empty:
             return addr_df
 
+        for row in df.itertuples():
+            addr_df = addr_df.append(
+                {'namespace': row.namespace,
+                 'hostname': row.hostname,
+                 'ifname': row.ifname,
+                 'vrf': row.vrf,
+                 'ipAddress': row.ipAddressList.split('/')[0],
+                 'vlan': 0,
+                 'macaddr': row.macaddr,
+                 'bondMembers': '',
+                 'type': 'interface',
+                 'l2miss': False,
+                 'timestamp': row.timestamp},
+                ignore_index=True)
+
+        addr_df['type'] = 'interface'
         return addr_df
