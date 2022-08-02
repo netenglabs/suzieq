@@ -238,7 +238,7 @@ class Node:
         self._last_exception = self._current_exception
         self._current_exception = val
         if val:
-            self._exception_timestamp = int(time.time()*1000)
+            self._exception_timestamp = int(time.time() * 1000)
 
     @property
     def is_connected(self):
@@ -1304,8 +1304,8 @@ class CumulusNode(Node):
 
         if output[0]["status"] == 0:
             upsecs = output[0]["data"].split()[0]
-            self.bootupTimestamp = int(int(time.time()*1000)
-                                       - float(upsecs)*1000)
+            self.bootupTimestamp = int(int(time.time() * 1000)
+                                       - float(upsecs) * 1000)
         if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1].get("data", '')
             hostname = data.splitlines()[0].strip()
@@ -1471,7 +1471,7 @@ class IosXRNode(Node):
             timestr = re.search(r'uptime is (.*)\n', data)
             if timestr:
                 self.bootupTimestamp = int(datetime.utcfromtimestamp(
-                    parse(timestr.group(1)).timestamp()).timestamp()*1000)
+                    parse(timestr.group(1)).timestamp()).timestamp() * 1000)
             else:
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -1665,7 +1665,7 @@ class IosXENode(Node):
                 self._set_hostname(hostupstr.group(1))
                 timestr = hostupstr.group(2)
                 self.bootupTimestamp = int(datetime.utcfromtimestamp(
-                    parse(timestr).timestamp()).timestamp()*1000)
+                    parse(timestr).timestamp()).timestamp() * 1000)
             else:
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -1792,7 +1792,7 @@ class JunosNode(Node):
                     f'Unable to parse junos boot time from {data}')
                 timestr = '{"junos:seconds": "0"}'
             self.bootupTimestamp = (get_timestamp_from_junos_time(
-                timestr, output[0]['timestamp']/1000)/1000)
+                timestr, output[0]['timestamp'] / 1000) / 1000)
 
         if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1]["data"]
@@ -1875,6 +1875,15 @@ class NxosNode(Node):
 
 class FWSMNode(IOSNode):
     '''Cisco FireWall Service Module Support'''
+    async def _init_rest(self):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
+    async def _rest_gather(self, service_callback, cmd_list, cb_token,
+                           oformat="json", timeout=None):
+        '''Gather data for service via device REST API'''
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
     async def _fetch_init_dev_data(self):
         # At this point we are in enable mode so prompt ends with a # and
@@ -1890,7 +1899,7 @@ class FWSMNode(IOSNode):
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version", "show context"], None, 'text')
 
-    async def _null_callback(self, output, cb_token) -> None:
+    async def _null_callback(self, _output, _cb_token) -> None:
         return
 
     async def _parse_init_dev_data(self, output, cb_token) -> None:
@@ -1914,7 +1923,8 @@ class FWSMNode(IOSNode):
             if "<context>" in output[0]['data']:
                 if len(output) > 1 and output[1]["status"] == 0:
                     data = output[1]['data']
-                    if match := re.search(r'^[\s\*]+(\S+)\s+', data, re.MULTILINE):  # need Multiline as using ^ in search pattern
+                    # need Multiline as using ^ in search pattern
+                    if match := re.search(r'^[\s\*]+(\S+)\s+', data, re.MULTILINE):
                         hostname += f"-{match[1]}"
             self._set_hostname(hostname)
 
@@ -1941,8 +1951,8 @@ class CPGaia(IOSNode):
             f'{self.address}: REST transport is not supported')
 
     async def _init_ssh(self, init_dev_data=True,
-                        use_lock: bool = True) -> None:
-
+                        use_lock: bool = True, waitfor=r'.*[>#]\s*$',
+                        check_privledge=True) -> None:
         # Need to start an interactive session for Checkpoint and the ISONode code works well
         # except we don't need to switch to privledge mode..
         await super()._init_ssh(init_dev_data=False, use_lock=False,
@@ -1958,7 +1968,7 @@ class CPGaia(IOSNode):
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version product", "show hostname", "show uptime"], None, 'text')
 
-    async def _null_callback(self, output, cb_token) -> None:
+    async def _null_callback(self, _output, _cb_token) -> None:
         return
 
     async def _parse_init_dev_data(self, output, cb_token) -> None:
@@ -2011,8 +2021,8 @@ class SonicNode(Node):
 
         if output[0]["status"] == 0:
             upsecs = output[0]["data"].split()[0]
-            self.bootupTimestamp = int(int(time.time()*1000)
-                                       - float(upsecs)*1000)
+            self.bootupTimestamp = int(int(time.time() * 1000)
+                                       - float(upsecs) * 1000)
         if (len(output) > 1) and (output[1]["status"] == 0):
             self.hostname = output[1]["data"].strip()
         if (len(output) > 2) and (output[2]["status"] == 0):
@@ -2113,7 +2123,7 @@ class PanosNode(Node):
                 upsecs = 86400 * int(days) + 3600 * int(hours) + \
                     60 * int(minutes) + int(seconds)
                 self.bootupTimestamp = int(
-                    int(time.time()*1000) - float(upsecs)*1000)
+                    int(time.time() * 1000) - float(upsecs) * 1000)
             else:
                 self.logger.warning(
                     f'Cannot parse uptime from {self.address}:{self.port}')

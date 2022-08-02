@@ -114,7 +114,7 @@ class ArpndService(Service):
     def _clean_ios_data(self, processed_data, raw_data):
         return self._clean_common_ios_data(processed_data, raw_data)
 
-    def _clean_cpgaia_data(self, processed_data, raw_data):
+    def _clean_cpgaia_data(self, processed_data, _raw_data):
         for entry in processed_data:
             if 'state' not in entry:
                 entry['state'] = 'reachable'
@@ -132,17 +132,18 @@ class ArpndService(Service):
                 drop_indices.append(i)
         processed_data = np.delete(processed_data, drop_indices).tolist()
 
-        for entry in processed_data:
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
             ip_address = entry['ipAddress']
             try:
                 # check we have a valid address
                 _ = ipaddress.ip_address(ip_address)
-            except Exception:
+            except ValueError:
                 if ip_address in lookup:
                     entry['ipAddress'] = lookup[ip_address]
                 else:
-                    # Should never reach here unless some strange issue with the device config
-                    logger.error(f"ERROR: FWSM has non IP address entry in APR table: {ip_address}")
+                    drop_indices.append(i)
+        processed_data = np.delete(processed_data, drop_indices).tolist()
 
         return self._clean_common_ios_data(processed_data, raw_data)
 

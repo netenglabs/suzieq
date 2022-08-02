@@ -152,7 +152,7 @@ class RoutesService(Service):
             lastChange = entry.get('statusChangeTimestamp', [''])
             if lastChange:
                 entry['statusChangeTimestamp'] = get_timestamp_from_junos_time(
-                    lastChange, raw_data[0]['timestamp']/1000)
+                    lastChange, raw_data[0]['timestamp'] / 1000)
             else:
                 entry['statusChangeTimestamp'] = 0
 
@@ -233,7 +233,7 @@ class RoutesService(Service):
             lastChange = entry.get('statusChangeTimestamp', [''])[0]
             if lastChange:
                 entry['statusChangeTimestamp'] = get_timestamp_from_cisco_time(
-                    lastChange, raw_data[0]['timestamp']/1000)
+                    lastChange, raw_data[0]['timestamp'] / 1000)
             else:
                 entry['statusChangeTimestamp'] = 0
 
@@ -293,9 +293,9 @@ class RoutesService(Service):
                     lastchange,
                     settings={'RELATIVE_BASE':
                               datetime.fromtimestamp(
-                                  (raw_data[0]['timestamp'])/1000), })
+                                  (raw_data[0]['timestamp']) / 1000), })
             if lastchange:
-                entry['statusChangeTimestamp'] = lastchange.timestamp()*1000
+                entry['statusChangeTimestamp'] = lastchange.timestamp() * 1000
             else:
                 entry['statusChangeTimestamp'] = 0
 
@@ -311,7 +311,7 @@ class RoutesService(Service):
         #  * Handling status change timestamp
         for entry in processed_data:
             entry['statusChangeTimestamp'] = get_timestamp_from_cisco_time(
-                entry['statusChangeTimestamp'], raw_data[0]['timestamp']/1000)
+                entry['statusChangeTimestamp'], raw_data[0]['timestamp'] / 1000)
             if ':' in entry['prefix']:
                 entry['prefix'] = entry['prefix'].lower()
                 if '/' not in entry['prefix']:
@@ -348,7 +348,8 @@ class RoutesService(Service):
         processed_data = np.delete(processed_data, drop_indices).tolist()
 
         # FWSM has routes with subnet(netmasks) instead of prefixes
-        for entry in processed_data:
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
             try:
                 # check we have a valid address
                 _ = ipaddress.ip_address(entry['prefix'])
@@ -357,10 +358,10 @@ class RoutesService(Service):
                 if prefix in lookup:
                     entry['prefix'] = lookup[prefix]
                 else:
-                    # Should never reach here unless some strange issue with the device config
-                    logger.error(f"ERROR: FWSM has non IP address entry in route table: {entry['prefix']}")
+                    drop_indices.append(i)
             # convert subnet to proper prefix notation
-            entry['prefix'] += f"/{sum(bin(int(x)).count('1') for x in entry['subnet'].split('.'))}"
+            prefix = sum(bin(int(x)).count('1') for x in entry['subnet'].split('.'))
+            entry['prefix'] += f"/{prefix}"
 
         return self._clean_iosxe_data(processed_data, raw_data)
 
@@ -404,7 +405,7 @@ class RoutesService(Service):
 
             if entry.get('_age', 0):
                 entry['statusChangeTimestamp'] = \
-                    (raw_data[0]['timestamp']/1000) - int(entry['_age'])
+                    (raw_data[0]['timestamp'] / 1000) - int(entry['_age'])
             if 'E' in flags:
                 # ECMP, so attempt to merge with previous entries
                 old_entry = prefix_dict.get(entry['prefix'], None)

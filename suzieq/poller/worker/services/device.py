@@ -36,7 +36,7 @@ class DeviceService(Service):
             if not entry.get("bootupTimestamp", None) and entry.get(
                     "sysUptime", None):
                 entry["bootupTimestamp"] = int(
-                    int(raw_data[0]["timestamp"])/1000 -
+                    int(raw_data[0]["timestamp"]) / 1000 -
                     float(entry.pop("sysUptime", 0))
                 )
                 if entry["bootupTimestamp"] < 0:
@@ -78,7 +78,7 @@ class DeviceService(Service):
                                              minutes=int(mins),
                                              seconds=int(secs.split('.')[0]))
                     entry['bootupTimestamp'] = int(
-                        (int(raw_data[0]["timestamp"])/1000) -
+                        (int(raw_data[0]["timestamp"]) / 1000) -
                         uptime_delta.total_seconds())
                 drop_rest = True
                 continue
@@ -89,7 +89,7 @@ class DeviceService(Service):
 
             if etype == 'uptime':
                 entry["bootupTimestamp"] = int(
-                    int(raw_data[0]["timestamp"])/1000 -
+                    int(raw_data[0]["timestamp"]) / 1000 -
                     float(entry.pop("_sysUptime", 0))
                 )
                 if entry["bootupTimestamp"] < 0:
@@ -99,7 +99,7 @@ class DeviceService(Service):
 
             if etype == 'model':
                 mem = entry['memory'] or 0
-                entry['mem'] = int(int(mem)/1024)
+                entry['mem'] = int(int(mem) / 1024)
                 if not entry.get('vendor', ''):
                     entry['vendor'] = 'Cumulus'
                 entry['os'] = 'cumulus'
@@ -149,14 +149,17 @@ class DeviceService(Service):
         for entry in processed_data:
             if entry["_bootupTimestamp"]:
                 years = days = hours = 0
-                if hostupstr := re.search(r'(\d+)\s+day[s]*\s+(\d+)\s+hour', entry["_bootupTimestamp"]):
+                if hostupstr := re.search(r'(\d+)\s+day[s]*\s+(\d+)\s+hour',
+                                          entry["_bootupTimestamp"]):
                     days = int(hostupstr[1])
                     hours = int(hostupstr[2])
-                elif hostupstr := re.search(r'(\d+)\s+year[s]*\s+(\d+)\s+day', entry["_bootupTimestamp"]):
+                elif hostupstr := re.search(r'(\d+)\s+year[s]*\s+(\d+)\s+day',
+                                            entry["_bootupTimestamp"]):
                     years = int(hostupstr[1])
                     days = int(hostupstr[2])
                 # note the approximation of years to days..
-                entry["bootupTimestamp"] = f"{datetime.now() - timedelta(days=days + (years*364), hours=hours)}"
+                ts_fixed = datetime.now() - timedelta(days=days + (years * 364), hours=hours)
+                entry["bootupTimestamp"] = f"{ts_fixed}"
             self._clean_common_ios(entry, 'ios-fwsm')
 
         return self._common_data_cleaner(processed_data, raw_data)
@@ -179,19 +182,19 @@ class DeviceService(Service):
         for entry in processed_data:
             entry['bootupTimestamp'] = get_timestamp_from_junos_time(
                 entry['bootupTimestamp'],
-                int(raw_data[0]["timestamp"])/1000)/1000
+                int(raw_data[0]["timestamp"]) / 1000) / 1000
 
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_nxos_data(self, processed_data, raw_data):
         for entry in processed_data:
-            upsecs = (24*3600*int(entry.pop('kern_uptm_days', 0)) +
-                      3600*int(entry.pop('kern_uptm_hrs', 0)) +
-                      60*int(entry.pop('kern_uptm_mins', 0)) +
+            upsecs = (24 * 3600 * int(entry.pop('kern_uptm_days', 0)) +
+                      3600 * int(entry.pop('kern_uptm_hrs', 0)) +
+                      60 * int(entry.pop('kern_uptm_mins', 0)) +
                       int(entry.pop('kern_uptm_secs', 0)))
             if upsecs:
                 entry['bootupTimestamp'] = int(
-                    int(raw_data[0]["timestamp"])/1000 - upsecs)
+                    int(raw_data[0]["timestamp"]) / 1000 - upsecs)
 
             # Needed for textfsm parsed data
             entry['vendor'] = 'Cisco'
@@ -216,7 +219,7 @@ class DeviceService(Service):
                     60 * int(minutes) + int(seconds)
             if upsecs:
                 entry['bootupTimestamp'] = int(
-                    int(raw_data[0]["timestamp"])/1000 - upsecs)
+                    int(raw_data[0]["timestamp"]) / 1000 - upsecs)
             # defaults
             entry["vendor"] = "Palo Alto"
             entry["os"] = "panos"
