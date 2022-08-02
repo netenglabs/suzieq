@@ -601,7 +601,7 @@ tests:
     between the last 5 mins and the polling period"}]'
 - command: table describe --table=network --format=json
   data-directory: tests/data/parquet-out/
-  marks: table network describe
+  marks: table describe
   output: '[{"name": "bondMembers", "type": "string", "key": "", "display": 7, "description":
     "Member ports of a bond interface"}, {"name": "hostname", "type": "string", "key":
     "", "display": 1, "description": "Hostname associated with this record"}, {"name":
@@ -612,6 +612,7 @@ tests:
     "string", "key": "", "display": 5, "description": "Interface mac address"}, {"name":
     "namespace", "type": "string", "key": "", "display": 0, "description": "Namespace
     associated with this record"}, {"name": "type", "type": "string", "key": "", "display":
-    8, "description": "Type of interface"}, {"name": "vlan", "type": "float", "key":
-    "", "display": 4, "description": "Interface vlan"}, {"name": "vrf", "type": "string",
-    "key": "", "display": 2, "description": "VRF associated with session"}]'
+    8, "description": "How is this address connected to network"}, {"name": "vlan",
+    "type": "float", "key": "", "display": 4, "description": "Interface vlan"}, {"name":
+    "vrf", "type": "string", "key": "", "display": 2, "description": "VRF associated
+    with session"}]'
