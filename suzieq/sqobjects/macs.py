@@ -21,6 +21,8 @@ class MacsObj(SqObject):
         for key, val in kwargs.items():
             if key == 'vlan':
                 for ele in val:
+                    if isinstance(ele, (int, float)):
+                        continue
                     if (ele.startswith(('<', '>', '!')) and (
                             ele in ['<', '<=', '>', '>=', '!=', '!'])):
                         raise ValueError('operator must not be separated by '
