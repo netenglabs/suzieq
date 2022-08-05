@@ -5,13 +5,13 @@ tests:
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "server101", "vrf": "default", "ipAddress":
     "172.16.1.101", "vlan": 0, "macaddr": "26:76:20:42:e2:c6", "ifname": "bond0",
-    "bondMembers": "", "type": "interface", "l2miss": false}]'
+    "bondMembers": "eth1, eth2", "type": "interface", "l2miss": false}]'
 - command: network find --namespace=panos --address="172.16.1.101" --format=json --namespace=panos
   data-directory: tests/data/parquet
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "server101", "vrf": "default", "ipAddress":
     "172.16.1.101", "vlan": 0, "macaddr": "26:76:20:42:e2:c6", "ifname": "bond0",
-    "bondMembers": "", "type": "interface", "l2miss": false}]'
+    "bondMembers": "eth1, eth2", "type": "interface", "l2miss": false}]'
 - command: network find --address="52:54:00:c5:1d:06" --namespace=panos --format=json
     --namespace=panos
   data-directory: tests/data/parquet
@@ -30,54 +30,54 @@ tests:
   data-directory: tests/data/parquet
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "leaf01", "vrf": "default", "ipAddress":
-    "10.0.0.11", "vlan": "0", "macaddr": "52:54:00:89:13:56", "ifname": "swp2", "bondMembers":
-    "", "type": "interface", "l2miss": false}, {"namespace": "panos", "hostname":
-    "leaf01", "vrf": "default", "ipAddress": "10.0.0.11", "vlan": "0", "macaddr":
-    "52:54:00:c4:19:83", "ifname": "swp1", "bondMembers": "", "type": "interface",
-    "l2miss": false}, {"namespace": "panos", "hostname": "leaf01", "vrf": "default",
-    "ipAddress": "10.0.0.11", "vlan": 0, "macaddr": "00:00:00:00:00:00", "ifname":
-    "lo", "bondMembers": "", "type": "interface", "l2miss": false}]'
+    "10.0.0.11", "vlan": 0, "macaddr": "52:54:00:89:13:56", "ifname": "swp2", "bondMembers":
+    "", "type": "routed", "l2miss": false}, {"namespace": "panos", "hostname": "leaf01",
+    "vrf": "default", "ipAddress": "10.0.0.11", "vlan": 0, "macaddr": "52:54:00:c4:19:83",
+    "ifname": "swp1", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
+    "panos", "hostname": "leaf01", "vrf": "default", "ipAddress": "10.0.0.11", "vlan":
+    0, "macaddr": "00:00:00:00:00:00", "ifname": "lo", "bondMembers": "", "type":
+    "interface", "l2miss": false}]'
 - command: network find --address="169.254.127.0" --format=json --namespace=panos
   data-directory: tests/data/parquet
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "dcedge01", "vrf": "default", "ipAddress":
-    "169.254.127.0, fe80::5054:ff:fe89:e4e1", "vlan": 0, "macaddr": "52:54:00:89:e4:e1",
-    "ifname": "swp1", "bondMembers": "", "type": "interface", "l2miss": false}]'
+    "169.254.127.0", "vlan": 0, "macaddr": "52:54:00:89:e4:e1", "ifname": "swp1",
+    "bondMembers": "", "type": "interface", "l2miss": false}]'
 - command: network find --address="169.254.127.1" --format=json --namespace=panos
   data-directory: tests/data/parquet
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "exit01", "vrf": "internet-vrf", "ipAddress":
-    "169.254.127.1, fe80::5054:ff:fede:df7d", "vlan": 0, "macaddr": "52:54:00:de:df:7d",
-    "ifname": "swp4", "bondMembers": "", "type": "interface", "l2miss": false}]'
+    "169.254.127.1", "vlan": 0, "macaddr": "52:54:00:de:df:7d", "ifname": "swp4",
+    "bondMembers": "", "type": "interface", "l2miss": false}]'
 - command: network find --address="10.0.0.21" --format=json --namespace=panos
   data-directory: tests/data/parquet
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "spine01", "vrf": "default", "ipAddress":
-    "10.0.0.21", "vlan": "0", "macaddr": "52:54:00:c4:54:00", "ifname": "swp6", "bondMembers":
-    "", "type": "interface", "l2miss": false}, {"namespace": "panos", "hostname":
-    "spine01", "vrf": "default", "ipAddress": "10.0.0.21", "vlan": "0", "macaddr":
-    "52:54:00:f5:f0:96", "ifname": "swp5", "bondMembers": "", "type": "interface",
-    "l2miss": false}, {"namespace": "panos", "hostname": "spine01", "vrf": "default",
-    "ipAddress": "10.0.0.21", "vlan": "0", "macaddr": "52:54:00:41:6f:13", "ifname":
-    "swp2", "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace":
+    "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:c4:54:00", "ifname": "swp6", "bondMembers":
+    "", "type": "routed", "l2miss": false}, {"namespace": "panos", "hostname": "spine01",
+    "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:f5:f0:96",
+    "ifname": "swp5", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
     "panos", "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21", "vlan":
-    "0", "macaddr": "52:54:00:d3:be:93", "ifname": "swp3", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "panos", "hostname": "spine01", "vrf":
-    "default", "ipAddress": "10.0.0.21", "vlan": "0", "macaddr": "52:54:00:83:d9:77",
-    "ifname": "swp1", "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace":
+    0, "macaddr": "52:54:00:41:6f:13", "ifname": "swp2", "bondMembers": "", "type":
+    "routed", "l2miss": false}, {"namespace": "panos", "hostname": "spine01", "vrf":
+    "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:d3:be:93",
+    "ifname": "swp3", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
     "panos", "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21", "vlan":
-    "0", "macaddr": "52:54:00:a0:82:3d", "ifname": "swp4", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "panos", "hostname": "spine01", "vrf":
-    "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "00:00:00:00:00:00",
-    "ifname": "lo", "bondMembers": "", "type": "interface", "l2miss": false}]'
+    0, "macaddr": "52:54:00:83:d9:77", "ifname": "swp1", "bondMembers": "", "type":
+    "routed", "l2miss": false}, {"namespace": "panos", "hostname": "spine01", "vrf":
+    "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:a0:82:3d",
+    "ifname": "swp4", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
+    "panos", "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21", "vlan":
+    0, "macaddr": "00:00:00:00:00:00", "ifname": "lo", "bondMembers": "", "type":
+    "interface", "l2miss": false}]'
 - command: network find --address="10.0.0.32" --format=json --namespace=panos
   data-directory: tests/data/parquet
   marks: network find panos
   output: '[{"namespace": "panos", "hostname": "exit02", "vrf": "default", "ipAddress":
-    "10.0.0.32", "vlan": "0", "macaddr": "52:54:00:3c:63:f0", "ifname": "swp2", "bondMembers":
-    "", "type": "interface", "l2miss": false}, {"namespace": "panos", "hostname":
-    "exit02", "vrf": "default", "ipAddress": "10.0.0.32", "vlan": "0", "macaddr":
-    "52:54:00:d2:4a:6a", "ifname": "swp1", "bondMembers": "", "type": "interface",
-    "l2miss": false}, {"namespace": "panos", "hostname": "exit02", "vrf": "default",
-    "ipAddress": "10.0.0.32", "vlan": 0, "macaddr": "00:00:00:00:00:00", "ifname":
-    "lo", "bondMembers": "", "type": "interface", "l2miss": false}]'
+    "10.0.0.32", "vlan": 0, "macaddr": "52:54:00:3c:63:f0", "ifname": "swp2", "bondMembers":
+    "", "type": "routed", "l2miss": false}, {"namespace": "panos", "hostname": "exit02",
+    "vrf": "default", "ipAddress": "10.0.0.32", "vlan": 0, "macaddr": "52:54:00:d2:4a:6a",
+    "ifname": "swp1", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
+    "panos", "hostname": "exit02", "vrf": "default", "ipAddress": "10.0.0.32", "vlan":
+    0, "macaddr": "00:00:00:00:00:00", "ifname": "lo", "bondMembers": "", "type":
+    "interface", "l2miss": false}]'
