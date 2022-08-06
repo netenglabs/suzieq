@@ -1,7 +1,7 @@
 description: Testing describe across all tables
 tests:
 - command: address describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: address describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "hostname", "type": "string",
@@ -25,7 +25,7 @@ tests:
     {"name": "vlan", "type": "long", "key": "", "display": "", "description": ""},
     {"name": "vrf", "type": "string", "key": "", "display": 7, "description": ""}]'
 - command: arpnd describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: arpnd describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "hostname", "type": "string",
@@ -43,7 +43,7 @@ tests:
     "key": "", "display": 7, "description": "Unix epach When this record was created,
     in ms"}]'
 - command: bgp describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: bgp describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "advertiseAllVnis", "type": "boolean",
@@ -132,7 +132,7 @@ tests:
     {"name": "vrf", "type": "string", "key": 2, "display": 2, "description": "VRF
     associated with session"}]'
 - command: devconfig describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: devconfig describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "config", "type": "string", "key":
@@ -144,7 +144,7 @@ tests:
     "timestamp", "type": "timestamp", "key": "", "display": 2, "description": "Unix
     epach When this record was created, in ms"}]'
 - command: device describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: device describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "address", "type": "string", "key":
@@ -168,7 +168,7 @@ tests:
     ""}, {"name": "version", "type": "string", "key": "", "display": 3, "description":
     ""}]'
 - command: evpnVni describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: evpnVni describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "advGateway", "type": "boolean",
@@ -201,7 +201,7 @@ tests:
     "vniFilter", "type": "string", "key": "", "display": "", "description": ""}, {"name":
     "vrf", "type": "string", "key": "", "display": "", "description": ""}]'
 - command: fs describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: fs describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "availSize", "type": "string",
@@ -221,7 +221,7 @@ tests:
     "usedSize", "type": "string", "key": "", "display": 4, "description": "Used space
     on partition"}]'
 - command: interface describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: interface describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "adminState", "type": "string",
@@ -268,7 +268,7 @@ tests:
     if assigned"}, {"name": "vni", "type": "int", "key": "", "display": "", "description":
     "Virtual Network ID, if provided"}]'
 - command: inventory describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: inventory describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "hostname", "type": "string",
@@ -290,7 +290,7 @@ tests:
     vendor of entry"}, {"name": "version", "type": "string", "key": "", "display":
     7, "description": "Version number of inventory"}]'
 - command: lldp describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: lldp describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "description", "type": "string",
@@ -312,7 +312,7 @@ tests:
     "subtype indicating peer interface identifier, mac/name etc."}, {"name": "timestamp",
     "type": "timestamp", "key": "", "display": 7, "description": ""}]'
 - command: mac describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: mac describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "bd", "type": "string", "key":
@@ -335,7 +335,7 @@ tests:
     "key": "", "display": 8, "description": ""}, {"name": "vlan", "type": "long",
     "key": "", "display": 2, "description": "VLAN ID"}]'
 - command: mlag describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: mlag describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "backupActive", "type": "boolean",
@@ -379,7 +379,7 @@ tests:
     "string", "key": "", "display": "", "description": "Anycast VTEP IP address, if
     appropriate"}]'
 - command: namespace describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: namespace describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     ""}, {"name": "deviceCnt", "type": "long", "key": "", "display": 1, "description":
@@ -398,7 +398,7 @@ tests:
     of services polled in this namespace"}, {"name": "sqvers", "type": "string", "key":
     "", "display": "", "description": "Schema version, not selectable"}]'
 - command: path describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: path describe
   output: '[{"name": "hopCount", "type": "long", "key": "", "display": 2, "description":
     "unique hop within a path, can be L2 or L3 path"}, {"name": "hostname", "type":
@@ -428,7 +428,7 @@ tests:
     ignored on L2 hop"}, {"name": "vtepLookup", "type": "string", "key": "", "display":
     15, "description": "vtep IP address used to lookup underlay route"}]'
 - command: ospf describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: ospf describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "adjState", "type": "string",
@@ -480,7 +480,7 @@ tests:
     "timestamp", "key": "", "display": 12, "description": ""}, {"name": "vrf", "type":
     "string", "key": 2, "display": 2, "description": "The OSPF instance VRF"}]'
 - command: route describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: route describe
   output: '[{"name": "action", "type": "string", "key": "", "display": 10, "description":
     "Action taken on this route: forward, blackhole etc"}, {"name": "active", "type":
@@ -520,7 +520,7 @@ tests:
     "weight", "type": "long"}}, "key": "", "display": "", "description": "List of
     weights associated with nexthop"}]'
 - command: topology describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: topology describe
   output: '[{"name": "area", "type": "string", "key": "", "display": 9, "description":
     "OSPF area in OSPF peering"}, {"name": "arpnd", "type": "bool", "key": "", "display":
@@ -545,7 +545,7 @@ tests:
     "vrf", "type": "string", "key": "", "display": 6, "description": "VRF that the
     connection is in"}]'
 - command: vlan describe --format=json
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   marks: vlan describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "hostname", "type": "string",
@@ -561,7 +561,7 @@ tests:
     6, "description": "VLAN ID"}, {"name": "vlanName", "type": "string", "key": 2,
     "display": 3, "description": "VLAN name"}]'
 - command: sqPoller describe --format=json
-  data-directory: tests/data/parquet-out/
+  data-directory: tests/data/parquet
   marks: sqPoller describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "gatherTime", "type": {"type":
@@ -600,7 +600,7 @@ tests:
     7, "description": "[min, max, avg] of write queue size, computed over the greater
     between the last 5 mins and the polling period"}]'
 - command: table describe --table=network --format=json
-  data-directory: tests/data/parquet-out/
+  data-directory: tests/data/parquet
   marks: table describe
   output: '[{"name": "bondMembers", "type": "string", "key": "", "display": 7, "description":
     "Member ports of a bond interface"}, {"name": "hostname", "type": "string", "key":
