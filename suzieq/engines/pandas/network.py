@@ -1,5 +1,6 @@
 from typing import List
 from ipaddress import ip_address, ip_network
+from datetime import timedelta
 
 import pandas as pd
 
@@ -79,6 +80,10 @@ class NetworkObj(SqPandasEngine):
         columns = kwargs.get('columns', ['default'])
         cols = self.schema.get_display_fields(columns)
 
+        if ((self.iobj.start_time and self.iobj.end_time) or
+                (self.iobj.view == 'all')):
+            cols.insert(0, 'active')
+            cols.append('timestamp')
         # Convert Cisco-style MAC address to standard MAC addr format,
         # and lowercase all letters of the alphabet
         addr = convert_macaddr_format_to_colon(addr)
@@ -89,20 +94,30 @@ class NetworkObj(SqPandasEngine):
             df = self._get_table_sqobj('address') \
                 .get(vrf=vrf, address=[addr],
                      columns=['namespace', 'hostname', 'ifname', 'vlan', 'vrf',
-                              'ipAddress', 'macaddr'],
+                              'ipAddress', 'macaddr', 'timestamp'],
                      **kwargs)
             if df.empty:
                 return addr_df
 
-            df['ipAddress'] = df.ipAddress.apply(
-                lambda x: ', '.join([y.split('/')[0] for y in x]))
+            # Only pick the entry with the address specified
+            df = df.explode('ipAddress')
+            df['ipAddress'] = df.ipAddress.str.split('/').str[0]
+            if any(x in addr for x in ['::', '.']):
+                df = df.query(f'ipAddress == "{addr}"').reset_index(drop=True)
+            else:
+                # If we're querying by MAC Addr and an interface has no IP,
+                # without fillna, the entries are dropped due to dropna below
+                # Arista's interfaces return a 0.0.0.0 if the primary address
+                # isn't set. Weed out these entries
 
-            df['bondMembers'] = ''
+                df = df.query(f'macaddr == "{addr}"') \
+                       .fillna('') \
+                       .query('ipAddress != "0.0.0.0"') \
+                       .reset_index(drop=True)
+
             df['type'] = 'interface'
             df['l2miss'] = False
-
-            cols = [x for x in cols if x in df.columns]
-            return df[cols]
+            addr_df = df
 
         addr_df = self._find_first_hop_attach(addr_df)
         if vlan and not addr_df.empty:
@@ -113,39 +128,36 @@ class NetworkObj(SqPandasEngine):
         if addr_df.empty:
             return addr_df
 
-        if addr_df.type.unique().tolist() == ['routed']:
-            addr_df = self._find_primary_interface(addr_df, addr)
+        # If routed interface and unnumbered interfaces are used, we need to
+        # identify the primary interface
+        addr_df = addr_df \
+            .dropna() \
+            .drop_duplicates() \
+            .reset_index(drop=True)
 
-        # Drop duplicates that can occur as a consequence of resolving the
-        # primary interface
-        if not addr_df.empty:
-            addr_df = addr_df \
-                .dropna() \
-                .drop_duplicates(subset=['namespace', 'hostname', 'vrf',
-                                         'ipAddress', 'ifname', 'macaddr',
-                                         'vlan']) \
-                .reset_index(drop=True)
+        if addr_df.type.unique().tolist() == ['routed']:
+            addr_df = self._add_primary_interface(addr_df, addr)
 
         return addr_df[cols]
 
     def _find_bond_members(self, namespace: str, hostname: str,
-                           ifname: str, timestamp: int) -> List[str]:
+                           ifname: str, timestamp: str) -> List[str]:
         """This function returns the member ports of a bond interface
         Args:
             namespace (str): Namespace of the host
             hostname (str): Hostname of the host
             ifname (str): Interface name of the bond
-            timestamp (int): Timestamp (epoch secs), at which to look for
+            timestamp (str): time string, of str(timestamp) format
 
         Returns:
-            mbr_list(List[str]): List of member ports
+            mbr_list(List[str]): List of member ports or input ifname
         """
 
         # get list  of namespaces, hostnames and ifnames to get info for
 
         ifdf = self._get_table_sqobj('interfaces',
-                                     start_time=str(timestamp-30),
-                                     end_time=str(timestamp+30)) \
+                                     start_time='',
+                                     end_time=timestamp) \
             .get(namespace=[namespace], hostname=[hostname], master=[ifname])
 
         if not ifdf.empty:
@@ -171,42 +183,56 @@ class NetworkObj(SqPandasEngine):
                 macaddr=addr.split(), **kwargs)
 
         result = []
-        for row in arpdf.itertuples():
+        if arpdf.empty:
+            return pd.DataFrame(result)
+
+        arpdf = arpdf.query('not remote').reset_index(drop=True)
+        if arpdf.empty:
+            return pd.DataFrame(result)
+
+        namespaces = arpdf.namespace.unique().tolist()
+        hostnames = arpdf.hostname.unique().tolist()
+        # Weed out MACVLAN interfaces on Cumulus that are for VIPs
+        ifaces = [x for x in arpdf.oif.unique().tolist()
+                  if not x.endswith('-v0')]
+        macaddrs = arpdf.macaddr.unique().tolist()
+
+        ifdf = self._get_table_sqobj('interfaces', start_time='') \
+            .get(namespace=namespaces, hostname=hostnames,
+                 ifname=ifaces)
+        macdf = self._get_table_sqobj('macs', start_time='') \
+                    .get(namespace=namespaces, hostname=hostnames,
+                         macaddr=macaddrs, columns=['default'],
+                         local=True)
+
+        for arp_row in arpdf.itertuples():
+            row_end_time = arp_row.timestamp + timedelta(seconds=60)
             tmpres = {}
-            if getattr(row, 'error', None):
+            if getattr(arp_row, 'error', None):
                 continue
-            if row.remote:
-                # We're only looking for locally attached addresses
-                continue
-            if row.oif.endswith('-v0'):
+            if arp_row.oif.endswith('-v0'):
                 # Handle VRR interfaces in Cumulus
-                oif = row.oif[:-3]
+                oif = arp_row.oif[:-3]
             else:
-                oif = row.oif
+                oif = arp_row.oif
 
-            active = getattr(row, 'active', True)
-            if not active:
-                result.append({
-                    'active': False,
-                    'namespace': row.namespace,
-                    'hostname': row.hostname,
-                    'vrf': '-',
-                    'ipAddress': row.ipAddress,
-                    'vlan': '-',
-                    'macaddr': row.macaddr,
-                    'ifname': row.oif,
-                    'type': 'bridged',
-                    'l2miss': False,
-                    'timestamp': row.timestamp
-                })
-                continue
+            active = getattr(arp_row, 'active', True)
 
-            ifdf = self._get_table_sqobj('interfaces') \
-                .get(namespace=[row.namespace], hostname=[row.hostname],
-                     ifname=[oif])
+            # We ignore the start time because the interface may not have
+            # had a change in a very long time. Using the start-time if
+            # one is provided can make us not return the relevant data
+            # in situations where the interface has been stable long before
+            # the start time.
+            row_ifdf = ifdf.query(f'namespace=="{arp_row.namespace}" and '
+                                  f'hostname=="{arp_row.hostname}" and '
+                                  f'ifname=="{arp_row.oif}"')
+            # We need to select the entries that are closest to this
+            # arpdf entry's timestamp
+            row_ifdf = row_ifdf[row_ifdf.timestamp <= row_end_time]
 
-            if not ifdf.empty:
-                netaddr = ip_address(row.ipAddress)
+            if not row_ifdf.empty:
+                netaddr = ip_address(arp_row.ipAddress)
+                row_vrf = row_ifdf.master.unique().tolist()[0] or 'default'
                 # The code below checks if the provided address belongs to
                 # the interface subnet. If it does, its a bridged address
                 # else its a routed address i.e. you use routing to reach it.
@@ -216,21 +242,20 @@ class NetworkObj(SqPandasEngine):
                         any(netaddr in ip_network(subnet, strict=False)
                             for subnet in subnets),
                         args=(netaddr,)).any():
-                    # Routed interface
-                    if hasattr(row, 'active'):
-                        tmpres['active'] = True  # False case handled above
 
+                    # Routed interface
                     tmpres.update({
-                        'namespace': row.namespace,
-                        'hostname': row.hostname,
-                        'vrf': ifdf.master.unique().tolist()[0] or 'default',
-                        'ipAddress': row.ipAddress,
-                        'vlan': ifdf.vlan.astype(str).unique().tolist()[0],
-                        'macaddr': row.macaddr,
+                        'active': active,
+                        'namespace': arp_row.namespace,
+                        'hostname': arp_row.hostname,
+                        'vrf': row_vrf,
+                        'ipAddress': arp_row.ipAddress,
+                        'vlan': row_ifdf.vlan.unique().tolist()[0],
+                        'macaddr': arp_row.macaddr,
                         'ifname': oif,
                         'type': 'routed',
                         'l2miss': False,
-                        'timestamp': row.timestamp
+                        'timestamp': arp_row.timestamp
                     })
                     result.append(tmpres)
                     continue
@@ -242,48 +267,55 @@ class NetworkObj(SqPandasEngine):
                 # function.
                 if 'vlan' not in ifdf.type.unique():
                     continue
-                macdf = self._get_table_sqobj('macs') \
-                    .get(namespace=[row.namespace], hostname=[row.hostname],
-                         vlan=ifdf.vlan.astype(str).unique().tolist(),
-                         macaddr=[row.macaddr],
-                         columns=['default'],
-                         local=True)
-                if not macdf.empty:
-                    oifs = [x for x in macdf.oif.unique() if x !=
-                            "vPC Peer-Link"]
-                    if not oifs:
+
+                row_macdf = macdf.query(
+                    f'namespace=="{arp_row.namespace}" and '
+                    f'hostname=="{arp_row.hostname}" and '
+                    f'macaddr=="{arp_row.macaddr}" and '
+                    f'vlan=={ifdf.vlan.unique().tolist()}')
+                # We need to select the entries that are closest to this
+                # arpdf entry's timestamp. We need to use start and end times
+                # because its possible to get multiple entries otherwise if
+                # the mac table has changed along with the arp table.
+                row_macdf = row_macdf[(row_macdf.timestamp <= row_end_time)]
+
+                for mac_row in row_macdf.itertuples():
+                    if not mac_row.oif or mac_row.oif == "vPC Peer-Link":
                         continue
-                    if hasattr(row, 'active'):
-                        tmpres['active'] = True
-                    tmpres.update({
-                        'namespace': row.namespace,
-                        'hostname': row.hostname,
-                        'vrf': ifdf.master.unique().tolist()[0] or 'default',
-                        'ipAddress': row.ipAddress,
-                        'vlan': ifdf.vlan.astype(str).unique().tolist()[0],
-                        'macaddr': row.macaddr,
-                        'ifname': oifs[0],
-                        'type': 'bridged',
-                        'l2miss': False,
-                        'timestamp': row.timestamp
-                    })
-                    result.append(tmpres)
-                else:
-                    if hasattr(row, 'active'):
-                        tmpres['active'] = True
+                    oifs = mac_row.oif
 
                     tmpres.update({
-                        'namespace': row.namespace,
-                        'hostname': row.hostname,
-                        'vrf': ifdf.master.unique().tolist()[0] or 'default',
-                        'ipAddress': row.ipAddress,
-                        'vlan': ifdf.vlan.astype(str).unique().tolist()[0],
-                        'macaddr': row.macaddr,
-                        'ifname': ' '.join(ifdf.ifname.unique().tolist()),
+                        'active': active,
+                        'namespace': arp_row.namespace,
+                        'hostname': arp_row.hostname,
+                        'vrf': row_vrf,
+                        'ipAddress': arp_row.ipAddress,
+                        'vlan': mac_row.vlan,
+                        'macaddr': arp_row.macaddr,
+                        'ifname': oifs,
                         'type': 'bridged',
-                        'l2miss': True,
-                        'timestamp': row.timestamp
+                        'l2miss': False,
+                        'timestamp': arp_row.timestamp
                     })
+                    result.append(tmpres)
+
+                if row_macdf.empty:
+                    for ele_vlan in row_ifdf.vlan.unique().tolist():
+                        tmpres.update({
+                            'active': active,
+                            'namespace': arp_row.namespace,
+                            'hostname': arp_row.hostname,
+                            'vrf': row_vrf,
+                            'ipAddress': arp_row.ipAddress,
+                            'vlan': ele_vlan,
+                            'macaddr': arp_row.macaddr,
+                            'ifname':
+                            ' '.join(row_ifdf.query(f'vlan == {ele_vlan}')
+                                     .ifname.unique().tolist()),
+                            'type': 'bridged',
+                            'l2miss': True,
+                            'timestamp': arp_row.timestamp
+                        })
                     result.append(tmpres)
 
         return pd.DataFrame(result)
@@ -308,32 +340,17 @@ class NetworkObj(SqPandasEngine):
             tmpres = {}
 
             active = getattr(row, 'active', True)
-            if not active:
-                result.append({
-                    'active': False,
-                    'namespace': row.namespace,
-                    'hostname': row.hostname,
-                    'vrf': row.vrf,
-                    'ipAddress': row.ipAddress,
-                    'vlan': row.vlan,
-                    'macaddr': row.macaddr,
-                    'ifname': row.ifname,
-                    'bondMembers': '-',
-                    'type': row.type,
-                    'l2miss': row.l2miss,
-                    'timestamp': row.timestamp
-                })
-                continue
-
             match_ifname = row.ifname.split('.')[0]
             match_hostname = row.hostname
             match_namespace = row.namespace
             match_vrf = row.vrf
-            match_endtime = str(row.timestamp.timestamp() + 30)
-            match_starttime = str(row.timestamp.timestamp() - 30)
-            macobj = self._get_table_sqobj('macs', start_time=match_starttime,
+            if self.iobj.end_time:
+                match_endtime = str(row.timestamp + timedelta(seconds=60))
+            else:
+                match_endtime = ''
+            macobj = self._get_table_sqobj('macs', start_time='',
                                            end_time=match_endtime)
-            lldpobj = self._get_table_sqobj('lldp', start_time=match_starttime,
+            lldpobj = self._get_table_sqobj('lldp', start_time='',
                                             end_time=match_endtime)
 
             while True:
@@ -344,7 +361,15 @@ class NetworkObj(SqPandasEngine):
 
                 mbr_ports = self._find_bond_members(
                     match_namespace, match_hostname, match_ifname,
-                    row.timestamp.timestamp())
+                    match_endtime)
+
+                # If what we have is an address of an interface, don't chase
+                # down the rabbit hole for first attach point
+                if row.type == 'interface':
+                    if match_ifname in mbr_ports:
+                        mbr_ports = ''
+                    match_ifname = row.ifname
+                    break
 
                 lldp_df = lldpobj.get(namespace=[row.namespace],
                                       hostname=[row.hostname],
@@ -357,7 +382,7 @@ class NetworkObj(SqPandasEngine):
                         match_ifname = lldp_df.peerIfname.unique().tolist()[0]
                         mbr_ports = self._find_bond_members(
                             match_namespace, match_hostname, match_ifname,
-                            row.timestamp.timestamp())
+                            match_endtime)
                         # Need to get VRF for the interface
                         ifdf = self._get_table_sqobj('interfaces') \
                             .get(namespace=[match_namespace],
@@ -386,10 +411,8 @@ class NetworkObj(SqPandasEngine):
             if match_ifname in mbr_ports:
                 mbr_ports = ''
 
-            if 'active' in addr_df.columns:
-                tmpres['active'] = True  # False has been handled already
-
             tmpres.update({
+                'active': active,
                 'namespace': row.namespace,
                 'hostname': match_hostname,
                 'vrf': match_vrf,
@@ -409,16 +432,16 @@ class NetworkObj(SqPandasEngine):
 
         return addr_df
 
-    def _find_primary_interface(self, addr_df: pd.DataFrame,
-                                addr: str) -> pd.DataFrame:
-        """Find the primary interface for this address
+    def _add_primary_interface(self, addr_df: pd.DataFrame,
+                               addr: str) -> pd.DataFrame:
+        """Add the primary interface for this address if unnumbered
 
         Args:
             addr_df (pd.DataFrame): Dataframe with the address information
             addr (str): address to search for
 
         Returns:
-            pd.DataFrame: Dataframe with primary interface rows only
+            pd.DataFrame: Dataframe with primary interface rows added
         """
 
         hostnsgrp = addr_df.groupby(['hostname', 'namespace', 'vrf'])
@@ -426,23 +449,18 @@ class NetworkObj(SqPandasEngine):
             # not a set of duplicated interfaces, return
             return addr_df
 
+        # We need to add the empty string to handle junos devices which have
+        # the IP address on .0 interfaces which the poller tended to classify
+        # as subinterface.
+        vrf = [addr_df.vrf[0], '']
         # We have a set of duplicated interfaces, find the primary
-        vrf = addr_df.vrf[0]
-        if vrf == 'default':
-            # Handle older records which have an empty string as default
-            vrf = ['default', '']
-        else:
-            vrf = [vrf]
-        df = self._get_table_sqobj('address') \
+        df = self._get_table_sqobj('address', start_time='') \
             .get(namespace=[addr_df.namespace[0]],
                  hostname=[addr_df.hostname[0]],
                  vrf=vrf, type='loopback')
 
-        if df.empty:
-            return addr_df
-
-        if ((df.ipAddressList.str.len() == 0).all() and
-                (df.ip6AddressList.str.len() == 0).all()):
+        if df.empty or ((df.ipAddressList.str.len() == 0).all() and
+                        (df.ip6AddressList.str.len() == 0).all()):
             # Junos interfaces have IP address on the subinterface, and
             # so look for that.
             ifnames = [f'{x}.0' for x in df.ifname.unique()]
@@ -454,25 +472,23 @@ class NetworkObj(SqPandasEngine):
         df = df.explode('ipAddressList').explode('ip6AddressList') \
             .query(f'ipAddressList.str.startswith("{addr}/") or '
                    f'ip6AddressList.str.startswith("{addr}/")') \
+            .fillna('') \
             .reset_index(drop=True)
 
-        if df.empty:
-            return addr_df
+        if not df.empty:
+            df['macaddr'] = "00:00:00:00:00:00"
+            df['vlan'] = 0
+            df['bondMembers'] = ''
+            df['type'] = 'interface'
+            df['l2miss'] = False
+            if '::' in addr:
+                df['ipAddress'] = df.ip6AddressList.apply(lambda x:
+                                                          x.split('/')[0])
+            else:
+                df['ipAddress'] = df.ipAddressList.apply(lambda x:
+                                                         x.split('/')[0])
 
-        for row in df.itertuples():
-            addr_df = addr_df.append(
-                {'namespace': row.namespace,
-                 'hostname': row.hostname,
-                 'ifname': row.ifname,
-                 'vrf': row.vrf,
-                 'ipAddress': row.ipAddressList.split('/')[0],
-                 'vlan': 0,
-                 'macaddr': row.macaddr,
-                 'bondMembers': '',
-                 'type': 'interface',
-                 'l2miss': False,
-                 'timestamp': row.timestamp},
-                ignore_index=True)
-
-        addr_df['type'] = 'interface'
+            addr_df = addr_df.append(df[['namespace', 'hostname', 'ifname',
+                                         'ipAddress', 'vrf', 'vlan', 'type',
+                                        'l2miss', 'macaddr', 'bondMembers']])
         return addr_df
