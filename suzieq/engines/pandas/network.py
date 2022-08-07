@@ -1,6 +1,5 @@
 from typing import List
 from ipaddress import ip_address, ip_network
-from datetime import timedelta
 
 import pandas as pd
 
@@ -165,6 +164,7 @@ class NetworkObj(SqPandasEngine):
 
         return [ifname]
 
+    # pylint: disable=too-many-statements
     def _find_addr_arp(self, addr: str, **kwargs) -> pd.DataFrame:
         """Find the origin or the first hop network device that owns this addr
 
@@ -182,13 +182,29 @@ class NetworkObj(SqPandasEngine):
             arpdf = self._get_table_sqobj('arpnd').get(
                 macaddr=addr.split(), **kwargs)
 
+        # This var tracks the set of hosts that were active and had
+        # local ARP entries when last seen. Its used when view=all or
+        # start and end times are specified.
+        active_local_hosts = set()
         result = []
         if arpdf.empty:
             return pd.DataFrame(result)
 
-        arpdf = arpdf.query('not remote').reset_index(drop=True)
-        if arpdf.empty:
-            return pd.DataFrame(result)
+        # When providing view=all or a start-time/end-time, since we're
+        # using data from multiple table to produce the final output, we
+        # need to know how to handle the time when we look for data in those
+        # additional tables. For example, consider an ARP entry exists at time
+        # t1, and then has changes at t2 and t3. Now lets say the user wants
+        # to see all changes or changes between t1 and t3. WHen processing
+        # the entries for row t1, We need to ensure that we look for data in
+        # other tables only before t2, only before t3 when processing the
+        # entry at time t2 and so on. We're figuring out the time window
+        # with the code below.
+        if not arpdf.empty:
+            key_cols = ['namespace', 'hostname', 'ipAddress']
+            arpdf = arpdf.sort_values(by=key_cols + ['timestamp'])
+            arpdf['next_ts'] = arpdf.groupby(by=key_cols)['timestamp'] \
+                                    .shift(-1)
 
         namespaces = arpdf.namespace.unique().tolist()
         hostnames = arpdf.hostname.unique().tolist()
@@ -200,35 +216,57 @@ class NetworkObj(SqPandasEngine):
         ifdf = self._get_table_sqobj('interfaces', start_time='') \
             .get(namespace=namespaces, hostname=hostnames,
                  ifname=ifaces)
+        # We don't explicitly look for only local-only entries because
+        # that precludes us addresses that were not remote in the past.
         macdf = self._get_table_sqobj('macs', start_time='') \
                     .get(namespace=namespaces, hostname=hostnames,
-                         macaddr=macaddrs, columns=['default'],
-                         local=True)
+                         macaddr=macaddrs,
+                         columns=['namespace', 'hostname', 'vlan', 'macaddr',
+                                  'oif', 'remoteVtepIp', 'flags', 'active',
+                                  'timestamp'])
 
         for arp_row in arpdf.itertuples():
-            row_end_time = arp_row.timestamp + timedelta(seconds=60)
+            # We ignore the start time because the entries such as interface
+            # may not have changeed in a very long time. Using the
+            # start-time if one is provided can make us not return the
+            # relevant data in situations where say, the interface has been
+            # stable long before.
+            # the start time.
+            row_end_time = arp_row.next_ts or self.iobj.end_time
             tmpres = {}
+
             if getattr(arp_row, 'error', None):
                 continue
+            # Remote ARP entries are not what we need to track down locally
+            # attached addresses. The if removes any always remote entries
+            # from being considered.
+            if (arp_row.remote and
+                    arp_row.hostname not in active_local_hosts):
+                continue
+
             if arp_row.oif.endswith('-v0'):
-                # Handle VRR interfaces in Cumulus
-                oif = arp_row.oif[:-3]
-            else:
-                oif = arp_row.oif
+                # Ignore VRR interfaces in Cumulus, we got them via the
+                # normal interface entry (without -v0)
+                continue
+            oif = arp_row.oif
 
             active = getattr(arp_row, 'active', True)
+            # If an entry goes from local to being deleted, remove it
+            if not active and arp_row.hostname in active_local_hosts:
+                active_local_hosts.remove(arp_row.hostname)
 
-            # We ignore the start time because the interface may not have
-            # had a change in a very long time. Using the start-time if
-            # one is provided can make us not return the relevant data
-            # in situations where the interface has been stable long before
-            # the start time.
+            if active and not arp_row.remote:
+                active_local_hosts.add(arp_row.hostname)
+
             row_ifdf = ifdf.query(f'namespace=="{arp_row.namespace}" and '
                                   f'hostname=="{arp_row.hostname}" and '
                                   f'ifname=="{arp_row.oif}"')
             # We need to select the entries that are closest to this
             # arpdf entry's timestamp
-            row_ifdf = row_ifdf[row_ifdf.timestamp <= row_end_time]
+            if (not row_ifdf.empty and
+                (self.iobj.end_time or self.iobj.view == "all") and
+                    row_end_time is not pd.NaT):
+                row_ifdf = row_ifdf[row_ifdf['timestamp'] <= row_end_time]
 
             if not row_ifdf.empty:
                 netaddr = ip_address(arp_row.ipAddress)
@@ -268,35 +306,82 @@ class NetworkObj(SqPandasEngine):
                 if 'vlan' not in ifdf.type.unique():
                     continue
 
+                # If the entry switched from local to remote, mark it as
+                # deleted
+                if active and arp_row.remote:
+                    # if the entry didnt switch from local to remote, we'd
+                    # have continued above
+                    # Routed interface
+                    tmpres.update({
+                        'active': False,
+                        'namespace': arp_row.namespace,
+                        'hostname': arp_row.hostname,
+                        'vrf': row_vrf,
+                        'ipAddress': arp_row.ipAddress,
+                        'vlan': row_ifdf.vlan.unique().tolist()[0],
+                        'macaddr': arp_row.macaddr,
+                        'ifname': oif,
+                        'type': 'bridged',
+                        'l2miss': False,
+                        'timestamp': arp_row.timestamp
+                    })
+                    result.append(tmpres)
+                    active_local_hosts.remove(arp_row.hostname)
+                    continue
+
                 row_macdf = macdf.query(
                     f'namespace=="{arp_row.namespace}" and '
                     f'hostname=="{arp_row.hostname}" and '
                     f'macaddr=="{arp_row.macaddr}" and '
                     f'vlan=={ifdf.vlan.unique().tolist()}')
                 # We need to select the entries that are closest to this
-                # arpdf entry's timestamp. We need to use start and end times
-                # because its possible to get multiple entries otherwise if
-                # the mac table has changed along with the arp table.
-                row_macdf = row_macdf[(row_macdf.timestamp <= row_end_time)]
+                # arpdf entry's timestamp. We can get duplicate entries
+                # due to the various possibilities of mac table updates
+                # (the mac table may not have changed in a long time or
+                # it might've in the time window of this entry). We use
+                # drop_duplicates later to remove duplicate entries.
+                if (not row_macdf.empty and
+                    (self.iobj.end_time or self.iobj.view == "all") and
+                        row_end_time is not pd.NaT):
+                    row_macdf = row_macdf[(row_macdf['timestamp']
+                                           <= row_end_time) &
+                                          (row_macdf['flags'] != "remote")]
 
                 for mac_row in row_macdf.itertuples():
-                    if not mac_row.oif or mac_row.oif == "vPC Peer-Link":
+                    tmpres = {}
+                    if (not mac_row.oif or mac_row.oif == "vPC Peer-Link" or
+                            mac_row.flags == 'remote'):
                         continue
                     oifs = mac_row.oif
 
-                    tmpres.update({
-                        'active': active,
-                        'namespace': arp_row.namespace,
-                        'hostname': arp_row.hostname,
-                        'vrf': row_vrf,
-                        'ipAddress': arp_row.ipAddress,
-                        'vlan': mac_row.vlan,
-                        'macaddr': arp_row.macaddr,
-                        'ifname': oifs,
-                        'type': 'bridged',
-                        'l2miss': False,
-                        'timestamp': arp_row.timestamp
-                    })
+                    if not mac_row.active:
+                        tmpres.update({
+                            'active': active,
+                            'namespace': arp_row.namespace,
+                            'hostname': arp_row.hostname,
+                            'vrf': row_vrf,
+                            'ipAddress': arp_row.ipAddress,
+                            'vlan': mac_row.vlan,
+                            'macaddr': arp_row.macaddr,
+                            'ifname': arp_row.oif,
+                            'type': 'bridged',
+                            'l2miss': True,
+                            'timestamp': mac_row.timestamp
+                        })
+                    else:
+                        tmpres.update({
+                            'active': active,
+                            'namespace': arp_row.namespace,
+                            'hostname': arp_row.hostname,
+                            'vrf': row_vrf,
+                            'ipAddress': arp_row.ipAddress,
+                            'vlan': mac_row.vlan,
+                            'macaddr': arp_row.macaddr,
+                            'ifname': oifs,
+                            'type': 'bridged',
+                            'l2miss': False,
+                            'timestamp': arp_row.timestamp
+                        })
                     result.append(tmpres)
 
                 if row_macdf.empty:
@@ -320,6 +405,7 @@ class NetworkObj(SqPandasEngine):
 
         return pd.DataFrame(result)
 
+    # pylint: disable=too-many-statements
     def _find_first_hop_attach(self, addr_df: pd.DataFrame) -> pd.DataFrame:
         """Find the first hop switch attachment point for this address
 
@@ -336,6 +422,14 @@ class NetworkObj(SqPandasEngine):
             return addr_df
 
         result = []
+
+        # Calculate the next timestamp window for use with pulling in
+        # correct info
+        key_cols = ['namespace', 'hostname', 'vrf', 'ipAddress']
+        l2_addr_df = l2_addr_df.sort_values(by=key_cols + ['timestamp'])
+        l2_addr_df['next_ts'] = l2_addr_df.groupby(by=key_cols)['timestamp'] \
+                                          .shift(-1)
+
         for row in l2_addr_df.itertuples():
             tmpres = {}
 
@@ -344,8 +438,16 @@ class NetworkObj(SqPandasEngine):
             match_hostname = row.hostname
             match_namespace = row.namespace
             match_vrf = row.vrf
+            # We ignore the start time because the entries such as interface
+            # may not have changeed in a very long time. Using the
+            # start-time if one is provided can make us not return the
+            # relevant data in situations where say, the interface has been
+            # stable long before.
             if self.iobj.end_time:
-                match_endtime = str(row.timestamp + timedelta(seconds=60))
+                if row.next_ts is pd.NaT:
+                    match_endtime = self.iobj.end_time
+                else:
+                    match_endtime = str(row.next_ts)
             else:
                 match_endtime = ''
             macobj = self._get_table_sqobj('macs', start_time='',
