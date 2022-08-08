@@ -51,7 +51,8 @@ def fake_netbox_data(server_conf: Dict) -> Tuple[Dict, Dict]:
         'ip4-prob': 0.5,
         'ip6-prob': 0.9,
         'site-count': 5,
-        'namespace': server_conf['namespace']
+        'namespace': server_conf['namespace'],
+        'seed': 1111
     }
     n = NetboxFaker(config)
     return n.generate_data()
@@ -164,13 +165,15 @@ async def test_valid_config(server_conf: Dict, default_config):
     assert src._data.token == config['token'], 'wrong token'
     assert isinstance(src._auth, StaticLoader), 'wrong auth object'
     if config.get('ssl-verify') is not None:
-        assert src._data.ssl_verify == config['ssl-verify']
+        assert src._data.ssl_verify == config['ssl-verify'], 'wrong ssl_verify'
     else:
         # default ssl config
         if src._server.protocol == 'http':
-            assert src._data.ssl_verify is False
+            assert src._data.ssl_verify is False, \
+                'with http protocol, ssl_verify must be False'
         elif src._server.protocol == 'https':
-            assert src._data.ssl_verify is True
+            assert src._data.ssl_verify is True, \
+                'with https protocol, ssl_verify must be True'
 
     await asyncio.wait_for(src.run(), 10)
 
@@ -304,10 +307,12 @@ def test_netbox_automatic_ssl_verify(default_config):
         config.pop('ssl-verify')
     config['url'] = 'http://127.0.0.1:22'
 
-    n = Netbox(config.copy(), validate=True)
-    assert not n._data.ssl_verify
+    n = Netbox(config.copy())
+    assert not n._data.ssl_verify, 'Expected ssl_verify=False'
 
     config['url'] = 'https://127.0.0.1:22'
+    n = Netbox(config.copy())
+    assert n._data.ssl_verify, 'Expected ssl_verify=True'
 
 
 @pytest.mark.controller_source
