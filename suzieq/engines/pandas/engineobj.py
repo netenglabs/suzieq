@@ -437,19 +437,21 @@ class SqPandasEngine(SqEngineObj):
         if not what:
             return pd.DataFrame()
 
-        columns = self.schema.get_display_fields(columns)
-        if what not in columns:
-            columns.insert(-1, what)
+        fields = self.schema.get_display_fields(columns)
+        if what not in fields:
+            fields.insert(-1, what)
 
-        df = self.get(columns=columns, **kwargs)
-        if df.empty or ('error' in df.columns):
+        getcols = list(set(fields + self.schema.key_fields()))
+
+        df = self.get(columns=getcols, **kwargs)
+        if 'error' in df.columns or df.empty:
             return df
 
         columns_by = [x for x in [what] + self.schema.key_fields()
                       if x in df.columns]
 
         return df.sort_values(by=columns_by, ascending=reverse) \
-                 .head(sqTopCount)
+                 .head(sqTopCount)[fields]
 
     def lpm(self, **kwargs):
         '''Default implementation to return not supported'''
