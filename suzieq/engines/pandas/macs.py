@@ -1,5 +1,7 @@
-from suzieq.engines.pandas.engineobj import SqPandasEngine
 import pandas as pd
+
+from suzieq.engines.pandas.engineobj import SqPandasEngine
+
 
 class MacsObj(SqPandasEngine):
     '''Backend class to handle manipulating MAC table with pandas'''

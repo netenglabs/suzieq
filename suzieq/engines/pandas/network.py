@@ -25,6 +25,7 @@ class NetworkObj(SqPandasEngine):
         addrlist = kwargs.pop('address', [])
         kwargs.pop('columns', ['default'])
         query_str = kwargs.pop('query_str', '')
+        fields = self.schema.get_display_fields(['default'])
 
         dflist = []
         if isinstance(addrlist, str):
@@ -35,6 +36,9 @@ class NetworkObj(SqPandasEngine):
                 dflist.append(df)
         if dflist:
             df = pd.concat(dflist)
+
+        if df.empty:
+            return df
 
         if not df.empty and query_str:
             return df.query(query_str)
