@@ -50,7 +50,7 @@ class TableObj(SqPandasEngine):
                                df['latestTime'].max(),
                                df['intervals'].max(),
                                df['allRows'].sum(),
-                               df['namespaces'].max(),
+                               df['namespaceCnt'].max(),
                                df['deviceCnt'].max()]],
                              columns=cols)
         df = df.append(total, ignore_index=True).dropna()
@@ -68,7 +68,7 @@ class TableObj(SqPandasEngine):
 
         sdf = pd.DataFrame({
             'serviceCnt': [df.index.nunique()-1],
-            'namespaceCnt': [df.at['TOTAL', 'namespaces']],
+            'namespaceCnt': [df.at['TOTAL', 'namespaceCnt']],
             'deviceCnt': [df.at['device', 'deviceCnt']],
             'earliestTimestamp': [df.firstTime.min()],
             'lastTimestamp': [df.latestTime.max()],

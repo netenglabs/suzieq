@@ -337,8 +337,8 @@ class SqPandasEngine(SqEngineObj):
                'latestTime': all_time_df.timestamp.max(),
                'intervals': len(times),
                'allRows': len(all_time_df),
-               'namespaces': all_time_df.get('namespace',
-                                             pd.Series(dtype='category'))
+               'namespaceCnt': all_time_df.get('namespace',
+                                               pd.Series(dtype='category'))
                .nunique(),
                'deviceCnt': all_time_df.get('hostname',
                                             pd.Series(dtype='category'))
