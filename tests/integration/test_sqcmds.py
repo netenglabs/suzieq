@@ -324,7 +324,7 @@ def test_sqcmds_regex_namespace(table, datadir):
 
     assert not df.empty
     if table == 'tables':
-        assert df[df.table == 'device']['namespaces'].tolist() == [2]
+        assert df[df.table == 'device']['namespaceCnt'].tolist() == [2]
         return
 
     if table in ['mlag', 'evpnVni', 'devconfig', 'bgp']:
