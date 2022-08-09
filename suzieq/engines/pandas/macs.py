@@ -1,5 +1,5 @@
 from suzieq.engines.pandas.engineobj import SqPandasEngine
-
+import pandas as pd
 
 class MacsObj(SqPandasEngine):
     '''Backend class to handle manipulating MAC table with pandas'''
@@ -45,7 +45,14 @@ class MacsObj(SqPandasEngine):
         df = super().get(view=view, columns=fields, addnl_fields=addnl_fields,
                          **kwargs)
 
-        if compute_moves and not df.empty:
+        if columns in [['default'], ['*']] or 'mackey' not in columns:
+            if 'mackey' in fields:
+                fields.remove('mackey')
+
+        if df.empty:
+            return df
+
+        if compute_moves:
             df = df.set_index('namespace hostname mackey macaddr'.split()) \
                    .sort_values(by=['timestamp'])
 
@@ -84,10 +91,6 @@ class MacsObj(SqPandasEngine):
             df = df.query("remoteVtepIp != ''").reset_index(drop=True)
         elif localOnly:
             df = df.query("remoteVtepIp == ''").reset_index(drop=True)
-
-        if columns in [['default'], ['*']] or 'mackey' not in columns:
-            if 'mackey' in fields:
-                fields.remove('mackey')
 
         return df[fields]
 

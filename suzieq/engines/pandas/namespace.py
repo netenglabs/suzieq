@@ -24,8 +24,8 @@ class NamespaceObj(SqPandasEngine):
         os_version = kwargs.pop('version', [])
         namespace = kwargs.pop('namespace', [])
 
-        drop_cols = []
         fields = self.schema.get_display_fields(columns)
+        df = pd.DataFrame()
 
         if os or model or vendor or os_version:
             devdf = self._get_table_sqobj('device').get(
@@ -39,7 +39,7 @@ class NamespaceObj(SqPandasEngine):
                 **kwargs)
 
         if devdf.empty:
-            return pd.DataFrame()
+            return df
 
         namespace = devdf.namespace.unique().tolist()
         dev_nsgrp = devdf.groupby(['namespace'])
@@ -51,7 +51,7 @@ class NamespaceObj(SqPandasEngine):
                  namespace=namespace)
 
         if pollerdf.empty:
-            return pd.DataFrame()
+            return df
 
         pollerdf = devdf.merge(pollerdf, on=['namespace', 'hostname'])
         nsgrp = pollerdf.groupby(by=['namespace'])
@@ -99,7 +99,7 @@ class NamespaceObj(SqPandasEngine):
             .reset_index()['timestamp']
 
         newdf = self._handle_user_query_str(newdf, user_query)
-        return newdf.drop(columns=drop_cols)[fields]
+        return newdf[fields]
 
     def summarize(self, **kwargs):
         '''Summarize for network

@@ -110,7 +110,7 @@ class DeviceObj(SqPandasEngine):
             df.insert(len(df.columns)-1, 'uptime', uptime_cols)
 
         if df.empty:
-            return df[fields]
+            return df
 
         # The poller merge kills the filtering we did earlier, so redo:
         if status:
