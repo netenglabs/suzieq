@@ -53,10 +53,10 @@ class SearchPage(SqGuiPage):
             st.stop()
 
         namespaces = [''] + sorted(devdf.namespace.unique().tolist())
-        if not state.namespace:
-            nsidx = 0
-        else:
+        nsidx = 0
+        if state.namespace and state.namespace in namespaces:
             nsidx = namespaces.index(state.namespace)
+
         namespace = st.sidebar.selectbox('Namespace',
                                          namespaces, key='search_ns',
                                          index=nsidx,
