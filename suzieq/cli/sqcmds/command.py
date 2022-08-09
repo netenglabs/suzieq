@@ -491,11 +491,8 @@ class SqTableCommand(SqCommand):
                                 )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if 'error' in df.columns:
+        if 'error' in df.columns or df.empty:
             return self._gen_output(df)
-
-        if df.empty:
-            return df
 
         if not count:
             return self._gen_output(df.sort_values(by=[df.columns[0]]),
