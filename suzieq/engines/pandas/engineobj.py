@@ -470,7 +470,8 @@ class SqPandasEngine(SqEngineObj):
         if df.empty or ('error' in df.columns):
             return df
 
-        columns_by = [what] + self.schema.key_fields()
+        columns_by = [x for x in [what] + self.schema.key_fields()
+                      if x in df.columns]
 
         return df.sort_values(by=columns_by, ascending=reverse) \
                  .head(sqTopCount)

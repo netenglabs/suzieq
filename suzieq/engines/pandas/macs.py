@@ -61,6 +61,11 @@ class MacsObj(SqPandasEngine):
             df['moveCount'] = df.groupby(level=[0, 1, 2, 3])[
                 'moved'].cumsum()
             df = df.reset_index()
+            if not ((view == "all") or
+                    (self.iobj.start_time and self.iobj.end_time)):
+                df = df.drop_duplicates(subset=self.schema.key_fields(),
+                                        keep='last') \
+                    .reset_index(drop=True)
 
             if moveCount:
                 try:

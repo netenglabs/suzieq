@@ -255,6 +255,10 @@ class InterfaceService(Service):
                 # This is because textfsm adds peer LLA as well
                 entry['ip6AddressList'] = entry['ip6AddressList-_2nd']
 
+            # Remove loopbacks
+            entry['ip6AddressList'] = [x for x in entry['ip6AddressList']
+                                       if x != "::1/128"]
+
             if 'type-_2nd' in entry:
                 entry['type'] = entry['type-_2nd']
 
@@ -381,7 +385,7 @@ class InterfaceService(Service):
                 lifname = lentry.get('name', [{}])[0].get('data', '')
                 if not lifname:
                     continue
-                if '.' in lifname:
+                if '.' in lifname and not lifname.endswith('.0'):
                     _, vlan = lifname.split('.')
                     # This order is important, don't change; irb is an internal
                     # interface

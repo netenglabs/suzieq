@@ -19,6 +19,7 @@ from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.shared.schema import Schema, SchemaForTable
 
 logger = logging.getLogger(__name__)
+BLACKLIST_SERVICES = ['ifCounters', 'topmem', 'topcpu']
 
 
 class ServiceManager:
@@ -138,8 +139,6 @@ class ServiceManager:
             List[str]: the list of services to executed in the poller
         """
 
-        BLACKLIST_SERVICES = ['ifCounters', 'topmem', 'topcpu']
-
         if not os.path.isdir(service_directory):
             raise SqPollerConfError(
                 'The service directory provided is not a directory'
@@ -207,7 +206,11 @@ class ServiceManager:
                 logger.warning(f'Skip empty service file: {filename}')
                 continue
 
-            if svc_def.get('service') not in self.svcs_list:
+            service = svc_def.get('service')
+            if service in BLACKLIST_SERVICES:
+                continue
+
+            if all(service not in x for x in [self.svcs_list]):
                 logger.warning(
                     f"Ignoring unspecified service {svc_def.get('service')}"
                 )

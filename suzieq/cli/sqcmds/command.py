@@ -274,6 +274,7 @@ class SqCommand(SqPlugin):
         else:
             print(df)
 
+    # pylint: disable=too-many-statements
     def _gen_output(self, df: pd.DataFrame, json_orient: str = "records",
                     dont_strip_cols: bool = False, sort: bool = True):
 
@@ -332,8 +333,13 @@ class SqCommand(SqPlugin):
                     if is_error:
                         print(df[cols])
                     else:
-                        sort_fields = [x for x in self.sqobj.sort_fields
-                                       if x in df.columns and x in cols]
+                        if (((self.start_time and self.end_time) or
+                             self.view == "all") and
+                                'timestamp' in df.columns):
+                            sort_fields = ['timestamp']
+                        else:
+                            sort_fields = [x for x in self.sqobj.sort_fields
+                                           if x in df.columns and x in cols]
                         if sort_fields:
                             self._pager_print(
                                 df[cols].sort_values(by=sort_fields,
