@@ -870,8 +870,10 @@ class PathObj(SqPandasEngine):
                         if dst_mtu > MAX_MTU:
                             dst_mtu = copy_dest.get('mtu', 0)
                         if dst_mtu != src_mtu:
-                            if 'Dst MTU != Src MTU' not in copy_dest['hopError']:
-                                copy_dest['hopError'].append('Dst MTU != Src MTU')
+                            if ('Dst MTU != Src MTU' not in
+                                    copy_dest['hopError']):
+                                copy_dest['hopError']\
+                                    .append('Dst MTU != Src MTU')
                         # This is weird because we have no room to store the
                         # prev hop's outgoing IIF MTU on the last hop
                         copy_dest['outMtu'] = \
@@ -897,8 +899,10 @@ class PathObj(SqPandasEngine):
                         if dst_mtu > MAX_MTU:
                             dst_mtu = copy_dest.get('mtu', 0)
                         if dst_mtu != src_mtu:
-                            if 'Dst MTU != Src MTU' not in copy_dest['hopError']:
-                                copy_dest['hopError'].append('Dst MTU != Src MTU')
+                            if ('Dst MTU != Src MTU' not in
+                                    copy_dest['hopError']):
+                                copy_dest['hopError']\
+                                    .append('Dst MTU != Src MTU')
                         # This is weird because we have no room to store the
                         # prev hop's outgoing IIF MTU on the last hop
                         copy_dest['outMtu'] = \
@@ -1026,7 +1030,8 @@ class PathObj(SqPandasEngine):
                         devices_iifs[devkey]['protocol'] = protocol
                     if not rt_ts:
                         devices_iifs[devkey]['timestamp'] = timestamp
-                    if errmsg and errmsg not in devices_iifs[devkey]['hopError']:
+                    if (errmsg and
+                            errmsg not in devices_iifs[devkey]['hopError']):
                         devices_iifs[devkey]['hopError'].append(errmsg)
 
                     if iface is not None:
