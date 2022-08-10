@@ -577,9 +577,20 @@ tests:
 - command: mac top --what=moveCount --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/
-  error:
-    error: '[{"error": "ERROR: ''mackey''"}]'
   marks: mac top
+  output: '[{"namespace": "ospf-single", "hostname": "leaf04", "vlan": 0, "macaddr":
+    "44:38:39:00:00:2c", "oif": "swp5", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "moveCount": 0, "timestamp": 1616352403984}, {"namespace": "ospf-single", "hostname":
+    "leaf04", "vlan": 10, "macaddr": "44:38:39:00:00:2c", "oif": "bridge", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1616352403984},
+    {"namespace": "ospf-single", "hostname": "leaf04", "vlan": 10, "macaddr": "00:03:00:44:44:02",
+    "oif": "swp5", "remoteVtepIp": "", "bd": "", "flags": "", "moveCount": 0, "timestamp":
+    1616352403984}, {"namespace": "ospf-single", "hostname": "leaf03", "vlan": 0,
+    "macaddr": "44:38:39:00:00:1f", "oif": "swp5", "remoteVtepIp": "", "bd": "", "flags":
+    "permanent", "moveCount": 0, "timestamp": 1616352404671}, {"namespace": "ospf-single",
+    "hostname": "leaf03", "vlan": 10, "macaddr": "44:38:39:00:00:1f", "oif": "bridge",
+    "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp":
+    1616352404671}]'
 - command: route top --what=prefixlen --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/
