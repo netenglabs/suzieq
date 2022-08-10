@@ -21,6 +21,7 @@ from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
                                            coalesce_resource_table)
 from suzieq.db.parquet.migratedb import get_migrate_fn
+from suzieq.shared.utils import reduce_filter_list
 
 
 class SqParquetDB(SqDB):
@@ -645,35 +646,25 @@ class SqParquetDB(SqDB):
         if not namespace:
             return dataset
 
-        # Exclude not and regexp operators as they're handled elsewhere.
-        excluded_ns = [x for x in namespace
-                       if x.startswith('!') or x.startswith('~!')]
-        if excluded_ns != namespace:
-            ns_filters = [x for x in namespace
-                          if not x.startswith('!') and not x.startswith('~!')]
-        else:
-            ns_filters = namespace
+        newns = reduce_filter_list(namespace)
         ns_filelist = []
         chklist = dataset.files
-        for ns in ns_filters or []:
+        for ns in newns or []:
             if ns.startswith('!'):
                 ns = ns[1:]
+                use_not = True
+            else:
+                use_not = False
+
+            if ns.startswith('~'):
+                ns = ns[1:]
+
+            if use_not:
                 ns_filelist = \
                     [x for x in chklist
-                     if not re.search(f'namespace={ns}/', x)]
+                        if not re.search(f'namespace={ns}/', x)]
+                # NOTs turn list from implicit OR into implicit AND
                 chklist = ns_filelist
-            elif ns.startswith('~'):
-                ns = ns[1:]
-                if ns.startswith('!'):
-                    ns = ns[1:]
-                    ns_filelist = \
-                        [x for x in chklist
-                         if not re.search(f'namespace={ns}/', x)]
-                    chklist = ns_filelist
-                else:
-                    ns_filelist.extend(
-                        [x for x in dataset.files
-                         if re.search(f'namespace={ns}/', x)])
             else:
                 ns_filelist.extend(
                     [x for x in dataset.files

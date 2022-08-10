@@ -42,15 +42,8 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         self._workers_count = config_data.get("workers", 1)
 
         # We need a pipeline thats at least as big as the number of workers
-        self._max_cmd_pipeline = config_data['config-dict'] \
-            .get('poller', {}) \
-            .get('max-cmd-pipeline', 0)
-        if ((self._max_cmd_pipeline != 0) and
-                (self._max_cmd_pipeline % self._workers_count != 0)):
-            raise SqPollerConfError(
-                f'max-cmd-pipeline ({self._max_cmd_pipeline}) has to be a '
-                'multiple of be a multiple of the number of worker '
-                f'({self._workers_count})')
+        # We need a pipeline that is at least as big as the number of workers
+        self._max_cmd_pipeline = config_data.get('max-cmd-pipeline', 0)
 
         if self._max_cmd_pipeline:
             worker_cmd = int(self._max_cmd_pipeline / self._workers_count)

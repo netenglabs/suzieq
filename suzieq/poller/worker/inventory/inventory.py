@@ -6,6 +6,7 @@ import abc
 import asyncio
 import logging
 from collections import defaultdict
+from contextlib import asynccontextmanager
 from typing import Callable, Coroutine, Dict, List
 
 from suzieq.poller.worker.nodes.node import Node
@@ -13,6 +14,60 @@ from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.shared.sq_plugin import SqPlugin
 
 logger = logging.getLogger(__name__)
+
+
+class CommandPacer:
+    """In many networks, backend authentication servers such as TACACS which
+    handle authentication of logins and even command execution, cannot
+    large volumes of authentication requests. Thanks to our use of
+    asyncio, we can easily sends hundreds of connection requests to such
+    servers, which effectively turns into authentication failures. To
+    handle this, we add a user-specified maximum of rate of cmds/sec
+    that the authentication can handle, and we pace it out. This code
+    implements that pacer.
+    """
+    def __init__(self, max_cmds: int):
+        self._max_cmds = max_cmds
+        if max_cmds > 0:
+            self._cmd_semaphore = asyncio.Semaphore(max_cmds)
+            self._cmd_mutex = asyncio.Lock()
+            self._cmd_pacer_sleep = float(1 / self.max_cmds)
+        else:
+            self._cmd_semaphore = None
+            self._cmd_mutex = None
+            self._cmd_pacer_sleep = 0
+
+    @property
+    def max_cmds(self) -> int:
+        """Get the maximum number of commands the worker issue every second.
+        If there is no limit the returned value is 0.
+
+        Returns:
+            int: maximum number of commands
+        """
+        return self._max_cmds
+
+    @asynccontextmanager
+    async def wait(self, use_pacer: bool = True):
+        """Context Manager to implement throttling of commands.
+
+        Some networks communicate with a backend authentication server only
+        on login while others contact it for authorization of a command as
+        well. Its to handle this difference that we pass use_sem. Users set
+        the per_cmd_auth to True if authorization is used. The caller of this
+        function sets the use_sem apppropriately depending on when the context
+        is invoked.
+
+        Args:
+            use_pacer(bool): True if you want to use the pacer
+        """
+        if use_pacer and self._max_cmds:
+            async with self._cmd_semaphore:
+                async with self._cmd_mutex:
+                    await asyncio.sleep(self._cmd_pacer_sleep)
+                yield
+        else:
+            yield
 
 
 class Inventory(SqPlugin):
@@ -32,8 +87,7 @@ class Inventory(SqPlugin):
         self._node_tasks = {}
         self.add_task_fn = add_task_fn
         self._max_outstanding_cmd = 0
-        self._cmd_semaphore = None
-        self._cmd_pacer_mutex = None
+        self._cmd_pacer = None
 
         self.connect_timeout = kwargs.pop('connect_timeout', 15)
         self.ssh_config_file = kwargs.pop('ssh_config_file', None)
@@ -74,9 +128,7 @@ class Inventory(SqPlugin):
         if not inventory_list:
             raise SqPollerConfError('The inventory source returned no hosts')
 
-        if self._max_outstanding_cmd:
-            self._cmd_semaphore = asyncio.Semaphore(self._max_outstanding_cmd)
-            self._cmd_pacer_mutex = asyncio.Lock()
+        self._cmd_pacer = CommandPacer(self._max_outstanding_cmd)
 
         # Initialize the nodes in the inventory
         self._nodes = await self._init_nodes(inventory_list)
@@ -125,23 +177,12 @@ class Inventory(SqPlugin):
 
         for host in inventory_list:
             new_node = Node()
-            if self._max_outstanding_cmd > 0:
-                init_tasks += [new_node.initialize(
-                    **host,
-                    cmd_sem=self._cmd_semaphore,
-                    cmd_mutex=self._cmd_pacer_mutex,
-                    cmd_pacer_sleep=float(1/self._max_outstanding_cmd),
-                    connect_timeout=self.connect_timeout,
-                    ssh_config_file=self.ssh_config_file
-                )]
-            else:
-                init_tasks += [new_node.initialize(
-                    **host,
-                    cmd_sem=self._cmd_semaphore,
-                    cmd_mutex=self._cmd_pacer_mutex,
-                    connect_timeout=self.connect_timeout,
-                    ssh_config_file=self.ssh_config_file
-                )]
+            init_tasks += [new_node.initialize(
+                **host,
+                cmd_pacer=self._cmd_pacer,
+                connect_timeout=self.connect_timeout,
+                ssh_config_file=self.ssh_config_file
+            )]
 
         for n in asyncio.as_completed(init_tasks):
             try:

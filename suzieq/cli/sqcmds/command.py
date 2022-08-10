@@ -278,7 +278,8 @@ class SqCommand(SqPlugin):
     def _gen_output(self, df: pd.DataFrame, json_orient: str = "records",
                     dont_strip_cols: bool = False, sort: bool = True):
 
-        if 'error' in df.columns:
+        if ('error' in df.columns or
+                ('hopError' in df.columns and (df.hopError != '').all())):
             retcode = 1
             max_colwidth = None
             cols = df.columns.tolist()
