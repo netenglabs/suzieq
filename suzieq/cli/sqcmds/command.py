@@ -525,6 +525,7 @@ class SqTableCommand(SqCommand):
                                 hostname=self.hostname,
                                 namespace=self.namespace,
                                 query_str=self.query_str,
+                                columns=self.columns,
                                 what=what, count=count,
                                 reverse=ast.literal_eval(reverse),
                                 **self.lvars,
@@ -537,9 +538,7 @@ class SqTableCommand(SqCommand):
 
         if not df.empty:
             df = self.sqobj.humanize_fields(df)
-            return self._gen_output(df.sort_values(
-                by=[what], ascending=(reverse == "True")),
-                dont_strip_cols=True, sort=False)
+            return self._gen_output(df, dont_strip_cols=True, sort=False)
         else:
             return self._gen_output(df)
 

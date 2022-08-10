@@ -438,10 +438,10 @@ class SqPandasEngine(SqEngineObj):
             return pd.DataFrame()
 
         fields = self.schema.get_display_fields(columns)
-        if what not in fields:
+        if columns == ['default'] and what not in fields:
             fields.insert(-1, what)
 
-        getcols = list(set(fields + self.schema.key_fields()))
+        getcols = list(set(fields + self.schema.key_fields() + [what]))
 
         df = self.get(columns=getcols, **kwargs)
         if 'error' in df.columns or df.empty:
