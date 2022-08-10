@@ -170,7 +170,7 @@ Here is an example of the configuration of a netbox type source:
 ```
 #### Selecting devices from Netbox
 
-Starting from 0.18.1, it's possible to specify more than one tag to be matched, defining a list of one or more rules.
+Starting from 0.19, it's possible to specify more than one tag to be matched, defining a list of one or more rules.
 A single rule can contain a set of tags divided by the `,` separator, which should **ALL** be matched.
 A device is polled by SuzieQ if it matches at least one of the defined rules.
 
@@ -186,7 +186,7 @@ A device is polled by SuzieQ if it matches at least one of the defined rules.
 For example, the source above tells SuzieQ to select from Netbox all the devices having the `alpha` OR `bravo & charlie` tags.
 
 !!!Warning
-    SuzieQ versions older than 0.18.1 supported one single tag.
+    SuzieQ versions older than 0.19 supported one single tag.
     The old syntax, following the pattern `tag: netbox-tag`, is deprecated and it might be removed in the future releases.
 
 #### Map Netbox sitenames to namespaces
