@@ -19,7 +19,8 @@ sources:
 - name: netbox-instance-123
   token: af8717c89ec0ff420c19d89e6c20646ad55dd54e
   url: http://127.0.0.1:8000
-  tag: suzieq-demo
+  tag:
+  - suzieq-demo
   type: netbox
   period: 3600
 
@@ -98,12 +99,14 @@ Whenever a source has many fields in common with another, you don't have to rewr
   type: netbox
   token: your-api-token-here
   url: http://127.0.0.1:8000
-  tag: suzieq-demo
+  tag:
+  - suzieq-demo
   period: 3600
 
 - name: netbox-copy     # This source will use the same set of parameters of 'netbox-orig'
   copy: netbox-orig     # and only overrides the 'tag' field.
-  tag: suzieq-copy
+  tag:
+  - suzieq-copy
 
 ```
 ### <a name='source-host-list'></a>Host list
@@ -142,9 +145,9 @@ Now you can set the path of the ansible inventory in the source:
 
 ### <a name='source-netbox'></a>Netbox
 
-[Netbox](https://netbox.readthedocs.io/en/stable/) is often used to store devices type, management address and other useful information to be used in network automation. Suzieq can pull device data from Netbox selecting them by tag (currently only one per each source).
-To do so a token to access the netbox API is required as well as the netbox instance url.
-
+[Netbox](https://netbox.readthedocs.io/en/stable/) is often used to store devices type, management address and other useful information to be used in network automation.
+Suzieq can pull device data from Netbox selecting them by one or more tags.
+To grant access to netbox, a token and an url must be provided.
 The token is considered a [sensitive data](#sensitive-data), so it can be specified via an environment variable using the format `env:ENV_TOKEN`.
 
 Since Netbox is a _dynamic source_, the data are periodically pulled, the period can be set to any desired number in seconds (default is 3600).
@@ -160,12 +163,35 @@ Here is an example of the configuration of a netbox type source:
   type: netbox
   token: your-api-token-here
   url: https://127.0.0.1:8000
-  tag: suzieq-demo    # if not present, default is "suzieq"
+  tag:                # if not present, default is "suzieq"
+  - suzieq-demo
   period: 3600        # How frequently Netbox should be polled
   ssl-verify: false   # Netbox certificate validation will be skipped
 ```
+#### Selecting devices from Netbox
 
-Moreover, netbox type source is capable to assign each device to a namespace which corresponds to the device's sitename.
+Starting from 0.18.1, it's possible to specify more than one tag to be matched, defining a list of one or more rules.
+A single rule can contain a set of tags divided by the `,` separator, which should **ALL** be matched.
+A device is polled by SuzieQ if it matches at least one of the defined rules.
+
+```yaml
+- name: netbox-multi-tag
+  type: netbox
+  token: your-api-token-here
+  url: https://127.0.0.1:8000
+  tag:
+  - alpha
+  - bravo, charlie
+```
+For example, the source above tells SuzieQ to select from Netbox all the devices having the `alpha` OR `bravo & charlie` tags.
+
+!!!Warning
+    SuzieQ versions older than 0.18.1 supported one single tag.
+    The old syntax, following the pattern `tag: netbox-tag`, is deprecated and it might be removed in the future releases.
+
+#### Map Netbox sitenames to namespaces
+
+Netbox type source is capable to assign each device to a namespace which corresponds to the device's sitename.
 To obtain this behaviour, we need to declare a `namespace` object with `name: netbox-sitename`.
 
 Here is an example:
@@ -175,13 +201,16 @@ sources:
   type: netbox
   token: your-api-token-here
   url: http://127.0.0.1:8000
-  tag: suzieq-demo
+  tag:
+  - tag1
+  - tag2, tag3
 
 - name: netbox-dc-02
   type: netbox
   token: your-api-token-here
   url: http://127.0.0.1:9000
-  tag: suzieq
+  tag:
+  - suzieq
 
 auths:
 - name: auth-st

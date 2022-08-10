@@ -81,7 +81,7 @@ def get_src_sample_config(src_type: str) -> Dict:
         sample_config.update({
             'token': 'MY-TOKEN',
             'url': 'http://127.0.0.1:9000',
-            'tag': 'suzieq',
+            'tag': ['suzieq'],
             'run_once': True,
             'auth': StaticLoader({
                 'name': 'static0',
