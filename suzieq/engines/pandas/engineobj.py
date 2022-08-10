@@ -499,12 +499,15 @@ class SqPandasEngine(SqEngineObj):
             verb (str): The verb to use in the get_sqobject call
         """
 
-        return get_sqobject(table)(
-            engine_name=self.iobj.engine.name,
-            context=self.ctxt,
-            start_time=start_time or self.iobj.start_time,
-            end_time=end_time or self.iobj.end_time,
-            view=view or self.iobj.view)
+        if start_time is None:
+            start_time = self.iobj.start_time
+        if end_time is None:
+            end_time = self.iobj.end_time
+        if view is None:
+            view = self.iobj.view
+        return get_sqobject(table)(engine_name=self.iobj.engine.name,
+                                   context=self.ctxt, view=view,
+                                   start_time=start_time, end_time=end_time)
 
     def _init_summarize(self, **kwargs) -> None:
         """Initialize the data structures for use with generating summary

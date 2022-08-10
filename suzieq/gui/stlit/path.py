@@ -79,10 +79,10 @@ class PathPage(SqGuiPage):
             st.stop()
 
         namespaces = [''] + sorted(devdf.namespace.unique().tolist())
-        if self._state.namespace:
-            nsidx = namespaces.index(self._state.namespace)
-        else:
-            nsidx = 0
+
+        nsidx = 0
+        if state.namespace and state.namespace in namespaces:
+            nsidx = namespaces.index(state.namespace)
 
         url = '&amp;'.join([
             f'{get_base_url()}?page=Help&session={get_session_id()}',
