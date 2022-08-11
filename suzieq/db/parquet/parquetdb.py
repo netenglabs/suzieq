@@ -399,6 +399,10 @@ class SqParquetDB(SqDB):
                 if migrate_rtn:
                     dataset = self._get_cp_dataset(table_name, True, sqvers,
                                                    'all', '', '')
+
+                    if not dataset:
+                        continue
+
                     for item in dataset.files:
                         try:
                             namespace = item.split('namespace=')[1] \
@@ -609,7 +613,7 @@ class SqParquetDB(SqDB):
         if filelist:
             return ds.dataset(filelist, format='parquet', partitioning='hive')
         else:
-            return []
+            return None
 
     def _build_master_schema(self, datasets: list) -> pa.lib.Schema:
         """Build the master schema from the list of diff versions
