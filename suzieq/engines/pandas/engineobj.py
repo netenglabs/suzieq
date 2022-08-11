@@ -185,9 +185,6 @@ class SqPandasEngine(SqEngineObj):
 
         aug_fields = sch.get_augmented_fields(fields)
 
-        if 'timestamp' not in fields:
-            fields.append('timestamp')
-
         self._add_active_to_fields(view, fields, addnl_fields)
         # Order matters. Don't put this before the missing key fields insert
         for f in aug_fields:
@@ -205,7 +202,7 @@ class SqPandasEngine(SqEngineObj):
             if fld not in fields+addnl_fields:
                 addnl_fields.insert(0, fld)
 
-        getcols = list(set(fields+addnl_fields))
+        getcols = list(set(fields+addnl_fields+['timestamp']))
 
         tz = self.ctxt.cfg.get('analyzer', {}).get('timezone', 'UTC')
         settings = {'TIMEZONE': tz}

@@ -64,6 +64,13 @@ class OspfObj(SqPandasEngine):
                                                    and x not in nbrcols)]
         self._add_active_to_fields(kwargs.get('view', 'latest'), nbrcols,
                                    None)
+
+        if 'timestamp' not in ifcols:
+            ifcols.append('timestamp')
+
+        if 'timestamp' not in nbrcols:
+            nbrcols.append('timestamp')
+
         state_query_dict = {
             'full': '(adjState == "full" or adjState == "passive")',
             'passive': '(adjState == "passive")',
