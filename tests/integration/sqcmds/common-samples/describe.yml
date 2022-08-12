@@ -402,7 +402,7 @@ tests:
   marks: path describe
   output: '[{"name": "hopCount", "type": "long", "key": "", "display": 2, "description":
     "unique hop within a path, can be L2 or L3 path"}, {"name": "hopError", "type":
-    "string", "key": "", "display": 15, "description": "Hop-specific error such as
+    "string", "key": "", "display": 17, "description": "Hop-specific error such as
     MTU mismatch"}, {"name": "hostname", "type": "string", "key": "", "display": 4,
     "description": "hostname associated with this hop"}, {"name": "iif", "type": "string",
     "key": "", "display": 5, "description": "incoming interface on the host"}, {"name":
@@ -411,11 +411,11 @@ tests:
     14, "description": "address used to lookup routing table for nexthop"}, {"name":
     "isL2", "type": "boolean", "key": "", "display": 8, "description": "True if this
     is an L2 hop"}, {"name": "macLookup", "type": "string", "key": "", "display":
-    16, "description": "MAC address used to lookup for L2 nexthop"}, {"name": "mtuMatch",
+    15, "description": "MAC address used to lookup for L2 nexthop"}, {"name": "mtuMatch",
     "type": "boolean", "key": "", "display": 10, "description": "True if the MTU of
     peering interfaces match"}, {"name": "namespace", "type": "string", "key": "",
     "display": 3, "description": "namespace within which path analysis is run"}, {"name":
-    "nexthopIp", "type": "string", "key": "", "display": 14, "description": "IP address
+    "nexthopIp", "type": "string", "key": "", "display": 16, "description": "IP address
     of routing nexthop"}, {"name": "oif", "type": "string", "key": "", "display":
     6, "description": "incoming interface on the host"}, {"name": "outMtu", "type":
     "long", "key": "", "display": 12, "description": "MTU of the outgoing interface"},
@@ -425,9 +425,9 @@ tests:
     "string", "key": "", "display": 13, "description": "protocol used to populate
     used route"}, {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
     "Schema version, not selectable"}, {"name": "timestamp", "type": "timestamp",
-    "key": "", "display": 17, "description": ""}, {"name": "vrf", "type": "string",
+    "key": "", "display": 18, "description": ""}, {"name": "vrf", "type": "string",
     "key": "", "display": 7, "description": "VRF used to do lookup, ignored on L2
-    hop"}, {"name": "vtepLookup", "type": "string", "key": "", "display": 15, "description":
+    hop"}, {"name": "vtepLookup", "type": "string", "key": "", "display": 14, "description":
     "vtep IP address used to lookup underlay route"}]'
 - command: ospf describe --format=json
   data-directory: tests/data/parquet
