@@ -430,3 +430,31 @@ tests:
     false, "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000, "protocol":
     "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "hopError":
     "Dst MTU != Src MTU", "timestamp": 1639476254836}]'
+- command: path show --dest=172.16.2.201 --src=10.0.0.21 --format=json --namespace=panos
+    --columns=*
+  data-directory: tests/data/parquet/
+  marks: path show panos
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "panos", "hostname": "spine01",
+    "iif": "lo", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 65536, "outMtu": 65536, "protocol": "", "ipLookup":
+    "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "hopError": "", "timestamp":
+    1639476254852}]'
+- command: path show --dest=172.16.2.201 --src=10.0.0.21 --format=json --namespace=panos
+    --columns='hostname namespace'
+  data-directory: tests/data/parquet/
+  marks: path show panos
+  output: '[{"hostname": "spine01", "namespace": "panos"}]'
+- command: path top --dest=172.16.2.201 --src=10.0.0.21 --format=json --namespace=panos
+    --what=inMtu
+  data-directory: tests/data/parquet/
+  marks: path top panos
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "panos", "hostname": "spine01",
+    "iif": "lo", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 65536, "outMtu": 65536, "protocol": "", "ipLookup":
+    "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "hopError": "", "timestamp":
+    1639476254852}]'
+- command: path top --dest=172.16.2.201 --src=10.0.0.21 --format=json --namespace=panos
+    --what=inMtu --columns=hostname
+  data-directory: tests/data/parquet/
+  marks: path top panos
+  output: '[{"hostname": "spine01"}]'
