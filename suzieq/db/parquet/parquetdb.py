@@ -24,6 +24,9 @@ from suzieq.db.parquet.migratedb import get_migrate_fn
 from suzieq.shared.utils import reduce_filter_list
 
 
+PARQUET_VERSION = '2.4'
+
+
 class SqParquetDB(SqDB):
     '''Class supporting Parquet backend as DB'''
 
@@ -178,7 +181,7 @@ class SqParquetDB(SqDB):
 
     def write(self, table_name: str, data_format: str,
               data, coalesced: bool, schema: pa.lib.Schema,
-              filename_cb, **kwargs) -> int:
+              basename_template: str = None, **kwargs) -> int:
         """Write the data supplied as a dataframe as a parquet file
 
         :param cfg: Suzieq configuration
@@ -189,7 +192,8 @@ class SqParquetDB(SqDB):
                             (only pandas supported at this point)
         :param coalesced: bool, True if data being written is in compacted form
         :param schema: pa.Schema, the schema for the data
-        :param filename_cb: callable, callback function to create the filename
+        :param basename_template: string, template for the name of the output
+                                  file
         :returns: status of write
         :rtype: integer
 
@@ -221,17 +225,14 @@ class SqParquetDB(SqDB):
                 table = pa.Table.from_pandas(df, schema=schema,
                                              preserve_index=False)
 
-            if filename_cb:
-                pq.write_to_dataset(table, root_path=folder,
-                                    partition_cols=partition_cols,
-                                    version="2.0", compression="ZSTD",
-                                    partition_filename_cb=filename_cb,
-                                    row_group_size=100000)
-            else:
-                pq.write_to_dataset(table, root_path=folder,
-                                    partition_cols=partition_cols,
-                                    version="2.0", compression="ZSTD",
-                                    row_group_size=100000)
+            pq.write_to_dataset(table,
+                                root_path=folder,
+                                partition_cols=partition_cols,
+                                version=PARQUET_VERSION,
+                                compression="ZSTD",
+                                basename_template=basename_template,
+                                existing_data_behavior='overwrite_or_ignore',
+                                row_group_size=100000)
 
         return 0
 
@@ -399,6 +400,10 @@ class SqParquetDB(SqDB):
                 if migrate_rtn:
                     dataset = self._get_cp_dataset(table_name, True, sqvers,
                                                    'all', '', '')
+
+                    if not dataset:
+                        continue
+
                     for item in dataset.files:
                         try:
                             namespace = item.split('namespace=')[1] \
@@ -431,7 +436,8 @@ class SqParquetDB(SqDB):
                             newdf, schema=schema.get_arrow_schema(),
                             preserve_index=False)
                         pq.write_to_dataset(table, newitem,
-                                            version="2.0", compression="ZSTD",
+                                            version=PARQUET_VERSION,
+                                            compression="ZSTD",
                                             row_group_size=100000)
                         self.logger.debug(
                             f'Migrated {item} version {sqvers}->'
@@ -611,7 +617,7 @@ class SqParquetDB(SqDB):
         if filelist:
             return ds.dataset(filelist, format='parquet', partitioning='hive')
         else:
-            return []
+            return None
 
     def _build_master_schema(self, datasets: list) -> pa.lib.Schema:
         """Build the master schema from the list of diff versions

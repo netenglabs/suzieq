@@ -31,7 +31,8 @@ class SqCoalesceState:
         self.poller_periods = set()
         self.block_start = self.block_end = 0
 
-    def pq_file_name(self, *args):  # pylint: disable=unused-argument
+    @ property
+    def pq_file_name(self):
         """Callback to create a filename that uses the timestamp of start
         of hour. This makes it easy for us to lookup data when we need to.
 
@@ -40,7 +41,11 @@ class SqCoalesceState:
 
         """
         # Using timestamp rather than date/time string to simplify reads
-        return f'{self.prefix}{self.block_start}-{self.block_end}.parquet'
+        name_suffix = f'{self.block_start}-{self.block_end}.parquet'
+
+        # {i} is replaced by pyarrow with a sequential number. It must be
+        # provided when a name for the output parquet file is provided
+        return f'{self.prefix}' + '{i}-' + name_suffix
 
 
 def archive_coalesced_files(filelist: List[str], outfolder: str,
