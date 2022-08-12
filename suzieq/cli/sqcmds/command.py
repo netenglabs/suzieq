@@ -279,7 +279,8 @@ class SqCommand(SqPlugin):
                     dont_strip_cols: bool = False, sort: bool = True):
 
         if ('error' in df.columns or
-                ('hopError' in df.columns and (df.hopError != '').all())):
+                ('hopError' in df.columns and not df.empty
+                 and (df.hopError != '').all())):
             retcode = 1
             max_colwidth = None
             cols = df.columns.tolist()
