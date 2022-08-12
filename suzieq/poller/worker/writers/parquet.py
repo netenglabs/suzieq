@@ -76,7 +76,7 @@ class ParquetOutputWorker(OutputWorker):
             table,
             root_path=cdir,
             partition_cols=data['partition_cols'],
-            version='2.0',
+            version='2.4',
             compression='ZSTD',
             row_group_size=100000,
         )

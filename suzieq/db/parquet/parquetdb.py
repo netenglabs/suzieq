@@ -224,13 +224,13 @@ class SqParquetDB(SqDB):
             if filename_cb:
                 pq.write_to_dataset(table, root_path=folder,
                                     partition_cols=partition_cols,
-                                    version="2.0", compression="ZSTD",
+                                    version="2.4", compression="ZSTD",
                                     partition_filename_cb=filename_cb,
                                     row_group_size=100000)
             else:
                 pq.write_to_dataset(table, root_path=folder,
                                     partition_cols=partition_cols,
-                                    version="2.0", compression="ZSTD",
+                                    version="2.4", compression="ZSTD",
                                     row_group_size=100000)
 
         return 0
@@ -435,7 +435,7 @@ class SqParquetDB(SqDB):
                             newdf, schema=schema.get_arrow_schema(),
                             preserve_index=False)
                         pq.write_to_dataset(table, newitem,
-                                            version="2.0", compression="ZSTD",
+                                            version="2.4", compression="ZSTD",
                                             row_group_size=100000)
                         self.logger.debug(
                             f'Migrated {item} version {sqvers}->'
