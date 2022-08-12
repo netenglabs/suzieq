@@ -574,12 +574,14 @@ class SqParquetDB(SqDB):
                         thistime = os.path.basename(file).split('.')[0] \
                             .split('-')[-2:]
                         thistime = [int(x)*1000 for x in thistime]  # to msec
+                        file_start_time, file_end_time = thistime
+
                         if (not start_time) or start_selected or (
-                                thistime[0] <= start_time <= thistime[1]):
+                                file_end_time >= start_time):
                             if not end_time:
                                 selected_in_dir.extend(files_per_ns[ele][i:])
                                 break
-                            if thistime[0] <= end_time:
+                            if file_start_time <= end_time:
                                 if (start_time or start_selected or
                                         view == "all"):
                                     selected_in_dir.append(file)

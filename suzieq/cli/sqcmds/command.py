@@ -319,7 +319,8 @@ class SqCommand(SqPlugin):
             if 'active' in df.columns:
                 df['active'] = np.where(df.active, '+', '-')
             if (not (self.view == "all" or self.columns == ['*'] or
-                     (self.start_time and self.end_time) or dont_strip_cols)):
+                     (self.start_time and self.end_time) or dont_strip_cols
+                     or 'timestamp' in self.columns)):
                 if 'timestamp' in cols:
                     cols.remove('timestamp')
             with pd.option_context(
