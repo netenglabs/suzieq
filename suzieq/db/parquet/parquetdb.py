@@ -178,7 +178,7 @@ class SqParquetDB(SqDB):
 
     def write(self, table_name: str, data_format: str,
               data, coalesced: bool, schema: pa.lib.Schema,
-              filename_cb, **kwargs) -> int:
+              basename_template: str = None, **kwargs) -> int:
         """Write the data supplied as a dataframe as a parquet file
 
         :param cfg: Suzieq configuration
@@ -189,7 +189,8 @@ class SqParquetDB(SqDB):
                             (only pandas supported at this point)
         :param coalesced: bool, True if data being written is in compacted form
         :param schema: pa.Schema, the schema for the data
-        :param filename_cb: callable, callback function to create the filename
+        :param basename_template: string, template for the name of the output
+                                  file
         :returns: status of write
         :rtype: integer
 
@@ -221,17 +222,14 @@ class SqParquetDB(SqDB):
                 table = pa.Table.from_pandas(df, schema=schema,
                                              preserve_index=False)
 
-            if filename_cb:
-                pq.write_to_dataset(table, root_path=folder,
-                                    partition_cols=partition_cols,
-                                    version="2.4", compression="ZSTD",
-                                    partition_filename_cb=filename_cb,
-                                    row_group_size=100000)
-            else:
-                pq.write_to_dataset(table, root_path=folder,
-                                    partition_cols=partition_cols,
-                                    version="2.4", compression="ZSTD",
-                                    row_group_size=100000)
+            pq.write_to_dataset(table,
+                                root_path=folder,
+                                partition_cols=partition_cols,
+                                version="2.4",
+                                compression="ZSTD",
+                                basename_template=basename_template,
+                                existing_data_behavior='overwrite_or_ignore',
+                                row_group_size=100000)
 
         return 0
 
