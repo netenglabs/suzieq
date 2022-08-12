@@ -24,6 +24,9 @@ from suzieq.db.parquet.migratedb import get_migrate_fn
 from suzieq.shared.utils import reduce_filter_list
 
 
+PARQUET_VERSION = '2.4'
+
+
 class SqParquetDB(SqDB):
     '''Class supporting Parquet backend as DB'''
 
@@ -225,7 +228,7 @@ class SqParquetDB(SqDB):
             pq.write_to_dataset(table,
                                 root_path=folder,
                                 partition_cols=partition_cols,
-                                version="2.4",
+                                version=PARQUET_VERSION,
                                 compression="ZSTD",
                                 basename_template=basename_template,
                                 existing_data_behavior='overwrite_or_ignore',
@@ -433,7 +436,8 @@ class SqParquetDB(SqDB):
                             newdf, schema=schema.get_arrow_schema(),
                             preserve_index=False)
                         pq.write_to_dataset(table, newitem,
-                                            version="2.4", compression="ZSTD",
+                                            version=PARQUET_VERSION,
+                                            compression="ZSTD",
                                             row_group_size=100000)
                         self.logger.debug(
                             f'Migrated {item} version {sqvers}->'

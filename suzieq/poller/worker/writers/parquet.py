@@ -9,8 +9,9 @@ import pandas as pd
 import pyarrow as pa
 import pyarrow.parquet as pq
 
-from suzieq.shared.exceptions import SqPollerConfError
+from suzieq.db.parquet.parquetdb import PARQUET_VERSION
 from suzieq.poller.worker.writers.output_worker import OutputWorker
+from suzieq.shared.exceptions import SqPollerConfError
 
 logger = logging.getLogger(__name__)
 
@@ -76,7 +77,7 @@ class ParquetOutputWorker(OutputWorker):
             table,
             root_path=cdir,
             partition_cols=data['partition_cols'],
-            version='2.4',
+            version=PARQUET_VERSION,
             compression='ZSTD',
             row_group_size=100000,
         )
