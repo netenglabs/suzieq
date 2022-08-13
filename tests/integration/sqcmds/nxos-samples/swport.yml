@@ -3839,3 +3839,87 @@ tests:
   data-directory: tests/data/parquet/
   marks: interface unique nxos switchport
   output: '[]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=nxos
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show nxos switchport
+  output: '[{"vlan": 1}, {"vlan": 1}, {"vlan": 1}, {"vlan": 999}, {"vlan": 999}, {"vlan":
+    1}, {"vlan": 1}, {"vlan": 999}, {"vlan": 1}, {"vlan": 999}, {"vlan": 999}, {"vlan":
+    999}]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=nxos
+    --columns='hostname ifname state adminState type vlan vlanList' --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show nxos switchport
+  output: '[{"hostname": "leaf03", "ifname": "Ethernet1/6", "state": "up", "adminState":
+    "up", "type": "bond_slave", "vlan": 1, "vlanList": [1, 20, 30, 999]}, {"hostname":
+    "leaf03", "ifname": "Ethernet1/5", "state": "up", "adminState": "up", "type":
+    "bond_slave", "vlan": 1, "vlanList": [1, 20, 30, 999]}, {"hostname": "leaf03",
+    "ifname": "port-channel1", "state": "up", "adminState": "up", "type": "bond",
+    "vlan": 1, "vlanList": [1, 20, 30, 999]}, {"hostname": "leaf03", "ifname": "Vlan999",
+    "state": "up", "adminState": "up", "type": "vlan", "vlan": 999, "vlanList": []},
+    {"hostname": "leaf01", "ifname": "Vlan999", "state": "up", "adminState": "up",
+    "type": "vlan", "vlan": 999, "vlanList": []}, {"hostname": "leaf04", "ifname":
+    "Ethernet1/6", "state": "up", "adminState": "up", "type": "bond_slave", "vlan":
+    1, "vlanList": [1, 20, 30, 999]}, {"hostname": "leaf04", "ifname": "Ethernet1/5",
+    "state": "up", "adminState": "up", "type": "bond_slave", "vlan": 1, "vlanList":
+    [1, 20, 30, 999]}, {"hostname": "leaf04", "ifname": "Vlan999", "state": "up",
+    "adminState": "up", "type": "vlan", "vlan": 999, "vlanList": []}, {"hostname":
+    "leaf04", "ifname": "port-channel1", "state": "up", "adminState": "up", "type":
+    "bond", "vlan": 1, "vlanList": [1, 20, 30, 999]}, {"hostname": "leaf02", "ifname":
+    "Vlan999", "state": "up", "adminState": "up", "type": "vlan", "vlan": 999, "vlanList":
+    []}, {"hostname": "exit01", "ifname": "Vlan999", "state": "up", "adminState":
+    "up", "type": "vlan", "vlan": 999, "vlanList": []}, {"hostname": "exit02", "ifname":
+    "Vlan999", "state": "up", "adminState": "up", "type": "vlan", "vlan": 999, "vlanList":
+    []}]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=nxos
+    --columns='hostname ifname state adminState type vlanList' --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show nxos switchport
+  output: '[{"hostname": "leaf03", "ifname": "Ethernet1/6", "state": "up", "adminState":
+    "up", "type": "bond_slave", "vlanList": [1, 20, 30, 999]}, {"hostname": "leaf03",
+    "ifname": "Ethernet1/5", "state": "up", "adminState": "up", "type": "bond_slave",
+    "vlanList": [1, 20, 30, 999]}, {"hostname": "leaf03", "ifname": "port-channel1",
+    "state": "up", "adminState": "up", "type": "bond", "vlanList": [1, 20, 30, 999]},
+    {"hostname": "leaf03", "ifname": "Vlan999", "state": "up", "adminState": "up",
+    "type": "vlan", "vlanList": []}, {"hostname": "leaf01", "ifname": "Vlan999", "state":
+    "up", "adminState": "up", "type": "vlan", "vlanList": []}, {"hostname": "leaf04",
+    "ifname": "Ethernet1/6", "state": "up", "adminState": "up", "type": "bond_slave",
+    "vlanList": [1, 20, 30, 999]}, {"hostname": "leaf04", "ifname": "Ethernet1/5",
+    "state": "up", "adminState": "up", "type": "bond_slave", "vlanList": [1, 20, 30,
+    999]}, {"hostname": "leaf04", "ifname": "Vlan999", "state": "up", "adminState":
+    "up", "type": "vlan", "vlanList": []}, {"hostname": "leaf04", "ifname": "port-channel1",
+    "state": "up", "adminState": "up", "type": "bond", "vlanList": [1, 20, 30, 999]},
+    {"hostname": "leaf02", "ifname": "Vlan999", "state": "up", "adminState": "up",
+    "type": "vlan", "vlanList": []}, {"hostname": "exit01", "ifname": "Vlan999", "state":
+    "up", "adminState": "up", "type": "vlan", "vlanList": []}, {"hostname": "exit02",
+    "ifname": "Vlan999", "state": "up", "adminState": "up", "type": "vlan", "vlanList":
+    []}]'
+- command: interface show --columns=vlan --vlan='!10 !20' --state=up --namespace=nxos
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show nxos switchport
+  output: '[{"vlan": 4}, {"vlan": 3}, {"vlan": 4}, {"vlan": 2}, {"vlan": 2}, {"vlan":
+    3}, {"vlan": 30}, {"vlan": 30}, {"vlan": 30}, {"vlan": 999}, {"vlan": 30}, {"vlan":
+    30}, {"vlan": 30}, {"vlan": 999}, {"vlan": 30}, {"vlan": 999}, {"vlan": 30}, {"vlan":
+    30}, {"vlan": 30}, {"vlan": 30}, {"vlan": 30}, {"vlan": 999}, {"vlan": 999}, {"vlan":
+    4}, {"vlan": 3}, {"vlan": 2}, {"vlan": 999}, {"vlan": 4}, {"vlan": 3}, {"vlan":
+    2}]'
+- command: interface show --columns=vlan --vlan='20' --namespace=nxos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show nxos switchport
+  output: '[{"vlan": 1}, {"vlan": 1}, {"vlan": 20}, {"vlan": 1}, {"vlan": 20}, {"vlan":
+    20}, {"vlan": 1}, {"vlan": 1}, {"vlan": 20}, {"vlan": 20}, {"vlan": 20}, {"vlan":
+    1}]'
+- command: interface show --columns=vlan --vlan='10 20' --namespace=nxos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show nxos switchport
+  output: '[{"vlan": 1}, {"vlan": 1}, {"vlan": 10}, {"vlan": 1}, {"vlan": 10}, {"vlan":
+    10}, {"vlan": 10}, {"vlan": 1}, {"vlan": 1}, {"vlan": 1}, {"vlan": 10}, {"vlan":
+    10}, {"vlan": 1}, {"vlan": 1}, {"vlan": 20}, {"vlan": 1}, {"vlan": 20}, {"vlan":
+    20}, {"vlan": 1}, {"vlan": 1}, {"vlan": 20}, {"vlan": 20}, {"vlan": 20}, {"vlan":
+    1}]'
+- command: interface unique --columns=vlan --vlan='!10 999' --state=up --namespace=nxos
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique nxos switchport
+  output: '[{"vlan": 1}, {"vlan": 999}]'

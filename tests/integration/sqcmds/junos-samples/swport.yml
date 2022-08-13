@@ -1765,3 +1765,51 @@ tests:
   data-directory: tests/data/parquet/
   marks: interface unique junos switchport
   output: '[]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=junos
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show junos switchport
+  output: '[{"vlan": 999}, {"vlan": 999}, {"vlan": 999}, {"vlan": 999}]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=junos
+    --columns='hostname ifname state adminState type vlan vlanList' --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show junos switchport
+  output: '[{"hostname": "exit01", "ifname": "lo0.999", "state": "up", "adminState":
+    "up", "type": "subinterface", "vlan": 999, "vlanList": []}, {"hostname": "leaf02",
+    "ifname": "lo0.999", "state": "up", "adminState": "up", "type": "subinterface",
+    "vlan": 999, "vlanList": []}, {"hostname": "exit02", "ifname": "lo0.999", "state":
+    "up", "adminState": "up", "type": "subinterface", "vlan": 999, "vlanList": []},
+    {"hostname": "leaf01", "ifname": "lo0.999", "state": "up", "adminState": "up",
+    "type": "subinterface", "vlan": 999, "vlanList": []}]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=junos
+    --columns='hostname ifname state adminState type vlanList' --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show junos switchport
+  output: '[{"hostname": "exit01", "ifname": "lo0.999", "state": "up", "adminState":
+    "up", "type": "subinterface", "vlanList": []}, {"hostname": "leaf02", "ifname":
+    "lo0.999", "state": "up", "adminState": "up", "type": "subinterface", "vlanList":
+    []}, {"hostname": "exit02", "ifname": "lo0.999", "state": "up", "adminState":
+    "up", "type": "subinterface", "vlanList": []}, {"hostname": "leaf01", "ifname":
+    "lo0.999", "state": "up", "adminState": "up", "type": "subinterface", "vlanList":
+    []}]'
+- command: interface show --columns=vlan --vlan='!10 !20' --state=up --namespace=junos
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show junos switchport
+  output: '[{"vlan": 3}, {"vlan": 4}, {"vlan": 2}, {"vlan": 4}, {"vlan": 2}, {"vlan":
+    3}, {"vlan": 2}, {"vlan": 999}, {"vlan": 3}, {"vlan": 4}, {"vlan": 999}, {"vlan":
+    30}, {"vlan": 30}, {"vlan": 999}, {"vlan": 4}, {"vlan": 3}, {"vlan": 2}, {"vlan":
+    999}, {"vlan": 30}, {"vlan": 30}]'
+- command: interface show --columns=vlan --vlan='20' --namespace=junos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show junos switchport
+  output: '[{"vlan": 20}, {"vlan": 20}]'
+- command: interface show --columns=vlan --vlan='10 20' --namespace=junos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show junos
+  output: '[{"vlan": 10}, {"vlan": 10}, {"vlan": 20}, {"vlan": 20}]'
+- command: interface unique --columns=vlan --vlan='!10 999' --state=up --namespace=junos
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique junos switchport
+  output: '[{"vlan": 999}]'
