@@ -177,3 +177,41 @@ tests:
   output: '[{"hostname": "dcedge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
     "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
+- command: vlan show --vlan='>10 <100' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
+  marks: vlan show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "vlanName": "vlan30", "state":
+    "active", "interfaces": ["port-channel1", "port-channel4", "Ethernet1/4", "Ethernet1/5",
+    "Ethernet1/6"], "vlan": 30, "timestamp": 1619275257018}, {"namespace": "nxos",
+    "hostname": "leaf02", "vlanName": "vlan30", "state": "active", "interfaces": ["port-channel1",
+    "port-channel4", "Ethernet1/4", "Ethernet1/5", "Ethernet1/6"], "vlan": 30, "timestamp":
+    1619275257018}, {"namespace": "nxos", "hostname": "leaf03", "vlanName": "vlan20",
+    "state": "active", "interfaces": ["port-channel1", "port-channel3", "Ethernet1/3",
+    "Ethernet1/5", "Ethernet1/6"], "vlan": 20, "timestamp": 1619275257446}, {"namespace":
+    "nxos", "hostname": "leaf03", "vlanName": "vlan30", "state": "active", "interfaces":
+    ["port-channel1", "port-channel4", "Ethernet1/4", "Ethernet1/5", "Ethernet1/6"],
+    "vlan": 30, "timestamp": 1619275257446}, {"namespace": "nxos", "hostname": "leaf04",
+    "vlanName": "vlan20", "state": "active", "interfaces": ["port-channel1", "port-channel3",
+    "Ethernet1/3", "Ethernet1/5", "Ethernet1/6"], "vlan": 20, "timestamp": 1619275257671},
+    {"namespace": "nxos", "hostname": "leaf04", "vlanName": "vlan30", "state": "active",
+    "interfaces": ["port-channel1", "port-channel4", "Ethernet1/4", "Ethernet1/5",
+    "Ethernet1/6"], "vlan": 30, "timestamp": 1619275257671}]'
+- command: vlan show --vlan='> 10 < 100' --format=json --namespace=nxos
+  data-directory: tests/data/parquet/
+  marks: vlan show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "vlanName": "vlan30", "state":
+    "active", "interfaces": ["port-channel1", "port-channel4", "Ethernet1/4", "Ethernet1/5",
+    "Ethernet1/6"], "vlan": 30, "timestamp": 1619275257018}, {"namespace": "nxos",
+    "hostname": "leaf02", "vlanName": "vlan30", "state": "active", "interfaces": ["port-channel1",
+    "port-channel4", "Ethernet1/4", "Ethernet1/5", "Ethernet1/6"], "vlan": 30, "timestamp":
+    1619275257018}, {"namespace": "nxos", "hostname": "leaf03", "vlanName": "vlan20",
+    "state": "active", "interfaces": ["port-channel1", "port-channel3", "Ethernet1/3",
+    "Ethernet1/5", "Ethernet1/6"], "vlan": 20, "timestamp": 1619275257446}, {"namespace":
+    "nxos", "hostname": "leaf03", "vlanName": "vlan30", "state": "active", "interfaces":
+    ["port-channel1", "port-channel4", "Ethernet1/4", "Ethernet1/5", "Ethernet1/6"],
+    "vlan": 30, "timestamp": 1619275257446}, {"namespace": "nxos", "hostname": "leaf04",
+    "vlanName": "vlan20", "state": "active", "interfaces": ["port-channel1", "port-channel3",
+    "Ethernet1/3", "Ethernet1/5", "Ethernet1/6"], "vlan": 20, "timestamp": 1619275257671},
+    {"namespace": "nxos", "hostname": "leaf04", "vlanName": "vlan30", "state": "active",
+    "interfaces": ["port-channel1", "port-channel4", "Ethernet1/4", "Ethernet1/5",
+    "Ethernet1/6"], "vlan": 30, "timestamp": 1619275257671}]'
