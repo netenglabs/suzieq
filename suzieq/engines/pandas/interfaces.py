@@ -10,7 +10,7 @@ from ciscoconfparse import CiscoConfParse
 from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.confutils import (get_access_port_interfaces,
                                      get_trunk_port_interfaces)
-from suzieq.shared.utils import build_query_str, reduce_filter_list
+from suzieq.shared.utils import build_query_str
 
 
 class InterfacesObj(SqPandasEngine):
@@ -132,9 +132,9 @@ class InterfacesObj(SqPandasEngine):
             vlan = int(vlan)
             if op == "!":
                 tmpdf = df[df.apply(
-                    lambda x, vlan: all(opdict[op](y, vlan)
-                                        for y in x.vlanList) and
-                    opdict[op](x.vlan, vlan), args=(vlan,), axis=1)]
+                    lambda row, vlan: all(opdict[op](v, vlan)
+                                          for v in row.vlanList) and
+                    opdict[op](row.vlan, vlan), args=(vlan,), axis=1)]
             else:
                 tmpdf = df[df.apply(
                     lambda x, vlan: any(opdict[op](y, vlan)

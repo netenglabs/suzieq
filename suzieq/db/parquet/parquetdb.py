@@ -687,15 +687,15 @@ class SqParquetDB(SqDB):
 
         # Check if we have logical operator (<, >, = etc.)
         if filter_str.startswith('<='):
-            return (ds.field(keyfld) <= int(filter_str[2:]))
+            return (ds.field(keyfld) <= int(filter_str[2:].strip()))
         elif filter_str.startswith('>='):
-            return (ds.field(keyfld) >= int(filter_str[2:]))
+            return (ds.field(keyfld) >= int(filter_str[2:].strip()))
         elif filter_str.startswith('<'):
-            return (ds.field(keyfld) < int(filter_str[1:]))
+            return (ds.field(keyfld) < int(filter_str[1:].strip()))
         elif filter_str.startswith('>'):
-            return (ds.field(keyfld) > int(filter_str[1:]))
+            return (ds.field(keyfld) > int(filter_str[1:].strip()))
         else:
-            return (ds.field(keyfld) == int(filter_str))
+            return (ds.field(keyfld) == int(filter_str.strip()))
 
     # pylint: disable=too-many-statements
     def build_ds_filters(self, start_tm: float, end_tm: float,
@@ -731,7 +731,15 @@ class SqParquetDB(SqDB):
             if isinstance(v, list):
                 infld = []
                 notinfld = []
-                or_filters = None
+                kw_filters = None
+                use_and = False
+                # If user specifies both </<= and >/>=, we treat
+                # it as an and i.e. the user is looking for a val
+                # between the provided < and > numbers.
+                if (any(x.startswith('>') for x in v) and
+                        any(x.startswith('<') for x in v)):
+                    use_and = True
+
                 for e in v:
                     if isinstance(e, str) and e.startswith("!"):
                         if ftype == 'int64':
@@ -740,11 +748,15 @@ class SqParquetDB(SqDB):
                             notinfld.append(e[1:])
                     else:
                         if ftype == 'int64':
-                            if or_filters is not None:
-                                or_filters = or_filters | \
-                                    self._cons_int_filter(k, e)
+                            if kw_filters is not None:
+                                if use_and:
+                                    kw_filters = kw_filters & \
+                                        self._cons_int_filter(k, e)
+                                else:
+                                    kw_filters = kw_filters | \
+                                        self._cons_int_filter(k, e)
                             else:
-                                or_filters = self._cons_int_filter(k, e)
+                                kw_filters = self._cons_int_filter(k, e)
                         else:
                             infld.append(e)
                 if infld and notinfld:
@@ -755,8 +767,8 @@ class SqParquetDB(SqDB):
                 elif notinfld:
                     filters = filters & (~ds.field(k).isin(notinfld))
 
-                if or_filters is not None:
-                    filters = filters & (or_filters)
+                if kw_filters is not None:
+                    filters = filters & (kw_filters)
             else:
                 if isinstance(v, str) and v.startswith("!"):
                     if ftype == 'int64':
