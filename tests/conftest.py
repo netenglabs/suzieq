@@ -46,7 +46,7 @@ commands = [(x) for x in get_sqcmds()]
 cli_commands = [(v.__command['name'])
                 for k, v in get_sqcmds().items()]
 
-tables = [t for t in get_tables() if t not in ['topmem', 'topcpu']]
+TABLES = [t for t in get_tables() if t not in ['topmem', 'topcpu']]
 
 
 @pytest.fixture(scope='session')

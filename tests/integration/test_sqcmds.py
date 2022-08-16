@@ -11,7 +11,7 @@ import pytest
 from nubia import context
 import pandas as pd
 
-from tests.conftest import (load_up_the_tests, tables, DATADIR,
+from tests.conftest import (load_up_the_tests, TABLES, DATADIR,
                             setup_sqcmds, cli_commands,
                             create_dummy_config_file)
 from suzieq.sqobjects import get_sqobject
@@ -261,7 +261,7 @@ def test_context_start_time_filtering(setup_nubia, get_cmd_object_dict, cmd):
 
 
 @pytest.mark.sqcmds
-@pytest.mark.parametrize('table', tables)
+@pytest.mark.parametrize('table', TABLES)
 def test_table_describe(setup_nubia, table):
     out = _test_command('TableCmd', 'describe', {"table": table})
     assert out == 0
@@ -272,7 +272,7 @@ def test_table_describe(setup_nubia, table):
                           [pytest.param(
                               x,
                               marks=getattr(pytest.mark, x))
-                           for x in tables
+                           for x in TABLES
                            if x not in ['path', 'topmem', 'topcpu',
                                         'topmem', 'time', 'ifCounters',
                                         'ospfIf', 'ospfNbr', 'network',
@@ -311,7 +311,7 @@ def test_sqcmds_regex_hostname(table, datadir):
                           [pytest.param(
                               x,
                               marks=getattr(pytest.mark, x))
-                           for x in tables
+                           for x in TABLES
                            if x not in ['path', 'inventory', 'network']
                            ])
 @ pytest.mark.parametrize('datadir', ['tests/data/parquet/'])

@@ -32,6 +32,7 @@ class SqObjMock:
     namespace: str
     view: str
     table: str
+    columns: str
 
 
 def validate_args(engine: SqRestEngine, params: Dict):
@@ -95,7 +96,7 @@ def test_request_params():
     """
     ctxt = SqContextMock('key', 'http', 'rest-ip', 80)
     sqobj = SqObjMock(ctxt, 'default', 'default', 'default',
-                      'default', 'default', 'default')
+                      'default', 'default', 'default', 'default')
     engine = SqRestEngine(sqobj)
     # paramters which will override engine internal paramters
     sqobj_override_params = ['hostname', 'namespace', 'view']
