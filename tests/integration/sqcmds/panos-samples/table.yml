@@ -12,135 +12,116 @@ tests:
 - command: table show --view=latest --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: table show
-  output: '[{"table": "arpnd", "firstTime": 1639476253556, "latestTime": 1639476254425,
+  output: '[{"table": "arpnd", "firstTime": 1639476253556, "lastTime": 1639476254425,
     "intervals": 13, "allRows": 154, "namespaceCnt": 1, "deviceCnt": 14}, {"table":
-    "bgp", "firstTime": 1639476253357, "latestTime": 1639476253949, "intervals": 5,
+    "bgp", "firstTime": 1639476253357, "lastTime": 1639476253949, "intervals": 5,
     "allRows": 40, "namespaceCnt": 1, "deviceCnt": 10}, {"table": "devconfig", "firstTime":
-    1639476253934, "latestTime": 1639476253949, "intervals": 5, "allRows": 9, "namespaceCnt":
-    1, "deviceCnt": 9}, {"table": "device", "firstTime": 1639476253683, "latestTime":
+    1639476253934, "lastTime": 1639476253949, "intervals": 5, "allRows": 9, "namespaceCnt":
+    1, "deviceCnt": 9}, {"table": "device", "firstTime": 1639476253683, "lastTime":
     1639476254878, "intervals": 9, "allRows": 14, "namespaceCnt": 1, "deviceCnt":
-    14}, {"table": "evpnVni", "firstTime": 1639476254315, "latestTime": 1639476254333,
+    14}, {"table": "evpnVni", "firstTime": 1639476254315, "lastTime": 1639476254333,
     "intervals": 4, "allRows": 14, "namespaceCnt": 1, "deviceCnt": 6}, {"table": "fs",
-    "firstTime": 1639476253890, "latestTime": 1639476254739, "intervals": 13, "allRows":
+    "firstTime": 1639476253890, "lastTime": 1639476254739, "intervals": 13, "allRows":
     95, "namespaceCnt": 1, "deviceCnt": 13}, {"table": "ifCounters", "firstTime":
-    1639476253889, "latestTime": 1639476254857, "intervals": 11, "allRows": 157, "namespaceCnt":
-    1, "deviceCnt": 13}, {"table": "interfaces", "firstTime": 1639476253769, "latestTime":
+    1639476253889, "lastTime": 1639476254857, "intervals": 11, "allRows": 157, "namespaceCnt":
+    1, "deviceCnt": 13}, {"table": "interfaces", "firstTime": 1639476253769, "lastTime":
     1639476254854, "intervals": 11, "allRows": 167, "namespaceCnt": 1, "deviceCnt":
-    14}, {"table": "lldp", "firstTime": 1639476253946, "latestTime": 1639476254658,
+    14}, {"table": "lldp", "firstTime": 1639476253946, "lastTime": 1639476254658,
     "intervals": 10, "allRows": 40, "namespaceCnt": 1, "deviceCnt": 10}, {"table":
-    "macs", "firstTime": 1639476253642, "latestTime": 1639476254484, "intervals":
-    10, "allRows": 186, "namespaceCnt": 1, "deviceCnt": 10}, {"table": "mlag", "firstTime":
-    1639476254291, "latestTime": 1639476254322, "intervals": 3, "allRows": 4, "namespaceCnt":
-    1, "deviceCnt": 4}, {"table": "ospfIf", "firstTime": 1639476253934, "latestTime":
+    "macs", "firstTime": 1639476253642, "lastTime": 1639476254484, "intervals": 10,
+    "allRows": 186, "namespaceCnt": 1, "deviceCnt": 10}, {"table": "mlag", "firstTime":
+    1639476254291, "lastTime": 1639476254322, "intervals": 3, "allRows": 4, "namespaceCnt":
+    1, "deviceCnt": 4}, {"table": "ospfIf", "firstTime": 1639476253934, "lastTime":
     1639476253949, "intervals": 5, "allRows": 32, "namespaceCnt": 1, "deviceCnt":
-    8}, {"table": "ospfNbr", "firstTime": 1639476254207, "latestTime": 1639476254315,
+    8}, {"table": "ospfNbr", "firstTime": 1639476254207, "lastTime": 1639476254315,
     "intervals": 5, "allRows": 24, "namespaceCnt": 1, "deviceCnt": 8}, {"table": "routes",
-    "firstTime": 1639476253357, "latestTime": 1639476253490, "intervals": 3, "allRows":
+    "firstTime": 1639476253357, "lastTime": 1639476253490, "intervals": 3, "allRows":
     190, "namespaceCnt": 1, "deviceCnt": 14}, {"table": "sqPoller", "firstTime": 1652587499149,
-    "latestTime": 1652587501957, "intervals": 216, "allRows": 216, "namespaceCnt":
-    1, "deviceCnt": 14}, {"table": "time", "firstTime": 1639476253629, "latestTime":
-    1639476254469, "intervals": 11, "allRows": 13, "namespaceCnt": 1, "deviceCnt":
-    13}, {"table": "topcpu", "firstTime": 1639476253746, "latestTime": 1639476254275,
-    "intervals": 9, "allRows": 105, "namespaceCnt": 1, "deviceCnt": 13}, {"table":
-    "topmem", "firstTime": 1639476253677, "latestTime": 1639476253770, "intervals":
-    6, "allRows": 135, "namespaceCnt": 1, "deviceCnt": 13}, {"table": "vlan", "firstTime":
-    1639476254274, "latestTime": 1639476254419, "intervals": 4, "allRows": 14, "namespaceCnt":
-    1, "deviceCnt": 6}, {"table": "TOTAL", "firstTime": 1639476253357, "latestTime":
-    1652587501957, "intervals": 216, "allRows": 1609, "namespaceCnt": 1, "deviceCnt":
-    14}]'
+    "lastTime": 1652587501957, "intervals": 216, "allRows": 216, "namespaceCnt": 1,
+    "deviceCnt": 14}, {"table": "time", "firstTime": 1639476253629, "lastTime": 1639476254469,
+    "intervals": 11, "allRows": 13, "namespaceCnt": 1, "deviceCnt": 13}, {"table":
+    "topcpu", "firstTime": 1639476253746, "lastTime": 1639476254275, "intervals":
+    9, "allRows": 105, "namespaceCnt": 1, "deviceCnt": 13}, {"table": "topmem", "firstTime":
+    1639476253677, "lastTime": 1639476253770, "intervals": 6, "allRows": 135, "namespaceCnt":
+    1, "deviceCnt": 13}, {"table": "vlan", "firstTime": 1639476254274, "lastTime":
+    1639476254419, "intervals": 4, "allRows": 14, "namespaceCnt": 1, "deviceCnt":
+    6}, {"table": "TOTAL", "firstTime": 1639476253357, "lastTime": 1652587501957,
+    "intervals": 216, "allRows": 1609, "namespaceCnt": 1, "deviceCnt": 14}]'
 - command: table show --hostname=leaf01 --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: table show
-  output: '[{"table": "arpnd", "firstTime": 1639476254425, "latestTime": 1639476254425,
+  output: '[{"table": "arpnd", "firstTime": 1639476254425, "lastTime": 1639476254425,
     "intervals": 1, "allRows": 15, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "bgp",
-    "firstTime": 1639476253949, "latestTime": 1639476253949, "intervals": 1, "allRows":
+    "firstTime": 1639476253949, "lastTime": 1639476253949, "intervals": 1, "allRows":
     2, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "devconfig", "firstTime": 1639476253949,
-    "latestTime": 1639476253949, "intervals": 1, "allRows": 1, "namespaceCnt": 1,
-    "deviceCnt": 1}, {"table": "device", "firstTime": 1639476254878, "latestTime":
-    1639476254878, "intervals": 1, "allRows": 1, "namespaceCnt": 1, "deviceCnt": 1},
-    {"table": "evpnVni", "firstTime": 1639476254333, "latestTime": 1639476254333,
-    "intervals": 1, "allRows": 3, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "fs",
-    "firstTime": 1639476254739, "latestTime": 1639476254739, "intervals": 1, "allRows":
-    7, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "ifCounters", "firstTime": 1639476254857,
-    "latestTime": 1639476254857, "intervals": 1, "allRows": 21, "namespaceCnt": 1,
-    "deviceCnt": 1}, {"table": "interfaces", "firstTime": 1639476254854, "latestTime":
-    1639476254854, "intervals": 1, "allRows": 21, "namespaceCnt": 1, "deviceCnt":
-    1}, {"table": "lldp", "firstTime": 1639476254658, "latestTime": 1639476254658,
-    "intervals": 1, "allRows": 4, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "macs",
-    "firstTime": 1639476254481, "latestTime": 1639476254481, "intervals": 1, "allRows":
-    18, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "mlag", "firstTime": 1639476254322,
-    "latestTime": 1639476254322, "intervals": 1, "allRows": 1, "namespaceCnt": 1,
-    "deviceCnt": 1}, {"table": "ospfIf", "firstTime": 1639476253949, "latestTime":
+    "lastTime": 1639476253949, "intervals": 1, "allRows": 1, "namespaceCnt": 1, "deviceCnt":
+    1}, {"table": "device", "firstTime": 1639476254878, "lastTime": 1639476254878,
+    "intervals": 1, "allRows": 1, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "evpnVni",
+    "firstTime": 1639476254333, "lastTime": 1639476254333, "intervals": 1, "allRows":
+    3, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "fs", "firstTime": 1639476254739,
+    "lastTime": 1639476254739, "intervals": 1, "allRows": 7, "namespaceCnt": 1, "deviceCnt":
+    1}, {"table": "ifCounters", "firstTime": 1639476254857, "lastTime": 1639476254857,
+    "intervals": 1, "allRows": 21, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "interfaces",
+    "firstTime": 1639476254854, "lastTime": 1639476254854, "intervals": 1, "allRows":
+    21, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "lldp", "firstTime": 1639476254658,
+    "lastTime": 1639476254658, "intervals": 1, "allRows": 4, "namespaceCnt": 1, "deviceCnt":
+    1}, {"table": "macs", "firstTime": 1639476254481, "lastTime": 1639476254481, "intervals":
+    1, "allRows": 18, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "mlag", "firstTime":
+    1639476254322, "lastTime": 1639476254322, "intervals": 1, "allRows": 1, "namespaceCnt":
+    1, "deviceCnt": 1}, {"table": "ospfIf", "firstTime": 1639476253949, "lastTime":
     1639476253949, "intervals": 1, "allRows": 3, "namespaceCnt": 1, "deviceCnt": 1},
-    {"table": "ospfNbr", "firstTime": 1639476254297, "latestTime": 1639476254297,
-    "intervals": 1, "allRows": 2, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "routes",
-    "firstTime": 1639476253487, "latestTime": 1639476253487, "intervals": 1, "allRows":
-    16, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "sqPoller", "firstTime": 1652587499149,
-    "latestTime": 1652587501875, "intervals": 18, "allRows": 18, "namespaceCnt": 1,
-    "deviceCnt": 1}, {"table": "time", "firstTime": 1639476254469, "latestTime": 1639476254469,
-    "intervals": 1, "allRows": 1, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "topcpu",
-    "firstTime": 1639476254256, "latestTime": 1639476254256, "intervals": 1, "allRows":
-    8, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "topmem", "firstTime": 1639476253746,
-    "latestTime": 1639476253746, "intervals": 1, "allRows": 10, "namespaceCnt": 1,
-    "deviceCnt": 1}, {"table": "vlan", "firstTime": 1639476254419, "latestTime": 1639476254419,
-    "intervals": 1, "allRows": 3, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "TOTAL",
-    "firstTime": 1639476253487, "latestTime": 1652587501875, "intervals": 18, "allRows":
-    155, "namespaceCnt": 1, "deviceCnt": 1}]'
+    {"table": "ospfNbr", "firstTime": 1639476254297, "lastTime": 1639476254297, "intervals":
+    1, "allRows": 2, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "routes", "firstTime":
+    1639476253487, "lastTime": 1639476253487, "intervals": 1, "allRows": 16, "namespaceCnt":
+    1, "deviceCnt": 1}, {"table": "sqPoller", "firstTime": 1652587499149, "lastTime":
+    1652587501875, "intervals": 18, "allRows": 18, "namespaceCnt": 1, "deviceCnt":
+    1}, {"table": "time", "firstTime": 1639476254469, "lastTime": 1639476254469, "intervals":
+    1, "allRows": 1, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "topcpu", "firstTime":
+    1639476254256, "lastTime": 1639476254256, "intervals": 1, "allRows": 8, "namespaceCnt":
+    1, "deviceCnt": 1}, {"table": "topmem", "firstTime": 1639476253746, "lastTime":
+    1639476253746, "intervals": 1, "allRows": 10, "namespaceCnt": 1, "deviceCnt":
+    1}, {"table": "vlan", "firstTime": 1639476254419, "lastTime": 1639476254419, "intervals":
+    1, "allRows": 3, "namespaceCnt": 1, "deviceCnt": 1}, {"table": "TOTAL", "firstTime":
+    1639476253487, "lastTime": 1652587501875, "intervals": 18, "allRows": 155, "namespaceCnt":
+    1, "deviceCnt": 1}]'
 - command: table show --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: table show filter
-  output: '[{"table": "arpnd", "firstTime": 1639476253556, "latestTime": 1639476254425,
+  output: '[{"table": "arpnd", "firstTime": 1639476253556, "lastTime": 1639476254425,
     "intervals": 13, "allRows": 154, "namespaceCnt": 1, "deviceCnt": 14}, {"table":
-    "bgp", "firstTime": 1639476253357, "latestTime": 1639476253949, "intervals": 5,
+    "bgp", "firstTime": 1639476253357, "lastTime": 1639476253949, "intervals": 5,
     "allRows": 40, "namespaceCnt": 1, "deviceCnt": 10}, {"table": "devconfig", "firstTime":
-    1639476253934, "latestTime": 1639476253949, "intervals": 5, "allRows": 9, "namespaceCnt":
-    1, "deviceCnt": 9}, {"table": "device", "firstTime": 1639476253683, "latestTime":
+    1639476253934, "lastTime": 1639476253949, "intervals": 5, "allRows": 9, "namespaceCnt":
+    1, "deviceCnt": 9}, {"table": "device", "firstTime": 1639476253683, "lastTime":
     1639476254878, "intervals": 9, "allRows": 14, "namespaceCnt": 1, "deviceCnt":
-    14}, {"table": "evpnVni", "firstTime": 1639476254315, "latestTime": 1639476254333,
+    14}, {"table": "evpnVni", "firstTime": 1639476254315, "lastTime": 1639476254333,
     "intervals": 4, "allRows": 14, "namespaceCnt": 1, "deviceCnt": 6}, {"table": "fs",
-    "firstTime": 1639476253890, "latestTime": 1639476254739, "intervals": 13, "allRows":
+    "firstTime": 1639476253890, "lastTime": 1639476254739, "intervals": 13, "allRows":
     95, "namespaceCnt": 1, "deviceCnt": 13}, {"table": "ifCounters", "firstTime":
-    1639476253889, "latestTime": 1639476254857, "intervals": 11, "allRows": 157, "namespaceCnt":
-    1, "deviceCnt": 13}, {"table": "interfaces", "firstTime": 1639476253769, "latestTime":
+    1639476253889, "lastTime": 1639476254857, "intervals": 11, "allRows": 157, "namespaceCnt":
+    1, "deviceCnt": 13}, {"table": "interfaces", "firstTime": 1639476253769, "lastTime":
     1639476254854, "intervals": 11, "allRows": 167, "namespaceCnt": 1, "deviceCnt":
-    14}, {"table": "lldp", "firstTime": 1639476253946, "latestTime": 1639476254658,
+    14}, {"table": "lldp", "firstTime": 1639476253946, "lastTime": 1639476254658,
     "intervals": 10, "allRows": 40, "namespaceCnt": 1, "deviceCnt": 10}, {"table":
-    "macs", "firstTime": 1639476253642, "latestTime": 1639476254484, "intervals":
-    10, "allRows": 186, "namespaceCnt": 1, "deviceCnt": 10}, {"table": "mlag", "firstTime":
-    1639476254291, "latestTime": 1639476254322, "intervals": 3, "allRows": 4, "namespaceCnt":
-    1, "deviceCnt": 4}, {"table": "ospfIf", "firstTime": 1639476253934, "latestTime":
+    "macs", "firstTime": 1639476253642, "lastTime": 1639476254484, "intervals": 10,
+    "allRows": 186, "namespaceCnt": 1, "deviceCnt": 10}, {"table": "mlag", "firstTime":
+    1639476254291, "lastTime": 1639476254322, "intervals": 3, "allRows": 4, "namespaceCnt":
+    1, "deviceCnt": 4}, {"table": "ospfIf", "firstTime": 1639476253934, "lastTime":
     1639476253949, "intervals": 5, "allRows": 32, "namespaceCnt": 1, "deviceCnt":
-    8}, {"table": "ospfNbr", "firstTime": 1639476254207, "latestTime": 1639476254315,
+    8}, {"table": "ospfNbr", "firstTime": 1639476254207, "lastTime": 1639476254315,
     "intervals": 5, "allRows": 24, "namespaceCnt": 1, "deviceCnt": 8}, {"table": "routes",
-    "firstTime": 1639476253357, "latestTime": 1639476253490, "intervals": 3, "allRows":
+    "firstTime": 1639476253357, "lastTime": 1639476253490, "intervals": 3, "allRows":
     190, "namespaceCnt": 1, "deviceCnt": 14}, {"table": "sqPoller", "firstTime": 1652587499149,
-    "latestTime": 1652587501957, "intervals": 216, "allRows": 216, "namespaceCnt":
-    1, "deviceCnt": 14}, {"table": "time", "firstTime": 1639476253629, "latestTime":
-    1639476254469, "intervals": 11, "allRows": 13, "namespaceCnt": 1, "deviceCnt":
-    13}, {"table": "topcpu", "firstTime": 1639476253746, "latestTime": 1639476254275,
-    "intervals": 9, "allRows": 105, "namespaceCnt": 1, "deviceCnt": 13}, {"table":
-    "topmem", "firstTime": 1639476253677, "latestTime": 1639476253770, "intervals":
-    6, "allRows": 135, "namespaceCnt": 1, "deviceCnt": 13}, {"table": "vlan", "firstTime":
-    1639476254274, "latestTime": 1639476254419, "intervals": 4, "allRows": 14, "namespaceCnt":
-    1, "deviceCnt": 6}, {"table": "TOTAL", "firstTime": 1639476253357, "latestTime":
-    1652587501957, "intervals": 216, "allRows": 1609, "namespaceCnt": 1, "deviceCnt":
-    14}]'
-- command: table describe --format=json --namespace=panos
-  data-directory: tests/data/parquet/
-  marks: table describe
-  output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
-    "If this entry is active or deleted"}, {"name": "allRows", "type": "long", "key":
-    "", "display": 5, "description": "Total number of records across all time"}, {"name":
-    "deviceCnt", "type": "long", "key": "", "display": 7, "description": "Total number
-    of devices in database"}, {"name": "firstTime", "type": "float", "key": "", "display":
-    2, "description": "Timestamp of first entry in database"}, {"name": "intervals",
-    "type": "long", "key": "", "display": 4, "description": "Number of records in
-    latest entry"}, {"name": "lastTime", "type": "float", "key": "", "display": 3,
-    "description": "Timestamp of last entry in database"}, {"name": "namespaceCnt",
-    "type": "long", "key": "", "display": 6, "description": "Total number of namespaces
-    in database"}, {"name": "sqvers", "type": "string", "key": "", "display": "",
-    "description": "Schema version, not selectable"}, {"name": "table", "type": "string",
-    "key": "", "display": 1, "description": "Table name"}]'
+    "lastTime": 1652587501957, "intervals": 216, "allRows": 216, "namespaceCnt": 1,
+    "deviceCnt": 14}, {"table": "time", "firstTime": 1639476253629, "lastTime": 1639476254469,
+    "intervals": 11, "allRows": 13, "namespaceCnt": 1, "deviceCnt": 13}, {"table":
+    "topcpu", "firstTime": 1639476253746, "lastTime": 1639476254275, "intervals":
+    9, "allRows": 105, "namespaceCnt": 1, "deviceCnt": 13}, {"table": "topmem", "firstTime":
+    1639476253677, "lastTime": 1639476253770, "intervals": 6, "allRows": 135, "namespaceCnt":
+    1, "deviceCnt": 13}, {"table": "vlan", "firstTime": 1639476254274, "lastTime":
+    1639476254419, "intervals": 4, "allRows": 14, "namespaceCnt": 1, "deviceCnt":
+    6}, {"table": "TOTAL", "firstTime": 1639476253357, "lastTime": 1652587501957,
+    "intervals": 216, "allRows": 1609, "namespaceCnt": 1, "deviceCnt": 14}]'
 - command: table describe --table=floop --format=json --namespace=panos
   data-directory: tests/data/parquet/
   error:
