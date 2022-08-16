@@ -16,7 +16,8 @@ class TableObj(SqPandasEngine):
 
         table_list = self._dbeng.get_tables()
         df = pd.DataFrame()
-        kwargs.pop('columns', ['default'])
+        columns = kwargs.pop('columns', ['default'])
+        fields = self.schema.get_display_fields(columns)
         unknown_tables = []
         tables = []
 
@@ -47,14 +48,14 @@ class TableObj(SqPandasEngine):
         df = df.sort_values(by=['table']).reset_index(drop=True)
         cols = df.columns
         total = pd.DataFrame([['TOTAL',  df['firstTime'].min(),
-                               df['latestTime'].max(),
+                               df['lastTime'].max(),
                                df['intervals'].max(),
                                df['allRows'].sum(),
                                df['namespaceCnt'].max(),
                                df['deviceCnt'].max()]],
                              columns=cols)
         df = df.append(total, ignore_index=True).dropna()
-        return df
+        return df[fields]
 
     def summarize(self, **kwargs):
         '''Summarize metainfo about the various DB tables'''
@@ -71,9 +72,9 @@ class TableObj(SqPandasEngine):
             'namespaceCnt': [df.at['TOTAL', 'namespaceCnt']],
             'deviceCnt': [df.at['device', 'deviceCnt']],
             'earliestTimestamp': [df.firstTime.min()],
-            'lastTimestamp': [df.latestTime.max()],
+            'lastTimestamp': [df.lastTime.max()],
             'firstTime99': [df.firstTime.quantile(0.99)],
-            'latestTime99': [df.latestTime.quantile(0.99)],
+            'lastTime99': [df.lastTime.quantile(0.99)],
         })
         return sdf.T.rename(columns={0: 'summary'})
 

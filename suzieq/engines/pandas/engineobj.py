@@ -331,7 +331,7 @@ class SqPandasEngine(SqEngineObj):
         all_time_df = self.get_valid_df(view='all', **kwargs)
         times = all_time_df['timestamp'].unique()
         ret = {'firstTime': all_time_df.timestamp.min(),
-               'latestTime': all_time_df.timestamp.max(),
+               'lastTime': all_time_df.timestamp.max(),
                'intervals': len(times),
                'allRows': len(all_time_df),
                'namespaceCnt': all_time_df.get('namespace',
