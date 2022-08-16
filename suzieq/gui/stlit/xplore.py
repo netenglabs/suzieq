@@ -639,7 +639,6 @@ class XplorePage(SqGuiPage):
                 else:
                     st.info('Assert not run')
 
-    @st.cache(ttl=90)
     def _run_summarize(self, **kwargs):
         '''Get summarize dataframe for the object in question'''
         df = gui_get_df(self._state.table, self._config_file, verb='summarize',
