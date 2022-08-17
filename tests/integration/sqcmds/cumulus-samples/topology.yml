@@ -1125,22 +1125,76 @@ tests:
   data-directory: tests/data/parquet/
   marks: topology unique cumulus
   output: '[]'
-- command: topology show --asn=64520 --format=json --namespace=ospf-ibgp
+- command: topology show --asn=65000 --format=json --namespace=ospf-ibgp
   data-directory: tests/data/parquet/
   marks: topology show cumulus
-  output: '[]'
-- command: topology summarize --asn=64520 --format=json --namespace=ospf-ibgp
+  output: '[{"namespace": "ospf-ibgp", "hostname": "exit01", "peerHostname": "spine01",
+    "vrf": "default", "asn": 65000, "peerAsn": 65000, "bgp": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "exit01", "peerHostname": "spine02", "vrf":
+    "default", "asn": 65000, "peerAsn": 65000, "bgp": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "exit01", "peerHostname": "edge01", "vrf": "default",
+    "asn": 65000, "peerAsn": 65530, "bgp": true, "polled": false}, {"namespace": "ospf-ibgp",
+    "hostname": "exit01", "peerHostname": "edge01", "vrf": "evpn-vrf", "asn": 65000,
+    "peerAsn": 65530, "bgp": true, "polled": false}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf03", "peerHostname": "spine01", "vrf": "default", "asn": 65000, "peerAsn":
+    65000, "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02",
+    "peerHostname": "spine02", "vrf": "default", "asn": 65000, "peerAsn": 65000, "bgp":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf02", "peerHostname":
+    "spine01", "vrf": "default", "asn": 65000, "peerAsn": 65000, "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "peerHostname": "spine02",
+    "vrf": "default", "asn": 65000, "peerAsn": 65000, "bgp": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "exit02", "peerHostname": "edge01", "vrf":
+    "default", "asn": 65000, "peerAsn": 65530, "bgp": true, "polled": false}, {"namespace":
+    "ospf-ibgp", "hostname": "exit02", "peerHostname": "spine01", "vrf": "default",
+    "asn": 65000, "peerAsn": 65000, "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "exit02", "peerHostname": "edge01", "vrf": "evpn-vrf", "asn": 65000,
+    "peerAsn": 65530, "bgp": true, "polled": false}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "peerHostname": "spine01", "vrf": "default", "asn": 65000, "peerAsn":
+    65000, "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01",
+    "peerHostname": "exit01", "vrf": "default", "asn": 65000, "peerAsn": 65000, "bgp":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname":
+    "exit02", "vrf": "default", "asn": 65000, "peerAsn": 65000, "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf04",
+    "vrf": "default", "asn": 65000, "peerAsn": 65000, "bgp": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf03", "vrf":
+    "default", "asn": 65000, "peerAsn": 65000, "bgp": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine01", "peerHostname": "leaf01", "vrf": "default",
+    "asn": 65000, "peerAsn": 65000, "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf01", "peerHostname": "spine02", "vrf": "default", "asn": 65000,
+    "peerAsn": 65000, "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "spine01", "peerHostname": "leaf02", "vrf": "default", "asn": 65000, "peerAsn":
+    65000, "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04",
+    "peerHostname": "spine02", "vrf": "default", "asn": 65000, "peerAsn": 65000, "bgp":
+    true, "polled": true}, {"namespace": "ospf-ibgp", "hostname": "leaf04", "peerHostname":
+    "spine01", "vrf": "default", "asn": 65000, "peerAsn": 65000, "bgp": true, "polled":
+    true}, {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname": "exit01",
+    "vrf": "default", "asn": 65000, "peerAsn": 65000, "bgp": true, "polled": true},
+    {"namespace": "ospf-ibgp", "hostname": "spine02", "peerHostname": "leaf01", "vrf":
+    "default", "asn": 65000, "peerAsn": 65000, "bgp": true, "polled": true}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "peerHostname": "leaf02", "vrf": "default",
+    "asn": 65000, "peerAsn": 65000, "bgp": true, "polled": true}, {"namespace": "ospf-ibgp",
+    "hostname": "spine02", "peerHostname": "leaf03", "vrf": "default", "asn": 65000,
+    "peerAsn": 65000, "bgp": true, "polled": true}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "peerHostname": "leaf04", "vrf": "default", "asn": 65000, "peerAsn":
+    65000, "bgp": true, "polled": true}]'
+- command: topology summarize --asn=65000 --format=json --namespace=ospf-ibgp
   data-directory: tests/data/parquet/
   marks: topology summarize cumulus
-  output: '{"bgp": {}}'
-- command: topology unique --asn=64520 --format=json --namespace=ospf-ibgp --columns=hostname
+  output: '{"ospf-ibgp": {"bgp_center": ["spine01"], "bgp_degree_histogram": "...",
+    "bgp_is_fully_connected": true, "bgp_number_of_disjoint_sets": 1, "bgp_number_of_edges":
+    13, "bgp_number_of_nodes": 9, "bgp_self_loops": []}}'
+- command: topology unique --asn=65000 --format=json --namespace=ospf-ibgp --columns=hostname
   data-directory: tests/data/parquet/
   marks: topology unique cumulus
-  output: '[]'
-- command: topology summarize --vrf=default --asn=64520 --format=json --namespace=ospf-ibgp
+  output: '[{"hostname": "exit01"}, {"hostname": "exit02"}, {"hostname": "leaf01"},
+    {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname": "leaf04"}, {"hostname":
+    "spine01"}, {"hostname": "spine02"}]'
+- command: topology summarize --vrf=default --asn=65000 --format=json --namespace=ospf-ibgp
   data-directory: tests/data/parquet/
   marks: topology summarize cumulus
-  output: '{"bgp": {}}'
+  output: '{"ospf-ibgp": {"bgp_center": ["spine01"], "bgp_degree_histogram": "...",
+    "bgp_is_fully_connected": true, "bgp_number_of_disjoint_sets": 1, "bgp_number_of_edges":
+    13, "bgp_number_of_nodes": 9, "bgp_self_loops": []}}'
 - command: topology summarize --vrf=default --via=lldp --format=json --namespace=ospf-ibgp
   data-directory: tests/data/parquet/
   marks: topology summarize cumulus

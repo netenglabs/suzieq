@@ -31,4 +31,4 @@ class AddressObj(SqObject):
                     if not validate_macaddr(a):
                         raise ValueError("Invalid address specified")
 
-        super().validate_get_input(**kwargs)
+        return super().validate_get_input(**kwargs)

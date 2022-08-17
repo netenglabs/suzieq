@@ -887,7 +887,7 @@ class Node:
             if isinstance(use, list):
                 # There's more than one version here, we have to pick ours
                 for item in use:
-                    if item['version'] != "all":
+                    if item.get('version', '') != "all":
                         os_version = item['version']
                         opdict = {'>': operator.gt, '<': operator.lt,
                                   '>=': operator.ge, '<=': operator.le,

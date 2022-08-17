@@ -9,6 +9,7 @@ class MacsObj(SqPandasEngine):
         '''Table name'''
         return 'macs'
 
+    # pylint: disable=too-many-statements
     def get(self, **kwargs):
         if not self.iobj.table:
             raise NotImplementedError
@@ -75,6 +76,8 @@ class MacsObj(SqPandasEngine):
                 except ValueError:
                     df = df.query(
                         f'moveCount {moveCount}').reset_index(drop=True)
+        elif df.empty and compute_moves:
+            df['moveCount'] = []
 
         df = self._handle_user_query_str(df, user_query)
         if remoteOnly:

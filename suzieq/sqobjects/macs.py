@@ -32,4 +32,4 @@ class MacsObj(SqObject):
                         int(words[-1])
                     except Exception:
                         raise ValueError(f'Invalid VLAN value: {val}')
-        super().validate_get_input(**kwargs)
+        return super().validate_get_input(**kwargs)
