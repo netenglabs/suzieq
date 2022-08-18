@@ -130,9 +130,19 @@ tests:
     1619275257123}]'
 - command: mac top --what=moveCount --format=json --namespace='nxos'
   data-directory: tests/data/parquet/
-  error:
-    error: '[{"error": "ERROR: ''mackey''"}]'
   marks: mac top nxos
+  output: '[{"namespace": "nxos", "hostname": "spine02", "vlan": 0, "macaddr": "44:01:01:02:1b:08",
+    "oif": "sup-eth1", "remoteVtepIp": "", "bd": "", "flags": "router", "moveCount":
+    0, "timestamp": 1619275258116}, {"namespace": "nxos", "hostname": "spine01", "vlan":
+    0, "macaddr": "44:01:01:01:1b:08", "oif": "sup-eth1", "remoteVtepIp": "", "bd":
+    "", "flags": "router", "moveCount": 0, "timestamp": 1619275257253}, {"namespace":
+    "nxos", "hostname": "server302", "vlan": 0, "macaddr": "33:33:ff:de:d8:99", "oif":
+    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp":
+    1619275256204}, {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr":
+    "33:33:ff:22:53:72", "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "moveCount": 0, "timestamp": 1619275256204}, {"namespace": "nxos", "hostname":
+    "server302", "vlan": 0, "macaddr": "33:33:ff:22:53:72", "oif": "eth1", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1619275256204}]'
 - command: route top --what=prefixlen --format=json --namespace='nxos'
   data-directory: tests/data/parquet/
   marks: route top nxos

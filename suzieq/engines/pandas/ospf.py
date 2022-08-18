@@ -318,14 +318,14 @@ class OspfObj(SqPandasEngine):
             left_on=["namespace", "hostname", "ifname"],
             right_on=["namespace", "peerHostname", "peerIfname"]) \
             .rename(columns={'assertReason_x': 'assertReason'}) \
-            .dropna(subset=['ipAddress_x', 'index_x', 'ipAddress_y']) \
+            .dropna(subset=['ipAddress_x', 'ipAddress_y']) \
             .fillna({'isUnnumbered_y': False})
 
         if peer_df.empty:
             # We're unable to find a peer but the sessions have failed
             failed_df['assertReason'] = failed_df.apply(
-                lambda x: 'Loopback not configured passive'
-                if x['networkType'] == 'loopback' else 'No Peer Found',
+                lambda x: ['Loopback not configured passive']
+                if x['networkType'] == 'loopback' else ['No Peer Found'],
                 axis=1)
 
             return self._create_aver_result([ok_df, ifdown_df, failed_df],
@@ -550,6 +550,4 @@ class OspfObj(SqPandasEngine):
 
         return ospf_df[['namespace', 'hostname', 'vrf', 'ifname', 'adjState',
                         'assertReason', 'result']] \
-            .explode('assertReason') \
-            .fillna('') \
             .reset_index(drop=True)

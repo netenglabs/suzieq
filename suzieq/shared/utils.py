@@ -598,17 +598,15 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
             if fldtype in num_type:
                 result = f'{fld} != {val}'
             else:
-                result = f'{fld} != "{val}"'
+                if val.startswith('~'):
+                    val = val[1:]
+                    result = f'~{fld}.str.fullmatch("{val}")'
+                else:
+                    result = f'{fld} != "{val}"'
         elif val.startswith(('<', '>')):
             result = val
         elif val.startswith('~'):
-            val = val[1:]
-            if val.startswith('!'):
-                val = val[1:]
-                cond = 'and'
-                result = f'~{fld}.str.match("{val}")'
-            else:
-                result = f'{fld}.str.match("{val}")'
+            result = f'{fld}.str.fullmatch("{val[1:]}")'
         else:
             if fldtype in num_type:
                 result = f'{fld} == {val}'
@@ -623,18 +621,12 @@ def build_query_str(skip_fields: list, schema, ignore_regex=True,
 
         stype = schema.field(f).get('type', 'string')
         if isinstance(v, list) and len(v):
-            notlist = [x for x in v
-                       if x.startswith('!') or x.startswith('~!')]
-            if notlist != v:
-                newv = [x for x in v
-                        if not x.startswith('!') and not x.startswith('~!')]
-            else:
-                newv = v
+            newv = reduce_filter_list(v)
             subq = ''
             subcond = ''
             if ignore_regex and [x for x in newv
                                  if isinstance(x, str) and
-                                 x.startswith('~')]:
+                                 x.startswith(('~', '!~'))]:
                 continue
 
             for elem in newv:
@@ -989,3 +981,23 @@ def deprecated_command_warning(dep_command: str, dep_sub_command: str,
 
     return deprecated_table_function_warning(dep_command, dep_sub_command,
                                              command, sub_command)
+
+
+def reduce_filter_list(filter_list: List[str]) -> List[str]:
+    '''Reduce the list of entries to the minimal set
+    Given a list of filters, some of which contain the NOT such as
+    [123, !245] and ['leaf01', '!~spine.*', '~edge.*'], we ignore the
+    entries which are NOT since they don't contribute to the final
+    result since the presence of NOT implies the list is an AND list
+    not an OR list.
+    '''
+
+    notlist = [x for x in filter_list
+               if isinstance(x, str) and x.startswith('!')]
+    if notlist and notlist != filter_list:
+        # if not is used with non-not, the nots are meaningless
+        newlist = [x for x in filter_list
+                   if not (isinstance(x, str) and x.startswith('!'))]
+    else:
+        newlist = filter_list
+    return newlist

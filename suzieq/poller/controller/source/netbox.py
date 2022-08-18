@@ -11,7 +11,7 @@ Classes:
 
 import asyncio
 import logging
-from typing import Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
 from pydantic import BaseModel, validator, Field
@@ -44,7 +44,7 @@ class NetboxServerModel(BaseModel):
 class NetboxSourceModel(SourceModel):
     """Netbox source validation model
     """
-    tag: Optional[str] = Field(default='suzieq')
+    tag: Optional[Any] = Field(default=['suzieq'])
     period: Optional[int] = Field(default=3600)
     token: str
     ssl_verify: Optional[bool] = Field(alias='ssl-verify')
@@ -94,6 +94,19 @@ class NetboxSourceModel(SourceModel):
             return get_sensitive_data(token)
         except SensitiveLoadError as e:
             raise ValueError(e)
+
+    @validator('tag')
+    def validate_tag(cls, tags):
+        """checks if the tag is a list or a string. It always returns a list
+        """
+        # This validator is implemented to avoid the users to update their
+        # tags from string to list.
+        # In future, 'tag' will be forced to be a list
+        if not isinstance(tags, list):
+            logger.warning(
+                'Netbox: deprecated string format for tag. Use a list instead')
+            tags = [tags]
+        return [[t.strip() for t in tag.split(',')] for tag in tags]
 
 
 class Netbox(Source, InventoryAsyncPlugin):
@@ -151,8 +164,35 @@ class Netbox(Source, InventoryAsyncPlugin):
         """
         return {'Authorization': f'Token {self._data.token}'}
 
+    def _get_url_list(self) -> List[str]:
+        """Return the list of requests to execute
+
+        Returns:
+            List[str]: list of urls
+        """
+        urls = []
+        url_address = f'{self._server.protocol}://{self._server.host}:'\
+            f'{self._server.port}/api/dcim/devices/?'
+        for tags in self._data.tag:
+            query = url_address
+            for (i, t) in enumerate(tags):
+                if i > 0:
+                    query += '&'
+                query += f'tag={t}'
+            urls.append(query)
+        return urls
+
     async def get_inventory_list(self) -> List:
         """Contact netbox to retrieve the inventory.
+
+        If more than one tag is set, all devices that have at least one of the
+        tags are selected. Netbox api doesn't allow to select with this
+        logic by default. If the url query is constructed like
+        '?tag=tag1&tag=tag2', only devices with both tags will be returned.
+        For this reason, a different request for each tag must be performed.
+
+        Devices with more than one tag may appear duplicated. It's also
+        necessary to drop duplicates.
 
         Raises:
             RuntimeError: Unable to connect to the REST server
@@ -160,23 +200,31 @@ class Netbox(Source, InventoryAsyncPlugin):
         Returns:
             List: inventory list
         """
-        url = f'{self._server.protocol}://{self._server.host}:'\
-            f'{self._server.port}/api/dcim/devices/?tag={self._data.tag}'
+
         if not self._session:
             headers = self._token_auth_header()
             self._init_session(headers)
+
+        # devices is a dictionary to avoid duplicated devices. The key of the
+        # dictionary is the device netbox id.
+        devices = {}
         try:
-            devices, next_url = await self._get_devices(url)
-            while next_url:
-                cur_devices, next_url = await self._get_devices(next_url)
-                devices.extend(cur_devices)
+            for url in self._get_url_list():
+                logger.debug(f"Netbox: Retrieving url '{url}'")
+                url_devices, next_url = await self._get_devices(url)
+                while next_url:
+                    logger.debug(f"Netbox: Retrieving url '{next_url}'")
+                    cur_devices, next_url = await self._get_devices(next_url)
+                    url_devices.extend(cur_devices)
+                devices.update({device['id']: device for device in url_devices
+                                if device.get('id') is not None})
         except Exception as e:
             raise InventorySourceError(f'{self.name}: error while '
                                        f'getting devices: {e}')
 
         logger.info(
             f'Netbox: Retrieved inventory list of {len(devices)} devices')
-        return devices
+        return list(devices.values())
 
     async def _get_devices(self, url: str) -> Tuple[List, str]:
         """Retrieve devices from netbox using an HTTP GET over <url>

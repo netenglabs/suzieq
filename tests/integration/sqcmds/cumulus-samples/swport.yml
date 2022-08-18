@@ -1674,3 +1674,46 @@ tests:
   data-directory: tests/data/parquet/
   marks: interface unique cumulus switchport
   output: '[]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=ospf-ibgp
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show cumulus switchport
+  output: '[]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=ospf-ibgp
+    --columns='hostname ifname state adminState type vlan vlanList' --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show cumulus switchport
+  output: '[]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=ospf-ibgp
+    --columns='hostname ifname state adminState type vlanList' --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show cumulus switchport
+  output: '[]'
+- command: interface show --columns=vlan --vlan='!10 !20' --state=up --namespace=ospf-ibgp
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show cumulus switchport
+  output: '[{"vlan": 2}, {"vlan": 2}, {"vlan": 3}, {"vlan": 3}, {"vlan": 4}, {"vlan":
+    4}, {"vlan": 2}, {"vlan": 3}, {"vlan": 4001}, {"vlan": 4001}, {"vlan": 4}, {"vlan":
+    4001}, {"vlan": 3}, {"vlan": 4001}, {"vlan": 4}, {"vlan": 2}, {"vlan": 4001},
+    {"vlan": 13}, {"vlan": 24}, {"vlan": 4001}, {"vlan": 24}, {"vlan": 13}, {"vlan":
+    24}, {"vlan": 13}, {"vlan": 1}, {"vlan": 4094}, {"vlan": 24}, {"vlan": 4001},
+    {"vlan": 4001}, {"vlan": 13}, {"vlan": 13}, {"vlan": 13}, {"vlan": 24}, {"vlan":
+    1}, {"vlan": 4094}, {"vlan": 24}, {"vlan": 4001}, {"vlan": 24}, {"vlan": 13},
+    {"vlan": 24}, {"vlan": 13}, {"vlan": 24}, {"vlan": 13}, {"vlan": 1}, {"vlan":
+    4094}, {"vlan": 4001}, {"vlan": 4001}, {"vlan": 24}, {"vlan": 13}, {"vlan": 4001},
+    {"vlan": 24}, {"vlan": 13}, {"vlan": 24}, {"vlan": 1}, {"vlan": 4094}, {"vlan":
+    13}]'
+- command: interface show --columns=vlan --vlan='20' --namespace=ospf-ibgp --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show cumulus switchport
+  output: '[]'
+- command: interface show --columns=vlan --vlan='10 20' --namespace=ospf-ibgp --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show cumulus switchport
+  output: '[]'
+- command: interface unique --columns=vlanList --vlan='!10 !20' --namespace=ospf-ibgp
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique cumulus switchport
+  output: '[{"vlanList": 1}, {"vlanList": 13}, {"vlanList": 24}]'

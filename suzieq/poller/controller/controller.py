@@ -107,6 +107,14 @@ class Controller:
                     f'{self._input_dir} is not a valid directory'
                 )
 
+        # Get the maximum number of commands per second
+        max_cmd_pipeline = self._config.get('max-cmd-pipeline', 0)
+        if ((max_cmd_pipeline != 0) and
+                (max_cmd_pipeline % self._n_workers != 0)):
+            raise SqPollerConfError(
+                f'max-cmd-pipeline ({max_cmd_pipeline}) has to be a '
+                f'multiple of the number of worker ({self._n_workers})')
+
         source_args = {'single-run-mode': self._single_run_mode,
                        'path': inventory_file}
 
@@ -118,6 +126,7 @@ class Controller:
                         'no-coalescer': self._no_coalescer,
                         'output-dir': args.output_dir,
                         'outputs': args.outputs,
+                        'max-cmd-pipeline': max_cmd_pipeline,
                         # `single-run-mode` and `run-once` are different.
                         # The former is an internal variable telling the
                         # poller if it should run and terminate, the other

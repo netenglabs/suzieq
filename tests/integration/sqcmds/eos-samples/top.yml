@@ -126,9 +126,19 @@ tests:
     4, "action": "forward", "numNexthops": 3, "timestamp": 1623025174530}]'
 - command: mac top --what=moveCount --format=json --namespace='eos'
   data-directory: tests/data/parquet/
-  error:
-    error: '[{"error": "ERROR: ''mackey''"}]'
   marks: mac top eos
+  output: '[{"namespace": "eos", "hostname": "server302", "vlan": 0, "macaddr": "33:33:ff:95:20:c5",
+    "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount":
+    0, "timestamp": 1623025175379}, {"namespace": "eos", "hostname": "server302",
+    "vlan": 0, "macaddr": "33:33:ff:66:e7:e2", "oif": "bond0", "remoteVtepIp": "",
+    "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1623025175379}, {"namespace":
+    "eos", "hostname": "server302", "vlan": 0, "macaddr": "33:33:ff:66:e7:e2", "oif":
+    "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp":
+    1623025175379}, {"namespace": "eos", "hostname": "server302", "vlan": 0, "macaddr":
+    "33:33:ff:66:e7:e2", "oif": "eth2", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "moveCount": 0, "timestamp": 1623025175379}, {"namespace": "eos", "hostname":
+    "server302", "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif": "eth1", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1623025175379}]'
 - command: route top --what=prefixlen --format=json --namespace='eos'
   data-directory: tests/data/parquet/
   marks: route top eos
