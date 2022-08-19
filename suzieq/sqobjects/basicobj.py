@@ -405,27 +405,29 @@ class SqObject(SqPlugin):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
-        if self.columns in [['*'], ['default']]:
-            req_cols = None
+        columns = kwargs.pop('columns', self.columns)
+
+        if columns in [['*'], ['default']]:
+            table_fields = None
         else:
-            req_cols = self.schema.get_display_fields(self.columns)
-            if not req_cols:
+            table_cols = [c for c in columns
+                          if c not in ['result', 'assertReason']]
+            table_fields = self.schema.get_display_fields(table_cols)
+            if not table_fields:
                 # Till we add a schema object for assert columns,
                 # this will have to do
-                req_cols = self.columns
+                table_fields = columns
 
         df = self.engine.aver(**kwargs)
-        if not df.empty and req_cols:
-
+        if table_fields:
+            req_cols = (table_fields +
+                        [c for c in columns if c not in table_fields])
             req_col_set = set(req_cols)
             got_col_set = set(df.columns)
             diff_cols = req_col_set - got_col_set
             if diff_cols:
                 return pd.DataFrame(
                     {'error': [f'columns {list(diff_cols)} not in dataframe']})
-
-            if 'assert' not in req_cols:
-                req_cols.append('assert')
 
             df = df[req_cols]
 

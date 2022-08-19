@@ -68,6 +68,7 @@ class OspfCmd(SqTableCommand):
         df = self._invoke_sqobj(self.sqobj.aver,
                                 namespace=self.namespace,
                                 hostname=self.hostname,
+                                columns=self._add_result_columns(self.columns),
                                 result=result,
                                 **self.lvars,
                                 )

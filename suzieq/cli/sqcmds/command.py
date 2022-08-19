@@ -4,6 +4,7 @@ import ast
 import inspect
 from io import StringIO
 import shutil
+from typing import List
 
 import numpy as np
 import pandas as pd
@@ -331,7 +332,7 @@ class SqCommand(SqPlugin):
                     'display.expand_frame_repr', not all_columns):
                 df = self.sqobj.humanize_fields(df)
                 if df.empty:
-                    print(df)
+                    print(df[cols])
                 elif sort:
                     if is_error:
                         print(df[cols])
@@ -435,6 +436,28 @@ class SqCommand(SqPlugin):
                                                  new_command,
                                                  sub_command)
         cprint(colored(warning_msg, 'yellow'))
+
+    def _add_result_columns(self, columns: List[str]) -> List[str]:
+        """Append the 'result' column to the input columns if necessary.
+
+        This function is used to always retrieve the 'result' column from the
+        assertions which is necessary in the _assert_gen_output function.
+
+        The 'result' column is not added if the input columns are '*' or
+        'default' because the column will be already present
+
+        Args:
+            columns (List[str]): input columns
+
+        Returns:
+            List[str]: updated columns
+        """
+        return (
+            columns
+            if (columns in [['default'], ['*']] or
+                'result' in columns)
+            else columns + ['result']
+        )
 
 
 class SqTableCommand(SqCommand):
