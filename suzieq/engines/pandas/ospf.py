@@ -12,6 +12,11 @@ from suzieq.shared.schema import SchemaForTable
 class OspfObj(SqPandasEngine):
     '''Backend class to handle manipulating OSPF table with pandas'''
 
+    def __init__(self, baseobj):
+        super().__init__(baseobj)
+        self._assert_result_cols = ['namespace', 'hostname', 'vrf', 'ifname',
+                                    'adjState', 'assertReason', 'result']
+
     @staticmethod
     def table_name():
         '''Table name'''
@@ -251,7 +256,7 @@ class OspfObj(SqPandasEngine):
                              .reset_index(drop=True)
 
         if ospf_df.empty:
-            return pd.DataFrame(columns=columns)
+            return ospf_df
 
         columns.extend(['peerHostname', 'peerIfname'])
         ospf_df = self._get_peernames(ospf_df, columns)
@@ -555,6 +560,4 @@ class OspfObj(SqPandasEngine):
         if result and result != "all":
             ospf_df = ospf_df.query(f'result == "{result}"')
 
-        return ospf_df[['namespace', 'hostname', 'vrf', 'ifname', 'adjState',
-                        'assertReason', 'result']] \
-            .reset_index(drop=True)
+        return ospf_df[self._assert_result_cols].reset_index(drop=True)

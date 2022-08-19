@@ -16,6 +16,12 @@ from suzieq.shared.utils import build_query_str
 class InterfacesObj(SqPandasEngine):
     '''Backend class to handle manipulating interfaces table with pandas'''
 
+    def __init__(self, baseobj):
+        super().__init__(baseobj)
+        self._assert_result_cols = ['namespace', 'hostname', 'ifname', 'state',
+                                    'peerHostname', 'peerIfname', 'result',
+                                    'assertReason', 'timestamp']
+
     @staticmethod
     def table_name():
         '''Table name'''
@@ -275,6 +281,9 @@ class InterfacesObj(SqPandasEngine):
         result_df = self.get(columns=columns, **kwargs) \
                         .query('ifname != "lo"')
 
+        if result_df.empty:
+            return result_df
+
         if not result_df.empty:
             result_df['result'] = result_df.apply(
                 lambda x, matchval: 'pass' if x['mtu'] in matchval else 'fail',
@@ -334,6 +343,7 @@ class InterfacesObj(SqPandasEngine):
 
         if_df = self.get(columns=columns, type=iftype, state=state, **kwargs)
         if if_df.empty:
+            if_df = pd.DataFrame(columns=self._assert_result_cols)
             if result != 'pass':
                 if_df['result'] = 'fail'
                 if_df['assertReason'] = 'No data'
@@ -555,9 +565,7 @@ class InterfacesObj(SqPandasEngine):
             lambda x: x if len(x) else '-'
         )
 
-        return combined_df[['namespace', 'hostname', 'ifname', 'state',
-                            'peerHostname', 'peerIfname', 'result',
-                            'assertReason', 'timestamp']]
+        return combined_df[self._assert_result_cols]
 
     def _drop_junos_pifnames(self, if_df: pd.DataFrame) -> pd.DataFrame:
         """This function drops parent interfaces of Junos subinterfaces ending
