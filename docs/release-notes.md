@@ -1,5 +1,24 @@
 # Release Notes
 
+## 0.19.0 (Aug 22, 2022)
+
+The 19th release of SuzieQ contains bug fixes and improvements to key functionalities such as the REST API and endpoint tracker. Here's a detailed list of key features of this release:
+
+* **Much improved Endpoint Tracker**: The endpoint tracker now displays endpoint movement accurately across all network OS. Its also faster. There are many other enhancements to endpoint tracking which we'll cover in a blog post separately.
+* **Vastly improved REST API performance**: Due to a bug in the code, the REST API handled only one request at a time. This has been fixed.
+* **EVPN VNI Assert Improved**: The EVPN VNI assert has been improved and cleaned up, and become faster too. 
+* **Fix/improve VLAN filtering**: VLan filtering with interfaces such as ```interface show vlan="> 25"``` did not work correctly. This has been fixed, and coupled with support for in-between, allows for more powerful searching by VLAN
+* **In Between Semantics for Numeric Fields**: You can now use ">25 <50" to mean all numbers between 25 and 50 (not inclusive).
+* **Gather only connected routes for Junos MX**: Juniper MX devices have difficulty displaying the routing table (with JSON) in a short time when dealing with Internet size routing tables. This has led to some frustration on the part of users using SuzieQ to gather data from MX devices. For now, we only gather connected (or direct) routes on MXes to mitigate this problem. This is a **breaking change** if you're using SuzieQ with MX currently. Reach out over Slack if this is an issue for you, and we can tell you how to restore the old behavior for your specific setup.
+* **Netbox Multi-Tag Support**: We support the use of multiple tags (with complex OR/AND logic) to identify devices that SuzieQ should poll.
+* **Making string match consistent**: We use ! to signify not equal to. So, "!leaf01" means a string that's not equal to leaf01. When it came to regexp however, we used ~! to signify a not equal to of the regexp. To be consistent, we need to say !~. Now you can consistently use ! as in ifname="!Ethernet1/1" as well as ifname="!~Ether.*". 
+* Poller Parser Fixes
+* **Handling router MAC in NXOS**: NXOS creates the same MAC addr/VLAN entry for both the SVI and the CPU. We didn't distinguish this case and so while we wrote both entries, the read displayed only one of them, and which of the two we did was unpredictable. This fix displays both entries with the flag "router".
+* Cumulus devices now recover from being dead
+* Updates to various libraries used, either because newer ones were available or due to security updates.
+
+And many more bug fixes, new tests and test fixes.
+
 ## 0.18.0 (June 21, 2022)
 
 This 18th release of SuzieQ contains significant improvements to all the various NOS parsers, but especially IOSXE (more versions and more platforms supported now) and versions of NXOS older than 9.3.x. We've also added support for throttling the rate of requests SuzieQ poller issues to prevent overrunning AAA Servers. A more detailed list of features and critical bug fixes follows:

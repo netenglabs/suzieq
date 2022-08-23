@@ -230,3 +230,18 @@ def test_get_sensitive_data(monkeypatch):
 
     monkeypatch.setattr('getpass.getpass', lambda x: sens_value)
     assert sens_value == get_sensitive_data('ask')
+
+
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_inventory
+def test_device_validations(default_inventory):
+    inventory = default_inventory
+
+    # Invalid jump-host
+    inventory['devices'][0]['jump-host'] = 'scheme://user@192.0.1.0:2222'
+    with pytest.raises(InventorySourceError,
+                    match="format username@jumphost\\[:port\\] required"):
+        validate_raw_inventory(inventory)

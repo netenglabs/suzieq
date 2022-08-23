@@ -67,8 +67,11 @@ class LldpObj(SqPandasEngine):
                                  errors='ignore')
 
         ifidx_df = df.query('subtype.str.startswith("locally")')
-        ifindices = ifidx_df.query('peerIfindex != 0').peerIfindex \
-            .unique().tolist()
+        # stringify the numbers because sqobj expects pretty much all input
+        # to be strings
+        ifindices = [str(x)
+                     for x in ifidx_df.query('peerIfindex != 0').peerIfindex
+                     .unique().tolist()]
         if not ifidx_df.empty and ifindices:
             ifdf = self._get_table_sqobj('interfaces').get(
                 namespace=namespace, ifindex=ifindices,

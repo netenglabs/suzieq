@@ -20,7 +20,7 @@ class NetboxRestApp:
                  log_level: str = 'error') -> None:
         self.ip_addr = ip
         self.port = port
-        self.data = data
+        self.devices = data.get('results', [])
 
         if use_ssl and use_ssl not in ['valid', 'self-signed']:
             raise ValueError(
@@ -109,7 +109,7 @@ class NetboxRestApp:
             error_code, error = self.get_error("invalid_token")
             raise HTTPException(status_code=error_code, detail=error)
 
-        in_devices = self.data.get('results', [])
+        in_devices = self.devices
         if tag == "null":
             tag = None
         devices = []

@@ -44,10 +44,10 @@ class StatusPage(SqGuiPage):
             st.stop()
 
         namespaces = [''] + sorted(devdf.namespace.unique().tolist())
-        if self._state.namespace:
+
+        nsidx = 0
+        if self._state.namespace and self._state.namespace in namespaces:
             nsidx = namespaces.index(self._state.namespace)
-        else:
-            nsidx = 0
         namespace = st.sidebar.selectbox('Namespace', namespaces, index=nsidx,
                                          key='status_ns',
                                          on_change=self._sync_state)

@@ -45,6 +45,7 @@ class DeviceModel(BaseModel):
             uri = parse_url(value)
             assert uri.scheme is None, \
                 'format username@jumphost[:port] required'
+            return value
         except ValueError:
             assert False, f'Invalid jumphost format: {value}'
 

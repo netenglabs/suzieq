@@ -125,9 +125,20 @@ tests:
     "numNexthops": 2, "timestamp": 1623025802263}]'
 - command: mac top --what=moveCount --format=json --namespace='junos'
   data-directory: tests/data/parquet/
-  error:
-    error: '[{"error": "ERROR: ''mackey''"}]'
   marks: mac top junos
+  output: '[{"namespace": "junos", "hostname": "server202", "vlan": 0, "macaddr":
+    "33:33:ff:88:ae:71", "oif": "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "moveCount": 0, "timestamp": 1623025795510}, {"namespace": "junos", "hostname":
+    "server202", "vlan": 0, "macaddr": "33:33:ff:1f:79:0c", "oif": "eth0", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1623025795510},
+    {"namespace": "junos", "hostname": "server202", "vlan": 0, "macaddr": "33:33:00:00:00:01",
+    "oif": "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount":
+    0, "timestamp": 1623025795510}, {"namespace": "junos", "hostname": "server202",
+    "vlan": 0, "macaddr": "33:33:00:00:00:01", "oif": "eth1", "remoteVtepIp": "",
+    "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1623025795510}, {"namespace":
+    "junos", "hostname": "server202", "vlan": 0, "macaddr": "01:80:c2:00:00:0e", "oif":
+    "eth1", "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp":
+    1623025795510}]'
 - command: route top --what=prefixlen --format=json --namespace='junos'
   data-directory: tests/data/parquet/
   marks: route top junos

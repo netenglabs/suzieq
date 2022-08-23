@@ -14,7 +14,6 @@ import asyncio
 from asyncio.subprocess import PIPE, DEVNULL
 # pylint: disable=redefined-builtin
 from concurrent.futures._base import TimeoutError
-from contextlib import asynccontextmanager
 
 from packaging import version as version_parse
 import xmltodict
@@ -113,9 +112,7 @@ class Node:
                                           or 0) + 1
         self._retry = self._max_retries_on_auth_fail
         self._discovery_lock = asyncio.Lock()
-        self._cmd_sem = kwargs.get('cmd_sem', None)
-        self._cmd_mutex = kwargs.get('cmd_mutex', None)
-        self._cmd_pacer_sleep = kwargs.get('cmd_pacer_sleep', None)
+        self._cmd_pacer = kwargs.get('cmd_pacer')
         self.per_cmd_auth = kwargs.get('per_cmd_auth', True)
 
         self.address = kwargs["address"]
@@ -154,7 +151,7 @@ class Node:
         self.ignore_known_hosts = kwargs.get('ignore_known_hosts', False)
         self.slow_host = kwargs.get('slow_host', False)
         # Number of commands to issue in parallel
-        if self._cmd_sem:
+        if self._cmd_pacer.max_cmds:
             # Limit the num of parallel cmds we can issue when we have limits
             self.batch_size = 1
         else:
@@ -244,37 +241,6 @@ class Node:
     def is_connected(self):
         '''Is there connectivity to the device at the transport level'''
         return self._conn is not None
-
-    @asynccontextmanager
-    async def cmd_pacer(self, use_sem: bool = True):
-        '''Context Manager to implement throttling of commands.
-
-        In many networks, backend authentication servers such as TACACS which
-        handle authentication of logins and even command execution, cannot
-        large volumes of authentication requests. Thanks to our use of
-        asyncio, we can easily sends hundreds of connection requests to such
-        servers, which effectively turns into authentication failures. To
-        handle this, we add a user-specified maximum of rate of cmds/sec
-        that the authentication can handle, and we pace it out. This code
-        implements that pacer.
-
-        Some networks communicate with a backend authentication server only
-        on login while others contact it for authorization of a command as
-        well. Its to handle this difference that we pass use_sem. Users set
-        the per_cmd_auth to True if authorization is used. The caller of this
-        function sets the use_sem apppropriately depending on when the context
-        is invoked.
-
-        Args:
-          use_sem(bool): True if you want to use the pacer
-        '''
-        if self._cmd_sem and use_sem:
-            async with self._cmd_sem:
-                async with self._cmd_mutex:
-                    await asyncio.sleep(self._cmd_pacer_sleep)
-                yield
-        else:
-            yield
 
     def _decrypt_pvtkey(self, pvtkey_file: str, passphrase: str) -> str:
         """Decrypt private key file"""
@@ -658,7 +624,7 @@ class Node:
                         self.ssh_ready.release()
                     return
 
-            async with self.cmd_pacer():
+            async with self._cmd_pacer.wait():
                 try:
                     if self._tunnel:
                         self._conn = await self._tunnel.connect_ssh(
@@ -809,7 +775,7 @@ class Node:
             cb_token.node_token = self.bootupTimestamp
 
         timeout = timeout or self.cmd_timeout
-        async with self.cmd_pacer(self.per_cmd_auth):
+        async with self._cmd_pacer.wait(self.per_cmd_auth):
             for cmd in cmd_list:
                 try:
                     output = await asyncio.wait_for(self._conn.run(cmd),
@@ -921,7 +887,7 @@ class Node:
             if isinstance(use, list):
                 # There's more than one version here, we have to pick ours
                 for item in use:
-                    if item['version'] != "all":
+                    if item.get('version', '') != "all":
                         os_version = item['version']
                         opdict = {'>': operator.gt, '<': operator.lt,
                                   '>=': operator.ge, '<=': operator.le,
@@ -1180,7 +1146,7 @@ class EosNode(Node):
         output = []
         status = 200  # status OK
 
-        async with self.cmd_pacer(self.per_cmd_auth):
+        async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
                 async with aiohttp.ClientSession(
                         auth=auth, conn_timeout=self.connect_timeout,
@@ -1327,7 +1293,7 @@ class CumulusNode(Node):
         url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
         headers = {"Content-Type": "application/json"}
 
-        async with self.cmd_pacer(self.per_cmd_auth):
+        async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
                 async with aiohttp.ClientSession(
                         auth=auth, timeout=self.cmd_timeout,
@@ -1352,7 +1318,7 @@ class CumulusNode(Node):
         url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
         headers = {"Content-Type": "application/json"}
 
-        async with self.cmd_pacer(self.per_cmd_auth):
+        async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
                 async with aiohttp.ClientSession(
                         auth=auth,
@@ -1542,7 +1508,7 @@ class IosXENode(Node):
         if self.is_connected and not self._stdin:
             self.logger.info(
                 f'Trying to create Persistent SSH for {self.hostname}')
-            async with self.cmd_pacer(self.per_cmd_auth):
+            async with self._cmd_pacer.wait(self.per_cmd_auth):
                 try:
                     self._stdin, self._stdout, self._stderr = \
                         await self._conn.open_session(term_type='xterm')
@@ -1679,7 +1645,7 @@ class IosXENode(Node):
             return
 
         timeout = timeout or self.cmd_timeout
-        async with self.cmd_pacer(self.per_cmd_auth):
+        async with self._cmd_pacer.wait(self.per_cmd_auth):
             for cmd in cmd_list:
                 try:
                     if self.slow_host:
@@ -1908,7 +1874,7 @@ class PanosNode(Node):
         try:
             res = []
             # temporary hack to detect device info using ssh
-            async with self.cmd_pacer():
+            async with self._cmd_pacer.wait():
                 async with asyncssh.connect(
                         self.address, port=22, username=self.username,
                         password=self.password, known_hosts=None) as conn:
@@ -1951,7 +1917,7 @@ class PanosNode(Node):
 
         if not self._retry:
             return
-        async with self.cmd_pacer(self.per_cmd_auth):
+        async with self._cmd_pacer.wait(self.per_cmd_auth):
             async with self._session.get(url, timeout=self.connect_timeout) \
                     as response:
                 status, xml = response.status, await response.text()
@@ -2012,7 +1978,7 @@ class PanosNode(Node):
     async def _init_rest(self):
         # In case of PANOS, getting here means REST is up
         if not self._session:
-            async with self.cmd_pacer(self.per_cmd_auth):
+            async with self._cmd_pacer.wait(self.per_cmd_auth):
                 try:
                     self._session = aiohttp.ClientSession(
                         conn_timeout=self.connect_timeout,
@@ -2057,7 +2023,7 @@ class PanosNode(Node):
             await service_callback(result, cb_token)
             return
 
-        async with self.cmd_pacer(self.per_cmd_auth):
+        async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
                 for cmd in cmd_list:
                     url_cmd = f"{url}?type=op&cmd={cmd}&key={self.api_key}"

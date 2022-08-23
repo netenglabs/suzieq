@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from pandas.core.groupby import DataFrameGroupBy
 
-from suzieq.shared.utils import humanize_timestamp
+from suzieq.shared.utils import humanize_timestamp, reduce_filter_list
 from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects import get_sqobject
@@ -289,33 +289,28 @@ class SqPandasEngine(SqEngineObj):
         """
         if hostname and not df.empty:
             hdf_list = []
-            notlist = [x for x in hostname if '!' in x]
-            if len(notlist) != len(hostname):
-                hnlist = [x for x in hostname if '!' not in x]
-            else:
-                hnlist = hostname
+            hnlist = reduce_filter_list(hostname)
             for hn in hnlist:
                 use_not = False
                 if hn.startswith('~'):
                     hn = hn[1:]
-                    if hn.startswith('!'):
-                        use_not = True
-                        hn = hn[1:]
                 elif hn.startswith('!'):
                     hn = hn[1:]
                     use_not = True
 
-                if use_not:
-                    df1 = df.query(f'~hostname.str.match("{hn}")')
-                    hdf_list = [df1]
-                else:
-                    df1 = df.query(f"hostname.str.match('{hn}')")
-                    if not df1.empty:
-                        hdf_list.append(df1)
+                    if hn.startswith('~'):
+                        hn = hn[1:]
 
                 if use_not:
+                    df1 = df.query(
+                        f'~hostname.str.fullmatch("{hn}")')
+                    hdf_list = [df1]
                     # With not, the list of hostnames becomes an and
                     df = df1
+                else:
+                    df1 = df.query(f"hostname.str.fullmatch('{hn}')")
+                    if not df1.empty:
+                        hdf_list.append(df1)
 
             if hdf_list:
                 df = pd.concat(hdf_list)
@@ -470,7 +465,8 @@ class SqPandasEngine(SqEngineObj):
         if df.empty or ('error' in df.columns):
             return df
 
-        columns_by = [what] + self.schema.key_fields()
+        columns_by = [x for x in [what] + self.schema.key_fields()
+                      if x in df.columns]
 
         return df.sort_values(by=columns_by, ascending=reverse) \
                  .head(sqTopCount)
@@ -499,12 +495,15 @@ class SqPandasEngine(SqEngineObj):
             verb (str): The verb to use in the get_sqobject call
         """
 
-        return get_sqobject(table)(
-            engine_name=self.iobj.engine.name,
-            context=self.ctxt,
-            start_time=start_time or self.iobj.start_time,
-            end_time=end_time or self.iobj.end_time,
-            view=view or self.iobj.view)
+        if start_time is None:
+            start_time = self.iobj.start_time
+        if end_time is None:
+            end_time = self.iobj.end_time
+        if view is None:
+            view = self.iobj.view
+        return get_sqobject(table)(engine_name=self.iobj.engine.name,
+                                   context=self.ctxt, view=view,
+                                   start_time=start_time, end_time=end_time)
 
     def _init_summarize(self, **kwargs) -> None:
         """Initialize the data structures for use with generating summary

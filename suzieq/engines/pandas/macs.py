@@ -9,6 +9,7 @@ class MacsObj(SqPandasEngine):
         '''Table name'''
         return 'macs'
 
+    # pylint: disable=too-many-statements
     def get(self, **kwargs):
         if not self.iobj.table:
             raise NotImplementedError
@@ -61,6 +62,11 @@ class MacsObj(SqPandasEngine):
             df['moveCount'] = df.groupby(level=[0, 1, 2, 3])[
                 'moved'].cumsum()
             df = df.reset_index()
+            if not ((view == "all") or
+                    (self.iobj.start_time and self.iobj.end_time)):
+                df = df.drop_duplicates(subset=self.schema.key_fields(),
+                                        keep='last') \
+                    .reset_index(drop=True)
 
             if moveCount:
                 try:
@@ -70,6 +76,8 @@ class MacsObj(SqPandasEngine):
                 except ValueError:
                     df = df.query(
                         f'moveCount {moveCount}').reset_index(drop=True)
+        elif df.empty and compute_moves:
+            df['moveCount'] = []
 
         df = self._handle_user_query_str(df, user_query)
         if remoteOnly:

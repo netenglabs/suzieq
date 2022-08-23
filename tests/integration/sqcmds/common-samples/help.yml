@@ -1,7 +1,7 @@
 description: Testing help across all tables
 tests:
 - command: address help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: address help
   output: "address: \e[36mIP and MAC addresses associated with interfaces\e[0m\n\n\
@@ -11,7 +11,7 @@ tests:
     \ - top: \e[36mReturn the top n values for a field in a table\e[0m\n - unique:\
     \ \e[36mGet unique values (and counts) associated with requested field\e[0m\n"
 - command: address help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: address help command
   output: "address show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -29,7 +29,7 @@ tests:
     \ view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e\
     [1mVRF(s), space separated\e[0m\n"
 - command: address help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: address help command
   output: "address summarize: \e[36mSummarize relevant information about the table\e\
@@ -47,7 +47,7 @@ tests:
     \ by type\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
     \ - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: address help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: address help command
   output: "address unique: \e[36mGet unique values (and counts) associated with requested\
@@ -66,7 +66,7 @@ tests:
     \ by type\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
     \ - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: address help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: address help command
   output: "address top: \e[36mReturn the top n values for a field in a table\e[0m\n\
@@ -86,7 +86,7 @@ tests:
     \ or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n -\
     \ what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: arpnd help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: arpnd help
   output: "arpnd: \e[36mARP/Neighbor Discovery information\e[0m\n\nSupported verbs\
@@ -96,7 +96,7 @@ tests:
     \ the top n values for a field in a table\e[0m\n - unique: \e[36mGet unique values\
     \ (and counts) associated with requested field\e[0m\n"
 - command: arpnd help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: arpnd help command
   output: "arpnd show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -112,7 +112,7 @@ tests:
     \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
     \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
 - command: arpnd help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: arpnd help command
   output: "arpnd summarize: \e[36mSummarize relevant information about the table\e\
@@ -129,7 +129,7 @@ tests:
     [1mStart of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView\
     \ all records or just the latest\e[0m\n"
 - command: arpnd help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: arpnd help command
   output: "arpnd unique: \e[36mGet unique values (and counts) associated with requested\
@@ -147,7 +147,7 @@ tests:
     [1mStart of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView\
     \ all records or just the latest\e[0m\n"
 - command: arpnd help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: arpnd help command
   output: "arpnd top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
@@ -166,7 +166,7 @@ tests:
     [36m\e[1mView all records or just the latest\e[0m\n - what: \e[36m\e[1mnumeric\
     \ field to get top values for\e[0m\n"
 - command: bgp help --command=assert
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: bgp help
   output: "bgp aver: \e[36mAssert BGP is functioning properly\e[0m\n\e[33m\nUse quotes\
@@ -184,7 +184,7 @@ tests:
     \ - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e\
     [1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: bgp help command
   output: "bgp show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -201,7 +201,7 @@ tests:
     \ - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e\
     [1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: bgp help command
   output: "bgp summarize: \e[36mSummarize relevant information about the table\e[0m\n\
@@ -218,7 +218,7 @@ tests:
     \ VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
     [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: bgp help command
   output: "bgp unique: \e[36mGet unique values (and counts) associated with requested\
@@ -236,7 +236,7 @@ tests:
     \ VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
     [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: bgp help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: bgp help command
   output: "bgp top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
@@ -255,7 +255,7 @@ tests:
     \ records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
     [0m\n - what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: devconfig help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: devconfig help
   output: "devconfig: \e[36mDevice configurations\e[0m\n\nSupported verbs are: \n\
@@ -265,7 +265,7 @@ tests:
     \ the top n values for a field in a table\e[0m\n - unique: \e[36mGet unique values\
     \ (and counts) associated with requested field\e[0m\n"
 - command: device help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: device help
   output: "device: \e[36mBasic device information such as OS, version, model etc.\e\
@@ -275,7 +275,7 @@ tests:
     [0m\n - top: \e[36mReturn the top n values for a field in a table\e[0m\n - unique:\
     \ \e[36mGet unique values (and counts) associated with requested field\e[0m\n"
 - command: device help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: device help command
   output: "device show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -292,7 +292,7 @@ tests:
     \ space separated\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
     [0m\n"
 - command: device help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: device help command
   output: "device summarize: \e[36mSummarize relevant information about the table\e\
@@ -309,7 +309,7 @@ tests:
     [0m\n - version: \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e\
     [36m\e[1mView all records or just the latest\e[0m\n"
 - command: device help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: device help command
   output: "device unique: \e[36mGet unique values (and counts) associated with requested\
@@ -327,7 +327,7 @@ tests:
     [0m\n - version: \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e\
     [36m\e[1mView all records or just the latest\e[0m\n"
 - command: device help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: device help command
   output: "device top: \e[36mReturn the top n values for a field in a table\e[0m\n\
@@ -346,7 +346,7 @@ tests:
     [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n - what: \e\
     [36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: evpnVni help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: evpnVni help
   output: "evpnVni: \e[36mEVPN information such as VNI/VLAN mapping, VTEP IPs etc.\e\
@@ -357,7 +357,7 @@ tests:
     \ \e[36mReturn the top n values for a field in a table\e[0m\n - unique: \e[36mGet\
     \ unique values (and counts) associated with requested field\e[0m\n"
 - command: evpnVni help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: evpnVni help command
   output: "evpnVni show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -372,7 +372,7 @@ tests:
     [36m\e[1mView all records or just the latest\e[0m\n - vni: \e[36m\e[1mVNI ID(s),\
     \ space separated\e[0m\n"
 - command: evpnVni help --command=assert
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: evpnVni help command
   output: "evpnVni aver: \e[36mAssert VXLAN Forwarding is functioning properly\e[0m\n\
@@ -388,7 +388,7 @@ tests:
     \ natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just the\
     \ latest\e[0m\n - vni: \e[36m\e[1mVNI ID(s), space separated\e[0m\n"
 - command: evpnVni help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: evpnVni help command
   output: "evpnVni summarize: \e[36mSummarize relevant information about the table\e\
@@ -403,7 +403,7 @@ tests:
     \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
     \ the latest\e[0m\n - vni: \e[36m\e[1mVNI ID(s), space separated\e[0m\n"
 - command: evpnVni help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: evpnVni help command
   output: "evpnVni unique: \e[36mGet unique values (and counts) associated with requested\
@@ -419,7 +419,7 @@ tests:
     \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
     \ the latest\e[0m\n - vni: \e[36m\e[1mVNI ID(s), space separated\e[0m\n"
 - command: evpnVni help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: evpnVni help command
   output: "evpnVni top: \e[36mReturn the top n values for a field in a table\e[0m\n\
@@ -436,7 +436,7 @@ tests:
     \ all records or just the latest\e[0m\n - vni: \e[36m\e[1mVNI ID(s), space separated\e\
     [0m\n - what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: fs help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: fs help
   output: "fs: \e[36mFilesystem information such as total disk space, filesystems\
@@ -447,7 +447,7 @@ tests:
     \ - unique: \e[36mGet unique values (and counts) associated with requested field\e\
     [0m\n"
 - command: interface help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: interface help
   output: "interfaces: \e[36mDevice interface information including MTU, Speed, IP\
@@ -458,7 +458,7 @@ tests:
     \ - top: \e[36mReturn the top n values for a field in a table\e[0m\n - unique:\
     \ \e[36mGet unique values (and counts) associated with requested field\e[0m\n"
 - command: interface help --command=assert
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: interface help command
   output: "interfaces aver: \e[36mAssert aspects about the interface\e[0m\n\e[33m\n\
@@ -480,7 +480,7 @@ tests:
     \ <, >, <=, >=, !\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n - what:\
     \ \e[36m\e[1mWhat do you want to assert\e[0m\n"
 - command: interface help --command=describe
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: interface help command
   output: "interfaces describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\n\
@@ -499,7 +499,7 @@ tests:
     [1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
     \ space separated\e[0m\n"
 - command: interface help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: interface help command
   output: "interfaces show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when\
@@ -518,7 +518,7 @@ tests:
     \ separated, can use <, >, <=, >=, !\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
     [0m\n"
 - command: interface help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: interface help command
   output: "interfaces summarize: \e[36mSummarize relevant information about the table\e\
@@ -537,7 +537,7 @@ tests:
     [0m\n - vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n\
     \ - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: interface help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: interface help command
   output: "interfaces top: \e[36mReturn the top n values for a field in a table\e\
@@ -558,7 +558,7 @@ tests:
     \ <=, >=, !\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n - what: \e\
     [36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: interface help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: interface help command
   output: "interfaces unique: \e[36mGet unique values (and counts) associated with\
@@ -578,7 +578,7 @@ tests:
     [0m\n - vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n\
     \ - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: inventory help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: inventory help
   output: "inventory: \e[36mDevice inventory information such as serial number, cable\
@@ -589,7 +589,7 @@ tests:
     \ table\e[0m\n - unique: \e[36mGet unique values (and counts) associated with\
     \ requested field\e[0m\n"
 - command: lldp help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: lldp help
   output: "lldp: \e[36mLLDP protocol information\e[0m\n\nSupported verbs are: \n -\
@@ -599,7 +599,7 @@ tests:
     \ the top n values for a field in a table\e[0m\n - unique: \e[36mGet unique values\
     \ (and counts) associated with requested field\e[0m\n"
 - command: lldp help --command=describe
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: lldp help command
   output: "lldp describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
@@ -615,7 +615,7 @@ tests:
     [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
     [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
 - command: lldp help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: lldp help command
   output: "lldp show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -631,7 +631,7 @@ tests:
     \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - view: \e\
     [36m\e[1mView all records or just the latest\e[0m\n"
 - command: lldp help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: lldp help command
   output: "lldp summarize: \e[36mSummarize relevant information about the table\e\
@@ -648,7 +648,7 @@ tests:
     \ natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just the\
     \ latest\e[0m\n"
 - command: lldp help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: lldp help command
   output: "lldp top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
@@ -667,7 +667,7 @@ tests:
     \ or just the latest\e[0m\n - what: \e[36m\e[1mnumeric field to get top values\
     \ for\e[0m\n"
 - command: lldp help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: lldp help command
   output: "lldp unique: \e[36mGet unique values (and counts) associated with requested\
@@ -685,7 +685,7 @@ tests:
     \ natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just the\
     \ latest\e[0m\n"
 - command: mac help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mac help
   output: "macs: \e[36mMAC address table information\e[0m\n\nSupported verbs are:\
@@ -695,7 +695,7 @@ tests:
     \ the top n values for a field in a table\e[0m\n - unique: \e[36mGet unique values\
     \ (and counts) associated with requested field\e[0m\n"
 - command: mac help --command=describe
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mac help command
   output: "macs describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
@@ -714,7 +714,7 @@ tests:
     \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated,\
     \ can use <, >, <=, >=, !\e[0m\n"
 - command: mac help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mac help command
   output: "macs show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -733,7 +733,7 @@ tests:
     \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated,\
     \ can use <, >, <=, >=, !\e[0m\n"
 - command: mac help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mac help command
   output: "macs summarize: \e[36mSummarize relevant information about the table\e\
@@ -752,7 +752,7 @@ tests:
     \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated,\
     \ can use <, >, <=, >=, !\e[0m\n"
 - command: mac help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mac help command
   output: "macs top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
@@ -773,7 +773,7 @@ tests:
     \ vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n -\
     \ what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: mac help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mac help command
   output: "macs unique: \e[36mGet unique values (and counts) associated with requested\
@@ -793,7 +793,7 @@ tests:
     \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated,\
     \ can use <, >, <=, >=, !\e[0m\n"
 - command: mlag help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mlag help
   output: "mlag: \e[36mMultichassis LAG information (includes variants such as NXOX\
@@ -804,7 +804,7 @@ tests:
     [0m\n - unique: \e[36mGet unique values (and counts) associated with requested\
     \ field\e[0m\n"
 - command: mlag help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mlag help command
   output: "mlag show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -817,7 +817,7 @@ tests:
     [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
     [0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n"
 - command: mlag help --command=describe
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mlag help command
   output: "mlag describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
@@ -831,7 +831,7 @@ tests:
     \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
     \ the latest\e[0m\n"
 - command: mlag help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mlag help command
   output: "mlag summarize: \e[36mSummarize relevant information about the table\e\
@@ -845,7 +845,7 @@ tests:
     \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
     \ records or just the latest\e[0m\n"
 - command: mlag help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mlag help command
   output: "mlag top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
@@ -861,7 +861,7 @@ tests:
     [36m\e[1mView all records or just the latest\e[0m\n - what: \e[36m\e[1mnumeric\
     \ field to get top values for\e[0m\n"
 - command: mlag help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: mlag help command
   output: "mlag unique: \e[36mGet unique values (and counts) associated with requested\
@@ -876,7 +876,7 @@ tests:
     \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
     \ records or just the latest\e[0m\n"
 - command: namespace help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: namespace help
   output: "namespace: \e[36mOverall network information such as device count, bgp\
@@ -887,7 +887,7 @@ tests:
     \ table\e[0m\n - unique: \e[36mGet unique values (and counts) associated with\
     \ requested field\e[0m\n"
 - command: namespace help --command=describe
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: namespace help command
   output: "namespace describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\n\
@@ -901,7 +901,7 @@ tests:
     \ try natural language spec\e[0m\n - view: \e[36m\e[1mView all records or just\
     \ the latest\e[0m\n"
 - command: namespace help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: namespace help command
   output: "namespace show: \e[36mShow namespace info\e[0m\n\e[33m\nUse quotes when\
@@ -918,7 +918,7 @@ tests:
     \ space separated\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
     [0m\n"
 - command: namespace help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: namespace help command
   output: "namespace summarize: \e[36mSummarize relevant information about the table\e\
@@ -932,7 +932,7 @@ tests:
     \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
     \ records or just the latest\e[0m\n"
 - command: namespace help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: namespace help command
   output: "namespace top: \e[36mReturn the top n values for a field in a table\e[0m\n\
@@ -948,7 +948,7 @@ tests:
     [36m\e[1mView all records or just the latest\e[0m\n - what: \e[36m\e[1mnumeric\
     \ field to get top values for\e[0m\n"
 - command: namespace help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: namespace help command
   output: "namespace unique: \e[36mGet unique values (and counts) associated with\
@@ -963,7 +963,7 @@ tests:
     \ of time window, try natural language spec\e[0m\n - view: \e[36m\e[1mView all\
     \ records or just the latest\e[0m\n"
 - command: network help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: network help command
   output: "network: \e[36mAdvanced commands across all the network\e[0m\n\nSupported\
@@ -974,7 +974,7 @@ tests:
     \ instead\e[0m\n - top: \e[36mDeprecated. Use 'namespace top' instead\e[0m\n -\
     \ unique: \e[36mDeprecated. Use 'namespace unique' instead\e[0m\n"
 - command: network help --command=find
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: network help command
   output: "network find: \e[36mFind the network attach point of a given IP or MAC\
@@ -990,7 +990,7 @@ tests:
     \ records or just the latest\e[0m\n - vlan: \e[36m\e[1mFind MAC within this VLAN\e\
     [0m\n - vrf: \e[36m\e[1mFind within this VRF, used for IP addr\e[0m\n"
 - command: path help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: path help
   output: "path: \e[36mPath trace information including overlay and underlay\e[0m\n\
@@ -1000,7 +1000,7 @@ tests:
     [0m\n - top: \e[36mReturn the top n values for a field in a table\e[0m\n - unique:\
     \ \e[36mGet unique values (and counts) associated with requested field\e[0m\n"
 - command: path help --command=describe
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: path help command
   output: "path describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
@@ -1016,7 +1016,7 @@ tests:
     [36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
     \ space separated\e[0m\n"
 - command: path help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: path help command
   output: "path show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -1032,7 +1032,7 @@ tests:
     \ records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
     [0m\n"
 - command: path help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: path help command
   output: "path summarize: \e[36mSummarize relevant information about the table\e\
@@ -1048,7 +1048,7 @@ tests:
     [36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
     \ space separated\e[0m\n"
 - command: path help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: path help command
   output: "path top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
@@ -1066,7 +1066,7 @@ tests:
     [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n - what: \e[36m\e[1mnumeric\
     \ field to get top values for\e[0m\n"
 - command: path help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: path help command
   output: "path unique: \e[36mGet unique values (and counts) associated with requested\
@@ -1083,7 +1083,7 @@ tests:
     [36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
     \ space separated\e[0m\n"
 - command: ospf help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: ospf help
   output: "ospf: \e[36mOSPFv2 protocol information\e[0m\n\nSupported verbs are: \n\
@@ -1094,7 +1094,7 @@ tests:
     \ a field in a table\e[0m\n - unique: \e[36mGet unique values (and counts) associated\
     \ with requested field\e[0m\n"
 - command: ospf help --command=describe
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: ospf help command
   output: "ospf describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
@@ -1110,7 +1110,7 @@ tests:
     [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
     \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: ospf help --command=assert
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: ospf help command
   output: "ospf aver: \e[36mTest OSPF runtime state is without errors\e[0m\n\e[33m\n\
@@ -1127,7 +1127,7 @@ tests:
     [1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the\
     \ latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: ospf help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: ospf help command
   output: "ospf show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -1143,7 +1143,7 @@ tests:
     \ VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
     [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: ospf help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: ospf help command
   output: "ospf summarize: \e[36mSummarize relevant information about the table\e\
@@ -1159,7 +1159,7 @@ tests:
     [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
     \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: ospf help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: ospf help command
   output: "ospf top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
@@ -1178,7 +1178,7 @@ tests:
     \ space separated\e[0m\n - what: \e[36m\e[1mnumeric field to get top values for\e\
     [0m\n"
 - command: ospf help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: ospf help command
   output: "ospf unique: \e[36mGet unique values (and counts) associated with requested\
@@ -1195,7 +1195,7 @@ tests:
     [36m\e[1mState of VLAN to query\e[0m\n - view: \e[36m\e[1mView all records or\
     \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: route help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: route help
   output: "routes: \e[36mRouting table information\e[0m\n\nSupported verbs are: \n\
@@ -1206,7 +1206,7 @@ tests:
     \ the top n values for a field in a table\e[0m\n - unique: \e[36mGet unique values\
     \ (and counts) associated with requested field\e[0m\n"
 - command: route help --command=describe
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: route help command
   output: "routes describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
@@ -1223,7 +1223,7 @@ tests:
     [36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
     \ space separated\e[0m\n"
 - command: route help --command=lpm
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: route help command
   output: "routes lpm: \e[36mShow the Longest Prefix Match(LPM) on a given prefix,\
@@ -1241,7 +1241,7 @@ tests:
     \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
     \ vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: route help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: route help command
   output: "routes show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -1258,7 +1258,7 @@ tests:
     \ records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
     [0m\n"
 - command: route help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: route help command
   output: "routes summarize: \e[36mSummarize relevant information about the table\e\
@@ -1275,7 +1275,7 @@ tests:
     \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
     \ vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: route help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: route help command
   output: "routes top: \e[36mReturn the top n values for a field in a table\e[0m\n\
@@ -1294,7 +1294,7 @@ tests:
     [0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n - what: \e[36m\e[1mnumeric\
     \ field to get top values for\e[0m\n"
 - command: route help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: route help command
   output: "routes unique: \e[36mGet unique values (and counts) associated with requested\
@@ -1312,7 +1312,7 @@ tests:
     \ spec\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n -\
     \ vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: topology help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: topology help
   output: "topology: \e[36mInformation about the topology constructed from various\
@@ -1323,7 +1323,7 @@ tests:
     \ table\e[0m\n - unique: \e[36mGet unique values (and counts) associated with\
     \ requested field\e[0m\n"
 - command: topology help --command=describe
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: topology help command
   output: "topology describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\n\
@@ -1343,7 +1343,7 @@ tests:
     \ are connected, space separated\e[0m\n - view: \e[36m\e[1mView all records or\
     \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: topology help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: topology help command
   output: "topology show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -1363,7 +1363,7 @@ tests:
     \ \e[36m\e[1mView all records or just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s),\
     \ space separated\e[0m\n"
 - command: topology help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: topology help command
   output: "topology summarize: \e[36mSummarize relevant information about the table\e\
@@ -1383,7 +1383,7 @@ tests:
     \ are connected, space separated\e[0m\n - view: \e[36m\e[1mView all records or\
     \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: topology help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: topology help command
   output: "topology top: \e[36mReturn the top n values for a field in a table\e[0m\n\
@@ -1406,7 +1406,7 @@ tests:
     \ space separated\e[0m\n - what: \e[36m\e[1mnumeric field to get top values for\e\
     [0m\n"
 - command: topology help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: topology help command
   output: "topology unique: \e[36mGet unique values (and counts) associated with requested\
@@ -1427,7 +1427,7 @@ tests:
     \ are connected, space separated\e[0m\n - view: \e[36m\e[1mView all records or\
     \ just the latest\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: vlan help
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: vlan help
   output: "vlan: \e[36mInformation about VLANs including interfaces belonging to a\
@@ -1438,7 +1438,7 @@ tests:
     [0m\n - unique: \e[36mGet unique values (and counts) associated with requested\
     \ field\e[0m\n"
 - command: vlan help --command=describe
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: vlan help command
   output: "vlan describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\nUse\
@@ -1454,7 +1454,7 @@ tests:
     [36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n - vlanName:\
     \ \e[36m\e[1mVLAN name(s), space separated\e[0m\n"
 - command: vlan help --command=show
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: vlan help command
   output: "vlan show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
@@ -1470,7 +1470,7 @@ tests:
     \ can use <, >, <=, >=, !\e[0m\n - vlanName: \e[36m\e[1mVLAN name(s), space separated\e\
     [0m\n"
 - command: vlan help --command=summarize
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: vlan help command
   output: "vlan summarize: \e[36mSummarize relevant information about the table\e\
@@ -1486,7 +1486,7 @@ tests:
     [0m\n - vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n\
     \ - vlanName: \e[36m\e[1mVLAN name(s), space separated\e[0m\n"
 - command: vlan help --command=top
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: vlan help command
   output: "vlan top: \e[36mReturn the top n values for a field in a table\e[0m\n\e\
@@ -1504,7 +1504,7 @@ tests:
     \ <, >, <=, >=, !\e[0m\n - vlanName: \e[36m\e[1mVLAN name(s), space separated\e\
     [0m\n - what: \e[36m\e[1mnumeric field to get top values for\e[0m\n"
 - command: vlan help --command=unique
-  data-directory: tests/data/eos/parquet-out/
+  data-directory: tests/data/parquet
   format: text
   marks: vlan help command
   output: "vlan unique: \e[36mGet unique values (and counts) associated with requested\

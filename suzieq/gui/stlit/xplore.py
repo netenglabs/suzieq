@@ -90,10 +90,11 @@ class XplorePage(SqGuiPage):
 
         namespaces = [""]
         namespaces.extend(sorted(devdf.namespace.unique().tolist()))
-        if state.namespace:
+
+        nsidx = 0
+        if state.namespace and state.namespace in namespaces:
             nsidx = namespaces.index(state.namespace)
-        else:
-            nsidx = 0
+
         with st.sidebar:
             with st.form('Xplore'):
                 namespace = st.selectbox('Namespace',
@@ -638,7 +639,6 @@ class XplorePage(SqGuiPage):
                 else:
                     st.info('Assert not run')
 
-    @st.cache(ttl=90)
     def _run_summarize(self, **kwargs):
         '''Get summarize dataframe for the object in question'''
         df = gui_get_df(self._state.table, self._config_file, verb='summarize',
