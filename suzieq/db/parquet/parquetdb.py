@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 from contextlib import suppress
 from shutil import rmtree
 from collections import defaultdict
+import operator
 
 import pandas as pd
 import numpy as np
@@ -21,7 +22,6 @@ from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
                                            coalesce_resource_table)
 from suzieq.db.parquet.migratedb import get_migrate_fn
-from suzieq.shared.utils import reduce_filter_list
 
 
 PARQUET_VERSION = '2.4'
@@ -639,7 +639,7 @@ class SqParquetDB(SqDB):
 
         return msch
 
-    def _get_filtered_fileset(self, dataset: ds, namespace: list) -> ds:
+    def _get_filtered_fileset(self, dataset: ds, namespaces: list) -> ds:
         """Filter the dataset based on the namespace
 
         We can use this method to filter out namespaces and hostnames based
@@ -651,34 +651,81 @@ class SqParquetDB(SqDB):
         Returns:
             ds: pyarrow dataset of only the files that match filter
         """
-        if not namespace:
+        def check_ns_conds(ns_to_test: str, filter_list: List[str],
+                           op: operator.or_) -> bool:
+            """Concat the expressions with the provided (AND or OR) operator
+            and return the result of the resulting expression tested on the
+            provided namespace.
+
+            Args:
+                ns_to_test (str): the namespace to test
+                filter_list (List[str]): the list of filter expressions to test
+                op (operator.or_): One of operator.and_ and operator._or
+
+            Returns:
+                bool: the result of the expression
+            """
+            # pylint: disable=comparison-with-callable
+            # We would like to init the result to False if we concat the
+            # expressions with OR, while with True if we use AND.
+            res = False
+            if operator.and_ == op:
+                res = True
+            for filter_val in filter_list:
+                res = op(res, bool(re.search(
+                    f'namespace={filter_val}', ns_to_test)))
+            return res
+
+        if not namespaces:
             return dataset
 
-        newns = reduce_filter_list(namespace)
-        ns_filelist = []
-        chklist = dataset.files
-        for ns in newns or []:
-            if ns.startswith('!'):
-                ns = ns[1:]
-                use_not = True
+        match_filters = []
+        not_filters = []
+
+        for ns_match in namespaces:
+            if ns_match.startswith('!~'):
+                not_filters.append(ns_match[2:])
+            elif ns_match.startswith('~'):
+                match_filters.append(ns_match[1:])
+            elif ns_match.startswith('!'):
+                not_filters.append(re.escape(ns_match[1:]))
             else:
-                use_not = False
+                match_filters.append(re.escape(ns_match))
 
-            if ns.startswith('~'):
-                ns = ns[1:]
+        all_files = dataset.files
 
-            if use_not:
-                ns_filelist = \
-                    [x for x in chklist
-                        if not re.search(f'namespace={ns}/', x)]
-                # NOTs turn list from implicit OR into implicit AND
-                chklist = ns_filelist
-            else:
-                ns_filelist.extend(
-                    [x for x in dataset.files
-                     if re.search(f'namespace={ns}/', x)])
+        # Apply matching rules with an OR
+        if match_filters:
+            matching_files = [file for file in all_files
+                              if (ns_section := next(
+                                  (s for s in file.split('/')
+                                   if s.startswith('namespace=')),
+                                  None))
+                              and check_ns_conds(ns_section, match_filters,
+                                                 operator.or_)]
+        else:
+            # If there aren't match filters we can get all the available file
+            # and pass them to the following set of filters
+            matching_files = all_files
 
-        return ds.dataset(ns_filelist, format='parquet', partitioning='hive')
+        # Apply the not rules, in this case we operate on the matching file
+        # list since we want to reproduce an AND.
+        for ns_not in not_filters:
+            matching_files = [file for file in matching_files
+                              if (ns_section := next(
+                                  (s for s in file.split('/')
+                                   if s.startswith('namespace=')),
+                                  None))
+                              and not re.search(
+                                  f'namespace={ns_not}', ns_section)]
+
+            # There is no need to proceed if there isn't any other file in the
+            # list
+            if not matching_files:
+                break
+
+        return ds.dataset(
+            matching_files, format='parquet', partitioning='hive')
 
     def _cons_int_filter(self, keyfld: str, filter_str: str) -> ds.Expression:
         '''Construct Integer filters with arithmetic operations'''
