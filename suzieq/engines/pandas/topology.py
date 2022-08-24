@@ -90,6 +90,11 @@ class TopologyObj(SqPandasEngine):
         vrf = kwargs.pop('vrf', '')
         afi_safi = kwargs.pop('afiSafi', '')
 
+        if via == ['bgp'] and ifname:
+            self.lsdb = pd.DataFrame(
+                {'error': ["Cannot use 'ifname' filter with 'bgp' via"]})
+            return self.lsdb
+
         self._init_dfs(self._namespaces)
         if self._if_df.empty:
             return pd.DataFrame({'error': ['No interfaces data found']})
@@ -344,7 +349,7 @@ class TopologyObj(SqPandasEngine):
     def summarize(self, **kwargs):
         '''Summarize the topology info'''
         self.get(**kwargs)
-        if self.lsdb.empty:
+        if self.lsdb.empty or 'error' in self.lsdb:
             return self.lsdb
 
         self.nses = self.lsdb['namespace'].unique()
