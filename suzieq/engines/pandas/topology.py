@@ -63,7 +63,7 @@ class TopologyObj(SqPandasEngine):
         self._if_df = self._if_df.drop(
             columns=['ipAddressList', 'ip6AddressList'])
 
-        self.nses = self._if_df['namespace'].unique()
+        self.nses = []
 
     # pylint: disable=too-many-statements
     def get(self, **kwargs):
@@ -346,6 +346,8 @@ class TopologyObj(SqPandasEngine):
         self.get(**kwargs)
         if self.lsdb.empty:
             return self.lsdb
+
+        self.nses = self.lsdb['namespace'].unique()
 
         self.ns = {}
         for i in self.nses:
