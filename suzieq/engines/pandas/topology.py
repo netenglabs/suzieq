@@ -208,7 +208,7 @@ class TopologyObj(SqPandasEngine):
         if user_query and not self.lsdb.empty:
             self.lsdb = self._handle_user_query_str(self.lsdb, user_query)
 
-        fields = [x for x in self.lsdb.columns if x in fields]
+        fields = [x for x in fields if x in self.lsdb.columns]
         return self.lsdb[fields].reset_index(drop=True)
 
     def _find_polled_neighbors(self, polled):
