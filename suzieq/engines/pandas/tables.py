@@ -88,15 +88,20 @@ class TableObj(SqPandasEngine):
         if not what:
             return pd.DataFrame()
 
+        columns = kwargs.pop('columns', ['default'])
+        fields = self.schema.get_display_fields(columns)
+
         df = self.get(**kwargs)
-        if df.empty or ('error' in df.columns):
+        if ('error' in df.columns) or df.empty:
             return df
 
         if reverse:
-            return df.query('table != "TOTAL"') \
+            df = df.query('table != "TOTAL"') \
                 .nsmallest(sqTopCount, columns=what, keep="all") \
                 .head(sqTopCount)
         else:
-            return df.query('table != "TOTAL"') \
+            df = df.query('table != "TOTAL"') \
                 .nlargest(sqTopCount, columns=what, keep="all") \
                 .head(sqTopCount)
+
+        return df[fields]

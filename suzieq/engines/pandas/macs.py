@@ -1,5 +1,3 @@
-import pandas as pd
-
 from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
@@ -25,6 +23,9 @@ class MacsObj(SqPandasEngine):
         vtep = kwargs.get('remoteVtepIp', [])
 
         addnl_fields = []
+        fields = self.schema.get_display_fields(columns)
+        if 'timestamp' not in fields:
+            addnl_fields.append('timestamp')
 
         if vtep:
             if kwargs['remoteVtepIp'] == ['any']:
@@ -38,7 +39,6 @@ class MacsObj(SqPandasEngine):
         else:
             compute_moves = False
 
-        fields = self.schema.get_display_fields(columns)
         self._add_active_to_fields(view, fields, addnl_fields)
 
         user_query_cols = self._get_user_query_cols(user_query)

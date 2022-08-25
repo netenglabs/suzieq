@@ -280,7 +280,7 @@ class SqObject(SqPlugin):
             **kwargs) -> pd.DataFrame:
         """Get the list of top/bottom entries of "what" field"""
         kwargs.pop('ignore_warning', None)
-        columns = kwargs.get('columns', ['default'])
+        columns = kwargs.pop('columns', self.columns)
         # This raises ValueError if it fails
         self.validate_columns(columns)
 
@@ -301,8 +301,6 @@ class SqObject(SqPlugin):
             raise ValueError(
                 f"Field {what} does not exist in table {self.table}")
 
-        columns = table_schema.get_display_fields(columns)
-
         ftype = table_schema.field(what).get('type', 'str')
         if ftype not in ['long', 'double', 'float', 'int', 'timestamp',
                          'timedelta64[s]']:
@@ -311,7 +309,7 @@ class SqObject(SqPlugin):
                                   f' numeric fields only']})
 
         return self.engine.top(what=what, count=int(count), reverse=reverse,
-                               **kwargs)
+                               columns=columns, **kwargs)
 
     def describe(self, **kwargs):
         """Describes the fields for a given table"""

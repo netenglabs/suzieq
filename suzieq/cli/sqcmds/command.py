@@ -549,7 +549,6 @@ class SqTableCommand(SqCommand):
                                 hostname=self.hostname,
                                 namespace=self.namespace,
                                 query_str=self.query_str,
-                                columns=self.columns,
                                 what=what, count=count,
                                 reverse=ast.literal_eval(reverse),
                                 **self.lvars,
