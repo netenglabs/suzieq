@@ -343,7 +343,6 @@ class InterfacesObj(SqPandasEngine):
 
         if_df = self.get(columns=columns, type=iftype, state=state, **kwargs)
         if if_df.empty:
-            if_df = pd.DataFrame(columns=self._assert_result_cols)
             if result != 'pass':
                 if_df['result'] = 'fail'
                 if_df['assertReason'] = 'No data'
@@ -392,10 +391,10 @@ class InterfacesObj(SqPandasEngine):
 
         if lldp_df.empty:
             if result != 'pass':
-                if_df['assertReason'] = 'No LLDP peering info'
-                if_df['result'] = 'fail'
+                lldp_df['assertReason'] = 'No LLDP peering info'
+                lldp_df['result'] = 'fail'
 
-            return if_df
+            return lldp_df
 
         # Now create a single DF where you get the MTU for the lldp
         # combo of (namespace, hostname, ifname) and the MTU for
@@ -450,10 +449,10 @@ class InterfacesObj(SqPandasEngine):
 
         if combined_df.empty:
             if result != 'pass':
-                if_df['assertReason'] = 'No LLDP peering info'
-                if_df['result'] = 'fail'
+                combined_df['assertReason'] = 'No LLDP peering info'
+                combined_df['result'] = 'fail'
 
-            return if_df
+            return combined_df
 
         combined_df = combined_df.fillna(
             {'mtuPeer': 0, 'speedPeer': 0, 'typePeer': '',

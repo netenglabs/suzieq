@@ -43,7 +43,7 @@ class NetworkObj(SqPandasEngine):
         if not df.empty and query_str:
             return df.query(query_str)
 
-        return df
+        return df[fields]
 
     def _find_asn(self, asn: List[str], **kwargs) -> pd.DataFrame:
         """Find the hosts with the ASN listed
