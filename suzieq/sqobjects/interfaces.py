@@ -15,7 +15,7 @@ class InterfacesObj(SqObject):
                                 'state', 'type', 'mtu', 'master', 'ifindex',
                                 'vrf', 'portmode', 'vlan', 'query_str']
         self._valid_assert_args = self._valid_get_args + \
-            ['what', 'matchval', 'result', 'ignore_missing_peer']
+            ['what', 'value', 'result', 'ignore_missing_peer']
         self._valid_arg_vals = {
             'state': ['up', 'down', 'notConnected', '!up', '!down',
                       '!notConnected', ''],

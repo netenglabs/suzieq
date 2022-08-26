@@ -273,10 +273,10 @@ class InterfacesObj(SqPandasEngine):
         columns = ["namespace", "hostname", "ifname", "state", "mtu",
                    "timestamp"]
 
-        matchval = kwargs.pop('matchval', [])
+        value = kwargs.pop('value', [])
         result = kwargs.pop('result', '')
 
-        matchval = [int(x) for x in matchval]
+        value = [int(x) for x in value]
 
         result_df = self.get(columns=columns, **kwargs) \
                         .query('ifname != "lo"')
@@ -286,8 +286,8 @@ class InterfacesObj(SqPandasEngine):
 
         if not result_df.empty:
             result_df['result'] = result_df.apply(
-                lambda x, matchval: 'pass' if x['mtu'] in matchval else 'fail',
-                axis=1, args=(matchval,))
+                lambda x, value: 'pass' if x['mtu'] in value else 'fail',
+                axis=1, args=(value,))
 
         if result == "fail":
             result_df = result_df.query('result == "fail"')
