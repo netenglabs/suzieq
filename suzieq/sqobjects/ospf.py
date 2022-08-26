@@ -1,3 +1,4 @@
+from typing import List
 import pandas as pd
 from pandas.core.dtypes.dtypes import DatetimeTZDtype
 import numpy as np
@@ -44,3 +45,10 @@ class OspfObj(SqObject):
             raise ValueError('Cannot specify state with OSPF assert')
 
         return super().aver(**kwargs)
+
+    def _get_empty_cols(self, columns: List[str], fun: str, **kwargs) \
+            -> List[str]:
+        if fun == 'assert' and columns in [['default'], ['*']]:
+            return ['namespace', 'hostname', 'vrf', 'ifname',
+                    'adjState', 'assertReason', 'result']
+        return super()._get_empty_cols(columns, fun, **kwargs)

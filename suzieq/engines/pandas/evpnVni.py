@@ -7,6 +7,12 @@ from suzieq.engines.pandas.engineobj import SqPandasEngine
 class EvpnvniObj(SqPandasEngine):
     '''Backend class to handle manipulating evpnVni table with pandas'''
 
+    def __init__(self, baseobj):
+        super().__init__(baseobj)
+        self._assert_result_cols = ['namespace', 'hostname', 'vni', 'type',
+                                    'vrf', 'macaddr', 'timestamp', 'result',
+                                    'assertReason']
+
     @staticmethod
     def table_name():
         '''Table name'''
@@ -178,17 +184,12 @@ class EvpnvniObj(SqPandasEngine):
 
     def aver(self, **kwargs) -> pd.DataFrame:
 
-        addnl_cols = kwargs.get('addnl_cols', [])
         result = kwargs.pop('result', 'all')
         kwargs.pop('columns', None)
 
         df = self._init_assert_df(**kwargs)
 
-        res_cols = ['namespace', 'hostname', 'vni', 'type', 'vrf',
-                    'macaddr', 'timestamp', 'result', 'assertReason']
-        for ac in addnl_cols:
-            if ac not in res_cols:
-                res_cols.insert(-3, ac)
+        res_cols = self._assert_result_cols
 
         if df.empty:
             df = pd.DataFrame(columns=res_cols)

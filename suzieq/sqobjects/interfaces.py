@@ -1,3 +1,4 @@
+from typing import List
 import pandas as pd
 from pandas.core.dtypes.dtypes import DatetimeTZDtype
 
@@ -34,3 +35,16 @@ class InterfacesObj(SqObject):
                     self.cfg.get('analyzer', {}).get('timezone', None))
 
         return super().humanize_fields(df)
+
+    def _get_empty_cols(self, columns: List[str], fun: str, **kwargs) \
+            -> List[str]:
+        if fun == 'assert':
+            if columns in [['default'], ['*']]:
+                if kwargs.get('what') == 'mtu-value':
+                    return ["namespace", "hostname", "ifname", "state",
+                            "mtu", "timestamp", "result"]
+                else:
+                    return ['namespace', 'hostname', 'ifname', 'state',
+                            'peerHostname', 'peerIfname', 'result',
+                            'assertReason', 'timestamp']
+        return super()._get_empty_cols(columns, fun, **kwargs)
