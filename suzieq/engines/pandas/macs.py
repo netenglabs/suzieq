@@ -47,10 +47,6 @@ class MacsObj(SqPandasEngine):
         df = super().get(view=view, columns=fields, addnl_fields=addnl_fields,
                          **kwargs)
 
-        if columns in [['default'], ['*']] or 'mackey' not in columns:
-            if 'mackey' in fields:
-                fields.remove('mackey')
-
         if df.empty:
             return df
 

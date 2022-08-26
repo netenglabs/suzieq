@@ -107,12 +107,17 @@ class Schema:
                                if x not in aug_fields])
             return aug_fields
 
-    def sorted_display_fields_for_table(self, table: str,
+    def sorted_display_fields_for_table(self,
+                                        table: str,
                                         getall: bool = False) -> List[str]:
         '''Returns sorted list of default display fields'''
-        return self._sort_fields_for_table(table, 'display', getall)
+        display_fields = self._sort_fields_for_table(table, 'display', getall)
+        return [f for f in display_fields
+                if not self.field_for_table(table, f).get('suppress', False)]
 
-    def _sort_fields_for_table(self, table: str, tag: str,
+    def _sort_fields_for_table(self,
+                               table: str,
+                               tag: str,
                                getall: bool = False) -> List[str]:
         '''Returns sorted list of fields in table with given tag'''
         fields = self.fields_for_table(table)
@@ -267,23 +272,24 @@ class SchemaForTable:
         return self._all_schemas.augmented_fields_for_table(
             self._table, fields, MAX_AUGMENTED_RECURSE)
 
-    def sorted_display_fields(self, getall: bool = False) -> List[str]:
+    def sorted_display_fields(self,
+                              getall: bool = False) -> List[str]:
         '''Returns sorted list of default display fields'''
-        return self._all_schemas.sorted_display_fields_for_table(self._table,
-                                                                 getall)
+        return self._all_schemas.sorted_display_fields_for_table(
+            self._table, getall)
 
     def field(self, field):
         '''Returns info about the specified field in table'''
         return self._all_schemas.field_for_table(self._table, field)
 
-    def get_display_fields(self, columns: list) -> list:
+    def get_display_fields(self,
+                           columns: list) -> list:
         """Return the list of display fields for the given table"""
         if columns == ["default"]:
             fields = self.sorted_display_fields()
 
         elif columns == ["*"]:
             fields = self.sorted_display_fields(getall=True)
-            fields.remove('sqvers')
         else:
             wrong_fields = [f for f in columns if f not in self.fields]
             if wrong_fields:

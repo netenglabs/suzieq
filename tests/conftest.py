@@ -87,6 +87,11 @@ def _get_table_data(table: str, datadir: str):
     sqobj = get_sqobject(table)(config_file=cfgfile)
     cols = sqobj.schema.get_display_fields(['*'])
 
+    # mackey is an internal field to be suppressed, however we need this field
+    # for the testing purpose, manually add it
+    if table == 'macs':
+        cols.append('mackey')
+
     if table == "interface":
         df = sqobj.get(columns=cols, type=["all"])
     else:

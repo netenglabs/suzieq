@@ -35,8 +35,6 @@ class BgpObj(SqPandasEngine):
 
         self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
                                    addnl_fields)
-        if columns == ['*']:
-            fields.remove('origPeer')
 
         for col in ['peerIP', 'updateSource', 'state', 'namespace', 'vrf',
                     'peer', 'hostname']:
