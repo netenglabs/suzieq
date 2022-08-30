@@ -84,6 +84,7 @@ class DeviceObj(SqPandasEngine):
                 (df['status_y'] != 0) & (df['status_y'] != 200) &
                 (df['status'] == "N/A"),
                 'neverpoll', df['status'])
+
             if 'version' in df.columns:
                 df['version'] = np.where(df.status_y == 418, 'unsupported',
                                          df.version)
@@ -100,13 +101,13 @@ class DeviceObj(SqPandasEngine):
                 df.address = np.where(df['address'] == 'N/A', df['hostname'],
                                       df['address'])
 
-            if 'uptime' in columns or columns == ['*']:
-                uptime_cols = (df['timestamp'] -
-                               humanize_timestamp(df['bootupTimestamp']*1000,
-                               self.cfg.get('analyzer', {}).get('timezone',
-                                                                None)))
-                uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
-                df.insert(len(df.columns)-1, 'uptime', uptime_cols)
+        if 'uptime' in columns or columns == ['*']:
+            uptime_cols = (df['timestamp'] -
+                           humanize_timestamp(df['bootupTimestamp']*1000,
+                           self.cfg.get('analyzer', {}).get('timezone',
+                                                            None)))
+            uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
+            df.insert(len(df.columns)-1, 'uptime', uptime_cols)
 
         if df.empty:
             return df[fields]
