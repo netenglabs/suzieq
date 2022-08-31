@@ -1043,23 +1043,3 @@ def deprecated_command_warning(dep_command: str, dep_sub_command: str,
 
     return deprecated_table_function_warning(dep_command, dep_sub_command,
                                              command, sub_command)
-
-
-def reduce_filter_list(filter_list: List[str]) -> List[str]:
-    '''Reduce the list of entries to the minimal set
-    Given a list of filters, some of which contain the NOT such as
-    [123, !245] and ['leaf01', '!~spine.*', '~edge.*'], we ignore the
-    entries which are NOT since they don't contribute to the final
-    result since the presence of NOT implies the list is an AND list
-    not an OR list.
-    '''
-
-    notlist = [x for x in filter_list
-               if isinstance(x, str) and x.startswith('!')]
-    if notlist and notlist != filter_list:
-        # if not is used with non-not, the nots are meaningless
-        newlist = [x for x in filter_list
-                   if not (isinstance(x, str) and x.startswith('!'))]
-    else:
-        newlist = filter_list
-    return newlist

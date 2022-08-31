@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from pandas.core.groupby import DataFrameGroupBy
 
-from suzieq.shared.utils import humanize_timestamp, reduce_filter_list
+from suzieq.shared.utils import build_query_str, humanize_timestamp
 from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects import get_sqobject
@@ -287,36 +287,16 @@ class SqPandasEngine(SqEngineObj):
         Returns:
             pd.DataFrame: filtered dataframe
         """
-        if hostname and not df.empty:
-            hdf_list = []
-            hnlist = reduce_filter_list(hostname)
-            for hn in hnlist:
-                use_not = False
-                if hn.startswith('~'):
-                    hn = hn[1:]
-                elif hn.startswith('!'):
-                    hn = hn[1:]
-                    use_not = True
 
-                    if hn.startswith('~'):
-                        hn = hn[1:]
+        if not hostname or df.empty:
+            return df
 
-                if use_not:
-                    df1 = df.query(
-                        f'~hostname.str.fullmatch("{hn}")')
-                    hdf_list = [df1]
-                    # With not, the list of hostnames becomes an and
-                    df = df1
-                else:
-                    df1 = df.query(f"hostname.str.fullmatch('{hn}')")
-                    if not df1.empty:
-                        hdf_list.append(df1)
+        hostname_filter = build_query_str(
+            [], self.schema, False, hostname=hostname)
 
-            if hdf_list:
-                df = pd.concat(hdf_list)
-            else:
-                return pd.DataFrame(columns=df.columns.tolist())
-        return df
+        res_df = df.query(hostname_filter)
+
+        return res_df
 
     def get(self, **kwargs) -> pd.DataFrame:
         """The default get method for all tables
