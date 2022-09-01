@@ -628,6 +628,7 @@ class Service(SqPlugin):
                 hostname=[hostname],
                 namespace=[namespace]).query('active')
             prev_res = df.to_dict('records')
+            self.previous_results[key] = prev_res
 
         if result or prev_res:
             adds, dels = self.get_diff(prev_res, result)
