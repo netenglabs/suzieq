@@ -119,10 +119,10 @@ class PathObj(SqPandasEngine):
 
         if ':' in source:
             self._src_df = self._if_df[self._if_df.ip6AddressList.astype(str)
-                                       .str.contains(source + "/")]
+                                       .str.startswith(source + "/")]
         else:
             self._src_df = self._if_df[self._if_df.ipAddressList.astype(str)
-                                       .str.contains(source + "/")]
+                                       .str.startswith(source + "/")]
 
         if self._src_df.empty:
             # TODO: No host with this src addr. Is addr a local ARP entry?
@@ -147,10 +147,10 @@ class PathObj(SqPandasEngine):
 
         if ':' in dest:
             self._dest_df = self._if_df[self._if_df.ip6AddressList.astype(str)
-                                        .str.contains(dest + "/")]
+                                        .str.startswith(dest + "/")]
         else:
             self._dest_df = self._if_df[self._if_df.ipAddressList.astype(str)
-                                        .str.contains(dest + "/")]
+                                        .str.startswith(dest + "/")]
 
         if self._dest_df.empty:
             # Check if addr is in any switch's local ARP
@@ -929,10 +929,10 @@ class PathObj(SqPandasEngine):
                     if not nhdf.empty:
                         if srcvers == 4:
                             nhdf = nhdf.query(
-                                f'ipAddressList.str.contains("{ndst}")')
+                                f'ipAddressList.str.startswith("{ndst}/")')
                         else:
                             nhdf = nhdf.query(
-                                f'ip6AddressList.str.contains("{ndst}")')
+                                f'ip6AddressList.str.startswith("{ndst}/")')
                     if not nhdf.empty:
                         ifmac = nhdf.macaddr.unique().tolist()
                         if (not macaddr) or (macaddr in ifmac):
