@@ -752,6 +752,7 @@ class PathObj(SqPandasEngine):
         src = kwargs.get("src", None)
         dest = kwargs.get("dest", None)
         dvrf = kwargs.get("vrf", "")
+        query_str = kwargs.pop('query_str', "")
 
         if not src or not dest:
             raise AttributeError("Must specify trace source and dest")
@@ -1120,7 +1121,9 @@ class PathObj(SqPandasEngine):
             # This occurs when a path traversal terminates due to an error such
             # as loop detected
             final_paths = paths
-        return self._path_cons_result(final_paths)
+        return self._handle_user_query_str(
+            self._path_cons_result(final_paths), query_str)\
+            .reset_index(drop=True)
 
     def _path_cons_result(self, paths):
         df_plist = []
