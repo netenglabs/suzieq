@@ -409,7 +409,11 @@ class Node:
                 f'Detected {devtype} for {self.address}:{self.port},'
                 f' {hostname}')
             self._set_devtype(devtype, version_str)
-            self._set_hostname(hostname)
+            # We don't set the hostname here because the real hostname
+            # is retrieved via a different command on some platforms
+            # and can contain the FQDN. The hostname stored with a
+            # record needs to be one that is also used in LLDP so that we
+            # can find interface peers
             self.current_exception = None
 
     async def _detect_node_type(self):

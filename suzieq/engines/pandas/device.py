@@ -117,9 +117,11 @@ class DeviceObj(SqPandasEngine):
             df = df.loc[df.status.isin(status)]
         if os_version:
             opdict = {'>': operator.gt, '<': operator.lt, '>=': operator.ge,
-                      '<=': operator.le, '=': operator.eq, '!=': operator.ne}
+                      '<=': operator.le, '=': operator.eq, '!': operator.ne}
             op = operator.eq
             for osv in os_version:
+                # Introduced in 0.19.1, we do this for backwards compatibility
+                osv = osv.replace('!=', '!')
                 for elem, val in opdict.items():
                     if osv.startswith(elem):
                         osv = osv.replace(elem, '')
