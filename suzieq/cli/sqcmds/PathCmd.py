@@ -25,6 +25,7 @@ class PathCmd(SqTableCommand):
         src: str = "",
         dest: str = "",
         vrf: str = "",
+        query_str: str = ' ',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -34,6 +35,7 @@ class PathCmd(SqTableCommand):
             view=view,
             namespace=namespace,
             columns=columns,
+            query_str=query_str,
             format=format,
             sqobj=PathObj
         )
