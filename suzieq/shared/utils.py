@@ -13,7 +13,7 @@ from ipaddress import ip_network
 from itertools import groupby
 from logging.handlers import RotatingFileHandler
 from os import getenv
-from typing import Dict, List
+from typing import Any, Dict, List
 from tzlocal import get_localzone
 
 import pandas as pd
@@ -22,6 +22,7 @@ from dateparser import parse
 from dateutil.relativedelta import relativedelta
 from pytz import all_timezones
 from suzieq.shared.exceptions import SensitiveLoadError
+from suzieq.shared.schema import SchemaForTable
 from suzieq.version import SUZIEQ_VERSION
 
 logger = logging.getLogger(__name__)
@@ -569,78 +570,139 @@ def convert_numlist_to_ranges(numList: List[int]) -> str:
     return result[:-2]
 
 
-def build_query_str(skip_fields: list, schema, ignore_regex=True,
-                    **kwargs) -> str:
-    """Build a pandas query string given key/val pairs
+# pylint: disable=too-many-statements
+def build_query_str(skip_fields: List, schema: SchemaForTable,
+                    ignore_regex=True, **kwargs):
+    """Build a pandas query starting from the given key/val pairs.
+
+    Args:
+        skip_fields (List): the fields we don't want to include in the query
+        schema (SchemaForTable): the schema of the table where to apply the
+            query.
+        ignore_regex (bool, optional): Ignore all the fields containing a
+            regex among the filters. Defaults to True.
     """
-    query_str = ''
-    prefix = ''
+    def _build_number_filter(field: str, fval: Any):
+        op = '=='
+        val = fval
+        if isinstance(fval, str):
+            if fval.startswith(('<=', '>=')):
+                val = fval[2:]
+                op = fval[:2]
+            elif fval.startswith(('<', '>')):
+                val = fval[1:]
+                op = fval[:1]
+        return f'{field} {op} {val}'
 
-    def _build_query_str(fld, val, fldtype) -> List[str]:
-        """Builds the string from the provided user input
+    def _escape(val: str) -> str:
+        return val.replace('"', '\\"')
 
-        Besides handling operators and regexp, the function returns what
-        the subsequent match within this list needs to be. If the ! operator
-        is used, we have to switch to AND, else we can be at OR. For
-        example. it makes no sense to say !leaf01 OR !leaf02 as this will
-        include both leaf01 and leaf02.
-        """
+    num_types = ['long', 'float', 'int']
+    str_query = '{}{}.str.fullmatch("{}")'
+    all_filters = []
 
-        cond = 'or'
-        num_type = ["long", "float", "int"]
-        if ((fldtype in num_type) and not
-                isinstance(val, str)):
-            result = f'{fld} == {val}'
+    if not kwargs:
+        return ''
 
-        elif val.startswith('!'):
-            val = val[1:]
-            cond = 'and'
-            if fldtype in num_type:
-                result = f'{fld} != {val}'
-            else:
-                if val.startswith('~'):
-                    val = val[1:]
-                    result = f'~{fld}.str.fullmatch("{val}")'
-                else:
-                    result = f'{fld} != "{val}"'
-        elif val.startswith(('<', '>')):
-            result = val
-        elif val.startswith('~'):
-            result = f'{fld}.str.fullmatch("{val[1:]}")'
-        else:
-            if fldtype in num_type:
-                result = f'{fld} == {val}'
-            else:
-                result = f'{fld} == "{val}"'
-
-        return result, cond
-
-    for f, v in kwargs.items():
-        if not v or f in skip_fields or f in ["groupby"]:
+    for field, filter_vals in kwargs.items():
+        match_filters = []
+        not_filters = []
+        # Check the skip conditions before proceeding
+        if not filter_vals or field in skip_fields or field in ['groupby']:
             continue
 
-        stype = schema.field(f).get('type', 'string')
-        if isinstance(v, list) and len(v):
-            newv = reduce_filter_list(v)
-            subq = ''
-            subcond = ''
-            if ignore_regex and [x for x in newv
-                                 if isinstance(x, str) and
-                                 x.startswith(('~', '!~'))]:
+        # Get info about the field if the field does not belong to the schema
+        # ignore it
+        field_info = schema.field(field)
+        if not field_info:
+            logger.warning(f'The field {field} does not belong to the schema')
+            continue
+
+        ftype = field_info.get('type', 'string')
+
+        # In order to reduce the number of if/else transform a single filter
+        # in a list to iterate over it
+        if not isinstance(filter_vals, list):
+            filter_vals = [filter_vals]
+
+        # Apply a number filter
+        if ftype in num_types:
+            i = 0
+            while i < len(filter_vals):
+                fval = filter_vals[i]
+                if isinstance(fval, str) and fval.startswith('!'):
+                    not_filters.append(f'{field} != {fval[1:]}')
+                elif (isinstance(fval, str) and fval.startswith('>')
+                        and i+1 < len(filter_vals)
+                        and isinstance(filter_vals[i+1], str)
+                        and filter_vals[i+1].startswith('<')):
+                    # In this case we are checking if the user asked for an
+                    # an interval. So if we find a sequence of > and <,
+                    # we will combine the rules
+                    start_rule = _build_number_filter(field, fval)
+                    end_rule = _build_number_filter(field, filter_vals[i+1])
+                    match_filters.append(f'({start_rule} and {end_rule})')
+                    # Increment one more time, in order to skip the
+                    # rule we already considered
+                    i += 1
+                else:
+                    match_filters.append(_build_number_filter(field, fval))
+                i += 1
+        else:
+            # Check if there are regex and in this case skip this field
+            if ignore_regex and any(f for f in filter_vals
+                                    if isinstance(f, str)
+                                    and f.startswith(('~', '!~'))):
                 continue
 
-            for elem in newv:
-                intq, nextcond = _build_query_str(f, elem, stype)
-                subq += f'{subcond} {intq} '
-                subcond = nextcond
-            query_str += '{} ({})'.format(prefix, subq)
-            prefix = "and"
-        else:
-            intq, nextcond = _build_query_str(f, v, stype)
-            query_str += f'{prefix} {intq} '
-            prefix = nextcond
+            for fval in filter_vals:
+                val_to_use = fval
+                use_not = False
+                regex = False
+                # As we are building a query string to provide to pandas we
+                # need to escape the quotes in the provided values.
+                if isinstance(fval, str):
+                    if fval.startswith('!~'):
+                        val_to_use = _escape(fval[2:])
+                        use_not = True
+                        regex = True
+                    elif fval.startswith('~'):
+                        val_to_use = _escape(fval[1:])
+                        regex = True
+                    elif fval.startswith('!'):
+                        val_to_use = _escape(fval[1:])
+                        use_not = True
+                    else:
+                        val_to_use = _escape(fval)
 
-    return query_str
+                if use_not:
+                    if regex:
+                        not_filters.append(
+                            str_query.format('~', field, val_to_use))
+                    else:
+                        not_filters.append(f'{field} != "{val_to_use}"')
+                else:
+                    if regex:
+                        match_filters.append(
+                            str_query.format('', field, val_to_use))
+                    else:
+                        match_filters.append(f'{field} == "{val_to_use}"')
+
+        match_str = ' or '.join(match_filters)
+        not_str = ' and '.join(not_filters)
+        field_filter = None
+
+        if match_str and not_str:
+            field_filter = f'({match_str}) and ({not_str})'
+        elif match_str:
+            field_filter = match_str
+        elif not_str:
+            field_filter = not_str
+
+        if field_filter:
+            all_filters.append(f'({field_filter})')
+
+    return ' and '.join(all_filters)
 
 
 def poller_log_params(cfg: dict, is_controller=False, worker_id=0) -> tuple:
