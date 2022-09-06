@@ -1,5 +1,15 @@
 # Release Notes
 
+## 0.19.1 (Sep 6, 2022)
+
+This patch release for the 0.19.0 release includes the following important fixes:
+
+* Fixes bug in path whereby an address such as 10.1.1.110 was incorrectly matched with 10.1.1.1 causing path problems
+* Fixes inconsistent use of "!" in filtering by device version string
+* Fixes intermittent crashes in device show (or the status page in the GUI) when using columns=*
+* Fixes incorrect hostname setting on NXOS devices in some conditions when the hostname is a hostname that includes the domain name
+* Add missing keyword query-str to path commands
+
 ## 0.19.0 (Aug 22, 2022)
 
 The 19th release of SuzieQ contains bug fixes and improvements to key functionalities such as the REST API and endpoint tracker. Here's a detailed list of key features of this release:
