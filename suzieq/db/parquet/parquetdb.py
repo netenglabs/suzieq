@@ -678,6 +678,9 @@ class SqParquetDB(SqDB):
                     [x for x in dataset.files
                      if re.search(f'namespace={ns}/', x)])
 
+        # Introduce on purpose random ordering of files between a run and
+        # another
+        ns_filelist = list(set(ns_filelist))
         return ds.dataset(ns_filelist, format='parquet', partitioning='hive')
 
     def _cons_int_filter(self, keyfld: str, filter_str: str) -> ds.Expression:
