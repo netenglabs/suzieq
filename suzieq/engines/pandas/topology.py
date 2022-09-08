@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List
 
 import networkx as nx
 import numpy as np
@@ -28,7 +29,6 @@ class TopologyObj(SqPandasEngine):
         self.lsdb = pd.DataFrame()
         self._a_df = pd.DataFrame()
         self._ip_table = pd.DataFrame()
-        self.nses = []
 
     @staticmethod
     def table_name():
@@ -63,7 +63,7 @@ class TopologyObj(SqPandasEngine):
         self._if_df = self._if_df.drop(
             columns=['ipAddressList', 'ip6AddressList'])
 
-        self.nses = []
+        self.lsdb = pd.DataFrame()
 
     # pylint: disable=too-many-statements
     def get(self, **kwargs):
@@ -352,18 +352,18 @@ class TopologyObj(SqPandasEngine):
         if self.lsdb.empty or 'error' in self.lsdb:
             return self.lsdb
 
-        self.nses = self.lsdb['namespace'].unique()
+        namespaces = self.lsdb['namespace'].unique()
 
         self.ns = {}
-        for i in self.nses:
+        for i in namespaces:
             self.ns[i] = {}
         self._create_graphs_from_lsdb()
-        self._analyze_lsdb_graph()
+        self._analyze_lsdb_graph(namespaces)
 
         return pd.DataFrame(self.ns)
 
-    def _analyze_lsdb_graph(self):
-        for ns in self.nses:
+    def _analyze_lsdb_graph(self, namespaces: List[str]):
+        for ns in namespaces:
             for name in [srv.name for srv in self.services if
                          nx.get_edge_attributes(self.graphs[ns], srv.name)]:
 
