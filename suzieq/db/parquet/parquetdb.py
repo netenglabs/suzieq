@@ -619,26 +619,6 @@ class SqParquetDB(SqDB):
         else:
             return None
 
-    def _build_master_schema(self, datasets: list) -> pa.lib.Schema:
-        """Build the master schema from the list of diff versions
-        We use this to build the filters and use the right type-based check
-        for a field.
-        """
-        msch = datasets[0].schema
-        msch_set = set(msch)
-        for dataset in datasets[1:]:
-            sch = dataset.schema
-            sch_set = set(sch)
-            if msch_set.issuperset(sch):
-                continue
-            if sch_set.issuperset(msch):
-                msch = sch
-            else:
-                for fld in sch_set-msch_set:
-                    msch.append(fld)
-
-        return msch
-
     def _get_filtered_fileset(self, dataset: ds, namespaces: list) -> ds:
         """Filter the dataset based on the namespace
 
