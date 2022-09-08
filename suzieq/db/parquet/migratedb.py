@@ -2,6 +2,9 @@
 from typing import Callable, Union
 import pandas as pd
 from pandas.core.computation.ops import UndefinedVariableError
+from suzieq.shared.schema import Schema
+
+from suzieq.shared.utils import get_default_per_vals
 
 
 def get_migrate_fn(table_name: str, from_vers: str,
@@ -22,7 +25,49 @@ def get_migrate_fn(table_name: str, from_vers: str,
     return conversion_dict.get(f'{table_name}-{from_vers}-{to_vers}', None)
 
 
-def _convert_bgp_vers_1_to_2(df: pd.DataFrame) -> pd.DataFrame:
+def generic_migration(df: pd.DataFrame, _table: str,
+                      schema: Schema) -> pd.DataFrame:
+    """When we don't need a specific migration function, it is possible to
+    use the generic one.
+
+    Args:
+        df (pd.DataFrame): DataFrame to migrate
+        schema (Schema): the current schema
+
+    Returns:
+        pd.DataFrame: the migrated DataFrame
+    """
+
+    # Try generic conversion of the dataframe
+    arrow_schema = schema.get_arrow_schema()
+    defaults = get_default_per_vals()
+    missing_fields = [f for f in arrow_schema
+                      if f.name not in df.columns]
+    for column in missing_fields:
+        field_info = schema.field(column.name)
+        if field_info:
+            default_val = field_info.get('default',
+                                         defaults.get(column.type, ''))
+        else:
+            default_val = defaults.get(column.type, '')
+        df[column.name] = default_val
+
+    # convert all dtypes to whatever is desired
+    for column in df.columns:
+        schema_type = arrow_schema.field(column).type.to_pandas_dtype()
+        if df.dtypes[column] != schema_type:
+            # If we are not able to perform the conversion, ignore and go on.
+            # We should not have this case, as when conversion can't be
+            # automatically performed we need to write a specific
+            # migration fn.
+            df[column] = df[column].astype(schema_type, errors='ignore')
+
+    df['sqvers'] = schema.version
+
+    return df
+
+
+def _convert_bgp_vers_1_to_2(df: pd.DataFrame, **_) -> pd.DataFrame:
     """Convert BGP schema from version 1.0 to version 2.0
 
     The dataframe MUST contain the sqvers column

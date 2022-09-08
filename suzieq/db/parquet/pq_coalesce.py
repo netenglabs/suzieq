@@ -10,7 +10,7 @@ from typing import List
 import pandas as pd
 import pyarrow.dataset as ds  # put this later due to some numpy dependency
 import pyarrow.parquet as pq
-from suzieq.db.parquet.migratedb import get_migrate_fn
+from suzieq.db.parquet.migratedb import generic_migration, get_migrate_fn
 from suzieq.shared.schema import SchemaForTable
 from suzieq.shared.utils import humanize_timestamp
 
@@ -108,12 +108,12 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
                 .to_table() \
                 .to_pandas()
             if not tmp_df.empty:
+                # Migrate each of the Dataframe before merging them
+                # if necessary
+                tmp_df = migrate_df(table, tmp_df, state.schema)
                 this_df = pd.concat([this_df, tmp_df])
 
         state.wrrec_count += this_df.shape[0]
-
-        if not this_df.empty:
-            this_df = migrate_df(table, this_df, state.schema)
 
         if state.schema.type == "record":
             if not state.current_df.empty:
@@ -243,12 +243,17 @@ def migrate_df(table_name: str, df: pd.DataFrame,
     :rtype: pd.DataFrame
     """
     sqvers_list = df.sqvers.unique().tolist()
+    do_migration = False
     for sqvers in sqvers_list:
         if sqvers != schema.version:
+            do_migration = True
             migrate_fn = get_migrate_fn(table_name, sqvers,
                                         schema.version)
             if migrate_fn:
-                df = migrate_fn(df)
+                df = migrate_fn(df, table_name, schema)
+
+    if do_migration:
+        df = generic_migration(df, table_name, schema)
 
     return df
 
