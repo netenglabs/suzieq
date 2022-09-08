@@ -1,17 +1,18 @@
-import os
-from datetime import datetime, timedelta, timezone
 import logging
-from typing import List
-from itertools import repeat
+import os
+import re
 import tarfile
+from collections import defaultdict
+from datetime import datetime, timedelta, timezone
+from itertools import repeat
+from typing import List
 
 import pandas as pd
+import pyarrow.dataset as ds  # put this later due to some numpy dependency
 import pyarrow.parquet as pq
-import pyarrow.dataset as ds    # put this later due to some numpy dependency
-
-from suzieq.shared.utils import humanize_timestamp
-from suzieq.shared.schema import SchemaForTable
 from suzieq.db.parquet.migratedb import get_migrate_fn
+from suzieq.shared.schema import SchemaForTable
+from suzieq.shared.utils import humanize_timestamp
 
 
 class SqCoalesceState:
@@ -94,10 +95,21 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
     state.block_start = int(block_start.timestamp())
     state.block_end = int(block_end.timestamp())
     if filelist:
-        this_df = ds.dataset(source=filelist, partitioning='hive',
-                             partition_base_dir=in_basedir) \
-            .to_table() \
-            .to_pandas()
+        files_pervers = defaultdict(list)
+        for file in filelist:
+            sqversmatch = re.search(r'sqvers=([0-9]*.[0-9]*)', file)
+            if sqversmatch:
+                files_pervers[sqversmatch.group(0)].append(file)
+
+        this_df = pd.DataFrame()
+        for files in files_pervers.values():
+            tmp_df = ds.dataset(files, partitioning='hive',
+                                partition_base_dir=in_basedir) \
+                .to_table() \
+                .to_pandas()
+            if not tmp_df.empty:
+                this_df = pd.concat([this_df, tmp_df])
+
         state.wrrec_count += this_df.shape[0]
 
         if not this_df.empty:
