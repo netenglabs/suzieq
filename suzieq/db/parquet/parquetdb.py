@@ -22,6 +22,7 @@ from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
                                            coalesce_resource_table)
 from suzieq.db.parquet.migratedb import get_migrate_fn
+from suzieq.shared.utils import get_default_per_vals
 
 
 PARQUET_VERSION = '2.4'
@@ -205,7 +206,7 @@ class SqParquetDB(SqDB):
             partition_cols = ['sqvers', 'namespace', 'hostname']
 
         schema_def = dict(zip(schema.names, schema.types))
-        defvals = self._get_default_vals()
+        defvals = get_default_per_vals()
 
         if data_format == "pandas":
             if isinstance(data, pd.DataFrame):
@@ -389,7 +390,7 @@ class SqParquetDB(SqDB):
         """
 
         current_vers = schema.version
-        defvals = self._get_default_vals()
+        defvals = get_default_per_vals()
         arrow_schema = schema.get_arrow_schema()
         schema_def = dict(zip(arrow_schema.names, arrow_schema.types))
 
@@ -852,16 +853,3 @@ class SqParquetDB(SqDB):
             return f'{folder}/{table_name}'
         else:
             return folder
-
-    def _get_default_vals(self) -> dict:
-        return({
-            pa.string(): "",
-            pa.int32(): 0,
-            pa.int64(): 0,
-            pa.float32(): 0.0,
-            pa.float64(): 0.0,
-            pa.date64(): 0.0,
-            pa.bool_(): False,
-            pa.list_(pa.string()): [],
-            pa.list_(pa.int64()): [],
-        })
