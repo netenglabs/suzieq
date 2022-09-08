@@ -1183,3 +1183,949 @@ tests:
     8}, {"type": "vtep", "numRows": 10}, {"type": "bond_slave", "numRows": 16}, {"type":
     "subinterface", "numRows": 21}, {"type": "ethernet", "numRows": 38}, {"type":
     "flexible-tunnel-interface", "numRows": 40}]'
+- command: interface show --mtu='>1514 <9192' --namespace=vmx --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show vmx junos
+  output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "pp0",
+    "state": "up", "adminState": "up", "type": "pppoe", "mtu": 1532, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae0", "state": "up", "adminState":
+    "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/3", "state": "up", "adminState": "up", "type":
+    "bond_slave", "mtu": 1518, "vlan": 0, "master": "ae0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ifname": "ge-0/0/2", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ifname": "ge-0/0/1", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ifname": "ge-0/0/0", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ifname": "ae1", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009088901}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae2",
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae1", "state": "up",
+    "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/5", "state": "up", "adminState":
+    "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master": "ae2", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ifname": "pp0", "state": "up", "adminState": "up", "type": "pppoe",
+    "mtu": 1532, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/3", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/2", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/0", "state": "up", "adminState": "up", "type": "flexible-ethernet",
+    "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/4", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae2", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ge-0/0/1", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ge-0/0/2", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ge-0/0/3", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ae0", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ae1",
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/0", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "pp0", "state": "up",
+    "adminState": "up", "type": "pppoe", "mtu": 1532, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "pp0", "state": "up", "adminState": "up", "type":
+    "pppoe", "mtu": 1532, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ae1", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "pp0", "state": "up", "adminState": "up", "type": "pppoe", "mtu": 1532, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/2", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/1", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae1", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae1", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/3", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae0", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864}]'
+- command: interface show --vlan='> 10 < 100' --namespace=vmx --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show vmx junos
+  output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae0",
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae1.20", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 20, "master":
+    "", "ipAddressList": ["10.0.20.3/29"], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/0", "state":
+    "up", "adminState": "up", "type": "flexible-ethernet", "mtu": 1518, "vlan": 0,
+    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae1", "state": "up",
+    "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae2", "state": "up", "adminState":
+    "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname":
+    "CRP-ACC-SW01", "ifname": "ae1", "state": "up", "adminState": "up", "type": "bond",
+    "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ae0", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089423}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "ae1.20", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536,
+    "vlan": 20, "master": "", "ipAddressList": ["10.0.20.2/29"], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ae0", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}]'
+- command: interface show --mtu='>= 1514' --namespace=vmx --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show vmx junos
+  output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0.16385",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/0", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae1", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/1", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae1", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/2", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/3", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/4", "state":
+    "down", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/5", "state": "down",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/6", "state": "down",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/7", "state": "down",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/8", "state": "down",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/9", "state": "down",
+    "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae0", "state": "up", "adminState":
+    "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ifname": "ae1", "state": "up", "adminState": "up", "type":
+    "bond", "mtu": 1518, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ifname": "demux0", "state": "up", "adminState": "up", "type": "software-pseudo",
+    "mtu": 9192, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ifname": "dsc", "state": "up", "adminState": "up", "type": "null", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
+    "em1", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0.16384", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/32"], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti0", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae1.20", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 20, "master":
+    "", "ipAddressList": ["10.0.20.3/29"], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae1.10", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 10, "master":
+    "", "ipAddressList": ["10.0.10.3/29"], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "vtep", "state":
+    "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "rbeb", "state": "up", "adminState":
+    "up", "type": "remote-beb", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ifname": "esi", "state": "up", "adminState": "up", "type":
+    "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ifname": "lo0", "state": "up", "adminState": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
+    "pp0", "state": "up", "adminState": "up", "type": "pppoe", "mtu": 1532, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti6", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti5", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti4", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti3", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti2", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti1", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti7", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fti2", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fti3", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fti4", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fti5", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fti6", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "lo0.16385", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "lo0", "state": "up", "adminState":
+    "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ifname": "pp0", "state": "up", "adminState": "up", "type": "pppoe",
+    "mtu": 1532, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "rbeb", "state": "up", "adminState": "up", "type": "remote-beb", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "vtep",
+    "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "lo0.16384", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    ["127.0.0.1/32"], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fti1", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fti7", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fti0", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/9", "state": "down", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ifname": "em1", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "dsc", "state": "up", "adminState": "up", "type": "null", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "demux0",
+    "state": "up", "adminState": "up", "type": "software-pseudo", "mtu": 9192, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae2", "state": "up",
+    "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae1", "state": "up", "adminState":
+    "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ifname": "ge-0/0/8", "state": "down", "adminState": "up", "type":
+    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/7", "state": "down", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/6", "state": "down", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/5", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae2", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/4", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae2", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/3", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/2", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/1", "state": "down", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/0",
+    "state": "up", "adminState": "up", "type": "flexible-ethernet", "mtu": 1518, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089182}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/0",
+    "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan":
+    0, "master": "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "esi", "state": "up",
+    "adminState": "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname":
+    "CRP-ACC-SW01", "ifname": "rbeb", "state": "up", "adminState": "up", "type": "remote-beb",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "pp0", "state": "up", "adminState": "up", "type": "pppoe", "mtu": 1532,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "lo0",
+    "state": "up", "adminState": "up", "type": "loopback", "mtu": 65536, "vlan": 0,
+    "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fti7", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fti6", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fti5", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fti4", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fti3", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fti2", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fti1", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fti0", "state": "up",
+    "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "lo0.16385", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423}, {"namespace":
+    "vmx", "hostname": "CRP-ACC-SW01", "ifname": "vtep", "state": "up", "adminState":
+    "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname":
+    "CRP-ACC-SW01", "ifname": "em1", "state": "up", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "demux0", "state": "up", "adminState": "up", "type": "software-pseudo",
+    "mtu": 9192, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ae1", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ae0",
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/9", "state":
+    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 100, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/8", "state":
+    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 101, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/7", "state":
+    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 200, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/6", "state":
+    "up", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 201, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/5", "state":
+    "down", "adminState": "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423}, {"namespace":
+    "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/4", "state": "down", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname":
+    "CRP-ACC-SW01", "ifname": "ge-0/0/3", "state": "up", "adminState": "up", "type":
+    "bond_slave", "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ge-0/0/2", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ge-0/0/1", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "dsc", "state": "up", "adminState": "up", "type": "null", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "lo0.16384",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": ["127.0.0.1/32"], "ip6AddressList": [], "timestamp":
+    1631009089423}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "ge-0/0/3", "state": "down", "adminState": "up", "type": "ethernet", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "ge-0/0/0", "state": "down", "adminState": "up", "type": "ethernet", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "ge-0/0/2", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 1514,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "fti2", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "ge-0/0/1", "state": "down", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "ge-0/0/2.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.100.0/31"], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "vtep", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "rbeb", "state": "up", "adminState": "up", "type": "remote-beb", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "pp0", "state": "up", "adminState": "up", "type": "pppoe", "mtu": 1532, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434},
+    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "lo0", "state":
+    "up", "adminState": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "fti7", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "fti6", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "fti5", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "fti4", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "fti3", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "lo0.16385", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "fti1", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "fti0", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "esi", "state": "up", "adminState": "up", "type":
+    "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "em1", "state": "up", "adminState": "up", "type": "ethernet", "mtu":
+    1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "dsc", "state": "up", "adminState": "up", "type": "null", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434},
+    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "demux0", "state":
+    "up", "adminState": "up", "type": "software-pseudo", "mtu": 9192, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "ge-0/0/9", "state": "down", "adminState":
+    "up", "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "ge-0/0/8", "state": "down", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "ge-0/0/7", "state": "down", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "ge-0/0/6", "state": "down", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "ge-0/0/5", "state": "down", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "ge-0/0/4", "state": "down", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "ge-0/0/3.0", "state": "down", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "lo0.16384", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/32"],
+    "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/6", "state": "down", "adminState": "up",
+    "type": "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/0", "state": "up", "adminState": "up", "type":
+    "bond_slave", "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ge-0/0/1", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ge-0/0/2", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ge-0/0/7", "state": "down", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ge-0/0/8", "state": "down", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ge-0/0/9", "state": "down", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ae0", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "ae1", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "demux0", "state":
+    "up", "adminState": "up", "type": "software-pseudo", "mtu": 9192, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "dsc", "state": "up", "adminState":
+    "up", "type": "null", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "em1", "state": "up", "adminState": "up", "type":
+    "ethernet", "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "fti0", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "fti1", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ge-0/0/4", "state": "down", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ge-0/0/5", "state": "down", "adminState": "up", "type": "ethernet",
+    "mtu": 1514, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [],
+    "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "fti3", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "fti5", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "fti6", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "fti7", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "lo0", "state": "up", "adminState": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "pp0", "state": "up", "adminState": "up", "type": "pppoe", "mtu": 1532, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "rbeb", "state":
+    "up", "adminState": "up", "type": "remote-beb", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "vtep", "state": "up", "adminState":
+    "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "ae1.10", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 65536, "vlan": 10, "master": "", "ipAddressList": ["10.0.10.2/29"],
+    "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "ae1.20", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 65536, "vlan": 20, "master": "", "ipAddressList": ["10.0.20.2/29"],
+    "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "lo0.16384", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    ["127.0.0.1/32"], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "lo0.16385", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/3", "state": "up", "adminState": "up", "type":
+    "bond_slave", "mtu": 1518, "vlan": 0, "master": "ae0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "fti4", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "fti2", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}]'
+- command: interface show --mtu='! 1514 !9192' --namespace=vmx --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show vmx junos
+  output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0.16385",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/1", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae1", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/2", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/3", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae0", "state":
+    "up", "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/0", "state": "up", "adminState":
+    "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ifname": "ae1", "state": "up", "adminState": "up", "type":
+    "bond", "mtu": 1518, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ifname": "dsc", "state": "up", "adminState": "up", "type": "null", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
+    "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti0", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti1", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti2", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti3", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti4", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0.16384", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": ["127.0.0.1/32"], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti6", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti5", "state":
+    "up", "adminState": "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae1.20", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 20, "master":
+    "", "ipAddressList": ["10.0.20.3/29"], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "em1.0", "state":
+    "up", "adminState": "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master":
+    "", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "ip6AddressList":
+    ["fe80::5206:ff:fe0f:1/64", "fec0::a:0:0:4/64"], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "irb.101", "state":
+    "up", "adminState": "up", "type": "vlan", "mtu": 1500, "vlan": 101, "master":
+    "", "ipAddressList": ["172.16.11.254/24"], "ip6AddressList": [], "timestamp":
+    1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
+    "irb.201", "state": "up", "adminState": "up", "type": "vlan", "mtu": 1500, "vlan":
+    201, "master": "", "ipAddressList": ["172.16.21.254/24"], "ip6AddressList": [],
+    "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ifname": "VRF-B", "state": "up", "adminState": "up", "type": "vrf", "mtu": 1500,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
+    "ae1.10", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536,
+    "vlan": 10, "master": "", "ipAddressList": ["10.0.10.3/29"], "ip6AddressList":
+    [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "ifname": "vtep", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
+    "rbeb", "state": "up", "adminState": "up", "type": "remote-beb", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009088901}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
+    "pp0", "state": "up", "adminState": "up", "type": "pppoe", "mtu": 1532, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0", "state":
+    "up", "adminState": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti7", "state": "up", "adminState":
+    "up", "type": "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "VRF-A", "state": "up", "adminState":
+    "up", "type": "vrf", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": [],
+    "ip6AddressList": [], "timestamp": 1631009088901}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ifname": "fti7", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "lo0.16384", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/32"], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "em1.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2",
+    "128.0.0.4/2"], "ip6AddressList": ["fe80::5206:ff:fe03:1/64", "fec0::a:0:0:4/64"],
+    "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "vtep", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "rbeb",
+    "state": "up", "adminState": "up", "type": "remote-beb", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "pp0", "state": "up",
+    "adminState": "up", "type": "pppoe", "mtu": 1532, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ifname": "lo0", "state": "up", "adminState": "up", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "fti6", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "fti1", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "fti4", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "fti3", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "fti2", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "fti0", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "dsc",
+    "state": "up", "adminState": "up", "type": "null", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
+    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae2", "state": "up", "adminState":
+    "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ifname": "ae1", "state": "up", "adminState": "up", "type": "bond",
+    "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/5", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae2", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/3", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/2", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/0", "state": "up", "adminState": "up", "type": "flexible-ethernet",
+    "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "fti5", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/4", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae2", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ge-0/0/0", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "fti6", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "lo0.16384", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/32"], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "em1.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2",
+    "128.0.0.4/2"], "ip6AddressList": ["fe80::5206:ff:fe0b:1/64", "fec0::a:0:0:4/64"],
+    "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "vtep", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "rbeb",
+    "state": "up", "adminState": "up", "type": "remote-beb", "mtu": 65536, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "pp0", "state": "up",
+    "adminState": "up", "type": "pppoe", "mtu": 1532, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname":
+    "CRP-ACC-SW01", "ifname": "lo0", "state": "up", "adminState": "up", "type": "loopback",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "fti7", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "fti5", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "fti4", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "lo0.16385", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "fti3", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "fti1", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "fti0", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "dsc",
+    "state": "up", "adminState": "up", "type": "null", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089423}, {"namespace":
+    "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ae1", "state": "up", "adminState":
+    "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname":
+    "CRP-ACC-SW01", "ifname": "ae0", "state": "up", "adminState": "up", "type": "bond",
+    "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ge-0/0/3", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ge-0/0/2", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "ge-0/0/1", "state": "up", "adminState": "up", "type": "bond_slave",
+    "mtu": 1518, "vlan": 0, "master": "ae0", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
+    "ifname": "fti2", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "fti1", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "fti0", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "fti5", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "dsc", "state": "up", "adminState": "up", "type": "null", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "fti2", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "esi", "state": "up", "adminState": "up", "type": "vtep", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "fti4", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "ge-0/0/2.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.100.0/31"], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "em1.0", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 1500, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2",
+    "128.0.0.4/2"], "ip6AddressList": ["fe80::5206:ff:fe01:1/64", "fec0::a:0:0:4/64"],
+    "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "fti6", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "fti7", "state": "up", "adminState": "up", "type": "flexible-tunnel-interface",
+    "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
+    "ifname": "lo0", "state": "up", "adminState": "up", "type": "loopback", "mtu":
+    65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089434}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "pp0", "state": "up", "adminState": "up", "type": "pppoe", "mtu": 1532, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434},
+    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "rbeb", "state":
+    "up", "adminState": "up", "type": "remote-beb", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace":
+    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "vtep", "state": "up", "adminState":
+    "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "fti3", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "ge-0/0/3.0", "state": "down", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "lo0.16384", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["127.0.0.1/32"],
+    "ip6AddressList": [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "lo0.16385", "state": "up", "adminState": "up", "type":
+    "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089434}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ae0", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518,
+    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "ge-0/0/3", "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 1518,
+    "vlan": 0, "master": "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "ge-0/0/2", "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 1518,
+    "vlan": 0, "master": "ae0", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "rbeb", "state": "up", "adminState": "up", "type": "remote-beb", "mtu": 65536,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "ge-0/0/0", "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 1518,
+    "vlan": 0, "master": "ae1", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "ae1", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/1", "state":
+    "up", "adminState": "up", "type": "bond_slave", "mtu": 1518, "vlan": 0, "master":
+    "ae1", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "dsc", "state":
+    "up", "adminState": "up", "type": "null", "mtu": 65536, "vlan": 0, "master": "",
+    "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "esi", "state": "up", "adminState":
+    "up", "type": "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "fti0", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "vtep", "state": "up", "adminState": "up", "type":
+    "vtep", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "VRF-A", "state": "up", "adminState": "up", "type": "vrf", "mtu": 1500,
+    "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    "VRF-B", "state": "up", "adminState": "up", "type": "vrf", "mtu": 1500, "vlan":
+    0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "lo0", "state":
+    "up", "adminState": "up", "type": "loopback", "mtu": 65536, "vlan": 0, "master":
+    "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.20", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 65536, "vlan": 20, "master": "", "ipAddressList":
+    ["10.0.20.2/29"], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "em1.0", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 1500, "vlan": 0, "master": "", "ipAddressList":
+    ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "ip6AddressList": ["fe80::5206:ff:fe0d:1/64",
+    "fec0::a:0:0:4/64"], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "irb.100", "state": "up", "adminState": "up", "type":
+    "vlan", "mtu": 1500, "vlan": 100, "master": "", "ipAddressList": ["172.16.10.254/24"],
+    "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "irb.200", "state": "up", "adminState": "up", "type":
+    "vlan", "mtu": 1500, "vlan": 200, "master": "", "ipAddressList": ["172.16.20.254/24"],
+    "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "lo0.16384", "state": "up", "adminState": "up",
+    "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    ["127.0.0.1/32"], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "lo0.16385", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "fti7", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "fti6", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "fti5", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "fti4", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "fti3", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "fti2", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "fti1", "state": "up", "adminState": "up", "type":
+    "flexible-tunnel-interface", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
+    [], "ip6AddressList": [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname":
+    "TOR1CRP-DGW-RT01", "ifname": "pp0", "state": "up", "adminState": "up", "type":
+    "pppoe", "mtu": 1532, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
+    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ae1.10", "state": "up", "adminState": "up", "type": "subinterface",
+    "mtu": 65536, "vlan": 10, "master": "", "ipAddressList": ["10.0.10.2/29"], "ip6AddressList":
+    [], "timestamp": 1631009089864}]'

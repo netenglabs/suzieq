@@ -118,20 +118,31 @@ tests:
     "source": "", "preference": 110, "ipvers": 4, "action": "forward", "numNexthops":
     6, "timestamp": 1619275257467}, {"namespace": "nxos", "hostname": "spine02", "vrf":
     "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22", "10.0.0.22"],
-    "oifs": ["Lo0", "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "numNexthops": 2, "timestamp": 1619275257123}, {"namespace":
-    "nxos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.134/32", "nexthopIps":
-    ["10.0.0.13", "10.0.0.14"], "oifs": ["Ethernet1/3", "Ethernet1/4"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "numNexthops":
-    2, "timestamp": 1619275257123}, {"namespace": "nxos", "hostname": "spine02", "vrf":
-    "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11", "10.0.0.12"],
-    "oifs": ["Ethernet1/1", "Ethernet1/2"], "protocol": "ospf", "source": "", "preference":
-    110, "ipvers": 4, "action": "forward", "numNexthops": 2, "timestamp": 1619275257123}]'
+    "oifs": ["loopback0", "loopback0"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "numNexthops": 2, "timestamp": 1619275257123},
+    {"namespace": "nxos", "hostname": "spine02", "vrf": "default", "prefix": "10.0.0.134/32",
+    "nexthopIps": ["10.0.0.13", "10.0.0.14"], "oifs": ["Ethernet1/3", "Ethernet1/4"],
+    "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
+    "numNexthops": 2, "timestamp": 1619275257123}, {"namespace": "nxos", "hostname":
+    "spine02", "vrf": "default", "prefix": "10.0.0.112/32", "nexthopIps": ["10.0.0.11",
+    "10.0.0.12"], "oifs": ["Ethernet1/1", "Ethernet1/2"], "protocol": "ospf", "source":
+    "", "preference": 110, "ipvers": 4, "action": "forward", "numNexthops": 2, "timestamp":
+    1619275257123}]'
 - command: mac top --what=moveCount --format=json --namespace='nxos'
   data-directory: tests/data/parquet/
-  error:
-    error: '[{"error": "ERROR: ''mackey''"}]'
   marks: mac top nxos
+  output: '[{"namespace": "nxos", "hostname": "spine02", "vlan": 0, "macaddr": "44:01:01:02:1b:08",
+    "oif": "sup-eth1", "remoteVtepIp": "", "bd": "", "flags": "router", "moveCount":
+    0, "timestamp": 1619275258116}, {"namespace": "nxos", "hostname": "spine01", "vlan":
+    0, "macaddr": "44:01:01:01:1b:08", "oif": "sup-eth1", "remoteVtepIp": "", "bd":
+    "", "flags": "router", "moveCount": 0, "timestamp": 1619275257253}, {"namespace":
+    "nxos", "hostname": "server302", "vlan": 0, "macaddr": "33:33:ff:de:d8:99", "oif":
+    "eth0", "remoteVtepIp": "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp":
+    1619275256204}, {"namespace": "nxos", "hostname": "server302", "vlan": 0, "macaddr":
+    "33:33:ff:22:53:72", "oif": "bond0", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+    "moveCount": 0, "timestamp": 1619275256204}, {"namespace": "nxos", "hostname":
+    "server302", "vlan": 0, "macaddr": "33:33:ff:22:53:72", "oif": "eth1", "remoteVtepIp":
+    "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1619275256204}]'
 - command: route top --what=prefixlen --format=json --namespace='nxos'
   data-directory: tests/data/parquet/
   marks: route top nxos

@@ -1,0 +1,48 @@
+description: Testing verbs for interface switchport
+tests:
+- command: interface show --columns=vlan --vlan='!100 10' --state=up --namespace=vmx
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique vmx switchport
+  output: '[{"vlan": 10}, {"vlan": 0}, {"vlan": 0}, {"vlan": 0}, {"vlan": 10}]'
+- command: interface show --columns=vlan --vlan='!100 20' --state=up --namespace=vmx
+    --columns='hostname ifname state adminState type vlan vlanList' --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show vmx switchport
+  output: '[{"hostname": "TOR4CRP-DGW-RT01", "ifname": "ae1.20", "state": "up", "adminState":
+    "up", "type": "subinterface", "vlan": 20, "vlanList": []}, {"hostname": "CRP-DIS-SW01",
+    "ifname": "ge-0/0/0", "state": "up", "adminState": "up", "type": "flexible-ethernet",
+    "vlan": 0, "vlanList": [10, 20]}, {"hostname": "CRP-DIS-SW01", "ifname": "ae1",
+    "state": "up", "adminState": "up", "type": "bond", "vlan": 0, "vlanList": [10,
+    20]}, {"hostname": "CRP-DIS-SW01", "ifname": "ae2", "state": "up", "adminState":
+    "up", "type": "bond", "vlan": 0, "vlanList": [10, 20]}, {"hostname": "TOR1CRP-DGW-RT01",
+    "ifname": "ae1.20", "state": "up", "adminState": "up", "type": "subinterface",
+    "vlan": 20, "vlanList": []}]'
+- command: interface show --columns=vlan --vlan='!100 20' --state=up --namespace=vmx
+    --columns='hostname ifname state adminState type vlanList' --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show vmx switchport
+  output: '[{"hostname": "TOR4CRP-DGW-RT01", "ifname": "ae1.20", "state": "up", "adminState":
+    "up", "type": "subinterface", "vlanList": []}, {"hostname": "CRP-DIS-SW01", "ifname":
+    "ge-0/0/0", "state": "up", "adminState": "up", "type": "flexible-ethernet", "vlanList":
+    [10, 20]}, {"hostname": "CRP-DIS-SW01", "ifname": "ae1", "state": "up", "adminState":
+    "up", "type": "bond", "vlanList": [10, 20]}, {"hostname": "CRP-DIS-SW01", "ifname":
+    "ae2", "state": "up", "adminState": "up", "type": "bond", "vlanList": [10, 20]},
+    {"hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.20", "state": "up", "adminState":
+    "up", "type": "subinterface", "vlanList": []}]'
+- command: interface show --columns=vlan --vlan='!100 !200' --state=up --namespace=vmx
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show vmx switchport
+  output: '[{"vlan": 0}, {"vlan": 20}, {"vlan": 101}, {"vlan": 201}, {"vlan": 10},
+    {"vlan": 0}, {"vlan": 0}, {"vlan": 0}, {"vlan": 0}, {"vlan": 101}, {"vlan": 201},
+    {"vlan": 10}, {"vlan": 20}]'
+- command: interface show --columns=vlan --vlan='101' --namespace=vmx --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show vmx switchport
+  output: '[{"vlan": 0}, {"vlan": 101}, {"vlan": 0}, {"vlan": 101}]'
+- command: interface show --columns=vlan --vlan='101 201' --namespace=vmx --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show vmx switchport
+  output: '[{"vlan": 0}, {"vlan": 101}, {"vlan": 0}, {"vlan": 101}, {"vlan": 0}, {"vlan":
+    201}, {"vlan": 0}, {"vlan": 201}]'

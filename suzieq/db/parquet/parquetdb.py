@@ -21,6 +21,10 @@ from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
                                            coalesce_resource_table)
 from suzieq.db.parquet.migratedb import get_migrate_fn
+from suzieq.shared.utils import reduce_filter_list
+
+
+PARQUET_VERSION = '2.4'
 
 
 class SqParquetDB(SqDB):
@@ -177,7 +181,7 @@ class SqParquetDB(SqDB):
 
     def write(self, table_name: str, data_format: str,
               data, coalesced: bool, schema: pa.lib.Schema,
-              filename_cb, **kwargs) -> int:
+              basename_template: str = None, **kwargs) -> int:
         """Write the data supplied as a dataframe as a parquet file
 
         :param cfg: Suzieq configuration
@@ -188,7 +192,8 @@ class SqParquetDB(SqDB):
                             (only pandas supported at this point)
         :param coalesced: bool, True if data being written is in compacted form
         :param schema: pa.Schema, the schema for the data
-        :param filename_cb: callable, callback function to create the filename
+        :param basename_template: string, template for the name of the output
+                                  file
         :returns: status of write
         :rtype: integer
 
@@ -220,17 +225,14 @@ class SqParquetDB(SqDB):
                 table = pa.Table.from_pandas(df, schema=schema,
                                              preserve_index=False)
 
-            if filename_cb:
-                pq.write_to_dataset(table, root_path=folder,
-                                    partition_cols=partition_cols,
-                                    version="2.0", compression="ZSTD",
-                                    partition_filename_cb=filename_cb,
-                                    row_group_size=100000)
-            else:
-                pq.write_to_dataset(table, root_path=folder,
-                                    partition_cols=partition_cols,
-                                    version="2.0", compression="ZSTD",
-                                    row_group_size=100000)
+            pq.write_to_dataset(table,
+                                root_path=folder,
+                                partition_cols=partition_cols,
+                                version=PARQUET_VERSION,
+                                compression="ZSTD",
+                                basename_template=basename_template,
+                                existing_data_behavior='overwrite_or_ignore',
+                                row_group_size=100000)
 
         return 0
 
@@ -398,6 +400,10 @@ class SqParquetDB(SqDB):
                 if migrate_rtn:
                     dataset = self._get_cp_dataset(table_name, True, sqvers,
                                                    'all', '', '')
+
+                    if not dataset:
+                        continue
+
                     for item in dataset.files:
                         try:
                             namespace = item.split('namespace=')[1] \
@@ -430,7 +436,8 @@ class SqParquetDB(SqDB):
                             newdf, schema=schema.get_arrow_schema(),
                             preserve_index=False)
                         pq.write_to_dataset(table, newitem,
-                                            version="2.0", compression="ZSTD",
+                                            version=PARQUET_VERSION,
+                                            compression="ZSTD",
                                             row_group_size=100000)
                         self.logger.debug(
                             f'Migrated {item} version {sqvers}->'
@@ -573,12 +580,14 @@ class SqParquetDB(SqDB):
                         thistime = os.path.basename(file).split('.')[0] \
                             .split('-')[-2:]
                         thistime = [int(x)*1000 for x in thistime]  # to msec
+                        file_start_time, file_end_time = thistime
+
                         if (not start_time) or start_selected or (
-                                thistime[0] <= start_time <= thistime[1]):
+                                file_end_time >= start_time):
                             if not end_time:
                                 selected_in_dir.extend(files_per_ns[ele][i:])
                                 break
-                            if thistime[0] <= end_time:
+                            if file_start_time <= end_time:
                                 if (start_time or start_selected or
                                         view == "all"):
                                     selected_in_dir.append(file)
@@ -608,7 +617,7 @@ class SqParquetDB(SqDB):
         if filelist:
             return ds.dataset(filelist, format='parquet', partitioning='hive')
         else:
-            return []
+            return None
 
     def _build_master_schema(self, datasets: list) -> pa.lib.Schema:
         """Build the master schema from the list of diff versions
@@ -645,35 +654,25 @@ class SqParquetDB(SqDB):
         if not namespace:
             return dataset
 
-        # Exclude not and regexp operators as they're handled elsewhere.
-        excluded_ns = [x for x in namespace
-                       if x.startswith('!') or x.startswith('~!')]
-        if excluded_ns != namespace:
-            ns_filters = [x for x in namespace
-                          if not x.startswith('!') and not x.startswith('~!')]
-        else:
-            ns_filters = namespace
+        newns = reduce_filter_list(namespace)
         ns_filelist = []
         chklist = dataset.files
-        for ns in ns_filters or []:
+        for ns in newns or []:
             if ns.startswith('!'):
                 ns = ns[1:]
+                use_not = True
+            else:
+                use_not = False
+
+            if ns.startswith('~'):
+                ns = ns[1:]
+
+            if use_not:
                 ns_filelist = \
                     [x for x in chklist
-                     if not re.search(f'namespace={ns}/', x)]
+                        if not re.search(f'namespace={ns}/', x)]
+                # NOTs turn list from implicit OR into implicit AND
                 chklist = ns_filelist
-            elif ns.startswith('~'):
-                ns = ns[1:]
-                if ns.startswith('!'):
-                    ns = ns[1:]
-                    ns_filelist = \
-                        [x for x in chklist
-                         if not re.search(f'namespace={ns}/', x)]
-                    chklist = ns_filelist
-                else:
-                    ns_filelist.extend(
-                        [x for x in dataset.files
-                         if re.search(f'namespace={ns}/', x)])
             else:
                 ns_filelist.extend(
                     [x for x in dataset.files
@@ -688,15 +687,15 @@ class SqParquetDB(SqDB):
 
         # Check if we have logical operator (<, >, = etc.)
         if filter_str.startswith('<='):
-            return (ds.field(keyfld) <= int(filter_str[2:]))
+            return (ds.field(keyfld) <= int(filter_str[2:].strip()))
         elif filter_str.startswith('>='):
-            return (ds.field(keyfld) >= int(filter_str[2:]))
+            return (ds.field(keyfld) >= int(filter_str[2:].strip()))
         elif filter_str.startswith('<'):
-            return (ds.field(keyfld) < int(filter_str[1:]))
+            return (ds.field(keyfld) < int(filter_str[1:].strip()))
         elif filter_str.startswith('>'):
-            return (ds.field(keyfld) > int(filter_str[1:]))
+            return (ds.field(keyfld) > int(filter_str[1:].strip()))
         else:
-            return (ds.field(keyfld) == int(filter_str))
+            return (ds.field(keyfld) == int(filter_str.strip()))
 
     # pylint: disable=too-many-statements
     def build_ds_filters(self, start_tm: float, end_tm: float,
@@ -732,7 +731,15 @@ class SqParquetDB(SqDB):
             if isinstance(v, list):
                 infld = []
                 notinfld = []
-                or_filters = None
+                kw_filters = None
+                use_and = False
+                # If user specifies both </<= and >/>=, we treat
+                # it as an and i.e. the user is looking for a val
+                # between the provided < and > numbers.
+                if (any(x.startswith('>') for x in v) and
+                        any(x.startswith('<') for x in v)):
+                    use_and = True
+
                 for e in v:
                     if isinstance(e, str) and e.startswith("!"):
                         if ftype == 'int64':
@@ -741,11 +748,15 @@ class SqParquetDB(SqDB):
                             notinfld.append(e[1:])
                     else:
                         if ftype == 'int64':
-                            if or_filters is not None:
-                                or_filters = or_filters | \
-                                    self._cons_int_filter(k, e)
+                            if kw_filters is not None:
+                                if use_and:
+                                    kw_filters = kw_filters & \
+                                        self._cons_int_filter(k, e)
+                                else:
+                                    kw_filters = kw_filters | \
+                                        self._cons_int_filter(k, e)
                             else:
-                                or_filters = self._cons_int_filter(k, e)
+                                kw_filters = self._cons_int_filter(k, e)
                         else:
                             infld.append(e)
                 if infld and notinfld:
@@ -756,8 +767,8 @@ class SqParquetDB(SqDB):
                 elif notinfld:
                     filters = filters & (~ds.field(k).isin(notinfld))
 
-                if or_filters is not None:
-                    filters = filters & (or_filters)
+                if kw_filters is not None:
+                    filters = filters & (kw_filters)
             else:
                 if isinstance(v, str) and v.startswith("!"):
                     if ftype == 'int64':

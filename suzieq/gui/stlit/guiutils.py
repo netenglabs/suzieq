@@ -57,8 +57,7 @@ def display_help_icon(url: str):
         unsafe_allow_html=True)
 
 
-@st.cache(ttl=90, allow_output_mutation=True, show_spinner=False,
-          max_entries=20)
+@st.experimental_memo
 def gui_get_df(table: str,
                config_file: str,
                verb: str = 'get', **kwargs) -> pd.DataFrame:

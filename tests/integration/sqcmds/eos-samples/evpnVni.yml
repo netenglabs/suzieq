@@ -76,29 +76,38 @@ tests:
 - command: evpnVni assert --format=json --namespace=eos
   data-directory: tests/data/parquet/
   marks: evpnVni assert eos
-  output: '[{"namespace": "eos", "hostname": "leaf02", "vni": 10, "type": "L2", "assertReason":
-    "-", "result": "pass", "timestamp": 1623025177153}, {"namespace": "eos", "hostname":
-    "leaf02", "vni": 999, "type": "L3", "assertReason": "-", "result": "pass", "timestamp":
-    1623025177153}, {"namespace": "eos", "hostname": "leaf02", "vni": 30, "type":
-    "L2", "assertReason": "-", "result": "pass", "timestamp": 1623025177153}, {"namespace":
-    "eos", "hostname": "leaf03", "vni": 20, "type": "L2", "assertReason": "-", "result":
-    "pass", "timestamp": 1623025177155}, {"namespace": "eos", "hostname": "leaf03",
-    "vni": 999, "type": "L3", "assertReason": "-", "result": "pass", "timestamp":
-    1623025177155}, {"namespace": "eos", "hostname": "leaf03", "vni": 30, "type":
-    "L2", "assertReason": "-", "result": "pass", "timestamp": 1623025177155}, {"namespace":
-    "eos", "hostname": "exit02", "vni": 999, "type": "L3", "assertReason": "-", "result":
-    "pass", "timestamp": 1623025177256}, {"namespace": "eos", "hostname": "exit01",
-    "vni": 999, "type": "L3", "assertReason": "-", "result": "pass", "timestamp":
-    1623025177350}, {"namespace": "eos", "hostname": "leaf01", "vni": 10, "type":
-    "L2", "assertReason": "-", "result": "pass", "timestamp": 1623025177459}, {"namespace":
-    "eos", "hostname": "leaf01", "vni": 999, "type": "L3", "assertReason": "-", "result":
-    "pass", "timestamp": 1623025177459}, {"namespace": "eos", "hostname": "leaf01",
-    "vni": 30, "type": "L2", "assertReason": "-", "result": "pass", "timestamp": 1623025177459},
-    {"namespace": "eos", "hostname": "leaf04", "vni": 20, "type": "L2", "assertReason":
-    "-", "result": "pass", "timestamp": 1623025177461}, {"namespace": "eos", "hostname":
-    "leaf04", "vni": 999, "type": "L3", "assertReason": "-", "result": "pass", "timestamp":
-    1623025177461}, {"namespace": "eos", "hostname": "leaf04", "vni": 30, "type":
-    "L2", "assertReason": "-", "result": "pass", "timestamp": 1623025177461}]'
+  output: '[{"namespace": "eos", "hostname": "leaf02", "vni": 10, "type": "L2", "vrf":
+    "evpn-vrf", "macaddr": "00:00:00:11:12:10", "timestamp": 1623025177153, "result":
+    "pass", "assertReason": []}, {"namespace": "eos", "hostname": "leaf02", "vni":
+    999, "type": "L3", "vrf": "evpn-vrf", "macaddr": "44:38:39:99:c7:9e", "timestamp":
+    1623025177153, "result": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+    "leaf02", "vni": 30, "type": "L2", "vrf": "evpn-vrf", "macaddr": "00:00:00:11:12:10",
+    "timestamp": 1623025177153, "result": "pass", "assertReason": []}, {"namespace":
+    "eos", "hostname": "leaf03", "vni": 20, "type": "L2", "vrf": "evpn-vrf", "macaddr":
+    "00:00:00:11:12:10", "timestamp": 1623025177155, "result": "pass", "assertReason":
+    []}, {"namespace": "eos", "hostname": "leaf03", "vni": 999, "type": "L3", "vrf":
+    "evpn-vrf", "macaddr": "44:38:39:24:3f:16", "timestamp": 1623025177155, "result":
+    "pass", "assertReason": []}, {"namespace": "eos", "hostname": "leaf03", "vni":
+    30, "type": "L2", "vrf": "evpn-vrf", "macaddr": "00:00:00:11:12:10", "timestamp":
+    1623025177155, "result": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+    "exit02", "vni": 999, "type": "L3", "vrf": "evpn-vrf", "macaddr": "44:38:39:c3:55:cb",
+    "timestamp": 1623025177256, "result": "pass", "assertReason": []}, {"namespace":
+    "eos", "hostname": "exit01", "vni": 999, "type": "L3", "vrf": "evpn-vrf", "macaddr":
+    "44:38:39:33:d8:43", "timestamp": 1623025177350, "result": "pass", "assertReason":
+    []}, {"namespace": "eos", "hostname": "leaf01", "vni": 10, "type": "L2", "vrf":
+    "evpn-vrf", "macaddr": "00:00:00:11:12:10", "timestamp": 1623025177459, "result":
+    "pass", "assertReason": []}, {"namespace": "eos", "hostname": "leaf01", "vni":
+    999, "type": "L3", "vrf": "evpn-vrf", "macaddr": "44:38:39:e3:19:2e", "timestamp":
+    1623025177459, "result": "pass", "assertReason": []}, {"namespace": "eos", "hostname":
+    "leaf01", "vni": 30, "type": "L2", "vrf": "evpn-vrf", "macaddr": "00:00:00:11:12:10",
+    "timestamp": 1623025177459, "result": "pass", "assertReason": []}, {"namespace":
+    "eos", "hostname": "leaf04", "vni": 20, "type": "L2", "vrf": "evpn-vrf", "macaddr":
+    "00:00:00:11:12:10", "timestamp": 1623025177461, "result": "pass", "assertReason":
+    []}, {"namespace": "eos", "hostname": "leaf04", "vni": 999, "type": "L3", "vrf":
+    "evpn-vrf", "macaddr": "44:38:39:81:30:22", "timestamp": 1623025177461, "result":
+    "pass", "assertReason": []}, {"namespace": "eos", "hostname": "leaf04", "vni":
+    30, "type": "L2", "vrf": "evpn-vrf", "macaddr": "00:00:00:11:12:10", "timestamp":
+    1623025177461, "result": "pass", "assertReason": []}]'
 - command: evpnVni show --priVtepIp='10.0.0.112' --format=json --namespace=eos
   data-directory: tests/data/parquet/
   marks: evpnVni show eos filter

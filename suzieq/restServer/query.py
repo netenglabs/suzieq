@@ -63,8 +63,8 @@ def get_configured_api_key():
     return api_key
 
 
-async def get_api_key(api_key_query: str = Security(api_key_query),
-                      api_key_header: str = Security(api_key_header)):
+def get_api_key(api_key_query: str = Security(api_key_query),
+                api_key_header: str = Security(api_key_header)):
 
     api_key = get_configured_api_key()
     if api_key_query == api_key:
@@ -283,91 +283,91 @@ class TruthasStrings(str, Enum):
 
 
 @app.get("/api/v1/{rest_of_path:path}", deprecated=True)
-async def deprecated_function(request: Request, rest_of_path: str):
+def deprecated_function(request: Request, rest_of_path: str):
     return([{'error': 'v1 is deprecated, use API version v2'}])
 
 
 @app.get("/api/v2/address/{verb}")
-async def query_address(verb: CommonVerbs, request: Request,
-                        token: str = Depends(get_api_key),
-                        format: str = None,
-                        hostname: List[str] = Query(None),
-                        start_time: str = "", end_time: str = "",
-                        view: ViewValues = "latest",
-                        namespace: List[str] = Query(None),
-                        columns: List[str] = Query(default=["default"]),
-                        address: List[str] = Query(None),
-                        type: List[str] = Query(None),
-                        ifname: List[str] = Query(None),
-                        prefix: List[str] = Query(None),
-                        ipvers: str = None, what: str = None,
-                        vrf: List[str] = Query(None), query_str: str = None,
-                        count: str = None, reverse: str = None,
-                        ):
+def query_address(verb: CommonVerbs, request: Request,
+                  token: str = Depends(get_api_key),
+                  format: str = None,
+                  hostname: List[str] = Query(None),
+                  start_time: str = "", end_time: str = "",
+                  view: ViewValues = "latest",
+                  namespace: List[str] = Query(None),
+                  columns: List[str] = Query(default=["default"]),
+                  address: List[str] = Query(None),
+                  type: List[str] = Query(None),
+                  ifname: List[str] = Query(None),
+                  prefix: List[str] = Query(None),
+                  ipvers: str = None, what: str = None,
+                  vrf: List[str] = Query(None), query_str: str = None,
+                  count: str = None, reverse: str = None,
+                  ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @ app.get("/api/v2/arpnd/{verb}")
-async def query_arpnd(verb: CommonVerbs, request: Request,
-                      token: str = Depends(get_api_key),
-                      format: str = None,
-                      hostname: List[str] = Query(None),
-                      start_time: str = "", end_time: str = "",
-                      view: ViewValues = "latest",
-                      namespace: List[str] = Query(None),
-                      columns: List[str] = Query(default=["default"]),
-                      ipAddress: List[str] = Query(None),
-                      macaddr: List[str] = Query(None),
-                      prefix: List[str] = Query(None),
-                      oif: List[str] = Query(None),
-                      query_str: str = None, what: str = None,
-                      count: str = None, reverse: str = None,
-                      ):
+def query_arpnd(verb: CommonVerbs, request: Request,
+                token: str = Depends(get_api_key),
+                format: str = None,
+                hostname: List[str] = Query(None),
+                start_time: str = "", end_time: str = "",
+                view: ViewValues = "latest",
+                namespace: List[str] = Query(None),
+                columns: List[str] = Query(default=["default"]),
+                ipAddress: List[str] = Query(None),
+                macaddr: List[str] = Query(None),
+                prefix: List[str] = Query(None),
+                oif: List[str] = Query(None),
+                query_str: str = None, what: str = None,
+                count: str = None, reverse: str = None,
+                ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @ app.get("/api/v2/bgp/{verb}")
-async def query_bgp(verb: CommonExtraVerbs, request: Request,
-                    token: str = Depends(get_api_key),
-                    format: str = None,
-                    hostname: List[str] = Query(None),
-                    start_time: str = "", end_time: str = "",
-                    view: ViewValues = "latest",
-                    namespace: List[str] = Query(None),
-                    columns: List[str] = Query(default=["default"]),
-                    peer: List[str] = Query(None),
-                    state: BgpStateValues = Query(None),
-                    vrf: List[str] = Query(None),
-                    asn: List[str] = Query(None),
-                    result: AssertResultValue = Query(None),
-                    afiSafi: str = Query(None),
-                    query_str: str = None, what: str = None,
-                    count: str = None, reverse: str = None,
-                    ):
+def query_bgp(verb: CommonExtraVerbs, request: Request,
+              token: str = Depends(get_api_key),
+              format: str = None,
+              hostname: List[str] = Query(None),
+              start_time: str = "", end_time: str = "",
+              view: ViewValues = "latest",
+              namespace: List[str] = Query(None),
+              columns: List[str] = Query(default=["default"]),
+              peer: List[str] = Query(None),
+              state: BgpStateValues = Query(None),
+              vrf: List[str] = Query(None),
+              asn: List[str] = Query(None),
+              result: AssertResultValue = Query(None),
+              afiSafi: str = Query(None),
+              query_str: str = None, what: str = None,
+              count: str = None, reverse: str = None,
+              ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @ app.get("/api/v2/device/{verb}")
-async def query_device(verb: CommonVerbs, request: Request,
-                       token: str = Depends(get_api_key),
-                       format: str = None,
-                       hostname: List[str] = Query(None),
-                       start_time: str = "", end_time: str = "",
-                       view: ViewValues = "latest",
-                       namespace: List[str] = Query(None),
-                       columns: List[str] = Query(default=["default"]),
-                       query_str: str = None,
-                       os: List[str] = Query(None),
-                       vendor: List[str] = Query(None),
-                       model: List[str] = Query(None),
-                       version: List[str] = Query(None),
-                       what: str = None,
-                       status: List[DeviceStatus] = Query(None),
-                       count: str = None, reverse: str = None,
-                       ):
+def query_device(verb: CommonVerbs, request: Request,
+                 token: str = Depends(get_api_key),
+                 format: str = None,
+                 hostname: List[str] = Query(None),
+                 start_time: str = "", end_time: str = "",
+                 view: ViewValues = "latest",
+                 namespace: List[str] = Query(None),
+                 columns: List[str] = Query(default=["default"]),
+                 query_str: str = None,
+                 os: List[str] = Query(None),
+                 vendor: List[str] = Query(None),
+                 model: List[str] = Query(None),
+                 version: List[str] = Query(None),
+                 what: str = None,
+                 status: List[DeviceStatus] = Query(None),
+                 count: str = None, reverse: str = None,
+                 ):
     function_name = inspect.currentframe().f_code.co_name
     if status:
         status = [x.value for x in status]  # convert enum to string
@@ -375,129 +375,7 @@ async def query_device(verb: CommonVerbs, request: Request,
 
 
 @ app.get("/api/v2/devconfig/{verb}")
-async def query_devconfig(verb: CommonVerbs, request: Request,
-                          token: str = Depends(get_api_key),
-                          format: str = None,
-                          hostname: List[str] = Query(None),
-                          start_time: str = "", end_time: str = "",
-                          view: ViewValues = "latest",
-                          namespace: List[str] = Query(None),
-                          columns: List[str] = Query(default=["default"]),
-                          query_str: str = None,
-                          what: str = None,
-                          count: str = None, reverse: str = None,
-                          ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, request, locals())
-
-
-@ app.get("/api/v2/evpnVni/{verb}")
-async def query_evpnVni(verb: CommonExtraVerbs, request: Request,
-                        token: str = Depends(get_api_key),
-                        format: str = None,
-                        hostname: List[str] = Query(None),
-                        start_time: str = "", end_time: str = "",
-                        view: ViewValues = "latest",
-                        namespace: List[str] = Query(None),
-                        columns: List[str] = Query(default=["default"]),
-                        vni: List[str] = Query(None),
-                        priVtepIp: List[str] = Query(None),
-                        result: AssertResultValue = None,
-                        query_str: str = None, what: str = None,
-                        count: str = None, reverse: str = None,
-                        ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, request, locals())
-
-
-@ app.get("/api/v2/fs/{verb}")
-async def query_fs(verb: CommonVerbs, request: Request,
-                   token: str = Depends(get_api_key),
-                   format: str = None,
-                   hostname: List[str] = Query(None),
-                   start_time: str = "", end_time: str = "",
-                   view: ViewValues = "latest",
-                   namespace: List[str] = Query(None),
-                   columns: List[str] = Query(default=["default"]),
-                   mountPoint: List[str] = Query(None), what: str = None,
-                   usedPercent: str = None, query_str: str = None,
-                   count: str = None, reverse: str = None,
-                   ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, request, locals())
-
-
-@ app.get("/api/v2/interface/{verb}")
-async def query_interface(verb: CommonExtraVerbs, request: Request,
-                          token: str = Depends(get_api_key),
-                          format: str = None,
-                          hostname: List[str] = Query(None),
-                          start_time: str = "", end_time: str = "",
-                          view: ViewValues = "latest",
-                          namespace: List[str] = Query(None),
-                          columns: List[str] = Query(default=["default"]),
-                          ifname: List[str] = Query(None),
-                          state: IfStateValues = Query(None),
-                          type: List[str] = Query(None),
-                          what: str = None, vrf: List[str] = Query(None),
-                          master: List[str] = Query(None),
-                          mtu: List[str] = Query(None),
-                          ifindex: List[str] = Query(None),
-                          matchval: int = Query(None, alias="value"),
-                          result: AssertResultValue = Query(None),
-                          ignore_missing_peer: bool = Query(False),
-                          vlan: List[str] = Query(None),
-                          portmode: List[str] = Query(None),
-                          query_str: str = None,
-                          count: str = None, reverse: str = None,
-                          ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, request, locals())
-
-
-@app.get("/api/v2/inventory/{verb}")
-async def query_inventory(verb: CommonVerbs, request: Request,
-                          token: str = Depends(get_api_key),
-                          format: str = None,
-                          hostname: List[str] = Query(None),
-                          start_time: str = "", end_time: str = "",
-                          view: ViewValues = "latest",
-                          namespace: List[str] = Query(None),
-                          columns: List[str] = Query(default=["default"]),
-                          query_str: str = None,
-                          type: List[str] = Query(None),
-                          serial: List[str] = Query(None),
-                          model: List[str] = Query(None),
-                          vendor: List[str] = Query(None), what: str = None,
-                          status: InventoryStatusValues = Query(None),
-                          count: str = None, reverse: str = None,
-                          ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, request, locals())
-
-
-@ app.get("/api/v2/lldp/{verb}")
-async def query_lldp(verb: CommonVerbs, request: Request,
-                     token: str = Depends(get_api_key),
-                     format: str = None,
-                     hostname: List[str] = Query(None),
-                     start_time: str = "", end_time: str = "",
-                     view: ViewValues = "latest",
-                     namespace: List[str] = Query(None),
-                     peerMacaddr: List[str] = Query(None),
-                     peerHostname: List[str] = Query(None),
-                     columns: List[str] = Query(default=["default"]),
-                     ifname: List[str] = Query(None),
-                     use_bond: TruthasStrings = Query(None),
-                     query_str: str = None, what: str = None,
-                     count: str = None, reverse: str = None,
-                     ):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, verb, request, locals())
-
-
-@ app.get("/api/v2/mac/{verb}")
-async def query_mac(verb: CommonVerbs, request: Request,
+def query_devconfig(verb: CommonVerbs, request: Request,
                     token: str = Depends(get_api_key),
                     format: str = None,
                     hostname: List[str] = Query(None),
@@ -505,271 +383,393 @@ async def query_mac(verb: CommonVerbs, request: Request,
                     view: ViewValues = "latest",
                     namespace: List[str] = Query(None),
                     columns: List[str] = Query(default=["default"]),
-                    bd: str = None,
-                    local: str = None,
-                    macaddr: List[str] = Query(None),
-                    remoteVtepIp: List[str] = Query(None),
-                    vlan: List[str] = Query(None),
-                    query_str: str = None, what: str = None,
-                    moveCount: str = None, count: str = None,
-                    reverse: str = None,
+                    query_str: str = None,
+                    what: str = None,
+                    count: str = None, reverse: str = None,
                     ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
+@ app.get("/api/v2/evpnVni/{verb}")
+def query_evpnVni(verb: CommonExtraVerbs, request: Request,
+                  token: str = Depends(get_api_key),
+                  format: str = None,
+                  hostname: List[str] = Query(None),
+                  start_time: str = "", end_time: str = "",
+                  view: ViewValues = "latest",
+                  namespace: List[str] = Query(None),
+                  columns: List[str] = Query(default=["default"]),
+                  vni: List[str] = Query(None),
+                  priVtepIp: List[str] = Query(None),
+                  result: AssertResultValue = None,
+                  query_str: str = None, what: str = None,
+                  count: str = None, reverse: str = None,
+                  ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
+@ app.get("/api/v2/fs/{verb}")
+def query_fs(verb: CommonVerbs, request: Request,
+             token: str = Depends(get_api_key),
+             format: str = None,
+             hostname: List[str] = Query(None),
+             start_time: str = "", end_time: str = "",
+             view: ViewValues = "latest",
+             namespace: List[str] = Query(None),
+             columns: List[str] = Query(default=["default"]),
+             mountPoint: List[str] = Query(None), what: str = None,
+             usedPercent: str = None, query_str: str = None,
+             count: str = None, reverse: str = None,
+             ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
+@ app.get("/api/v2/interface/{verb}")
+def query_interface(verb: CommonExtraVerbs, request: Request,
+                    token: str = Depends(get_api_key),
+                    format: str = None,
+                    hostname: List[str] = Query(None),
+                    start_time: str = "", end_time: str = "",
+                    view: ViewValues = "latest",
+                    namespace: List[str] = Query(None),
+                    columns: List[str] = Query(default=["default"]),
+                    ifname: List[str] = Query(None),
+                    state: IfStateValues = Query(None),
+                    type: List[str] = Query(None),
+                    what: str = None, vrf: List[str] = Query(None),
+                    master: List[str] = Query(None),
+                    mtu: List[str] = Query(None),
+                    ifindex: List[str] = Query(None),
+                    matchval: int = Query(None, alias="value"),
+                    result: AssertResultValue = Query(None),
+                    ignore_missing_peer: bool = Query(False),
+                    vlan: List[str] = Query(None),
+                    portmode: List[str] = Query(None),
+                    query_str: str = None,
+                    count: str = None, reverse: str = None,
+                    ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/inventory/{verb}")
+def query_inventory(verb: CommonVerbs, request: Request,
+                    token: str = Depends(get_api_key),
+                    format: str = None,
+                    hostname: List[str] = Query(None),
+                    start_time: str = "", end_time: str = "",
+                    view: ViewValues = "latest",
+                    namespace: List[str] = Query(None),
+                    columns: List[str] = Query(default=["default"]),
+                    query_str: str = None,
+                    type: List[str] = Query(None),
+                    serial: List[str] = Query(None),
+                    model: List[str] = Query(None),
+                    vendor: List[str] = Query(None), what: str = None,
+                    status: InventoryStatusValues = Query(None),
+                    count: str = None, reverse: str = None,
+                    ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
+@ app.get("/api/v2/lldp/{verb}")
+def query_lldp(verb: CommonVerbs, request: Request,
+               token: str = Depends(get_api_key),
+               format: str = None,
+               hostname: List[str] = Query(None),
+               start_time: str = "", end_time: str = "",
+               view: ViewValues = "latest",
+               namespace: List[str] = Query(None),
+               peerMacaddr: List[str] = Query(None),
+               peerHostname: List[str] = Query(None),
+               columns: List[str] = Query(default=["default"]),
+               ifname: List[str] = Query(None),
+               use_bond: TruthasStrings = Query(None),
+               query_str: str = None, what: str = None,
+               count: str = None, reverse: str = None,
+               ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
+@ app.get("/api/v2/mac/{verb}")
+def query_mac(verb: CommonVerbs, request: Request,
+              token: str = Depends(get_api_key),
+              format: str = None,
+              hostname: List[str] = Query(None),
+              start_time: str = "", end_time: str = "",
+              view: ViewValues = "latest",
+              namespace: List[str] = Query(None),
+              columns: List[str] = Query(default=["default"]),
+              bd: str = None,
+              local: str = None,
+              macaddr: List[str] = Query(None),
+              remoteVtepIp: List[str] = Query(None),
+              vlan: List[str] = Query(None),
+              query_str: str = None, what: str = None,
+              moveCount: str = None, count: str = None,
+              reverse: str = None,
+              ):
+    function_name = inspect.currentframe().f_code.co_name
+    return read_shared(function_name, verb, request, locals())
+
+
 @ app.get("/api/v2/mlag/{verb}")
-async def query_mlag(verb: CommonVerbs, request: Request,
-                     token: str = Depends(get_api_key),
-                     format: str = None,
-                     hostname: List[str] = Query(None),
-                     start_time: str = "", end_time: str = "",
-                     view: ViewValues = "latest",
-                     namespace: List[str] = Query(None),
-                     columns: List[str] = Query(default=["default"]),
-                     query_str: str = None, what: str = None,
-                     count: str = None, reverse: str = None,
-                     ):
+def query_mlag(verb: CommonVerbs, request: Request,
+               token: str = Depends(get_api_key),
+               format: str = None,
+               hostname: List[str] = Query(None),
+               start_time: str = "", end_time: str = "",
+               view: ViewValues = "latest",
+               namespace: List[str] = Query(None),
+               columns: List[str] = Query(default=["default"]),
+               query_str: str = None, what: str = None,
+               count: str = None, reverse: str = None,
+               ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @app.get("/api/v2/network/show", deprecated=True)
-async def query_network_depr_show(request: Request,
-                                  token: str = Depends(get_api_key),
-                                  format: str = None,
-                                  columns: List[str] = Query(
-                                      default=["default"]),
-                                  namespace: List[str] = Query(None),
-                                  hostname: List[str] = Query(None),
-                                  start_time: str = "", end_time: str = "",
-                                  version: str = "",
-                                  view: ViewValues = "latest",
-                                  model: List[str] = Query(None),
-                                  vendor: List[str] = Query(None),
-                                  os: List[str] = Query(None),
-                                  query_str: str = None, what: str = None,
-                                  count: str = None, reverse: str = None,
-                                  ):
+def query_network_depr_show(request: Request,
+                            token: str = Depends(get_api_key),
+                            format: str = None,
+                            columns: List[str] = Query(
+                                default=["default"]),
+                            namespace: List[str] = Query(None),
+                            hostname: List[str] = Query(None),
+                            start_time: str = "", end_time: str = "",
+                            version: str = "",
+                            view: ViewValues = "latest",
+                            model: List[str] = Query(None),
+                            vendor: List[str] = Query(None),
+                            os: List[str] = Query(None),
+                            query_str: str = None, what: str = None,
+                            count: str = None, reverse: str = None,
+                            ):
     function_name = 'query_namespace'
     verb = 'show'
     return read_shared(function_name, verb, request, locals())
 
 
 @app.get("/api/v2/network/summarize", deprecated=True)
-async def query_network_depr_summarize(request: Request,
-                                       token: str = Depends(get_api_key),
-                                       format: str = None,
-                                       columns: List[str] = Query(
-                                           default=["default"]),
-                                       namespace: List[str] = Query(None),
-                                       hostname: List[str] = Query(None),
-                                       start_time: str = "",
-                                       end_time: str = "",
-                                       version: str = "",
-                                       view: ViewValues = "latest",
-                                       model: List[str] = Query(None),
-                                       vendor: List[str] = Query(None),
-                                       os: List[str] = Query(None),
-                                       query_str: str = None,
-                                       what: str = None,
-                                       count: str = None,
-                                       reverse: str = None,
-                                       ):
-    function_name = 'query_namespace'
-    verb = 'summarize'
-    return read_shared(function_name, verb, request, locals())
-
-
-@app.get("/api/v2/network/unique", deprecated=True)
-async def query_network_depr_unique(request: Request,
-                                    token: str = Depends(get_api_key),
-                                    format: str = None,
-                                    columns: List[str] = Query(
-                                        default=["default"]),
-                                    namespace: List[str] = Query(None),
-                                    hostname: List[str] = Query(None),
-                                    start_time: str = "",
-                                    end_time: str = "",
-                                    version: str = "",
-                                    view: ViewValues = "latest",
-                                    model: List[str] = Query(None),
-                                    vendor: List[str] = Query(None),
-                                    os: List[str] = Query(None),
-                                    query_str: str = None,
-                                    what: str = None,
-                                    count: str = None, reverse: str = None,
-                                    ):
-    function_name = 'query_namespace'
-    verb = 'unique'
-    return read_shared(function_name, verb, request, locals())
-
-
-@app.get("/api/v2/network/top", deprecated=True)
-async def query_network_depr_top(request: Request,
+def query_network_depr_summarize(request: Request,
                                  token: str = Depends(get_api_key),
                                  format: str = None,
                                  columns: List[str] = Query(
                                      default=["default"]),
                                  namespace: List[str] = Query(None),
                                  hostname: List[str] = Query(None),
-                                 start_time: str = "", end_time: str = "",
+                                 start_time: str = "",
+                                 end_time: str = "",
                                  version: str = "",
                                  view: ViewValues = "latest",
                                  model: List[str] = Query(None),
                                  vendor: List[str] = Query(None),
                                  os: List[str] = Query(None),
-                                 query_str: str = None, what: str = None,
-                                 count: str = None, reverse: str = None,
+                                 query_str: str = None,
+                                 what: str = None,
+                                 count: str = None,
+                                 reverse: str = None,
                                  ):
+    function_name = 'query_namespace'
+    verb = 'summarize'
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/network/unique", deprecated=True)
+def query_network_depr_unique(request: Request,
+                              token: str = Depends(get_api_key),
+                              format: str = None,
+                              columns: List[str] = Query(
+                                  default=["default"]),
+                              namespace: List[str] = Query(None),
+                              hostname: List[str] = Query(None),
+                              start_time: str = "",
+                              end_time: str = "",
+                              version: str = "",
+                              view: ViewValues = "latest",
+                              model: List[str] = Query(None),
+                              vendor: List[str] = Query(None),
+                              os: List[str] = Query(None),
+                              query_str: str = None,
+                              what: str = None,
+                              count: str = None, reverse: str = None,
+                              ):
+    function_name = 'query_namespace'
+    verb = 'unique'
+    return read_shared(function_name, verb, request, locals())
+
+
+@app.get("/api/v2/network/top", deprecated=True)
+def query_network_depr_top(request: Request,
+                           token: str = Depends(get_api_key),
+                           format: str = None,
+                           columns: List[str] = Query(
+                               default=["default"]),
+                           namespace: List[str] = Query(None),
+                           hostname: List[str] = Query(None),
+                           start_time: str = "", end_time: str = "",
+                           version: str = "",
+                           view: ViewValues = "latest",
+                           model: List[str] = Query(None),
+                           vendor: List[str] = Query(None),
+                           os: List[str] = Query(None),
+                           query_str: str = None, what: str = None,
+                           count: str = None, reverse: str = None,
+                           ):
     function_name = 'query_namespace'
     verb = 'top'
     return read_shared(function_name, verb, request, locals())
 
 
 @app.get("/api/v2/network/{verb}")
-async def query_network(verb: NetworkVerbs, request: Request,
-                        token: str = Depends(get_api_key),
-                        format: str = None,
-                        columns: List[str] = Query(default=["default"]),
-                        namespace: List[str] = Query(None),
-                        hostname: List[str] = Query(None),
-                        start_time: str = "", end_time: str = "",
-                        view: ViewValues = "latest",
-                        address: List[str] = Query(None),
-                        vlan: str = '', vrf: str = '',
-                        query_str: str = None,
-                        ):
+def query_network(verb: NetworkVerbs, request: Request,
+                  token: str = Depends(get_api_key),
+                  format: str = None,
+                  columns: List[str] = Query(default=["default"]),
+                  namespace: List[str] = Query(None),
+                  hostname: List[str] = Query(None),
+                  start_time: str = "", end_time: str = "",
+                  view: ViewValues = "latest",
+                  address: List[str] = Query(None),
+                  vlan: str = '', vrf: str = '',
+                  query_str: str = None,
+                  ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @app.get("/api/v2/namespace/{verb}")
-async def query_namespace(verb: CommonVerbs, request: Request,
-                          token: str = Depends(get_api_key),
-                          format: str = None,
-                          columns: List[str] = Query(default=["default"]),
-                          namespace: List[str] = Query(None),
-                          hostname: List[str] = Query(None),
-                          start_time: str = "", end_time: str = "",
-                          version: str = "",
-                          view: ViewValues = "latest",
-                          model: List[str] = Query(None),
-                          vendor: List[str] = Query(None),
-                          os: List[str] = Query(None),
-                          query_str: str = None, what: str = None,
-                          count: str = None, reverse: str = None,
-                          ):
+def query_namespace(verb: CommonVerbs, request: Request,
+                    token: str = Depends(get_api_key),
+                    format: str = None,
+                    columns: List[str] = Query(default=["default"]),
+                    namespace: List[str] = Query(None),
+                    hostname: List[str] = Query(None),
+                    start_time: str = "", end_time: str = "",
+                    version: str = "",
+                    view: ViewValues = "latest",
+                    model: List[str] = Query(None),
+                    vendor: List[str] = Query(None),
+                    os: List[str] = Query(None),
+                    query_str: str = None, what: str = None,
+                    count: str = None, reverse: str = None,
+                    ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @ app.get("/api/v2/ospf/{verb}")
-async def query_ospf(verb: CommonExtraVerbs, request: Request,
-                     token: str = Depends(get_api_key),
-                     format: str = None,
-                     hostname: List[str] = Query(None),
-                     start_time: str = "", end_time: str = "",
-                     view: ViewValues = "latest",
-                     namespace: List[str] = Query(None),
-                     columns: List[str] = Query(default=["default"]),
-                     ifname: List[str] = Query(None),
-                     state: OspfStateValues = Query(None),
-                     area: List[str] = Query(None),
-                     vrf: List[str] = Query(None),
-                     result: AssertResultValue = None,
-                     query_str: str = None, what: str = None,
-                     count: str = None, reverse: str = None,
-                     ):
+def query_ospf(verb: CommonExtraVerbs, request: Request,
+               token: str = Depends(get_api_key),
+               format: str = None,
+               hostname: List[str] = Query(None),
+               start_time: str = "", end_time: str = "",
+               view: ViewValues = "latest",
+               namespace: List[str] = Query(None),
+               columns: List[str] = Query(default=["default"]),
+               ifname: List[str] = Query(None),
+               state: OspfStateValues = Query(None),
+               area: List[str] = Query(None),
+               vrf: List[str] = Query(None),
+               result: AssertResultValue = None,
+               query_str: str = None, what: str = None,
+               count: str = None, reverse: str = None,
+               ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @ app.get("/api/v2/path/{verb}")
-async def query_path(verb: CommonVerbs, request: Request,
-                     token: str = Depends(get_api_key),
-                     format: str = None,
-                     hostname: List[str] = Query(None),
-                     start_time: str = "", end_time: str = "",
-                     view: ViewValues = "latest",
-                     namespace: List[str] = Query(None),
-                     columns: List[str] = Query(default=["default"]),
-                     vrf: str = Query(None),
-                     dest: str = Query(None),
-                     src: str = Query(None),
-                     query_str: str = None, what: str = None,
-                     count: str = None, reverse: str = None,
-                     ):
+def query_path(verb: CommonVerbs, request: Request,
+               token: str = Depends(get_api_key),
+               format: str = None,
+               hostname: List[str] = Query(None),
+               start_time: str = "", end_time: str = "",
+               view: ViewValues = "latest",
+               namespace: List[str] = Query(None),
+               columns: List[str] = Query(default=["default"]),
+               vrf: str = Query(None),
+               dest: str = Query(None),
+               src: str = Query(None),
+               query_str: str = None, what: str = None,
+               count: str = None, reverse: str = None,
+               ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @ app.get("/api/v2/route/{verb}")
-async def query_route(verb: RouteVerbs, request: Request,
-                      token: str = Depends(get_api_key),
-                      format: str = None,
-                      hostname: List[str] = Query(None),
-                      start_time: str = "", end_time: str = "",
-                      view: ViewValues = "latest",
-                      namespace: List[str] = Query(None),
-                      columns: List[str] = Query(default=["default"]),
-                      prefix: List[str] = Query(None),
-                      vrf: List[str] = Query(None),
-                      protocol: List[str] = Query(None),
-                      prefixlen: str = None, ipvers: str = None,
-                      add_filter: str = None, address: str = None,
-                      query_str: str = None, what: str = None,
-                      count: str = None, reverse: str = None,
-                      ):
+def query_route(verb: RouteVerbs, request: Request,
+                token: str = Depends(get_api_key),
+                format: str = None,
+                hostname: List[str] = Query(None),
+                start_time: str = "", end_time: str = "",
+                view: ViewValues = "latest",
+                namespace: List[str] = Query(None),
+                columns: List[str] = Query(default=["default"]),
+                prefix: List[str] = Query(None),
+                vrf: List[str] = Query(None),
+                protocol: List[str] = Query(None),
+                prefixlen: str = None, ipvers: str = None,
+                add_filter: str = None, address: str = None,
+                query_str: str = None, what: str = None,
+                count: str = None, reverse: str = None,
+                ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @ app.get("/api/v2/sqPoller/{verb}")
-async def query_sqPoller(verb: CommonVerbs, request: Request,
-                         token: str = Depends(get_api_key),
-                         format: str = None,
-                         hostname: List[str] = Query(None),
-                         start_time: str = "", end_time: str = "",
-                         view: ViewValues = "latest",
-                         namespace: List[str] = Query(None),
-                         columns: List[str] = Query(default=["default"]),
-                         service: str = None,
-                         status: SqPollerStatus = Query(None),
-                         query_str: str = None, what: str = None,
-                         pollExcdPeriodCount: str = None,
-                         count: str = None, reverse: str = None,
-                         ):
+def query_sqPoller(verb: CommonVerbs, request: Request,
+                   token: str = Depends(get_api_key),
+                   format: str = None,
+                   hostname: List[str] = Query(None),
+                   start_time: str = "", end_time: str = "",
+                   view: ViewValues = "latest",
+                   namespace: List[str] = Query(None),
+                   columns: List[str] = Query(default=["default"]),
+                   service: str = None,
+                   status: SqPollerStatus = Query(None),
+                   query_str: str = None, what: str = None,
+                   pollExcdPeriodCount: str = None,
+                   count: str = None, reverse: str = None,
+                   ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @ app.get("/api/v2/topology/{verb}")
-async def query_topology(verb: CommonVerbs, request: Request,
-                         token: str = Depends(get_api_key),
-                         format: str = None,
-                         hostname: List[str] = Query(None),
-                         start_time: str = "", end_time: str = "",
-                         view: ViewValues = "latest",
-                         namespace: List[str] = Query(None),
-                         columns: List[str] = Query(default=["default"]),
-                         polled: str = None,
-                         via: List[str] = Query(None),
-                         ifname: List[str] = Query(None),
-                         peerHostname: List[str] = Query(None),
-                         asn: List[str] = Query(None),
-                         area: List[str] = Query(None),
-                         vrf: List[str] = Query(None),
-                         afiSafi: str = Query(None),
-                         query_str: str = None, what: str = None,
-                         count: str = None, reverse: str = None,
-                         ):
+def query_topology(verb: CommonVerbs, request: Request,
+                   token: str = Depends(get_api_key),
+                   format: str = None,
+                   hostname: List[str] = Query(None),
+                   start_time: str = "", end_time: str = "",
+                   view: ViewValues = "latest",
+                   namespace: List[str] = Query(None),
+                   columns: List[str] = Query(default=["default"]),
+                   polled: str = None,
+                   via: List[str] = Query(None),
+                   ifname: List[str] = Query(None),
+                   peerHostname: List[str] = Query(None),
+                   asn: List[str] = Query(None),
+                   area: List[str] = Query(None),
+                   vrf: List[str] = Query(None),
+                   afiSafi: str = Query(None),
+                   query_str: str = None, what: str = None,
+                   count: str = None, reverse: str = None,
+                   ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 
 
 @ app.get("/api/v2/table/describe")
-async def query_table_describe(
+def query_table_describe(
         request: Request,
         token: str = Depends(get_api_key),
         format: str = None,
@@ -780,7 +780,7 @@ async def query_table_describe(
 
 
 @app.get("/api/v2/table/{verb}")
-async def query_table(
+def query_table(
         verb: CommonVerbs, request: Request,
         token: str = Depends(get_api_key),
         format: str = None,
@@ -797,20 +797,20 @@ async def query_table(
 
 
 @ app.get("/api/v2/vlan/{verb}")
-async def query_vlan(verb: CommonVerbs, request: Request,
-                     token: str = Depends(get_api_key),
-                     format: str = None,
-                     hostname: List[str] = Query(None),
-                     start_time: str = "", end_time: str = "",
-                     view: ViewValues = "latest",
-                     namespace: List[str] = Query(None),
-                     columns: List[str] = Query(default=["default"]),
-                     vlan: List[str] = Query(None),
-                     state: str = None,
-                     vlanName: List[str] = Query(None),
-                     query_str: str = None, what: str = None,
-                     count: str = None, reverse: str = None,
-                     ):
+def query_vlan(verb: CommonVerbs, request: Request,
+               token: str = Depends(get_api_key),
+               format: str = None,
+               hostname: List[str] = Query(None),
+               start_time: str = "", end_time: str = "",
+               view: ViewValues = "latest",
+               namespace: List[str] = Query(None),
+               columns: List[str] = Query(default=["default"]),
+               vlan: List[str] = Query(None),
+               state: str = None,
+               vlanName: List[str] = Query(None),
+               query_str: str = None, what: str = None,
+               count: str = None, reverse: str = None,
+               ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
 

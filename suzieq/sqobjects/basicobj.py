@@ -1,4 +1,6 @@
 from typing import List
+import re
+
 import pandas as pd
 from pandas.core.dtypes.dtypes import DatetimeTZDtype
 
@@ -117,10 +119,12 @@ class SqObject(SqPlugin):
     def _check_input_for_valid_vals(self, good_arg_val_list, **kwargs):
         '''Check if the input is valid for the arg, if possible'''
 
-        if not good_arg_val_list:
-            return
-
+        fields = self.schema.fields
         for arg, val in kwargs.items():
+
+            if arg not in fields:
+                continue
+
             if arg not in good_arg_val_list:
                 continue
 
@@ -129,15 +133,30 @@ class SqObject(SqPlugin):
             else:
                 chkval = val
             for v in chkval:
-                if v not in good_arg_val_list[arg]:
+                if v not in good_arg_val_list.get(arg, []):
                     raise ValueError(
                         f"invalid value {val} for argument {arg}")
 
     def validate_get_input(self, **kwargs):
         '''Validate the values of the get function'''
+        fields = self.schema.fields
+        for arg, val in kwargs.items():
+            if arg not in fields or not val or not isinstance(val, list):
+                # only if the value can be a split does a "> 100" become
+                # a two element list instead of being a single element.
+                # This is what the code below is fixing
+                continue
+            if (self.schema.field(arg).get('type', '') in ['int', 'long',
+                                                           'float']):
+                user_val = ' '.join(val)
+                if user_val:
+                    vals = re.split(r'(?<!<|>|=|!)\s+', user_val)
+                    kwargs[arg] = vals
+
         self._check_input_for_valid_args(
             self._valid_get_args + ['columns'], **kwargs)
         self._check_input_for_valid_vals(self._valid_arg_vals, **kwargs)
+        return kwargs
 
     def validate_assert_input(self, **kwargs):
         '''Validate the values of the assert function'''
@@ -182,7 +201,7 @@ class SqObject(SqPlugin):
 
         # This raises exceptions if it fails
         try:
-            self.validate_get_input(**kwargs)
+            kwargs = self.validate_get_input(**kwargs)
         except (AttributeError, ValueError) as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df
@@ -271,7 +290,7 @@ class SqObject(SqPlugin):
         #     self._valid_get_args += ['what', 'n', 'reverse']
         # This raises exceptions if it fails
         try:
-            self.validate_get_input(**kwargs)
+            kwargs = self.validate_get_input(**kwargs)
         except (ValueError, AttributeError) as error:
             df = pd.DataFrame({'error': [f'{error}']})
             return df

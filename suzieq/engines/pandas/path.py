@@ -119,10 +119,10 @@ class PathObj(SqPandasEngine):
 
         if ':' in source:
             self._src_df = self._if_df[self._if_df.ip6AddressList.astype(str)
-                                       .str.contains(source + "/")]
+                                       .str.startswith(source + "/")]
         else:
             self._src_df = self._if_df[self._if_df.ipAddressList.astype(str)
-                                       .str.contains(source + "/")]
+                                       .str.startswith(source + "/")]
 
         if self._src_df.empty:
             # TODO: No host with this src addr. Is addr a local ARP entry?
@@ -147,10 +147,10 @@ class PathObj(SqPandasEngine):
 
         if ':' in dest:
             self._dest_df = self._if_df[self._if_df.ip6AddressList.astype(str)
-                                        .str.contains(dest + "/")]
+                                        .str.startswith(dest + "/")]
         else:
             self._dest_df = self._if_df[self._if_df.ipAddressList.astype(str)
-                                        .str.contains(dest + "/")]
+                                        .str.startswith(dest + "/")]
 
         if self._dest_df.empty:
             # Check if addr is in any switch's local ARP
@@ -752,6 +752,7 @@ class PathObj(SqPandasEngine):
         src = kwargs.get("src", None)
         dest = kwargs.get("dest", None)
         dvrf = kwargs.get("vrf", "")
+        query_str = kwargs.pop('query_str', "")
 
         if not src or not dest:
             raise AttributeError("Must specify trace source and dest")
@@ -775,7 +776,7 @@ class PathObj(SqPandasEngine):
                 "outMtu": item["mtu"],
                 "overlay": '',
                 "protocol": '',
-                "error": [],
+                "hopError": [],
                 "lookup": dest,
                 "macaddr": None,
                 "vrf": dvrf or item['master'],  # pick user pref if given
@@ -806,7 +807,7 @@ class PathObj(SqPandasEngine):
                 "mtu": item["mtu"],
                 "outMtu": item["mtu"],
                 "macaddr": None,
-                "error": error,
+                "hopError": error,
                 "overlay": '',
                 "is_l2": False,
                 "overlay_nhip": '',
@@ -853,7 +854,7 @@ class PathObj(SqPandasEngine):
                         rev_df = self._rpf_df.query(
                             f'hostname == "{device}" and vrf == "{vrfchk}"')
                         if rev_df.empty:
-                            dest_device_iifs[destdevkey]['error'] \
+                            dest_device_iifs[destdevkey]['hopError'] \
                                 .append('no reverse path')
                         revdf_check = False
                     pdev1 = devkey.split('/')[1]
@@ -870,8 +871,10 @@ class PathObj(SqPandasEngine):
                         if dst_mtu > MAX_MTU:
                             dst_mtu = copy_dest.get('mtu', 0)
                         if dst_mtu != src_mtu:
-                            if 'Dst MTU != Src MTU' not in copy_dest['error']:
-                                copy_dest['error'].append('Dst MTU != Src MTU')
+                            if ('Dst MTU != Src MTU' not in
+                                    copy_dest['hopError']):
+                                copy_dest['hopError']\
+                                    .append('Dst MTU != Src MTU')
                         # This is weird because we have no room to store the
                         # prev hop's outgoing IIF MTU on the last hop
                         copy_dest['outMtu'] = \
@@ -897,8 +900,10 @@ class PathObj(SqPandasEngine):
                         if dst_mtu > MAX_MTU:
                             dst_mtu = copy_dest.get('mtu', 0)
                         if dst_mtu != src_mtu:
-                            if 'Dst MTU != Src MTU' not in copy_dest['error']:
-                                copy_dest['error'].append('Dst MTU != Src MTU')
+                            if ('Dst MTU != Src MTU' not in
+                                    copy_dest['hopError']):
+                                copy_dest['hopError']\
+                                    .append('Dst MTU != Src MTU')
                         # This is weird because we have no room to store the
                         # prev hop's outgoing IIF MTU on the last hop
                         copy_dest['outMtu'] = \
@@ -925,10 +930,10 @@ class PathObj(SqPandasEngine):
                     if not nhdf.empty:
                         if srcvers == 4:
                             nhdf = nhdf.query(
-                                f'ipAddressList.str.contains("{ndst}")')
+                                f'ipAddressList.str.startswith("{ndst}/")')
                         else:
                             nhdf = nhdf.query(
-                                f'ip6AddressList.str.contains("{ndst}")')
+                                f'ip6AddressList.str.startswith("{ndst}/")')
                     if not nhdf.empty:
                         ifmac = nhdf.macaddr.unique().tolist()
                         if (not macaddr) or (macaddr in ifmac):
@@ -967,10 +972,10 @@ class PathObj(SqPandasEngine):
                     if skey in l2_visited_devices:
                         # This is a loop
                         if ioverlay:
-                            devices_iifs[devkey]['error'] \
+                            devices_iifs[devkey]['hopError'] \
                                 .append("Loop in underlay")
                         else:
-                            devices_iifs[devkey]['error'] \
+                            devices_iifs[devkey]['hopError'] \
                                 .append("L2 Loop detected")
                         for x in paths:
                             z = x + [OrderedDict({devkey:
@@ -982,7 +987,7 @@ class PathObj(SqPandasEngine):
                     l2_visited_devices.add(skey)
                 else:
                     if skey in l3_visited_devices:
-                        devices_iifs[devkey]['error'].append("L3 loop")
+                        devices_iifs[devkey]['hopError'].append("L3 loop")
                         for x in paths:
                             z = x + [OrderedDict({devkey:
                                                   devices_iifs[devkey]})]
@@ -1007,7 +1012,7 @@ class PathObj(SqPandasEngine):
                         rev_df = self._rpf_df.query(
                             f'hostname == "{device}" and vrf == "{ivrf}"')
                         if rev_df.empty and not on_src_node:
-                            devices_iifs[devkey]['error'] \
+                            devices_iifs[devkey]['hopError'] \
                                 .append('no reverse path')
                     else:
                         devices_iifs[devkey]['lookup'] = ''
@@ -1026,8 +1031,9 @@ class PathObj(SqPandasEngine):
                         devices_iifs[devkey]['protocol'] = protocol
                     if not rt_ts:
                         devices_iifs[devkey]['timestamp'] = timestamp
-                    if errmsg and errmsg not in devices_iifs[devkey]['error']:
-                        devices_iifs[devkey]['error'].append(errmsg)
+                    if (errmsg and
+                            errmsg not in devices_iifs[devkey]['hopError']):
+                        devices_iifs[devkey]['hopError'].append(errmsg)
 
                     if iface is not None:
                         if iface.startswith('vPC Peer'):
@@ -1080,7 +1086,7 @@ class PathObj(SqPandasEngine):
                             "is_l2": is_l2,
                             "nhip": nhip,
                             "oif": iface,
-                            "error": error,
+                            "hopError": error,
                             "overlay_nhip": overlay_nhip,
                             'l3_visited_devices': l3_visited_devices.copy(),
                             'l2_visited_devices': l2_visited_devices.copy()
@@ -1115,7 +1121,9 @@ class PathObj(SqPandasEngine):
             # This occurs when a path traversal terminates due to an error such
             # as loop detected
             final_paths = paths
-        return self._path_cons_result(final_paths)
+        return self._handle_user_query_str(
+            self._path_cons_result(final_paths), query_str)\
+            .reset_index(drop=True)
 
     def _path_cons_result(self, paths):
         df_plist = []
@@ -1156,7 +1164,7 @@ class PathObj(SqPandasEngine):
                     "vtepLookup": "",
                     "macLookup": "",
                     "nexthopIp": ele[item].get('nhip', ''),
-                    "error": ', '.join(ele[item].get('error', [])),
+                    "hopError": ', '.join(ele[item].get('hopError', [])),
                     "timestamp": ele[item].get("timestamp", np.nan)
                 }
                 df_plist.append(hop)
@@ -1196,8 +1204,6 @@ class PathObj(SqPandasEngine):
             prev_hop['nexthopIp'] = ''
             prev_hop['vtepLookup'] = ''
         paths_df = pd.DataFrame(df_plist)
-        if not paths_df.empty and not any(paths_df.error):
-            paths_df.drop(columns=['error'], inplace=True)
         return paths_df.drop_duplicates()
 
     def summarize(self, **kwargs):

@@ -45,9 +45,12 @@ class MacsService(Service):
                     entry['mackey'] = entry['oif']
             else:
                 if entry.get('vlan', 0):
-                    entry['mackey'] = entry['vlan']
+                    if entry['flags'] in ['static', 'permanent', 'router']:
+                        entry['mackey'] = f'{entry["vlan"]}-{entry["oif"]}'
+                    else:
+                        entry['mackey'] = entry['vlan']
                 else:
-                    if entry['flags'] in ['static', 'permanent']:
+                    if entry['flags'] in ['static', 'permanent', 'router']:
                         entry['mackey'] = f'{entry["oif"]}'
                     else:
                         entry['mackey'] = '0'

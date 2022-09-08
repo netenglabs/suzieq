@@ -1,5 +1,7 @@
+from typing import List
 from ipaddress import ip_network
 import re
+import operator
 
 import numpy as np
 import pandas as pd
@@ -71,14 +73,10 @@ class InterfacesObj(SqPandasEngine):
             query_str = build_query_str([], self.schema, state=state,
                                         portmode=portmode)
 
-            df = df.query(query_str)
+            df = df.query(query_str).reset_index(drop=True)
 
         if vlan:
-            # vlan needs to be looked at even in vlanList
-            vlan = [int(x) for x in vlan]
-            query_str = f' (vlan.isin({vlan}) or ' \
-                f'@self._is_any_in_list(vlanList, {vlan}))'
-            df = df.query(query_str)
+            df = self._check_vlan_match(vlan, df).reset_index(drop=True)
 
         if user_query:
             df = self._handle_user_query_str(df, user_query)
@@ -88,6 +86,69 @@ class InterfacesObj(SqPandasEngine):
                      .reset_index(drop=True)[fields]
         else:
             return df.reset_index(drop=True)[fields]
+
+    def _check_vlan_match(self, vlan_list: List[str],
+                          df: pd.DataFrame) -> pd.DataFrame:
+        '''Return a dataframe with rows in VLANs requested
+
+        VLAN is treated specially because its the only field that is a list
+        of integers, and can be filtered on multiple fields: vlan and vlanList
+        A user filter on VLAN is a list that can contain numeric comparisons
+        as well as simple integers.
+
+        Its not made into a generic filter match because this match on VLAN
+        applies only to interface table.
+        '''
+
+        # If there are any VLANs with ! mixed without !, remove the
+        # ! ones. vlanList is an OR list, not an AND list, except
+        # if all are !
+        if any(x.startswith('!') for x in vlan_list):
+            cond = 'and'
+        else:
+            cond = 'or'
+
+        resdf_list = []
+        if (any(x.startswith('>') for x in vlan_list) and
+                any(x.startswith('<') for x in vlan_list)):
+            # if the user specifies both >/>= and </<=, then we
+            # treat this as an and
+            cond = 'and'
+
+        opdict = {'<': operator.lt, '>': operator.gt,
+                  '<=': operator.le, '>=': operator.ge,
+                  '!': operator.ne, '==': operator.eq}
+
+        for vlan in vlan_list:
+            if vlan.startswith(('<=', '>=')):
+                op = vlan[0:2]
+                vlan = vlan[2:].strip()
+            elif vlan.startswith(('<', '>', '!')):
+                op = vlan[0]
+                vlan = vlan[1:].strip()
+            else:
+                op = '=='
+
+            vlan = int(vlan)
+            if op == "!":
+                tmpdf = df[df.apply(
+                    lambda row, vlan: all(opdict[op](v, vlan)
+                                          for v in row.vlanList) and
+                    opdict[op](row.vlan, vlan), args=(vlan,), axis=1)]
+            else:
+                tmpdf = df[df.apply(
+                    lambda x, vlan: any(opdict[op](y, vlan)
+                                        for y in x.vlanList) or
+                    opdict[op](x.vlan, vlan), args=(vlan,), axis=1)]
+            if cond == "or":
+                resdf_list.append(tmpdf.reset_index(drop=True))
+            else:
+                df = tmpdf
+
+        if resdf_list:
+            df = pd.concat(resdf_list)
+
+        return df.query('vlanList.str.len() > 0 or vlan != 0')
 
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""

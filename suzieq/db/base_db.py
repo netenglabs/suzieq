@@ -48,8 +48,7 @@ class SqDB(SqPlugin, ABC):
 
     @abstractmethod
     def write(self, table_name: str, data_format: str,
-              data, coalesced: bool, schema: pa.lib.Schema,
-              filename_cb, **kwargs) -> int:
+              data, coalesced: bool, schema: pa.lib.Schema, **kwargs) -> int:
         """Write the data supplied as a dataframe in the appropriate format
 
         :param cfg: Suzieq configuration

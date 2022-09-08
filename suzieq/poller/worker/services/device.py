@@ -147,7 +147,8 @@ class DeviceService(Service):
         for entry in processed_data:
             new_entries.update(entry)
 
-        processed_data = [new_entries]
+        if new_entries:
+            processed_data = [new_entries]
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_sonic_data(self, processed_data, raw_data):

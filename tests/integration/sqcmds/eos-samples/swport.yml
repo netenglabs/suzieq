@@ -1067,3 +1067,43 @@ tests:
   data-directory: tests/data/parquet/
   marks: interface unique eos switchport
   output: '[]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=eos
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show eos switchport
+  output: '[]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=eos
+    --columns='hostname ifname state adminState type vlan vlanList' --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show eos switchport
+  output: '[]'
+- command: interface show --columns=vlan --vlan='!10 999' --state=up --namespace=eos
+    --columns='hostname ifname state adminState type vlanList' --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show eos switchport
+  output: '[]'
+- command: interface show --columns=vlan --vlan='!10 !20' --state=up --namespace=eos
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show eos switchport
+  output: '[{"vlan": 3}, {"vlan": 4}, {"vlan": 2}, {"vlan": 3}, {"vlan": 4}, {"vlan":
+    2}, {"vlan": 30}, {"vlan": 4094}, {"vlan": 1006}, {"vlan": 30}, {"vlan": 30},
+    {"vlan": 1006}, {"vlan": 4094}, {"vlan": 30}, {"vlan": 4094}, {"vlan": 0}, {"vlan":
+    0}, {"vlan": 4094}, {"vlan": 4094}, {"vlan": 1006}, {"vlan": 30}, {"vlan": 30},
+    {"vlan": 30}, {"vlan": 4094}, {"vlan": 30}, {"vlan": 1006}]'
+- command: interface show --columns=vlan --vlan='20' --namespace=eos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show eos switchport
+  output: '[{"vlan": 0}, {"vlan": 20}, {"vlan": 1}, {"vlan": 20}, {"vlan": 0}, {"vlan":
+    20}, {"vlan": 1}, {"vlan": 20}]'
+- command: interface show --columns=vlan --vlan='10 20' --namespace=eos --format=json
+  data-directory: tests/data/parquet/
+  marks: interface show eos switchport
+  output: '[{"vlan": 10}, {"vlan": 0}, {"vlan": 10}, {"vlan": 1}, {"vlan": 10}, {"vlan":
+    10}, {"vlan": 0}, {"vlan": 1}, {"vlan": 0}, {"vlan": 20}, {"vlan": 1}, {"vlan":
+    20}, {"vlan": 0}, {"vlan": 20}, {"vlan": 1}, {"vlan": 20}]'
+- command: interface unique --columns=vlanList --vlan='!10 999' --state=up --namespace=eos
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: interface unique eos switchport
+  output: '[]'

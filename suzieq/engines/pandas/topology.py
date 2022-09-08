@@ -23,6 +23,13 @@ from suzieq.shared.utils import build_query_str
 class TopologyObj(SqPandasEngine):
     '''Backend class to operate on virtual table, topology, with pandas'''
 
+    def __init__(self, baseobj):
+        super().__init__(baseobj)
+        self.lsdb = pd.DataFrame()
+        self._a_df = pd.DataFrame()
+        self._ip_table = pd.DataFrame()
+        self.nses = []
+
     @staticmethod
     def table_name():
         '''Table name'''
@@ -86,9 +93,6 @@ class TopologyObj(SqPandasEngine):
         self._init_dfs(self._namespaces)
         if self._if_df.empty:
             return pd.DataFrame({'error': ['No interfaces data found']})
-        self.lsdb = pd.DataFrame()
-        self._a_df = pd.DataFrame()
-        self._ip_table = pd.DataFrame()
 
         fields = self.schema.get_display_fields(columns)
 
