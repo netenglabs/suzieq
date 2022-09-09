@@ -622,21 +622,13 @@ class SqPandasEngine(SqEngineObj):
         if not field_name:
             field_name = field
 
-        count_per_ns = self.nsgrp[field].nunique()
-
         for n in self.ns.keys():
-            if 3 >= count_per_ns[n] > 0:
-                # can't do a value_counts on all groups, incase one of the
-                # groups other groups doesn't have data
-                unique_for_ns = self.nsgrp.get_group(n)[field].value_counts()
-                value = unique_for_ns.to_dict()
-                # Filter numm entries if category because of how pandas
-                # behaves here
-                if self.nsgrp[field].dtype[n].name == 'category':
-                    value = dict(filter(lambda x: x[1] != 0, value.items()))
-
-            else:
-                value = count_per_ns[n]
+            unique_for_ns = self.nsgrp.get_group(n)[field].value_counts()
+            value = unique_for_ns.to_dict()
+            # Filter numm entries if category because of how pandas
+            # behaves here
+            if self.nsgrp[field].dtype[n].name == 'category':
+                value = dict(filter(lambda x: x[1] != 0, value.items()))
 
             self.ns[n].update({field_name: value})
 
