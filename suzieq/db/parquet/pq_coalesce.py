@@ -8,7 +8,7 @@ from itertools import repeat
 from typing import List
 
 import pandas as pd
-import pyarrow.dataset as ds  # put this later due to some numpy dependency
+import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 from suzieq.db.parquet.migratedb import generic_migration, get_migrate_fn
 from suzieq.shared.schema import SchemaForTable
@@ -97,7 +97,7 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
     if filelist:
         files_pervers = defaultdict(list)
         for file in filelist:
-            sqversmatch = re.search(r'sqvers=([0-9]*.[0-9]*)', file)
+            sqversmatch = re.search(r'sqvers=([0-9]+\.[0-9]+)', file)
             if sqversmatch:
                 files_pervers[sqversmatch.group(0)].append(file)
 
