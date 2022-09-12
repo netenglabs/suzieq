@@ -1,4 +1,4 @@
-from typing import List
+from typing import Callable, List, Tuple, Union
 from ipaddress import ip_network
 import re
 import operator
@@ -87,7 +87,7 @@ class InterfacesObj(SqPandasEngine):
         else:
             return df.reset_index(drop=True)[fields]
 
-    def _check_vlan_match(self, vlan_list: List[str],
+    def _check_vlan_match(self, vlan_filters: List[str],
                           df: pd.DataFrame) -> pd.DataFrame:
         '''Return a dataframe with rows in VLANs requested
 
@@ -100,55 +100,85 @@ class InterfacesObj(SqPandasEngine):
         applies only to interface table.
         '''
 
-        # If there are any VLANs with ! mixed without !, remove the
-        # ! ones. vlanList is an OR list, not an AND list, except
-        # if all are !
-        if any(x.startswith('!') for x in vlan_list):
-            cond = 'and'
-        else:
-            cond = 'or'
-
-        resdf_list = []
-        if (any(x.startswith('>') for x in vlan_list) and
-                any(x.startswith('<') for x in vlan_list)):
-            # if the user specifies both >/>= and </<=, then we
-            # treat this as an and
-            cond = 'and'
-
         opdict = {'<': operator.lt, '>': operator.gt,
                   '<=': operator.le, '>=': operator.ge,
                   '!': operator.ne, '==': operator.eq}
 
-        for vlan in vlan_list:
-            if vlan.startswith(('<=', '>=')):
-                op = vlan[0:2]
-                vlan = vlan[2:].strip()
-            elif vlan.startswith(('<', '>', '!')):
-                op = vlan[0]
-                vlan = vlan[1:].strip()
-            else:
-                op = '=='
+        def _check_cond(vlist: pd.Series, op: Callable, *args):
+            fn = opdict[op]
+            return vlist.apply(lambda ls: any(fn(vlan, *args) for vlan in ls))
 
-            vlan = int(vlan)
-            if op == "!":
-                tmpdf = df[df.apply(
-                    lambda row, vlan: all(opdict[op](v, vlan)
-                                          for v in row.vlanList) and
-                    opdict[op](row.vlan, vlan), args=(vlan,), axis=1)]
-            else:
-                tmpdf = df[df.apply(
-                    lambda x, vlan: any(opdict[op](y, vlan)
-                                        for y in x.vlanList) or
-                    opdict[op](x.vlan, vlan), args=(vlan,), axis=1)]
-            if cond == "or":
-                resdf_list.append(tmpdf.reset_index(drop=True))
-            else:
-                df = tmpdf
+        def _interval(ival, start_val, start_op, end_val, end_op):
+            start_op = opdict[start_op]
+            end_op = opdict[end_op]
+            return start_op(ival, start_val) and end_op(ival, end_val)
 
-        if resdf_list:
-            df = pd.concat(resdf_list)
+        def extract_op(expression: Union[str, int]) -> Tuple[str, int]:
+            op = '=='
+            val = expression
+            if isinstance(expression, str):
+                if expression.startswith(('<=', '>=')):
+                    val = expression[2:]
+                    op = expression[:2]
+                elif expression.startswith(('<', '>')):
+                    val = expression[1:]
+                    op = expression[:1]
+                elif expression.startswith('!'):
+                    val = expression[1:]
+                    op = expression[:1]
+            return op, val
 
-        return df.query('vlanList.str.len() > 0 or vlan != 0')
+        if not vlan_filters:
+            return df
+
+        opdict.update({'><': _interval})
+        not_filters = []
+        match_filters = []
+
+        i = 0
+        while i < len(vlan_filters):
+            op, fval = extract_op(vlan_filters[i])
+            if op.startswith('!'):
+                not_filters.append(
+                    f'(vlan != {fval} '
+                    f'and ~@_check_cond(vlanList, "==", {fval}))')
+            elif (op.startswith('>')
+                  and i+1 < len(vlan_filters)
+                  and isinstance(vlan_filters[i+1], str)
+                  and vlan_filters[i+1].startswith('<')):
+                # In this case we are checking if the user asked for an
+                # an interval. So if we find a sequence of > and <,
+                # we will combine the rules
+                next_op, next_val = extract_op(vlan_filters[i+1])
+                start_rule = f'vlan {op} {fval}'
+                end_rule = f'vlan {next_op} {next_val}'
+                listcheck = (f'@_check_cond(vlanList, "><", {fval}, "{op}", '
+                             f'{next_val}, "{next_op}")')
+                match_filters.append(
+                    f'(({start_rule} and {end_rule}) or {listcheck})')
+                # Increment one more time, in order to skip the
+                # rule we already considered
+                i += 1
+            else:
+                match_filters.append(
+                    f'(vlan {op} {fval} '
+                    f'or @_check_cond(vlanList, "{op}", {fval}))')
+            i += 1
+
+        not_str = ' and '.join(not_filters)
+        match_str = ' or '.join(match_filters)
+        filters = None
+        if not_str and match_str:
+            filters = f'({match_str}) and ({not_str})'
+        elif not_str:
+            filters = not_str
+        elif match_str:
+            filters = match_str
+
+        if filters:
+            filters += ' and (vlanList.str.len() > 0 or vlan != 0)'
+            df = df.query(filters)
+        return df
 
     def aver(self, what="", **kwargs) -> pd.DataFrame:
         """Assert that interfaces are in good state"""

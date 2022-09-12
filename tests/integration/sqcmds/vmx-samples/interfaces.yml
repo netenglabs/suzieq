@@ -1276,33 +1276,21 @@ tests:
 - command: interface show --vlan='> 10 < 100' --namespace=vmx --format=json
   data-directory: tests/data/parquet/
   marks: interface show vmx junos
-  output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae0",
+  output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae1.20",
+    "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan":
+    20, "master": "", "ipAddressList": ["10.0.20.3/29"], "ip6AddressList": [], "timestamp":
+    1631009088901}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/0",
+    "state": "up", "adminState": "up", "type": "flexible-ethernet", "mtu": 1518, "vlan":
+    0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1631009089182}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae1",
     "state": "up", "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master":
-    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009088901},
-    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae1.20", "state":
-    "up", "adminState": "up", "type": "subinterface", "mtu": 65536, "vlan": 20, "master":
-    "", "ipAddressList": ["10.0.20.3/29"], "ip6AddressList": [], "timestamp": 1631009088901},
-    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/0", "state":
-    "up", "adminState": "up", "type": "flexible-ethernet", "mtu": 1518, "vlan": 0,
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
-    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae1", "state": "up",
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae2", "state": "up",
     "adminState": "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace":
-    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ae2", "state": "up", "adminState":
-    "up", "type": "bond", "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList":
-    [], "ip6AddressList": [], "timestamp": 1631009089182}, {"namespace": "vmx", "hostname":
-    "CRP-ACC-SW01", "ifname": "ae1", "state": "up", "adminState": "up", "type": "bond",
-    "mtu": 1518, "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1631009089423}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "ae0", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518,
-    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1631009089423}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
-    "ae1.20", "state": "up", "adminState": "up", "type": "subinterface", "mtu": 65536,
-    "vlan": 20, "master": "", "ipAddressList": ["10.0.20.2/29"], "ip6AddressList":
-    [], "timestamp": 1631009089864}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ae0", "state": "up", "adminState": "up", "type": "bond", "mtu": 1518,
-    "vlan": 0, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
-    1631009089864}]'
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ae1.20", "state": "up", "adminState":
+    "up", "type": "subinterface", "mtu": 65536, "vlan": 20, "master": "", "ipAddressList":
+    ["10.0.20.2/29"], "ip6AddressList": [], "timestamp": 1631009089864}]'
 - command: interface show --mtu='>= 1514' --namespace=vmx --format=json
   data-directory: tests/data/parquet/
   marks: interface show vmx junos
