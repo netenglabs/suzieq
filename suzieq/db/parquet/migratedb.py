@@ -27,8 +27,13 @@ def get_migrate_fn(table_name: str, from_vers: str,
 
 def generic_migration(df: pd.DataFrame, table: str,
                       schema: Schema) -> pd.DataFrame:
-    """When we don't need a specific migration function, it is possible to
-    use the generic one.
+    """The generic migration fuction tries to perform the conversion from an
+    old schema to the new one:
+      - Creating the missing fields and writing a default value
+      - Checking if there are type mismatches and try a simple conversion
+      - Removing all the fields which are not in the schema anymore
+    This function allows to perform automatic conversion whenever possible,
+    to perform more complex actions we need a specific conversion function.
 
     Args:
         df (pd.DataFrame): DataFrame to migrate
