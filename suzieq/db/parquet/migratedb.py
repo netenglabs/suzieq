@@ -53,21 +53,27 @@ def generic_migration(df: pd.DataFrame, table: str,
         df[column.name] = default_val
 
     # convert all dtypes to whatever is desired
-    for column in df.columns:
-        schema_type = arrow_schema.field(column).type.to_pandas_dtype()
-        if df.dtypes[column] != schema_type:
-            # when conversion can't be automatically performed we need to write
-            # a specific migration fn. Reraise the exception to detect this
-            # error
-            try:
-                df[column] = df[column].astype(schema_type)
-            except ValueError as e:
-                raise ValueError(
-                    f'Unable to perform auto conversion of {table} '
-                    f'to {schema.version}, due to: {e}')
+    columns_in_schema = arrow_schema.names
+    for column in columns_in_schema:
+        # If the column was missing, there is no need to try conversion, since
+        # there is no previous type
+        if column not in missing_fields:
+            schema_type = arrow_schema.field(column).type.to_pandas_dtype()
+            if df.dtypes[column] != schema_type:
+                # when conversion can't be automatically performed we need to
+                # write a specific migration fn. Reraise the exception to
+                # detect this error
+                try:
+                    df[column] = df[column].astype(schema_type)
+                except ValueError as e:
+                    raise ValueError(
+                        f'Unable to perform auto conversion of {table} '
+                        f'to {schema.version}, due to: {e}')
     df['sqvers'] = schema.version
 
-    return df
+    # We would like to return only what is in the current schema, dropping all
+    # the old columns
+    return df[columns_in_schema]
 
 
 def _convert_bgp_vers_1_to_2(df: pd.DataFrame, **_) -> pd.DataFrame:
