@@ -25,7 +25,7 @@ def get_migrate_fn(table_name: str, from_vers: str,
     return conversion_dict.get(f'{table_name}-{from_vers}-{to_vers}', None)
 
 
-def generic_migration(df: pd.DataFrame, _table: str,
+def generic_migration(df: pd.DataFrame, table: str,
                       schema: Schema) -> pd.DataFrame:
     """When we don't need a specific migration function, it is possible to
     use the generic one.
@@ -56,12 +56,15 @@ def generic_migration(df: pd.DataFrame, _table: str,
     for column in df.columns:
         schema_type = arrow_schema.field(column).type.to_pandas_dtype()
         if df.dtypes[column] != schema_type:
-            # If we are not able to perform the conversion, ignore and go on.
-            # We should not have this case, as when conversion can't be
-            # automatically performed we need to write a specific
-            # migration fn.
-            df[column] = df[column].astype(schema_type, errors='ignore')
-
+            # when conversion can't be automatically performed we need to write
+            # a specific migration fn. Reraise the exception to detect this
+            # error
+            try:
+                df[column] = df[column].astype(schema_type)
+            except ValueError as e:
+                raise ValueError(
+                    f'Unable to perform auto conversion of {table} '
+                    f'to {schema.version}, due to: {e}')
     df['sqvers'] = schema.version
 
     return df
