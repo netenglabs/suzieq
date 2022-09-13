@@ -1,6 +1,10 @@
 """List of Exceptions specific to Suzieq, across all the modules."""
 
 
+class SqCoalescerCriticalError(Exception):
+    """Raised when a critical error occuur inside the coalescer"""
+
+
 class NoLLdpError(Exception):
     """No LLDP error."""
 
@@ -27,6 +31,10 @@ class UserQueryError(Exception):
 
 class UnknownDevtypeError(Exception):
     """Unknown dev type error."""
+
+
+class SqVersConversionError(SqCoalescerCriticalError):
+    """Raised if there is an error while converting the data"""
 
 
 class SqPollerConfError(Exception):

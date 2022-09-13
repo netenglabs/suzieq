@@ -2,6 +2,7 @@
 from typing import Callable, Union
 import pandas as pd
 from pandas.core.computation.ops import UndefinedVariableError
+from suzieq.shared.exceptions import SqVersConversionError
 from suzieq.shared.schema import Schema
 
 from suzieq.shared.utils import get_default_per_vals
@@ -70,10 +71,13 @@ def generic_migration(df: pd.DataFrame, table: str,
                 # detect this error
                 try:
                     df[column] = df[column].astype(schema_type)
-                except ValueError as e:
-                    raise ValueError(
-                        f'Unable to perform auto conversion of {table} '
-                        f'to {schema.version}, due to: {e}')
+                except ValueError:
+                    prev_vers = (df['sqvers'][0] if not df['sqvers'].empty
+                                 else None)
+                    raise SqVersConversionError(
+                        f'Unable to perform auto conversion of {column} '
+                        f'to {schema_type} while converting schema version of '
+                        f'{table} from {prev_vers} to {schema.version}.')
     df['sqvers'] = schema.version
 
     # We would like to return only what is in the current schema, dropping all

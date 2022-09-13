@@ -17,6 +17,7 @@ import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 
 from suzieq.db.base_db import SqDB, SqCoalesceStats
+from suzieq.shared.exceptions import SqCoalescerCriticalError
 from suzieq.shared.schema import Schema, SchemaForTable
 
 from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
@@ -250,8 +251,8 @@ class SqParquetDB(SqDB):
                        stuff
         :param ign_sqpoller: True if its OK to ignore the absence of sqpoller
                              to coalesce
-        :returns: coalesce statistics list, one per table
-        :rtype: SqCoalesceStats
+        :returns: exception if any, coalesce statistics list, one per table
+        :rtype: Tuple[SqCoalescerCriticalError, SqCoalesceStats]
         """
 
         infolder = self.cfg['data-directory']
@@ -333,6 +334,7 @@ class SqParquetDB(SqDB):
 
         # We've forced the sqPoller to be always the first table to coalesce
         stats = []
+        current_exception = None
         for entry in tables:
             table_outfolder = f'{outfolder}/{entry}'
             table_infolder = f'{infolder}//{entry}'
@@ -371,14 +373,19 @@ class SqParquetDB(SqDB):
                                              state.wrrec_count,
                                              int(datetime.now(tz=timezone.utc)
                                                  .timestamp() * 1000)))
-            except Exception:  # pylint: disable=broad-except
-                self.logger.exception(f'Unable to coalesce table {entry}')
+            except Exception as e:  # pylint: disable=broad-except
+
                 stats.append(SqCoalesceStats(entry, period, int(end-start),
                                              0, 0,
                                              int(datetime.now(tz=timezone.utc)
                                                  .timestamp() * 1000)))
+                # If we are dealing with a critical error, abort the coalescing
+                if isinstance(e, SqCoalescerCriticalError):
+                    current_exception = e
+                    break
+                self.logger.exception(f'Unable to coalesce table {entry}')
 
-        return stats
+        return current_exception, stats
 
     def migrate(self, table_name: str, schema: SchemaForTable) -> None:
         """Migrates the data for the table specified to latest version
