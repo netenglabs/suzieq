@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 from contextlib import suppress
 from shutil import rmtree
 from collections import defaultdict
+import operator
 
 import pandas as pd
 import numpy as np
@@ -21,7 +22,6 @@ from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
                                            coalesce_resource_table)
 from suzieq.db.parquet.migratedb import get_migrate_fn
-from suzieq.shared.utils import reduce_filter_list
 
 
 PARQUET_VERSION = '2.4'
@@ -639,7 +639,7 @@ class SqParquetDB(SqDB):
 
         return msch
 
-    def _get_filtered_fileset(self, dataset: ds, namespace: list) -> ds:
+    def _get_filtered_fileset(self, dataset: ds, namespaces: list) -> ds:
         """Filter the dataset based on the namespace
 
         We can use this method to filter out namespaces and hostnames based
@@ -651,34 +651,81 @@ class SqParquetDB(SqDB):
         Returns:
             ds: pyarrow dataset of only the files that match filter
         """
-        if not namespace:
+        def check_ns_conds(ns_to_test: str, filter_list: List[str],
+                           op: operator.or_) -> bool:
+            """Concat the expressions with the provided (AND or OR) operator
+            and return the result of the resulting expression tested on the
+            provided namespace.
+
+            Args:
+                ns_to_test (str): the namespace to test
+                filter_list (List[str]): the list of filter expressions to test
+                op (operator.or_): One of operator.and_ and operator._or
+
+            Returns:
+                bool: the result of the expression
+            """
+            # pylint: disable=comparison-with-callable
+            # We would like to init the result to False if we concat the
+            # expressions with OR, while with True if we use AND.
+            res = False
+            if operator.and_ == op:
+                res = True
+            for filter_val in filter_list:
+                res = op(res, bool(re.search(
+                    f'namespace={filter_val}', ns_to_test)))
+            return res
+
+        if not namespaces:
             return dataset
 
-        newns = reduce_filter_list(namespace)
-        ns_filelist = []
-        chklist = dataset.files
-        for ns in newns or []:
-            if ns.startswith('!'):
-                ns = ns[1:]
-                use_not = True
+        match_filters = []
+        not_filters = []
+
+        for ns_match in namespaces:
+            if ns_match.startswith('!~'):
+                not_filters.append(ns_match[2:])
+            elif ns_match.startswith('~'):
+                match_filters.append(ns_match[1:])
+            elif ns_match.startswith('!'):
+                not_filters.append(re.escape(ns_match[1:]))
             else:
-                use_not = False
+                match_filters.append(re.escape(ns_match))
 
-            if ns.startswith('~'):
-                ns = ns[1:]
+        all_files = dataset.files
 
-            if use_not:
-                ns_filelist = \
-                    [x for x in chklist
-                        if not re.search(f'namespace={ns}/', x)]
-                # NOTs turn list from implicit OR into implicit AND
-                chklist = ns_filelist
-            else:
-                ns_filelist.extend(
-                    [x for x in dataset.files
-                     if re.search(f'namespace={ns}/', x)])
+        # Apply matching rules with an OR
+        if match_filters:
+            matching_files = [file for file in all_files
+                              if (ns_section := next(
+                                  (s for s in file.split('/')
+                                   if s.startswith('namespace=')),
+                                  None))
+                              and check_ns_conds(ns_section, match_filters,
+                                                 operator.or_)]
+        else:
+            # If there aren't match filters we can get all the available file
+            # and pass them to the following set of filters
+            matching_files = all_files
 
-        return ds.dataset(ns_filelist, format='parquet', partitioning='hive')
+        # Apply the not rules, in this case we operate on the matching file
+        # list since we want to reproduce an AND.
+        for ns_not in not_filters:
+            matching_files = [file for file in matching_files
+                              if (ns_section := next(
+                                  (s for s in file.split('/')
+                                   if s.startswith('namespace=')),
+                                  None))
+                              and not re.search(
+                                  f'namespace={ns_not}', ns_section)]
+
+            # There is no need to proceed if there isn't any other file in the
+            # list
+            if not matching_files:
+                break
+
+        return ds.dataset(
+            matching_files, format='parquet', partitioning='hive')
 
     def _cons_int_filter(self, keyfld: str, filter_str: str) -> ds.Expression:
         '''Construct Integer filters with arithmetic operations'''
@@ -703,6 +750,25 @@ class SqParquetDB(SqDB):
                          **kwargs) -> ds.Expression:
         """The new style of filters using dataset instead of ParquetDataset"""
 
+        def add_rule(new_filter: ds.Expression, collection: ds.Expression,
+                     operation) -> ds.Expression:
+            """Add a rule in the pyarrow filter
+
+            Args:
+                new_filter (pc.Expression): the filter to append
+                collection (pc.Expression): the collection of filters where to
+                    add the new one
+                operation: `operator.or_` or `operator.and_` to append the
+                    new filter to the collection
+
+            Returns:
+                pc.Expression: the concatenated expressions
+            """
+            if collection is not None:
+                return operation(collection, new_filter)
+            else:
+                return new_filter
+
         merge_fields = kwargs.pop('merge_fields', {})
         # The time filters first
         if start_tm and not end_tm:
@@ -716,70 +782,72 @@ class SqParquetDB(SqDB):
             filters = (ds.field("timestamp") != 0)
 
         sch_fields = schema.names
-        # pylint: disable=too-many-nested-blocks
-        for k, v in kwargs.items():
-            if not v:
+
+        for field, filter_vals in kwargs.items():
+            if not filter_vals:
                 continue
-            if k not in sch_fields:
-                self.logger.warning(f'Ignoring invalid field {k} in filter')
+            if field not in sch_fields:
+                self.logger.warning(
+                    f'Ignoring invalid field {field} in filter')
                 continue
 
-            ftype = schema.field(k).type
-            if k in merge_fields:
-                k = merge_fields[k]
+            ftype = schema.field(field).type
+            if field in merge_fields:
+                field = merge_fields[field]
 
-            if isinstance(v, list):
-                infld = []
-                notinfld = []
-                kw_filters = None
-                use_and = False
-                # If user specifies both </<= and >/>=, we treat
-                # it as an and i.e. the user is looking for a val
-                # between the provided < and > numbers.
-                if (any(x.startswith('>') for x in v) and
-                        any(x.startswith('<') for x in v)):
-                    use_and = True
+            infld = []
+            notinfld = []
+            kw_filters = None
 
-                for e in v:
-                    if isinstance(e, str) and e.startswith("!"):
-                        if ftype == 'int64':
-                            notinfld.append(int(e[1:]))
-                        else:
-                            notinfld.append(e[1:])
+            # We would like to reduce if..else, so we want to only work with
+            # lists. If a value is passed, this will be converted to a list
+            # with a single element
+            if not isinstance(filter_vals, list):
+                filter_vals = [filter_vals]
+
+            i = 0
+            while i < len(filter_vals):
+                val = filter_vals[i]
+                if ftype == 'int64':
+                    if isinstance(val, str) and val.startswith('!'):
+                        notinfld.append(int(val[1:]))
+                    elif (isinstance(val, str) and val.startswith('>')
+                            and i+1 < len(filter_vals)
+                            and isinstance(filter_vals[i+1], str)
+                            and filter_vals[i+1].startswith('<')):
+                        # We look for a sequence of >/< to detect an
+                        # interval and combine the rules.
+                        first_rule = self._cons_int_filter(field, val)
+                        second_rule = self._cons_int_filter(
+                            field, filter_vals[i+1])
+                        interval = (first_rule & second_rule)
+                        kw_filters = add_rule(
+                            interval, kw_filters, operator.or_)
+
+                        # Increment one more time, in order to skip the
+                        # rule we already considered
+                        i += 1
                     else:
-                        if ftype == 'int64':
-                            if kw_filters is not None:
-                                if use_and:
-                                    kw_filters = kw_filters & \
-                                        self._cons_int_filter(k, e)
-                                else:
-                                    kw_filters = kw_filters | \
-                                        self._cons_int_filter(k, e)
-                            else:
-                                kw_filters = self._cons_int_filter(k, e)
-                        else:
-                            infld.append(e)
-                if infld and notinfld:
-                    filters = filters & (ds.field(k).isin(infld) &
-                                         ~ds.field(k).isin(notinfld))
-                elif infld:
-                    filters = filters & (ds.field(k).isin(infld))
-                elif notinfld:
-                    filters = filters & (~ds.field(k).isin(notinfld))
-
-                if kw_filters is not None:
-                    filters = filters & (kw_filters)
-            else:
-                if isinstance(v, str) and v.startswith("!"):
-                    if ftype == 'int64':
-                        filters = filters & (ds.field(k) != int(v[1:]))
-                    else:
-                        filters = filters & (ds.field(k) != v[1:])
+                        new_rule = self._cons_int_filter(field, val)
+                        kw_filters = add_rule(
+                            new_rule, kw_filters, operator.or_)
                 else:
-                    if ftype == 'int64':
-                        filters = filters & self._cons_int_filter(k, v)
+                    if isinstance(val, str) and val.startswith('!'):
+                        notinfld.append(val[1:])
                     else:
-                        filters = filters & (ds.field(k) == v)
+                        infld.append(val)
+                i += 1
+
+            if infld and notinfld:
+                filters = filters & (ds.field(field).isin(infld) &
+                                     ~ds.field(field).isin(notinfld))
+            elif infld:
+                filters = filters & (ds.field(field).isin(infld))
+            elif notinfld:
+                filters = filters & (~ds.field(field).isin(notinfld))
+
+            if kw_filters is not None:
+                filters = filters & (kw_filters)
 
         return filters
 

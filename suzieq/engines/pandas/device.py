@@ -85,6 +85,7 @@ class DeviceObj(SqPandasEngine):
                 (df['status_y'] != 0) & (df['status_y'] != 200) &
                 (df['status'] == "N/A"),
                 'neverpoll', df['status'])
+
             if 'version' in df.columns:
                 df['version'] = np.where(df.status_y == 418, 'unsupported',
                                          df.version)
@@ -101,13 +102,13 @@ class DeviceObj(SqPandasEngine):
                 df.address = np.where(df['address'] == 'N/A', df['hostname'],
                                       df['address'])
 
-            if 'uptime' in columns or columns == ['*']:
-                uptime_cols = (df['timestamp'] -
-                               humanize_timestamp(df['bootupTimestamp']*1000,
-                               self.cfg.get('analyzer', {}).get('timezone',
-                                                                None)))
-                uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
-                df.insert(len(df.columns)-1, 'uptime', uptime_cols)
+        if 'uptime' in columns or columns == ['*']:
+            uptime_cols = (df['timestamp'] -
+                           humanize_timestamp(df['bootupTimestamp']*1000,
+                           self.cfg.get('analyzer', {}).get('timezone',
+                                                            None)))
+            uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
+            df.insert(len(df.columns)-1, 'uptime', uptime_cols)
 
         if df.empty:
             return df[fields]
@@ -117,9 +118,11 @@ class DeviceObj(SqPandasEngine):
             df = df.loc[df.status.isin(status)]
         if os_version:
             opdict = {'>': operator.gt, '<': operator.lt, '>=': operator.ge,
-                      '<=': operator.le, '=': operator.eq, '!=': operator.ne}
+                      '<=': operator.le, '=': operator.eq, '!': operator.ne}
             op = operator.eq
             for osv in os_version:
+                # Introduced in 0.19.1, we do this for backwards compatibility
+                osv = osv.replace('!=', '!')
                 for elem, val in opdict.items():
                     if osv.startswith(elem):
                         osv = osv.replace(elem, '')

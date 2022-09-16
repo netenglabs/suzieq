@@ -75,8 +75,9 @@ tests:
 - command: path show --src='172.16.1.101' --dest='172.16.3.202' --namespace='ospf-ibgp'
     --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/parquet/
+  error:
+    error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: path show badquery cumulus
-  output: '[]'
 - command: topology show --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
@@ -158,8 +159,9 @@ tests:
 - command: path summarize --src='172.16.1.101' --dest='172.16.3.202' --namespace='ospf-ibgp'
     --query-str='vendor == "Cisco" and mtu==1500' --format=json
   data-directory: tests/data/parquet/
+  error:
+    error: '{"error": {"0": "ERROR: UserQueryError: name ''vendor'' is not defined"}}'
   marks: path summarize badquery cumulus
-  output: '[]'
 - command: topology summarize --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
@@ -241,8 +243,9 @@ tests:
 - command: path unique --src='172.16.1.101' --dest='172.16.3.202' --namespace='ospf-ibgp'
     --query-str='vendor == "Cisco" and mtu==1500' --format=json --columns='hostname'
   data-directory: tests/data/parquet/
+  error:
+    error: '[{"error": "ERROR: UserQueryError: name ''vendor'' is not defined"}]'
   marks: path unique badquery cumulus
-  output: '[]'
 - command: topology unique --query-str='vendor == "Cisco" and mtu==1500' --format=json
     --namespace='ospf-single dual-evpn ospf-ibgp' --columns='hostname'
   data-directory: tests/data/parquet/
