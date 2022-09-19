@@ -853,7 +853,15 @@ class PathObj(SqPandasEngine):
                         vrfchk = dest_device_iifs[destdevkey]["vrf"]
                         rev_df = self._rpf_df.query(
                             f'hostname == "{device}" and vrf == "{vrfchk}"')
-                        if rev_df.empty:
+                        if rev_df.empty and is_l2:
+                            # for the case if this node is the ingress VTEP
+                            rev_df = self._arpnd_df.query(
+                                f'hostname == "{device}" and '
+                                f'ipAddress == "{dest}"')
+                            if rev_df.empty:
+                                dest_device_iifs[destdevkey]['hopError'] \
+                                    .append('no reverse path, possible flood')
+                        elif rev_df.empty:
                             dest_device_iifs[destdevkey]['hopError'] \
                                 .append('no reverse path')
                         revdf_check = False
