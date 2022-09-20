@@ -1644,8 +1644,12 @@ class IosXENode(Node):
             await self._init_ssh()
 
         if not self._conn or not self._stdin:
-            self.logger.error(f'Not connected to {self.address}:{self.port}')
-            await service_callback({}, cb_token)
+            for cmd in cmd_list:
+                self.logger.error(
+                    "Unable to connect to node %s (%s) cmd %s",
+                    self.address, self.hostname, cmd)
+                result.append(self._create_error(cmd))
+            await service_callback(result, cb_token)
             return
 
         timeout = timeout or self.cmd_timeout
