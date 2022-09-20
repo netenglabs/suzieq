@@ -1435,13 +1435,16 @@ class IosXRNode(Node):
                     stderr=DEVNULL)
                 self.logger.info(
                     f'Persistent SSH present for {self.hostname}')
-                if init_dev_data:
-                    await self._fetch_init_dev_data()
             except Exception:
                 self._conn = self._long_proc = None
 
         if use_lock:
             self.ssh_ready.release()
+
+        # We need to release the lock and make sure that we are connected to
+        # the device before proceeding with the _fetch_init_dev_data() fn.
+        if self.is_connected and init_dev_data:
+            await self._fetch_init_dev_data()
 
     async def _parse_init_dev_data(self, output, cb_token) -> None:
         '''Parse the version for uptime and hostname'''
@@ -1572,12 +1575,13 @@ class IosXENode(Node):
                 self._stdin.write('terminal length 0\n')
                 output = await self._stdout.readuntil(self.WAITFOR)
 
-            if init_dev_data:
-                await self._fetch_init_dev_data()
-
         if use_lock:
             self.ssh_ready.release()
-        return
+
+        # We need to release the lock and make sure that we are connected to
+        # the device before proceeding with the _fetch_init_dev_data() fn.
+        if self.is_connected and init_dev_data:
+            await self._fetch_init_dev_data()
 
     async def _handle_privilege_escalation(self) -> int:
         '''Escalata privilege if necessary
