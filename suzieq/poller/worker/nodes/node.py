@@ -688,7 +688,8 @@ class Node:
             # Release here because init_dev_data uses this lock as well
             # We need to be sure that devtype is set, otherwise the
             # _fetch_dev_data function is not implemented and will raise.
-            if init_dev_data and self.devtype:
+            # Moreover we want to be connected if we call this function
+            if self._conn and init_dev_data and self.devtype:
                 await self._fetch_init_dev_data()
 
     @abstractmethod
