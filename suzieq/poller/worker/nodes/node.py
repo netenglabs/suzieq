@@ -29,6 +29,9 @@ from suzieq.shared.exceptions import SqPollerConfError, UnknownDevtypeError
 logger = logging.getLogger(__name__)
 IOS_SLEEP_BET_CMDS = 5          # in seconds
 IOS_TIME_AFTER_DISCOVERY = 60   # time to wait after ios(xe,xr) auto-discovery
+IOS_CONN_INITIAL_BACKOFF = 1
+IOS_CONN_INITIAL_BACKOFF_SLOW = 30
+
 TNode = TypeVar('TNode', bound='Node')
 
 
@@ -1398,7 +1401,10 @@ class IosXRNode(Node):
         if this doesn't succeed. Maybe better to abort after a fixed number
         of retries to enable things like run-once=gather to work.
         '''
-        backoff_period = 1
+        backoff_period = IOS_CONN_INITIAL_BACKOFF
+
+        self.logger.info(f'Trying to connect via SSH for {self.hostname}')
+
         if use_lock:
             await self.ssh_ready.acquire()
 
@@ -1490,7 +1496,12 @@ class IosXENode(Node):
         multiple authemtication requests because each SSH session needs to be
         authenticated, not just the main SSH connection.
         '''
-        backoff_period = 1
+
+        # If the device is marked as slow, we don't want to be too fast when
+        # we retry the connection. So increase the initial backoff time.
+        backoff_period = (IOS_CONN_INITIAL_BACKOFF_SLOW if self.slow_host
+                          else IOS_CONN_INITIAL_BACKOFF)
+
         self.WAITFOR = r'.*[>#]\s*$'
 
         self.logger.info(
