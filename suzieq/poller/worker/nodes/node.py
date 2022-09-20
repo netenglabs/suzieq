@@ -111,6 +111,7 @@ class Node:
         self._exception_timestamp = None
         self._current_exception = None
         self.api_key = None
+        self._fetching_dev_data = False  # If we are fetching the dev data
         self._stdin = self._stdout = self._long_proc = None
         self._max_retries_on_auth_fail = (kwargs.get('retries_on_auth_fail')
                                           or 0) + 1
@@ -951,8 +952,27 @@ class Node:
         await self._exec_cmd(service_callback, cmdlist, cb_token,
                              oformat=oformat, timeout=cb_token.timeout)
 
-    @abstractmethod
     async def _fetch_init_dev_data(self):
+        """Start data fetch to initialize the class with specific device attrs
+
+        This function is a wrapper which calls the specific implementation for
+        the devtype we are polling.
+        """
+        # If we are already fetching the device data directly return
+        if self._fetching_dev_data:
+            return
+
+        # The _fetching_dev_data allows us to tell that we are already fetching
+        # the device data, so if we establish a new connection, we should not
+        # call that function again
+        self._fetching_dev_data = True
+        try:
+            await self._fetch_init_dev_data_devtype()
+        finally:
+            self._fetching_dev_data = False
+
+    @abstractmethod
+    async def _fetch_init_dev_data_devtype(self):
         """Start data fetch to initialize the class with specific device attrs
 
         This function initiates the process of fetching critical pieces
@@ -1100,7 +1120,7 @@ class EosNode(Node):
                 f'Unable to connect to {self.address}:{self.port}, '
                 f'error: {str(e)}')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
 
         if self.transport == 'https':
             cmdlist = ["show version", "show hostname"]
@@ -1267,7 +1287,7 @@ class EosNode(Node):
 class CumulusNode(Node):
     '''Cumulus Node specific implementation'''
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["cat /proc/uptime", "hostname",
@@ -1387,7 +1407,7 @@ class IosXRNode(Node):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version", "show run hostname"],
@@ -1491,7 +1511,7 @@ class IosXENode(Node):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version"], None, 'text')
@@ -1757,7 +1777,7 @@ class JunosNode(Node):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show system uptime|display json",
@@ -1815,7 +1835,7 @@ class NxosNode(Node):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version", "show hostname"], None,
@@ -1875,7 +1895,7 @@ class SonicNode(Node):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["cat /proc/uptime", "hostname", "show version"],
@@ -1906,7 +1926,7 @@ class SonicNode(Node):
 class PanosNode(Node):
     '''Node object representing access to a Palo Alto Networks FW'''
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         discovery_cmd = 'show system info'
         try:
             res = []
