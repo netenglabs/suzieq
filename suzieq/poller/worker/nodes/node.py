@@ -1434,14 +1434,14 @@ class IosXRNode(Node):
 
         while not self._conn:
 
-            if not self._retry:
-                break
-
             await super()._init_ssh(init_dev_data=False, use_lock=False)
 
             if self.is_connected:
                 self.logger.info(
                     f'Connection succeeded via SSH for {self.hostname}')
+                break
+
+            if not self._retry:
                 break
 
             await asyncio.sleep(backoff_period)
