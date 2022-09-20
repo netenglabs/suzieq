@@ -264,7 +264,7 @@ class SqParquetDB(SqDB):
 
         if not period:
             period = self.cfg.get(
-                'coalesceer', {'period': '1h'}).get('period', '1h')
+                'coalescer', {'period': '1h'}).get('period', '1h')
         schemas = Schema(self.cfg.get('schema-directory'))
         state = SqCoalesceState(self.logger, period)
 
@@ -359,7 +359,7 @@ class SqParquetDB(SqDB):
                 # Migrate the data if needed
                 self.logger.debug(f'Migrating data for {entry}')
                 self.migrate(entry, state.schema)
-                self.logger.debug(f'Migrating data for {entry}')
+
                 start = time()
                 coalesce_resource_table(table_infolder, table_outfolder,
                                         table_archive_folder, entry,
