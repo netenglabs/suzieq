@@ -28,6 +28,7 @@ from suzieq.shared.exceptions import SqPollerConfError, UnknownDevtypeError
 
 logger = logging.getLogger(__name__)
 IOS_SLEEP_BET_CMDS = 5          # in seconds
+IOS_TIME_AFTER_DISCOVERY = 60   # time to wait after ios(xe,xr) auto-discovery
 TNode = TypeVar('TNode', bound='Node')
 
 
@@ -214,8 +215,12 @@ class Node:
             # are executed. So close the conn at our end too
             # avoiding the initial persistent connection failure that
             # otherwise happens
-            if self.devtype in ['iosxe', 'ios', 'iosxr']:
+            if self.devtype in ['iosxe', 'ios', 'iosxr'] and self._conn:
                 await self._close_connection()
+                # In this case opening and closing a connetion too quickly
+                # might cause an authentication failure. Wait some time before
+                # proceeding with the new connection
+                await asyncio.sleep(IOS_TIME_AFTER_DISCOVERY)
 
             await self._fetch_init_dev_data()
             if not self.hostname:
