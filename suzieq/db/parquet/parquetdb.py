@@ -24,7 +24,7 @@ from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
                                            coalesce_resource_table)
 from suzieq.db.parquet.migratedb import generic_migration, get_migrate_fn
 from suzieq.shared.utils import get_default_per_vals
-
+from suzieq.shared.exceptions import SqBrokenFilesError
 
 PARQUET_VERSION = '2.4'
 
@@ -146,8 +146,6 @@ class SqParquetDB(SqDB):
                         final_df = pd.concat([final_df, tmp_df])
             except FileNotFoundError:
                 pass
-            except Exception as e:
-                raise e
 
             # Now operate on the coalesced data set
             cp_dataset = self._get_cp_dataset(table_name, need_sqvers, sqvers,
@@ -170,8 +168,9 @@ class SqParquetDB(SqDB):
                 if not final_df.empty and (view == 'latest'):
                     final_df = final_df.set_index(key_fields) \
                         .query('~index.duplicated(keep="last")')
-        except (pa.lib.ArrowInvalid, OSError):
-            return pd.DataFrame(columns=fields)
+        except pa.lib.ArrowInvalid as error:
+            self.logger.error(f'Unable to read broken/invalid file: {error}')
+            raise SqBrokenFilesError('Corrupted/broken file.')
 
         if need_sqvers:
             final_df['sqvers'] = max_vers

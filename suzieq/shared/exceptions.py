@@ -51,3 +51,8 @@ class PollingError(Exception):
 
 class SensitiveLoadError(Exception):
     """Sensitive informarmation isn't loaded correctly"""
+
+
+class SqBrokenFilesError(Exception):
+    """Raise when there are broken files and it is not possible to return a
+    coherent result."""
