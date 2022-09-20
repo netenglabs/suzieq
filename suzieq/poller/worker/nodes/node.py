@@ -178,7 +178,11 @@ class Node:
 
         if self.transport == "ssh":
             self.port = self.port or 22
-            await self._init_ssh(init_dev_data=False)
+            # If a devtype is provided do not perform the initial connection
+            # we want to do the connection once. So that we don't need to
+            # open and close it in the case of 'iosxe', 'ios', 'iosxr'.
+            if not self.devtype:
+                await self._init_ssh(init_dev_data=False)
         elif self.transport == "https":
             self.port = self.port or 443
             if self.devtype:
