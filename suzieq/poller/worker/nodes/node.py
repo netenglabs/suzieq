@@ -667,11 +667,14 @@ class Node:
                             '"ignore-known-hosts: True" in the device section '
                             'of the inventory')
                     elif isinstance(e, asyncssh.misc.PermissionDenied):
-                        self.logger.error(
-                            f'Authentication failed to {self.address}. '
-                            'Not retrying to avoid locking out user. Please '
-                            'restart poller with proper authentication')
                         self._retry -= 1
+                        error_msg = f'Authentication failed to {self.address} '
+                        if not self._retry:
+                            error_msg += ('Not retrying to avoid locking out '
+                                          'user. Please restart poller with '
+                                          'proper authentication.')
+                        self.logger.error(f'{error_msg}: {e}')
+
                     else:
                         self.logger.error('Unable to connect to '
                                           f'{self.address}:{self.port}, {e}')
@@ -1416,6 +1419,8 @@ class IosXRNode(Node):
             await super()._init_ssh(init_dev_data=False, use_lock=False)
 
             if self.is_connected:
+                self.logger.info(
+                    f'Connection succeeded via SSH for {self.hostname}')
                 break
 
             await asyncio.sleep(backoff_period)
@@ -1504,8 +1509,7 @@ class IosXENode(Node):
 
         self.WAITFOR = r'.*[>#]\s*$'
 
-        self.logger.info(
-            f'Trying to reconnect via SSH for {self.hostname}')
+        self.logger.info(f'Trying to connect via SSH for {self.hostname}')
 
         if not self._retry or (self._conn and self._stdin):
             return
@@ -1519,7 +1523,7 @@ class IosXENode(Node):
 
             if self.is_connected:
                 self.logger.info(
-                    f'Reconnect succeeded via SSH for {self.hostname}')
+                    f'Connection succeeded via SSH for {self.hostname}')
                 break
 
             if not self._retry:
