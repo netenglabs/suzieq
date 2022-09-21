@@ -101,11 +101,9 @@ if __name__ == '__main__':
             elif 'output' in test:
                 result = 'output'
 
-            if userargs.namespace:
-                if userargs.namespace not in test['command']:
-                    test['command'] = \
-                        f"{test['command']} --namespace={userargs.namespace}"
-                    changes += 1
+            if (userargs.namespace and
+                    userargs.namespace not in test['command']):
+                continue
 
             if userargs.verb and userargs.verb not in test['command']:
                 continue
