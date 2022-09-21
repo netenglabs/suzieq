@@ -19,7 +19,7 @@ from packaging import version as version_parse
 from suzieq.poller.worker.services.svcparser \
     import cons_recs_from_json_template
 from suzieq.shared.sq_plugin import SqPlugin
-from suzieq.shared.utils import known_devtypes
+from suzieq.shared.utils import get_default_per_vals, known_devtypes
 from suzieq.version import SUZIEQ_VERSION
 
 # How long b4 declaring node dead
@@ -153,23 +153,9 @@ class Service(SqPlugin):
         else:
             self.node_postcall_list = node_call_list
 
-    def _get_default_vals(self) -> dict:
-        '''Get default values based on type'''
-        return({
-            pa.string(): "",
-            pa.int32(): 0,
-            pa.int64(): 0,
-            pa.float32(): 0.0,
-            pa.float64(): 0.0,
-            pa.date64(): 0.0,
-            pa.bool_(): False,
-            pa.list_(pa.string()): [],
-            pa.list_(pa.int64()): [],
-        })
-
     def get_empty_record(self):
         '''Return an empty record matching schema'''
-        map_defaults = self._get_default_vals()
+        map_defaults = get_default_per_vals()
 
         defaults = [map_defaults[x] for x in self.schema.types]
         rec = dict(zip(self.schema.names, defaults))
@@ -548,7 +534,7 @@ class Service(SqPlugin):
 
         # Build default data structure
         schema_rec = {}
-        def_vals = self._get_default_vals()
+        def_vals = get_default_per_vals()
 
         ptype_map = {
             pa.string(): str,

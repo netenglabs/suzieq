@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import traceback
 from typing import List
 import sys
 import os
@@ -84,8 +85,11 @@ def run_coalescer(cfg: dict, tables: List[str], periodstr: str, run_once: bool,
         sys.exit(1)
 
     while True:
+        current_exception = None
+        stats = []
         try:
-            stats = do_coalesce(cfg, tables, periodstr, logger, no_sqpoller)
+            current_exception, stats = do_coalesce(
+                cfg, tables, periodstr, logger, no_sqpoller)
         except Exception:
             logger.exception('Coalescer aborted. Continuing')
         # Write the selftats
@@ -99,14 +103,37 @@ def run_coalescer(cfg: dict, tables: List[str], periodstr: str, run_once: bool,
                 pqdb.write('sqCoalescer', 'pandas', df, True,
                            coalescer_schema.get_arrow_schema(), None)
 
+        # When a critical exception occour we would like to write the stats
+        # and abort the coalescer execution.
+        if current_exception:
+            raise current_exception
+
         if run_once:
             break
         sleep_time = get_sleep_time(periodstr)
         sleep(sleep_time)
 
 
-def coalescer_main():
+def coalescer_exit(status_code: int, fd):
+    """Exit from the coalescer, cleaning up and releasing the lockfile
 
+    Args:
+        status_code (int): the exit code
+        fd (FileDescriptorLike): the file descriptor of the lock file
+    """
+    os.truncate(fd, 0)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_UN)
+        os.close(fd)
+    except OSError:
+        pass
+
+    sys.exit(status_code)
+
+
+def coalescer_main():
+    """Start the coalescer component
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "-s",
@@ -185,16 +212,16 @@ def coalescer_main():
     else:
         tables = []
 
-    run_coalescer(cfg, tables, timestr, userargs.run_once,
-                  logger, userargs.no_sqpoller or False)
-    os.truncate(fd, 0)
     try:
-        fcntl.flock(fd, fcntl.LOCK_UN)
-        os.close(fd)
-    except OSError:
-        pass
+        run_coalescer(cfg, tables, timestr, userargs.run_once,
+                      logger, userargs.no_sqpoller or False)
+    except Exception as error:
+        if not log_stdout:
+            traceback.print_exc()
+        logger.critical(f'{error}\n{traceback.format_exc()}')
+        coalescer_exit(1, fd)
 
-    sys.exit(0)
+    coalescer_exit(0, fd)
 
 
 if __name__ == '__main__':
