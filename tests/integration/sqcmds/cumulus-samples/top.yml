@@ -382,9 +382,9 @@ tests:
     0, "hasOspf": true, "hasBgp": false, "hasVxlan": false, "hasMlag": false, "lastUpdate":
     1652587637124}, {"namespace": "ospf-ibgp", "deviceCnt": 14, "serviceCnt": 18,
     "errSvcCnt": 0, "hasOspf": true, "hasBgp": true, "hasVxlan": true, "hasMlag":
-    true, "lastUpdate": 1652587500802}, {"namespace": "dual-evpn", "deviceCnt": 14,
+    true, "lastUpdate": 1652587500802}, {"namespace": "dual-evpn", "deviceCnt": 10,
     "serviceCnt": 17, "errSvcCnt": 0, "hasOspf": false, "hasBgp": true, "hasVxlan":
-    true, "hasMlag": true, "lastUpdate": 1652587570720}]'
+    true, "hasMlag": true, "lastUpdate": 1652587570707}]'
 - command: bgp top --what=numChanges --count=1 --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
@@ -447,22 +447,22 @@ tests:
     ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: device top
-  output: '[{"namespace": "dual-evpn", "hostname": "server103", "model": "vm", "version":
-    "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.121.34", "bootupTimestamp": 1616643991000, "uptime": 830893,
-    "timestamp": 1616644821893}, {"namespace": "dual-evpn", "hostname": "server101",
-    "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
-    "status": "alive", "address": "192.168.121.110", "bootupTimestamp": 1616643995000,
-    "uptime": 827007, "timestamp": 1616644822007}, {"namespace": "dual-evpn", "hostname":
-    "server102", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "192.168.121.152", "bootupTimestamp":
-    1616643999000, "uptime": 822893, "timestamp": 1616644821893}, {"namespace": "dual-evpn",
-    "hostname": "server104", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu",
-    "architecture": "x86-64", "status": "alive", "address": "192.168.121.114", "bootupTimestamp":
-    1616644003000, "uptime": 819166, "timestamp": 1616644822166}, {"namespace": "ospf-ibgp",
-    "hostname": "server101", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu",
-    "architecture": "x86-64", "status": "alive", "address": "192.168.123.184", "bootupTimestamp":
-    1616680816000, "uptime": 765632, "timestamp": 1616681581632}]'
+  output: '[{"namespace": "ospf-ibgp", "hostname": "server101", "model": "vm", "version":
+    "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
+    "address": "192.168.123.184", "bootupTimestamp": 1616680816000, "uptime": 765632,
+    "timestamp": 1616681581632}, {"namespace": "ospf-ibgp", "hostname": "server102",
+    "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
+    "status": "alive", "address": "192.168.123.134", "bootupTimestamp": 1616680827000,
+    "uptime": 754705, "timestamp": 1616681581705}, {"namespace": "ospf-ibgp", "hostname":
+    "server103", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu", "architecture":
+    "x86-64", "status": "alive", "address": "192.168.123.150", "bootupTimestamp":
+    1616680845000, "uptime": 736595, "timestamp": 1616681581595}, {"namespace": "ospf-ibgp",
+    "hostname": "server104", "model": "vm", "version": "16.04.7 LTS", "vendor": "Ubuntu",
+    "architecture": "x86-64", "status": "alive", "address": "192.168.123.197", "bootupTimestamp":
+    1616680858000, "uptime": 723652, "timestamp": 1616681581652}, {"namespace": "ospf-single",
+    "hostname": "server103", "model": "vm", "version": "16.04.6 LTS", "vendor": "Ubuntu",
+    "architecture": "x86-64", "status": "alive", "address": "10.255.2.182", "bootupTimestamp":
+    1616351788000, "uptime": 614601, "timestamp": 1616352402601}]'
 - command: device top --what=bootupTimestamp --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
@@ -578,10 +578,10 @@ tests:
     ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: mac top
-  output: '[{"namespace": "ospf-single", "hostname": "leaf04", "vlan": 0, "macaddr":
-    "44:38:39:00:00:2c", "oif": "swp5", "remoteVtepIp": "", "bd": "", "flags": "permanent",
+  output: '[{"namespace": "ospf-single", "hostname": "leaf04", "vlan": 10, "macaddr":
+    "44:38:39:00:00:2c", "oif": "bridge", "remoteVtepIp": "", "bd": "", "flags": "permanent",
     "moveCount": 0, "timestamp": 1616352403984}, {"namespace": "ospf-single", "hostname":
-    "leaf04", "vlan": 10, "macaddr": "44:38:39:00:00:2c", "oif": "bridge", "remoteVtepIp":
+    "leaf04", "vlan": 0, "macaddr": "44:38:39:00:00:2c", "oif": "swp5", "remoteVtepIp":
     "", "bd": "", "flags": "permanent", "moveCount": 0, "timestamp": 1616352403984},
     {"namespace": "ospf-single", "hostname": "leaf04", "vlan": 10, "macaddr": "00:03:00:44:44:02",
     "oif": "swp5", "remoteVtepIp": "", "bd": "", "flags": "", "moveCount": 0, "timestamp":
