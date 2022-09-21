@@ -42,7 +42,8 @@ class PathObj(SqPandasEngine):
                 .get(namespace=namespace, state='up',
                      columns=['namespace', 'hostname', 'ifname', 'mtu', 'type',
                               'ipAddressList', 'ip6AddressList', 'state',
-                              'vlan', 'master', 'macaddr', 'timestamp']) \
+                              'vlan', 'master', 'macaddr', 'timestamp',
+                              'portmode']) \
                 .explode('ipAddressList') \
                 .fillna({'ipAddressList': ''}) \
                 .explode('ip6AddressList') \
@@ -222,7 +223,8 @@ class PathObj(SqPandasEngine):
                     f'ipAddressList.str.startswith("{addr}")')
             else:
                 # No address, but a bridge interface as the master
-                if iifdf.iloc[0]['vlan']:
+                if (iifdf.iloc[0]['vlan'] and
+                   iifdf.iloc[0]['portmode'] != 'trunk'):
                     # Check if there's an SVI, assuming format is vlan*
                     # TODO: Handle trunk
                     vlan = iifdf.iloc[0]['vlan']
