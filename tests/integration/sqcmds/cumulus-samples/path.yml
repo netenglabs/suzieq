@@ -3335,3 +3335,73 @@ tests:
   output: '[{"hostname": "edge01"}, {"hostname": "exit01"}, {"hostname": "exit02"},
     {"hostname": "leaf01"}, {"hostname": "leaf02"}, {"hostname": "leaf03"}, {"hostname":
     "leaf04"}, {"hostname": "spine01"}, {"hostname": "spine02"}]'
+- command: path show --dest=10.0.0.11 --src=10.0.0.14 --namespace=ospf-single --columns=*
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: path show cumulus
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "ospf-single", "hostname": "leaf04",
+    "iif": "lo", "oif": "swp1", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 65536, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+    "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "10.0.0.21", "hopError":
+    "", "timestamp": 1616352402798}, {"pathid": 1, "hopCount": 1, "namespace": "ospf-single",
+    "hostname": "spine01", "iif": "swp4", "oif": "swp1", "vrf": "default", "isL2":
+    false, "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol":
+    "ospf", "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
+    "10.0.0.11", "hopError": "", "timestamp": 1616352402846}, {"pathid": 1, "hopCount":
+    2, "namespace": "ospf-single", "hostname": "leaf01", "iif": "swp1", "oif": "lo",
+    "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu":
+    9216, "outMtu": 65536, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup":
+    "", "nexthopIp": "", "hopError": "", "timestamp": 1616352404640}, {"pathid": 2,
+    "hopCount": 0, "namespace": "ospf-single", "hostname": "leaf04", "iif": "lo",
+    "oif": "swp2", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 65536, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.11/32",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "10.0.0.22", "hopError": "", "timestamp":
+    1616352402798}, {"pathid": 2, "hopCount": 1, "namespace": "ospf-single", "hostname":
+    "spine02", "iif": "swp4", "oif": "swp1", "vrf": "default", "isL2": false, "overlay":
+    false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+    "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "10.0.0.11", "hopError":
+    "", "timestamp": 1616352402876}, {"pathid": 2, "hopCount": 2, "namespace": "ospf-single",
+    "hostname": "leaf01", "iif": "swp2", "oif": "lo", "vrf": "default", "isL2": false,
+    "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 65536, "protocol":
+    "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "hopError":
+    "", "timestamp": 1616352404640}]'
+- command: path show --dest=10.0.0.11 --src=10.0.0.14 --namespace=ospf-single --columns='hostname
+    namespace' --format=json
+  data-directory: tests/data/parquet/
+  marks: path show cumulus
+  output: '[{"hostname": "leaf04", "namespace": "ospf-single"}, {"hostname": "spine01",
+    "namespace": "ospf-single"}, {"hostname": "leaf01", "namespace": "ospf-single"},
+    {"hostname": "leaf04", "namespace": "ospf-single"}, {"hostname": "spine02", "namespace":
+    "ospf-single"}, {"hostname": "leaf01", "namespace": "ospf-single"}]'
+- command: path top --dest=10.0.0.11 --src=10.0.0.14 --namespace=ospf-single --what=inMtu
+    --format=json
+  data-directory: tests/data/parquet/
+  marks: path top cumulus
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "ospf-single", "hostname": "leaf04",
+    "iif": "lo", "oif": "swp1", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 65536, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+    "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "10.0.0.21", "hopError":
+    "", "timestamp": 1616352402798}, {"pathid": 2, "hopCount": 0, "namespace": "ospf-single",
+    "hostname": "leaf04", "iif": "lo", "oif": "swp2", "vrf": "default", "isL2": false,
+    "overlay": false, "mtuMatch": true, "inMtu": 65536, "outMtu": 9216, "protocol":
+    "ospf", "ipLookup": "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
+    "10.0.0.22", "hopError": "", "timestamp": 1616352402798}, {"pathid": 1, "hopCount":
+    1, "namespace": "ospf-single", "hostname": "spine01", "iif": "swp4", "oif": "swp1",
+    "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu":
+    9216, "outMtu": 9216, "protocol": "ospf", "ipLookup": "10.0.0.11/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "10.0.0.11", "hopError": "", "timestamp": 1616352402846},
+    {"pathid": 1, "hopCount": 2, "namespace": "ospf-single", "hostname": "leaf01",
+    "iif": "swp1", "oif": "lo", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 9216, "outMtu": 65536, "protocol": "", "ipLookup":
+    "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "hopError": "", "timestamp":
+    1616352404640}, {"pathid": 2, "hopCount": 1, "namespace": "ospf-single", "hostname":
+    "spine02", "iif": "swp4", "oif": "swp1", "vrf": "default", "isL2": false, "overlay":
+    false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
+    "10.0.0.11/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "10.0.0.11", "hopError":
+    "", "timestamp": 1616352402876}]'
+- command: path top --dest=10.0.0.11 --src=10.0.0.14 --namespace=ospf-single --what=inMtu
+    --columns=hostname --format=json
+  data-directory: tests/data/parquet/
+  marks: path top cumulus
+  output: '[{"hostname": "leaf04"}, {"hostname": "leaf04"}, {"hostname": "spine01"},
+    {"hostname": "leaf01"}, {"hostname": "spine02"}]'

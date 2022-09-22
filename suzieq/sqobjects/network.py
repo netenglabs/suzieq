@@ -18,6 +18,7 @@ class NetworkObj(SqObject):
         '''Find network attach point for a given address'''
 
         addresses = kwargs.get('address', '')
+        columns = kwargs.pop('columns', self.columns)
 
         if not self.ctxt.engine:
             raise AttributeError('No analysis engine specified')
@@ -39,7 +40,11 @@ class NetworkObj(SqObject):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
-        return self.engine.find(**kwargs)
+        result = self.engine.find(**kwargs, columns=columns)
+        if self._is_result_empty(result):
+            fields = self._get_empty_cols(columns, 'find')
+            return self._empty_result(fields)
+        return result
 
     def get(self, **kwargs) -> pd.DataFrame:
         return self._run_deprecated_function(table='namespace', command='get',

@@ -45,23 +45,11 @@ tests:
     ifname state mtu" --format=json
   data-directory: tests/data/parquet/
   marks: interface top statusChangeTimestamp
-  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "bond02", "state":
-    "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 24, "master": "bridge",
-    "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp": 1616706446400,
-    "timestamp": 1616681582391}, {"namespace": "ospf-ibgp", "hostname": "leaf03",
-    "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond", "mtu":
-    9000, "vlan": 13, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
-    "statusChangeTimestamp": 1616706446390, "timestamp": 1616681582391}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf04", "ifname": "bond02", "state": "up", "adminState":
-    "up", "type": "bond", "mtu": 9000, "vlan": 24, "master": "bridge", "ipAddressList":
-    [], "ip6AddressList": [], "statusChangeTimestamp": 1616706446340, "timestamp":
-    1616681582523}, {"namespace": "ospf-ibgp", "hostname": "leaf03", "ifname": "swp6",
-    "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9000, "vlan":
-    0, "master": "bond02", "ipAddressList": [], "ip6AddressList": [], "statusChangeTimestamp":
-    1616706446340, "timestamp": 1616681582391}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf04", "ifname": "bond01", "state": "up", "adminState": "up", "type": "bond",
-    "mtu": 9000, "vlan": 13, "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "statusChangeTimestamp": 1616706446330, "timestamp": 1616681582523}]'
+  output: '[{"hostname": "leaf03", "ifname": "bond02", "state": "up", "mtu": 9000},
+    {"hostname": "leaf03", "ifname": "bond01", "state": "up", "mtu": 9000}, {"hostname":
+    "leaf04", "ifname": "bond02", "state": "up", "mtu": 9000}, {"hostname": "leaf03",
+    "ifname": "swp6", "state": "up", "mtu": 9000}, {"hostname": "leaf04", "ifname":
+    "bond01", "state": "up", "mtu": 9000}]'
 - command: interface top --what=numChanges --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
@@ -128,24 +116,9 @@ tests:
     --format=json
   data-directory: tests/data/parquet/
   marks: bgp top statusChangeTimestamp
-  output: '[{"namespace": "dual-evpn", "hostname": "spine01", "vrf": "default", "peer":
-    "swp1", "peerHostname": "leaf01", "state": "Established", "afi": "l2vpn", "safi":
-    "evpn", "asn": 65000, "peerAsn": 65101, "pfxRx": 8, "pfxTx": 0, "numChanges":
-    1, "estdTime": 1616644609000, "timestamp": 1616644822861}, {"namespace": "dual-evpn",
-    "hostname": "spine01", "vrf": "default", "peer": "swp1", "peerHostname": "leaf01",
-    "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn":
-    65101, "pfxRx": 2, "pfxTx": 0, "numChanges": 1, "estdTime": 1616644609000, "timestamp":
-    1616644822861}, {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default",
-    "peer": "swp6", "peerHostname": "exit01", "state": "Established", "afi": "l2vpn",
-    "safi": "evpn", "asn": 65000, "peerAsn": 65201, "pfxRx": 10, "pfxTx": 0, "numChanges":
-    1, "estdTime": 1616644608000, "timestamp": 1616644822793}, {"namespace": "dual-evpn",
-    "hostname": "spine02", "vrf": "default", "peer": "swp6", "peerHostname": "exit01",
-    "state": "Established", "afi": "ipv4", "safi": "unicast", "asn": 65000, "peerAsn":
-    65201, "pfxRx": 7, "pfxTx": 0, "numChanges": 1, "estdTime": 1616644608000, "timestamp":
-    1616644822793}, {"namespace": "dual-evpn", "hostname": "spine02", "vrf": "default",
-    "peer": "swp5", "peerHostname": "exit02", "state": "Established", "afi": "l2vpn",
-    "safi": "evpn", "asn": 65000, "peerAsn": 65202, "pfxRx": 10, "pfxTx": 0, "numChanges":
-    1, "estdTime": 1616644608000, "timestamp": 1616644822793}]'
+  output: '[{"hostname": "spine01", "peer": "swp1"}, {"hostname": "spine01", "peer":
+    "swp1"}, {"hostname": "spine02", "peer": "swp6"}, {"hostname": "spine02", "peer":
+    "swp6"}, {"hostname": "spine02", "peer": "swp5"}]'
 - command: bgp top --what="updatesRx" --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/
@@ -274,21 +247,11 @@ tests:
     --columns='hostname vendor version' --format=json
   data-directory: tests/data/parquet/
   marks: device top bootupTimestamp
-  output: '[{"namespace": "ospf-ibgp", "hostname": "server101", "model": "vm", "version":
-    "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.184", "bootupTimestamp": 1616680816000, "timestamp": 1616681581632},
-    {"namespace": "ospf-ibgp", "hostname": "server102", "model": "vm", "version":
-    "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.134", "bootupTimestamp": 1616680827000, "timestamp": 1616681581705},
-    {"namespace": "ospf-ibgp", "hostname": "server103", "model": "vm", "version":
-    "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.150", "bootupTimestamp": 1616680845000, "timestamp": 1616681581595},
-    {"namespace": "ospf-ibgp", "hostname": "server104", "model": "vm", "version":
-    "16.04.7 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "192.168.123.197", "bootupTimestamp": 1616680858000, "timestamp": 1616681581652},
-    {"namespace": "ospf-ibgp", "hostname": "edge01", "model": "vm", "version": "16.04.7
-    LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive", "address":
-    "192.168.123.180", "bootupTimestamp": 1616681014000, "timestamp": 1616681581705}]'
+  output: '[{"hostname": "server101", "vendor": "Ubuntu", "version": "16.04.7 LTS"},
+    {"hostname": "server102", "vendor": "Ubuntu", "version": "16.04.7 LTS"}, {"hostname":
+    "server103", "vendor": "Ubuntu", "version": "16.04.7 LTS"}, {"hostname": "server104",
+    "vendor": "Ubuntu", "version": "16.04.7 LTS"}, {"hostname": "edge01", "vendor":
+    "Ubuntu", "version": "16.04.7 LTS"}]'
 - command: ospf top --what="lastChangeTime" --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
@@ -338,24 +301,10 @@ tests:
     --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: ospf top
-  output: '[{"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
-    "swp6", "peerHostname": "exit01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1.0, "adjState": "full", "peerIP": "10.0.0.101", "numChanges": 5.0, "lastChangeTime":
-    1616681064000, "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp4", "peerHostname": "leaf04", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1.0, "adjState": "full", "peerIP": "10.0.0.14",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000, "timestamp": 1616681581441},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
-    "swp3", "peerHostname": "leaf03", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1.0, "adjState": "full", "peerIP": "10.0.0.13", "numChanges": 5.0, "lastChangeTime":
-    1616681064000, "timestamp": 1616681581441}, {"namespace": "ospf-ibgp", "hostname":
-    "spine02", "vrf": "default", "ifname": "swp2", "peerHostname": "leaf02", "area":
-    "0.0.0.0", "ifState": "up", "nbrCount": 1.0, "adjState": "full", "peerIP": "10.0.0.12",
-    "numChanges": 5.0, "lastChangeTime": 1616681064000, "timestamp": 1616681581441},
-    {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ifname":
-    "swp1", "peerHostname": "leaf01", "area": "0.0.0.0", "ifState": "up", "nbrCount":
-    1.0, "adjState": "full", "peerIP": "10.0.0.11", "numChanges": 5.0, "lastChangeTime":
-    1616681064000, "timestamp": 1616681581441}]'
+  output: '[{"hostname": "spine02", "ifname": "swp6", "adjState": "full"}, {"hostname":
+    "spine02", "ifname": "swp4", "adjState": "full"}, {"hostname": "spine02", "ifname":
+    "swp3", "adjState": "full"}, {"hostname": "spine02", "ifname": "swp2", "adjState":
+    "full"}, {"hostname": "spine02", "ifname": "swp1", "adjState": "full"}]'
 - command: evpnVni top --what=vni --format=json --namespace='ospf-single dual-evpn
     ospf-ibgp'
   data-directory: tests/data/parquet/

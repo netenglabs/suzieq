@@ -1132,11 +1132,15 @@ class PathObj(SqPandasEngine):
             # as loop detected
             final_paths = paths
         return self._handle_user_query_str(
-            self._path_cons_result(final_paths), query_str)\
+            self._path_cons_result(final_paths, **kwargs), query_str)\
             .reset_index(drop=True)
 
-    def _path_cons_result(self, paths):
+    def _path_cons_result(self, paths, **kwargs):
         df_plist = []
+        columns = kwargs.get('columns', ['default'])
+        fields = self.schema.get_display_fields(columns)
+        # TODO: handle hostname filtering
+        # hostname = kwargs.get('hostname')
         prev_hop = hop = None
         for i, path in enumerate(paths):
             if prev_hop:
@@ -1214,7 +1218,9 @@ class PathObj(SqPandasEngine):
             prev_hop['nexthopIp'] = ''
             prev_hop['vtepLookup'] = ''
         paths_df = pd.DataFrame(df_plist)
-        return paths_df.drop_duplicates()
+        paths_df.drop_duplicates(inplace=True)
+        ret_cols = [f for f in fields if (f in paths_df.columns)]
+        return paths_df[ret_cols]
 
     def summarize(self, **kwargs):
         """return a pandas dataframe summarizing the path info between src/dest

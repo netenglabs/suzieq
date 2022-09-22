@@ -8,6 +8,12 @@ from suzieq.shared.utils import build_query_str, humanize_timestamp
 class BgpObj(SqPandasEngine):
     '''Backend class to handle manipulating BGP table with pandas'''
 
+    def __init__(self, baseobj):
+        super().__init__(baseobj)
+        self._assert_result_cols = ['namespace', 'hostname', 'vrf', 'peer',
+                                    'asn', 'peerAsn', 'state', 'peerHostname',
+                                    'result', 'assertReason', 'timestamp']
+
     @staticmethod
     def table_name():
         '''Table name'''
@@ -29,8 +35,6 @@ class BgpObj(SqPandasEngine):
 
         self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
                                    addnl_fields)
-        if columns == ['*']:
-            fields.remove('origPeer')
 
         for col in ['peerIP', 'updateSource', 'state', 'namespace', 'vrf',
                     'peer', 'hostname']:
@@ -297,9 +301,7 @@ class BgpObj(SqPandasEngine):
 
         df = pd.concat([failed_df, passed_df])
 
-        result_df = df[['namespace', 'hostname', 'vrf', 'peer', 'asn',
-                        'peerAsn', 'state', 'peerHostname', 'result',
-                        'assertReason', 'timestamp']] \
+        result_df = df[self._assert_result_cols] \
             .explode(column="assertReason") \
             .fillna({'assertReason': '-'})
 

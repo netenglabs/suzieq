@@ -185,9 +185,6 @@ class SqPandasEngine(SqEngineObj):
 
         aug_fields = sch.get_augmented_fields(fields)
 
-        if 'timestamp' not in fields:
-            fields.append('timestamp')
-
         self._add_active_to_fields(view, fields, addnl_fields)
         # Order matters. Don't put this before the missing key fields insert
         for f in aug_fields:
@@ -205,7 +202,7 @@ class SqPandasEngine(SqEngineObj):
             if fld not in fields+addnl_fields:
                 addnl_fields.insert(0, fld)
 
-        getcols = list(set(fields+addnl_fields))
+        getcols = list(set(fields+addnl_fields+['timestamp']))
 
         tz = self.ctxt.cfg.get('analyzer', {}).get('timezone', 'UTC')
         settings = {'TIMEZONE': tz}
@@ -334,11 +331,11 @@ class SqPandasEngine(SqEngineObj):
         all_time_df = self.get_valid_df(view='all', **kwargs)
         times = all_time_df['timestamp'].unique()
         ret = {'firstTime': all_time_df.timestamp.min(),
-               'latestTime': all_time_df.timestamp.max(),
+               'lastTime': all_time_df.timestamp.max(),
                'intervals': len(times),
                'allRows': len(all_time_df),
-               'namespaces': all_time_df.get('namespace',
-                                             pd.Series(dtype='category'))
+               'namespaceCnt': all_time_df.get('namespace',
+                                               pd.Series(dtype='category'))
                .nunique(),
                'deviceCnt': all_time_df.get('hostname',
                                             pd.Series(dtype='category'))
@@ -437,19 +434,21 @@ class SqPandasEngine(SqEngineObj):
         if not what:
             return pd.DataFrame()
 
-        columns = self.schema.get_display_fields(columns)
-        if what not in columns:
-            columns.insert(-1, what)
+        fields = self.schema.get_display_fields(columns)
+        if columns == ['default'] and what not in fields:
+            fields.insert(-1, what)
 
-        df = self.get(columns=columns, **kwargs)
-        if df.empty or ('error' in df.columns):
+        getcols = list(set(fields + self.schema.key_fields() + [what]))
+
+        df = self.get(columns=getcols, **kwargs)
+        if 'error' in df.columns or df.empty:
             return df
 
         columns_by = [x for x in [what] + self.schema.key_fields()
                       if x in df.columns]
 
         return df.sort_values(by=columns_by, ascending=reverse) \
-                 .head(sqTopCount)
+                 .head(sqTopCount)[fields]
 
     def lpm(self, **kwargs):
         '''Default implementation to return not supported'''

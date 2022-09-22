@@ -13,6 +13,12 @@ class NamespaceObj(SqObject):
                                 'model', 'vendor', 'columns', 'query_str']
         self._unique_def_column = ['namespace']
 
+    def get(self, **kwargs) -> pd.DataFrame:
+        view = kwargs.get('view', self.view)
+        if view == 'all':
+            raise AttributeError("Cannot use 'view=all' with this table")
+        return super().get(**kwargs)
+
     def humanize_fields(self, df: pd.DataFrame, _=None) -> pd.DataFrame:
         '''Humanize the timestamp fields'''
         if df.empty:

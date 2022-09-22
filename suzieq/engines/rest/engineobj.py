@@ -72,7 +72,8 @@ class SqRestEngine(SqEngineObj):
                       'view': kwargs.get('view', self.iobj.view),
                       'namespace': kwargs.get('namespace',
                                               self.iobj.namespace),
-                      'hostname': kwargs.get('hostname', self.iobj.hostname)}
+                      'hostname': kwargs.get('hostname', self.iobj.hostname),
+                      'columns': kwargs.get('columns', self.iobj.columns)}
         kwargs.update(cmd_params)
         # Cannot drop values which are equal to 0 or False
         kwargs = {k: v for k, v in kwargs.items() if v or v in [0, False]}
