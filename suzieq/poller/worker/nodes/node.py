@@ -1853,7 +1853,7 @@ class JunosNode(Node):
 
         if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1]["data"]
-            hmatch = re.search(r'\nHostname:\s+(\S+)\n', data)
+            hmatch = re.search(r'\bHostname:\s+(\S+)\b', data)
             if hmatch:
                 self._set_hostname(hmatch.group(1))
 
