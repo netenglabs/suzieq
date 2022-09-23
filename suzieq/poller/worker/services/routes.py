@@ -115,6 +115,10 @@ class RoutesService(Service):
                 drop_entries_idx.append(i)
                 continue
 
+            if entry.get('prefix', None) is None:
+                drop_entries_idx.append(i)
+                continue
+
             vrf = entry.pop("vrf")[0]['data']
             if vrf == "inet.0":
                 vrf = "default"
