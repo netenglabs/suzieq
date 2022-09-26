@@ -398,11 +398,12 @@ class InterfaceService(Service):
                     vlan = int(vlan)
                     if vlan > 4095:
                         vlan = 0
+                        iftype = 'internal'
                 else:
                     vlan = 0
                     iftype = entry['type']
 
-                if iftype == 'subinterface':
+                if iftype == 'subinterface' or lifname.endswith(".0"):
                     speed = lentry \
                         .get('logical-interface-bandwidth', [{}])[0] \
                         .get('data', entry.get('speed', MISSING_SPEED))
