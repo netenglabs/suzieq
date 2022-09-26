@@ -219,9 +219,9 @@ class BgpService(Service):
                 new_entry['pfxSuppressRx'] = 0
                 for table in val:
                     vrf = table
-                    if vrf == "inet.0":
+                    if vrf.startswith("inet."):
                         vrf = "default"
-                    elif vrf == "inet6.0":
+                    elif vrf.startswith("inet6."):
                         vrf = "default"
                     elif vrf == "bgp.evpn.0":
                         vrf = "default"
