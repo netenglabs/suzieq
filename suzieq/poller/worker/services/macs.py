@@ -111,7 +111,15 @@ class MacsService(Service):
                 for j, mac in enumerate(maclist):
                     new_entry = entry.copy()
                     new_entry['macaddr'] = mac
-                    new_entry['oif'] = oifs[j].split('.')[0]
+                    if not entry['bd']:
+                        if '.' in oifs[j]:
+                            new_entry['oif'], new_entry['vlan'] = \
+                                oifs[j].split('.')
+                        else:
+                            new_entry['oif'] = oifs[j].split('.')[0]
+                    else:
+                        new_entry['oif'] = oifs[j]
+
                     new_entry['flags'] = ''
                     self._add_mackey_protocol(new_entry)
                     new_entries.append(new_entry)

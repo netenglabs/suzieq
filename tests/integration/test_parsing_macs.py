@@ -15,11 +15,15 @@ def validate_macs(df: pd.DataFrame):
     assert (df.mackey != '').all()
     # Validate that the only MAC addresses there are fit the macaddr format
     assert df.macaddr.apply(validate_macaddr).all()
-    # Ignore Linux HER entries and interface MAC entries, and some NXOS entries
-    assert (df.query(
-        'macaddr != "00:00:00:00:00:00" and flags != "permanent" and '
-        '~(oif.isin(["cpu", "sup-eth1", "sup-eth1(R)"]) or flags == "router")')
-        .vlan != 0).all()
+    # We shouldn't have both VLAN and BD empty except for permanent and
+    # router entries
+    assert (df.query('vlan == 0 and bd == "" and '
+                     '~flags.isin(["permanent", "router"]) and '
+                     'oif != "cpu"').empty)
+    # Verify that we don't have an all null MAC addr except for FRR
+    # ingress replication entries which shouldn't have an empty vtep ip
+    assert (df.query('macaddr == "00:00:00:00:00:00" and '
+                     ' remoteVtepIp == ""').empty)
     # Remote learnt MACs MUST have a non-zero VTEP IP
     assert (df.query('flags == "remote"').remoteVtepIp != '').all()
     # Verify all entries with a remoteVtepIp have the remote flag set_index
@@ -46,7 +50,7 @@ def validate_interfaces(df: pd.DataFrame, datadir: str):
     only_oifs = df.query('~oif.isin(["bridge", "sup-eth1", '
                          '"vPC Peer-Link", "nve1", "Router"])') \
                   .query('~oif.str.startswith("vtep.")') \
-                  .query('vlan != 0') \
+                  .query('vlan != 0 and bd != ""') \
                   .groupby(by=['namespace', 'hostname', 'vlan'])['oif'] \
                   .unique() \
                   .reset_index() \
