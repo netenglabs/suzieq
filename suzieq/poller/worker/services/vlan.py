@@ -109,12 +109,18 @@ class VlanService(Service):
             # We don't need the explicit .<vlan> tag for interfaces
             # to keep it consistent with the other devices, but we
             # cannot remove the VTEP info
-            entry['interfaces'] = [x.split('.')[0].replace('*', '')
-                                   if not x.startswith('vtep')
-                                   else x.replace('*', '')
-                                   for x in entry['interfaces']]
+
+            if entry['vlan'] != 'none':
+                # MX has no VLAN, just BD, and so don't strip vlan
+                # from interface name
+                entry['interfaces'] = [x.split('.')[0].replace('*', '')
+                                       if not x.startswith('vtep')
+                                       else x.replace('*', '')
+                                       for x in entry['interfaces']]
             entry['state'] = entry['state'].lower()
-            entry['vlanName'] = entry['vlanName'].lower()
+            name = entry.get('vlanName', '')
+            if name.startswith('Vlan'):
+                entry['vlanName'] = entry['vlanName'].lower()
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
         return processed_data
