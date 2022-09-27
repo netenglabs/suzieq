@@ -27,7 +27,7 @@ from suzieq.shared.utils import get_timestamp_from_junos_time, known_devtypes
 from suzieq.shared.exceptions import SqPollerConfError, UnknownDevtypeError
 
 logger = logging.getLogger(__name__)
-IOS_SLEEP_BET_CMDS = 5          # in seconds
+SLOW_HOST_SLEEP_BET_CMDS = 5          # in seconds
 TNode = TypeVar('TNode', bound='Node')
 
 
@@ -782,6 +782,8 @@ class Node:
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             for cmd in cmd_list:
                 try:
+                    if self.slow_host:
+                        await asyncio.sleep(SLOW_HOST_SLEEP_BET_CMDS)
                     output = await asyncio.wait_for(self._conn.run(cmd),
                                                     timeout=timeout)
                     if self.current_exception:
@@ -1653,7 +1655,7 @@ class IosXENode(Node):
             for cmd in cmd_list:
                 try:
                     if self.slow_host:
-                        await asyncio.sleep(IOS_SLEEP_BET_CMDS)
+                        await asyncio.sleep(SLOW_HOST_SLEEP_BET_CMDS)
                     self._stdin.write(cmd + '\n')
                     output = await self.wait_for_prompt()
                     if 'Invalid input detected' in output:
@@ -1745,7 +1747,8 @@ class JunosNode(Node):
                            ['attributes'])
             except Exception:
                 self.logger.warning(
-                    f'Unable to parse junos boot time from {data}')
+                    f'Unable to parse junos boot time from {self.address} '
+                    f'{data}')
                 timestr = '{"junos:seconds": "0"}'
             self.bootupTimestamp = (get_timestamp_from_junos_time(
                 timestr, output[0]['timestamp']/1000)/1000)
