@@ -72,7 +72,7 @@ coalescer:
 | coalescer.logsize            | max size of the coalescer log file                                                                                                                                                                                                   | 10000000                         | no                  |
 | coalescer.log-stdout         | log on standard output instead of log file                                                                                                                                                                                           | False                            | no                  |
 | analizer.timezone            | By default, the timezone is set to the local timezone.<br>Set this value if you want to display the time in a different timezone.<br>Check [here](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) the available values. | user local timezone              | no                  |
-| ux.engine                    | set the engine for the CLI. Set it to 'rest' to use [remote CLI](remote-cli)                                                                                                                                                         | -                                | no                  |
+| ux.engine                    | set the engine for the CLI. Set it to 'rest' to use [remote CLI](./remote-cli.md)                                                                                                                                                         | -                                | no                  |
 
 !!!Info
     <sup>1</sup>: the coalescer period can be expressed using the format `<value><m,h,d,w>` where: <br>
