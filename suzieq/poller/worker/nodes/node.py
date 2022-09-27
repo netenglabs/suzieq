@@ -1846,7 +1846,8 @@ class JunosNode(Node):
                            ['attributes'])
             except Exception:
                 self.logger.warning(
-                    f'Unable to parse junos boot time from {data}')
+                    f'{self.address}:{self.port} Unable to parse junos boot '
+                    f'time from {data}')
                 timestr = '{"junos:seconds": "0"}'
             self.bootupTimestamp = (get_timestamp_from_junos_time(
                 timestr, output[0]['timestamp']/1000)/1000)
