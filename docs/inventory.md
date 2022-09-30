@@ -263,6 +263,14 @@ Moreover if all the devices inside a namespace run the same NOS, it is possible 
 !!! information
     The fields specified in the `device` section are treated as default values, which are provided if the node does not have one. Fields such as `devtype` or `transport` could be already provided by the source, in this case device will not override them.
 
+### Limiting commands and authentication attempts
+
+The device section provides some instruments to reduce the amount of commands and authentication attempts that the poller issues.
+
+- **retries-on-auth-fail**: tells the poller how many times it can retry the authentication after the first failure. By **default** the poller retries **only once** after the first failure.
+- **per-cmd-auth**: when all the commands are authorized before execution, someone might want to limit the number of issued commands. Setting this value to `True` enables throttling of the commands as well as logins. The number of logins (and issued commands) per second is specified in `max-cmd-pipeline` in the poller section of the [configuration file](./config_file.md), if this number is 0 or unspecified, then the value of `per-cmd-auth` has no effect. Default is True.
+
+Additional information can be found in [Rate Limiting AAA Server Requests](./rate-limiting-AAA.md).
 
 ## <a name='auths'></a>Auths
 
