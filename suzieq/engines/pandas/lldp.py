@@ -22,8 +22,8 @@ class LldpObj(SqPandasEngine):
         query_str = kwargs.pop('query_str', '')
 
         addnl_fields = []
-        cols = self.schema.get_display_fields(columns)
-        self._add_active_to_fields(kwargs.get('view', self.iobj.view), cols,
+        fields = self.schema.get_display_fields(columns)
+        self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
                                    addnl_fields)
 
         if columns == ['default']:
@@ -34,14 +34,16 @@ class LldpObj(SqPandasEngine):
         else:
             needed_fields = []
 
-        addnl_fields += [f for f in needed_fields if f not in cols]
+        addnl_fields += [f for f in needed_fields if f not in fields]
 
         user_query_cols = self._get_user_query_cols(query_str)
         addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
 
-        df = super().get(addnl_fields=addnl_fields, columns=cols, **kwargs)
-        if df.empty or (not needed_fields and columns != ['*']):
+        df = super().get(addnl_fields=addnl_fields, columns=fields, **kwargs)
+        if df.empty:
             return df
+        if not needed_fields and columns != ['*']:
+            return df[fields]
 
         macdf = df.query('subtype.isin(["", "mac address"])')
         if not macdf.empty:
@@ -89,10 +91,10 @@ class LldpObj(SqPandasEngine):
 
         if use_bond.lower() == "true":
             df = self._resolve_to_bond(
-                df[cols], hostname=kwargs.get('hostname', []))[cols]
+                df[fields], hostname=kwargs.get('hostname', []))[fields]
 
         df = self._handle_user_query_str(df, query_str)
-        return df.reset_index(drop=True)[cols]
+        return df.reset_index(drop=True)[fields]
 
     def summarize(self, **kwargs):
         '''Summarize LLDP info'''

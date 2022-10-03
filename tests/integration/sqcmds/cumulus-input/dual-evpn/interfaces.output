@@ -1,54 +1,6 @@
 [
     {
         "status": 0,
-        "timestamp": 1616644822254,
-        "cmd": "ip -d address show",
-        "devtype": "linux",
-        "namespace": "dual-evpn",
-        "hostname": "server103",
-        "address": "192.168.121.34",
-        "version": "16.04",
-        "data": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 promiscuity 0 \n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000\n    link/ether 52:54:00:12:9a:21 brd ff:ff:ff:ff:ff:ff promiscuity 0 \n    inet 192.168.121.34/24 brd 192.168.121.255 scope global eth0\n       valid_lft forever preferred_lft forever\n3: eth1: <BROADCAST,MULTICAST,PROMISC,SLAVE,UP,LOWER_UP> mtu 9000 qdisc pfifo_fast master bond0 state UP group default qlen 1000\n    link/ether 52:54:00:b2:0d:bd brd ff:ff:ff:ff:ff:ff promiscuity 1 \n    bond_slave state ACTIVE mii_status UP link_failure_count 1 perm_hwaddr 52:54:00:b2:0d:bd queue_id 0 ad_aggregator_id 1 ad_actor_oper_port_state 63\nad_partner_oper_port_state 63\n\n4: eth2: <BROADCAST,MULTICAST,PROMISC,SLAVE,UP,LOWER_UP> mtu 9000 qdisc pfifo_fast master bond0 state UP group default qlen 1000\n    link/ether 52:54:00:b2:0d:bd brd ff:ff:ff:ff:ff:ff promiscuity 1 \n    bond_slave state ACTIVE mii_status UP link_failure_count 0 perm_hwaddr 52:54:00:da:c2:51 queue_id 0 ad_aggregator_id 1 ad_actor_oper_port_state 63\nad_partner_oper_port_state 63\n\n5: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 9000 qdisc noqueue state UP group default qlen 1000\n    link/ether 52:54:00:b2:0d:bd brd ff:ff:ff:ff:ff:ff promiscuity 0 \n    bond mode 802.3ad miimon 100 updelay 0 downdelay 0 use_carrier 1 arp_interval 0 arp_validate none arp_all_targets any primary_reselect always fail_over_mac none xmit_hash_policy layer3+4 resend_igmp 1 num_grat_arp 1 all_slaves_active 0 min_links 0 lp_interval 1 packets_per_slave 1 lacp_rate fast ad_select stable ad_aggregator 1 ad_num_ports 2 ad_actor_key 9 ad_partner_key 9 ad_partner_mac 44:39:39:ff:40:94 tlb_dynamic_lb 1 \n    inet 172.16.1.103/24 brd 172.16.1.255 scope global bond0\n       valid_lft forever preferred_lft forever\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1616644822254,
-        "cmd": "ip -d address show",
-        "devtype": "linux",
-        "namespace": "dual-evpn",
-        "hostname": "server102",
-        "address": "192.168.121.152",
-        "version": "16.04",
-        "data": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 promiscuity 0 \n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000\n    link/ether 52:54:00:15:46:ea brd ff:ff:ff:ff:ff:ff promiscuity 0 \n    inet 192.168.121.152/24 brd 192.168.121.255 scope global eth0\n       valid_lft forever preferred_lft forever\n3: eth1: <BROADCAST,MULTICAST,PROMISC,SLAVE,UP,LOWER_UP> mtu 9000 qdisc pfifo_fast master bond0 state UP group default qlen 1000\n    link/ether 52:54:00:8d:77:fc brd ff:ff:ff:ff:ff:ff promiscuity 1 \n    bond_slave state ACTIVE mii_status UP link_failure_count 1 perm_hwaddr 52:54:00:8d:77:fc queue_id 0 ad_aggregator_id 1 ad_actor_oper_port_state 63\nad_partner_oper_port_state 63\n\n4: eth2: <BROADCAST,MULTICAST,PROMISC,SLAVE,UP,LOWER_UP> mtu 9000 qdisc pfifo_fast master bond0 state UP group default qlen 1000\n    link/ether 52:54:00:8d:77:fc brd ff:ff:ff:ff:ff:ff promiscuity 1 \n    bond_slave state ACTIVE mii_status UP link_failure_count 0 perm_hwaddr 52:54:00:29:05:76 queue_id 0 ad_aggregator_id 1 ad_actor_oper_port_state 63\nad_partner_oper_port_state 63\n\n5: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 9000 qdisc noqueue state UP group default qlen 1000\n    link/ether 52:54:00:8d:77:fc brd ff:ff:ff:ff:ff:ff promiscuity 0 \n    bond mode 802.3ad miimon 100 updelay 0 downdelay 0 use_carrier 1 arp_interval 0 arp_validate none arp_all_targets any primary_reselect always fail_over_mac none xmit_hash_policy layer3+4 resend_igmp 1 num_grat_arp 1 all_slaves_active 0 min_links 0 lp_interval 1 packets_per_slave 1 lacp_rate fast ad_select stable ad_aggregator 1 ad_num_ports 2 ad_actor_key 9 ad_partner_key 9 ad_partner_mac 44:39:39:ff:40:94 tlb_dynamic_lb 1 \n    inet 172.16.2.102/24 brd 172.16.2.255 scope global bond0\n       valid_lft forever preferred_lft forever\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1616644822254,
-        "cmd": "ip -d address show",
-        "devtype": "linux",
-        "namespace": "dual-evpn",
-        "hostname": "server101",
-        "address": "192.168.121.110",
-        "version": "16.04",
-        "data": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 promiscuity 0 \n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000\n    link/ether 52:54:00:d0:76:f9 brd ff:ff:ff:ff:ff:ff promiscuity 0 \n    inet 192.168.121.110/24 brd 192.168.121.255 scope global eth0\n       valid_lft forever preferred_lft forever\n3: eth1: <BROADCAST,MULTICAST,PROMISC,SLAVE,UP,LOWER_UP> mtu 9000 qdisc pfifo_fast master bond0 state UP group default qlen 1000\n    link/ether 52:54:00:a0:c3:0b brd ff:ff:ff:ff:ff:ff promiscuity 1 \n    bond_slave state ACTIVE mii_status UP link_failure_count 0 perm_hwaddr 52:54:00:a0:c3:0b queue_id 0 ad_aggregator_id 1 ad_actor_oper_port_state 63\nad_partner_oper_port_state 63\n\n4: eth2: <BROADCAST,MULTICAST,PROMISC,SLAVE,UP,LOWER_UP> mtu 9000 qdisc pfifo_fast master bond0 state UP group default qlen 1000\n    link/ether 52:54:00:a0:c3:0b brd ff:ff:ff:ff:ff:ff promiscuity 1 \n    bond_slave state ACTIVE mii_status UP link_failure_count 0 perm_hwaddr 52:54:00:c0:11:45 queue_id 0 ad_aggregator_id 1 ad_actor_oper_port_state 63\nad_partner_oper_port_state 63\n\n5: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 9000 qdisc noqueue state UP group default qlen 1000\n    link/ether 52:54:00:a0:c3:0b brd ff:ff:ff:ff:ff:ff promiscuity 0 \n    bond mode 802.3ad miimon 100 updelay 0 downdelay 0 use_carrier 1 arp_interval 0 arp_validate none arp_all_targets any primary_reselect always fail_over_mac none xmit_hash_policy layer3+4 resend_igmp 1 num_grat_arp 1 all_slaves_active 0 min_links 0 lp_interval 1 packets_per_slave 1 lacp_rate fast ad_select stable ad_aggregator 1 ad_num_ports 2 ad_actor_key 9 ad_partner_key 9 ad_partner_mac 44:39:39:ff:40:94 tlb_dynamic_lb 1 \n    inet 172.16.1.101/24 brd 172.16.1.255 scope global bond0\n       valid_lft forever preferred_lft forever\n"
-    }
-][
-    {
-        "status": 0,
-        "timestamp": 1616644822255,
-        "cmd": "ip -d address show",
-        "devtype": "linux",
-        "namespace": "dual-evpn",
-        "hostname": "server104",
-        "address": "192.168.121.114",
-        "version": "16.04",
-        "data": "1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN group default qlen 1\n    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00 promiscuity 0 \n    inet 127.0.0.1/8 scope host lo\n       valid_lft forever preferred_lft forever\n2: eth0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc pfifo_fast state UP group default qlen 1000\n    link/ether 52:54:00:b8:34:0d brd ff:ff:ff:ff:ff:ff promiscuity 0 \n    inet 192.168.121.114/24 brd 192.168.121.255 scope global eth0\n       valid_lft forever preferred_lft forever\n3: eth1: <BROADCAST,MULTICAST,PROMISC,SLAVE,UP,LOWER_UP> mtu 9000 qdisc pfifo_fast master bond0 state UP group default qlen 1000\n    link/ether 52:54:00:40:cd:95 brd ff:ff:ff:ff:ff:ff promiscuity 1 \n    bond_slave state ACTIVE mii_status UP link_failure_count 1 perm_hwaddr 52:54:00:40:cd:95 queue_id 0 ad_aggregator_id 2 ad_actor_oper_port_state 63\nad_partner_oper_port_state 63\n\n4: eth2: <BROADCAST,MULTICAST,PROMISC,SLAVE,UP,LOWER_UP> mtu 9000 qdisc pfifo_fast master bond0 state UP group default qlen 1000\n    link/ether 52:54:00:40:cd:95 brd ff:ff:ff:ff:ff:ff promiscuity 1 \n    bond_slave state ACTIVE mii_status UP link_failure_count 0 perm_hwaddr 52:54:00:cf:94:6d queue_id 0 ad_aggregator_id 2 ad_actor_oper_port_state 63\nad_partner_oper_port_state 63\n\n5: bond0: <BROADCAST,MULTICAST,MASTER,UP,LOWER_UP> mtu 9000 qdisc noqueue state UP group default qlen 1000\n    link/ether 52:54:00:40:cd:95 brd ff:ff:ff:ff:ff:ff promiscuity 0 \n    bond mode 802.3ad miimon 100 updelay 0 downdelay 0 use_carrier 1 arp_interval 0 arp_validate none arp_all_targets any primary_reselect always fail_over_mac none xmit_hash_policy layer3+4 resend_igmp 1 num_grat_arp 1 all_slaves_active 0 min_links 0 lp_interval 1 packets_per_slave 1 lacp_rate fast ad_select stable ad_aggregator 2 ad_num_ports 2 ad_actor_key 9 ad_partner_key 9 ad_partner_mac 44:39:39:ff:40:94 tlb_dynamic_lb 1 \n    inet 172.16.2.104/24 brd 172.16.2.255 scope global bond0\n       valid_lft forever preferred_lft forever\n"
-    }
-][
-    {
-        "status": 0,
         "timestamp": 1616644822307,
         "cmd": "ip -d address show",
         "devtype": "linux",

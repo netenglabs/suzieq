@@ -46,7 +46,7 @@ commands = [(x) for x in get_sqcmds()]
 cli_commands = [(v.__command['name'])
                 for k, v in get_sqcmds().items()]
 
-tables = [t for t in get_tables() if t not in ['topmem', 'topcpu']]
+TABLES = [t for t in get_tables() if t not in ['topmem', 'topcpu']]
 
 
 @pytest.fixture(scope='session')
@@ -86,6 +86,11 @@ def _get_table_data(table: str, datadir: str):
     cfgfile = create_dummy_config_file(datadir=datadir)
     sqobj = get_sqobject(table)(config_file=cfgfile)
     cols = sqobj.schema.get_display_fields(['*'])
+
+    # mackey is an internal field to be suppressed, however we need this field
+    # for the testing purpose, manually add it
+    if table == 'macs':
+        cols.append('mackey')
 
     if table == "interface":
         df = sqobj.get(columns=cols, type=["all"])

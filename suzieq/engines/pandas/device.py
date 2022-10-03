@@ -46,8 +46,10 @@ class DeviceObj(SqPandasEngine):
         user_query_cols = self._get_user_query_cols(user_query)
         addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
 
+        getcols = list(set(fields + ['timestamp']))
+
         df = super().get(active_only=False, addnl_fields=addnl_fields,
-                         columns=fields, **kwargs)
+                         columns=getcols, **kwargs)
         if view == 'latest' and 'status' in df.columns:
             df['status'] = np.where(df.active, df['status'], 'dead')
 
@@ -111,7 +113,7 @@ class DeviceObj(SqPandasEngine):
             df.insert(len(df.columns)-1, 'uptime', uptime_cols)
 
         if df.empty:
-            return df[fields]
+            return df
 
         # The poller merge kills the filtering we did earlier, so redo:
         if status:

@@ -98,7 +98,8 @@ class InterfaceCmd(SqTableCommand):
                                 hostname=self.hostname,
                                 namespace=self.namespace,
                                 what=what,
-                                matchval=value.split(),
+                                columns=self._add_result_columns(self.columns),
+                                value=value.split(),
                                 result=result,
                                 ignore_missing_peer=(
                                     ignore_missing_peer == "True"),

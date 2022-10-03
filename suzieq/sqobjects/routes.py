@@ -38,10 +38,15 @@ class RoutesObj(SqObject):
     def lpm(self, **kwargs) -> pd.DataFrame:
         '''Get the lpm for the given address'''
         kwargs.pop('ignore_warning', None)
+        columns = kwargs.pop('columns', self.columns)
         if not kwargs.get("address", None):
             raise AttributeError('ip address is mandatory parameter')
         if isinstance(kwargs['address'], list):
             if len(kwargs['address']) > 1:
                 raise AttributeError('Just one address at a time')
             kwargs['address'] = kwargs['address'][0]
-        return self.engine.lpm(**kwargs)
+        result = self.engine.lpm(**kwargs, columns=columns)
+        if self._is_result_empty(result):
+            fields = self._get_empty_cols(columns, 'lpm')
+            return self._empty_result(fields)
+        return result

@@ -17,6 +17,7 @@ from typing import Any, Dict, List
 from tzlocal import get_localzone
 
 import pandas as pd
+import pyarrow as pa
 import yaml
 from dateparser import parse
 from dateutil.relativedelta import relativedelta
@@ -1043,3 +1044,23 @@ def deprecated_command_warning(dep_command: str, dep_sub_command: str,
 
     return deprecated_table_function_warning(dep_command, dep_sub_command,
                                              command, sub_command)
+
+
+def get_default_per_vals() -> Dict:
+    """For each pyarrow type get the default type.
+
+    Returns:
+        Dict: mapping between type and default value
+    """
+    return({
+        pa.string(): "",
+        pa.int32(): 0,
+        pa.int64(): 0,
+        pa.float32(): 0.0,
+        pa.float64(): 0.0,
+        pa.date64(): 0.0,
+        pa.bool_(): False,
+        pa.list_(pa.string()): [],
+        pa.list_(pa.int64()): [],
+        pa.binary(): b''
+    })

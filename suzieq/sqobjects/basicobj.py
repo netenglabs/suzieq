@@ -206,11 +206,10 @@ class SqObject(SqPlugin):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
-        if 'columns' not in kwargs:
-            kwargs['columns'] = self.columns or ['default']
+        columns = kwargs.pop('columns', self.columns or ['default'])
 
         # This raises ValueError if it fails
-        self.validate_columns(kwargs.get('columns', []))
+        self.validate_columns(columns)
 
         for k, v in self._convert_args.items():
             if v and k in kwargs:
@@ -224,7 +223,11 @@ class SqObject(SqPlugin):
                 elif isinstance(val, str):
                     kwargs[k] = v(val)
 
-        return self.engine.get(**kwargs)
+        result = self.engine.get(**kwargs, columns=columns)
+        if self._is_result_empty(result):
+            fields = self._get_empty_cols(columns, 'get', **kwargs)
+            return self._empty_result(fields)
+        return result
 
     def summarize(self, **kwargs) -> pd.DataFrame:
         '''Summarize the data from specific table'''
@@ -243,7 +246,11 @@ class SqObject(SqPlugin):
 
         self.validate_summarize_input(**kwargs)
 
-        return self.engine.summarize(**kwargs)
+        result = self.engine.summarize(**kwargs)
+        if self._is_result_empty(result):
+            fields = self._get_empty_cols([], 'summarize')
+            return self._empty_result(fields)
+        return result
 
     def unique(self, **kwargs) -> pd.DataFrame:
         '''Identify unique values and value counts for a column in table'''
@@ -258,7 +265,7 @@ class SqObject(SqPlugin):
         count = kwargs.pop('count', 'False')
 
         if columns is None or columns == ['default']:
-            columns = self._unique_def_column
+            columns = self._unique_def_column.copy()
 
         if len(columns) > 1 or columns == ['*']:
             raise ValueError('Specify a single column with unique')
@@ -266,13 +273,23 @@ class SqObject(SqPlugin):
         # This raises ValueError if it fails
         self.validate_columns(columns)
         self._check_input_for_valid_vals(self._valid_arg_vals, **kwargs)
-        return self.engine.unique(**kwargs, count=str(count), columns=columns)
+        result = self.engine.unique(**kwargs, count=str(count),
+                                    columns=columns)
+        if self._is_result_empty(result):
+            columns = self._get_empty_cols(columns, 'unique', count=count)
+            return self._empty_result(columns)
+        return result
 
     def aver(self, **kwargs):
         '''Assert one or more checks on table'''
         kwargs.pop('ignore_warning', None)
+        columns = kwargs.pop('columns', self.columns)
         if self._valid_assert_args:
-            return self._assert_if_supported(**kwargs)
+            result = self._assert_if_supported(**kwargs, columns=columns)
+            if self._is_result_empty(result):
+                fields = self._get_empty_cols(columns, 'assert', **kwargs)
+                return self._empty_result(fields)
+            return result
 
         raise NotImplementedError
 
@@ -280,7 +297,7 @@ class SqObject(SqPlugin):
             **kwargs) -> pd.DataFrame:
         """Get the list of top/bottom entries of "what" field"""
         kwargs.pop('ignore_warning', None)
-        columns = kwargs.get('columns', ['default'])
+        columns = kwargs.pop('columns', self.columns)
         # This raises ValueError if it fails
         self.validate_columns(columns)
 
@@ -301,8 +318,6 @@ class SqObject(SqPlugin):
             raise ValueError(
                 f"Field {what} does not exist in table {self.table}")
 
-        columns = table_schema.get_display_fields(columns)
-
         ftype = table_schema.field(what).get('type', 'str')
         if ftype not in ['long', 'double', 'float', 'int', 'timestamp',
                          'timedelta64[s]']:
@@ -310,8 +325,13 @@ class SqObject(SqPlugin):
                                  [f'{what} not numeric; top can be used with'
                                   f' numeric fields only']})
 
-        return self.engine.top(what=what, count=int(count), reverse=reverse,
-                               **kwargs)
+        result = self.engine.top(what=what, count=int(count), reverse=reverse,
+                                 columns=columns, **kwargs)
+
+        if self._is_result_empty(result):
+            fields = self._get_empty_cols(columns, 'top', what=what)
+            return self._empty_result(fields)
+        return result
 
     def describe(self, **kwargs):
         """Describes the fields for a given table"""
@@ -405,27 +425,29 @@ class SqObject(SqPlugin):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
-        if self.columns in [['*'], ['default']]:
-            req_cols = None
+        columns = kwargs.pop('columns', self.columns)
+
+        if columns in [['*'], ['default']]:
+            table_fields = None
         else:
-            req_cols = self.schema.get_display_fields(self.columns)
-            if not req_cols:
+            table_cols = [c for c in columns
+                          if c not in ['result', 'assertReason']]
+            table_fields = self.schema.get_display_fields(table_cols)
+            if not table_fields:
                 # Till we add a schema object for assert columns,
                 # this will have to do
-                req_cols = self.columns
+                table_fields = columns
 
         df = self.engine.aver(**kwargs)
-        if not df.empty and req_cols:
-
+        if table_fields and not df.empty:
+            req_cols = (table_fields +
+                        [c for c in columns if c not in table_fields])
             req_col_set = set(req_cols)
             got_col_set = set(df.columns)
             diff_cols = req_col_set - got_col_set
             if diff_cols:
                 return pd.DataFrame(
                     {'error': [f'columns {list(diff_cols)} not in dataframe']})
-
-            if 'assert' not in req_cols:
-                req_cols.append('assert')
 
             df = df[req_cols]
 
@@ -478,3 +500,70 @@ class SqObject(SqPlugin):
             return func(**kwargs)
         except RuntimeError as e:
             return pd.DataFrame({'error': [str(e)]})
+
+    def _get_empty_cols(self, columns: List[str], fun: str, **kwargs) \
+            -> List[str]:
+        """This function returns the same set of columns the 'fun' would have
+        returned depending on the 'columns' parameter.
+
+        Args:
+            columns (List[str]): input columns
+            fun (str): name of the caller of the function
+
+        Returns:
+            List[str]: list of columns
+        """
+        if fun == 'assert':
+            if columns not in [['default'], ['*']]:
+                # validate columns
+                check_cols = [c for c in columns if c not in [
+                    'result', 'assertReason']]
+                self.schema.get_display_fields(check_cols)
+                return columns
+        elif fun == 'top':
+            # in case of columns = ['default'] and the <what> column not
+            # in the default columns, the 'top' function adds the <what>
+            # column at the end. Here it's necessary to do the same
+            fields = self.schema.get_display_fields(columns)
+            what = kwargs.get('what')
+            if columns == ['default'] and what and what not in fields:
+                fields.insert(-1, what)
+            return fields
+        elif fun == 'unique':
+            count = kwargs.get('count', 'False')
+            if count == 'True' and 'numRows' not in columns:
+                columns.append('numRows')
+            return columns
+        elif fun == 'summarize':
+            return []
+        return self.schema.get_display_fields(columns)
+
+    def _is_result_empty(self, result: pd.DataFrame) -> bool:
+        """returns True if the dataframe is empty. False otherwise
+
+        WARNING: this function should not be placed in sqobject because
+        it assumes that the result is pandas dataframe.
+        There are no other solutions for now
+
+        Args:
+            result (pd.DataFrame): dataframe to check
+
+        Returns:
+            bool: True if <result> is empty
+        """
+        return result.empty
+
+    def _empty_result(self, columns: List[str]) -> pd.DataFrame:
+        """returns an empty dataframe with the input columns
+
+        WARNING: this function should not be placed in sqobject because
+        it assumes that the result is pandas dataframe.
+        There are no other solutions for now
+
+        Args:
+            columns (List[str]): columns of the empty dataframe
+
+        Returns:
+            pd.DataFrame: empty dataframe
+        """
+        return pd.DataFrame(columns=columns)

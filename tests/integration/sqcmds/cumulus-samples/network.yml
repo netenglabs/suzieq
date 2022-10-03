@@ -4,37 +4,31 @@ tests:
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet
   marks: network find cumulus
-  output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ipAddress":
-    "172.16.1.101", "vlan": 10, "macaddr": "00:03:00:11:11:01", "ifname": "swp5",
-    "bondMembers": "", "type": "bridged", "l2miss": false}, {"namespace": "dual-evpn",
-    "hostname": "server103", "vrf": "default", "ipAddress": "172.16.1.101", "vlan":
-    0, "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond0", "bondMembers": "eth1, eth2",
-    "type": "bridged", "l2miss": true}, {"namespace": "dual-evpn", "hostname": "leaf01",
-    "vrf": "default", "ipAddress": "172.16.1.101", "vlan": 13, "macaddr": "52:54:00:a0:c3:0b",
-    "ifname": "bond01", "bondMembers": "swp5", "type": "bridged", "l2miss": false},
-    {"namespace": "dual-evpn", "hostname": "leaf02", "vrf": "default", "ipAddress":
+  output: '[{"namespace": "dual-evpn", "hostname": "leaf01", "vrf": "default", "ipAddress":
     "172.16.1.101", "vlan": 13, "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond01",
-    "bondMembers": "swp5", "type": "bridged", "l2miss": false}, {"namespace": "ospf-ibgp",
-    "hostname": "server103", "vrf": "default", "ipAddress": "172.16.1.101", "vlan":
-    0, "macaddr": "52:54:00:c5:1d:06", "ifname": "bond0", "bondMembers": "eth1, eth2",
-    "type": "bridged", "l2miss": true}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
+    "bondMembers": "swp5", "type": "bridged", "l2miss": false}, {"namespace": "dual-evpn",
+    "hostname": "leaf02", "vrf": "default", "ipAddress": "172.16.1.101", "vlan": 13,
+    "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond01", "bondMembers": "swp5", "type":
+    "bridged", "l2miss": false}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
     "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan": 13, "macaddr": "52:54:00:c5:1d:06",
     "ifname": "bond01", "bondMembers": "swp5", "type": "bridged", "l2miss": false},
     {"namespace": "ospf-ibgp", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": 13, "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01",
-    "bondMembers": "swp5", "type": "bridged", "l2miss": false}]'
+    "bondMembers": "swp5", "type": "bridged", "l2miss": false}, {"namespace": "ospf-ibgp",
+    "hostname": "server103", "vrf": "default", "ipAddress": "172.16.1.101", "vlan":
+    0, "macaddr": "52:54:00:c5:1d:06", "ifname": "bond0", "bondMembers": "eth1, eth2",
+    "type": "bridged", "l2miss": true}, {"namespace": "ospf-single", "hostname": "leaf01",
+    "vrf": "default", "ipAddress": "172.16.1.101", "vlan": 10, "macaddr": "00:03:00:11:11:01",
+    "ifname": "swp5", "bondMembers": "", "type": "bridged", "l2miss": false}]'
 - command: network find --namespace=dual-evpn --address="172.16.1.101" --format=json
   data-directory: tests/data/parquet
   marks: network find cumulus
-  output: '[{"namespace": "dual-evpn", "hostname": "server103", "vrf": "default",
-    "ipAddress": "172.16.1.101", "vlan": 0, "macaddr": "52:54:00:a0:c3:0b", "ifname":
-    "bond0", "bondMembers": "eth1, eth2", "type": "bridged", "l2miss": true}, {"namespace":
-    "dual-evpn", "hostname": "leaf01", "vrf": "default", "ipAddress": "172.16.1.101",
-    "vlan": 13, "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond01", "bondMembers":
-    "swp5", "type": "bridged", "l2miss": false}, {"namespace": "dual-evpn", "hostname":
-    "leaf02", "vrf": "default", "ipAddress": "172.16.1.101", "vlan": 13, "macaddr":
-    "52:54:00:a0:c3:0b", "ifname": "bond01", "bondMembers": "swp5", "type": "bridged",
-    "l2miss": false}]'
+  output: '[{"namespace": "dual-evpn", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "172.16.1.101", "vlan": 13, "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond01",
+    "bondMembers": "swp5", "type": "bridged", "l2miss": false}, {"namespace": "dual-evpn",
+    "hostname": "leaf02", "vrf": "default", "ipAddress": "172.16.1.101", "vlan": 13,
+    "macaddr": "52:54:00:a0:c3:0b", "ifname": "bond01", "bondMembers": "swp5", "type":
+    "bridged", "l2miss": false}]'
 - command: network find --address="52:54:00:c5:1d:06" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/parquet
   marks: network find cumulus
@@ -69,15 +63,15 @@ tests:
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet
   marks: network find cumulus
-  output: '[{"namespace": "ospf-single", "hostname": "leaf01", "vrf": "default", "ipAddress":
-    "10.0.0.11", "vlan": 0, "macaddr": "44:38:39:00:00:53", "ifname": "swp1", "bondMembers":
-    "", "type": "routed", "l2miss": false}, {"namespace": "ospf-single", "hostname":
-    "leaf01", "vrf": "default", "ipAddress": "10.0.0.11", "vlan": 0, "macaddr": "44:38:39:00:00:24",
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "10.0.0.11", "vlan": 0, "macaddr": "52:54:00:e6:0f:5c", "ifname": "swp1", "bondMembers":
+    "", "type": "routed", "l2miss": false}, {"namespace": "ospf-ibgp", "hostname":
+    "leaf01", "vrf": "default", "ipAddress": "10.0.0.11", "vlan": 0, "macaddr": "52:54:00:e6:50:37",
     "ifname": "swp2", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "vrf": "default", "ipAddress": "10.0.0.11",
-    "vlan": 0, "macaddr": "52:54:00:e6:0f:5c", "ifname": "swp1", "bondMembers": "",
-    "type": "routed", "l2miss": false}, {"namespace": "ospf-ibgp", "hostname": "leaf01",
-    "vrf": "default", "ipAddress": "10.0.0.11", "vlan": 0, "macaddr": "52:54:00:e6:50:37",
+    "ospf-single", "hostname": "leaf01", "vrf": "default", "ipAddress": "10.0.0.11",
+    "vlan": 0, "macaddr": "44:38:39:00:00:53", "ifname": "swp1", "bondMembers": "",
+    "type": "routed", "l2miss": false}, {"namespace": "ospf-single", "hostname": "leaf01",
+    "vrf": "default", "ipAddress": "10.0.0.11", "vlan": 0, "macaddr": "44:38:39:00:00:24",
     "ifname": "swp2", "bondMembers": "", "type": "routed", "l2miss": false}]'
 - command: network find --address="169.254.127.0" --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
@@ -103,37 +97,36 @@ tests:
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet
   marks: network find cumulus
-  output: '[{"namespace": "ospf-single", "hostname": "spine01", "vrf": "default",
-    "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:00:00:54", "ifname":
-    "swp1", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace": "ospf-single",
-    "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0,
-    "macaddr": "44:38:39:00:00:29", "ifname": "swp2", "bondMembers": "", "type": "routed",
-    "l2miss": false}, {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default",
-    "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:00:00:50", "ifname":
-    "swp3", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace": "ospf-single",
-    "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0,
-    "macaddr": "44:38:39:00:00:0a", "ifname": "swp6", "bondMembers": "", "type": "routed",
-    "l2miss": false}, {"namespace": "ospf-single", "hostname": "spine01", "vrf": "default",
-    "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:00:00:22", "ifname":
-    "swp5", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace": "ospf-single",
-    "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0,
-    "macaddr": "44:38:39:00:00:3c", "ifname": "swp4", "bondMembers": "", "type": "routed",
-    "l2miss": false}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default",
-    "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:e5:e3:d4", "ifname":
-    "swp5", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0,
-    "macaddr": "52:54:00:5d:da:ac", "ifname": "swp6", "bondMembers": "", "type": "routed",
-    "l2miss": false}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default",
-    "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:54:3d:39", "ifname":
-    "swp1", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0,
-    "macaddr": "52:54:00:25:b0:5b", "ifname": "swp3", "bondMembers": "", "type": "routed",
-    "l2miss": false}, {"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default",
-    "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:a7:ba:2d", "ifname":
-    "swp4", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace": "ospf-ibgp",
-    "hostname": "spine02", "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0,
-    "macaddr": "52:54:00:d1:00:da", "ifname": "swp2", "bondMembers": "", "type": "routed",
-    "l2miss": false}]'
+  output: '[{"namespace": "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ipAddress":
+    "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:5d:da:ac", "ifname": "swp6", "bondMembers":
+    "", "type": "routed", "l2miss": false}, {"namespace": "ospf-ibgp", "hostname":
+    "spine02", "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:e5:e3:d4",
+    "ifname": "swp5", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ipAddress": "10.0.0.21",
+    "vlan": 0, "macaddr": "52:54:00:54:3d:39", "ifname": "swp1", "bondMembers": "",
+    "type": "routed", "l2miss": false}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:d1:00:da",
+    "ifname": "swp2", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
+    "ospf-ibgp", "hostname": "spine02", "vrf": "default", "ipAddress": "10.0.0.21",
+    "vlan": 0, "macaddr": "52:54:00:25:b0:5b", "ifname": "swp3", "bondMembers": "",
+    "type": "routed", "l2miss": false}, {"namespace": "ospf-ibgp", "hostname": "spine02",
+    "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "52:54:00:a7:ba:2d",
+    "ifname": "swp4", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
+    "ospf-single", "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21",
+    "vlan": 0, "macaddr": "44:38:39:00:00:0a", "ifname": "swp6", "bondMembers": "",
+    "type": "routed", "l2miss": false}, {"namespace": "ospf-single", "hostname": "spine01",
+    "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:00:00:22",
+    "ifname": "swp5", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
+    "ospf-single", "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21",
+    "vlan": 0, "macaddr": "44:38:39:00:00:54", "ifname": "swp1", "bondMembers": "",
+    "type": "routed", "l2miss": false}, {"namespace": "ospf-single", "hostname": "spine01",
+    "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:00:00:29",
+    "ifname": "swp2", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
+    "ospf-single", "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21",
+    "vlan": 0, "macaddr": "44:38:39:00:00:50", "ifname": "swp3", "bondMembers": "",
+    "type": "routed", "l2miss": false}, {"namespace": "ospf-single", "hostname": "spine01",
+    "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:00:00:3c",
+    "ifname": "swp4", "bondMembers": "", "type": "routed", "l2miss": false}]'
 - command: network find --address="10.0.0.32" --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet
@@ -166,25 +159,20 @@ tests:
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet
   marks: network find cumulus
-  output: '[{"namespace": "dual-evpn", "hostname": "server103", "vrf": "default",
-    "ipAddress": "172.16.1.1", "vlan": 0, "macaddr": "44:39:39:ff:00:13", "ifname":
-    "bond0", "bondMembers": "eth1, eth2", "type": "bridged", "l2miss": true}, {"namespace":
-    "dual-evpn", "hostname": "leaf01", "vrf": "default", "ipAddress": "fe80::4639:39ff:feff:13",
+  output: '[{"namespace": "dual-evpn", "hostname": "leaf01", "vrf": "default", "ipAddress":
+    "fe80::4639:39ff:feff:13", "vlan": 13, "macaddr": "44:39:39:ff:00:13", "ifname":
+    "vlan13", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
+    "dual-evpn", "hostname": "leaf02", "vrf": "default", "ipAddress": "fe80::4639:39ff:feff:13",
     "vlan": 13, "macaddr": "44:39:39:ff:00:13", "ifname": "vlan13", "bondMembers":
     "", "type": "routed", "l2miss": false}, {"namespace": "dual-evpn", "hostname":
     "leaf03", "vrf": "default", "ipAddress": "fe80::4639:39ff:feff:13", "vlan": 13,
     "macaddr": "44:39:39:ff:00:13", "ifname": "vlan13", "bondMembers": "", "type":
-    "routed", "l2miss": false}, {"namespace": "dual-evpn", "hostname": "leaf02", "vrf":
+    "routed", "l2miss": false}, {"namespace": "dual-evpn", "hostname": "leaf04", "vrf":
     "default", "ipAddress": "fe80::4639:39ff:feff:13", "vlan": 13, "macaddr": "44:39:39:ff:00:13",
     "ifname": "vlan13", "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace":
-    "dual-evpn", "hostname": "leaf04", "vrf": "default", "ipAddress": "fe80::4639:39ff:feff:13",
-    "vlan": 13, "macaddr": "44:39:39:ff:00:13", "ifname": "vlan13", "bondMembers":
-    "", "type": "routed", "l2miss": false}, {"namespace": "dual-evpn", "hostname":
-    "server101", "vrf": "default", "ipAddress": "172.16.1.1", "vlan": 0, "macaddr":
-    "44:39:39:ff:00:13", "ifname": "bond0", "bondMembers": "eth1, eth2", "type": "bridged",
-    "l2miss": true}, {"namespace": "ospf-ibgp", "hostname": "server103", "vrf": "default",
-    "ipAddress": "172.16.1.1", "vlan": 0, "macaddr": "44:39:39:ff:00:13", "ifname":
-    "bond0", "bondMembers": "eth1, eth2", "type": "bridged", "l2miss": true}, {"namespace":
     "ospf-ibgp", "hostname": "server101", "vrf": "default", "ipAddress": "172.16.1.1",
     "vlan": 0, "macaddr": "44:39:39:ff:00:13", "ifname": "bond0", "bondMembers": "eth1,
-    eth2", "type": "bridged", "l2miss": true}]'
+    eth2", "type": "bridged", "l2miss": true}, {"namespace": "ospf-ibgp", "hostname":
+    "server103", "vrf": "default", "ipAddress": "172.16.1.1", "vlan": 0, "macaddr":
+    "44:39:39:ff:00:13", "ifname": "bond0", "bondMembers": "eth1, eth2", "type": "bridged",
+    "l2miss": true}]'

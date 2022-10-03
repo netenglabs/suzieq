@@ -233,7 +233,7 @@ class RoutesObj(SqPandasEngine):
             else:
                 rslt = pd.DataFrame()
 
-        if not rslt.empty:
-            return rslt[usercols]
+        if rslt.empty:
+            return rslt
 
-        return rslt
+        return rslt[usercols]

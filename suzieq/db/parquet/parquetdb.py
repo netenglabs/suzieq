@@ -17,11 +17,13 @@ import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 
 from suzieq.db.base_db import SqDB, SqCoalesceStats
+from suzieq.shared.exceptions import SqCoalescerCriticalError
 from suzieq.shared.schema import Schema, SchemaForTable
 
 from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
                                            coalesce_resource_table)
-from suzieq.db.parquet.migratedb import get_migrate_fn
+from suzieq.db.parquet.migratedb import generic_migration, get_migrate_fn
+from suzieq.shared.utils import get_default_per_vals
 
 
 PARQUET_VERSION = '2.4'
@@ -205,7 +207,7 @@ class SqParquetDB(SqDB):
             partition_cols = ['sqvers', 'namespace', 'hostname']
 
         schema_def = dict(zip(schema.names, schema.types))
-        defvals = self._get_default_vals()
+        defvals = get_default_per_vals()
 
         if data_format == "pandas":
             if isinstance(data, pd.DataFrame):
@@ -249,8 +251,8 @@ class SqParquetDB(SqDB):
                        stuff
         :param ign_sqpoller: True if its OK to ignore the absence of sqpoller
                              to coalesce
-        :returns: coalesce statistics list, one per table
-        :rtype: SqCoalesceStats
+        :returns: exception if any, coalesce statistics list, one per table
+        :rtype: Tuple[SqCoalescerCriticalError, SqCoalesceStats]
         """
 
         infolder = self.cfg['data-directory']
@@ -332,6 +334,7 @@ class SqParquetDB(SqDB):
 
         # We've forced the sqPoller to be always the first table to coalesce
         stats = []
+        current_exception = None
         for entry in tables:
             table_outfolder = f'{outfolder}/{entry}'
             table_infolder = f'{infolder}//{entry}'
@@ -370,14 +373,19 @@ class SqParquetDB(SqDB):
                                              state.wrrec_count,
                                              int(datetime.now(tz=timezone.utc)
                                                  .timestamp() * 1000)))
-            except Exception:  # pylint: disable=broad-except
-                self.logger.exception(f'Unable to coalesce table {entry}')
+            except Exception as e:  # pylint: disable=broad-except
+
                 stats.append(SqCoalesceStats(entry, period, int(end-start),
                                              0, 0,
                                              int(datetime.now(tz=timezone.utc)
                                                  .timestamp() * 1000)))
+                # If we are dealing with a critical error, abort the coalescing
+                if isinstance(e, SqCoalescerCriticalError):
+                    current_exception = e
+                    break
+                self.logger.exception(f'Unable to coalesce table {entry}')
 
-        return stats
+        return current_exception, stats
 
     def migrate(self, table_name: str, schema: SchemaForTable) -> None:
         """Migrates the data for the table specified to latest version
@@ -389,64 +397,48 @@ class SqParquetDB(SqDB):
         """
 
         current_vers = schema.version
-        defvals = self._get_default_vals()
         arrow_schema = schema.get_arrow_schema()
-        schema_def = dict(zip(arrow_schema.names, arrow_schema.types))
 
-        # pylint: disable=too-many-nested-blocks
         for sqvers in self._get_avail_sqvers(table_name, True):
             if sqvers != current_vers:
                 migrate_rtn = get_migrate_fn(table_name, sqvers, current_vers)
-                if migrate_rtn:
-                    dataset = self._get_cp_dataset(table_name, True, sqvers,
-                                                   'all', '', '')
+                dataset = self._get_cp_dataset(table_name, True, sqvers,
+                                               'all', '', '')
+                if not dataset:
+                    continue
 
-                    if not dataset:
-                        continue
+                for file in dataset.files:
+                    try:
+                        df = ds.dataset(file,
+                                        format='parquet',
+                                        partitioning='hive') \
+                            .to_table() \
+                            .to_pandas(self_destruct=True)
+                    except pa.ArrowInvalid as e:
+                        self.logger.warning(f'Unable to migrate file: {e}')
 
-                    for item in dataset.files:
-                        try:
-                            namespace = item.split('namespace=')[1] \
-                                .split('/')[0]
-                        except IndexError:
-                            # Don't convert data not in our template
-                            continue
+                    if migrate_rtn:
+                        df = migrate_rtn(df, table_name, schema)
+                    # Always perform generic migration
+                    df = generic_migration(df, table_name, schema)
 
-                        df = pd.read_parquet(item)
-                        df['sqvers'] = sqvers
-                        df['namespace'] = namespace
-                        newdf = migrate_rtn(df)
+                    # Work out the filename
+                    splitted_name = Path(file).name.split('-')
+                    name_prefix = '-'.join(splitted_name[0:2])
+                    name_suffix = '-'.join(splitted_name[2:])
+                    filename = name_prefix + '-{i}-' + name_suffix
 
-                        cols = newdf.columns
-                        # Ensure all fields are present
-                        for field in schema_def:
-                            if field not in cols:
-                                newdf[field] = defvals.get(schema_def[field],
-                                                           '')
+                    self.write(table_name, 'pandas', df, True,
+                               arrow_schema, filename)
 
-                        newdf.drop(columns=['namespace', 'sqvers'])
+                    self.logger.debug(
+                        f'Migrated {file} version {sqvers}->'
+                        f'{current_vers}')
+                    os.remove(file)
 
-                        newitem = item.replace(f'sqvers={sqvers}',
-                                               f'sqvers={current_vers}')
-                        newdir = os.path.dirname(newitem)
-                        if not os.path.exists(newdir):
-                            os.makedirs(newdir, exist_ok=True)
-
-                        table = pa.Table.from_pandas(
-                            newdf, schema=schema.get_arrow_schema(),
-                            preserve_index=False)
-                        pq.write_to_dataset(table, newitem,
-                                            version=PARQUET_VERSION,
-                                            compression="ZSTD",
-                                            row_group_size=100000)
-                        self.logger.debug(
-                            f'Migrated {item} version {sqvers}->'
-                            f'{current_vers}')
-                        os.remove(item)
-
-                    rmtree(
-                        f'{self._get_table_directory(table_name, True)}/'
-                        f'sqvers={sqvers}', ignore_errors=True)
+                rmtree(
+                    f'{self._get_table_directory(table_name, True)}/'
+                    f'sqvers={sqvers}', ignore_errors=True)
 
     def _get_avail_sqvers(self, table_name: str, coalesced: bool) -> List[str]:
         """Get list of DB versions for a given table.
@@ -618,26 +610,6 @@ class SqParquetDB(SqDB):
             return ds.dataset(filelist, format='parquet', partitioning='hive')
         else:
             return None
-
-    def _build_master_schema(self, datasets: list) -> pa.lib.Schema:
-        """Build the master schema from the list of diff versions
-        We use this to build the filters and use the right type-based check
-        for a field.
-        """
-        msch = datasets[0].schema
-        msch_set = set(msch)
-        for dataset in datasets[1:]:
-            sch = dataset.schema
-            sch_set = set(sch)
-            if msch_set.issuperset(sch):
-                continue
-            if sch_set.issuperset(msch):
-                msch = sch
-            else:
-                for fld in sch_set-msch_set:
-                    msch.append(fld)
-
-        return msch
 
     def _get_filtered_fileset(self, dataset: ds, namespaces: list) -> ds:
         """Filter the dataset based on the namespace
@@ -872,16 +844,3 @@ class SqParquetDB(SqDB):
             return f'{folder}/{table_name}'
         else:
             return folder
-
-    def _get_default_vals(self) -> dict:
-        return({
-            pa.string(): "",
-            pa.int32(): 0,
-            pa.int64(): 0,
-            pa.float32(): 0.0,
-            pa.float64(): 0.0,
-            pa.date64(): 0.0,
-            pa.bool_(): False,
-            pa.list_(pa.string()): [],
-            pa.list_(pa.int64()): [],
-        })

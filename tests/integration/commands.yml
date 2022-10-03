@@ -1,0 +1,269 @@
+all:
+  # these functions are executed on all tables
+  # the args for these functions can be overridden by each table (f.e. devconfig)
+  get:
+  -
+  - columns:
+    - '*'
+  - columns:
+    - hostname
+    - namespace
+  unique:
+  -
+  - count: 'True'
+  summarize:
+  -
+address:
+  top:
+  - what: vlan
+  - what: vlan
+    columns:
+    - namespace
+bgp:
+  top:
+  - what: pfxRx
+  - what: pfxRx
+    columns:
+    - namespace
+  aver:
+  -
+  - columns:
+    - hostname
+device:
+  top:
+  - what: memory
+  - what: memory
+    columns:
+    - namespace
+devconfig:
+  unique:
+  - skip: # devconfig unique is not supported
+evpnVni:
+  top:
+  - what: vlan
+  aver:
+  -
+  - columns:
+    - hostname
+fs:
+  top:
+  - what: usedPercent
+  - what: usedPercent
+    columns:
+    - namespace
+interfaces:
+  top:
+  - what: mtu
+  - what: mtu
+    columns:
+    - namespace
+  aver:
+  -
+  - columns:
+    - hostname
+  - what: mtu-value
+ifCounters: # blacklisted
+  get:
+  - skip
+  unique:
+  - skip
+  summarize:
+  - skip
+lldp:
+  top:
+  - what: peerIfindex
+  - what: peerIfindex
+    columns:
+    - namespace
+macs:
+  top:
+  - what: moveCount
+  - what: moveCount
+    columns:
+    - namespace
+mlag:
+  top:
+  - what: mlagDualPortsCnt
+  - what: mlagDualPortsCnt
+    columns:
+    - namespace
+namespace:
+  top:
+  - what: deviceCnt
+  - what: deviceCnt
+    columns:
+    - namespace
+  get:
+  -
+  - columns:
+    - '*'
+  - columns:
+    - deviceCnt
+    - namespace
+network:
+  get:
+  - skip # already tested by namespace
+  unique:
+  - skip # already tested by namespace
+  summarize:
+  - skip # already tested by namespace
+  find:
+  - address:
+    - 10.0.0.11
+ospf:
+  top:
+  - what: numChanges
+  - what: numChanges
+    columns:
+    - namespace
+  aver:
+  -
+  - columns:
+    - hostname
+ospfIf: # internal
+  get:
+  - skip
+  unique:
+  - skip
+  summarize:
+  - skip
+ospfNbr: # internal
+  get:
+  - skip
+  unique:
+  - skip
+  summarize:
+  - skip
+path:
+  # skip path tests until the hostname filter is not fixed
+  get:
+  - skip
+  unique:
+  - skip
+  summarize:
+  - skip
+  # get:
+  # - dest: '172.16.2.104'
+  #   src: '172.16.1.101'
+  #   namespace:
+  #   - dual-evpn
+  # - dest: '172.16.2.104'
+  #   src: '172.16.1.101'
+  #   namespace:
+  #   - dual-evpn
+  #   columns:
+  #   - hostname
+  #   - pathid
+  # unique:
+  # - dest: '172.16.2.104'
+  #   src: '172.16.1.101'
+  #   namespace:
+  #   - dual-evpn
+  # - dest: '172.16.2.104'
+  #   src: '172.16.1.101'
+  #   namespace:
+  #   - dual-evpn
+  #   count: 'True'
+  # - dest: '172.16.2.104'
+  #   src: '172.16.1.101'
+  #   namespace:
+  #   - dual-evpn
+  #   count: 'True'
+  #   columns:
+  #   - pathid
+  # summarize:
+  # - dest: '172.16.2.104'
+  #   src: '172.16.1.101'
+  #   namespace:
+  #   - dual-evpn
+  # top:
+  # - dest: '172.16.2.104'
+  #   src: '172.16.1.101'
+  #   namespace:
+  #   - dual-evpn
+  #   what: inMtu
+  # - dest: '172.16.2.104'
+  #   src: '172.16.1.101'
+  #   namespace:
+  #   - dual-evpn
+  #   what: inMtu
+  #   columns:
+  #   - namespace
+routes:
+  top:
+  - what: preference
+  - what: preference
+    columns:
+    - namespace
+  lpm:
+  - address:
+    - 10.0.0.0
+  - address:
+    - 10.0.0.0
+    columns:
+    - '*'
+  - address:
+    - 10.0.0.0
+    columns:
+    - vrf
+    - prefix
+sqPoller:
+  top:
+  - what: status
+  - what: status
+    columns:
+    - namespace
+tables: # column namespaces not found. Investigate
+  top:
+  - what: allRows
+  - what: allRows
+    columns:
+    - table
+  get:
+  -
+  - columns:
+    - '*'
+  - columns:
+    - table
+    - allRows
+topmem: # blacklisted
+  get:
+  - skip
+  unique:
+  - skip
+  summarize:
+  - skip
+topcpu: # blacklisted
+  get:
+  - skip
+  unique:
+  - skip
+  summarize:
+  - skip
+
+topology:
+  get:
+    -
+    - columns:
+      - '*'
+    - columns:
+      - hostname
+      - namespace
+    - via:
+      - bgp
+    - via:
+      - lldp
+      - ospf
+    - via:
+      - ospf
+      columns:
+      - hostname
+# add topology test when asn is converted to int
+#   top:
+#     what: asn
+vlan:
+  top:
+  - what: vlan
+  - what: vlan
+    columns:
+    - namespace

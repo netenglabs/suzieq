@@ -1,6 +1,6 @@
 import pytest
 
-from tests.conftest import DATADIR, tables
+from tests.conftest import DATADIR, TABLES
 from suzieq.sqobjects import get_sqobject
 
 
@@ -8,7 +8,7 @@ from suzieq.sqobjects import get_sqobject
 @ pytest.mark.parametrize('table',
                           [pytest.param(x,
                                         marks=getattr(pytest.mark, x))
-                           for x in tables])
+                           for x in TABLES])
 @ pytest.mark.parametrize('datadir', DATADIR)
 @pytest.mark.parametrize('columns', [['*'], ['default']])
 def test_schema_data_consistency(table, datadir, columns, get_table_data_cols):
