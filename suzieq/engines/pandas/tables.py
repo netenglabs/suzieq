@@ -18,22 +18,14 @@ class TableObj(SqPandasEngine):
         df = pd.DataFrame()
         columns = kwargs.pop('columns', ['default'])
         fields = self.schema.get_display_fields(columns)
-        unknown_tables = []
         tables = []
 
         for table in table_list:
-            table_obj = self._get_table_sqobj(table)
-
-            if not table_obj:
-                # This is a table without an sqobject backing store
-                # this happens either because we haven't yet implemented the
-                # table functions or because this table is collapsed into a
-                # single table as in the case of ospf
-                unknown_tables.append(table)
-                table_inst = self._get_table_sqobj('tables')
-                table_inst.table = table
-            else:
-                table_inst = table_obj
+            try:
+                table_inst = self._get_table_sqobj(table)
+            except ModuleNotFoundError:
+                # ignore unknown tables
+                continue
 
             info = {'table': table}
             info.update(table_inst.get_table_info(
