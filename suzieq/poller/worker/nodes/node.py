@@ -213,10 +213,6 @@ class Node:
             if self.devtype in ['iosxe', 'ios', 'iosxr']:
                 await self._close_connection()
 
-            await self._fetch_init_dev_data()
-            if not self.hostname:
-                self.hostname = self.address
-
         return self
 
     @property
@@ -422,15 +418,9 @@ class Node:
         Its only available if we're using ssh as transport
         '''
 
-        devtype = None
-        hostname = None
-
         if self.transport in ['ssh', 'local']:
             try:
                 await self._get_device_type_hostname()
-                # The above fn calls results in invoking a callback fn
-                # that sets the device type
-                devtype = self.devtype
             except Exception:
                 self.logger.exception(f'{self.address}:{self.port}: Node '
                                       'discovery failed due to exception')
@@ -441,17 +431,16 @@ class Node:
                 # In this case there is not point in retrying discovery, it is
                 # likely a bug.
                 self._retry = 0
-                devtype = None
 
-            if not devtype:
+            if not self.devtype:
                 self.logger.debug(
                     f'No devtype for {self.hostname} {self.current_exception}')
                 # We were not able to do the discovery, schedule a new attempt
                 self._schedule_discovery_attempt()
-                return
             else:
-                self._set_devtype(devtype, '')
-                self._set_hostname(hostname)
+                # Need to initialize the node with the device-specific
+                # commands
+                await self._fetch_init_dev_data()
         else:
             self.logger.error(
                 f'Non-SSH transport node {self.address}:{self.port} '
@@ -857,7 +846,11 @@ class Node:
                 async with self._discovery_lock:
                     await self._detect_node_type()
 
-        if not self.devtype:
+        # As after the discovery we call the _init_dev_data() devtype might be
+        # set but the devdata is still not intialized, so discovery is still
+        # pending. In this case we need to fail
+        if (not self.devtype
+                or (self.devtype and self._discovery_lock.locked())):
             result.append(self._create_error(svc_defn.get("service", "-")))
             return await service_callback(result, cb_token)
 
