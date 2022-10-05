@@ -637,10 +637,10 @@ class InterfacesObj(SqPandasEngine):
         namespace = kwargs.get('namespace', [])
         hostname = kwargs.get('hostname', [])
 
-        conf_df = self._get_table_sqobj('devconfig') \
+        conf_df = self._get_table_sqobj('devconfig', start_time='') \
             .get(namespace=namespace, hostname=hostname)
 
-        devdf = self._get_table_sqobj('device') \
+        devdf = self._get_table_sqobj('device', start_time='') \
             .get(namespace=namespace, hostname=hostname,
                  columns=['namespace', 'hostname', 'os'],
                  ignore_neverpoll=True)
@@ -652,6 +652,8 @@ class InterfacesObj(SqPandasEngine):
         for row in conf_df.itertuples():
             # Check what type of device this is
             # TBD: SONIC support
+            conf = None
+            nos = None
             if not devdf.empty:
                 nos = devdf[(devdf.namespace == row.namespace) &
                             (devdf.hostname == row.hostname)]['os'].tolist()
@@ -676,18 +678,19 @@ class InterfacesObj(SqPandasEngine):
             except Exception:  # pylint: disable=broad-except
                 continue
 
-            pm_dict = get_access_port_interfaces(conf, nos)
-            pm_list.extend([{'namespace': row.namespace,
-                             'hostname': row.hostname,
-                             'ifname': k,
-                             'portmode': 'access',
-                             'vlan': v} for k, v in pm_dict.items()])
-            pm_dict = get_trunk_port_interfaces(conf, nos)
-            pm_list.extend([{'namespace': row.namespace,
-                             'hostname': row.hostname,
-                             'ifname': k,
-                             'portmode': 'trunk',
-                             'vlan': v} for k, v in pm_dict.items()])
+            if conf and nos:
+                pm_dict = get_access_port_interfaces(conf, nos)
+                pm_list.extend([{'namespace': row.namespace,
+                                 'hostname': row.hostname,
+                                 'ifname': k,
+                                 'portmode': 'access',
+                                 'vlan': v} for k, v in pm_dict.items()])
+                pm_dict = get_trunk_port_interfaces(conf, nos)
+                pm_list.extend([{'namespace': row.namespace,
+                                 'hostname': row.hostname,
+                                 'ifname': k,
+                                 'portmode': 'trunk',
+                                 'vlan': v} for k, v in pm_dict.items()])
 
         pm_df = pd.DataFrame(pm_list)
 
@@ -734,7 +737,7 @@ class InterfacesObj(SqPandasEngine):
         if df.empty:
             return df
 
-        vlan_df = self._get_table_sqobj('vlan') \
+        vlan_df = self._get_table_sqobj('vlan', start_time='') \
                       .get(namespace=kwargs.get('namespace', []))
 
         if vlan_df.empty:

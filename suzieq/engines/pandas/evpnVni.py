@@ -59,7 +59,7 @@ class EvpnvniObj(SqPandasEngine):
         iflist = [x for x in df[df.vlan == 0]['ifname'].to_list()
                   if x and x != 'None']
         if iflist:
-            ifdf = self._get_table_sqobj('interfaces').get(
+            ifdf = self._get_table_sqobj('interfaces', start_time='').get(
                 namespace=kwargs.get('namespace', []), ifname=iflist,
                 columns=['namespace', 'hostname', 'ifname', 'state', 'vlan',
                          'vni'])
