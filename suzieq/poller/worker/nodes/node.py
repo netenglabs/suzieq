@@ -1048,11 +1048,14 @@ class Node:
         the devtype we are polling.
         """
         # Check whether all the commands has been successful
-        if any(out['status'] not in [0, 200] for out in output):
-            # the last command is the once which failed get why it failed.
-            failed_cmd = output[-1]
-            fail_reason = (f"Cmd `{failed_cmd['cmd']}` failed with reason: "
-                           f"{failed_cmd['data'].get('error', 'None')}")
+        failed_commands = [out for out in output
+                           if out['status'] not in [0, 200]]
+        if failed_commands:
+            # Get the reason for the failure of the commands
+            fail_reason = ''
+            for cmd in failed_commands:
+                fail_reason += (f"Cmd `{cmd['cmd']}` failed with reason: "
+                                f"{cmd['data']}. ")
 
             # Schedule a new connection attempt to retry the discovery of the
             # node
@@ -1068,7 +1071,7 @@ class Node:
             next_time = datetime.fromtimestamp(self._connect_again_at)
             logger.warning(
                 f'{self.address}:{self.port} unable to initialize the device '
-                f'data. {fail_reason}. Disconnecting and scheduling '
+                f'data. {fail_reason} Disconnecting and scheduling '
                 f'another connection attempt from {next_time}.')
         else:
             await self._parse_init_dev_data_devtype(output, cb_token)
