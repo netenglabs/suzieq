@@ -47,7 +47,8 @@ class SqParquetDB(SqDB):
         folder = self._get_table_directory(None, False)
         dirs = Path(folder).glob('*')
         tables = [str(x.stem) for x in dirs
-                  if not str(x.stem).startswith(('_', 'coalesced'))]
+                  if not str(x.stem).startswith(('_', 'coalesced'))
+                  and x.is_dir()]
 
         return tables
 
