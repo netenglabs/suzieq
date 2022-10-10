@@ -222,20 +222,6 @@ class Node:
         if not self.devtype and self._retry:
             # Unable to connect to the node, schedule later another attempt
             self._schedule_discovery_attempt()
-        elif self.devtype not in ['unsupported', None] and self._retry:
-            # OK, we know the devtype, now initialize the info we need
-            # to start proper operation
-
-            # IOS* closes the connection after the initial cmds
-            # are executed. So close the conn at our end too
-            # avoiding the initial persistent connection failure that
-            # otherwise happens
-            if self.devtype in ['iosxe', 'ios', 'iosxr'] and self._conn:
-                await self._close_connection()
-                # In this case opening and closing a connetion too quickly
-                # might cause an authentication failure. Wait some time before
-                # proceeding with the new connection
-                await asyncio.sleep(IOS_TIME_AFTER_DISCOVERY)
 
         return self
 
@@ -462,6 +448,17 @@ class Node:
                 # We were not able to do the discovery, schedule a new attempt
                 self._schedule_discovery_attempt()
             else:
+                # IOS* closes the connection after the initial cmds
+                # are executed. So close the conn at our end too
+                # avoiding the initial persistent connection failure that
+                # otherwise happens
+                if self.devtype in ['iosxe', 'ios', 'iosxr']:
+                    await self._close_connection()
+                    # In this case opening and closing a connetion too quickly
+                    # might cause an authentication failure. Wait some time
+                    # before proceeding with the new connection
+                    await asyncio.sleep(IOS_TIME_AFTER_DISCOVERY)
+
                 # Need to initialize the node with the device-specific
                 # commands
                 await self._fetch_init_dev_data()
