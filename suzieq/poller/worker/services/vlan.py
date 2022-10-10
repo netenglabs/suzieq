@@ -130,6 +130,7 @@ class VlanService(Service):
 
         vlan_dict = {}
         drop_indices = []
+        new_entries = []
 
         for i, entry in enumerate(processed_data):
             if entry.get('_entryType', '') == 'vlan':
@@ -164,9 +165,21 @@ class VlanService(Service):
                                   for k, j in enumerate(i.split('-'))]))
                      if '-' in i else [i]) for i in vlans.split(',')), [])
                 for vlan in vlans:
+                    # IOS allows declaring a native VLAN without it being
+                    # declared in show vlan. Handle that
+                    if str(vlan) not in vlan_dict:
+                        vlan_dict[str(vlan)] = {
+                            'vlan': vlan,
+                            'state': 'active',
+                            'vlanName': f'vlan{vlan}',
+                            'interfaces': []
+                        }
+                        new_entries.append(vlan_dict[str(vlan)])
                     vlan_dict[str(vlan)]['interfaces'].append(ifname)
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
+        if new_entries:
+            processed_data.extend(new_entries)
         return processed_data
 
     def _clean_iosxe_data(self, processed_data, raw_data):
