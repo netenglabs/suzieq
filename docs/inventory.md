@@ -13,7 +13,7 @@ The new inventory is structured in 4 major pieces, explained in its own section:
 - `auths`: a list of credential sources
 - `namespaces`: where you put together all the above. A namespace is be defined by a `source`, an `auth` and a `device`
 
-Here is an example of a complete inventory file:
+Here is an example of an inventory file with a bunch of different options, but non-exhaustive, for each section:
 ```yaml
 sources:
 - name: netbox-instance-123
@@ -27,23 +27,26 @@ sources:
 - name: dc-02-suzieq-native
   hosts:
   - url: ssh://vagrant@10.0.0.1:22 keyfile=/path/to/private_key
-  - url: ssh://vagrant@10.0.0.2:22 devtype=eos keyfile=/path/to/private_key
+  - url: https://vagrant@10.0.0.2:22 devtype=eos
 
 - name: ansible-01
   type: ansible
   path: /path/to/ansible/list
 
 devices:
+- name: devices-without-jump-hosts
+  ignore-known-hosts: true
+
 - name: devices-with-jump-hosts
   transport: ssh
   jump-host: username@127.0.0.1
   jump-host-key-file: /path/to/jump/key
   ignore-known-hosts: true
   port: 22
-  devtype: eos
 
 - name: devices-using-rest
   transport: https
+  devtype: eos
 
 auths:
 - name: credentials-from-file-0
@@ -71,6 +74,56 @@ namespaces:
   source: netbox-instance-123
   device: devices-with-jump-hosts
   auth: credentials-from-file-0
+```
+
+Some observations on the YAML file above:
+- This is an example that covers all the possible combinations, not an real life inventory
+- Do not specify device type unless you're using REST. SuzieQ automatically determines device type with SSH
+- Most environments require setting the ignore-known-hosts
+- The auths section shows all the different authorization methods supported by SuzieQ
+- The Ansible method assumes you'll be using REST with Arista devices by default, and SSH for the others
+
+You can have different sources all mapped to the same namespace, as this inventory file shows:
+```
+---
+sources:
+  - name: single
+    hosts:
+      - url: ssh://vagrant@localhost:10000 password=vagrant 
+
+  - name: slowpoke
+    hosts:
+      - url: ssh://vagrant@10.255.3.10 password=vagrant 
+  
+  - name: mixed
+    hosts:
+      - url: https://vagrant@10.0.0.2:22 devtype=eos
+      - url: ssh://vagrant@192.13.1.1 password=vagrant 
+
+devices:
+  - name: default
+    ignore-known-hosts: true
+
+  - name: slow
+    ignore-known-hosts: true
+    slow_host: true
+
+  - name: default-rest
+    transport: https
+    devtype: eos
+
+namespaces:
+  - name: testing
+    source: single
+    device: default
+
+  - name: testing
+    source: slowpoke
+    device: slow
+    
+  - name: testing
+    source: mixed
+    device: default
 ```
 
 ## <a name='sensitive-data'></a>Sensitive data
