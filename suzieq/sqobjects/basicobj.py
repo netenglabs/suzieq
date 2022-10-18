@@ -536,6 +536,12 @@ class SqObject(SqPlugin):
             return columns
         elif fun == 'summarize':
             return []
+        elif fun == 'get':
+            fields = self.schema.get_display_fields(columns)
+            if (kwargs.get('view', self.view) == 'all' and
+                    'active' not in fields):
+                fields.insert(0, 'active')
+            return fields
         return self.schema.get_display_fields(columns)
 
     def _is_result_empty(self, result: pd.DataFrame) -> bool:
