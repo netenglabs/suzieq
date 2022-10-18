@@ -277,34 +277,25 @@ class SqParquetDB(SqDB):
         try:
             timeint = int(period[:-1])
             time_unit = period[-1]
-            if time_unit == 'm':
-                run_int = timedelta(minutes=timeint)
-                state.prefix = 'sqc-m-'
-                state.ign_pfx = ['.', '_', 'sqc-']
-            elif time_unit == 'h':
-                run_int = timedelta(hours=timeint)
-                state.prefix = 'sqc-h-'
-                state.ign_pfx = ['.', '_', 'sqc-y-', 'sqc-d-', 'sqc-w-',
-                                 'sqc-M-']
-            elif time_unit == 'd':
-                run_int = timedelta(days=timeint)
-                if timeint > 364:
-                    state.prefix = 'sqc-y-'
-                    state.ign_pfx = ['.', '_', 'sqc-y-']
-                elif timeint > 29:
-                    state.prefix = 'sqc-M-'
-                    state.ign_pfx = ['.', '_', 'sqc-M-', 'sqc-y-']
-                else:
-                    state.prefix = 'sqc-d-'
-                    state.ign_pfx = ['.', '_', 'sqc-m-', 'sqc-d-', 'sqc-w-',
-                                     'sqc-M-', 'sqc-y-']
-            elif time_unit == 'w':
-                run_int = timedelta(weeks=timeint)
-                state.prefix = 'sqc-w-'
-                state.ign_pfx = ['.', '_', 'sqc-w-', 'sqc-m-', 'sqc-y-']
-            else:
-                logging.error(f'Invalid unit for period, {time_unit}, '
-                              'must be one of m/h/d/w')
+            allowed_units = {
+                'm': 'minutes',
+                'h': 'hours',
+                'd': 'days',
+                'w': 'weeks'
+            }
+            if time_unit not in allowed_units:
+                raise ValueError(f'Invalid unit for period, {time_unit}, '
+                                 'must be one of m/h/d/w')
+
+            run_int = timedelta(**{allowed_units[time_unit]: timeint})
+            state.prefix = f'sqc-{time_unit}{timeint}-'
+            state.ign_pfx = ['.', '_']
+
+            # Build the list of coalesced file to ignore if the coalescer
+            # works with already coalesced files.
+            unit_list = list(allowed_units)
+            ignored_from_coalescing = unit_list[unit_list.index(time_unit)+1:]
+            state.ign_pfx += [f'sqc-{u}' for u in ignored_from_coalescing]
         except ValueError:
             logging.error(f'Invalid time, {period}')
             return None
