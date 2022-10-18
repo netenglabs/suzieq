@@ -89,6 +89,11 @@ class LldpObj(SqPandasEngine):
                 df['peerIfname'] = np.where(df['peerIfname'] == '-',
                                             df['ifname_y'], df['peerIfname'])
 
+        # Intelligently handle hostnames without FQDN announcing themselves
+        # with FQDN in LLDP
+        if not df.empty:
+            df = self._fix_fqdn_in_peerhost(df)
+
         if use_bond.lower() == "true":
             df = self._resolve_to_bond(
                 df[fields], hostname=kwargs.get('hostname', []))[fields]
@@ -164,3 +169,30 @@ class LldpObj(SqPandasEngine):
             .drop(columns=['master', 'master_peer'], errors='ignore')
 
         return lldp_df
+
+    def _fix_fqdn_in_peerhost(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Intelligently strip FQDN from peer hostname if necessary.
+
+        In some cases, the hostname returned by the NOS is without the
+        domain name while the hostname advertised in LLDP is the FQDN.
+        This means we cannot use LLDP to determine peering interfaces.
+        This routine addresses this by intelligently stripping domain
+        name from hosts if they're known without FQDN
+
+        Args:
+            df: LLDP pandas Dataframe
+
+        Returns:
+            pandas Dataframe with the peerHost entry fixed
+        """
+        hosts = set(df.hostname.unique().tolist())
+        peerhosts = set(df.peerHostname.unique().tolist())
+
+        ph_map = {hname: (hname.split('.')[0]
+                          if hname.split('.')[0] in hosts else hname)
+                  for hname in peerhosts}
+
+        df['peerHostname'] = df.peerHostname.apply(lambda x, ph_map:
+                                                   ph_map[x], args=(ph_map,))
+
+        return df
