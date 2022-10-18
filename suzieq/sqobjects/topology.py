@@ -1,4 +1,6 @@
 from typing import List
+
+import pandas as pd
 from suzieq.sqobjects.basicobj import SqObject
 
 
@@ -20,6 +22,12 @@ class TopologyObj(SqObject):
         }
         self._valid_summarize_args = ['namespace', 'hostname', 'via',
                                       'query_str']
+
+    def get(self, **kwargs) -> pd.DataFrame:
+        view = kwargs.get('view', self.view)
+        if view == 'all':
+            raise AttributeError("Cannot use 'view=all' with this table")
+        return super().get(**kwargs)
 
     def _get_empty_cols(self, columns: List[str], fun: str, **kwargs) \
             -> List[str]:
