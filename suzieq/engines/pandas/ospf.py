@@ -508,7 +508,7 @@ class OspfObj(SqPandasEngine):
             nopeer_df = nopeer_df.drop(columns=['peerHostname', 'peerIfname'],
                                        errors='ignore')
             # We need to look deeper to see if we can figure out the peers
-            addr_df = self._get_table_sqobj('address').get(
+            addr_df = self._get_table_sqobj('address', start_time='').get(
                 namespace=kwargs.get('namespace', []),
                 hostname=kwargs.get('hostname', []),
                 type='!loopback',

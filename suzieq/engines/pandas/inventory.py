@@ -67,7 +67,7 @@ class InventoryObj(SqPandasEngine):
             # Lets see if we can name the ports properly
             namespaces = kwargs.get('namespace', [])
             hostnames = kwargs.get('hostname', [])
-            ifdf = self._get_table_sqobj('interfaces') \
+            ifdf = self._get_table_sqobj('interfaces', start_time='') \
                 .get(namespace=namespaces, hostname=hostnames,
                      columns=['namespace', 'hostname', 'ifname'],
                      type=['ethernet', 'flexible-ethernet', 'bond_slave'])

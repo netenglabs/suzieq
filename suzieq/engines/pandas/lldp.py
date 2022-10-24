@@ -48,7 +48,7 @@ class LldpObj(SqPandasEngine):
         macdf = df.query('subtype.isin(["", "mac address"])')
         if not macdf.empty:
             macs = macdf.peerMacaddr.unique().tolist()
-            addrdf = self._get_table_sqobj('address').get(
+            addrdf = self._get_table_sqobj('address', start_time='').get(
                 namespace=namespace, address=macs,
                 columns=['namespace', 'hostname', 'ifname', 'macaddr'])
 
@@ -75,7 +75,7 @@ class LldpObj(SqPandasEngine):
                      for x in ifidx_df.query('peerIfindex != 0').peerIfindex
                      .unique().tolist()]
         if not ifidx_df.empty and ifindices:
-            ifdf = self._get_table_sqobj('interfaces').get(
+            ifdf = self._get_table_sqobj('interfaces', start_time='').get(
                 namespace=namespace, ifindex=ifindices,
                 columns=['namespace', 'hostname', 'ifname', 'ifindex'])
             df = df.merge(
@@ -127,7 +127,7 @@ class LldpObj(SqPandasEngine):
             The LLDP dataframe with the appropriate substitution
         """
 
-        ifdf = self._get_table_sqobj('interfaces').get(
+        ifdf = self._get_table_sqobj('interfaces', start_time='').get(
             namespace=df.namespace.unique().tolist(),
             hostname=hostname,
             type=['bond_slave', 'bond'],
