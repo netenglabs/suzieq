@@ -27,7 +27,9 @@ from suzieq.shared.utils import get_timestamp_from_junos_time, known_devtypes
 from suzieq.shared.exceptions import SqPollerConfError, UnknownDevtypeError
 
 logger = logging.getLogger(__name__)
-IOS_SLEEP_BET_CMDS = 5          # in seconds
+
+IOS_TIME_AFTER_DISCOVERY = 60   # time to wait after ios(xe,xr) auto-discovery
+
 TNode = TypeVar('TNode', bound='Node')
 
 
@@ -75,6 +77,12 @@ class Node:
           return data. You'll need to supply a callback fn to call after the
           data is available.
     '''
+    SLEEP_BET_CMDS_SLOW = 5  # seconds slow hosts wait between commands
+
+    CONN_INITIAL_BACKOFF = 1  # (s) initial backoff time after conn failure
+    CONN_INITIAL_BACKOFF_SLOW = 30  # same as before but for slow hosts
+    CONNECTION_ATTEMPTS = 4  # How many connection attempts each time
+    MIN_WAIT_TIME_CONN_FAIL = 60  # (s) wait time when all conn attempts failed
 
     # pylint: disable=too-many-statements
     async def initialize(self, **kwargs) -> TNode:
@@ -92,6 +100,7 @@ class Node:
         self.port = 0
         self.backoff = 15  # secs to backoff
         self.init_again_at = 0  # after this epoch secs, try init again
+        self._connect_again_at = 0  # after this epoch secs, try connection
         self.connect_timeout = kwargs.get('connect_timeout', 15)
         self.cmd_timeout = 10  # default command timeout in seconds
         self.bootupTimestamp = 0
@@ -107,6 +116,7 @@ class Node:
         self._exception_timestamp = None
         self._current_exception = None
         self.api_key = None
+        self._fetching_dev_data = False  # If we are fetching the dev data
         self._stdin = self._stdout = self._long_proc = None
         self._max_retries_on_auth_fail = (kwargs.get('retries_on_auth_fail')
                                           or 0) + 1
@@ -178,7 +188,11 @@ class Node:
 
         if self.transport == "ssh":
             self.port = self.port or 22
-            await self._init_ssh(init_dev_data=False)
+            # If a devtype is provided do not perform the initial connection
+            # we want to do the connection once. So that we don't need to
+            # open and close it in the case of 'iosxe', 'ios', 'iosxr'.
+            if not self.devtype:
+                await self._init_ssh(init_dev_data=False)
         elif self.transport == "https":
             self.port = self.port or 443
             if self.devtype:
@@ -210,8 +224,12 @@ class Node:
             # are executed. So close the conn at our end too
             # avoiding the initial persistent connection failure that
             # otherwise happens
-            if self.devtype in ['iosxe', 'ios', 'iosxr']:
+            if self.devtype in ['iosxe', 'ios', 'iosxr'] and self._conn:
                 await self._close_connection()
+                # In this case opening and closing a connetion too quickly
+                # might cause an authentication failure. Wait some time before
+                # proceeding with the new connection
+                await asyncio.sleep(IOS_TIME_AFTER_DISCOVERY)
 
             await self._fetch_init_dev_data()
             if not self.hostname:
@@ -596,7 +614,14 @@ class Node:
         return options
 
     async def _init_ssh(self, init_dev_data=True, use_lock=True) -> None:
-        '''Setup a persistent SSH connection to our node.
+        '''Setup a persistent SSH connection to our node. This function is a
+        wrapper for `_ssh_connect()` and  handles concurrent calls and
+        multiple attempts in case of failure.
+        It perform at most `self.CONNECTION_ATTEMPTS` connection attempts
+        blocking all the pending commands. If after all the attempts, it does
+        not succeed in creating the new connection, the function return and
+        schedule a time for the next set of attempts.
+        All the calls before this time will fail without even trying.
 
         In some cases such as IOSXE/XR, this may not actually setup a
         persistent SSH session, but does the basics of setting one up.
@@ -610,71 +635,129 @@ class Node:
         caller MUST acquire the lock and pass use_lock=False. And the
         caller MUST ensure they release the lock.
         '''
-        if self._retry and not self._conn:
+        if (self._retry and not self._conn
+                and time.time() > self._connect_again_at):
+            someone_tried = False
             if use_lock:
+                # We need to check whether someone is already attempting a
+                # connection. If so wait for the result and return.
+                if self.ssh_ready.locked():
+                    someone_tried = True
                 await self.ssh_ready.acquire()
 
             # Someone else may have already succeeded in getting the SSH conn
-            if self.is_connected or not self._retry:
+            # or tried without any success
+            if someone_tried or self.is_connected or not self._retry:
                 if use_lock:
                     self.ssh_ready.release()
                 return
 
-            options = self._init_ssh_options()
-            if self.jump_host and not self._tunnel:
-                await self._init_jump_host_connection(options)
-                if not self._tunnel:
-                    if use_lock:
-                        self.ssh_ready.release()
-                    return
+            attempts = 0
+            backoff_period = (self.CONN_INITIAL_BACKOFF_SLOW if self.slow_host
+                              else self.CONN_INITIAL_BACKOFF)
+            try:
+                while not self.is_connected:
+                    prev_auth_retry = self._retry
+                    await self._ssh_connect()
 
-            async with self._cmd_pacer.wait():
-                try:
-                    if self._tunnel:
-                        self._conn = await self._tunnel.connect_ssh(
-                            self.address, port=self.port,
-                            username=self.username,
-                            options=options)
-                    else:
-                        self._conn = await asyncssh.connect(
-                            self.address,
-                            username=self.username,
-                            port=self.port,
-                            options=options)
-                    self.logger.info(
-                        f"Connected to {self.address}:{self.port} at "
-                        f"{time.time()}")
-                    # Reset authentication fail attempt on success
-                    self._retry = self._max_retries_on_auth_fail
-                except Exception as e:  # pylint: disable=broad-except
-                    if isinstance(e, asyncssh.HostKeyNotVerifiable):
-                        self.logger.error(
-                            f'Unable to connect to {self.address}: {self.port}'
-                            ', host key is unknown. If you do not need to '
-                            ' verify the host identity, add '
-                            '"ignore-known-hosts: True" in the device section '
-                            'of the inventory')
-                    elif isinstance(e, asyncssh.misc.PermissionDenied):
-                        self.logger.error(
-                            f'Authentication failed to {self.address}. '
-                            'Not retrying to avoid locking out user. Please '
-                            'restart poller with proper authentication')
-                        self._retry -= 1
-                    else:
-                        self.logger.error('Unable to connect to '
-                                          f'{self.address}:{self.port}, {e}')
-                    self.current_exception = e
-                    await self._close_connection()
-                    self._conn = None
-                finally:
-                    if use_lock:
-                        self.ssh_ready.release()
+                    if self.is_connected:
+                        self.logger.info('Connection succeeded via SSH for '
+                                         f'{self.hostname}')
+                        break
+
+                    # As we want to do all the maximum authentication attempts,
+                    # reduce `attempts` only if the reason is not an
+                    # authentication error
+                    if prev_auth_retry == self._retry:
+                        attempts += 1
+
+                    if not self._retry or attempts >= self.CONNECTION_ATTEMPTS:
+                        break
+
+                    # Wait a backoff time and retry with the connection
+                    await asyncio.sleep(backoff_period)
+                    backoff_period *= 2
+                    backoff_period = min(backoff_period, 120)
+            finally:
+                if use_lock:
+                    self.ssh_ready.release()
 
             # Release here because init_dev_data uses this lock as well
             # We need to be sure that devtype is set, otherwise the
             # _fetch_dev_data function is not implemented and will raise.
-            if init_dev_data and self.devtype:
-                await self._fetch_init_dev_data()
+            # Moreover we want to be connected if we call this function
+            if self.is_connected:
+                self._connect_again_at = 0
+                if init_dev_data and self.devtype:
+                    await self._fetch_init_dev_data()
+            elif self.devtype and self._retry:
+                # If we are not able to connect after all the previous attempts
+                # wait some time before the next attempts.
+                # If we don't know the devtype we want to follow the device
+                # init scheduling, so skip.
+                wait_time = max(self.MIN_WAIT_TIME_CONN_FAIL,
+                                backoff_period * 3)
+                self._connect_again_at = time.time() + wait_time
+                next_time = datetime.fromtimestamp(self._connect_again_at)
+                logger.info(
+                    f'Connection to {self.address}:{self.port} will be '
+                    f'retried from {next_time}'
+                )
+
+    async def _ssh_connect(self):
+        """Create a new SSH connection with the node. The function just creates
+        the new connection without handling concurrent calls or an already
+        opened connection. Useful to be overridden when the node requires
+        specific operations to set up a new SSH connection (i.e. IOSXE, IOSXR).
+        To safely create a new connection always call `_init_ssh()`.
+        """
+        options = self._init_ssh_options()
+        if self.jump_host and not self._tunnel:
+            await self._init_jump_host_connection(options)
+            if not self._tunnel:
+                return
+
+        async with self._cmd_pacer.wait():
+            try:
+                if self._tunnel:
+                    self._conn = await self._tunnel.connect_ssh(
+                        self.address, port=self.port,
+                        username=self.username,
+                        options=options)
+                else:
+                    self._conn = await asyncssh.connect(
+                        self.address,
+                        username=self.username,
+                        port=self.port,
+                        options=options)
+                self.logger.info(
+                    f"Connected to {self.address}:{self.port} at "
+                    f"{time.time()}")
+                # Reset authentication fail attempt on success
+                self._retry = self._max_retries_on_auth_fail
+            except Exception as e:  # pylint: disable=broad-except
+                if isinstance(e, asyncssh.HostKeyNotVerifiable):
+                    self.logger.error(
+                        f'Unable to connect to {self.address}: {self.port}'
+                        ', host key is unknown. If you do not need to '
+                        ' verify the host identity, add '
+                        '"ignore-known-hosts: True" in the device section '
+                        'of the inventory')
+                elif isinstance(e, asyncssh.misc.PermissionDenied):
+                    self._retry -= 1
+                    error_msg = f'Authentication failed to {self.address} '
+                    if not self._retry:
+                        error_msg += ('Not retrying to avoid locking out '
+                                      'user. Please restart poller with '
+                                      'proper authentication.')
+                    self.logger.error(f'{error_msg}: {e}')
+
+                else:
+                    self.logger.error('Unable to connect to '
+                                      f'{self.address}:{self.port}, {e}')
+                self.current_exception = e
+                await self._close_connection()
+                self._conn = None
 
     @abstractmethod
     async def _init_rest(self):
@@ -782,6 +865,8 @@ class Node:
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             for cmd in cmd_list:
                 try:
+                    if self.slow_host:
+                        await asyncio.sleep(self.SLEEP_BET_CMDS_SLOW)
                     output = await asyncio.wait_for(self._conn.run(cmd),
                                                     timeout=timeout)
                     if self.current_exception:
@@ -935,8 +1020,27 @@ class Node:
         await self._exec_cmd(service_callback, cmdlist, cb_token,
                              oformat=oformat, timeout=cb_token.timeout)
 
-    @abstractmethod
     async def _fetch_init_dev_data(self):
+        """Start data fetch to initialize the class with specific device attrs
+
+        This function is a wrapper which calls the specific implementation for
+        the devtype we are polling.
+        """
+        # If we are already fetching the device data directly return
+        if self._fetching_dev_data:
+            return
+
+        # The _fetching_dev_data allows us to tell that we are already fetching
+        # the device data, so if we establish a new connection, we should not
+        # call that function again
+        self._fetching_dev_data = True
+        try:
+            await self._fetch_init_dev_data_devtype()
+        finally:
+            self._fetching_dev_data = False
+
+    @abstractmethod
+    async def _fetch_init_dev_data_devtype(self):
         """Start data fetch to initialize the class with specific device attrs
 
         This function initiates the process of fetching critical pieces
@@ -1084,7 +1188,7 @@ class EosNode(Node):
                 f'Unable to connect to {self.address}:{self.port}, '
                 f'error: {str(e)}')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
 
         if self.transport == 'https':
             cmdlist = ["show version", "show hostname"]
@@ -1251,7 +1355,7 @@ class EosNode(Node):
 class CumulusNode(Node):
     '''Cumulus Node specific implementation'''
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["cat /proc/uptime", "hostname",
@@ -1371,42 +1475,25 @@ class IosXRNode(Node):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version", "show run hostname"],
                              None, 'text')
 
-    async def _init_ssh(self, init_dev_data=True,
-                        use_lock: bool = True) -> None:
-        '''Need to start a neverending process to keep persistent ssh
+    async def _ssh_connect(self):
+        """Connect to an IOSXR device, the standard `_ssh_connect()` is not
+        enough as we need to start a neverending process to keep persistent
+        ssh.
 
         IOS XR's ssh is fragile and archaic. It doesn't support sending
         multiple commands over a single SSH connection as most other devices
-        do. I suspect this may not be the only one. The bug is mentioned in
-        https://github.com/ronf/asyncssh/issues/241. To overcome this issue,
-        we wait in a loop for things to succeed. There's no point in continuing
-        if this doesn't succeed. Maybe better to abort after a fixed number
-        of retries to enable things like run-once=gather to work.
-        '''
-        backoff_period = 1
-        if use_lock:
-            await self.ssh_ready.acquire()
+        do and this may not be the only one. The bug is mentioned in
+        https://github.com/ronf/asyncssh/issues/241.
+        """
+        await super()._ssh_connect()
 
-        while not self._conn:
-
-            if not self._retry:
-                break
-
-            await super()._init_ssh(init_dev_data=False, use_lock=False)
-
-            if self.is_connected:
-                break
-
-            await asyncio.sleep(backoff_period)
-            backoff_period *= 2
-            backoff_period = min(backoff_period, 120)
-
+        # Create a persistent ssh connection
         if self.is_connected and not self._long_proc:
             try:
                 self._long_proc = await self._conn.create_process(
@@ -1414,13 +1501,14 @@ class IosXRNode(Node):
                     stderr=DEVNULL)
                 self.logger.info(
                     f'Persistent SSH present for {self.hostname}')
-                if init_dev_data:
-                    await self._fetch_init_dev_data()
-            except Exception:
-                self._conn = self._long_proc = None
-
-        if use_lock:
-            self.ssh_ready.release()
+            except Exception as e:
+                if isinstance(e, asyncssh.misc.PermissionDenied):
+                    self._retry -= 1
+                self.current_exception = e
+                self.logger.error('Unable to create persistent SSH session'
+                                  f' for {self.hostname} due to {str(e)}')
+                self._close_connection()
+                self._long_proc = None
 
     async def _parse_init_dev_data(self, output, cb_token) -> None:
         '''Parse the version for uptime and hostname'''
@@ -1457,6 +1545,7 @@ class IosXRNode(Node):
 
 class IosXENode(Node):
     '''IOS-XE Node-sepcific telemetry gather implementation'''
+    WAITFOR = r'.*[>#]\s*$'  # devtype specific termination sequence
 
     async def _init_rest(self):
         raise NotImplementedError(
@@ -1467,47 +1556,16 @@ class IosXENode(Node):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version"], None, 'text')
 
-    async def _init_ssh(self, init_dev_data=True,
-                        use_lock: bool = True) -> None:
-        '''Need to start an interactive session for XE
-
-        Many IOSXE devices cannot accept commands as fast as we can fire them.
-        Furthermore, many TACACS servers also collapse under the load of
-        multiple authemtication requests because each SSH session needs to be
-        authenticated, not just the main SSH connection.
-        '''
-        backoff_period = 1
-        self.WAITFOR = r'.*[>#]\s*$'
-
-        self.logger.info(
-            f'Trying to reconnect via SSH for {self.hostname}')
-
-        if not self._retry or (self._conn and self._stdin):
-            return
-
-        if use_lock:
-            await self.ssh_ready.acquire()
-
-        while not self.is_connected:
-            # Don't release rel lock here
-            await super()._init_ssh(init_dev_data=False, use_lock=False)
-
-            if self.is_connected:
-                self.logger.info(
-                    f'Reconnect succeeded via SSH for {self.hostname}')
-                break
-
-            if not self._retry:
-                break
-
-            await asyncio.sleep(backoff_period)
-            backoff_period *= 2
-            backoff_period = min(backoff_period, 120)
+    async def _ssh_connect(self):
+        """Connect to an IOSXR device, the standard `_ssh_connect()` is not
+        enough as we need to start an interactive session for XE.
+        """
+        await super()._ssh_connect()
 
         if self.is_connected and not self._stdin:
             self.logger.info(
@@ -1526,8 +1584,6 @@ class IosXENode(Node):
                             self._conn = None
                             self._stdin = None
                             self._retry -= 1
-                            if use_lock:
-                                self.ssh_ready.release()
                             return
                     # Reset number of retries on successful auth
                     self._retry = self._max_retries_on_auth_fail
@@ -1537,22 +1593,12 @@ class IosXENode(Node):
                     self.current_exception = e
                     self.logger.error('Unable to create persistent SSH session'
                                       f' for {self.hostname} due to {str(e)}')
-                    self._conn = None
-                    self._stdin = None
-                    if use_lock:
-                        self.ssh_ready.release()
+                    self._close_connection()
                     return
 
                 # Set the terminal length to 0 to avoid paging
                 self._stdin.write('terminal length 0\n')
                 output = await self._stdout.readuntil(self.WAITFOR)
-
-            if init_dev_data:
-                await self._fetch_init_dev_data()
-
-        if use_lock:
-            self.ssh_ready.release()
-        return
 
     async def _handle_privilege_escalation(self) -> int:
         '''Escalata privilege if necessary
@@ -1644,8 +1690,12 @@ class IosXENode(Node):
             await self._init_ssh()
 
         if not self._conn or not self._stdin:
-            self.logger.error(f'Not connected to {self.address}:{self.port}')
-            await service_callback({}, cb_token)
+            for cmd in cmd_list:
+                self.logger.error(
+                    "Unable to connect to node %s (%s) cmd %s",
+                    self.address, self.hostname, cmd)
+                result.append(self._create_error(cmd))
+            await service_callback(result, cb_token)
             return
 
         timeout = timeout or self.cmd_timeout
@@ -1653,7 +1703,7 @@ class IosXENode(Node):
             for cmd in cmd_list:
                 try:
                     if self.slow_host:
-                        await asyncio.sleep(IOS_SLEEP_BET_CMDS)
+                        await asyncio.sleep(self.SLEEP_BET_CMDS_SLOW)
                     self._stdin.write(cmd + '\n')
                     output = await self.wait_for_prompt()
                     if 'Invalid input detected' in output:
@@ -1724,7 +1774,7 @@ class JunosNode(Node):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show system uptime|display json",
@@ -1782,7 +1832,7 @@ class NxosNode(Node):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version", "show hostname"], None,
@@ -1842,7 +1892,7 @@ class SonicNode(Node):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         """Fill in the boot time of the node by running requisite cmd"""
         await self._exec_cmd(self._parse_init_dev_data,
                              ["cat /proc/uptime", "hostname", "show version"],
@@ -1873,7 +1923,7 @@ class SonicNode(Node):
 class PanosNode(Node):
     '''Node object representing access to a Palo Alto Networks FW'''
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self):
         discovery_cmd = 'show system info'
         try:
             res = []
