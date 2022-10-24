@@ -137,8 +137,7 @@ if __name__ == '__main__':
                             f"error: {error}, xfail: {xfail}"
                     )
                     if xfail:
-                        assert result == (
-                            'xfail',
+                        assert result == 'xfail', (
                             f"expected xfail ({test[result]}), but got "
                             f"{result} ({globals()[result]}) "
                         )
@@ -157,7 +156,7 @@ if __name__ == '__main__':
                     else:
                         test[result] = json.dumps(output)
                 elif result == 'xfail':
-                    test[result]['error'] = json.dumps(output)
+                    test[result]['error'] = json.dumps(error)
                 else:
                     result = 'error'
                     if xfail:
