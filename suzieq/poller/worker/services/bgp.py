@@ -339,7 +339,8 @@ class BgpService(Service):
                 entry.pop('afAdvertised')
                 entry.pop('afRcvd')
 
-            if entry.get('rrclient', ''):
+            rrclient = entry.get('rrclient', [])
+            if rrclient and 'true' in rrclient:
                 entry['rrclient'] = 'True'
             else:
                 entry['rrclient'] = 'False'
