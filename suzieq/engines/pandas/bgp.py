@@ -122,8 +122,8 @@ class BgpObj(SqPandasEngine):
 
         self._summarize_on_add_with_query = [
             ('failedPeerCnt', 'state == "NotEstd"', 'peer'),
-            ('iBGPPeerCnt', 'asn == peerAsn', 'peer'),
-            ('eBGPPeerCnt', 'asn != peerAsn', 'peer'),
+            ('iBGPPeerCnt', 'asn == peerAsn', 'peer', 'count'),
+            ('eBGPPeerCnt', 'asn != peerAsn', 'peer', 'count'),
             ('rrClientPeerCnt', 'rrclient.str.lower() == "true"', 'peer',
              'count'),
         ]
