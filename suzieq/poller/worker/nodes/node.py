@@ -557,11 +557,6 @@ class Node:
                     options=jump_host_options,
                     known_hosts=None
                 )
-            if self.ssh_config_file:
-                jump_host_options = asyncssh.SSHClientConnectionOptions(
-                    options=jump_host_options,
-                    config_file=[self.ssh_config_file]
-                )
         else:
             jump_host_options = options
 
@@ -573,7 +568,8 @@ class Node:
                 )
                 self._tunnel = await asyncssh.connect(
                     self.jump_host, port=self.jump_port,
-                    options=jump_host_options, username=self.jump_user)
+                    options=jump_host_options, username=self.jump_user,
+                    config=[self.ssh_config_file])
                 self.logger.info(
                     'Connection to jump host %s succeeded', self.jump_host)
 
@@ -604,11 +600,6 @@ class Node:
             options = asyncssh.SSHClientConnectionOptions(
                 options=options,
                 known_hosts=None,
-            )
-        if self.ssh_config_file:
-            options = asyncssh.SSHClientConnectionOptions(
-                options=options,
-                config=[self.ssh_config_file],
             )
 
         return options
@@ -729,7 +720,8 @@ class Node:
                         self.address,
                         username=self.username,
                         port=self.port,
-                        options=options)
+                        options=options,
+                        config=[self.ssh_config_file])
                 self.logger.info(
                     f"Connected to {self.address}:{self.port} at "
                     f"{time.time()}")
