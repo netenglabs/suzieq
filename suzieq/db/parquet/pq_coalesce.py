@@ -8,8 +8,10 @@ from itertools import repeat
 from typing import List
 
 import pandas as pd
+import pyarrow as pa
 import pyarrow.dataset as ds
-import pyarrow.parquet as pq
+
+from suzieq.db.parquet.dataset_utils import move_broken_file
 from suzieq.db.parquet.migratedb import generic_migration, get_migrate_fn
 from suzieq.shared.schema import SchemaForTable
 from suzieq.shared.utils import humanize_timestamp
@@ -146,54 +148,6 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
                                   .query('~index.duplicated(keep="last")')
 
 
-def find_broken_files(parent_dir: str) -> List[str]:
-    """Find any files in the parent_dir that pyarrow can't read
-    :parame parent_dir: str, the parent directory to investigate
-    :returns: list of broken files
-    :rtype: list of strings
-    """
-
-    all_files = []
-    broken_files = []
-    ro, _ = os.path.split(parent_dir)
-    for root, _, files in os.walk(parent_dir):
-        if ('_archived' not in root and '.sq-coalescer.pid' not in files
-                and len(files) > 0):
-            path = root.replace(ro, '')
-            all_files.extend(list(map(lambda x: f"{path}/{x}", files)))
-    for file in all_files:
-        try:
-            pq.ParquetFile(f"{ro}/{file}")
-        except pq.lib.ArrowInvalid:
-            broken_files.append(file)
-
-    return broken_files
-
-
-def move_broken_files(parent_dir: str, state: SqCoalesceState,
-                      out_dir: str = '_broken', ) -> None:
-    """ move any files that cannot be read by pyarrow in parent dir
-        to a safe directory to be investigated later
-    :param parent_dir: str, the parent directory to investigate
-    :param state: SqCoalesceState, needed for the logger
-    :param out_dir: str, diretory to put the broken files in
-    :returns: Nothing
-    :rtype: None
-    """
-
-    broken_files = find_broken_files(parent_dir)
-    ro, _ = os.path.split(parent_dir)
-
-    for file in broken_files:
-        src = f"{ro}/{file}"
-        dst = f"{ro}/{out_dir}/{file}"
-
-        if not os.path.exists(os.path.dirname(dst)):
-            os.makedirs(os.path.dirname(dst))
-        state.logger.debug(f"moving broken file {src} to {dst}")
-        os.replace(src, dst)
-
-
 def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
     """Read the files and construct a dataframe of files and timestamp of
        record in them.
@@ -219,9 +173,12 @@ def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
             ts = pd.read_parquet(file, columns=['timestamp'])
             fts_list.append(ts.timestamp.min())
             fname_list.append(file)
-        except OSError:
+        except pa.ArrowInvalid:
             # skip this file because it can't be read, is probably 0 bytes
             logging.debug(f"not reading timestamp for {file}")
+            # We would like to move the broken files to a separate directory
+            # where we can perform additional investigations
+            move_broken_file(file)
 
     # Construct file dataframe as its simpler to deal with
     if fname_list:
@@ -341,14 +298,13 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
         if state.current_df.empty:
             state.current_df = get_last_update_df(table, outfolder, state)
 
-    # Ignore reading the compressed files
-    try:
-        dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
-                             ignore_prefixes=state.ign_pfx)
-    except OSError:
-        move_broken_files(infolder, state=state)
-        dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
-                             ignore_prefixes=state.ign_pfx)
+    # Providing the schema, we don't perform any IO to read it, moreover,
+    # we don't need to handle the case in which one of the files is broken.
+    # We will detect them later.
+    dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
+                         # Ignore reading the compressed files
+                         ignore_prefixes=state.ign_pfx,
+                         schema=schema.get_arrow_schema())
 
     state.logger.info(f'Examining {len(dataset.files)} {table} files '
                       f'for coalescing')
