@@ -159,6 +159,22 @@ class DeviceService(Service):
                 entry['bootupTimestamp'],
                 int(raw_data[0]["timestamp"])/1000)/1000
 
+            if entry.get('version', '').endswith('EVO'):
+                entry['os'] = 'junos-evo'
+                continue
+
+            model = entry.get('model', '')
+            if 'qfx10' in model:
+                entry['os'] = 'junos-qfx10k'
+            elif 'qfx' in model:
+                entry['os'] = 'junos-qfx'
+            elif model.startswith(('mx', 'vmx')):
+                entry['os'] = 'junos-mx'
+            elif 'ex' in model:
+                entry['os'] = 'junos-ex'
+            elif model.startswith(('srx', 'vSRX')):
+                entry['os'] = 'junos-es'
+
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_nxos_data(self, processed_data, raw_data):

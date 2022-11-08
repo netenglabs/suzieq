@@ -24,10 +24,13 @@ from dateparser import parse
 
 from suzieq.poller.worker.services.service import RsltToken
 from suzieq.shared.utils import get_timestamp_from_junos_time, known_devtypes
-from suzieq.shared.exceptions import SqPollerConfError, UnknownDevtypeError
+from suzieq.shared.exceptions import (SqPollerConfError, UnknownDevtypeError,
+                                      PollingError)
 
 logger = logging.getLogger(__name__)
 SLOW_HOST_SLEEP_BET_CMDS = 5          # in seconds
+IOS_TIME_AFTER_DISCOVERY = 60   # time to wait after ios(xe,xr) auto-discovery
+
 TNode = TypeVar('TNode', bound='Node')
 
 
@@ -101,6 +104,7 @@ class Node:
         self.port = 0
         self.backoff = 15  # secs to backoff
         self.init_again_at = 0  # after this epoch secs, try init again
+        self._connect_again_at = 0  # after this epoch secs, try connection
         self.connect_timeout = kwargs.get('connect_timeout', 15)
         # _is_connecting tells if the poller is connecting, this prevents the
         # commands to proceed if the node data are not yet initialized
@@ -119,6 +123,7 @@ class Node:
         self._exception_timestamp = None
         self._current_exception = None
         self.api_key = None
+        self._fetching_dev_data = False  # If we are fetching the dev data
         self._stdin = self._stdout = self._long_proc = None
         self._max_retries_on_auth_fail = (kwargs.get('retries_on_auth_fail')
                                           or 0) + 1
@@ -338,6 +343,11 @@ class Node:
                         devtype = 'junos-es'
                 if not devtype:
                     devtype = "junos"
+            elif 'Junos: ' in data:
+                if re.search(r'-EVO\b', data):
+                    devtype = 'junos-evo'
+                else:
+                    devtype = 'junos'
             elif "NX-OS" in data:
                 devtype = "nxos"
             elif "SONiC" in data:
@@ -616,10 +626,15 @@ class Node:
                 and time.time() > self._connect_again_at):
             someone_tried = False
             if use_lock:
+                # We need to check whether someone is already attempting a
+                # connection. If so wait for the result and return.
+                if self.ssh_ready.locked():
+                    someone_tried = True
                 await self.ssh_ready.acquire()
 
             # Someone else may have already succeeded in getting the SSH conn
-            if self.is_connected or not self._retry:
+            # or tried without any success
+            if someone_tried or self.is_connected or not self._retry:
                 if use_lock:
                     self.ssh_ready.release()
                 return
@@ -906,101 +921,126 @@ class Node:
         '''
         result = []  # same type as gather function
         cmd = None
+
+        # If the service provided no service definition, something really
+        # wrong happend. Raise an exception to stop polling.
         if not svc_defn:
-            return result
+            raise PollingError(f'The {cb_token.service} service did not '
+                               'provide any service definition')
 
-        if (not self.devtype and self._retry
-                and self.init_again_at < time.time()):
-            # When we issue bunch of commands multiple tasks might try to
-            # perform the discovery all together, we need only one of them
-            # trying to perform the discovery, all the others can fail
-            if not self._discovery_lock.locked():
-                async with self._discovery_lock:
-                    await self._detect_node_type()
+        try:
+            if (not self.devtype and self._retry
+                    and self.init_again_at < time.time()):
+                # When we issue bunch of commands multiple tasks might try to
+                # perform the discovery all together, we need only one of them
+                # trying to perform the discovery, all the others can fail
+                if not self._discovery_lock.locked():
+                    async with self._discovery_lock:
+                        await self._detect_node_type()
 
-        # As after the discovery we call the _init_dev_data() devtype might be
-        # set but the devdata is still not intialized, so discovery is still
-        # pending. In this case we need to fail
-        if (not self.devtype
-                or (self.devtype and self._discovery_lock.locked())):
-            result.append(self._create_error(svc_defn.get("service", "-")))
-            return await service_callback(result, cb_token)
+            # As after the discovery we call the _init_dev_data() devtype might
+            # be set but the devdata is still not intialized, so discovery is
+            # still pending. In this case we need to fail
+            if (not self.devtype
+                    or (self.devtype and self._discovery_lock.locked())):
+                result.append(self._create_error(svc_defn.get("service", "-")))
+                return await service_callback(result, cb_token)
 
-        if self.devtype == 'unsupported':
-            # Service code 418 means I'm a teapot in http status codes
-            # in other words, I won't brew coffee because I'm a teapot
-            result.append(self._create_result(
-                svc_defn, 418, "No service definition"))
-            self.error_svcs_proc.add(svc_defn.get("service"))
-            return await service_callback(result, cb_token)
+            if self.devtype == 'unsupported':
+                # Service code 418 means I'm a teapot in http status codes
+                # in other words, I won't brew coffee because I'm a teapot
+                result.append(self._create_result(
+                    svc_defn, 418, "No service definition"))
+                self.error_svcs_proc.add(svc_defn.get("service"))
+                return await service_callback(result, cb_token)
 
-        # Update our boot time value into the callback token
-        if cb_token:
-            cb_token.bootupTimestamp = self.bootupTimestamp
+            # Update our boot time value into the callback token
+            if cb_token:
+                cb_token.bootupTimestamp = self.bootupTimestamp
 
-        self.svcs_proc.add(svc_defn.get("service"))
-        use = svc_defn.get(self.hostname, None)
-        if not use:
-            use = svc_defn.get(self.devtype, {})
-        if not use:
-            if svc_defn.get("service") not in self.error_svcs_proc:
+            self.svcs_proc.add(svc_defn.get("service"))
+            use = svc_defn.get(self.hostname, None)
+            if not use:
+                use = svc_defn.get(self.devtype, {})
+            if not use:
+                if svc_defn.get("service") not in self.error_svcs_proc:
+                    res = self._create_result(svc_defn,
+                                              HTTPStatus.NOT_FOUND,
+                                              "No service definition")
+                    result.append(res)
+                    self.error_svcs_proc.add(svc_defn.get("service"))
+                return await service_callback(result, cb_token)
+
+            # TODO This kind of logic should be encoded in config and node
+            # shouldn't have to know about it
+            if "copy" in use:
+                use = svc_defn.get(use.get("copy"))
+
+            if use:
+                if isinstance(use, list):
+                    # There's more than one version here, we have to pick ours
+                    for item in use:
+                        if item.get('version', '') != "all":
+                            os_version = item['version']
+                            opdict = {'>': operator.gt, '<': operator.lt,
+                                      '>=': operator.ge, '<=': operator.le,
+                                      '=': operator.eq, '!=': operator.ne}
+                            op = operator.eq
+
+                            for elem, val in opdict.items():
+                                if os_version.startswith(elem):
+                                    os_version = os_version.replace(
+                                        elem, '').strip()
+                                    op = val
+                                    break
+
+                            if op(version_parse.LegacyVersion(self.version),
+                                    version_parse.LegacyVersion(os_version)):
+                                cmd = item.get('command', None)
+                                use = item
+                                break
+                        else:
+                            cmd = item.get("command", None)
+                            use = item
+                            break
+                else:
+                    cmd = use.get("command", None)
+
+            if not cmd:
                 result.append(self._create_result(
                     svc_defn, HTTPStatus.NOT_FOUND, "No service definition"))
                 self.error_svcs_proc.add(svc_defn.get("service"))
-            return await service_callback(result, cb_token)
+                return await service_callback(result, cb_token)
 
-        # TODO This kind of logic should be encoded in config and node
-        # shouldn't have to know about it
-        if "copy" in use:
-            use = svc_defn.get(use.get("copy"))
-
-        if use:
-            if isinstance(use, list):
-                # There's more than one version here, we have to pick ours
-                for item in use:
-                    if item.get('version', '') != "all":
-                        os_version = item['version']
-                        opdict = {'>': operator.gt, '<': operator.lt,
-                                  '>=': operator.ge, '<=': operator.le,
-                                  '=': operator.eq, '!=': operator.ne}
-                        op = operator.eq
-
-                        for elem, val in opdict.items():
-                            if os_version.startswith(elem):
-                                os_version = os_version.replace(
-                                    elem, '').strip()
-                                op = val
-                                break
-
-                        if op(version_parse.LegacyVersion(self.version),
-                                version_parse.LegacyVersion(os_version)):
-                            cmd = item.get('command', None)
-                            use = item
-                            break
-                    else:
-                        cmd = item.get("command", None)
-                        use = item
-                        break
+            oformat = use.get('format', 'json')
+            if not isinstance(cmd, list):
+                if use.get('textfsm'):
+                    oformat = 'text'
+                cmdlist = [cmd]
             else:
-                cmd = use.get("command", None)
+                # TODO: Handling format for the multiple cmd case
+                cmdlist = [x.get('command', '') for x in cmd]
 
-        if not cmd:
-            result.append(self._create_result(
-                svc_defn, HTTPStatus.NOT_FOUND, "No service definition"))
-            self.error_svcs_proc.add(svc_defn.get("service"))
-            return await service_callback(result, cb_token)
+            await self._exec_cmd(service_callback, cmdlist, cb_token,
+                                 oformat=oformat, timeout=cb_token.timeout)
+        except Exception as e:
+            # Here we need to catch any uncatched exception as if the node
+            # does not return any answer to the service, it will never schedule
+            # the service again
+            logger.exception(f'{self.address}:{self.port} exception raised '
+                             f'while executing the {cb_token.service} '
+                             'service.')
+            self.current_exception = e
+            if cmd:
+                if not isinstance(cmd, list):
+                    result.append(self._create_error(cmd))
+                else:
+                    for c in cmd:
+                        result.append(self._create_error(c.get('command', '')))
+            else:
+                result.append(self._create_error(''))
 
-        oformat = use.get('format', 'json')
-        if not isinstance(cmd, list):
-            if use.get('textfsm'):
-                oformat = 'text'
-            cmdlist = [cmd]
-        else:
-            # TODO: Handling format for the multiple cmd case
-            cmdlist = [x.get('command', '') for x in cmd]
-
-        await self._exec_cmd(service_callback, cmdlist, cb_token,
-                             oformat=oformat, timeout=cb_token.timeout)
+            await service_callback(result, cb_token)
 
     async def _fetch_init_dev_data(self, reconnect=True):
         """Start data fetch to initialize the class with specific device attrs
@@ -1179,8 +1219,18 @@ class Node:
                         break
 
                 if tasks:
-                    _, pending = await asyncio.wait(
+                    completed, pending = await asyncio.wait(
                         tasks, return_when=asyncio.FIRST_COMPLETED)
+
+                    # Check whether the completed tasks raised an
+                    # uncaught exception, as at this point there might be a
+                    # service not rescheduled. So, instead of keeping the
+                    # poller in an inconsistent state we raise the exception.
+                    # We don't expect it to be common but when it happens we
+                    # want to notice it.
+                    for c in completed:
+                        if raised_exp := c.exception():
+                            raise raised_exp
 
                     tasks = list(pending)
         except asyncio.CancelledError:
@@ -1860,10 +1910,14 @@ class JunosNode(Node):
 
     async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by running requisite cmd"""
-        await self._exec_cmd(self._parse_init_dev_data,
-                             ["show system uptime|display json",
-                              "show version"], None, 'mixed',
-                             reconnect=reconnect)
+        if self.devtype == 'junos-evo':
+            cmdlist = ["show system uptime|display json",
+                       'show version node all']
+        else:
+            cmdlist = ["show system uptime|display json",
+                       'show version']
+        await self._exec_cmd(self._parse_init_dev_data, cmdlist, None,
+                             "mixed", reconnect=reconnect)
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -1871,7 +1925,8 @@ class JunosNode(Node):
             data = output[0]["data"]
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
-                if self.devtype not in ["junos-mx", "junos-qfx10k"]:
+                if self.devtype not in ["junos-mx", "junos-qfx10k",
+                                        "junos-evo"]:
                     jdata = (jdata['multi-routing-engine-results'][0]
                              ['multi-routing-engine-item'][0])
 
@@ -1890,6 +1945,10 @@ class JunosNode(Node):
             data = output[1]["data"]
             hmatch = re.search(r'\bHostname:\s+(\S+)\b', data)
             if hmatch:
+                # TODO
+                # In case of a VC, we'll need to strip off some chars
+                # at the end such as -re0 or -re1. Lets do this with a
+                # separate option passed via the inventory device setting.
                 self._set_hostname(hmatch.group(1))
 
             self._extract_nos_version(data)
