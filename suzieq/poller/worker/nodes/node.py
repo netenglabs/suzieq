@@ -1463,8 +1463,7 @@ class CumulusNode(Node):
 
         if output[0]["status"] == 0:
             upsecs = output[0]["data"].split()[0]
-            self.bootupTimestamp = int(int(time.time()*1000)
-                                       - float(upsecs)*1000)
+            self.bootupTimestamp = int(int(time.time()) - float(upsecs))
         if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1].get("data", '')
             hostname = data.splitlines()[0].strip()
@@ -1614,7 +1613,7 @@ class IosXRNode(Node):
             timestr = re.search(r'uptime is (.*)\n', data)
             if timestr:
                 self.bootupTimestamp = int(datetime.utcfromtimestamp(
-                    parse(timestr.group(1)).timestamp()).timestamp()*1000)
+                    parse(timestr.group(1)).timestamp()).timestamp())
             else:
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -1765,7 +1764,7 @@ class IosXENode(Node):
                 self._set_hostname(hostupstr.group(1))
                 timestr = hostupstr.group(2)
                 self.bootupTimestamp = int(datetime.utcfromtimestamp(
-                    parse(timestr).timestamp()).timestamp()*1000)
+                    parse(timestr).timestamp()).timestamp())
             else:
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -2004,8 +2003,7 @@ class SonicNode(Node):
 
         if output[0]["status"] == 0:
             upsecs = output[0]["data"].split()[0]
-            self.bootupTimestamp = int(int(time.time()*1000)
-                                       - float(upsecs)*1000)
+            self.bootupTimestamp = int(int(time.time()) - float(upsecs))
         if (len(output) > 1) and (output[1]["status"] == 0):
             self.hostname = output[1]["data"].strip()
         if (len(output) > 2) and (output[2]["status"] == 0):
@@ -2105,8 +2103,7 @@ class PanosNode(Node):
                 seconds = match.group(4).strip()
                 upsecs = 86400 * int(days) + 3600 * int(hours) + \
                     60 * int(minutes) + int(seconds)
-                self.bootupTimestamp = int(
-                    int(time.time()*1000) - float(upsecs)*1000)
+                self.bootupTimestamp = int(int(time.time()) - float(upsecs))
             else:
                 self.logger.warning(
                     f'Cannot parse uptime from {self.address}:{self.port}')
