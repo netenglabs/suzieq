@@ -320,6 +320,24 @@ class Node:
         }
         return result
 
+    async def _post_result(self, service_callback: asyncio.coroutine,
+                           result: List[Dict],
+                           cb_token: RsltToken):
+        """This function submits the result calling the service callback, this
+        is a wrapper of service callback itself, allowing to perform all the
+        preliminary actions before calling the callback.
+
+        Args:
+            service_callback (asyncio.coroutine): service callback
+            result (List[Dict]): the result of teh command
+            cb_token (RsltToken): the metadata passed between the node and the
+                service.
+        """
+        if cb_token:
+            cb_token.bootupTimestamp = self.bootupTimestamp
+
+        await service_callback(result, cb_token)
+
     async def _parse_device_type_hostname(self, output, _) -> None:
         devtype = ""
         hostname = None
@@ -801,7 +819,7 @@ class Node:
                 self.current_exception = e
                 result.append(self._create_error(cmd))
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)
 
     def _schedule_discovery_attempt(self):
         """Schedule a new attempt for the node discovery
@@ -842,7 +860,7 @@ class Node:
         result = []
 
         if cmd_list is None:
-            await service_callback(result, cb_token)
+            await self._post_result(service_callback, result, cb_token)
 
         if not self.is_connected or self._is_connecting:
             if reconnect:
@@ -853,11 +871,8 @@ class Node:
                         "Unable to connect to node %s cmd %s",
                         self.hostname, cmd)
                     result.append(self._create_error(cmd))
-                await service_callback(result, cb_token)
+                await self._post_result(service_callback, result, cb_token)
                 return
-
-        if isinstance(cb_token, RsltToken):
-            cb_token.node_token = self.bootupTimestamp
 
         timeout = timeout or self.cmd_timeout
         async with self._cmd_pacer.wait(self.per_cmd_auth):
@@ -892,7 +907,7 @@ class Node:
 
                     break
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)
 
     async def _exec_cmd(self, service_callback, cmd_list, cb_token,
                         oformat='json', timeout=None, only_one=False,
@@ -950,7 +965,8 @@ class Node:
             if (not self.devtype
                     or (self.devtype and self._discovery_lock.locked())):
                 result.append(self._create_error(svc_defn.get("service", "-")))
-                return await service_callback(result, cb_token)
+                return await self._post_result(
+                    service_callback, result, cb_token)
 
             if self.devtype == 'unsupported':
                 # Service code 418 means I'm a teapot in http status codes
@@ -958,11 +974,8 @@ class Node:
                 result.append(self._create_result(
                     svc_defn, 418, "No service definition"))
                 self.error_svcs_proc.add(svc_defn.get("service"))
-                return await service_callback(result, cb_token)
-
-            # Update our boot time value into the callback token
-            if cb_token:
-                cb_token.bootupTimestamp = self.bootupTimestamp
+                return await self._post_result(
+                    service_callback, result, cb_token)
 
             self.svcs_proc.add(svc_defn.get("service"))
             use = svc_defn.get(self.hostname, None)
@@ -975,7 +988,8 @@ class Node:
                                               "No service definition")
                     result.append(res)
                     self.error_svcs_proc.add(svc_defn.get("service"))
-                return await service_callback(result, cb_token)
+                return await self._post_result(
+                    service_callback, result, cb_token)
 
             # TODO This kind of logic should be encoded in config and node
             # shouldn't have to know about it
@@ -1016,7 +1030,8 @@ class Node:
                 result.append(self._create_result(
                     svc_defn, HTTPStatus.NOT_FOUND, "No service definition"))
                 self.error_svcs_proc.add(svc_defn.get("service"))
-                return await service_callback(result, cb_token)
+                return await self._post_result(
+                    service_callback, result, cb_token)
 
             oformat = use.get('format', 'json')
             if not isinstance(cmd, list):
@@ -1046,7 +1061,7 @@ class Node:
             else:
                 result.append(self._create_error(''))
 
-            await service_callback(result, cb_token)
+            await self._post_result(service_callback, result, cb_token)
 
     async def _fetch_init_dev_data(self, reconnect=True):
         """Start data fetch to initialize the class with specific device attrs
@@ -1384,7 +1399,7 @@ class EosNode(Node):
                     f"{self.transport}://{self.hostname}:{self.port}: Unable "
                     f"to communicate with node due to {str(e)}")
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
 
@@ -1538,7 +1553,7 @@ class CumulusNode(Node):
                     f"{self.transport}://{self.hostname}:{self.port}: Unable "
                     f"to communicate with node due to {str(e)}")
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)
 
 
 class LinuxNode(CumulusNode):
@@ -1766,7 +1781,7 @@ class IosXENode(Node):
 
         result = []
         if cmd_list is None:
-            await service_callback(result, cb_token)
+            await self._post_result(service_callback, result, cb_token)
             return
 
         if not self.is_connected or not self._stdin:
@@ -1782,7 +1797,7 @@ class IosXENode(Node):
                     "Unable to connect to node %s (%s) cmd %s",
                     self.address, self.hostname, cmd)
                 result.append(self._create_error(cmd))
-            await service_callback(result, cb_token)
+            await self._post_result(service_callback, result, cb_token)
             return
 
         timeout = timeout or self.cmd_timeout
@@ -1799,8 +1814,6 @@ class IosXENode(Node):
                         status = HTTPStatus.REQUEST_TIMEOUT
                     else:
                         status = 0
-                    if isinstance(cb_token, RsltToken):
-                        cb_token.node_token = self.bootupTimestamp
                     result.append(self._create_result(cmd, status, output))
                     continue
                 except Exception as e:
@@ -1824,7 +1837,7 @@ class IosXENode(Node):
                             "due to timeout")
                     break
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)
 
     def _extract_nos_version(self, data: str) -> None:
         match = re.search(r', Version\s+([^ ,]+)', data)
@@ -2162,7 +2175,7 @@ class PanosNode(Node):
         if not self._session:
             for cmd in cmd_list:
                 result.append(self._create_error(cmd))
-            await service_callback(result, cb_token)
+            await self._post_result(service_callback, result, cb_token)
             return
 
         async with self._cmd_pacer.wait(self.per_cmd_auth):
@@ -2199,4 +2212,4 @@ class PanosNode(Node):
                     f"{self.transport}://{self.hostname}:{self.port} "
                     f"Unable to communicate due to {str(e)}")
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)

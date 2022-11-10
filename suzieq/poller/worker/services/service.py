@@ -10,7 +10,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from http import HTTPStatus
 from tempfile import mkstemp
-from typing import Dict, List
+from typing import Dict, List, Tuple
 
 import pyarrow as pa
 import yaml
@@ -26,6 +26,8 @@ from suzieq.version import SUZIEQ_VERSION
 HOLD_TIME_IN_MSECS = 60000
 # How many unsuccessful polls before marking records with active=false
 HYSTERESIS_FAILURE_CNT = 3
+# The boot timestamp time drift tolerance (in seconds)
+TIME_DRIFT_TOLERANCE = 30
 
 
 @dataclass
@@ -88,6 +90,7 @@ class Service(SqPlugin):
         self.node_postcall_list = {}
         self.new_node_postcall_list = {}
         self.previous_results = {}
+        self._node_boot_timestamps = {}  # dictionary useful to detect reboots
         self._poller_schema = {}
         self.node_boot_times = defaultdict(int)
         self._failed_node_set = set()
@@ -101,7 +104,7 @@ class Service(SqPlugin):
         self.result_queue = asyncio.Queue()
 
         # Add the hidden fields to ignore_fields
-        self.ignore_fields.append("timestamp")
+        self.ignore_fields += ['timestamp', 'sqvers', 'deviceSession']
 
         if "namespace" not in self.keys:
             self.keys.insert(0, "namespace")
@@ -175,9 +178,19 @@ class Service(SqPlugin):
             return name
         return ""
 
-    def get_diff(self, old, new):
-        """Compare list of dictionaries ignoring certain fields
-        Return list of adds and deletes
+    def get_diff(self, old: List[Dict], new: List[Dict],
+                 add_all: bool) -> Tuple[List, List]:
+        """Get the difference between the old and the new result
+
+        Args:
+            old (List[Dict]): previous result
+            new (List[Dict]): new result
+            add_all (bool): if True return all the records in adds, even though
+                nothing changed.
+
+        Returns:
+            Tuple[List, List]: return additions and deletions to respect the
+                previous result.
         """
         # If old is empty there is no need to look for differences
         # just return adds
@@ -224,7 +237,12 @@ class Service(SqPlugin):
             koldvals.append(vals)
             koldkeys.append(kvals)
 
-        adds = [new[k] for k, v in enumerate(knewvals) if v not in koldvals]
+        if add_all or self.stype == 'counters':
+            adds = new
+        else:
+            adds = [new[k]
+                    for k, v in enumerate(knewvals)
+                    if v not in koldvals]
         dels = [old[k] for k, v in enumerate(koldvals)
                 if v not in knewvals and koldkeys[k] not in knewkeys]
 
@@ -232,11 +250,6 @@ class Service(SqPlugin):
         for d in dels:
             if d.get('sqvers'):
                 d['sqvers'] = str(d['sqvers'])
-
-        if adds and self.stype == "counters":
-            # If there's a change in any field of the counters, update them all
-            # simplifies querying
-            adds = new
 
         return adds, dels
 
@@ -591,11 +604,13 @@ class Service(SqPlugin):
                                     entry[fld][i] = val
         return processed_data
 
-    async def commit_data(self, result: Dict, namespace: str, hostname: str):
+    async def commit_data(self, result: Dict, namespace: str, hostname: str,
+                          boot_timestamp: float):
         """Write the result data out"""
         records = []
         key = f'{namespace}.{hostname}'
         prev_res = self.previous_results.get(key, None)
+        last_device_session = self._node_boot_timestamps.get(key, 0)
         # No data previously polled with this service from the the
         # current namespace and hostname. Check if the datastore contains some
         # information about
@@ -613,14 +628,28 @@ class Service(SqPlugin):
                 add_filter=filter_df,
                 hostname=[hostname],
                 namespace=[namespace]).query('active')
+            # Get the latest device session we have written with this service
+            if not df.empty:
+                last_device_session = df['deviceSession'].iloc[0] or 0
+                self._node_boot_timestamps[key] = int(last_device_session)
+
             prev_res = df.to_dict('records')
             self.previous_results[key] = prev_res
 
         if result or prev_res:
-            adds, dels = self.get_diff(prev_res, result)
+            # Check whether there has been a node reboot and in this case
+            # write everything
+            write_all = abs(boot_timestamp -
+                            last_device_session) > TIME_DRIFT_TOLERANCE
+            if write_all:
+                last_device_session = int(boot_timestamp)
+                self._node_boot_timestamps[key] = boot_timestamp
+
+            adds, dels = self.get_diff(prev_res, result, write_all)
             if adds or dels:
                 self.previous_results[key] = copy.deepcopy(result)
                 for entry in adds:
+                    entry['deviceSession'] = last_device_session
                     records.append(entry)
                 for entry in dels:
                     if entry.get("active", True):
@@ -833,7 +862,8 @@ class Service(SqPlugin):
 
                 if should_commit:
                     await self.commit_data(result, output[0]["namespace"],
-                                           output[0]["hostname"])
+                                           output[0]["hostname"],
+                                           token.bootupTimestamp)
             elif self.run_once in ["gather", "process", "update"]:
                 total_nodes -= 1
                 if total_nodes <= 0:
