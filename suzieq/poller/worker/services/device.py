@@ -156,8 +156,7 @@ class DeviceService(Service):
 
         for entry in processed_data:
             entry['bootupTimestamp'] = get_timestamp_from_junos_time(
-                entry['bootupTimestamp'],
-                int(raw_data[0]["timestamp"])/1000)/1000
+                entry['bootupTimestamp'], ms=False)
 
         return self._common_data_cleaner(processed_data, raw_data)
 

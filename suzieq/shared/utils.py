@@ -448,12 +448,27 @@ def get_timestamp_from_cisco_time(in_data, timestamp) -> int:
     return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
 
 
-def get_timestamp_from_junos_time(in_data, timestamp: int):
+def get_timestamp_from_junos_time(in_data: Tuple[Dict, str],
+                                  relative_to: int = None,
+                                  ms=True) -> int:
     """Get timestamp in ms from the Junos-specific timestamp string
     The expected input looks like: "attributes" : {"junos:seconds" : "0"}.
     We don't check for format because we're assuming the input would be blank
-    if it wasn't the right format. The input can either be a dictionary or a
-    JSON string.
+    if it wasn't the right format.
+
+    Args:
+        in_data (Tuple[Dict, str]): the time data received from the device,
+            The input can either be a dictionary or a JSON string.
+        relative_to (int, optional): Subtract the extracted seconds to the
+            provided epoch timestamp.
+            If None, the function returns the seconds without further
+            processing (e.g. useful when we already have an epoch timestamp).
+            Defaults to None.
+        ms (int, optional) If the True the result is returned in milliseconds
+            otherwise the result will be in seconds.
+
+    Returns:
+        int: enlapsed time or unix timestamp
     """
 
     if not in_data:
@@ -470,8 +485,13 @@ def get_timestamp_from_junos_time(in_data, timestamp: int):
             logger.warning(f'Unable to convert junos secs from {in_data}')
             secs = 0
 
-    delta = relativedelta(seconds=int(secs))
-    return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
+    conversion_unit = 1000 if ms else 1
+
+    if relative_to:
+        delta = relativedelta(seconds=int(secs))
+        secs = (datetime.fromtimestamp(relative_to) - delta).timestamp()
+
+    return secs * conversion_unit
 
 
 def convert_macaddr_format_to_colon(macaddr: str) -> str:

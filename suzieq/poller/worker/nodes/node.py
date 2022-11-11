@@ -1891,14 +1891,14 @@ class JunosNode(Node):
                              ['multi-routing-engine-item'][0])
 
                 timestr = (jdata['system-uptime-information'][0]
-                           ['system-booted-time'][0]['time-length'][0]
+                           ['system-booted-time'][0]['date-time'][0]
                            ['attributes'])
             except Exception:
                 self.logger.warning(
                     f'Unable to parse junos boot time from {data}')
                 timestr = '{"junos:seconds": "0"}'
-            self.bootupTimestamp = (get_timestamp_from_junos_time(
-                timestr, output[0]['timestamp']/1000)/1000)
+            self.bootupTimestamp = get_timestamp_from_junos_time(
+                timestr, ms=False)
 
         if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1]["data"]

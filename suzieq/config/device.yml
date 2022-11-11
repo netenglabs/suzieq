@@ -76,7 +76,7 @@ apply:
      - version: < 9.3(0)
        command: show version
        textfsm: textfsm_templates/nxos_show_version.tfsm
-       
+
      - version: all
        command: show version | json native
        normalize: '[
@@ -107,7 +107,7 @@ apply:
         ]'
       - command: "show system uptime | display json"
         normalize: 'multi-routing-engine-results/[0]/multi-routing-engine-item/[0]/system-uptime-information/*/[
-        "system-booted-time/[0]/time-length/[0]/attributes: bootupTimestamp?|"
+        "system-booted-time/[0]/date-time/[0]/attributes: bootupTimestamp?|"
         ]'
 
   junos-ex:
@@ -126,9 +126,9 @@ apply:
         ]'
       - command: "show system uptime | display json"
         normalize: 'system-uptime-information/*/[
-        "system-booted-time/[0]/time-length/[0]/attributes: bootupTimestamp?|"
+        "system-booted-time/[0]/date-time/[0]/attributes: bootupTimestamp?|"
         ]'
-        
+
   junos-es:
     copy: junos-mx
 
