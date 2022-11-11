@@ -19,11 +19,10 @@ from packaging import version as version_parse
 import xmltodict
 import asyncssh
 import aiohttp
-from dateparser import parse
-
 
 from suzieq.poller.worker.services.service import RsltToken
-from suzieq.shared.utils import get_timestamp_from_junos_time, known_devtypes
+from suzieq.shared.utils import get_timestamp_from_junos_time, \
+    known_devtypes, parse_relative_timestamp
 from suzieq.shared.exceptions import (PollingError, SqPollerConfError,
                                       UnknownDevtypeError)
 
@@ -1612,8 +1611,9 @@ class IosXRNode(Node):
             data = output[0]['data']
             timestr = re.search(r'uptime is (.*)\n', data)
             if timestr:
-                self.bootupTimestamp = int(datetime.utcfromtimestamp(
-                    parse(timestr.group(1)).timestamp()).timestamp())
+                timestr = timestr.group(1)
+                self.bootupTimestamp = parse_relative_timestamp(
+                    timestr, output[0]['timestamp'] / 1000)
             else:
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -1763,8 +1763,8 @@ class IosXENode(Node):
             if hostupstr:
                 self._set_hostname(hostupstr.group(1))
                 timestr = hostupstr.group(2)
-                self.bootupTimestamp = int(datetime.utcfromtimestamp(
-                    parse(timestr).timestamp()).timestamp())
+                self.bootupTimestamp = parse_relative_timestamp(
+                    timestr, output[0]['timestamp'] / 1000)
             else:
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -1949,7 +1949,8 @@ class NxosNode(Node):
             self._extract_nos_version(data)
             uptime_grp = re.search(r'Kernel\s+uptime\s+is\s+([^\n]+)', data)
             if uptime_grp:
-                self.bootupTimestamp = parse(uptime_grp.group(1)).timestamp()
+                self.bootupTimestamp = parse_relative_timestamp(
+                    uptime_grp.group(1), output[0]['timestamp'] / 1000)
 
         if len(output) > 1:
             if output[1]["status"] == 0:

@@ -1,10 +1,10 @@
 import re
-from datetime import timedelta, datetime
-from dateparser import parse
+from datetime import timedelta
 
 import numpy as np
 from suzieq.poller.worker.services.service import Service
-from suzieq.shared.utils import get_timestamp_from_junos_time
+from suzieq.shared.utils import get_timestamp_from_junos_time, \
+    parse_relative_timestamp
 
 
 class DeviceService(Service):
@@ -124,31 +124,31 @@ class DeviceService(Service):
 
         return processed_data
 
-    def _clean_common_ios(self, entry, os):
+    def _clean_common_ios(self, entry, os, rcv_timestamp):
         '''Common IOS-like NOS cleaning'''
         entry['os'] = os
         entry['vendor'] = 'Cisco'
         if entry.get('bootupTimestamp', ''):
-            entry['bootupTimestamp'] = int(datetime.utcfromtimestamp(
-                parse(entry['bootupTimestamp']).timestamp()).timestamp())
+            entry['bootupTimestamp'] = parse_relative_timestamp(
+                entry['bootupTimestamp'], rcv_timestamp / 1000)
 
     def _clean_iosxr_data(self, processed_data, raw_data):
-        for entry in processed_data:
-            self._clean_common_ios(entry, 'iosxr')
+        for i, entry in enumerate(processed_data):
+            self._clean_common_ios(entry, 'iosxr', raw_data[i]['timestamp'])
             if 'IOS-XRv' in entry.get('model', ''):
                 entry['architecture'] = "x86-64"
 
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_iosxe_data(self, processed_data, raw_data):
-        for entry in processed_data:
-            self._clean_common_ios(entry, 'iosxe')
+        for i, entry in enumerate(processed_data):
+            self._clean_common_ios(entry, 'iosxe', raw_data[i]['timestamp'])
 
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_ios_data(self, processed_data, raw_data):
-        for entry in processed_data:
-            self._clean_common_ios(entry, 'ios')
+        for i, entry in enumerate(processed_data):
+            self._clean_common_ios(entry, 'ios', raw_data[i]['timestamp'])
 
         return self._common_data_cleaner(processed_data, raw_data)
 

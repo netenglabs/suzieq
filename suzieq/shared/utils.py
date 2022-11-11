@@ -6,14 +6,14 @@ import logging
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from importlib.util import find_spec
 from ipaddress import ip_network
 from itertools import groupby
 from logging.handlers import RotatingFileHandler
 from os import getenv
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 from tzlocal import get_localzone
 
 import pandas as pd
@@ -374,6 +374,27 @@ def calc_avg(oldval, newval):
         return newval
 
     return float((oldval+newval)/2)
+
+
+def parse_relative_timestamp(uptime: str, relative_to: int = None) -> int:
+    """Get a relative time (i.e. with format 10 weeks, 4 days, 3 hours 11 mins)
+    and convert it into a timestamp.
+
+    Args:
+        uptime (str): _description_
+        relative_to (int, optional): provide a custom base epoch timestamp, if
+            not provided, the base timestamp is "now".
+
+    Returns:
+        int: The epoch timestamp of the base time minus the uptime
+    """
+    settings = {'TIMEZONE': 'utc',
+                'RETURN_AS_TIMEZONE_AWARE': True}
+    if relative_to:
+        base_ts = datetime.fromtimestamp(relative_to, timezone.utc)
+        settings['RELATIVE_BASE'] = base_ts
+
+    return int(parse(uptime, settings=settings).timestamp())
 
 
 def get_timestamp_from_cisco_time(in_data, timestamp) -> int:
