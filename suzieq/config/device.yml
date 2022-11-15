@@ -31,7 +31,6 @@ apply:
         normalize: '[
         "os-version: version",
         "vendor: vendor?|Cumulus",
-        "uptime: _uptime",
         "os: os?|cumulus",
         "memory: memory?|0",
         "platform/info/model_name: _modelName?|",
@@ -41,9 +40,9 @@ apply:
         "_entryType: _entryType?|json"
         ]'
 
-      - command: cat /proc/uptime; hostname
+      - command: cat /proc/stat | grep btime | grep -o '[0-9]*'
         textfsm: textfsm_templates/cls_uptime_hostname.tfsm
-        _entryType: uptime
+        _entryType: bootupTimestamp
 
       - command: /usr/cumulus/bin/decode-syseeprom; cat /etc/os-release; cat /proc/meminfo
         textfsm: textfsm_templates/cls_model_rel.tfsm
@@ -64,12 +63,12 @@ apply:
 
   linux:
     version: all
-    command: cat /proc/uptime; hostnamectl
+    command: cat /proc/stat | grep btime | grep -o '[0-9]*'; hostnamectl
     textfsm: textfsm_templates/linux_showsys.tfsm
 
   sonic:
     version: all
-    command: cat /proc/uptime; hostnamectl; show version
+    command: cat /proc/stat | grep btime | grep -o '[0-9]*'; hostnamectl; show version
     textfsm: textfsm_templates/sonic_showsys.tfsm
 
   nxos:

@@ -1453,7 +1453,8 @@ class CumulusNode(Node):
     async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
-                             ["cat /proc/uptime", "hostname",
+                             ["cat /proc/stat | grep btime | grep -o '[0-9]*'",
+                              "hostname",
                               "cat /etc/os-release"], None, 'text',
                              reconnect=reconnect)
 
@@ -1461,8 +1462,7 @@ class CumulusNode(Node):
         """Parse the uptime command output"""
 
         if output[0]["status"] == 0:
-            upsecs = output[0]["data"].split()[0]
-            self.bootupTimestamp = int(int(time.time()) - float(upsecs))
+            self.bootupTimestamp = int(output[0]["data"])
         if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1].get("data", '')
             hostname = data.splitlines()[0].strip()
@@ -1996,15 +1996,15 @@ class SonicNode(Node):
     async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by running requisite cmd"""
         await self._exec_cmd(self._parse_init_dev_data,
-                             ["cat /proc/uptime", "hostname", "show version"],
+                             ["cat /proc/stat | grep btime | grep -o '[0-9]*'",
+                              "hostname", "show version"],
                              None, 'text', reconnect=reconnect)
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
         """Parse the uptime command output"""
 
         if output[0]["status"] == 0:
-            upsecs = output[0]["data"].split()[0]
-            self.bootupTimestamp = int(int(time.time()) - float(upsecs))
+            self.bootupTimestamp = int(output[0]["data"])
         if (len(output) > 1) and (output[1]["status"] == 0):
             self.hostname = output[1]["data"].strip()
         if (len(output) > 2) and (output[2]["status"] == 0):

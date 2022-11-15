@@ -1,5 +1,4 @@
 import re
-from datetime import timedelta
 
 import numpy as np
 from suzieq.poller.worker.services.service import Service
@@ -29,18 +28,9 @@ class DeviceService(Service):
     def _clean_linux_data(self, processed_data, raw_data):
 
         for entry in processed_data:
-            # We're assuming that if the entry doesn't provide the
-            # bootupTimestamp field but provides the sysUptime field,
-            # we fix the data so that it is always bootupTimestamp
-            # TODO: Fix the clock drift
-            if not entry.get("bootupTimestamp", None) and entry.get(
-                    "sysUptime", None):
-                entry["bootupTimestamp"] = int(
-                    int(raw_data[0]["timestamp"])/1000 -
-                    float(entry.pop("sysUptime", 0))
-                )
-                if entry["bootupTimestamp"] < 0:
-                    entry["bootupTimestamp"] = 0
+            if entry.get("bootupTimestamp"):
+                entry["bootupTimestamp"] = int(entry["bootupTimestamp"])
+
             # This is the case for Linux servers, so also extract the vendor
             # and version from the os string
             if not entry.get("vendor", ''):
@@ -60,50 +50,31 @@ class DeviceService(Service):
     def _clean_cumulus_data(self, processed_data, raw_data):
 
         drop_indices = []
-        drop_rest = False
+        ignore_model_info = False
         for i, entry in enumerate(processed_data):
             etype = entry.get('_entryType', '')
             if etype == 'json':
                 model = entry.get('_modelName', '')
                 if model:
                     entry['model'] = model
-                uptime = entry.get('_uptime', '').split()
-                if uptime:
-                    hr, mins, secs = uptime[-1].split(':')
-                    if len(uptime) > 1:
-                        days = int(uptime[0])
-                    else:
-                        days = 0
-                    uptime_delta = timedelta(days=days, hours=int(hr),
-                                             minutes=int(mins),
-                                             seconds=int(secs.split('.')[0]))
-                    entry['bootupTimestamp'] = int(
-                        (int(raw_data[0]["timestamp"])/1000) -
-                        uptime_delta.total_seconds())
-                drop_rest = True
-                continue
 
-            if drop_rest:
-                drop_indices.append(i)
-                continue
-
-            if etype == 'uptime':
-                entry["bootupTimestamp"] = int(
-                    int(raw_data[0]["timestamp"])/1000 -
-                    float(entry.pop("_sysUptime", 0))
-                )
-                if entry["bootupTimestamp"] < 0:
-                    entry["bootupTimestamp"] = 0
-
-                continue
-
-            if etype == 'model':
-                mem = entry['memory'] or 0
-                entry['mem'] = int(int(mem)/1024)
-                if not entry.get('vendor', ''):
-                    entry['vendor'] = 'Cumulus'
-                entry['os'] = 'cumulus'
-                continue
+                # Some devices do not support the json output, when this is
+                # available, we don't need to parse the model info as present
+                # in the json output
+                ignore_model_info = True
+            elif etype == 'bootupTimestamp':
+                entry["bootupTimestamp"] = int(entry["bootupTimestamp"])
+            elif etype == 'model':
+                # If we parsed the json output no need to parse this result, so
+                # skip.
+                if ignore_model_info:
+                    drop_indices.append(i)
+                else:
+                    mem = entry['memory'] or 0
+                    entry['mem'] = int(int(mem)/1024)
+                    if not entry.get('vendor', ''):
+                        entry['vendor'] = 'Cumulus'
+                    entry['os'] = 'cumulus'
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
 
