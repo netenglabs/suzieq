@@ -2,13 +2,13 @@
     {
         "status": 0,
         "timestamp": 1616644822168,
-        "cmd": "cat /proc/uptime; hostnamectl",
+        "cmd": "cat /proc/stat | grep btime | grep -o '[0-9]*'; hostnamectl",
         "devtype": "linux",
         "namespace": "dual-evpn",
         "hostname": "edge01",
         "address": "192.168.121.154",
         "version": "16.04",
-        "data": "229.63 438.44\n   Static hostname: edge01\n         Icon name: computer-vm\n           Chassis: vm\n        Machine ID: df5eda4c2677752bba6b5f545dd6fb52\n           Boot ID: d6e678f118b4479d935a639c0a8055b2\n    Virtualization: qemu\n  Operating System: Ubuntu 16.04.6 LTS\n            Kernel: Linux 4.4.0-169-generic\n      Architecture: x86-64\n"
+        "data": "1668501391\n   Static hostname: edge01\n         Icon name: computer-vm\n           Chassis: vm\n        Machine ID: df5eda4c2677752bba6b5f545dd6fb52\n           Boot ID: d6e678f118b4479d935a639c0a8055b2\n    Virtualization: qemu\n  Operating System: Ubuntu 16.04.6 LTS\n            Kernel: Linux 4.4.0-169-generic\n      Architecture: x86-64\n"
     }
 ][
     {
@@ -21,6 +21,17 @@
         "address": "192.168.121.13",
         "version": "3.7.9",
         "data": "{\"memory\": 693064, \"uptime\": \"0:03:44.190000\", \"hostname\": \"leaf03\", \"platform\": {\"detected\": true, \"vendor\": \"Cumulus\", \"model\": \"VX\"}, \"build\": \"Cumulus Linux 3.7.9\", \"os-version\": \"3.7.9\", \"disk\": null, \"lsb-release\": \"DISTRIB_ID=\\\"Cumulus Linux\\\"\\nDISTRIB_RELEASE=3.7.9\\nDISTRIB_DESCRIPTION=\\\"Cumulus Linux 3.7.9\\\"\\n\", \"os-description\": \"Cumulus Linux 3.7.9\", \"eeprom\": {\"idString\": \"TlvInfo\", \"totalLength\": 69, \"version\": 1, \"tlv\": {\"Part Number\": {\"index\": 36, \"length\": 5, \"code\": \"0x22\", \"value\": \"3.7.9\"}, \"Serial Number\": {\"index\": 55, \"length\": 17, \"code\": \"0x23\", \"value\": \"52:54:00:fc:26:d8\"}, \"MAC Addresses\": {\"index\": 43, \"length\": 2, \"code\": \"0x2A\", \"value\": \"7\"}, \"CRC-32\": {\"index\": 74, \"length\": 4, \"code\": \"0xFE\", \"value\": \"0xCD06565A\"}, \"Product Name\": {\"index\": 29, \"length\": 2, \"code\": \"0x21\", \"value\": \"VX\"}, \"Device Version\": {\"index\": 33, \"length\": 1, \"code\": \"0x26\", \"value\": \"3\"}, \"Base MAC Address\": {\"index\": 47, \"length\": 6, \"code\": \"0x24\", \"value\": \"52:54:00:FC:26:D8\"}, \"Vendor Name\": {\"index\": 11, \"length\": 16, \"code\": \"0x2D\", \"value\": \"Cumulus Networks\"}}, \"validTlvInfoHeader\": true}} \n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616644822332,
+        "cmd": "cat /proc/stat | grep btime | grep -o '[0-9]*'",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "leaf03",
+        "address": "192.168.121.13",
+        "version": "3.7.9",
+        "data": "1668501391"
     }
 ][
     {
@@ -33,6 +44,17 @@
         "address": "192.168.121.136",
         "version": "3.7.9",
         "data": "{\"memory\": 693064, \"uptime\": \"0:03:44.030000\", \"hostname\": \"spine02\", \"platform\": {\"detected\": true, \"vendor\": \"Cumulus\", \"model\": \"VX\"}, \"build\": \"Cumulus Linux 3.7.9\", \"os-version\": \"3.7.9\", \"disk\": null, \"lsb-release\": \"DISTRIB_ID=\\\"Cumulus Linux\\\"\\nDISTRIB_RELEASE=3.7.9\\nDISTRIB_DESCRIPTION=\\\"Cumulus Linux 3.7.9\\\"\\n\", \"os-description\": \"Cumulus Linux 3.7.9\", \"eeprom\": {\"idString\": \"TlvInfo\", \"totalLength\": 69, \"version\": 1, \"tlv\": {\"Part Number\": {\"index\": 36, \"length\": 5, \"code\": \"0x22\", \"value\": \"3.7.9\"}, \"Serial Number\": {\"index\": 55, \"length\": 17, \"code\": \"0x23\", \"value\": \"52:54:00:7a:4d:60\"}, \"MAC Addresses\": {\"index\": 43, \"length\": 2, \"code\": \"0x2A\", \"value\": \"7\"}, \"CRC-32\": {\"index\": 74, \"length\": 4, \"code\": \"0xFE\", \"value\": \"0xA396EE39\"}, \"Product Name\": {\"index\": 29, \"length\": 2, \"code\": \"0x21\", \"value\": \"VX\"}, \"Device Version\": {\"index\": 33, \"length\": 1, \"code\": \"0x26\", \"value\": \"3\"}, \"Base MAC Address\": {\"index\": 47, \"length\": 6, \"code\": \"0x24\", \"value\": \"52:54:00:7A:4D:60\"}, \"Vendor Name\": {\"index\": 11, \"length\": 16, \"code\": \"0x2D\", \"value\": \"Cumulus Networks\"}}, \"validTlvInfoHeader\": true}} \n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616644822358,
+        "cmd": "cat /proc/stat | grep btime | grep -o '[0-9]*'",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "spine02",
+        "address": "192.168.121.136",
+        "version": "3.7.9",
+        "data": "1668501391"
     }
 ][
     {
@@ -45,6 +67,17 @@
         "address": "192.168.121.38",
         "version": "3.7.9",
         "data": "{\"memory\": 693064, \"uptime\": \"0:03:45.370000\", \"hostname\": \"leaf04\", \"platform\": {\"detected\": true, \"vendor\": \"Cumulus\", \"model\": \"VX\"}, \"build\": \"Cumulus Linux 3.7.9\", \"os-version\": \"3.7.9\", \"disk\": null, \"lsb-release\": \"DISTRIB_ID=\\\"Cumulus Linux\\\"\\nDISTRIB_RELEASE=3.7.9\\nDISTRIB_DESCRIPTION=\\\"Cumulus Linux 3.7.9\\\"\\n\", \"os-description\": \"Cumulus Linux 3.7.9\", \"eeprom\": {\"idString\": \"TlvInfo\", \"totalLength\": 69, \"version\": 1, \"tlv\": {\"Part Number\": {\"index\": 36, \"length\": 5, \"code\": \"0x22\", \"value\": \"3.7.9\"}, \"Serial Number\": {\"index\": 55, \"length\": 17, \"code\": \"0x23\", \"value\": \"52:54:00:8c:ae:6b\"}, \"MAC Addresses\": {\"index\": 43, \"length\": 2, \"code\": \"0x2A\", \"value\": \"7\"}, \"CRC-32\": {\"index\": 74, \"length\": 4, \"code\": \"0xFE\", \"value\": \"0x09623B24\"}, \"Product Name\": {\"index\": 29, \"length\": 2, \"code\": \"0x21\", \"value\": \"VX\"}, \"Device Version\": {\"index\": 33, \"length\": 1, \"code\": \"0x26\", \"value\": \"3\"}, \"Base MAC Address\": {\"index\": 47, \"length\": 6, \"code\": \"0x24\", \"value\": \"52:54:00:8C:AE:6B\"}, \"Vendor Name\": {\"index\": 11, \"length\": 16, \"code\": \"0x2D\", \"value\": \"Cumulus Networks\"}}, \"validTlvInfoHeader\": true}} \n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616644822466,
+        "cmd": "cat /proc/stat | grep btime | grep -o '[0-9]*'",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "leaf04",
+        "address": "192.168.121.38",
+        "version": "3.7.9",
+        "data": "1668501391"
     }
 ][
     {
@@ -57,6 +90,17 @@
         "address": "192.168.121.42",
         "version": "3.7.9",
         "data": "{\"memory\": 693064, \"uptime\": \"0:03:44.120000\", \"hostname\": \"spine01\", \"platform\": {\"detected\": true, \"vendor\": \"Cumulus\", \"model\": \"VX\"}, \"build\": \"Cumulus Linux 3.7.9\", \"os-version\": \"3.7.9\", \"disk\": null, \"lsb-release\": \"DISTRIB_ID=\\\"Cumulus Linux\\\"\\nDISTRIB_RELEASE=3.7.9\\nDISTRIB_DESCRIPTION=\\\"Cumulus Linux 3.7.9\\\"\\n\", \"os-description\": \"Cumulus Linux 3.7.9\", \"eeprom\": {\"idString\": \"TlvInfo\", \"totalLength\": 69, \"version\": 1, \"tlv\": {\"Part Number\": {\"index\": 36, \"length\": 5, \"code\": \"0x22\", \"value\": \"3.7.9\"}, \"Serial Number\": {\"index\": 55, \"length\": 17, \"code\": \"0x23\", \"value\": \"44:39:39:00:00:01\"}, \"MAC Addresses\": {\"index\": 43, \"length\": 2, \"code\": \"0x2A\", \"value\": \"7\"}, \"CRC-32\": {\"index\": 74, \"length\": 4, \"code\": \"0xFE\", \"value\": \"0x0231932E\"}, \"Product Name\": {\"index\": 29, \"length\": 2, \"code\": \"0x21\", \"value\": \"VX\"}, \"Device Version\": {\"index\": 33, \"length\": 1, \"code\": \"0x26\", \"value\": \"3\"}, \"Base MAC Address\": {\"index\": 47, \"length\": 6, \"code\": \"0x24\", \"value\": \"44:39:39:00:00:01\"}, \"Vendor Name\": {\"index\": 11, \"length\": 16, \"code\": \"0x2D\", \"value\": \"Cumulus Networks\"}}, \"validTlvInfoHeader\": true}} \n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616644822466,
+        "cmd": "cat /proc/stat | grep btime | grep -o '[0-9]*'",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "spine01",
+        "address": "192.168.121.42",
+        "version": "3.7.9",
+        "data": "1668501391"
     }
 ][
     {
@@ -69,6 +113,17 @@
         "address": "192.168.121.88",
         "version": "3.7.9",
         "data": "{\"memory\": 693064, \"uptime\": \"0:03:44.390000\", \"hostname\": \"leaf01\", \"platform\": {\"detected\": true, \"vendor\": \"Cumulus\", \"model\": \"VX\"}, \"build\": \"Cumulus Linux 3.7.9\", \"os-version\": \"3.7.9\", \"disk\": null, \"lsb-release\": \"DISTRIB_ID=\\\"Cumulus Linux\\\"\\nDISTRIB_RELEASE=3.7.9\\nDISTRIB_DESCRIPTION=\\\"Cumulus Linux 3.7.9\\\"\\n\", \"os-description\": \"Cumulus Linux 3.7.9\", \"eeprom\": {\"idString\": \"TlvInfo\", \"totalLength\": 69, \"version\": 1, \"tlv\": {\"Part Number\": {\"index\": 36, \"length\": 5, \"code\": \"0x22\", \"value\": \"3.7.9\"}, \"Serial Number\": {\"index\": 55, \"length\": 17, \"code\": \"0x23\", \"value\": \"52:54:00:16:5f:76\"}, \"MAC Addresses\": {\"index\": 43, \"length\": 2, \"code\": \"0x2A\", \"value\": \"7\"}, \"CRC-32\": {\"index\": 74, \"length\": 4, \"code\": \"0xFE\", \"value\": \"0xBBD6E0E3\"}, \"Product Name\": {\"index\": 29, \"length\": 2, \"code\": \"0x21\", \"value\": \"VX\"}, \"Device Version\": {\"index\": 33, \"length\": 1, \"code\": \"0x26\", \"value\": \"3\"}, \"Base MAC Address\": {\"index\": 47, \"length\": 6, \"code\": \"0x24\", \"value\": \"52:54:00:16:5F:76\"}, \"Vendor Name\": {\"index\": 11, \"length\": 16, \"code\": \"0x2D\", \"value\": \"Cumulus Networks\"}}, \"validTlvInfoHeader\": true}} \n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616644822493,
+        "cmd": "cat /proc/stat | grep btime | grep -o '[0-9]*'",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "leaf01",
+        "address": "192.168.121.88",
+        "version": "3.7.9",
+        "data": "1668501391"
     }
 ][
     {
@@ -81,6 +136,17 @@
         "address": "192.168.121.126",
         "version": "3.7.9",
         "data": "{\"memory\": 693064, \"uptime\": \"0:03:44.170000\", \"hostname\": \"exit01\", \"platform\": {\"detected\": true, \"vendor\": \"Cumulus\", \"model\": \"VX\"}, \"build\": \"Cumulus Linux 3.7.9\", \"os-version\": \"3.7.9\", \"disk\": null, \"lsb-release\": \"DISTRIB_ID=\\\"Cumulus Linux\\\"\\nDISTRIB_RELEASE=3.7.9\\nDISTRIB_DESCRIPTION=\\\"Cumulus Linux 3.7.9\\\"\\n\", \"os-description\": \"Cumulus Linux 3.7.9\", \"eeprom\": {\"idString\": \"TlvInfo\", \"totalLength\": 69, \"version\": 1, \"tlv\": {\"Part Number\": {\"index\": 36, \"length\": 5, \"code\": \"0x22\", \"value\": \"3.7.9\"}, \"Serial Number\": {\"index\": 55, \"length\": 17, \"code\": \"0x23\", \"value\": \"52:54:00:c8:33:98\"}, \"MAC Addresses\": {\"index\": 43, \"length\": 2, \"code\": \"0x2A\", \"value\": \"7\"}, \"CRC-32\": {\"index\": 74, \"length\": 4, \"code\": \"0xFE\", \"value\": \"0xAC5DFE19\"}, \"Product Name\": {\"index\": 29, \"length\": 2, \"code\": \"0x21\", \"value\": \"VX\"}, \"Device Version\": {\"index\": 33, \"length\": 1, \"code\": \"0x26\", \"value\": \"3\"}, \"Base MAC Address\": {\"index\": 47, \"length\": 6, \"code\": \"0x24\", \"value\": \"52:54:00:C8:33:98\"}, \"Vendor Name\": {\"index\": 11, \"length\": 16, \"code\": \"0x2D\", \"value\": \"Cumulus Networks\"}}, \"validTlvInfoHeader\": true}} \n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616644822508,
+        "cmd": "cat /proc/stat | grep btime | grep -o '[0-9]*'",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "exit01",
+        "address": "192.168.121.126",
+        "version": "3.7.9",
+        "data": "1668501391"
     }
 ][
     {
@@ -93,6 +159,17 @@
         "address": "192.168.121.157",
         "version": "3.7.9",
         "data": "{\"memory\": 693064, \"uptime\": \"0:03:43.870000\", \"hostname\": \"internet\", \"platform\": {\"detected\": true, \"vendor\": \"Cumulus\", \"model\": \"VX\"}, \"build\": \"Cumulus Linux 3.7.9\", \"os-version\": \"3.7.9\", \"disk\": null, \"lsb-release\": \"DISTRIB_ID=\\\"Cumulus Linux\\\"\\nDISTRIB_RELEASE=3.7.9\\nDISTRIB_DESCRIPTION=\\\"Cumulus Linux 3.7.9\\\"\\n\", \"os-description\": \"Cumulus Linux 3.7.9\", \"eeprom\": {\"idString\": \"TlvInfo\", \"totalLength\": 69, \"version\": 1, \"tlv\": {\"Part Number\": {\"index\": 36, \"length\": 5, \"code\": \"0x22\", \"value\": \"3.7.9\"}, \"Serial Number\": {\"index\": 55, \"length\": 17, \"code\": \"0x23\", \"value\": \"52:54:00:fa:09:49\"}, \"MAC Addresses\": {\"index\": 43, \"length\": 2, \"code\": \"0x2A\", \"value\": \"3\"}, \"CRC-32\": {\"index\": 74, \"length\": 4, \"code\": \"0xFE\", \"value\": \"0x8B9FDE9B\"}, \"Product Name\": {\"index\": 29, \"length\": 2, \"code\": \"0x21\", \"value\": \"VX\"}, \"Device Version\": {\"index\": 33, \"length\": 1, \"code\": \"0x26\", \"value\": \"3\"}, \"Base MAC Address\": {\"index\": 47, \"length\": 6, \"code\": \"0x24\", \"value\": \"52:54:00:FA:09:49\"}, \"Vendor Name\": {\"index\": 11, \"length\": 16, \"code\": \"0x2D\", \"value\": \"Cumulus Networks\"}}, \"validTlvInfoHeader\": true}} \n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616644822618,
+        "cmd": "cat /proc/stat | grep btime | grep -o '[0-9]*'",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "internet",
+        "address": "192.168.121.157",
+        "version": "3.7.9",
+        "data": "1668501391"
     }
 ][
     {
@@ -105,6 +182,17 @@
         "address": "192.168.121.150",
         "version": "3.7.9",
         "data": "{\"memory\": 693064, \"uptime\": \"0:03:44.410000\", \"hostname\": \"exit02\", \"platform\": {\"detected\": true, \"vendor\": \"Cumulus\", \"model\": \"VX\"}, \"build\": \"Cumulus Linux 3.7.9\", \"os-version\": \"3.7.9\", \"disk\": null, \"lsb-release\": \"DISTRIB_ID=\\\"Cumulus Linux\\\"\\nDISTRIB_RELEASE=3.7.9\\nDISTRIB_DESCRIPTION=\\\"Cumulus Linux 3.7.9\\\"\\n\", \"os-description\": \"Cumulus Linux 3.7.9\", \"eeprom\": {\"idString\": \"TlvInfo\", \"totalLength\": 69, \"version\": 1, \"tlv\": {\"Part Number\": {\"index\": 36, \"length\": 5, \"code\": \"0x22\", \"value\": \"3.7.9\"}, \"Serial Number\": {\"index\": 55, \"length\": 17, \"code\": \"0x23\", \"value\": \"52:54:00:d8:48:63\"}, \"MAC Addresses\": {\"index\": 43, \"length\": 2, \"code\": \"0x2A\", \"value\": \"7\"}, \"CRC-32\": {\"index\": 74, \"length\": 4, \"code\": \"0xFE\", \"value\": \"0x9E4D7392\"}, \"Product Name\": {\"index\": 29, \"length\": 2, \"code\": \"0x21\", \"value\": \"VX\"}, \"Device Version\": {\"index\": 33, \"length\": 1, \"code\": \"0x26\", \"value\": \"3\"}, \"Base MAC Address\": {\"index\": 47, \"length\": 6, \"code\": \"0x24\", \"value\": \"52:54:00:D8:48:63\"}, \"Vendor Name\": {\"index\": 11, \"length\": 16, \"code\": \"0x2D\", \"value\": \"Cumulus Networks\"}}, \"validTlvInfoHeader\": true}} \n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616644822818,
+        "cmd": "cat /proc/stat | grep btime | grep -o '[0-9]*'",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "exit02",
+        "address": "192.168.121.150",
+        "version": "3.7.9",
+        "data": "1668501391"
     }
 ][
     {
@@ -117,5 +205,16 @@
         "address": "192.168.121.253",
         "version": "3.7.9",
         "data": "{\"memory\": 693064, \"uptime\": \"0:03:45.400000\", \"hostname\": \"leaf02\", \"platform\": {\"detected\": true, \"vendor\": \"Cumulus\", \"model\": \"VX\"}, \"build\": \"Cumulus Linux 3.7.9\", \"os-version\": \"3.7.9\", \"disk\": null, \"lsb-release\": \"DISTRIB_ID=\\\"Cumulus Linux\\\"\\nDISTRIB_RELEASE=3.7.9\\nDISTRIB_DESCRIPTION=\\\"Cumulus Linux 3.7.9\\\"\\n\", \"os-description\": \"Cumulus Linux 3.7.9\", \"eeprom\": {\"idString\": \"TlvInfo\", \"totalLength\": 69, \"version\": 1, \"tlv\": {\"Part Number\": {\"index\": 36, \"length\": 5, \"code\": \"0x22\", \"value\": \"3.7.9\"}, \"Serial Number\": {\"index\": 55, \"length\": 17, \"code\": \"0x23\", \"value\": \"52:54:00:8a:e0:4c\"}, \"MAC Addresses\": {\"index\": 43, \"length\": 2, \"code\": \"0x2A\", \"value\": \"7\"}, \"CRC-32\": {\"index\": 74, \"length\": 4, \"code\": \"0xFE\", \"value\": \"0x9191DAF6\"}, \"Product Name\": {\"index\": 29, \"length\": 2, \"code\": \"0x21\", \"value\": \"VX\"}, \"Device Version\": {\"index\": 33, \"length\": 1, \"code\": \"0x26\", \"value\": \"3\"}, \"Base MAC Address\": {\"index\": 47, \"length\": 6, \"code\": \"0x24\", \"value\": \"52:54:00:8A:E0:4C\"}, \"Vendor Name\": {\"index\": 11, \"length\": 16, \"code\": \"0x2D\", \"value\": \"Cumulus Networks\"}}, \"validTlvInfoHeader\": true}} \n"
+    },
+    {
+        "status": 0,
+        "timestamp": 1616644822742,
+        "cmd": "cat /proc/stat | grep btime | grep -o '[0-9]*'",
+        "devtype": "cumulus",
+        "namespace": "dual-evpn",
+        "hostname": "leaf02",
+        "address": "192.168.121.253",
+        "version": "3.7.9",
+        "data": "1668501391"
     }
 ]
