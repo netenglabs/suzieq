@@ -45,23 +45,12 @@ def test_schema_data_consistency(table, datadir, columns, get_table_data_cols):
     assert not df.empty
 
     sqobj = get_sqobject(table)()
-    if columns == ['*']:
-        schema_fld_set = set(sqobj.schema.fields)
-        schema_fld_set.remove('sqvers')
-        if table == 'bgp':
-            schema_fld_set.remove('origPeer')
-        elif table == "macs":
-            schema_fld_set.remove('mackey')
-        elif table == 'topology':
-            # By default, we don't pull arpnd
-            schema_fld_set.remove('arpnd')
-            schema_fld_set.remove('arpndBidir')
-    else:
-        schema_fld_set = set(sqobj.schema.sorted_display_fields())
-        if table == 'topology':
-            # By default, we don't pull arpnd
-            schema_fld_set.remove('arpnd')
-            schema_fld_set.remove('arpndBidir')
+    all_cols = columns == ['*']
+    schema_fld_set = set(sqobj.schema.sorted_display_fields(getall=all_cols))
+    if table == 'topology':
+        # By default, we don't pull arpnd
+        schema_fld_set.remove('arpnd')
+        schema_fld_set.remove('arpndBidir')
 
     df_fld_set = set(df.columns)
     assert not schema_fld_set.symmetric_difference(df_fld_set)
