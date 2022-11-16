@@ -178,7 +178,7 @@ class SqParquetDB(SqDB):
 
         cols = set(final_df.columns.tolist() + final_df.index.names)
         for fld in [x for x in fields if x not in cols]:
-            final_df[fld] = ''
+            final_df[fld] = None
         return final_df.reset_index()[fields]
 
     def write(self, table_name: str, data_format: str,
