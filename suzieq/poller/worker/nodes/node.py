@@ -1368,20 +1368,10 @@ class EosNode(Node):
                                     json_out["error"].get('data', []))
 
                             for i, cmd in enumerate(cmd_list):
+                                data = (output[i] if isinstance(output, list)
+                                        else output)
                                 result.append(
-                                    {
-                                        "status": status,
-                                        "timestamp": now,
-                                        "cmd": cmd,
-                                        "devtype": self.devtype,
-                                        "namespace": self.nsname,
-                                        "hostname": self.hostname,
-                                        "address": self.address,
-                                        "data":
-                                        output[i]
-                                        if isinstance(output, list)
-                                        else output,
-                                    }
+                                    self._create_result(cmd, status, data)
                                 )
                         else:
                             for cmd in cmd_list:
@@ -1533,17 +1523,11 @@ class CumulusNode(Node):
                         async with session.post(
                                 url, json=data, headers=headers
                         ) as response:
-                            result.append({
-                                "status": response.status,
-                                "timestamp": int(datetime.now(tz=timezone.utc)
-                                                 .timestamp() * 1000),
-                                "cmd": cmd,
-                                "devtype": self.devtype,
-                                "namespace": self.nsname,
-                                "hostname": self.hostname,
-                                "address": self.address,
-                                "data": await response.text(),
-                            })
+                            data_res = await response.text()
+                            result.append(
+                                self._create_result(
+                                    cmd, response.status, data_res)
+                            )
             except Exception as e:
                 self.current_exception = e
                 result.append(self._create_error(cmd_list))
@@ -2044,9 +2028,7 @@ class PanosNode(Node):
 
                         stdout, _ = process.collect_output()
                         output += stdout
-                        res = [{
-                            "status": 0,
-                            "data": output}]
+                        res = [self._create_result(discovery_cmd, 0, output)]
 
             await self._parse_init_dev_data(res, None)
             self._session = aiohttp.ClientSession(
@@ -2159,8 +2141,6 @@ class PanosNode(Node):
 
         timeout = timeout or self.connect_timeout
 
-        now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
-
         url = f"https://{self.address}:{self.port}/api/"
 
         status = 200  # status OK
@@ -2186,16 +2166,9 @@ class PanosNode(Node):
                         if status == 200:
                             json_out = json.dumps(
                                 xmltodict.parse(xml))
-                            result.append({
-                                "status": status,
-                                "timestamp": now,
-                                "cmd": cmd,
-                                "devtype": self.devtype,
-                                "namespace": self.nsname,
-                                "hostname": self.hostname,
-                                "address": self.address,
-                                "data": json_out,
-                            })
+                            result.append(
+                                self._create_result(cmd, status, json_out)
+                            )
                         else:
                             result.append(self._create_error(cmd))
                             self.logger.error(
