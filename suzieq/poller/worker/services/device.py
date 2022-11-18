@@ -105,7 +105,8 @@ class DeviceService(Service):
 
     def _clean_iosxr_data(self, processed_data, raw_data):
         for i, entry in enumerate(processed_data):
-            self._clean_common_ios(entry, 'iosxr', raw_data[i]['timestamp'])
+            self._clean_common_ios(
+                entry, 'iosxr', raw_data[i]['cmd_timestamp'])
             if 'IOS-XRv' in entry.get('model', ''):
                 entry['architecture'] = "x86-64"
 
@@ -113,13 +114,14 @@ class DeviceService(Service):
 
     def _clean_iosxe_data(self, processed_data, raw_data):
         for i, entry in enumerate(processed_data):
-            self._clean_common_ios(entry, 'iosxe', raw_data[i]['timestamp'])
+            self._clean_common_ios(
+                entry, 'iosxe', raw_data[i]['cmd_timestamp'])
 
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_ios_data(self, processed_data, raw_data):
         for i, entry in enumerate(processed_data):
-            self._clean_common_ios(entry, 'ios', raw_data[i]['timestamp'])
+            self._clean_common_ios(entry, 'ios', raw_data[i]['cmd_timestamp'])
 
         return self._common_data_cleaner(processed_data, raw_data)
 
@@ -139,7 +141,7 @@ class DeviceService(Service):
                       int(entry.pop('kern_uptm_secs', 0)))
             if upsecs:
                 entry['bootupTimestamp'] = int(
-                    int(raw_data[0]["timestamp"])/1000 - upsecs)
+                    int(raw_data[0]['cmd_timestamp'])/1000 - upsecs)
 
             # Needed for textfsm parsed data
             entry['vendor'] = 'Cisco'
@@ -164,7 +166,7 @@ class DeviceService(Service):
                     60 * int(minutes) + int(seconds)
             if upsecs:
                 entry['bootupTimestamp'] = int(
-                    int(raw_data[0]["timestamp"])/1000 - upsecs)
+                    int(raw_data[0]["cmd_timestamp"])/1000 - upsecs)
             # defaults
             entry["vendor"] = "Palo Alto"
             entry["os"] = "panos"

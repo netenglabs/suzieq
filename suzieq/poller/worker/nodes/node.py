@@ -300,7 +300,7 @@ class Node:
             status = -1
         return self._create_result(cmd, status, data)
 
-    def _create_result(self, cmd, status, data) -> dict:
+    def _create_result(self, cmd, status, data, cmd_timestamp=None) -> dict:
         if self.port in [22, 443]:
             # Ignore port if defaults (SSH or HTTPS)
             addrstr = self.address
@@ -309,6 +309,8 @@ class Node:
         result = {
             "status": status,
             "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
+            "cmd_timestamp": (int(cmd_timestamp * 1000) if cmd_timestamp
+                              else None),
             "cmd": cmd,
             "devtype": self.devtype,
             "namespace": self.nsname,
@@ -880,6 +882,7 @@ class Node:
                     if self.slow_host:
                         await asyncio.sleep(self.SLEEP_BET_CMDS_SLOW)
 
+                    cmd_timestamp = time.time()
                     output = await asyncio.wait_for(self._conn.run(cmd),
                                                     timeout=timeout)
                     if self.current_exception:
@@ -888,7 +891,7 @@ class Node:
                             self.hostname)
                         self.current_exception = None
                     result.append(self._create_result(
-                        cmd, output.exit_status, output.stdout))
+                        cmd, output.exit_status, output.stdout, cmd_timestamp))
                     if (output.exit_status == 0) and only_one:
                         break
                 except Exception as e:
@@ -1371,7 +1374,8 @@ class EosNode(Node):
                                 data = (output[i] if isinstance(output, list)
                                         else output)
                                 result.append(
-                                    self._create_result(cmd, status, data)
+                                    self._create_result(
+                                        cmd, status, data, now / 1000)
                                 )
                         else:
                             for cmd in cmd_list:
@@ -1520,13 +1524,15 @@ class CumulusNode(Node):
                 ) as session:
                     for cmd in cmd_list:
                         data = {"cmd": cmd}
+                        cmd_timestamp = time.time()
                         async with session.post(
                                 url, json=data, headers=headers
                         ) as response:
                             data_res = await response.text()
                             result.append(
                                 self._create_result(
-                                    cmd, response.status, data_res)
+                                    cmd, response.status, data_res,
+                                    cmd_timestamp)
                             )
             except Exception as e:
                 self.current_exception = e
@@ -1597,7 +1603,7 @@ class IosXRNode(Node):
             if timestr:
                 timestr = timestr.group(1)
                 self.bootupTimestamp = parse_relative_timestamp(
-                    timestr, output[0]['timestamp'] / 1000)
+                    timestr, output[0]['cmd_timestamp'] / 1000)
             else:
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -1748,7 +1754,7 @@ class IosXENode(Node):
                 self._set_hostname(hostupstr.group(1))
                 timestr = hostupstr.group(2)
                 self.bootupTimestamp = parse_relative_timestamp(
-                    timestr, output[0]['timestamp'] / 1000)
+                    timestr, output[0]['cmd_timestamp'] / 1000)
             else:
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -1789,6 +1795,8 @@ class IosXENode(Node):
                 try:
                     if self.slow_host:
                         await asyncio.sleep(self.SLEEP_BET_CMDS_SLOW)
+
+                    cmd_timestamp = time.time()
                     self._stdin.write(cmd + '\n')
                     output = await self.wait_for_prompt()
                     if 'Invalid input detected' in output:
@@ -1797,7 +1805,8 @@ class IosXENode(Node):
                         status = HTTPStatus.REQUEST_TIMEOUT
                     else:
                         status = 0
-                    result.append(self._create_result(cmd, status, output))
+                    result.append(self._create_result(
+                        cmd, status, output, cmd_timestamp))
                     continue
                 except Exception as e:
                     self.current_exception = e
@@ -1934,7 +1943,7 @@ class NxosNode(Node):
             uptime_grp = re.search(r'Kernel\s+uptime\s+is\s+([^\n]+)', data)
             if uptime_grp:
                 self.bootupTimestamp = parse_relative_timestamp(
-                    uptime_grp.group(1), output[0]['timestamp'] / 1000)
+                    uptime_grp.group(1), output[0]['cmd_timestamp'] / 1000)
 
         if len(output) > 1:
             if output[1]["status"] == 0:
@@ -2017,6 +2026,7 @@ class PanosNode(Node):
                         self.address, port=22, username=self.username,
                         password=self.password, known_hosts=None) as conn:
                     async with conn.create_process() as process:
+                        cmd_timestamp = time.time()
                         process.stdin.write(f'{discovery_cmd}\n')
                         output = ""
                         output += await process.stdout.read(1)
@@ -2028,7 +2038,8 @@ class PanosNode(Node):
 
                         stdout, _ = process.collect_output()
                         output += stdout
-                        res = [self._create_result(discovery_cmd, 0, output)]
+                        res = [self._create_result(discovery_cmd, 0, output,
+                                                   cmd_timestamp)]
 
             await self._parse_init_dev_data(res, None)
             self._session = aiohttp.ClientSession(
@@ -2086,7 +2097,8 @@ class PanosNode(Node):
                 seconds = match.group(4).strip()
                 upsecs = 86400 * int(days) + 3600 * int(hours) + \
                     60 * int(minutes) + int(seconds)
-                self.bootupTimestamp = int(int(time.time()) - float(upsecs))
+                self.bootupTimestamp = int(
+                    (output[0]['cmd_timestamp'] / 1000) - float(upsecs))
             else:
                 self.logger.warning(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -2160,6 +2172,7 @@ class PanosNode(Node):
             try:
                 for cmd in cmd_list:
                     url_cmd = f"{url}?type=op&cmd={cmd}&key={self.api_key}"
+                    cmd_timestamp = time.time()
                     async with self._session.get(
                             url_cmd, timeout=timeout) as response:
                         status, xml = response.status, await response.text()
@@ -2167,7 +2180,8 @@ class PanosNode(Node):
                             json_out = json.dumps(
                                 xmltodict.parse(xml))
                             result.append(
-                                self._create_result(cmd, status, json_out)
+                                self._create_result(
+                                    cmd, status, json_out, cmd_timestamp)
                             )
                         else:
                             result.append(self._create_error(cmd))
