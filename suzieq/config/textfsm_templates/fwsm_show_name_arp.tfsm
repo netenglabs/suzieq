@@ -1,0 +1,12 @@
+Value Required ipAddress (\S+)
+Value macaddr ([a-f0-9.]+)
+Value type (\S+)
+Value oif (\S+)
+Value protocol (\S+)
+Value alias (\S+)
+
+Start
+  ^name\s+${ipAddress}\s+${alias}.*$$ -> Record
+
+#name 192.168.199.7 host1
+#name 192.168.11.27 host2_92.1xx.181.207

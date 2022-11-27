@@ -1,0 +1,121 @@
+Value Required ifname (\S+)
+Value state (\S+)
+Value adminState (\S+)
+Value type ([^,]+)
+Value macaddr ((?:\w{2}\:){5}\w{2})
+Value interfaceMac ((?:\w{4}\.){2}\w{4})
+Value description (.*?)
+Value List ipAddressList (.*)
+Value mtu (\d+)
+Value duplex (\S+)
+Value speed (\d+)
+Value bandwidth (\d+\s+\w+)
+Value ENCAPSULATION ([^,]+)
+Value statusChangeTimestamp (\S+)
+Value numChanges (\d+)
+Value vlan (\d+)
+Value innerVlan (\d+)
+Value _bondMbrCnt (\d+)
+Value List _bondMbrs ([^,]+)
+Value _switchport (Layer 2)
+
+Start
+  ^Stat.*$$ -> Continue.Record
+  ^Interface\s${ifname}.*$$
+  ^\s+state\s+${adminState}.*$$
+  ^\s+mac-addr\s+${macaddr}.*$$
+  ^\s+type\s+${type}.*$$
+  ^\s+link-state link\s+${state}.*$$
+  ^\s+link-state\s+${state}.*$$
+  ^\s+mtu\s+${mtu}.*$$
+  ^\s+speed\s+${speed}.*$$
+  ^\s+duplex\s+${duplex}.*$$
+  ^\s+ipv4-address\s+${ipAddressList}.*$$
+  ^\s+comments\s+\{${description}\}.*$$
+ 
+#Interface Mgmt1
+#    state on
+#    mac-addr 00:1c:7f:00:00:FF
+#    type ethernet
+#    link-state link up
+#    mtu 1500
+#    auto-negotiation on
+#    speed 1000M
+#    ipv6-autoconfig Not configured
+#    duplex full
+#    monitor-mode Not configured
+#    link-speed 1000M/full
+#    comments 
+#    ipv4-address 172.2.2.2/24
+#    ipv6-address Not Configured
+#    ipv6-local-link-address Not Configured
+#    
+#Statistics: 
+#    TX bytes:44388023637 packets:180944130 errors:0 dropped:0 overruns:0 carrier:0
+#    RX bytes:1001251322 packets:11111249 errors:0 dropped:0 overruns:0 frame:0
+#
+#
+#Interface Sync
+#    state on
+#    mac-addr 00:1c:7f:01:01:01
+#    type ethernet
+#    link-state link up
+#    mtu 1500
+#    auto-negotiation on
+#    speed 1000M
+#    ipv6-autoconfig Not configured
+#    duplex full
+#    monitor-mode Not configured
+#    link-speed Not configured
+#    comments {Sync Interface with something}
+#    ipv4-address 1.1.1.1/30
+#    ipv6-address Not Configured
+#    ipv6-local-link-address Not Configured
+#    
+#Statistics: 
+#    TX bytes:429827928043 packets:398314508 errors:0 dropped:0 overruns:0 carrier:0
+#    RX bytes:23940326623 packets:210700927 errors:0 dropped:0 overruns:0 frame:0
+#
+#Interface eth1-02.1234
+#    state on
+#    mac-addr 00:1c:7f:fe:fe:34
+#    type vlan
+#    link-state not available
+#    mtu 1500
+#    auto-negotiation on (eth1-02)
+#    speed 10G (eth1-02)
+#    ipv6-autoconfig Not configured
+#    duplex full (eth1-02)
+#    monitor-mode Not configured
+#    link-speed Not configured
+#    comments Corp
+#    ipv4-address 172.4.54.1/29
+#    ipv6-address Not Configured
+#    ipv6-local-link-address Not Configured
+#
+#Statistics: 
+#    TX bytes:249560115590 packets:341159527 errors:0 dropped:0 overruns:0 carrier:0
+#    RX bytes:147452354286 packets:263071600 errors:0 dropped:0 overruns:0 frame:0
+#
+#
+#Interface eth1-02.3000
+#    state on
+#    mac-addr 00:1c:7f:af:ee:33
+#    type vlan
+#    link-state not available
+#    mtu 1500
+#    auto-negotiation on (eth1-02)
+#    speed 10G (eth1-02)
+#    ipv6-autoconfig Not configured
+#    duplex full (eth1-02)
+#    monitor-mode Not configured
+#    link-speed Not configured
+#    comments {special VRF}
+#    ipv4-address 172.2.16.91/29
+#    ipv6-address Not Configured
+#    ipv6-local-link-address Not Configured
+#    
+#Statistics: 
+#    TX bytes:5100485625830 packets:4541073453 errors:0 dropped:0 overruns:0 carrier:0
+#    RX bytes:4114128435559 packets:3450435325 errors:0 dropped:0 overruns:0 frame:0
+

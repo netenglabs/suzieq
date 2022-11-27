@@ -1,0 +1,20 @@
+## Value Required ipAddress (\d+\.\d+\.\d+\.\d+)
+Value Required ipAddress (\S+)
+Value macaddr ([a-f0-9.]+)
+Value type (\S+)
+Value oif (\S+)
+Value protocol (\S+)
+
+Start
+  ^\s+${oif}\s+${ipAddress}\s+${macaddr}.*$$ -> Record
+
+
+#  MGMT-PRMT-APP 192.168.16.1 a4sa.0ffb.2aa2 
+#  MGMT-PRMT-APP 192.168.16.1 0050.5ff4.0aab 
+#  MGMT-PRMT-APP 192.168.13.4 0050.56ff.1aa8
+#  MGMT-PRMT-APP alisa_host_name 0050.ff82.daad 
+#  OOBM 172.3.0.45 7008.a706.8eff 
+#  OOBM 172.3.1.1 0004.ef73.fff3 
+#  Inside 192.168.9.252 0002.4ffd.9cff 
+#  Inside 192.168.9.251 0008.7ff6.ce0
+

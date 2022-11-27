@@ -60,7 +60,21 @@ apply:
 
   ios:
     copy: iosxe
-  
+
+  fwsm:
+    version: all
+    command:
+      - command: show route
+        textfsm: textfsm_templates/fwsm_show_route.tfsm
+      - command: show name
+        textfsm: textfsm_templates/fwsm_show_name.tfsm
+
+  cpgaia:
+    version: all
+    command:
+      - command: show route
+        textfsm: textfsm_templates/cpgaia_show_route.tfsm
+
   junos-qfx:
     version: all
     command:

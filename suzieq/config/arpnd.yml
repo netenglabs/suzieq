@@ -43,6 +43,20 @@ apply:
   ios:
     copy: iosxe
 
+  fwsm:
+    version: all
+    command:
+      - command: show arp
+        textfsm: textfsm_templates/fwsm_show_arp.tfsm
+      - command: show name
+        textfsm: textfsm_templates/fwsm_show_name_arp.tfsm
+
+  cpgaia:
+    version: all
+    command:
+      - command: show arp dynamic all
+        textfsm: textfsm_templates/cpgaia_show_arp.tfsm
+
   linux:
     copy: cumulus
 

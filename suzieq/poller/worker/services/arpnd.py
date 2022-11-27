@@ -1,10 +1,14 @@
 import re
+import ipaddress
+import logging
 
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (
     convert_macaddr_format_to_colon, expand_ios_ifname)
+
+logger = logging.getLogger(__name__)
 
 
 class ArpndService(Service):
@@ -108,6 +112,39 @@ class ArpndService(Service):
         return self._clean_common_ios_data(processed_data, raw_data)
 
     def _clean_ios_data(self, processed_data, raw_data):
+        return self._clean_common_ios_data(processed_data, raw_data)
+
+    def _clean_cpgaia_data(self, processed_data, _raw_data):
+        for entry in processed_data:
+            if 'state' not in entry:
+                entry['state'] = 'reachable'
+            # FIX oif ?
+        return processed_data
+
+    def _clean_fwsm_data(self, processed_data, raw_data):
+        lookup = {}
+
+        # Build a "dns" type lookup table from the "show names" command
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            if "alias" in entry:
+                lookup[entry['alias']] = entry['ipAddress']
+                drop_indices.append(i)
+        processed_data = np.delete(processed_data, drop_indices).tolist()
+
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            ip_address = entry['ipAddress']
+            try:
+                # check we have a valid address
+                _ = ipaddress.ip_address(ip_address)
+            except ValueError:
+                if ip_address in lookup:
+                    entry['ipAddress'] = lookup[ip_address]
+                else:
+                    drop_indices.append(i)
+        processed_data = np.delete(processed_data, drop_indices).tolist()
+
         return self._clean_common_ios_data(processed_data, raw_data)
 
     def _clean_panos_data(self, processed_data, _):

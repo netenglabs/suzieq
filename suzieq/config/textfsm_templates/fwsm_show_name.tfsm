@@ -1,0 +1,8 @@
+Value prefix ([0-9./]+|[\S+]+)
+Value alias (\S+)
+
+Start
+  ^name\s+${prefix}\s+${alias}.*$$ -> Record
+
+#name 192.168.181.76 host1
+#name 192.168.181.207 host2_92.168.181.207

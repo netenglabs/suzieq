@@ -1,6 +1,9 @@
 import re
 from datetime import datetime
 
+import ipaddress
+import logging
+
 from dateparser import parse
 import numpy as np
 
@@ -8,6 +11,7 @@ from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (expand_nxos_ifname,
                                  get_timestamp_from_cisco_time,
                                  get_timestamp_from_junos_time)
+logger = logging.getLogger(__name__)
 
 
 class RoutesService(Service):
@@ -148,7 +152,7 @@ class RoutesService(Service):
             lastChange = entry.get('statusChangeTimestamp', [''])
             if lastChange:
                 entry['statusChangeTimestamp'] = get_timestamp_from_junos_time(
-                    lastChange, raw_data[0]['timestamp']/1000)
+                    lastChange, raw_data[0]['timestamp'] / 1000)
             else:
                 entry['statusChangeTimestamp'] = 0
 
@@ -229,7 +233,7 @@ class RoutesService(Service):
             lastChange = entry.get('statusChangeTimestamp', [''])[0]
             if lastChange:
                 entry['statusChangeTimestamp'] = get_timestamp_from_cisco_time(
-                    lastChange, raw_data[0]['timestamp']/1000)
+                    lastChange, raw_data[0]['timestamp'] / 1000)
             else:
                 entry['statusChangeTimestamp'] = 0
 
@@ -289,9 +293,9 @@ class RoutesService(Service):
                     lastchange,
                     settings={'RELATIVE_BASE':
                               datetime.fromtimestamp(
-                                  (raw_data[0]['timestamp'])/1000), })
+                                  (raw_data[0]['timestamp']) / 1000), })
             if lastchange:
-                entry['statusChangeTimestamp'] = lastchange.timestamp()*1000
+                entry['statusChangeTimestamp'] = lastchange.timestamp() * 1000
             else:
                 entry['statusChangeTimestamp'] = 0
 
@@ -307,7 +311,7 @@ class RoutesService(Service):
         #  * Handling status change timestamp
         for entry in processed_data:
             entry['statusChangeTimestamp'] = get_timestamp_from_cisco_time(
-                entry['statusChangeTimestamp'], raw_data[0]['timestamp']/1000)
+                entry['statusChangeTimestamp'], raw_data[0]['timestamp'] / 1000)
             if ':' in entry['prefix']:
                 entry['prefix'] = entry['prefix'].lower()
                 if '/' not in entry['prefix']:
@@ -330,6 +334,40 @@ class RoutesService(Service):
 
     def _clean_ios_data(self, processed_data, raw_data):
         return self._clean_iosxe_data(processed_data, raw_data)
+
+    def _clean_fwsm_data(self, processed_data, raw_data):
+
+        lookup = {}
+
+        # Build a "dns" type lookup table from the "show names" command
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            if "alias" in entry:
+                lookup[entry['alias']] = entry['prefix']
+                drop_indices.append(i)
+        processed_data = np.delete(processed_data, drop_indices).tolist()
+
+        # FWSM has routes with subnet(netmasks) instead of prefixes
+        drop_indices = []
+        for i, entry in enumerate(processed_data):
+            try:
+                # check we have a valid address
+                _ = ipaddress.ip_address(entry['prefix'])
+            except Exception:
+                prefix = entry['prefix']
+                if prefix in lookup:
+                    entry['prefix'] = lookup[prefix]
+                else:
+                    drop_indices.append(i)
+            # convert subnet to proper prefix notation
+            prefix = sum(bin(int(x)).count('1') for x in entry['subnet'].split('.'))
+            entry['prefix'] += f"/{prefix}"
+
+        return self._clean_iosxe_data(processed_data, raw_data)
+
+    def _clean_cpgaia_data(self, processed_data, raw_data):
+        # fix blank vrf, and expande protocol fields
+        return self._clean_iosxr_data(processed_data, raw_data)
 
     def _clean_panos_data(self, processed_data, raw_data):
         drop_indices = []
@@ -367,7 +405,7 @@ class RoutesService(Service):
 
             if entry.get('_age', 0):
                 entry['statusChangeTimestamp'] = \
-                    (raw_data[0]['timestamp']/1000) - int(entry['_age'])
+                    (raw_data[0]['timestamp'] / 1000) - int(entry['_age'])
             if 'E' in flags:
                 # ECMP, so attempt to merge with previous entries
                 old_entry = prefix_dict.get(entry['prefix'], None)
