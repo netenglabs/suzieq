@@ -28,20 +28,21 @@ tests:
   data-directory: tests/data/parquet
   marks: arpnd describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
-    "If this entry is active or deleted"}, {"name": "hostname", "type": "string",
-    "key": 1, "display": 1, "description": "hostname associated with this record"},
-    {"name": "ipAddress", "type": "string", "key": 2, "display": 2, "description":
-    "IP Address of entry"}, {"name": "macaddr", "type": "string", "key": "", "display":
-    4, "description": "MAC address of entry"}, {"name": "namespace", "type": "string",
-    "key": 0, "display": 0, "description": "namespace associated with this record"},
-    {"name": "oif", "type": "string", "key": 3, "display": 3, "description": "Name
-    of outgoing interface"}, {"name": "remote", "type": "boolean", "key": "", "display":
-    6, "description": "True if entry is learnt via EVPN"}, {"name": "sqvers", "type":
-    "string", "key": "", "display": "", "description": "Schema version, not selectable"},
-    {"name": "state", "type": "string", "key": "", "display": 5, "description": "State
-    of entry: STALE, REACHABLE etc."}, {"name": "timestamp", "type": "timestamp",
-    "key": "", "display": 7, "description": "Unix epach When this record was created,
-    in ms"}]'
+    "If this entry is active or deleted"}, {"name": "deviceSession", "type": "timestamp",
+    "key": "", "display": "", "description": "Device boot session id"}, {"name": "hostname",
+    "type": "string", "key": 1, "display": 1, "description": "hostname associated
+    with this record"}, {"name": "ipAddress", "type": "string", "key": 2, "display":
+    2, "description": "IP Address of entry"}, {"name": "macaddr", "type": "string",
+    "key": "", "display": 4, "description": "MAC address of entry"}, {"name": "namespace",
+    "type": "string", "key": 0, "display": 0, "description": "namespace associated
+    with this record"}, {"name": "oif", "type": "string", "key": 3, "display": 3,
+    "description": "Name of outgoing interface"}, {"name": "remote", "type": "boolean",
+    "key": "", "display": 6, "description": "True if entry is learnt via EVPN"}, {"name":
+    "sqvers", "type": "string", "key": "", "display": "", "description": "Schema version,
+    not selectable"}, {"name": "state", "type": "string", "key": "", "display": 5,
+    "description": "State of entry: STALE, REACHABLE etc."}, {"name": "timestamp",
+    "type": "timestamp", "key": "", "display": 7, "description": "Unix epach When
+    this record was created, in ms"}]'
 - command: bgp describe --format=json
   data-directory: tests/data/parquet
   marks: bgp describe
@@ -63,44 +64,45 @@ tests:
     {"type": "array", "items": {"name": "weight", "type": "string"}}, "key": "", "display":
     "", "description": "List of types of communities advertised for AFI/SAFI to peer"},
     {"name": "defOriginate", "type": "boolean", "key": "", "display": "", "description":
-    "True if advertising default route for this AFI/SAFI to peer"}, {"name": "egressRmap",
-    "type": "string", "key": "", "display": "", "description": "Route map name associated
-    with egress for AFI/SAFI"}, {"name": "estdTime", "type": "timedelta64[s]", "key":
-    "", "display": 13, "description": "Session uptime"}, {"name": "extnhAdvertised",
-    "type": "boolean", "key": "", "display": "", "description": "Extended NextHop
-    capability sent"}, {"name": "extnhEnabled", "type": "boolean", "key": "", "display":
-    "", "description": "Extended NextHop capability enabled on session"}, {"name":
-    "extnhReceived", "type": "boolean", "key": "", "display": "", "description": "Extended
-    NextHop capability rcvd"}, {"name": "holdTime", "type": "long", "key": "", "display":
-    "", "description": "BGP hold time"}, {"name": "hopsMax", "type": "long", "key":
-    "", "display": "", "description": "Maximum #hops this peer can be"}, {"name":
-    "hostname", "type": "string", "key": 1, "display": 1, "description": "Hostname
-    associated with this record"}, {"name": "ifname", "type": "string", "key": "",
-    "display": "", "description": "Interface name associated with session"}, {"name":
-    "ingressRmap", "type": "string", "key": "", "display": "", "description": "Route
-    map name associated with ingress for AFI/SAFI"}, {"name": "keepaliveTime", "type":
-    "long", "key": "", "display": "", "description": "BGP peer keepalive time in secs"},
-    {"name": "lastDownTime", "type": "timestamp", "key": "", "display": "", "description":
-    "Unix epoch indicating when session was last down"}, {"name": "mrai", "type":
-    "long", "key": "", "display": "", "description": "Min Route Adv Interval, in secs"},
-    {"name": "namespace", "type": "string", "key": 0, "display": 0, "description":
-    "Namespace associated with this record"}, {"name": "nhSelf", "type": "boolean",
-    "key": "", "display": "", "description": "True if set nexthop self is configured
-    for iBGP peer"}, {"name": "nhUnchanged", "type": "boolean", "key": "", "display":
-    "", "description": "True if set nexthop unchanged is configured for eBGP peer"},
-    {"name": "notificnReason", "type": "string", "key": "", "display": "", "description":
-    "Last BGP notification reason"}, {"name": "numChanges", "type": "long", "key":
-    "", "display": 12, "description": "Count of changes in BGP session state"}, {"name":
-    "origPeer", "type": "string", "key": "", "display": "", "description": "internal
-    field, not selectable"}, {"name": "peer", "type": "string", "key": 3, "display":
-    3, "description": "IP address or ifname of BGP peer"}, {"name": "peerAsn", "type":
-    "long", "key": "", "display": 9, "description": "Peer device''s ASN"}, {"name":
-    "peerAsndot", "type": "string", "key": "", "display": "", "description": "Peer
-    device''s ASN displayed in asdot format"}, {"name": "peerHostname", "type": "string",
-    "key": "", "display": 4, "description": "Hostname of BGP peer"}, {"name": "peerIP",
-    "type": "string", "key": "", "display": "", "description": "Peering IP address,
-    if any"}, {"name": "peerRouterId", "type": "string", "key": "", "display": "",
-    "description": "Peer router ID"}, {"name": "pfxBestRx", "type": "long", "key":
+    "True if advertising default route for this AFI/SAFI to peer"}, {"name": "deviceSession",
+    "type": "timestamp", "key": "", "display": "", "description": "Device boot session
+    id"}, {"name": "egressRmap", "type": "string", "key": "", "display": "", "description":
+    "Route map name associated with egress for AFI/SAFI"}, {"name": "estdTime", "type":
+    "timedelta64[s]", "key": "", "display": 13, "description": "Session uptime"},
+    {"name": "extnhAdvertised", "type": "boolean", "key": "", "display": "", "description":
+    "Extended NextHop capability sent"}, {"name": "extnhEnabled", "type": "boolean",
+    "key": "", "display": "", "description": "Extended NextHop capability enabled
+    on session"}, {"name": "extnhReceived", "type": "boolean", "key": "", "display":
+    "", "description": "Extended NextHop capability rcvd"}, {"name": "holdTime", "type":
+    "long", "key": "", "display": "", "description": "BGP hold time"}, {"name": "hopsMax",
+    "type": "long", "key": "", "display": "", "description": "Maximum #hops this peer
+    can be"}, {"name": "hostname", "type": "string", "key": 1, "display": 1, "description":
+    "Hostname associated with this record"}, {"name": "ifname", "type": "string",
+    "key": "", "display": "", "description": "Interface name associated with session"},
+    {"name": "ingressRmap", "type": "string", "key": "", "display": "", "description":
+    "Route map name associated with ingress for AFI/SAFI"}, {"name": "keepaliveTime",
+    "type": "long", "key": "", "display": "", "description": "BGP peer keepalive time
+    in secs"}, {"name": "lastDownTime", "type": "timestamp", "key": "", "display":
+    "", "description": "Unix epoch indicating when session was last down"}, {"name":
+    "mrai", "type": "long", "key": "", "display": "", "description": "Min Route Adv
+    Interval, in secs"}, {"name": "namespace", "type": "string", "key": 0, "display":
+    0, "description": "Namespace associated with this record"}, {"name": "nhSelf",
+    "type": "boolean", "key": "", "display": "", "description": "True if set nexthop
+    self is configured for iBGP peer"}, {"name": "nhUnchanged", "type": "boolean",
+    "key": "", "display": "", "description": "True if set nexthop unchanged is configured
+    for eBGP peer"}, {"name": "notificnReason", "type": "string", "key": "", "display":
+    "", "description": "Last BGP notification reason"}, {"name": "numChanges", "type":
+    "long", "key": "", "display": 12, "description": "Count of changes in BGP session
+    state"}, {"name": "origPeer", "type": "string", "key": "", "display": "", "description":
+    "internal field, not selectable"}, {"name": "peer", "type": "string", "key": 3,
+    "display": 3, "description": "IP address or ifname of BGP peer"}, {"name": "peerAsn",
+    "type": "long", "key": "", "display": 9, "description": "Peer device''s ASN"},
+    {"name": "peerAsndot", "type": "string", "key": "", "display": "", "description":
+    "Peer device''s ASN displayed in asdot format"}, {"name": "peerHostname", "type":
+    "string", "key": "", "display": 4, "description": "Hostname of BGP peer"}, {"name":
+    "peerIP", "type": "string", "key": "", "display": "", "description": "Peering
+    IP address, if any"}, {"name": "peerRouterId", "type": "string", "key": "", "display":
+    "", "description": "Peer router ID"}, {"name": "pfxBestRx", "type": "long", "key":
     "", "display": "", "description": "Number of prefixes rcvd that are bestpath for
     this AFI/SAFI from peer"}, {"name": "pfxMaxRx", "type": "long", "key": "", "display":
     "", "description": "Max prefixes accepted for this AFI/SAFI from peer"}, {"name":
@@ -136,13 +138,15 @@ tests:
   marks: devconfig describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "config", "type": "string", "key":
-    "", "display": 1, "description": "The running config"}, {"name": "hostname", "type":
-    "string", "key": 1, "display": 1, "description": "Hostname associated with this
-    record"}, {"name": "namespace", "type": "string", "key": 0, "display": 0, "description":
-    "Namespace associated with this record"}, {"name": "sqvers", "type": "string",
-    "key": "", "display": "", "description": "Schema version, not selectable"}, {"name":
-    "timestamp", "type": "timestamp", "key": "", "display": 2, "description": "Unix
-    epach When this record was created, in ms"}]'
+    "", "display": 1, "description": "The running config"}, {"name": "deviceSession",
+    "type": "timestamp", "key": "", "display": "", "description": "Device boot session
+    id"}, {"name": "hostname", "type": "string", "key": 1, "display": 1, "description":
+    "Hostname associated with this record"}, {"name": "namespace", "type": "string",
+    "key": 0, "display": 0, "description": "Namespace associated with this record"},
+    {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
+    "Schema version, not selectable"}, {"name": "timestamp", "type": "timestamp",
+    "key": "", "display": 2, "description": "Unix epach When this record was created,
+    in ms"}]'
 - command: device describe --format=json
   data-directory: tests/data/parquet
   marks: device describe
@@ -151,55 +155,58 @@ tests:
     "", "display": 7, "description": "The IP address/hostname used for polling"},
     {"name": "architecture", "type": "string", "key": "", "display": 5, "description":
     ""}, {"name": "bootupTimestamp", "type": "double", "key": "", "display": 9, "description":
-    ""}, {"name": "hostname", "type": "string", "key": 1, "display": 1, "description":
-    "Hostname associated with this record"}, {"name": "memory", "type": "int", "key":
-    "", "display": "", "description": ""}, {"name": "model", "type": "string", "key":
-    "", "display": 2, "description": ""}, {"name": "namespace", "type": "string",
-    "key": 0, "display": 0, "description": "Namespace associated with this record"},
-    {"name": "os", "type": "string", "key": "", "display": "", "description": ""},
-    {"name": "reason", "type": "string", "key": "", "display": "", "description":
-    ""}, {"name": "serialNumber", "type": "string", "key": "", "display": "", "description":
-    ""}, {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
-    "Schema version, not selectable"}, {"name": "status", "type": "string", "key":
-    "", "display": 6, "description": "Status of device: alive/dead/neverpoll"}, {"name":
-    "timestamp", "type": "timestamp", "key": "", "display": 10, "description": ""},
-    {"name": "uptime", "type": "double", "key": "", "display": "", "description":
-    ""}, {"name": "vendor", "type": "string", "key": "", "display": 4, "description":
-    ""}, {"name": "version", "type": "string", "key": "", "display": 3, "description":
-    ""}]'
+    ""}, {"name": "deviceSession", "type": "timestamp", "key": "", "display": "",
+    "description": "Device boot session id"}, {"name": "hostname", "type": "string",
+    "key": 1, "display": 1, "description": "Hostname associated with this record"},
+    {"name": "memory", "type": "int", "key": "", "display": "", "description": ""},
+    {"name": "model", "type": "string", "key": "", "display": 2, "description": ""},
+    {"name": "namespace", "type": "string", "key": 0, "display": 0, "description":
+    "Namespace associated with this record"}, {"name": "os", "type": "string", "key":
+    "", "display": "", "description": ""}, {"name": "reason", "type": "string", "key":
+    "", "display": "", "description": ""}, {"name": "serialNumber", "type": "string",
+    "key": "", "display": "", "description": ""}, {"name": "sqvers", "type": "string",
+    "key": "", "display": "", "description": "Schema version, not selectable"}, {"name":
+    "status", "type": "string", "key": "", "display": 6, "description": "Status of
+    device: alive/dead/neverpoll"}, {"name": "timestamp", "type": "timestamp", "key":
+    "", "display": 10, "description": ""}, {"name": "uptime", "type": "double", "key":
+    "", "display": "", "description": ""}, {"name": "vendor", "type": "string", "key":
+    "", "display": 4, "description": ""}, {"name": "version", "type": "string", "key":
+    "", "display": 3, "description": ""}]'
 - command: evpnVni describe --format=json
   data-directory: tests/data/parquet
   marks: evpnVni describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "advGateway", "type": "boolean",
-    "key": "", "display": "", "description": ""}, {"name": "hostname", "type": "string",
-    "key": 1, "display": 1, "description": "Hostname associated with this record"},
-    {"name": "ifname", "type": "string", "key": "", "display": "", "description":
-    ""}, {"name": "l2VniList", "type": {"type": "array", "items": {"type": "long",
-    "name": "l2Vni"}}, "key": "", "display": "", "description": ""}, {"name": "mcastGroup",
-    "type": "string", "key": "", "display": 6, "description": ""}, {"name": "namespace",
-    "type": "string", "key": 0, "display": 0, "description": "Namespace associated
-    with this record"}, {"name": "numArpNd", "type": "long", "key": "", "display":
-    "", "description": "Number of ARP/ND entries associated with this VNI"}, {"name":
-    "numMacs", "type": "long", "key": "", "display": "", "description": "Number of
-    MACs associated with this VNI"}, {"name": "priVtepIp", "type": "string", "key":
-    "", "display": 8, "description": "Primary VTEP IP"}, {"name": "remoteVtepCnt",
-    "type": "int", "key": "", "display": 7, "description": "Augmented column, count
-    of how many peers are seen for VNI"}, {"name": "remoteVtepList", "type": {"type":
-    "array", "items": {"type": "string", "name": "remoteVtep"}}, "key": "", "display":
-    "", "description": ""}, {"name": "replicationType", "type": "string", "key": "",
-    "display": "", "description": "How is BUM traffic handled"}, {"name": "routerMac",
-    "type": "string", "key": "", "display": "", "description": ""}, {"name": "secVtepIp",
-    "type": "string", "key": "", "display": 9, "description": "Secondary VTEP IP,
-    some NOS--such as NXOS--require this"}, {"name": "sqvers", "type": "string", "key":
-    "", "display": "", "description": "Schema version, not selectable"}, {"name":
-    "state", "type": "string", "key": "", "display": 5, "description": ""}, {"name":
-    "timestamp", "type": "timestamp", "key": "", "display": 10, "description": ""},
-    {"name": "type", "type": "string", "key": "", "display": 3, "description": ""},
-    {"name": "vlan", "type": "long", "key": "", "display": 4, "description": ""},
-    {"name": "vni", "type": "long", "key": 2, "display": 2, "description": ""}, {"name":
-    "vniFilter", "type": "string", "key": "", "display": "", "description": ""}, {"name":
-    "vrf", "type": "string", "key": "", "display": "", "description": ""}]'
+    "key": "", "display": "", "description": ""}, {"name": "deviceSession", "type":
+    "timestamp", "key": "", "display": "", "description": "Device boot session id"},
+    {"name": "hostname", "type": "string", "key": 1, "display": 1, "description":
+    "Hostname associated with this record"}, {"name": "ifname", "type": "string",
+    "key": "", "display": "", "description": ""}, {"name": "l2VniList", "type": {"type":
+    "array", "items": {"type": "long", "name": "l2Vni"}}, "key": "", "display": "",
+    "description": ""}, {"name": "mcastGroup", "type": "string", "key": "", "display":
+    6, "description": ""}, {"name": "namespace", "type": "string", "key": 0, "display":
+    0, "description": "Namespace associated with this record"}, {"name": "numArpNd",
+    "type": "long", "key": "", "display": "", "description": "Number of ARP/ND entries
+    associated with this VNI"}, {"name": "numMacs", "type": "long", "key": "", "display":
+    "", "description": "Number of MACs associated with this VNI"}, {"name": "priVtepIp",
+    "type": "string", "key": "", "display": 8, "description": "Primary VTEP IP"},
+    {"name": "remoteVtepCnt", "type": "int", "key": "", "display": 7, "description":
+    "Augmented column, count of how many peers are seen for VNI"}, {"name": "remoteVtepList",
+    "type": {"type": "array", "items": {"type": "string", "name": "remoteVtep"}},
+    "key": "", "display": "", "description": ""}, {"name": "replicationType", "type":
+    "string", "key": "", "display": "", "description": "How is BUM traffic handled"},
+    {"name": "routerMac", "type": "string", "key": "", "display": "", "description":
+    ""}, {"name": "secVtepIp", "type": "string", "key": "", "display": 9, "description":
+    "Secondary VTEP IP, some NOS--such as NXOS--require this"}, {"name": "sqvers",
+    "type": "string", "key": "", "display": "", "description": "Schema version, not
+    selectable"}, {"name": "state", "type": "string", "key": "", "display": 5, "description":
+    ""}, {"name": "timestamp", "type": "timestamp", "key": "", "display": 10, "description":
+    ""}, {"name": "type", "type": "string", "key": "", "display": 3, "description":
+    ""}, {"name": "vlan", "type": "long", "key": "", "display": 4, "description":
+    ""}, {"name": "vni", "type": "long", "key": 2, "display": 2, "description": ""},
+    {"name": "vniFilter", "type": "string", "key": "", "display": "", "description":
+    ""}, {"name": "vrf", "type": "string", "key": "", "display": "", "description":
+    ""}]'
 - command: fs describe --format=json
   data-directory: tests/data/parquet
   marks: fs describe
@@ -207,19 +214,20 @@ tests:
     "If this entry is active or deleted"}, {"name": "availSize", "type": "string",
     "key": "", "display": "", "description": "Available space on partition"}, {"name":
     "device", "type": "string", "key": "", "display": 6, "description": "Name of partition"},
-    {"name": "fstype", "type": "string", "key": "", "display": "", "description":
-    "Filesystem type"}, {"name": "hostname", "type": "string", "key": 1, "display":
-    1, "description": "Hostname associated with this record"}, {"name": "mountPoint",
-    "type": "string", "key": 2, "display": 2, "description": "Filesystem name where
-    partition is mounted"}, {"name": "namespace", "type": "string", "key": 0, "display":
-    0, "description": "Namespace associated with this record"}, {"name": "sqvers",
-    "type": "string", "key": "", "display": "", "description": "Schema version, not
-    selectable"}, {"name": "timestamp", "type": "timestamp", "key": "", "display":
-    7, "description": ""}, {"name": "totalSize", "type": "string", "key": "", "display":
-    3, "description": "Size of partition"}, {"name": "usedPercent", "type": "long",
-    "key": "", "display": 5, "description": "Percentage of used space"}, {"name":
-    "usedSize", "type": "string", "key": "", "display": 4, "description": "Used space
-    on partition"}]'
+    {"name": "deviceSession", "type": "timestamp", "key": "", "display": "", "description":
+    "Device boot session id"}, {"name": "fstype", "type": "string", "key": "", "display":
+    "", "description": "Filesystem type"}, {"name": "hostname", "type": "string",
+    "key": 1, "display": 1, "description": "Hostname associated with this record"},
+    {"name": "mountPoint", "type": "string", "key": 2, "display": 2, "description":
+    "Filesystem name where partition is mounted"}, {"name": "namespace", "type": "string",
+    "key": 0, "display": 0, "description": "Namespace associated with this record"},
+    {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
+    "Schema version, not selectable"}, {"name": "timestamp", "type": "timestamp",
+    "key": "", "display": 7, "description": ""}, {"name": "totalSize", "type": "string",
+    "key": "", "display": 3, "description": "Size of partition"}, {"name": "usedPercent",
+    "type": "long", "key": "", "display": 5, "description": "Percentage of used space"},
+    {"name": "usedSize", "type": "string", "key": "", "display": 4, "description":
+    "Used space on partition"}]'
 - command: interface describe --format=json
   data-directory: tests/data/parquet
   marks: interface describe
@@ -227,83 +235,87 @@ tests:
     "If this entry is active or deleted"}, {"name": "adminState", "type": "string",
     "key": "", "display": 4, "description": ""}, {"name": "description", "type": "string",
     "key": "", "display": "", "description": "Operator assigned interface description,
-    if any"}, {"name": "hostname", "type": "string", "key": 1, "display": 1, "description":
-    "Hostname associated with this record"}, {"name": "ifindex", "type": "long", "key":
-    "", "display": "", "description": "ifIndex of interface"}, {"name": "ifname",
-    "type": "string", "key": 2, "display": 2, "description": ""}, {"name": "innerVlan",
-    "type": "int", "key": "", "display": "", "description": "inner VLAN ID if Q-in-Q
-    interface"}, {"name": "interfaceMac", "type": "string", "key": "", "display":
-    "", "description": "MAC address of interface, burned in"}, {"name": "ip6AddressList",
-    "type": {"type": "array", "items": {"type": "string", "name": "ip6Address"}},
-    "key": "", "display": 10, "description": "IPv6 addresses on this interface"},
-    {"name": "ipAddressList", "type": {"type": "array", "items": {"type": "string",
-    "name": "ipAddress"}}, "key": "", "display": 9, "description": "IPv4 addresses
-    on this interface"}, {"name": "lacpBypass", "type": "boolean", "key": "", "display":
-    "", "description": ""}, {"name": "macaddr", "type": "string", "key": "", "display":
-    "", "description": "MAC address of interface, not burned in"}, {"name": "master",
-    "type": "string", "key": "", "display": 8, "description": "Container for this
-    interface such as port channel, VRF, etc"}, {"name": "mtu", "type": "long", "key":
-    "", "display": 6, "description": ""}, {"name": "namespace", "type": "string",
-    "key": 0, "display": 0, "description": "Namespace associated with this record"},
-    {"name": "numChanges", "type": "long", "key": "", "display": "", "description":
-    "Number of interface state changes"}, {"name": "portmode", "type": "string", "key":
-    "", "display": "", "description": "switchport mode: access, trunk or routed"},
-    {"name": "reason", "type": "string", "key": "", "display": "", "description":
-    "Reason for interface being down"}, {"name": "routeDistinguisher", "type": "string",
-    "key": "", "display": "", "description": "Route distinguisher of interface, if
-    VRF"}, {"name": "speed", "type": "long", "key": "", "display": "", "description":
-    "Interface speed in Mbps"}, {"name": "sqvers", "type": "string", "key": "", "display":
-    "", "description": "Schema version, not selectable"}, {"name": "srcVtepIp", "type":
-    "string", "key": "", "display": "", "description": "Some NOS provide the Src VTEP
-    IP associated with interface"}, {"name": "state", "type": "string", "key": "",
-    "display": 3, "description": "Operational state of interface"}, {"name": "statusChangeTimestamp",
-    "type": "double", "key": "", "display": "", "description": ""}, {"name": "timestamp",
-    "type": "timestamp", "key": "", "display": 11, "description": ""}, {"name": "type",
-    "type": "string", "key": "", "display": 5, "description": "Interface type, such
-    as loopback, bond, etc"}, {"name": "vlan", "type": "int", "key": "", "display":
-    7, "description": "VLAN ID of interface, if any"}, {"name": "vlanList", "type":
-    {"type": "array", "items": {"type": "int", "name": "vlan"}}, "key": "", "display":
-    "", "description": "List of active, unpruned VLANs on a trunk port"}, {"name":
-    "vlanName", "type": "string", "key": "", "display": "", "description": "VLAN name
-    if assigned"}, {"name": "vni", "type": "int", "key": "", "display": "", "description":
-    "Virtual Network ID, if provided"}]'
+    if any"}, {"name": "deviceSession", "type": "timestamp", "key": "", "display":
+    "", "description": "Device boot session id"}, {"name": "hostname", "type": "string",
+    "key": 1, "display": 1, "description": "Hostname associated with this record"},
+    {"name": "ifindex", "type": "long", "key": "", "display": "", "description": "ifIndex
+    of interface"}, {"name": "ifname", "type": "string", "key": 2, "display": 2, "description":
+    ""}, {"name": "innerVlan", "type": "int", "key": "", "display": "", "description":
+    "inner VLAN ID if Q-in-Q interface"}, {"name": "interfaceMac", "type": "string",
+    "key": "", "display": "", "description": "MAC address of interface, burned in"},
+    {"name": "ip6AddressList", "type": {"type": "array", "items": {"type": "string",
+    "name": "ip6Address"}}, "key": "", "display": 10, "description": "IPv6 addresses
+    on this interface"}, {"name": "ipAddressList", "type": {"type": "array", "items":
+    {"type": "string", "name": "ipAddress"}}, "key": "", "display": 9, "description":
+    "IPv4 addresses on this interface"}, {"name": "lacpBypass", "type": "boolean",
+    "key": "", "display": "", "description": ""}, {"name": "macaddr", "type": "string",
+    "key": "", "display": "", "description": "MAC address of interface, not burned
+    in"}, {"name": "master", "type": "string", "key": "", "display": 8, "description":
+    "Container for this interface such as port channel, VRF, etc"}, {"name": "mtu",
+    "type": "long", "key": "", "display": 6, "description": ""}, {"name": "namespace",
+    "type": "string", "key": 0, "display": 0, "description": "Namespace associated
+    with this record"}, {"name": "numChanges", "type": "long", "key": "", "display":
+    "", "description": "Number of interface state changes"}, {"name": "portmode",
+    "type": "string", "key": "", "display": "", "description": "switchport mode: access,
+    trunk or routed"}, {"name": "reason", "type": "string", "key": "", "display":
+    "", "description": "Reason for interface being down"}, {"name": "routeDistinguisher",
+    "type": "string", "key": "", "display": "", "description": "Route distinguisher
+    of interface, if VRF"}, {"name": "speed", "type": "long", "key": "", "display":
+    "", "description": "Interface speed in Mbps"}, {"name": "sqvers", "type": "string",
+    "key": "", "display": "", "description": "Schema version, not selectable"}, {"name":
+    "srcVtepIp", "type": "string", "key": "", "display": "", "description": "Some
+    NOS provide the Src VTEP IP associated with interface"}, {"name": "state", "type":
+    "string", "key": "", "display": 3, "description": "Operational state of interface"},
+    {"name": "statusChangeTimestamp", "type": "double", "key": "", "display": "",
+    "description": ""}, {"name": "timestamp", "type": "timestamp", "key": "", "display":
+    11, "description": ""}, {"name": "type", "type": "string", "key": "", "display":
+    5, "description": "Interface type, such as loopback, bond, etc"}, {"name": "vlan",
+    "type": "int", "key": "", "display": 7, "description": "VLAN ID of interface,
+    if any"}, {"name": "vlanList", "type": {"type": "array", "items": {"type": "int",
+    "name": "vlan"}}, "key": "", "display": "", "description": "List of active, unpruned
+    VLANs on a trunk port"}, {"name": "vlanName", "type": "string", "key": "", "display":
+    "", "description": "VLAN name if assigned"}, {"name": "vni", "type": "int", "key":
+    "", "display": "", "description": "Virtual Network ID, if provided"}]'
 - command: inventory describe --format=json
   data-directory: tests/data/parquet
   marks: inventory describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
-    "If this entry is active or deleted"}, {"name": "hostname", "type": "string",
-    "key": 1, "display": 1, "description": "Hostname associated with this entry"},
-    {"name": "model", "type": "string", "key": 3, "display": 3, "description": "Model
-    of the entry"}, {"name": "name", "type": "string", "key": 2, "display": 2, "description":
-    "Name of inventory entry"}, {"name": "namespace", "type": "string", "key": 0,
-    "display": 0, "description": "Namespace associated with this entry"}, {"name":
-    "partNum", "type": "string", "key": 5, "display": "", "description": "Part number
-    of entry"}, {"name": "partType", "type": "string", "key": "", "display": 8, "description":
-    "Type specific info such as optics and such"}, {"name": "serial", "type": "string",
-    "key": 4, "display": "", "description": "Serial number of entry"}, {"name": "sqvers",
-    "type": "string", "key": "", "display": "", "description": "Schema version, not
-    selectable"}, {"name": "status", "type": "string", "key": "", "display": 4, "description":
-    "Status of the entry"}, {"name": "timestamp", "type": "timestamp", "key": "",
-    "display": 8, "description": ""}, {"name": "type", "type": "string", "key": "",
-    "display": 6, "description": "Type of entry, such as linecard, Xcvr etc."}, {"name":
-    "vendor", "type": "string", "key": "", "display": 5, "description": "Manufacturing
-    vendor of entry"}, {"name": "version", "type": "string", "key": "", "display":
-    7, "description": "Version number of inventory"}]'
+    "If this entry is active or deleted"}, {"name": "deviceSession", "type": "timestamp",
+    "key": "", "display": "", "description": "Device boot session id"}, {"name": "hostname",
+    "type": "string", "key": 1, "display": 1, "description": "Hostname associated
+    with this entry"}, {"name": "model", "type": "string", "key": 3, "display": 3,
+    "description": "Model of the entry"}, {"name": "name", "type": "string", "key":
+    2, "display": 2, "description": "Name of inventory entry"}, {"name": "namespace",
+    "type": "string", "key": 0, "display": 0, "description": "Namespace associated
+    with this entry"}, {"name": "partNum", "type": "string", "key": 5, "display":
+    "", "description": "Part number of entry"}, {"name": "partType", "type": "string",
+    "key": "", "display": 8, "description": "Type specific info such as optics and
+    such"}, {"name": "serial", "type": "string", "key": 4, "display": "", "description":
+    "Serial number of entry"}, {"name": "sqvers", "type": "string", "key": "", "display":
+    "", "description": "Schema version, not selectable"}, {"name": "status", "type":
+    "string", "key": "", "display": 4, "description": "Status of the entry"}, {"name":
+    "timestamp", "type": "timestamp", "key": "", "display": 8, "description": ""},
+    {"name": "type", "type": "string", "key": "", "display": 6, "description": "Type
+    of entry, such as linecard, Xcvr etc."}, {"name": "vendor", "type": "string",
+    "key": "", "display": 5, "description": "Manufacturing vendor of entry"}, {"name":
+    "version", "type": "string", "key": "", "display": 7, "description": "Version
+    number of inventory"}]'
 - command: lldp describe --format=json
   data-directory: tests/data/parquet
   marks: lldp describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "description", "type": "string",
     "key": "", "display": 5, "description": "Description of peer interface, if advertised"},
-    {"name": "hostname", "type": "string", "key": 1, "display": 1, "description":
-    "Hostname associated with this entry"}, {"name": "ifname", "type": "string", "key":
-    2, "display": 2, "description": "Interface name associated with this entry"},
-    {"name": "mgmtIP", "type": "string", "key": "", "display": 6, "description": "Management
-    IP address, if advertised"}, {"name": "namespace", "type": "string", "key": 0,
-    "display": 0, "description": "Namespace associated with this entry"}, {"name":
-    "peerHostname", "type": "string", "key": "", "display": 3, "description": "Peer
-    hostname"}, {"name": "peerIfindex", "type": "long", "key": "", "display": "",
-    "description": "Peer interface index, if advertised"}, {"name": "peerIfname",
+    {"name": "deviceSession", "type": "timestamp", "key": "", "display": "", "description":
+    "Device boot session id"}, {"name": "hostname", "type": "string", "key": 1, "display":
+    1, "description": "Hostname associated with this entry"}, {"name": "ifname", "type":
+    "string", "key": 2, "display": 2, "description": "Interface name associated with
+    this entry"}, {"name": "mgmtIP", "type": "string", "key": "", "display": 6, "description":
+    "Management IP address, if advertised"}, {"name": "namespace", "type": "string",
+    "key": 0, "display": 0, "description": "Namespace associated with this entry"},
+    {"name": "peerHostname", "type": "string", "key": "", "display": 3, "description":
+    "Peer hostname"}, {"name": "peerIfindex", "type": "long", "key": "", "display":
+    "", "description": "Peer interface index, if advertised"}, {"name": "peerIfname",
     "type": "string", "key": "", "display": 4, "description": "Peer interface name,
     if advertised"}, {"name": "peerMacaddr", "type": "string", "key": "", "display":
     "", "description": "Peer Mac addr, if advertised"}, {"name": "sqvers", "type":
@@ -317,23 +329,24 @@ tests:
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "bd", "type": "string", "key":
     "", "display": 6, "description": "Bridge domain name, platform-appropriate"},
-    {"name": "flags", "type": "string", "key": "", "display": 7, "description": "Flags,
-    platform-appropriate"}, {"name": "hostname", "type": "string", "key": 1, "display":
-    1, "description": "Hostname associated with this record"}, {"name": "macaddr",
-    "type": "string", "key": 3, "display": 3, "description": "MAC address"}, {"name":
-    "mackey", "type": "string", "key": 2, "display": "", "description": "Internal
-    table key uniquifier, not selectable"}, {"name": "moveCount", "type": "long",
-    "key": "", "display": "", "description": "Number of times this MAC has moved for
-    duration"}, {"name": "namespace", "type": "string", "key": 0, "display": 0, "description":
-    "Namespace associated with this record"}, {"name": "oif", "type": "string", "key":
-    "", "display": 4, "description": "Outgoing interface name"}, {"name": "protocol",
-    "type": "string", "key": "", "display": "", "description": "Protocol that populated
-    this entry, if provided"}, {"name": "remoteVtepIp", "type": "string", "key": "",
-    "display": 5, "description": "Remote VTEP IP address, for remote Vxlan MAC"},
-    {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
-    "Schema version, not selectable"}, {"name": "timestamp", "type": "timestamp",
-    "key": "", "display": 8, "description": ""}, {"name": "vlan", "type": "long",
-    "key": "", "display": 2, "description": "VLAN ID"}]'
+    {"name": "deviceSession", "type": "timestamp", "key": "", "display": "", "description":
+    "Device boot session id"}, {"name": "flags", "type": "string", "key": "", "display":
+    7, "description": "Flags, platform-appropriate"}, {"name": "hostname", "type":
+    "string", "key": 1, "display": 1, "description": "Hostname associated with this
+    record"}, {"name": "macaddr", "type": "string", "key": 3, "display": 3, "description":
+    "MAC address"}, {"name": "mackey", "type": "string", "key": 2, "display": "",
+    "description": "Internal table key uniquifier, not selectable"}, {"name": "moveCount",
+    "type": "long", "key": "", "display": "", "description": "Number of times this
+    MAC has moved for duration"}, {"name": "namespace", "type": "string", "key": 0,
+    "display": 0, "description": "Namespace associated with this record"}, {"name":
+    "oif", "type": "string", "key": "", "display": 4, "description": "Outgoing interface
+    name"}, {"name": "protocol", "type": "string", "key": "", "display": "", "description":
+    "Protocol that populated this entry, if provided"}, {"name": "remoteVtepIp", "type":
+    "string", "key": "", "display": 5, "description": "Remote VTEP IP address, for
+    remote Vxlan MAC"}, {"name": "sqvers", "type": "string", "key": "", "display":
+    "", "description": "Schema version, not selectable"}, {"name": "timestamp", "type":
+    "timestamp", "key": "", "display": 8, "description": ""}, {"name": "vlan", "type":
+    "long", "key": "", "display": 2, "description": "VLAN ID"}]'
 - command: mlag describe --format=json
   data-directory: tests/data/parquet
   marks: mlag describe
@@ -345,39 +358,40 @@ tests:
     "type": "string", "key": "", "display": "", "description": "Reason if MLAG backup
     is down"}, {"name": "configSanity", "type": "string", "key": "", "display": "",
     "description": "Configuration sanity status, if platform provides it"}, {"name":
-    "domainId", "type": "string", "key": "", "display": "", "description": "MLAG domain
-    ID, platform-specific"}, {"name": "hostname", "type": "string", "key": 1, "display":
-    1, "description": "Hostname associated with this record"}, {"name": "mlagDualPortsCnt",
-    "type": "long", "key": "", "display": 7, "description": "Number of dual-attached
-    ports"}, {"name": "mlagDualPortsList", "type": {"type": "array", "items": {"type":
-    "string", "name": "mlagDualPort"}}, "key": "", "display": "", "description": "List
-    of dual-attached ports"}, {"name": "mlagErrorPortsCnt", "type": "long", "key":
-    "", "display": 9, "description": "Number of ports in error"}, {"name": "mlagErrorPortsList",
-    "type": {"type": "array", "items": {"type": "string", "name": "mlagErrorPort"}},
-    "key": "", "display": "", "description": "List of ports in error"}, {"name": "mlagSinglePortsCnt",
-    "type": "long", "key": "", "display": 8, "description": "Number of single-attached
-    ports"}, {"name": "mlagSinglePortsList", "type": {"type": "array", "items": {"type":
-    "string", "name": "mlagSinglePort"}}, "key": "", "display": "", "description":
-    "List of single-attached ports"}, {"name": "namespace", "type": "string", "key":
-    0, "display": 0, "description": "Namespace associated with this record"}, {"name":
-    "peerAddress", "type": "string", "key": "", "display": 4, "description": "MLAG
-    peer IP address"}, {"name": "peerLink", "type": "string", "key": "", "display":
-    6, "description": "Interface name used as peer link"}, {"name": "peerLinkStatus",
-    "type": "string", "key": "", "display": "", "description": "Status of peer link"},
-    {"name": "peerMacAddress", "type": "string", "key": "", "display": "", "description":
-    "MLAG peer MAC address"}, {"name": "peerRole", "type": "string", "key": "", "display":
-    "", "description": "MLAG peer role"}, {"name": "portsErrDisabled", "type": "string",
-    "key": "", "display": "", "description": ""}, {"name": "role", "type": "string",
-    "key": "", "display": 5, "description": "MLAG role of this device"}, {"name":
-    "sqvers", "type": "string", "key": "", "display": "", "description": "Schema version,
-    not selectable"}, {"name": "state", "type": "string", "key": "", "display": 3,
-    "description": "MLAG state of this device"}, {"name": "systemId", "type": "string",
-    "key": "", "display": 2, "description": "MLAG SystemID, platform-specific"}, {"name":
-    "timestamp", "type": "timestamp", "key": "", "display": 10, "description": ""},
-    {"name": "usesLinkLocal", "type": "boolean", "key": "", "display": "", "description":
-    "True if this device uses link-local address to peer"}, {"name": "vtepIP", "type":
-    "string", "key": "", "display": "", "description": "Anycast VTEP IP address, if
-    appropriate"}]'
+    "deviceSession", "type": "timestamp", "key": "", "display": "", "description":
+    "Device boot session id"}, {"name": "domainId", "type": "string", "key": "", "display":
+    "", "description": "MLAG domain ID, platform-specific"}, {"name": "hostname",
+    "type": "string", "key": 1, "display": 1, "description": "Hostname associated
+    with this record"}, {"name": "mlagDualPortsCnt", "type": "long", "key": "", "display":
+    7, "description": "Number of dual-attached ports"}, {"name": "mlagDualPortsList",
+    "type": {"type": "array", "items": {"type": "string", "name": "mlagDualPort"}},
+    "key": "", "display": "", "description": "List of dual-attached ports"}, {"name":
+    "mlagErrorPortsCnt", "type": "long", "key": "", "display": 9, "description": "Number
+    of ports in error"}, {"name": "mlagErrorPortsList", "type": {"type": "array",
+    "items": {"type": "string", "name": "mlagErrorPort"}}, "key": "", "display": "",
+    "description": "List of ports in error"}, {"name": "mlagSinglePortsCnt", "type":
+    "long", "key": "", "display": 8, "description": "Number of single-attached ports"},
+    {"name": "mlagSinglePortsList", "type": {"type": "array", "items": {"type": "string",
+    "name": "mlagSinglePort"}}, "key": "", "display": "", "description": "List of
+    single-attached ports"}, {"name": "namespace", "type": "string", "key": 0, "display":
+    0, "description": "Namespace associated with this record"}, {"name": "peerAddress",
+    "type": "string", "key": "", "display": 4, "description": "MLAG peer IP address"},
+    {"name": "peerLink", "type": "string", "key": "", "display": 6, "description":
+    "Interface name used as peer link"}, {"name": "peerLinkStatus", "type": "string",
+    "key": "", "display": "", "description": "Status of peer link"}, {"name": "peerMacAddress",
+    "type": "string", "key": "", "display": "", "description": "MLAG peer MAC address"},
+    {"name": "peerRole", "type": "string", "key": "", "display": "", "description":
+    "MLAG peer role"}, {"name": "portsErrDisabled", "type": "string", "key": "", "display":
+    "", "description": ""}, {"name": "role", "type": "string", "key": "", "display":
+    5, "description": "MLAG role of this device"}, {"name": "sqvers", "type": "string",
+    "key": "", "display": "", "description": "Schema version, not selectable"}, {"name":
+    "state", "type": "string", "key": "", "display": 3, "description": "MLAG state
+    of this device"}, {"name": "systemId", "type": "string", "key": "", "display":
+    2, "description": "MLAG SystemID, platform-specific"}, {"name": "timestamp", "type":
+    "timestamp", "key": "", "display": 10, "description": ""}, {"name": "usesLinkLocal",
+    "type": "boolean", "key": "", "display": "", "description": "True if this device
+    uses link-local address to peer"}, {"name": "vtepIP", "type": "string", "key":
+    "", "display": "", "description": "Anycast VTEP IP address, if appropriate"}]'
 - command: namespace describe --format=json
   data-directory: tests/data/parquet
   marks: namespace describe
@@ -489,15 +503,16 @@ tests:
     "boolean", "key": "", "display": "", "description": "If this entry is active or
     deleted"}, {"name": "asPathList", "type": {"type": "array", "items": {"name":
     "asPath", "type": "string"}}, "key": "", "display": "", "description": "List of
-    AS paths, platform-specific"}, {"name": "hardwareProgrammed", "type": "string",
-    "key": "", "display": "", "description": "Hardware programmed state of route,
-    platform-specific"}, {"name": "hostname", "type": "string", "key": 1, "display":
-    1, "description": "Hostname associated with this record"}, {"name": "ipvers",
-    "type": "long", "key": "", "display": 9, "description": "IP version of route"},
-    {"name": "metric", "type": "long", "key": "", "display": "", "description": "Metric
-    associated with route, platform-specific"}, {"name": "namespace", "type": "string",
-    "key": 0, "display": 0, "description": "Namespace associated with this record"},
-    {"name": "nexthopIps", "type": {"type": "array", "items": {"name": "nexthopIp",
+    AS paths, platform-specific"}, {"name": "deviceSession", "type": "timestamp",
+    "key": "", "display": "", "description": "Device boot session id"}, {"name": "hardwareProgrammed",
+    "type": "string", "key": "", "display": "", "description": "Hardware programmed
+    state of route, platform-specific"}, {"name": "hostname", "type": "string", "key":
+    1, "display": 1, "description": "Hostname associated with this record"}, {"name":
+    "ipvers", "type": "long", "key": "", "display": 9, "description": "IP version
+    of route"}, {"name": "metric", "type": "long", "key": "", "display": "", "description":
+    "Metric associated with route, platform-specific"}, {"name": "namespace", "type":
+    "string", "key": 0, "display": 0, "description": "Namespace associated with this
+    record"}, {"name": "nexthopIps", "type": {"type": "array", "items": {"name": "nexthopIp",
     "type": "string"}}, "key": "", "display": 4, "description": "List of nexthop IPs"},
     {"name": "numNexthops", "type": "long", "key": "", "display": "", "description":
     "Number of nexthops"}, {"name": "oifs", "type": {"type": "array", "items": {"name":
@@ -550,18 +565,19 @@ tests:
   data-directory: tests/data/parquet
   marks: vlan describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
-    "If this entry is active or deleted"}, {"name": "hostname", "type": "string",
-    "key": 1, "display": 1, "description": "Hostname associated with record"}, {"name":
-    "interfaces", "type": {"type": "array", "items": {"name": "vid", "type": "string"}},
-    "key": "", "display": 5, "description": "List of interfaces carrying this VLAN"},
-    {"name": "namespace", "type": "string", "key": 0, "display": 0, "description":
-    "Namespace associated with record"}, {"name": "sqvers", "type": "string", "key":
-    "", "display": "", "description": "Schema version, not selectable"}, {"name":
-    "state", "type": "string", "key": 2, "display": 4, "description": "VLAN state:
-    active or suspended"}, {"name": "timestamp", "type": "timestamp", "key": "", "display":
-    7, "description": ""}, {"name": "vlan", "type": "long", "key": "", "display":
-    6, "description": "VLAN ID"}, {"name": "vlanName", "type": "string", "key": 2,
-    "display": 3, "description": "VLAN name"}]'
+    "If this entry is active or deleted"}, {"name": "deviceSession", "type": "timestamp",
+    "key": "", "display": "", "description": "Device boot session id"}, {"name": "hostname",
+    "type": "string", "key": 1, "display": 1, "description": "Hostname associated
+    with record"}, {"name": "interfaces", "type": {"type": "array", "items": {"name":
+    "vid", "type": "string"}}, "key": "", "display": 5, "description": "List of interfaces
+    carrying this VLAN"}, {"name": "namespace", "type": "string", "key": 0, "display":
+    0, "description": "Namespace associated with record"}, {"name": "sqvers", "type":
+    "string", "key": "", "display": "", "description": "Schema version, not selectable"},
+    {"name": "state", "type": "string", "key": 2, "display": 4, "description": "VLAN
+    state: active or suspended"}, {"name": "timestamp", "type": "timestamp", "key":
+    "", "display": 7, "description": ""}, {"name": "vlan", "type": "long", "key":
+    "", "display": 6, "description": "VLAN ID"}, {"name": "vlanName", "type": "string",
+    "key": 2, "display": 3, "description": "VLAN name"}]'
 - command: sqPoller describe --format=json
   data-directory: tests/data/parquet
   marks: sqPoller describe
