@@ -19,7 +19,6 @@ flags1
   ^Destination\s+Address\s+Address\s+Type\s+vlan\s+Destination\s+Port
   ^\s*$$
   ^Multicast\s+Entries -> End
-  ^. -> Error
 
 flags2
   # Order of the group in brackets here matters
@@ -55,7 +54,6 @@ flags2
   ^\s+vlan\s+mac address\s+type\s+learn\s+age\s+ports
   ^\s*$$
   ^Multicast\s+Entries -> End
-  ^. -> Error
 
 flags3
   ^\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+${_ports}(?:\s|$$) -> Record
@@ -64,7 +62,6 @@ flags3
   ^\s+vlan\s+mac address\s+type\s+protocols\s+port
   ^\s*$$
   ^Multicast\s+Entries -> End
-  ^. -> Error
 
 flags4
   ^\s*${vlan}\s+${macaddr}\s+${flags}\s+${_ports}(?:\s|$$) -> Record
@@ -74,5 +71,3 @@ flags4
   ^\s*$$
   ^Total\s+Mac\s+Addresses
   ^MultiCast\s+Entries -> End
-  ^. -> Error
-
