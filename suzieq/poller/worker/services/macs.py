@@ -173,16 +173,7 @@ class MacsService(Service):
                 entry.get('macaddr', '0000.0000.0000'))
             oiflist = []
             oifs = ''
-            oif = entry.get('oif', '').strip()
-            if oif:
-                oiflist = oif.split(',')
-            if not oiflist:
-                # Some versions of IOS/XE have a different output
-                # format and we capture that in a different var
-                oif = entry.get('_ports', '')
-                if oif:
-                    for ele in oif:
-                        oiflist.extend(ele.split(','))
+            oiflist = entry.get('_ports', [])
             for oif in oiflist:
                 # Handles multicast entries
                 oifs += f'{expand_ios_ifname(oif)} '
@@ -192,8 +183,10 @@ class MacsService(Service):
                 entry['oif'] = ''
 
             entry['remoteVtepIp'] = ''
-            if entry.get('vlan', ' ').strip() == "All":
+            vlan = entry.get('vlan', ' ').strip()
+            if vlan in ["All", "N/A"]:
                 entry['vlan'] = 0
+
             entry['flags'] = entry.get('flags', '').lower()
 
             self._add_mackey_protocol(entry)
