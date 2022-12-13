@@ -114,7 +114,6 @@ class Node:
         self._service_queue = None
         self._conn = None
         self._tunnel = None
-        self._session = None    # Used only by PANOS as of this comment
         self.svcs_proc = set()
         self.error_svcs_proc = set()
         self.ssh_ready = asyncio.Lock()
@@ -269,8 +268,11 @@ class Node:
 
     async def _close_connection(self):
         if self.is_connected:
-            self._conn.close()
-            await self._conn.wait_closed()
+            if self.transport == 'ssh':
+                self._conn.close()
+                await self._conn.wait_closed()
+            elif self.transport == 'https':
+                await self._conn.close()
         if self._tunnel:
             self._tunnel.close()
             await self._tunnel.wait_closed()
@@ -1280,11 +1282,11 @@ class EosNode(Node):
         url = f"https://{self.address}:{self.port}/command-api"
 
         try:
-            async with aiohttp.ClientSession(
-                    auth=auth, timeout=self.connect_timeout,
-                    connector=aiohttp.TCPConnector(ssl=False)) as session:
-                async with session.post(url, timeout=timeout) as response:
-                    _ = response.status
+            self._conn = aiohttp.ClientSession(
+                auth=auth, timeout=self.connect_timeout,
+                connector=aiohttp.TCPConnector(ssl=False))
+            async with self._conn.post(url, timeout=timeout) as response:
+                _ = response.status
         except Exception as e:
             self.logger.error(
                 f'Unable to connect to {self.address}:{self.port}, '
@@ -1339,9 +1341,7 @@ class EosNode(Node):
 
         timeout = timeout or self.cmd_timeout
 
-        now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
-        auth = aiohttp.BasicAuth(self.username,
-                                 password=self.password or 'vagrant')
+        now = int(time.time() * 1000)
         data = {
             "jsonrpc": "2.0",
             "method": "runCmds",
@@ -1359,36 +1359,32 @@ class EosNode(Node):
 
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
-                async with aiohttp.ClientSession(
-                        auth=auth, conn_timeout=self.connect_timeout,
-                        read_timeout=timeout,
-                        connector=aiohttp.TCPConnector(ssl=False)) as session:
-                    async with session.post(url, json=data,
-                                            timeout=timeout,
-                                            headers=headers) as response:
-                        status = response.status
-                        if status == HTTPStatus.OK:
-                            json_out = await response.json()
-                            if "result" in json_out:
-                                output.extend(json_out["result"])
-                            else:
-                                output.extend(
-                                    json_out["error"].get('data', []))
-
-                            for i, cmd in enumerate(cmd_list):
-                                data = (output[i] if isinstance(output, list)
-                                        else output)
-                                result.append(
-                                    self._create_result(
-                                        cmd, status, data, now / 1000)
-                                )
+                async with self._conn.post(url, json=data,
+                                           timeout=timeout,
+                                           headers=headers) as response:
+                    status = response.status
+                    if status == HTTPStatus.OK:
+                        json_out = await response.json()
+                        if "result" in json_out:
+                            output.extend(json_out["result"])
                         else:
-                            for cmd in cmd_list:
-                                result.append(self._create_error(cmd))
-                            self.logger.error(
-                                f'{self.transport}://{self.hostname}:'
-                                f'{self.port}: Commands failed due to '
-                                f'{response.status}')
+                            output.extend(
+                                json_out["error"].get('data', []))
+
+                        for i, cmd in enumerate(cmd_list):
+                            data = (output[i] if isinstance(output, list)
+                                    else output)
+                            result.append(
+                                self._create_result(
+                                    cmd, status, data, now / 1000)
+                            )
+                    else:
+                        for cmd in cmd_list:
+                            result.append(self._create_error(cmd))
+                        self.logger.error(
+                            f'{self.transport}://{self.hostname}:'
+                            f'{self.port}: Commands failed due to '
+                            f'{response.status}')
             except Exception as e:
                 self.current_exception = e
                 for cmd in cmd_list:
@@ -1497,12 +1493,12 @@ class CumulusNode(Node):
 
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
-                async with aiohttp.ClientSession(
+                self._conn = aiohttp.ClientSession(
                         auth=auth, timeout=self.cmd_timeout,
-                        connector=aiohttp.TCPConnector(ssl=False),
-                ) as session:
-                    async with session.post(url, headers=headers) as response:
-                        _ = response.status
+                        connector=aiohttp.TCPConnector(ssl=False)
+                )
+                async with self._conn.post(url, headers=headers) as response:
+                    _ = response.status
             except Exception as e:
                 self.current_exception = e
                 self.logger.error(
@@ -1516,29 +1512,23 @@ class CumulusNode(Node):
         if not cmd_list:
             return result
 
-        auth = aiohttp.BasicAuth(self.username, password=self.password)
         url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
         headers = {"Content-Type": "application/json"}
 
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
-                async with aiohttp.ClientSession(
-                        auth=auth,
-                        timeout=timeout or self.cmd_timeout,
-                        connector=aiohttp.TCPConnector(ssl=False),
-                ) as session:
-                    for cmd in cmd_list:
-                        data = {"cmd": cmd}
-                        cmd_timestamp = time.time()
-                        async with session.post(
-                                url, json=data, headers=headers
-                        ) as response:
-                            data_res = await response.text()
-                            result.append(
-                                self._create_result(
-                                    cmd, response.status, data_res,
-                                    cmd_timestamp)
-                            )
+                for cmd in cmd_list:
+                    data = {"cmd": cmd}
+                    cmd_timestamp = time.time()
+                    async with self._conn.post(
+                            url, json=data, headers=headers
+                    ) as response:
+                        data_res = await response.text()
+                        result.append(
+                            self._create_result(
+                                cmd, response.status, data_res,
+                                cmd_timestamp)
+                        )
             except Exception as e:
                 self.current_exception = e
                 result.append(self._create_error(cmd_list))
@@ -2057,10 +2047,6 @@ class PanosNode(Node):
                                                    cmd_timestamp)]
 
             await self._parse_init_dev_data(res, None)
-            self._session = aiohttp.ClientSession(
-                conn_timeout=self.connect_timeout,
-                connector=aiohttp.TCPConnector(ssl=False),
-            )
             if self.api_key is None:
                 await self.get_api_key()
         except asyncssh.misc.PermissionDenied:
@@ -2080,7 +2066,7 @@ class PanosNode(Node):
         if not self._retry:
             return
         async with self._cmd_pacer.wait(self.per_cmd_auth):
-            async with self._session.get(url, timeout=self.connect_timeout) \
+            async with self._conn.get(url, timeout=self.connect_timeout) \
                     as response:
                 status, xml = response.status, await response.text()
                 if status == 200:
@@ -2139,10 +2125,10 @@ class PanosNode(Node):
 
     async def _init_rest(self):
         # In case of PANOS, getting here means REST is up
-        if not self._session:
+        if not self._conn:
             async with self._cmd_pacer.wait(self.per_cmd_auth):
                 try:
-                    self._session = aiohttp.ClientSession(
+                    self._conn = aiohttp.ClientSession(
                         conn_timeout=self.connect_timeout,
                         connector=aiohttp.TCPConnector(ssl=False),
                     )
@@ -2152,9 +2138,9 @@ class PanosNode(Node):
                     # Ensure that the connection pool is closed and set it to
                     # None so that _rest_gather can fail gracefully.
                     if self.api_key is None:
-                        self._session.close()
-                        self._session = None
+                        await self._close_connection()
                 except Exception as e:
+                    await self._close_connection()
                     self.logger.error(
                         f'{self.transport}://{self.hostname}:{self.port}, '
                         f'Unable to communicate due to error: {str(e)}')
@@ -2173,11 +2159,11 @@ class PanosNode(Node):
         status = 200  # status OK
 
         # if there's no session we have failed to get init dev data
-        if not self._session and self._retry:
+        if not self._conn and self._retry:
             self._fetch_init_dev_data()
 
         # if there's still no session, we need to create an error
-        if not self._session:
+        if not self._conn:
             for cmd in cmd_list:
                 result.append(self._create_error(cmd))
             await self._post_result(service_callback, result, cb_token)
@@ -2188,7 +2174,7 @@ class PanosNode(Node):
                 for cmd in cmd_list:
                     url_cmd = f"{url}?type=op&cmd={cmd}&key={self.api_key}"
                     cmd_timestamp = time.time()
-                    async with self._session.get(
+                    async with self._conn.get(
                             url_cmd, timeout=timeout) as response:
                         status, xml = response.status, await response.text()
                         if status == 200:
