@@ -26,9 +26,16 @@ class MacsService(Service):
         4. The remaining regular entries where VLAN disambiguates a MAC.
         """
         # Make VLAN int first
-        vlan = entry.get('vlan', '')
-        if vlan and vlan != "none":
-            entry['vlan'] = int(vlan)
+        vlan = entry.get('vlan', '0')
+        if vlan:
+            if isinstance(vlan, str):
+                if not vlan.isnumeric():
+                    entry['vlan'] = 0
+
+                entry['vlan'] = int(vlan)
+        else:
+            vlan = 0
+            entry['vlan'] = 0
 
         if entry.get('bd', ""):
             if not entry.get('vlan', 0):
@@ -44,11 +51,11 @@ class MacsService(Service):
                 else:
                     entry['mackey'] = entry['oif']
             else:
-                if entry.get('vlan', 0):
+                if vlan:
                     if entry['flags'] in ['static', 'permanent', 'router']:
-                        entry['mackey'] = f'{entry["vlan"]}-{entry["oif"]}'
+                        entry['mackey'] = f'{vlan}-{entry["oif"]}'
                     else:
-                        entry['mackey'] = entry['vlan']
+                        entry['mackey'] = vlan
                 else:
                     if entry['flags'] in ['static', 'permanent', 'router']:
                         entry['mackey'] = f'{entry["oif"]}'
@@ -63,6 +70,7 @@ class MacsService(Service):
             oif = entry.get('oif', '')
             if macaddr and (macaddr != "00:00:00:00:00:00"):
                 key = f'{macaddr}-{oif}'
+
                 old_entry = macentries.get(key, None)
                 if not old_entry:
                     macentries[key] = entry
