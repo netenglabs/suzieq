@@ -38,6 +38,11 @@ class DeviceService(Service):
         model = description_result.group(1)
         version = description_result.group(2)
 
+        # if version[0] == '8':
+        #     os = 'aos8'
+        # else:
+        #     os = 'aos6'
+
         # sample output: '0 days 0 hours 3 minutes and 28 seconds'
         uptime_result = re.search(r'(\d+) days (\d{1,2}) hours (\d{1,2})'
                                   r' minutes and (\d{1,2}) seconds',
@@ -55,10 +60,13 @@ class DeviceService(Service):
             bootupTimestamp = int(int(raw_data[0]["timestamp"])
                                   / 1000 - upsecs)
 
-        entry['vendor'] = "Alcatel-Lucent Enterprise"
-        entry['model'] = model
-        entry['version'] = version
         entry['bootupTimestamp'] = bootupTimestamp
+        entry['memory'] = entry['available']
+        entry['os'] = 'aos'
+        entry['model'] = model
+        entry['vendor'] = "Alcatel-Lucent Enterprise"
+        entry['version'] = version
+
 
         return self._common_data_cleaner(processed_data, raw_data)
 
