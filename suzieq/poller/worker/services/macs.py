@@ -63,18 +63,20 @@ class MacsService(Service):
 
             entry_dict = {}
 
-            protocol = entry['domain']
-            vlan = entry['id']
-            macaddr = entry['mac_address']
             flags = entry['operation']
+            macaddr = entry['mac_address']
+            bd = entry['domain']
             oif = entry['interface']
+            protocol = entry['type']
+            vlan = entry['id']
 
             entry_dict = {
+                "flags": flags,
+                "macaddr": macaddr,
+                "bd": bd,
+                "oif": oif,
                 "protocol": protocol,
                 "vlan": vlan,
-                "macaddr": macaddr,
-                "flags": flags,
-                "oif": oif,
             }
 
             entry_new.append(entry_dict)
