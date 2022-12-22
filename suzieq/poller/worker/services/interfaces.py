@@ -71,6 +71,7 @@ class InterfaceService(Service):
         entry_interfaces_status = []
         entry_interfaces = []
         entry_vlan_members = []
+        entry_ip_interface = []
 
         entry_interfaces_status = [
             item for item in processed_data
@@ -80,11 +81,52 @@ class InterfaceService(Service):
             item for item in processed_data
             if item.get('_entryType') == 'interfaces'
         ]
+        entry_ip_interface = [
+            item for item in processed_data
+            if item.get('_entryType') == 'ip_interface'
+        ]
         entry_vlan_members = [
             item for item in processed_data
             if item.get('_entryType') == 'members'
         ]
 
+        # vlan interfaces
+        for ip_interface in entry_ip_interface:
+
+            entry_dict = {}
+            ip_address = []
+
+            adminState = ip_interface['status']
+            device = ip_interface['device']
+            forward = ip_interface['forward']
+            ifname = ip_interface['name']
+            ip_address.append(ip_interface['ip_address'])
+
+            if forward == "YES":
+                state = "up"
+            else:
+                state = "down"
+
+            if "vlan" in device or "service" in device:
+                device = str(device).split()
+                type = device[0]
+                vlan = device[1]
+            else:
+                type = device
+                vlan = ""
+
+            entry_dict = {
+                'adminState': str(adminState).lower(),
+                'ifname': str(ifname).lower(),
+                'ipAddressList': ip_address,
+                'state': str(state).lower(),
+                'type': str(type).lower(),
+                'vlan': vlan
+            }
+
+            entry_new.append(entry_dict)
+
+        # ethernet interfaces
         for interfaces_status, interfaces \
                 in zip(entry_interfaces_status, entry_interfaces):
 
@@ -103,12 +145,12 @@ class InterfaceService(Service):
             vlans = [
                 vlan_member['vlan'] for vlan_member in entry_vlan_members
                 if vlan_member['port'] == ifname
-                if vlan_member['type'] == 'default'
+                if vlan_member['type'] in ["default","untagged"]
             ]
             vlanList = [
                 vlan_member['vlan'] for vlan_member in entry_vlan_members
                 if vlan_member['port'] == ifname
-                if vlan_member['type'] == 'unpUntag'
+                if vlan_member['type'] in ["unpUntag","tagged","qtagged" ]
             ]
 
             if len(vlans) < 1:
@@ -133,7 +175,7 @@ class InterfaceService(Service):
                 'reason': reason,
                 'speed': speed,
                 'state': state,
-                'type': type_int,
+                'type': str(type_int).lower(),
                 'vlan': vlan,
                 'vlanList': vlanList
             }
