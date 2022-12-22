@@ -1,3 +1,4 @@
+from typing import List
 from suzieq.sqobjects.basicobj import SqObject
 
 
@@ -12,3 +13,12 @@ class EvpnvniObj(SqObject):
         self._valid_arg_vals = {
             'result': ['all', 'pass', 'fail'],
         }
+
+    def _get_empty_cols(self, columns: List[str], fun: str, **kwargs) \
+            -> List[str]:
+        if fun == 'assert':
+            if columns in [['default'], ['*']]:
+                # this is the copy of engine/pandas/self._assert_result_cols
+                return ['namespace', 'hostname', 'vni', 'type', 'vrf',
+                        'macaddr', 'timestamp', 'result', 'assertReason']
+        return super()._get_empty_cols(columns, fun, **kwargs)

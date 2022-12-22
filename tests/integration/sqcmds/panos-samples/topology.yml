@@ -3,311 +3,316 @@ tests:
 - command: topology show  --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos
-  output: '[{"namespace": "panos", "hostname": "firewall01", "peerHostname": "exit02",
-    "ifname": "ethernet1/2", "vrf": "default", "lldp": true, "asn": 65533.0, "peerAsn":
-    65522.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "panos",
-    "hostname": "firewall01", "peerHostname": "exit02", "ifname": "ethernet1/2", "vrf":
-    "default", "lldp": true, "asn": 65533.0, "peerAsn": 65521.0, "bgp": true, "area":
-    "", "ospf": "", "polled": true}, {"namespace": "panos", "hostname": "firewall01",
-    "peerHostname": "exit02", "ifname": "ethernet1/2", "vrf": "default", "lldp": true,
-    "asn": 65533.0, "peerAsn": 65520.0, "bgp": true, "area": "", "ospf": "", "polled":
-    true}, {"namespace": "panos", "hostname": "firewall01", "peerHostname": "exit01",
-    "ifname": "ethernet1/1", "vrf": "default", "lldp": true, "asn": 65533.0, "peerAsn":
-    65522.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "panos",
-    "hostname": "firewall01", "peerHostname": "exit01", "ifname": "ethernet1/1", "vrf":
-    "default", "lldp": true, "asn": 65533.0, "peerAsn": 65521.0, "bgp": true, "area":
-    "", "ospf": "", "polled": true}, {"namespace": "panos", "hostname": "firewall01",
-    "peerHostname": "exit01", "ifname": "ethernet1/1", "vrf": "default", "lldp": true,
-    "asn": 65533.0, "peerAsn": 65520.0, "bgp": true, "area": "", "ospf": "", "polled":
-    true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname": "exit01",
-    "ifname": "swp1", "vrf": "default", "lldp": true, "asn": 65534.0, "peerAsn": 65522.0,
-    "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "panos", "hostname":
-    "dcedge01", "peerHostname": "exit02", "ifname": "swp2", "vrf": "default", "lldp":
-    true, "asn": 65534.0, "peerAsn": 65522.0, "bgp": true, "area": "", "ospf": "",
-    "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "spine01", "ifname": "swp1", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
-    "panos", "hostname": "exit01", "peerHostname": "spine02", "ifname": "swp2", "vrf":
-    "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
-    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "exit01",
-    "peerHostname": "firewall01", "ifname": "swp3", "vrf": "default", "lldp": true,
-    "asn": 65520.0, "peerAsn": 65533.0, "bgp": true, "area": "", "ospf": "", "polled":
-    true}, {"namespace": "panos", "hostname": "exit01", "peerHostname": "dcedge01",
-    "ifname": "swp4", "vrf": "internet-vrf", "lldp": true, "asn": 65522.0, "peerAsn":
-    65534.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "panos",
-    "hostname": "exit02", "peerHostname": "dcedge01", "ifname": "swp4", "vrf": "internet-vrf",
-    "lldp": true, "asn": 65522.0, "peerAsn": 65534.0, "bgp": true, "area": "", "ospf":
-    "", "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "firewall01", "ifname": "swp3", "vrf": "default", "lldp": true, "asn": 65520.0,
-    "peerAsn": 65533.0, "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace":
-    "panos", "hostname": "exit02", "peerHostname": "spine02", "ifname": "swp2", "vrf":
-    "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
-    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "exit02",
-    "peerHostname": "spine01", "ifname": "swp1", "vrf": "default", "lldp": true, "asn":
-    64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname": "leaf03",
-    "ifname": "swp6", "vrf": "default", "lldp": true, "asn": "", "peerAsn": "", "bgp":
-    "", "area": "", "ospf": "", "polled": true}, {"namespace": "panos", "hostname":
-    "leaf04", "peerHostname": "leaf03", "ifname": "swp5", "vrf": "default", "lldp":
-    true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true},
-    {"namespace": "panos", "hostname": "leaf04", "peerHostname": "spine02", "ifname":
-    "swp2", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos",
-    "hostname": "leaf04", "peerHostname": "spine01", "ifname": "swp1", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0",
-    "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf01", "ifname": "swp5", "vrf": "default", "lldp": true, "asn": "", "peerAsn":
-    "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace": "panos",
-    "hostname": "leaf02", "peerHostname": "leaf01", "ifname": "swp6", "vrf": "default",
-    "lldp": true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled":
-    true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname": "spine01",
-    "ifname": "swp1", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0,
-    "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos",
-    "hostname": "leaf02", "peerHostname": "spine02", "ifname": "swp2", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0",
-    "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "leaf04", "ifname": "swp4", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
-    "panos", "hostname": "spine02", "peerHostname": "leaf03", "ifname": "swp3", "vrf":
-    "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
-    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "spine02",
-    "peerHostname": "leaf02", "ifname": "swp2", "vrf": "default", "lldp": true, "asn":
-    64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine02", "peerHostname": "leaf01",
-    "ifname": "swp1", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0,
-    "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos",
-    "hostname": "spine02", "peerHostname": "exit02", "ifname": "swp6", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0",
-    "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "exit01", "ifname": "swp5", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
-    "panos", "hostname": "leaf03", "peerHostname": "leaf04", "ifname": "swp6", "vrf":
-    "default", "lldp": true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf":
-    "", "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "leaf04", "ifname": "swp5", "vrf": "default", "lldp": true, "asn": "", "peerAsn":
-    "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace": "panos",
-    "hostname": "leaf03", "peerHostname": "spine02", "ifname": "swp2", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0",
-    "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "spine01", "ifname": "swp1", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
-    "panos", "hostname": "spine01", "peerHostname": "leaf02", "ifname": "swp2", "vrf":
-    "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
-    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "spine01",
-    "peerHostname": "leaf03", "ifname": "swp3", "vrf": "default", "lldp": true, "asn":
-    64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine01", "peerHostname": "leaf04",
-    "ifname": "swp4", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0,
-    "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos",
-    "hostname": "spine01", "peerHostname": "exit01", "ifname": "swp5", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0",
-    "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "exit02", "ifname": "swp6", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
-    "panos", "hostname": "spine01", "peerHostname": "leaf01", "ifname": "swp1", "vrf":
-    "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
-    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "leaf01",
-    "peerHostname": "leaf02", "ifname": "swp5", "vrf": "default", "lldp": true, "asn":
-    "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true}, {"namespace":
-    "panos", "hostname": "leaf01", "peerHostname": "leaf02", "ifname": "swp6", "vrf":
-    "default", "lldp": true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf":
-    "", "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace":
-    "panos", "hostname": "leaf01", "peerHostname": "spine01", "ifname": "swp1", "vrf":
-    "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area":
-    "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "exit01",
-    "peerHostname": "firewall01", "ifname": "", "vrf": "internet-vrf", "lldp": "",
-    "asn": 65522.0, "peerAsn": 65533.0, "bgp": true, "area": "", "ospf": "", "polled":
-    true}, {"namespace": "panos", "hostname": "exit01", "peerHostname": "firewall01",
-    "ifname": "", "vrf": "evpn-vrf", "lldp": "", "asn": 65521.0, "peerAsn": 65533.0,
-    "bgp": true, "area": "", "ospf": "", "polled": true}, {"namespace": "panos", "hostname":
-    "exit02", "peerHostname": "firewall01", "ifname": "", "vrf": "internet-vrf", "lldp":
-    "", "asn": 65522.0, "peerAsn": 65533.0, "bgp": true, "area": "", "ospf": "", "polled":
-    true}, {"namespace": "panos", "hostname": "exit02", "peerHostname": "firewall01",
-    "ifname": "", "vrf": "evpn-vrf", "lldp": "", "asn": 65521.0, "peerAsn": 65533.0,
-    "bgp": true, "area": "", "ospf": "", "polled": true}]'
+  output: '[{"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/2",
+    "peerHostname": "exit02", "vrf": "default", "asn": 65533.0, "peerAsn": 65522.0,
+    "area": "", "bgp": true, "lldp": true, "ospf": "", "polled": true}, {"namespace":
+    "panos", "hostname": "firewall01", "ifname": "ethernet1/2", "peerHostname": "exit02",
+    "vrf": "default", "asn": 65533.0, "peerAsn": 65521.0, "area": "", "bgp": true,
+    "lldp": true, "ospf": "", "polled": true}, {"namespace": "panos", "hostname":
+    "firewall01", "ifname": "ethernet1/2", "peerHostname": "exit02", "vrf": "default",
+    "asn": 65533.0, "peerAsn": 65520.0, "area": "", "bgp": true, "lldp": true, "ospf":
+    "", "polled": true}, {"namespace": "panos", "hostname": "firewall01", "ifname":
+    "ethernet1/1", "peerHostname": "exit01", "vrf": "default", "asn": 65533.0, "peerAsn":
+    65522.0, "area": "", "bgp": true, "lldp": true, "ospf": "", "polled": true}, {"namespace":
+    "panos", "hostname": "firewall01", "ifname": "ethernet1/1", "peerHostname": "exit01",
+    "vrf": "default", "asn": 65533.0, "peerAsn": 65521.0, "area": "", "bgp": true,
+    "lldp": true, "ospf": "", "polled": true}, {"namespace": "panos", "hostname":
+    "firewall01", "ifname": "ethernet1/1", "peerHostname": "exit01", "vrf": "default",
+    "asn": 65533.0, "peerAsn": 65520.0, "area": "", "bgp": true, "lldp": true, "ospf":
+    "", "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname":
+    "swp1", "peerHostname": "exit01", "vrf": "default", "asn": 65534.0, "peerAsn":
+    65522.0, "area": "", "bgp": true, "lldp": true, "ospf": "", "polled": true}, {"namespace":
+    "panos", "hostname": "dcedge01", "ifname": "swp2", "peerHostname": "exit02", "vrf":
+    "default", "asn": 65534.0, "peerAsn": 65522.0, "area": "", "bgp": true, "lldp":
+    true, "ospf": "", "polled": true}, {"namespace": "panos", "hostname": "exit01",
+    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "asn": 64520.0,
+    "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf": true,
+    "polled": true}, {"namespace": "panos", "hostname": "exit01", "ifname": "swp2",
+    "peerHostname": "spine02", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0,
+    "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "panos", "hostname": "exit01", "ifname": "swp3", "peerHostname": "firewall01",
+    "vrf": "default", "asn": 65520.0, "peerAsn": 65533.0, "area": "", "bgp": true,
+    "lldp": true, "ospf": "", "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "swp4", "peerHostname": "dcedge01", "vrf": "internet-vrf",
+    "asn": 65522.0, "peerAsn": 65534.0, "area": "", "bgp": true, "lldp": true, "ospf":
+    "", "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "swp4",
+    "peerHostname": "dcedge01", "vrf": "internet-vrf", "asn": 65522.0, "peerAsn":
+    65534.0, "area": "", "bgp": true, "lldp": true, "ospf": "", "polled": true}, {"namespace":
+    "panos", "hostname": "exit02", "ifname": "swp3", "peerHostname": "firewall01",
+    "vrf": "default", "asn": 65520.0, "peerAsn": 65533.0, "area": "", "bgp": true,
+    "lldp": true, "ospf": "", "polled": true}, {"namespace": "panos", "hostname":
+    "exit02", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf":
+    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "asn": 64520.0, "peerAsn":
+    64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "panos", "hostname": "leaf04", "ifname": "swp6", "peerHostname":
+    "leaf03", "vrf": "default", "asn": "", "peerAsn": "", "area": "", "bgp": "", "lldp":
+    true, "ospf": "", "polled": true}, {"namespace": "panos", "hostname": "leaf04",
+    "ifname": "swp5", "peerHostname": "leaf03", "vrf": "default", "asn": "", "peerAsn":
+    "", "area": "", "bgp": "", "lldp": true, "ospf": "", "polled": true}, {"namespace":
+    "panos", "hostname": "leaf04", "ifname": "swp2", "peerHostname": "spine02", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true,
+    "lldp": true, "ospf": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf":
+    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "ifname":
+    "swp5", "peerHostname": "leaf01", "vrf": "default", "asn": "", "peerAsn": "",
+    "area": "", "bgp": "", "lldp": true, "ospf": "", "polled": true}, {"namespace":
+    "panos", "hostname": "leaf02", "ifname": "swp6", "peerHostname": "leaf01", "vrf":
+    "default", "asn": "", "peerAsn": "", "area": "", "bgp": "", "lldp": true, "ospf":
+    "", "polled": true}, {"namespace": "panos", "hostname": "leaf02", "ifname": "swp1",
+    "peerHostname": "spine01", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0,
+    "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "panos", "hostname": "leaf02", "ifname": "swp2", "peerHostname": "spine02", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true,
+    "lldp": true, "ospf": true, "polled": true}, {"namespace": "panos", "hostname":
+    "spine02", "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf":
+    true, "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname":
+    "swp3", "peerHostname": "leaf03", "vrf": "default", "asn": 64520.0, "peerAsn":
+    64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp2", "peerHostname":
+    "leaf02", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0",
+    "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace": "panos",
+    "hostname": "spine02", "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default",
+    "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname":
+    "swp6", "peerHostname": "exit02", "vrf": "default", "asn": 64520.0, "peerAsn":
+    64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp5", "peerHostname":
+    "exit01", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0",
+    "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace": "panos",
+    "hostname": "leaf03", "ifname": "swp6", "peerHostname": "leaf04", "vrf": "default",
+    "asn": "", "peerAsn": "", "area": "", "bgp": "", "lldp": true, "ospf": "", "polled":
+    true}, {"namespace": "panos", "hostname": "leaf03", "ifname": "swp5", "peerHostname":
+    "leaf04", "vrf": "default", "asn": "", "peerAsn": "", "area": "", "bgp": "", "lldp":
+    true, "ospf": "", "polled": true}, {"namespace": "panos", "hostname": "leaf03",
+    "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "asn": 64520.0,
+    "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf": true,
+    "polled": true}, {"namespace": "panos", "hostname": "leaf03", "ifname": "swp1",
+    "peerHostname": "spine01", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0,
+    "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace":
+    "panos", "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true,
+    "lldp": true, "ospf": true, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf":
+    true, "polled": true}, {"namespace": "panos", "hostname": "spine01", "ifname":
+    "swp4", "peerHostname": "leaf04", "vrf": "default", "asn": 64520.0, "peerAsn":
+    64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "panos", "hostname": "spine01", "ifname": "swp5", "peerHostname":
+    "exit01", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0",
+    "bgp": true, "lldp": true, "ospf": true, "polled": true}, {"namespace": "panos",
+    "hostname": "spine01", "ifname": "swp6", "peerHostname": "exit02", "vrf": "default",
+    "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true,
+    "ospf": true, "polled": true}, {"namespace": "panos", "hostname": "spine01", "ifname":
+    "swp1", "peerHostname": "leaf01", "vrf": "default", "asn": 64520.0, "peerAsn":
+    64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf": true, "polled":
+    true}, {"namespace": "panos", "hostname": "leaf01", "ifname": "swp5", "peerHostname":
+    "leaf02", "vrf": "default", "asn": "", "peerAsn": "", "area": "", "bgp": "", "lldp":
+    true, "ospf": "", "polled": true}, {"namespace": "panos", "hostname": "leaf01",
+    "ifname": "swp6", "peerHostname": "leaf02", "vrf": "default", "asn": "", "peerAsn":
+    "", "area": "", "bgp": "", "lldp": true, "ospf": "", "polled": true}, {"namespace":
+    "panos", "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true,
+    "lldp": true, "ospf": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf":
+    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "ifname":
+    "", "peerHostname": "firewall01", "vrf": "internet-vrf", "asn": 65522.0, "peerAsn":
+    65533.0, "area": "", "bgp": true, "lldp": "", "ospf": "", "polled": true}, {"namespace":
+    "panos", "hostname": "exit01", "ifname": "", "peerHostname": "firewall01", "vrf":
+    "evpn-vrf", "asn": 65521.0, "peerAsn": 65533.0, "area": "", "bgp": true, "lldp":
+    "", "ospf": "", "polled": true}, {"namespace": "panos", "hostname": "exit02",
+    "ifname": "", "peerHostname": "firewall01", "vrf": "internet-vrf", "asn": 65522.0,
+    "peerAsn": 65533.0, "area": "", "bgp": true, "lldp": "", "ospf": "", "polled":
+    true}, {"namespace": "panos", "hostname": "exit02", "ifname": "", "peerHostname":
+    "firewall01", "vrf": "evpn-vrf", "asn": 65521.0, "peerAsn": 65533.0, "area": "",
+    "bgp": true, "lldp": "", "ospf": "", "polled": true}]'
 - command: topology show --via=lldp  --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos
-  output: '[{"namespace": "panos", "hostname": "firewall01", "peerHostname": "exit02",
-    "ifname": "ethernet1/2", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "firewall01", "peerHostname": "exit01", "ifname": "ethernet1/1",
+  output: '[{"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/2",
+    "peerHostname": "exit02", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
+    "panos", "hostname": "firewall01", "ifname": "ethernet1/1", "peerHostname": "exit01",
     "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
-    "dcedge01", "peerHostname": "exit01", "ifname": "swp1", "vrf": "default", "lldp":
-    true, "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname":
-    "exit02", "ifname": "swp2", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "exit01", "peerHostname": "spine01", "ifname": "swp1", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "exit01",
-    "peerHostname": "spine02", "ifname": "swp2", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "exit01", "peerHostname": "firewall01",
-    "ifname": "swp3", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "exit01", "peerHostname": "dcedge01", "ifname": "swp4", "vrf":
+    "dcedge01", "ifname": "swp1", "peerHostname": "exit01", "vrf": "default", "lldp":
+    true, "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname":
+    "swp2", "peerHostname": "exit02", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "exit01", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "exit01", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "ifname":
+    "swp3", "peerHostname": "firewall01", "vrf": "default", "lldp": true, "polled":
+    true}, {"namespace": "panos", "hostname": "exit01", "ifname": "swp4", "peerHostname":
+    "dcedge01", "vrf": "internet-vrf", "lldp": true, "polled": true}, {"namespace":
+    "panos", "hostname": "exit02", "ifname": "swp4", "peerHostname": "dcedge01", "vrf":
     "internet-vrf", "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
-    "exit02", "peerHostname": "dcedge01", "ifname": "swp4", "vrf": "internet-vrf",
-    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "firewall01", "ifname": "swp3", "vrf": "default", "lldp": true, "polled": true},
-    {"namespace": "panos", "hostname": "exit02", "peerHostname": "spine02", "ifname":
-    "swp2", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
-    "hostname": "exit02", "peerHostname": "spine01", "ifname": "swp1", "vrf": "default",
-    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf03", "ifname": "swp6", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "leaf04", "peerHostname": "leaf03", "ifname": "swp5", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf04",
-    "peerHostname": "spine02", "ifname": "swp2", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname": "spine01",
-    "ifname": "swp1", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "leaf02", "peerHostname": "leaf01", "ifname": "swp5", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf02",
-    "peerHostname": "leaf01", "ifname": "swp6", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname": "spine01",
-    "ifname": "swp1", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "leaf02", "peerHostname": "spine02", "ifname": "swp2", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "spine02",
-    "peerHostname": "leaf04", "ifname": "swp4", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine02", "peerHostname": "leaf03",
-    "ifname": "swp3", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "spine02", "peerHostname": "leaf02", "ifname": "swp2", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "spine02",
-    "peerHostname": "leaf01", "ifname": "swp1", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine02", "peerHostname": "exit02",
-    "ifname": "swp6", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "spine02", "peerHostname": "exit01", "ifname": "swp5", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf03",
-    "peerHostname": "leaf04", "ifname": "swp6", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname": "leaf04",
-    "ifname": "swp5", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "leaf03", "peerHostname": "spine02", "ifname": "swp2", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf03",
-    "peerHostname": "spine01", "ifname": "swp1", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine01", "peerHostname": "leaf02",
-    "ifname": "swp2", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "spine01", "peerHostname": "leaf03", "ifname": "swp3", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "spine01",
-    "peerHostname": "leaf04", "ifname": "swp4", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine01", "peerHostname": "exit01",
-    "ifname": "swp5", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "spine01", "peerHostname": "exit02", "ifname": "swp6", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "spine01",
-    "peerHostname": "leaf01", "ifname": "swp1", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname": "leaf02",
-    "ifname": "swp5", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "leaf01", "peerHostname": "spine02", "ifname": "swp2", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf01",
-    "peerHostname": "spine01", "ifname": "swp1", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname": "leaf02",
-    "ifname": "swp6", "vrf": "default", "lldp": true, "polled": true}]'
+    "exit02", "ifname": "swp3", "peerHostname": "firewall01", "vrf": "default", "lldp":
+    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "exit02", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "leaf04", "ifname": "swp6", "peerHostname": "leaf03", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "ifname":
+    "swp5", "peerHostname": "leaf03", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf04", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "leaf04", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "ifname":
+    "swp5", "peerHostname": "leaf01", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf02", "ifname": "swp6", "peerHostname":
+    "leaf01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "leaf02", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine02", "ifname": "swp4", "peerHostname":
+    "leaf04", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "spine02", "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname":
+    "swp2", "peerHostname": "leaf02", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine02", "ifname": "swp1", "peerHostname":
+    "leaf01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname":
+    "swp5", "peerHostname": "exit01", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf03", "ifname": "swp6", "peerHostname":
+    "leaf04", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "leaf03", "ifname": "swp5", "peerHostname": "leaf04", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf03", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "spine01", "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "spine01", "ifname":
+    "swp3", "peerHostname": "leaf03", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine01", "ifname": "swp4", "peerHostname":
+    "leaf04", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "spine01", "ifname": "swp5", "peerHostname": "exit01", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "spine01", "ifname":
+    "swp6", "peerHostname": "exit02", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine01", "ifname": "swp1", "peerHostname":
+    "leaf01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "leaf01", "ifname": "swp5", "peerHostname": "leaf02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "ifname":
+    "swp2", "peerHostname": "spine02", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf01", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "leaf01", "ifname": "swp6", "peerHostname": "leaf02", "vrf": "default",
+    "lldp": true, "polled": true}]'
 - command: topology show --via='lldp bgp'  --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos
-  output: '[{"namespace": "panos", "hostname": "firewall01", "peerHostname": "exit02",
-    "ifname": "ethernet1/2", "vrf": "default", "lldp": true, "asn": 65533.0, "peerAsn":
-    65522.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname": "firewall01",
-    "peerHostname": "exit02", "ifname": "ethernet1/2", "vrf": "default", "lldp": true,
-    "asn": 65533.0, "peerAsn": 65521.0, "bgp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "firewall01", "peerHostname": "exit02", "ifname": "ethernet1/2",
-    "vrf": "default", "lldp": true, "asn": 65533.0, "peerAsn": 65520.0, "bgp": true,
-    "polled": true}, {"namespace": "panos", "hostname": "firewall01", "peerHostname":
-    "exit01", "ifname": "ethernet1/1", "vrf": "default", "lldp": true, "asn": 65533.0,
-    "peerAsn": 65522.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname":
-    "firewall01", "peerHostname": "exit01", "ifname": "ethernet1/1", "vrf": "default",
-    "lldp": true, "asn": 65533.0, "peerAsn": 65521.0, "bgp": true, "polled": true},
-    {"namespace": "panos", "hostname": "firewall01", "peerHostname": "exit01", "ifname":
-    "ethernet1/1", "vrf": "default", "lldp": true, "asn": 65533.0, "peerAsn": 65520.0,
-    "bgp": true, "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname":
-    "exit01", "ifname": "swp1", "vrf": "default", "lldp": true, "asn": 65534.0, "peerAsn":
-    65522.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname": "dcedge01",
-    "peerHostname": "exit02", "ifname": "swp2", "vrf": "default", "lldp": true, "asn":
-    65534.0, "peerAsn": 65522.0, "bgp": true, "polled": true}, {"namespace": "panos",
-    "hostname": "exit01", "peerHostname": "spine01", "ifname": "swp1", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true},
-    {"namespace": "panos", "hostname": "exit01", "peerHostname": "spine02", "ifname":
-    "swp2", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "firewall01", "ifname": "swp3", "vrf": "default", "lldp": true, "asn": 65520.0,
-    "peerAsn": 65533.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname":
-    "exit01", "peerHostname": "dcedge01", "ifname": "swp4", "vrf": "internet-vrf",
-    "lldp": true, "asn": 65522.0, "peerAsn": 65534.0, "bgp": true, "polled": true},
-    {"namespace": "panos", "hostname": "exit02", "peerHostname": "dcedge01", "ifname":
-    "swp4", "vrf": "internet-vrf", "lldp": true, "asn": 65522.0, "peerAsn": 65534.0,
-    "bgp": true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "firewall01", "ifname": "swp3", "vrf": "default", "lldp": true, "asn": 65520.0,
-    "peerAsn": 65533.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname":
-    "exit02", "peerHostname": "spine02", "ifname": "swp2", "vrf": "default", "lldp":
-    true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "exit02", "peerHostname": "spine01", "ifname": "swp1", "vrf":
-    "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname": "leaf03",
-    "ifname": "swp6", "vrf": "default", "lldp": true, "asn": "", "peerAsn": "", "bgp":
-    "", "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf03", "ifname": "swp5", "vrf": "default", "lldp": true, "asn": "", "peerAsn":
-    "", "bgp": "", "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf04",
-    "peerHostname": "spine01", "ifname": "swp1", "vrf": "default", "lldp": true, "asn":
-    64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "panos",
-    "hostname": "leaf02", "peerHostname": "leaf01", "ifname": "swp5", "vrf": "default",
-    "lldp": true, "asn": "", "peerAsn": "", "bgp": "", "polled": true}, {"namespace":
-    "panos", "hostname": "leaf02", "peerHostname": "leaf01", "ifname": "swp6", "vrf":
-    "default", "lldp": true, "asn": "", "peerAsn": "", "bgp": "", "polled": true},
-    {"namespace": "panos", "hostname": "leaf02", "peerHostname": "spine01", "ifname":
-    "swp1", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname": "spine02",
-    "peerHostname": "leaf04", "ifname": "swp4", "vrf": "default", "lldp": true, "asn":
-    64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "panos",
-    "hostname": "spine02", "peerHostname": "leaf03", "ifname": "swp3", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true},
-    {"namespace": "panos", "hostname": "spine02", "peerHostname": "leaf02", "ifname":
-    "swp2", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "leaf01", "ifname": "swp1", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname": "spine02",
-    "peerHostname": "exit02", "ifname": "swp6", "vrf": "default", "lldp": true, "asn":
-    64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "panos",
-    "hostname": "spine02", "peerHostname": "exit01", "ifname": "swp5", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true},
-    {"namespace": "panos", "hostname": "leaf03", "peerHostname": "leaf04", "ifname":
-    "swp6", "vrf": "default", "lldp": true, "asn": "", "peerAsn": "", "bgp": "", "polled":
-    true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname": "leaf04",
-    "ifname": "swp5", "vrf": "default", "lldp": true, "asn": "", "peerAsn": "", "bgp":
-    "", "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf03",
-    "peerHostname": "spine01", "ifname": "swp1", "vrf": "default", "lldp": true, "asn":
-    64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "panos",
-    "hostname": "spine01", "peerHostname": "leaf02", "ifname": "swp2", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true},
-    {"namespace": "panos", "hostname": "spine01", "peerHostname": "leaf03", "ifname":
-    "swp3", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "leaf04", "ifname": "swp4", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname": "spine01",
-    "peerHostname": "exit01", "ifname": "swp5", "vrf": "default", "lldp": true, "asn":
-    64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "panos",
-    "hostname": "spine01", "peerHostname": "exit02", "ifname": "swp6", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true},
-    {"namespace": "panos", "hostname": "spine01", "peerHostname": "leaf01", "ifname":
-    "swp1", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "leaf02", "ifname": "swp5", "vrf": "default", "lldp": true, "asn": "", "peerAsn":
-    "", "bgp": "", "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "leaf02", "ifname": "swp6", "vrf": "default", "lldp": true, "asn": "", "peerAsn":
-    "", "bgp": "", "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn":
-    64520.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf01",
-    "peerHostname": "spine01", "ifname": "swp1", "vrf": "default", "lldp": true, "asn":
-    64520.0, "peerAsn": 64520.0, "bgp": true, "polled": true}, {"namespace": "panos",
-    "hostname": "exit01", "peerHostname": "firewall01", "ifname": "", "vrf": "internet-vrf",
-    "lldp": "", "asn": 65522.0, "peerAsn": 65533.0, "bgp": true, "polled": true},
-    {"namespace": "panos", "hostname": "exit01", "peerHostname": "firewall01", "ifname":
-    "", "vrf": "evpn-vrf", "lldp": "", "asn": 65521.0, "peerAsn": 65533.0, "bgp":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "firewall01", "ifname": "", "vrf": "internet-vrf", "lldp": "", "asn": 65522.0,
-    "peerAsn": 65533.0, "bgp": true, "polled": true}, {"namespace": "panos", "hostname":
-    "exit02", "peerHostname": "firewall01", "ifname": "", "vrf": "evpn-vrf", "lldp":
-    "", "asn": 65521.0, "peerAsn": 65533.0, "bgp": true, "polled": true}]'
+  output: '[{"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/2",
+    "peerHostname": "exit02", "vrf": "default", "asn": 65533.0, "peerAsn": 65522.0,
+    "bgp": true, "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
+    "firewall01", "ifname": "ethernet1/2", "peerHostname": "exit02", "vrf": "default",
+    "asn": 65533.0, "peerAsn": 65521.0, "bgp": true, "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/2", "peerHostname":
+    "exit02", "vrf": "default", "asn": 65533.0, "peerAsn": 65520.0, "bgp": true, "lldp":
+    true, "polled": true}, {"namespace": "panos", "hostname": "firewall01", "ifname":
+    "ethernet1/1", "peerHostname": "exit01", "vrf": "default", "asn": 65533.0, "peerAsn":
+    65522.0, "bgp": true, "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
+    "firewall01", "ifname": "ethernet1/1", "peerHostname": "exit01", "vrf": "default",
+    "asn": 65533.0, "peerAsn": 65521.0, "bgp": true, "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/1", "peerHostname":
+    "exit01", "vrf": "default", "asn": 65533.0, "peerAsn": 65520.0, "bgp": true, "lldp":
+    true, "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname":
+    "swp1", "peerHostname": "exit01", "vrf": "default", "asn": 65534.0, "peerAsn":
+    65522.0, "bgp": true, "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
+    "dcedge01", "ifname": "swp2", "peerHostname": "exit02", "vrf": "default", "asn":
+    65534.0, "peerAsn": 65522.0, "bgp": true, "lldp": true, "polled": true}, {"namespace":
+    "panos", "hostname": "exit01", "ifname": "swp1", "peerHostname": "spine01", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled":
+    true}, {"namespace": "panos", "hostname": "exit01", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "ifname":
+    "swp3", "peerHostname": "firewall01", "vrf": "default", "asn": 65520.0, "peerAsn":
+    65533.0, "bgp": true, "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "swp4", "peerHostname": "dcedge01", "vrf": "internet-vrf",
+    "asn": 65522.0, "peerAsn": 65534.0, "bgp": true, "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "exit02", "ifname": "swp4", "peerHostname":
+    "dcedge01", "vrf": "internet-vrf", "asn": 65522.0, "peerAsn": 65534.0, "bgp":
+    true, "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "exit02",
+    "ifname": "swp3", "peerHostname": "firewall01", "vrf": "default", "asn": 65520.0,
+    "peerAsn": 65533.0, "bgp": true, "lldp": true, "polled": true}, {"namespace":
+    "panos", "hostname": "exit02", "ifname": "swp2", "peerHostname": "spine02", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled":
+    true}, {"namespace": "panos", "hostname": "exit02", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "ifname":
+    "swp6", "peerHostname": "leaf03", "vrf": "default", "asn": "", "peerAsn": "",
+    "bgp": "", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf04",
+    "ifname": "swp5", "peerHostname": "leaf03", "vrf": "default", "asn": "", "peerAsn":
+    "", "bgp": "", "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled": true}, {"namespace":
+    "panos", "hostname": "leaf04", "ifname": "swp1", "peerHostname": "spine01", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled":
+    true}, {"namespace": "panos", "hostname": "leaf02", "ifname": "swp5", "peerHostname":
+    "leaf01", "vrf": "default", "asn": "", "peerAsn": "", "bgp": "", "lldp": true,
+    "polled": true}, {"namespace": "panos", "hostname": "leaf02", "ifname": "swp6",
+    "peerHostname": "leaf01", "vrf": "default", "asn": "", "peerAsn": "", "bgp": "",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled": true}, {"namespace":
+    "panos", "hostname": "spine02", "ifname": "swp4", "peerHostname": "leaf04", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled":
+    true}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp3", "peerHostname":
+    "leaf03", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp":
+    true, "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname":
+    "swp2", "peerHostname": "leaf02", "vrf": "default", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
+    "spine02", "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled": true}, {"namespace":
+    "panos", "hostname": "spine02", "ifname": "swp6", "peerHostname": "exit02", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled":
+    true}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp5", "peerHostname":
+    "exit01", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp":
+    true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "ifname":
+    "swp6", "peerHostname": "leaf04", "vrf": "default", "asn": "", "peerAsn": "",
+    "bgp": "", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf03",
+    "ifname": "swp5", "peerHostname": "leaf04", "vrf": "default", "asn": "", "peerAsn":
+    "", "bgp": "", "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled": true}, {"namespace":
+    "panos", "hostname": "leaf03", "ifname": "swp1", "peerHostname": "spine01", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled":
+    true}, {"namespace": "panos", "hostname": "spine01", "ifname": "swp2", "peerHostname":
+    "leaf02", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp":
+    true, "polled": true}, {"namespace": "panos", "hostname": "spine01", "ifname":
+    "swp3", "peerHostname": "leaf03", "vrf": "default", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled": true}, {"namespace":
+    "panos", "hostname": "spine01", "ifname": "swp5", "peerHostname": "exit01", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled":
+    true}, {"namespace": "panos", "hostname": "spine01", "ifname": "swp6", "peerHostname":
+    "exit02", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp":
+    true, "polled": true}, {"namespace": "panos", "hostname": "spine01", "ifname":
+    "swp1", "peerHostname": "leaf01", "vrf": "default", "asn": 64520.0, "peerAsn":
+    64520.0, "bgp": true, "lldp": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "swp5", "peerHostname": "leaf02", "vrf": "default", "asn":
+    "", "peerAsn": "", "bgp": "", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "leaf01", "ifname": "swp6", "peerHostname": "leaf02", "vrf": "default",
+    "asn": "", "peerAsn": "", "bgp": "", "lldp": true, "polled": true}, {"namespace":
+    "panos", "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "lldp": true, "polled":
+    true}, {"namespace": "panos", "hostname": "leaf01", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "asn": 64520.0, "peerAsn": 64520.0, "bgp": true,
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "ifname":
+    "", "peerHostname": "firewall01", "vrf": "internet-vrf", "asn": 65522.0, "peerAsn":
+    65533.0, "bgp": true, "lldp": "", "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "", "peerHostname": "firewall01", "vrf": "evpn-vrf", "asn":
+    65521.0, "peerAsn": 65533.0, "bgp": true, "lldp": "", "polled": true}, {"namespace":
+    "panos", "hostname": "exit02", "ifname": "", "peerHostname": "firewall01", "vrf":
+    "internet-vrf", "asn": 65522.0, "peerAsn": 65533.0, "bgp": true, "lldp": "", "polled":
+    true}, {"namespace": "panos", "hostname": "exit02", "ifname": "", "peerHostname":
+    "firewall01", "vrf": "evpn-vrf", "asn": 65521.0, "peerAsn": 65533.0, "bgp": true,
+    "lldp": "", "polled": true}]'
 - command: topology show --via=lldp --via=bgp  --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos
@@ -467,431 +472,430 @@ tests:
 - command: topology show --via=ospf  --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos
-  output: '[{"namespace": "panos", "hostname": "exit01", "peerHostname": "spine01",
-    "ifname": "swp1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "exit01", "peerHostname": "spine02",
-    "ifname": "swp2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine01", "peerHostname": "leaf02",
-    "ifname": "swp2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname": "spine02",
-    "ifname": "swp2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname": "spine01",
-    "ifname": "swp1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine01", "peerHostname": "leaf03",
-    "ifname": "swp3", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine01", "peerHostname": "leaf04",
-    "ifname": "swp4", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine01", "peerHostname": "exit02",
-    "ifname": "swp6", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine01", "peerHostname": "leaf01",
-    "ifname": "swp1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine01", "peerHostname": "exit01",
-    "ifname": "swp5", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine02", "peerHostname": "leaf01",
-    "ifname": "swp1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine02", "peerHostname": "leaf02",
-    "ifname": "swp2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine02", "peerHostname": "leaf03",
-    "ifname": "swp3", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine02", "peerHostname": "leaf04",
-    "ifname": "swp4", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine02", "peerHostname": "exit02",
-    "ifname": "swp6", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "spine02", "peerHostname": "exit01",
-    "ifname": "swp5", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "exit02", "peerHostname": "spine02",
-    "ifname": "swp2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "exit02", "peerHostname": "spine01",
-    "ifname": "swp1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname": "spine01",
-    "ifname": "swp1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname": "spine02",
-    "ifname": "swp2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname": "spine02",
-    "ifname": "swp2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname": "spine01",
-    "ifname": "swp1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname": "spine02",
-    "ifname": "swp2", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname": "spine01",
-    "ifname": "swp1", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled":
-    true}]'
+  output: '[{"namespace": "panos", "hostname": "exit01", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "exit01", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine01", "ifname": "swp2", "peerHostname":
+    "leaf02", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf03", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf03", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine01", "ifname": "swp3", "peerHostname":
+    "leaf03", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine01", "ifname": "swp4", "peerHostname":
+    "leaf04", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine01", "ifname": "swp6", "peerHostname":
+    "exit02", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine01", "ifname": "swp1", "peerHostname":
+    "leaf01", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine01", "ifname": "swp5", "peerHostname":
+    "exit01", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine02", "ifname": "swp1", "peerHostname":
+    "leaf01", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine02", "ifname": "swp2", "peerHostname":
+    "leaf02", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine02", "ifname": "swp3", "peerHostname":
+    "leaf03", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine02", "ifname": "swp4", "peerHostname":
+    "leaf04", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine02", "ifname": "swp6", "peerHostname":
+    "exit02", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "spine02", "ifname": "swp5", "peerHostname":
+    "exit01", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "exit02", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "exit02", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf04", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf04", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf02", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf02", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf01", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf01", "ifname": "swp1", "peerHostname":
+    "spine01", "vrf": "default", "area": "0.0.0.0", "ospf": true, "polled": true}]'
 - command: topology show --via=arpnd  --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos
-  output: '[{"namespace": "panos", "hostname": "firewall01", "peerHostname": "exit01",
-    "ifname": "ethernet1/1.2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "firewall01", "peerHostname":
-    "exit01", "ifname": "ethernet1/1.2", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "firewall01", "peerHostname":
-    "exit01", "ifname": "ethernet1/1.4", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "firewall01", "peerHostname":
-    "exit01", "ifname": "ethernet1/1.3", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "firewall01", "peerHostname":
-    "exit02", "ifname": "ethernet1/2.2", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "firewall01", "peerHostname":
-    "exit02", "ifname": "ethernet1/2.2", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "firewall01", "peerHostname":
-    "exit02", "ifname": "ethernet1/2.3", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "firewall01", "peerHostname":
-    "exit02", "ifname": "ethernet1/2.4", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "server102", "peerHostname":
-    "leaf04", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server102", "peerHostname":
-    "leaf02", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server102", "peerHostname":
-    "leaf03", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server102", "peerHostname":
-    "leaf01", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server301", "peerHostname":
-    "leaf04", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server301", "peerHostname":
-    "leaf03", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server302", "peerHostname":
-    "leaf04", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server302", "peerHostname":
-    "leaf02", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server302", "peerHostname":
-    "leaf03", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server302", "peerHostname":
-    "leaf01", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server101", "peerHostname":
-    "leaf02", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "server101", "peerHostname":
-    "leaf01", "ifname": "bond0", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname":
-    "exit02", "ifname": "swp2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname":
-    "exit02", "ifname": "swp2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname":
-    "server102", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname":
-    "server301", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname":
-    "server101", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname":
-    "server302", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname":
-    "exit01", "ifname": "swp1", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "peerHostname":
-    "exit01", "ifname": "swp1", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "server102", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "server301", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "server302", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "server101", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "leaf04", "ifname": "swp4", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "leaf02", "ifname": "swp2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "exit01", "ifname": "swp5", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "leaf01", "ifname": "swp1", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "exit02", "ifname": "swp6", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine02", "peerHostname":
-    "leaf03", "ifname": "swp3", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "server102", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "server101", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "server302", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "server301", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "leaf04", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "leaf03", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "leaf02", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "leaf01", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "firewall01", "ifname": "swp3.3", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "firewall01", "ifname": "swp3.2", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "firewall01", "ifname": "swp3.2", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "firewall01", "ifname": "swp3.4", "vrf": "internet-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "spine01", "ifname": "swp1", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "dcedge01", "ifname": "swp4", "vrf": "internet-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "peerHostname":
-    "dcedge01", "ifname": "swp4", "vrf": "internet-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "exit02", "ifname": "swp6", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "exit01", "ifname": "swp5", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "leaf04", "ifname": "swp4", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "leaf01", "ifname": "swp1", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "leaf03", "ifname": "swp3", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "server302", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "server102", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "server301", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "server101", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "spine01", "peerHostname":
-    "leaf02", "ifname": "swp2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "server101", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "server301", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "server302", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "server102", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "dcedge01", "ifname": "swp4", "vrf": "internet-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "dcedge01", "ifname": "swp4", "vrf": "internet-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "firewall01", "ifname": "swp3.2", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "firewall01", "ifname": "swp3.2", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "firewall01", "ifname": "swp3.4", "vrf": "internet-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "firewall01", "ifname": "swp3.3", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "leaf02", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "leaf01", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "leaf04", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "leaf03", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "exit01", "peerHostname":
-    "spine01", "ifname": "swp1", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "server301", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "server101", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "server102", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "server302", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "server101", "ifname": "bond01", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf02", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf01", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf02", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf01", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "server102", "ifname": "bond02", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf04", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf02", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf03", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf01", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf04", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf02", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf03", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf01", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "server302", "ifname": "Vlan30", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf02", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf01", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "exit02", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf04", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf03", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "exit01", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "spine01", "ifname": "swp1", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf02", "peerHostname":
-    "leaf01", "ifname": "peerlink.4094", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "server301", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "server101", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "server302", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "server102", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "exit02", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "leaf02", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "leaf01", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "exit01", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "server102", "ifname": "Vlan30", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "server302", "ifname": "bond02", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "server301", "ifname": "bond01", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "leaf04", "ifname": "peerlink.4094", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf03", "peerHostname":
-    "spine01", "ifname": "swp1", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "server301", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "server101", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "server302", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "server102", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "server302", "ifname": "Vlan30", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "server102", "ifname": "bond02", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "server101", "ifname": "bond01", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "leaf02", "ifname": "peerlink.4094", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "spine01", "ifname": "swp1", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "exit01", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "exit02", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "leaf04", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "leaf03", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf04", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf03", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf04", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf03", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "server301", "ifname": "bond01", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "exit02", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "exit01", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf02", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf01", "ifname": "vlan999", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf04", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf03", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "spine02", "ifname": "swp2", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "spine01", "ifname": "swp1", "vrf": "default", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "server302", "ifname": "bond02", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "server102", "ifname": "Vlan30", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf04", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf02", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf03", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf01", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf04", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf02", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf03", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf01", "ifname": "bridge", "vrf": "evpn-vrf", "arpndBidir": true, "arpnd":
-    true, "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "server101", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": false, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "server302", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "server301", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "server102", "ifname": "eth0", "vrf": "mgmt", "arpndBidir": true, "arpnd": true,
-    "polled": true}, {"namespace": "panos", "hostname": "leaf04", "peerHostname":
-    "leaf03", "ifname": "peerlink.4094", "vrf": "default", "arpndBidir": true, "arpnd":
-    true, "polled": true}]'
+  output: '[{"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/1.2",
+    "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/1.2",
+    "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/1.4",
+    "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/1.3",
+    "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/2.2",
+    "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/2.2",
+    "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/2.3",
+    "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "firewall01", "ifname": "ethernet1/2.4",
+    "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server102", "ifname": "bond0",
+    "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server102", "ifname": "bond0",
+    "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server102", "ifname": "bond0",
+    "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server102", "ifname": "bond0",
+    "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server301", "ifname": "bond0",
+    "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server301", "ifname": "bond0",
+    "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server302", "ifname": "bond0",
+    "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server302", "ifname": "bond0",
+    "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server302", "ifname": "bond0",
+    "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server302", "ifname": "bond0",
+    "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server101", "ifname": "bond0",
+    "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "server101", "ifname": "bond0",
+    "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname": "swp2",
+    "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname": "swp2",
+    "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname": "eth0",
+    "peerHostname": "server102", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname": "eth0",
+    "peerHostname": "server301", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname": "eth0",
+    "peerHostname": "server101", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname": "eth0",
+    "peerHostname": "server302", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname": "swp1",
+    "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "dcedge01", "ifname": "swp1",
+    "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname": "eth0",
+    "peerHostname": "server102", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname": "eth0",
+    "peerHostname": "server301", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname": "eth0",
+    "peerHostname": "server302", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname": "eth0",
+    "peerHostname": "server101", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp4",
+    "peerHostname": "leaf04", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp2",
+    "peerHostname": "leaf02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp5",
+    "peerHostname": "exit01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp1",
+    "peerHostname": "leaf01", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp6",
+    "peerHostname": "exit02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "spine02", "ifname": "swp3",
+    "peerHostname": "leaf03", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "eth0",
+    "peerHostname": "server102", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "eth0",
+    "peerHostname": "server101", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "eth0",
+    "peerHostname": "server302", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "eth0",
+    "peerHostname": "server301", "vrf": "mgmt", "arpnd": true, "arpndBidir": false,
+    "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "swp2",
+    "peerHostname": "spine02", "vrf": "default", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "vlan999",
+    "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "vlan999",
+    "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "vlan999",
+    "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "vlan999",
+    "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir": true,
+    "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname": "swp3.3",
+    "peerHostname": "firewall01", "vrf": "evpn-vrf", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname":
+    "swp3.2", "peerHostname": "firewall01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname":
+    "swp3.2", "peerHostname": "firewall01", "vrf": "default", "arpnd": true, "arpndBidir":
+    true, "polled": true}, {"namespace": "panos", "hostname": "exit02", "ifname":
+    "swp3.4", "peerHostname": "firewall01", "vrf": "internet-vrf", "arpnd": true,
+    "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname": "exit02",
+    "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd": true,
+    "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname": "exit02",
+    "ifname": "swp4", "peerHostname": "dcedge01", "vrf": "internet-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit02", "ifname": "swp4", "peerHostname": "dcedge01", "vrf": "internet-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "swp6", "peerHostname": "exit02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "swp5", "peerHostname": "exit01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "swp4", "peerHostname": "leaf04", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "swp1", "peerHostname": "leaf01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "swp3", "peerHostname": "leaf03", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "eth0", "peerHostname": "server302", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "eth0", "peerHostname": "server102", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "eth0", "peerHostname": "server301", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "eth0", "peerHostname": "server101", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "spine01", "ifname": "swp2", "peerHostname": "leaf02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "eth0", "peerHostname": "server101", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "eth0", "peerHostname": "server301", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "eth0", "peerHostname": "server302", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "eth0", "peerHostname": "server102", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "swp4", "peerHostname": "dcedge01", "vrf": "internet-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "swp4", "peerHostname": "dcedge01", "vrf": "internet-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "swp3.2", "peerHostname": "firewall01", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "swp3.2", "peerHostname": "firewall01", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "swp3.4", "peerHostname": "firewall01", "vrf": "internet-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "swp3.3", "peerHostname": "firewall01", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "vlan999", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "vlan999", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "vlan999", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "vlan999", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "exit01", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "eth0", "peerHostname": "server301", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "eth0", "peerHostname": "server101", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "eth0", "peerHostname": "server102", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "eth0", "peerHostname": "server302", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bond01", "peerHostname": "server101", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bond02", "peerHostname": "server102", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "Vlan30", "peerHostname": "server302", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "bridge", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "vlan999", "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "vlan999", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "vlan999", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "vlan999", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf02", "ifname": "peerlink.4094", "peerHostname": "leaf01", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "eth0", "peerHostname": "server301", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "eth0", "peerHostname": "server101", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "eth0", "peerHostname": "server302", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "eth0", "peerHostname": "server102", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "vlan999", "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "vlan999", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "vlan999", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "vlan999", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "Vlan30", "peerHostname": "server102", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "bond02", "peerHostname": "server302", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "bond01", "peerHostname": "server301", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "peerlink.4094", "peerHostname": "leaf04", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf03", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "eth0", "peerHostname": "server301", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "eth0", "peerHostname": "server101", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "eth0", "peerHostname": "server302", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "eth0", "peerHostname": "server102", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "Vlan30", "peerHostname": "server302", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "bond02", "peerHostname": "server102", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "bond01", "peerHostname": "server101", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "peerlink.4094", "peerHostname": "leaf02", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "vlan999", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "vlan999", "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "vlan999", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "vlan999", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bond01", "peerHostname": "server301", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "vlan999", "peerHostname": "exit02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "vlan999", "peerHostname": "exit01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "vlan999", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "vlan999", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bond02", "peerHostname": "server302", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "Vlan30", "peerHostname": "server102", "vrf": "evpn-vrf",
+    "arpnd": true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf04", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf02", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf03", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "bridge", "peerHostname": "leaf01", "vrf": "evpn-vrf", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "eth0", "peerHostname": "server101", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": false, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "eth0", "peerHostname": "server302", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "eth0", "peerHostname": "server301", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "eth0", "peerHostname": "server102", "vrf": "mgmt", "arpnd":
+    true, "arpndBidir": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf04", "ifname": "peerlink.4094", "peerHostname": "leaf03", "vrf": "default",
+    "arpnd": true, "arpndBidir": true, "polled": true}]'
 - command: topology show --hostname=leaf01  --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos
-  output: '[{"namespace": "panos", "hostname": "leaf01", "peerHostname": "leaf02",
-    "ifname": "swp5", "vrf": "default", "lldp": true, "asn": "", "peerAsn": "", "bgp":
-    "", "area": "", "ospf": "", "polled": true}, {"namespace": "panos", "hostname":
-    "leaf01", "peerHostname": "leaf02", "ifname": "swp6", "vrf": "default", "lldp":
-    true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true},
-    {"namespace": "panos", "hostname": "leaf01", "peerHostname": "spine02", "ifname":
-    "swp2", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos",
-    "hostname": "leaf01", "peerHostname": "spine01", "ifname": "swp1", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0",
-    "ospf": true, "polled": true}]'
+  output: '[{"namespace": "panos", "hostname": "leaf01", "ifname": "swp5", "peerHostname":
+    "leaf02", "vrf": "default", "asn": "", "peerAsn": "", "area": "", "bgp": "", "lldp":
+    true, "ospf": "", "polled": true}, {"namespace": "panos", "hostname": "leaf01",
+    "ifname": "swp6", "peerHostname": "leaf02", "vrf": "default", "asn": "", "peerAsn":
+    "", "area": "", "bgp": "", "lldp": true, "ospf": "", "polled": true}, {"namespace":
+    "panos", "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true,
+    "lldp": true, "ospf": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf":
+    true, "polled": true}]'
 - command: topology show --hostname=leaf01 --via=lldp  --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos
-  output: '[{"namespace": "panos", "hostname": "leaf01", "peerHostname": "leaf02",
-    "ifname": "swp5", "vrf": "default", "lldp": true, "polled": true}, {"namespace":
-    "panos", "hostname": "leaf01", "peerHostname": "spine02", "ifname": "swp2", "vrf":
-    "default", "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf01",
-    "peerHostname": "spine01", "ifname": "swp1", "vrf": "default", "lldp": true, "polled":
-    true}, {"namespace": "panos", "hostname": "leaf01", "peerHostname": "leaf02",
-    "ifname": "swp6", "vrf": "default", "lldp": true, "polled": true}]'
+  output: '[{"namespace": "panos", "hostname": "leaf01", "ifname": "swp5", "peerHostname":
+    "leaf02", "vrf": "default", "lldp": true, "polled": true}, {"namespace": "panos",
+    "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf": "default",
+    "lldp": true, "polled": true}, {"namespace": "panos", "hostname": "leaf01", "ifname":
+    "swp1", "peerHostname": "spine01", "vrf": "default", "lldp": true, "polled": true},
+    {"namespace": "panos", "hostname": "leaf01", "ifname": "swp6", "peerHostname":
+    "leaf02", "vrf": "default", "lldp": true, "polled": true}]'
 - command: topology show --hostname=leaf01 --ifname=swp2 --via=lldp --format=json
     --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos
-  output: '[{"namespace": "panos", "hostname": "leaf01", "peerHostname": "spine02",
-    "ifname": "swp2", "vrf": "default", "lldp": true, "polled": true}]'
+  output: '[{"namespace": "panos", "hostname": "leaf01", "ifname": "swp2", "peerHostname":
+    "spine02", "vrf": "default", "lldp": true, "polled": true}]'
 - command: topology show --hostname=leaf01 --polled=True  --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos
-  output: '[{"namespace": "panos", "hostname": "leaf01", "peerHostname": "leaf02",
-    "ifname": "swp5", "vrf": "default", "lldp": true, "asn": "", "peerAsn": "", "bgp":
-    "", "area": "", "ospf": "", "polled": true}, {"namespace": "panos", "hostname":
-    "leaf01", "peerHostname": "leaf02", "ifname": "swp6", "vrf": "default", "lldp":
-    true, "asn": "", "peerAsn": "", "bgp": "", "area": "", "ospf": "", "polled": true},
-    {"namespace": "panos", "hostname": "leaf01", "peerHostname": "spine02", "ifname":
-    "swp2", "vrf": "default", "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp":
-    true, "area": "0.0.0.0", "ospf": true, "polled": true}, {"namespace": "panos",
-    "hostname": "leaf01", "peerHostname": "spine01", "ifname": "swp1", "vrf": "default",
-    "lldp": true, "asn": 64520.0, "peerAsn": 64520.0, "bgp": true, "area": "0.0.0.0",
-    "ospf": true, "polled": true}]'
+  output: '[{"namespace": "panos", "hostname": "leaf01", "ifname": "swp5", "peerHostname":
+    "leaf02", "vrf": "default", "asn": "", "peerAsn": "", "area": "", "bgp": "", "lldp":
+    true, "ospf": "", "polled": true}, {"namespace": "panos", "hostname": "leaf01",
+    "ifname": "swp6", "peerHostname": "leaf02", "vrf": "default", "asn": "", "peerAsn":
+    "", "area": "", "bgp": "", "lldp": true, "ospf": "", "polled": true}, {"namespace":
+    "panos", "hostname": "leaf01", "ifname": "swp2", "peerHostname": "spine02", "vrf":
+    "default", "asn": 64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true,
+    "lldp": true, "ospf": true, "polled": true}, {"namespace": "panos", "hostname":
+    "leaf01", "ifname": "swp1", "peerHostname": "spine01", "vrf": "default", "asn":
+    64520.0, "peerAsn": 64520.0, "area": "0.0.0.0", "bgp": true, "lldp": true, "ospf":
+    true, "polled": true}]'
 - command: topology show --hostname=leaf01 --polled=False --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: topology show panos

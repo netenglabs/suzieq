@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List
 
 import networkx as nx
 import numpy as np
@@ -28,7 +29,6 @@ class TopologyObj(SqPandasEngine):
         self.lsdb = pd.DataFrame()
         self._a_df = pd.DataFrame()
         self._ip_table = pd.DataFrame()
-        self.nses = []
 
     @staticmethod
     def table_name():
@@ -63,7 +63,7 @@ class TopologyObj(SqPandasEngine):
         self._if_df = self._if_df.drop(
             columns=['ipAddressList', 'ip6AddressList'])
 
-        self.nses = self._if_df['namespace'].unique()
+        self.lsdb = pd.DataFrame()
 
     # pylint: disable=too-many-statements
     def get(self, **kwargs):
@@ -89,6 +89,11 @@ class TopologyObj(SqPandasEngine):
         area = kwargs.pop('area', '')
         vrf = kwargs.pop('vrf', '')
         afi_safi = kwargs.pop('afiSafi', '')
+
+        if via == ['bgp'] and ifname:
+            self.lsdb = pd.DataFrame(
+                {'error': ["Cannot use 'ifname' filter with 'bgp' via"]})
+            return self.lsdb
 
         self._init_dfs(self._namespaces)
         if self._if_df.empty:
@@ -208,7 +213,7 @@ class TopologyObj(SqPandasEngine):
         if user_query and not self.lsdb.empty:
             self.lsdb = self._handle_user_query_str(self.lsdb, user_query)
 
-        fields = [x for x in self.lsdb.columns if x in fields]
+        fields = [x for x in fields if x in self.lsdb.columns]
         return self.lsdb[fields].reset_index(drop=True)
 
     def _find_polled_neighbors(self, polled):
@@ -344,19 +349,21 @@ class TopologyObj(SqPandasEngine):
     def summarize(self, **kwargs):
         '''Summarize the topology info'''
         self.get(**kwargs)
-        if self.lsdb.empty:
+        if self.lsdb.empty or 'error' in self.lsdb:
             return self.lsdb
 
+        namespaces = self.lsdb['namespace'].unique()
+
         self.ns = {}
-        for i in self.nses:
+        for i in namespaces:
             self.ns[i] = {}
         self._create_graphs_from_lsdb()
-        self._analyze_lsdb_graph()
+        self._analyze_lsdb_graph(namespaces)
 
         return pd.DataFrame(self.ns)
 
-    def _analyze_lsdb_graph(self):
-        for ns in self.nses:
+    def _analyze_lsdb_graph(self, namespaces: List[str]):
+        for ns in namespaces:
             for name in [srv.name for srv in self.services if
                          nx.get_edge_attributes(self.graphs[ns], srv.name)]:
 

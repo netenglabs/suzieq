@@ -54,6 +54,7 @@ class EvpnVniCmd(SqTableCommand):
         df = self._invoke_sqobj(self.sqobj.aver,
                                 hostname=self.hostname,
                                 namespace=self.namespace,
+                                columns=self._add_result_columns(self.columns),
                                 result=result,
                                 **self.lvars,
                                 )
