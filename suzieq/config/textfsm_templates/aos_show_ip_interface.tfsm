@@ -1,0 +1,17 @@
+Value name (\S+(\s\S+)*)
+Value ip_address ((?:[0-9]{1,3}\.){3}[0-9]{1,3})
+Value subnet_mask ((?:[0-9]{1,3}\.){3}[0-9]{1,3})
+Value status (UP|DOWN)
+Value forward (YES|NO)
+Value device (Loopback|EMP|unbound|(vlan\s\d+)|(service\s\d+)|GRE\stunnel|IPIP\stunnel)
+Value flags (D|)
+
+Start
+  ^Total (\d+) interfaces$$
+  ^ Flags (D=Directly-bound)$$
+  ^            Name                 IP Address      Subnet Mask     Status Forward  Device   Flags$$
+  ^[-+\+]+\s*$$ -> Interfaces
+
+Interfaces
+  ^${name}\s+${ip_address}\s+${subnet_mask}\s+${status}\s+${forward}\s+${device}\s*${flags}$$ -> Record
+#  ^. -> Error
