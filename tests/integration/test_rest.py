@@ -403,8 +403,6 @@ def get_supported_verbs(sqobj: SqObject) -> List[str]:
             supported_verbs = [e.value for e in CommonExtraVerbs]
         else:
             supported_verbs = [e.value for e in CommonVerbs]
-        if sqobj.table == 'tables':
-            supported_verbs.append('describe')
 
     if sqobj.table == 'network':
         supported_verbs += [e.value for e in NetworkVerbs]
