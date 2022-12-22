@@ -29,6 +29,12 @@ apply:
       - command: show ip interface
         textfsm: textfsm_templates/aos_show_ip_interface.tfsm
         _entryType: ip_interface
+      - command: show linkagg
+        textfsm: textfsm_templates/aos_show_linkagg.tfsm
+        _entryType: linkagg
+      - command: show linkagg port
+        textfsm: textfsm_templates/aos_show_linkagg_port.tfsm
+        _entryType: linkagg_ports
 
   cumulus:
     version: all
