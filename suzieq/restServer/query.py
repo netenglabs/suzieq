@@ -768,17 +768,6 @@ def query_topology(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/table/describe")
-def query_table_describe(
-        request: Request,
-        token: str = Depends(get_api_key),
-        format: str = None,
-        table: str = None,
-):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, 'describe', request, locals())
-
-
 @app.get("/api/v2/table/{verb}")
 def query_table(
         verb: CommonVerbs, request: Request,
