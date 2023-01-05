@@ -15,12 +15,10 @@ The configuration file can be explicitly set as argument of any of the SuzieQ co
 sq-poller -c my-config.yml
 ```
 
-A complete SuzieQ configuration file example is available [here](https://github.com/netenglabs/suzieq/blob/master/suzieq/config/etc/suzieq-cfg.yml) and all fields are described in a table below.
-
-The following snipped is an example of configuration file.
+A [complete SuzieQ configuration file example is available here](https://github.com/netenglabs/suzieq/blob/master/suzieq/config/etc/suzieq-cfg.yml) and all fields are described in a [table below](#fields-description). The following snippet is a small example of how the SuzieQ configuration file looks like:
 
 ```yaml
-data-directory: ./parquet
+data-directory: /user/parquet-data-dir
 temp-directory: /tmp/
 
 rest:
