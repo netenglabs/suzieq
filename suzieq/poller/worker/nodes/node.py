@@ -1524,16 +1524,16 @@ class EosNode(Node):
 class AosNode(Node):
     '''Alcatel AOS Node-specific implementation'''
 
-    async def _init_rest(self):
+    async def _rest_connect(self):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat='json', timeout=None):
+                           oformat='json', timeout=None, reconnect=True):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
-    async def _parse_init_dev_data(self, output, cb_token) -> None:
+    async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
 
         if output[0]['status'] == 0:
             data = output[0]['data']
@@ -1562,10 +1562,11 @@ class AosNode(Node):
 
             self._extract_nos_version(data)
 
-    async def _fetch_init_dev_data(self):
+    async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
-                             ["show system"], None, 'text')
+                             ["show system"], None, 'text',
+                             reconnect=reconnect)
 
     def _extract_nos_version(self, data: str) -> None:
         version_result = re.search(r'((\d+\.){3,}.*?(?=,))', data)
