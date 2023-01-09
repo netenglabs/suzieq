@@ -1,6 +1,6 @@
 import pytest
 
-from tests.conftest import DATADIR, TABLES
+from tests.conftest import DATADIR, TABLES, create_dummy_config_file
 from suzieq.sqobjects import get_sqobject
 
 
@@ -44,7 +44,8 @@ def test_schema_data_consistency(table, datadir, columns, get_table_data_cols):
 
     assert not df.empty
 
-    sqobj = get_sqobject(table)()
+    config_file = create_dummy_config_file()
+    sqobj = get_sqobject(table)(config_file=config_file)
     all_cols = columns == ['*']
     schema_fld_set = set(sqobj.schema.sorted_display_fields(getall=all_cols))
     if table == 'topology':
