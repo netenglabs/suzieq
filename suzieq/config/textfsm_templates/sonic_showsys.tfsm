@@ -1,4 +1,4 @@
-Value sysUptime (\d+.\d+)
+Value bootupTimestamp (\d+.\d+)
 Value architecture (\S+)
 Value version (\S+)
 Value vendor (.*)
@@ -6,7 +6,7 @@ Value model (\S+)
 Value serialNumber (\S+)
 
 Start
-  ^${sysUptime}.*$$
+  ^${bootupTimestamp}.*$$
   ^\s*Architecture:\s+${architecture}\s*$$
   ^SONiC Software Version\s*:\s*${version}\s*$$
   ^Product: Enterprise SONiC Distribution by\s*${vendor}\s*$$

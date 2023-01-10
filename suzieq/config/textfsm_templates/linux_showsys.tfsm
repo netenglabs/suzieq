@@ -1,11 +1,11 @@
 Value vendor (\S+)
 Value model (\S+)
 Value os (.*)
-Value sysUptime (\d+.\d+)
+Value bootupTimestamp (\d+.\d+)
 Value architecture (\S+)
 
 Start
-  ^${sysUptime}.*$$
+  ^${bootupTimestamp}.*$$
   ^\s*Chassis:\s+${model}\s*$$
   ^\s*Operating System:\s+${os}\s*$$
   ^\s*Architecture:\s+${architecture}\s*$$

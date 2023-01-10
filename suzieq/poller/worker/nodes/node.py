@@ -19,11 +19,10 @@ from packaging import version as version_parse
 import xmltodict
 import asyncssh
 import aiohttp
-from dateparser import parse
-
 
 from suzieq.poller.worker.services.service import RsltToken
-from suzieq.shared.utils import get_timestamp_from_junos_time, known_devtypes
+from suzieq.shared.utils import get_timestamp_from_junos_time, \
+    known_devtypes, parse_relative_timestamp
 from suzieq.shared.exceptions import (PollingError, SqPollerConfError,
                                       UnknownDevtypeError)
 
@@ -301,7 +300,7 @@ class Node:
             status = -1
         return self._create_result(cmd, status, data)
 
-    def _create_result(self, cmd, status, data) -> dict:
+    def _create_result(self, cmd, status, data, cmd_timestamp=None) -> dict:
         if self.port in [22, 443]:
             # Ignore port if defaults (SSH or HTTPS)
             addrstr = self.address
@@ -310,6 +309,8 @@ class Node:
         result = {
             "status": status,
             "timestamp": int(datetime.now(tz=timezone.utc).timestamp() * 1000),
+            "cmd_timestamp": (int(cmd_timestamp * 1000) if cmd_timestamp
+                              else None),
             "cmd": cmd,
             "devtype": self.devtype,
             "namespace": self.nsname,
@@ -319,6 +320,24 @@ class Node:
             "data": data,
         }
         return result
+
+    async def _post_result(self, service_callback: asyncio.coroutine,
+                           result: List[Dict],
+                           cb_token: RsltToken):
+        """This function submits the result calling the service callback, this
+        is a wrapper of service callback itself, allowing to perform all the
+        preliminary actions before calling the callback.
+
+        Args:
+            service_callback (asyncio.coroutine): service callback
+            result (List[Dict]): the result of teh command
+            cb_token (RsltToken): the metadata passed between the node and the
+                service.
+        """
+        if cb_token:
+            cb_token.bootupTimestamp = self.bootupTimestamp
+
+        await service_callback(result, cb_token)
 
     async def _parse_device_type_hostname(self, output, _) -> None:
         devtype = ""
@@ -801,7 +820,7 @@ class Node:
                 self.current_exception = e
                 result.append(self._create_error(cmd))
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)
 
     def _schedule_discovery_attempt(self):
         """Schedule a new attempt for the node discovery
@@ -842,7 +861,7 @@ class Node:
         result = []
 
         if cmd_list is None:
-            await service_callback(result, cb_token)
+            await self._post_result(service_callback, result, cb_token)
 
         if not self.is_connected or self._is_connecting:
             if reconnect:
@@ -853,11 +872,8 @@ class Node:
                         "Unable to connect to node %s cmd %s",
                         self.hostname, cmd)
                     result.append(self._create_error(cmd))
-                await service_callback(result, cb_token)
+                await self._post_result(service_callback, result, cb_token)
                 return
-
-        if isinstance(cb_token, RsltToken):
-            cb_token.node_token = self.bootupTimestamp
 
         timeout = timeout or self.cmd_timeout
         async with self._cmd_pacer.wait(self.per_cmd_auth):
@@ -866,6 +882,7 @@ class Node:
                     if self.slow_host:
                         await asyncio.sleep(self.SLEEP_BET_CMDS_SLOW)
 
+                    cmd_timestamp = time.time()
                     output = await asyncio.wait_for(self._conn.run(cmd),
                                                     timeout=timeout)
                     if self.current_exception:
@@ -874,7 +891,7 @@ class Node:
                             self.hostname)
                         self.current_exception = None
                     result.append(self._create_result(
-                        cmd, output.exit_status, output.stdout))
+                        cmd, output.exit_status, output.stdout, cmd_timestamp))
                     if (output.exit_status == 0) and only_one:
                         break
                 except Exception as e:
@@ -892,7 +909,7 @@ class Node:
 
                     break
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)
 
     async def _exec_cmd(self, service_callback, cmd_list, cb_token,
                         oformat='json', timeout=None, only_one=False,
@@ -950,7 +967,8 @@ class Node:
             if (not self.devtype
                     or (self.devtype and self._discovery_lock.locked())):
                 result.append(self._create_error(svc_defn.get("service", "-")))
-                return await service_callback(result, cb_token)
+                return await self._post_result(
+                    service_callback, result, cb_token)
 
             if self.devtype == 'unsupported':
                 # Service code 418 means I'm a teapot in http status codes
@@ -958,11 +976,8 @@ class Node:
                 result.append(self._create_result(
                     svc_defn, 418, "No service definition"))
                 self.error_svcs_proc.add(svc_defn.get("service"))
-                return await service_callback(result, cb_token)
-
-            # Update our boot time value into the callback token
-            if cb_token:
-                cb_token.bootupTimestamp = self.bootupTimestamp
+                return await self._post_result(
+                    service_callback, result, cb_token)
 
             self.svcs_proc.add(svc_defn.get("service"))
             use = svc_defn.get(self.hostname, None)
@@ -975,7 +990,8 @@ class Node:
                                               "No service definition")
                     result.append(res)
                     self.error_svcs_proc.add(svc_defn.get("service"))
-                return await service_callback(result, cb_token)
+                return await self._post_result(
+                    service_callback, result, cb_token)
 
             # TODO This kind of logic should be encoded in config and node
             # shouldn't have to know about it
@@ -1016,7 +1032,8 @@ class Node:
                 result.append(self._create_result(
                     svc_defn, HTTPStatus.NOT_FOUND, "No service definition"))
                 self.error_svcs_proc.add(svc_defn.get("service"))
-                return await service_callback(result, cb_token)
+                return await self._post_result(
+                    service_callback, result, cb_token)
 
             oformat = use.get('format', 'json')
             if not isinstance(cmd, list):
@@ -1046,7 +1063,7 @@ class Node:
             else:
                 result.append(self._create_error(''))
 
-            await service_callback(result, cb_token)
+            await self._post_result(service_callback, result, cb_token)
 
     async def _fetch_init_dev_data(self, reconnect=True):
         """Start data fetch to initialize the class with specific device attrs
@@ -1354,20 +1371,11 @@ class EosNode(Node):
                                     json_out["error"].get('data', []))
 
                             for i, cmd in enumerate(cmd_list):
+                                data = (output[i] if isinstance(output, list)
+                                        else output)
                                 result.append(
-                                    {
-                                        "status": status,
-                                        "timestamp": now,
-                                        "cmd": cmd,
-                                        "devtype": self.devtype,
-                                        "namespace": self.nsname,
-                                        "hostname": self.hostname,
-                                        "address": self.address,
-                                        "data":
-                                        output[i]
-                                        if isinstance(output, list)
-                                        else output,
-                                    }
+                                    self._create_result(
+                                        cmd, status, data, now / 1000)
                                 )
                         else:
                             for cmd in cmd_list:
@@ -1384,7 +1392,7 @@ class EosNode(Node):
                     f"{self.transport}://{self.hostname}:{self.port}: Unable "
                     f"to communicate with node due to {str(e)}")
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
 
@@ -1439,7 +1447,8 @@ class CumulusNode(Node):
     async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
-                             ["cat /proc/uptime", "hostname",
+                             ["cat /proc/stat | grep btime | grep -o '[0-9]*'",
+                              "hostname",
                               "cat /etc/os-release"], None, 'text',
                              reconnect=reconnect)
 
@@ -1447,9 +1456,7 @@ class CumulusNode(Node):
         """Parse the uptime command output"""
 
         if output[0]["status"] == 0:
-            upsecs = output[0]["data"].split()[0]
-            self.bootupTimestamp = int(int(time.time()*1000)
-                                       - float(upsecs)*1000)
+            self.bootupTimestamp = int(output[0]["data"])
         if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1].get("data", '')
             hostname = data.splitlines()[0].strip()
@@ -1517,20 +1524,16 @@ class CumulusNode(Node):
                 ) as session:
                     for cmd in cmd_list:
                         data = {"cmd": cmd}
+                        cmd_timestamp = time.time()
                         async with session.post(
                                 url, json=data, headers=headers
                         ) as response:
-                            result.append({
-                                "status": response.status,
-                                "timestamp": int(datetime.now(tz=timezone.utc)
-                                                 .timestamp() * 1000),
-                                "cmd": cmd,
-                                "devtype": self.devtype,
-                                "namespace": self.nsname,
-                                "hostname": self.hostname,
-                                "address": self.address,
-                                "data": await response.text(),
-                            })
+                            data_res = await response.text()
+                            result.append(
+                                self._create_result(
+                                    cmd, response.status, data_res,
+                                    cmd_timestamp)
+                            )
             except Exception as e:
                 self.current_exception = e
                 result.append(self._create_error(cmd_list))
@@ -1538,7 +1541,7 @@ class CumulusNode(Node):
                     f"{self.transport}://{self.hostname}:{self.port}: Unable "
                     f"to communicate with node due to {str(e)}")
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)
 
 
 class LinuxNode(CumulusNode):
@@ -1598,8 +1601,9 @@ class IosXRNode(Node):
             data = output[0]['data']
             timestr = re.search(r'uptime is (.*)\n', data)
             if timestr:
-                self.bootupTimestamp = int(datetime.utcfromtimestamp(
-                    parse(timestr.group(1)).timestamp()).timestamp()*1000)
+                timestr = timestr.group(1)
+                self.bootupTimestamp = parse_relative_timestamp(
+                    timestr, output[0]['cmd_timestamp'] / 1000)
             else:
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -1749,8 +1753,8 @@ class IosXENode(Node):
             if hostupstr:
                 self._set_hostname(hostupstr.group(1))
                 timestr = hostupstr.group(2)
-                self.bootupTimestamp = int(datetime.utcfromtimestamp(
-                    parse(timestr).timestamp()).timestamp()*1000)
+                self.bootupTimestamp = parse_relative_timestamp(
+                    timestr, output[0]['cmd_timestamp'] / 1000)
             else:
                 self.logger.error(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -1766,7 +1770,7 @@ class IosXENode(Node):
 
         result = []
         if cmd_list is None:
-            await service_callback(result, cb_token)
+            await self._post_result(service_callback, result, cb_token)
             return
 
         if not self.is_connected or not self._stdin:
@@ -1782,7 +1786,7 @@ class IosXENode(Node):
                     "Unable to connect to node %s (%s) cmd %s",
                     self.address, self.hostname, cmd)
                 result.append(self._create_error(cmd))
-            await service_callback(result, cb_token)
+            await self._post_result(service_callback, result, cb_token)
             return
 
         timeout = timeout or self.cmd_timeout
@@ -1791,6 +1795,8 @@ class IosXENode(Node):
                 try:
                     if self.slow_host:
                         await asyncio.sleep(self.SLEEP_BET_CMDS_SLOW)
+
+                    cmd_timestamp = time.time()
                     self._stdin.write(cmd + '\n')
                     output = await self.wait_for_prompt()
                     if 'Invalid input detected' in output:
@@ -1799,9 +1805,8 @@ class IosXENode(Node):
                         status = HTTPStatus.REQUEST_TIMEOUT
                     else:
                         status = 0
-                    if isinstance(cb_token, RsltToken):
-                        cb_token.node_token = self.bootupTimestamp
-                    result.append(self._create_result(cmd, status, output))
+                    result.append(self._create_result(
+                        cmd, status, output, cmd_timestamp))
                     continue
                 except Exception as e:
                     self.current_exception = e
@@ -1824,7 +1829,7 @@ class IosXENode(Node):
                             "due to timeout")
                     break
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)
 
     def _extract_nos_version(self, data: str) -> None:
         match = re.search(r', Version\s+([^ ,]+)', data)
@@ -1879,14 +1884,14 @@ class JunosNode(Node):
                              ['multi-routing-engine-item'][0])
 
                 timestr = (jdata['system-uptime-information'][0]
-                           ['system-booted-time'][0]['time-length'][0]
+                           ['system-booted-time'][0]['date-time'][0]
                            ['attributes'])
             except Exception:
                 self.logger.warning(
                     f'Unable to parse junos boot time from {data}')
                 timestr = '{"junos:seconds": "0"}'
-            self.bootupTimestamp = (get_timestamp_from_junos_time(
-                timestr, output[0]['timestamp']/1000)/1000)
+            self.bootupTimestamp = get_timestamp_from_junos_time(
+                timestr, ms=False)
 
         if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1]["data"]
@@ -1937,7 +1942,8 @@ class NxosNode(Node):
             self._extract_nos_version(data)
             uptime_grp = re.search(r'Kernel\s+uptime\s+is\s+([^\n]+)', data)
             if uptime_grp:
-                self.bootupTimestamp = parse(uptime_grp.group(1)).timestamp()
+                self.bootupTimestamp = parse_relative_timestamp(
+                    uptime_grp.group(1), output[0]['cmd_timestamp'] / 1000)
 
         if len(output) > 1:
             if output[1]["status"] == 0:
@@ -1983,16 +1989,15 @@ class SonicNode(Node):
     async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by running requisite cmd"""
         await self._exec_cmd(self._parse_init_dev_data,
-                             ["cat /proc/uptime", "hostname", "show version"],
+                             ["cat /proc/stat | grep btime | grep -o '[0-9]*'",
+                              "hostname", "show version"],
                              None, 'text', reconnect=reconnect)
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
         """Parse the uptime command output"""
 
         if output[0]["status"] == 0:
-            upsecs = output[0]["data"].split()[0]
-            self.bootupTimestamp = int(int(time.time()*1000)
-                                       - float(upsecs)*1000)
+            self.bootupTimestamp = int(output[0]["data"])
         if (len(output) > 1) and (output[1]["status"] == 0):
             self.hostname = output[1]["data"].strip()
         if (len(output) > 2) and (output[2]["status"] == 0):
@@ -2021,6 +2026,7 @@ class PanosNode(Node):
                         self.address, port=22, username=self.username,
                         password=self.password, known_hosts=None) as conn:
                     async with conn.create_process() as process:
+                        cmd_timestamp = time.time()
                         process.stdin.write(f'{discovery_cmd}\n')
                         output = ""
                         output += await process.stdout.read(1)
@@ -2032,9 +2038,8 @@ class PanosNode(Node):
 
                         stdout, _ = process.collect_output()
                         output += stdout
-                        res = [{
-                            "status": 0,
-                            "data": output}]
+                        res = [self._create_result(discovery_cmd, 0, output,
+                                                   cmd_timestamp)]
 
             await self._parse_init_dev_data(res, None)
             self._session = aiohttp.ClientSession(
@@ -2093,7 +2098,7 @@ class PanosNode(Node):
                 upsecs = 86400 * int(days) + 3600 * int(hours) + \
                     60 * int(minutes) + int(seconds)
                 self.bootupTimestamp = int(
-                    int(time.time()*1000) - float(upsecs)*1000)
+                    (output[0]['cmd_timestamp'] / 1000) - float(upsecs))
             else:
                 self.logger.warning(
                     f'Cannot parse uptime from {self.address}:{self.port}')
@@ -2148,8 +2153,6 @@ class PanosNode(Node):
 
         timeout = timeout or self.connect_timeout
 
-        now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
-
         url = f"https://{self.address}:{self.port}/api/"
 
         status = 200  # status OK
@@ -2162,29 +2165,24 @@ class PanosNode(Node):
         if not self._session:
             for cmd in cmd_list:
                 result.append(self._create_error(cmd))
-            await service_callback(result, cb_token)
+            await self._post_result(service_callback, result, cb_token)
             return
 
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
                 for cmd in cmd_list:
                     url_cmd = f"{url}?type=op&cmd={cmd}&key={self.api_key}"
+                    cmd_timestamp = time.time()
                     async with self._session.get(
                             url_cmd, timeout=timeout) as response:
                         status, xml = response.status, await response.text()
                         if status == 200:
                             json_out = json.dumps(
                                 xmltodict.parse(xml))
-                            result.append({
-                                "status": status,
-                                "timestamp": now,
-                                "cmd": cmd,
-                                "devtype": self.devtype,
-                                "namespace": self.nsname,
-                                "hostname": self.hostname,
-                                "address": self.address,
-                                "data": json_out,
-                            })
+                            result.append(
+                                self._create_result(
+                                    cmd, status, json_out, cmd_timestamp)
+                            )
                         else:
                             result.append(self._create_error(cmd))
                             self.logger.error(
@@ -2199,4 +2197,4 @@ class PanosNode(Node):
                     f"{self.transport}://{self.hostname}:{self.port} "
                     f"Unable to communicate due to {str(e)}")
 
-        await service_callback(result, cb_token)
+        await self._post_result(service_callback, result, cb_token)

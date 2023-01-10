@@ -32,7 +32,7 @@ class ConfigService(Service):
 
         return processed_data
 
-    def get_diff(self, old, new):
+    def get_diff(self, old, new, add_all):
         """Compare string hashes for fast matches of config
         """
 
@@ -51,7 +51,7 @@ class ConfigService(Service):
 
         if oldcfg and not newcfg:
             dels = new
-        elif newcfg and not oldcfg:
+        elif (newcfg and not oldcfg) or add_all:
             adds = new
         else:
             hash_old = hash(oldcfg)

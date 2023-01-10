@@ -78,9 +78,15 @@ class DeviceObj(SqPandasEngine):
 
             df = df.merge(poller_df, on=['namespace', 'hostname'],
                           how='outer', suffixes=['', '_y'])  \
-                .fillna({'bootupTimestamp': 0, 'timestamp': 0,
-                         'active': True}) \
-                .fillna('N/A')
+                .fillna({'bootupTimestamp': 0,
+                         'active': True})
+
+            df.timestamp = np.where(df['timestamp'].isna(),
+                                    df['timestamp_y'], df['timestamp'])
+
+            # For some reason the fillna operation removes the timezone, so we
+            # use where to detect NaN values and to replace them
+            df = df.fillna('N/A')
 
             df.status = np.where(
                 (df['status_y'] != 0) & (df['status_y'] != 200) &
@@ -97,8 +103,6 @@ class DeviceObj(SqPandasEngine):
                 df['model'] = np.where(df.status_y == 418, 'unsupported',
                                        df.model)
             df = df[df.status != 'N/A']
-            df.timestamp = np.where(df['timestamp'] == 0,
-                                    df['timestamp_y'], df['timestamp'])
             if 'address' in df.columns:
                 df.address = np.where(df['address'] == 'N/A', df['hostname'],
                                       df['address'])

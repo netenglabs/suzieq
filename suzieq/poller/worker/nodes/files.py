@@ -68,7 +68,8 @@ class FileNode:
             data = await f.read()
 
         required_keys = ['status', 'timestamp', 'cmd', 'devtype', 'namespace',
-                         'hostname', 'address', 'version', 'data']
+                         'hostname', 'address', 'version', 'data',
+                         'cmd_timestamp']
         entries = re.split(r'\]\n*\[\n', data)
         entlen = len(entries)
 
@@ -96,7 +97,14 @@ class FileNode:
                 self.logger.error(f"Unable to decode JSON in file {file}")
                 continue
 
-            if not all(key in required_keys for key in jelem[0].keys()):
+            # Add backward compatibility for the files not having the
+            # cmd_timestamp field
+            data_keys = jelem[0].keys()
+            if 'cmd_timestamp' not in data_keys:
+                for record in jelem:
+                    record['cmd_timestamp'] = record['timestamp']
+
+            if not all(key in required_keys for key in data_keys):
                 self.logger.error(
                     f'Ignoring entry with missing required key fields {jelem}')
                 continue
