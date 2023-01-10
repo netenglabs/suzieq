@@ -115,7 +115,7 @@ def test_namespace_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     for cmd in cli_commands])
 def test_view_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     s = _test_command(get_cmd_object_dict[cmd], 'show', None, {'view': 'all'})
-    if cmd != 'namespace':
+    if cmd not in ['namespace', 'topology', 'path']:
         assert s == 0
     else:
         assert s == 1

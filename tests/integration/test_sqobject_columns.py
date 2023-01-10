@@ -63,7 +63,10 @@ def get_exp_cols(sqobj: SqObject, df: pd.DataFrame, fun_args: Dict, fun: str) \
     """
     cols = fun_args.get('columns') or ['default']
     if fun == 'get':
+        view = fun_args.get('view', sqobj.view)
         exp_cols = sqobj.schema.get_display_fields(cols)
+        if view == 'all' and 'active' not in exp_cols:
+            exp_cols.insert(0, 'active')
     elif fun == 'unique':
         exp_cols = fun_args.get('columns', sqobj._unique_def_column.copy())
         if 'count' in fun_args:
@@ -99,35 +102,45 @@ def compare_results(sqobj: SqObject, fun: str, fun_args_list: List[Dict]):
     """
     table = sqobj.table
     sq_fun = getattr(sqobj, fun)
+    NO_VIEW_ALL_TABLES = ['namespace', 'topology', 'macs', 'network',
+                          'tables']
+    orig_view = sqobj.view
+    views = ['latest']
+    if table not in NO_VIEW_ALL_TABLES and fun == 'get':
+        views.append('all')
     for i, fun_args in enumerate(fun_args_list):
-        fun_name = f'{table}.{sq_fun.__name__}({i})'
-        fun_args = fun_args or {}
-        # columns may be updated in the sqobject
-        # need to copy to keep the original value
-        restore_columns = 'columns' in fun_args
-        columns = fun_args.get('columns', []).copy()
-        non_empty_res, non_empty_exc = run_function(sq_fun, **fun_args)
-        if non_empty_exc:
-            pytest.fail(f'{fun_name} exception '
-                        f'(non-empty): {non_empty_exc}')
-        fun_args.pop('hostname', None)
-        if restore_columns:
-            fun_args['columns'] = columns.copy()
-        empty_res, empty_exc = run_function(
-            sq_fun, **fun_args, hostname=['invalid'])
-        if empty_exc:
-            pytest.fail(f'{fun_name} exception (empty): '
-                        f'{empty_exc}')
-        if restore_columns:
-            fun_args['columns'] = columns.copy()
-        if table == 'topology':
-            check_topology_results(sqobj, non_empty_res,
-                                   empty_res, fun_args, fun, fun_name)
-        else:
-            exp_cols = get_exp_cols(sqobj, non_empty_res, fun_args, fun)
-            exp_empty_cols = exp_cols if fun != 'summarize' else []
-            check_results(non_empty_res, empty_res,
-                          fun_name, exp_cols, exp_empty_cols)
+        for view in views:
+            sqobj.view = view
+            fun_name = f'{table}.{sq_fun.__name__}(view={view})({i})'
+            fun_args = fun_args or {}
+            # columns may be updated in the sqobject
+            # need to copy to keep the original value
+            restore_columns = 'columns' in fun_args
+            columns = fun_args.get('columns', []).copy()
+            non_empty_res, non_empty_exc = run_function(sq_fun, **fun_args)
+            if non_empty_exc:
+                pytest.fail(f'{fun_name} exception '
+                            f'(non-empty): {non_empty_exc}')
+            fun_args.pop('hostname', None)
+            if restore_columns:
+                fun_args['columns'] = columns.copy()
+            empty_res, empty_exc = run_function(
+                sq_fun, **fun_args, hostname=['invalid'])
+            if empty_exc:
+                pytest.fail(f'{fun_name} exception (empty): '
+                            f'{empty_exc}')
+            if restore_columns:
+                fun_args['columns'] = columns.copy()
+            if table == 'topology':
+                check_topology_results(sqobj, non_empty_res,
+                                       empty_res, fun_args, fun, fun_name)
+            else:
+                exp_cols = get_exp_cols(sqobj, non_empty_res, fun_args, fun)
+                exp_empty_cols = exp_cols if fun != 'summarize' else []
+                check_results(non_empty_res, empty_res,
+                              fun_name, exp_cols, exp_empty_cols)
+    # reset sqobj view
+    sqobj.view = orig_view
 
 
 def check_results(

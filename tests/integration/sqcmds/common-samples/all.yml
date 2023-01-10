@@ -36553,3 +36553,14 @@ tests:
     "totalTime": [2106.0, 2106.0, 2106.0], "svcQsize": [0.0, 0.0, 0.0], "wrQsize":
     [120.0, 120.0, 120.0], "nodeQsize": [4.0, 4.0, 4.0], "rxBytes": [27779.0, 27779.0,
     27779.0], "pollExcdPeriodCount": 0, "timestamp": 1658656300675}]'
+- command: topology show --view=all --format=json
+  data-directory: tests/data/parquet/
+  error:
+    error: '[{"error": "ERROR: Cannot use ''view=all'' with this table"}]'
+  marks: topology show all
+- command: path show --dest=172.16.2.102 --src=172.16.1.103 --namespace=dual-evpn
+    --view=all --format=json
+  data-directory: tests/data/parquet/
+  error:
+    error: '[{"error": "ERROR: Cannot use ''view=all'' with this table"}]'
+  marks: path show all
