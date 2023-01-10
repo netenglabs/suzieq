@@ -127,7 +127,9 @@ class XplorePage(SqGuiPage):
                 st.form_submit_button('Get', on_click=self._fetch_data)
 
             if state.table:
-                state.tables_obj = get_sqobject(state.table)()
+                state.tables_obj = get_sqobject(state.table)(
+                    config_file=self._config_file
+                )
                 fields = state.tables_obj.describe()
                 colist = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                         fields.name.tolist())))
@@ -558,7 +560,8 @@ class XplorePage(SqGuiPage):
 
         dfcols = sorted((filter(lambda x: x not in ['index', 'sqvers'],
                                 dfcols)))
-        uniq_clicked = get_sqobject(state.table)().unique_default_column[0]
+        uniq_clicked = get_sqobject(state.table)(
+            config_file=self._config_file).unique_default_column[0]
         if 'state' in dfcols:
             uniq_clicked = 'state'
         elif 'status' in dfcols:
