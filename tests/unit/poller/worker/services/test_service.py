@@ -154,7 +154,7 @@ async def test_write_device_on_reboot(service_for_diff: Service, device_out):
     # 1. Test whether the service write if there is a small difference in time
     ##
     service_for_diff._node_boot_timestamps = {}  # reset boot cache
-    device_boot = boot_ts + 10
+    device_boot = boot_ts + 1
     await service_for_diff.commit_data(
         device_out, 'vagrant', 'leaf01', device_boot)
     try:

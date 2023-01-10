@@ -27,7 +27,7 @@ HOLD_TIME_IN_MSECS = 60000
 # How many unsuccessful polls before marking records with active=false
 HYSTERESIS_FAILURE_CNT = 3
 # The boot timestamp time drift tolerance (in seconds)
-TIME_DRIFT_TOLERANCE = 30
+TIME_DRIFT_TOLERANCE = 5
 
 
 @dataclass
