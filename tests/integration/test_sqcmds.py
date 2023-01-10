@@ -264,9 +264,10 @@ def test_context_start_time_filtering(setup_nubia, get_cmd_object_dict, cmd):
 
 
 @pytest.mark.sqcmds
-@pytest.mark.parametrize('table', TABLES)
-def test_table_describe(setup_nubia, table):
-    out = _test_command('TableCmd', 'describe', {"table": table})
+@pytest.mark.describe
+@pytest.mark.table
+def test_table_describe(setup_nubia):
+    out = _test_command('TableCmd', 'describe', None)
     assert out == 0
 
 
