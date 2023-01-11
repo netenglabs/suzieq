@@ -1,7 +1,7 @@
 Value Required peer (\S+)
 Value Required peerAsn (\d+)
 Value asn (\d+)
-Value vrf (\w+)
+Value vrf (\S+)
 Value description (.+?)
 Value peerRouterId (\S+)
 Value clusterId (\S+)
@@ -12,8 +12,8 @@ Value keepaliveTime (\d+)
 Value bfdStatus (\w+)
 Value rrClient (\S+)
 Value GR (.+?)
-Value Filldown afi (\w+)
-Value Filldown safi (\w+)
+Value Filldown afi (\S+)
+Value Filldown safi (\S+)
 Value List afisAdvOnly ([^:]+)
 Value List afisRcvOnly ([^:]+)
 Value mrai (\d+)
@@ -51,8 +51,8 @@ Value _adminDown (\S+)
 Start
   ^For\s+address\s+family:\s+${afi}\s+${safi}\s*$$
   ^For\s+address\s+family:\s+${afi}\s+${safi}\s*$$
-  ^BGP neighbor is ${peer},\s+remote\s+AS\s+${peerAsn},.*$$
-  ^BGP neighbor is ${peer},\s+vrf\s+${vrf},\s+remote\s+AS\s+${peerAsn},.*$$
+  ^BGP\s+neighbor\s+is\s+${peer},\s+remote\s+AS\s+${peerAsn},.*$$
+  ^BGP\s+neighbor\s+is\s+${peer},\s+vrf\s+${vrf},\s+remote\s+AS\s+${peerAsn},.*$$
   ^\s+.*,\s+remote\s+router\s+ID\s+${peerRouterId}\s*$$
   ^\s+BGP\s+state\s+=\s+${state},\s+up\s+for\s+${estdTime}\s*$$
   ^\s+${_adminDown}\s+shut\s+down
@@ -67,7 +67,7 @@ Start
   ^\s+Last\s+reset\s+${lastDownTime}\s*$$
   ^\s+Interface\s+associated:\s+${ifname}.*$$
   ^Local\s+host:\s+${updateSource}.*$$ -> Record
-  ^No\s+Active\s+TCP -> Record
+  ^\s*No\s+[aA]ctive\s+TCP -> Record
 
 
 

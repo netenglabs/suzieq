@@ -1884,6 +1884,9 @@ class IosXENode(Node):
                         status = HTTPStatus.REQUEST_TIMEOUT
                     else:
                         status = 0
+                        # Strip out the command prompt that gets added
+                        if output[-2:].strip() in ["#", "$"]:
+                            output = output[:-2]
                     result.append(self._create_result(
                         cmd, status, output, cmd_timestamp))
                     continue

@@ -561,7 +561,11 @@ class BgpService(Service):
                         old_entry = vrf_peer_dict[check_peer_key]
                         old_entry[index]['routerId'] = entry['routerId']
                         old_entry[index]['asn'] = entry['asn']
-                        # add the prefix only in matching AFI-SAFI
+                        # add the prefix only in matching AFI-SAFI & estd
+                        # the statePfx column otherwise contains the state
+                        # and not the count of prefixes exchanged
+                        if not entry['statePfx'].isnumeric():
+                            continue
                         if entry['afi'].lower() == (
                             old_entry[index]['afi'] and
                             entry['safi'].lower() == old_entry[index]['safi']
