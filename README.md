@@ -92,7 +92,7 @@ One of Suzieq's powerful capabilities are asserts, which are statements that sho
 
 # Suzieq Data
 
-**Suzieq supports gathering data from Cumulus, EOS, IOS, IOSXE, IOSXR, JunOS(QFX, MX, EX, SRX supported), NXOS and SONIC routers, and Linux servers.** Suzieq gathers:
+**Suzieq supports gathering data from Cumulus, EOS, IOS, IOSXE, IOSXR, JunOS(QFX, EX, MX and SRX platforms and Evolved OS), Palo Alto's Panos (version 8.0 or higher), NXOS and SONIC routers, and Linux servers.** Suzieq gathers:
 
 * Basic device info including serial number, model, version, platform etc.
 * Interfaces

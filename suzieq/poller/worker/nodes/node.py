@@ -366,6 +366,11 @@ class Node:
                         devtype = 'junos-es'
                 if not devtype:
                     devtype = "junos"
+            elif 'Junos: ' in data:
+                if re.search(r'-EVO\b', data):
+                    devtype = 'junos-evo'
+                else:
+                    devtype = 'junos'
             elif "NX-OS" in data:
                 devtype = "nxos"
             elif "SONiC" in data:
@@ -1868,10 +1873,14 @@ class JunosNode(Node):
 
     async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by running requisite cmd"""
-        await self._exec_cmd(self._parse_init_dev_data,
-                             ["show system uptime|display json",
-                              "show version"], None, 'mixed',
-                             reconnect=reconnect)
+        if self.devtype == 'junos-evo':
+            cmdlist = ["show system uptime|display json",
+                       'show version node all']
+        else:
+            cmdlist = ["show system uptime|display json",
+                       'show version']
+        await self._exec_cmd(self._parse_init_dev_data, cmdlist, None,
+                             "mixed", reconnect=reconnect)
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
         """Parse the uptime command output"""
@@ -1879,7 +1888,8 @@ class JunosNode(Node):
             data = output[0]["data"]
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
-                if self.devtype not in ["junos-mx", "junos-qfx10k"]:
+                if self.devtype not in ["junos-mx", "junos-qfx10k",
+                                        "junos-evo"]:
                     jdata = (jdata['multi-routing-engine-results'][0]
                              ['multi-routing-engine-item'][0])
 
@@ -1898,6 +1908,10 @@ class JunosNode(Node):
             data = output[1]["data"]
             hmatch = re.search(r'\bHostname:\s+(\S+)\b', data)
             if hmatch:
+                # TODO
+                # In case of a VC, we'll need to strip off some chars
+                # at the end such as -re0 or -re1. Lets do this with a
+                # separate option passed via the inventory device setting.
                 self._set_hostname(hmatch.group(1))
 
             self._extract_nos_version(data)
