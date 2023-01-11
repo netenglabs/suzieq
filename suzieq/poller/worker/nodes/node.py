@@ -423,11 +423,6 @@ class Node:
                     hostname = self.address
         elif len(output) > 1 and output[1]["status"] == 0:
             data = output[1]["data"]
-            version_str = data
-            if 'Alcatel-Lucent' in data:
-                devtype = "aos"
-        elif len(output) > 2 and output[2]["status"] == 0:
-            data = output[2]["data"]
             if data:
                 if "Cumulus Linux" in data:
                     devtype = "cumulus"
@@ -438,6 +433,11 @@ class Node:
                 # Hostname is the last line of the output
                 if len(data.strip()) > 0:
                     hostname = data.splitlines()[-1].strip()
+        elif len(output) > 2 and output[2]["status"] == 0:
+            data = output[2]["data"]
+            version_str = data
+            if 'Alcatel-Lucent' in data:
+                devtype = "aos"
 
         if devtype == 'unsupported':
             if not self.current_exception:
@@ -515,8 +515,8 @@ class Node:
         # closes the connection after the first command.
         await self._exec_cmd(self._parse_device_type_hostname,
                              ["show version",
-                              "show system",
-                              "cat /etc/os-release && hostname"],
+                              "cat /etc/os-release && hostname",
+                              "show system"],
                              None, 'text', only_one=True)
 
     def _set_devtype(self, devtype: str, version_str: str) -> None:
