@@ -30,7 +30,7 @@ class MacsService(Service):
         if vlan:
             if isinstance(vlan, str):
                 if not vlan.isnumeric():
-                    entry['vlan'] = 0
+                    vlan = '0'
 
                 entry['vlan'] = int(vlan)
         else:
