@@ -31,7 +31,6 @@ class SqCoalesceState:
         self.ign_pfx = ['.', '_', 'sqc-']  # Prefixes to ignore for coalesceing
         self.wrfile_count = 0
         self.wrrec_count = 0
-        self.poller_periods = set()
         self.block_start = self.block_end = 0
 
     @ property
@@ -254,7 +253,6 @@ def get_last_update_df(table_name: str, outfolder: str,
     return current_df
 
 
-# pylint: disable=too-many-statements
 def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
                             table: str, state: SqCoalesceState) -> None:
     """This routine coalesces all the parquet data in the folder provided
@@ -283,11 +281,6 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     partition_cols = ['sqvers', 'namespace']
     dodel = True
 
-    if table == "sqPoller":
-        wr_polling_period = True
-        state.poller_periods = set()
-    else:
-        wr_polling_period = False
     state.wrfile_count = 0
     state.wrrec_count = 0
     state.table_name = table
@@ -309,18 +302,12 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     state.logger.info(f'Examining {len(dataset.files)} {table} files '
                       f'for coalescing')
     fdf = get_file_timestamps(dataset.files)
-    if fdf.empty:
-        if (table == 'sqPoller') or (not state.poller_periods):
-            return
 
-    # this is no longer true if we are skipping files that aren't readable
-    # assert(len(dataset.files) == fdf.shape[0])
-    polled_periods = sorted(state.poller_periods)
     if fdf.empty:
         state.logger.info(f'No updates for {table} to coalesce')
-        start = polled_periods[0]
-    else:
-        start = fdf.timestamp.iloc[0]
+        return
+
+    start = fdf.timestamp.iloc[0]
     utcnow = datetime.now(timezone.utc)
 
     # We now need to determine if we're coalesceing a lot of data, at the start
@@ -343,71 +330,39 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     readblock = []
     wrfile_count = 0
 
-    # We may start coalescing when nothing has changed for some initial period.
-    # We have to write out records for that period.
-    if schema.type == "record":
-        for interval in polled_periods:
-            if not fdf.empty and (block_end < interval):
-                break
-            pre_block_start = compute_block_start(interval)
-            pre_block_end = pre_block_start + state.period
-            write_files(table, readblock, infolder, outfolder, partition_cols,
-                        state, pre_block_start, pre_block_end)
-
     for row in fdf.itertuples():
         if block_start <= row.timestamp < block_end:
             readblock.append(row.file)
             continue
 
-        # Write data if either there's data to be written (readblock isn't
-        # empty) OR this table is a record type and poller was alive during
-        # this period (state's poller period for this window isn't blank
-        if readblock or ((schema.type == "record") and
-                         block_start in state.poller_periods):
-
+        # Write data if there are changes in the current time window
+        if readblock:
             write_files(table, readblock, infolder, outfolder, partition_cols,
                         state, block_start, block_end)
             wrfile_count += len(readblock)
-        if wr_polling_period and readblock:
-            state.poller_periods.add(block_start)
-        # Archive the saved files
-        if readblock:
+
+            # Archive the saved files. When this option is enable, it allows
+            # us to restore the coalesced file, if something goes wrong with
+            # the coalescer.
             archive_coalesced_files(readblock, archive_folder, state, dodel)
 
-        # We have to find the timeslot where this record fits
-        block_start = block_end
-        block_end = block_start + state.period
+        # We need now to reset the time window according to the current file
+        # timestamp
         readblock = []
-        if schema.type != "record":
-            # We can jump directly to the timestamp corresonding to this
-            # row's timestamp
-            block_start = compute_block_start(row.timestamp)
-            block_end = block_start + state.period
-            if (row.timestamp > block_end) or (block_end > utcnow):
-                break
-            readblock = [row.file]
-            continue
+        block_start = compute_block_start(row.timestamp)
+        block_end = block_start + state.period
 
-        while row.timestamp > block_end:
-            if block_start in state.poller_periods:
-                write_files(table, readblock, infolder, outfolder,
-                            partition_cols, state, block_start, block_end)
-                # Nothing to archive here, and we're not counting coalesced
-                # records since these are duplicates
-            block_start = block_end
-            block_end = block_start + state.period
+        # When the current timestamp is inside the new coalescing time windows
+        # we have to stop
         if block_end > utcnow:
             break
         readblock = [row.file]
 
     # The last batch that ended before the block end
-    if readblock or (fdf.empty and (schema.type == "record") and
-                     block_start in state.poller_periods):
+    if readblock:
         write_files(table, readblock, infolder, outfolder, partition_cols,
                     state, block_start, block_end)
         wrfile_count += len(readblock)
-        if wr_polling_period:
-            state.poller_periods.add(block_start)
         archive_coalesced_files(readblock, archive_folder, state, dodel)
 
     state.wrfile_count = wrfile_count
