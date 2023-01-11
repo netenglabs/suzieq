@@ -366,6 +366,7 @@ def query_device(verb: CommonVerbs, request: Request,
                  version: List[str] = Query(None),
                  what: str = None,
                  status: List[DeviceStatus] = Query(None),
+                 ignore_neverpoll: bool = None,
                  count: str = None, reverse: str = None,
                  ):
     function_name = inspect.currentframe().f_code.co_name

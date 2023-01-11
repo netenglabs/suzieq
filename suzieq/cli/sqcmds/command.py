@@ -474,6 +474,13 @@ class SqTableCommand(SqCommand):
             **self.lvars,
             **kwargs
         )
+
+        # for readability syntesize output when dict has more than 3 items
+        for index, row in summarize_df.iterrows():
+            for col in summarize_df:
+                if isinstance(row[col], dict) and len(row[col]) > 3:
+                    summarize_df.loc[index, col] = len(row[col])
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(summarize_df, json_orient='columns')
 

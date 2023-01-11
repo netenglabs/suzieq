@@ -119,27 +119,17 @@ class OspfObj(SqPandasEngine):
                 df['ipAddress_x'] == "",
                 df['ipAddress_y'], df['ipAddress_x'])
 
-        if columns == ['*']:
-            df = df.drop(columns=['area_y', 'instance_y', 'vrf_y',
-                                  'ipAddress_x', 'ipAddress_y', 'areaStub_y',
-                                  'sqvers_x', 'timestamp_y'],
-                         errors='ignore') \
-                .rename(columns={
-                    'instance_x': 'instance', 'areaStub_x': 'areaStub',
-                    'area_x': 'area', 'vrf_x': 'vrf',
-                    'state_x': 'ifState', 'state_y': 'adjState',
-                    'active_x': 'active', 'timestamp_x': 'timestamp'}) \
-                .fillna({'peerIP': '-', 'numChanges': 0,
-                         'lastChangeTime': 0})
-        else:
-            df = df.rename(columns={'vrf_x': 'vrf', 'area_x': 'area',
-                                    'state_x': 'ifState',
-                                    'state_y': 'adjState',
-                                    'timestamp_x': 'timestamp'})
-            df = df.drop(list(df.filter(regex='_y$')), axis=1) \
-                   .drop(columns=['ipAddress_x'], errors='ignore') \
-                   .fillna({'peerIP': '-', 'numChanges': 0,
-                            'lastChangeTime': 0})
+        df = df.rename(columns={
+            'instance_x': 'instance', 'areaStub_x': 'areaStub',
+            'area_x': 'area', 'vrf_x': 'vrf',
+            'state_x': 'ifState', 'state_y': 'adjState',
+            'active_x': 'active', 'timestamp_x': 'timestamp'})
+
+        df = df.drop(columns=list(df.filter(regex='_y$|_x$')),
+                     errors='ignore') \
+            .fillna({'peerIP': '-', 'numChanges': 0,
+                     'lastChangeTime': 0})
+
         if df.empty:
             return df
 
@@ -166,8 +156,6 @@ class OspfObj(SqPandasEngine):
             df.drop(columns=['passive'], inplace=True)
 
         final_df = df
-        if 'active_x' in final_df.columns:
-            final_df = final_df.rename(columns={'active_x': 'active'})
         if 'peerHostname' in cols or 'peerIfname' in cols:
             final_df = self._get_peernames(final_df, cols, hostname=hostname,
                                            **kwargs)

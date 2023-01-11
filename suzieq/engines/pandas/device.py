@@ -113,10 +113,10 @@ class DeviceObj(SqPandasEngine):
                            self.cfg.get('analyzer', {}).get('timezone',
                                                             None)))
             uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
-            df.insert(len(df.columns)-1, 'uptime', uptime_cols)
+            df['uptime'] = uptime_cols
 
         if df.empty:
-            return df
+            return df.reset_index(drop=True)[fields]
 
         # The poller merge kills the filtering we did earlier, so redo:
         if status:

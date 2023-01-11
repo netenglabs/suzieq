@@ -248,15 +248,20 @@ def get_sensitive_data(input_method: str, ask_message: str = '') -> str:
 
 def sq_get_config_file(config_file):
     """Get the path to the suzieq config file"""
-
+    default_path = '{home}/.suzieq/suzieq-cfg.yml'
     if config_file:
         cfgfile = config_file
     elif os.path.exists("./suzieq-cfg.yml"):
         cfgfile = "./suzieq-cfg.yml"
-    elif os.path.exists(os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"):
-        cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
+    elif (os.getenv('HOME')
+            and os.path.exists(default_path.format(home=os.getenv('HOME')))):
+        return default_path.format(home=os.getenv('HOME'))
     else:
-        cfgfile = None
+        if not os.getenv('HOME'):
+            logger.warning(
+                'Unable to determine the HOME directory, is $HOME env var '
+                'properly set?')
+        return None
     return cfgfile
 
 
