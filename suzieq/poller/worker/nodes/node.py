@@ -114,10 +114,9 @@ class Node:
         self._service_queue = None
         self._conn = None
         self._tunnel = None
-        self._session = None    # Used only by PANOS as of this comment
         self.svcs_proc = set()
         self.error_svcs_proc = set()
-        self.ssh_ready = asyncio.Lock()
+        self._conn_lock = asyncio.Lock()
         self._last_exception = None
         self._exception_timestamp = None
         self._current_exception = None
@@ -269,8 +268,11 @@ class Node:
 
     async def _close_connection(self):
         if self.is_connected:
-            self._conn.close()
-            await self._conn.wait_closed()
+            if self.transport == 'ssh':
+                self._conn.close()
+                await self._conn.wait_closed()
+            elif self.transport == 'https':
+                await self._conn.close()
         if self._tunnel:
             self._tunnel.close()
             await self._tunnel.wait_closed()
@@ -658,15 +660,15 @@ class Node:
             if use_lock:
                 # We need to check whether someone is already attempting a
                 # connection. If so wait for the result and return.
-                if self.ssh_ready.locked():
+                if self._conn_lock.locked():
                     someone_tried = True
-                await self.ssh_ready.acquire()
+                await self._conn_lock.acquire()
 
             # Someone else may have already succeeded in getting the SSH conn
             # or tried without any success
             if someone_tried or self.is_connected or not self._retry:
                 if use_lock:
-                    self.ssh_ready.release()
+                    self._conn_lock.release()
                 return
 
             self._is_connecting = True
@@ -721,7 +723,7 @@ class Node:
             finally:
                 self._is_connecting = False
                 if use_lock:
-                    self.ssh_ready.release()
+                    self._conn_lock.release()
 
     async def _ssh_connect(self):
         """Create a new SSH connection with the node. The function just creates
@@ -778,9 +780,65 @@ class Node:
                 await self._close_connection()
                 self._conn = None
 
+    async def _init_rest(self, init_dev_data=True):
+        """Create rest session and initialize the device data. This function
+        handles concurrency and retries.
+
+        Args:
+            init_dev_data (bool, optional): Initialize the device data after
+                connection. Defaults to True.
+        """
+        if (self._retry and (not self.is_connected or self._is_connecting)
+                and time.time() > self._connect_again_at):
+            someone_tried = False
+            # We need to check whether someone is already attempting a
+            # connection. If so wait for the result and return.
+            if self._conn_lock.locked():
+                someone_tried = True
+            await self._conn_lock.acquire()
+
+            # Someone else may have already succeeded in getting the SSH conn
+            # or tried without any success
+            if someone_tried or self.is_connected or not self._retry:
+                self._conn_lock.release()
+                return
+
+            self._is_connecting = True
+            backoff_period = (self.CONN_INITIAL_BACKOFF_SLOW if self.slow_host
+                              else self.CONN_INITIAL_BACKOFF)
+            try:
+                await self._rest_connect()
+
+                # We need to be sure that devtype is set, otherwise the
+                # _fetch_dev_data function is not implemented and will raise.
+                # Moreover we want to be connected if we call this function
+                if self.is_connected:
+                    self._connect_again_at = 0
+                    if init_dev_data:
+                        await self._fetch_init_dev_data(reconnect=False)
+                elif self._retry:
+                    # If we are not able to create a session
+                    # If we don't know the devtype we want to follow the device
+                    # init scheduling, so skip.
+                    wait_time = max(self.MIN_WAIT_TIME_CONN_FAIL,
+                                    backoff_period * 3)
+                    self._connect_again_at = time.time() + wait_time
+                    next_time = datetime.fromtimestamp(self._connect_again_at)
+                    logger.info(
+                        f'Connection to {self.address}:{self.port} will be '
+                        f'retried from {next_time}'
+                    )
+            finally:
+                self._is_connecting = False
+                self._conn_lock.release()
+
     @abstractmethod
-    async def _init_rest(self):
-        '''Check that connectivity exists and works'''
+    async def _rest_connect(self):
+        """Creates a http session to communicate with the node. This function
+        doesn't handle concurrency and already existing connections and it's
+        useful to be overridden when the node requires specific operations.
+        To safely create a new session always call `_init_rest()`.
+        """
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
@@ -872,10 +930,10 @@ class Node:
             if reconnect:
                 await self._init_ssh()
             if not self.is_connected:
+                self.logger.error(
+                    f'Unable to connect to node {self.address}:{self.port}'
+                    f'. While executing: {cmd_list}')
                 for cmd in cmd_list:
-                    self.logger.error(
-                        "Unable to connect to node %s cmd %s",
-                        self.hostname, cmd)
                     result.append(self._create_error(cmd))
                 await self._post_result(service_callback, result, cb_token)
                 return
@@ -929,7 +987,7 @@ class Node:
                                    oformat, timeout, reconnect, only_one)
         elif self.transport == "https":
             await self._rest_gather(service_callback, cmd_list,
-                                    cb_token, oformat, timeout)
+                                    cb_token, oformat, timeout, reconnect)
         elif self.transport == "local":
             await self._local_gather(service_callback, cmd_list,
                                      cb_token, oformat, timeout)
@@ -1178,7 +1236,8 @@ class Node:
     @abstractmethod
     async def _rest_gather(self, service_callback: Callable,
                            cmd_list: List[str], cb_token: RsltToken,
-                           oformat: str = "json", timeout: int = None):
+                           oformat: str = "json", timeout: int = None,
+                           reconnect=True):
         """Use HTTP(s) to execute the commands requested
 
         This function takes the raw list of commands to execute on the device
@@ -1270,7 +1329,7 @@ class Node:
 class EosNode(Node):
     '''EOS Node specific implementation'''
 
-    async def _init_rest(self):
+    async def _rest_connect(self):
         '''Check that connectivity and authentication works'''
 
         timeout = self.cmd_timeout
@@ -1280,11 +1339,11 @@ class EosNode(Node):
         url = f"https://{self.address}:{self.port}/command-api"
 
         try:
-            async with aiohttp.ClientSession(
-                    auth=auth, timeout=self.connect_timeout,
-                    connector=aiohttp.TCPConnector(ssl=False)) as session:
-                async with session.post(url, timeout=timeout) as response:
-                    _ = response.status
+            self._conn = aiohttp.ClientSession(
+                auth=auth, timeout=self.connect_timeout,
+                connector=aiohttp.TCPConnector(ssl=False))
+            async with self._conn.post(url, timeout=timeout) as response:
+                _ = response.status
         except Exception as e:
             self.logger.error(
                 f'Unable to connect to {self.address}:{self.port}, '
@@ -1331,17 +1390,27 @@ class EosNode(Node):
                                          reconnect, only_one)
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat="json", timeout=None):
+                           oformat="json", timeout=None, reconnect=True):
 
         result = []
         if not cmd_list:
             return result
 
+        if not self.is_connected or self._is_connecting:
+            if reconnect:
+                await self._init_rest()
+            if not self.is_connected:
+                self.logger.error(
+                    f'Unable to connect to node {self.address}:{self.port}'
+                    f'. While executing: {cmd_list}')
+                for cmd in cmd_list:
+                    result.append(self._create_error(cmd))
+                await self._post_result(service_callback, result, cb_token)
+                return
+
         timeout = timeout or self.cmd_timeout
 
-        now = int(datetime.now(tz=timezone.utc).timestamp() * 1000)
-        auth = aiohttp.BasicAuth(self.username,
-                                 password=self.password or 'vagrant')
+        now = int(time.time() * 1000)
         data = {
             "jsonrpc": "2.0",
             "method": "runCmds",
@@ -1359,36 +1428,34 @@ class EosNode(Node):
 
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
-                async with aiohttp.ClientSession(
-                        auth=auth, conn_timeout=self.connect_timeout,
-                        read_timeout=timeout,
-                        connector=aiohttp.TCPConnector(ssl=False)) as session:
-                    async with session.post(url, json=data,
-                                            timeout=timeout,
-                                            headers=headers) as response:
-                        status = response.status
-                        if status == HTTPStatus.OK:
-                            json_out = await response.json()
-                            if "result" in json_out:
-                                output.extend(json_out["result"])
-                            else:
-                                output.extend(
-                                    json_out["error"].get('data', []))
-
-                            for i, cmd in enumerate(cmd_list):
-                                data = (output[i] if isinstance(output, list)
-                                        else output)
-                                result.append(
-                                    self._create_result(
-                                        cmd, status, data, now / 1000)
-                                )
+                self.logger.info(
+                    f'{self.address}:{self.port} exec: {cmd_list}')
+                async with self._conn.post(url, json=data,
+                                           timeout=timeout,
+                                           headers=headers) as response:
+                    status = response.status
+                    if status == HTTPStatus.OK:
+                        json_out = await response.json()
+                        if "result" in json_out:
+                            output.extend(json_out["result"])
                         else:
-                            for cmd in cmd_list:
-                                result.append(self._create_error(cmd))
-                            self.logger.error(
-                                f'{self.transport}://{self.hostname}:'
-                                f'{self.port}: Commands failed due to '
-                                f'{response.status}')
+                            output.extend(
+                                json_out["error"].get('data', []))
+
+                        for i, cmd in enumerate(cmd_list):
+                            data = (output[i] if isinstance(output, list)
+                                    else output)
+                            result.append(
+                                self._create_result(
+                                    cmd, status, data, now / 1000)
+                            )
+                    else:
+                        for cmd in cmd_list:
+                            result.append(self._create_error(cmd))
+                        self.logger.error(
+                            f'{self.transport}://{self.hostname}:'
+                            f'{self.port}: Commands failed due to '
+                            f'{response.status}')
             except Exception as e:
                 self.current_exception = e
                 for cmd in cmd_list:
@@ -1488,7 +1555,7 @@ class CumulusNode(Node):
             self.logger.error(
                 f'Cannot parse version from {self.address}:{self.port}')
 
-    async def _init_rest(self):
+    async def _rest_connect(self):
         '''Check that connectivity exists and works'''
 
         auth = aiohttp.BasicAuth(self.username, password=self.password)
@@ -1497,12 +1564,12 @@ class CumulusNode(Node):
 
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
-                async with aiohttp.ClientSession(
+                self._conn = aiohttp.ClientSession(
                         auth=auth, timeout=self.cmd_timeout,
-                        connector=aiohttp.TCPConnector(ssl=False),
-                ) as session:
-                    async with session.post(url, headers=headers) as response:
-                        _ = response.status
+                        connector=aiohttp.TCPConnector(ssl=False)
+                )
+                async with self._conn.post(url, headers=headers) as response:
+                    _ = response.status
             except Exception as e:
                 self.current_exception = e
                 self.logger.error(
@@ -1510,35 +1577,42 @@ class CumulusNode(Node):
                     f"to communicate with node due to {str(e)}")
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat='json', timeout=None):
+                           oformat='json', timeout=None, reconnect=True):
 
         result = []
         if not cmd_list:
             return result
 
-        auth = aiohttp.BasicAuth(self.username, password=self.password)
+        if not self.is_connected or self._is_connecting:
+            if reconnect:
+                await self._init_rest()
+            if not self.is_connected:
+                self.logger.error(
+                    f'Unable to connect to node {self.address}:{self.port}'
+                    f'. While executing: {cmd_list}')
+                for cmd in cmd_list:
+                    result.append(self._create_error(cmd))
+                await self._post_result(service_callback, result, cb_token)
+                return
+
         url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
         headers = {"Content-Type": "application/json"}
 
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
-                async with aiohttp.ClientSession(
-                        auth=auth,
-                        timeout=timeout or self.cmd_timeout,
-                        connector=aiohttp.TCPConnector(ssl=False),
-                ) as session:
-                    for cmd in cmd_list:
-                        data = {"cmd": cmd}
-                        cmd_timestamp = time.time()
-                        async with session.post(
-                                url, json=data, headers=headers
-                        ) as response:
-                            data_res = await response.text()
-                            result.append(
-                                self._create_result(
-                                    cmd, response.status, data_res,
-                                    cmd_timestamp)
-                            )
+                for cmd in cmd_list:
+                    data = {"cmd": cmd}
+                    cmd_timestamp = time.time()
+                    self.logger.info(f'{self.address}:{self.port} exec: {cmd}')
+                    async with self._conn.post(
+                            url, json=data, headers=headers
+                    ) as response:
+                        data_res = await response.text()
+                        result.append(
+                            self._create_result(
+                                cmd, response.status, data_res,
+                                cmd_timestamp)
+                        )
             except Exception as e:
                 self.current_exception = e
                 result.append(self._create_error(cmd_list))
@@ -1556,12 +1630,12 @@ class LinuxNode(CumulusNode):
 class IosXRNode(Node):
     '''IOSXR Node specific implementation'''
 
-    async def _init_rest(self):
+    async def _rest_connect(self):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat='json', timeout=None):
+                           oformat="json", timeout=None, reconnect=True):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
@@ -1638,12 +1712,12 @@ class IosXENode(Node):
     '''IOS-XE Node-sepcific telemetry gather implementation'''
     WAITFOR = r'.*[>#]\s*$'  # devtype specific termination sequence
 
-    async def _init_rest(self):
+    async def _rest_connect(self):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat='json', timeout=None):
+                           oformat="json", timeout=None, reconnect=True):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
@@ -1849,12 +1923,12 @@ class IosXENode(Node):
 class IOSNode(IosXENode):
     '''Classic IOS Node-specific implementation'''
 
-    async def _init_rest(self):
+    async def _rest_connect(self):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat='json', timeout=None):
+                           oformat="json", timeout=None, reconnect=True):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
@@ -1862,12 +1936,12 @@ class IOSNode(IosXENode):
 class JunosNode(Node):
     '''Juniper's Junos node-specific implementation'''
 
-    async def _init_rest(self):
+    async def _rest_connect(self):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat='json', timeout=None):
+                           oformat="json", timeout=None, reconnect=True):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
@@ -1930,12 +2004,12 @@ class JunosNode(Node):
 class NxosNode(Node):
     '''Cisco's NXOS Node-specific implementation'''
 
-    async def _init_rest(self):
+    async def _rest_connect(self):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat="json", timeout=None):
+                           oformat="json", timeout=None, reconnect=True):
         '''Gather data for service via device REST API'''
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
@@ -1991,12 +2065,12 @@ class NxosNode(Node):
 class SonicNode(Node):
     '''SONiC Node-specific implementtaion'''
 
-    async def _init_rest(self):
+    async def _rest_connect(self):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat="json", timeout=None):
+                           oformat="json", timeout=None, reconnect=True):
         '''Gather data for service via device REST API'''
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
@@ -2031,10 +2105,10 @@ class SonicNode(Node):
 class PanosNode(Node):
     '''Node object representing access to a Palo Alto Networks FW'''
 
-    async def _fetch_init_dev_data_devtype(self, reconnect: bool):
+    async def _fetch_init_dev_data_devtype(self, _reconnect: bool):
         discovery_cmd = 'show system info'
+        result = []
         try:
-            res = []
             # temporary hack to detect device info using ssh
             async with self._cmd_pacer.wait():
                 async with asyncssh.connect(
@@ -2053,24 +2127,20 @@ class PanosNode(Node):
 
                         stdout, _ = process.collect_output()
                         output += stdout
-                        res = [self._create_result(discovery_cmd, 0, output,
-                                                   cmd_timestamp)]
-
-            await self._parse_init_dev_data(res, None)
-            self._session = aiohttp.ClientSession(
-                conn_timeout=self.connect_timeout,
-                connector=aiohttp.TCPConnector(ssl=False),
-            )
-            if self.api_key is None:
-                await self.get_api_key()
-        except asyncssh.misc.PermissionDenied:
-            self.logger.error(
-                f'{self.address}:{self.port}: permission denied')
-            self._retry -= 1
+                        result = [self._create_result(discovery_cmd, 0, output,
+                                                      cmd_timestamp)]
         except Exception as e:
-            self.logger.error(
-                f'{self.hostname}:{self.port}: Command "{discovery_cmd}" '
-                f'failed due to {e}')
+            self.current_exception = e
+            result.append(self._create_error(discovery_cmd))
+            if isinstance(e, asyncssh.misc.PermissionDenied):
+                self.logger.error(
+                    f'{self.address}:{self.port}: permission denied')
+                self._retry -= 1
+            else:
+                self.logger.error(
+                    f'{self.hostname}:{self.port}: Command "{discovery_cmd}" '
+                    f'failed due to {e}')
+        await self._parse_init_dev_data(result, None)
 
     async def get_api_key(self):
         """Authenticate to get the api key needed in all cmd requests"""
@@ -2080,7 +2150,7 @@ class PanosNode(Node):
         if not self._retry:
             return
         async with self._cmd_pacer.wait(self.per_cmd_auth):
-            async with self._session.get(url, timeout=self.connect_timeout) \
+            async with self._conn.get(url, timeout=self.connect_timeout) \
                     as response:
                 status, xml = response.status, await response.text()
                 if status == 200:
@@ -2137,12 +2207,12 @@ class PanosNode(Node):
                 f'Cannot parse version from {self.address}:{self.port}')
             self.version = "all"
 
-    async def _init_rest(self):
+    async def _rest_connect(self):
         # In case of PANOS, getting here means REST is up
-        if not self._session:
+        if not self._conn:
             async with self._cmd_pacer.wait(self.per_cmd_auth):
                 try:
-                    self._session = aiohttp.ClientSession(
+                    self._conn = aiohttp.ClientSession(
                         conn_timeout=self.connect_timeout,
                         connector=aiohttp.TCPConnector(ssl=False),
                     )
@@ -2152,15 +2222,15 @@ class PanosNode(Node):
                     # Ensure that the connection pool is closed and set it to
                     # None so that _rest_gather can fail gracefully.
                     if self.api_key is None:
-                        self._session.close()
-                        self._session = None
+                        await self._close_connection()
                 except Exception as e:
+                    await self._close_connection()
                     self.logger.error(
                         f'{self.transport}://{self.hostname}:{self.port}, '
                         f'Unable to communicate due to error: {str(e)}')
 
     async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat="json", timeout=None):
+                           oformat="json", timeout=None, reconnect=True):
 
         result = []
         if not cmd_list:
@@ -2172,23 +2242,25 @@ class PanosNode(Node):
 
         status = 200  # status OK
 
-        # if there's no session we have failed to get init dev data
-        if not self._session and self._retry:
-            self._fetch_init_dev_data()
-
-        # if there's still no session, we need to create an error
-        if not self._session:
-            for cmd in cmd_list:
-                result.append(self._create_error(cmd))
-            await self._post_result(service_callback, result, cb_token)
-            return
+        if not self.is_connected or self._is_connecting:
+            if reconnect:
+                await self._init_rest()
+            if not self.is_connected:
+                self.logger.error(
+                    f'Unable to connect to node {self.address}:{self.port}'
+                    f'. While executing: {cmd_list}')
+                for cmd in cmd_list:
+                    result.append(self._create_error(cmd))
+                await self._post_result(service_callback, result, cb_token)
+                return
 
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
                 for cmd in cmd_list:
+                    self.logger.info(f'{self.address}:{self.port} exec: {cmd}')
                     url_cmd = f"{url}?type=op&cmd={cmd}&key={self.api_key}"
                     cmd_timestamp = time.time()
-                    async with self._session.get(
+                    async with self._conn.get(
                             url_cmd, timeout=timeout) as response:
                         status, xml = response.status, await response.text()
                         if status == 200:
