@@ -1888,14 +1888,15 @@ class JunosNode(Node):
                            ['attributes'])
             except Exception:
                 self.logger.warning(
-                    f'Unable to parse junos boot time from {data}')
+                    f'{self.address}:{self.port} Unable to parse junos boot '
+                    f'time from {data}')
                 timestr = '{"junos:seconds": "0"}'
             self.bootupTimestamp = get_timestamp_from_junos_time(
                 timestr, ms=False)
 
         if (len(output) > 1) and (output[1]["status"] == 0):
             data = output[1]["data"]
-            hmatch = re.search(r'\nHostname:\s+(\S+)\n', data)
+            hmatch = re.search(r'\bHostname:\s+(\S+)\b', data)
             if hmatch:
                 self._set_hostname(hmatch.group(1))
 

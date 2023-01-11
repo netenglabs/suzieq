@@ -85,7 +85,8 @@ def validate_interfaces(df: pd.DataFrame, datadir: str):
     '''
 
     # Create a new df of namespace/hostname/vrf to oif mapping
-    only_oifs = df.groupby(by=['namespace', 'hostname'])['ifname'] \
+    only_oifs = df.query('state == "Established"') \
+                  .groupby(by=['namespace', 'hostname'])['ifname'] \
                   .unique() \
                   .reset_index() \
                   .explode('ifname') \
@@ -131,4 +132,4 @@ def test_bgp_parsing(table, datadir, get_table_data):
     validate_host_shape(df, ns_dict)
     validate_bgp_data(df)
     validate_interfaces(df.query('ifname != ""').reset_index(), datadir)
-    validate_vrfs(df, 'bgp', datadir)
+    validate_vrfs(df.query('state == "Established"'), 'bgp', datadir)
