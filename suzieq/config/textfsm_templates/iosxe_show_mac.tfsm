@@ -1,23 +1,75 @@
-Value Required vlan (\d+| All)
-Value Required macaddr (\S+)
-Value Required flags (\w+)
-Value oif (\S+)
-Value protocol (\S+)
-Value _learn (\w+)
-Value age (\d+|-)
-Value List _ports (\S+)
+Value Required macaddr ([0-9a-fA-F]{4}\.[0-9a-fA-F]{4}\.[0-9a-fA-F]{4})
+Value flags (\S+)
+Value vlan (\S+)
+Value List _ports ([^,\s]+)
 
 Start
-  ^\* -> WithStar
-  ^\s+vlan.*protocol.* -> WithProtocol
-  ^\s*${vlan}\s+${macaddr}\s+${flags}\s+${oif}.*$$ -> Record
+  ^Destination\s+Address\s+Address\s+Type\s+vlan\s+Destination\s+Port -> flags1
+  ^\s+vlan\s+mac address\s+type\s+learn\s+age\s+ports -> flags2
+  ^\s+vlan\s+mac address\s+type\s+protocols\s+port -> flags3
+  ^Vlan\s+Mac Address\s+Type\s+Ports -> flags4
+  # Capture time-stamp if vty line has command time-stamping turned on
+  ^Load\s+for\s+
+  ^Time\s+source\s+is
 
-WithProtocol
-  ^\s*${vlan}\s+${macaddr}\s+${flags}\s+${protocol}\s+${oif}.*$$ -> Record
-  ^Multicast\s+Entries -> Start
+flags1
+  ^${macaddr}\s+${flags}\s+${vlan}\s+${_ports}$$ -> Record
+  ^-+\s+-+
+  ^Displaying\s+entries
+  ^Destination\s+Address\s+Address\s+Type\s+vlan\s+Destination\s+Port
+  ^\s*$$
+  ^Multicast\s+Entries -> End
 
-WithStar
-  ^\* -> Continue.Record
-  ^\*\s+${vlan}\s+${macaddr}\s+${flags}\s+${_learn}\s+${age}\s+${_ports}
-  ^\s+${_ports}
-  
+flags2
+  # Order of the group in brackets here matters
+  ^\s*(\*\s+R|\*|R|\s)\s*(\d+|-+|[Nn]/[Aa]) -> Continue.Record
+  # using 20 spaces should ensure that lines only match destination port flowing to next line
+  ^\s{20}\s+${_ports}(\s+|,\s*)\S -> Continue
+  ^\s{20}\s+${_ports},*\s*$$
+  ^\s{20}\s+[^,\s]+(\s+|,\s*)${_ports}(\s+|,\s*)\S -> Continue
+  ^\s{20}\s+[^,\s]+(\s+|,\s*)${_ports},*\s*$$
+  ^\s{20}\s+([^,\s]+(\s+|,\s*)){2}${_ports}(\s+|,\s*)\S -> Continue
+  ^\s{20}\s+([^,\s]+(\s+|,\s*)){2}${_ports},*\s*$$
+  ^\s{20}\s+([^,\s]+(\s+|,\s*)){3}${_ports}(\s+|,\s*)\S -> Continue
+  ^\s{20}\s+([^,\s]+(\s+|,\s*)){3}${_ports},*\s*$$
+  ^\s{20}\s+([^,\s]+(\s+|,\s*)){4}${_ports}(\s+|,\s*)\S -> Continue
+  ^\s{20}\s+([^,\s]+(\s+|,\s*)){4}${_ports},*\s*$$
+  ^\s{20}\s+([^,\s]+(\s+|,\s*)){5}${_ports}(\s+|,\s*)\S -> Continue
+  ^\s{20}\s+([^,\s]+(\s+|,\s*)){5}${_ports},*\s*$$
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s*$$
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+${_ports}(\s+|,\s*)\S -> Continue
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+${_ports},*\s*$$
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+[^,\s]+(\s+|,\s*)${_ports}(\s+|,\s*)\S -> Continue
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+[^,\s]+?(\s+|,\s*)${_ports},*\s*$$
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+([^,\s]+(\s+|,\s*)){2}${_ports}(\s+|,\s*)\S -> Continue
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+([^,\s]+(\s+|,\s*)){2}${_ports},*\s*$$
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+([^,\s]+(\s+|,\s*)){3}${_ports}(\s+|,\s*)\S -> Continue
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+([^,\s]+(\s+|,\s*)){3}${_ports},*\s*$$
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+([^,\s]+(\s+|,\s*)){4}${_ports}(\s+|,\s*)\S -> Continue
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+([^,\s]+(\s+|,\s*)){4}${_ports},*\s*$$
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+([^,\s]+(\s+|,\s*)){5}${_ports}(\s+|,\s*)\S -> Continue
+  ^\s*(\*\s+R|\*|R|\s)\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+\S+\s+([^,\s]+(\s+|,\s*)){5}${_ports},*\s*$$
+  ^-+\+-+
+  ^Displaying\s+entries
+  ^\s+vlan\s+mac address\s+type\s+learn\s+age\s+ports
+  ^\s*$$
+  ^Multicast\s+Entries -> End
+
+flags3
+  ^\s*${vlan}\s+${macaddr}\s+${flags}\s+\S+\s+${_ports}(?:\s|$$) -> Record
+  ^-+\+-+
+  ^Displaying\s+entries
+  ^\s+vlan\s+mac address\s+type\s+protocols\s+port
+  ^\s*$$
+  ^Multicast\s+Entries -> End
+
+flags4
+  ^\s*${vlan}\s+${macaddr}\s+${flags}\s+${_ports}(?:\s|$$) -> Record
+  ^-+\s+-+
+  ^Displaying\s+entries
+  ^Vlan\s+Mac Address\s+Type\s+Ports
+  ^\s*$$
+  ^Total\s+Mac\s+Addresses
+  ^MultiCast\s+Entries -> End
+
+# Original from ntc-templates github repo (https://github.com/networktocode/ntc-templates)

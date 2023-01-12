@@ -166,7 +166,7 @@ apply:
           "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/pfxsent: pfxSent?|0",
           "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: extendComm?|",
           "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/sendextcommunity: sendComm?|",
-          "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/rrconfigured: rrclient?|",
+          "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/rrconfigured: rrclient?|[],
           "TABLE_peraf/ROW_peraf/[0]?/TABLE_persaf/ROW_persaf/[*]/firstconvgtime: _firstconvgtime",
           "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/defaultoriginate: defaultOrig",
           "TABLE_peraf/ROW_peraf/[*]?/TABLE_persaf/ROW_persaf/[*]/insoftreconfigallowed: softReconfig",
@@ -246,6 +246,9 @@ apply:
     copy: junos-qfx
 
   junos-qfx10k:
+    copy: junos-qfx
+
+  junos-evo:
     copy: junos-qfx
 
   panos:

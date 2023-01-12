@@ -45,15 +45,24 @@ class MySSHServerSession(asyncssh.SSHServerSession):
             if command == 'cat /proc/uptime; hostnamectl; show version':
                 return f'{self.input_dir}/nos.txt'
 
-            cmdfile = command.replace("*", "all").replace(" ", "_") \
-                .replace("-", "_")
+            cmdfile = command.replace("*", "all").replace(" ", "_")
 
             filepath = self.input_dir / f'{cmdfile}{fmt}'
 
             if filepath.exists():
                 return filepath
 
-            print(f'No file {filepath} found')
+            if command.find('exclude security') > 0:
+                command = command.replace('exclude security', '').strip()
+
+                cmdfile = command.replace("*", "all").replace(" ", "_")
+
+                filepath = self.input_dir / f'{cmdfile}{fmt}'
+
+                if filepath.exists():
+                    return filepath
+
+            print(f'File {filepath} not found')
             return ''
 
         return ''

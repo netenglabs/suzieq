@@ -6,14 +6,14 @@ import logging
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from importlib.util import find_spec
 from ipaddress import ip_network
 from itertools import groupby
 from logging.handlers import RotatingFileHandler
 from os import getenv
-from typing import Any, Dict, List
+from typing import Any, Dict, List, Tuple
 from tzlocal import get_localzone
 
 import pandas as pd
@@ -248,15 +248,20 @@ def get_sensitive_data(input_method: str, ask_message: str = '') -> str:
 
 def sq_get_config_file(config_file):
     """Get the path to the suzieq config file"""
-
+    default_path = '{home}/.suzieq/suzieq-cfg.yml'
     if config_file:
         cfgfile = config_file
     elif os.path.exists("./suzieq-cfg.yml"):
         cfgfile = "./suzieq-cfg.yml"
-    elif os.path.exists(os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"):
-        cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
+    elif (os.getenv('HOME')
+            and os.path.exists(default_path.format(home=os.getenv('HOME')))):
+        return default_path.format(home=os.getenv('HOME'))
     else:
-        cfgfile = None
+        if not os.getenv('HOME'):
+            logger.warning(
+                'Unable to determine the HOME directory, is $HOME env var '
+                'properly set?')
+        return None
     return cfgfile
 
 
@@ -376,6 +381,27 @@ def calc_avg(oldval, newval):
     return float((oldval+newval)/2)
 
 
+def parse_relative_timestamp(uptime: str, relative_to: int = None) -> int:
+    """Get a relative time (i.e. with format 10 weeks, 4 days, 3 hours 11 mins)
+    and convert it into a timestamp.
+
+    Args:
+        uptime (str): _description_
+        relative_to (int, optional): provide a custom base epoch timestamp, if
+            not provided, the base timestamp is "now".
+
+    Returns:
+        int: The epoch timestamp of the base time minus the uptime
+    """
+    settings = {'TIMEZONE': 'utc',
+                'RETURN_AS_TIMEZONE_AWARE': True}
+    if relative_to:
+        base_ts = datetime.fromtimestamp(relative_to, timezone.utc)
+        settings['RELATIVE_BASE'] = base_ts
+
+    return int(parse(uptime, settings=settings).timestamp())
+
+
 def get_timestamp_from_cisco_time(in_data, timestamp) -> int:
     """Get timestamp in ms from the Cisco-specific timestamp string
     Examples of Cisco timestamp str are P2DT14H45M16S, P1M17DT4H49M50S etc.
@@ -427,12 +453,27 @@ def get_timestamp_from_cisco_time(in_data, timestamp) -> int:
     return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
 
 
-def get_timestamp_from_junos_time(in_data, timestamp: int):
+def get_timestamp_from_junos_time(in_data: Tuple[Dict, str],
+                                  relative_to: int = None,
+                                  ms=True) -> int:
     """Get timestamp in ms from the Junos-specific timestamp string
     The expected input looks like: "attributes" : {"junos:seconds" : "0"}.
     We don't check for format because we're assuming the input would be blank
-    if it wasn't the right format. The input can either be a dictionary or a
-    JSON string.
+    if it wasn't the right format.
+
+    Args:
+        in_data (Tuple[Dict, str]): the time data received from the device,
+            The input can either be a dictionary or a JSON string.
+        relative_to (int, optional): Subtract the extracted seconds to the
+            provided epoch timestamp.
+            If None, the function returns the seconds without further
+            processing (e.g. useful when we already have an epoch timestamp).
+            Defaults to None.
+        ms (int, optional) If the True the result is returned in milliseconds
+            otherwise the result will be in seconds.
+
+    Returns:
+        int: enlapsed time or unix timestamp
     """
 
     if not in_data:
@@ -449,8 +490,13 @@ def get_timestamp_from_junos_time(in_data, timestamp: int):
             logger.warning(f'Unable to convert junos secs from {in_data}')
             secs = 0
 
-    delta = relativedelta(seconds=int(secs))
-    return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
+    conversion_unit = 1000 if ms else 1
+
+    if relative_to:
+        delta = relativedelta(seconds=int(secs))
+        secs = (datetime.fromtimestamp(relative_to) - delta).timestamp()
+
+    return secs * conversion_unit
 
 
 def convert_macaddr_format_to_colon(macaddr: str) -> str:
@@ -810,8 +856,8 @@ def init_logger(logname: str,
 def known_devtypes() -> list:
     """Returns the list of known dev types"""
     return(['aos', 'cumulus', 'eos', 'iosxe', 'iosxr', 'ios', 'junos-mx',
-            'junos-qfx', 'junos-qfx10k', 'junos-ex', 'junos-es', 'linux',
-            'nxos', 'sonic', 'panos'])
+            'junos-qfx', 'junos-qfx10k', 'junos-ex', 'junos-es', 'junos-evo',
+            'linux', 'nxos', 'sonic', 'panos'])
 
 
 def humanize_timestamp(field: pd.Series, tz=None) -> pd.Series:

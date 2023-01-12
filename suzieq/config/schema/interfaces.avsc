@@ -7,7 +7,7 @@
             "name": "sqvers",
             "type": "string",
             "partition": 0,
-            "default": "3.0",
+            "default": "4.0",
             "suppress": true,
             "description": "Schema version, not selectable"
         },
@@ -73,18 +73,18 @@
             "type": "string",
             "description": "VLAN name if assigned"
         },
-	{
-	    "name": "vlanList",
-	    "type": {
-                "type": "array",
-                "items": {
-                    "type": "int",
-                    "name": "vlan"
-                }
-            },
-	    "description": "List of active, unpruned VLANs on a trunk port",
-	    "depends": "namespace hostname ifname portmode"
-	 },
+        {
+            "name": "vlanList",
+            "type": {
+                    "type": "array",
+                    "items": {
+                        "type": "int",
+                        "name": "vlan"
+                    }
+                },
+            "description": "List of active, unpruned VLANs on a trunk port",
+            "depends": "namespace hostname ifname portmode"
+        },
         {
             "name": "ipAddressList",
             "type": {
@@ -155,12 +155,18 @@
             "type": "long",
             "display": 6
         },
-	{
-	    "name": "portmode",
-	    "type": "string",
-	    "description": "switchport mode: access, trunk or routed",
-	    "depends": "namespace hostname ifname adminState type ipAddressList ip6AddressList"
-	 },
+        {
+            "name": "portmode",
+            "type": "string",
+            "description": "switchport mode: access, trunk or routed",
+            "depends": "namespace hostname ifname adminState type ipAddressList ip6AddressList"
+        },
+        {
+            "name": "deviceSession",
+            "type": "timestamp",
+            "suppress": true,
+            "description": "Device boot session id"
+        },
         {
             "name": "hostname",
             "type": "string",

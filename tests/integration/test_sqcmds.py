@@ -115,7 +115,7 @@ def test_namespace_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     for cmd in cli_commands])
 def test_view_show_filter(setup_nubia, get_cmd_object_dict, cmd):
     s = _test_command(get_cmd_object_dict[cmd], 'show', None, {'view': 'all'})
-    if cmd != 'namespace':
+    if cmd not in ['namespace', 'topology', 'path']:
         assert s == 0
     else:
         assert s == 1
@@ -264,9 +264,10 @@ def test_context_start_time_filtering(setup_nubia, get_cmd_object_dict, cmd):
 
 
 @pytest.mark.sqcmds
-@pytest.mark.parametrize('table', TABLES)
-def test_table_describe(setup_nubia, table):
-    out = _test_command('TableCmd', 'describe', {"table": table})
+@pytest.mark.describe
+@pytest.mark.table
+def test_table_describe(setup_nubia):
+    out = _test_command('TableCmd', 'describe', None)
     assert out == 0
 
 

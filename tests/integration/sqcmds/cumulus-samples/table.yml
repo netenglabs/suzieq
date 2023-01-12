@@ -200,42 +200,6 @@ tests:
     "allRows": 20, "namespaceCnt": 2, "deviceCnt": 6}, {"table": "TOTAL", "firstTime":
     1616352402449, "lastTime": 1652587637124, "intervals": 376, "allRows": 2724, "namespaceCnt":
     2, "deviceCnt": 14}]'
-- command: table describe --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
-  data-directory: tests/data/parquet/
-  marks: table describe
-  output: '[{"name": "allRows", "type": "long", "key": "", "display": 5, "description":
-    "Total number of records across all time"}, {"name": "deviceCnt", "type": "long",
-    "key": "", "display": 7, "description": "Total number of devices in database"},
-    {"name": "firstTime", "type": "float", "key": "", "display": 2, "description":
-    "Timestamp of first entry in database"}, {"name": "intervals", "type": "long",
-    "key": "", "display": 4, "description": "Number of records in latest entry"},
-    {"name": "lastTime", "type": "float", "key": "", "display": 3, "description":
-    "Timestamp of last entry in database"}, {"name": "namespaceCnt", "type": "long",
-    "key": "", "display": 6, "description": "Total number of namespaces in database"},
-    {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
-    "Schema version, not selectable"}, {"name": "table", "type": "string", "key":
-    "", "display": 1, "description": "Table name"}]'
-- command: table describe --namespace=dual-evpn --format=json
-  data-directory: tests/data/parquet/
-  marks: table describe
-  output: '[{"name": "allRows", "type": "long", "key": "", "display": 5, "description":
-    "Total number of records across all time"}, {"name": "deviceCnt", "type": "long",
-    "key": "", "display": 7, "description": "Total number of devices in database"},
-    {"name": "firstTime", "type": "float", "key": "", "display": 2, "description":
-    "Timestamp of first entry in database"}, {"name": "intervals", "type": "long",
-    "key": "", "display": 4, "description": "Number of records in latest entry"},
-    {"name": "lastTime", "type": "float", "key": "", "display": 3, "description":
-    "Timestamp of last entry in database"}, {"name": "namespaceCnt", "type": "long",
-    "key": "", "display": 6, "description": "Total number of namespaces in database"},
-    {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
-    "Schema version, not selectable"}, {"name": "table", "type": "string", "key":
-    "", "display": 1, "description": "Table name"}]'
-- command: table describe --table=floop --format=json --namespace='ospf-single dual-evpn
-    ospf-ibgp'
-  data-directory: tests/data/parquet/
-  error:
-    error: '[{"error": "ERROR: incorrect table name floop"}]'
-  marks: table describe
 - command: table unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: table unique

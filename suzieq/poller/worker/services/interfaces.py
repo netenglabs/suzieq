@@ -569,11 +569,12 @@ class InterfaceService(Service):
                     vlan = int(vlan)
                     if vlan > 4095:
                         vlan = 0
+                        iftype = 'internal'
                 else:
                     vlan = 0
                     iftype = entry['type']
 
-                if iftype == 'subinterface':
+                if iftype == 'subinterface' or lifname.endswith(".0"):
                     speed = lentry \
                         .get('logical-interface-bandwidth', [{}])[0] \
                         .get('data', entry.get('speed', MISSING_SPEED))
@@ -668,14 +669,18 @@ class InterfaceService(Service):
                     laddr = elem.get("ifa-local")[0]["data"]
                     if ':' in laddr:
                         plen = (elem.get("ifa-destination",
-                                         [{"data": "0/128"}])[0]
-                                ["data"].split("/")[1])
-                        v6addresses.append(f'{laddr}/{plen}')
+                                         [{"data": "0/128"}])[0]["data"])
+                        if '/' in plen:
+                            v6addresses.append(f'{laddr}/{plen.split("/")[1]}')
+                        else:
+                            v6addresses.append(f'{laddr}/128')
                     else:
                         plen = (elem.get("ifa-destination",
-                                         [{"data": "0/32"}])[0]
-                                ["data"].split("/")[1])
-                        v4addresses.append(f'{laddr}/{plen}')
+                                         [{"data": "0/32"}])[0]["data"])
+                        if '/' in plen:
+                            v4addresses.append(f'{laddr}/{plen.split("/")[1]}')
+                        else:
+                            v4addresses.append(f'{laddr}/32')
                 vlanName = lentry.get('irb-domain', [{}])[0] \
                     .get('irb-bridge', [{}])[0] \
                     .get('data', '')

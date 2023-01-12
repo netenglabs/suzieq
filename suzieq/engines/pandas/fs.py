@@ -13,6 +13,9 @@ class FsObj(SqPandasEngine):
         columns = kwargs.get('columns', ['default'])
         fields = self.schema.get_display_fields(columns)
 
+        self._add_active_to_fields(
+            kwargs.get('view', self.iobj.view), fields, [])
+
         df = super().get(**kwargs)
 
         if df.empty:

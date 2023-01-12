@@ -4,9 +4,9 @@ Many AAA servers (such as TACACS, Radius) cannot handle the rate at which SuzieQ
 
 * **max-cmd-pipeline**: This is an integer value that ensures that no more than this number of requests are sent to a device in a second. Thus a value of 9 implies that we never have more than 9 outstanding commands or logins. If you use distributed pollers, you need to ensure that this number is a multiple of the number of pollers. Thus with a value of 9, you can use either 1 or 3 pollers. With 8, you can use 1, 2, or 4 pollers and so on. This is **specified in the suzieq-cfg.yml** file. The default is 0 i.e. no limits.
 
-* **per-cmd-auth**: This is a boolean to specify whether need to throttle logins as well as commands sent to a device. This is required in installations where commands are authorized before execution. True means use it for commands as well as logins. This is specified in the devices section of the poller inventory file. The default is False.
+* **per-cmd-auth**: This is a boolean to specify whether need to throttle logins as well as commands sent to a device. This is required in installations where commands are authorized before execution. True means use it for commands as well as logins. This is specified in the devices section of the poller inventory file. The default is True.
 
-* **retries-on-auth-fail**: Some older AAA servers fail even at low rates. In certain installations, a maximum of 3 authentication failures are tolerated before the user account is locked, and in some installations it can be anything more than a single failure. This parameter now enables us to support both types of installations. This is specified in the devices section of the poller inventory file. The default is 0, i.e. we never retry on authentication failure.
+* **retries-on-auth-fail**: Some older AAA servers fail even at low rates. In certain installations, a maximum of 3 authentication failures are tolerated before the user account is locked, and in some installations it can be anything more than a single failure. This parameter now enables us to support both types of installations. This is specified in the devices section of the poller inventory file. The default is 1, so the poller retries once after the first authentication failure.
 
 Here's a sample suzieq-cfg.yml file with the max-cmd-pipeline parameter (see the poller section).
 ```

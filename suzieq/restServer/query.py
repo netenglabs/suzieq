@@ -366,6 +366,7 @@ def query_device(verb: CommonVerbs, request: Request,
                  version: List[str] = Query(None),
                  what: str = None,
                  status: List[DeviceStatus] = Query(None),
+                 ignore_neverpoll: bool = None,
                  count: str = None, reverse: str = None,
                  ):
     function_name = inspect.currentframe().f_code.co_name
@@ -766,17 +767,6 @@ def query_topology(verb: CommonVerbs, request: Request,
                    ):
     function_name = inspect.currentframe().f_code.co_name
     return read_shared(function_name, verb, request, locals())
-
-
-@ app.get("/api/v2/table/describe")
-def query_table_describe(
-        request: Request,
-        token: str = Depends(get_api_key),
-        format: str = None,
-        table: str = None,
-):
-    function_name = inspect.currentframe().f_code.co_name
-    return read_shared(function_name, 'describe', request, locals())
 
 
 @app.get("/api/v2/table/{verb}")
