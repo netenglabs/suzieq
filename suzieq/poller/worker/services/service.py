@@ -630,6 +630,11 @@ class Service(SqPlugin):
                 namespace=[namespace]).query('active')
             # Get the latest device session we have written with this service
             if not df.empty:
+                # If we are dealing with old data then the value of
+                # deviceSession will be unset, if this is the case, set the
+                # value to 0 so that we force write. We need to check only
+                # the first value of deviceSession as it is equal for all the
+                # latest record, as in case of reboot we rewrite everything.
                 if not df['deviceSession'].iloc[:1].isnull().any():
                     last_device_session = df['deviceSession'].iloc[0] or 0
                 else:
