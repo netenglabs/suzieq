@@ -630,7 +630,11 @@ class Service(SqPlugin):
                 namespace=[namespace]).query('active')
             # Get the latest device session we have written with this service
             if not df.empty:
-                last_device_session = df['deviceSession'].iloc[0] or 0
+                if not df['deviceSession'].iloc[:1].isnull().any():
+                    last_device_session = df['deviceSession'].iloc[0] or 0
+                else:
+                    last_device_session = 0
+
                 self._node_boot_timestamps[key] = int(last_device_session)
 
             prev_res = df.to_dict('records')
