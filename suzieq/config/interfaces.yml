@@ -210,7 +210,7 @@ apply:
           "linklocal-addr: _linklocal"
           ]'
 
-        - command: show interface | egrep '^\w|Hardware|MTU|reset|Description'
+        - command: show interface | egrep '^\w|Hardware|MTU|reset|Description|flapped'
           textfsm: textfsm_templates/nxos_show_int_grep.tfsm
           _entryType: mtumac
 
