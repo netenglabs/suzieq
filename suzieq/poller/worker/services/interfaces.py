@@ -877,8 +877,12 @@ class InterfaceService(Service):
                                            'type': 'bond_slave'}
 
             if entry['adminState'] == 'administratively down':
-                entry['state'] = 'down'
                 entry['adminState'] = 'down'
+            else:
+                # IOS reports the admin state as down when the oper state
+                # (line protocol) is down. administratively down is what
+                # is administratively down.
+                entry['adminState'] = 'up'
 
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
