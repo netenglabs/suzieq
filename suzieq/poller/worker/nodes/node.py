@@ -1516,6 +1516,15 @@ class EosNode(Node):
 class CumulusNode(Node):
     '''Cumulus Node specific implementation'''
 
+    async def _rest_connect(self):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
+    async def _rest_gather(self, service_callback, cmd_list, cb_token,
+                           oformat="json", timeout=None, reconnect=True):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
     async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
@@ -1554,73 +1563,6 @@ class CumulusNode(Node):
             self.version = "all"
             self.logger.error(
                 f'Cannot parse version from {self.address}:{self.port}')
-
-    async def _rest_connect(self):
-        '''Check that connectivity exists and works'''
-
-        auth = aiohttp.BasicAuth(self.username, password=self.password)
-        url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
-        headers = {"Content-Type": "application/json"}
-
-        async with self._cmd_pacer.wait(self.per_cmd_auth):
-            try:
-                self._conn = aiohttp.ClientSession(
-                        auth=auth, timeout=self.cmd_timeout,
-                        connector=aiohttp.TCPConnector(ssl=False)
-                )
-                async with self._conn.post(url, headers=headers) as response:
-                    _ = response.status
-            except Exception as e:
-                self.current_exception = e
-                self.logger.error(
-                    f"{self.transport}://{self.hostname}:{self.port}: Unable "
-                    f"to communicate with node due to {str(e)}")
-
-    async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat='json', timeout=None, reconnect=True):
-
-        result = []
-        if not cmd_list:
-            return result
-
-        if not self.is_connected or self._is_connecting:
-            if reconnect:
-                await self._init_rest()
-            if not self.is_connected:
-                self.logger.error(
-                    f'Unable to connect to node {self.address}:{self.port}'
-                    f'. While executing: {cmd_list}')
-                for cmd in cmd_list:
-                    result.append(self._create_error(cmd))
-                await self._post_result(service_callback, result, cb_token)
-                return
-
-        url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
-        headers = {"Content-Type": "application/json"}
-
-        async with self._cmd_pacer.wait(self.per_cmd_auth):
-            try:
-                for cmd in cmd_list:
-                    data = {"cmd": cmd}
-                    cmd_timestamp = time.time()
-                    self.logger.info(f'{self.address}:{self.port} exec: {cmd}')
-                    async with self._conn.post(
-                            url, json=data, headers=headers
-                    ) as response:
-                        data_res = await response.text()
-                        result.append(
-                            self._create_result(
-                                cmd, response.status, data_res,
-                                cmd_timestamp)
-                        )
-            except Exception as e:
-                self.current_exception = e
-                result.append(self._create_error(cmd_list))
-                self.logger.error(
-                    f"{self.transport}://{self.hostname}:{self.port}: Unable "
-                    f"to communicate with node due to {str(e)}")
-
-        await self._post_result(service_callback, result, cb_token)
 
 
 class LinuxNode(CumulusNode):
