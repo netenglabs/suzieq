@@ -638,8 +638,8 @@ class SqParquetDB(SqDB):
             if operator.and_ == op:
                 res = True
             for filter_val in filter_list:
-                res = op(res, bool(re.search(
-                    f'namespace={filter_val}', ns_to_test)))
+                ns_to_test = ns_to_test.split('namespace=')[-1]
+                res = op(res, bool(re.fullmatch(filter_val, ns_to_test)))
             return res
 
         if not namespaces:
