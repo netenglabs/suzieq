@@ -1568,6 +1568,15 @@ class CumulusNode(Node):
 class LinuxNode(CumulusNode):
     '''Linux server node'''
 
+    async def _rest_connect(self):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
+    async def _rest_gather(self, service_callback, cmd_list, cb_token,
+                           oformat="json", timeout=None, reconnect=True):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
 
 class IosXRNode(Node):
     '''IOSXR Node specific implementation'''
