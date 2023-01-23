@@ -11,6 +11,60 @@ class InventoryService(Service):
     def _clean_data_common(self, processed_data, _):
         return processed_data
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry_new = []
+        entry_chassis = []
+        entry_system = []
+
+        entry_chassis = [
+                        item for item in processed_data
+                        if item.get('_entryType') == 'chassis'
+                        ]
+        entry_system = [
+                        item for item in processed_data
+                        if item.get('_entryType') == 'system'
+                        ]
+
+        # extract single list item (dict)
+        system, = entry_system
+
+        for entry in entry_chassis:
+
+            entry_dict = {}
+
+            model = entry['model_name']
+            serial = entry['serial_number']
+            partNum = entry['part_number']
+            vendor = "Alcatel-Lucent Enterprise"
+            type_inv = entry['description']
+            partType = entry['model_type']
+
+            version_result = re.search(r'(\d+\.){3,}.*?(?=,)',
+                                       system.get('description'))
+            version = version_result.group(0)
+
+            if entry.get('admin_status') == 'POWER ON' \
+                    and entry.get('operational_status') == 'UP':
+                status = 'up'
+            else:
+                status = 'down'
+
+            entry_dict = {
+                'model': model,
+                'status': status,
+                'serial': serial,
+                'partNum': partNum,
+                'vendor': vendor,
+                'type': type_inv,
+                'partType': partType,
+                'version': version,
+            }
+
+            entry_new.append(entry_dict)
+
+        return entry_new
+
     def _clean_eos_data(self, processed_data, _):
         new_data = []
         for entry in processed_data:

@@ -106,7 +106,7 @@ Tar this directory and supply it to one of the developers, Dinesh or Justin, at 
 
 ## Massaging the Output Gathered
 
-All data stored by Suzieq is structured and has a schema. This schema is stored in config/schema. In many cases, it is not possible for the command output to fit into the schema directly. In such cases, its required to massage the output to fit the schema. Each file in config/*.yml has a corresponding python file under suzieq/poller/services/ directory that contains the code to massage the output. For example, suzieq/poller/services/bgp.py contains code that massages the output for the BGP commands from different NOS. Look at an existing file to determine how to add support for your NOS.
+All data stored by Suzieq is structured and has a schema. This schema is stored in config/schema. In many cases, it is not possible for the command output to fit into the schema directly. In such cases, its required to massage the output to fit the schema. Each file in config/*.yml has a corresponding python file under suzieq/poller/worker/services/ directory that contains the code to massage the output. For example, suzieq/poller/worker/services/bgp.py contains code that massages the output for the BGP commands from different NOS. Look at an existing file to determine how to add support for your NOS.
 
 ## Adding the NOS to the List of Known NOS
 

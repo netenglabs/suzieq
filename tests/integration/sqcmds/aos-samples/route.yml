@@ -1,0 +1,35 @@
+description: 'Testing verbs for route: show summarize unique'
+tests:
+- command: route show --format=json --namespace=aos
+  data-directory: tests/data/parquet/
+  marks: route show aos
+  output: '[{"namespace": "aos", "hostname": "net-lab-swi-001-1", "vrf": "", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["10.20.99.1"], "oifs": ["vlan2099ip"], "protocol":
+    "STATIC", "source": "", "preference": 0, "ipvers": 0, "action": "", "timestamp":
+    1671742336629}, {"namespace": "aos", "hostname": "net-lab-swi-001-1", "vrf": "",
+    "prefix": "10.20.99.0/24", "nexthopIps": ["10.20.99.11"], "oifs": ["vlan2099ip"],
+    "protocol": "LOCAL", "source": "", "preference": 0, "ipvers": 0, "action": "",
+    "timestamp": 1671742336629}, {"namespace": "aos", "hostname": "net-lab-swi-001-1",
+    "vrf": "", "prefix": "127.0.0.1/32", "nexthopIps": ["127.0.0.1"], "oifs": ["Loopback"],
+    "protocol": "LOCAL", "source": "", "preference": 0, "ipvers": 0, "action": "",
+    "timestamp": 1671742336629}, {"namespace": "aos", "hostname": "net-lab-swi-dist",
+    "vrf": "", "prefix": "0.0.0.0/0", "nexthopIps": ["10.20.99.1"], "oifs": ["vlan2099"],
+    "protocol": "STATIC", "source": "", "preference": 0, "ipvers": 0, "action": "",
+    "timestamp": 1671742337119}, {"namespace": "aos", "hostname": "net-lab-swi-dist",
+    "vrf": "", "prefix": "10.20.99.0/24", "nexthopIps": ["10.20.99.10"], "oifs": ["vlan2099"],
+    "protocol": "LOCAL", "source": "", "preference": 0, "ipvers": 0, "action": "",
+    "timestamp": 1671742337119}, {"namespace": "aos", "hostname": "net-lab-swi-dist",
+    "vrf": "", "prefix": "127.0.0.1/32", "nexthopIps": ["127.0.0.1"], "oifs": ["Loopback"],
+    "protocol": "LOCAL", "source": "", "preference": 0, "ipvers": 0, "action": "",
+    "timestamp": 1671742337119}]'
+- command: route summarize --format=json --namespace=aos
+  data-directory: tests/data/parquet/
+  marks: route show aos
+  output: '{"aos": {"deviceCnt": 2, "uniquePrefixCnt": 3, "uniqueVrfsCnt": 1, "ifRoutesCnt":
+    0, "hostRoutesCnt": 2, "totalV4RoutesinNs": 0, "totalV6RoutesinNs": 0, "routingProtocolCnt":
+    {"LOCAL": 4, "STATIC": 2}, "nexthopCnt": {"1": 6}, "routesPerHostStat": [3, 3,
+    3.0], "routesperVrfStat": [6, 6, 6.0], "deviceWithNoDefRoute": true}}'
+- command: route unique --format=json --namespace=aos
+  data-directory: tests/data/parquet/
+  marks: route show aos
+  output: '[{"prefix": "0.0.0.0/0"}, {"prefix": "10.20.99.0/24"}, {"prefix": "127.0.0.1/32"}]'

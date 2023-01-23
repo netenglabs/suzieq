@@ -1,0 +1,16 @@
+Value Key,Required slot_port (\d\/\d+\/\d+[\w]*)
+Value aggregate (Static|Dynamic)
+Value snmp_id (\d+)
+Value status (ATTACHED|CONFIGURED|PENDING|SELECTED|RESERVED)
+Value agg (\d{0,3}|NONE)
+Value oper (UP|DOWN)
+Value link (UP|DOWN)
+Value prim (YES|NO|UNK)
+
+Start
+  ^Chassis/Slot/Port\s+Aggregate\s+SNMP Id\s+Status\s+Agg\s+Oper\s+Link\s+Prim
+  ^[-+\+]+\s*$$ -> Linkagg_port
+
+Linkagg_port
+  ^\s+${slot_port}\s+${aggregate}\s+${snmp_id}\s+${status}\s+${agg}\s+${oper}\s+${link}\s+${prim}\s*$$ -> Record
+  ^. -> Error

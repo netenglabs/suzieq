@@ -11,6 +11,11 @@ show-fields:
   - remote
 
 apply:
+  aos:
+    version: all
+    command: show arp
+    textfsm: textfsm_templates/aos_show_arp.tfsm
+
   cumulus:
     version: all
     command: ip neigh show

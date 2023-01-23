@@ -1,0 +1,16 @@
+Value Key,Required number (\d{1,3})
+Value aggregate (Static|Dynamic|Loopback)
+Value snmp_id (\d+)
+Value size (\d+)
+Value admin_state (ENABLED|DISABLED)
+Value oper_state (UP|DOWN)
+Value att_ports (\d+)
+Value sel_ports (\d+)
+
+Start
+  ^Number\s+Aggregate\s+SNMP Id\s+Size\s+Admin State\s+Oper State\s+Att\/Sel Ports$$
+  ^[-+\+]+\s*$$ -> Linkagg
+
+Linkagg
+  ^\s+${number}\s+${aggregate}\s+${snmp_id}\s+${size}\s+${admin_state}\s+${oper_state}\s+${att_ports}\s+${sel_ports}$$ -> Record
+#  ^. -> Error

@@ -1,0 +1,15 @@
+Value vlannumber (\d+)
+Value vlantype (std|vstk|router|mvrp|ipmv|pvlan-p|pvlan-c|pvlan-i|fcoe|vcm)
+Value vlanadmstatus (Ena|Dis)
+Value vlanoperstatus (Ena|Dis)
+Value vlanrouterstatus (Ena|Dis)
+Value vlanmtu (\d+)
+Value vlandescription ((\S+\s*)+\S+)
+
+Start
+  ^\s*vlan\s+type\s+admin\s+oper\s+ip\s+mtu\s+name\s$$
+  ^[-+\+]+\s*$$ -> VLAN
+
+VLAN
+  ^\s*${vlannumber}\s+${vlantype}\s+${vlanadmstatus}\s+${vlanoperstatus}\s+${vlanrouterstatus}\s+${vlanmtu}\s+${vlandescription}\s*$$ -> Record
+#  ^. -> Error

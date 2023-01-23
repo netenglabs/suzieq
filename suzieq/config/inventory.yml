@@ -11,6 +11,17 @@ show-fields:
   - description
 
 apply:
+  aos:
+    version: all
+    merge: False
+    command:
+      - command: show chassis
+        textfsm: textfsm_templates/aos_show_chassis.tfsm
+        _entryType: chassis
+      - command: show system
+        textfsm: textfsm_templates/aos_show_system.tfsm
+        _entryType: system
+
   eos:
     version: all
     command: show inventory

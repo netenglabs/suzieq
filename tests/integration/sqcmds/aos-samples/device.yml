@@ -1,0 +1,23 @@
+description: 'Testing verbs for device: show summarize unique'
+tests:
+- command: device show --format=json --namespace=aos
+  data-directory: tests/data/parquet/
+  marks: device show aos
+  output: '[{"namespace": "aos", "hostname": "net-lab-swi-001-1", "model": "OS6560-P24X4",
+    "version": "8.6.289.R01 GA", "vendor": "Alcatel-Lucent Enterprise", "architecture":
+    "", "status": "alive", "address": "10.20.99.11", "bootupTimestamp": 1623163075.0,
+    "timestamp": 1671742337713}, {"namespace": "aos", "hostname": "net-lab-swi-dist",
+    "model": "OS6860E-U28", "version": "8.9.73.R01 GA", "vendor": "Alcatel-Lucent
+    Enterprise", "architecture": "", "status": "alive", "address": "10.20.99.10",
+    "bootupTimestamp": 1671531797.0, "timestamp": 1671742339335}]'
+- command: device summarize --format=json --namespace=aos
+  data-directory: tests/data/parquet/
+  marks: device show aos
+  output: '{"aos": {"deviceCnt": 2, "downDeviceCnt": 0, "unpolledDeviceCnt": 0, "vendorCnt":
+    {"Alcatel-Lucent Enterprise": 2}, "modelCnt": {"OS6560-P24X4": 1, "OS6860E-U28":
+    1}, "archCnt": {"": 2}, "versionCnt": {"8.6.289.R01 GA": 1, "8.9.73.R01 GA": 1},
+    "upTimeStat": [210542335, 48579262713, 24394902524]}}'
+- command: device unique --format=json --namespace=aos
+  data-directory: tests/data/parquet/
+  marks: device show aos
+  output: '[{"model": "OS6560-P24X4"}, {"model": "OS6860E-U28"}]'
