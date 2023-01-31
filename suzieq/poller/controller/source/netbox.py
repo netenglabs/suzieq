@@ -242,7 +242,60 @@ class Netbox(Source, InventoryAsyncPlugin):
         async with self._session.get(url) as response:
             if int(response.status) == 200:
                 res = await response.json()
-                return res.get('results', []), res.get('next')
+                next_url = res.get('next')
+                if next_url:
+                    # The next url might contain a different url if netbox is
+                    # behind a reverse proxy.
+                    # The code below sets the protocol, the host and the port
+                    # of the next request to the same parameters of the
+                    # previous request which was successful
+
+                    logger.debug(f'Parsing next page url {next_url}')
+
+                    # parse urls
+                    url_data = urlparse(url)
+                    next_url_data = urlparse(next_url)
+
+                    # retrieve protocol, host and port from the urls
+                    host = url_data.hostname
+                    protocol = url_data.scheme or 'http'
+                    port = url_data.port or _DEFAULT_PORTS.get(protocol)
+
+                    next_host = next_url_data.hostname
+                    next_protocol = next_url_data.scheme or 'http'
+                    next_port = (next_url_data.port or
+                                 _DEFAULT_PORTS.get(next_protocol))
+
+                    # verify if the two elements are different. If so, log
+                    # what's different and set the value to content of the
+                    # previous url
+                    if host != next_host:
+                        logger.debug(
+                            'Detected a different host in response: original '
+                            f'host "{host}", received host "{next_host}". '
+                            f'Setting the request host to "{host}"'
+                        )
+                        next_host = host
+                    if protocol != next_protocol:
+                        logger.debug(
+                            'Detected a different protocol in response: '
+                            f'original protocol "{protocol}", received '
+                            f'protocol "{next_protocol}". Setting the request '
+                            f'protocol to "{protocol}"'
+                        )
+                        next_protocol = protocol
+                    if port != next_port:
+                        logger.debug(
+                            'Detected a different port in response: original '
+                            f'port "{port}", received port "{next_port}". '
+                            f'Setting the request port to "{port}"'
+                        )
+                        next_port = port
+
+                    # build the next_url
+                    next_url = (f'{next_protocol}://{next_host}:{next_port}'
+                                f'{next_url_data.path}?{next_url_data.query}')
+                return res.get('results', []), next_url
             else:
                 raise InventorySourceError(
                     f'{self.name}: error in inventory get '
