@@ -13,15 +13,16 @@ import asyncio
 import logging
 import signal
 from collections import defaultdict
+from copy import deepcopy
 from pathlib import Path
 from typing import Dict, List
-from copy import deepcopy
 
 from suzieq.poller.controller.base_controller_plugin import ControllerPlugin
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
 from suzieq.poller.worker.services.service_manager import ServiceManager
-from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
+from suzieq.shared.exceptions import (InventorySourceError, SqPollerConfError,
+                                      SqRuntimeError)
 from suzieq.shared.utils import sq_get_config_file
 
 logger = logging.getLogger(__name__)
@@ -278,9 +279,12 @@ class Controller:
                 )
 
                 tasks = list(pending)
+                exceptions = []
                 for task in done:
                     if task.exception():
-                        raise task.exception()
+                        exceptions.append(task.exception())
+                if exceptions:
+                    raise SqRuntimeError(exceptions)
                 # Ignore completed task if started with single-run mode
                 if self._single_run_mode:
                     continue
@@ -314,7 +318,7 @@ class Controller:
                     ))
                 except asyncio.TimeoutError:
                     raise InventorySourceError(
-                        f'Timeout error: source {inv_src.name} took'
+                        f'Timeout error: source {inv_src.name} took '
                         'too much time'
                     )
 
