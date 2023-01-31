@@ -256,6 +256,9 @@ def mock_plugins():
         self.set_device()
         self._load(inv)
 
+    def mock_get_name(self):
+        return self._name
+
     def mock_set_inventory(self, inv):
         self._inventory = inv.copy()
         if not self._inv_is_set:
@@ -284,12 +287,14 @@ def mock_plugins():
     native_mock = patch.multiple(SqNativeFile, __init__=mock_src_init,
                                  set_inventory=mock_set_inventory,
                                  get_inventory=mock_get_inventory,
+                                 name=mock_get_name,
                                  _load=mock_native_load,
                                  set_device=MagicMock())
 
     netbox_mock = patch.multiple(Netbox, __init__=mock_src_init,
                                  set_inventory=mock_set_inventory,
                                  get_inventory=mock_get_inventory,
+                                 name=mock_get_name,
                                  _load=MagicMock(), run=mock_netbox_run,
                                  set_device=MagicMock())
 
