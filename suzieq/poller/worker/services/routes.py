@@ -72,6 +72,7 @@ class RoutesService(Service):
                 'oifs': oifs,
                 'prefix': ip_route['dest_addr'],
                 'protocol': ip_route['protocol'],
+                'vrf': 'default'
             }
 
             entry_new.append(entry_dict)
