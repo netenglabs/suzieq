@@ -779,7 +779,8 @@ class Node:
 
                 else:
                     self.logger.error('Unable to connect to '
-                                      f'{self.address}:{self.port}, {e}')
+                                      f'{self.address}:{self.port}, {e}, '
+                                      f'{type(e)}')
                 self.current_exception = e
                 await self._close_connection()
                 self._conn = None
@@ -1626,7 +1627,7 @@ class IosXRNode(Node):
                 self.current_exception = e
                 self.logger.error('Unable to create persistent SSH session'
                                   f' for {self.hostname} due to {str(e)}')
-                self._close_connection()
+                await self._close_connection()
                 self._long_proc = None
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
@@ -1700,6 +1701,11 @@ class IosXENode(Node):
                         f'Persistent SSH created for {self.hostname}')
 
                     output = await self.wait_for_prompt()
+                    if 'suzieq timeout' in output:
+                        raise TimeoutError(
+                            'Did not receive > or # prompt before privilege '
+                            'escalation')
+
                     if output.strip().endswith('>'):
                         if await self._handle_privilege_escalation() == -1:
                             self.logger.error(f'{self.address}:{self.port}: '
@@ -1709,6 +1715,21 @@ class IosXENode(Node):
                             self._stdin = None
                             self._retry -= 1
                             return
+
+                    # Set the terminal length to 0 to avoid paging
+                    self.logger.info(
+                        f'{self.hostname} set terminal length to 0')
+                    self._stdin.write('terminal length 0\n')
+                    try:
+                        output = await asyncio.wait_for(
+                            self._stdout.readuntil(self.prompt),
+                            90)
+                    except TimeoutError:
+                        raise TimeoutError(
+                            'Unable to set the terminal length to 0, did not '
+                            'receive prompt.')
+                    self.logger.info(
+                        f'{self.hostname} set terminal length to 0: DONE')
                     # Reset number of retries on successful auth
                     self._retry = self._max_retries_on_auth_fail
                 except Exception as e:
@@ -1717,12 +1738,8 @@ class IosXENode(Node):
                     self.current_exception = e
                     self.logger.error('Unable to create persistent SSH session'
                                       f' for {self.hostname} due to {str(e)}')
-                    self._close_connection()
+                    await self._close_connection()
                     return
-
-                # Set the terminal length to 0 to avoid paging
-                self._stdin.write('terminal length 0\n')
-                output = await self._stdout.readuntil(self.prompt)
 
     async def _handle_privilege_escalation(self) -> int:
         '''Escalata privilege if necessary
@@ -1779,7 +1796,8 @@ class IosXENode(Node):
         except asyncio.TimeoutError:
             self.current_exception = asyncio.TimeoutError
             self.logger.error(f'{self.address}.{self.port} '
-                              'Timed out waiting for expected prompt')
+                              'Timed out waiting for expected prompt: '
+                              f'{prompt}')
             # Return something that won't ever be in real output
             await self._close_connection()
             self.prompt = self.IOS_DEFAULT_PROMPT
@@ -1820,6 +1838,11 @@ class IosXENode(Node):
         if cmd_list is None:
             await self._post_result(service_callback, result, cb_token)
             return
+
+        self.logger.info(
+            f'{self.hostname} {self.address}:{self.port} '
+            f'executing cmds: {cmd_list}'
+        )
 
         if not self.is_connected or not self._stdin:
             if reconnect:
@@ -1864,8 +1887,8 @@ class IosXENode(Node):
                     result.append(self._create_error(cmd))
                     if not isinstance(e, asyncio.TimeoutError):
                         self.logger.error(
-                            f"Unable to connect to {self.hostname} for {cmd} "
-                            f"due to {e}")
+                            f'{self.hostname} {self.address}:{self.port}'
+                            f'output failed for {cmd} due to {e}')
                         try:
                             await self._close_connection()
                             self.logger.debug("Closed conn successfully for "
@@ -1876,8 +1899,8 @@ class IosXENode(Node):
                                 f" for {cmd}: {close_exc}")
                     else:
                         self.logger.error(
-                            f"Unable to connect to {self.hostname} {cmd} "
-                            "due to timeout")
+                            f'{self.hostname} {self.address}:{self.port}'
+                            f'output failed for {cmd} due to timeout')
                     break
 
         await self._post_result(service_callback, result, cb_token)
