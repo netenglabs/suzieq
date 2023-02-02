@@ -1,6 +1,9 @@
 """List of Exceptions specific to Suzieq, across all the modules."""
 
 
+from typing import List
+
+
 class SqCoalescerCriticalError(Exception):
     """Raised when a critical error occuur inside the coalescer"""
 
@@ -56,3 +59,12 @@ class SensitiveLoadError(Exception):
 class SqBrokenFilesError(Exception):
     """Raise when there are broken files and it is not possible to return a
     coherent result."""
+
+
+class SqRuntimeError(Exception):
+    """Contains inside self.exceptions a list of exceptions"""
+
+    def __init__(self, exceptions: List[Exception]) -> None:
+        self.exceptions = exceptions
+        message = '\n'.join([str(e) for e in exceptions])
+        super().__init__(message)

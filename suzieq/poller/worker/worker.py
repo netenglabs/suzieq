@@ -13,7 +13,7 @@ from suzieq.poller.worker.inventory.inventory import Inventory
 from suzieq.poller.worker.services.service_manager import ServiceManager
 from suzieq.poller.worker.writers.output_worker_manager \
     import OutputWorkerManager
-from suzieq.shared.exceptions import SqPollerConfError
+from suzieq.shared.exceptions import SqPollerConfError, SqRuntimeError
 
 logger = logging.getLogger(__name__)
 
@@ -140,9 +140,12 @@ class Worker:
                 try:
                     done, pending = await asyncio.wait(
                         tasks, return_when=asyncio.FIRST_COMPLETED)
+                    exceptions = []
                     for d in done:
                         if d.exception():
-                            raise d.exception()
+                            exceptions.append(d.exception())
+                    if exceptions:
+                        raise SqRuntimeError(exceptions)
                     tasks = list(pending)
                     running_svcs = self.service_manager.running_services
                     if tasks and any(i._coro in running_svcs

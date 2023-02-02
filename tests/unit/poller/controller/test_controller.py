@@ -13,7 +13,7 @@ from suzieq.poller.controller.controller import Controller
 from suzieq.poller.controller.manager.static import StaticManager
 from suzieq.poller.controller.source.native import SqNativeFile
 from suzieq.poller.controller.source.netbox import Netbox
-from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
+from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError, SqRuntimeError
 from suzieq.shared.utils import load_sq_config
 from tests.conftest import create_dummy_config_file, get_async_task_mock
 
@@ -700,9 +700,22 @@ async def test_controller_empty_inventory(inv_file: str, mock_plugins,
     with patch.multiple(SqNativeFile, set_device=mock_set_device, name='n'):
         with patch.multiple(Netbox, set_device=mock_set_device, name='n'):
             c.init()
-            with pytest.raises(InventorySourceError,
-                               match='No devices to poll'):
+            try:
                 await c.run()
+            except SqRuntimeError as err:
+                assert len(err.exceptions) == 1, (
+                    f'got multiple exceptions: {err}')
+                exc = err.exceptions[0]
+                assert isinstance(exc, InventorySourceError), (
+                    'wrong exception type. expected InventorySourceError, got '
+                    f'{type(exc)}')
+                exp_error = 'No devices to poll'
+                assert str(exc) == exp_error, (
+                    f'Wrong error message: expected {exp_error}, got '
+                    f'{str(exc)}'
+                )
+            except Exception as e:
+                pytest.fail(f'Unexpected exception: ({type(e)}) {e}')
 
 
 @pytest.mark.poller
@@ -731,5 +744,18 @@ async def test_controller_run_timeout_error(inv_file: str, config_file: str,
     c = generate_controller(default_args, inv_file, config_file)
     c.init()
     with patch.multiple(Netbox, run=mock_netbox_run, name='n'):
-        with pytest.raises(InventorySourceError):
+        try:
             await c.run()
+        except SqRuntimeError as err:
+            assert len(err.exceptions) == 1, (
+                f'got multiple exceptions: {err}')
+            exc = err.exceptions[0]
+            assert isinstance(exc, InventorySourceError), (
+                'wrong exception type. expected InventorySourceError, got '
+                f'{type(exc)}')
+            exp_error = 'Timeout error: source n took too much time'
+            assert str(exc) == exp_error, (
+                f'Wrong error message: expected {exp_error}, got {str(exc)}'
+            )
+        except Exception as e:
+            pytest.fail(f'Unexpected exception: ({type(e)}) {e}')

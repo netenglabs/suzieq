@@ -13,7 +13,7 @@ import uvloop
 from suzieq.poller.controller.controller import Controller
 from suzieq.poller.worker.writers.output_worker import OutputWorker
 from suzieq.shared.exceptions import InventorySourceError, PollingError, \
-    SqPollerConfError
+    SqPollerConfError, SqRuntimeError
 from suzieq.shared.utils import (poller_log_params, init_logger,
                                  load_sq_config, print_version)
 from suzieq.poller.controller.utils.inventory_utils import read_inventory
@@ -48,15 +48,21 @@ async def start_controller(user_args: argparse.Namespace, config_data: Dict):
         controller = Controller(user_args, config_data)
         controller.init()
         await controller.run()
-    except (SqPollerConfError, InventorySourceError, PollingError) as error:
-        if not log_stdout:
-            print(f"ERROR: {error}")
-        logger.error(error)
-        sys.exit(1)
     except Exception as error:
-        if not log_stdout:
-            traceback.print_exc()
-        logger.critical(f'{error}\n{traceback.format_exc()}')
+        if isinstance(error, SqRuntimeError):
+            exceptions = error.exceptions
+        else:
+            exceptions = [error]
+        for exc in exceptions:
+            if any(isinstance(exc, e) for e in
+                   [SqPollerConfError, InventorySourceError, PollingError]):
+                if not log_stdout:
+                    print(f"ERROR: {error}")
+                logger.error(exc)
+            else:
+                if not log_stdout:
+                    traceback.print_exc()
+                logger.critical(f'{exc}\n{traceback.format_exc()}')
         sys.exit(1)
 
 
