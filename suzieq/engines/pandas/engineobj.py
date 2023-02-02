@@ -7,7 +7,7 @@ import numpy as np
 import pandas as pd
 from pandas.core.groupby import DataFrameGroupBy
 
-from suzieq.shared.utils import humanize_timestamp, reduce_filter_list
+from suzieq.shared.utils import build_query_str, humanize_timestamp
 from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects import get_sqobject
@@ -185,9 +185,6 @@ class SqPandasEngine(SqEngineObj):
 
         aug_fields = sch.get_augmented_fields(fields)
 
-        if 'timestamp' not in fields:
-            fields.append('timestamp')
-
         self._add_active_to_fields(view, fields, addnl_fields)
         # Order matters. Don't put this before the missing key fields insert
         for f in aug_fields:
@@ -205,7 +202,7 @@ class SqPandasEngine(SqEngineObj):
             if fld not in fields+addnl_fields:
                 addnl_fields.insert(0, fld)
 
-        getcols = list(set(fields+addnl_fields))
+        getcols = list(set(fields+addnl_fields+['timestamp']))
 
         tz = self.ctxt.cfg.get('analyzer', {}).get('timezone', 'UTC')
         settings = {'TIMEZONE': tz}
@@ -287,36 +284,16 @@ class SqPandasEngine(SqEngineObj):
         Returns:
             pd.DataFrame: filtered dataframe
         """
-        if hostname and not df.empty:
-            hdf_list = []
-            hnlist = reduce_filter_list(hostname)
-            for hn in hnlist:
-                use_not = False
-                if hn.startswith('~'):
-                    hn = hn[1:]
-                elif hn.startswith('!'):
-                    hn = hn[1:]
-                    use_not = True
 
-                    if hn.startswith('~'):
-                        hn = hn[1:]
+        if not hostname or df.empty:
+            return df
 
-                if use_not:
-                    df1 = df.query(
-                        f'~hostname.str.fullmatch("{hn}")')
-                    hdf_list = [df1]
-                    # With not, the list of hostnames becomes an and
-                    df = df1
-                else:
-                    df1 = df.query(f"hostname.str.fullmatch('{hn}')")
-                    if not df1.empty:
-                        hdf_list.append(df1)
+        hostname_filter = build_query_str(
+            [], self.schema, False, hostname=hostname)
 
-            if hdf_list:
-                df = pd.concat(hdf_list)
-            else:
-                return pd.DataFrame(columns=df.columns.tolist())
-        return df
+        res_df = df.query(hostname_filter)
+
+        return res_df
 
     def get(self, **kwargs) -> pd.DataFrame:
         """The default get method for all tables
@@ -354,11 +331,11 @@ class SqPandasEngine(SqEngineObj):
         all_time_df = self.get_valid_df(view='all', **kwargs)
         times = all_time_df['timestamp'].unique()
         ret = {'firstTime': all_time_df.timestamp.min(),
-               'latestTime': all_time_df.timestamp.max(),
+               'lastTime': all_time_df.timestamp.max(),
                'intervals': len(times),
                'allRows': len(all_time_df),
-               'namespaces': all_time_df.get('namespace',
-                                             pd.Series(dtype='category'))
+               'namespaceCnt': all_time_df.get('namespace',
+                                               pd.Series(dtype='category'))
                .nunique(),
                'deviceCnt': all_time_df.get('hostname',
                                             pd.Series(dtype='category'))
@@ -457,19 +434,21 @@ class SqPandasEngine(SqEngineObj):
         if not what:
             return pd.DataFrame()
 
-        columns = self.schema.get_display_fields(columns)
-        if what not in columns:
-            columns.insert(-1, what)
+        fields = self.schema.get_display_fields(columns)
+        if columns == ['default'] and what not in fields:
+            fields.insert(-1, what)
 
-        df = self.get(columns=columns, **kwargs)
-        if df.empty or ('error' in df.columns):
+        getcols = list(set(fields + self.schema.key_fields() + [what]))
+
+        df = self.get(columns=getcols, **kwargs)
+        if 'error' in df.columns or df.empty:
             return df
 
         columns_by = [x for x in [what] + self.schema.key_fields()
                       if x in df.columns]
 
         return df.sort_values(by=columns_by, ascending=reverse) \
-                 .head(sqTopCount)
+                 .head(sqTopCount)[fields]
 
     def lpm(self, **kwargs):
         '''Default implementation to return not supported'''
@@ -643,21 +622,13 @@ class SqPandasEngine(SqEngineObj):
         if not field_name:
             field_name = field
 
-        count_per_ns = self.nsgrp[field].nunique()
-
         for n in self.ns.keys():
-            if 3 >= count_per_ns[n] > 0:
-                # can't do a value_counts on all groups, incase one of the
-                # groups other groups doesn't have data
-                unique_for_ns = self.nsgrp.get_group(n)[field].value_counts()
-                value = unique_for_ns.to_dict()
-                # Filter numm entries if category because of how pandas
-                # behaves here
-                if self.nsgrp[field].dtype[n].name == 'category':
-                    value = dict(filter(lambda x: x[1] != 0, value.items()))
-
-            else:
-                value = count_per_ns[n]
+            unique_for_ns = self.nsgrp.get_group(n)[field].value_counts()
+            value = unique_for_ns.to_dict()
+            # Filter numm entries if category because of how pandas
+            # behaves here
+            if self.nsgrp[field].dtype[n].name == 'category':
+                value = dict(filter(lambda x: x[1] != 0, value.items()))
 
             self.ns[n].update({field_name: value})
 

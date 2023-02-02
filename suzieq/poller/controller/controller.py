@@ -318,6 +318,7 @@ class Controller:
                         'too much time'
                     )
 
+                logger.debug(f'Received inventory from {inv_src.name}')
                 if cur_inv:
                     cur_inv_count = len(cur_inv)
                     duplicated_devices = [x for x in cur_inv

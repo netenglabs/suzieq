@@ -282,7 +282,10 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         # starting string: 'vrfs/*/peerList/*/[ by
                         # merging the rest lists
                         for entry in result[1:]:
-                            tmpres[0]['rest'].extend(entry[0]['rest'])
+                            # in case of junos routes, we sometimes end up with
+                            # {'rest': 'keepalive'} as an element. Ignore that
+                            if isinstance(tmpres[0]['rest'], list):
+                                tmpres[0]['rest'].extend(entry[0]['rest'])
                         result = tmpres
 
             tmplt_str = tmplt_str[pos + 1:]

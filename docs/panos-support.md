@@ -1,10 +1,10 @@
 ## Panos support - alpha feature
 
-Palo Alto firewalls support is currently an alpha feature. This means that some workarounds are needed to let Suzieq poll these devices. We tested it with a PA-VM with PanOS version 8.0 but should be compatible with higher versions too.
+Palo Alto firewalls support is currently an alpha feature. This means that some workarounds are needed to let SuzieQ poll these devices. We tested it with a PA-VM with PanOS version 8.0 but should be compatible with higher versions too.
 
-At the moment Suzieq cannot discover automatically if a node is running panos, therefore this should be manually specified in the inventory. If you haven't checked out the new inventory format for Suzieq, read the [related docs](./inventory.md) before proceeding.
+At the moment SuzieQ cannot discover automatically if a node is running panos, therefore this should be manually specified in the inventory. If you haven't checked out the new inventory format for SuzieQ, read the [related docs](./inventory.md) before proceeding.
 
-If you are using Netbox or Ansible as source, Suzieq cannot pull the device type information from it. Therefore, you will need to define another source only for the panos device in order to specify the devtype. For example:
+If you are using Netbox or Ansible as source, SuzieQ cannot pull the device type information from it. Therefore, you will need to define another source only for the panos device in order to specify the devtype. For example:
 
 ```yaml
 sources:

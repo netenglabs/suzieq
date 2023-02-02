@@ -398,11 +398,12 @@ class InterfaceService(Service):
                     vlan = int(vlan)
                     if vlan > 4095:
                         vlan = 0
+                        iftype = 'internal'
                 else:
                     vlan = 0
                     iftype = entry['type']
 
-                if iftype == 'subinterface':
+                if iftype == 'subinterface' or lifname.endswith(".0"):
                     speed = lentry \
                         .get('logical-interface-bandwidth', [{}])[0] \
                         .get('data', entry.get('speed', MISSING_SPEED))
@@ -497,14 +498,18 @@ class InterfaceService(Service):
                     laddr = elem.get("ifa-local")[0]["data"]
                     if ':' in laddr:
                         plen = (elem.get("ifa-destination",
-                                         [{"data": "0/128"}])[0]
-                                ["data"].split("/")[1])
-                        v6addresses.append(f'{laddr}/{plen}')
+                                         [{"data": "0/128"}])[0]["data"])
+                        if '/' in plen:
+                            v6addresses.append(f'{laddr}/{plen.split("/")[1]}')
+                        else:
+                            v6addresses.append(f'{laddr}/128')
                     else:
                         plen = (elem.get("ifa-destination",
-                                         [{"data": "0/32"}])[0]
-                                ["data"].split("/")[1])
-                        v4addresses.append(f'{laddr}/{plen}')
+                                         [{"data": "0/32"}])[0]["data"])
+                        if '/' in plen:
+                            v4addresses.append(f'{laddr}/{plen.split("/")[1]}')
+                        else:
+                            v4addresses.append(f'{laddr}/32')
                 vlanName = lentry.get('irb-domain', [{}])[0] \
                     .get('irb-bridge', [{}])[0] \
                     .get('data', '')
@@ -816,8 +821,10 @@ class InterfaceService(Service):
                 elif 'Autostate Enabled' in state:
                     entry['state'] = 'down'
                     entry['reason'] = state.split(',')[1].strip()
-                elif 'disabled' in state:
+                elif 'err-disabled' in state:
                     entry['state'] = 'errDisabled'
+                elif 'disabled' in state:
+                    entry['state'] = 'down'
                 elif 'monitoring' in state:
                     entry['state'] = 'down'
                 elif 'suspended' in state:
@@ -872,8 +879,12 @@ class InterfaceService(Service):
                                            'type': 'bond_slave'}
 
             if entry['adminState'] == 'administratively down':
-                entry['state'] = 'down'
                 entry['adminState'] = 'down'
+            else:
+                # IOS reports the admin state as down when the oper state
+                # (line protocol) is down. administratively down is what
+                # is administratively down.
+                entry['adminState'] = 'up'
 
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))

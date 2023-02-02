@@ -1,3 +1,4 @@
+from typing import List
 import pandas as pd
 from pandas.core.dtypes.dtypes import DatetimeTZDtype
 
@@ -30,3 +31,11 @@ class BgpObj(SqObject):
                     .get('timezone', None))
 
         return super().humanize_fields(df)
+
+    def _get_empty_cols(self, columns: List[str], fun: str, **kwargs) \
+            -> List[str]:
+        if fun == 'assert' and columns in [['default'], ['*']]:
+            return ['namespace', 'hostname', 'vrf', 'peer',
+                    'asn', 'peerAsn', 'state', 'peerHostname',
+                    'result', 'assertReason', 'timestamp']
+        return super()._get_empty_cols(columns, fun, **kwargs)

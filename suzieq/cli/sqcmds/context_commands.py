@@ -33,7 +33,7 @@ from suzieq.shared.utils import SUPPORTED_ENGINES, print_version
     description="What backend analyzer engine to use",
 )
 @argument(
-    "debug", choices=['True'], description="Enable debug mode",
+    "debug", choices=['True', 'False'], description="Enable debug mode",
 )
 @argument(
     "datadir",
@@ -89,7 +89,7 @@ def set_ctxt(
         plugin_ctx.change_engine(engine)
 
     if debug:
-        ctxt.debug = True
+        ctxt.debug = debug == 'True'
 
     if datadir:
         if os.path.isdir(datadir):

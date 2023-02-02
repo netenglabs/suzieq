@@ -23,6 +23,9 @@ class MacsObj(SqPandasEngine):
         vtep = kwargs.get('remoteVtepIp', [])
 
         addnl_fields = []
+        fields = self.schema.get_display_fields(columns)
+        if 'timestamp' not in fields:
+            addnl_fields.append('timestamp')
 
         if vtep:
             if kwargs['remoteVtepIp'] == ['any']:
@@ -36,7 +39,6 @@ class MacsObj(SqPandasEngine):
         else:
             compute_moves = False
 
-        fields = self.schema.get_display_fields(columns)
         self._add_active_to_fields(view, fields, addnl_fields)
 
         user_query_cols = self._get_user_query_cols(user_query)
@@ -45,7 +47,10 @@ class MacsObj(SqPandasEngine):
         df = super().get(view=view, columns=fields, addnl_fields=addnl_fields,
                          **kwargs)
 
-        if compute_moves and not df.empty:
+        if df.empty:
+            return df
+
+        if compute_moves:
             df = df.set_index('namespace hostname mackey macaddr'.split()) \
                    .sort_values(by=['timestamp'])
 
@@ -84,10 +89,6 @@ class MacsObj(SqPandasEngine):
             df = df.query("remoteVtepIp != ''").reset_index(drop=True)
         elif localOnly:
             df = df.query("remoteVtepIp == ''").reset_index(drop=True)
-
-        if columns in [['default'], ['*']] or 'mackey' not in columns:
-            if 'mackey' in fields:
-                fields.remove('mackey')
 
         return df[fields]
 

@@ -16,23 +16,16 @@ class TableObj(SqPandasEngine):
 
         table_list = self._dbeng.get_tables()
         df = pd.DataFrame()
-        kwargs.pop('columns', ['default'])
-        unknown_tables = []
+        columns = kwargs.pop('columns', ['default'])
+        fields = self.schema.get_display_fields(columns)
         tables = []
 
         for table in table_list:
-            table_obj = self._get_table_sqobj(table)
-
-            if not table_obj:
-                # This is a table without an sqobject backing store
-                # this happens either because we haven't yet implemented the
-                # table functions or because this table is collapsed into a
-                # single table as in the case of ospf
-                unknown_tables.append(table)
-                table_inst = self._get_table_sqobj('tables')
-                table_inst.table = table
-            else:
-                table_inst = table_obj
+            try:
+                table_inst = self._get_table_sqobj(table)
+            except ModuleNotFoundError:
+                # ignore unknown tables
+                continue
 
             info = {'table': table}
             info.update(table_inst.get_table_info(
@@ -47,14 +40,14 @@ class TableObj(SqPandasEngine):
         df = df.sort_values(by=['table']).reset_index(drop=True)
         cols = df.columns
         total = pd.DataFrame([['TOTAL',  df['firstTime'].min(),
-                               df['latestTime'].max(),
+                               df['lastTime'].max(),
                                df['intervals'].max(),
                                df['allRows'].sum(),
-                               df['namespaces'].max(),
+                               df['namespaceCnt'].max(),
                                df['deviceCnt'].max()]],
                              columns=cols)
         df = df.append(total, ignore_index=True).dropna()
-        return df
+        return df[fields]
 
     def summarize(self, **kwargs):
         '''Summarize metainfo about the various DB tables'''
@@ -68,12 +61,12 @@ class TableObj(SqPandasEngine):
 
         sdf = pd.DataFrame({
             'serviceCnt': [df.index.nunique()-1],
-            'namespaceCnt': [df.at['TOTAL', 'namespaces']],
+            'namespaceCnt': [df.at['TOTAL', 'namespaceCnt']],
             'deviceCnt': [df.at['device', 'deviceCnt']],
             'earliestTimestamp': [df.firstTime.min()],
-            'lastTimestamp': [df.latestTime.max()],
+            'lastTimestamp': [df.lastTime.max()],
             'firstTime99': [df.firstTime.quantile(0.99)],
-            'latestTime99': [df.latestTime.quantile(0.99)],
+            'lastTime99': [df.lastTime.quantile(0.99)],
         })
         return sdf.T.rename(columns={0: 'summary'})
 
@@ -87,15 +80,20 @@ class TableObj(SqPandasEngine):
         if not what:
             return pd.DataFrame()
 
+        columns = kwargs.pop('columns', ['default'])
+        fields = self.schema.get_display_fields(columns)
+
         df = self.get(**kwargs)
-        if df.empty or ('error' in df.columns):
+        if ('error' in df.columns) or df.empty:
             return df
 
         if reverse:
-            return df.query('table != "TOTAL"') \
+            df = df.query('table != "TOTAL"') \
                 .nsmallest(sqTopCount, columns=what, keep="all") \
                 .head(sqTopCount)
         else:
-            return df.query('table != "TOTAL"') \
+            df = df.query('table != "TOTAL"') \
                 .nlargest(sqTopCount, columns=what, keep="all") \
                 .head(sqTopCount)
+
+        return df[fields]

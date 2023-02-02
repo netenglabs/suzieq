@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-cd $PYTHONPATH
 VERSION=`./suzieq/version.py`
 poetry build
 if [ $# -eq 0 ]; then

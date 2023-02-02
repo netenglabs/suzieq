@@ -64,9 +64,9 @@ default set of columns that are displayed, but you can choose to display less or
 display more, using the ‘columns=’ filter. ‘columns=default’ gives this default view, 
 ‘columns=*’ displays all the columns and ‘columns=’col1 col2' would display the col1 and col2 columns.
 
-You can see how many columns and what are the defaults using the ‘table describe’ command.
+You can see how many columns and what are the defaults using the ```<table> describe``` command, as in:
 
-    table describe table=device
+    device describe
 
 ![](images/suzieq-table-describe-device.png)
 

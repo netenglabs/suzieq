@@ -8,7 +8,7 @@ Value statePfx (.*)
 Value Filldown routerId ([0-9.]+)
 
 Start
-  ^BGP\s+summary\s+information\s+for\s+VRF\s+${vrf},address\s+family\s+${afi}\s+${safi}
+  ^BGP\s+summary\s+information\s+for\s+VRF\s+${vrf},\s+address\s+family\s+${afi}\s+${safi}
   ^For\s+address\s+family:\s+${afi}\s+${safi}\s*$$
   ^BGP\s+router\s+identifier\s+${routerId},\s+local\s+AS\s+number\s+${asn}
   ^Neighbor\s+V\s+ -> Nbrs
@@ -34,6 +34,7 @@ Nbrs
 #Neighbor        V           AS MsgRcvd MsgSent   TblVer  InQ OutQ Up/Down  State/PfxRcd
 #10.127.0.0      4        65001     417     417        7    0    0 06:15:34        3
 #10.128.1.1      4        65002      31      31        0    0    0 00:23:10     Idle
+#10.127.0.2      4        65002      41      17        2    0    0 03:15:34        3
 #
 #For address family: VPNv4 Unicast
 #BGP router identifier 10.0.0.12, local AS number 65000

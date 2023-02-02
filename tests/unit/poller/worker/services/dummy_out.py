@@ -29,6 +29,7 @@ interface_out = [
         "hostname": "leaf01",
         "namespace": "vagrant",
         "timestamp": 1644778941900,
+        "deviceSession": 1644778941,
         "active": True,
     },
     {
@@ -59,6 +60,7 @@ interface_out = [
         "hostname": "leaf01",
         "namespace": "vagrant",
         "timestamp": 1644778941900,
+        "deviceSession": 1644778941,
         "active": True,
     },
     {
@@ -89,6 +91,7 @@ interface_out = [
         "hostname": "leaf01",
         "namespace": "vagrant",
         "timestamp": 1644778941900,
+        "deviceSession": 1644778941,
         "active": True,
     },
     {
@@ -119,6 +122,7 @@ interface_out = [
         "hostname": "leaf01",
         "namespace": "vagrant",
         "timestamp": 1644778941900,
+        "deviceSession": 1644778941,
         "active": True,
     },
     {
@@ -149,6 +153,7 @@ interface_out = [
         "hostname": "leaf01",
         "namespace": "vagrant",
         "timestamp": 1644778941900,
+        "deviceSession": 1644778941,
         "active": True,
     },
     {
@@ -179,6 +184,7 @@ interface_out = [
         "hostname": "leaf01",
         "namespace": "vagrant",
         "timestamp": 1644778941900,
+        "deviceSession": 1644778941,
         "active": True,
     },
     {
@@ -209,6 +215,7 @@ interface_out = [
         "hostname": "leaf01",
         "namespace": "vagrant",
         "timestamp": 1644778941900,
+        "deviceSession": 1644778941,
         "active": True,
     },
     {
@@ -239,6 +246,7 @@ interface_out = [
         "hostname": "leaf01",
         "namespace": "vagrant",
         "timestamp": 1644778941900,
+        "deviceSession": 1644778941,
         "active": True,
     },
     {
@@ -269,6 +277,7 @@ interface_out = [
         "hostname": "leaf01",
         "namespace": "vagrant",
         "timestamp": 1644778941900,
+        "deviceSession": 1644778941,
         "active": True,
     },
 ]

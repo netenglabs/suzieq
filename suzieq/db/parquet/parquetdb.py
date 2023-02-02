@@ -8,6 +8,7 @@ from datetime import datetime, timedelta, timezone
 from contextlib import suppress
 from shutil import rmtree
 from collections import defaultdict
+import operator
 
 import pandas as pd
 import numpy as np
@@ -16,13 +17,14 @@ import pyarrow.dataset as ds
 import pyarrow.parquet as pq
 
 from suzieq.db.base_db import SqDB, SqCoalesceStats
+from suzieq.shared.exceptions import SqCoalescerCriticalError
 from suzieq.shared.schema import Schema, SchemaForTable
 
 from suzieq.db.parquet.pq_coalesce import (SqCoalesceState,
                                            coalesce_resource_table)
-from suzieq.db.parquet.migratedb import get_migrate_fn
-from suzieq.shared.utils import reduce_filter_list
-
+from suzieq.db.parquet.migratedb import generic_migration, get_migrate_fn
+from suzieq.shared.utils import get_default_per_vals
+from suzieq.shared.exceptions import SqBrokenFilesError
 
 PARQUET_VERSION = '2.4'
 
@@ -45,7 +47,8 @@ class SqParquetDB(SqDB):
         folder = self._get_table_directory(None, False)
         dirs = Path(folder).glob('*')
         tables = [str(x.stem) for x in dirs
-                  if not str(x.stem).startswith(('_', 'coalesced'))]
+                  if not str(x.stem).startswith(('_', 'coalesced'))
+                  and x.is_dir()]
 
         return tables
 
@@ -143,8 +146,6 @@ class SqParquetDB(SqDB):
                         final_df = pd.concat([final_df, tmp_df])
             except FileNotFoundError:
                 pass
-            except Exception as e:
-                raise e
 
             # Now operate on the coalesced data set
             cp_dataset = self._get_cp_dataset(table_name, need_sqvers, sqvers,
@@ -167,8 +168,9 @@ class SqParquetDB(SqDB):
                 if not final_df.empty and (view == 'latest'):
                     final_df = final_df.set_index(key_fields) \
                         .query('~index.duplicated(keep="last")')
-        except (pa.lib.ArrowInvalid, OSError):
-            return pd.DataFrame(columns=fields)
+        except pa.lib.ArrowInvalid as error:
+            self.logger.error(f'Unable to read broken/invalid file: {error}')
+            raise SqBrokenFilesError('Corrupted/broken file.')
 
         if need_sqvers:
             final_df['sqvers'] = max_vers
@@ -176,7 +178,7 @@ class SqParquetDB(SqDB):
 
         cols = set(final_df.columns.tolist() + final_df.index.names)
         for fld in [x for x in fields if x not in cols]:
-            final_df[fld] = ''
+            final_df[fld] = None
         return final_df.reset_index()[fields]
 
     def write(self, table_name: str, data_format: str,
@@ -205,7 +207,7 @@ class SqParquetDB(SqDB):
             partition_cols = ['sqvers', 'namespace', 'hostname']
 
         schema_def = dict(zip(schema.names, schema.types))
-        defvals = self._get_default_vals()
+        defvals = get_default_per_vals()
 
         if data_format == "pandas":
             if isinstance(data, pd.DataFrame):
@@ -249,8 +251,8 @@ class SqParquetDB(SqDB):
                        stuff
         :param ign_sqpoller: True if its OK to ignore the absence of sqpoller
                              to coalesce
-        :returns: coalesce statistics list, one per table
-        :rtype: SqCoalesceStats
+        :returns: exception if any, coalesce statistics list, one per table
+        :rtype: Tuple[SqCoalescerCriticalError, SqCoalesceStats]
         """
 
         infolder = self.cfg['data-directory']
@@ -261,7 +263,7 @@ class SqParquetDB(SqDB):
 
         if not period:
             period = self.cfg.get(
-                'coalesceer', {'period': '1h'}).get('period', '1h')
+                'coalescer', {'period': '1h'}).get('period', '1h')
         schemas = Schema(self.cfg.get('schema-directory'))
         state = SqCoalesceState(self.logger, period)
 
@@ -275,34 +277,25 @@ class SqParquetDB(SqDB):
         try:
             timeint = int(period[:-1])
             time_unit = period[-1]
-            if time_unit == 'm':
-                run_int = timedelta(minutes=timeint)
-                state.prefix = 'sqc-m-'
-                state.ign_pfx = ['.', '_', 'sqc-']
-            elif time_unit == 'h':
-                run_int = timedelta(hours=timeint)
-                state.prefix = 'sqc-h-'
-                state.ign_pfx = ['.', '_', 'sqc-y-', 'sqc-d-', 'sqc-w-',
-                                 'sqc-M-']
-            elif time_unit == 'd':
-                run_int = timedelta(days=timeint)
-                if timeint > 364:
-                    state.prefix = 'sqc-y-'
-                    state.ign_pfx = ['.', '_', 'sqc-y-']
-                elif timeint > 29:
-                    state.prefix = 'sqc-M-'
-                    state.ign_pfx = ['.', '_', 'sqc-M-', 'sqc-y-']
-                else:
-                    state.prefix = 'sqc-d-'
-                    state.ign_pfx = ['.', '_', 'sqc-m-', 'sqc-d-', 'sqc-w-',
-                                     'sqc-M-', 'sqc-y-']
-            elif time_unit == 'w':
-                run_int = timedelta(weeks=timeint)
-                state.prefix = 'sqc-w-'
-                state.ign_pfx = ['.', '_', 'sqc-w-', 'sqc-m-', 'sqc-y-']
-            else:
-                logging.error(f'Invalid unit for period, {time_unit}, '
-                              'must be one of m/h/d/w')
+            allowed_units = {
+                'm': 'minutes',
+                'h': 'hours',
+                'd': 'days',
+                'w': 'weeks'
+            }
+            if time_unit not in allowed_units:
+                raise ValueError(f'Invalid unit for period, {time_unit}, '
+                                 'must be one of m/h/d/w')
+
+            run_int = timedelta(**{allowed_units[time_unit]: timeint})
+            state.prefix = f'sqc-{time_unit}{timeint}-'
+            state.ign_pfx = ['.', '_']
+
+            # Build the list of coalesced file to ignore if the coalescer
+            # works with already coalesced files.
+            unit_list = list(allowed_units)
+            ignored_from_coalescing = unit_list[unit_list.index(time_unit)+1:]
+            state.ign_pfx += [f'sqc-{u}' for u in ignored_from_coalescing]
         except ValueError:
             logging.error(f'Invalid time, {period}')
             return None
@@ -332,6 +325,7 @@ class SqParquetDB(SqDB):
 
         # We've forced the sqPoller to be always the first table to coalesce
         stats = []
+        current_exception = None
         for entry in tables:
             table_outfolder = f'{outfolder}/{entry}'
             table_infolder = f'{infolder}//{entry}'
@@ -346,6 +340,7 @@ class SqParquetDB(SqDB):
                 self.logger.info(
                     f'No input records to coalesce for {entry}')
                 continue
+            end = None
             try:
                 if not os.path.isdir(table_outfolder):
                     os.makedirs(table_outfolder)
@@ -355,7 +350,7 @@ class SqParquetDB(SqDB):
                 # Migrate the data if needed
                 self.logger.debug(f'Migrating data for {entry}')
                 self.migrate(entry, state.schema)
-                self.logger.debug(f'Migrating data for {entry}')
+
                 start = time()
                 coalesce_resource_table(table_infolder, table_outfolder,
                                         table_archive_folder, entry,
@@ -370,14 +365,21 @@ class SqParquetDB(SqDB):
                                              state.wrrec_count,
                                              int(datetime.now(tz=timezone.utc)
                                                  .timestamp() * 1000)))
-            except Exception:  # pylint: disable=broad-except
+            except Exception as e:
                 self.logger.exception(f'Unable to coalesce table {entry}')
+                if end is None:
+                    end = time()
                 stats.append(SqCoalesceStats(entry, period, int(end-start),
                                              0, 0,
                                              int(datetime.now(tz=timezone.utc)
                                                  .timestamp() * 1000)))
+                # If we are dealing with a critical error, abort the coalescing
+                if isinstance(e, SqCoalescerCriticalError):
+                    current_exception = e
+                    break
+                self.logger.exception(f'Unable to coalesce table {entry}')
 
-        return stats
+        return current_exception, stats
 
     def migrate(self, table_name: str, schema: SchemaForTable) -> None:
         """Migrates the data for the table specified to latest version
@@ -389,64 +391,48 @@ class SqParquetDB(SqDB):
         """
 
         current_vers = schema.version
-        defvals = self._get_default_vals()
         arrow_schema = schema.get_arrow_schema()
-        schema_def = dict(zip(arrow_schema.names, arrow_schema.types))
 
-        # pylint: disable=too-many-nested-blocks
         for sqvers in self._get_avail_sqvers(table_name, True):
             if sqvers != current_vers:
                 migrate_rtn = get_migrate_fn(table_name, sqvers, current_vers)
-                if migrate_rtn:
-                    dataset = self._get_cp_dataset(table_name, True, sqvers,
-                                                   'all', '', '')
+                dataset = self._get_cp_dataset(table_name, True, sqvers,
+                                               'all', '', '')
+                if not dataset:
+                    continue
 
-                    if not dataset:
-                        continue
+                for file in dataset.files:
+                    try:
+                        df = ds.dataset(file,
+                                        format='parquet',
+                                        partitioning='hive') \
+                            .to_table() \
+                            .to_pandas(self_destruct=True)
+                    except pa.ArrowInvalid as e:
+                        self.logger.warning(f'Unable to migrate file: {e}')
 
-                    for item in dataset.files:
-                        try:
-                            namespace = item.split('namespace=')[1] \
-                                .split('/')[0]
-                        except IndexError:
-                            # Don't convert data not in our template
-                            continue
+                    if migrate_rtn:
+                        df = migrate_rtn(df, table_name, schema)
+                    # Always perform generic migration
+                    df = generic_migration(df, table_name, schema)
 
-                        df = pd.read_parquet(item)
-                        df['sqvers'] = sqvers
-                        df['namespace'] = namespace
-                        newdf = migrate_rtn(df)
+                    # Work out the filename
+                    splitted_name = Path(file).name.split('-')
+                    name_prefix = '-'.join(splitted_name[0:2])
+                    name_suffix = '-'.join(splitted_name[2:])
+                    filename = name_prefix + '-{i}-' + name_suffix
 
-                        cols = newdf.columns
-                        # Ensure all fields are present
-                        for field in schema_def:
-                            if field not in cols:
-                                newdf[field] = defvals.get(schema_def[field],
-                                                           '')
+                    self.write(table_name, 'pandas', df, True,
+                               arrow_schema, filename)
 
-                        newdf.drop(columns=['namespace', 'sqvers'])
+                    self.logger.debug(
+                        f'Migrated {file} version {sqvers}->'
+                        f'{current_vers}')
+                    os.remove(file)
 
-                        newitem = item.replace(f'sqvers={sqvers}',
-                                               f'sqvers={current_vers}')
-                        newdir = os.path.dirname(newitem)
-                        if not os.path.exists(newdir):
-                            os.makedirs(newdir, exist_ok=True)
-
-                        table = pa.Table.from_pandas(
-                            newdf, schema=schema.get_arrow_schema(),
-                            preserve_index=False)
-                        pq.write_to_dataset(table, newitem,
-                                            version=PARQUET_VERSION,
-                                            compression="ZSTD",
-                                            row_group_size=100000)
-                        self.logger.debug(
-                            f'Migrated {item} version {sqvers}->'
-                            f'{current_vers}')
-                        os.remove(item)
-
-                    rmtree(
-                        f'{self._get_table_directory(table_name, True)}/'
-                        f'sqvers={sqvers}', ignore_errors=True)
+                rmtree(
+                    f'{self._get_table_directory(table_name, True)}/'
+                    f'sqvers={sqvers}', ignore_errors=True)
 
     def _get_avail_sqvers(self, table_name: str, coalesced: bool) -> List[str]:
         """Get list of DB versions for a given table.
@@ -619,27 +605,7 @@ class SqParquetDB(SqDB):
         else:
             return None
 
-    def _build_master_schema(self, datasets: list) -> pa.lib.Schema:
-        """Build the master schema from the list of diff versions
-        We use this to build the filters and use the right type-based check
-        for a field.
-        """
-        msch = datasets[0].schema
-        msch_set = set(msch)
-        for dataset in datasets[1:]:
-            sch = dataset.schema
-            sch_set = set(sch)
-            if msch_set.issuperset(sch):
-                continue
-            if sch_set.issuperset(msch):
-                msch = sch
-            else:
-                for fld in sch_set-msch_set:
-                    msch.append(fld)
-
-        return msch
-
-    def _get_filtered_fileset(self, dataset: ds, namespace: list) -> ds:
+    def _get_filtered_fileset(self, dataset: ds, namespaces: list) -> ds:
         """Filter the dataset based on the namespace
 
         We can use this method to filter out namespaces and hostnames based
@@ -651,34 +617,81 @@ class SqParquetDB(SqDB):
         Returns:
             ds: pyarrow dataset of only the files that match filter
         """
-        if not namespace:
+        def check_ns_conds(ns_to_test: str, filter_list: List[str],
+                           op: operator.or_) -> bool:
+            """Concat the expressions with the provided (AND or OR) operator
+            and return the result of the resulting expression tested on the
+            provided namespace.
+
+            Args:
+                ns_to_test (str): the namespace to test
+                filter_list (List[str]): the list of filter expressions to test
+                op (operator.or_): One of operator.and_ and operator._or
+
+            Returns:
+                bool: the result of the expression
+            """
+            # pylint: disable=comparison-with-callable
+            # We would like to init the result to False if we concat the
+            # expressions with OR, while with True if we use AND.
+            res = False
+            if operator.and_ == op:
+                res = True
+            for filter_val in filter_list:
+                ns_to_test = ns_to_test.split('namespace=')[-1]
+                res = op(res, bool(re.fullmatch(filter_val, ns_to_test)))
+            return res
+
+        if not namespaces:
             return dataset
 
-        newns = reduce_filter_list(namespace)
-        ns_filelist = []
-        chklist = dataset.files
-        for ns in newns or []:
-            if ns.startswith('!'):
-                ns = ns[1:]
-                use_not = True
+        match_filters = []
+        not_filters = []
+
+        for ns_match in namespaces:
+            if ns_match.startswith('!~'):
+                not_filters.append(ns_match[2:])
+            elif ns_match.startswith('~'):
+                match_filters.append(ns_match[1:])
+            elif ns_match.startswith('!'):
+                not_filters.append(re.escape(ns_match[1:]))
             else:
-                use_not = False
+                match_filters.append(re.escape(ns_match))
 
-            if ns.startswith('~'):
-                ns = ns[1:]
+        all_files = dataset.files
 
-            if use_not:
-                ns_filelist = \
-                    [x for x in chklist
-                        if not re.search(f'namespace={ns}/', x)]
-                # NOTs turn list from implicit OR into implicit AND
-                chklist = ns_filelist
-            else:
-                ns_filelist.extend(
-                    [x for x in dataset.files
-                     if re.search(f'namespace={ns}/', x)])
+        # Apply matching rules with an OR
+        if match_filters:
+            matching_files = [file for file in all_files
+                              if (ns_section := next(
+                                  (s for s in file.split('/')
+                                   if s.startswith('namespace=')),
+                                  None))
+                              and check_ns_conds(ns_section, match_filters,
+                                                 operator.or_)]
+        else:
+            # If there aren't match filters we can get all the available file
+            # and pass them to the following set of filters
+            matching_files = all_files
 
-        return ds.dataset(ns_filelist, format='parquet', partitioning='hive')
+        # Apply the not rules, in this case we operate on the matching file
+        # list since we want to reproduce an AND.
+        for ns_not in not_filters:
+            matching_files = [file for file in matching_files
+                              if (ns_section := next(
+                                  (s for s in file.split('/')
+                                   if s.startswith('namespace=')),
+                                  None))
+                              and not re.search(
+                                  f'namespace={ns_not}', ns_section)]
+
+            # There is no need to proceed if there isn't any other file in the
+            # list
+            if not matching_files:
+                break
+
+        return ds.dataset(
+            matching_files, format='parquet', partitioning='hive')
 
     def _cons_int_filter(self, keyfld: str, filter_str: str) -> ds.Expression:
         '''Construct Integer filters with arithmetic operations'''
@@ -703,6 +716,25 @@ class SqParquetDB(SqDB):
                          **kwargs) -> ds.Expression:
         """The new style of filters using dataset instead of ParquetDataset"""
 
+        def add_rule(new_filter: ds.Expression, collection: ds.Expression,
+                     operation) -> ds.Expression:
+            """Add a rule in the pyarrow filter
+
+            Args:
+                new_filter (pc.Expression): the filter to append
+                collection (pc.Expression): the collection of filters where to
+                    add the new one
+                operation: `operator.or_` or `operator.and_` to append the
+                    new filter to the collection
+
+            Returns:
+                pc.Expression: the concatenated expressions
+            """
+            if collection is not None:
+                return operation(collection, new_filter)
+            else:
+                return new_filter
+
         merge_fields = kwargs.pop('merge_fields', {})
         # The time filters first
         if start_tm and not end_tm:
@@ -716,70 +748,72 @@ class SqParquetDB(SqDB):
             filters = (ds.field("timestamp") != 0)
 
         sch_fields = schema.names
-        # pylint: disable=too-many-nested-blocks
-        for k, v in kwargs.items():
-            if not v:
+
+        for field, filter_vals in kwargs.items():
+            if not filter_vals:
                 continue
-            if k not in sch_fields:
-                self.logger.warning(f'Ignoring invalid field {k} in filter')
+            if field not in sch_fields:
+                self.logger.warning(
+                    f'Ignoring invalid field {field} in filter')
                 continue
 
-            ftype = schema.field(k).type
-            if k in merge_fields:
-                k = merge_fields[k]
+            ftype = schema.field(field).type
+            if field in merge_fields:
+                field = merge_fields[field]
 
-            if isinstance(v, list):
-                infld = []
-                notinfld = []
-                kw_filters = None
-                use_and = False
-                # If user specifies both </<= and >/>=, we treat
-                # it as an and i.e. the user is looking for a val
-                # between the provided < and > numbers.
-                if (any(x.startswith('>') for x in v) and
-                        any(x.startswith('<') for x in v)):
-                    use_and = True
+            infld = []
+            notinfld = []
+            kw_filters = None
 
-                for e in v:
-                    if isinstance(e, str) and e.startswith("!"):
-                        if ftype == 'int64':
-                            notinfld.append(int(e[1:]))
-                        else:
-                            notinfld.append(e[1:])
+            # We would like to reduce if..else, so we want to only work with
+            # lists. If a value is passed, this will be converted to a list
+            # with a single element
+            if not isinstance(filter_vals, list):
+                filter_vals = [filter_vals]
+
+            i = 0
+            while i < len(filter_vals):
+                val = filter_vals[i]
+                if ftype == 'int64':
+                    if isinstance(val, str) and val.startswith('!'):
+                        notinfld.append(int(val[1:]))
+                    elif (isinstance(val, str) and val.startswith('>')
+                            and i+1 < len(filter_vals)
+                            and isinstance(filter_vals[i+1], str)
+                            and filter_vals[i+1].startswith('<')):
+                        # We look for a sequence of >/< to detect an
+                        # interval and combine the rules.
+                        first_rule = self._cons_int_filter(field, val)
+                        second_rule = self._cons_int_filter(
+                            field, filter_vals[i+1])
+                        interval = (first_rule & second_rule)
+                        kw_filters = add_rule(
+                            interval, kw_filters, operator.or_)
+
+                        # Increment one more time, in order to skip the
+                        # rule we already considered
+                        i += 1
                     else:
-                        if ftype == 'int64':
-                            if kw_filters is not None:
-                                if use_and:
-                                    kw_filters = kw_filters & \
-                                        self._cons_int_filter(k, e)
-                                else:
-                                    kw_filters = kw_filters | \
-                                        self._cons_int_filter(k, e)
-                            else:
-                                kw_filters = self._cons_int_filter(k, e)
-                        else:
-                            infld.append(e)
-                if infld and notinfld:
-                    filters = filters & (ds.field(k).isin(infld) &
-                                         ~ds.field(k).isin(notinfld))
-                elif infld:
-                    filters = filters & (ds.field(k).isin(infld))
-                elif notinfld:
-                    filters = filters & (~ds.field(k).isin(notinfld))
-
-                if kw_filters is not None:
-                    filters = filters & (kw_filters)
-            else:
-                if isinstance(v, str) and v.startswith("!"):
-                    if ftype == 'int64':
-                        filters = filters & (ds.field(k) != int(v[1:]))
-                    else:
-                        filters = filters & (ds.field(k) != v[1:])
+                        new_rule = self._cons_int_filter(field, val)
+                        kw_filters = add_rule(
+                            new_rule, kw_filters, operator.or_)
                 else:
-                    if ftype == 'int64':
-                        filters = filters & self._cons_int_filter(k, v)
+                    if isinstance(val, str) and val.startswith('!'):
+                        notinfld.append(val[1:])
                     else:
-                        filters = filters & (ds.field(k) == v)
+                        infld.append(val)
+                i += 1
+
+            if infld and notinfld:
+                filters = filters & (ds.field(field).isin(infld) &
+                                     ~ds.field(field).isin(notinfld))
+            elif infld:
+                filters = filters & (ds.field(field).isin(infld))
+            elif notinfld:
+                filters = filters & (~ds.field(field).isin(notinfld))
+
+            if kw_filters is not None:
+                filters = filters & (kw_filters)
 
         return filters
 
@@ -804,16 +838,3 @@ class SqParquetDB(SqDB):
             return f'{folder}/{table_name}'
         else:
             return folder
-
-    def _get_default_vals(self) -> dict:
-        return({
-            pa.string(): "",
-            pa.int32(): 0,
-            pa.int64(): 0,
-            pa.float32(): 0.0,
-            pa.float64(): 0.0,
-            pa.date64(): 0.0,
-            pa.bool_(): False,
-            pa.list_(pa.string()): [],
-            pa.list_(pa.int64()): [],
-        })

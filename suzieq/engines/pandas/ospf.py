@@ -12,6 +12,11 @@ from suzieq.shared.schema import SchemaForTable
 class OspfObj(SqPandasEngine):
     '''Backend class to handle manipulating OSPF table with pandas'''
 
+    def __init__(self, baseobj):
+        super().__init__(baseobj)
+        self._assert_result_cols = ['namespace', 'hostname', 'vrf', 'ifname',
+                                    'adjState', 'assertReason', 'result']
+
     @staticmethod
     def table_name():
         '''Table name'''
@@ -64,6 +69,13 @@ class OspfObj(SqPandasEngine):
                                                    and x not in nbrcols)]
         self._add_active_to_fields(kwargs.get('view', 'latest'), nbrcols,
                                    None)
+
+        if 'timestamp' not in ifcols:
+            ifcols.append('timestamp')
+
+        if 'timestamp' not in nbrcols:
+            nbrcols.append('timestamp')
+
         state_query_dict = {
             'full': '(adjState == "full" or adjState == "passive")',
             'passive': '(adjState == "passive")',
@@ -107,27 +119,17 @@ class OspfObj(SqPandasEngine):
                 df['ipAddress_x'] == "",
                 df['ipAddress_y'], df['ipAddress_x'])
 
-        if columns == ['*']:
-            df = df.drop(columns=['area_y', 'instance_y', 'vrf_y',
-                                  'ipAddress_x', 'ipAddress_y', 'areaStub_y',
-                                  'sqvers_x', 'timestamp_y'],
-                         errors='ignore') \
-                .rename(columns={
-                    'instance_x': 'instance', 'areaStub_x': 'areaStub',
-                    'area_x': 'area', 'vrf_x': 'vrf',
-                    'state_x': 'ifState', 'state_y': 'adjState',
-                    'active_x': 'active', 'timestamp_x': 'timestamp'}) \
-                .fillna({'peerIP': '-', 'numChanges': 0,
-                         'lastChangeTime': 0})
-        else:
-            df = df.rename(columns={'vrf_x': 'vrf', 'area_x': 'area',
-                                    'state_x': 'ifState',
-                                    'state_y': 'adjState',
-                                    'timestamp_x': 'timestamp'})
-            df = df.drop(list(df.filter(regex='_y$')), axis=1) \
-                   .drop(columns=['ipAddress_x'], errors='ignore') \
-                   .fillna({'peerIP': '-', 'numChanges': 0,
-                            'lastChangeTime': 0})
+        df = df.rename(columns={
+            'instance_x': 'instance', 'areaStub_x': 'areaStub',
+            'area_x': 'area', 'vrf_x': 'vrf',
+            'state_x': 'ifState', 'state_y': 'adjState',
+            'active_x': 'active', 'timestamp_x': 'timestamp'})
+
+        df = df.drop(columns=list(df.filter(regex='_y$|_x$')),
+                     errors='ignore') \
+            .fillna({'peerIP': '-', 'numChanges': 0,
+                     'lastChangeTime': 0})
+
         if df.empty:
             return df
 
@@ -154,8 +156,6 @@ class OspfObj(SqPandasEngine):
             df.drop(columns=['passive'], inplace=True)
 
         final_df = df
-        if 'active_x' in final_df.columns:
-            final_df = final_df.rename(columns={'active_x': 'active'})
         if 'peerHostname' in cols or 'peerIfname' in cols:
             final_df = self._get_peernames(final_df, cols, hostname=hostname,
                                            **kwargs)
@@ -244,7 +244,7 @@ class OspfObj(SqPandasEngine):
                              .reset_index(drop=True)
 
         if ospf_df.empty:
-            return pd.DataFrame(columns=columns)
+            return ospf_df
 
         columns.extend(['peerHostname', 'peerIfname'])
         ospf_df = self._get_peernames(ospf_df, columns)
@@ -496,7 +496,7 @@ class OspfObj(SqPandasEngine):
             nopeer_df = nopeer_df.drop(columns=['peerHostname', 'peerIfname'],
                                        errors='ignore')
             # We need to look deeper to see if we can figure out the peers
-            addr_df = self._get_table_sqobj('address').get(
+            addr_df = self._get_table_sqobj('address', start_time='').get(
                 namespace=kwargs.get('namespace', []),
                 hostname=kwargs.get('hostname', []),
                 type='!loopback',
@@ -548,6 +548,4 @@ class OspfObj(SqPandasEngine):
         if result and result != "all":
             ospf_df = ospf_df.query(f'result == "{result}"')
 
-        return ospf_df[['namespace', 'hostname', 'vrf', 'ifname', 'adjState',
-                        'assertReason', 'result']] \
-            .reset_index(drop=True)
+        return ospf_df[self._assert_result_cols].reset_index(drop=True)

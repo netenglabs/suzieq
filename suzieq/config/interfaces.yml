@@ -142,6 +142,9 @@ apply:
   junos-qfx10k:
     copy: junos-qfx
 
+  junos-evo:
+    copy: junos-qfx
+
   nxos:
     - version: < 9.3(0)
       command:
@@ -207,7 +210,7 @@ apply:
           "linklocal-addr: _linklocal"
           ]'
 
-        - command: show interface | egrep '^\w|Hardware|MTU|reset|Description'
+        - command: show interface | egrep '^\w|Hardware|MTU|reset|Description|flapped'
           textfsm: textfsm_templates/nxos_show_int_grep.tfsm
           _entryType: mtumac
 

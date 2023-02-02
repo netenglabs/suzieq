@@ -25,7 +25,12 @@ class NetworkObj(SqPandasEngine):
         addrlist = kwargs.pop('address', [])
         kwargs.pop('columns', ['default'])
         query_str = kwargs.pop('query_str', '')
+        fields = self.schema.get_display_fields(['default'])
 
+        if ((self.iobj.start_time and self.iobj.end_time) or
+                (self.iobj.view == 'all')):
+            fields.insert(0, 'active')
+            fields.append('timestamp')
         dflist = []
         if isinstance(addrlist, str):
             addrlist = [addrlist]
@@ -36,10 +41,13 @@ class NetworkObj(SqPandasEngine):
         if dflist:
             df = pd.concat(dflist)
 
+        if df.empty:
+            return df
+
         if not df.empty and query_str:
             return df.query(query_str)
 
-        return df
+        return df[fields]
 
     def _find_asn(self, asn: List[str], **kwargs) -> pd.DataFrame:
         """Find the hosts with the ASN listed

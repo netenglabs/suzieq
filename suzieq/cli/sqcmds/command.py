@@ -4,6 +4,7 @@ import ast
 import inspect
 from io import StringIO
 import shutil
+from typing import List
 
 import numpy as np
 import pandas as pd
@@ -279,7 +280,8 @@ class SqCommand(SqPlugin):
                     dont_strip_cols: bool = False, sort: bool = True):
 
         if ('error' in df.columns or
-                ('hopError' in df.columns and (df.hopError != '').all())):
+                ('hopError' in df.columns and not df.empty
+                 and (df.hopError != '').all())):
             retcode = 1
             max_colwidth = None
             cols = df.columns.tolist()
@@ -330,7 +332,7 @@ class SqCommand(SqPlugin):
                     'display.expand_frame_repr', not all_columns):
                 df = self.sqobj.humanize_fields(df)
                 if df.empty:
-                    print(df)
+                    print(df[cols])
                 elif sort:
                     if is_error:
                         print(df[cols])
@@ -435,6 +437,28 @@ class SqCommand(SqPlugin):
                                                  sub_command)
         cprint(colored(warning_msg, 'yellow'))
 
+    def _add_result_columns(self, columns: List[str]) -> List[str]:
+        """Append the 'result' column to the input columns if necessary.
+
+        This function is used to always retrieve the 'result' column from the
+        assertions which is necessary in the _assert_gen_output function.
+
+        The 'result' column is not added if the input columns are '*' or
+        'default' because the column will be already present
+
+        Args:
+            columns (List[str]): input columns
+
+        Returns:
+            List[str]: updated columns
+        """
+        return (
+            columns
+            if (columns in [['default'], ['*']] or
+                'result' in columns)
+            else columns + ['result']
+        )
+
 
 class SqTableCommand(SqCommand):
     """Base Command Class for table commands"""
@@ -450,6 +474,13 @@ class SqTableCommand(SqCommand):
             **self.lvars,
             **kwargs
         )
+
+        # for readability syntesize output when dict has more than 3 items
+        for index, row in summarize_df.iterrows():
+            for col in summarize_df:
+                if isinstance(row[col], dict) and len(row[col]) > 3:
+                    summarize_df.loc[index, col] = len(row[col])
+
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
         return self._gen_output(summarize_df, json_orient='columns')
 
@@ -491,11 +522,8 @@ class SqTableCommand(SqCommand):
                                 )
 
         self.ctxt.exec_time = "{:5.4f}s".format(time.time() - now)
-        if 'error' in df.columns:
+        if 'error' in df.columns or df.empty:
             return self._gen_output(df)
-
-        if df.empty:
-            return df
 
         if not count:
             return self._gen_output(df.sort_values(by=[df.columns[0]]),
@@ -540,9 +568,7 @@ class SqTableCommand(SqCommand):
 
         if not df.empty:
             df = self.sqobj.humanize_fields(df)
-            return self._gen_output(df.sort_values(
-                by=[what], ascending=(reverse == "True")),
-                dont_strip_cols=True, sort=False)
+            return self._gen_output(df, dont_strip_cols=True, sort=False)
         else:
             return self._gen_output(df)
 

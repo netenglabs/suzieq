@@ -42,7 +42,8 @@ class PathObj(SqPandasEngine):
                 .get(namespace=namespace, state='up',
                      columns=['namespace', 'hostname', 'ifname', 'mtu', 'type',
                               'ipAddressList', 'ip6AddressList', 'state',
-                              'vlan', 'master', 'macaddr', 'timestamp']) \
+                              'vlan', 'master', 'macaddr', 'timestamp',
+                              'portmode']) \
                 .explode('ipAddressList') \
                 .fillna({'ipAddressList': ''}) \
                 .explode('ip6AddressList') \
@@ -222,7 +223,8 @@ class PathObj(SqPandasEngine):
                     f'ipAddressList.str.startswith("{addr}")')
             else:
                 # No address, but a bridge interface as the master
-                if iifdf.iloc[0]['vlan']:
+                if (iifdf.iloc[0]['vlan'] and
+                   iifdf.iloc[0]['portmode'] != 'trunk'):
                     # Check if there's an SVI, assuming format is vlan*
                     # TODO: Handle trunk
                     vlan = iifdf.iloc[0]['vlan']
@@ -853,7 +855,15 @@ class PathObj(SqPandasEngine):
                         vrfchk = dest_device_iifs[destdevkey]["vrf"]
                         rev_df = self._rpf_df.query(
                             f'hostname == "{device}" and vrf == "{vrfchk}"')
-                        if rev_df.empty:
+                        if rev_df.empty and is_l2:
+                            # for the case if this node is the ingress VTEP
+                            rev_df = self._arpnd_df.query(
+                                f'hostname == "{device}" and '
+                                f'ipAddress == "{dest}"')
+                            if rev_df.empty:
+                                dest_device_iifs[destdevkey]['hopError'] \
+                                    .append('no reverse path, possible flood')
+                        elif rev_df.empty:
                             dest_device_iifs[destdevkey]['hopError'] \
                                 .append('no reverse path')
                         revdf_check = False
@@ -1122,11 +1132,15 @@ class PathObj(SqPandasEngine):
             # as loop detected
             final_paths = paths
         return self._handle_user_query_str(
-            self._path_cons_result(final_paths), query_str)\
+            self._path_cons_result(final_paths, **kwargs), query_str)\
             .reset_index(drop=True)
 
-    def _path_cons_result(self, paths):
+    def _path_cons_result(self, paths, **kwargs):
         df_plist = []
+        columns = kwargs.get('columns', ['default'])
+        fields = self.schema.get_display_fields(columns)
+        # TODO: handle hostname filtering
+        # hostname = kwargs.get('hostname')
         prev_hop = hop = None
         for i, path in enumerate(paths):
             if prev_hop:
@@ -1204,7 +1218,9 @@ class PathObj(SqPandasEngine):
             prev_hop['nexthopIp'] = ''
             prev_hop['vtepLookup'] = ''
         paths_df = pd.DataFrame(df_plist)
-        return paths_df.drop_duplicates()
+        paths_df.drop_duplicates(inplace=True)
+        ret_cols = [f for f in fields if (f in paths_df.columns)]
+        return paths_df[ret_cols]
 
     def summarize(self, **kwargs):
         """return a pandas dataframe summarizing the path info between src/dest

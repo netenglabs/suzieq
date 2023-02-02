@@ -26,9 +26,16 @@ class MacsService(Service):
         4. The remaining regular entries where VLAN disambiguates a MAC.
         """
         # Make VLAN int first
-        vlan = entry.get('vlan', '')
-        if vlan and vlan != "none":
-            entry['vlan'] = int(vlan)
+        vlan = entry.get('vlan', '0')
+        if vlan:
+            if isinstance(vlan, str):
+                if not vlan.isnumeric():
+                    vlan = '0'
+
+                entry['vlan'] = int(vlan)
+        else:
+            vlan = 0
+            entry['vlan'] = 0
 
         if entry.get('bd', ""):
             if not entry.get('vlan', 0):
@@ -44,11 +51,11 @@ class MacsService(Service):
                 else:
                     entry['mackey'] = entry['oif']
             else:
-                if entry.get('vlan', 0):
+                if vlan:
                     if entry['flags'] in ['static', 'permanent', 'router']:
-                        entry['mackey'] = f'{entry["vlan"]}-{entry["oif"]}'
+                        entry['mackey'] = f'{vlan}-{entry["oif"]}'
                     else:
-                        entry['mackey'] = entry['vlan']
+                        entry['mackey'] = vlan
                 else:
                     if entry['flags'] in ['static', 'permanent', 'router']:
                         entry['mackey'] = f'{entry["oif"]}'
@@ -63,6 +70,7 @@ class MacsService(Service):
             oif = entry.get('oif', '')
             if macaddr and (macaddr != "00:00:00:00:00:00"):
                 key = f'{macaddr}-{oif}'
+
                 old_entry = macentries.get(key, None)
                 if not old_entry:
                     macentries[key] = entry
@@ -111,7 +119,15 @@ class MacsService(Service):
                 for j, mac in enumerate(maclist):
                     new_entry = entry.copy()
                     new_entry['macaddr'] = mac
-                    new_entry['oif'] = oifs[j].split('.')[0]
+                    if not entry['bd']:
+                        if '.' in oifs[j]:
+                            new_entry['oif'], new_entry['vlan'] = \
+                                oifs[j].split('.')
+                        else:
+                            new_entry['oif'] = oifs[j].split('.')[0]
+                    else:
+                        new_entry['oif'] = oifs[j]
+
                     new_entry['flags'] = ''
                     self._add_mackey_protocol(new_entry)
                     new_entries.append(new_entry)
@@ -165,16 +181,7 @@ class MacsService(Service):
                 entry.get('macaddr', '0000.0000.0000'))
             oiflist = []
             oifs = ''
-            oif = entry.get('oif', '').strip()
-            if oif:
-                oiflist = oif.split(',')
-            if not oiflist:
-                # Some versions of IOS/XE have a different output
-                # format and we capture that in a different var
-                oif = entry.get('_ports', '')
-                if oif:
-                    for ele in oif:
-                        oiflist.extend(ele.split(','))
+            oiflist = entry.get('_ports', [])
             for oif in oiflist:
                 # Handles multicast entries
                 oifs += f'{expand_ios_ifname(oif)} '
@@ -184,8 +191,10 @@ class MacsService(Service):
                 entry['oif'] = ''
 
             entry['remoteVtepIp'] = ''
-            if entry.get('vlan', ' ').strip() == "All":
+            vlan = entry.get('vlan', ' ').strip()
+            if vlan in ["All", "N/A"]:
                 entry['vlan'] = 0
+
             entry['flags'] = entry.get('flags', '').lower()
 
             self._add_mackey_protocol(entry)

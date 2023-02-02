@@ -1,10 +1,10 @@
 ## Accessing remote data
 
-From version 0.16.0, the cli can be used on a local machine while parquet data is stored remotely. To achieve that, the REST server should be running in the node where the parquet data is stored. Then the Suzieq configuration should be updated to enable the remote data access.
+From version 0.16.0, the cli can be used on a local machine while parquet data is stored remotely. To achieve that, the REST server should be running in the node where the parquet data is stored. Then the SuzieQ configuration should be updated to enable the remote data access.
 
-In case you don't have a Suzieq REST server running yet, follow the [guide](./rest-server.md).
+In case you don't have a SuzieQ REST server running yet, follow the [guide](./rest-server.md).
 
-Both for the Suzieq REST server and CLI you can use the same configuration file. You will need to add just 2 lines at the bottom of the configuration file to enable remote data access:
+Both for the SuzieQ REST server and CLI you can use the same configuration file. You will need to add just 2 lines at the bottom of the configuration file to enable remote data access:
 
 ```yaml
 ux:
@@ -19,9 +19,9 @@ If you are using the docker container to use the CLI you need to mount the new c
 docker run -it -v suzieq-cfg.yml:/home/suzieq/.suzieq/suzieq-cfg.yml
 ```
 
-If you are using Suzieq as a Python package, place the configuration file in the folder where you launch the cli  `suzieq-cfg.yml` or, for a global configuration, in `~/.suzieq/suzieq-cfg.yml`.
+If you are using SuzieQ as a Python package, place the configuration file in the folder where you launch the cli  `suzieq-cfg.yml` or, for a global configuration, in `~/.suzieq/suzieq-cfg.yml`.
 
-Now you can run the Suzieq CLI:
+Now you can run the SuzieQ CLI:
 ```bash
 suzieq-cli
 ```

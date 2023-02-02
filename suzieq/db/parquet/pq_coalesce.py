@@ -1,17 +1,20 @@
-import os
-from datetime import datetime, timedelta, timezone
 import logging
-from typing import List
-from itertools import repeat
+import os
+import re
 import tarfile
+from collections import defaultdict
+from datetime import datetime, timedelta, timezone
+from itertools import repeat
+from typing import List
 
 import pandas as pd
-import pyarrow.parquet as pq
-import pyarrow.dataset as ds    # put this later due to some numpy dependency
+import pyarrow as pa
+import pyarrow.dataset as ds
 
-from suzieq.shared.utils import humanize_timestamp
+from suzieq.db.parquet.dataset_utils import move_broken_file
+from suzieq.db.parquet.migratedb import generic_migration, get_migrate_fn
 from suzieq.shared.schema import SchemaForTable
-from suzieq.db.parquet.migratedb import get_migrate_fn
+from suzieq.shared.utils import humanize_timestamp
 
 
 class SqCoalesceState:
@@ -28,7 +31,6 @@ class SqCoalesceState:
         self.ign_pfx = ['.', '_', 'sqc-']  # Prefixes to ignore for coalesceing
         self.wrfile_count = 0
         self.wrrec_count = 0
-        self.poller_periods = set()
         self.block_start = self.block_end = 0
 
     @ property
@@ -94,14 +96,25 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
     state.block_start = int(block_start.timestamp())
     state.block_end = int(block_end.timestamp())
     if filelist:
-        this_df = ds.dataset(source=filelist, partitioning='hive',
-                             partition_base_dir=in_basedir) \
-            .to_table() \
-            .to_pandas()
-        state.wrrec_count += this_df.shape[0]
+        files_pervers = defaultdict(list)
+        for file in filelist:
+            sqversmatch = re.search(r'sqvers=([0-9]+\.[0-9]+)', file)
+            if sqversmatch:
+                files_pervers[sqversmatch.group(0)].append(file)
 
-        if not this_df.empty:
-            this_df = migrate_df(table, this_df, state.schema)
+        this_df = pd.DataFrame()
+        for files in files_pervers.values():
+            tmp_df = ds.dataset(files, partitioning='hive',
+                                partition_base_dir=in_basedir) \
+                .to_table() \
+                .to_pandas()
+            if not tmp_df.empty:
+                # Migrate each of the Dataframe before merging them
+                # if necessary
+                tmp_df = migrate_df(table, tmp_df, state.schema)
+                this_df = pd.concat([this_df, tmp_df])
+
+        state.wrrec_count += this_df.shape[0]
 
         if state.schema.type == "record":
             if not state.current_df.empty:
@@ -134,54 +147,6 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
                                   .query('~index.duplicated(keep="last")')
 
 
-def find_broken_files(parent_dir: str) -> List[str]:
-    """Find any files in the parent_dir that pyarrow can't read
-    :parame parent_dir: str, the parent directory to investigate
-    :returns: list of broken files
-    :rtype: list of strings
-    """
-
-    all_files = []
-    broken_files = []
-    ro, _ = os.path.split(parent_dir)
-    for root, _, files in os.walk(parent_dir):
-        if ('_archived' not in root and '.sq-coalescer.pid' not in files
-                and len(files) > 0):
-            path = root.replace(ro, '')
-            all_files.extend(list(map(lambda x: f"{path}/{x}", files)))
-    for file in all_files:
-        try:
-            pq.ParquetFile(f"{ro}/{file}")
-        except pq.lib.ArrowInvalid:
-            broken_files.append(file)
-
-    return broken_files
-
-
-def move_broken_files(parent_dir: str, state: SqCoalesceState,
-                      out_dir: str = '_broken', ) -> None:
-    """ move any files that cannot be read by pyarrow in parent dir
-        to a safe directory to be investigated later
-    :param parent_dir: str, the parent directory to investigate
-    :param state: SqCoalesceState, needed for the logger
-    :param out_dir: str, diretory to put the broken files in
-    :returns: Nothing
-    :rtype: None
-    """
-
-    broken_files = find_broken_files(parent_dir)
-    ro, _ = os.path.split(parent_dir)
-
-    for file in broken_files:
-        src = f"{ro}/{file}"
-        dst = f"{ro}/{out_dir}/{file}"
-
-        if not os.path.exists(os.path.dirname(dst)):
-            os.makedirs(os.path.dirname(dst))
-        state.logger.debug(f"moving broken file {src} to {dst}")
-        os.replace(src, dst)
-
-
 def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
     """Read the files and construct a dataframe of files and timestamp of
        record in them.
@@ -207,9 +172,12 @@ def get_file_timestamps(filelist: List[str]) -> pd.DataFrame:
             ts = pd.read_parquet(file, columns=['timestamp'])
             fts_list.append(ts.timestamp.min())
             fname_list.append(file)
-        except OSError:
+        except pa.ArrowInvalid:
             # skip this file because it can't be read, is probably 0 bytes
             logging.debug(f"not reading timestamp for {file}")
+            # We would like to move the broken files to a separate directory
+            # where we can perform additional investigations
+            move_broken_file(file)
 
     # Construct file dataframe as its simpler to deal with
     if fname_list:
@@ -231,12 +199,17 @@ def migrate_df(table_name: str, df: pd.DataFrame,
     :rtype: pd.DataFrame
     """
     sqvers_list = df.sqvers.unique().tolist()
+    do_migration = False
     for sqvers in sqvers_list:
         if sqvers != schema.version:
+            do_migration = True
             migrate_fn = get_migrate_fn(table_name, sqvers,
                                         schema.version)
             if migrate_fn:
-                df = migrate_fn(df)
+                df = migrate_fn(df, table_name, schema)
+
+    if do_migration:
+        df = generic_migration(df, table_name, schema)
 
     return df
 
@@ -280,7 +253,6 @@ def get_last_update_df(table_name: str, outfolder: str,
     return current_df
 
 
-# pylint: disable=too-many-statements
 def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
                             table: str, state: SqCoalesceState) -> None:
     """This routine coalesces all the parquet data in the folder provided
@@ -309,11 +281,6 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     partition_cols = ['sqvers', 'namespace']
     dodel = True
 
-    if table == "sqPoller":
-        wr_polling_period = True
-        state.poller_periods = set()
-    else:
-        wr_polling_period = False
     state.wrfile_count = 0
     state.wrrec_count = 0
     state.table_name = table
@@ -324,30 +291,23 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
         if state.current_df.empty:
             state.current_df = get_last_update_df(table, outfolder, state)
 
-    # Ignore reading the compressed files
-    try:
-        dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
-                             ignore_prefixes=state.ign_pfx)
-    except OSError:
-        move_broken_files(infolder, state=state)
-        dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
-                             ignore_prefixes=state.ign_pfx)
+    # Providing the schema, we don't perform any IO to read it, moreover,
+    # we don't need to handle the case in which one of the files is broken.
+    # We will detect them later.
+    dataset = ds.dataset(infolder, partitioning='hive', format='parquet',
+                         # Ignore reading the compressed files
+                         ignore_prefixes=state.ign_pfx,
+                         schema=schema.get_arrow_schema())
 
     state.logger.info(f'Examining {len(dataset.files)} {table} files '
                       f'for coalescing')
     fdf = get_file_timestamps(dataset.files)
-    if fdf.empty:
-        if (table == 'sqPoller') or (not state.poller_periods):
-            return
 
-    # this is no longer true if we are skipping files that aren't readable
-    # assert(len(dataset.files) == fdf.shape[0])
-    polled_periods = sorted(state.poller_periods)
     if fdf.empty:
         state.logger.info(f'No updates for {table} to coalesce')
-        start = polled_periods[0]
-    else:
-        start = fdf.timestamp.iloc[0]
+        return
+
+    start = fdf.timestamp.iloc[0]
     utcnow = datetime.now(timezone.utc)
 
     # We now need to determine if we're coalesceing a lot of data, at the start
@@ -370,71 +330,39 @@ def coalesce_resource_table(infolder: str, outfolder: str, archive_folder: str,
     readblock = []
     wrfile_count = 0
 
-    # We may start coalescing when nothing has changed for some initial period.
-    # We have to write out records for that period.
-    if schema.type == "record":
-        for interval in polled_periods:
-            if not fdf.empty and (block_end < interval):
-                break
-            pre_block_start = compute_block_start(interval)
-            pre_block_end = pre_block_start + state.period
-            write_files(table, readblock, infolder, outfolder, partition_cols,
-                        state, pre_block_start, pre_block_end)
-
     for row in fdf.itertuples():
         if block_start <= row.timestamp < block_end:
             readblock.append(row.file)
             continue
 
-        # Write data if either there's data to be written (readblock isn't
-        # empty) OR this table is a record type and poller was alive during
-        # this period (state's poller period for this window isn't blank
-        if readblock or ((schema.type == "record") and
-                         block_start in state.poller_periods):
-
+        # Write data if there are changes in the current time window
+        if readblock:
             write_files(table, readblock, infolder, outfolder, partition_cols,
                         state, block_start, block_end)
             wrfile_count += len(readblock)
-        if wr_polling_period and readblock:
-            state.poller_periods.add(block_start)
-        # Archive the saved files
-        if readblock:
+
+            # Archive the saved files. When this option is enable, it allows
+            # us to restore the coalesced file, if something goes wrong with
+            # the coalescer.
             archive_coalesced_files(readblock, archive_folder, state, dodel)
 
-        # We have to find the timeslot where this record fits
-        block_start = block_end
-        block_end = block_start + state.period
+        # We need now to reset the time window according to the current file
+        # timestamp
         readblock = []
-        if schema.type != "record":
-            # We can jump directly to the timestamp corresonding to this
-            # row's timestamp
-            block_start = compute_block_start(row.timestamp)
-            block_end = block_start + state.period
-            if (row.timestamp > block_end) or (block_end > utcnow):
-                break
-            readblock = [row.file]
-            continue
+        block_start = compute_block_start(row.timestamp)
+        block_end = block_start + state.period
 
-        while row.timestamp > block_end:
-            if block_start in state.poller_periods:
-                write_files(table, readblock, infolder, outfolder,
-                            partition_cols, state, block_start, block_end)
-                # Nothing to archive here, and we're not counting coalesced
-                # records since these are duplicates
-            block_start = block_end
-            block_end = block_start + state.period
+        # When the current timestamp is inside the new coalescing time windows
+        # we have to stop
         if block_end > utcnow:
             break
         readblock = [row.file]
 
     # The last batch that ended before the block end
-    if readblock or (fdf.empty and (schema.type == "record") and
-                     block_start in state.poller_periods):
+    if readblock:
         write_files(table, readblock, infolder, outfolder, partition_cols,
                     state, block_start, block_end)
         wrfile_count += len(readblock)
-        if wr_polling_period:
-            state.poller_periods.add(block_start)
         archive_coalesced_files(readblock, archive_folder, state, dodel)
 
     state.wrfile_count = wrfile_count

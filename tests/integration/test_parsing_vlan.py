@@ -10,9 +10,10 @@ def validate_vlan_tbl(df: pd.DataFrame):
     '''Validate the VLAN table for all values'''
 
     assert (df.vlan != 0).all()
-    if not (df.query('vlan != 1').interfaces.str.len() != 0).all():
+    if not (df.query('vlan != 1 or state != "suspended"').interfaces.str.len()
+            != 0).all():
         warnings.warn('Some VLANs not assigned to any interface')
-    assert (df.state.isin(['active', 'unsupported'])).all()
+    assert (df.state.isin(['active', 'unsupported', 'suspended'])).all()
     assert (df.vlanName != '').all()
 
 
@@ -27,7 +28,8 @@ def validate_interfaces(df: pd.DataFrame, datadir: str):
     '''
 
     # Create a new df of namespace/hostname/vrf to oif mapping
-    only_oifs = df[['namespace', 'hostname', 'vlan', 'interfaces']] \
+    only_oifs = df[df.state != 'suspended'][
+            ['namespace', 'hostname', 'vlan', 'interfaces']] \
         .explode('interfaces') \
         .dropna() \
         .query('interfaces != ""') \

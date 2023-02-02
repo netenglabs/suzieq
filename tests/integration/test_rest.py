@@ -17,7 +17,7 @@ from suzieq.restServer.query import (API_KEY_NAME, CommonExtraVerbs,
                                      app, cleanup_verb, get_configured_api_key)
 from suzieq.sqobjects import get_sqobject
 from suzieq.sqobjects.basicobj import SqObject
-from tests.conftest import cli_commands, create_dummy_config_file, tables
+from tests.conftest import cli_commands, create_dummy_config_file, TABLES
 
 ENDPOINT = "http://localhost:8000/api/v2"
 
@@ -403,8 +403,6 @@ def get_supported_verbs(sqobj: SqObject) -> List[str]:
             supported_verbs = [e.value for e in CommonExtraVerbs]
         else:
             supported_verbs = [e.value for e in CommonVerbs]
-        if sqobj.table == 'tables':
-            supported_verbs.append('describe')
 
     if sqobj.table == 'network':
         supported_verbs += [e.value for e in NetworkVerbs]
@@ -500,7 +498,7 @@ def test_rest_services(app_initialize, service, verb, arg):
 
 @ pytest.mark.rest
 @ pytest.mark.parametrize("service, verb", [
-    (cmd, verb) for cmd in tables for verb in VERBS])
+    (cmd, verb) for cmd in TABLES for verb in VERBS])
 def test_rest_arg_consistency(service, verb):
     '''check that the arguments used in REST match whats in sqobjects'''
 
@@ -572,9 +570,6 @@ def test_rest_arg_consistency(service, verb):
                         'format', 'view', 'columns', 'query_str'])
 
         valid_args = set(arglist)
-
-        if service == 'device':
-            valid_args.remove('ignore_neverpoll')
 
         # In the tests below, we warn when we don't have the exact
         # {service}_{verb} REST function, which prevents us from picking the
@@ -695,8 +690,7 @@ def test_routes_sqobj_consistency():
             args_to_match = get_args_to_match(sqobj, route.verbs)
             args_to_match = {a for a in args_to_match
                              if a not in common_args.union(top_args)}
-            if table == 'device':
-                args_to_match.remove('ignore_neverpoll')
+
             if args_to_match != query_params:
                 assert False, (f'different query params for {table}: expected '
                                f'{args_to_match}. Got {query_params}')

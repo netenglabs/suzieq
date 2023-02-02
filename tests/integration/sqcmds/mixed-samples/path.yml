@@ -132,3 +132,76 @@ tests:
     "inMtu": 1500, "outMtu": 1500, "protocol": "direct", "ipLookup": "10.2.6.0/30",
     "vtepLookup": "", "macLookup": "", "nexthopIp": "", "hopError": "", "timestamp":
     1627395440281}]'
+- command: path show --src='1.1.1.1' --dest='6.6.6.6' --format=json --namespace=mixed
+    --columns=*
+  data-directory: tests/data/parquet
+  marks: path show all mixed
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "mixed", "hostname": "leaf1-ios",
+    "iif": "Loopback0", "oif": "GigabitEthernet0/0", "vrf": "default", "isL2": false,
+    "overlay": false, "mtuMatch": true, "inMtu": 1514, "outMtu": 1500, "protocol":
+    "ospf", "ipLookup": "6.6.6.6/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
+    "10.1.1.1", "hopError": "", "timestamp": 1627395444959}, {"pathid": 1, "hopCount":
+    1, "namespace": "mixed", "hostname": "spine1-nxos", "iif": "Ethernet1/1", "oif":
+    "Ethernet1/6", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
+    true, "inMtu": 1500, "outMtu": 1500, "protocol": "ospf", "ipLookup": "6.6.6.6/32",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "6.6.6.6", "hopError": "Hop MTU
+    < Src Mtu", "timestamp": 1627395439859}, {"pathid": 1, "hopCount": 2, "namespace":
+    "mixed", "hostname": "leaf6-eos", "iif": "Ethernet1", "oif": "Loopback0", "vrf":
+    "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu":
+    65535, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup": "", "nexthopIp":
+    "", "hopError": "Dst MTU != Src MTU", "timestamp": 1627395434695}, {"pathid":
+    2, "hopCount": 0, "namespace": "mixed", "hostname": "leaf1-ios", "iif": "Loopback0",
+    "oif": "GigabitEthernet0/1", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 1514, "outMtu": 1500, "protocol": "ospf", "ipLookup":
+    "6.6.6.6/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "10.2.1.1", "hopError":
+    "", "timestamp": 1627395444959}, {"pathid": 2, "hopCount": 1, "namespace": "mixed",
+    "hostname": "spine2-nxos", "iif": "Ethernet1/1", "oif": "Ethernet1/6", "vrf":
+    "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 1500, "outMtu":
+    1500, "protocol": "ospf", "ipLookup": "6.6.6.6/32", "vtepLookup": "", "macLookup":
+    "", "nexthopIp": "6.6.6.6", "hopError": "Hop MTU < Src Mtu", "timestamp": 1627395440281},
+    {"pathid": 2, "hopCount": 2, "namespace": "mixed", "hostname": "leaf6-eos", "iif":
+    "Ethernet2", "oif": "Loopback0", "vrf": "default", "isL2": false, "overlay": false,
+    "mtuMatch": true, "inMtu": 1500, "outMtu": 65535, "protocol": "", "ipLookup":
+    "", "vtepLookup": "", "macLookup": "", "nexthopIp": "", "hopError": "Dst MTU !=
+    Src MTU", "timestamp": 1627395434695}]'
+- command: path show --src='1.1.1.1' --dest='6.6.6.6' --format=json --namespace=mixed
+    --columns='hostname namespace'
+  data-directory: tests/data/parquet
+  marks: path show all mixed
+  output: '[{"hostname": "leaf1-ios", "namespace": "mixed"}, {"hostname": "spine1-nxos",
+    "namespace": "mixed"}, {"hostname": "leaf6-eos", "namespace": "mixed"}, {"hostname":
+    "leaf1-ios", "namespace": "mixed"}, {"hostname": "spine2-nxos", "namespace": "mixed"},
+    {"hostname": "leaf6-eos", "namespace": "mixed"}]'
+- command: path top --src='1.1.1.1' --dest='6.6.6.6' --format=json --namespace=mixed
+    --what=inMtu
+  data-directory: tests/data/parquet
+  marks: path top all mixed
+  output: '[{"pathid": 1, "hopCount": 0, "namespace": "mixed", "hostname": "leaf1-ios",
+    "iif": "Loopback0", "oif": "GigabitEthernet0/0", "vrf": "default", "isL2": false,
+    "overlay": false, "mtuMatch": true, "inMtu": 1514, "outMtu": 1500, "protocol":
+    "ospf", "ipLookup": "6.6.6.6/32", "vtepLookup": "", "macLookup": "", "nexthopIp":
+    "10.1.1.1", "hopError": "", "timestamp": 1627395444959}, {"pathid": 2, "hopCount":
+    0, "namespace": "mixed", "hostname": "leaf1-ios", "iif": "Loopback0", "oif": "GigabitEthernet0/1",
+    "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu":
+    1514, "outMtu": 1500, "protocol": "ospf", "ipLookup": "6.6.6.6/32", "vtepLookup":
+    "", "macLookup": "", "nexthopIp": "10.2.1.1", "hopError": "", "timestamp": 1627395444959},
+    {"pathid": 1, "hopCount": 1, "namespace": "mixed", "hostname": "spine1-nxos",
+    "iif": "Ethernet1/1", "oif": "Ethernet1/6", "vrf": "default", "isL2": false, "overlay":
+    false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "ospf", "ipLookup":
+    "6.6.6.6/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "6.6.6.6", "hopError":
+    "Hop MTU < Src Mtu", "timestamp": 1627395439859}, {"pathid": 1, "hopCount": 2,
+    "namespace": "mixed", "hostname": "leaf6-eos", "iif": "Ethernet1", "oif": "Loopback0",
+    "vrf": "default", "isL2": false, "overlay": false, "mtuMatch": true, "inMtu":
+    1500, "outMtu": 65535, "protocol": "", "ipLookup": "", "vtepLookup": "", "macLookup":
+    "", "nexthopIp": "", "hopError": "Dst MTU != Src MTU", "timestamp": 1627395434695},
+    {"pathid": 2, "hopCount": 1, "namespace": "mixed", "hostname": "spine2-nxos",
+    "iif": "Ethernet1/1", "oif": "Ethernet1/6", "vrf": "default", "isL2": false, "overlay":
+    false, "mtuMatch": true, "inMtu": 1500, "outMtu": 1500, "protocol": "ospf", "ipLookup":
+    "6.6.6.6/32", "vtepLookup": "", "macLookup": "", "nexthopIp": "6.6.6.6", "hopError":
+    "Hop MTU < Src Mtu", "timestamp": 1627395440281}]'
+- command: path top --src='1.1.1.1' --dest='6.6.6.6' --format=json --namespace=mixed
+    --what=inMtu --columns=hostname
+  data-directory: tests/data/parquet
+  marks: path top all mixed
+  output: '[{"hostname": "leaf1-ios"}, {"hostname": "leaf1-ios"}, {"hostname": "spine1-nxos"},
+    {"hostname": "leaf6-eos"}, {"hostname": "spine2-nxos"}]'

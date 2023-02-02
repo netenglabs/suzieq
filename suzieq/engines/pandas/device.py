@@ -45,8 +45,10 @@ class DeviceObj(SqPandasEngine):
         user_query_cols = self._get_user_query_cols(user_query)
         addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
 
+        getcols = list(set(fields + ['timestamp']))
+
         df = super().get(active_only=False, addnl_fields=addnl_fields,
-                         columns=fields, **kwargs)
+                         columns=getcols, **kwargs)
         if view == 'latest' and 'status' in df.columns:
             df['status'] = np.where(df.active, df['status'], 'dead')
 
@@ -76,9 +78,15 @@ class DeviceObj(SqPandasEngine):
 
             df = df.merge(poller_df, on=['namespace', 'hostname'],
                           how='outer', suffixes=['', '_y'])  \
-                .fillna({'bootupTimestamp': 0, 'timestamp': 0,
-                         'active': True}) \
-                .fillna('N/A')
+                .fillna({'bootupTimestamp': 0,
+                         'active': True})
+
+            df.timestamp = np.where(df['timestamp'].isna(),
+                                    df['timestamp_y'], df['timestamp'])
+
+            # For some reason the fillna operation removes the timezone, so we
+            # use where to detect NaN values and to replace them
+            df = df.fillna('N/A')
 
             df.status = np.where(
                 (df['status_y'] != 0) & (df['status_y'] != 200) &
@@ -95,8 +103,6 @@ class DeviceObj(SqPandasEngine):
                 df['model'] = np.where(df.status_y == 418, 'unsupported',
                                        df.model)
             df = df[df.status != 'N/A']
-            df.timestamp = np.where(df['timestamp'] == 0,
-                                    df['timestamp_y'], df['timestamp'])
             if 'address' in df.columns:
                 df.address = np.where(df['address'] == 'N/A', df['hostname'],
                                       df['address'])
@@ -107,10 +113,10 @@ class DeviceObj(SqPandasEngine):
                            self.cfg.get('analyzer', {}).get('timezone',
                                                             None)))
             uptime_cols = pd.to_timedelta(uptime_cols, unit='s')
-            df.insert(len(df.columns)-1, 'uptime', uptime_cols)
+            df['uptime'] = uptime_cols
 
         if df.empty:
-            return df[fields]
+            return df.reset_index(drop=True)[fields]
 
         # The poller merge kills the filtering we did earlier, so redo:
         if status:

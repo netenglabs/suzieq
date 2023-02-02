@@ -1,10 +1,9 @@
 import re
-from datetime import timedelta, datetime
-from dateparser import parse
 
 import numpy as np
 from suzieq.poller.worker.services.service import Service
-from suzieq.shared.utils import get_timestamp_from_junos_time
+from suzieq.shared.utils import get_timestamp_from_junos_time, \
+    parse_relative_timestamp
 
 
 class DeviceService(Service):
@@ -29,18 +28,9 @@ class DeviceService(Service):
     def _clean_linux_data(self, processed_data, raw_data):
 
         for entry in processed_data:
-            # We're assuming that if the entry doesn't provide the
-            # bootupTimestamp field but provides the sysUptime field,
-            # we fix the data so that it is always bootupTimestamp
-            # TODO: Fix the clock drift
-            if not entry.get("bootupTimestamp", None) and entry.get(
-                    "sysUptime", None):
-                entry["bootupTimestamp"] = int(
-                    int(raw_data[0]["timestamp"])/1000 -
-                    float(entry.pop("sysUptime", 0))
-                )
-                if entry["bootupTimestamp"] < 0:
-                    entry["bootupTimestamp"] = 0
+            if entry.get("bootupTimestamp"):
+                entry["bootupTimestamp"] = int(entry["bootupTimestamp"])
+
             # This is the case for Linux servers, so also extract the vendor
             # and version from the os string
             if not entry.get("vendor", ''):
@@ -60,50 +50,31 @@ class DeviceService(Service):
     def _clean_cumulus_data(self, processed_data, raw_data):
 
         drop_indices = []
-        drop_rest = False
+        ignore_model_info = False
         for i, entry in enumerate(processed_data):
             etype = entry.get('_entryType', '')
             if etype == 'json':
                 model = entry.get('_modelName', '')
                 if model:
                     entry['model'] = model
-                uptime = entry.get('_uptime', '').split()
-                if uptime:
-                    hr, mins, secs = uptime[-1].split(':')
-                    if len(uptime) > 1:
-                        days = int(uptime[0])
-                    else:
-                        days = 0
-                    uptime_delta = timedelta(days=days, hours=int(hr),
-                                             minutes=int(mins),
-                                             seconds=int(secs.split('.')[0]))
-                    entry['bootupTimestamp'] = int(
-                        (int(raw_data[0]["timestamp"])/1000) -
-                        uptime_delta.total_seconds())
-                drop_rest = True
-                continue
 
-            if drop_rest:
-                drop_indices.append(i)
-                continue
-
-            if etype == 'uptime':
-                entry["bootupTimestamp"] = int(
-                    int(raw_data[0]["timestamp"])/1000 -
-                    float(entry.pop("_sysUptime", 0))
-                )
-                if entry["bootupTimestamp"] < 0:
-                    entry["bootupTimestamp"] = 0
-
-                continue
-
-            if etype == 'model':
-                mem = entry['memory'] or 0
-                entry['mem'] = int(int(mem)/1024)
-                if not entry.get('vendor', ''):
-                    entry['vendor'] = 'Cumulus'
-                entry['os'] = 'cumulus'
-                continue
+                # Some devices do not support the json output, when this is
+                # available, we don't need to parse the model info as present
+                # in the json output
+                ignore_model_info = True
+            elif etype == 'bootupTimestamp':
+                entry["bootupTimestamp"] = int(entry["bootupTimestamp"])
+            elif etype == 'model':
+                # If we parsed the json output no need to parse this result, so
+                # skip.
+                if ignore_model_info:
+                    drop_indices.append(i)
+                else:
+                    mem = entry['memory'] or 0
+                    entry['mem'] = int(int(mem)/1024)
+                    if not entry.get('vendor', ''):
+                        entry['vendor'] = 'Cumulus'
+                    entry['os'] = 'cumulus'
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
 
@@ -124,31 +95,33 @@ class DeviceService(Service):
 
         return processed_data
 
-    def _clean_common_ios(self, entry, os):
+    def _clean_common_ios(self, entry, os, rcv_timestamp):
         '''Common IOS-like NOS cleaning'''
         entry['os'] = os
         entry['vendor'] = 'Cisco'
         if entry.get('bootupTimestamp', ''):
-            entry['bootupTimestamp'] = int(datetime.utcfromtimestamp(
-                parse(entry['bootupTimestamp']).timestamp()).timestamp())
+            entry['bootupTimestamp'] = parse_relative_timestamp(
+                entry['bootupTimestamp'], rcv_timestamp / 1000)
 
     def _clean_iosxr_data(self, processed_data, raw_data):
-        for entry in processed_data:
-            self._clean_common_ios(entry, 'iosxr')
+        for i, entry in enumerate(processed_data):
+            self._clean_common_ios(
+                entry, 'iosxr', raw_data[i]['cmd_timestamp'])
             if 'IOS-XRv' in entry.get('model', ''):
                 entry['architecture'] = "x86-64"
 
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_iosxe_data(self, processed_data, raw_data):
-        for entry in processed_data:
-            self._clean_common_ios(entry, 'iosxe')
+        for i, entry in enumerate(processed_data):
+            self._clean_common_ios(
+                entry, 'iosxe', raw_data[i]['cmd_timestamp'])
 
         return self._common_data_cleaner(processed_data, raw_data)
 
     def _clean_ios_data(self, processed_data, raw_data):
-        for entry in processed_data:
-            self._clean_common_ios(entry, 'ios')
+        for i, entry in enumerate(processed_data):
+            self._clean_common_ios(entry, 'ios', raw_data[i]['cmd_timestamp'])
 
         return self._common_data_cleaner(processed_data, raw_data)
 
@@ -156,8 +129,23 @@ class DeviceService(Service):
 
         for entry in processed_data:
             entry['bootupTimestamp'] = get_timestamp_from_junos_time(
-                entry['bootupTimestamp'],
-                int(raw_data[0]["timestamp"])/1000)/1000
+                entry['bootupTimestamp'], ms=False)
+
+            if entry.get('version', '').endswith('EVO'):
+                entry['os'] = 'junos-evo'
+                continue
+
+            model = entry.get('model', '')
+            if 'qfx10' in model:
+                entry['os'] = 'junos-qfx10k'
+            elif 'qfx' in model:
+                entry['os'] = 'junos-qfx'
+            elif model.startswith(('mx', 'vmx')):
+                entry['os'] = 'junos-mx'
+            elif 'ex' in model:
+                entry['os'] = 'junos-ex'
+            elif model.startswith(('srx', 'vSRX')):
+                entry['os'] = 'junos-es'
 
         return self._common_data_cleaner(processed_data, raw_data)
 
@@ -169,7 +157,7 @@ class DeviceService(Service):
                       int(entry.pop('kern_uptm_secs', 0)))
             if upsecs:
                 entry['bootupTimestamp'] = int(
-                    int(raw_data[0]["timestamp"])/1000 - upsecs)
+                    int(raw_data[0]['cmd_timestamp'])/1000 - upsecs)
 
             # Needed for textfsm parsed data
             entry['vendor'] = 'Cisco'
@@ -194,7 +182,7 @@ class DeviceService(Service):
                     60 * int(minutes) + int(seconds)
             if upsecs:
                 entry['bootupTimestamp'] = int(
-                    int(raw_data[0]["timestamp"])/1000 - upsecs)
+                    int(raw_data[0]["cmd_timestamp"])/1000 - upsecs)
             # defaults
             entry["vendor"] = "Palo Alto"
             entry["os"] = "panos"

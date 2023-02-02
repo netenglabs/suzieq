@@ -6,22 +6,24 @@ import logging
 import os
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from importlib.util import find_spec
 from ipaddress import ip_network
 from itertools import groupby
 from logging.handlers import RotatingFileHandler
 from os import getenv
-from typing import Dict, List
+from typing import Any, Dict, List, Tuple
 from tzlocal import get_localzone
 
 import pandas as pd
+import pyarrow as pa
 import yaml
 from dateparser import parse
 from dateutil.relativedelta import relativedelta
 from pytz import all_timezones
 from suzieq.shared.exceptions import SensitiveLoadError
+from suzieq.shared.schema import SchemaForTable
 from suzieq.version import SUZIEQ_VERSION
 
 logger = logging.getLogger(__name__)
@@ -246,15 +248,20 @@ def get_sensitive_data(input_method: str, ask_message: str = '') -> str:
 
 def sq_get_config_file(config_file):
     """Get the path to the suzieq config file"""
-
+    default_path = '{home}/.suzieq/suzieq-cfg.yml'
     if config_file:
         cfgfile = config_file
     elif os.path.exists("./suzieq-cfg.yml"):
         cfgfile = "./suzieq-cfg.yml"
-    elif os.path.exists(os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"):
-        cfgfile = os.getenv("HOME") + "/.suzieq/suzieq-cfg.yml"
+    elif (os.getenv('HOME')
+            and os.path.exists(default_path.format(home=os.getenv('HOME')))):
+        return default_path.format(home=os.getenv('HOME'))
     else:
-        cfgfile = None
+        if not os.getenv('HOME'):
+            logger.warning(
+                'Unable to determine the HOME directory, is $HOME env var '
+                'properly set?')
+        return None
     return cfgfile
 
 
@@ -374,6 +381,27 @@ def calc_avg(oldval, newval):
     return float((oldval+newval)/2)
 
 
+def parse_relative_timestamp(uptime: str, relative_to: int = None) -> int:
+    """Get a relative time (i.e. with format 10 weeks, 4 days, 3 hours 11 mins)
+    and convert it into a timestamp.
+
+    Args:
+        uptime (str): _description_
+        relative_to (int, optional): provide a custom base epoch timestamp, if
+            not provided, the base timestamp is "now".
+
+    Returns:
+        int: The epoch timestamp of the base time minus the uptime
+    """
+    settings = {'TIMEZONE': 'utc',
+                'RETURN_AS_TIMEZONE_AWARE': True}
+    if relative_to:
+        base_ts = datetime.fromtimestamp(relative_to, timezone.utc)
+        settings['RELATIVE_BASE'] = base_ts
+
+    return int(parse(uptime, settings=settings).timestamp())
+
+
 def get_timestamp_from_cisco_time(in_data, timestamp) -> int:
     """Get timestamp in ms from the Cisco-specific timestamp string
     Examples of Cisco timestamp str are P2DT14H45M16S, P1M17DT4H49M50S etc.
@@ -425,12 +453,27 @@ def get_timestamp_from_cisco_time(in_data, timestamp) -> int:
     return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
 
 
-def get_timestamp_from_junos_time(in_data, timestamp: int):
+def get_timestamp_from_junos_time(in_data: Tuple[Dict, str],
+                                  relative_to: int = None,
+                                  ms=True) -> int:
     """Get timestamp in ms from the Junos-specific timestamp string
     The expected input looks like: "attributes" : {"junos:seconds" : "0"}.
     We don't check for format because we're assuming the input would be blank
-    if it wasn't the right format. The input can either be a dictionary or a
-    JSON string.
+    if it wasn't the right format.
+
+    Args:
+        in_data (Tuple[Dict, str]): the time data received from the device,
+            The input can either be a dictionary or a JSON string.
+        relative_to (int, optional): Subtract the extracted seconds to the
+            provided epoch timestamp.
+            If None, the function returns the seconds without further
+            processing (e.g. useful when we already have an epoch timestamp).
+            Defaults to None.
+        ms (int, optional) If the True the result is returned in milliseconds
+            otherwise the result will be in seconds.
+
+    Returns:
+        int: enlapsed time or unix timestamp
     """
 
     if not in_data:
@@ -447,8 +490,13 @@ def get_timestamp_from_junos_time(in_data, timestamp: int):
             logger.warning(f'Unable to convert junos secs from {in_data}')
             secs = 0
 
-    delta = relativedelta(seconds=int(secs))
-    return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
+    conversion_unit = 1000 if ms else 1
+
+    if relative_to:
+        delta = relativedelta(seconds=int(secs))
+        secs = (datetime.fromtimestamp(relative_to) - delta).timestamp()
+
+    return secs * conversion_unit
 
 
 def convert_macaddr_format_to_colon(macaddr: str) -> str:
@@ -569,78 +617,139 @@ def convert_numlist_to_ranges(numList: List[int]) -> str:
     return result[:-2]
 
 
-def build_query_str(skip_fields: list, schema, ignore_regex=True,
-                    **kwargs) -> str:
-    """Build a pandas query string given key/val pairs
+# pylint: disable=too-many-statements
+def build_query_str(skip_fields: List, schema: SchemaForTable,
+                    ignore_regex=True, **kwargs):
+    """Build a pandas query starting from the given key/val pairs.
+
+    Args:
+        skip_fields (List): the fields we don't want to include in the query
+        schema (SchemaForTable): the schema of the table where to apply the
+            query.
+        ignore_regex (bool, optional): Ignore all the fields containing a
+            regex among the filters. Defaults to True.
     """
-    query_str = ''
-    prefix = ''
+    def _build_number_filter(field: str, fval: Any):
+        op = '=='
+        val = fval
+        if isinstance(fval, str):
+            if fval.startswith(('<=', '>=')):
+                val = fval[2:]
+                op = fval[:2]
+            elif fval.startswith(('<', '>')):
+                val = fval[1:]
+                op = fval[:1]
+        return f'{field} {op} {val}'
 
-    def _build_query_str(fld, val, fldtype) -> List[str]:
-        """Builds the string from the provided user input
+    def _escape(val: str) -> str:
+        return val.replace('"', '\\"')
 
-        Besides handling operators and regexp, the function returns what
-        the subsequent match within this list needs to be. If the ! operator
-        is used, we have to switch to AND, else we can be at OR. For
-        example. it makes no sense to say !leaf01 OR !leaf02 as this will
-        include both leaf01 and leaf02.
-        """
+    num_types = ['long', 'float', 'int']
+    str_query = '{}{}.str.fullmatch("{}")'
+    all_filters = []
 
-        cond = 'or'
-        num_type = ["long", "float", "int"]
-        if ((fldtype in num_type) and not
-                isinstance(val, str)):
-            result = f'{fld} == {val}'
+    if not kwargs:
+        return ''
 
-        elif val.startswith('!'):
-            val = val[1:]
-            cond = 'and'
-            if fldtype in num_type:
-                result = f'{fld} != {val}'
-            else:
-                if val.startswith('~'):
-                    val = val[1:]
-                    result = f'~{fld}.str.fullmatch("{val}")'
-                else:
-                    result = f'{fld} != "{val}"'
-        elif val.startswith(('<', '>')):
-            result = val
-        elif val.startswith('~'):
-            result = f'{fld}.str.fullmatch("{val[1:]}")'
-        else:
-            if fldtype in num_type:
-                result = f'{fld} == {val}'
-            else:
-                result = f'{fld} == "{val}"'
-
-        return result, cond
-
-    for f, v in kwargs.items():
-        if not v or f in skip_fields or f in ["groupby"]:
+    for field, filter_vals in kwargs.items():
+        match_filters = []
+        not_filters = []
+        # Check the skip conditions before proceeding
+        if not filter_vals or field in skip_fields or field in ['groupby']:
             continue
 
-        stype = schema.field(f).get('type', 'string')
-        if isinstance(v, list) and len(v):
-            newv = reduce_filter_list(v)
-            subq = ''
-            subcond = ''
-            if ignore_regex and [x for x in newv
-                                 if isinstance(x, str) and
-                                 x.startswith(('~', '!~'))]:
+        # Get info about the field if the field does not belong to the schema
+        # ignore it
+        field_info = schema.field(field)
+        if not field_info:
+            logger.warning(f'The field {field} does not belong to the schema')
+            continue
+
+        ftype = field_info.get('type', 'string')
+
+        # In order to reduce the number of if/else transform a single filter
+        # in a list to iterate over it
+        if not isinstance(filter_vals, list):
+            filter_vals = [filter_vals]
+
+        # Apply a number filter
+        if ftype in num_types:
+            i = 0
+            while i < len(filter_vals):
+                fval = filter_vals[i]
+                if isinstance(fval, str) and fval.startswith('!'):
+                    not_filters.append(f'{field} != {fval[1:]}')
+                elif (isinstance(fval, str) and fval.startswith('>')
+                        and i+1 < len(filter_vals)
+                        and isinstance(filter_vals[i+1], str)
+                        and filter_vals[i+1].startswith('<')):
+                    # In this case we are checking if the user asked for an
+                    # an interval. So if we find a sequence of > and <,
+                    # we will combine the rules
+                    start_rule = _build_number_filter(field, fval)
+                    end_rule = _build_number_filter(field, filter_vals[i+1])
+                    match_filters.append(f'({start_rule} and {end_rule})')
+                    # Increment one more time, in order to skip the
+                    # rule we already considered
+                    i += 1
+                else:
+                    match_filters.append(_build_number_filter(field, fval))
+                i += 1
+        else:
+            # Check if there are regex and in this case skip this field
+            if ignore_regex and any(f for f in filter_vals
+                                    if isinstance(f, str)
+                                    and f.startswith(('~', '!~'))):
                 continue
 
-            for elem in newv:
-                intq, nextcond = _build_query_str(f, elem, stype)
-                subq += f'{subcond} {intq} '
-                subcond = nextcond
-            query_str += '{} ({})'.format(prefix, subq)
-            prefix = "and"
-        else:
-            intq, nextcond = _build_query_str(f, v, stype)
-            query_str += f'{prefix} {intq} '
-            prefix = nextcond
+            for fval in filter_vals:
+                val_to_use = fval
+                use_not = False
+                regex = False
+                # As we are building a query string to provide to pandas we
+                # need to escape the quotes in the provided values.
+                if isinstance(fval, str):
+                    if fval.startswith('!~'):
+                        val_to_use = _escape(fval[2:])
+                        use_not = True
+                        regex = True
+                    elif fval.startswith('~'):
+                        val_to_use = _escape(fval[1:])
+                        regex = True
+                    elif fval.startswith('!'):
+                        val_to_use = _escape(fval[1:])
+                        use_not = True
+                    else:
+                        val_to_use = _escape(fval)
 
-    return query_str
+                if use_not:
+                    if regex:
+                        not_filters.append(
+                            str_query.format('~', field, val_to_use))
+                    else:
+                        not_filters.append(f'{field} != "{val_to_use}"')
+                else:
+                    if regex:
+                        match_filters.append(
+                            str_query.format('', field, val_to_use))
+                    else:
+                        match_filters.append(f'{field} == "{val_to_use}"')
+
+        match_str = ' or '.join(match_filters)
+        not_str = ' and '.join(not_filters)
+        field_filter = None
+
+        if match_str and not_str:
+            field_filter = f'({match_str}) and ({not_str})'
+        elif match_str:
+            field_filter = match_str
+        elif not_str:
+            field_filter = not_str
+
+        if field_filter:
+            all_filters.append(f'({field_filter})')
+
+    return ' and '.join(all_filters)
 
 
 def poller_log_params(cfg: dict, is_controller=False, worker_id=0) -> tuple:
@@ -747,8 +856,8 @@ def init_logger(logname: str,
 def known_devtypes() -> list:
     """Returns the list of known dev types"""
     return(['cumulus', 'eos', 'iosxe', 'iosxr', 'ios', 'junos-mx', 'junos-qfx',
-            'junos-qfx10k', 'junos-ex', 'junos-es', 'linux', 'nxos', 'sonic',
-            'panos'])
+            'junos-qfx10k', 'junos-ex', 'junos-es', 'junos-evo', 'linux',
+            'nxos', 'sonic', 'panos'])
 
 
 def humanize_timestamp(field: pd.Series, tz=None) -> pd.Series:
@@ -983,21 +1092,21 @@ def deprecated_command_warning(dep_command: str, dep_sub_command: str,
                                              command, sub_command)
 
 
-def reduce_filter_list(filter_list: List[str]) -> List[str]:
-    '''Reduce the list of entries to the minimal set
-    Given a list of filters, some of which contain the NOT such as
-    [123, !245] and ['leaf01', '!~spine.*', '~edge.*'], we ignore the
-    entries which are NOT since they don't contribute to the final
-    result since the presence of NOT implies the list is an AND list
-    not an OR list.
-    '''
+def get_default_per_vals() -> Dict:
+    """For each pyarrow type get the default type.
 
-    notlist = [x for x in filter_list
-               if isinstance(x, str) and x.startswith('!')]
-    if notlist and notlist != filter_list:
-        # if not is used with non-not, the nots are meaningless
-        newlist = [x for x in filter_list
-                   if not (isinstance(x, str) and x.startswith('!'))]
-    else:
-        newlist = filter_list
-    return newlist
+    Returns:
+        Dict: mapping between type and default value
+    """
+    return({
+        pa.string(): "",
+        pa.int32(): 0,
+        pa.int64(): 0,
+        pa.float32(): 0.0,
+        pa.float64(): 0.0,
+        pa.date64(): 0.0,
+        pa.bool_(): False,
+        pa.list_(pa.string()): [],
+        pa.list_(pa.int64()): [],
+        pa.binary(): b''
+    })
