@@ -1,8 +1,8 @@
-# Tags for Suzieq and Mfn
+# Tags for SuzieQ and Mfn
 
 __NOTE WELL: THESE ARE IDEAS OF WHAT WE WANT TO DO WITH SUZIEQ, NOTHING OUTSIDE OF NAMESPACE is SUPPORTED YET__
 
-Both Suzieq and Mfn need to be able to have these tags to group things together and they should be the same groups.
+Both SuzieQ and Mfn need to be able to have these tags to group things together and they should be the same groups.
 
 When we first think of tags, we think of device tags, but really lots of things need tags. We will want to be able to group interfaces as well. Maybe there are other attributes that need tags.
 
@@ -78,9 +78,9 @@ for MfN it needs tags at the time of recording the data
 * what If I don't have ansible
 ** create a hosts file, and then have a script that reads that hostfile and updates the groups? 
 
-### Dynamic description for Suzieq
+### Dynamic description for SuzieQ
 
-For Suzieq, we want to get the tags at analysis time, rather than at write time, so suzieq-cli will need to use the above library to read the database. (why did I say this, doesn't it need to be recorded over time just like MfN?)
+For SuzieQ, we want to get the tags at analysis time, rather than at write time, so suzieq-cli will need to use the above library to read the database. (why did I say this, doesn't it need to be recorded over time just like MfN?)
 
 ### Questions
 
