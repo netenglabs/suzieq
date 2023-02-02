@@ -821,8 +821,10 @@ class InterfaceService(Service):
                 elif 'Autostate Enabled' in state:
                     entry['state'] = 'down'
                     entry['reason'] = state.split(',')[1].strip()
-                elif 'disabled' in state:
+                elif 'err-disabled' in state:
                     entry['state'] = 'errDisabled'
+                elif 'disabled' in state:
+                    entry['state'] = 'down'
                 elif 'monitoring' in state:
                     entry['state'] = 'down'
                 elif 'suspended' in state:
