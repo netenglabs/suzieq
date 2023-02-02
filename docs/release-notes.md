@@ -105,7 +105,7 @@ The 17th release of SuzieQ comes with the following new features and bug fixes. 
 
 ## 0.16.0 (Jan 15, 2022)
 
-This is the 16th release of Suzieq, with many new and useful features. Refer to the release notes for 0.16.0b1 and 0.16.0a1 for details. In addition to those features and bug fixes, this release has the following changes compared to 0.16.0b1:
+This is the 16th release of SuzieQ, with many new and useful features. Refer to the release notes for 0.16.0b1 and 0.16.0a1 for details. In addition to those features and bug fixes, this release has the following changes compared to 0.16.0b1:
 
 * **Improved GUI Support** The new GUI had a bunch of critical bugs. This version fixes most of them. Refer to the caveats section of the GUI document for issues using it especially with the experimental feature enabled.
 * **Breaking Change** Network find was broken in some cases and this has been addressed correctly. With this change, you can now get the output even if the MAC address has been aged out. This update adds a new column, l2miss, that is True if the MAC address was found in the L2 table, else false.
@@ -124,19 +124,19 @@ This release adds a bunch of major features on top of the alpha release set.
 * **New GUI**: There's a new way to sort/filter information in the GUI without having to know any pandas or fancy SQL. Check out the Xplore page for more info. One limitation with the beta release: Entire rows are not highlighted in case of a bad status, only the cell (for example only the state column in interfaces table is highlighted if down, not the entire row)
 * **Snapshot Mode**: A common use case is wanting to run the SuzieQ poller in snapshot mode i.e. run once over all supported tables over all devices in the inventory, update the parquet DB and terminate. People who used this had to resort to a slightly complicated sequence of steps to achieve their goal. Now, add --run-once=update option to the sq-poller command, and you get the snapshot mode behavior. 
 * Filters applied to all verbs: Before this release, you couldn't apply filters to any command except show. For example, you couldn't get summaries over interfaces with an MTU > 9200 or BGP IPv4 unicast sessions or routes populated with BGP etc. Now, a table's filters are applicable to all commands associated with that command.
-* **Polling from a local folder**: If you can't run the SuzieQ poller for whatever reason, but have a directory full of show command outputs from a set of devices and want this to be used to update the Suzieq database so that you can run all your favorite suzieq commands, it is now possible with the sq-simnodes program. More details can be found on [the documentation page](https://suzieq.readthedocs.io/en/0.16.0/simnode/).
+* **Polling from a local folder**: If you can't run the SuzieQ poller for whatever reason, but have a directory full of show command outputs from a set of devices and want this to be used to update the SuzieQ database so that you can run all your favorite suzieq commands, it is now possible with the sq-simnodes program. More details can be found on [the documentation page](https://suzieq.readthedocs.io/en/0.16.0/simnode/).
 * **Improved support for IOSXE devices**: including Catalyst 4509, Catlyst 9300, Catalyst 9500 and more. 
 * **QFX10K Support**: Added support for Junos QFX10K platforms. QFX10K platforms are not like QFX5K platform, they're a hybrid between QFX and MX. This is now handled correctly.
 * Poller now honors use-stdout: True in the config file.
 * Use hostname instead of hostnamectl for determining Cumulus and Linux hostnames (Issue #530).
-* You can see the Suzieq version via suzieq-cli version OR suzieq-cli -V. Same -V option can be used for the poller, and rest server. You can get the same info via the About option from the Menu in the GUI
+* You can see the SuzieQ version via suzieq-cli version OR suzieq-cli -V. Same -V option can be used for the poller, and rest server. You can get the same info via the About option from the Menu in the GUI
 
 A bunch of other additional bugs have been fixed. Thanks to Claudia de Luna and John Howard for their awesome assistance in getting this release out.
 
 
 ## 0.16.0 alpha (Dec 24, 2021)
 
-This release has some major new features, and some breaking changes. Please note these changes before using Suzieq. This is an alpha release and so we expect there to be bugs. Please test and provide feedback via Slack or bug reports. The new features were the ones selected by the community as the ones they most cared about.
+This release has some major new features, and some breaking changes. Please note these changes before using SuzieQ. This is an alpha release and so we expect there to be bugs. Please test and provide feedback via Slack or bug reports. The new features were the ones selected by the community as the ones they most cared about.
 
 * Palo Alto Networks Firewall support: We've added support for this new platform. Support today is only when running the firewall in L3 mode, with support for only BGP protocol. We hope to add support for OSPF protocol before the final release. Please look at the [guide](./panos-support.md) for more details on using this feature.
 * Netbox inventory support: We support pulling configuration directly from Netbox now. Netbox is the second of many plugins that we'll support for pulling inventory information. The first is Ansible. 
@@ -178,13 +178,13 @@ Another bugfix release of the 0.15.5 release train. The main fix is the reworkin
 * Handle the case of a hostname or namespace specification not selecting any data correctly. Before this fix, a hostname that doesn't exist would result in displaying all hosts.
 * Added more tests, and updated tests and data to match the poller updates from the earlier versions of this release.
 
-__NOTE__: If you're installing Suzieq as a pip package, you'll have to install version 0.15.5.1 because of how pip dragged in an incompotible version of the pyparsing library resulting in random parsing errors. 
+__NOTE__: If you're installing SuzieQ as a pip package, you'll have to install version 0.15.5.1 because of how pip dragged in an incompotible version of the pyparsing library resulting in random parsing errors. 
 
 ## 0.15.4 (Oct 18, 2021)
 
 This is a largely a bug fix release of the 0.15.0 release. However, it does add one important foundational feature: support for parsers/commands based on NOS version.
 
-* Support for multiple NOS versions: Different versions of a NOS produce either different outputs or sometimes even require different command names. One example that impacted Suzieq right away is Junos' QFX command for getting the LLDP neighbors. The post 19.1(?) release use "show lldp neighbors detail" to get the peer interface name, while older versions of Junos only require 'show lldp neighbors" for the same info. With this release, we can specify both commands with the versions they're relevant to, and Suzieq poller will pick the right command to use based on the version of the node it is polling. So, even in the same namespace, you can have two different versions of the same NOS, and the poller will pick the right command and parser to use for each version.
+* Support for multiple NOS versions: Different versions of a NOS produce either different outputs or sometimes even require different command names. One example that impacted SuzieQ right away is Junos' QFX command for getting the LLDP neighbors. The post 19.1(?) release use "show lldp neighbors detail" to get the peer interface name, while older versions of Junos only require 'show lldp neighbors" for the same info. With this release, we can specify both commands with the versions they're relevant to, and Suzieq poller will pick the right command to use based on the version of the node it is polling. So, even in the same namespace, you can have two different versions of the same NOS, and the poller will pick the right command and parser to use for each version.
 * Bug fix for proper use of start and end times: Many commands didn't properly apply the user-specified start and end times to the additional tables they called upon. For example, ```network find``` didn't use the start and end times when invoking arpnd or mac address tables, leading to the wrong output. This is fixed now across all commands.
 * Bug fix for GUI Path: The swap source and dest button the GUI was not working correctly.
 * Bug fix for interface assert: Interface assert was broken in certain cases such as a network without VLANs. Fixing that led to a far more improved interface assert than before. We now check subinterfaces also for consistency, Junos interfaces are supported and more. We added a new flag "ignore-missing-peer" to have the interface assert pass if no peer was found for an interface. For example, if you're peering with a device in a different administrative domain. By default, missing peers will be treated as assert failure. Using the ignore-missing-peer flag, the missing peer is reported, but the assert does not fail.
@@ -206,7 +206,7 @@ This is a bug fix release with the following important changes:
 
 ## 0.15.1 (Oct 4, 2021)
 
-This is a hotfix release for those who tried to install Suzieq via PyPi. There were multiple failures in the PyPi package that had been uploaded including some missing specifications for certain dependencies. (Issue #430).
+This is a hotfix release for those who tried to install SuzieQ via PyPi. There were multiple failures in the PyPi package that had been uploaded including some missing specifications for certain dependencies. (Issue #430).
 
 ## 0.15.0 (Oct 3, 2021)
 
@@ -220,7 +220,7 @@ This is a major release with tons of new features and important bug fixes.
 * Updated GUI framework to streamlit version 0.87. Things should work better, and a little faster now. 
 * GUI search now uses network find for an IP or MAC address. In addition, you can lookup unique values of MTUs, ASNs, VTEPs, VLANs, VNIs, as well as a listing of what set of hosts have a specific value of one of these tables. You can look at the help on the Search page for more details.
 * __describe__ now works across all tables as a verb to display the schema of the saved data. Thus bgp describe lists the schema of the BGP table. tables describe table=bgp still works, but will be deprecated over time.
-* Added ability to log to stdout. This feature is particularly useful for those running Suzieq on top of Kubernetes.
+* Added ability to log to stdout. This feature is particularly useful for those running SuzieQ on top of Kubernetes.
 * Added __support for regex__ in specifying hostnames and namespaces. Start with "~" to indicate regex. "~spine.*" matches all hosts whose name starts with "spine", for example.
 * Support for "!" operator is more consistent
 * Searching by NOS version now works with "<, >..." and such operators. 
@@ -270,7 +270,7 @@ This release fixes a bunch of critical issues associated with release 0.14.0.
 
 The major features in this release are the support for IOS/IOSXE network operating systems and a revamped REST API. This version also fixes a subtle but critical coalescer issue.
 
-* __Support for IOS/IOSXE__: This release introduces support for IOS and IOSXE. All testing has been done using IOSvL2 (2019 version) and CSR1000v (16.11) images. Thanks to Rick Donato for his generous support for additional IOS testing. IOS and XE are mature operating systems with features and knobs galore.I obviously don't have the ability to test everything, but am happy to take fix bugs reported, take patch contributions and such. The support includes all the tables that Suzieq currently supports except for VXLAN and BFD support. 
+* __Support for IOS/IOSXE__: This release introduces support for IOS and IOSXE. All testing has been done using IOSvL2 (2019 version) and CSR1000v (16.11) images. Thanks to Rick Donato for his generous support for additional IOS testing. IOS and XE are mature operating systems with features and knobs galore.I obviously don't have the ability to test everything, but am happy to take fix bugs reported, take patch contributions and such. The support includes all the tables that SuzieQ currently supports except for VXLAN and BFD support. 
 * (_Breaking Change_)__Revamped REST API__: The v1 version of the REST API has been replaced by a newer v2 version. The fundamental difference is better support for the API tooling ecosystem. The v1 API accepted multiple values for a parameter as space separated strings. But it wasn't clear which query parameter accepted multiple values and which didn't by looking at the API. Some invalid parameters were silently ignored. Fixing all this is what led
 to v2. A discussion on the Slack channel about the breaking change led to the conclusion that it was worth making this change now.
 * Support for improved coalescing times: Instead of just 1 hour, 1 day etc., the coalescer now accepts much finer grained periods such as 10m, 2h etc. The coalescer also fires close to the top of the period. Originally, if you had a coalescing period of 1 hour and you started the coalescer at 7:59, the coalescer would coalesce the existing data and fire up at 8:59. But since it only coalesces whatever's in the 8:00-9:00 window when it wakes up, and since the clock is still at 8:59, it skips coalescing the entire hour's worth of data and only coalesces the data from 8-9 when it wakes up at 9:59. Thus, an additional hour's worth of data is always uncoalesced which can lead to bad query performance in the presence of a lot of data. The new version instead fires at 8, at 8, at 10 etc. to ensure all the data that can be coalesced is indeed coalesced.
@@ -322,7 +322,7 @@ This list of features and bug fixes for this release include:
 
 ## 0.11 (Apr 6, 2021)
 
-This is a mostly a repackaged 0.10 release, but now shippable as a python package as well. You can use pip install to install Suzieq. As a consequence, some of the directory structures (for config) have changed, and the suzieq config file format has been streamlined and made consistent so the variables appropriate to each component is present in the right hierarchy. The older config file will be subsumed and converted internally.
+This is a mostly a repackaged 0.10 release, but now shippable as a python package as well. You can use pip install to install SuzieQ. As a consequence, some of the directory structures (for config) have changed, and the suzieq config file format has been streamlined and made consistent so the variables appropriate to each component is present in the right hierarchy. The older config file will be subsumed and converted internally.
 
 ## 0.10 (Apr 1, 2021)
 
@@ -432,7 +432,7 @@ This is a release with some major structural changes, and support for SONIC NOS.
   - Improved predicate pushdown support with new dataset API for improved IO efficiency
   * We use vectorization and itertuples to support full Internet routing table with good performance. Thanks to Donald Sharp for this.
   * Row group size of 100000 and the ZSTD compression for better compression and read/write performance
-* Schema evolution support. Now you won't need to throw away data with newer Suzieq releases. 
+* Schema evolution support. Now you won't need to throw away data with newer SuzieQ releases. 
 * (Alpha) Migration tool to help with migrating old data to new format
 * Improved SSH security support including support for jumphosts, passphrase with private key, ssh config support. Thanks to Steve Dodd(idahood) for his help with testing and requesting the features.
 * Support for complex Ansible inventory to retrieve username/password etc. via the ansible-inventory command output

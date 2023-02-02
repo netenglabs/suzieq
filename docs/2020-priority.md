@@ -1,4 +1,4 @@
-# Suzieq Priorities
+# SuzieQ Priorities
 
 (last updated June 2022)
 
@@ -8,12 +8,12 @@ order of what we want to deliver.  If we are missing something that would make
 it more useful to you, please let us know. The best way is to
 [file an issue](https://github.com/netenglabs/suzieq/issues/new/choose).
 
-We are trying to provide a mix of adding new collection, new analysis, and making Suzieq a better
+We are trying to provide a mix of adding new collection, new analysis, and making SuzieQ a better
 platform to build on.
 
 ## Areas of Development
 
-There are six major areas that Suzieq development can be broken down into.
+There are six major areas that SuzieQ development can be broken down into.
 
 1. Platforms (new NOS)
 1. Features
@@ -77,6 +77,6 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 
 * By telling us which of these tasks you care to see sooner than later
 * Signing up to help with some of the tasks
-* Suggesting items that you care about but are missing from this list. The best way to do this is to open an issue. Please do add some color about how you intend to use Suzieq with that feature.
+* Suggesting items that you care about but are missing from this list. The best way to do this is to open an issue. Please do add some color about how you intend to use SuzieQ with that feature.
 * Writing some tests and/or documentation
 * Funding us to do the work :)

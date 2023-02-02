@@ -1,10 +1,10 @@
 ## Quick Start
 
-We want to make it as easy as possible for you to start engaging with Suzieq. We support two ways in which you can get started with Suzieq. The first is using pre-built Docker containers, and the second is as a regular python package.
+We want to make it as easy as possible for you to start engaging with SuzieQ. We support two ways in which you can get started with Suzieq. The first is using pre-built Docker containers, and the second is as a regular python package.
 
 ### As a Docker Container
 
-To get started seeing the kind of analysis Suzieq provides today, we have a demo container that has data in including the image.
+To get started seeing the kind of analysis SuzieQ provides today, we have a demo container that has data in including the image.
 ```
     docker run -it -p 8501:8501 --name suzieq netenglabs/suzieq-demo
     suzieq-cli # for the CLI
@@ -25,7 +25,7 @@ See section [Poller](./poller.md) and [Inventory file](./inventory.md) for furth
 
 ### As a Python Package
 
-Suzieq is also available as a standard Python package that you can install via pip. We strongly recommend the use of [Python virtual environment](https://docs.python.org/3.8/tutorial/venv.html). **Suzieq only works with Python versions 3.8.1 and above, and on Linux and MacOS**. The releases are always tested with Python versions 3.8 and 3.9.
+SuzieQ is also available as a standard Python package that you can install via pip. We strongly recommend the use of [Python virtual environment](https://docs.python.org/3.8/tutorial/venv.html). **Suzieq only works with Python versions 3.8.1 and above, and on Linux and MacOS**. The releases are always tested with Python versions 3.8 and 3.9.
 
 To install suzieq via pip run:
 ```
@@ -39,7 +39,7 @@ To setup a virtual environment if you don't know how to, is as simple as:
 
 Now, you can install suzieq via pip install as described above.
 
-Now you can use the main applications of Suzieq:
+Now you can use the main applications of SuzieQ:
 
 * sq-poller: The poller to gather the data from the various routers and bridges and Linux servers
 * suzieq-gui: The GUI front end to view, query and analyze the data

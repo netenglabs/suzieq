@@ -1,13 +1,13 @@
-# Suzieq REST server
+# SuzieQ REST server
 
-Suzieq ships with a REST server. It has the same set of commands, verbs and filters the the CLI has, with the exception of the verb "top". The output is always in JSON format at this time.
+SuzieQ ships with a REST server. It has the same set of commands, verbs and filters the the CLI has, with the exception of the verb "top". The output is always in JSON format at this time.
 
 ## Running the REST Server
 
-The REST server is bundled with the Suzieq Docker image. It already has an API key and a self-signed SSL certificate to get you going without further ado. Real deployment of course involves changing these defaults with something specific to your enterprise. At this time it's only authentication
+The REST server is bundled with the SuzieQ Docker image. It already has an API key and a self-signed SSL certificate to get you going without further ado. Real deployment of course involves changing these defaults with something specific to your enterprise. At this time it's only authentication
 is via an API key and all access to the API is via SSL.
 
-You can launch the Suzieq docker container as follows:
+You can launch the SuzieQ docker container as follows:
 
 ```shell
 docker run -it -p 8000:8000 --name suzieq netenglabs/suzieq:latest
@@ -24,7 +24,7 @@ The server is now accessible via [https://localhost:8000/api/docs](https://local
 curl --insecure 'https://localhost:8000/api/v2/device/show?access_token=496157e6e869ef7f3d6ecb24a6f6d847b224ee4f'
 ```
 
-The Suzieq docker container of course serves the data available under `/home/suzieq/parquet` inside the container. You can mount the parquet data you've already gathered via the `-v` option. So an example of mounting the parquet directory with data would be to launch the container as follows:
+The SuzieQ docker container of course serves the data available under `/home/suzieq/parquet` inside the container. You can mount the parquet data you've already gathered via the `-v` option. So an example of mounting the parquet directory with data would be to launch the container as follows:
 
 ```shell
 docker run -it -p 8000:8000 -v /path/to/you/suzieq-data:/home/suzieq/parquet --name suzieq netenglabs/suzieq:latest

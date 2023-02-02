@@ -50,7 +50,7 @@ The poller could use different policies for the inventory splitting. At the mome
 !!! warning
     At the moment, when using the namespace policy, you should make sure that the number of workers is less or equal than the number of namespaces.
 
-The chunking policy can be easily specified in the Suzieq configuration file via the `policy` field under chunker in poller:
+The chunking policy can be easily specified in the SuzieQ configuration file via the `policy` field under chunker in poller:
 
 ```yaml
 poller:
@@ -75,19 +75,19 @@ You can also run multiple pollers each with a different inventory (be very caref
 ## <a name='gathering-data'></a>Gathering Data
 
 Two important concepts in the poller are Nodes and Services. Nodes are devices of some kind;
-they are the object being monitored. Services are the data that is collected and consumed by Suzieq.
+they are the object being monitored. Services are the data that is collected and consumed by SuzieQ.
 Service definitions describe how to get output from devices and then how to turn that into useful data.
 
-Currently Suzieq supports polling [Arista](https://www.arista.com/en/),
+Currently SuzieQ supports polling [Arista](https://www.arista.com/en/),
 [Cisco's IOS](https://www.cisco.com/c/en/us/products/ios-nx-os-software/ios-technologies/index.html) including IOS Classic, IOS-XE and IOS-XR,
 [Cisco's NXOS](https://www.cisco.com/c/en/us/products/switches/data-center-switches/index.html),
 [Cumulus Linux](https://cumulusnetworks.com/),
 [Juniper](https://www.juniper.net),
 and [SONIC](https://azure.github.io/SONiC/) and [Palo Alto Firewalls](https://www.paloaltonetworks.com/) devices, as well as native Linux devices such as servers. SuzieQ can easily support other device types, and we have third-party contributors working on other NOSes. Please let us know if you're interested in SuzieQ supporting other NOSes.
 
-Suzieq started out with least common denominator SSH and REST access to devices.
+SuzieQ started out with least common denominator SSH and REST access to devices.
 It doesn't care much about transport, we will use whatever gets the best data.
-Suzieq does have support for agents, such as Kafka and SNMP, to push data and we've done some experiments with them, but don't
+SuzieQ does have support for agents, such as Kafka and SNMP, to push data and we've done some experiments with them, but don't
 have production versions of that code.
 
 ## Polling Period
@@ -99,7 +99,7 @@ Independent of this, you can change the polling period of any individual service
 ## Debugging poller issues
 
 There are two places to look if you want to know what the poller is up to. The first is the poller
-log file in _/tmp/sq-poller.log_. The second is in SuzieQ in the sq-poller table. We keep data about how
+log file in */tmp/sq-poller.log*. The second is in SuzieQ in the sq-poller table. We keep data about how
 polling is going in that table. If you do `suzieq-cli sqpoller show --status=fail` you should see any failures.
 
 ```
