@@ -27,6 +27,10 @@ class NetworkObj(SqPandasEngine):
         query_str = kwargs.pop('query_str', '')
         fields = self.schema.get_display_fields(['default'])
 
+        if ((self.iobj.start_time and self.iobj.end_time) or
+                (self.iobj.view == 'all')):
+            fields.insert(0, 'active')
+            fields.append('timestamp')
         dflist = []
         if isinstance(addrlist, str):
             addrlist = [addrlist]
