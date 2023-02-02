@@ -72,7 +72,6 @@ Given the categories, here is a rough list of tasks we will be tackling. We welc
 * Understand BGP routing policy and route maps / etc
 * ISIS
 * ~~Supporting 1M+ routes per device~~
-* Integration with other systems as both source of data and as a client.
 
 ## How You Can Help
 
