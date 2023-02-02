@@ -53,6 +53,15 @@ def gui_main(*args):
                 'stlit' / 'suzieq-gui.py'
             thisprog = str(thisprog)
 
+    if userargs.port == '3000':
+        # due to a streamlit issue, starting a server on port 3000 will cause
+        # the SuzieQ gui to show an empty page
+        # Issue: https://github.com/netenglabs/suzieq/issues/847
+        print('Port 3000 is not allowed. Please choose a different port.\n\n'
+              'For more details, check '
+              'https://github.com/netenglabs/suzieq/issues/847')
+        return
+
     # validate the config file before starting the gui
     load_sq_config(config_file=userargs.config)
 
