@@ -1,12 +1,12 @@
 # Python API
 
-Suzieq provides a simple, consistent Python API for those who wish to interact with Suzieq via Python. It hews very much to the REST API which in turn hews close enough to the CLI. If you know how to type in the CLI for an operation, its pretty close to what you can do with the Python API. 
+SuzieQ provides a simple, consistent Python API for those who wish to interact with SuzieQ via Python. It hews very much to the REST API which in turn hews close enough to the CLI. If you know how to type in the CLI for an operation, its pretty close to what you can do with the Python API. 
 
-Suzieq organizes information into tables. The main steps in using the Python API is:
+SuzieQ organizes information into tables. The main steps in using the Python API is:
 
 * Get a handle to a table
 * Use this handle to perform one of several operations (expressed as verbs) providing some options to filter the data. 
-* Suzieq then returns the result as a Pandas DataFrame
+* SuzieQ then returns the result as a Pandas DataFrame
 
 You can choose to do further operations on the Pandas DataFrame.
 
@@ -34,7 +34,7 @@ ospf_df = ospf_tbl().get()
 Two common table parameters that can be passed are:
 
 * The start and end time windows (start_time, end_time)
-* The config file to be used (config_file). This is used to specify the location of the database as well as parameters such as the timezone to be used. If you don't specify a config file, Suzieq looks for a file first in ./suzieq-cfg.yml and if its not found there, then in ~/.suzieq/suzieq-cfg.yml.
+* The config file to be used (config_file). This is used to specify the location of the database as well as parameters such as the timezone to be used. If you don't specify a config file, SuzieQ looks for a file first in ./suzieq-cfg.yml and if its not found there, then in ~/.suzieq/suzieq-cfg.yml.
 
 The common verb parameters are:
 

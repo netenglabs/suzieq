@@ -1,10 +1,10 @@
-# Schema Evolution in Suzieq
+# Schema Evolution in SuzieQ
 
-Anything that intends to live for a long time has to evolve. Data is no different. Normalized data from multiple vendors even more so. During the course of Suzieq's brief life of about 3-4 months, the schema for one resource or the other has evolved. It has evolved in response as new, more sophisticated analysis has emerged to solve problems such as path, and it has evolved in response to new NOS being added to the system. A simple example is how the MAC table evolved when we added support for JunOS MX's VPLS MAC table support. VPLS on JunOS doesn't have a VLAN field, but only a bridging instance field that is a name, not a number. So, we needed to (i) add a new column and (ii) change the key to account for this new column to uniquify MAC addresses. This document addresses schema evolution.
+Anything that intends to live for a long time has to evolve. Data is no different. Normalized data from multiple vendors even more so. During the course of SuzieQ's brief life of about 3-4 months, the schema for one resource or the other has evolved. It has evolved in response as new, more sophisticated analysis has emerged to solve problems such as path, and it has evolved in response to new NOS being added to the system. A simple example is how the MAC table evolved when we added support for JunOS MX's VPLS MAC table support. VPLS on JunOS doesn't have a VLAN field, but only a bridging instance field that is a name, not a number. So, we needed to (i) add a new column and (ii) change the key to account for this new column to uniquify MAC addresses. This document addresses schema evolution.
 
 ## When Does a Schema Change?
 
-In Suzieq, the schema has changed when:
+In SuzieQ, the schema has changed when:
 - One or more fields are added or removed
 - The type of the field changes
 - The name of the field changes (say due to typos)
@@ -34,11 +34,11 @@ Here is a common table that's presented in many schema evolution discussions.
 | Full Transitive | Backward & Forward compatible with all prev versions | Modify optional | All prev versions | Any order |
 |
 
-In Suzieq, we'll aim for "Full Transitive" compatibility from the matrix above.
+In SuzieQ, we'll aim for "Full Transitive" compatibility from the matrix above.
 
-## Schema Evolution in Suzieq
+## Schema Evolution in SuzieQ
 
-With Suzieq using a pull model by default, schema evolution between readers and writers is not as interesting. I expect the sq-poller and the suzieq-cli to be released together. The REST API will similarly be released at the same time as the updated schema. In either case, the solution proposed should address make the reader vs writer update model irrelevant.
+With SuzieQ using a pull model by default, schema evolution between readers and writers is not as interesting. I expect the sq-poller and the suzieq-cli to be released together. The REST API will similarly be released at the same time as the updated schema. In either case, the solution proposed should address make the reader vs writer update model irrelevant.
 
 To meet the goals defined in the simplest possible way, we propose the following design:
 - All resources (tables) will be versioned. 
@@ -50,8 +50,8 @@ To meet the goals defined in the simplest possible way, we propose the following
 - On read, the only routine that needs to know how to handle different versions is the parquet reader routine (the file suzieq/engines/pandas/engine.py in the current code. Will be renamed to dbread.py in the upcoming release). This routine will ensure that all the fields missing from the on-disk version but present in the current schema version, are added to the dataframe (if required) before returning the dataframe to the upper layers. This addition will ensure the values take on default values, as defined by the schema, and not make it pandas NaN value. This ensures many of pandas operations including type-casting the column succeeds.
 - Since all the fields present in the dataframe are as per the schema, and no fields are deleted, the remainder of the analysis code works as expected with no additional checking required.
 
-### Disambiguating Fields in Suzieq
+### Disambiguating Fields in SuzieQ
 
-In Suzieq, there are certain fields, which are used to disambiguate older entries from newer entries. For example, in case of an interface, the combination of {namespace, hostname, interface name} always uniquely identify an interface. You cannot add the operational state or the MTU to this key list because then you'd have no way of knowing which entry is duplicate and which is not. If you had an interface with state up at time t0, and it later changed to down at time t1 (t1 > t0), if we included operational state as a key field, You'd end up with both entries as being valid. Again, the key fields are for disambiguation only. Since we do not delete any field by default, we can assume that the fields used for disambiguation can change. Consider the behavior if we add a new field to disambiguateentries, for example, adding the bridging instance along with VLAN. Since the older schema entries worked fine without the need for a bridging instance, a default value for the bridging instance will continue to make the disambiguation logic work as expected. 
+In SuzieQ, there are certain fields, which are used to disambiguate older entries from newer entries. For example, in case of an interface, the combination of {namespace, hostname, interface name} always uniquely identify an interface. You cannot add the operational state or the MTU to this key list because then you'd have no way of knowing which entry is duplicate and which is not. If you had an interface with state up at time t0, and it later changed to down at time t1 (t1 > t0), if we included operational state as a key field, You'd end up with both entries as being valid. Again, the key fields are for disambiguation only. Since we do not delete any field by default, we can assume that the fields used for disambiguation can change. Consider the behavior if we add a new field to disambiguateentries, for example, adding the bridging instance along with VLAN. Since the older schema entries worked fine without the need for a bridging instance, a default value for the bridging instance will continue to make the disambiguation logic work as expected. 
 
 It must be ensured by the reader (or the upper layer calling the reader routine) that the disambiguating fields are always read!

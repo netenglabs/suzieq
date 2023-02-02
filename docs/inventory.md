@@ -98,7 +98,7 @@ Currently this method is used to specify passwords, passphrases and tokens.
 
 The device sources currently supported are:
 
-- Host list (the same used with the old option `-D` in Suzieq 0.15.x or lower)
+- Host list (the same used with the old option `-D` in SuzieQ 0.15.x or lower)
 - Ansible inventory, specifing a path to a file that has to be the output of ```ansible-inventory --list``` command
 - Netbox
 
@@ -161,7 +161,7 @@ Now you can set the path of the ansible inventory in the source:
 ### <a name='source-netbox'></a>Netbox
 
 [Netbox](https://netbox.readthedocs.io/en/stable/) is often used to store devices type, management address and other useful information to be used in network automation.
-Suzieq can pull device data from Netbox selecting them by one or more tags.
+SuzieQ can pull device data from Netbox selecting them by one or more tags.
 To grant access to netbox, a token and an url must be provided.
 The token is considered a [sensitive data](#sensitive-data), so it can be specified via an environment variable using the format `env:ENV_TOKEN`.
 
@@ -289,7 +289,7 @@ Additional information can be found in [Rate Limiting AAA Server Requests](./rat
 
 ## <a name='auths'></a>Auths
 
-This section is optional in case Suzieq native and ansible source types. Here a set of default authentication sources can be defined. Currently a `cred-file` type and a static default type are defined. This way if credentials are not defined in the sources, default values can be applied.
+This section is optional in case SuzieQ native and ansible source types. Here a set of default authentication sources can be defined. Currently a `cred-file` type and a static default type are defined. This way if credentials are not defined in the sources, default values can be applied.
 
 Currently for both SSH and REST API, the only supported is username and password, therefore you will not be able to set api keys.
 
@@ -356,7 +356,7 @@ namespaces:
   auth: dc-01-credentials
 ```
 
-In case you are using the Suzieq native or ansible source types, `auth` field is optional since the settings can be defined per-device in the source.
+In case you are using the SuzieQ native or ansible source types, `auth` field is optional since the settings can be defined per-device in the source.
 
 The `device` field is always optional since it only contains common configurations for all the devices in the namespace.
 
@@ -413,9 +413,9 @@ Once you have generated the inventory file you can launch the poller with the fo
 sq-poller -I inventory.yaml
 ```
 
-## <a name='migrating-to-new-format'></a>Migrating Suzieq Native Inventory to new format
+## <a name='migrating-to-new-format'></a>Migrating SuzieQ Native Inventory to new format
 
-Starting with version 0.16.0, the Suzieq Native inventory format is no longer supported as is. We need to do some small changes to use it with the new version. Here is an example of creating a new `inventory.yml` from an old suzieq native inventory format.
+Starting with version 0.16.0, the SuzieQ Native inventory format is no longer supported as is. We need to do some small changes to use it with the new version. Here is an example of creating a new `inventory.yml` from an old suzieq native inventory format.
 
 Suppose we have this inventory valid for version 0.15.x:
 

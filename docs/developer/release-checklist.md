@@ -1,6 +1,6 @@
-# Suzieq Release Checklist
+# SuzieQ Release Checklist
 
-This is the checklist in releasing Suzieq:
+This is the checklist in releasing SuzieQ:
 
 - Make sure all tests pass:
   : ```pytest```
