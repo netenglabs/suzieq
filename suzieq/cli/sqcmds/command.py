@@ -325,11 +325,15 @@ class SqCommand(SqPlugin):
                      or 'timestamp' in self.columns)):
                 if 'timestamp' in cols:
                     cols.remove('timestamp')
+
             with pd.option_context(
-                    'precision', 3,
+                    'format.precision', 3,
+                    'display.width', None,
+                    'display.max_columns', None,
                     'display.max_colwidth', max_colwidth,
-                    'display.max_rows', max_rows,
-                    'display.expand_frame_repr', not all_columns):
+                    'display.expand_frame_repr', not all_columns,
+                    'display.max_rows', max_rows):
+
                 df = self.sqobj.humanize_fields(df)
                 if df.empty:
                     print(df[cols])
@@ -382,7 +386,7 @@ class SqCommand(SqPlugin):
                 df = pd.DataFrame({'error': [f'ERROR: UserQueryError: {ex}']})
             else:
                 if self.ctxt.debug:
-                    raise Exception from ex
+                    raise ex
                 df = pd.DataFrame({'error': [f'ERROR: {ex}']})
 
         return df
