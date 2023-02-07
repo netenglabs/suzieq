@@ -6,13 +6,14 @@ import logging
 import os
 import re
 import sys
-from datetime import datetime, timezone
+from datetime import datetime
 from enum import Enum
 from importlib.util import find_spec
 from ipaddress import ip_network
 from itertools import groupby
 from logging.handlers import RotatingFileHandler
 from os import getenv
+from time import time
 from typing import Any, Dict, List, Tuple
 from tzlocal import get_localzone
 
@@ -381,41 +382,61 @@ def calc_avg(oldval, newval):
     return float((oldval+newval)/2)
 
 
-def parse_relative_timestamp(uptime: str, relative_to: int = None) -> int:
+def parse_relative_timestamp(
+        uptime: str, relative_to: int = None, ms=False) -> int:
     """Get a relative time (i.e. with format 10 weeks, 4 days, 3 hours 11 mins)
     and convert it into a timestamp.
 
     Args:
         uptime (str): _description_
         relative_to (int, optional): provide a custom base epoch timestamp, if
-            not provided, the base timestamp is "now".
+            not provided, the base timestamp is "now". Time in s or ms
+            depending on the value of the `ms` argument.
+        ms (bool, optional): whether the function assumes time in seconds or
+            milliseconds. Default to False.
 
     Returns:
-        int: The epoch timestamp of the base time minus the uptime
+        int: The epoch timestamp of the base time minus the uptime. Returned
+            time in ms or s depending if ms=True
     """
+    # We do not use the RELATIVE_BASE option of dateparser due to a bug in the
+    # library causing a memory leak:
+    # https://github.com/scrapinghub/dateparser/issues/985
+
     settings = {'TIMEZONE': 'utc',
                 'RETURN_AS_TIMEZONE_AWARE': True}
-    if relative_to:
-        base_ts = datetime.fromtimestamp(relative_to, timezone.utc)
-        settings['RELATIVE_BASE'] = base_ts
+    conversion_value = 1000 if ms else 1
 
-    return int(parse(uptime, settings=settings).timestamp())
+    parsed_uptime = parse(uptime, settings=settings)
+    if not parsed_uptime:
+        return None
+
+    ts_offset = time() - (relative_to / conversion_value) if relative_to else 0
+
+    return int((parsed_uptime.timestamp() - ts_offset) * conversion_value)
 
 
-def get_timestamp_from_cisco_time(in_data, timestamp) -> int:
+def get_timestamp_from_cisco_time(in_data: str, timestamp: int) -> int:
     """Get timestamp in ms from the Cisco-specific timestamp string
     Examples of Cisco timestamp str are P2DT14H45M16S, P1M17DT4H49M50S etc.
+
+    Args:
+        in_data (str): The Cisco uptime string
+        timestamp (int): the base unix timestamp IS SECONDS from which
+            subtracting the uptime.
+
+    Returns:
+        int: a unix timestamp in milliseconds
     """
     if in_data and not in_data.startswith('P'):
         in_data = in_data.replace('y', 'years')
         in_data = in_data.replace('w', 'weeks')
         in_data = in_data.replace('d', 'days')
 
-        other_time = parse(in_data,
-                           settings={'RELATIVE_BASE':
-                                     datetime.utcfromtimestamp(timestamp)})
+        ts_offset = time() - timestamp
+        other_time = parse(in_data)
         if other_time:
-            return int(other_time.timestamp()*1000)
+            return int((other_time.timestamp() - ts_offset) * 1000)
         else:
             logger.error(f'Unable to parse relative time string, {in_data}')
             return 0
