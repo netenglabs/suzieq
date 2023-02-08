@@ -1,13 +1,11 @@
 import re
-from datetime import datetime
-
-from dateparser import parse
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (expand_nxos_ifname,
                                  get_timestamp_from_cisco_time,
-                                 get_timestamp_from_junos_time)
+                                 get_timestamp_from_junos_time,
+                                 parse_relative_timestamp)
 
 
 class RoutesService(Service):
@@ -289,11 +287,8 @@ class RoutesService(Service):
                     lastchange = lastchange.split(':')
                     lastchange = (f'{lastchange[0]} hour '
                                   f'{lastchange[1]}:{lastchange[2]} mins ago')
-                lastchange = parse(
-                    lastchange,
-                    settings={'RELATIVE_BASE':
-                              datetime.fromtimestamp(
-                                  (raw_data[0]['timestamp'])/1000), })
+                lastchange = parse_relative_timestamp(
+                    lastchange, raw_data[0]['timestamp'], ms=True)
             if lastchange:
                 entry['statusChangeTimestamp'] = lastchange.timestamp()*1000
             else:
