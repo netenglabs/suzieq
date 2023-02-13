@@ -8,10 +8,12 @@ import traceback
 from typing import Dict
 
 import uvloop
+
 from suzieq.poller.worker.worker import Worker
 from suzieq.poller.worker.writers.output_worker import OutputWorker
 from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
-from suzieq.shared.utils import init_logger, load_sq_config, poller_log_params
+from suzieq.shared.utils import (init_logger, load_sq_config, log_suzieq_info,
+                                 poller_log_params)
 
 
 async def start_worker(userargs: argparse.Namespace, cfg: Dict):
@@ -29,6 +31,7 @@ async def start_worker(userargs: argparse.Namespace, cfg: Dict):
     logger = init_logger('suzieq.poller.worker', logfile,
                          loglevel, logsize, log_stdout)
 
+    log_suzieq_info('Poller Worker', logger)
     worker = None
     try:
         worker = Worker(userargs, cfg)

@@ -4,6 +4,7 @@ import getpass
 import json
 import logging
 import os
+import platform
 import re
 import sys
 from datetime import datetime
@@ -15,14 +16,16 @@ from logging.handlers import RotatingFileHandler
 from os import getenv
 from time import time
 from typing import Any, Dict, List, Tuple
-from tzlocal import get_localzone
 
 import pandas as pd
+import psutil
 import pyarrow as pa
 import yaml
 from dateparser import parse
 from dateutil.relativedelta import relativedelta
 from pytz import all_timezones
+from tzlocal import get_localzone
+
 from suzieq.shared.exceptions import SensitiveLoadError
 from suzieq.shared.schema import SchemaForTable
 from suzieq.version import SUZIEQ_VERSION
@@ -1131,3 +1134,44 @@ def get_default_per_vals() -> Dict:
         pa.list_(pa.int64()): [],
         pa.binary(): b''
     })
+
+
+def log_suzieq_info(name: str, c_logger: logging.Logger = None,
+                    show_more=False):
+    """Log the info about the running component. This function changes the
+    logging level so that these info are always shown and then sets it back to
+    the original value.
+
+    Args:
+        name (str): the name of the running component.
+        c_logger (logging.Logger, optional): The logger to use for logging.
+            If None the default utils module logger is used. Defaults to None.
+        show_more (bool, optional): By defaul the version of SuzieQ and
+            of the current Python interpreter are shown. If True, shows
+            additional info about the evironment where SuzieQ is running, like
+            OS, CPU and memory info. Defaults to False.
+    """
+    if not c_logger:
+        c_logger = logger
+    prev_level = c_logger.level
+    if prev_level > logging.INFO:
+        c_logger.setLevel(logging.INFO)
+
+    info_to_show = '\n|-----------------------------------------------------|'
+
+    info_to_show += f'\nSuzieQ {name} v{SUZIEQ_VERSION} \n' \
+        f'Python version: {sys.version}'
+
+    if show_more:
+        cpu_freq = psutil.cpu_freq()
+        processor_name = platform.processor() or '-'
+        mem_info = psutil.virtual_memory()
+        info_to_show += f'\nPlatform: {platform.platform()} \n' \
+            f'CPU: {processor_name} {cpu_freq.min:.2f}Mhz - ' \
+            f'{cpu_freq.max:.2f}Mhz \n' \
+            f'Memory: total: {mem_info.total}, available: {mem_info.available}'
+    info_to_show += '\n|-----------------------------------------------------|'
+    c_logger.info(info_to_show)
+
+    if prev_level > logging.INFO:
+        c_logger.setLevel(prev_level)
