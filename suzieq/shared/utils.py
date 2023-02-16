@@ -1163,12 +1163,27 @@ def log_suzieq_info(name: str, c_logger: logging.Logger = None,
         f'Python version: {sys.version}'
 
     if show_more:
+        # Get processor model. This might not work everywhere, if it doesn't
+        # rollback to platform.processor()
+        cpu_name = None
+        try:
+            with open('/proc/cpuinfo', 'r') as ifile:
+                model_prefix = 'model name'
+                while line := ifile.readline():
+                    if line.startswith(model_prefix):
+                        # The line has format: "model name\t: MODEL\n"
+                        cpu_name = line[len(model_prefix) + 3:-1]
+        except Exception:
+            pass
+        if not cpu_name:
+            cpu_name = (platform.processor() or '-')
+
         cpu_freq = psutil.cpu_freq()
-        processor_name = platform.processor() or '-'
+        cpu_info = f'{cpu_name} {psutil.cpu_count()} cores - '
+        cpu_info += f'freq. {cpu_freq.min:.2f}Mhz - {cpu_freq.max:.2f}Mhz'
         mem_info = psutil.virtual_memory()
         info_to_show += f'\nPlatform: {platform.platform()} \n' \
-            f'CPU: {processor_name} {cpu_freq.min:.2f}Mhz - ' \
-            f'{cpu_freq.max:.2f}Mhz \n' \
+            f'CPU: {cpu_info} \n' \
             f'Memory: total: {mem_info.total}, available: {mem_info.available}'
     info_to_show += '\n|-----------------------------------------------------|'
     c_logger.info(info_to_show)
