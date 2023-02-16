@@ -1179,12 +1179,17 @@ def log_suzieq_info(name: str, c_logger: logging.Logger = None,
             cpu_name = (platform.processor() or '-')
 
         cpu_freq = psutil.cpu_freq()
-        cpu_info = f'{cpu_name} {psutil.cpu_count()} cores - '
+        cpu_cores = psutil.cpu_count()
+        cpu_info = f'{cpu_name} {cpu_cores} cores - '
         cpu_info += f'freq. {cpu_freq.min:.2f}Mhz - {cpu_freq.max:.2f}Mhz'
+        cpu_load_history = ', '.join(
+            f'{(c / cpu_cores) * 100:.1f}%' for c in psutil.getloadavg())
         mem_info = psutil.virtual_memory()
         info_to_show += f'\nPlatform: {platform.platform()} \n' \
             f'CPU: {cpu_info} \n' \
+            f'CPU load 1m, 5m, 15m: {cpu_load_history}\n' \
             f'Memory: total: {mem_info.total}, available: {mem_info.available}'
+
     info_to_show += '\n|-----------------------------------------------------|'
     c_logger.info(info_to_show)
 
