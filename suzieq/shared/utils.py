@@ -1193,5 +1193,10 @@ def log_suzieq_info(name: str, c_logger: logging.Logger = None,
     info_to_show += '\n|-----------------------------------------------------|'
     c_logger.info(info_to_show)
 
+    # Warning if the system has less than 2 cores and 16GB of ram
+    if show_more and (cpu_cores < 2 or mem_info.total < 16 * (1024 ** 3)):
+        c_logger.warning(
+            'Minimum recommended system spec is a modern i7-equivalent or '
+            'higher with 4 cores and 16 GB RAM')
     if prev_level > logging.INFO:
         c_logger.setLevel(prev_level)
