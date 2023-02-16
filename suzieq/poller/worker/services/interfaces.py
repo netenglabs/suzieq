@@ -151,11 +151,9 @@ class InterfaceService(Service):
             adm_state = entry.get('adminState', 'down')
             if adm_state == 'notconnect':
                 entry['reason'] = 'notconnect'
-                entry['adminState'] = 'down'
                 entry['state'] = 'notConnected'
             elif adm_state == 'errdisabled':
                 entry['reason'] = 'errdisabled'
-                entry['adminState'] = 'down'
                 entry['state'] = 'errDisabled'
             elif adm_state == 'connected':
                 entry['adminState'] = 'up'
