@@ -4,6 +4,7 @@ import getpass
 import json
 import logging
 import os
+import platform
 import re
 import sys
 from datetime import datetime
@@ -15,14 +16,16 @@ from logging.handlers import RotatingFileHandler
 from os import getenv
 from time import time
 from typing import Any, Dict, List, Tuple
-from tzlocal import get_localzone
 
 import pandas as pd
+import psutil
 import pyarrow as pa
 import yaml
 from dateparser import parse
 from dateutil.relativedelta import relativedelta
 from pytz import all_timezones
+from tzlocal import get_localzone
+
 from suzieq.shared.exceptions import SensitiveLoadError
 from suzieq.shared.schema import SchemaForTable
 from suzieq.version import SUZIEQ_VERSION
@@ -1131,3 +1134,69 @@ def get_default_per_vals() -> Dict:
         pa.list_(pa.int64()): [],
         pa.binary(): b''
     })
+
+
+def log_suzieq_info(name: str, c_logger: logging.Logger = None,
+                    show_more=False):
+    """Log the info about the running component. This function changes the
+    logging level so that these info are always shown and then sets it back to
+    the original value.
+
+    Args:
+        name (str): the name of the running component.
+        c_logger (logging.Logger, optional): The logger to use for logging.
+            If None the default utils module logger is used. Defaults to None.
+        show_more (bool, optional): By defaul the version of SuzieQ and
+            of the current Python interpreter are shown. If True, shows
+            additional info about the evironment where SuzieQ is running, like
+            OS, CPU and memory info. Defaults to False.
+    """
+    if not c_logger:
+        c_logger = logger
+    prev_level = c_logger.level
+    if prev_level > logging.INFO:
+        c_logger.setLevel(logging.INFO)
+
+    info_to_show = '\n|-----------------------------------------------------|'
+
+    info_to_show += f'\nSuzieQ {name} v{SUZIEQ_VERSION} \n' \
+        f'Python version: {sys.version}'
+
+    if show_more:
+        # Get processor model. This might not work everywhere, if it doesn't
+        # rollback to platform.processor()
+        cpu_name = None
+        try:
+            with open('/proc/cpuinfo', 'r') as ifile:
+                model_prefix = 'model name'
+                while line := ifile.readline():
+                    if line.startswith(model_prefix):
+                        # The line has format: "model name\t: MODEL\n"
+                        cpu_name = line[len(model_prefix) + 3:-1]
+        except Exception:
+            pass
+        if not cpu_name:
+            cpu_name = (platform.processor() or '-')
+
+        cpu_freq = psutil.cpu_freq()
+        cpu_cores = psutil.cpu_count()
+        cpu_info = f'{cpu_name} {cpu_cores} cores - '
+        cpu_info += f'freq. {cpu_freq.min:.2f}Mhz - {cpu_freq.max:.2f}Mhz'
+        cpu_load_history = ', '.join(
+            f'{(c / cpu_cores) * 100:.1f}%' for c in psutil.getloadavg())
+        mem_info = psutil.virtual_memory()
+        info_to_show += f'\nPlatform: {platform.platform()} \n' \
+            f'CPU: {cpu_info} \n' \
+            f'CPU load 1m, 5m, 15m: {cpu_load_history}\n' \
+            f'Memory: total: {mem_info.total}, available: {mem_info.available}'
+
+    info_to_show += '\n|-----------------------------------------------------|'
+    c_logger.info(info_to_show)
+
+    # Warning if the system has less than 2 cores and 16GB of ram
+    if show_more and (cpu_cores < 2 or mem_info.total < 16 * (1024 ** 3)):
+        c_logger.warning(
+            'Minimum recommended system spec is a modern i7-equivalent or '
+            'higher with 4 cores and 16 GB RAM')
+    if prev_level > logging.INFO:
+        c_logger.setLevel(prev_level)

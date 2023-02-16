@@ -15,7 +15,8 @@ from suzieq.poller.worker.writers.output_worker import OutputWorker
 from suzieq.shared.exceptions import InventorySourceError, PollingError, \
     SqPollerConfError
 from suzieq.shared.utils import (poller_log_params, init_logger,
-                                 load_sq_config, print_version)
+                                 load_sq_config, print_version,
+                                 log_suzieq_info)
 from suzieq.poller.controller.utils.inventory_utils import read_inventory
 
 
@@ -45,6 +46,8 @@ async def start_controller(user_args: argparse.Namespace, config_data: Dict):
             read_inventory(user_args.inventory)
             print('Inventory syntax check passed')
             return
+
+        log_suzieq_info('Poller Controller', logger, show_more=True)
         controller = Controller(user_args, config_data)
         controller.init()
         await controller.run()
