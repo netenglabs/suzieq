@@ -135,7 +135,7 @@ class InterfaceService(Service):
                 'adminState': str(adminState).lower(),
                 'ifname': str(ifname).lower(),
                 'state': str(state).lower(),
-                'type': 'aggregate',
+                'type': 'bond',
                 'vlan': vlan,
                 'vlanList': vlanList
             }
