@@ -167,6 +167,9 @@ class InterfaceService(Service):
                 type = device
                 vlan = ""
 
+            if "EMP" in device:
+                type = 'ethernet'
+
             entry_dict = {
                 'adminState': str(adminState).lower(),
                 'ifname': str(ifname).lower(),
