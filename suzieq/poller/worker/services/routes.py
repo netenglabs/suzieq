@@ -58,14 +58,21 @@ class RoutesService(Service):
             if item.get('_entryType') == 'ip_routes'
         ]
 
-
         for ip_route in entry_ip_routes:
 
             entry_dict = {}
             oifs = []
 
-            oifs += [arp['interface'] for arp in entry_arp if arp['ip_address'] == ip_route['gateway_addr']]
-            oifs += [interface['name'] for interface in entry_ip_interface if interface['ip_address'] == ip_route['gateway_addr']]
+            oifs += [
+                arp["interface"]
+                for arp in entry_arp
+                if arp["ip_address"] == ip_route["gateway_addr"]
+            ]
+            oifs += [
+                interface["name"]
+                for interface in entry_ip_interface
+                if interface["ip_address"] == ip_route["gateway_addr"]
+            ]
 
             entry_dict = {
                 'nexthopIps': [ip_route['gateway_addr']],
