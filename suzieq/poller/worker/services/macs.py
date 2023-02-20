@@ -86,6 +86,8 @@ class MacsService(Service):
                 "vlan": vlan,
             }
 
+            self._add_mackey_protocol(entry_dict)
+
             entry_new.append(entry_dict)
 
         return entry_new
