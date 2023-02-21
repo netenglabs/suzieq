@@ -528,10 +528,14 @@ class Node:
             elif self.devtype == "eos":
                 self.__class__ = EosNode
             elif self.devtype == "iosxe":
+                # Since we need to create one single interactive session with
+                # ios and iosxe, we cannot concurrently issue commands
+                self.batch_size = 1
                 self.__class__ = IosXENode
             elif self.devtype == "iosxr":
                 self.__class__ = IosXRNode
             elif self.devtype == "ios":
+                self.batch_size = 1
                 self.__class__ = IOSNode
             elif self.devtype.startswith("junos"):
                 self.__class__ = JunosNode
