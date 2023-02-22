@@ -15,9 +15,9 @@ from dataclasses import asdict
 
 import pandas as pd
 
-from suzieq.shared.utils import (load_sq_config, init_logger,
-                                 ensure_single_instance,
-                                 get_log_params, get_sleep_time)
+from suzieq.shared.utils import (ensure_single_instance, get_log_params,
+                                 get_sleep_time, init_logger, load_sq_config,
+                                 log_suzieq_info)
 from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.db import do_coalesce, get_sqdb_engine
 from suzieq.version import SUZIEQ_VERSION
@@ -74,6 +74,8 @@ def run_coalescer(cfg: dict, tables: List[str], periodstr: str, run_once: bool,
         logger.error(f'Aborting. Unable to load schema: {str(ex)}')
         print(f'ERROR: Aborting. Unable to load schema: {str(ex)}')
         sys.exit(1)
+
+    log_suzieq_info('Coalescer', logger)
 
     coalescer_schema = SchemaForTable('sqCoalescer', schemas)
     pqdb = get_sqdb_engine(cfg, 'sqCoalescer', None, logger)

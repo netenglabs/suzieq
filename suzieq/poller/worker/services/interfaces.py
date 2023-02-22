@@ -2,13 +2,13 @@ import re
 from datetime import datetime
 from collections import defaultdict
 from json import loads
-from dateparser import parse
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (get_timestamp_from_junos_time,
-                                 expand_ios_ifname, expand_nxos_ifname)
-from suzieq.shared.utils import convert_macaddr_format_to_colon
+                                 expand_ios_ifname, expand_nxos_ifname,
+                                 convert_macaddr_format_to_colon,
+                                 parse_relative_timestamp)
 from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
 
@@ -151,11 +151,9 @@ class InterfaceService(Service):
             adm_state = entry.get('adminState', 'down')
             if adm_state == 'notconnect':
                 entry['reason'] = 'notconnect'
-                entry['adminState'] = 'down'
                 entry['state'] = 'notConnected'
             elif adm_state == 'errdisabled':
                 entry['reason'] = 'errdisabled'
-                entry['adminState'] = 'down'
                 entry['state'] = 'errDisabled'
             elif adm_state == 'connected':
                 entry['adminState'] = 'up'
@@ -590,14 +588,10 @@ class InterfaceService(Service):
                         if any(x in lastChange for x in 'dwmy'):
                             lastChange = f'{lastChange} hours ago'
 
-                        lastChange = parse(
-                            lastChange,
-                            settings={'RELATIVE_BASE': datetime.fromtimestamp(
-                                (raw_data[0]['timestamp'])/1000),
-                                'TIMEZONE': 'UTC'})
+                        lastChange = parse_relative_timestamp(
+                            lastChange, raw_data[0]['timestamp'], ms=True)
                     if lastChange:
-                        old_entry['statusChangeTimestamp'] = int(
-                            lastChange.timestamp() * 1000)
+                        old_entry['statusChangeTimestamp'] = lastChange
                     else:
                         old_entry['statusChangeTimestamp'] = 0
                     old_entry['description'] = entry.get('description', '')
@@ -895,14 +889,12 @@ class InterfaceService(Service):
             entry['interfaceMac'] = convert_macaddr_format_to_colon(
                 entry.get('interfaceMac', '0000.0000.0000'))
 
-            lastChange = parse(
+            lastChange = parse_relative_timestamp(
                 entry.get('statusChangeTimestamp', ''),
-                settings={'RELATIVE_BASE':
-                          datetime.fromtimestamp(
-                              (raw_data[0]['timestamp'])/1000), })
+                raw_data[0]['timestamp'], ms=True)
+
             if lastChange:
-                entry['statusChangeTimestamp'] = int(lastChange.timestamp()
-                                                     * 1000)
+                entry['statusChangeTimestamp'] = lastChange
             if 'ipAddressList' not in entry:
                 entry['ipAddressList'] = []
                 entry['ip6AddressList'] = []

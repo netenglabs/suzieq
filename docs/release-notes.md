@@ -1,5 +1,14 @@
 # Release Notes
 
+## 0.20.1 (Feb 22, 2023)
+
+This is a bugfix release. The main changes in this release including the bug fixes are:
+
+* Memory leak caused by one of the libraries we use has been eliminated by working around the leak in our code.
+* EOS interfaces that were in err-disabled or unconnected state were incorrectly marked as being admin down as well. Now, the admin state is shown correctly.
+* Displaying the processor and memory of the device on which the poller is running. This is displayed during the poller startup. A warning message is also printed if the server specifications are not optimal for running SuzieQ. This optimality is based on assumptions about the network such as devices, the amount of state per device etc. Individual user experience maybe different.
+* Reduced the number of outstanding commands per device to be always 1 for IOS/IOSXE. This is to avoid the outputs getting mixed up accidentally. This is a rare event, but nevertheless we want to eliminate it.
+
 ## 0.20.0 (Feb 2, 2023)
 
 This is largely a major bug fix release, fixing many parser issues, documentation updates. The main major addition is support for Junos EVO platforms. Among the major bug fixes are:
