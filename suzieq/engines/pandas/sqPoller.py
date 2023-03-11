@@ -1,3 +1,4 @@
+from suzieq.shared.poller_error_codes import SqPollerStatusCode
 from suzieq.engines.pandas.engineobj import SqPandasEngine
 
 
@@ -53,6 +54,9 @@ class SqpollerObj(SqPandasEngine):
         if not df.empty and add_filter:
             df = df.query(add_filter).reset_index(drop=True)
 
+        if 'statusStr' in fields:
+            df['statusStr'] = df.status.apply(self._get_status_str)
+
         return df.reset_index(drop=True)[fields]
 
     def summarize(self, **kwargs):
@@ -72,3 +76,12 @@ class SqpollerObj(SqPandasEngine):
         ]
 
         return super().summarize(**kwargs)
+
+    @staticmethod
+    def _get_status_str(code: int) -> str:
+        '''Function to catch exception'''
+        try:
+            # pylint: disable=no-value-for-parameter
+            return SqPollerStatusCode(code).errstr
+        except ValueError:
+            return f'{code}'
