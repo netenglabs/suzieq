@@ -21,7 +21,7 @@
                 }
             },
             "display": 4,
-            "description": "[min, max, avg] of time taken to get data, computed over the greater between the last 5 mins and the polling period"
+            "description": "[min, max, avg] of time(ms) taken to get data, computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "totalTime",
@@ -33,7 +33,7 @@
                 }
             },
             "display": 5,
-            "description": "[min, max, avg] of time taken to get & process data,computed over the greater between the last 5 mins and the polling period"
+            "description": "[min, max, avg] of time(ms) taken to get & process data,computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "svcQsize",
@@ -45,7 +45,7 @@
                 }
             },
             "display": 6,
-            "description": "[min, max, avg] of service queue size, computed over the greater between the last 5 mins and the polling period"
+            "description": "[min, max, avg] of service queue length, computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "wrQsize",
@@ -57,7 +57,7 @@
                 }
             },
             "display": 7,
-            "description": "[min, max, avg] of write queue size, computed over the greater between the last 5 mins and the polling period"
+            "description": "[min, max, avg] of write queue length, computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "nodeQsize",
@@ -69,7 +69,7 @@
                 }
             },
             "display": 8,
-            "description": "[min, max, avg] of node queue size, computed over the greater between the last 5 mins and the polling period"
+            "description": "[min, max, avg] of node queue length, computed over the greater between the last 5 mins and the polling period"
         },
         {
             "name": "rxBytes",
@@ -97,8 +97,14 @@
         {
             "name": "status",
             "type": "long",
+            "description": "Service polling status code. 0 or 200 means successfully polled, -1 means time timeout, other values mean failed to poll"
+        },
+        {
+            "name": "statusStr",
+            "type": "string",
             "display": 3,
-            "description": "Service polling status. 0 or 200 means successfully polled, -1 means time timeout, other values mean failed to poll"
+            "description": "Service polling status string",
+	    "depends": "status"
         },
         {
             "name": "nodesPolledCnt",
