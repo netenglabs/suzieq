@@ -1,4 +1,5 @@
 # pylint: disable=no-name-in-module
+from copy import deepcopy
 from typing import Dict, List, Optional
 
 from pydantic import BaseModel
@@ -69,7 +70,7 @@ class ControllerPlugin(SqPlugin):
         if not controller_class:
             raise SqPollerConfError(f"Unknown plugin called {ptype}")
 
-        return [controller_class[ptype](plugin_conf, validate)]
+        return [controller_class[ptype](deepcopy(plugin_conf), validate)]
 
     @classmethod
     def default_type(cls) -> str:
