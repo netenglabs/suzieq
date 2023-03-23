@@ -1,4 +1,4 @@
-from typing import TypeVar, Dict, Callable, List
+from typing import TypeVar, Dict, Callable, List, Optional
 from abc import abstractmethod
 from collections import defaultdict
 import time
@@ -119,7 +119,7 @@ class Node:
         self._conn_lock = asyncio.Lock()
         self._last_exception = None
         self._exception_timestamp = None
-        self._current_exception = None
+        self._current_exception: Optional[Exception] = None
         self.api_key = None
         self._fetching_dev_data = False  # If we are fetching the dev data
         self._stdin = self._stdout = self._long_proc = None
@@ -141,7 +141,7 @@ class Node:
         self.ssh_config_file = kwargs.get("ssh_config_file", None)
         self.enable_password = kwargs.get('enable_password')
 
-        passphrase = kwargs.get("passphrase", None)
+        passphrase: str = kwargs.get("passphrase", None)
         jump_host = kwargs.get("jump_host", "")
         if jump_host:
             jump_result = urlparse(jump_host)
@@ -230,7 +230,7 @@ class Node:
         return self._last_exception
 
     @property
-    def current_exception(self) -> Exception:
+    def current_exception(self) -> Optional[Exception]:
         '''The current exception faced on this device'''
         return self._current_exception
 
@@ -1665,7 +1665,7 @@ class IosXRNode(Node):
 
 class IosXENode(Node):
     '''IOS-XE Node-sepcific telemetry gather implementation'''
-    WAITFOR = r'.*[>#]\s*$'  # devtype specific termination sequence
+    IOS_DEFAULT_PROMPT = ('>', '#')  # devtype specific termination sequence
 
     async def _rest_connect(self):
         raise NotImplementedError(
@@ -1678,6 +1678,7 @@ class IosXENode(Node):
 
     async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by executing certain cmds"""
+        self.prompt = self.IOS_DEFAULT_PROMPT
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version"], None, 'text',
                              reconnect=reconnect)
@@ -1701,6 +1702,8 @@ class IosXENode(Node):
                     output = await self.wait_for_prompt()
                     if output.strip().endswith('>'):
                         if await self._handle_privilege_escalation() == -1:
+                            self.logger.error(f'{self.address}:{self.port}: '
+                                              'Privilege escalation failed')
                             await self._close_connection()
                             self._conn = None
                             self._stdin = None
@@ -1719,7 +1722,7 @@ class IosXENode(Node):
 
                 # Set the terminal length to 0 to avoid paging
                 self._stdin.write('terminal length 0\n')
-                output = await self._stdout.readuntil(self.WAITFOR)
+                output = await self._stdout.readuntil(self.prompt)
 
     async def _handle_privilege_escalation(self) -> int:
         '''Escalata privilege if necessary
@@ -1729,7 +1732,13 @@ class IosXENode(Node):
         self.logger.info(
             f'Privilege escalation required for {self.hostname}')
         self._stdin.write('enable\n')
-        output = await self.wait_for_prompt(r'Password:\s*')
+        output = await self.wait_for_prompt(('Password:', '%'))
+        if '%' in output:
+            self.logger.error('Privilege escalation failed, Aborting')
+            self.current_exception = PollingError(
+                'Privilege Escalation Failed')
+            return -1
+
         if self.enable_password:
             self._stdin.write(self.enable_password + '\n')
         else:
@@ -1739,8 +1748,8 @@ class IosXENode(Node):
         if (output in ['suzieq timeout', 'Password:'] or
                 output.strip().endswith('>')):
             self.logger.error(
-                f'Privilege escalation failed for {self.hostname}'
-                ', Aborting connection')
+                f'{self.address}:{self.port} Privilege escalation failed, '
+                'Aborting connection')
             return -1
 
         self.logger.info(f'Privilege escalation succeeded for {self.hostname}')
@@ -1762,7 +1771,7 @@ class IosXENode(Node):
             the output data or 'timeout'
         """
         if prompt is None:
-            prompt = self.WAITFOR
+            prompt = self.prompt
         coro = self._stdout.readuntil(prompt)
         try:
             output = await asyncio.wait_for(coro, timeout=timeout)
@@ -1772,6 +1781,8 @@ class IosXENode(Node):
             self.logger.error(f'{self.address}.{self.port} '
                               'Timed out waiting for expected prompt')
             # Return something that won't ever be in real output
+            await self._close_connection()
+            self.prompt = self.IOS_DEFAULT_PROMPT
             return 'suzieq timeout'
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
@@ -1786,6 +1797,9 @@ class IosXENode(Node):
             hostupstr = re.search(r'(\S+)\s+uptime is (.*)\n', data)
             if hostupstr:
                 self._set_hostname(hostupstr.group(1))
+                self.prompt = tuple(f'{self.hostname}{x}'
+                                    for x in self.IOS_DEFAULT_PROMPT)
+
                 timestr = hostupstr.group(2)
                 self.bootupTimestamp = parse_relative_timestamp(
                     timestr, output[0]['cmd_timestamp'] / 1000)
@@ -1832,7 +1846,7 @@ class IosXENode(Node):
 
                     cmd_timestamp = time.time()
                     self._stdin.write(cmd + '\n')
-                    output = await self.wait_for_prompt()
+                    output = await self.wait_for_prompt(timeout=timeout)
                     if 'Invalid input detected' in output:
                         status = -1
                     elif 'suzieq timeout' in output:
