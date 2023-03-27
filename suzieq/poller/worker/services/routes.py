@@ -228,7 +228,9 @@ class RoutesService(Service):
             # Right now we only store the timestamp of the first NH change
             # The correct thing to do is to take all NH timestamps, and take
             # the latest one: TODO
-            lastChange = entry.get('statusChangeTimestamp', [''])[0]
+            lastChange = entry.get('statusChangeTimestamp', [''])
+            if isinstance(lastChange, list):
+                lastChange = lastChange[0]
             if lastChange:
                 entry['statusChangeTimestamp'] = get_timestamp_from_cisco_time(
                     lastChange, raw_data[0]['timestamp']/1000)
