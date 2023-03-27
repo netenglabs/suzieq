@@ -104,7 +104,8 @@ class SqRestEngine(SqEngineObj):
             f'{verb}?'
             f'{query_params}')
 
-        response = requests.get(url, verify=False, )
+        # pylint: disable=missing-timeout
+        response = requests.get(url, verify=None)
         if response.status_code != 200:
             if response.text:
                 msg = response.json().get("detail", str(response.status_code))

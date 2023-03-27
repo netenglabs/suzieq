@@ -128,7 +128,7 @@ def get_session_id():
     '''Return Streamlit's session ID'''
     ctx = get_script_run_ctx()
     if ctx is None:
-        raise Exception("Failed to get the thread context")
+        raise AttributeError("Failed to get the thread context")
     return ctx.session_id
 
 
@@ -166,8 +166,8 @@ def set_def_aggrid_options(grid_options: dict):
 
 def get_image_dir():
     '''Get directory where images are stored'''
-    return(os.path.dirname(find_spec('suzieq.gui')
-                           .loader.path) + '/images')
+    return (os.path.dirname(find_spec('suzieq.gui')
+                            .loader.path) + '/images')
 
 
 def color_row(row, **kwargs):
