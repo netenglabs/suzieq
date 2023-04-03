@@ -291,11 +291,13 @@ class PathObj(SqPandasEngine):
                 # is obtained from the MAC because of trunk ports.
                 if idf.empty:
                     continue
-                idf.at[idf.index, 'vlan'] = mac_entry.vlan.iloc[0]
+                idfidx = idf.index.values[0]
+                idf.at[idfidx, 'vlan'] = mac_entry.vlan.iloc[0]
+
                 if (idf.master == 'bridge').all():
-                    idf.at[idf.index, 'ipAddressList'] = f'{ip}/32'
+                    idf.at[idfidx, 'ipAddressList'] = f'{ip}/32'
                     # Assuming the VRF is identical across multiple entries
-                    idf.at[idf.index, 'master'] = rslt_df.iloc[0].vrf
+                    idf.at[idfidx, 'master'] = rslt_df.iloc[0].vrf
             else:
                 idf = self._if_df.query(f'hostname=="{row.hostname}" and '
                                         f'ifname=="{row.oif}" and '
