@@ -284,7 +284,7 @@ class TruthasStrings(str, Enum):
 
 @app.get("/api/v1/{rest_of_path:path}", deprecated=True)
 def deprecated_function(request: Request, rest_of_path: str):
-    return([{'error': 'v1 is deprecated, use API version v2'}])
+    return ([{'error': 'v1 is deprecated, use API version v2'}])
 
 
 @app.get("/api/v2/address/{verb}")

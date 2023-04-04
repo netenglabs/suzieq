@@ -587,7 +587,7 @@ class SqPandasEngine(SqEngineObj):
             if self.ns[ns][check_empty_col] == 0:
                 delete_keys.append(ns)
         for ns in delete_keys:
-            del(self.ns[ns])
+            del (self.ns[ns])
 
         ns_df = pd.DataFrame(self.ns)
         if len(self.summary_row_order) > 0:
