@@ -1789,19 +1789,27 @@ class IosXENode(Node):
         """
         if prompt is None:
             prompt = self.prompt
-        coro = self._stdout.readuntil(prompt)
-        try:
-            output = await asyncio.wait_for(coro, timeout=timeout)
-            return output
-        except asyncio.TimeoutError:
-            self.current_exception = asyncio.TimeoutError
-            self.logger.error(f'{self.address}.{self.port} '
-                              'Timed out waiting for expected prompt: '
-                              f'{prompt}')
-            # Return something that won't ever be in real output
-            await self._close_connection()
-            self.prompt = self.IOS_DEFAULT_PROMPT
-            return 'suzieq timeout'
+        data = []
+        while True:
+            try:
+                output = await asyncio.wait_for(
+                    self._stdout.readuntil(prompt), timeout=timeout)
+                data.append(output)
+                return ''.join(data)
+            except asyncio.IncompleteReadError as exc:
+                if exc.partial:
+                    data.append(exc.partial)
+                    self.logger.warning('Received partial data, continuing')
+                else:
+                    continue
+            except asyncio.TimeoutError:
+                self.current_exception = asyncio.TimeoutError
+                self.logger.error(f'{self.address}.{self.port} '
+                                  'Timed out waiting for expected prompt')
+                # Return something that won't ever be in real output
+                await self._close_connection()
+                self.prompt = self.IOS_DEFAULT_PROMPT
+                return 'suzieq timeout'
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
         '''Parse the version for uptime and hostname'''
