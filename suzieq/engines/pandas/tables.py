@@ -46,7 +46,7 @@ class TableObj(SqPandasEngine):
                                df['namespaceCnt'].max(),
                                df['deviceCnt'].max()]],
                              columns=cols)
-        df = df.append(total, ignore_index=True).dropna()
+        df = pd.concat([df, total]).dropna().reset_index(drop=True)
         return df[fields]
 
     def summarize(self, **kwargs):
