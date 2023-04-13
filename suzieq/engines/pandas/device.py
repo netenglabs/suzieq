@@ -25,6 +25,8 @@ class DeviceObj(SqPandasEngine):
         status = kwargs.pop('status', '')
         os_version = kwargs.pop('version', '')
         os = kwargs.get('os', '')
+        model = kwargs.get('model', '')
+        vendor = kwargs.get('vendor', '')
         ignore_neverpoll = kwargs.pop('ignore_neverpoll', False)
 
         addnl_fields = []
@@ -121,6 +123,16 @@ class DeviceObj(SqPandasEngine):
         # The poller merge kills the filtering we did earlier, so redo:
         if status:
             df = df.loc[df.status.isin(status)]
+
+        if os:
+            df = df.loc[df.os.isin(os)]
+
+        if model:
+            df = df.loc[df.model.isin(model)]
+
+        if vendor:
+            df = df.loc[df.vendor.isin(vendor)]
+
         if os_version:
             opdict = {'>': operator.gt, '<': operator.lt, '>=': operator.ge,
                       '<=': operator.le, '=': operator.eq, '!': operator.ne}
