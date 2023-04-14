@@ -520,7 +520,7 @@ def get_timestamp_from_junos_time(in_data: Tuple[Dict, str],
         delta = relativedelta(seconds=int(secs))
         secs = (datetime.fromtimestamp(relative_to) - delta).timestamp()
 
-    return secs * conversion_unit
+    return int(secs * conversion_unit)
 
 
 def convert_macaddr_format_to_colon(macaddr: str) -> str:
