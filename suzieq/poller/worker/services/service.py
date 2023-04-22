@@ -519,7 +519,7 @@ class Service(SqPlugin):
 
         final_res = list(int_res.values())
 
-        return(final_res)
+        return (final_res)
 
     def _get_devtype_from_input(self, input_data):
         if isinstance(input_data, list):

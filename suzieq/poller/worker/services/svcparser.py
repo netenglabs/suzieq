@@ -196,8 +196,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         # Some outputs contain just the main key with a null
                         # body such as ospfNbr from EOS: {'vrfs': {}}.
                         logging.info(
-                            f"Unnatural return from svcparser. xstr is {xstr}. \
-                            Result is {result}")
+                            f"Unnatural return from svcparser. xstr is {xstr}.\
+                             Result is {result}")
                         return cleanup_and_return(result)
                     result = [{"rest": data[xstr]}]
                 else:

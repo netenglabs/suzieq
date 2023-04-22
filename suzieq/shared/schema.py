@@ -29,7 +29,7 @@ class Schema:
         if not (schema_dir and os.path.exists(schema_dir)):
             logger.error(
                 "Schema directory %s does not exist", schema_dir)
-            raise Exception(f"Schema directory {schema_dir} does not exist")
+            raise ValueError(f"Schema directory {schema_dir} does not exist")
 
         for root, _, files in os.walk(schema_dir):
             for topic in files:

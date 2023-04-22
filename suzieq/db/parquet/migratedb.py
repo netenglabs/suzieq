@@ -1,7 +1,7 @@
 
 from typing import Callable, Union
 import pandas as pd
-from pandas.core.computation.ops import UndefinedVariableError
+from pandas.errors import UndefinedVariableError
 from suzieq.shared.exceptions import SqVersConversionError
 from suzieq.shared.schema import Schema
 

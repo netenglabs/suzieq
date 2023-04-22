@@ -452,7 +452,7 @@ class PathPage(SqGuiPage):
             color = 'red'
         else:
             color = 'black'
-        return('\n'.join(tdf.T.to_string().split('\n')[1:]), color)
+        return ('\n'.join(tdf.T.to_string().split('\n')[1:]), color)
 
     def _aggrid_style(self):
         '''Style the cells based on value'''
