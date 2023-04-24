@@ -660,16 +660,23 @@ class Service(SqPlugin):
                 for entry in adds:
                     entry['deviceSession'] = last_device_session
                     records.append(entry)
+                # make sure to use the same timestamp for all the deleted
+                # records. If the result is not empty, use that to get the
+                # timestamp. If the result is empty, use the current timestamp
+                if result:
+                    del_ts = result[0]['timestamp']
+                else:
+                    del_ts = int(datetime.now(
+                        tz=timezone.utc).timestamp() * 1000)
+
                 for entry in dels:
                     if entry.get("active", True):
                         # If there's already an entry marked as deleted
                         # No point in adding one more
-                        entry.update({"active": False})
-                        entry.update(
-                            {"timestamp":
-                             int(datetime.now(tz=timezone.utc).timestamp()
-                                 * 1000)}
-                        )
+                        entry.update({
+                            "active": False,
+                            "timestamp": del_ts
+                        })
                         records.append(entry)
 
                 self._post_work_to_writer(records)
