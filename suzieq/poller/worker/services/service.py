@@ -572,10 +572,12 @@ class Service(SqPlugin):
 
         # pylint: disable=too-many-nested-blocks
         for entry in processed_data or []:
-            entry.update({"hostname": read_from["hostname"]})
-            entry.update({"namespace": read_from["namespace"]})
-            entry.update({"timestamp": read_from["timestamp"]})
-            entry.update({"sqvers": self.version})
+            entry.update({
+                "hostname": read_from["hostname"],
+                "namespace": read_from["namespace"],
+                "timestamp": read_from["timestamp"],
+                "sqvers": self.version
+            })
             for fld, val in schema_rec.items():
                 if fld not in entry:
                     if fld == "active":
