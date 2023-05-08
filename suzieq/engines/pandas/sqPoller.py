@@ -17,8 +17,12 @@ class SqpollerObj(SqPandasEngine):
         poll_period_exceeded = kwargs.pop('pollExcdPeriodCount', '')
         columns = kwargs.pop('columns', [])
         addnl_fields = kwargs.pop('addnl_fields', [])
+        user_query = kwargs.pop('query_str', '')
 
         fields = self.schema.get_display_fields(columns)
+        user_query_cols = self._get_user_query_cols(user_query)
+        addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
+
         if status and 'status' not in fields:
             addnl_fields.append('status')
 
@@ -51,12 +55,13 @@ class SqpollerObj(SqPandasEngine):
             else:
                 add_filter += f'{add_prefix}pollExcdPeriodCount == 0'
 
-        if not df.empty and add_filter:
-            df = df.query(add_filter).reset_index(drop=True)
-
         if 'statusStr' in fields:
             df['statusStr'] = df.status.apply(self._get_status_str)
 
+        if not df.empty and add_filter:
+            df = df.query(add_filter).reset_index(drop=True)
+
+        df = self._handle_user_query_str(df, user_query)
         return df.reset_index(drop=True)[fields]
 
     def summarize(self, **kwargs):
