@@ -405,12 +405,14 @@ tests:
     {"name": "hasOspf", "type": "boolean", "key": "", "display": 4, "description":
     "Is OSPF used in this namespace"}, {"name": "hasVxlan", "type": "boolean", "key":
     "", "display": 6, "description": "Is VXLAN used in this namespace"}, {"name":
-    "lastUpdate", "type": "timestamp", "key": "", "display": 8, "description": "Time
-    when any service was last polled"}, {"name": "namespace", "type": "string", "key":
-    0, "display": 0, "description": "Namespace associated with this record"}, {"name":
-    "serviceCnt", "type": "long", "key": "", "display": 2, "description": "Number
-    of services polled in this namespace"}, {"name": "sqvers", "type": "string", "key":
-    "", "display": "", "description": "Schema version, not selectable"}]'
+    "lastUpdate", "type": "timestamp", "key": "", "display": 8, "description": "The
+    last time the poller updated this namespace"}, {"name": "lastUpdate", "type":
+    "timestamp", "key": "", "display": 8, "description": "Time when any service was
+    last polled"}, {"name": "namespace", "type": "string", "key": 0, "display": 0,
+    "description": "Namespace associated with this record"}, {"name": "serviceCnt",
+    "type": "long", "key": "", "display": 2, "description": "Number of services polled
+    in this namespace"}, {"name": "sqvers", "type": "string", "key": "", "display":
+    "", "description": "Schema version, not selectable"}]'
 - command: path describe --format=json
   data-directory: tests/data/parquet
   marks: path describe
