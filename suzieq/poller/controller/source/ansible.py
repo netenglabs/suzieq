@@ -108,6 +108,9 @@ class AnsibleInventory(Source):
             if 'ansible_password' in entry:
                 password = entry['ansible_password']
 
+            if 'ansible_ssh_pass' in entry:
+                password = entry['ansible_ssh_pass']
+
             devtype = None
             if entry.get('ansible_network_os') in ['panos']:
                 devtype = 'panos'
