@@ -14,6 +14,7 @@ The new inventory is structured in 4 major pieces, explained in its own section:
 - `namespaces`: where you put together all the above. A namespace is be defined by a `source`, an `auth` and a `device`
 
 Here is an example of an inventory file with a bunch of different options, but non-exhaustive, for each section:
+
 ```yaml
 sources:
 - name: netbox-instance-123
@@ -86,6 +87,7 @@ namespaces:
     - It is possible to [map different sources to the same namespace](#mapping-different-sources-to-the-same-namespace)
 
 ## <a name='sensitive-data'></a>Sensitive data
+
 A sensitive data is an information that the user doesn't want to store in plain-text inside the inventory.
 For this reason, SuzieQ inventory now supports three different options to store these kind of informations
 
@@ -94,6 +96,7 @@ For this reason, SuzieQ inventory now supports three different options to store 
 - `ask`: the user can write the sensitive information on the stdin
 
 Currently this method is used to specify passwords, passphrases and tokens.
+
 ## <a name='inventory-sources'></a>Sources
 
 The device sources currently supported are:
@@ -121,9 +124,11 @@ Whenever a source has many fields in common with another, you don't have to rewr
   - suzieq-copy
 
 ```
+
 ### <a name='source-host-list'></a>Host list
 
 The host list contains the IP address, the access method (SSH or REST), the IP address of the node, the user name, the type of OS if using REST and the access token such as a private key file. Here is an example of a native suzieq source type. For example (all possible combinations are shown for illustration):
+
 ```yaml
 - name: dc-01-native
   type: native # optional, if type is not present this is the default value
@@ -149,14 +154,16 @@ ansible-inventory --list > ansible.json
 ```
 
 Now you can set the path of the ansible inventory in the source:
+
 ```yaml
 - name: ansible-01
   type: ansible
   path: /path/to/ansible.json
 ```
 
+Since Ansible devices cannot really be split up, the device and auth sections apply to **all** the devices in the Ansible inventory file. This is a limitaion of the Ansible source input. We always assume ssh as the transport unless otherwise specified in the device section of the SuzieQ inventory file. 
 !!! info
-    The Ansible source assumes REST transport with Arista EOS and PanOs devices by default, and SSH for the others
+    From 0.21.0, with Ansible inventories, the device type and transport are taken from the specification in the device section of the suzieq inventory file. You must specify the transport as rest if you want to use rest as the transport for EOS devices. By default, we assume ssh as the transport. For PANOS also, you must specify the device type and transport. Before version 0.21.0, Ansible inventory assumed REST as the transport for EOS, even if the user specified the transport as SSH in the device section.
 
 ### <a name='source-netbox'></a>Netbox
 
@@ -173,6 +180,7 @@ Since Netbox is a _dynamic source_, the data are periodically pulled, the period
     If the user manually sets `ssl-verify: true` with an http netbox server, an error will be notified.
 
 Here is an example of the configuration of a netbox type source:
+
 ```yaml
 - name: netbox-dc-01
   type: netbox
@@ -183,6 +191,7 @@ Here is an example of the configuration of a netbox type source:
   period: 3600        # How frequently Netbox should be polled
   ssl-verify: false   # Netbox certificate validation will be skipped
 ```
+
 #### Selecting devices from Netbox
 
 Starting from 0.19, it's possible to specify more than one tag to be matched, defining a list of one or more rules.
@@ -198,6 +207,7 @@ A device is polled by SuzieQ if it matches at least one of the defined rules.
   - alpha
   - bravo, charlie
 ```
+
 For example, the source above tells SuzieQ to select from Netbox all the devices having the `alpha` OR `bravo & charlie` tags.
 
 !!!Warning
@@ -210,6 +220,7 @@ Netbox type source is capable to assign each device to a namespace which corresp
 To obtain this behaviour, we need to declare a `namespace` object with `name: netbox-sitename`.
 
 Here is an example:
+
 ```yaml
 sources:
 - name: netbox-dc-01
@@ -270,6 +281,7 @@ In case you want to ignore the check of the device's key against the `known_host
 ```
 
 Moreover if all the devices inside a namespace run the same NOS, it is possible to specify it via the `devtype` option:
+
 ```yaml
 - name: eos-devices
   devtype: eos
@@ -294,6 +306,7 @@ This section is optional in case SuzieQ native and ansible source types. Here a 
 Currently for both SSH and REST API, the only supported is username and password, therefore you will not be able to set api keys.
 
 The simplest method is defining either username and password/private key.
+
 ```yaml
 - name: suzieq-user
   username: suzieq
@@ -301,6 +314,7 @@ The simplest method is defining either username and password/private key.
 ```
 
 In case a private key is used to authenticate:
+
 ```yaml
 - name: suzieq-user
   keyfile: path/to/private/key
@@ -326,6 +340,7 @@ A `cred-file` is an external file where you store credentials for all the device
 Each device credentials can be specified via its `hostname` or its `address`
 (with Netbox, it's encouraged the usage of `hostname`).
 The credential file should look like this:
+
 ```yaml
 - namespace: testing
   devices:
@@ -348,6 +363,7 @@ The credential file should look like this:
 
 In the `namespaces` section sources, auths and devices can be put together to define namespaces.
 For example the following namespace will be defined by the source named `netbox-1`, the auths named `dc-01-credentials`, and the device named `ssh-jump-devs`:
+
 ```yaml
 namespaces:
 - name: example
@@ -430,14 +446,13 @@ Suppose we have this inventory valid for version 0.15.x:
     - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
     - url: https://vagrant@192.168.123.123 password=vagrant
 ```
-The new inventory format consists of four sections (sources, auths, devices, namespaces) which are described above. We need to add the devices specified in the old inventory format in a new source inside the `sources` section and link it to a namespace.
 
+The new inventory format consists of four sections (sources, auths, devices, namespaces) which are described above. We need to add the devices specified in the old inventory format in a new source inside the `sources` section and link it to a namespace.
 
 Here is how the new format will look like:
 
 !!! important
     Sections [auths](#auths) and [devices](#devices) are optional. See the full documentation to know how to use them.
-
 
 ```yaml
 sources:
