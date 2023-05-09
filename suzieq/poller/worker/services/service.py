@@ -607,7 +607,7 @@ class Service(SqPlugin):
         return processed_data
 
     async def commit_data(self, result: Dict, namespace: str, hostname: str,
-                          boot_timestamp: float):
+                          boot_timestamp: int):
         """Write the result data out"""
         records = []
         key = f'{namespace}.{hostname}'

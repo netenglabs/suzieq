@@ -1484,7 +1484,7 @@ class EosNode(Node):
                     return
             else:
                 data = output[0]["data"]
-            self.bootupTimestamp = data["bootupTimestamp"]
+            self.bootupTimestamp = int(data["bootupTimestamp"])
             self._extract_nos_version(data)
             if not self.version:
                 self.logger.error(f'nodeinit: Error getting version for '
