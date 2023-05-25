@@ -2220,9 +2220,9 @@ tests:
   marks: interface summarize nxos
   output: '{"nxos": {"deviceCnt": 14, "interfaceCnt": 678, "devicesWithL2Cnt": 8,
     "devicesWithVxlanCnt": 6, "ifDownCnt": 469, "ifAdminDownCnt": 8, "ifWithMultipleIPCnt":
-    4, "uniqueMTUCnt": 5, "uniqueIfTypesCnt": 13, "speedCnt": 8, "ifChangesStat":
-    [0, 6, 0.0], "ifPerDeviceStat": [5, 78, 70.0], "uniqueIPv4AddrCnt": 58, "uniqueIPv6AddrCnt":
-    0}}'
+    4, "errDisabledCnt": 0, "uniqueMTUCnt": 5, "uniqueIfTypesCnt": 13, "speedCnt":
+    8, "ifChangesStat": [0, 6, 0.0], "ifPerDeviceStat": [5, 78, 70.0], "uniqueIPv4AddrCnt":
+    58, "uniqueIPv6AddrCnt": 0}}'
 - command: interface unique --columns=hostname --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: interface unique nxos

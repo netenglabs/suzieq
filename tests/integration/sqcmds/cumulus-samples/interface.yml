@@ -1439,25 +1439,26 @@ tests:
   marks: interface summarize
   output: '{"ospf-single": {"deviceCnt": 14, "interfaceCnt": 97, "devicesWithL2Cnt":
     4, "devicesWithVxlanCnt": 0, "ifDownCnt": 0, "ifAdminDownCnt": 12, "ifWithMultipleIPCnt":
-    0, "uniqueMTUCnt": {"9216": 44, "1500": 30, "65536": 23}, "uniqueIfTypesCnt":
-    5, "speedCnt": 4, "ifChangesStat": [0, 1, 0.0], "ifPerDeviceStat": [3, 10, 9.0],
-    "uniqueIPv4AddrCnt": 31, "uniqueIPv6AddrCnt": 1}, "dual-evpn": {"deviceCnt": 10,
-    "interfaceCnt": 146, "devicesWithL2Cnt": 6, "devicesWithVxlanCnt": 12, "ifDownCnt":
-    0, "ifAdminDownCnt": 4, "ifWithMultipleIPCnt": 5, "uniqueMTUCnt": 4, "uniqueIfTypesCnt":
-    9, "speedCnt": 5, "ifChangesStat": [0, 7, 0.0], "ifPerDeviceStat": [4, 21, 18.0],
-    "uniqueIPv4AddrCnt": 48, "uniqueIPv6AddrCnt": 1}, "ospf-ibgp": {"deviceCnt": 14,
-    "interfaceCnt": 178, "devicesWithL2Cnt": 6, "devicesWithVxlanCnt": 14, "ifDownCnt":
-    0, "ifAdminDownCnt": 4, "ifWithMultipleIPCnt": 5, "uniqueMTUCnt": 4, "uniqueIfTypesCnt":
-    9, "speedCnt": 5, "ifChangesStat": [0, 5, 0.0], "ifPerDeviceStat": [4, 23, 9.5],
-    "uniqueIPv4AddrCnt": 60, "uniqueIPv6AddrCnt": 1}}'
+    0, "errDisabledCnt": 0, "uniqueMTUCnt": {"9216": 44, "1500": 30, "65536": 23},
+    "uniqueIfTypesCnt": 5, "speedCnt": 4, "ifChangesStat": [0, 1, 0.0], "ifPerDeviceStat":
+    [3, 10, 9.0], "uniqueIPv4AddrCnt": 31, "uniqueIPv6AddrCnt": 1}, "dual-evpn": {"deviceCnt":
+    10, "interfaceCnt": 146, "devicesWithL2Cnt": 6, "devicesWithVxlanCnt": 12, "ifDownCnt":
+    0, "ifAdminDownCnt": 4, "ifWithMultipleIPCnt": 5, "errDisabledCnt": 0, "uniqueMTUCnt":
+    4, "uniqueIfTypesCnt": 9, "speedCnt": 5, "ifChangesStat": [0, 7, 0.0], "ifPerDeviceStat":
+    [4, 21, 18.0], "uniqueIPv4AddrCnt": 48, "uniqueIPv6AddrCnt": 1}, "ospf-ibgp":
+    {"deviceCnt": 14, "interfaceCnt": 178, "devicesWithL2Cnt": 6, "devicesWithVxlanCnt":
+    14, "ifDownCnt": 0, "ifAdminDownCnt": 4, "ifWithMultipleIPCnt": 5, "errDisabledCnt":
+    0, "uniqueMTUCnt": 4, "uniqueIfTypesCnt": 9, "speedCnt": 5, "ifChangesStat": [0,
+    5, 0.0], "ifPerDeviceStat": [4, 23, 9.5], "uniqueIPv4AddrCnt": 60, "uniqueIPv6AddrCnt":
+    1}}'
 - command: interface summarize --namespace=dual-evpn --format=json
   data-directory: tests/data/parquet/
   marks: interface summarize
   output: '{"dual-evpn": {"deviceCnt": 10, "interfaceCnt": 146, "devicesWithL2Cnt":
     6, "devicesWithVxlanCnt": 12, "ifDownCnt": 0, "ifAdminDownCnt": 4, "ifWithMultipleIPCnt":
-    5, "uniqueMTUCnt": 4, "uniqueIfTypesCnt": 9, "speedCnt": 5, "ifChangesStat": [0,
-    7, 0.0], "ifPerDeviceStat": [4, 21, 18.0], "uniqueIPv4AddrCnt": 48, "uniqueIPv6AddrCnt":
-    1}}'
+    5, "errDisabledCnt": 0, "uniqueMTUCnt": 4, "uniqueIfTypesCnt": 9, "speedCnt":
+    5, "ifChangesStat": [0, 7, 0.0], "ifPerDeviceStat": [4, 21, 18.0], "uniqueIPv4AddrCnt":
+    48, "uniqueIPv6AddrCnt": 1}}'
 - command: interface unique --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet/
   marks: interface unique

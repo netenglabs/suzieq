@@ -567,9 +567,9 @@ tests:
   marks: interface summarize panos
   output: '{"panos": {"deviceCnt": 14, "interfaceCnt": 167, "devicesWithL2Cnt": 6,
     "devicesWithVxlanCnt": 14, "ifDownCnt": 0, "ifAdminDownCnt": 0, "ifWithMultipleIPCnt":
-    4, "uniqueMTUCnt": 5, "uniqueIfTypesCnt": 9, "speedCnt": 4, "ifChangesStat": [0,
-    5, 0.0], "ifPerDeviceStat": [5, 21, 9.5], "uniqueIPv4AddrCnt": 50, "uniqueIPv6AddrCnt":
-    3}}'
+    4, "errDisabledCnt": 0, "uniqueMTUCnt": 5, "uniqueIfTypesCnt": 9, "speedCnt":
+    4, "ifChangesStat": [0, 5, 0.0], "ifPerDeviceStat": [5, 21, 9.5], "uniqueIPv4AddrCnt":
+    50, "uniqueIPv6AddrCnt": 3}}'
 - command: interface unique --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: interface unique panos
