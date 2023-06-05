@@ -93,7 +93,7 @@ FILTERS = ['',  # for vanilla commands without any filter
            'state=active',
            'priVtepIp=10.0.0.112',
            'query_str=hostname%20==%20"leaf01"',
-           'query_str=hostname=="leaf01"%20and%201000<mtu<2000',
+           'query_str=hostname=="leaf01"%20and%201000%3Cmtu%3C2000',
            'what=mtu',
            'what=numChanges',
            'what=uptime',
