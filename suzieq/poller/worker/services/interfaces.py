@@ -437,6 +437,7 @@ class InterfaceService(Service):
                     macaddr = entry.get('macaddr', '00:00:00:00:00:00')
 
                 addrlist = []
+                afi_mtu = entry['mtu']
                 for elem in afis:
                     afi_mtu = elem.get('mtu', [{}])[0].get(
                         'data', entry['mtu'])
@@ -462,7 +463,8 @@ class InterfaceService(Service):
                     continue
 
                 vrf = entry_dict.get(ifname, {}).get('vrf', '')
-
+                l_description = lentry.get('description',
+                                           [{}])[0].get('data', '')
                 new_entry = {'ifname': lifname,
                              'mtu': afi_mtu,
                              'type': iftype,
@@ -471,7 +473,7 @@ class InterfaceService(Service):
                              'master': vrf,
                              'macaddr': macaddr,
                              'adminState': 'up',
-                             'description': entry['description'],
+                             'description': l_description,
                              'state': 'up',
                              'statusChangeTimestamp':
                              entry['statusChangeTimestamp'],
@@ -612,6 +614,7 @@ class InterfaceService(Service):
             entry['ifname'] = ifname
 
             ipaddresses = entry.get('ipAddressList', None)
+            pri_ipaddr = ''
             if ipaddresses and ipaddresses != "--":
                 pri_ipaddr = f"{entry['ipAddressList']}/{entry['_maskLen']}"
                 ipaddr = [pri_ipaddr]

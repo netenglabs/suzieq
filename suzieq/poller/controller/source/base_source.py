@@ -191,7 +191,8 @@ class Source(ControllerPlugin):
                     f'Unknown plugin called {ptype}'
                 )
             src_conf.update({'run_once': run_once})
-            src_plugins.append(plugin_classes[ptype](src_conf, validate))
+            src_plugins.append(plugin_classes[ptype](
+                deepcopy(src_conf), validate))
         return src_plugins
 
     def set_device(self, inventory: Dict[str, Dict]):

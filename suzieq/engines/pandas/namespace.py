@@ -92,7 +92,6 @@ class NamespaceObj(SqPandasEngine):
         if 'sqvers' in fields:
             newdf['sqvers'] = self.schema.version
         newdf['active'] = True
-        newdf = self._handle_user_query_str(newdf, user_query)
 
         # Look for the rest of info only in selected namepaces
         newdf['lastUpdate'] = nsgrp['timestamp'].max() \

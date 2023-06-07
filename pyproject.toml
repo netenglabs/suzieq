@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "suzieq"
-version = "0.20.1"
+version = "0.21.0"
 description = "A framework and application for network observability"
 readme = 'README.md'
 repository = 'https://github.com/netenglabs/suzieq'
@@ -23,8 +23,8 @@ textfsm = "*"
 async-timeout = "<4.0"
 aiofiles = "*"
 prompt-toolkit = ">2"
-pyarrow = "10.0.1"
-pandas = "1.3.4"
+pyarrow = "~11.0"
+pandas = "~1.5"
 PyYAML = "*"
 python-nubia = "0.2b5"
 uvloop = "*"
@@ -33,7 +33,7 @@ matplotlib = "^3.2.2"
 faker = "^4.1.1"
 netconan = "^0.11.2"
 jsonpath-ng = "^1.5.1"
-fastapi = "^0.65"
+fastapi = "~0.95"
 uvicorn = "^0.14.0"
 tabulate = "^0.8.7"
 streamlit = "1.11.1"
@@ -50,6 +50,7 @@ notebook = "6.4.12"
 urllib3 = "^1.26.12"
 packaging = "^21.3"
 psutil = "^5.9.4"
+jellyfish = "~0.10"
 
 [tool.poetry.dev-dependencies]
 pylint = "*"
@@ -59,7 +60,7 @@ jedi = "~0.17.2"
 flake8 = "*"
 ipdb = "*"
 pycscope = "*"
-pytest = "*"
+pytest = "~7.2"
 pytest-cov = "*"
 pytest-xdist = "*"
 pytest-asyncio = "*"
@@ -67,8 +68,8 @@ pytest-mock = "*"
 mock = "*"
 pytest-depends = "^1.0.1"
 bandit = "^1.6.2"
-pytest-icdiff = "^0.5"
-ipython = "~=7.16.3"
+pytest-icdiff = "~0.6"
+ipython = "~=8.10"
 requests = "^2.24.0"
 sphinx-autodoc-typehints = "^1.11.1"
 filelock = "^3.0.12"
@@ -84,6 +85,9 @@ sq-anonymizer = 'suzieq.utilities.sq_anonymizer:anonymizer_main'
 sq-simnodes = 'suzieq.utilities.sq_simnode:simnodes_main'
 suzieq-cli = 'suzieq.cli.sq_cli:cli_main'
 suzieq-gui = 'suzieq.gui.sq_gui:gui_main'
+
+[tool.poetry.group.dev.dependencies]
+httpx = "^0.24.1"
 
 [build-system]
 requires = ["poetry>=0.12"]

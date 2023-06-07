@@ -3,9 +3,10 @@ Value macaddr ([a-f0-9.]+)
 Value type (\S+)
 Value oif (\S+)
 Value protocol (\S+)
+Value _age (\d+|-)
 
 Start
-  ^${protocol}\s+${ipAddress}\s+\d+\s+${macaddr}\s+${type}\s+${oif}.*$$ -> Record
+  ^${protocol}\s+${ipAddress}\s+${_age}\s+${macaddr}\s+${type}\s+${oif}.*$$ -> Record
   ^Protocol
 
 #Protocol  Address          Age (min)  Hardware Addr   Type   Interface
@@ -13,7 +14,7 @@ Start
 #Internet  10.127.0.1              4   4438.3900.0002  ARPA   GigabitEthernet0/1
 #Internet  10.127.0.2              -   4438.3900.0003  ARPA   GigabitEthernet0/2
 #Internet  10.127.0.3              4   4438.3900.0004  ARPA   GigabitEthernet0/2
-#Internet  10.127.0.0            196   4438.3900.0001  ARPA   GigabitEthernet2
-#Internet  10.127.0.1              -   4438.3900.0002  ARPA   GigabitEthernet2
-#Internet  10.127.0.2            173   4438.3900.0003  ARPA   GigabitEthernet3
-#Internet  10.127.0.3              -   4438.3900.0004  ARPA   GigabitEthernet3
+#Internet  10.127.1.0            196   4438.3900.0001  ARPA   GigabitEthernet2
+#Internet  10.127.1.1              -   4438.3900.0002  ARPA   GigabitEthernet2
+#Internet  10.127.1.2            173   4438.3900.0003  ARPA   GigabitEthernet3
+#Internet  10.127.1.3              -   4438.3900.0004  ARPA   GigabitEthernet3

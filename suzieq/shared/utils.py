@@ -520,7 +520,7 @@ def get_timestamp_from_junos_time(in_data: Tuple[Dict, str],
         delta = relativedelta(seconds=int(secs))
         secs = (datetime.fromtimestamp(relative_to) - delta).timestamp()
 
-    return secs * conversion_unit
+    return int(secs * conversion_unit)
 
 
 def convert_macaddr_format_to_colon(macaddr: str) -> str:
@@ -879,9 +879,9 @@ def init_logger(logname: str,
 
 def known_devtypes() -> list:
     """Returns the list of known dev types"""
-    return(['cumulus', 'eos', 'iosxe', 'iosxr', 'ios', 'junos-mx', 'junos-qfx',
-            'junos-qfx10k', 'junos-ex', 'junos-es', 'junos-evo', 'linux',
-            'nxos', 'sonic', 'panos'])
+    return (['cumulus', 'eos', 'iosxe', 'iosxr', 'ios', 'junos-mx',
+             'junos-qfx', 'junos-qfx10k', 'junos-ex', 'junos-es', 'junos-evo',
+             'linux', 'nxos', 'sonic', 'panos'])
 
 
 def humanize_timestamp(field: pd.Series, tz=None) -> pd.Series:
@@ -1108,6 +1108,7 @@ def deprecated_command_warning(dep_command: str, dep_sub_command: str,
         sub_command (str, optional): subcommand to use instead.
         Defaults to None.
 
+
     Returns:
         str: deprecated command warning message
     """
@@ -1122,7 +1123,7 @@ def get_default_per_vals() -> Dict:
     Returns:
         Dict: mapping between type and default value
     """
-    return({
+    return ({
         pa.string(): "",
         pa.int32(): 0,
         pa.int64(): 0,
