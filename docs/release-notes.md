@@ -1,5 +1,26 @@
 # Release Notes
 
+## 0.21.0 (June 6, 2023)
+
+This release fixes a number of important bugs across various platforms. The main new feature is the display of a status string for sqPoller show to help identify problems more easily.
+
+* **BREAKING CHANGE: Ansible inventory behavior**: We pick transport and devtype from the SuzieQ inventory and not what is specfied in the Ansible inventory. The username/password are picked from the Ansible inventory file, along with device IP. This mainly affects EOS devices where the transport was automatically assumed to be REST for EOS devices.
+* **Display status string instead of status code** in sqpoller output to help identify polling problems more easily
+* **Support multiple partial output reads from IOS/XE Platform**: When the output of a show command is large, the data is returned over several reads() of the SSH socket. This release handles this properly, making it possible to retrieve the entire internet routing table for example
+* **Correct identifying end of output in IOS/XE**: Looking for a command prompt with IOS devices wasn't handled correctly which could result in bad data being created for IOS & XE devices
+* **Improved IOS Connction management**: During some scenarios, the poller could hang forever and fail to communicate with some IOS/XE devices. This has been fixed
+* Use a common timestamp across adds and deletes of a record within a single write to ensure coalescer works corrctly
+* **Ensure bootupTimestamp is an int**: This ensures that in certain scenarios we don't end up writing duplicate records
+* **Junos parser fixes**: do not propagate interface description to subinterfaces
+* **NXOS parser fixes**: route timestamp fix for older NXOS versions,
+* **EOS parser fixes**: Updates to support evpnVni with newer EOS versions,
+* **IOS parser fixes**: Handle ARP entries correctly in the presence of - for Age,
+* Fix filters to working correctly for device and namespace tables in the event of unpolled devices
+* Add missing lastUpdate field to namespace schema
+* Humanize all timestamps returned by tables output
+* Various documentation updates
+* Security and general updates to various libraries used by SuzieQ
+
 ## 0.20.1 (Feb 22, 2023)
 
 This is a bugfix release. The main changes in this release including the bug fixes are:

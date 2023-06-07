@@ -12,7 +12,7 @@ that the bgp service collects from routers. To see what information is collected
 | BGP     | yes | yes | yes | yes | yes | yes | yes | yes | yes | yes |
 | Device  | yes | yes | yes | yes | yes |  yes | yes | yes | yes |  yes |
 | EvpnVni | yes | yes | no | yes<sup>2<sup> | yes | yes | no | no | no | no |
-| Filesystem (fs) | yes | yes | yes | yes | no | yes | no | no | no | no |
+| Filesystem (fs) | yes | no | yes | no | yes | yes | yes | no | no | no |
 | Interfaces | yes | yes | yes| yes | yes | yes | yes | yes | yes | yes |
 | Inventory | no | yes | no | yes | yes | no | no | no | no | no |
 | LLDP | yes | yes | yes | yes | yes | yes | yes | yes | yes | yes |
