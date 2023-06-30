@@ -20,8 +20,8 @@ rest:
 # The certificates listed below are provided purely to get started, In any
 # secure deployment, these must be generated specifically for the site and
 # these lines uncommented and containing the location of the site-specific file.
-# rest_certfile: /suzieq/cert.pem
-# rest_keyfile: /suzieq/key.pem
+# rest-certfile: /suzieq/cert.pem
+# rest-keyfile: /suzieq/key.pem
 #
   API_KEY: 496157e6e869ef7f3d6ecb24a6f6d847b224ee4f
   logging-level: WARNING
