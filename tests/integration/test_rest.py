@@ -5,6 +5,7 @@ import warnings
 from dataclasses import dataclass
 from typing import Dict, List
 
+import yaml
 import pandas as pd
 import pytest
 from fastapi import FastAPI
@@ -284,12 +285,12 @@ def _validate_namespace_output(json_out, service, verb, _):
             return
         # summarize output has namespace as a key
         if service in ["bgp", "evpnVni", "devconfig", "mlag"]:
-            assert(set(json_out.keys()) == set(['ospf-ibgp']))
+            assert (set(json_out.keys()) == set(['ospf-ibgp']))
         else:
             assert (set(json_out.keys()) == set(['ospf-ibgp', 'ospf-single']))
     else:
         if service in ["bgp", "evpnVni", "devconfig", "mlag"]:
-            assert({x['namespace'] for x in json_out} == set(['ospf-ibgp']))
+            assert ({x['namespace'] for x in json_out} == set(['ospf-ibgp']))
         else:
             assert ({x['namespace'] for x in json_out} == set(['ospf-ibgp',
                                                                'ospf-single']))
@@ -455,7 +456,7 @@ def get(endpoint, service, verb, args):
                 response.content.decode('utf-8')))
             if ((c_v_f not in GOOD_FILTER_EMPTY_RESULT_FILTER) and
                     (c_all not in GOOD_FILTER_EMPTY_RESULT_FILTER)):
-                assert(not df.empty)
+                assert (not df.empty)
             else:
                 assert df.empty
         else:
@@ -474,7 +475,7 @@ def get(endpoint, service, verb, args):
                     response.json(), service, verb, args)
             else:
                 df = pd.DataFrame(json.loads(response.content.decode('utf-8')))
-                assert(not df.empty)
+                assert (not df.empty)
         else:
             df = pd.DataFrame(json.loads(response.content.decode('utf-8')))
             assert df.empty
@@ -627,8 +628,8 @@ def test_rest_server():
         f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} --no-https'
         .split())
     sleep(5)
-    assert(server.pid)
-    assert(requests.get('http://localhost:8000/api/docs'))
+    assert (server.pid)
+    assert (requests.get('http://localhost:8000/api/docs'))
     server.kill()
     sleep(5)
 
@@ -636,8 +637,26 @@ def test_rest_server():
     server = subprocess.Popen(
         f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} '.split())
     sleep(5)
-    assert(server.pid)
-    assert(requests.get('https://localhost:8000/api/docs', verify=False))
+    with pytest.raises(requests.exceptions.ConnectionError):
+        requests.get('https://localhost:8000/api/docs', verify=False)
+        server.kill()
+        sleep(5)
+
+    # update config file to provide dummy SSL cert files
+    with open(cfgfile, 'r+') as f:
+        cfg = yaml.load(f, Loader=yaml.FullLoader)
+        cfg['rest']['rest-certfile'] = './suzieq/config/etc/cert.pem'
+        cfg['rest']['rest-keyfile'] = './suzieq/config/etc/key.pem'
+        f.seek(0)
+        f.write(yaml.dump(cfg))
+        f.truncate()
+
+    # pylint: disable=consider-using-with
+    server = subprocess.Popen(
+        f'./suzieq/restServer/sq_rest_server.py -c {cfgfile} '.split())
+    sleep(5)
+    assert (server.pid)
+    assert (requests.get('https://localhost:8000/api/docs', verify=False))
     server.kill()
     sleep(5)
 
