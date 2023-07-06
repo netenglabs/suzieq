@@ -10,7 +10,7 @@ from st_aggrid import (GridOptionsBuilder, AgGrid, GridUpdateMode,
 
 from suzieq.sqobjects import get_sqobject
 from suzieq.gui.stlit.guiutils import (gui_get_df, set_def_aggrid_options,
-                                       display_help_icon, get_base_url,
+                                       display_help_icon,
                                        get_session_id, SuzieqMainPages)
 from suzieq.gui.stlit.pagecls import SqGuiPage
 
@@ -85,7 +85,7 @@ class PathPage(SqGuiPage):
             nsidx = namespaces.index(state.namespace)
 
         url = '&amp;'.join([
-            f'{get_base_url()}?page=Help&session={get_session_id()}',
+            f'?page=Help&session={get_session_id()}',
             'help=yes',
             'help_on=Path',
         ])
@@ -339,7 +339,7 @@ class PathPage(SqGuiPage):
                         continue
                     hostset.add(hostname)
                     debugURL = '&amp;'.join([
-                        f'{get_base_url()}?page={quote("Path-Debug")}',
+                        f'?page={quote("Path-Debug")}',
                         'lookupType=hop',
                         f'namespace={quote(df.namespace[0])}',
                         f'session={quote(get_session_id())}',
@@ -408,7 +408,7 @@ class PathPage(SqGuiPage):
                 tooltip = '\n'.join(tdf.T.to_string(
                     justify='right').split('\n')[1:])
                 debugURL = '&amp;'.join([
-                    f'{get_base_url()}?page={quote("Path-Debug")}',
+                    f'?page={quote("Path-Debug")}',
                     'lookupType=edge',
                     f'namespace={quote(row.namespace)}',
                     f'session={quote(get_session_id())}',
