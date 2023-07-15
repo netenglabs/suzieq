@@ -14,6 +14,8 @@ from suzieq.poller.controller.credential_loader.base_credential_loader import \
 from suzieq.poller.controller.utils.inventory_utils import read_inventory
 from suzieq.shared.exceptions import InventorySourceError
 
+_DEFAULT_PORTS = {'http': 80, 'https': 443, 'ssh': 22}
+
 
 class SourceModel(InventoryPluginModel):
     """Model for inventory source validation
@@ -233,14 +235,17 @@ class Source(ControllerPlugin):
             devtype = self._device.get('devtype')
 
         for node in inventory.values():
+            transport_tmp = node.get('transport') or transport or 'ssh'
+            ignore_known_hosts_tmp = node.get('ignore_known_hosts')
             node.update({
                 'jump_host': node.get('jump_host') or jump_host,
                 'jump_host_key_file': node.get('jump_host_key_file')
                 or jump_host_key_file,
-                'ignore_known_hosts': node.get('ignore_known_hosts')
-                or ignore_known_hosts,
-                'transport': node.get('transport') or transport or 'ssh',
-                'port': node.get('port') or port or 22,
+                'ignore_known_hosts': ignore_known_hosts_tmp if
+                ignore_known_hosts_tmp is not None else ignore_known_hosts,
+                'transport': transport_tmp,
+                'port': node.get('port') or port or
+                _DEFAULT_PORTS.get(transport_tmp),
                 'devtype': node.get('devtype') or devtype,
                 'slow_host': node.get('slow_host', '') or slow_host,
                 'per_cmd_auth': ((node.get('per_cmd_auth', '') != '')
