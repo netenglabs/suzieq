@@ -20,9 +20,13 @@ The inventory file format is covered in the [inventory page](./inventory.md).
 
 To monitor the status of the poller, you can look at the log files created (by default) in the `/tmp` directory. All the aspects related to the creation/update of the inventory are logged into `sq-poller-controller.log`, while the each worker logs into `sq-poller-<x>.log` where `x` is the worker id.
 
+!!! warning
+    If you want to start the poller process as background task, remember to redirect the stdout to `/dev/null` otherwise the poller might crash when it tries to write something on the terminal.<br>
+    `sq-poller -I inventory.yml >/dev/null &`
+
 ## Polling Modes
 
-SuzieQ poller can run in either **continuous mode** or **snapshot mode**. In continuous mode, the poller runs forever, gathering data at the specified period from the supplied inventory file. Alternately, it can run in snapshot mode where it gathers the data just once and stops once it has gathered data from all the nodes in the inventory file. If we cannot gather data from a node, we do not persist in gathering data in the snapshot mode. 
+SuzieQ poller can run in either **continuous mode** or **snapshot mode**. In continuous mode, the poller runs forever, gathering data at the specified period from the supplied inventory file. Alternately, it can run in snapshot mode where it gathers the data just once and stops once it has gathered data from all the nodes in the inventory file. If we cannot gather data from a node, we do not persist in gathering data in the snapshot mode.
 
 The default mode is the continuous mode. To use the snapshot mode, add the option `--run-once=update`.
 
@@ -92,7 +96,7 @@ have production versions of that code.
 
 ## Polling Period
 
-When polling in continuous mode, SuzieQ uses the default period specified in the suzieq-cfg.yml [configuration file](./config_file.md) (you can change the default location via the `-c` option when launching the poller). 
+When polling in continuous mode, SuzieQ uses the default period specified in the suzieq-cfg.yml [configuration file](./config_file.md) (you can change the default location via the `-c` option when launching the poller).
 
 Independent of this, you can change the polling period of any individual service by modifying (or adding) the `period:<time in secs>` key-value pair to the service configuration file (located under lib/python\<python version\>/site-packages/suzieq/config) wherever SuzieQ is installed.
 
@@ -128,7 +132,7 @@ jpietsch> sqpoller show status=fail namespace=dual-evpn
      354  dual-evpn  server104  ospfNbr       1         []        []       []      []        []                    0 2020-06-17 05:14:40.980
 ```
 
-In this case the errors are because we aren't running any of those services (mlag, evpn etc.) on those nodes (server101, edge01 etc.).  
+In this case the errors are because we aren't running any of those services (mlag, evpn etc.) on those nodes (server101, edge01 etc.).
 
 ## Database and Data Persistence
 
