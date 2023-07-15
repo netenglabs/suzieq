@@ -15,9 +15,9 @@ from fastapi import Depends, FastAPI, HTTPException, Query, Request, Security
 from fastapi.responses import Response
 from fastapi.security.api_key import APIKeyHeader, APIKeyQuery
 from starlette import status
+
 from suzieq.shared.exceptions import UserQueryError
-from suzieq.shared.utils import (DATA_FORMATS, get_log_params,
-                                 get_sq_install_dir, load_sq_config,
+from suzieq.shared.utils import (DATA_FORMATS, get_log_params, load_sq_config,
                                  print_version, sq_get_config_file)
 from suzieq.sqobjects import get_sqobject
 
@@ -80,19 +80,16 @@ def get_api_key(api_key_query: str = Security(api_key_query),
 
 
 def get_cert_files(cfg):
-    sqdir = get_sq_install_dir()
-    ssl_certfile = cfg.get('rest', {}) \
-                      .get('rest-certfile', f'{sqdir}/config/etc/cert.pem')
+    ssl_certfile = cfg.get('rest', {}).get('rest-certfile')
 
-    ssl_keyfile = cfg.get('rest', {}) \
-                     .get('rest-keyfile', f'{sqdir}/config/etc/key.pem')
+    ssl_keyfile = cfg.get('rest', {}).get('rest-keyfile')
 
     if not os.path.isfile(ssl_certfile):
-        print(f"ERROR: Missing certificate file: {ssl_certfile}")
+        print(f"ERROR: Missing SSL certificate file: {ssl_certfile}")
         sys.exit(1)
 
     if not os.path.isfile(ssl_keyfile):
-        print(f"ERROR: Missing certificate file: {ssl_keyfile}")
+        print(f"ERROR: Missing SSL key file: {ssl_keyfile}")
         sys.exit(1)
 
     return ssl_keyfile,  ssl_certfile

@@ -52,12 +52,12 @@ openssl rand -hex 20
 
 ## Configure SSL Key and Certificate
 
-It is possible to secure connections to the REST server via SSL. You can specify the full path of your SSL key and certificate via the ```rest_keyfile``` and ```rest_certfile``` variables under the `rest` section of the suzieq config file, typically at `~/.suzieq/suzieq-cfg.yml`. Here is an example of a config file with these two parameters defined:
+It is possible to secure connections to the REST server via SSL. You can specify the full path of your SSL key and certificate via the ```rest-keyfile``` and ```rest-certfile``` variables under the `rest` section of the suzieq config file, typically at `~/.suzieq/suzieq-cfg.yml`. Here is an example of a config file with these two parameters defined:
 
 ```yaml
 rest:
-    rest_certfile: /home/suzieq/cert.pem
-    rest_keyfile: /home/suzieq/cert.pem
+    rest-certfile: /home/suzieq/cert.pem
+    rest-keyfile: /home/suzieq/cert.pem
 ```
 
 For more details about the configuration file, check the [configuration](config_file.md) file documentation.
