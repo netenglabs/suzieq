@@ -2,16 +2,21 @@ sources:
 - name: native0
   hosts:
   - url: https://vagrant@192.168.123.164 devtype=eos
-  - url: ssh://192.168.123.70 username=admin
+  - url: ssh://192.168.123.70:123 username=admin
 - name: netbox0
   type: netbox
   token: MY-TOKEN
   url: http://localhost:8000
   tag: suzieq
+- name: native-default
+  hosts:
+  - url: https://192.168.1.2 devtype=eos
+  - url: ssh://192.168.1.3
 
 auths:
 - name: auth0
   password: plain:strong-passoword
+  username: user
 
 devices:
 - name: dev0
@@ -19,12 +24,16 @@ devices:
   jump-host: user@192.0.2.0
   per-cmd-auth: False
   retries-on-auth-fail: 0
+  port: 333
 
 namespaces:
 - name: native-ns
   device: dev0
   auth: auth0
   source: native0
+- name: native-default
+  auth: auth0
+  source: native-default
 - name: netbox-ns
   auth: auth0
   source: netbox0

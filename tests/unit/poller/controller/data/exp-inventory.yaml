@@ -6,7 +6,7 @@ auths:
     password: strong-passoword
     key-passphrase: null
     type: null
-    username: null
+    username: user
 devices:
   dev0:
     devtype: null
@@ -14,7 +14,7 @@ devices:
     jump-host: user@192.0.2.0
     jump-host-key-file: null
     name: dev0
-    port: null
+    port: 333
     slow-host: False
     per-cmd-auth: False
     retries-on-auth-fail: 0
@@ -26,16 +26,40 @@ namespaces:
   source: native0
 - auth: auth0
   device: null
+  name: native-default
+  source: native-default
+- auth: auth0
+  device: null
   name: netbox-ns
   source: netbox0
 sources:
+  native-default:
+    hosts:
+    - address: 192.168.1.2
+      devtype: eos
+      keyfile: null
+      password: null
+      port: null
+      transport: https
+      url: https://192.168.1.2 devtype=eos
+      username: null
+    - address: 192.168.1.3
+      devtype: null
+      keyfile: null
+      password: null
+      port: null
+      transport: ssh
+      url: ssh://192.168.1.3
+      username: null
+    name: native-default
+    type: null
   native0:
     hosts:
     - address: 192.168.123.164
       devtype: eos
       keyfile: null
       password: null
-      port: 443
+      port: null
       transport: https
       url: https://vagrant@192.168.123.164 devtype=eos
       username: vagrant
@@ -43,9 +67,9 @@ sources:
       devtype: null
       keyfile: null
       password: null
-      port: 22
+      port: 123
       transport: ssh
-      url: ssh://192.168.123.70 username=admin
+      url: ssh://192.168.123.70:123 username=admin
       username: admin
     name: native0
     type: null
