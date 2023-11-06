@@ -34,7 +34,7 @@ class DeviceModel(BaseModel):
     retries_on_auth_fail: Optional[int] = Field(alias='retries-on-auth-fail',
                                                 default=1)
     transport: Optional[PollerTransport]
-    port: Optional[str]
+    port: Optional[int]
     devtype: Optional[str]
 
     # pylint: disable=no-self-argument
