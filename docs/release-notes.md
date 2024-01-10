@@ -1,5 +1,19 @@
 # Release Notes
 
+## 0.22.0 (Jan 10, 2023)
+
+This is largely a bugfix release, with some improvements in the output of some commands, and dependent library updates.
+
+* Path is improved to handle cases where the source or destination can belong to a SVI without the specific IP address being in the ARPND table
+* Other minor impovements in path logic
+* Updating automatic device detect to handle newer SONiC versions
+* Added support for count of errDisabled ports in ```interface summarize```
+* Added support for displaying serial number instead of architecture in ```device show```
+* Fixed bug in crash when port is specified in device config section of the poller
+* Fixing bug in version extraction of SONiC versions
+* Bunch of GUI fixes
+* Documentation updates
+
 ## 0.21.0 (June 6, 2023)
 
 This release fixes a number of important bugs across various platforms. The main new feature is the display of a status string for sqPoller show to help identify problems more easily.
