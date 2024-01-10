@@ -210,7 +210,7 @@ class Source(ControllerPlugin):
         slow_host = False
         per_cmd_auth = True
         retries_on_auth_fail = 0
-        port = None
+        dev_port = None
         devtype = None
 
         if self._device:
@@ -231,12 +231,17 @@ class Source(ControllerPlugin):
             slow_host = self._device.get('slow-host', False)
             per_cmd_auth = self._device.get('per-cmd-auth', True)
             retries_on_auth_fail = self._device.get('retries-on-auth-fail', 0)
-            port = self._device.get('port')
+            dev_port = self._device.get('port')
             devtype = self._device.get('devtype')
 
-        for node in inventory.values():
+        node_keys_to_remove = []
+        nodes_to_add = {}
+        for node_name, node in inventory.items():
             transport_tmp = node.get('transport') or transport or 'ssh'
             ignore_known_hosts_tmp = node.get('ignore_known_hosts')
+            missing_node_port = not (node_port := node.get('port'))
+            if missing_node_port:
+                node_port = dev_port or _DEFAULT_PORTS.get(transport_tmp)
             node.update({
                 'jump_host': node.get('jump_host') or jump_host,
                 'jump_host_key_file': node.get('jump_host_key_file')
@@ -244,8 +249,7 @@ class Source(ControllerPlugin):
                 'ignore_known_hosts': ignore_known_hosts_tmp if
                 ignore_known_hosts_tmp is not None else ignore_known_hosts,
                 'transport': transport_tmp,
-                'port': node.get('port') or port or
-                _DEFAULT_PORTS.get(transport_tmp),
+                'port': node_port,
                 'devtype': node.get('devtype') or devtype,
                 'slow_host': node.get('slow_host', '') or slow_host,
                 'per_cmd_auth': ((node.get('per_cmd_auth', '') != '')
@@ -254,6 +258,25 @@ class Source(ControllerPlugin):
                                                    -1) != -1) or
                                          retries_on_auth_fail)
             })
+            if missing_node_port:
+                # An inventory key is composed by
+                # '{namespace}.{address}.{port}'. If the node port is missing,
+                # the key generated is not complete.
+                # We need to assign the node to a correct key. Since we are
+                # looping on the items in the inventory, we cannot update it
+                # here. We need to do it after the loop is completed, so we are
+                # storing in "node_keys_to_remove" the invalid key and in
+                # "nodes_to_add" the current node assigned to the correct key
+                node_keys_to_remove.append(node_name)
+                new_key = f"{node['namespace']}.{node['address']}.{node_port}"
+                nodes_to_add[new_key] = node
+
+        if node_keys_to_remove:
+            for k in node_keys_to_remove:
+                del inventory[k]
+
+        if nodes_to_add:
+            inventory.update(nodes_to_add)
 
     def _validate_device(self):
         if self._device:

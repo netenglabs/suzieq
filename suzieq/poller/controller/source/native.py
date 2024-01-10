@@ -12,8 +12,6 @@ from suzieq.shared.utils import PollerTransport
 
 logger = logging.getLogger(__name__)
 
-_DEFAULT_PORTS = {'http': 80, 'https': 443, 'ssh': 22}
-
 
 class HostModel(BaseModel):
     """Model used to validate the hosts of a native inventory
@@ -22,7 +20,7 @@ class HostModel(BaseModel):
     password: Optional[str] = Field(default=None)
     keyfile: Optional[str] = Field(default=None)
     devtype: Optional[str] = Field(default=None)
-    port: str = Field(default=None)
+    port: Optional[str] = Field(default=None)
     address: str = Field(default=None)
     transport: str = Field(default=None)
     url: str
@@ -47,7 +45,7 @@ class HostModel(BaseModel):
         except KeyError:
             raise ValueError(
                 f"Transport '{transport}' not supported for host {address}")
-        port = decoded_url.port or _DEFAULT_PORTS.get(transport)
+        port = decoded_url.port
         devtype = None
         keyfile = None
 

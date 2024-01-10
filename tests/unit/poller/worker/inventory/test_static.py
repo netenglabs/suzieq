@@ -67,11 +67,13 @@ def test_missing_inventory_path_or_key(monkeypatch):
     """Test if an error is generated if no key for credential decryption
     or no inventory path is provided
     """
+    monkeypatch.setenv('SQ_CONTROLLER_POLLER_CRED', '')
     with pytest.raises(InventorySourceError,
                        match=r'Unable to retrieve the key *'):
         StaticManagerInventory(MagicMock())
 
     monkeypatch.setenv('SQ_CONTROLLER_POLLER_CRED', 'dummy_key')
+    monkeypatch.setenv('SQ_INVENTORY_PATH', '')
     with pytest.raises(InventorySourceError,
                        match='Unable to get the inventory path'):
         StaticManagerInventory(MagicMock())

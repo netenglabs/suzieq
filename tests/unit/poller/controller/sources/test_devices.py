@@ -49,7 +49,7 @@ _INVENTORY = {
         'transport': 'http',
         'port': 443
     },
-    'native-ns.192.168.123.171.22':
+    'native-ns.192.168.123.171':
     {
         'address': '192.168.123.171',
         'hostname': None,
@@ -101,7 +101,7 @@ _RESULT_INVENTORY = {
         'transport': 'http',
         'port': 443
     },
-    'native-ns.192.168.123.171.22':
+    'native-ns.192.168.123.171.80':
     {
         'address': '192.168.123.171',
         'hostname': None,
