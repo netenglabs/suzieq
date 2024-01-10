@@ -1,6 +1,6 @@
 # Release Notes
 
-## 0.22.0 (Jan 10, 2023)
+## 0.22.0 (Jan 10, 2024)
 
 This is largely a bugfix release, with some improvements in the output of some commands, and dependent library updates.
 
