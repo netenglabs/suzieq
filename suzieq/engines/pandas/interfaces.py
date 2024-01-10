@@ -220,6 +220,8 @@ class InterfacesObj(SqPandasEngine):
             ('ifDownCnt', 'state != "up" and adminState == "up"', 'ifname'),
             ('ifAdminDownCnt', 'adminState != "up"', 'ifname'),
             ('ifWithMultipleIPCnt', 'ipAddressList.str.len() > 1', 'ifname'),
+            ('errDisabledCnt', 'state == "errDisabled" and adminState == "up"',
+             'ifname')
         ]
 
         self._summarize_on_add_list_or_count = [

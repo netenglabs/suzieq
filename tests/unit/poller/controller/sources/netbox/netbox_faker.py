@@ -274,7 +274,8 @@ class NetboxFaker:
                     namespace = dev_site
                 else:
                     namespace = self._namespace
-                dev_key = f'{namespace}.{ip}'
+                port = 22
+                dev_key = f'{namespace}.{ip}.{port}'
                 exp_inventory[dev_key] = _BASE_INVENTORY_DEVICE.copy()
 
                 exp_inventory[dev_key].update({

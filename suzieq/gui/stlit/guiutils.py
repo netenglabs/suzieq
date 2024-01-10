@@ -109,21 +109,6 @@ def gui_get_df(table: str,
     return df.reset_index(drop=True)
 
 
-def get_base_url():
-    '''Return the base URL of the page.
-    Usually connections are http://localhost:8501. But the port can change
-    or it can be a remote connection. And so, its useful to get the base
-    URL for use with links on various pages.
-    '''
-    session_id = get_script_run_ctx().session_id
-    session_info = Server.get_current()._get_session_info(session_id)
-
-    if session_info:
-        return f'http://{session_info.ws.request.host}/'
-
-    return 'http://localhost:8501/'
-
-
 def get_session_id():
     '''Return Streamlit's session ID'''
     ctx = get_script_run_ctx()

@@ -1,3 +1,4 @@
+from typing import Optional, List, Any, Iterable
 from ipaddress import ip_network, ip_address
 from collections import OrderedDict
 from itertools import repeat
@@ -19,7 +20,7 @@ class PathObj(SqPandasEngine):
     '''Backend class to handle manipulating virtual table, path, with pandas'''
 
     @staticmethod
-    def table_name():
+    def table_name() -> str:
         '''Table name'''
         return 'path'
 
@@ -137,7 +138,34 @@ class PathObj(SqPandasEngine):
             self._srcnode_via_arp = True
 
         if self._src_df.empty:
-            raise AttributeError(f"Invalid src {source}")
+            # See if we can find an mlag pair of devices that contains the SVI
+            # pandas has a bug that prevents us from using startswith with a
+            # tuple such as ("Vlan", "vlan", "irb.") directly instead of using
+            # the @svi_names trick
+            # pylint: disable=unused-variable
+            svi_names = tuple(["Vlan", "vlan", "irb."])  # noqa: F841
+            if ':' in source:
+                self._src_df = (
+                    self._if_df.query(
+                        f'@self._in_subnet_series("{source}", ip6AddressList)'
+                        ' and ifname.str.startswith(@svi_names)')
+                )
+            else:
+                self._src_df = (
+                    self._if_df.query(
+                        f'@self._in_subnet_series("{source}", ipAddressList)'
+                        ' and ifname.str.startswith(@svi_names)')
+                )
+            if not self._src_df.empty:
+                hosts = self._src_df.hostname.unique().tolist()
+                if len(hosts) > 2:
+                    raise ValueError(
+                        'source not in ARP and SVI on too many hosts')
+                self._srcnode_via_arp = True
+
+        if self._src_df.empty:
+            raise AttributeError(f"Unable to find starting node for {source}")
+
         src_hostname = self._src_df.hostname.unique().tolist()[0]
 
         if self._src_df.hostname.nunique() == 1 and len(self._src_df) > 1:
@@ -241,7 +269,7 @@ class PathObj(SqPandasEngine):
 
         return vrf
 
-    def _find_fhr_df(self, device: str, ip: str) -> pd.DataFrame:
+    def _find_fhr_df(self, device: Optional[str], ip: str) -> pd.DataFrame:
         """Find Firstt Hop Router's iface DF for a given IP and device.
         The logic in finding the next hop router is:
           find the arp table entry corresponding to the IP provided;
@@ -317,12 +345,12 @@ class PathObj(SqPandasEngine):
                              (self._if_df["ifname"] == ifname)]
 
         if oif_df.empty:
-            return []
+            return -1
 
         return oif_df.iloc[0]["vlan"]
 
     def _get_l2_nexthop(self, device: str, vrf: str, dest: str,
-                        macaddr: str, protocol: str) -> list:
+                        macaddr: Optional[str], protocol: str) -> list:
         """Get the bridged/tunnel nexthops
         We're passing protocol because we need to keep the return
         match the other get nexthop function returns. We don't really
@@ -387,7 +415,7 @@ class PathObj(SqPandasEngine):
 
     def _get_underlay_nexthop(self, hostname: str, vtep_list: list,
                               vrf_list: list,
-                              is_overlay: bool) -> pd.DataFrame:
+                              is_overlay: bool) -> List[Any]:
         """Return the underlay nexthop given the Vtep and VRF"""
 
         # WARNING: This function is incomplete right now
@@ -486,7 +514,7 @@ class PathObj(SqPandasEngine):
         return df
 
     def _get_nexthops(self, device: str, vrf: str, dest: str, is_l2: bool,
-                      vtep: str, macaddr: str) -> list:
+                      vtep: str, macaddr: str) -> Iterable:
         """Get nexthops (oif + IP + overlay) or just oif for given host/vrf.
 
         The overlay is a bit indicating we're getting into overlay or not.
@@ -612,6 +640,7 @@ class PathObj(SqPandasEngine):
         for (nhip, iface, overlay, l2hop, protocol,
              timestamp) in new_nexthop_list:
             df = pd.DataFrame()
+            arpdf = pd.DataFrame()
             errormsg = ''
             if l2hop and macaddr and not overlay:
                 if (not nhip or nhip == 'None') and iface:
@@ -721,7 +750,7 @@ class PathObj(SqPandasEngine):
                         'state!="failed"')
                     if not revarp_df.empty:
                         df = df.query(f'ifname == "{revarp_df.oif.iloc[0]}"')
-            df.apply(lambda x, nexthops:
+            df.apply(lambda x, nexthops:   # type: ignore
                      nexthops.append((iface, x['hostname'],
                                       x['ifname'],  overlay,
                                       l2hop, nhip,
@@ -761,8 +790,8 @@ class PathObj(SqPandasEngine):
         if not src or not dest:
             raise AttributeError("Must specify trace source and dest")
 
-        srcvers = ip_network(src, strict=False)._version
-        dstvers = ip_network(dest, strict=False)._version
+        srcvers = ip_network(src, strict=False).version
+        dstvers = ip_network(dest, strict=False).version
         if srcvers != dstvers:
             raise AttributeError(
                 "Source and Dest MUST belong to same address familt")
@@ -771,7 +800,8 @@ class PathObj(SqPandasEngine):
         self._init_dfs(self.namespace, src, dest)
 
         devices_iifs = OrderedDict()
-        src_mtu = None
+        src_mtu: int = MAX_MTU + 1
+        item = None
         for i in range(len(self._src_df)):
             item = self._src_df.iloc[i]
             devices_iifs[f'{item.hostname}/'] = {
@@ -793,9 +823,9 @@ class PathObj(SqPandasEngine):
                 "l3_visited_devices": set(),
                 "l2_visited_devices": set()
             }
-            if src_mtu is None or (item.get('mtu', 0) < src_mtu):
-                src_mtu = item.get('mtu', 0)
-        if not dvrf:
+            if (src_mtu > MAX_MTU) or (item.get('mtu', 0) < src_mtu):
+                src_mtu = item.get('mtu', 0)  # type: ignore
+        if not dvrf and item is not None:
             dvrf = item['master']
         if not dvrf:
             dvrf = "default"
