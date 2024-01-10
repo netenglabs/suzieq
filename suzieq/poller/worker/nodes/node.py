@@ -2093,7 +2093,7 @@ class SonicNode(Node):
         if (len(output) > 1) and (output[1]["status"] == 0):
             self.hostname = output[1]["data"].strip()
         if (len(output) > 2) and (output[2]["status"] == 0):
-            self._extract_nos_version(output[1]["data"])
+            self._extract_nos_version(output[2]["data"])
 
     def _extract_nos_version(self, data: str) -> None:
         match = re.search(r'Version:\s+SONiC-OS-([^-]+)', data)
