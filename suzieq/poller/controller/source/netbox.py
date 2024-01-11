@@ -50,6 +50,7 @@ class NetboxSourceModel(SourceModel):
     ssl_verify: Optional[bool] = Field(alias='ssl-verify')
     server: Union[str, NetboxServerModel] = Field(alias='url')
     run_once: Optional[bool] = Field(default=False, alias='run_once')
+    device_query_filters: Optional[list] = Field(default=[], alias='query_filters')
 
     @validator('server', pre=True)
     def validate_and_set(cls, url, values):
@@ -108,6 +109,14 @@ class NetboxSourceModel(SourceModel):
             tags = [tags]
         return [[t.strip() for t in tag.split(',')] for tag in tags]
 
+    @validator('device_query_filters')
+    def validate_device_query_filters(cls, device_query_filters):
+        """checks if the device_query_filters is a list. It always returns a list
+        """
+        if not isinstance(device_query_filters, list):
+            raise ValueError(f'device_query_filters is not a list {device_query_filters}')
+        else:
+            return device_query_filters
 
 class Netbox(Source, InventoryAsyncPlugin):
     """This class is used to dinamically retrieve the inventory from Netbox
@@ -179,6 +188,11 @@ class Netbox(Source, InventoryAsyncPlugin):
                 if i > 0:
                     query += '&'
                 query += f'tag={t}'
+            if len(self._data.device_query_filters):
+                api_filter = '&'.join([f'{key}={value}' for key, value in self._data.device_query_filters])
+                if "&" in query:
+                    query += '&'
+                query += f'{api_filter}'
             urls.append(query)
         return urls
 
