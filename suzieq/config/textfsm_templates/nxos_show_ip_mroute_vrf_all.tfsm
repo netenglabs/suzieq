@@ -1,0 +1,29 @@
+Value Required group (\S+)
+Value source (\*|\S+)
+Value Filldown vrf (\S+)
+Value List oifList (\S+)
+Value incomingIf (\S+)
+Value rpfNeighbor (\S+)
+Value lastUpTime (\S+)
+
+Start
+  ^\s*$$
+  ^IP\s+Multicast\s+Routing\s+Table\s+for\s+VRF\s+"${vrf}"
+  ^\( -> Continue.Record
+  ^\(${source},\s+${group}\),\s+uptime:\s+${lastUpTime},.*
+  ^\s+Incoming\s+interface:\s+${incomingIf},\s+RPF\s+nbr:\s+${rpfNeighbor}
+  ^\s+Outgoing\s+interface\s+list:\s+\(count:\s+\d+\)
+  ^\s+${oifList},\s+uptime:\s+${lastUpTime},\s+\w+
+  ^. -> Error
+
+# nxos-2# show ip mroute vrf all
+# IP Multicast Routing Table for VRF "default"
+#
+# (10.0.13.10/32, 225.0.0.1/32), uptime: 00:11:35, pim mrib ip 
+#   Incoming interface: Ethernet1/2, RPF nbr: 10.0.2.2, internal
+#   Outgoing interface list: (count: 0)
+#
+#
+# (*, 232.0.0.0/8), uptime: 23:48:01, pim ip 
+#   Incoming interface: Null, RPF nbr: 0.0.0.0
+#   Outgoing interface list: (count: 0)

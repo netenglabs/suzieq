@@ -1,0 +1,63 @@
+{
+    "namespace": "suzieq",
+    "name": "igmp",
+    "type": "record",
+    "fields": [
+        {
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
+        {
+            "name": "group",
+            "type": "string",
+            "key": 3,
+            "display": 3,
+            "description": "The multicast group being subscribed to"
+        },
+        {
+            "name": "interface",
+            "type": "string",
+            "display": 4,
+            "description": "The interface with a subscribed to the group"
+        },
+        {
+            "name": "flag",
+            "type": "string",
+            "display": 5,
+            "description": "Whether the igmp group is dynamic or statically configured"
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "key": 1,
+            "display": 1,
+            "description": "Hostname of the device that returned the data"
+        },
+        {
+            "name": "vrf",
+            "type": "string",
+            "key": 4,
+            "display": 6,
+            "description": "VRF that the group has joined"
+        },
+        {
+            "name": "namespace",
+            "type": "string",
+            "key": 0,
+            "display": 0,
+            "description": "namespace to which the data belongs"
+        },
+        {
+            "name": "timestamp",
+            "type": "timestamp"
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        }
+    ]
+}

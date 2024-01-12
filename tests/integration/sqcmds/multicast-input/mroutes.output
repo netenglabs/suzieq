@@ -1,0 +1,79 @@
+[
+    {
+        "status": 0,
+        "timestamp": 1702060462965,
+        "cmd_timestamp": 1702060462382,
+        "cmd": "show ip mroute| json",
+        "devtype": "eos",
+        "namespace": "multicast",
+        "hostname": "ceos-3",
+        "address": "172.20.20.12",
+        "version": "4.29.5M-33599604.4295M (engineering build)",
+        "data": "{\n    \"bidirectional\": {\n        \"groups\": {}\n    },\n    \"sparseMode\": {\n        \"groups\": {\n            \"225.2.0.1\": {\n                \"groupSources\": {\n                    \"10.2.13.10\": {\n                        \"sourceAddress\": \"10.2.13.10\",\n                        \"creationTime\": 1702048640.0,\n                        \"routeFlags\": \"SLP\",\n                        \"registerInOifList\": false,\n                        \"rpfInterface\": \"Ethernet3\",\n                        \"rpf\": {\n                            \"rpfRib\": \"U\",\n                            \"rpfPrefix\": \"10.2.13.0/24\",\n                            \"rpfPreference\": 0,\n                            \"rpfMetric\": 1,\n                            \"rpfNeighbor\": \"\",\n                            \"rpfAttached\": true,\n                            \"rpfEvpnTenantDomain\": false,\n                            \"rpfMvpn\": false\n                        },\n                        \"oifList\": [\n                            \"Ethernet1\"\n                        ]\n                    }\n                }\n            }\n        }\n    }\n}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1702060463286,
+        "cmd_timestamp": 1702060462383,
+        "cmd": "show ip mroute| json",
+        "devtype": "eos",
+        "namespace": "multicast",
+        "hostname": "ceos-1",
+        "address": "172.20.20.8",
+        "version": "4.29.5M-33599604.4295M (engineering build)",
+        "data": "{\n    \"bidirectional\": {\n        \"groups\": {}\n    },\n    \"sparseMode\": {\n        \"groups\": {\n            \"225.2.0.1\": {\n                \"groupSources\": {\n                    \"0.0.0.0\": {\n                        \"sourceAddress\": \"0.0.0.0\",\n                        \"creationTime\": 1700447616.0,\n                        \"routeFlags\": \"W\",\n                        \"rp\": \"2.2.2.2\",\n                        \"rpfInterface\": \"Ethernet1\",\n                        \"rpf\": {\n                            \"rpfRib\": \"U\",\n                            \"rpfPrefix\": \"2.2.2.2/32\",\n                            \"rpfPreference\": 110,\n                            \"rpfMetric\": 20,\n                            \"rpfNeighbor\": \"10.2.1.1\",\n                            \"rpfAttached\": false,\n                            \"rpfEvpnTenantDomain\": false,\n                            \"rpfMvpn\": false\n                        },\n                        \"oifList\": [\n                            \"Ethernet3\"\n                        ]\n                    },\n                    \"10.2.13.10\": {\n                        \"sourceAddress\": \"10.2.13.10\",\n                        \"creationTime\": 1702048640.0,\n                        \"routeFlags\": \"SP\",\n                        \"registerInOifList\": false,\n                        \"rpfInterface\": \"Ethernet1\",\n                        \"rpf\": {\n                            \"rpfRib\": \"U\",\n                            \"rpfPrefix\": \"10.2.13.0/24\",\n                            \"rpfPreference\": 110,\n                            \"rpfMetric\": 30,\n                            \"rpfNeighbor\": \"10.2.1.1\",\n                            \"rpfAttached\": false,\n                            \"rpfEvpnTenantDomain\": false,\n                            \"rpfMvpn\": false\n                        },\n                        \"oifList\": [\n                            \"Ethernet3\"\n                        ]\n                    }\n                }\n            }\n        }\n    }\n}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1702060463420,
+        "cmd_timestamp": 1702060462382,
+        "cmd": "show ip mroute| json",
+        "devtype": "eos",
+        "namespace": "multicast",
+        "hostname": "ceos-2",
+        "address": "172.20.20.10",
+        "version": "4.29.5M-33599604.4295M (engineering build)",
+        "data": "{\n    \"bidirectional\": {\n        \"groups\": {}\n    },\n    \"sparseMode\": {\n        \"groups\": {\n            \"225.2.0.1\": {\n                \"groupSources\": {\n                    \"0.0.0.0\": {\n                        \"sourceAddress\": \"0.0.0.0\",\n                        \"creationTime\": 1700447616.0,\n                        \"routeFlags\": \"W\",\n                        \"rp\": \"2.2.2.2\",\n                        \"rpfInterface\": \"Register0\",\n                        \"oifList\": [\n                            \"Ethernet1\"\n                        ]\n                    },\n                    \"10.2.13.10\": {\n                        \"sourceAddress\": \"10.2.13.10\",\n                        \"creationTime\": 1702048640.0,\n                        \"routeFlags\": \"SNCP\",\n                        \"registerInOifList\": false,\n                        \"rpfInterface\": \"Ethernet2\",\n                        \"rpf\": {\n                            \"rpfRib\": \"U\",\n                            \"rpfPrefix\": \"10.2.13.0/24\",\n                            \"rpfPreference\": 110,\n                            \"rpfMetric\": 20,\n                            \"rpfNeighbor\": \"10.2.2.2\",\n                            \"rpfAttached\": false,\n                            \"rpfEvpnTenantDomain\": false,\n                            \"rpfMvpn\": false\n                        },\n                        \"oifList\": [\n                            \"Ethernet1\"\n                        ]\n                    }\n                }\n            }\n        }\n    }\n}\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1702060464021,
+        "cmd_timestamp": 1702060462383,
+        "cmd": "show ip mroute vrf all",
+        "devtype": "nxos",
+        "namespace": "multicast",
+        "hostname": "nxos-2",
+        "address": "172.20.20.2",
+        "version": "9.3(10)",
+        "data": "IP Multicast Routing Table for VRF \"default\"\n\n(*, 225.1.0.1/32), uptime: 2w4d, pim ip \n  Incoming interface: loopback0, RPF nbr: 2.1.2.2\n  Outgoing interface list: (count: 1)\n    Ethernet1/1, uptime: 2w4d, pim\n\n\n(10.1.13.10/32, 225.1.0.1/32), uptime: 03:16:38, pim mrib ip \n  Incoming interface: Ethernet1/2, RPF nbr: 10.1.2.2, internal\n  Outgoing interface list: (count: 1)\n    Ethernet1/1, uptime: 03:16:38, pim\n\n\n(*, 232.0.0.0/8), uptime: 2w4d, pim ip \n  Incoming interface: Null, RPF nbr: 0.0.0.0\n  Outgoing interface list: (count: 0)\n\n\n\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1702060464085,
+        "cmd_timestamp": 1702060462383,
+        "cmd": "show ip mroute vrf all",
+        "devtype": "nxos",
+        "namespace": "multicast",
+        "hostname": "nxos-3",
+        "address": "172.20.20.6",
+        "version": "9.3(10)",
+        "data": "IP Multicast Routing Table for VRF \"default\"\n\n(10.1.13.10/32, 225.1.0.1/32), uptime: 03:16:38, ip pim \n  Incoming interface: Vlan10, RPF nbr: 10.1.13.10\n  Outgoing interface list: (count: 1)\n    Ethernet1/1, uptime: 03:16:38, pim\n\n\n(*, 232.0.0.0/8), uptime: 2w4d, pim ip \n  Incoming interface: Null, RPF nbr: 0.0.0.0\n  Outgoing interface list: (count: 0)\n\n\n\n"
+    }
+][
+    {
+        "status": 0,
+        "timestamp": 1702060464293,
+        "cmd_timestamp": 1702060462383,
+        "cmd": "show ip mroute vrf all",
+        "devtype": "nxos",
+        "namespace": "multicast",
+        "hostname": "nxos-1",
+        "address": "172.20.20.3",
+        "version": "9.3(10)",
+        "data": "IP Multicast Routing Table for VRF \"default\"\n\n(*, 225.1.0.1/32), uptime: 2w4d, igmp ip pim \n  Incoming interface: Ethernet1/1, RPF nbr: 10.1.1.1\n  Outgoing interface list: (count: 1)\n    Ethernet1/3, uptime: 2w4d, igmp\n\n\n(10.1.13.10/32, 225.1.0.1/32), uptime: 03:16:39, ip mrib pim \n  Incoming interface: Ethernet1/1, RPF nbr: 10.1.1.1\n  Outgoing interface list: (count: 1)\n    Ethernet1/3, uptime: 03:16:39, mrib\n\n\n(*, 232.0.0.0/8), uptime: 2w4d, pim ip \n  Incoming interface: Null, RPF nbr: 0.0.0.0\n  Outgoing interface list: (count: 0)\n\n\n\n"
+    }
+]

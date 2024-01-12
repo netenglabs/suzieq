@@ -1,0 +1,87 @@
+{
+    "namespace": "suzieq",
+    "name": "mroutes",
+    "type": "record",
+    "fields": [
+        {
+            "name": "sqvers",
+            "type": "string",
+            "partition": 0,
+            "default": "2.0",
+            "suppress": true,
+            "description": "Schema version, not selectable"
+        },
+        {
+            "name": "source",
+            "type": "string",
+            "key": 2,
+            "display": 2,
+            "description": "Source advertising a given multicast group/route"
+        },
+        {
+            "name": "group",
+            "type": "string",
+            "key": 3,
+            "display": 3,
+            "description": "multicast group"
+        },
+        {
+            "name": "hostname",
+            "type": "string",
+            "key": 1,
+            "display": 1,
+            "description": "Device the data was gathered from"
+        },
+        {
+            "name": "rpfInterface",
+            "type": "string",
+            "display": 4,
+            "description": "Reverse path forwarding interface. The interface toward the originator of the multicast traffic"
+        },
+        {
+            "name": "oifList",
+            "type": {
+                "type": "array",
+                "items": {
+                    "name": "oif",
+                    "type": "string"
+                }
+            },
+            "display": 5,
+            "description": "Outgoing interface list. The list of interfaces toward the multicast receivers"
+        },
+        {
+            "name": "vrf",
+            "type": "string",
+            "key": 3,
+            "display": 6,
+            "description": "VRF the data is from on the specific device"
+        },
+        {
+            "name": "ipvers",
+            "type": "long",
+            "display": 7
+        },
+        {
+            "name": "rpNeighbor",
+            "type": "string",
+            "display": 9,
+            "description": "IP of the RPF neighbor. Should be reachable via the rpfInterface"
+        },
+        {
+            "name": "namespace",
+            "type": "string",
+            "key": 0,
+            "display": 0
+        },
+        {
+            "name": "timestamp",
+            "type": "timestamp",
+            "display": 10
+        },
+        {
+            "name": "active",
+            "type": "boolean"
+        }
+    ]
+}

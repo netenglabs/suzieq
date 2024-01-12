@@ -1,0 +1,35 @@
+service: mroutes
+keys:
+  - source
+  - group
+  - vrf
+ignore-fields:
+  - statusChangeTimestamp
+show-fields:
+  - source
+  - group
+  - rpfInterface
+  - oifList
+  - vrf
+  - ipvers
+  - rpfNeighbor
+  - lastUpTime
+  
+
+apply:
+  eos:
+    version: all
+    command: show ip mroute
+    normalize: '*:protocol/groups/*:group/groupSources/*:source/[
+    "creationTime: lastUpTime",
+    "rpfInterface: rpfInterface",
+    "rpf/rpfNeighbor: rpfNeighbor",
+    "oifList: oifList",
+    "vrf: vrf?|default"
+    ]'
+
+  nxos:
+    version: all
+    command: show ip mroute vrf all
+    textfsm: textfsm_templates/nxos_show_ip_mroute_vrf_all.tfsm
+    merge: False
