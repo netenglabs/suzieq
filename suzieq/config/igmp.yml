@@ -1,0 +1,37 @@
+service: igmp
+keys:
+  - group
+  - vrf
+  - interface
+ignore-fields:
+  - lastUpTime
+show-fields:
+  - interface
+  - flag
+  - vrf
+
+apply:
+  eos:
+    version: all
+    command:
+      - command: show ip igmp groups
+        normalize: 'groupList/*/[
+          "groupAddress: group",
+          "interfaceName: interface",
+          "uptime: lastUpTime",
+          "lastReporter: querier",
+          "flag: flag?|dynamic",
+          "vrf: vrf?|default"
+        ]'
+      - command: show ip igmp static-groups
+        normalize: 'intfAddrs/*:interface/[
+          "groupAddrsList: group",
+          "flag: flag?|static",
+          "vrf: vrf?|default"
+        ]'
+  nxos:
+    version: all
+    command: show ip igmp groups vrf all
+    textfsm: textfsm_templates/nxos_show_ip_igmp_groups_vrf_all.tfsm
+    merge: False
+

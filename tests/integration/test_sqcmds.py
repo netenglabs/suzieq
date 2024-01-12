@@ -288,7 +288,7 @@ def test_sqcmds_regex_hostname(table, datadir):
     cfgfile = create_dummy_config_file(datadir=datadir)
 
     df = get_sqobject(table)(config_file=cfgfile).get(
-        hostname=['~leaf0.*', '~exit0.*'])
+        hostname=['~leaf.*', '~exit.*'])
 
     if table == 'tables':
         if 'junos' in datadir:
