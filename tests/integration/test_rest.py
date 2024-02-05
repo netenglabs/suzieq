@@ -63,6 +63,7 @@ FILTERS = ['',  # for vanilla commands without any filter
            'vni=13&vni=24',
            'mountPoint=/',
            'ifname=swp1',
+           'bond=Port-Channel3',
            'type=ethernet',
            'vlan=13',
            'remoteVtepIp=10.0.0.101',
