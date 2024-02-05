@@ -38,6 +38,7 @@ class InterfacesObj(SqPandasEngine):
         user_query = kwargs.pop('query_str', '')
         vlan = kwargs.pop('vlan', '')
         portmode = kwargs.pop('portmode', '')
+        macaddr: List[str] = kwargs.pop('macaddr', [])
 
         addnl_fields = []
         if vrf:
@@ -50,6 +51,25 @@ class InterfacesObj(SqPandasEngine):
         drop_cols = []
         user_query_cols = self._get_user_query_cols(user_query)
         addnl_fields += [x for x in user_query_cols if x not in addnl_fields]
+
+        if vlan or portmode or ('vlan' in columns and
+                                'portmode' not in addnl_fields+fields):
+            addnl_fields.append('portmode')
+            if 'vlan' not in fields+addnl_fields:
+                addnl_fields.append('vlan')
+
+        if state and 'state' not in addnl_fields+fields:
+            addnl_fields.append('state')
+
+        if macaddr and 'macaddr' not in fields + addnl_fields:
+            addnl_fields.append('macaddr')
+
+        if any(x in addnl_fields + fields
+               for x in ['portmode', 'vlanList', 'vlan']):
+            req_pm_fields = ['namespace', 'hostname', 'state', 'adminState',
+                             'type', 'ipAddressList', 'ip6AddressList']
+            addnl_fields.extend([f for f in req_pm_fields
+                                 if f not in addnl_fields + fields])
 
         if not ifname and iftype and iftype != ["all"]:
             df = super().get(type=iftype, master=master, columns=fields,
@@ -75,9 +95,9 @@ class InterfacesObj(SqPandasEngine):
         if vlan or "vlanList" in fields:
             df = self._add_vlanlist(df, **kwargs)
 
-        if state or portmode:
+        if state or portmode or macaddr:
             query_str = build_query_str([], self.schema, state=state,
-                                        portmode=portmode)
+                                        portmode=portmode, macaddr=macaddr)
 
             df = df.query(query_str).reset_index(drop=True)
 
