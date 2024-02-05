@@ -39,10 +39,14 @@ class InterfacesObj(SqPandasEngine):
         vlan = kwargs.pop('vlan', '')
         portmode = kwargs.pop('portmode', '')
         macaddr: List[str] = kwargs.pop('macaddr', [])
+        bond: List[str] = kwargs.pop('bond', [])
 
         addnl_fields = []
         if vrf:
             master.extend(vrf)
+
+        if bond:
+            master.extend(bond)
 
         fields = self.schema.get_display_fields(columns)
         self._add_active_to_fields(kwargs.get('view', self.iobj.view), fields,
@@ -70,6 +74,10 @@ class InterfacesObj(SqPandasEngine):
                              'type', 'ipAddressList', 'ip6AddressList']
             addnl_fields.extend([f for f in req_pm_fields
                                  if f not in addnl_fields + fields])
+
+        if bond:
+            if 'master' not in fields + addnl_fields:
+                addnl_fields.append('master')
 
         if not ifname and iftype and iftype != ["all"]:
             df = super().get(type=iftype, master=master, columns=fields,
