@@ -233,6 +233,16 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'inventory/summarize?namespace=ospf-ibgp&namespace=ospf-single',
     'inventory/summarize?type=ethernet',
     'inventory/summarize?query_str=hostname%20==%20"leaf01"',
+    'interface/show?macaddr=44:39:39:FF:40:95',
+    'interface/summarize?macaddr=44:39:39:FF:40:95',
+    'interface/assert?macaddr=44:39:39:FF:40:95',
+    'interface/show?macaddr=4439.39FF.4095',
+    'interface/assert?macaddr=4439.39FF.4095',
+    'interface/show?macaddr=4439.39ff.4095',
+    'interface/summarize?macaddr=4439.39ff.4095',
+    'interface/summarize?macaddr=4439.39FF.4095',
+    'interface/assert?macaddr=4439.39ff.4095',
+    'interface/assert?macaddr=44:39:39:ff:00:13&macaddr=44:39:39:ff:00:24',
 ]
 
 GOOD_SERVICE_VERBS = {
