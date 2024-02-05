@@ -22,6 +22,8 @@ from suzieq.cli.sqcmds.command import SqTableCommand
           description="MTU(s), space separated, can use <, >, <=, >=, !")
 @argument("macaddr",
           description="interface macaddr, space separated")
+@argument("bond",
+          description="show portchannel and mbr ports for, space separated")
 class InterfaceCmd(SqTableCommand):
     """Device interface information including MTU, Speed, IP address etc"""
 
@@ -44,7 +46,8 @@ class InterfaceCmd(SqTableCommand):
             mtu: str = '',
             portmode: str = '',
             vlan: str = '',
-            macaddr: str = ''
+            macaddr: str = '',
+            bond: str = ''
     ) -> None:
         super().__init__(
             engine=engine,
@@ -66,7 +69,8 @@ class InterfaceCmd(SqTableCommand):
             'mtu': mtu.split(),
             'vlan': vlan.split(),
             'portmode': portmode.split(),
-            'macaddr': macaddr.split()
+            'macaddr': macaddr.split(),
+            'bond': bond.split()
         }
 
     @command("assert")
