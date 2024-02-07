@@ -17,15 +17,32 @@ show-fields:
 
 apply:
   cumulus:
+    - version: '>= 5.0'
+      merge: False
+      command: 
+        - command: ip -j nexthop show
+          normalize: '[
+            "id: _nhid",
+            "dev: _oif?|",
+            "gateway: _nexthopIp?|",
+            "group/[*]/id: _nhgroup?|[]",
+            "group/[*]/weight: _nhweights?|[]"
+            ]'
+
+        - command: ip route show table all
+          textfsm: textfsm_templates/cumulus_routes_v5.tfsm
+
+    - version: all
+      command: ip route show table all
+      textfsm: textfsm_templates/linux_routes.tfsm
+
+  linux:
     version: all
     command: ip route show table all
     textfsm: textfsm_templates/linux_routes.tfsm
 
-  linux:
-    copy: cumulus
-
   sonic:
-    copy: cumulus
+    copy: linux
 
   eos:
     version: all
