@@ -1,3 +1,5 @@
+from collections import defaultdict
+from datetime import datetime
 import re
 import numpy as np
 
@@ -54,15 +56,58 @@ class RoutesService(Service):
 
         return processed_data
 
+    # pylint: disable=too-many-statements
     def _clean_linux_data(self, processed_data, _):
         """Clean Linux ip route data"""
+        drop_indices: List[int] = []
+        nexthop_dict: Dict[str, Dict] = defaultdict(dict)
 
-        for entry in processed_data:
+        for i, entry in enumerate(processed_data):
+            if nhid := entry.get('_nhid', ""):
+                # We manage those nos such as cumulus v5.0 that implement a
+                # nexthop table separated from the route table, so nos which
+                # for a route has only the reference to the nh entry in the nh
+                # table
+                if nhgroup := entry.get('_nhgroup'):
+                    # if there are multiple next hop we find all necessary ids
+                    # under the nhgroup field
+                    nexthop_dict[nhid] = {
+                        'nhgroup': nhgroup,
+                        'weights': entry.get('_nhweights', [])
+                    }
+                else:
+                    nexthop_dict[nhid] = {
+                        'oifs': entry.get('_oif'),
+                        'nexthopIps': entry.get('_nexthopIp', [])
+                    }
+
+                drop_indices.append(i)
+                continue
             entry["vrf"] = entry["vrf"] or "default"
             entry["metric"] = entry["metric"] or 20
             entry['preference'] = entry['metric']
-            for ele in ["nexthopIps", "oifs"]:
-                entry[ele] = entry[ele] or [""]
+            if nhid := entry.get('nhid'):
+                # if the route table contains the nhid field we take nexthop
+                # info (nexthopIps and oifs) from the nexthop table
+                nh = nexthop_dict[self._parse_int_value("nexthop id", nhid)]
+                oifs = []
+                nexthopIps = []
+                if nhgroup := nh.get('nhgroup'):
+                    weights = nh.get('weights')
+                    entry['weights'] = weights or [1 for _ in nhgroup]
+                    for nhid_group in nhgroup:
+                        sub_nh = nexthop_dict.get(nhid_group, {})
+                        oifs.append(sub_nh.get('oifs'))
+                        nexthopIps.append(sub_nh.get('nexthopIps'))
+
+                else:
+                    oifs.append(nh.get('oifs'))
+                    nexthopIps.append(nh.get('nexthopIps'))
+                entry['oifs'] = oifs
+                entry['nexthopIps'] = nexthopIps
+            else:
+                for ele in ["nexthopIps", "oifs"]:
+                    entry[ele] = entry[ele] or [""]
             entry['hardwareProgrammed'] = 'unknown'
             entry["weights"] = entry["weights"] or [1]
             if entry['prefix'] == 'default':
@@ -85,6 +130,11 @@ class RoutesService(Service):
 
             entry['inHardware'] = True  # Till the offload flag is here
 
+        if drop_indices:
+            processed_data = np.delete(
+                processed_data, drop_indices).tolist()   # type: ignore
+
+        del nexthop_dict
         return processed_data
 
     def _clean_cumulus_data(self, processed_data, raw_data):
