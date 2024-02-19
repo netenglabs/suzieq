@@ -48,6 +48,8 @@ class RoutesService(Service):
                 entry['oifs'] = len(entry['nexthopIps']) * \
                     ['_nexthopVrf:default']
             entry['protocol'] = entry['protocol'].lower()
+            if entry['protocol'] == 'connected':
+                entry['nexthopIps'] = []
             entry['preference'] = int(entry.get('preference', 0))
             entry['metric'] = int(entry.get('metric', 0))
             self._fix_ipvers(entry)
