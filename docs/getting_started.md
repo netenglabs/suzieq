@@ -4,7 +4,7 @@ We want to make it as easy as possible for you to start engaging with SuzieQ. We
 
 ### As a Docker Container
 
-To get started seeing the kind of analysis SuzieQ provides today, we have a demo container that has data in including the image.
+To get started seeing the kind of analysis SuzieQ provides today, we have a demo container that includes both sample data and the image.
 ```
     docker run -it -p 8501:8501 --name suzieq netenglabs/suzieq-demo
     suzieq-cli # for the CLI
