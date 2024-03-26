@@ -674,7 +674,7 @@ class InterfaceService(Service):
 
                 if entry['reason'] == "xcvr not inserted":
                     entry['state'] = 'notConnected'
-                    entry['adminState'] = 'notConnected'
+                    entry['adminState'] = 'down'
 
             if entry.get('reason', '') == 'administratively down':
                 entry['adminState'] = 'down'
