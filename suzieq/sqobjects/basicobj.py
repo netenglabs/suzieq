@@ -223,6 +223,8 @@ class SqObject(SqPlugin):
                 elif isinstance(val, str):
                     kwargs[k] = v(val)
 
+        # This raises TypeError if it fails
+        self._validate_list_args(**kwargs)
         result = self.engine.get(**kwargs, columns=columns)
         if self._is_result_empty(result):
             fields = self._get_empty_cols(columns, 'get', **kwargs)
@@ -245,6 +247,8 @@ class SqObject(SqPlugin):
             raise AttributeError('No analysis engine specified')
 
         self.validate_summarize_input(**kwargs)
+        # This raises TypeError if it fails
+        self._validate_list_args(**kwargs)
 
         result = self.engine.summarize(**kwargs)
         if self._is_result_empty(result):
@@ -284,6 +288,8 @@ class SqObject(SqPlugin):
         '''Assert one or more checks on table'''
         kwargs.pop('ignore_warning', None)
         columns = kwargs.pop('columns', self.columns)
+        # This raises TypeError if it fails
+        self._validate_list_args(**kwargs)
         if self._valid_assert_args:
             result = self._assert_if_supported(**kwargs, columns=columns)
             if self._is_result_empty(result):
@@ -312,6 +318,8 @@ class SqObject(SqPlugin):
             df = pd.DataFrame({'error': [f'{error}']})
             return df
 
+        # This raises TypeError if it fails
+        self._validate_list_args(**kwargs)
         # This raises ValueError if it fails
         table_schema = SchemaForTable(self._table, self.all_schemas)
         if not self._field_exists(table_schema, what):
@@ -573,3 +581,18 @@ class SqObject(SqPlugin):
             pd.DataFrame: empty dataframe
         """
         return pd.DataFrame(columns=columns)
+
+    def _validate_list_args(self, **kwargs):
+        """Method to ensure specified kwargs are lists."""
+        # Specify which arguments should be lists
+        list_args = ['namespace', 'hostname']
+        for arg in list_args:
+            if arg not in kwargs or kwargs[arg] is None:
+                continue
+            if not isinstance(kwargs[arg], list):
+                error_msg = (
+                    f"The argument '{arg}' must be a List of strings, "
+                    f"got '{type(kwargs[arg]).__name__}' instead. current "
+                    f"val: {kwargs[arg]}"
+                )
+                raise TypeError(error_msg)
