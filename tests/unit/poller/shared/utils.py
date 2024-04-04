@@ -89,6 +89,17 @@ def get_src_sample_config(src_type: str) -> Dict:
                 'password': 'plain:password'
             }),
         })
+    elif src_type == 'nautobot':
+        sample_config.update({
+            'token': 'MY-TOKEN',
+            'url': 'http://127.0.0.1:8080',
+            'run_once': True,
+            'auth': StaticLoader({
+                'name': 'static0',
+                'username': 'username',
+                'password': 'plain:password'
+            }),
+        })
 
     return sample_config
 
