@@ -39,6 +39,7 @@ class OspfObj(SqPandasEngine):
 
         ifschema = SchemaForTable('ospfIf', schema=self.all_schemas)
         nbrschema = SchemaForTable('ospfNbr', schema=self.all_schemas)
+        ospfschema = SchemaForTable('ospf', schema=self.all_schemas)
 
         if columns not in [['default'], ['*']]:
             ifkeys = ifschema.key_fields()
@@ -102,6 +103,11 @@ class OspfObj(SqPandasEngine):
         nbr_df = self._get_table_sqobj('ospfNbr') \
                      .get(columns=nbrcols, **kwargs)
         if nbr_df.empty:
+            missing_cols = set(ospfschema.get_display_fields(['default'])) - set(df.columns)
+            for col in missing_cols:
+                df[col] = np.nan
+            df = df.fillna({'peerIP': '-', 'peerHostname': '',
+                        'lastChangeTime': 0, 'numChanges': 0, 'ifState': '', 'adjState': ''})
             return df
 
         merge_cols = [x for x in ['namespace', 'hostname', 'ifname']
