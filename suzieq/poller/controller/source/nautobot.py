@@ -1,16 +1,19 @@
 """Nautobot inventory"""
 
-from pynautobot import api
-
 import asyncio
 import logging
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Dict, List, Optional, Union
 from urllib.parse import urlparse
+
+from pynautobot import api
 
 from suzieq.poller.controller.source.base_source import Source, SourceModel
 from suzieq.poller.controller.inventory_async_plugin import InventoryAsyncPlugin
 from suzieq.shared.utils import get_sensitive_data
 from suzieq.shared.exceptions import InventorySourceError, SensitiveLoadError
+
+# pylint: disable=no-name-in-module
+# pylint: disable=no-self-argument
 
 from pydantic import BaseModel, validator, Field
 
