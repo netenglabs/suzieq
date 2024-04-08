@@ -258,7 +258,9 @@ Credentials are not pulled from netbox, you will need to define an authenticatio
 
 #### Selecting devices from Nautobot
 
-[Nautobot](https://docs.nautobot.com/projects/core/en/stable/) is a Network Source of Truth and automation platform and can be used as a dynamic inventory source for SuzieQ. The integration is provided by [Pynautobot](https://pynautobot.readthedocs.io/en/latest/) which provides support for Nautobot 1.x and 2.x. The inventory collection and filtering mechanisms are provided by pynautobot. If no filters are provided, all devices are retrieved. The pynautobot filters are defined under `device_filters` in the source configuration:
+[Nautobot](https://docs.nautobot.com/projects/core/en/stable/) is a Network Source of Truth and automation platform and can be used as a dynamic inventory source for SuzieQ. The integration is provided by [Pynautobot](https://pynautobot.readthedocs.io/en/latest/) and currently provides support for `Nautobot 2.x`.
+
+The inventory collection and filtering mechanisms are provided by pynautobot. If no filters are provided, all devices are retrieved. The pynautobot filters are defined under `device_filters` in the source configuration:
 
 ```yaml
 sources:
