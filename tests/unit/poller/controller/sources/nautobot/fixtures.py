@@ -20,7 +20,7 @@ EXPECTED_RESULT = {
     }
 }
 
-RESP1 = {
+BASE = {
     "circuits": "http://localhost:8080/api/circuits/",
     "dcim": "http://localhost:8080/api/dcim/",
     "extras": "http://localhost:8080/api/extras/",
@@ -33,7 +33,7 @@ RESP1 = {
     "virtualization": "http://localhost:8080/api/virtualization/"
 }
 
-RESP2 = {'count': 3,
+ALL_DEVICES = {'count': 3,
  'next': None,
  'previous': None,
  'results': [{'id': '9dacbca0-6f98-47f8-adcb-b501a0ff7769',
@@ -103,7 +103,7 @@ RESP2 = {'count': 3,
    'custom_fields': {},
    'parent_bay': None}]}
 
-RESP3 = {'id': '83dbe0a9-cc69-4a71-9d7e-ebe9dc5b85e1',
+DEVICE_1_IP = {'id': '83dbe0a9-cc69-4a71-9d7e-ebe9dc5b85e1',
  'object_type': 'ipam.ipaddress',
  'display': '172.100.100.10/24',
  'url': 'http://localhost:8080/api/ipam/ip-addresses/83dbe0a9-cc69-4a71-9d7e-ebe9dc5b85e1/',
@@ -135,7 +135,7 @@ RESP3 = {'id': '83dbe0a9-cc69-4a71-9d7e-ebe9dc5b85e1',
    'url': 'http://localhost:8080/api/dcim/interfaces/74747faa-8068-4bf9-beac-624873012131/'}],
  'vm_interfaces': []}
 
-RESP4 = {'id': 'e3c17e29-89de-49ef-809e-7540a309548d',
+DEVICE_1_LOCATION = {'id': 'e3c17e29-89de-49ef-809e-7540a309548d',
  'object_type': 'dcim.location',
  'display': 'North America → Site1 = Chicago, IL, CH1-EQ-COLO1',
  'url': 'http://localhost:8080/api/dcim/locations/e3c17e29-89de-49ef-809e-7540a309548d/',
@@ -176,13 +176,16 @@ RESP4 = {'id': 'e3c17e29-89de-49ef-809e-7540a309548d',
  'notes_url': 'http://localhost:8080/api/dcim/locations/e3c17e29-89de-49ef-809e-7540a309548d/notes/',
  'custom_fields': {'remedy_id': None}}
 
-TEST_URLS = {
-    "http://127.0.0.1:8080/api/": RESP1,
-    "http://127.0.0.1:8080/api/dcim/devices/": RESP2,
-    "http://localhost:8080/api/ipam/ip-addresses/83dbe0a9-cc69-4a71-9d7e-ebe9dc5b85e1/": RESP3,
-    "http://localhost:8080/api/dcim/locations/e3c17e29-89de-49ef-809e-7540a309548d/": RESP4,
-    "https://127.0.0.1:8080/api/": RESP1,
-    "https://127.0.0.1:8080/api/dcim/devices/": RESP2,
-    "https://localhost:8080/api/ipam/ip-addresses/83dbe0a9-cc69-4a71-9d7e-ebe9dc5b85e1/": RESP3,
-    "https://localhost:8080/api/dcim/locations/e3c17e29-89de-49ef-809e-7540a309548d/": RESP4,
+TEST1_URLS = {
+    "http://127.0.0.1:8080/api/": BASE,
+    "http://127.0.0.1:8080/api/dcim/devices/": ALL_DEVICES,
+    "http://localhost:8080/api/ipam/ip-addresses/83dbe0a9-cc69-4a71-9d7e-ebe9dc5b85e1/": DEVICE_1_IP,
+    "http://localhost:8080/api/dcim/locations/e3c17e29-89de-49ef-809e-7540a309548d/": DEVICE_1_LOCATION,
+}
+
+TEST2_URLS = {
+    "https://127.0.0.1:8080/api/": BASE,
+    "https://127.0.0.1:8080/api/dcim/devices/": ALL_DEVICES,
+    "http://localhost:8080/api/ipam/ip-addresses/83dbe0a9-cc69-4a71-9d7e-ebe9dc5b85e1/": DEVICE_1_IP,
+    "http://localhost:8080/api/dcim/locations/e3c17e29-89de-49ef-809e-7540a309548d/": DEVICE_1_LOCATION,
 }

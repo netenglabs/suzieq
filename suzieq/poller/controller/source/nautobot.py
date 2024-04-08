@@ -175,7 +175,7 @@ class Nautobot(Source, InventoryAsyncPlugin):
             ipv6 = device.primary_ip6.address if device.primary_ip6 else None
             hostname = device.name
             site_name = device.location.name
-            if self._namespace == "nautobot-location-name":
+            if self._namespace == "group-by-location":
                 namespace = site_name
             else:
                 namespace = self._namespace

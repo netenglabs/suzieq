@@ -2,7 +2,7 @@ import json
 from typing import Dict
 from pprint import pprint
 
-def get_json_response(filename: str):
+def get_json(filename: str):
     with open(filename, "r") as f:
         response_json = json.load(f)
     return response_json
