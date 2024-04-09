@@ -84,30 +84,38 @@ def test_variables_init(monkeypatch):
     """
     ask_password = 'ask_password'
     env_password = 'env_password'
+    ask_username = 'ask_username'
+    env_username = 'env_username'
     plain_passphrase = 'my-pass'
 
     # 'env' and 'plain' values
     init_data = {
         'name': 'n',
+        'username': 'env:SUZIEQ_ENV_USERNAME',
         'key-passphrase': f'plain:{plain_passphrase}',
         'password': 'env:SUZIEQ_ENV_PASSWORD'
     }
     monkeypatch.setenv('SUZIEQ_ENV_PASSWORD', env_password)
+    monkeypatch.setenv('SUZIEQ_ENV_USERNAME', env_username)
     sl = StaticModel(**init_data)
 
     assert sl.key_passphrase == plain_passphrase
     assert sl.password == env_password
+    assert sl.username == env_username
 
     # 'ask' values
     init_data = {
         'name': 'n',
+        'username': 'ask',
         'password': 'ask'
     }
     valid_data = StaticModel(**init_data).dict(by_alias=True)
-    monkeypatch.setattr('getpass.getpass', lambda x: ask_password)
+    mock_get_pass = MockGetPass([ask_username, ask_password])
+    monkeypatch.setattr('getpass.getpass', mock_get_pass)
     sl = StaticLoader(valid_data)
 
     assert sl._data.password == ask_password
+    assert sl._data.username == ask_username
 
     # unknown parameter
     init_data = {
@@ -117,3 +125,40 @@ def test_variables_init(monkeypatch):
     }
     with pytest.raises(ValidationError):
         StaticModel(**init_data)
+
+
+class MockGetPass:
+    """
+   Mocks `getpass.getpass` for testing, cycling through a list of predefined
+   responses.
+
+   Attributes:
+       responses (list): A list of responses to simulate sequential user inputs.
+       call_count (int): Tracks calls to provide the next response in the list.
+   """
+
+    def __init__(self, responses: list):
+        """
+        Initializes the mock with responses and resets call count.
+
+        Args:
+            responses: Simulated user inputs.
+        """
+        self.responses = responses
+        self.call_count = 0
+
+    def __call__(self, prompt=''):
+        """
+        Returns the next response from the list, mimicking user input.
+
+        Args:
+            prompt: Unused, present for compatibility.
+
+        Returns:
+            The next simulated user input.
+        """
+        response = self.responses[self.call_count]
+        self.call_count += 1
+        if self.call_count >= len(self.responses):
+            self.call_count = 0
+        return response
