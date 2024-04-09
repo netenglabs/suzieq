@@ -18,7 +18,7 @@ class StaticModel(CredentialLoaderModel):
     keyfile: Optional[str]
     enable_password: Optional[str] = Field(alias='enable-password')
 
-    @validator('password', 'key_passphrase', 'enable_password')
+    @validator('username', 'password', 'key_passphrase', 'enable_password')
     def validate_sens_field(cls, field):
         """Validate if the sensitive var was passed correctly
         """
@@ -56,6 +56,14 @@ class StaticLoader(CredentialLoader):
                 init_data.pop('enable-password', None)
             init_data['key_passphrase'] = init_data.pop('key-passphrase', None)
         super().init(init_data)
+
+        if self._data.username == 'ask':
+            try:
+                self._data.username = get_sensitive_data(
+                    self._data.username,
+                    f'{self.name} Username to login to device: ')
+            except SensitiveLoadError as e:
+                raise InventorySourceError(f'{self.name} {e}')
 
         if self._data.password == 'ask':
             try:
