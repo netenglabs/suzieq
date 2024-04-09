@@ -8,6 +8,7 @@ import pytest
 import requests_mock
 
 from suzieq.poller.controller.source.nautobot import Nautobot
+from suzieq.shared.exceptions import InventorySourceError
 
 from tests.unit.poller.shared.utils import get_src_sample_config
 
@@ -209,3 +210,29 @@ async def test_valid_config(test_conf, default_config):
         cur_inv = await asyncio.wait_for(src.get_inventory(), 5)
 
     assert cur_inv == test_conf["test_params"]["expected_result"], cur_inv
+
+@pytest.mark.controller_source
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_source_nautobot
+@pytest.mark.asyncio
+async def test_valid_config(default_config):
+    """Tests if the pulled inventory is valid
+
+    Args:
+        test_conf(Dict): test configuration
+    """
+    config = default_config
+    config["device_filters"] = {"foo": "bar"}
+
+    with requests_mock.Mocker() as m:
+        # for endpoint, resp in test_conf["test_params"]["test_urls"].items():
+        m.get("http://127.0.0.1:8080/api/", json=get_json(_RESPONSE_DATA_DIR + "base_response.json"))
+        m.get("http://127.0.0.1:8080/api/dcim/devices/?" + urllib.parse.urlencode(config["device_filters"]), json={'foo': ['Unknown filter field']}, status_code=400, reason="Bad Request")
+
+        with pytest.raises(InventorySourceError) as exc_info:
+            src = Nautobot(config.copy())
+            await asyncio.wait_for(src.run(), 10)
+        assert exc_info.value.args[0] == "nautobot0: error while getting devices: The request failed with code 400 Bad Request: {'foo': ['Unknown filter field']}"
