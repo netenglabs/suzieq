@@ -669,9 +669,12 @@ class InterfaceService(Service):
                 if entry['reason'] == 'none' or not entry['reason']:
                     entry['reason'] = ''
 
-                if entry['reason'] in ["link not connected",
-                                       "xcvr not inserted"]:
+                if entry['reason'] == "link not connected":
                     entry['state'] = 'notConnected'
+
+                if entry['reason'] == "xcvr not inserted":
+                    entry['state'] = 'notConnected'
+                    entry['adminState'] = 'down'
 
             if entry.get('reason', '') == 'administratively down':
                 entry['adminState'] = 'down'
