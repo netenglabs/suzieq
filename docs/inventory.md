@@ -3,8 +3,8 @@
 The inventory file that the poller uses describes a set of sources used to gather the list of devices, credentials to authenticate in the devices, default settings and eventually puts all together defining namespaces. An extensive explanation of each secation is provided on this page.
 
 !!! warning
-Starting with version 0.16.0 the old options `-D` and `-a` and the old inventory format are no longer supported.
-See the section [Migrating to the new format](#migrating-to-new-format).
+    Starting with version 0.16.0 the old options `-D` and `-a`  and the old inventory format are no longer supported.
+    See the section [Migrating to the new format](#migrating-to-new-format).
 
 The new inventory is structured in 4 major pieces, explained in its own section:
 
@@ -17,68 +17,68 @@ Here is an example of an inventory file with a bunch of different options, but n
 
 ```yaml
 sources:
-  - name: netbox-instance-123
-    token: af8717c89ec0ff420c19d89e6c20646ad55dd54e
-    url: http://127.0.0.1:8000
-    tag:
-      - suzieq-demo
-    type: netbox
-    period: 3600
+- name: netbox-instance-123
+  token: af8717c89ec0ff420c19d89e6c20646ad55dd54e
+  url: http://127.0.0.1:8000
+  tag:
+  - suzieq-demo
+  type: netbox
+  period: 3600
 
-  - name: dc-02-suzieq-native
-    hosts:
-      - url: ssh://vagrant@10.0.0.1:22 keyfile=/path/to/private_key
-      - url: https://vagrant@10.0.0.2:22 devtype=eos
+- name: dc-02-suzieq-native
+  hosts:
+  - url: ssh://vagrant@10.0.0.1:22 keyfile=/path/to/private_key
+  - url: https://vagrant@10.0.0.2:22 devtype=eos
 
-  - name: ansible-01
-    type: ansible
-    path: /path/to/ansible/list
+- name: ansible-01
+  type: ansible
+  path: /path/to/ansible/list
 
 devices:
-  - name: devices-without-jump-hosts
-    ignore-known-hosts: true
+- name: devices-without-jump-hosts
+  ignore-known-hosts: true
 
-  - name: devices-with-jump-hosts
-    transport: ssh
-    jump-host: username@127.0.0.1
-    jump-host-key-file: /path/to/jump/key
-    ignore-known-hosts: true
-    port: 22
+- name: devices-with-jump-hosts
+  transport: ssh
+  jump-host: username@127.0.0.1
+  jump-host-key-file: /path/to/jump/key
+  ignore-known-hosts: true
+  port: 22
 
-  - name: devices-using-rest
-    transport: https
-    devtype: eos
+- name: devices-using-rest
+  transport: https
+  devtype: eos
 
 auths:
-  - name: credentials-from-file-0
-    type: cred-file
-    path: /path/to/device/credentials.yaml
+- name: credentials-from-file-0
+  type: cred-file
+  path: /path/to/device/credentials.yaml
 
-  - name: suzieq-user-01
-    username: suzieq
-    password: plain:pass
+- name: suzieq-user-01
+  username: suzieq
+  password: plain:pass
 
-  - name: suzieq-user-02
-    username: suzieq
-    password: env:PASSWORD_ENV_VAR
+- name: suzieq-user-02
+  username: suzieq
+  password: env:PASSWORD_ENV_VAR
 
-  - name: suzieq-user-03
-    username: suzieq
-    password: ask
+- name: suzieq-user-03
+  username: suzieq
+  password: ask
 
-  - name: suzieq-user-04
-    key-passphrase: ask
-    keyfile: path/to/key
+- name: suzieq-user-04
+  key-passphrase: ask
+  keyfile: path/to/key
 
 namespaces:
-  - name: testing
-    source: netbox-instance-123
-    device: devices-with-jump-hosts
-    auth: credentials-from-file-0
+- name: testing
+  source: netbox-instance-123
+  device: devices-with-jump-hosts
+  auth: credentials-from-file-0
 ```
 
 !!! warning
-Some observations on the YAML file above:
+    Some observations on the YAML file above:
 
     - **This is just an example** that covers all the possible combinations, **not an real life inventory**
     - **Do not specify device type unless you're using REST**. SuzieQ automatically determines device type with SSH
@@ -102,7 +102,7 @@ Currently this method is used to specify passwords, passphrases and tokens.
 The device sources currently supported are:
 
 - Host list (the same used with the old option `-D` in SuzieQ 0.15.x or lower)
-- Ansible inventory, specifing a path to a file that has to be the output of `ansible-inventory --list` command
+- Ansible inventory, specifing a path to a file that has to be the output of ```ansible-inventory --list``` command
 - Netbox
 - Nautobot
 
@@ -116,13 +116,14 @@ Whenever a source has many fields in common with another, you don't have to rewr
   token: your-api-token-here
   url: http://127.0.0.1:8000
   tag:
-    - suzieq-demo
+  - suzieq-demo
   period: 3600
 
-- name: netbox-copy # This source will use the same set of parameters of 'netbox-orig'
-  copy: netbox-orig # and only overrides the 'tag' field.
+- name: netbox-copy     # This source will use the same set of parameters of 'netbox-orig'
+  copy: netbox-orig     # and only overrides the 'tag' field.
   tag:
-    - suzieq-copy
+  - suzieq-copy
+
 ```
 
 ### <a name='source-host-list'></a>Host list
@@ -146,7 +147,7 @@ There's a template in the docs directory called `hosts-template.yml`. You can co
 
 ### <a name='source-ansible'></a>Ansible
 
-If you are using Ansible to configure the devices, it is possible to set the output of the `ansible-inventory --list` command as an input source.
+If you are using Ansible to configure the devices, it is possible to set the output of the ```ansible-inventory --list``` command as an input source.
 Once you created a json file containing the result of the command, with:
 
 ```shell
@@ -161,9 +162,9 @@ Now you can set the path of the ansible inventory in the source:
   path: /path/to/ansible.json
 ```
 
-Since Ansible devices cannot really be split up, the device and auth sections apply to **all** the devices in the Ansible inventory file. This is a limitaion of the Ansible source input. We always assume ssh as the transport unless otherwise specified in the device section of the SuzieQ inventory file.
+Since Ansible devices cannot really be split up, the device and auth sections apply to **all** the devices in the Ansible inventory file. This is a limitaion of the Ansible source input. We always assume ssh as the transport unless otherwise specified in the device section of the SuzieQ inventory file. 
 !!! info
-From 0.21.0, with Ansible inventories, the device type and transport are taken from the specification in the device section of the suzieq inventory file. You must specify the transport as rest if you want to use rest as the transport for EOS devices. By default, we assume ssh as the transport. For PANOS also, you must specify the device type and transport. Before version 0.21.0, Ansible inventory assumed REST as the transport for EOS, even if the user specified the transport as SSH in the device section.
+    From 0.21.0, with Ansible inventories, the device type and transport are taken from the specification in the device section of the suzieq inventory file. You must specify the transport as rest if you want to use rest as the transport for EOS devices. By default, we assume ssh as the transport. For PANOS also, you must specify the device type and transport. Before version 0.21.0, Ansible inventory assumed REST as the transport for EOS, even if the user specified the transport as SSH in the device section.
 
 ### <a name='source-netbox'></a>Netbox
 
@@ -175,9 +176,9 @@ The token is considered a [sensitive data](#sensitive-data), so it can be specif
 Since Netbox is a _dynamic source_, the data are periodically pulled, the period can be set to any desired number in seconds (default is 3600).
 
 !!!Info
-Each netbox source contains a parameter called `ssl-verify`.
-This parameter is used to specify whether perform ssl certificate verify or not. By default `ssl-verify` is set to _true_ if the url contains an https host.
-If the user manually sets `ssl-verify: true` with an http netbox server, an error will be notified.
+    Each netbox source contains a parameter called `ssl-verify`.
+    This parameter is used to specify whether perform ssl certificate verify or not. By default `ssl-verify` is set to _true_ if the url contains an https host.
+    If the user manually sets `ssl-verify: true` with an http netbox server, an error will be notified.
 
 Here is an example of the configuration of a netbox type source:
 
@@ -186,10 +187,10 @@ Here is an example of the configuration of a netbox type source:
   type: netbox
   token: your-api-token-here
   url: https://127.0.0.1:8000
-  tag: # if not present, default is "suzieq"
-    - suzieq-demo
-  period: 3600 # How frequently Netbox should be polled
-  ssl-verify: false # Netbox certificate validation will be skipped
+  tag:                # if not present, default is "suzieq"
+  - suzieq-demo
+  period: 3600        # How frequently Netbox should be polled
+  ssl-verify: false   # Netbox certificate validation will be skipped
 ```
 
 #### Selecting devices from Netbox
@@ -204,15 +205,15 @@ A device is polled by SuzieQ if it matches at least one of the defined rules.
   token: your-api-token-here
   url: https://127.0.0.1:8000
   tag:
-    - alpha
-    - bravo, charlie
+  - alpha
+  - bravo, charlie
 ```
 
 For example, the source above tells SuzieQ to select from Netbox all the devices having the `alpha` OR `bravo & charlie` tags.
 
 !!!Warning
-SuzieQ versions older than 0.19 supported one single tag.
-The old syntax, following the pattern `tag: netbox-tag`, is deprecated and it might be removed in the future releases.
+    SuzieQ versions older than 0.19 supported one single tag.
+    The old syntax, following the pattern `tag: netbox-tag`, is deprecated and it might be removed in the future releases.
 
 #### Map Netbox sitenames to namespaces
 
@@ -223,38 +224,39 @@ Here is an example:
 
 ```yaml
 sources:
-  - name: netbox-dc-01
-    type: netbox
-    token: your-api-token-here
-    url: http://127.0.0.1:8000
-    tag:
-      - tag1
-      - tag2, tag3
+- name: netbox-dc-01
+  type: netbox
+  token: your-api-token-here
+  url: http://127.0.0.1:8000
+  tag:
+  - tag1
+  - tag2, tag3
 
-  - name: netbox-dc-02
-    type: netbox
-    token: your-api-token-here
-    url: http://127.0.0.1:9000
-    tag:
-      - suzieq
+- name: netbox-dc-02
+  type: netbox
+  token: your-api-token-here
+  url: http://127.0.0.1:9000
+  tag:
+  - suzieq
 
 auths:
-  - name: auth-st
-    username: user
-    password: my-password
+- name: auth-st
+  username: user
+  password: my-password
 
 namespaces:
-  - name: netbox-sitename # devices namespaces equal to their site names
-    source: netbox-dc-01
-    auth: auth-st
+- name: netbox-sitename # devices namespaces equal to their site names
+  source: netbox-dc-01
+  auth: auth-st
 
-  - name: namespace01 # devices namespaces equal to 'namespace01'
-    source: netbox-dc-02
-    auth: auth-st
+- name: namespace01     # devices namespaces equal to 'namespace01'
+  source: netbox-dc-02
+  auth: auth-st
+
 ```
 
 !!! warning
-Credentials are not pulled from netbox, you will need to define an authentication source under the [auths](#auths) get the nodes' credentials.
+    Credentials are not pulled from netbox, you will need to define an authentication source under the [auths](#auths) get the nodes' credentials.
 
 ### <a name='source-nautobot'></a>Nautobot
 
@@ -331,7 +333,7 @@ Moreover if all the devices inside a namespace run the same NOS, it is possible 
 ```
 
 !!! information
-The fields specified in the `device` section are treated as default values, which are provided if the node does not have one. Fields such as `devtype` or `transport` could be already provided by the source, in this case device will not override them.
+    The fields specified in the `device` section are treated as default values, which are provided if the node does not have one. Fields such as `devtype` or `transport` could be already provided by the source, in this case device will not override them.
 
 ### Limiting commands and authentication attempts
 
@@ -387,19 +389,19 @@ The credential file should look like this:
 ```yaml
 - namespace: testing
   devices:
-    - hostname: leaf01
-      password: my-password
-      username: vagrant
-    - hostname: leaf02
-      keyfile: /path/to/private/key
-      username: vagrant
-    - hostname: leaf03
-      keyfile: /path/to/private/key
-      username: vagrant
-      key-passphrase: my-passphrase
-    - address: 10.0.0.1
-      username: vagrant
-      password: my-password
+  - hostname: leaf01
+    password: my-password
+    username: vagrant
+  - hostname: leaf02
+    keyfile: /path/to/private/key
+    username: vagrant
+  - hostname: leaf03
+    keyfile: /path/to/private/key
+    username: vagrant
+    key-passphrase: my-passphrase
+  - address: 10.0.0.1
+    username: vagrant
+    password: my-password
 ```
 
 ## <a name='namespaces'></a>Namespaces
@@ -409,10 +411,10 @@ For example the following namespace will be defined by the source named `netbox-
 
 ```yaml
 namespaces:
-  - name: example
-    source: netbox-1
-    device: ssh-jump-devs
-    auth: dc-01-credentials
+- name: example
+  source: netbox-1
+  device: ssh-jump-devs
+  auth: dc-01-credentials
 ```
 
 In case you are using the SuzieQ native or ansible source types, `auth` field is optional since the settings can be defined per-device in the source.
@@ -495,21 +497,21 @@ The new inventory format consists of four sections (sources, auths, devices, nam
 Here is how the new format will look like:
 
 !!! important
-Sections [auths](#auths) and [devices](#devices) are optional. See the full documentation to know how to use them.
+    Sections [auths](#auths) and [devices](#devices) are optional. See the full documentation to know how to use them.
 
 ```yaml
 sources:
-  - name: eos-source # namespace is defined below, this is only a name to be used as reference
-    hosts:
-      - url: https://vagrant@192.168.123.252 devtype=eos
-      - url: ssh://vagrant@192.168.123.232  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
-      - url: https://vagrant@192.168.123.164 devtype=eos
-      - url: ssh://192.168.123.70 username=admin password=admin
-      - url: ssh://vagrant@192.168.123.230  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
-      - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
-      - url: https://vagrant@192.168.123.123 password=vagrant
+- name: eos-source # namespace is defined below, this is only a name to be used as reference
+  hosts:
+    - url: https://vagrant@192.168.123.252 devtype=eos
+    - url: ssh://vagrant@192.168.123.232  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/internet/libvirt/private_key
+    - url: https://vagrant@192.168.123.164 devtype=eos
+    - url: ssh://192.168.123.70 username=admin password=admin
+    - url: ssh://vagrant@192.168.123.230  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server101/libvirt/private_key
+    - url: ssh://vagrant@192.168.123.54:2023  keyfile=/home/netenglabs/cloud-native-data-center-networking/topologies/dual-attach/.vagrant/machines/server104/libvirt/private_key
+    - url: https://vagrant@192.168.123.123 password=vagrant
 
 namespaces:
-  - name: eos
-    source: eos-source
+- name: eos
+  source: eos-source
 ```
