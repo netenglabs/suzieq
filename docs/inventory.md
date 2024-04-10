@@ -256,7 +256,7 @@ namespaces:
 !!! warning
 Credentials are not pulled from netbox, you will need to define an authentication source under the [auths](#auths) get the nodes' credentials.
 
-#### Selecting devices from Nautobot
+### <a name='source-nautobot'></a>Nautobot
 
 [Nautobot](https://docs.nautobot.com/projects/core/en/stable/) is a Network Source of Truth and automation platform and can be used as a dynamic inventory source for SuzieQ. The integration is provided by [Pynautobot](https://pynautobot.readthedocs.io/en/latest/) and currently provides support for `Nautobot 2.x`.
 
@@ -298,7 +298,7 @@ namespaces:
     auth: auth-st
 ```
 
-> Nautobot doesn't currently support retrieving device credentials from Nautobot. For now, you must device authentication in SuzieQ.
+> Nautobot doesn't currently support retrieving device credentials from Nautobot. For now, you must configure device authentication in SuzieQ.
 
 ## <a name='devices'></a>Devices
 
