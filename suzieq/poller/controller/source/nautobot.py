@@ -8,7 +8,9 @@ from urllib.parse import urlparse
 from pynautobot import api
 
 from suzieq.poller.controller.source.base_source import Source, SourceModel
-from suzieq.poller.controller.inventory_async_plugin import InventoryAsyncPlugin
+from suzieq.poller.controller.inventory_async_plugin import (
+    InventoryAsyncPlugin,
+)
 from suzieq.shared.utils import get_sensitive_data
 from suzieq.shared.exceptions import InventorySourceError, SensitiveLoadError
 
@@ -43,7 +45,9 @@ class NautobotSourceModel(SourceModel):
     ssl_verify: Optional[bool] = Field(alias="ssl-verify")
     server: Union[str, NautobotServerModel] = Field(alias="url")
     run_once: Optional[bool] = Field(default=False, alias="run_once")
-    device_filters: Optional[Dict] = Field(default=None, alias="device_filters")
+    device_filters: Optional[Dict] = Field(
+        default=None, alias="device_filters"
+    )
 
     @validator("server", pre=True)
     def validate_and_set(cls, url, values):
@@ -59,7 +63,9 @@ class NautobotSourceModel(SourceModel):
             port = url_data.port or _DEFAULT_PORTS.get(protocol)
             if not port:
                 raise ValueError(f"Unable to parse port {url}")
-            server = NautobotServerModel(host=host, port=port, protocol=protocol)
+            server = NautobotServerModel(
+                host=host, port=port, protocol=protocol
+            )
             ssl_verify = values["ssl_verify"]
             if ssl_verify is None:
                 if server.protocol == "http":
@@ -68,7 +74,9 @@ class NautobotSourceModel(SourceModel):
                     ssl_verify = True
             else:
                 if server.protocol == "http" and ssl_verify:
-                    raise ValueError("Cannot use ssl_verify=True with http host")
+                    raise ValueError(
+                        "Cannot use ssl_verify=True with http host"
+                    )
             values["ssl_verify"] = ssl_verify
             return server
         elif isinstance(url, NautobotServerModel):
@@ -88,7 +96,7 @@ class NautobotSourceModel(SourceModel):
 
 
 class Nautobot(Source, InventoryAsyncPlugin):
-    """This class is used to dynamically retrieve the inventory from Nautobot"""
+    """Retrieve the inventory from Nautobot"""
 
     def __init__(self, config_data: dict, validate: bool = True) -> None:
         self._status = "init"
@@ -126,7 +134,8 @@ class Nautobot(Source, InventoryAsyncPlugin):
             headers ([dict]): headers to initialize the session
         """
         url_address = (
-            f"{self._server.protocol}://{self._server.host}:" f"{self._server.port}"
+            f"{self._server.protocol}://{self._server.host}:"
+            f"{self._server.port}"
         )
 
         if not self._session:
@@ -149,7 +158,9 @@ class Nautobot(Source, InventoryAsyncPlugin):
             self._init_session()
         try:
             if self._data.device_filters:
-                devices = self._session.dcim.devices.filter(**self._data.device_filters)
+                devices = self._session.dcim.devices.filter(
+                    **self._data.device_filters
+                )
             else:
                 devices = self._session.dcim.devices.all()
         except Exception as e:
@@ -157,7 +168,9 @@ class Nautobot(Source, InventoryAsyncPlugin):
                 f"{self.name}: error while " f"getting devices: {e}"
             )
 
-        logger.info(f"Nautobot: Retrieved inventory list of {len(devices)} devices")
+        logger.info(
+            f"Nautobot: Retrieved inventory list of {len(devices)} devices"
+        )
         return devices
 
     def parse_inventory(self, inventory_list: list) -> Dict:
@@ -191,7 +204,8 @@ class Nautobot(Source, InventoryAsyncPlugin):
 
             if not address:
                 logger.warning(
-                    f"Skipping {namespace}.{hostname}: doesn't have a management IP"
+                    f"Skipping {namespace}.{hostname}: "
+                    "doesn't have a management IP"
                 )
                 ignored_device_count += 1
                 continue

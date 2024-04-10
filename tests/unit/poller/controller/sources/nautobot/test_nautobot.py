@@ -34,6 +34,10 @@ def default_config() -> Dict:
 
 
 _RESPONSE_DATA_DIR = "tests/unit/poller/controller/sources/nautobot/responses/"
+_BASE_URL = "https://127.0.0.1:8080/api/"
+_DEVICES_URL = "https://127.0.0.1:8080/api/dcim/devices/"
+_IP_ADDRESSES_URL = "https://127.0.0.1:8080/api/ipam/ip-addresses/"
+_LOCATIONS_URL = "https://127.0.0.1:8080/api/dcim/locations/"
 
 _TEST_CONFIGS = [
     {
@@ -44,24 +48,26 @@ _TEST_CONFIGS = [
         },
         "test_params": {
             "test_urls": {
-                "https://127.0.0.1:8080/api/": get_json(
-                    _RESPONSE_DATA_DIR + "base_response.json"
-                ),
-                "https://127.0.0.1:8080/api/dcim/devices/": get_json(
+                _BASE_URL: get_json(_RESPONSE_DATA_DIR + "base_response.json"),
+                _DEVICES_URL: get_json(
                     _RESPONSE_DATA_DIR + "all-devices.json"
                 ),
                 # ang01-edge-01
-                "https://127.0.0.1:8080/api/ipam/ip-addresses/fe06d6c1-b233-4499-b5e9-f36af5a72dc3/": get_json(
+                _IP_ADDRESSES_URL
+                + "fe06d6c1-b233-4499-b5e9-f36af5a72dc3/": get_json(
                     _RESPONSE_DATA_DIR + "ang01-edge-01_ip.json"
                 ),
-                "https://127.0.0.1:8080/api/dcim/locations/279b30b2-7aee-45be-8086-9d151ce22799/": get_json(
+                _LOCATIONS_URL
+                + "279b30b2-7aee-45be-8086-9d151ce22799/": get_json(
                     _RESPONSE_DATA_DIR + "ang01-edge-01_location.json"
                 ),
                 # azd01-leaf-07
-                "https://127.0.0.1:8080/api/ipam/ip-addresses/94f6cbb7-2897-4b9e-91ef-573f9c0b44d8/": get_json(
+                _IP_ADDRESSES_URL
+                + "94f6cbb7-2897-4b9e-91ef-573f9c0b44d8/": get_json(
                     _RESPONSE_DATA_DIR + "azd01-leaf-07_ip.json"
                 ),
-                "https://127.0.0.1:8080/api/dcim/locations/f6aa82a1-c61a-4b3e-8f4d-03e09e32feb6/": get_json(
+                _LOCATIONS_URL
+                + "f6aa82a1-c61a-4b3e-8f4d-03e09e32feb6/": get_json(
                     _RESPONSE_DATA_DIR + "azd01-leaf-07_location.json"
                 ),
             },
@@ -78,24 +84,26 @@ _TEST_CONFIGS = [
         },
         "test_params": {
             "test_urls": {
-                "https://127.0.0.1:8080/api/": get_json(
-                    _RESPONSE_DATA_DIR + "base_response.json"
-                ),
-                "https://127.0.0.1:8080/api/dcim/devices/": get_json(
+                _BASE_URL: get_json(_RESPONSE_DATA_DIR + "base_response.json"),
+                _DEVICES_URL: get_json(
                     _RESPONSE_DATA_DIR + "all-devices.json"
                 ),
                 # ang01-edge-01
-                "https://127.0.0.1:8080/api/ipam/ip-addresses/fe06d6c1-b233-4499-b5e9-f36af5a72dc3/": get_json(
+                _IP_ADDRESSES_URL
+                + "fe06d6c1-b233-4499-b5e9-f36af5a72dc3/": get_json(
                     _RESPONSE_DATA_DIR + "ang01-edge-01_ip.json"
                 ),
-                "https://127.0.0.1:8080/api/dcim/locations/279b30b2-7aee-45be-8086-9d151ce22799/": get_json(
+                _LOCATIONS_URL
+                + "279b30b2-7aee-45be-8086-9d151ce22799/": get_json(
                     _RESPONSE_DATA_DIR + "ang01-edge-01_location.json"
                 ),
                 # azd01-leaf-07
-                "https://127.0.0.1:8080/api/ipam/ip-addresses/94f6cbb7-2897-4b9e-91ef-573f9c0b44d8/": get_json(
+                _IP_ADDRESSES_URL
+                + "94f6cbb7-2897-4b9e-91ef-573f9c0b44d8/": get_json(
                     _RESPONSE_DATA_DIR + "azd01-leaf-07_ip.json"
                 ),
-                "https://127.0.0.1:8080/api/dcim/locations/f6aa82a1-c61a-4b3e-8f4d-03e09e32feb6/": get_json(
+                _LOCATIONS_URL
+                + "f6aa82a1-c61a-4b3e-8f4d-03e09e32feb6/": get_json(
                     _RESPONSE_DATA_DIR + "azd01-leaf-07_location.json"
                 ),
             },
@@ -113,17 +121,18 @@ _TEST_CONFIGS = [
         },
         "test_params": {
             "test_urls": {
-                "https://127.0.0.1:8080/api/": get_json(
-                    _RESPONSE_DATA_DIR + "base_response.json"
-                ),
-                "https://127.0.0.1:8080/api/dcim/devices/?"
+                _BASE_URL: get_json(_RESPONSE_DATA_DIR + "base_response.json"),
+                _DEVICES_URL
+                + "?"
                 + urllib.parse.urlencode({"name": "ang01-edge-01"}): get_json(
                     _RESPONSE_DATA_DIR + "ang01-edge-01_device.json"
                 ),
-                "https://127.0.0.1:8080/api/ipam/ip-addresses/fe06d6c1-b233-4499-b5e9-f36af5a72dc3/": get_json(
+                _IP_ADDRESSES_URL
+                + "fe06d6c1-b233-4499-b5e9-f36af5a72dc3/": get_json(
                     _RESPONSE_DATA_DIR + "ang01-edge-01_ip.json"
                 ),
-                "https://127.0.0.1:8080/api/dcim/locations/279b30b2-7aee-45be-8086-9d151ce22799/": get_json(
+                _LOCATIONS_URL
+                + "279b30b2-7aee-45be-8086-9d151ce22799/": get_json(
                     _RESPONSE_DATA_DIR + "ang01-edge-01_location.json"
                 ),
             },
@@ -141,17 +150,18 @@ _TEST_CONFIGS = [
         },
         "test_params": {
             "test_urls": {
-                "https://127.0.0.1:8080/api/": get_json(
-                    _RESPONSE_DATA_DIR + "base_response.json"
-                ),
-                "https://127.0.0.1:8080/api/dcim/devices/?"
+                _BASE_URL: get_json(_RESPONSE_DATA_DIR + "base_response.json"),
+                _DEVICES_URL
+                + "?"
                 + urllib.parse.urlencode({"location": "AZD01"}): get_json(
                     _RESPONSE_DATA_DIR + "azd01-leaf-07_device.json"
                 ),
-                "https://127.0.0.1:8080/api/ipam/ip-addresses/94f6cbb7-2897-4b9e-91ef-573f9c0b44d8/": get_json(
+                _IP_ADDRESSES_URL
+                + "94f6cbb7-2897-4b9e-91ef-573f9c0b44d8/": get_json(
                     _RESPONSE_DATA_DIR + "azd01-leaf-07_ip.json"
                 ),
-                "https://127.0.0.1:8080/api/dcim/locations/f6aa82a1-c61a-4b3e-8f4d-03e09e32feb6/": get_json(
+                _LOCATIONS_URL
+                + "f6aa82a1-c61a-4b3e-8f4d-03e09e32feb6/": get_json(
                     _RESPONSE_DATA_DIR + "azd01-leaf-07_location.json"
                 ),
             },
@@ -193,7 +203,9 @@ def update_config(server_conf: Dict, config: Dict) -> Dict:
 @pytest.mark.controller_source_nautobot
 @pytest.mark.asyncio
 @pytest.mark.parametrize("test_conf", _TEST_CONFIGS)
-async def test_valid_config(test_conf, default_config):
+async def test_valid_config(
+    test_conf, default_config
+):  # pylint: disable=redefined-outer-name
     """Tests if the pulled inventory is valid
 
     Args:
@@ -219,7 +231,9 @@ async def test_valid_config(test_conf, default_config):
 @pytest.mark.controller_unit_tests
 @pytest.mark.controller_source_nautobot
 @pytest.mark.asyncio
-async def test_invalid_filters(default_config):
+async def test_invalid_filters(
+    default_config,
+):  # pylint: disable=redefined-outer-name
     """Tests for invalid filter parameters.
 
     Args:
@@ -245,7 +259,8 @@ async def test_invalid_filters(default_config):
         with pytest.raises(InventorySourceError) as exc_info:
             src = Nautobot(config.copy())
             await asyncio.wait_for(src.run(), 10)
-        assert (
-            exc_info.value.args[0]
-            == "nautobot0: error while getting devices: The request failed with code 400 Bad Request: {'foo': ['Unknown filter field']}"
+        assert exc_info.value.args[0] == (
+            "nautobot0: error while getting devices: "
+            "The request failed with code 400 Bad Request: "
+            "{'foo': ['Unknown filter field']}"
         )
