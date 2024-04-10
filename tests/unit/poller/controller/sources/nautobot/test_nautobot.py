@@ -146,16 +146,16 @@ _TEST_CONFIGS = [
             "namespace": "nautobot-ns",
             "use_ssl": True,
             "port": 8080,
-            "device_filters": {"location": "AZD01"},
+            "device_filters": {"location": "AZD01", "name": "azd01-leaf-07"},
         },
         "test_params": {
             "test_urls": {
                 _BASE_URL: get_json(_RESPONSE_DATA_DIR + "base_response.json"),
                 _DEVICES_URL
                 + "?"
-                + urllib.parse.urlencode({"location": "AZD01"}): get_json(
-                    _RESPONSE_DATA_DIR + "azd01-leaf-07_device.json"
-                ),
+                + urllib.parse.urlencode(
+                    {"location": "AZD01", "name": "azd01-leaf-07"}
+                ): get_json(_RESPONSE_DATA_DIR + "azd01-leaf-07_device.json"),
                 _IP_ADDRESSES_URL
                 + "94f6cbb7-2897-4b9e-91ef-573f9c0b44d8/": get_json(
                     _RESPONSE_DATA_DIR + "azd01-leaf-07_ip.json"
