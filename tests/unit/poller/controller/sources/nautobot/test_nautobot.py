@@ -219,7 +219,7 @@ async def test_valid_config(test_conf, default_config):
 @pytest.mark.controller_unit_tests
 @pytest.mark.controller_source_nautobot
 @pytest.mark.asyncio
-async def test_valid_config(default_config):
+async def test_invalid_filters(default_config):
     """Tests for invalid filter parameters.
 
     Args:
