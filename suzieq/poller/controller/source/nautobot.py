@@ -191,7 +191,7 @@ class Nautobot(Source, InventoryAsyncPlugin):
 
             if not address:
                 logger.warning(
-                    f"Skipping {namespace}.{hostname}: doesn't have a " "management IP"
+                    f"Skipping {namespace}.{hostname}: doesn't have a management IP"
                 )
                 ignored_device_count += 1
                 continue
