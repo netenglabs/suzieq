@@ -104,6 +104,7 @@ The device sources currently supported are:
 - Host list (the same used with the old option `-D` in SuzieQ 0.15.x or lower)
 - Ansible inventory, specifing a path to a file that has to be the output of ```ansible-inventory --list``` command
 - Netbox
+- Nautobot
 
 Each source must have a name so that it can be referred to in the `namespace` section.
 
@@ -256,6 +257,50 @@ namespaces:
 
 !!! warning
     Credentials are not pulled from netbox, you will need to define an authentication source under the [auths](#auths) get the nodes' credentials.
+
+### <a name='source-nautobot'></a>Nautobot
+
+[Nautobot](https://docs.nautobot.com/projects/core/en/stable/) is a Network Source of Truth and automation platform and can be used as a dynamic inventory source for SuzieQ. The integration is provided by [Pynautobot](https://pynautobot.readthedocs.io/en/latest/) and currently provides support for `Nautobot 2.x`.
+
+The inventory collection and filtering mechanisms are provided by pynautobot. If no filters are provided, all devices are retrieved. The pynautobot filters are defined under `device_filters` in the source configuration:
+
+```yaml
+sources:
+  - name: nautobot-instance
+    token: 0123456789abcdef0123456789abcdef01234567
+    url: http://localhost:8080
+    ssl-verify: false
+    type: nautobot
+    period: 3600
+    device_filters: # pynautobot filters
+      location: "Athens, GA"
+      role: "Spine"
+```
+
+> See [pynautobot filtering](https://pynautobot.readthedocs.io/en/latest/advanced/read.html) for more filter examples.
+
+To group devices based on Nautobot Location, use `group-by-location` as the namespace name:
+
+```yaml
+sources:
+  - name: nautobot-instance
+    token: 0123456789abcdef0123456789abcdef01234567
+    url: http://localhost:8080
+    type: nautobot
+    period: 3600
+
+auths:
+  - name: auth-st
+    username: admin
+    password: admin
+
+namespaces:
+  - name: group-by-location # devices namespaces equal to their location names
+    source: nautobot-instance
+    auth: auth-st
+```
+
+> Nautobot doesn't currently support retrieving device credentials from Nautobot. For now, you must configure device authentication in SuzieQ.
 
 ## <a name='devices'></a>Devices
 
