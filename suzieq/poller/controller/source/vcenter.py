@@ -8,10 +8,8 @@ retrieve the list of VMs.
 
 import asyncio
 import logging
-from requests.auth import HTTPBasicAuth
-from requests.exceptions import RequestException
-from typing import Any, Dict, List, Optional, Tuple, Union
-from urllib.parse import urljoin, urlparse
+from typing import Dict, List, Optional, Union
+from urllib.parse import urlparse
 from pyVim.connect import SmartConnect, Disconnect
 from pyVmomi import vim, vmodl
 import ssl
@@ -84,6 +82,7 @@ class VcenterSourceModel(SourceModel):
         except SensitiveLoadError as e:
             raise ValueError(e)
 
+
 class Vcenter(Source, InventoryAsyncPlugin):
     def __init__(self, config_data: dict, validate: bool = True) -> None:
         self._status = 'init'
@@ -109,14 +108,17 @@ class Vcenter(Source, InventoryAsyncPlugin):
             )
         self._server = self._data.server
         if not self._auth:
-            raise InventorySourceError(f"{self.name} Vcenter must have an "
-                                       "'auth' set in the 'namespaces' section"
-                                       )
+            raise InventorySourceError(
+                f"{self.name} Vcenter must have an "
+                "'auth' set in the 'namespaces' section")
 
     def _init_session(self):
         """Initialize the session property"""
         context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
-        context.verify_mode = ssl.CERT_NONE if not self._data.ssl_verify else ssl.CERT_REQUIRED
+        context.verify_mode = ssl.CERT_REQUIRED
+        if not self._data.ssl_verify:
+            context.verify_mode = ssl.CERT_NONE
+
         try:
             self._session = SmartConnect(
                 host=self._server.host,
@@ -127,25 +129,31 @@ class Vcenter(Source, InventoryAsyncPlugin):
             )
         except Exception as e:
             self._session = None
-            raise InventorySourceError(f"Failed to connect to VCenter: {str(e)}")
+            raise InventorySourceError(
+                f"Failed to connect to VCenter: {str(e)}")
 
     def _get_custom_keys(self, content, attribute_names):
         """Retrieve custom attribute keys based on their names."""
-        all_custom_fields = {field.name: field.key for field in content.customFieldsManager.field}
-        return [all_custom_fields[name] for name in attribute_names if name in all_custom_fields]
+        all_custom_fields = {field.name: field.key
+                             for field in content.customFieldsManager.field}
+        return [
+            all_custom_fields[name]
+            for name in attribute_names
+            if name in all_custom_fields
+        ]
 
     def _create_filter_spec(self, view):
-        """Create and return a FilterSpec based on provided view and attribute keys."""
+        """Return a FilterSpec based on provided view and attribute keys."""
         traversal_spec = vmodl.query.PropertyCollector.TraversalSpec(
-            name='traverseEntities',
-            path='view',
-            skip=False,
+            name='traverseEntities', path='view', skip=False,
             type=vim.view.ContainerView,
-            selectSet=[vmodl.query.PropertyCollector.SelectionSpec(name='traverseEntities')]
-        )
-        prop_set = vmodl.query.PropertyCollector.PropertySpec(all=False, type=vim.VirtualMachine)
+            selectSet=[vmodl.query.PropertyCollector.SelectionSpec(
+                name='traverseEntities')])
+        prop_set = vmodl.query.PropertyCollector.PropertySpec(
+            all=False, type=vim.VirtualMachine)
         prop_set.pathSet = ['name', 'guest.ipAddress', 'customValue']
-        obj_spec = vmodl.query.PropertyCollector.ObjectSpec(obj=view, selectSet=[traversal_spec])
+        obj_spec = vmodl.query.PropertyCollector.ObjectSpec(
+            obj=view, selectSet=[traversal_spec])
         filter_spec = vmodl.query.PropertyCollector.FilterSpec()
         filter_spec.objectSet = [obj_spec]
         filter_spec.propSet = [prop_set]
@@ -153,21 +161,24 @@ class Vcenter(Source, InventoryAsyncPlugin):
 
     async def get_inventory_list(self) -> List:
         """
-        Retrieve VMs that have any of a list of specified custom attribute names using the Property Collector.
+        Retrieve VMs that have any specified custom attribute names.
 
-        This method uses vSphere's Property Collector to fetch only properties that are required.
-        This is a lot faster than fetching the entire inventory and filtering on attributes.
+        This method uses vSphere's Property Collector to fetch only
+        properties that are required. This is a lot faster than
+        fetching the entire inventory and filtering on attributes.
         """
         if not self._session:
             self._init_session()
 
         content = self._session.RetrieveContent()
-        view = content.viewManager.CreateContainerView(content.rootFolder, [vim.VirtualMachine], True)
+        view = content.viewManager.CreateContainerView(
+            content.rootFolder, [vim.VirtualMachine], True)
         attribute_keys = self._get_custom_keys(content, self._data.attributes)
 
         filter_spec = self._create_filter_spec(view)
         retrieve_options = vmodl.query.PropertyCollector.RetrieveOptions()
-        result = content.propertyCollector.RetrievePropertiesEx([filter_spec], retrieve_options)
+        result = content.propertyCollector.RetrievePropertiesEx(
+            [filter_spec], retrieve_options)
         vms_with_ip = {}
         while result:
             for obj in result.objects:
@@ -180,19 +191,22 @@ class Vcenter(Source, InventoryAsyncPlugin):
                     elif prop.name == 'guest.ipAddress' and prop.val:
                         vm_ip = prop.val
                     elif prop.name == 'customValue':
-                        has_custom_attr = any(cv.key in attribute_keys for cv in prop.val)
+                        has_custom_attr = any(
+                            cv.key in attribute_keys for cv in prop.val)
                 if has_custom_attr and vm_ip:
                     vms_with_ip[vm_name] = vm_ip
 
             if hasattr(result, 'token') and result.token:
-                result = content.propertyCollector.ContinueRetrievePropertiesEx(token=result.token)
+                property_collector = content.propertyCollector
+                result = property_collector.ContinueRetrievePropertiesEx(
+                    token=result.token)
             else:
                 break
 
         view.Destroy()
-        logger.info(f'Vcenter: Retrieved {len(vms_with_ip)} VMs with IPs that have any of the specified attribute names')
+        logger.info(
+            f'Vcenter: Retrieved {len(vms_with_ip)} VMs with IPs')
         return vms_with_ip
-
 
     def parse_inventory(self, inventory_list: list) -> Dict:
         inventory = {}
@@ -203,7 +217,8 @@ class Vcenter(Source, InventoryAsyncPlugin):
                 'namespace': namespace,
                 'hostname': name,
             }
-        logger.info(f'Vcenter: Acting on inventory of {len(inventory)} devices')
+        logger.info(
+            f'Vcenter: Acting on inventory of {len(inventory)} devices')
         return inventory
 
     async def _execute(self):
