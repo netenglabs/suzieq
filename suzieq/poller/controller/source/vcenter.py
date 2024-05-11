@@ -10,9 +10,10 @@ import asyncio
 import logging
 from typing import Dict, List, Optional, Union
 from urllib.parse import urlparse
-from pyVim.connect import SmartConnect, Disconnect
-from pyVmomi import vim, vmodl
 import ssl
+from pyVim.connect import Disconnect, SmartConnect
+from pyVmomi import vim, vmodl
+
 
 from pydantic import BaseModel, validator, Field
 
@@ -84,6 +85,9 @@ class VcenterSourceModel(SourceModel):
 
 
 class Vcenter(Source, InventoryAsyncPlugin):
+    """This class is used to dynamically retrieve the inventory
+    from Vcenter
+    """
     def __init__(self, config_data: dict, validate: bool = True) -> None:
         self._status = 'init'
         self._server: VcenterServerModel = None
@@ -208,7 +212,15 @@ class Vcenter(Source, InventoryAsyncPlugin):
             f'Vcenter: Retrieved {len(vms_with_ip)} VMs with IPs')
         return vms_with_ip
 
-    def parse_inventory(self, inventory_list: list) -> Dict:
+    def parse_inventory(self, inventory_list: dict) -> Dict:
+        """parse the raw inventory collected from the server and generates
+           a new inventory with only the required information.
+
+        Args:
+            raw_inventory: raw inventory received from vcenter.
+
+        Returns: A dict containing the inventory.
+        """
         inventory = {}
         for name, ip in inventory_list.items():
             namespace = self._namespace
