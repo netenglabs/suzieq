@@ -233,6 +233,20 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'inventory/summarize?namespace=ospf-ibgp&namespace=ospf-single',
     'inventory/summarize?type=ethernet',
     'inventory/summarize?query_str=hostname%20==%20"leaf01"',
+    'mroute/show?hostname=leaf01',
+    'mroute/show?hostname=leaf01',
+    'mroute/show?namespace=ospf-ibgp',
+    'mroute/show?hostname=leaf01&hostname=spine01',
+    'mroute/show?namespace=ospf-ibgp&namespace=ospf-single',
+    'mroute/show?type=ethernet',
+    'mroute/show?query_str=hostname%20==%20"leaf01"',
+    'mroute/summarize?hostname=leaf01',
+    'mroute/summarize?namespace=ospf-ibgp',
+    'mroute/summarize?hostname=leaf01&hostname=spine01',
+    'mroute/summarize?namespace=ospf-ibgp&namespace=ospf-single',
+    'mroute/summarize?type=ethernet',
+    'mroute/summarize?query_str=hostname%20==%20"leaf01"',
+    
 ]
 
 GOOD_SERVICE_VERBS = {
