@@ -1072,8 +1072,8 @@ class Node:
                     for item in use:
                         if item.get('version', '') != "all":
                             os_version = item['version']
-                            opdict = {'>': operator.gt, '<': operator.lt,
-                                      '>=': operator.ge, '<=': operator.le,
+                            opdict = {'>=': operator.ge, '<=': operator.le,
+                                      '>': operator.gt, '<': operator.lt,
                                       '=': operator.eq, '!=': operator.ne}
                             op = operator.eq
 
@@ -1679,7 +1679,6 @@ class IosXENode(Node):
 
     async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by executing certain cmds"""
-        self.prompt = self.IOS_DEFAULT_PROMPT
         await self._exec_cmd(self._parse_init_dev_data,
                              ["show version"], None, 'text',
                              reconnect=reconnect)
@@ -1689,6 +1688,7 @@ class IosXENode(Node):
         enough as we need to start an interactive session for XE.
         """
         await super()._ssh_connect()
+        self.prompt = self.IOS_DEFAULT_PROMPT
 
         if self.is_connected and not self._stdin:
             self.logger.info(
