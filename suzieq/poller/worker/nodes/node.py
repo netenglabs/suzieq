@@ -1072,8 +1072,8 @@ class Node:
                     for item in use:
                         if item.get('version', '') != "all":
                             os_version = item['version']
-                            opdict = {'>': operator.gt, '<': operator.lt,
-                                      '>=': operator.ge, '<=': operator.le,
+                            opdict = {'>=': operator.ge, '<=': operator.le,
+                                      '>': operator.gt, '<': operator.lt,
                                       '=': operator.eq, '!=': operator.ne}
                             op = operator.eq
 
