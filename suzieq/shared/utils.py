@@ -15,7 +15,7 @@ from itertools import groupby
 from logging.handlers import RotatingFileHandler
 from os import getenv
 from time import time
-from typing import Any, Dict, List, Optional, Tuple, Union
+from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 import psutil
