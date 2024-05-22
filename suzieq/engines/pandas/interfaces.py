@@ -27,6 +27,7 @@ class InterfacesObj(SqPandasEngine):
         '''Table name'''
         return 'interfaces'
 
+    # pylint: disable=too-many-statements
     def get(self, **kwargs):
         """Handling state outside of regular filters"""
         state = kwargs.pop('state', '')
@@ -756,7 +757,7 @@ class InterfacesObj(SqPandasEngine):
         return df.drop(columns=['portmode_y', 'vlan_y'],
                        errors='ignore')
 
-    def _add_vlanlist(self, df: pd.DataFrame, **kwargs) -> pd.DataFrame():
+    def _add_vlanlist(self, df: pd.DataFrame, **kwargs) -> pd.DataFrame:
         """Add list of active, unpruned VLANs on trunked ports
 
         :param df[pd.Dataframe]: The dataframe to add vlanList to
