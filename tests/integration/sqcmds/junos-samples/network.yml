@@ -16,7 +16,12 @@ tests:
     "02:05:86:71:ad:07", "ifname": "xe-0/0/1", "bondMembers": "", "type": "routed",
     "l2miss": false}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
     "ipAddress": "10.0.0.11", "vlan": 0, "macaddr": "00:00:00:00:00:00", "ifname":
-    "lo0.0", "bondMembers": "", "type": "interface", "l2miss": false}]'
+    "xe-0/0/0.0", "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "default", "ipAddress": "10.0.0.11", "vlan":
+    0, "macaddr": "00:00:00:00:00:00", "ifname": "lo0.0", "bondMembers": "", "type":
+    "interface", "l2miss": false}, {"namespace": "junos", "hostname": "leaf01", "vrf":
+    "default", "ipAddress": "10.0.0.11", "vlan": 0, "macaddr": "00:00:00:00:00:00",
+    "ifname": "xe-0/0/1.0", "bondMembers": "", "type": "interface", "l2miss": false}]'
 - command: network find --address="169.254.127.0" --format=json --namespace=junos
   data-directory: tests/data/parquet
   marks: network find junos
@@ -39,7 +44,12 @@ tests:
     "02:05:86:71:74:07", "ifname": "xe-0/0/1", "bondMembers": "", "type": "routed",
     "l2miss": false}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
     "ipAddress": "10.0.0.31", "vlan": 0, "macaddr": "00:00:00:00:00:00", "ifname":
-    "lo0.0", "bondMembers": "", "type": "interface", "l2miss": false}]'
+    "lo0.0", "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "default", "ipAddress": "10.0.0.31", "vlan":
+    0, "macaddr": "00:00:00:00:00:00", "ifname": "xe-0/0/1.0", "bondMembers": "",
+    "type": "interface", "l2miss": false}, {"namespace": "junos", "hostname": "exit01",
+    "vrf": "default", "ipAddress": "10.0.0.31", "vlan": 0, "macaddr": "00:00:00:00:00:00",
+    "ifname": "xe-0/0/0.0", "bondMembers": "", "type": "interface", "l2miss": false}]'
 - command: network find --address="10.0.0.112" --format=json --namespace=junos
   data-directory: tests/data/parquet
   marks: network find junos

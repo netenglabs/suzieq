@@ -3,37 +3,37 @@ tests:
 - command: network find --address="172.16.1.101" --format=json --namespace=eos
   data-directory: tests/data/parquet
   marks: network find eos
-  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+  output: '[{"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": 10, "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
     "bondMembers": "Ethernet3", "type": "bridged", "l2miss": false}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
     10, "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
     "Ethernet3", "type": "bridged", "l2miss": false}]'
 - command: network find --address="66:49:0d:d4:d8:63" --format=json --namespace=eos
   data-directory: tests/data/parquet
   marks: network find eos
-  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+  output: '[{"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": 10, "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
     "bondMembers": "Ethernet3", "type": "bridged", "l2miss": false}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
     10, "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
     "Ethernet3", "type": "bridged", "l2miss": false}]'
 - command: network find --address="6649.0dd4.d863" --format=json --namespace=eos
   data-directory: tests/data/parquet
   marks: network find  eos
-  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+  output: '[{"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": 10, "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
     "bondMembers": "Ethernet3", "type": "bridged", "l2miss": false}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
     10, "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
     "Ethernet3", "type": "bridged", "l2miss": false}]'
 - command: network find --address="66:49:0d:D4:D8:63" --format=json --namespace=eos
   data-directory: tests/data/parquet
   marks: network find eos
-  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+  output: '[{"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": 10, "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3",
     "bondMembers": "Ethernet3", "type": "bridged", "l2miss": false}, {"namespace":
-    "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
     10, "macaddr": "66:49:0d:d4:d8:63", "ifname": "Port-Channel3", "bondMembers":
     "Ethernet3", "type": "bridged", "l2miss": false}]'
 - command: network find --address="10.0.0.11" --format=json --namespace=eos
@@ -63,17 +63,17 @@ tests:
   data-directory: tests/data/parquet
   marks: network find eos
   output: '[{"namespace": "eos", "hostname": "spine01", "vrf": "default", "ipAddress":
-    "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:ba:d2:34", "ifname": "Ethernet3",
+    "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:ba:d2:34", "ifname": "Ethernet5",
     "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace": "eos", "hostname":
     "spine01", "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:ba:d2:34",
-    "ifname": "Ethernet2", "bondMembers": "", "type": "routed", "l2miss": false},
-    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21",
-    "vlan": 0, "macaddr": "44:38:39:ba:d2:34", "ifname": "Ethernet5", "bondMembers":
-    "", "type": "routed", "l2miss": false}, {"namespace": "eos", "hostname": "spine01",
-    "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:ba:d2:34",
     "ifname": "Ethernet6", "bondMembers": "", "type": "routed", "l2miss": false},
     {"namespace": "eos", "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21",
     "vlan": 0, "macaddr": "44:38:39:ba:d2:34", "ifname": "Ethernet1", "bondMembers":
+    "", "type": "routed", "l2miss": false}, {"namespace": "eos", "hostname": "spine01",
+    "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:ba:d2:34",
+    "ifname": "Ethernet2", "bondMembers": "", "type": "routed", "l2miss": false},
+    {"namespace": "eos", "hostname": "spine01", "vrf": "default", "ipAddress": "10.0.0.21",
+    "vlan": 0, "macaddr": "44:38:39:ba:d2:34", "ifname": "Ethernet3", "bondMembers":
     "", "type": "routed", "l2miss": false}, {"namespace": "eos", "hostname": "spine01",
     "vrf": "default", "ipAddress": "10.0.0.21", "vlan": 0, "macaddr": "44:38:39:ba:d2:34",
     "ifname": "Ethernet4", "bondMembers": "", "type": "routed", "l2miss": false},
@@ -104,25 +104,25 @@ tests:
 - command: network find --address='00:00:00:11:12:10' --format=json --namespace=eos
   data-directory: tests/data/parquet
   marks: network find eos
-  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+  output: '[{"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.254", "vlan": 10, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan10",
     "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace": "eos",
-    "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan":
+    "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan":
     30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "eos", "hostname": "leaf04", "vrf":
-    "evpn-vrf", "ipAddress": "172.16.3.254", "vlan": 30, "macaddr": "00:00:00:11:12:10",
-    "ifname": "Vlan30", "bondMembers": "", "type": "interface", "l2miss": false},
-    {"namespace": "eos", "hostname": "leaf04", "vrf": "evpn-vrf", "ipAddress": "172.16.2.254",
-    "vlan": 20, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan20", "bondMembers":
+    "interface", "l2miss": false}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "ipAddress": "172.16.1.254", "vlan": 10, "macaddr": "00:00:00:11:12:10",
+    "ifname": "Vlan10", "bondMembers": "", "type": "interface", "l2miss": false},
+    {"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
+    "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
     "", "type": "interface", "l2miss": false}, {"namespace": "eos", "hostname": "leaf03",
     "vrf": "evpn-vrf", "ipAddress": "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10",
     "ifname": "Vlan20", "bondMembers": "", "type": "interface", "l2miss": false},
     {"namespace": "eos", "hostname": "leaf03", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
     "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
-    "", "type": "interface", "l2miss": false}, {"namespace": "eos", "hostname": "leaf01",
-    "vrf": "evpn-vrf", "ipAddress": "172.16.1.254", "vlan": 10, "macaddr": "00:00:00:11:12:10",
-    "ifname": "Vlan10", "bondMembers": "", "type": "interface", "l2miss": false},
-    {"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
+    "", "type": "interface", "l2miss": false}, {"namespace": "eos", "hostname": "leaf04",
+    "vrf": "evpn-vrf", "ipAddress": "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10",
+    "ifname": "Vlan20", "bondMembers": "", "type": "interface", "l2miss": false},
+    {"namespace": "eos", "hostname": "leaf04", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
     "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
     "", "type": "interface", "l2miss": false}]'
 - command: network find --address='00:00:00:11:12' --format=json --namespace=eos
@@ -133,24 +133,24 @@ tests:
 - command: network find --address='0000.0011.1210' --format=json --namespace=eos
   data-directory: tests/data/parquet
   marks: network find eos
-  output: '[{"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+  output: '[{"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.254", "vlan": 10, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan10",
     "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace": "eos",
-    "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan":
+    "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan":
     30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "eos", "hostname": "leaf04", "vrf":
-    "evpn-vrf", "ipAddress": "172.16.3.254", "vlan": 30, "macaddr": "00:00:00:11:12:10",
-    "ifname": "Vlan30", "bondMembers": "", "type": "interface", "l2miss": false},
-    {"namespace": "eos", "hostname": "leaf04", "vrf": "evpn-vrf", "ipAddress": "172.16.2.254",
-    "vlan": 20, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan20", "bondMembers":
+    "interface", "l2miss": false}, {"namespace": "eos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "ipAddress": "172.16.1.254", "vlan": 10, "macaddr": "00:00:00:11:12:10",
+    "ifname": "Vlan10", "bondMembers": "", "type": "interface", "l2miss": false},
+    {"namespace": "eos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
+    "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
     "", "type": "interface", "l2miss": false}, {"namespace": "eos", "hostname": "leaf03",
     "vrf": "evpn-vrf", "ipAddress": "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10",
     "ifname": "Vlan20", "bondMembers": "", "type": "interface", "l2miss": false},
     {"namespace": "eos", "hostname": "leaf03", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
     "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
-    "", "type": "interface", "l2miss": false}, {"namespace": "eos", "hostname": "leaf01",
-    "vrf": "evpn-vrf", "ipAddress": "172.16.1.254", "vlan": 10, "macaddr": "00:00:00:11:12:10",
-    "ifname": "Vlan10", "bondMembers": "", "type": "interface", "l2miss": false},
-    {"namespace": "eos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
+    "", "type": "interface", "l2miss": false}, {"namespace": "eos", "hostname": "leaf04",
+    "vrf": "evpn-vrf", "ipAddress": "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10",
+    "ifname": "Vlan20", "bondMembers": "", "type": "interface", "l2miss": false},
+    {"namespace": "eos", "hostname": "leaf04", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
     "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
     "", "type": "interface", "l2miss": false}]'
