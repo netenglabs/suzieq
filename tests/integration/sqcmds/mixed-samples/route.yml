@@ -140,18 +140,18 @@ tests:
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "10.1.4.2/32", "nexthopIps": [], "oifs":
     ["xe-0/0/0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "local", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "10.1.4.0/30", "nexthopIps": [], "oifs":
-    ["xe-0/0/0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    ["xe-0/0/0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.1.4.1"],
     "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "4.4.4.4/32", "nexthopIps": [], "oifs":
-    ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
-    "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname": "leaf4-qfx",
-    "vrf": "default", "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.4.1"], "oifs":
-    ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    ["lo0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers": 4,
+    "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    "leaf4-qfx", "vrf": "default", "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.4.1"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "6.6.6.6/32", "nexthopIps": ["10.1.4.1",
     "10.2.4.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source":
@@ -174,13 +174,13 @@ tests:
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "172.29.151.6/32",
     "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps":
-    [], "oifs": ["xe-0/0/1.0"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/1.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.4.2/32", "nexthopIps":
     [], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0,
-    "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace": "mixed",
+    "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed",
     "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps":
     ["10.2.4.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
@@ -195,12 +195,12 @@ tests:
     "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426},
     {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "169.254.0.2/32",
     "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "224.0.0.5/32",
     "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "multirecv", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "fe80::205:860f:fc71:8700/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 6, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
     [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
@@ -217,7 +217,7 @@ tests:
     "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf3-qfx", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs":
     ["em1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
-    "local", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
     "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.1.3.1", "10.2.3.1"],
     "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
@@ -225,7 +225,7 @@ tests:
     ["10.1.3.1", "10.2.3.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf",
     "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
-    "prefix": "3.3.3.3/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct",
+    "prefix": "3.3.3.3/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
     "prefix": "4.4.4.4/32", "nexthopIps": ["10.1.3.1", "10.2.3.1"], "oifs": ["xe-0/0/0.0",
@@ -242,10 +242,10 @@ tests:
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.1.3.0/30", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "10.1.3.2/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "10.1.3.2/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.1.4.0/30", "nexthopIps": ["10.1.3.1"], "oifs": ["xe-0/0/0.0"],
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
@@ -263,88 +263,89 @@ tests:
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.2.3.0/30", "nexthopIps": [], "oifs": ["xe-0/0/1.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.3.1"], "oifs": ["xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "172.29.151.5/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
-    1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
-    "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol": "ospf", "source":
-    "", "preference": 10, "ipvers": 4, "action": "multirecv", "timestamp": 1627395438536},
-    {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "fe80::205:860f:fc71:1300/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 6, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
-    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
-    6, "action": "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed",
-    "hostname": "leaf3-qfx", "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.3.2/32", "nexthopIps":
-    [], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0,
-    "ipvers": 4, "action": "local", "timestamp": 1627395438536}, {"namespace": "mixed",
-    "hostname": "leaf3-qfx", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps":
-    ["10.1.3.1"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.5.0/30",
-    "nexthopIps": ["10.1.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source":
-    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "10.2.6.0/30", "nexthopIps": ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "11.11.11.11/32", "nexthopIps": ["11.11.11.11", "11.11.11.11"], "oifs":
-    ["Lo0", "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps": ["10.1.1.2",
-    "10.1.2.2", "10.1.3.2", "10.1.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3",
-    "Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "5.5.5.5/32", "nexthopIps": ["10.1.5.2"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.3.1"], "oifs":
+    ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "172.29.151.5/32", "nexthopIps": [],
+    "oifs": ["em0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs":
+    [], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action":
+    "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "fe80::205:860f:fc71:1300/128", "nexthopIps": [],
+    "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
+    6, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs":
+    [], "protocol": "inet6", "source": "", "preference": 0, "ipvers": 6, "action":
+    "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps": ["10.2.3.1"], "oifs":
+    ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.3.2/32", "nexthopIps": [], "oifs":
+    ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps": ["10.1.3.1"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps": ["10.1.5.2"],
     "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "2.2.2.2/32", "nexthopIps":
-    ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source": "", "preference":
+    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps":
+    ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "3.3.3.3/32",
-    "nexthopIps": ["10.1.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source":
-    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "4.4.4.4/32", "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "11.11.11.11/32",
+    "nexthopIps": ["11.11.11.11", "11.11.11.11"], "oifs": ["Lo0", "Lo0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "10.2.4.0/30", "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"],
+    "prefix": "22.22.22.22/32", "nexthopIps": ["10.1.1.2", "10.1.2.2", "10.1.3.2",
+    "10.1.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3", "Ethernet1/4"],
     "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
     "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
-    "vrf": "management", "prefix": "172.29.151.1/32", "nexthopIps": ["172.29.151.1"],
-    "oifs": ["mgmt0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    "vrf": "default", "prefix": "5.5.5.5/32", "nexthopIps": ["10.1.5.2"], "oifs":
+    ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
     4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.1.1.2"],
-    "oifs": ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110,
+    "spine1-nxos", "vrf": "default", "prefix": "2.2.2.2/32", "nexthopIps": ["10.1.2.2"],
+    "oifs": ["Ethernet1/2"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.3.0/30", "nexthopIps":
+    "hostname": "spine1-nxos", "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps":
     ["10.1.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.1.0/30",
-    "nexthopIps": ["10.1.1.2"], "oifs": ["Ethernet1/1"], "protocol": "ospf", "source":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "4.4.4.4/32",
+    "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
     {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "6.6.6.6/32", "nexthopIps": ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol":
+    "10.2.4.0/30", "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "10.1.2.0/30", "nexthopIps": ["10.1.2.1"], "oifs": ["Ethernet1/2"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "management",
+    "prefix": "172.29.151.1/32", "nexthopIps": ["172.29.151.1"], "oifs": ["mgmt0"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.1.1.2"], "oifs":
+    ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.2.3.0/30", "nexthopIps": ["10.1.3.2"],
+    "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110,
+    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
+    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.1.0/30", "nexthopIps":
+    ["10.1.1.2"], "oifs": ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference":
+    110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "6.6.6.6/32",
+    "nexthopIps": ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source":
+    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
+    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
+    "10.1.2.0/30", "nexthopIps": ["10.1.2.1"], "oifs": ["Ethernet1/2"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
     "vrf": "default", "prefix": "10.1.2.1/32", "nexthopIps": ["10.1.2.1"], "oifs":
     ["Ethernet1/2"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -353,109 +354,111 @@ tests:
     "oifs": ["Ethernet1/1"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
     "spine1-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.1.3.1"],
-    "oifs": ["Ethernet1/3"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.3.1/32", "nexthopIps":
-    ["10.1.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source": "", "preference":
+    "oifs": ["Ethernet1/3"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.2.0/30",
-    "nexthopIps": ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source":
-    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "10.1.1.0/30", "nexthopIps": ["10.1.1.1"], "oifs": ["Ethernet1/1"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "10.1.6.1/32", "nexthopIps": ["10.1.6.1"], "oifs": ["Ethernet1/6"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
-    "vrf": "default", "prefix": "10.1.6.0/30", "nexthopIps": ["10.1.6.1"], "oifs":
-    ["Ethernet1/6"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "10.1.5.1/32", "nexthopIps": ["10.1.5.1"],
-    "oifs": ["Ethernet1/5"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "10.1.5.0/30", "nexthopIps": ["10.1.5.1"],
-    "oifs": ["Ethernet1/5"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.4.1/32", "nexthopIps":
-    ["10.1.4.1"], "oifs": ["Ethernet1/4"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.4.0/30",
-    "nexthopIps": ["10.1.4.1"], "oifs": ["Ethernet1/4"], "protocol": "direct", "source":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.3.1/32",
+    "nexthopIps": ["10.1.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source":
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "2.2.2.2/32", "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"], "protocol":
+    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
+    "10.2.2.0/30", "nexthopIps": ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "22.22.22.22/32", "nexthopIps": ["22.22.22.22", "22.22.22.22"], "oifs":
-    ["Lo0", "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps": ["10.2.1.2",
-    "10.2.2.2", "10.2.3.2", "10.2.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3",
+    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
+    "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.1.1"], "oifs": ["Ethernet1/1"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "prefix": "10.1.6.1/32", "nexthopIps": ["10.1.6.1"], "oifs":
+    ["Ethernet1/6"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.1.6.0/30", "nexthopIps": ["10.1.6.1"],
+    "oifs": ["Ethernet1/6"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.5.1/32",
+    "nexthopIps": ["10.1.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
+    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
+    "10.1.5.0/30", "nexthopIps": ["10.1.5.1"], "oifs": ["Ethernet1/5"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "prefix": "10.1.4.1/32", "nexthopIps": ["10.1.4.1"], "oifs":
+    ["Ethernet1/4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.1.4.0/30", "nexthopIps": ["10.1.4.1"],
+    "oifs": ["Ethernet1/4"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "2.2.2.2/32",
+    "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source":
+    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
+    "22.22.22.22/32", "nexthopIps": ["22.22.22.22", "22.22.22.22"], "oifs": ["Lo0",
+    "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
+    "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps": ["10.2.1.2", "10.2.2.2",
+    "10.2.3.2", "10.2.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3",
     "Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "default", "prefix": "10.2.6.1/32", "nexthopIps": ["10.2.6.1"],
     "oifs": ["Ethernet1/6"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps": ["10.2.6.1"],
-    "oifs": ["Ethernet1/6"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.1/32", "nexthopIps":
-    ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source": "", "preference":
+    "oifs": ["Ethernet1/6"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.0/30",
-    "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "direct", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.1/32",
+    "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source":
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "10.2.4.1/32", "nexthopIps": ["10.2.4.1"], "oifs": ["Ethernet1/4"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.4.1"], "oifs": ["Ethernet1/4"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "10.2.5.0/30", "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
-    "vrf": "default", "prefix": "10.2.3.1/32", "nexthopIps": ["10.2.3.1"], "oifs":
-    ["Ethernet1/3"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    "vrf": "default", "prefix": "10.2.4.1/32", "nexthopIps": ["10.2.4.1"], "oifs":
+    ["Ethernet1/4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "10.2.3.0/30", "nexthopIps": ["10.2.3.1"],
-    "oifs": ["Ethernet1/3"], "protocol": "direct", "source": "", "preference": 0,
+    "spine2-nxos", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.4.1"],
+    "oifs": ["Ethernet1/4"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.3.1/32",
+    "nexthopIps": ["10.2.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
+    "10.2.3.0/30", "nexthopIps": ["10.2.3.1"], "oifs": ["Ethernet1/3"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
+    "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps": ["10.2.3.2"], "oifs":
+    ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
+    "spine2-nxos", "vrf": "default", "prefix": "4.4.4.4/32", "nexthopIps": ["10.2.4.2"],
+    "oifs": ["Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps":
-    ["10.2.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference":
+    "hostname": "spine2-nxos", "vrf": "default", "prefix": "5.5.5.5/32", "nexthopIps":
+    ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "4.4.4.4/32",
-    "nexthopIps": ["10.2.4.2"], "oifs": ["Ethernet1/4"], "protocol": "ospf", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "6.6.6.6/32",
+    "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "5.5.5.5/32", "nexthopIps": ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol":
+    "10.1.1.0/30", "nexthopIps": ["10.2.1.2"], "oifs": ["Ethernet1/1"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
     1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "6.6.6.6/32", "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.1.1.0/30", "nexthopIps": ["10.2.1.2"], "oifs": ["Ethernet1/1"],
+    "prefix": "10.1.2.0/30", "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"],
     "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
-    "vrf": "default", "prefix": "10.1.2.0/30", "nexthopIps": ["10.2.2.2"], "oifs":
-    ["Ethernet1/2"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.2.1.2"], "oifs":
+    ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.2.1.2"],
-    "oifs": ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110,
+    "spine2-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.2.3.2"],
+    "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps":
-    ["10.2.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference":
+    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.5.0/30", "nexthopIps":
+    ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.5.0/30",
-    "nexthopIps": ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.6.0/30",
+    "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "10.1.6.0/30", "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.2.1.0/30", "nexthopIps": ["10.2.1.1"], "oifs": ["Ethernet1/1"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "10.2.1.0/30", "nexthopIps": ["10.2.1.1"], "oifs": ["Ethernet1/1"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.2.1"], "oifs":
-    ["Ethernet1/2"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    ["Ethernet1/2"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "default", "prefix": "10.2.2.1/32", "nexthopIps": ["10.2.2.1"],
     "oifs": ["Ethernet1/2"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -631,41 +634,41 @@ tests:
     ["Management1"], "protocol": "static", "source": "", "preference": 1, "ipvers":
     4, "action": "forward", "timestamp": 1627395437620}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs":
-    ["em1.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
-    "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname": "leaf4-qfx",
-    "vrf": "default", "prefix": "172.29.151.0/24", "nexthopIps": [], "oifs": ["em0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438426}, {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf":
-    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": ["em0.0"],
-    "protocol": "static", "source": "", "preference": 5, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438426}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": ["em0.0"],
-    "protocol": "static", "source": "", "preference": 5, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "172.29.151.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
-    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
-    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395438536}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "management",
+    ["em1.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers": 4,
+    "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    "leaf4-qfx", "vrf": "default", "prefix": "172.29.151.0/24", "nexthopIps": [],
+    "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    "leaf4-qfx", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"],
+    "oifs": ["em0.0"], "protocol": "static", "source": "", "preference": 5, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"],
+    "oifs": ["em0.0"], "protocol": "static", "source": "", "preference": 5, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "172.29.151.0/24", "nexthopIps": [],
+    "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs":
+    ["em1.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers": 4,
+    "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "management", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"],
+    "oifs": [], "protocol": "static", "source": "", "preference": 1, "ipvers": 4,
+    "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "management", "prefix": "172.29.151.0/24", "nexthopIps":
+    ["172.29.151.1"], "oifs": ["mgmt0"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["172.29.151.254"], "oifs": ["_nexthopVrf:management"], "protocol": "static",
+    "source": "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp":
+    1627395439859}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "management",
     "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": [], "protocol":
     "static", "source": "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "management",
-    "prefix": "172.29.151.0/24", "nexthopIps": ["172.29.151.1"], "oifs": ["mgmt0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs":
-    ["_nexthopVrf:management"], "protocol": "static", "source": "", "preference":
-    1, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "management", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["172.29.151.254"], "oifs": [], "protocol": "static", "source":
-    "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
-    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": ["_nexthopVrf:management"],
+    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
+    "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": ["_nexthopVrf:management"],
     "protocol": "static", "source": "", "preference": 1, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "management", "prefix": "172.29.151.0/24", "nexthopIps": ["172.29.151.2"],
-    "oifs": ["mgmt0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    "oifs": ["mgmt0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "leaf2-ios", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"],
     "oifs": [], "protocol": "static", "source": "", "preference": 1, "ipvers": 4,
@@ -815,18 +818,18 @@ tests:
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "10.1.4.2/32", "nexthopIps": [], "oifs":
     ["xe-0/0/0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "local", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "10.1.4.0/30", "nexthopIps": [], "oifs":
-    ["xe-0/0/0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    ["xe-0/0/0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.1.4.1"],
     "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "4.4.4.4/32", "nexthopIps": [], "oifs":
-    ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
-    "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname": "leaf4-qfx",
-    "vrf": "default", "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.4.1"], "oifs":
-    ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    ["lo0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers": 4,
+    "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    "leaf4-qfx", "vrf": "default", "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.4.1"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "6.6.6.6/32", "nexthopIps": ["10.1.4.1",
     "10.2.4.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source":
@@ -849,13 +852,13 @@ tests:
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "172.29.151.6/32",
     "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps":
-    [], "oifs": ["xe-0/0/1.0"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/1.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.4.2/32", "nexthopIps":
     [], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0,
-    "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace": "mixed",
+    "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed",
     "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps":
     ["10.2.4.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
@@ -870,12 +873,12 @@ tests:
     "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426},
     {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "169.254.0.2/32",
     "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "224.0.0.5/32",
     "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "multirecv", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "fe80::205:860f:fc71:8700/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 6, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
     [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
@@ -892,7 +895,7 @@ tests:
     "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf3-qfx", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs":
     ["em1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
-    "local", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
     "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.1.3.1", "10.2.3.1"],
     "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
@@ -900,7 +903,7 @@ tests:
     ["10.1.3.1", "10.2.3.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf",
     "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
-    "prefix": "3.3.3.3/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct",
+    "prefix": "3.3.3.3/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
     "prefix": "4.4.4.4/32", "nexthopIps": ["10.1.3.1", "10.2.3.1"], "oifs": ["xe-0/0/0.0",
@@ -917,10 +920,10 @@ tests:
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.1.3.0/30", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "10.1.3.2/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "10.1.3.2/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.1.4.0/30", "nexthopIps": ["10.1.3.1"], "oifs": ["xe-0/0/0.0"],
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
@@ -938,88 +941,89 @@ tests:
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.2.3.0/30", "nexthopIps": [], "oifs": ["xe-0/0/1.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.3.1"], "oifs": ["xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "172.29.151.5/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
-    1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
-    "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol": "ospf", "source":
-    "", "preference": 10, "ipvers": 4, "action": "multirecv", "timestamp": 1627395438536},
-    {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "fe80::205:860f:fc71:1300/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 6, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
-    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
-    6, "action": "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed",
-    "hostname": "leaf3-qfx", "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.3.2/32", "nexthopIps":
-    [], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0,
-    "ipvers": 4, "action": "local", "timestamp": 1627395438536}, {"namespace": "mixed",
-    "hostname": "leaf3-qfx", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps":
-    ["10.1.3.1"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.5.0/30",
-    "nexthopIps": ["10.1.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source":
-    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "10.2.6.0/30", "nexthopIps": ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "11.11.11.11/32", "nexthopIps": ["11.11.11.11", "11.11.11.11"], "oifs":
-    ["Lo0", "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps": ["10.1.1.2",
-    "10.1.2.2", "10.1.3.2", "10.1.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3",
-    "Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "5.5.5.5/32", "nexthopIps": ["10.1.5.2"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.3.1"], "oifs":
+    ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "172.29.151.5/32", "nexthopIps": [],
+    "oifs": ["em0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs":
+    [], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action":
+    "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "fe80::205:860f:fc71:1300/128", "nexthopIps": [],
+    "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
+    6, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs":
+    [], "protocol": "inet6", "source": "", "preference": 0, "ipvers": 6, "action":
+    "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps": ["10.2.3.1"], "oifs":
+    ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.3.2/32", "nexthopIps": [], "oifs":
+    ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps": ["10.1.3.1"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps": ["10.1.5.2"],
     "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "2.2.2.2/32", "nexthopIps":
-    ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source": "", "preference":
+    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps":
+    ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "3.3.3.3/32",
-    "nexthopIps": ["10.1.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source":
-    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "4.4.4.4/32", "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "11.11.11.11/32",
+    "nexthopIps": ["11.11.11.11", "11.11.11.11"], "oifs": ["Lo0", "Lo0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "10.2.4.0/30", "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"],
+    "prefix": "22.22.22.22/32", "nexthopIps": ["10.1.1.2", "10.1.2.2", "10.1.3.2",
+    "10.1.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3", "Ethernet1/4"],
     "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
     "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
-    "vrf": "management", "prefix": "172.29.151.1/32", "nexthopIps": ["172.29.151.1"],
-    "oifs": ["mgmt0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    "vrf": "default", "prefix": "5.5.5.5/32", "nexthopIps": ["10.1.5.2"], "oifs":
+    ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
     4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.1.1.2"],
-    "oifs": ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110,
+    "spine1-nxos", "vrf": "default", "prefix": "2.2.2.2/32", "nexthopIps": ["10.1.2.2"],
+    "oifs": ["Ethernet1/2"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.3.0/30", "nexthopIps":
+    "hostname": "spine1-nxos", "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps":
     ["10.1.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.1.0/30",
-    "nexthopIps": ["10.1.1.2"], "oifs": ["Ethernet1/1"], "protocol": "ospf", "source":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "4.4.4.4/32",
+    "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
     {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "6.6.6.6/32", "nexthopIps": ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol":
+    "10.2.4.0/30", "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "10.1.2.0/30", "nexthopIps": ["10.1.2.1"], "oifs": ["Ethernet1/2"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "management",
+    "prefix": "172.29.151.1/32", "nexthopIps": ["172.29.151.1"], "oifs": ["mgmt0"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.1.1.2"], "oifs":
+    ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.2.3.0/30", "nexthopIps": ["10.1.3.2"],
+    "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110,
+    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
+    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.1.0/30", "nexthopIps":
+    ["10.1.1.2"], "oifs": ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference":
+    110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "6.6.6.6/32",
+    "nexthopIps": ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source":
+    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
+    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
+    "10.1.2.0/30", "nexthopIps": ["10.1.2.1"], "oifs": ["Ethernet1/2"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
     "vrf": "default", "prefix": "10.1.2.1/32", "nexthopIps": ["10.1.2.1"], "oifs":
     ["Ethernet1/2"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -1028,109 +1032,111 @@ tests:
     "oifs": ["Ethernet1/1"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
     "spine1-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.1.3.1"],
-    "oifs": ["Ethernet1/3"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.3.1/32", "nexthopIps":
-    ["10.1.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source": "", "preference":
+    "oifs": ["Ethernet1/3"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.2.0/30",
-    "nexthopIps": ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source":
-    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "10.1.1.0/30", "nexthopIps": ["10.1.1.1"], "oifs": ["Ethernet1/1"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "10.1.6.1/32", "nexthopIps": ["10.1.6.1"], "oifs": ["Ethernet1/6"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
-    "vrf": "default", "prefix": "10.1.6.0/30", "nexthopIps": ["10.1.6.1"], "oifs":
-    ["Ethernet1/6"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "10.1.5.1/32", "nexthopIps": ["10.1.5.1"],
-    "oifs": ["Ethernet1/5"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "10.1.5.0/30", "nexthopIps": ["10.1.5.1"],
-    "oifs": ["Ethernet1/5"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.4.1/32", "nexthopIps":
-    ["10.1.4.1"], "oifs": ["Ethernet1/4"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.4.0/30",
-    "nexthopIps": ["10.1.4.1"], "oifs": ["Ethernet1/4"], "protocol": "direct", "source":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.3.1/32",
+    "nexthopIps": ["10.1.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source":
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "2.2.2.2/32", "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"], "protocol":
+    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
+    "10.2.2.0/30", "nexthopIps": ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "22.22.22.22/32", "nexthopIps": ["22.22.22.22", "22.22.22.22"], "oifs":
-    ["Lo0", "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps": ["10.2.1.2",
-    "10.2.2.2", "10.2.3.2", "10.2.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3",
+    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
+    "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.1.1"], "oifs": ["Ethernet1/1"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "prefix": "10.1.6.1/32", "nexthopIps": ["10.1.6.1"], "oifs":
+    ["Ethernet1/6"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.1.6.0/30", "nexthopIps": ["10.1.6.1"],
+    "oifs": ["Ethernet1/6"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.5.1/32",
+    "nexthopIps": ["10.1.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
+    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
+    "10.1.5.0/30", "nexthopIps": ["10.1.5.1"], "oifs": ["Ethernet1/5"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "prefix": "10.1.4.1/32", "nexthopIps": ["10.1.4.1"], "oifs":
+    ["Ethernet1/4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.1.4.0/30", "nexthopIps": ["10.1.4.1"],
+    "oifs": ["Ethernet1/4"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "2.2.2.2/32",
+    "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source":
+    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
+    "22.22.22.22/32", "nexthopIps": ["22.22.22.22", "22.22.22.22"], "oifs": ["Lo0",
+    "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
+    "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps": ["10.2.1.2", "10.2.2.2",
+    "10.2.3.2", "10.2.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3",
     "Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "default", "prefix": "10.2.6.1/32", "nexthopIps": ["10.2.6.1"],
     "oifs": ["Ethernet1/6"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps": ["10.2.6.1"],
-    "oifs": ["Ethernet1/6"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.1/32", "nexthopIps":
-    ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source": "", "preference":
+    "oifs": ["Ethernet1/6"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.0/30",
-    "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "direct", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.1/32",
+    "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source":
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "10.2.4.1/32", "nexthopIps": ["10.2.4.1"], "oifs": ["Ethernet1/4"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.4.1"], "oifs": ["Ethernet1/4"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "10.2.5.0/30", "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
-    "vrf": "default", "prefix": "10.2.3.1/32", "nexthopIps": ["10.2.3.1"], "oifs":
-    ["Ethernet1/3"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    "vrf": "default", "prefix": "10.2.4.1/32", "nexthopIps": ["10.2.4.1"], "oifs":
+    ["Ethernet1/4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "10.2.3.0/30", "nexthopIps": ["10.2.3.1"],
-    "oifs": ["Ethernet1/3"], "protocol": "direct", "source": "", "preference": 0,
+    "spine2-nxos", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.4.1"],
+    "oifs": ["Ethernet1/4"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.3.1/32",
+    "nexthopIps": ["10.2.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
+    "10.2.3.0/30", "nexthopIps": ["10.2.3.1"], "oifs": ["Ethernet1/3"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
+    "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps": ["10.2.3.2"], "oifs":
+    ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
+    "spine2-nxos", "vrf": "default", "prefix": "4.4.4.4/32", "nexthopIps": ["10.2.4.2"],
+    "oifs": ["Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps":
-    ["10.2.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference":
+    "hostname": "spine2-nxos", "vrf": "default", "prefix": "5.5.5.5/32", "nexthopIps":
+    ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "4.4.4.4/32",
-    "nexthopIps": ["10.2.4.2"], "oifs": ["Ethernet1/4"], "protocol": "ospf", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "6.6.6.6/32",
+    "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "5.5.5.5/32", "nexthopIps": ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol":
+    "10.1.1.0/30", "nexthopIps": ["10.2.1.2"], "oifs": ["Ethernet1/1"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
     1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "6.6.6.6/32", "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.1.1.0/30", "nexthopIps": ["10.2.1.2"], "oifs": ["Ethernet1/1"],
+    "prefix": "10.1.2.0/30", "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"],
     "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
-    "vrf": "default", "prefix": "10.1.2.0/30", "nexthopIps": ["10.2.2.2"], "oifs":
-    ["Ethernet1/2"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.2.1.2"], "oifs":
+    ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.2.1.2"],
-    "oifs": ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110,
+    "spine2-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.2.3.2"],
+    "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps":
-    ["10.2.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference":
+    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.5.0/30", "nexthopIps":
+    ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.5.0/30",
-    "nexthopIps": ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.6.0/30",
+    "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "10.1.6.0/30", "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.2.1.0/30", "nexthopIps": ["10.2.1.1"], "oifs": ["Ethernet1/1"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "10.2.1.0/30", "nexthopIps": ["10.2.1.1"], "oifs": ["Ethernet1/1"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.2.1"], "oifs":
-    ["Ethernet1/2"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    ["Ethernet1/2"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "default", "prefix": "10.2.2.1/32", "nexthopIps": ["10.2.2.1"],
     "oifs": ["Ethernet1/2"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -1431,18 +1437,18 @@ tests:
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "10.1.4.2/32", "nexthopIps": [], "oifs":
     ["xe-0/0/0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "local", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "10.1.4.0/30", "nexthopIps": [], "oifs":
-    ["xe-0/0/0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    ["xe-0/0/0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.1.4.1"],
     "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "4.4.4.4/32", "nexthopIps": [], "oifs":
-    ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action":
-    "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname": "leaf4-qfx",
-    "vrf": "default", "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.4.1"], "oifs":
-    ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    ["lo0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers": 4,
+    "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    "leaf4-qfx", "vrf": "default", "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.4.1"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf4-qfx", "vrf": "default", "prefix": "6.6.6.6/32", "nexthopIps": ["10.1.4.1",
     "10.2.4.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source":
@@ -1465,13 +1471,13 @@ tests:
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "172.29.151.6/32",
     "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps":
-    [], "oifs": ["xe-0/0/1.0"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/1.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.4.2/32", "nexthopIps":
     [], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0,
-    "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace": "mixed",
+    "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed",
     "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps":
     ["10.2.4.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
@@ -1485,19 +1491,19 @@ tests:
     "nexthopIps": ["10.2.4.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source":
     "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426},
     {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "169.254.0.0/24",
-    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "169.254.0.2/32",
     "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "172.29.151.0/24",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "224.0.0.5/32",
     "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "multirecv", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "fe80::205:860f:fc71:8700/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 6, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
     [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
@@ -1514,7 +1520,7 @@ tests:
     "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf3-qfx", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs":
     ["em1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
-    "local", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
     "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.1.3.1", "10.2.3.1"],
     "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
@@ -1522,7 +1528,7 @@ tests:
     ["10.1.3.1", "10.2.3.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf",
     "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
-    "prefix": "3.3.3.3/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct",
+    "prefix": "3.3.3.3/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
     "prefix": "4.4.4.4/32", "nexthopIps": ["10.1.3.1", "10.2.3.1"], "oifs": ["xe-0/0/0.0",
@@ -1539,10 +1545,10 @@ tests:
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.1.3.0/30", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "10.1.3.2/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "10.1.3.2/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.1.4.0/30", "nexthopIps": ["10.1.3.1"], "oifs": ["xe-0/0/0.0"],
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
@@ -1560,74 +1566,75 @@ tests:
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.2.3.0/30", "nexthopIps": [], "oifs": ["xe-0/0/1.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.3.1"], "oifs": ["xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "172.29.151.5/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
-    1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
-    "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol": "ospf", "source":
-    "", "preference": 10, "ipvers": 4, "action": "multirecv", "timestamp": 1627395438536},
-    {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "fe80::205:860f:fc71:1300/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 6, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
-    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
-    6, "action": "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed",
-    "hostname": "leaf3-qfx", "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "172.29.151.0/24",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "169.254.0.0/24",
-    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.3.2/32", "nexthopIps":
-    [], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0,
-    "ipvers": 4, "action": "local", "timestamp": 1627395438536}, {"namespace": "mixed",
-    "hostname": "leaf3-qfx", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps":
-    ["10.1.3.1"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.5.0/30",
-    "nexthopIps": ["10.1.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source":
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.3.1"], "oifs":
+    ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "172.29.151.5/32", "nexthopIps": [],
+    "oifs": ["em0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs":
+    [], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action":
+    "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "fe80::205:860f:fc71:1300/128", "nexthopIps": [],
+    "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
+    6, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs":
+    [], "protocol": "inet6", "source": "", "preference": 0, "ipvers": 6, "action":
+    "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps": ["10.2.3.1"], "oifs":
+    ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "172.29.151.0/24", "nexthopIps": [],
+    "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs":
+    ["em1.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers": 4,
+    "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.3.2/32", "nexthopIps": [], "oifs":
+    ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps": ["10.1.3.1"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps": ["10.1.5.2"],
+    "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference": 110,
+    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
+    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps":
+    ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source": "", "preference":
+    110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "11.11.11.11/32",
+    "nexthopIps": ["11.11.11.11", "11.11.11.11"], "oifs": ["Lo0", "Lo0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
+    "prefix": "22.22.22.22/32", "nexthopIps": ["10.1.1.2", "10.1.2.2", "10.1.3.2",
+    "10.1.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3", "Ethernet1/4"],
+    "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "management", "prefix": "172.29.151.0/24", "nexthopIps": ["172.29.151.1"],
+    "oifs": ["mgmt0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "5.5.5.5/32", "nexthopIps": ["10.1.5.2"],
+    "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference": 110,
+    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
+    "hostname": "spine1-nxos", "vrf": "default", "prefix": "2.2.2.2/32", "nexthopIps":
+    ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source": "", "preference":
+    110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "3.3.3.3/32",
+    "nexthopIps": ["10.1.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
     {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "10.2.6.0/30", "nexthopIps": ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "11.11.11.11/32", "nexthopIps": ["11.11.11.11", "11.11.11.11"], "oifs":
-    ["Lo0", "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps": ["10.1.1.2",
-    "10.1.2.2", "10.1.3.2", "10.1.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3",
-    "Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "management", "prefix": "172.29.151.0/24", "nexthopIps":
-    ["172.29.151.1"], "oifs": ["mgmt0"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "5.5.5.5/32",
-    "nexthopIps": ["10.1.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source":
-    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "2.2.2.2/32", "nexthopIps": ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "3.3.3.3/32", "nexthopIps": ["10.1.3.2"], "oifs": ["Ethernet1/3"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "4.4.4.4/32", "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"], "protocol":
+    "4.4.4.4/32", "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
     1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
     "prefix": "10.2.4.0/30", "nexthopIps": ["10.1.4.2"], "oifs": ["Ethernet1/4"],
@@ -1650,8 +1657,8 @@ tests:
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
     1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
     "prefix": "10.1.2.0/30", "nexthopIps": ["10.1.2.1"], "oifs": ["Ethernet1/2"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
     "vrf": "default", "prefix": "10.1.2.1/32", "nexthopIps": ["10.1.2.1"], "oifs":
     ["Ethernet1/2"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
@@ -1659,109 +1666,111 @@ tests:
     "oifs": ["Ethernet1/1"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
     "spine1-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.1.3.1"],
-    "oifs": ["Ethernet1/3"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.3.1/32", "nexthopIps":
-    ["10.1.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source": "", "preference":
+    "oifs": ["Ethernet1/3"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.2.0/30",
-    "nexthopIps": ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source":
-    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "10.1.1.0/30", "nexthopIps": ["10.1.1.1"], "oifs": ["Ethernet1/1"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "10.1.6.1/32", "nexthopIps": ["10.1.6.1"], "oifs": ["Ethernet1/6"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
-    "vrf": "default", "prefix": "10.1.6.0/30", "nexthopIps": ["10.1.6.1"], "oifs":
-    ["Ethernet1/6"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "10.1.5.1/32", "nexthopIps": ["10.1.5.1"],
-    "oifs": ["Ethernet1/5"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "10.1.5.0/30", "nexthopIps": ["10.1.5.1"],
-    "oifs": ["Ethernet1/5"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.4.1/32", "nexthopIps":
-    ["10.1.4.1"], "oifs": ["Ethernet1/4"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.4.0/30",
-    "nexthopIps": ["10.1.4.1"], "oifs": ["Ethernet1/4"], "protocol": "direct", "source":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.3.1/32",
+    "nexthopIps": ["10.1.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source":
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "2.2.2.2/32", "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"], "protocol":
+    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
+    "10.2.2.0/30", "nexthopIps": ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "22.22.22.22/32", "nexthopIps": ["22.22.22.22", "22.22.22.22"], "oifs":
-    ["Lo0", "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps": ["10.2.1.2",
-    "10.2.2.2", "10.2.3.2", "10.2.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3",
+    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
+    "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.1.1"], "oifs": ["Ethernet1/1"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "prefix": "10.1.6.1/32", "nexthopIps": ["10.1.6.1"], "oifs":
+    ["Ethernet1/6"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.1.6.0/30", "nexthopIps": ["10.1.6.1"],
+    "oifs": ["Ethernet1/6"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.5.1/32",
+    "nexthopIps": ["10.1.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
+    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
+    "10.1.5.0/30", "nexthopIps": ["10.1.5.1"], "oifs": ["Ethernet1/5"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "prefix": "10.1.4.1/32", "nexthopIps": ["10.1.4.1"], "oifs":
+    ["Ethernet1/4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.1.4.0/30", "nexthopIps": ["10.1.4.1"],
+    "oifs": ["Ethernet1/4"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "2.2.2.2/32",
+    "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source":
+    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
+    "22.22.22.22/32", "nexthopIps": ["22.22.22.22", "22.22.22.22"], "oifs": ["Lo0",
+    "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
+    "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps": ["10.2.1.2", "10.2.2.2",
+    "10.2.3.2", "10.2.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3",
     "Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "default", "prefix": "10.2.6.1/32", "nexthopIps": ["10.2.6.1"],
     "oifs": ["Ethernet1/6"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps": ["10.2.6.1"],
-    "oifs": ["Ethernet1/6"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.1/32", "nexthopIps":
-    ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source": "", "preference":
+    "oifs": ["Ethernet1/6"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.0/30",
-    "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "direct", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.1/32",
+    "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source":
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "10.2.4.1/32", "nexthopIps": ["10.2.4.1"], "oifs": ["Ethernet1/4"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.4.1"], "oifs": ["Ethernet1/4"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "10.2.5.0/30", "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
-    "vrf": "default", "prefix": "10.2.3.1/32", "nexthopIps": ["10.2.3.1"], "oifs":
-    ["Ethernet1/3"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    "vrf": "default", "prefix": "10.2.4.1/32", "nexthopIps": ["10.2.4.1"], "oifs":
+    ["Ethernet1/4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "10.2.3.0/30", "nexthopIps": ["10.2.3.1"],
-    "oifs": ["Ethernet1/3"], "protocol": "direct", "source": "", "preference": 0,
+    "spine2-nxos", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.4.1"],
+    "oifs": ["Ethernet1/4"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.3.1/32",
+    "nexthopIps": ["10.2.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
+    "10.2.3.0/30", "nexthopIps": ["10.2.3.1"], "oifs": ["Ethernet1/3"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
+    "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps": ["10.2.3.2"], "oifs":
+    ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
+    "spine2-nxos", "vrf": "default", "prefix": "4.4.4.4/32", "nexthopIps": ["10.2.4.2"],
+    "oifs": ["Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps":
-    ["10.2.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference":
+    "hostname": "spine2-nxos", "vrf": "default", "prefix": "5.5.5.5/32", "nexthopIps":
+    ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "4.4.4.4/32",
-    "nexthopIps": ["10.2.4.2"], "oifs": ["Ethernet1/4"], "protocol": "ospf", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "6.6.6.6/32",
+    "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "5.5.5.5/32", "nexthopIps": ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol":
+    "10.1.1.0/30", "nexthopIps": ["10.2.1.2"], "oifs": ["Ethernet1/1"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
     1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "6.6.6.6/32", "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.1.1.0/30", "nexthopIps": ["10.2.1.2"], "oifs": ["Ethernet1/1"],
+    "prefix": "10.1.2.0/30", "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"],
     "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
-    "vrf": "default", "prefix": "10.1.2.0/30", "nexthopIps": ["10.2.2.2"], "oifs":
-    ["Ethernet1/2"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.2.1.2"], "oifs":
+    ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.2.1.2"],
-    "oifs": ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110,
+    "spine2-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.2.3.2"],
+    "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps":
-    ["10.2.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference":
+    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.5.0/30", "nexthopIps":
+    ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.5.0/30",
-    "nexthopIps": ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.6.0/30",
+    "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "10.1.6.0/30", "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.2.1.0/30", "nexthopIps": ["10.2.1.1"], "oifs": ["Ethernet1/1"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "10.2.1.0/30", "nexthopIps": ["10.2.1.1"], "oifs": ["Ethernet1/1"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.2.1"], "oifs":
-    ["Ethernet1/2"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    ["Ethernet1/2"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "default", "prefix": "10.2.2.1/32", "nexthopIps": ["10.2.2.1"],
     "oifs": ["Ethernet1/2"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -1777,9 +1786,9 @@ tests:
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "management", "prefix":
     "172.29.151.0/24", "nexthopIps": ["172.29.151.2"], "oifs": ["mgmt0"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf": "default",
-    "prefix": "172.29.151.4/32", "nexthopIps": [], "oifs": ["GigabitEthernet0/7"],
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf":
+    "default", "prefix": "172.29.151.4/32", "nexthopIps": [], "oifs": ["GigabitEthernet0/7"],
     "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395444170}, {"namespace": "mixed", "hostname": "leaf2-ios", "vrf":
     "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.2.2.1", "10.1.2.1"], "oifs":
@@ -2072,47 +2081,47 @@ tests:
     "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426},
     {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.1.4.2/32",
     "nexthopIps": [], "oifs": ["xe-0/0/0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.1.4.0/30", "nexthopIps":
-    [], "oifs": ["xe-0/0/0.0"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps":
     ["10.1.4.1"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "4.4.4.4/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
-    "leaf4-qfx", "vrf": "default", "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.4.1"],
-    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
-    4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
-    "leaf4-qfx", "vrf": "default", "prefix": "6.6.6.6/32", "nexthopIps": ["10.1.4.1",
-    "10.2.4.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source":
-    "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426},
-    {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "5.5.5.5/32",
-    "nexthopIps": ["10.1.4.1", "10.2.4.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438426}, {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf":
-    "default", "prefix": "10.2.1.0/30", "nexthopIps": ["10.2.4.1"], "oifs": ["xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438426}, {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf":
-    "default", "prefix": "3.3.3.3/32", "nexthopIps": ["10.1.4.1", "10.2.4.1"], "oifs":
-    ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
-    "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.1.2.0/30", "nexthopIps":
+    [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed",
+    "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.1.1.0/30", "nexthopIps":
     ["10.1.4.1"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
-    "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.2.0/30", "nexthopIps":
-    ["10.2.4.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
-    "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "172.29.151.6/32",
+    "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "6.6.6.6/32", "nexthopIps":
+    ["10.1.4.1", "10.2.4.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf",
+    "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
+    1627395438426}, {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default",
+    "prefix": "5.5.5.5/32", "nexthopIps": ["10.1.4.1", "10.2.4.1"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    "leaf4-qfx", "vrf": "default", "prefix": "10.2.1.0/30", "nexthopIps": ["10.2.4.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
+    "leaf4-qfx", "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps": ["10.1.4.1",
+    "10.2.4.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source":
+    "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426},
+    {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.1.2.0/30",
+    "nexthopIps": ["10.1.4.1"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source":
+    "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426},
+    {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.2.0/30",
+    "nexthopIps": ["10.2.4.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source":
+    "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426},
+    {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "172.29.151.6/32",
     "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps":
-    [], "oifs": ["xe-0/0/1.0"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/1.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.4.2/32", "nexthopIps":
     [], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0,
-    "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace": "mixed",
+    "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed",
     "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps":
     ["10.2.4.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
@@ -2127,12 +2136,12 @@ tests:
     "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1627395438426},
     {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "169.254.0.2/32",
     "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1627395438426}, {"namespace":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "224.0.0.5/32",
     "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "multirecv", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "fe80::205:860f:fc71:8700/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 6, "action": "forward", "timestamp": 1627395438426}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
     [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
@@ -2152,7 +2161,7 @@ tests:
     4, "action": "forward", "timestamp": 1627395438426}, {"namespace": "mixed", "hostname":
     "leaf3-qfx", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs":
     ["em1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action":
-    "local", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
     "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs":
     ["em0.0"], "protocol": "static", "source": "", "preference": 5, "ipvers": 4, "action":
     "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
@@ -2163,7 +2172,7 @@ tests:
     ["10.1.3.1", "10.2.3.1"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf",
     "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
-    "prefix": "3.3.3.3/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct",
+    "prefix": "3.3.3.3/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
     "prefix": "4.4.4.4/32", "nexthopIps": ["10.1.3.1", "10.2.3.1"], "oifs": ["xe-0/0/0.0",
@@ -2180,10 +2189,10 @@ tests:
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.1.3.0/30", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "10.1.3.2/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "10.1.3.2/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.1.4.0/30", "nexthopIps": ["10.1.3.1"], "oifs": ["xe-0/0/0.0"],
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
@@ -2201,55 +2210,56 @@ tests:
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
     "default", "prefix": "10.2.3.0/30", "nexthopIps": [], "oifs": ["xe-0/0/1.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.3.1"], "oifs": ["xe-0/0/1.0"],
-    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf":
-    "default", "prefix": "172.29.151.5/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
-    1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
-    "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs": [], "protocol": "ospf", "source":
-    "", "preference": 10, "ipvers": 4, "action": "multirecv", "timestamp": 1627395438536},
-    {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "fe80::205:860f:fc71:1300/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 6, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
-    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
-    6, "action": "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed",
-    "hostname": "leaf3-qfx", "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps":
-    ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.3.2/32", "nexthopIps":
-    [], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0,
-    "ipvers": 4, "action": "local", "timestamp": 1627395438536}, {"namespace": "mixed",
-    "hostname": "leaf3-qfx", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps":
-    ["10.1.3.1"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1627395438536}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.5.0/30",
-    "nexthopIps": ["10.1.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source":
-    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "10.2.6.0/30", "nexthopIps": ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.3.1"], "oifs":
+    ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "172.29.151.5/32", "nexthopIps": [],
+    "oifs": ["em0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps": [], "oifs":
+    [], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action":
+    "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "fe80::205:860f:fc71:1300/128", "nexthopIps": [],
+    "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
+    6, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs":
+    [], "protocol": "inet6", "source": "", "preference": 0, "ipvers": 6, "action":
+    "multirecv", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname": "leaf3-qfx",
+    "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps": ["10.2.3.1"], "oifs":
+    ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.3.1"],
+    "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "10.2.3.2/32", "nexthopIps": [], "oifs":
+    ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "leaf3-qfx", "vrf": "default", "prefix": "11.11.11.11/32", "nexthopIps": ["10.1.3.1"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1627395438536}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.2.5.0/30", "nexthopIps": ["10.1.5.2"],
+    "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference": 110,
+    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
+    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps":
+    ["10.1.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source": "", "preference":
+    110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "11.11.11.11/32",
+    "nexthopIps": ["11.11.11.11", "11.11.11.11"], "oifs": ["Lo0", "Lo0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "11.11.11.11/32", "nexthopIps": ["11.11.11.11", "11.11.11.11"], "oifs":
-    ["Lo0", "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "22.22.22.22/32", "nexthopIps": ["10.1.1.2",
-    "10.1.2.2", "10.1.3.2", "10.1.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3",
-    "Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "management", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"],
+    "prefix": "22.22.22.22/32", "nexthopIps": ["10.1.1.2", "10.1.2.2", "10.1.3.2",
+    "10.1.4.2"], "oifs": ["Ethernet1/1", "Ethernet1/2", "Ethernet1/3", "Ethernet1/4"],
+    "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "management", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"],
     "oifs": [], "protocol": "static", "source": "", "preference": 1, "ipvers": 4,
     "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
     "spine1-nxos", "vrf": "default", "prefix": "5.5.5.5/32", "nexthopIps": ["10.1.5.2"],
@@ -2288,8 +2298,8 @@ tests:
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
     1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
     "prefix": "10.1.2.0/30", "nexthopIps": ["10.1.2.1"], "oifs": ["Ethernet1/2"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
     "vrf": "default", "prefix": "10.1.2.1/32", "nexthopIps": ["10.1.2.1"], "oifs":
     ["Ethernet1/2"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
@@ -2297,42 +2307,43 @@ tests:
     "oifs": ["Ethernet1/1"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
     "spine1-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.1.3.1"],
-    "oifs": ["Ethernet1/3"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.3.1/32", "nexthopIps":
-    ["10.1.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source": "", "preference":
+    "oifs": ["Ethernet1/3"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.2.2.0/30",
-    "nexthopIps": ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source":
-    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
-    "10.1.1.0/30", "nexthopIps": ["10.1.1.1"], "oifs": ["Ethernet1/1"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
-    "prefix": "10.1.6.1/32", "nexthopIps": ["10.1.6.1"], "oifs": ["Ethernet1/6"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
-    "vrf": "default", "prefix": "10.1.6.0/30", "nexthopIps": ["10.1.6.1"], "oifs":
-    ["Ethernet1/6"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "10.1.5.1/32", "nexthopIps": ["10.1.5.1"],
-    "oifs": ["Ethernet1/5"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
-    "spine1-nxos", "vrf": "default", "prefix": "10.1.5.0/30", "nexthopIps": ["10.1.5.1"],
-    "oifs": ["Ethernet1/5"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed",
-    "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.4.1/32", "nexthopIps":
-    ["10.1.4.1"], "oifs": ["Ethernet1/4"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
-    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.4.0/30",
-    "nexthopIps": ["10.1.4.1"], "oifs": ["Ethernet1/4"], "protocol": "direct", "source":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.3.1/32",
+    "nexthopIps": ["10.1.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source":
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
-    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "2.2.2.2/32", "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"], "protocol":
+    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
+    "10.2.2.0/30", "nexthopIps": ["10.1.2.2"], "oifs": ["Ethernet1/2"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "management",
-    "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": [], "protocol":
-    "static", "source": "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp":
+    1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default",
+    "prefix": "10.1.1.0/30", "nexthopIps": ["10.1.1.1"], "oifs": ["Ethernet1/1"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "prefix": "10.1.6.1/32", "nexthopIps": ["10.1.6.1"], "oifs":
+    ["Ethernet1/6"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.1.6.0/30", "nexthopIps": ["10.1.6.1"],
+    "oifs": ["Ethernet1/6"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.5.1/32",
+    "nexthopIps": ["10.1.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859},
+    {"namespace": "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix":
+    "10.1.5.0/30", "nexthopIps": ["10.1.5.1"], "oifs": ["Ethernet1/5"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395439859}, {"namespace": "mixed", "hostname": "spine1-nxos",
+    "vrf": "default", "prefix": "10.1.4.1/32", "nexthopIps": ["10.1.4.1"], "oifs":
+    ["Ethernet1/4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1627395439859}, {"namespace": "mixed", "hostname":
+    "spine1-nxos", "vrf": "default", "prefix": "10.1.4.0/30", "nexthopIps": ["10.1.4.1"],
+    "oifs": ["Ethernet1/4"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "2.2.2.2/32",
+    "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"], "protocol": "ospf", "source":
+    "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "management", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs": [], "protocol": "static",
+    "source": "", "preference": 1, "ipvers": 4, "action": "forward", "timestamp":
     1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
     "prefix": "22.22.22.22/32", "nexthopIps": ["22.22.22.22", "22.22.22.22"], "oifs":
     ["Lo0", "Lo0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -2345,77 +2356,78 @@ tests:
     "oifs": ["Ethernet1/6"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "default", "prefix": "10.2.6.0/30", "nexthopIps": ["10.2.6.1"],
-    "oifs": ["Ethernet1/6"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.1/32", "nexthopIps":
-    ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source": "", "preference":
+    "oifs": ["Ethernet1/6"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.0/30",
-    "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "direct", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.1/32",
+    "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "local", "source":
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "10.2.4.1/32", "nexthopIps": ["10.2.4.1"], "oifs": ["Ethernet1/4"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.4.1"], "oifs": ["Ethernet1/4"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "10.2.5.0/30", "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
-    "vrf": "default", "prefix": "10.2.3.1/32", "nexthopIps": ["10.2.3.1"], "oifs":
-    ["Ethernet1/3"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    "vrf": "default", "prefix": "10.2.4.1/32", "nexthopIps": ["10.2.4.1"], "oifs":
+    ["Ethernet1/4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "10.2.3.0/30", "nexthopIps": ["10.2.3.1"],
-    "oifs": ["Ethernet1/3"], "protocol": "direct", "source": "", "preference": 0,
+    "spine2-nxos", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps": ["10.2.4.1"],
+    "oifs": ["Ethernet1/4"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.3.1/32",
+    "nexthopIps": ["10.2.3.1"], "oifs": ["Ethernet1/3"], "protocol": "local", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
+    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
+    "10.2.3.0/30", "nexthopIps": ["10.2.3.1"], "oifs": ["Ethernet1/3"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
+    "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps": ["10.2.3.2"], "oifs":
+    ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
+    "spine2-nxos", "vrf": "default", "prefix": "4.4.4.4/32", "nexthopIps": ["10.2.4.2"],
+    "oifs": ["Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps":
-    ["10.2.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference":
+    "hostname": "spine2-nxos", "vrf": "default", "prefix": "5.5.5.5/32", "nexthopIps":
+    ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "4.4.4.4/32",
-    "nexthopIps": ["10.2.4.2"], "oifs": ["Ethernet1/4"], "protocol": "ospf", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "6.6.6.6/32",
+    "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "5.5.5.5/32", "nexthopIps": ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol":
+    "10.1.1.0/30", "nexthopIps": ["10.2.1.2"], "oifs": ["Ethernet1/1"], "protocol":
     "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
     1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "6.6.6.6/32", "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.1.1.0/30", "nexthopIps": ["10.2.1.2"], "oifs": ["Ethernet1/1"],
+    "prefix": "10.1.2.0/30", "nexthopIps": ["10.2.2.2"], "oifs": ["Ethernet1/2"],
     "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
-    "vrf": "default", "prefix": "10.1.2.0/30", "nexthopIps": ["10.2.2.2"], "oifs":
-    ["Ethernet1/2"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.2.1.2"], "oifs":
+    ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
-    "spine2-nxos", "vrf": "default", "prefix": "1.1.1.1/32", "nexthopIps": ["10.2.1.2"],
-    "oifs": ["Ethernet1/1"], "protocol": "ospf", "source": "", "preference": 110,
+    "spine2-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.2.3.2"],
+    "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110,
     "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed",
-    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps":
-    ["10.2.3.2"], "oifs": ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference":
+    "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.5.0/30", "nexthopIps":
+    ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source": "", "preference":
     110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
-    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.5.0/30",
-    "nexthopIps": ["10.2.5.2"], "oifs": ["Ethernet1/5"], "protocol": "ospf", "source":
+    "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.1.6.0/30",
+    "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol": "ospf", "source":
     "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
     {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "10.1.6.0/30", "nexthopIps": ["10.2.6.2"], "oifs": ["Ethernet1/6"], "protocol":
-    "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward", "timestamp":
-    1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.2.1.0/30", "nexthopIps": ["10.2.1.1"], "oifs": ["Ethernet1/1"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "10.2.1.0/30", "nexthopIps": ["10.2.1.1"], "oifs": ["Ethernet1/1"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.29.151.254"], "oifs":
     ["_nexthopVrf:management"], "protocol": "static", "source": "", "preference":
     1, "ipvers": 4, "action": "forward", "timestamp": 1627395440281}, {"namespace":
     "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.2.0/30",
-    "nexthopIps": ["10.2.2.1"], "oifs": ["Ethernet1/2"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281},
-    {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix":
-    "10.2.2.1/32", "nexthopIps": ["10.2.2.1"], "oifs": ["Ethernet1/2"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    "nexthopIps": ["10.2.2.1"], "oifs": ["Ethernet1/2"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos", "vrf": "default",
-    "prefix": "10.1.4.0/30", "nexthopIps": ["10.2.4.2"], "oifs": ["Ethernet1/4"],
-    "protocol": "ospf", "source": "", "preference": 110, "ipvers": 4, "action": "forward",
+    "prefix": "10.2.2.1/32", "nexthopIps": ["10.2.2.1"], "oifs": ["Ethernet1/2"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395440281}, {"namespace": "mixed", "hostname": "spine2-nxos",
-    "vrf": "default", "prefix": "10.2.1.1/32", "nexthopIps": ["10.2.1.1"], "oifs":
-    ["Ethernet1/1"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    "vrf": "default", "prefix": "10.1.4.0/30", "nexthopIps": ["10.2.4.2"], "oifs":
+    ["Ethernet1/4"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
+    4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
+    "spine2-nxos", "vrf": "default", "prefix": "10.2.1.1/32", "nexthopIps": ["10.2.1.1"],
+    "oifs": ["Ethernet1/1"], "protocol": "local", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281}, {"namespace": "mixed", "hostname":
     "spine2-nxos", "vrf": "management", "prefix": "172.29.151.2/32", "nexthopIps":
     ["172.29.151.2"], "oifs": ["mgmt0"], "protocol": "local", "source": "", "preference":
@@ -2587,7 +2599,8 @@ tests:
     error: '[{"error": "Invalid prefixlen query: it must be of the form ''[<|<=|>=|>|!]
       length'' (i.e. ''>= 24'')"}]'
   marks: route show filter prefixlen mixed
-- command: route lpm --address='11.11.11.11' --columns='hostname nexthopIps' --format=json --namespace=mixed
+- command: route lpm --address='11.11.11.11' --columns='hostname nexthopIps' --format=json
+    --namespace=mixed
   data-directory: tests/data/parquet//
   marks: route lpm mixed
   output: '[{"hostname": "leaf6-eos", "nexthopIps": ["10.1.6.1"]}, {"hostname": "spine2-nxos",

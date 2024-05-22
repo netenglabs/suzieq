@@ -5274,7 +5274,7 @@ tests:
     "metric": 0, "statusChangeTimestamp": 1623025764173, "active": true}, {"namespace":
     "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.1.254/32",
     "nexthopIps": [], "oifs": ["irb.10"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025801173, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025801173, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998743173,
     "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf",
@@ -5296,22 +5296,22 @@ tests:
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
     1623025764173, "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf":
     "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": [], "oifs": ["irb.10"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1623025801173, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622998743173, "active": true}, {"namespace": "junos",
-    "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps":
-    [], "oifs": ["irb.10"], "protocol": "evpn", "source": "", "preference": 7, "ipvers":
-    4, "action": "forward", "timestamp": 1623025801173, "weights": [], "prefixlen":
-    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1623025416173, "active": true},
-    {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24",
-    "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
-    1623025801173, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622998781173, "active": true}, {"namespace": "junos",
-    "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025801173, "weights": [], "prefixlen": 24, "numNexthops": 1,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1622998743173, "active": true}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32",
+    "nexthopIps": [], "oifs": ["irb.10"], "protocol": "evpn", "source": "", "preference":
+    7, "ipvers": 4, "action": "forward", "timestamp": 1623025801173, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1623025416173,
+    "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf",
+    "prefix": "172.16.2.0/24", "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025801173, "weights": [], "prefixlen": 24, "numNexthops": 1,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1622998781173, "active": true}, {"namespace":
+    "junos", "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
     ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
     "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
     1623025801173, "weights": [], "prefixlen": 32, "numNexthops": 2, "routeTag": "",
@@ -5329,13 +5329,13 @@ tests:
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998078173,
     "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
     "prefix": "fe80::205:860f:fc71:ad00/128", "nexthopIps": [], "oifs": ["lo0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action": "forward",
-    "timestamp": 1623025801173, "weights": [], "prefixlen": 128, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 6, "action":
+    "forward", "timestamp": 1623025801173, "weights": [], "prefixlen": 128, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1622998089173, "active": true}, {"namespace":
     "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.254/32",
     "nexthopIps": [], "oifs": ["irb.30"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025801173, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025801173, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998750173,
     "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf",
@@ -5356,19 +5356,19 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1623025481173, "active": true},
     {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "10.0.0.101/32",
-    "nexthopIps": [], "oifs": ["lo0.999"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1623025801173, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998734173,
-    "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
-    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["xe-0/0/0.0"],
+    "nexthopIps": [], "oifs": ["lo0.999"], "protocol": "connected", "source": "",
+    "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025801173,
+    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
+    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1622998734173, "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf":
+    "default", "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["xe-0/0/0.0"],
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1623025801173, "weights": [], "prefixlen": 32, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 1, "statusChangeTimestamp": 1622998737173, "active": true}, {"namespace":
     "junos", "hostname": "leaf01", "vrf": ":vxlan", "prefix": "169.254.0.0/24", "nexthopIps":
-    [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025801173, "weights": [], "prefixlen":
+    [], "oifs": ["em1.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025801173, "weights": [], "prefixlen":
     24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998682173, "active": true},
     {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "0.0.0.0/0",
@@ -5378,8 +5378,8 @@ tests:
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622998095173, "active": true}, {"namespace": "junos",
     "hostname": "leaf01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025801173, "weights": [], "prefixlen":
+    [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025801173, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998384173, "active": true},
     {"namespace": "junos", "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.102/32",
@@ -5406,24 +5406,24 @@ tests:
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     2, "statusChangeTimestamp": 1622998737173, "active": true}, {"namespace": "junos",
     "hostname": "leaf01", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps":
-    [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025801173, "weights": [], "prefixlen":
+    [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025801173, "weights": [], "prefixlen":
     24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998094173, "active": true},
     {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "10.255.5.184/32",
     "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025801173, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025801173, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998094173,
     "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf": "default",
-    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
+    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025801173, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622998087173, "active": true}, {"namespace": "junos",
     "hostname": "leaf01", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps":
     [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "local", "timestamp": 1623025801173, "weights": [], "prefixlen":
+    4, "action": "forward", "timestamp": 1623025801173, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998087173, "active": true},
     {"namespace": "junos", "hostname": "leaf01", "vrf": "default", "prefix": "224.0.0.5/32",
@@ -5432,7 +5432,7 @@ tests:
     [], "prefixlen": 32, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp": 1622998503173,
     "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf": ":vxlan",
-    "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct",
+    "prefix": "10.0.0.11/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025801173, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
@@ -5444,149 +5444,149 @@ tests:
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622998781173, "active": true}, {"namespace": "junos",
     "hostname": "leaf01", "vrf": ":vxlan", "prefix": "10.255.5.0/24", "nexthopIps":
-    [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025801173, "weights": [], "prefixlen":
+    [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025801173, "weights": [], "prefixlen":
     24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998682173, "active": true},
     {"namespace": "junos", "hostname": "leaf01", "vrf": ":vxlan", "prefix": "10.255.5.184/32",
     "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025801173, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025801173, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1623005602173,
     "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf": ":vxlan",
     "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
-    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025801173,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025801173, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998682173, "active": true}, {"namespace": "junos",
+    "hostname": "leaf01", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "connected", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025801173,
+    "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1622998682173, "active": true}, {"namespace": "junos", "hostname": "leaf01", "vrf":
-    "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1623025801173, "weights": [], "prefixlen": 24, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1622998750173, "active": true}, {"namespace":
-    "junos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps":
-    ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 2, "routeTag": "",
+    1622998750173, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 32, "numNexthops": 2, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 2, "statusChangeTimestamp": 1622998753263,
+    "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen": 32,
+    "numNexthops": 2, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 2, "statusChangeTimestamp": 1622998753263, "active": true},
+    {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "169.254.253.4/30",
+    "nexthopIps": ["10.0.0.32"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    2, "statusChangeTimestamp": 1622998753263, "active": true}, {"namespace": "junos",
-    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 2, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    2, "statusChangeTimestamp": 1622998753263, "active": true}, {"namespace": "junos",
-    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "169.254.253.4/30", "nexthopIps":
-    ["10.0.0.32"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
+    0, "statusChangeTimestamp": 1623025780263, "active": true}, {"namespace": "junos",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30", "nexthopIps":
+    ["10.0.0.31"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
     "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
     "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1623025780263, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
-    "evpn-vrf", "prefix": "169.254.254.4/30", "nexthopIps": ["10.0.0.31"], "oifs":
-    ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference": 170,
-    "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
-    30, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1623025764263, "active": true},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.1.0/24",
-    "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622998781263, "active": true}, {"namespace": "junos",
-    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32", "nexthopIps":
-    ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
-    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1623025417263, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
-    "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps": [], "oifs": ["irb.20"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622998746263, "active": true}, {"namespace": "junos",
-    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.201/32", "nexthopIps":
-    [], "oifs": ["irb.20"], "protocol": "evpn", "source": "", "preference": 7, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
-    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1623025480263, "active": true},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.254/32",
-    "nexthopIps": [], "oifs": ["irb.20"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998746263,
-    "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
-    "prefix": "172.16.3.0/24", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    1623025764263, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "prefix": "172.16.1.0/24", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1622998752263, "active": true}, {"namespace":
-    "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.102/32",
+    "metric": 0, "statusChangeTimestamp": 1622998781263, "active": true}, {"namespace":
+    "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.1.101/32",
     "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
     "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
     1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1623025449263, "active": true}, {"namespace": "junos",
-    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.202/32", "nexthopIps":
-    [], "oifs": ["irb.30"], "protocol": "evpn", "source": "", "preference": 7, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
-    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1623025535263, "active": true},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.254/32",
-    "nexthopIps": [], "oifs": ["irb.30"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263, "weights": [],
+    0, "statusChangeTimestamp": 1623025417263, "active": true}, {"namespace": "junos",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.0/24", "nexthopIps":
+    [], "oifs": ["irb.20"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1622998746263, "active": true},
+    {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.2.201/32",
+    "nexthopIps": [], "oifs": ["irb.20"], "protocol": "evpn", "source": "", "preference":
+    7, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998752263,
-    "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
-    "prefix": "fe80::205:860f:fc71:5500/128", "nexthopIps": [], "oifs": ["lo0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action": "forward",
-    "timestamp": 1623025802263, "weights": [], "prefixlen": 128, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1622998099263, "active": true}, {"namespace":
-    "junos", "hostname": "leaf02", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
-    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
-    6, "action": "multirecv", "timestamp": 1623025802263, "weights": [], "prefixlen":
-    128, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1622998093263, "active": true},
-    {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "ff02::2/128",
-    "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "", "preference":
-    0, "ipvers": 6, "action": "multirecv", "timestamp": 1623025802263, "weights":
-    [], "prefixlen": 128, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998736263,
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1623025480263,
     "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
-    "prefix": "10.0.0.122/32", "nexthopIps": ["10.0.0.32"], "oifs": ["_nexthopVrf:default"],
+    "prefix": "172.16.2.254/32", "nexthopIps": [], "oifs": ["irb.20"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998746263, "active": true}, {"namespace": "junos",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.0/24", "nexthopIps":
+    ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "connected", "source":
+    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
+    "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList":
+    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1622998752263, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "prefix": "172.16.3.102/32", "nexthopIps": ["10.0.0.11"], "oifs":
+    ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference": 170,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1623025449263, "active": true},
+    {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "172.16.3.202/32",
+    "nexthopIps": [], "oifs": ["irb.30"], "protocol": "evpn", "source": "", "preference":
+    7, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1623025535263,
+    "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
+    "prefix": "172.16.3.254/32", "nexthopIps": [], "oifs": ["irb.30"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998752263, "active": true}, {"namespace": "junos",
+    "hostname": "leaf02", "vrf": "default", "prefix": "fe80::205:860f:fc71:5500/128",
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 6, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 128, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998099263,
+    "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
+    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
+    "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1623025802263,
+    "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag": "", "asPathList":
+    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1622998093263, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
+    "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag":
+    "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998736263, "active": true}, {"namespace": "junos",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "10.0.0.122/32", "nexthopIps":
+    ["10.0.0.32"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
+    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
+    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
+    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1623025780263, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "prefix": "10.0.0.121/32", "nexthopIps": ["10.0.0.31"], "oifs": ["_nexthopVrf:default"],
     "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1623025780263, "active": true}, {"namespace":
-    "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "10.0.0.121/32", "nexthopIps":
-    ["10.0.0.31"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
-    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1623025764263, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
-    "evpn-vrf", "prefix": "10.0.0.102/32", "nexthopIps": [], "oifs": ["lo0.999"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "metric": 0, "statusChangeTimestamp": 1623025764263, "active": true}, {"namespace":
+    "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "10.0.0.102/32", "nexthopIps":
+    [], "oifs": ["lo0.999"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998736263,
+    "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.101/32", "nexthopIps": ["10.0.0.11"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1622998736263, "active": true}, {"namespace":
-    "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "10.0.0.101/32", "nexthopIps":
-    ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
-    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
+    "metric": 0, "statusChangeTimestamp": 1622998781263, "active": true}, {"namespace":
+    "junos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1622998388263, "active": true},
+    {"namespace": "junos", "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.21/32",
+    "nexthopIps": ["10.0.0.21"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source":
+    "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
     "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1622998781263, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
-    "default", "prefix": "10.0.0.12/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622998388263, "active": true}, {"namespace": "junos",
-    "hostname": "leaf02", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
-    ["10.0.0.21"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp": 1622998753263,
-    "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
-    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["xe-0/0/1.0"],
+    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp":
+    1622998753263, "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf":
+    "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["xe-0/0/1.0"],
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
@@ -5603,13 +5603,13 @@ tests:
     "numNexthops": 2, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 2, "statusChangeTimestamp": 1622998753263, "active": true},
     {"namespace": "junos", "hostname": "leaf02", "vrf": "default", "prefix": "10.255.5.0/24",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998107263,
     "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
     "prefix": "10.255.5.185/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622998107263, "active": true}, {"namespace": "junos",
@@ -5619,7 +5619,7 @@ tests:
     "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998108263,
     "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
-    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
+    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
@@ -5636,238 +5636,240 @@ tests:
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1622998781263, "active": true}, {"namespace":
     "junos", "hostname": "leaf02", "vrf": ":vxlan", "prefix": "10.0.0.12/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998679263, "active": true},
     {"namespace": "junos", "hostname": "leaf02", "vrf": ":vxlan", "prefix": "10.255.5.0/24",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998679263,
     "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": ":vxlan",
     "prefix": "10.255.5.185/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1623005602263, "active": true}, {"namespace": "junos",
     "hostname": "leaf02", "vrf": ":vxlan", "prefix": "169.254.0.0/24", "nexthopIps":
-    [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    [], "oifs": ["em1.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
     24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998679263, "active": true},
     {"namespace": "junos", "hostname": "leaf02", "vrf": ":vxlan", "prefix": "169.254.0.2/32",
     "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998679263,
     "active": true}, {"namespace": "junos", "hostname": "leaf02", "vrf": "default",
     "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
-    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025802263,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1622998097263, "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf":
-    "evpn-vrf", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
-    "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag":
-    "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622999400263, "active": true}, {"namespace": "junos",
-    "hostname": "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal", "source": "",
-    "preference": 12, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
-    "weights": [], "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1622998105263, "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf":
-    "default", "prefix": "fe80::205:860f:fc71:2700/128", "nexthopIps": [], "oifs":
-    ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action":
-    "forward", "timestamp": 1623025802263, "weights": [], "prefixlen": 128, "numNexthops":
-    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1622998093263, "active": true}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps":
-    [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
-    24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1622998092263, "active": true},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.255.5.252/32",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998102263,
-    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
-    "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
+    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622998102263, "active": true}, {"namespace": "junos",
-    "hostname": "dcedge01", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
+    0, "statusChangeTimestamp": 1622998097263, "active": true}, {"namespace": "junos",
+    "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "ff02::2/128", "nexthopIps":
     [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
     6, "action": "multirecv", "timestamp": 1623025802263, "weights": [], "prefixlen":
     128, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1622998088263, "active": true},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.31/32",
+    "unknown", "metric": 0, "statusChangeTimestamp": 1622999400263, "active": true},
+    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal",
+    "source": "", "preference": 12, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 0, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998105263, "active": true}, {"namespace": "junos",
+    "hostname": "exit02", "vrf": "default", "prefix": "fe80::205:860f:fc71:2700/128",
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 6, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 128, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998093263,
+    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998092263, "active": true}, {"namespace": "junos",
+    "hostname": "exit02", "vrf": "default", "prefix": "10.255.5.252/32", "nexthopIps":
+    [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1622998102263, "active": true},
+    {"namespace": "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.255.5.0/24",
+    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998102263,
+    "active": true}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
+    "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1623025802263,
+    "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag": "", "asPathList":
+    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1622998088263, "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf":
+    "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"],
+    "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 32, "numNexthops": 2, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 2, "statusChangeTimestamp": 1622998729263,
+    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.22"], "oifs": ["xe-0/0/1.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 1, "statusChangeTimestamp": 1622998709263, "active": true}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.21/32", "nexthopIps":
+    ["10.0.0.21"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp": 1622998719263,
+    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
+    "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen": 32,
+    "numNexthops": 2, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 2, "statusChangeTimestamp": 1622998756263, "active": true},
+    {"namespace": "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.11/32",
     "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"],
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 2,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 2, "statusChangeTimestamp": 1622998729263, "active": true}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps":
-    ["10.0.0.22"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp": 1622998709263,
-    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
-    "prefix": "10.0.0.21/32", "nexthopIps": ["10.0.0.21"], "oifs": ["xe-0/0/0.0"],
-    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 1, "statusChangeTimestamp": 1622998719263, "active": true}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
-    ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 2, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    2, "statusChangeTimestamp": 1622998756263, "active": true}, {"namespace": "junos",
-    "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 2, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    2, "statusChangeTimestamp": 1622998739263, "active": true}, {"namespace": "junos",
-    "hostname": "exit02", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"],
-    "oifs": ["em0.0"], "protocol": "access-internal", "source": "", "preference":
-    12, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
-    "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998103263,
-    "active": true}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
-    "prefix": "10.0.0.41/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct",
-    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622999235263, "active": true}, {"namespace": "junos",
-    "hostname": "dcedge01", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps":
-    [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
-    24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1622998104263, "active": true},
-    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "10.255.5.250/32",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "metric": 2, "statusChangeTimestamp": 1622998739263, "active": true}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal", "source": "",
+    "preference": 12, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
+    "weights": [], "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList":
+    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1622998103263, "active": true}, {"namespace": "junos", "hostname": "dcedge01",
+    "vrf": "default", "prefix": "10.0.0.41/32", "nexthopIps": [], "oifs": ["lo0.0"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1622999235263, "active": true}, {"namespace":
+    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "10.255.5.0/24",
+    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998104263,
     "active": true}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
-    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
-    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
+    "prefix": "10.255.5.250/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622998094263, "active": true}, {"namespace": "junos",
-    "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps":
-    [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "local", "timestamp": 1623025802263, "weights": [], "prefixlen":
-    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    0, "statusChangeTimestamp": 1622998104263, "active": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps":
+    [], "oifs": ["em1.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998094263, "active": true},
-    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/31",
-    "nexthopIps": [], "oifs": ["xe-0/0/0.0"], "protocol": "direct", "source": "",
-    "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
-    "weights": [], "prefixlen": 31, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1622999247263, "active": true}, {"namespace": "junos", "hostname": "dcedge01",
-    "vrf": "default", "prefix": "169.254.127.0/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
-    "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1,
+    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.0.2/32",
+    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998094263,
+    "active": true}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "169.254.127.0/31", "nexthopIps": [], "oifs": ["xe-0/0/0.0"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263, "weights": [], "prefixlen": 31, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1622999247263, "active": true}, {"namespace":
-    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/31",
-    "nexthopIps": [], "oifs": ["xe-0/0/1.0"], "protocol": "direct", "source": "",
-    "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
-    "weights": [], "prefixlen": 31, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1622999252263, "active": true}, {"namespace": "junos", "hostname": "dcedge01",
-    "vrf": "default", "prefix": "169.254.127.2/32", "nexthopIps": [], "oifs": ["xe-0/0/1.0"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
-    "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1,
+    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/32",
+    "nexthopIps": [], "oifs": ["xe-0/0/0.0"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622999247263,
+    "active": true}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "169.254.127.2/31", "nexthopIps": [], "oifs": ["xe-0/0/1.0"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263, "weights": [], "prefixlen": 31, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1622999252263, "active": true}, {"namespace":
-    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.1.0/24",
-    "nexthopIps": ["169.254.127.1"], "oifs": ["xe-0/0/0.0"], "protocol": "bgp", "source":
-    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
-    "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList":
-    ["64520", "65533", "64520", "I"], "validState": "unverified", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1623021268263, "active": true},
-    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.2.0/24",
-    "nexthopIps": ["169.254.127.1"], "oifs": ["xe-0/0/0.0"], "protocol": "bgp", "source":
-    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
-    "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList":
-    ["64520", "65533", "64520", "I"], "validState": "unverified", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1623021268263, "active": true},
-    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.3.0/24",
-    "nexthopIps": ["169.254.127.1"], "oifs": ["xe-0/0/0.0"], "protocol": "bgp", "source":
-    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
-    "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList":
-    ["64520", "65533", "64520", "I"], "validState": "unverified", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1623021268263, "active": true},
-    {"namespace": "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "fe80::205:860f:fc71:c200/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/32",
+    "nexthopIps": [], "oifs": ["xe-0/0/1.0"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622999252263,
+    "active": true}, {"namespace": "junos", "hostname": "dcedge01", "vrf": "default",
+    "prefix": "172.16.1.0/24", "nexthopIps": ["169.254.127.1"], "oifs": ["xe-0/0/0.0"],
+    "protocol": "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1,
+    "routeTag": "", "asPathList": ["64520", "65533", "64520", "I"], "validState":
+    "unverified", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1623021268263, "active": true}, {"namespace": "junos", "hostname": "dcedge01",
+    "vrf": "default", "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.127.1"],
+    "oifs": ["xe-0/0/0.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    24, "numNexthops": 1, "routeTag": "", "asPathList": ["64520", "65533", "64520",
+    "I"], "validState": "unverified", "hardwareProgrammed": "unknown", "metric": 0,
+    "statusChangeTimestamp": 1623021268263, "active": true}, {"namespace": "junos",
+    "hostname": "dcedge01", "vrf": "default", "prefix": "172.16.3.0/24", "nexthopIps":
+    ["169.254.127.1"], "oifs": ["xe-0/0/0.0"], "protocol": "bgp", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights":
+    [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": ["64520",
+    "65533", "64520", "I"], "validState": "unverified", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1623021268263, "active": true}, {"namespace":
+    "junos", "hostname": "dcedge01", "vrf": "default", "prefix": "fe80::205:860f:fc71:c200/128",
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 6, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 128, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998094263,
     "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
     "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
-    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025802263,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1622998092263, "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf":
-    "default", "prefix": "169.254.253.0/30", "nexthopIps": [], "oifs": ["xe-0/0/2.2"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802263, "weights": [], "prefixlen": 30, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1622999420263, "active": true}, {"namespace":
-    "junos", "hostname": "exit02", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
-    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1622998400263, "active": true},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "default", "prefix": "224.0.0.5/32",
-    "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "multirecv", "timestamp": 1623025802263, "weights":
-    [], "prefixlen": 32, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp": 1622998525263,
-    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf",
-    "prefix": "172.16.3.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"],
-    "protocol": "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1,
-    "routeTag": "", "asPathList": ["65533", "64520", "I"], "validState": "unverified",
-    "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1623021268263,
-    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf",
-    "prefix": "172.16.2.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"],
-    "protocol": "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1,
-    "routeTag": "", "asPathList": ["65533", "64520", "I"], "validState": "unverified",
-    "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1623021268263,
-    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf",
-    "prefix": "172.16.1.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"],
-    "protocol": "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1,
-    "routeTag": "", "asPathList": ["65533", "64520", "I"], "validState": "unverified",
-    "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1623021268263,
-    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf",
-    "prefix": "169.254.253.9/32", "nexthopIps": [], "oifs": ["xe-0/0/2.4"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998092263, "active": true}, {"namespace": "junos",
+    "hostname": "exit02", "vrf": "default", "prefix": "169.254.253.0/30", "nexthopIps":
+    [], "oifs": ["xe-0/0/2.2"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
+    "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622999420263,
+    "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
+    "prefix": "10.0.0.32/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998400263, "active": true}, {"namespace": "junos",
+    "hostname": "exit02", "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps":
+    [], "oifs": [], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "multirecv", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    32, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 1, "statusChangeTimestamp": 1622998525263, "active": true},
+    {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
+    "172.16.3.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"], "protocol":
+    "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
+    "asPathList": ["65533", "64520", "I"], "validState": "unverified", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1623021268263, "active": true},
+    {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
+    "172.16.2.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"], "protocol":
+    "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
+    "asPathList": ["65533", "64520", "I"], "validState": "unverified", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1623021268263, "active": true},
+    {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
+    "172.16.1.0/24", "nexthopIps": ["169.254.253.10"], "oifs": ["xe-0/0/2.4"], "protocol":
+    "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802263, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
+    "asPathList": ["65533", "64520", "I"], "validState": "unverified", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1623021268263, "active": true},
+    {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf", "prefix":
+    "169.254.253.9/32", "nexthopIps": [], "oifs": ["xe-0/0/2.4"], "protocol": "local",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622999434263, "active": true}, {"namespace": "junos",
     "hostname": "exit02", "vrf": "internet-vrf", "prefix": "169.254.253.8/30", "nexthopIps":
-    [], "oifs": ["xe-0/0/2.4"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/2.4"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622999434263,
     "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "internet-vrf",
     "prefix": "169.254.127.3/32", "nexthopIps": [], "oifs": ["xe-0/0/3.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622999442263, "active": true}, {"namespace": "junos",
     "hostname": "exit02", "vrf": "internet-vrf", "prefix": "169.254.127.2/31", "nexthopIps":
-    [], "oifs": ["xe-0/0/3.0"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/3.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 31, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622999442263,
@@ -5897,7 +5899,7 @@ tests:
     "unknown", "metric": 0, "statusChangeTimestamp": 1622999495263, "active": true},
     {"namespace": "junos", "hostname": "exit02", "vrf": "default", "prefix": "169.254.253.1/32",
     "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622999420263,
     "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "default",
@@ -5907,72 +5909,73 @@ tests:
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
     1622998073263, "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf":
     "evpn-vrf", "prefix": "169.254.253.5/32", "nexthopIps": [], "oifs": ["xe-0/0/2.3"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1622999427263, "active": true}, {"namespace":
     "junos", "hostname": "exit02", "vrf": ":vxlan", "prefix": "10.0.0.32/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622999390263, "active": true},
     {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan", "prefix": "10.255.5.0/24",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622999390263,
     "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan",
     "prefix": "10.255.5.252/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1623019245263, "active": true}, {"namespace": "junos",
     "hostname": "exit02", "vrf": ":vxlan", "prefix": "169.254.0.0/24", "nexthopIps":
-    [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    [], "oifs": ["em1.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
     24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622999390263, "active": true},
     {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan", "prefix": "169.254.0.2/32",
     "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025802263, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622999390263,
     "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": ":vxlan",
     "prefix": "169.254.253.0/30", "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622999420263, "active": true}, {"namespace": "junos",
-    "hostname": "exit02", "vrf": ":vxlan", "prefix": "169.254.253.1/32", "nexthopIps":
-    [], "oifs": ["xe-0/0/2.2"], "protocol": "local", "source": "", "preference": 0,
-    "ipvers": 4, "action": "local", "timestamp": 1623025802263, "weights": [], "prefixlen":
-    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1622999420263, "active": true},
-    {"namespace": "junos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "10.0.0.122/32",
-    "nexthopIps": [], "oifs": ["lo0.999"], "protocol": "direct", "source": "", "preference":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263, "weights": [], "prefixlen": 30, "numNexthops": 1,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1622999420263, "active": true}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": ":vxlan", "prefix": "169.254.253.1/32",
+    "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol": "local", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622999400263,
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622999420263,
     "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf": "evpn-vrf",
-    "prefix": "169.254.253.4/30", "nexthopIps": [], "oifs": ["xe-0/0/2.3"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1623025802263, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622999427263, "active": true}, {"namespace": "junos",
-    "hostname": "exit02", "vrf": "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["169.254.127.2"], "oifs": ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference":
-    170, "ipvers": 4, "action": "forward", "timestamp": 1623025802263, "weights":
-    [], "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList": ["65534",
-    "I"], "validState": "unverified", "hardwareProgrammed": "unknown", "metric": 0,
-    "statusChangeTimestamp": 1622999495263, "active": true}, {"namespace": "junos",
-    "hostname": "spine02", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps":
-    [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802688, "weights": [], "prefixlen":
-    24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1622998098688, "active": true},
-    {"namespace": "junos", "hostname": "spine02", "vrf": "default", "prefix": "169.254.0.2/32",
+    "prefix": "10.0.0.122/32", "nexthopIps": [], "oifs": ["lo0.999"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025802263, "weights": [], "prefixlen": 32, "numNexthops": 1,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1622999400263, "active": true}, {"namespace":
+    "junos", "hostname": "exit02", "vrf": "evpn-vrf", "prefix": "169.254.253.4/30",
+    "nexthopIps": [], "oifs": ["xe-0/0/2.3"], "protocol": "connected", "source": "",
+    "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025802263,
+    "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
+    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1622999427263, "active": true}, {"namespace": "junos", "hostname": "exit02", "vrf":
+    "internet-vrf", "prefix": "0.0.0.0/0", "nexthopIps": ["169.254.127.2"], "oifs":
+    ["xe-0/0/3.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802263, "weights": [], "prefixlen":
+    0, "numNexthops": 1, "routeTag": "", "asPathList": ["65534", "I"], "validState":
+    "unverified", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1622999495263, "active": true}, {"namespace": "junos", "hostname": "spine02",
+    "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025802688, "weights": [], "prefixlen": 24, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1622998098688, "active": true}, {"namespace":
+    "junos", "hostname": "spine02", "vrf": "default", "prefix": "169.254.0.2/32",
     "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025802688, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802688, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998088688,
     "active": true}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
@@ -6004,7 +6007,7 @@ tests:
     "prefixlen": 32, "numNexthops": 4, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 2, "statusChangeTimestamp": 1622998753688,
     "active": true}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
-    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
+    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025802688, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
@@ -6022,11 +6025,11 @@ tests:
     "metric": 1, "statusChangeTimestamp": 1622998710688, "active": true}, {"namespace":
     "junos", "hostname": "spine02", "vrf": "default", "prefix": "10.255.5.118/32",
     "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025802688, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802688, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998098688,
     "active": true}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
-    "prefix": "10.0.0.22/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct",
+    "prefix": "10.0.0.22/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025802688, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
@@ -6037,94 +6040,95 @@ tests:
     128, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998068688, "active": true},
     {"namespace": "junos", "hostname": "spine02", "vrf": "default", "prefix": "fe80::205:860f:fc71:c600/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 6, "action": "forward", "timestamp": 1623025802688, "weights": [],
     "prefixlen": 128, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998089688,
     "active": true}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
     "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
-    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025802890,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1622998077890, "active": true}, {"namespace": "junos", "hostname": "spine01",
-    "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802890, "weights": [], "prefixlen": 24, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1622998087890, "active": true}, {"namespace":
-    "junos", "hostname": "spine01", "vrf": "default", "prefix": "224.0.0.5/32", "nexthopIps":
-    [], "oifs": [], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
-    4, "action": "multirecv", "timestamp": 1623025802890, "weights": [], "prefixlen":
-    32, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 1, "statusChangeTimestamp": 1622998510890, "active": true},
-    {"namespace": "junos", "hostname": "spine01", "vrf": "default", "prefix": "fe80::205:860f:fc71:2e00/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 6, "action": "forward", "timestamp": 1623025802890, "weights": [],
-    "prefixlen": 128, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998079890,
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802890, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998077890, "active": true}, {"namespace": "junos",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps":
+    [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025802890, "weights": [], "prefixlen":
+    24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1622998087890, "active": true},
+    {"namespace": "junos", "hostname": "spine01", "vrf": "default", "prefix": "224.0.0.5/32",
+    "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "multirecv", "timestamp": 1623025802890, "weights":
+    [], "prefixlen": 32, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp": 1622998510890,
     "active": true}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
-    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
-    "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1623025802890,
-    "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1622998057890, "active": true}, {"namespace": "junos", "hostname": "spine01",
-    "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps": ["10.0.0.32"], "oifs":
-    ["xe-0/0/3.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802890, "weights": [], "prefixlen":
-    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 1, "statusChangeTimestamp": 1622998714890, "active": true},
-    {"namespace": "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.31/32",
-    "nexthopIps": ["10.0.0.31"], "oifs": ["xe-0/0/2.0"], "protocol": "ospf", "source":
+    "prefix": "fe80::205:860f:fc71:2e00/128", "nexthopIps": [], "oifs": ["lo0.0"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 6, "action":
+    "forward", "timestamp": 1623025802890, "weights": [], "prefixlen": 128, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1622998079890, "active": true}, {"namespace":
+    "junos", "hostname": "spine01", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
+    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
+    6, "action": "multirecv", "timestamp": 1623025802890, "weights": [], "prefixlen":
+    128, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1622998057890, "active": true},
+    {"namespace": "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.32/32",
+    "nexthopIps": ["10.0.0.32"], "oifs": ["xe-0/0/3.0"], "protocol": "ospf", "source":
     "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp": 1623025802890,
     "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp":
-    1622998729890, "active": true}, {"namespace": "junos", "hostname": "spine01",
-    "vrf": "default", "prefix": "10.0.0.22/32", "nexthopIps": ["10.0.0.11", "10.0.0.12",
-    "10.0.0.31", "10.0.0.32"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0", "xe-0/0/2.0",
-    "xe-0/0/3.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4,
-    "action": "forward", "timestamp": 1623025802890, "weights": [], "prefixlen": 32,
-    "numNexthops": 4, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 2, "statusChangeTimestamp": 1622998755890, "active": true},
-    {"namespace": "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.21/32",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802890, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998385890,
+    1622998714890, "active": true}, {"namespace": "junos", "hostname": "spine01",
+    "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps": ["10.0.0.31"], "oifs":
+    ["xe-0/0/2.0"], "protocol": "ospf", "source": "", "preference": 10, "ipvers":
+    4, "action": "forward", "timestamp": 1623025802890, "weights": [], "prefixlen":
+    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 1, "statusChangeTimestamp": 1622998729890, "active": true},
+    {"namespace": "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.22/32",
+    "nexthopIps": ["10.0.0.11", "10.0.0.12", "10.0.0.31", "10.0.0.32"], "oifs": ["xe-0/0/0.0",
+    "xe-0/0/1.0", "xe-0/0/2.0", "xe-0/0/3.0"], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802890, "weights": [],
+    "prefixlen": 32, "numNexthops": 4, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 2, "statusChangeTimestamp": 1622998755890,
     "active": true}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
-    "prefix": "10.0.0.12/32", "nexthopIps": ["10.0.0.12"], "oifs": ["xe-0/0/1.0"],
+    "prefix": "10.0.0.21/32", "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025802890, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998385890, "active": true}, {"namespace": "junos",
+    "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.12/32", "nexthopIps":
+    ["10.0.0.12"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
+    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802890, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp": 1622998755890,
+    "active": true}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
+    "prefix": "10.0.0.11/32", "nexthopIps": ["10.0.0.11"], "oifs": ["xe-0/0/0.0"],
     "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
     "timestamp": 1623025802890, "weights": [], "prefixlen": 32, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 1, "statusChangeTimestamp": 1622998755890, "active": true}, {"namespace":
-    "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.0.0.11/32", "nexthopIps":
-    ["10.0.0.11"], "oifs": ["xe-0/0/0.0"], "protocol": "ospf", "source": "", "preference":
-    10, "ipvers": 4, "action": "forward", "timestamp": 1623025802890, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp": 1622998734890,
-    "active": true}, {"namespace": "junos", "hostname": "spine01", "vrf": "default",
-    "prefix": "0.0.0.0/0", "nexthopIps": ["10.255.5.1"], "oifs": ["em0.0"], "protocol":
-    "access-internal", "source": "", "preference": 12, "ipvers": 4, "action": "forward",
-    "timestamp": 1623025802890, "weights": [], "prefixlen": 0, "numNexthops": 1, "routeTag":
-    "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622998088890, "active": true}, {"namespace": "junos",
-    "hostname": "spine01", "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps":
-    [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025802890, "weights": [], "prefixlen":
-    24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1622998077890, "active": true},
-    {"namespace": "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.255.5.117/32",
+    "metric": 1, "statusChangeTimestamp": 1622998734890, "active": true}, {"namespace":
+    "junos", "hostname": "spine01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.255.5.1"], "oifs": ["em0.0"], "protocol": "access-internal", "source": "",
+    "preference": 12, "ipvers": 4, "action": "forward", "timestamp": 1623025802890,
+    "weights": [], "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList":
+    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1622998088890, "active": true}, {"namespace": "junos", "hostname": "spine01",
+    "vrf": "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025802890, "weights": [], "prefixlen": 24, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1622998077890, "active": true}, {"namespace":
+    "junos", "hostname": "spine01", "vrf": "default", "prefix": "10.255.5.117/32",
     "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025802890, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025802890, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998087890,
     "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf",
     "prefix": "169.254.127.1/32", "nexthopIps": [], "oifs": ["xe-0/0/3.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025803098, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622998815098, "active": true}, {"namespace": "junos",
     "hostname": "exit01", "vrf": "internet-vrf", "prefix": "169.254.127.0/31", "nexthopIps":
-    [], "oifs": ["xe-0/0/3.0"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/3.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [],
     "prefixlen": 31, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998815098,
@@ -6141,7 +6145,7 @@ tests:
     "asPathList": ["65534", "I"], "validState": "unverified", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622999271098, "active": true},
     {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "169.254.254.4/30",
-    "nexthopIps": [], "oifs": ["xe-0/0/2.3"], "protocol": "direct", "source": "",
+    "nexthopIps": [], "oifs": ["xe-0/0/2.3"], "protocol": "connected", "source": "",
     "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025803098,
     "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
@@ -6153,13 +6157,13 @@ tests:
     "unverified", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
     1622999271098, "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf":
     "internet-vrf", "prefix": "169.254.254.8/30", "nexthopIps": [], "oifs": ["xe-0/0/2.4"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1623025803098, "weights": [], "prefixlen": 30, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1623025803098, "weights": [], "prefixlen": 30, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1622998808098, "active": true}, {"namespace":
     "junos", "hostname": "exit01", "vrf": "internet-vrf", "prefix": "169.254.254.9/32",
     "nexthopIps": [], "oifs": ["xe-0/0/2.4"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025803098, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998808098,
     "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": "internet-vrf",
@@ -6182,9 +6186,9 @@ tests:
     "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1623021268098,
     "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
     "prefix": "fe80::205:860f:fc71:7400/128", "nexthopIps": [], "oifs": ["lo0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action": "forward",
-    "timestamp": 1623025803098, "weights": [], "prefixlen": 128, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 6, "action":
+    "forward", "timestamp": 1623025803098, "weights": [], "prefixlen": 128, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1622998094098, "active": true}, {"namespace":
     "junos", "hostname": "exit01", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
     [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
@@ -6226,57 +6230,57 @@ tests:
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1623025449098, "active": true}, {"namespace": "junos",
     "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.121/32", "nexthopIps":
-    [], "oifs": ["lo0.999"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [], "prefixlen":
-    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1622998734098, "active": true},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.102/32",
-    "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn",
-    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
-    1623025803098, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1623021268098, "active": true}, {"namespace": "junos",
-    "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.101/32", "nexthopIps":
+    [], "oifs": ["lo0.999"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998734098,
+    "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf",
+    "prefix": "10.0.0.102/32", "nexthopIps": ["10.0.0.12"], "oifs": ["_nexthopVrf:default"],
+    "protocol": "evpn", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025803098, "weights": [], "prefixlen": 32, "numNexthops": 1,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1623021268098, "active": true}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.101/32", "nexthopIps":
     ["10.0.0.11"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
     "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025803098,
     "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
     1623021268098, "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf":
     ":vxlan", "prefix": "169.254.254.1/32", "nexthopIps": [], "oifs": ["xe-0/0/2.2"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1623025803098, "weights": [], "prefixlen": 32, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1622998793098, "active": true}, {"namespace":
     "junos", "hostname": "exit01", "vrf": ":vxlan", "prefix": "169.254.254.0/30",
-    "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol": "direct", "source": "",
+    "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol": "connected", "source": "",
     "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025803098,
     "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
     1622998793098, "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf":
     ":vxlan", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025803098, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622998677098, "active": true}, {"namespace": "junos",
     "hostname": "exit01", "vrf": ":vxlan", "prefix": "169.254.0.0/24", "nexthopIps":
-    [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025803098, "weights": [], "prefixlen":
+    [], "oifs": ["em1.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [], "prefixlen":
     24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998677098, "active": true},
     {"namespace": "junos", "hostname": "exit01", "vrf": ":vxlan", "prefix": "10.255.5.251/32",
     "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025803098, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1623018853098,
     "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": ":vxlan",
-    "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct",
+    "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025803098, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622998677098, "active": true}, {"namespace": "junos",
     "hostname": "exit01", "vrf": ":vxlan", "prefix": "10.0.0.31/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025803098, "weights": [], "prefixlen":
+    [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998677098, "active": true},
     {"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix": "224.0.0.5/32",
@@ -6286,46 +6290,46 @@ tests:
     "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp": 1622998503098,
     "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
     "prefix": "169.254.254.1/32", "nexthopIps": [], "oifs": ["xe-0/0/2.2"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025803098, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622998793098, "active": true}, {"namespace": "junos",
     "hostname": "exit01", "vrf": "default", "prefix": "169.254.254.0/30", "nexthopIps":
-    [], "oifs": ["xe-0/0/2.2"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/2.2"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [],
     "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998793098,
     "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
     "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
-    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1623025803098,
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1623025803098, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1622998092098, "active": true}, {"namespace": "junos",
+    "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "172.16.3.202/32", "nexthopIps":
+    ["10.0.0.12"], "oifs": ["_nexthopVrf:default"], "protocol": "evpn", "source":
+    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1623025803098,
     "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1622998092098, "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf":
-    "evpn-vrf", "prefix": "172.16.3.202/32", "nexthopIps": ["10.0.0.12"], "oifs":
-    ["_nexthopVrf:default"], "protocol": "evpn", "source": "", "preference": 170,
+    1623025535098, "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf":
+    "default", "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025803098, "weights": [], "prefixlen": 24, "numNexthops": 1,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1622998092098, "active": true}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "default", "prefix": "10.255.5.0/24", "nexthopIps":
+    [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference": 0,
     "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [], "prefixlen":
-    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1623025535098, "active": true},
-    {"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix": "169.254.0.0/24",
-    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference":
-    0, "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [],
-    "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998092098,
-    "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": "default",
-    "prefix": "10.255.5.0/24", "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct",
-    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1623025803098, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1622998103098, "active": true}, {"namespace": "junos",
-    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.32/32", "nexthopIps":
-    ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"], "protocol":
-    "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward", "timestamp":
-    1623025803098, "weights": [], "prefixlen": 32, "numNexthops": 2, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    2, "statusChangeTimestamp": 1622998728098, "active": true}, {"namespace": "junos",
-    "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025803098, "weights": [], "prefixlen":
+    24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1622998103098, "active": true},
+    {"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.32/32",
+    "nexthopIps": ["10.0.0.21", "10.0.0.22"], "oifs": ["xe-0/0/0.0", "xe-0/0/1.0"],
+    "protocol": "ospf", "source": "", "preference": 10, "ipvers": 4, "action": "forward",
+    "timestamp": 1623025803098, "weights": [], "prefixlen": 32, "numNexthops": 2,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 2, "statusChangeTimestamp": 1622998728098, "active": true}, {"namespace":
+    "junos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.31/32", "nexthopIps":
+    [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025803098, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998386098, "active": true},
     {"namespace": "junos", "hostname": "exit01", "vrf": "default", "prefix": "10.0.0.22/32",
@@ -6358,7 +6362,7 @@ tests:
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1622998104098,
     "active": true}, {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf",
     "prefix": "169.254.254.5/32", "nexthopIps": [], "oifs": ["xe-0/0/2.3"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025803098, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1622998801098, "active": true}, {"namespace": "junos",
@@ -6393,7 +6397,7 @@ tests:
     0, "statusChangeTimestamp": 1623021268098, "active": true}, {"namespace": "junos",
     "hostname": "exit01", "vrf": "default", "prefix": "10.255.5.251/32", "nexthopIps":
     [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "local", "timestamp": 1623025803098, "weights": [], "prefixlen":
+    4, "action": "forward", "timestamp": 1623025803098, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1622998103098, "active": true},
     {"namespace": "junos", "hostname": "exit01", "vrf": "evpn-vrf", "prefix": "10.0.0.122/32",

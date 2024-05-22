@@ -6063,8 +6063,8 @@ tests:
     1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 20, "statusChangeTimestamp": 0, "active": true}, {"namespace": "eos",
     "hostname": "dcedge01", "vrf": "default", "prefix": "10.0.0.41/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025176627, "weights": [], "prefixlen":
+    [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025176627, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1620676278627, "active": true},
     {"namespace": "eos", "hostname": "dcedge01", "vrf": "default", "prefix": "10.0.0.200/32",
@@ -6074,28 +6074,28 @@ tests:
     ["65522", "65533", "?"], "validState": "unverified", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1620677002627, "active": true}, {"namespace":
     "eos", "hostname": "dcedge01", "vrf": "default", "prefix": "10.255.2.0/24", "nexthopIps":
-    [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1623025176627, "weights": [], "prefixlen":
+    [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1623025176627, "weights": [], "prefixlen":
     24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1620675831627, "active": true},
     {"namespace": "eos", "hostname": "dcedge01", "vrf": "default", "prefix": "10.255.2.250/32",
     "nexthopIps": [], "oifs": ["em0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1623025176627, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1623025176627, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1620675831627,
     "active": true}, {"namespace": "eos", "hostname": "dcedge01", "vrf": "default",
-    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
+    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025176627, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1620675821627, "active": true}, {"namespace": "eos",
     "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps":
     [], "oifs": ["em1.0"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "local", "timestamp": 1623025176627, "weights": [], "prefixlen":
+    4, "action": "forward", "timestamp": 1623025176627, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1620675821627, "active": true},
     {"namespace": "eos", "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.0/31",
-    "nexthopIps": [], "oifs": ["xe-0/0/0.0"], "protocol": "direct", "source": "",
+    "nexthopIps": [], "oifs": ["xe-0/0/0.0"], "protocol": "connected", "source": "",
     "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1623025176627,
     "weights": [], "prefixlen": 31, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
@@ -6107,13 +6107,13 @@ tests:
     "I"], "validState": "unverified", "hardwareProgrammed": "unknown", "metric": 0,
     "statusChangeTimestamp": 1620699310627, "active": true}, {"namespace": "eos",
     "hostname": "dcedge01", "vrf": "default", "prefix": "169.254.127.2/31", "nexthopIps":
-    [], "oifs": ["xe-0/0/1.0"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/1.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1623025176627, "weights": [],
     "prefixlen": 31, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1620676707627,
     "active": true}, {"namespace": "eos", "hostname": "dcedge01", "vrf": "default",
     "prefix": "169.254.127.2/32", "nexthopIps": [], "oifs": ["xe-0/0/1.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1623025176627, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1620676707627, "active": true}, {"namespace": "eos",
@@ -6130,7 +6130,7 @@ tests:
     "65533", "65521", "I"], "validState": "unverified", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1620700001627, "active": true}, {"namespace":
     "eos", "hostname": "dcedge01", "vrf": "default", "prefix": "fe80::205:860f:fc71:f000/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 6, "action": "forward", "timestamp": 1623025176627, "weights": [],
     "prefixlen": 128, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1620675822627,
@@ -6141,7 +6141,7 @@ tests:
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
     1620675816627, "active": true}, {"namespace": "eos", "hostname": "dcedge01", "vrf":
     "default", "prefix": "169.254.127.0/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1623025176627, "weights": [], "prefixlen": 32, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1620676700627, "active": true}, {"namespace":

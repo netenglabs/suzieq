@@ -3759,12 +3759,12 @@ tests:
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 41, "statusChangeTimestamp":
     1626288402426, "active": true}, {"namespace": "mixed", "hostname": "leaf4-qfx",
     "vrf": "default", "prefix": "10.1.4.2/32", "nexthopIps": [], "oifs": ["xe-0/0/0.0"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438426, "weights": [], "prefixlen": 32, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1624544826426, "active": true}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.1.4.0/30", "nexthopIps":
-    [], "oifs": ["xe-0/0/0.0"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426, "weights": [],
     "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1624544826426,
@@ -3775,8 +3775,8 @@ tests:
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     41, "statusChangeTimestamp": 1626288402426, "active": true}, {"namespace": "mixed",
     "hostname": "leaf4-qfx", "vrf": "default", "prefix": "4.4.4.4/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395438426, "weights": [], "prefixlen":
+    [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1627395438426, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1624392615426, "active": true},
     {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.1.1.0/30",
@@ -3820,18 +3820,18 @@ tests:
     "", "hardwareProgrammed": "unknown", "metric": 41, "statusChangeTimestamp": 1625734327426,
     "active": true}, {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default",
     "prefix": "172.29.151.6/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395438426, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1624392615426, "active": true}, {"namespace": "mixed",
     "hostname": "leaf4-qfx", "vrf": "default", "prefix": "10.2.4.0/30", "nexthopIps":
-    [], "oifs": ["xe-0/0/1.0"], "protocol": "direct", "source": "", "preference":
+    [], "oifs": ["xe-0/0/1.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426, "weights": [],
     "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1624544826426,
     "active": true}, {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default",
     "prefix": "10.2.4.2/32", "nexthopIps": [], "oifs": ["xe-0/0/1.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395438426, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1624544826426, "active": true}, {"namespace": "mixed",
@@ -3858,31 +3858,31 @@ tests:
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 2, "statusChangeTimestamp": 1625734327426, "active": true}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "169.254.0.0/24",
-    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["em1.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438426, "weights": [],
     "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1624392615426,
     "active": true}, {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default",
     "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "local",
-    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1627395438426,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1624392615426, "active": true}, {"namespace": "mixed", "hostname": "leaf4-qfx",
-    "vrf": "default", "prefix": "172.29.151.0/24", "nexthopIps": [], "oifs": ["em0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438426, "weights": [], "prefixlen": 24, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1624392615426, "active": true}, {"namespace":
-    "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "224.0.0.5/32",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395438426, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1624392615426, "active": true}, {"namespace": "mixed",
+    "hostname": "leaf4-qfx", "vrf": "default", "prefix": "172.29.151.0/24", "nexthopIps":
+    [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1627395438426, "weights": [], "prefixlen":
+    24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1624392615426, "active": true},
+    {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "224.0.0.5/32",
     "nexthopIps": [], "oifs": [], "protocol": "ospf", "source": "", "preference":
     10, "ipvers": 4, "action": "multirecv", "timestamp": 1627395438426, "weights":
     [], "prefixlen": 32, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 1, "statusChangeTimestamp": 1624392614426,
     "active": true}, {"namespace": "mixed", "hostname": "leaf4-qfx", "vrf": "default",
     "prefix": "fe80::205:860f:fc71:8700/128", "nexthopIps": [], "oifs": ["lo0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action": "forward",
-    "timestamp": 1627395438426, "weights": [], "prefixlen": 128, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 6, "action":
+    "forward", "timestamp": 1627395438426, "weights": [], "prefixlen": 128, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1624392615426, "active": true}, {"namespace":
     "mixed", "hostname": "leaf4-qfx", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
     [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
@@ -3913,7 +3913,7 @@ tests:
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
     1624392616426, "active": true}, {"namespace": "mixed", "hostname": "leaf3-qfx",
     "vrf": "default", "prefix": "169.254.0.2/32", "nexthopIps": [], "oifs": ["em1.0"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
     "timestamp": 1627395438536, "weights": [], "prefixlen": 32, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1624392644536, "active": true}, {"namespace":
@@ -3935,8 +3935,8 @@ tests:
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 42, "statusChangeTimestamp": 1626288127536, "active": true}, {"namespace":
     "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps":
-    [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1627395438536, "weights": [], "prefixlen":
+    [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1627395438536, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1624392644536, "active": true},
     {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "4.4.4.4/32",
@@ -3964,13 +3964,13 @@ tests:
     "", "hardwareProgrammed": "unknown", "metric": 41, "statusChangeTimestamp": 1626961760536,
     "active": true}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
     "prefix": "10.1.3.0/30", "nexthopIps": [], "oifs": ["xe-0/0/0.0"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1627395438536, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1624544839536, "active": true}, {"namespace": "mixed",
-    "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.1.3.2/32", "nexthopIps":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1627395438536, "weights": [], "prefixlen": 30, "numNexthops": 1,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1624544839536, "active": true}, {"namespace":
+    "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.1.3.2/32", "nexthopIps":
     [], "oifs": ["xe-0/0/0.0"], "protocol": "local", "source": "", "preference": 0,
-    "ipvers": 4, "action": "local", "timestamp": 1627395438536, "weights": [], "prefixlen":
+    "ipvers": 4, "action": "forward", "timestamp": 1627395438536, "weights": [], "prefixlen":
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1624544839536, "active": true},
     {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.1.4.0/30",
@@ -4002,9 +4002,9 @@ tests:
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 41, "statusChangeTimestamp":
     1626288127536, "active": true}, {"namespace": "mixed", "hostname": "leaf3-qfx",
     "vrf": "default", "prefix": "10.2.3.0/30", "nexthopIps": [], "oifs": ["xe-0/0/1.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1627395438536, "weights": [], "prefixlen": 30, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1627395438536, "weights": [], "prefixlen": 30, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1624544839536, "active": true}, {"namespace":
     "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "10.2.2.0/30", "nexthopIps":
     ["10.2.3.1"], "oifs": ["xe-0/0/1.0"], "protocol": "ospf", "source": "", "preference":
@@ -4013,7 +4013,7 @@ tests:
     "", "hardwareProgrammed": "unknown", "metric": 41, "statusChangeTimestamp": 1625734326536,
     "active": true}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
     "prefix": "172.29.151.5/32", "nexthopIps": [], "oifs": ["em0.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1624392644536, "active": true}, {"namespace": "mixed",
@@ -4023,7 +4023,7 @@ tests:
     32, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 1, "statusChangeTimestamp": 1624392641536, "active": true},
     {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "fe80::205:860f:fc71:1300/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 6, "action": "forward", "timestamp": 1627395438536, "weights": [],
     "prefixlen": 128, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1624392644536,
@@ -4039,12 +4039,12 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 2, "statusChangeTimestamp": 1625734326536, "active": true},
     {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default", "prefix": "172.29.151.0/24",
-    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["em0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1627395438536, "weights": [],
     "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1624392644536,
     "active": true}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
-    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "direct",
+    "prefix": "169.254.0.0/24", "nexthopIps": [], "oifs": ["em1.0"], "protocol": "connected",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
@@ -4067,7 +4067,7 @@ tests:
     "", "hardwareProgrammed": "unknown", "metric": 41, "statusChangeTimestamp": 1625734326536,
     "active": true}, {"namespace": "mixed", "hostname": "leaf3-qfx", "vrf": "default",
     "prefix": "10.2.3.2/32", "nexthopIps": [], "oifs": ["xe-0/0/1.0"], "protocol":
-    "local", "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
     1627395438536, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1624544839536, "active": true}, {"namespace": "mixed",
@@ -4106,7 +4106,7 @@ tests:
     "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1625740371859, "active": true}, {"namespace":
     "mixed", "hostname": "spine1-nxos", "vrf": "management", "prefix": "172.29.151.0/24",
-    "nexthopIps": ["172.29.151.1"], "oifs": ["mgmt0"], "protocol": "direct", "source":
+    "nexthopIps": ["172.29.151.1"], "oifs": ["mgmt0"], "protocol": "connected", "source":
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859,
     "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
@@ -4172,10 +4172,10 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 50, "statusChangeTimestamp": 1626937975859, "active": true}, {"namespace":
     "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.2.0/30",
-    "nexthopIps": ["10.1.2.1"], "oifs": ["Ethernet1/2"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859,
-    "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
+    "nexthopIps": ["10.1.2.1"], "oifs": ["Ethernet1/2"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395439859, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1625740651859, "active": true}, {"namespace": "mixed", "hostname": "spine1-nxos",
     "vrf": "default", "prefix": "10.1.2.1/32", "nexthopIps": ["10.1.2.1"], "oifs":
     ["Ethernet1/2"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -4189,7 +4189,7 @@ tests:
     [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1626896038859, "active": true}, {"namespace": "mixed", "hostname": "spine1-nxos",
     "vrf": "default", "prefix": "10.1.3.0/30", "nexthopIps": ["10.1.3.1"], "oifs":
-    ["Ethernet1/3"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    ["Ethernet1/3"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395439859, "weights": [], "prefixlen":
     30, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1626288118859, "active": true}, {"namespace":
@@ -4205,10 +4205,10 @@ tests:
     30, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 41, "statusChangeTimestamp": 1625740718859, "active": true}, {"namespace":
     "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.1.0/30",
-    "nexthopIps": ["10.1.1.1"], "oifs": ["Ethernet1/1"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859,
-    "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
+    "nexthopIps": ["10.1.1.1"], "oifs": ["Ethernet1/1"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395439859, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1626896038859, "active": true}, {"namespace": "mixed", "hostname": "spine1-nxos",
     "vrf": "default", "prefix": "10.1.6.1/32", "nexthopIps": ["10.1.6.1"], "oifs":
     ["Ethernet1/6"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -4216,10 +4216,10 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1626937966859, "active": true}, {"namespace":
     "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.6.0/30",
-    "nexthopIps": ["10.1.6.1"], "oifs": ["Ethernet1/6"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859,
-    "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
+    "nexthopIps": ["10.1.6.1"], "oifs": ["Ethernet1/6"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395439859, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1626937966859, "active": true}, {"namespace": "mixed", "hostname": "spine1-nxos",
     "vrf": "default", "prefix": "10.1.5.1/32", "nexthopIps": ["10.1.5.1"], "oifs":
     ["Ethernet1/5"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -4227,10 +4227,10 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1625740652859, "active": true}, {"namespace":
     "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.5.0/30",
-    "nexthopIps": ["10.1.5.1"], "oifs": ["Ethernet1/5"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859,
-    "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
+    "nexthopIps": ["10.1.5.1"], "oifs": ["Ethernet1/5"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395439859, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1625740652859, "active": true}, {"namespace": "mixed", "hostname": "spine1-nxos",
     "vrf": "default", "prefix": "10.1.4.1/32", "nexthopIps": ["10.1.4.1"], "oifs":
     ["Ethernet1/4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -4238,10 +4238,10 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1626288394859, "active": true}, {"namespace":
     "mixed", "hostname": "spine1-nxos", "vrf": "default", "prefix": "10.1.4.0/30",
-    "nexthopIps": ["10.1.4.1"], "oifs": ["Ethernet1/4"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395439859,
-    "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
+    "nexthopIps": ["10.1.4.1"], "oifs": ["Ethernet1/4"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395439859, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1626288394859, "active": true}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "2.2.2.2/32", "nexthopIps": ["10.2.2.2"], "oifs":
     ["Ethernet1/2"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
@@ -4272,10 +4272,10 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1625734317281, "active": true}, {"namespace":
     "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.6.0/30",
-    "nexthopIps": ["10.2.6.1"], "oifs": ["Ethernet1/6"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281,
-    "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
+    "nexthopIps": ["10.2.6.1"], "oifs": ["Ethernet1/6"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395440281, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1625734317281, "active": true}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "10.2.5.1/32", "nexthopIps": ["10.2.5.1"], "oifs":
     ["Ethernet1/5"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -4283,10 +4283,10 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1625734317281, "active": true}, {"namespace":
     "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.5.0/30",
-    "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281,
-    "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
+    "nexthopIps": ["10.2.5.1"], "oifs": ["Ethernet1/5"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395440281, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1625734317281, "active": true}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "10.2.4.1/32", "nexthopIps": ["10.2.4.1"], "oifs":
     ["Ethernet1/4"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -4294,10 +4294,10 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1625734317281, "active": true}, {"namespace":
     "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.4.0/30",
-    "nexthopIps": ["10.2.4.1"], "oifs": ["Ethernet1/4"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281,
-    "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
+    "nexthopIps": ["10.2.4.1"], "oifs": ["Ethernet1/4"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395440281, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1625734317281, "active": true}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "10.2.3.1/32", "nexthopIps": ["10.2.3.1"], "oifs":
     ["Ethernet1/3"], "protocol": "local", "source": "", "preference": 0, "ipvers":
@@ -4305,10 +4305,10 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1625734317281, "active": true}, {"namespace":
     "mixed", "hostname": "spine2-nxos", "vrf": "default", "prefix": "10.2.3.0/30",
-    "nexthopIps": ["10.2.3.1"], "oifs": ["Ethernet1/3"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281,
-    "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
+    "nexthopIps": ["10.2.3.1"], "oifs": ["Ethernet1/3"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1627395440281, "weights": [], "prefixlen": 30, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1625734317281, "active": true}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "3.3.3.3/32", "nexthopIps": ["10.2.3.2"], "oifs":
     ["Ethernet1/3"], "protocol": "ospf", "source": "", "preference": 110, "ipvers":
@@ -4366,7 +4366,7 @@ tests:
     [], "validState": "", "hardwareProgrammed": "", "metric": 50, "statusChangeTimestamp":
     1625734330281, "active": true}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "10.2.1.0/30", "nexthopIps": ["10.2.1.1"], "oifs":
-    ["Ethernet1/1"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    ["Ethernet1/1"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281, "weights": [], "prefixlen":
     30, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1625734317281, "active": true}, {"namespace":
@@ -4377,7 +4377,7 @@ tests:
     "asPathList": [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
     1625734229281, "active": true}, {"namespace": "mixed", "hostname": "spine2-nxos",
     "vrf": "default", "prefix": "10.2.2.0/30", "nexthopIps": ["10.2.2.1"], "oifs":
-    ["Ethernet1/2"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
+    ["Ethernet1/2"], "protocol": "connected", "source": "", "preference": 0, "ipvers":
     4, "action": "forward", "timestamp": 1627395440281, "weights": [], "prefixlen":
     30, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1625734317281, "active": true}, {"namespace":
@@ -4404,7 +4404,7 @@ tests:
     32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "", "metric": 0, "statusChangeTimestamp": 1625734227281, "active": true}, {"namespace":
     "mixed", "hostname": "spine2-nxos", "vrf": "management", "prefix": "172.29.151.0/24",
-    "nexthopIps": ["172.29.151.2"], "oifs": ["mgmt0"], "protocol": "direct", "source":
+    "nexthopIps": ["172.29.151.2"], "oifs": ["mgmt0"], "protocol": "connected", "source":
     "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1627395440281,
     "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "", "metric": 0, "statusChangeTimestamp":
