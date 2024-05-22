@@ -447,6 +447,7 @@ def query_interface(verb: CommonExtraVerbs, request: Request,
                     vlan: List[str] = Query(None),
                     portmode: List[str] = Query(None),
                     macaddr: List[str] = Query(None),
+                    bond: List[str] = Query(None),
                     query_str: str = None,
                     count: str = None, reverse: str = None,
                     ):
