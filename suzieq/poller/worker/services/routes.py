@@ -1,4 +1,5 @@
 import re
+from typing import Dict, List
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
@@ -58,9 +59,18 @@ class RoutesService(Service):
 
     def _clean_linux_data(self, processed_data, _):
         """Clean Linux ip route data"""
+        drop_indices: List[int] = []
+        id_vrf_match: Dict[str, str] = {}
 
-        for entry in processed_data:
-            entry["vrf"] = entry["vrf"] or "default"
+        for i, entry in enumerate(processed_data):
+            if table_id := entry.get('table_id'):
+                id_vrf_match[table_id] = entry.get('vrf') or 'default'
+                drop_indices.append(i)
+                continue
+            if vrf_id := entry.get('vrf_id'):
+                entry["vrf"] = id_vrf_match.get(vrf_id) or 'default'
+            else:
+                entry["vrf"] = entry.get("vrf") or "default"
             entry["metric"] = entry["metric"] or 20
             entry['preference'] = entry['metric']
             for ele in ["nexthopIps", "oifs"]:
@@ -86,6 +96,10 @@ class RoutesService(Service):
                 entry["oifs"] = ["blackhole"]
 
             entry['inHardware'] = True  # Till the offload flag is here
+
+        if drop_indices:
+            processed_data = np.delete(
+                processed_data, drop_indices).tolist()   # type: ignore
 
         return processed_data
 
