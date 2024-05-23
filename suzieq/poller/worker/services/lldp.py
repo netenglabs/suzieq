@@ -1,4 +1,5 @@
 import re
+from typing import Dict, List
 
 import numpy as np
 
@@ -65,8 +66,8 @@ class LldpService(Service):
 
     def _clean_nxos_data(self, processed_data, _):
 
-        drop_indices = []
-        entries = {}
+        drop_indices: List[int] = []
+        entries: Dict[str, int] = {}
 
         for i, entry in enumerate(processed_data):
             entry['peerHostname'] = re.sub(r'\(.*\)', '',
@@ -88,15 +89,23 @@ class LldpService(Service):
 
             entry['ifname'] = expand_nxos_ifname(entry['ifname'])
 
-            if entry['ifname'] in entries:
+            # Handle the case where both LLDP and CDP entries are present.
+            # Ensure we copy the relvant fields from one into the other.
+            # key is computed to handle p2mp ports.
+            key = (f'{entry.get("ifname")}-{entry.get("peerHostname")}-'
+                   f'{entry.get("peerIfname")}')
+            if key in entries:
+                old_entry = processed_data[entries[key]]
+
                 # Description is sometimes filled in with CDP, but not LLDP
                 if not entry.get('description', ''):
-                    old_entry = processed_data[entries[entry['ifname']]]
                     entry['description'] = old_entry.get('description', '')
                     entry['subtype'] = old_entry.get('subtype', '')
-                    drop_indices.append(entries[entry['ifname']])
+                if not entry.get('peerPlatform', ''):
+                    entry['peerPlatform'] = old_entry.get('peerPlatform', '')
+                drop_indices.append(entries[key])
             else:
-                entries[entry['ifname']] = i
+                entries[key] = i
 
             if entry.get('protocol', '') == 'cdp':
                 entry['subtype'] = 'interface name'
@@ -203,7 +212,9 @@ class LldpService(Service):
 
     def _clean_iosxe_data(self, processed_data, _):
 
-        drop_indices = []
+        drop_indices: List[int] = []
+        entries: Dict[str, int] = {}
+
         for i, entry in enumerate(processed_data):
             entry['peerHostname'] = re.sub(r'\(.*\)', '',
                                            entry['peerHostname'])
@@ -223,6 +234,24 @@ class LldpService(Service):
                 entry[field] = expand_ios_ifname(entry[field])
                 if ' ' in entry.get(field, ''):
                     entry[field] = entry[field].replace(' ', '')
+
+            # Handle the case where both LLDP and CDP entries are present.
+            # Ensure we copy the relvant fields from one into the other.
+            # key is computed to handle p2mp ports.
+            key = (f'{entry.get("ifname")}-{entry.get("peerHostname")}-'
+                   f'{entry.get("peerIfname")}')
+            if key in entries:
+                old_entry = processed_data[entries[key]]
+                # Description is sometimes filled in with CDP, but not LLDP
+                if not entry.get('description', ''):
+                    entry['description'] = old_entry.get('description', '')
+                    entry['subtype'] = old_entry.get('subtype', '')
+                if not entry.get('peerPlatform', ''):
+                    entry['peerPlatform'] = old_entry.get('peerPlatform', '')
+                drop_indices.append(entries[key])
+            else:
+                entries[key] = i
+
             self._common_cleaner(entry)
 
         processed_data = np.delete(processed_data, drop_indices).tolist()
