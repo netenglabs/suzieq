@@ -161,6 +161,8 @@ class LldpService(Service):
                 entry['subtype'] = "interface name"
             elif subtype == "local":
                 entry['subtype'] = "locally assigned"
+            elif subtype == 'mac':
+                entry['subtype'] = "mac address"
 
             self._common_cleaner(entry)
 
