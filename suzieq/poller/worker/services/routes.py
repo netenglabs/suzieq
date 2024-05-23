@@ -133,6 +133,8 @@ class RoutesService(Service):
                 drop_entries_idx.append(i)
                 continue
 
+            if entry.get('protocol', '') == 'direct':
+                entry['protocol'] = 'connected'
             vrf = entry.pop("vrf")[0]['data']
             if vrf == "inet.0":
                 vrf = "default"
@@ -252,6 +254,17 @@ class RoutesService(Service):
                     lastChange, raw_data[0]['timestamp']/1000)
             else:
                 entry['statusChangeTimestamp'] = 0
+
+            if (protocol := entry.get('protocol', '')) == 'bgp':
+                rt_tag = entry.get('routeTag', [])
+                if isinstance(rt_tag, str):
+                    # This is for older versions of NXOS
+                    entry['asPathList'] = re.findall(r'\d+', rt_tag)
+                else:
+                    entry['asPathList'] = rt_tag or []
+
+            if protocol == 'direct':
+                entry['protocol'] = 'connected'
 
             self._fix_ipvers(entry)
 

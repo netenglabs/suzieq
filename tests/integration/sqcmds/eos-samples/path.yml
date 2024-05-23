@@ -916,8 +916,9 @@ tests:
 - command: path summarize --dest=172.16.3.202 --src=172.16.1.101 --format=json --namespace=eos
   data-directory: tests/data/parquet/
   marks: path summarize eos
-  output: '[{"eos": 8}, {"eos": [2, 2, 2, 1]}, {"eos": 4}, {"eos": 4.0}, {"eos": 8},
-    {"eos": 1500}, {"eos": true}, {"eos": true}]'
+  output: '{"eos": {"totalPaths": 8, "perHopEcmp": [2, 2, 2, 1], "maxPathLength":
+    4, "avgPathLength": 4.0, "uniqueDevices": 8, "pathMtu": 1500, "usesOverlay": true,
+    "mtuMismatch": true}}'
 - command: path summarize --dest=10.0.0.11 --src=10.0.0.14 --format=json --namespace=eos
   data-directory: tests/data/parquet/
   marks: path summarize eos
