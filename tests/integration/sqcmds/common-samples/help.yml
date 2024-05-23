@@ -463,15 +463,17 @@ tests:
   marks: interface help command
   output: "interfaces aver: \e[36mAssert aspects about the interface\e[0m\n\e[33m\n\
     Use quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n\
+    \ - bond: \e[36m\e[1mshow portchannel and mbr ports for, space separated\e[0m\n\
     \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
     \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
     [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
     \ space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e\
     [0m\n - ignore_missing_peer: \e[36m\e[1mTreat missing peer as passing assert check\e\
-    [0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n\
-    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - portmode: \e\
-    [36m\e[1mPortmode(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - result:\
+    [0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes, space separated\e[0m\n\
+    \ - mtu: \e[36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n -\
+    \ namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - portmode: \e[36m\e\
+    [1mPortmode(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank\
+    \ terminated pandas query format to further filter the output\e[0m\n - result:\
     \ \e[36m\e[1mShow only assert that matches this value\e[0m\n - start_time: \e\
     [36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e[36m\e\
     [1mState of VLAN to query\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - value:\
@@ -485,14 +487,16 @@ tests:
   marks: interface help command
   output: "interfaces describe: \e[36mDisplay the schema of the table\e[0m\n\e[33m\n\
     Use quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n\
+    \ - bond: \e[36m\e[1mshow portchannel and mbr ports for, space separated\e[0m\n\
     \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
     \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
     [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
     \ space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e\
-    [0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n\
-    \ - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - portmode: \e\
-    [36m\e[1mPortmode(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing\
-    \ blank terminated pandas query format to further filter the output\e[0m\n - start_time:\
+    [0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes, space separated\e[0m\n\
+    \ - mtu: \e[36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n -\
+    \ namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - portmode: \e[36m\e\
+    [1mPortmode(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank\
+    \ terminated pandas query format to further filter the output\e[0m\n - start_time:\
     \ \e[36m\e[1mStart of time window, try natural language spec\e[0m\n - state: \e\
     [36m\e[1mState of VLAN to query\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n\
     \ - view: \e[36m\e[1mView all records or just the latest\e[0m\n - vlan: \e[36m\e\
@@ -503,38 +507,41 @@ tests:
   format: text
   marks: interface help command
   output: "interfaces show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when\
-    \ providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e\
-    [36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e\
-    [1mEnd of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
+    \ providing more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - bond: \e[36m\e\
+    [1mshow portchannel and mbr ports for, space separated\e[0m\n - columns: \e[36m\e\
+    [1mSpace separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd\
+    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
-    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - mtu: \e\
-    [36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n - namespace:\
-    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - portmode: \e[36m\e[1mPortmode(s),\
-    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart\
-    \ of time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of\
-    \ VLAN to query\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e\
-    [1mView all records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space\
-    \ separated, can use <, >, <=, >=, !\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e\
-    [0m\n"
+    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - macaddr:\
+    \ \e[36m\e[1mMAC address(es), in quotes, space separated\e[0m\n - mtu: \e[36m\e\
+    [1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n - namespace: \e[36m\e\
+    [1mNamespace(s), space separated\e[0m\n - portmode: \e[36m\e[1mPortmode(s), space\
+    \ separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
+    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
+    \ time window, try natural language spec\e[0m\n - state: \e[36m\e[1mState of VLAN\
+    \ to query\e[0m\n - type: \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView\
+    \ all records or just the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated,\
+    \ can use <, >, <=, >=, !\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: interface help --command=summarize
   data-directory: tests/data/parquet
   format: text
   marks: interface help command
   output: "interfaces summarize: \e[36mSummarize relevant information about the table\e\
     [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - bond: \e[36m\e[1mshow portchannel and mbr ports for, space separated\e\
     [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
     \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
     \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
     [36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface name(s),\
-    \ space separated\e[0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can use <,\
-    \ >, <=, >=, !\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
-    [0m\n - portmode: \e[36m\e[1mPortmode(s), space separated\e[0m\n - query_str:\
-    \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
-    \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
-    \ spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - type: \e[36m\e\
-    [1mFilter by type\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
-    [0m\n - vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n\
+    \ space separated\e[0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes, space\
+    \ separated\e[0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can use <, >, <=,\
+    \ >=, !\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n -\
+    \ portmode: \e[36m\e[1mPortmode(s), space separated\e[0m\n - query_str: \e[36m\e\
+    [1mTrailing blank terminated pandas query format to further filter the output\e\
+    [0m\n - start_time: \e[36m\e[1mStart of time window, try natural language spec\e\
+    [0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - type: \e[36m\e[1mFilter\
+    \ by type\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e[0m\n\
+    \ - vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n\
     \ - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n"
 - command: interface help --command=top
   data-directory: tests/data/parquet
@@ -542,34 +549,38 @@ tests:
   marks: interface help command
   output: "interfaces top: \e[36mReturn the top n values for a field in a table\e\
     [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
+    [0m\n - bond: \e[36m\e[1mshow portchannel and mbr ports for, space separated\e\
     [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
     \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
     \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
     \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
-    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - mtu: \e\
-    [36m\e[1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n - namespace:\
-    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - portmode: \e[36m\e[1mPortmode(s),\
-    \ space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas\
-    \ query format to further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn\
-    \ bottom n values\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural\
-    \ language spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - type:\
-    \ \e[36m\e[1mFilter by type\e[0m\n - view: \e[36m\e[1mView all records or just\
-    \ the latest\e[0m\n - vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >,\
-    \ <=, >=, !\e[0m\n - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n - what: \e\
-    [36m\e[1mnumeric field to get top values for\e[0m\n"
+    [0m\n - ifname: \e[36m\e[1mInterface name(s), space separated\e[0m\n - macaddr:\
+    \ \e[36m\e[1mMAC address(es), in quotes, space separated\e[0m\n - mtu: \e[36m\e\
+    [1mMTU(s), space separated, can use <, >, <=, >=, !\e[0m\n - namespace: \e[36m\e\
+    [1mNamespace(s), space separated\e[0m\n - portmode: \e[36m\e[1mPortmode(s), space\
+    \ separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
+    \ format to further filter the output\e[0m\n - reverse: \e[36m\e[1mreturn bottom\
+    \ n values\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\
+    \ spec\e[0m\n - state: \e[36m\e[1mState of VLAN to query\e[0m\n - type: \e[36m\e\
+    [1mFilter by type\e[0m\n - view: \e[36m\e[1mView all records or just the latest\e\
+    [0m\n - vlan: \e[36m\e[1mVLAN(s), space separated, can use <, >, <=, >=, !\e[0m\n\
+    \ - vrf: \e[36m\e[1mVRF(s), space separated\e[0m\n - what: \e[36m\e[1mnumeric\
+    \ field to get top values for\e[0m\n"
 - command: interface help --command=unique
   data-directory: tests/data/parquet
   format: text
   marks: interface help command
   output: "interfaces unique: \e[36mGet unique values (and counts) associated with\
     \ requested field\e[0m\n\e[33m\nUse quotes when providing more than one value\e\
-    [0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
+    [0m\n\e[33m\nArguments:\e[0m\n - bond: \e[36m\e[1mshow portchannel and mbr ports\
+    \ for, space separated\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns,\
     \ * for all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e\
     [0m\n - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e\
     [0m\n - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname:\
     \ \e[36m\e[1mHostname(s), space separated\e[0m\n - ifname: \e[36m\e[1mInterface\
-    \ name(s), space separated\e[0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can\
-    \ use <, >, <=, >=, !\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
+    \ name(s), space separated\e[0m\n - macaddr: \e[36m\e[1mMAC address(es), in quotes,\
+    \ space separated\e[0m\n - mtu: \e[36m\e[1mMTU(s), space separated, can use <,\
+    \ >, <=, >=, !\e[0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e\
     [0m\n - portmode: \e[36m\e[1mPortmode(s), space separated\e[0m\n - query_str:\
     \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
     \ output\e[0m\n - start_time: \e[36m\e[1mStart of time window, try natural language\

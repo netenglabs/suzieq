@@ -2,6 +2,8 @@ from ipaddress import ip_interface
 
 import numpy as np
 import pandas as pd
+import pyarrow as pa
+import pyarrow.compute as pc
 
 from suzieq.engines.pandas.engineobj import SqPandasEngine
 from suzieq.shared.utils import (convert_macaddr_format_to_colon,
@@ -66,8 +68,20 @@ class AddressObj(SqPandasEngine):
         df = super().get(addnl_fields=addnl_fields, columns=fields,
                          **kwargs)
 
-        if df.empty:
+        if df.empty or 'error' in df:
             return df
+
+        # pylint: disable=no-member
+        df['v4addrlen'] = pc.list_value_length(
+            pa.array(df.ipAddressList)).to_pandas()
+        # pylint: disable=no-member
+        df['v6addrlen'] = pc.list_value_length(
+            pa.array(df.ip6AddressList)).to_pandas()
+
+        df = (
+            df.query('v4addrlen > 0 or v6addrlen > 0')
+            .reset_index(drop=True)
+        )
 
         if 'master' in df.columns:
             df = df.rename({'master': 'vrf'}, axis=1) \
