@@ -15,7 +15,7 @@ from itertools import groupby
 from logging.handlers import RotatingFileHandler
 from os import getenv
 from time import time
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Optional, Union
 
 import pandas as pd
 import psutil
@@ -386,9 +386,13 @@ def calc_avg(oldval, newval):
 
 
 def parse_relative_timestamp(
-        uptime: str, relative_to: int = None, ms=False) -> int:
-    """Get a relative time (i.e. with format 10 weeks, 4 days, 3 hours 11 mins)
-    and convert it into a timestamp.
+        uptime: str, relative_to: Optional[int] = None,
+        ms=False) -> Optional[int]:
+    """Convert a string of relative time into a timestamp
+
+    This takes dateparser parsable strings such as
+    '10 weeks, 4 days, 3 hours 11 mins' or '1w4d' or '00h05m040s'
+    and converts it into a timestamp.
 
     Args:
         uptime (str): _description_
@@ -477,8 +481,32 @@ def get_timestamp_from_cisco_time(in_data: str, timestamp: int) -> int:
     return int((datetime.fromtimestamp(timestamp)-delta).timestamp()*1000)
 
 
-def get_timestamp_from_junos_time(in_data: Tuple[Dict, str],
-                                  relative_to: int = None,
+def get_timestamp_from_iosxe_time(in_data: str, timestamp: int) -> int:
+    """Get timestamp in ms from the Cisco IOS/XE-specific timestamp string
+    Examples of Cisco timestamp str are 1w4d, 1d10h, 01:20:35, 00:01:56.
+
+    Args:
+        in_data (str): The IOSXE uptime string
+        timestamp (int): the base unix timestamp IS SECONDS from which
+            subtracting the uptime.
+
+    Returns:
+        int: a unix timestamp in milliseconds
+    """
+    if not in_data:
+        return 0
+
+    if ':' in in_data:
+        # There's time and so we need to convert it into h/m/s
+        in_data = (in_data.replace(':', 'h', 1)
+                          .replace(':', 'm', 1)
+                   ) + 's'
+
+    return parse_relative_timestamp(in_data, timestamp, False) or 0
+
+
+def get_timestamp_from_junos_time(in_data: Union[str, Dict[str, str]],
+                                  relative_to: Optional[int] = None,
                                   ms=True) -> int:
     """Get timestamp in ms from the Junos-specific timestamp string
     The expected input looks like: "attributes" : {"junos:seconds" : "0"}.
