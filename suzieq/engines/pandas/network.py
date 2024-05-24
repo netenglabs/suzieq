@@ -481,8 +481,8 @@ class NetworkObj(SqPandasEngine):
                     match_ifname = row.ifname
                     break
 
-                lldp_df = lldpobj.get(namespace=[row.namespace],
-                                      hostname=[row.hostname],
+                lldp_df = lldpobj.get(namespace=[match_namespace],
+                                      hostname=[match_hostname],
                                       ifname=mbr_ports)
 
                 if not lldp_df.empty:
