@@ -259,6 +259,14 @@ class PathPage(SqGuiPage):
                                    vrf=self._state.vrf)
 
             summ_df = self._path_summarize(df)
+        else:
+            df = self._pathobj.get(namespace=[self._state.namespace],
+                                   src=self._state.dest,
+                                   dest=self._state.source,
+                                   vrf=self._state.vrf)
+
+            summ_df = self._path_summarize(df)
+
         return df, summ_df
 
     def _get_failed_data(self, namespace: str, pgbar) -> None:
