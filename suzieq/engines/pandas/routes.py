@@ -35,7 +35,6 @@ class RoutesObj(SqPandasEngine):
 
         return addnl_fields
 
-    # pylint: disable=too-many-statements
     def get(self, **kwargs):
         '''Return the routes table for the given filters'''
 

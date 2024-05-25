@@ -130,8 +130,7 @@ class SqParquetDB(SqDB):
                         continue
                     if need_sqvers:
                         vers = float(str(elem).split('=')[-1])
-                        if vers > max_vers:
-                            max_vers = vers
+                        max_vers = max(vers, max_vers)
 
                     dataset = ds.dataset(elem, format='parquet',
                                          partitioning='hive')
@@ -539,8 +538,7 @@ class SqParquetDB(SqDB):
                 continue
             if need_sqvers:
                 vers = float(str(elem).split('=')[-1])
-                if vers > max_vers:
-                    max_vers = vers
+                max_vers = max(vers, max_vers)
 
             dataset = ds.dataset(elem, format='parquet', partitioning='hive')
 
@@ -631,7 +629,6 @@ class SqParquetDB(SqDB):
             Returns:
                 bool: the result of the expression
             """
-            # pylint: disable=comparison-with-callable
             # We would like to init the result to False if we concat the
             # expressions with OR, while with True if we use AND.
             res = False
