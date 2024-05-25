@@ -225,6 +225,9 @@ class SqParquetDB(SqDB):
                 df = pd.DataFrame.from_dict(data["records"])
                 table = pa.Table.from_pandas(df, schema=schema,
                                              preserve_index=False)
+            else:
+                raise ValueError('Unknown format of data provided:'
+                                 f'{type(data)}')
 
             pq.write_to_dataset(table,
                                 root_path=folder,
