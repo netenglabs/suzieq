@@ -1,7 +1,7 @@
 import os
 import re
 from time import time
-from typing import List, Optional
+from typing import Any, Callable, List, Optional
 import logging
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
@@ -619,7 +619,7 @@ class SqParquetDB(SqDB):
             ds: pyarrow dataset of only the files that match filter
         """
         def check_ns_conds(ns_to_test: str, filter_list: List[str],
-                           op: operator.or_) -> bool:
+                           op: Callable[[Any, Any], Any]) -> bool:
             """Concat the expressions with the provided (AND or OR) operator
             and return the result of the resulting expression tested on the
             provided namespace.
@@ -635,7 +635,7 @@ class SqParquetDB(SqDB):
             # We would like to init the result to False if we concat the
             # expressions with OR, while with True if we use AND.
             res = False
-            if operator.and_ == op:
+            if operator.and_ is op:
                 res = True
             for filter_val in filter_list:
                 ns_to_test = ns_to_test.split('namespace=')[-1]
