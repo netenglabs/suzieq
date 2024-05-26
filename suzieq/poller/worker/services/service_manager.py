@@ -188,9 +188,8 @@ class ServiceManager:
         svc_classes = Service.get_plugins()
 
         schemas = Schema(self.schema_dir)
-        if schemas:
-            poller_schema = schemas.get_arrow_schema('sqPoller')
-            poller_schema_version = SchemaForTable('sqPoller', schemas).version
+        poller_schema = schemas.get_arrow_schema('sqPoller')
+        poller_schema_version = SchemaForTable('sqPoller', schemas).version
 
         db_access = self._get_db_access(self.cfg)
 

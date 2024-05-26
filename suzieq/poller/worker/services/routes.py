@@ -136,6 +136,7 @@ class RoutesService(Service):
             if entry.get('protocol', '') == 'direct':
                 entry['protocol'] = 'connected'
             vrf = entry.pop("vrf")[0]['data']
+            vers = 0
             if vrf == "inet.0":
                 vrf = "default"
                 vers = 4

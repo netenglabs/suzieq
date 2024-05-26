@@ -415,6 +415,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
         # Process default value processing of the form <key>?|<def_val> or
         # <key>?<expected_val>|<def_val>
         op = None  # pylint: disable=redefined-outer-name
+        exp_val = None
         if "?" in rval:
             rval, op = rval.split("?")
             exp_val, def_val = op.split("|")

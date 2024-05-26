@@ -344,6 +344,7 @@ class Node:
     async def _parse_device_type_hostname(self, output, _) -> None:
         devtype = ""
         hostname = None
+        version_str = '0.0.0'   # default that's possibly never used
 
         if output[0]["status"] == 0:
             # don't keep trying if we're connected to an unsupported dev
