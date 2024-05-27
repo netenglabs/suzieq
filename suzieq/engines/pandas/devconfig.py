@@ -27,7 +27,7 @@ class DevconfigObj(SqPandasEngine):
         devdf = self._get_table_sqobj('device') \
             .get(columns=['namespace', 'hostname', 'os'], **kwargs)
 
-        if devdf.empty or 'errror' in devdf.columns:
+        if devdf.empty or 'error' in devdf.columns:
             return df
 
         drop_indices: List[int] = []
