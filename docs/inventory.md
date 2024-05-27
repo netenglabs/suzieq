@@ -69,6 +69,22 @@ auths:
 - name: suzieq-user-04
   key-passphrase: ask
   keyfile: path/to/key
+  
+- name: suzieq-user-05
+  username: ask
+  password: ask
+  
+- name: suzieq-user-06
+  username: env:USERNAME_ENV_VAR
+  password: ask
+  
+- name: suzieq-user-07
+  username: env:USERNAME_ENV_VAR
+  password: env:PASSWORD_ENV_VAR
+
+- name: suzieq-user-08
+  username: ask
+  password: env:PASSWORD_ENV_VAR
 
 namespaces:
 - name: testing
@@ -80,7 +96,7 @@ namespaces:
 !!! warning
     Some observations on the YAML file above:
 
-    - **This is just an example** that covers all the possible combinations, **not an real life inventory**
+    - **This is just an example** that covers most of the possible combinations, **not an real life inventory**
     - **Do not specify device type unless you're using REST**. SuzieQ automatically determines device type with SSH
     - Most environments require setting the `ignore-known-hosts` option in the device section
     - The auths section shows all the different authorization methods supported by SuzieQ
@@ -95,7 +111,8 @@ For this reason, SuzieQ inventory now supports three different options to store 
 - `env:<ENV_VARIABLE>`: the sensitive information is stored in an environment variable
 - `ask`: the user can write the sensitive information on the stdin
 
-Currently this method is used to specify passwords, passphrases and tokens.
+This method is currently utilized for specifying usernames, passwords,
+passphrases, and tokens.
 
 ## <a name='inventory-sources'></a>Sources
 
@@ -323,8 +340,10 @@ In case a private key is used to authenticate:
 
 Where `key-passphrase` is the passphrase of the private key.
 
-Both `passoword` and `key-passphrase` are considered [sensitive data](#sensitive-data).
-For this reason they can be set as plaintext, env variable or asked to the user via stdin.
+`Password`, `key-passphrase` and `username` are considered [sensitive 
+data](#sensitive-data).
+For this reason they can be set as plaintext, env variable or
+asked to the user via stdin.
 
 ### <a name='cred-file'></a>Credential file
 

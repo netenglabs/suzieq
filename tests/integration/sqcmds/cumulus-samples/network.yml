@@ -32,33 +32,29 @@ tests:
 - command: network find --address="52:54:00:c5:1d:06" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/parquet
   marks: network find cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "server103", "vrf": "default",
-    "ipAddress": "172.16.1.101", "vlan": 0, "macaddr": "52:54:00:c5:1d:06", "ifname":
-    "bond0", "bondMembers": "eth1, eth2", "type": "bridged", "l2miss": true}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
-    "vlan": 13, "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers":
-    "swp5", "type": "bridged", "l2miss": false}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan": 13, "macaddr":
-    "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers": "swp5", "type": "bridged",
-    "l2miss": false}]'
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": 13, "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01",
+    "bondMembers": "swp5", "type": "bridged", "l2miss": false}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    13, "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers": "swp5",
+    "type": "bridged", "l2miss": false}, {"namespace": "ospf-ibgp", "hostname": "server103",
+    "vrf": "default", "ipAddress": "172.16.1.101", "vlan": 0, "macaddr": "52:54:00:c5:1d:06",
+    "ifname": "bond0", "bondMembers": "eth1, eth2", "type": "bridged", "l2miss": true}]'
 - command: network find --address="72:f0:17:6d:80:3f" --namespace=ospf-ibgp --format=json
   data-directory: tests/data/parquet
   marks: network find  cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf04", "vrf": "", "ipAddress":
-    "", "vlan": 24, "macaddr": "72:f0:17:6d:80:3f", "ifname": "vni24", "bondMembers":
-    "", "type": "interface", "l2miss": false}]'
+  output: '[]'
 - command: network find --address="5254.00c5.1d06" --format=json
   data-directory: tests/data/parquet
   marks: network find cumulus
-  output: '[{"namespace": "ospf-ibgp", "hostname": "server103", "vrf": "default",
-    "ipAddress": "172.16.1.101", "vlan": 0, "macaddr": "52:54:00:c5:1d:06", "ifname":
-    "bond0", "bondMembers": "eth1, eth2", "type": "bridged", "l2miss": true}, {"namespace":
-    "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
-    "vlan": 13, "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers":
-    "swp5", "type": "bridged", "l2miss": false}, {"namespace": "ospf-ibgp", "hostname":
-    "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan": 13, "macaddr":
-    "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers": "swp5", "type": "bridged",
-    "l2miss": false}]'
+  output: '[{"namespace": "ospf-ibgp", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.101", "vlan": 13, "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01",
+    "bondMembers": "swp5", "type": "bridged", "l2miss": false}, {"namespace": "ospf-ibgp",
+    "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101", "vlan":
+    13, "macaddr": "52:54:00:c5:1d:06", "ifname": "bond01", "bondMembers": "swp5",
+    "type": "bridged", "l2miss": false}, {"namespace": "ospf-ibgp", "hostname": "server103",
+    "vrf": "default", "ipAddress": "172.16.1.101", "vlan": 0, "macaddr": "52:54:00:c5:1d:06",
+    "ifname": "bond0", "bondMembers": "eth1, eth2", "type": "bridged", "l2miss": true}]'
 - command: network find --address="10.0.0.11" --format=json --namespace='ospf-single
     dual-evpn ospf-ibgp'
   data-directory: tests/data/parquet

@@ -3,9 +3,9 @@ tests:
 - command: devconfig show --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: devconfig show panos
-  output: '[{"namespace": "panos", "config": "# hostname\nexit01\n# interfaces\n#
-    This file describes the network interfaces available on your system\n# and how
-    to activate them. For more information, see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n#
+  output: '[{"namespace": "panos", "hostname": "exit01", "config": "# hostname\nexit01\n#
+    interfaces\n# This file describes the network interfaces available on your system\n#
+    and how to activate them. For more information, see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n#
     The loopback network interface\nauto lo\niface lo inet loopback\n\n# The primary
     network interface\nauto eth0\niface eth0 inet dhcp\n    vrf mgmt\n\nauto mgmt\niface
     mgmt\n    address 127.0.0.1/8\n    address ::1/128\n    vrf-table auto\n# BEGIN
@@ -56,7 +56,7 @@ tests:
     FW activate\n exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.31\n
     passive-interface lo\n!\nroute-map LOWER_AGGRT_PREF permit 10\n set local-preference
     10\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "exit01", "timestamp": 1639476253934}, {"namespace": "panos",
+    vrf mgmt", "timestamp": 1639476253934}, {"namespace": "panos", "hostname": "leaf03",
     "config": "# hostname\nleaf03\n# interfaces\n# This file describes the network
     interfaces available on your system\n# and how to activate them. For more information,
     see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
@@ -115,7 +115,7 @@ tests:
     exit-address-family\n !\n address-family l2vpn evpn\n  advertise ipv4 unicast\n
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.13\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "leaf03", "timestamp": 1639476253942}, {"namespace": "panos",
+    vrf mgmt", "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "spine01",
     "config": "# hostname\nspine01\n# interfaces\n# This file describes the network
     interfaces available on your system\n# and how to activate them. For more information,
     see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
@@ -146,7 +146,7 @@ tests:
     address-family l2vpn evpn\n  neighbor RR activate\n  neighbor RR route-reflector-client\n
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.21\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "spine01", "timestamp": 1639476253942}, {"namespace": "panos",
+    vrf mgmt", "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "exit02",
     "config": "# hostname\nexit02\n# interfaces\n# This file describes the network
     interfaces available on your system\n# and how to activate them. For more information,
     see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
@@ -200,7 +200,7 @@ tests:
     FW activate\n exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.32\n
     passive-interface lo\n!\nroute-map LOWER_AGGRT_PREF permit 10\n set local-preference
     10\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "exit02", "timestamp": 1639476253943}, {"namespace": "panos",
+    vrf mgmt", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "spine02",
     "config": "# hostname\nspine02\n# interfaces\n# This file describes the network
     interfaces available on your system\n# and how to activate them. For more information,
     see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
@@ -231,7 +231,7 @@ tests:
     address-family l2vpn evpn\n  neighbor RR activate\n  neighbor RR route-reflector-client\n
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.22\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "spine02", "timestamp": 1639476253943}, {"namespace": "panos",
+    vrf mgmt", "timestamp": 1639476253943}, {"namespace": "panos", "hostname": "dcedge01",
     "config": "# hostname\ndcedge01\n# interfaces\n# This file describes the network
     interfaces available on your system\n# and how to activate them. For more information,
     see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
@@ -250,8 +250,8 @@ tests:
     169.254.127.1 peer-group ISL\n neighbor 169.254.127.3 peer-group ISL\n !\n address-family
     ipv4 unicast\n  redistribute connected route-map LOOPBACKS\n  neighbor ISL default-originate\n
     exit-address-family\n!\nroute-map LOOPBACKS permit 10\n match interface lo\n!\nline
-    vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 # vrf mgmt", "hostname":
-    "dcedge01", "timestamp": 1639476253948}, {"namespace": "panos", "config": "# hostname\nleaf01\n#
+    vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 # vrf mgmt", "timestamp":
+    1639476253948}, {"namespace": "panos", "hostname": "leaf01", "config": "# hostname\nleaf01\n#
     interfaces\n# This file describes the network interfaces available on your system\n#
     and how to activate them. For more information, see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n#
     The loopback network interface\nauto lo\niface lo inet loopback\n\n# The primary
@@ -310,7 +310,7 @@ tests:
     exit-address-family\n !\n address-family l2vpn evpn\n  advertise ipv4 unicast\n
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.11\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "leaf01", "timestamp": 1639476253949}, {"namespace": "panos",
+    vrf mgmt", "timestamp": 1639476253949}, {"namespace": "panos", "hostname": "leaf02",
     "config": "# hostname\nleaf02\n# interfaces\n# This file describes the network
     interfaces available on your system\n# and how to activate them. For more information,
     see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
@@ -369,7 +369,7 @@ tests:
     exit-address-family\n !\n address-family l2vpn evpn\n  advertise ipv4 unicast\n
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.12\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "leaf02", "timestamp": 1639476253949}, {"namespace": "panos",
+    vrf mgmt", "timestamp": 1639476253949}, {"namespace": "panos", "hostname": "leaf04",
     "config": "# hostname\nleaf04\n# interfaces\n# This file describes the network
     interfaces available on your system\n# and how to activate them. For more information,
     see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
@@ -428,13 +428,13 @@ tests:
     exit-address-family\n !\n address-family l2vpn evpn\n  advertise ipv4 unicast\n
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.14\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "leaf04", "timestamp": 1639476253949}]'
+    vrf mgmt", "timestamp": 1639476253949}]'
 - command: devconfig show --hostname=leaf01 --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: devconfig show panos
-  output: '[{"namespace": "panos", "config": "# hostname\nleaf01\n# interfaces\n#
-    This file describes the network interfaces available on your system\n# and how
-    to activate them. For more information, see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n#
+  output: '[{"namespace": "panos", "hostname": "leaf01", "config": "# hostname\nleaf01\n#
+    interfaces\n# This file describes the network interfaces available on your system\n#
+    and how to activate them. For more information, see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n#
     The loopback network interface\nauto lo\niface lo inet loopback\n\n# The primary
     network interface\nauto eth0\niface eth0 inet dhcp\n    vrf mgmt\n\nauto mgmt\niface
     mgmt\n    address 127.0.0.1/8\n    address ::1/128\n    vrf-table auto\n# BEGIN
@@ -491,81 +491,21 @@ tests:
     exit-address-family\n !\n address-family l2vpn evpn\n  advertise ipv4 unicast\n
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.11\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "leaf01", "timestamp": 1639476253949}]'
+    vrf mgmt", "timestamp": 1639476253949}]'
 - command: devconfig show --hostname='leaf01 spine01' --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: devconfig show panos
-  output: '[{"namespace": "panos", "config": "# hostname\nleaf01\n# interfaces\n#
-    This file describes the network interfaces available on your system\n# and how
-    to activate them. For more information, see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n#
+  output: '[{"namespace": "panos", "hostname": "spine01", "config": "# hostname\nspine01\n#
+    interfaces\n# This file describes the network interfaces available on your system\n#
+    and how to activate them. For more information, see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n#
     The loopback network interface\nauto lo\niface lo inet loopback\n\n# The primary
     network interface\nauto eth0\niface eth0 inet dhcp\n    vrf mgmt\n\nauto mgmt\niface
     mgmt\n    address 127.0.0.1/8\n    address ::1/128\n    vrf-table auto\n# BEGIN
-    lo\nauto lo\niface lo inet loopback\n   address 10.0.0.11/32\n   vxlan-local-tunnelip
-    10.0.0.11/32\n      clagd-vxlan-anycast-ip 10.0.0.112/32\n   \n# END lo\n# BEGIN
-    swp1\nauto swp1\niface swp1 inet manual\n  address 10.0.0.11/32\n  mtu 9216\n#
-    END swp1\n# BEGIN swp2\nauto swp2\niface swp2 inet manual\n  address 10.0.0.11/32\n  mtu
-    9216\n# END swp2\n#BEGIN {''cumulus'': ''peerlink'', ''eos'': ''port-channel1'',
-    ''nxos'': ''port-channel1''}\nauto swp5\niface swp5\n  mtu 9216\n  post-up ip
-    link set promisc on dev swp5\n#\nauto swp6\niface swp6\n  mtu 9216\n  post-up
-    ip link set promisc on dev swp6\n#\nauto peerlink\niface peerlink\n   mtu 9216\n   bond-slaves
-    swp5 swp6\n#\n#END {''cumulus'': ''peerlink'', ''eos'': ''port-channel1'', ''nxos'':
-    ''port-channel1''}\n#BEGIN clag def\nauto peerlink.4094\niface peerlink.4094\n   clagd-peer-ip
-    linklocal\n   clagd-sys-mac 44:39:39:FF:40:95\n      clagd-backup-ip false\n         clagd-priority
-    32768\n      clagd-args --initDelay 90\n#\n#END clag def\n#BEGIN mlag-member-ports\nauto
-    swp3\niface swp3\n   mtu 9000      \n   post-up ip link set promisc on dev swp3\n#\nauto
-    bond01\niface bond01\n   bond-slaves swp3\n   mtu 9000\n   clag-id 3\n   mstpctl-portadminedge
-    yes\n   mstpctl-bpduguard yes\n   bond-lacp-bypass-allow yes\n#\nauto swp4\niface
-    swp4\n   mtu 9000      \n   post-up ip link set promisc on dev swp4\n#\nauto bond02\niface
-    bond02\n   bond-slaves swp4\n   mtu 9000\n   clag-id 4\n   mstpctl-portadminedge
-    yes\n   mstpctl-bpduguard yes\n   bond-lacp-bypass-allow yes\n#\n#END mlag-member-ports\n#
-    BEGIN l2port-bond01\nauto bond01\niface bond01\n   mtu 9000\n   bridge-access
-    10\n# END l2port-bond01\n# BEGIN l2port-bond02\nauto bond02\niface bond02\n   mtu
-    9000\n   bridge-access 30\n# END l2port-bond02\n# BEGIN bridge\nauto bridge\niface
-    bridge\n  bridge-vlan-aware yes\n  bridge-ports  bond01 bond02 vni10 vni30 vni999\n  bridge-vids
-    10 30 999\n# END bridge\n# BEGIN SVI-vlan10\nauto Vlan10\niface Vlan10\n    vrf
-    evpn-vrf\n    mtu 9000\n  address 172.16.1.254/24\n  hwaddress 00:00:00:11:12:10\n  vlan-id
-    10\n  vlan-raw-device bridge\n# END SVI-vlan10\n# BEGIN SVI-vlan30\nauto Vlan30\niface
-    Vlan30\n    vrf evpn-vrf\n    mtu 9000\n  address 172.16.3.254/24\n  hwaddress
-    00:00:00:11:12:30\n  vlan-id 30\n  vlan-raw-device bridge\n# END SVI-vlan30\n#
-    BEGIN l2vni-10\nauto vni10\niface vni10\n  mtu 9216\n  vxlan-id 10\n  bridge-learning
-    off\n  bridge-access 10\n# END l2vni-10\n# BEGIN l2vni-30\nauto vni30\niface vni30\n  mtu
-    9216\n  vxlan-id 30\n  bridge-learning off\n  bridge-access 30\n# END l2vni-30\n#
-    BEGIN evpn-vrf\nauto evpn-vrf\niface evpn-vrf\n  vrf-table auto\n# END evpn-vrf\n#
-    BEGIN {''vlan'': 999, ''vnid'': 999, ''vlanif'': ''vlan999'', ''junos_vrf_loopback_ip'':
-    {''leaf01'': ''10.0.0.101/32'', ''leaf02'': ''10.0.0.102/32'', ''exit01'': ''10.0.0.121/32'',
-    ''exit02'': ''10.0.0.122/32''}, ''vrf'': ''evpn-vrf''}\nauto vni999\niface vni999\n  mtu
-    9216\n  vxlan-id 999\n  mstpctl-bpduguard yes\n  mstpctl-portbpdufilter yes\n  bridge-access
-    999\n  bridge-learning off\n\nauto vlan999\niface vlan999\n  mtu 9216\n  hwaddress
-    44:39:39:FF:40:95\n  vlan-id 999\n  vlan-raw-device bridge\n  vrf evpn-vrf\n#
-    END {''vlan'': 999, ''vnid'': 999, ''vlanif'': ''vlan999'', ''junos_vrf_loopback_ip'':
-    {''leaf01'': ''10.0.0.101/32'', ''leaf02'': ''10.0.0.102/32'', ''exit01'': ''10.0.0.121/32'',
-    ''exit02'': ''10.0.0.122/32''}, ''vrf'': ''evpn-vrf''}\nBuilding configuration...\n\nCurrent
-    configuration:\n!\nfrr version 7.0+cl4u3\nfrr defaults datacenter\nhostname leaf01\nlog
-    syslog informational\nservice integrated-vtysh-config\n!\nvrf evpn-vrf\n vni 999\n
-    exit-vrf\n!\ninterface lo\n ip ospf area 0.0.0.0\n!\ninterface swp1\n ip ospf
-    area 0\n ip ospf network point-to-point\n!\ninterface swp2\n ip ospf area 0\n
-    ip ospf network point-to-point\n!\nrouter bgp 64520\n bgp router-id 10.0.0.11\n
-    no bgp default ipv4-unicast\n neighbor RR peer-group\n neighbor RR remote-as internal\n
-    neighbor RR bfd\n neighbor 10.0.0.21 peer-group RR\n neighbor 10.0.0.22 peer-group
-    RR\n !\n address-family l2vpn evpn\n  neighbor RR activate\n  advertise-all-vni\n
-    exit-address-family\n!\nrouter bgp 64520 vrf evpn-vrf\n bgp router-id 10.0.0.11\n
-    !\n address-family ipv4 unicast\n  network 172.16.1.0/24\n  network 172.16.3.0/24\n
-    exit-address-family\n !\n address-family l2vpn evpn\n  advertise ipv4 unicast\n
-    exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.11\n passive-interface
-    lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "leaf01", "timestamp": 1639476253949}, {"namespace": "panos",
-    "config": "# hostname\nspine01\n# interfaces\n# This file describes the network
-    interfaces available on your system\n# and how to activate them. For more information,
-    see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
-    network interface\nauto lo\niface lo inet loopback\n\n# The primary network interface\nauto
-    eth0\niface eth0 inet dhcp\n    vrf mgmt\n\nauto mgmt\niface mgmt\n    address
-    127.0.0.1/8\n    address ::1/128\n    vrf-table auto\n# BEGIN lo\nauto lo\niface
-    lo inet loopback\n   address 10.0.0.21/32\n# END lo\n# BEGIN swp1\nauto swp1\niface
-    swp1 inet manual\n  address 10.0.0.21/32\n  mtu 9216\n# END swp1\n# BEGIN swp2\nauto
-    swp2\niface swp2 inet manual\n  address 10.0.0.21/32\n  mtu 9216\n# END swp2\n#
-    BEGIN swp3\nauto swp3\niface swp3 inet manual\n  address 10.0.0.21/32\n  mtu 9216\n#
-    END swp3\n# BEGIN swp4\nauto swp4\niface swp4 inet manual\n  address 10.0.0.21/32\n  mtu
+    lo\nauto lo\niface lo inet loopback\n   address 10.0.0.21/32\n# END lo\n# BEGIN
+    swp1\nauto swp1\niface swp1 inet manual\n  address 10.0.0.21/32\n  mtu 9216\n#
+    END swp1\n# BEGIN swp2\nauto swp2\niface swp2 inet manual\n  address 10.0.0.21/32\n  mtu
+    9216\n# END swp2\n# BEGIN swp3\nauto swp3\niface swp3 inet manual\n  address 10.0.0.21/32\n  mtu
+    9216\n# END swp3\n# BEGIN swp4\nauto swp4\niface swp4 inet manual\n  address 10.0.0.21/32\n  mtu
     9216\n# END swp4\n# BEGIN swp5\nauto swp5\niface swp5 inet manual\n  address 10.0.0.21/32\n  mtu
     9216\n# END swp5\n# BEGIN swp6\nauto swp6\niface swp6 inet manual\n  address 10.0.0.21/32\n  mtu
     9216\n# END swp6\nBuilding configuration...\n\nCurrent configuration:\n!\nfrr
@@ -585,27 +525,116 @@ tests:
     address-family l2vpn evpn\n  neighbor RR activate\n  neighbor RR route-reflector-client\n
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.21\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "spine01", "timestamp": 1639476253942}]'
+    vrf mgmt", "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "leaf01",
+    "config": "# hostname\nleaf01\n# interfaces\n# This file describes the network
+    interfaces available on your system\n# and how to activate them. For more information,
+    see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
+    network interface\nauto lo\niface lo inet loopback\n\n# The primary network interface\nauto
+    eth0\niface eth0 inet dhcp\n    vrf mgmt\n\nauto mgmt\niface mgmt\n    address
+    127.0.0.1/8\n    address ::1/128\n    vrf-table auto\n# BEGIN lo\nauto lo\niface
+    lo inet loopback\n   address 10.0.0.11/32\n   vxlan-local-tunnelip 10.0.0.11/32\n      clagd-vxlan-anycast-ip
+    10.0.0.112/32\n   \n# END lo\n# BEGIN swp1\nauto swp1\niface swp1 inet manual\n  address
+    10.0.0.11/32\n  mtu 9216\n# END swp1\n# BEGIN swp2\nauto swp2\niface swp2 inet
+    manual\n  address 10.0.0.11/32\n  mtu 9216\n# END swp2\n#BEGIN {''cumulus'': ''peerlink'',
+    ''eos'': ''port-channel1'', ''nxos'': ''port-channel1''}\nauto swp5\niface swp5\n  mtu
+    9216\n  post-up ip link set promisc on dev swp5\n#\nauto swp6\niface swp6\n  mtu
+    9216\n  post-up ip link set promisc on dev swp6\n#\nauto peerlink\niface peerlink\n   mtu
+    9216\n   bond-slaves swp5 swp6\n#\n#END {''cumulus'': ''peerlink'', ''eos'': ''port-channel1'',
+    ''nxos'': ''port-channel1''}\n#BEGIN clag def\nauto peerlink.4094\niface peerlink.4094\n   clagd-peer-ip
+    linklocal\n   clagd-sys-mac 44:39:39:FF:40:95\n      clagd-backup-ip false\n         clagd-priority
+    32768\n      clagd-args --initDelay 90\n#\n#END clag def\n#BEGIN mlag-member-ports\nauto
+    swp3\niface swp3\n   mtu 9000      \n   post-up ip link set promisc on dev swp3\n#\nauto
+    bond01\niface bond01\n   bond-slaves swp3\n   mtu 9000\n   clag-id 3\n   mstpctl-portadminedge
+    yes\n   mstpctl-bpduguard yes\n   bond-lacp-bypass-allow yes\n#\nauto swp4\niface
+    swp4\n   mtu 9000      \n   post-up ip link set promisc on dev swp4\n#\nauto bond02\niface
+    bond02\n   bond-slaves swp4\n   mtu 9000\n   clag-id 4\n   mstpctl-portadminedge
+    yes\n   mstpctl-bpduguard yes\n   bond-lacp-bypass-allow yes\n#\n#END mlag-member-ports\n#
+    BEGIN l2port-bond01\nauto bond01\niface bond01\n   mtu 9000\n   bridge-access
+    10\n# END l2port-bond01\n# BEGIN l2port-bond02\nauto bond02\niface bond02\n   mtu
+    9000\n   bridge-access 30\n# END l2port-bond02\n# BEGIN bridge\nauto bridge\niface
+    bridge\n  bridge-vlan-aware yes\n  bridge-ports  bond01 bond02 vni10 vni30 vni999\n  bridge-vids
+    10 30 999\n# END bridge\n# BEGIN SVI-vlan10\nauto Vlan10\niface Vlan10\n    vrf
+    evpn-vrf\n    mtu 9000\n  address 172.16.1.254/24\n  hwaddress 00:00:00:11:12:10\n  vlan-id
+    10\n  vlan-raw-device bridge\n# END SVI-vlan10\n# BEGIN SVI-vlan30\nauto Vlan30\niface
+    Vlan30\n    vrf evpn-vrf\n    mtu 9000\n  address 172.16.3.254/24\n  hwaddress
+    00:00:00:11:12:30\n  vlan-id 30\n  vlan-raw-device bridge\n# END SVI-vlan30\n#
+    BEGIN l2vni-10\nauto vni10\niface vni10\n  mtu 9216\n  vxlan-id 10\n  bridge-learning
+    off\n  bridge-access 10\n# END l2vni-10\n# BEGIN l2vni-30\nauto vni30\niface vni30\n  mtu
+    9216\n  vxlan-id 30\n  bridge-learning off\n  bridge-access 30\n# END l2vni-30\n#
+    BEGIN evpn-vrf\nauto evpn-vrf\niface evpn-vrf\n  vrf-table auto\n# END evpn-vrf\n#
+    BEGIN {''vlan'': 999, ''vnid'': 999, ''vlanif'': ''vlan999'', ''junos_vrf_loopback_ip'':
+    {''leaf01'': ''10.0.0.101/32'', ''leaf02'': ''10.0.0.102/32'', ''exit01'': ''10.0.0.121/32'',
+    ''exit02'': ''10.0.0.122/32''}, ''vrf'': ''evpn-vrf''}\nauto vni999\niface vni999\n  mtu
+    9216\n  vxlan-id 999\n  mstpctl-bpduguard yes\n  mstpctl-portbpdufilter yes\n  bridge-access
+    999\n  bridge-learning off\n\nauto vlan999\niface vlan999\n  mtu 9216\n  hwaddress
+    44:39:39:FF:40:95\n  vlan-id 999\n  vlan-raw-device bridge\n  vrf evpn-vrf\n#
+    END {''vlan'': 999, ''vnid'': 999, ''vlanif'': ''vlan999'', ''junos_vrf_loopback_ip'':
+    {''leaf01'': ''10.0.0.101/32'', ''leaf02'': ''10.0.0.102/32'', ''exit01'': ''10.0.0.121/32'',
+    ''exit02'': ''10.0.0.122/32''}, ''vrf'': ''evpn-vrf''}\nBuilding configuration...\n\nCurrent
+    configuration:\n!\nfrr version 7.0+cl4u3\nfrr defaults datacenter\nhostname leaf01\nlog
+    syslog informational\nservice integrated-vtysh-config\n!\nvrf evpn-vrf\n vni 999\n
+    exit-vrf\n!\ninterface lo\n ip ospf area 0.0.0.0\n!\ninterface swp1\n ip ospf
+    area 0\n ip ospf network point-to-point\n!\ninterface swp2\n ip ospf area 0\n
+    ip ospf network point-to-point\n!\nrouter bgp 64520\n bgp router-id 10.0.0.11\n
+    no bgp default ipv4-unicast\n neighbor RR peer-group\n neighbor RR remote-as internal\n
+    neighbor RR bfd\n neighbor 10.0.0.21 peer-group RR\n neighbor 10.0.0.22 peer-group
+    RR\n !\n address-family l2vpn evpn\n  neighbor RR activate\n  advertise-all-vni\n
+    exit-address-family\n!\nrouter bgp 64520 vrf evpn-vrf\n bgp router-id 10.0.0.11\n
+    !\n address-family ipv4 unicast\n  network 172.16.1.0/24\n  network 172.16.3.0/24\n
+    exit-address-family\n !\n address-family l2vpn evpn\n  advertise ipv4 unicast\n
+    exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.11\n passive-interface
+    lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
+    vrf mgmt", "timestamp": 1639476253949}]'
 - command: devconfig show --hostname='leaf01 spine01' --query-str='config.str.contains("10.0.0.21")'
     --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: devconfig show panos
-  output: '[{"namespace": "panos", "config": "# hostname\nleaf01\n# interfaces\n#
-    This file describes the network interfaces available on your system\n# and how
-    to activate them. For more information, see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n#
+  output: '[{"namespace": "panos", "hostname": "spine01", "config": "# hostname\nspine01\n#
+    interfaces\n# This file describes the network interfaces available on your system\n#
+    and how to activate them. For more information, see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n#
     The loopback network interface\nauto lo\niface lo inet loopback\n\n# The primary
     network interface\nauto eth0\niface eth0 inet dhcp\n    vrf mgmt\n\nauto mgmt\niface
     mgmt\n    address 127.0.0.1/8\n    address ::1/128\n    vrf-table auto\n# BEGIN
-    lo\nauto lo\niface lo inet loopback\n   address 10.0.0.11/32\n   vxlan-local-tunnelip
-    10.0.0.11/32\n      clagd-vxlan-anycast-ip 10.0.0.112/32\n   \n# END lo\n# BEGIN
-    swp1\nauto swp1\niface swp1 inet manual\n  address 10.0.0.11/32\n  mtu 9216\n#
-    END swp1\n# BEGIN swp2\nauto swp2\niface swp2 inet manual\n  address 10.0.0.11/32\n  mtu
-    9216\n# END swp2\n#BEGIN {''cumulus'': ''peerlink'', ''eos'': ''port-channel1'',
-    ''nxos'': ''port-channel1''}\nauto swp5\niface swp5\n  mtu 9216\n  post-up ip
-    link set promisc on dev swp5\n#\nauto swp6\niface swp6\n  mtu 9216\n  post-up
-    ip link set promisc on dev swp6\n#\nauto peerlink\niface peerlink\n   mtu 9216\n   bond-slaves
-    swp5 swp6\n#\n#END {''cumulus'': ''peerlink'', ''eos'': ''port-channel1'', ''nxos'':
-    ''port-channel1''}\n#BEGIN clag def\nauto peerlink.4094\niface peerlink.4094\n   clagd-peer-ip
+    lo\nauto lo\niface lo inet loopback\n   address 10.0.0.21/32\n# END lo\n# BEGIN
+    swp1\nauto swp1\niface swp1 inet manual\n  address 10.0.0.21/32\n  mtu 9216\n#
+    END swp1\n# BEGIN swp2\nauto swp2\niface swp2 inet manual\n  address 10.0.0.21/32\n  mtu
+    9216\n# END swp2\n# BEGIN swp3\nauto swp3\niface swp3 inet manual\n  address 10.0.0.21/32\n  mtu
+    9216\n# END swp3\n# BEGIN swp4\nauto swp4\niface swp4 inet manual\n  address 10.0.0.21/32\n  mtu
+    9216\n# END swp4\n# BEGIN swp5\nauto swp5\niface swp5 inet manual\n  address 10.0.0.21/32\n  mtu
+    9216\n# END swp5\n# BEGIN swp6\nauto swp6\niface swp6 inet manual\n  address 10.0.0.21/32\n  mtu
+    9216\n# END swp6\nBuilding configuration...\n\nCurrent configuration:\n!\nfrr
+    version 7.0+cl4u3\nfrr defaults datacenter\nhostname spine01\nlog syslog informational\nservice
+    integrated-vtysh-config\n!\ninterface lo\n ip ospf area 0.0.0.0\n!\ninterface
+    swp1\n ip ospf area 0\n ip ospf network point-to-point\n!\ninterface swp2\n ip
+    ospf area 0\n ip ospf network point-to-point\n!\ninterface swp3\n ip ospf area
+    0\n ip ospf network point-to-point\n!\ninterface swp4\n ip ospf area 0\n ip ospf
+    network point-to-point\n!\ninterface swp5\n ip ospf area 0\n ip ospf network point-to-point\n!\ninterface
+    swp6\n ip ospf area 0\n ip ospf network point-to-point\n!\nrouter bgp 64520\n
+    bgp router-id 10.0.0.21\n no bgp default ipv4-unicast\n neighbor RR peer-group\n
+    neighbor RR remote-as internal\n neighbor RR bfd\n neighbor 10.0.0.11 peer-group
+    RR\n neighbor 10.0.0.12 peer-group RR\n neighbor 10.0.0.13 peer-group RR\n neighbor
+    10.0.0.14 peer-group RR\n neighbor 10.0.0.31 peer-group RR\n neighbor 10.0.0.32
+    peer-group RR\n !\n address-family ipv4 unicast\n  neighbor RR activate\n  neighbor
+    RR route-reflector-client\n  maximum-paths ibgp 16\n exit-address-family\n !\n
+    address-family l2vpn evpn\n  neighbor RR activate\n  neighbor RR route-reflector-client\n
+    exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.21\n passive-interface
+    lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
+    vrf mgmt", "timestamp": 1639476253942}, {"namespace": "panos", "hostname": "leaf01",
+    "config": "# hostname\nleaf01\n# interfaces\n# This file describes the network
+    interfaces available on your system\n# and how to activate them. For more information,
+    see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
+    network interface\nauto lo\niface lo inet loopback\n\n# The primary network interface\nauto
+    eth0\niface eth0 inet dhcp\n    vrf mgmt\n\nauto mgmt\niface mgmt\n    address
+    127.0.0.1/8\n    address ::1/128\n    vrf-table auto\n# BEGIN lo\nauto lo\niface
+    lo inet loopback\n   address 10.0.0.11/32\n   vxlan-local-tunnelip 10.0.0.11/32\n      clagd-vxlan-anycast-ip
+    10.0.0.112/32\n   \n# END lo\n# BEGIN swp1\nauto swp1\niface swp1 inet manual\n  address
+    10.0.0.11/32\n  mtu 9216\n# END swp1\n# BEGIN swp2\nauto swp2\niface swp2 inet
+    manual\n  address 10.0.0.11/32\n  mtu 9216\n# END swp2\n#BEGIN {''cumulus'': ''peerlink'',
+    ''eos'': ''port-channel1'', ''nxos'': ''port-channel1''}\nauto swp5\niface swp5\n  mtu
+    9216\n  post-up ip link set promisc on dev swp5\n#\nauto swp6\niface swp6\n  mtu
+    9216\n  post-up ip link set promisc on dev swp6\n#\nauto peerlink\niface peerlink\n   mtu
+    9216\n   bond-slaves swp5 swp6\n#\n#END {''cumulus'': ''peerlink'', ''eos'': ''port-channel1'',
+    ''nxos'': ''port-channel1''}\n#BEGIN clag def\nauto peerlink.4094\niface peerlink.4094\n   clagd-peer-ip
     linklocal\n   clagd-sys-mac 44:39:39:FF:40:95\n      clagd-backup-ip false\n         clagd-priority
     32768\n      clagd-args --initDelay 90\n#\n#END clag def\n#BEGIN mlag-member-ports\nauto
     swp3\niface swp3\n   mtu 9000      \n   post-up ip link set promisc on dev swp3\n#\nauto
@@ -649,38 +678,7 @@ tests:
     exit-address-family\n !\n address-family l2vpn evpn\n  advertise ipv4 unicast\n
     exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.11\n passive-interface
     lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "leaf01", "timestamp": 1639476253949}, {"namespace": "panos",
-    "config": "# hostname\nspine01\n# interfaces\n# This file describes the network
-    interfaces available on your system\n# and how to activate them. For more information,
-    see interfaces(5).\n\nsource /etc/network/interfaces.d/*.intf\n\n# The loopback
-    network interface\nauto lo\niface lo inet loopback\n\n# The primary network interface\nauto
-    eth0\niface eth0 inet dhcp\n    vrf mgmt\n\nauto mgmt\niface mgmt\n    address
-    127.0.0.1/8\n    address ::1/128\n    vrf-table auto\n# BEGIN lo\nauto lo\niface
-    lo inet loopback\n   address 10.0.0.21/32\n# END lo\n# BEGIN swp1\nauto swp1\niface
-    swp1 inet manual\n  address 10.0.0.21/32\n  mtu 9216\n# END swp1\n# BEGIN swp2\nauto
-    swp2\niface swp2 inet manual\n  address 10.0.0.21/32\n  mtu 9216\n# END swp2\n#
-    BEGIN swp3\nauto swp3\niface swp3 inet manual\n  address 10.0.0.21/32\n  mtu 9216\n#
-    END swp3\n# BEGIN swp4\nauto swp4\niface swp4 inet manual\n  address 10.0.0.21/32\n  mtu
-    9216\n# END swp4\n# BEGIN swp5\nauto swp5\niface swp5 inet manual\n  address 10.0.0.21/32\n  mtu
-    9216\n# END swp5\n# BEGIN swp6\nauto swp6\niface swp6 inet manual\n  address 10.0.0.21/32\n  mtu
-    9216\n# END swp6\nBuilding configuration...\n\nCurrent configuration:\n!\nfrr
-    version 7.0+cl4u3\nfrr defaults datacenter\nhostname spine01\nlog syslog informational\nservice
-    integrated-vtysh-config\n!\ninterface lo\n ip ospf area 0.0.0.0\n!\ninterface
-    swp1\n ip ospf area 0\n ip ospf network point-to-point\n!\ninterface swp2\n ip
-    ospf area 0\n ip ospf network point-to-point\n!\ninterface swp3\n ip ospf area
-    0\n ip ospf network point-to-point\n!\ninterface swp4\n ip ospf area 0\n ip ospf
-    network point-to-point\n!\ninterface swp5\n ip ospf area 0\n ip ospf network point-to-point\n!\ninterface
-    swp6\n ip ospf area 0\n ip ospf network point-to-point\n!\nrouter bgp 64520\n
-    bgp router-id 10.0.0.21\n no bgp default ipv4-unicast\n neighbor RR peer-group\n
-    neighbor RR remote-as internal\n neighbor RR bfd\n neighbor 10.0.0.11 peer-group
-    RR\n neighbor 10.0.0.12 peer-group RR\n neighbor 10.0.0.13 peer-group RR\n neighbor
-    10.0.0.14 peer-group RR\n neighbor 10.0.0.31 peer-group RR\n neighbor 10.0.0.32
-    peer-group RR\n !\n address-family ipv4 unicast\n  neighbor RR activate\n  neighbor
-    RR route-reflector-client\n  maximum-paths ibgp 16\n exit-address-family\n !\n
-    address-family l2vpn evpn\n  neighbor RR activate\n  neighbor RR route-reflector-client\n
-    exit-address-family\n!\nrouter ospf\n ospf router-id 10.0.0.21\n passive-interface
-    lo\n!\nline vty\n!\nend\n# ports.conf\n# resolv.conf\nnameserver 10.255.2.1 #
-    vrf mgmt", "hostname": "spine01", "timestamp": 1639476253942}]'
+    vrf mgmt", "timestamp": 1639476253949}]'
 - command: devconfig summarize --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: devconfig summarize panos

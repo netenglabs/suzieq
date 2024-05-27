@@ -5,23 +5,25 @@
 [![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/netenglabs/suzieq?logo=docker&color=blue)](https://hub.docker.com/r/netenglabs/suzieq/tags?page=1&ordering=last_updated)
 [![Docker Pulls](https://img.shields.io/docker/pulls/netenglabs/suzieq?logo=docker&color=blue)](https://hub.docker.com/r/netenglabs/suzieq/tags?page=1&ordering=last_updated)
 
-# Suzieq -- Healthier Networks Through Network Observability
+# SuzieQ -- Healthier Networks Through Network Observability
 
 Would you like to be able to easily answer trivial questions such as how many unique prefixes are there in your routing table, or how many MAC addresses are there in the MAC tables across the network? How about more difficult questions, such as what changes did your routing table see between 10 pm and midnight last night, or which of your nodes have been up the longest, or which BGP sessions have had the most routing updates? How about being able to answer if your OSPF (or BGP) sessions are working correctly, or is all well with your EVPN? How about a quick way to determine the amount of ECMP at every hop between two endpoints? Do you wish you could easily validate the configuration you deployed across your network?
 
 Do you login to every network node you have to figure out answers to a questions like these? Do you then struggle to piece the information together into a consistent whole across the various formats provided by various vendors? Do you wish you had an **open source, multi-vendor** tool that could help you answer questions like these and more?
 
-If you answered yes to one or more of these questions, then Suzieq is a tool that we think will be interesting to you.  **Suzieq helps you find things in your network.**
+If you answered yes to one or more of these questions, then SuzieQ is a tool that we think will be interesting to you.  **SuzieQ helps you find things in your network.**
 
-**Suzieq** is both a framework and an application using that framework, that is focused on **improving the observability of your network**.  We define observability as the ability of a system to answer either trivial or complex questions that you pose as you go about operating your network. How easily you can answer your questions is a measure of how good the system's observability is. A good observable system goes well beyond monitoring and alerting. Suzieq is primarily meant for use by network engineers and designers.
+**SuzieQ** is both a framework and an application using that framework, that is focused on **improving the observability of your network**.  We define observability as the ability of a system to answer either trivial or complex questions that you pose as you go about operating your network. How easily you can answer your questions is a measure of how good the system's observability is. A good observable system goes well beyond monitoring and alerting. SuzieQ is primarily meant for use by network engineers and designers.
 
-Suzieq does multiple things. It [collects](https://suzieq.readthedocs.io/en/latest/poller/) data from devices and systems across your network. It normalizes the data and then stores it in a vendor independent way. Then it allows analysis of that data. With the applications that we build on top of the framework we want to demonstrate a different and more systematic approach to thinking about networks. We want to show how useful it is to think of your network holistically.
+SuzieQ does multiple things. It [collects](https://suzieq.readthedocs.io/en/latest/poller/) data from devices and systems across your network. It normalizes the data and then stores it in a vendor independent way. Then it allows analysis of that data. With the applications that we build on top of the framework we want to demonstrate a different and more systematic approach to thinking about networks. We want to show how useful it is to think of your network holistically.
+
+**An enterprise version of SuzieQ is also available**. It has been deployed in production by multiple customers, and the company behind SuzieQ, (Stardust Systems)[https://stardustsystems.net] was named a "Cool Vendor" by Gartner for making network automation easy for enterprises. 
 
 ## Quick Start
 
 ### Using Docker Container
 
-We want to make it as easy as possible for you to start engaging with Suzieq so
+We want to make it as easy as possible for you to start engaging with SuzieQ so
 we have a demo that has data included in the image. To get started:
 
 * `docker run -it -p 8501:8501 --name suzieq netenglabs/suzieq-demo`
@@ -36,13 +38,13 @@ the official [documentation page](https://suzieq.readthedocs.io/en/latest/).
 To start collecting data for your network, create an inventory file to gather the data from following the instructions [here](https://suzieq.readthedocs.io/en/latest/poller/). Decide the directory where the data will be stored (ensure you have sufficient available space if you're going to be running the poller, say 100 MB at least). Lets call this dbdir. Now launch the suzieq docker container as follows:
 
 * ```docker run -it -v <parquet-out-local-dir>:/home/suzieq/parquet -v <inventory-file>:/home/suzieq/inventory.yml --name sq-poller netenglabs/suzieq:latest```
-* Launch the poller with the appropriate options. For example, ```sq-poller -D inventory.yml -n mydatacenter``` where mydatacenter is the name of the namespace where the data associated with the inventory is stored and inventory.yml is the inventory file in Suzieq poller native format (Use -a instead of -D if you're using Ansible inventory file format).
+* Launch the poller with the appropriate options. For example, ```sq-poller -D inventory.yml -n mydatacenter``` where mydatacenter is the name of the namespace where the data associated with the inventory is stored and inventory.yml is the inventory file in SuzieQ poller native format (Use -a instead of -D if you're using Ansible inventory file format).
 
 ### Using Python Packaging
 
-If you don't want to use docker container or cannot use a docker container, an alternative approach is to install Suzieq as a python package. It is **strongly** recommended to install suzieq inside a virtual environment. If you already use a tool to create and manage virtual environments, you can skip the step of creating a virtual envirobment below.
+If you don't want to use docker container or cannot use a docker container, an alternative approach is to install SuzieQ as a python package. It is **strongly** recommended to install suzieq inside a virtual environment. If you already use a tool to create and manage virtual environments, you can skip the step of creating a virtual envirobment below.
 
-Suzieq requires python version 3.7.1 at least, and has been tested with python versions 3.7 and 3.8. It has not been tested to work on Windows. Use Linux (recommended) or macOS. To create a virtual environment, in case you haven't got a tool to create one, type:
+SuzieQ requires python version 3.7.1 at least, and has been tested with python versions 3.7 and 3.8. It has not been tested to work on Windows. Use Linux (recommended) or macOS. To create a virtual environment, in case you haven't got a tool to create one, type:
 
 ```bash
 python -m venv suzieq
@@ -67,14 +69,14 @@ Once the command completes, you have the main programs of suzieq available for u
 * suzieq-cli: For running the CLI
 * sq-rest-server: For running the REST API server
 
-[The official documentation is at suzieq.readthedocs.io](https://suzieq.readthedocs.io/en/latest/), and you can watch the screencasts about Suzieq on [Youtube](https://www.youtube.com/results?search_query=netenglabs).
+[The official documentation is at suzieq.readthedocs.io](https://suzieq.readthedocs.io/en/latest/), and you can watch the screencasts about SuzieQ on [Youtube](https://www.youtube.com/results?search_query=netenglabs).
 
 # Analysis
 
-Suzieq supports Analysis using CLI, GUI, REST API, and python objects. For the most part they are equivalent, though with the GUI we have combined the output of multiple commands of the CLI into one page.
+SuzieQ supports Analysis using CLI, GUI, REST API, and python objects. For the most part they are equivalent, though with the GUI we have combined the output of multiple commands of the CLI into one page.
 
 The GUI has a status page to let you know what the status of entities in your network.
-![Suzieq GUI status](images/status.png)
+![SuzieQ GUI status](images/status.png)
 
 The Xplore page lets you dive into what is in your network. ![Explore device](images/devices-gui.png)
 
@@ -84,15 +86,15 @@ The CLI supports the same kind of analysis as the explore page. ![CLI device](im
 
 ## Path
 
-Suzieq has the ability to show the path between two IP addresses, including the ability to show the path through EVPN overlay. You can use this to see each of the paths from a source to a destination and to see if you have anything asymetrical in your paths. ![GUI PATH](images/path-gui.png)
+SuzieQ has the ability to show the path between two IP addresses, including the ability to show the path through EVPN overlay. You can use this to see each of the paths from a source to a destination and to see if you have anything asymetrical in your paths. ![GUI PATH](images/path-gui.png)
 
 ## Asserts
 
-One of Suzieq's powerful capabilities are asserts, which are statements that should be true in the network. We've only just started on asserts; what Suzieq has now only demonstrates it's power, there's a lot more to be added in this space. ![interfaces assert](images/interfaces-assert.png)
+One of SuzieQ's powerful capabilities are asserts, which are statements that should be true in the network. We've only just started on asserts; what SuzieQ has now only demonstrates it's power, there's a lot more to be added in this space. ![interfaces assert](images/interfaces-assert.png)
 
-# Suzieq Data
+# SuzieQ Data
 
-**Suzieq supports gathering data from Cumulus, EOS, IOS, IOSXE, IOSXR, JunOS(QFX, EX, MX and SRX platforms and Evolved OS), Palo Alto's Panos (version 8.0 or higher), NXOS and SONIC routers, and Linux servers.** Suzieq gathers:
+**SuzieQ supports gathering data from Cumulus, EOS, IOS, IOSXE, IOSXR, JunOS(QFX, EX, MX and SRX platforms and Evolved OS), Palo Alto's Panos (version 8.0 or higher), NXOS and SONIC routers, and Linux servers.** SuzieQ gathers:
 
 * Basic device info including serial number, model, version, platform etc.
 * Interfaces
@@ -107,7 +109,7 @@ One of Suzieq's powerful capabilities are asserts, which are statements that sho
 
 We're adding support for more platforms and features with every release. See [the documentation](https://suzieq.readthedocs.io/en/latest/tables/) on details of specific tables and its NOS support.
 
-We're also looking for collaborators to help us make Suzieq a truly useful multi-vendor, open source platform for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for ideas on how you can help.
+We're also looking for collaborators to help us make SuzieQ a truly useful multi-vendor, open source platform for observing all aspects of networking. Please read the [collaboration document](./CONTRIBUTING.md) for ideas on how you can help.
 
 # Release Notes
 
@@ -119,15 +121,15 @@ You can join the conversation via [slack](https://join.slack.com/t/netenglabs/sh
 
 # Additional Documentation & Screencasts
 
-We've done some blogging about Suzieq:
+We've done some blogging about SuzieQ:
 
-* [Introducing Suzieq](https://elegantnetwork.github.io/posts/Suzieq/)
-* [10ish ways to explore your network with Suzieq](https://elegantnetwork.github.io/posts/10ish_ways_to_explore_your_network_with_Suzieq/)
-* [Questions to Suzieq](https://elegantnetwork.github.io/posts/10qa-suzieq/)
-* [Time in Suzieq](https://elegantnetwork.github.io/posts/time-suzieq/)
+* [Introducing SuzieQ](https://elegantnetwork.github.io/posts/SuzieQ/)
+* [10ish ways to explore your network with SuzieQ](https://elegantnetwork.github.io/posts/10ish_ways_to_explore_your_network_with_SuzieQ/)
+* [Questions to SuzieQ](https://elegantnetwork.github.io/posts/10qa-suzieq/)
+* [Time in SuzieQ](https://elegantnetwork.github.io/posts/time-suzieq/)
 
 We've also been adding screencasts on [Youtube](https://www.youtube.com/results?search_query=netenglabs).
 
-# Suzieq Priorities
+# SuzieQ Enterprise
 
-We don't have a roadmap, but we do have a list of our [priorities](https://github.com/netenglabs/suzieq/blob/master/docs/2020-priority.md). We mix this with the [issues reported](https://github.com/netenglabs/suzieq/issues).
+SuzieQ also has a commercial offering, SuzieQ Enterprise. To know more about this and contact us, please visit the Stardust Systems (website)[https://stardustsystems.net].

@@ -23,6 +23,7 @@ class AnsibleSourceModel(SourceModel):
     def validate_and_set(cls, path: str):
         """checks if the path is valid
         """
+        inventory = None
         if isinstance(path, str):
             if not Path(path).is_file():
                 raise ValueError(
@@ -38,6 +39,10 @@ class AnsibleSourceModel(SourceModel):
 
         elif isinstance(path, Dict):
             inventory = path
+
+        if not inventory:
+            raise ValueError('Unknown inventory format: expect path or dict')
+
         if '_meta' not in inventory \
                 or 'hostvars' not in inventory['_meta']:
             if isinstance(inventory, list) and 'namespace' in inventory[0]:

@@ -79,6 +79,7 @@ class OspfIfService(Service):
     def _clean_junos_data(self, processed_data, _):
 
         drop_indices = []
+        routerId = ''
 
         for i, entry in enumerate(processed_data):
             if entry['_entryType'] == 'overview':

@@ -3,20 +3,20 @@ tests:
 - command: network find --address="172.16.1.101" --format=json --namespace=nxos
   data-directory: tests/data/parquet
   marks: network find nxos
-  output: '[{"namespace": "nxos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress":
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
     "172.16.1.101", "vlan": 10, "macaddr": "32:bb:c5:b5:3a:20", "ifname": "port-channel3",
     "bondMembers": "Ethernet1/3", "type": "bridged", "l2miss": false}, {"namespace":
-    "nxos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
+    "nxos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.101",
     "vlan": 10, "macaddr": "32:bb:c5:b5:3a:20", "ifname": "port-channel3", "bondMembers":
     "Ethernet1/3", "type": "bridged", "l2miss": false}]'
 - command: network find --address="10.0.0.11" --format=json --namespace=nxos
   data-directory: tests/data/parquet
   marks: network find nxos
   output: '[{"namespace": "nxos", "hostname": "leaf01", "vrf": "default", "ipAddress":
-    "10.0.0.11", "vlan": 0, "macaddr": "44:01:02:01:1b:08", "ifname": "Ethernet1/2",
+    "10.0.0.11", "vlan": 0, "macaddr": "44:01:02:01:1b:08", "ifname": "Ethernet1/1",
     "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace": "nxos", "hostname":
     "leaf01", "vrf": "default", "ipAddress": "10.0.0.11", "vlan": 0, "macaddr": "44:01:02:01:1b:08",
-    "ifname": "Ethernet1/1", "bondMembers": "", "type": "routed", "l2miss": false},
+    "ifname": "Ethernet1/2", "bondMembers": "", "type": "routed", "l2miss": false},
     {"namespace": "nxos", "hostname": "leaf01", "vrf": "default", "ipAddress": "10.0.0.11",
     "vlan": 0, "macaddr": "00:00:00:00:00:00", "ifname": "loopback0", "bondMembers":
     "", "type": "interface", "l2miss": false}]'
@@ -36,10 +36,10 @@ tests:
   data-directory: tests/data/parquet
   marks: network find nxos
   output: '[{"namespace": "nxos", "hostname": "exit01", "vrf": "default", "ipAddress":
-    "10.0.0.31", "vlan": 0, "macaddr": "44:01:03:01:1b:08", "ifname": "Ethernet1/2",
+    "10.0.0.31", "vlan": 0, "macaddr": "44:01:03:01:1b:08", "ifname": "Ethernet1/1",
     "bondMembers": "", "type": "routed", "l2miss": false}, {"namespace": "nxos", "hostname":
     "exit01", "vrf": "default", "ipAddress": "10.0.0.31", "vlan": 0, "macaddr": "44:01:03:01:1b:08",
-    "ifname": "Ethernet1/1", "bondMembers": "", "type": "routed", "l2miss": false},
+    "ifname": "Ethernet1/2", "bondMembers": "", "type": "routed", "l2miss": false},
     {"namespace": "nxos", "hostname": "exit01", "vrf": "default", "ipAddress": "10.0.0.31",
     "vlan": 0, "macaddr": "00:00:00:00:00:00", "ifname": "loopback0", "bondMembers":
     "", "type": "interface", "l2miss": false}]'
@@ -65,41 +65,27 @@ tests:
 - command: network find --address='00:00:00:11:12:10' --format=json --namespace=nxos
   data-directory: tests/data/parquet
   marks: network find nxos
-  output: '[{"namespace": "nxos", "hostname": "leaf03", "vrf": "evpn-vrf", "ipAddress":
-    "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan20",
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.254", "vlan": 10, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan10",
     "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace": "nxos",
-    "hostname": "leaf03", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan":
+    "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan":
     30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf03", "vrf":
-    "", "ipAddress": "", "vlan": 999, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan999",
-    "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace": "nxos",
-    "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.254", "vlan":
-    10, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan10", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf01", "vrf":
-    "evpn-vrf", "ipAddress": "172.16.3.254", "vlan": 30, "macaddr": "00:00:00:11:12:10",
-    "ifname": "Vlan30", "bondMembers": "", "type": "interface", "l2miss": false},
-    {"namespace": "nxos", "hostname": "leaf01", "vrf": "", "ipAddress": "", "vlan":
-    999, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan999", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf04", "vrf":
-    "", "ipAddress": "", "vlan": 999, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan999",
-    "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace": "nxos",
-    "hostname": "leaf04", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan":
-    30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf04", "vrf":
-    "evpn-vrf", "ipAddress": "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10",
+    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "ipAddress": "172.16.1.254", "vlan": 10, "macaddr": "00:00:00:11:12:10",
+    "ifname": "Vlan10", "bondMembers": "", "type": "interface", "l2miss": false},
+    {"namespace": "nxos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
+    "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
+    "", "type": "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf03",
+    "vrf": "evpn-vrf", "ipAddress": "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10",
     "ifname": "Vlan20", "bondMembers": "", "type": "interface", "l2miss": false},
-    {"namespace": "nxos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.254",
-    "vlan": 10, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan10", "bondMembers":
-    "", "type": "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf02",
-    "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan": 30, "macaddr": "00:00:00:11:12:10",
-    "ifname": "Vlan30", "bondMembers": "", "type": "interface", "l2miss": false},
-    {"namespace": "nxos", "hostname": "leaf02", "vrf": "", "ipAddress": "", "vlan":
-    999, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan999", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "exit01", "vrf":
-    "", "ipAddress": "", "vlan": 999, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan999",
-    "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace": "nxos",
-    "hostname": "exit02", "vrf": "", "ipAddress": "", "vlan": 999, "macaddr": "00:00:00:11:12:10",
-    "ifname": "Vlan999", "bondMembers": "", "type": "interface", "l2miss": false}]'
+    {"namespace": "nxos", "hostname": "leaf03", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
+    "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
+    "", "type": "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf04",
+    "vrf": "evpn-vrf", "ipAddress": "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10",
+    "ifname": "Vlan20", "bondMembers": "", "type": "interface", "l2miss": false},
+    {"namespace": "nxos", "hostname": "leaf04", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
+    "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
+    "", "type": "interface", "l2miss": false}]'
 - command: network find --address='00:00:00:11:12' --format=json --namespace=nxos
   data-directory: tests/data/parquet
   error:
@@ -108,38 +94,24 @@ tests:
 - command: network find --address='0000.0011.1210' --format=json --namespace=nxos
   data-directory: tests/data/parquet
   marks: network find nxos
-  output: '[{"namespace": "nxos", "hostname": "leaf03", "vrf": "evpn-vrf", "ipAddress":
-    "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan20",
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress":
+    "172.16.1.254", "vlan": 10, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan10",
     "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace": "nxos",
-    "hostname": "leaf03", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan":
+    "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan":
     30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf03", "vrf":
-    "", "ipAddress": "", "vlan": 999, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan999",
-    "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace": "nxos",
-    "hostname": "leaf01", "vrf": "evpn-vrf", "ipAddress": "172.16.1.254", "vlan":
-    10, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan10", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf01", "vrf":
-    "evpn-vrf", "ipAddress": "172.16.3.254", "vlan": 30, "macaddr": "00:00:00:11:12:10",
-    "ifname": "Vlan30", "bondMembers": "", "type": "interface", "l2miss": false},
-    {"namespace": "nxos", "hostname": "leaf01", "vrf": "", "ipAddress": "", "vlan":
-    999, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan999", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf04", "vrf":
-    "", "ipAddress": "", "vlan": 999, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan999",
-    "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace": "nxos",
-    "hostname": "leaf04", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan":
-    30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf04", "vrf":
-    "evpn-vrf", "ipAddress": "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10",
+    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf02", "vrf":
+    "evpn-vrf", "ipAddress": "172.16.1.254", "vlan": 10, "macaddr": "00:00:00:11:12:10",
+    "ifname": "Vlan10", "bondMembers": "", "type": "interface", "l2miss": false},
+    {"namespace": "nxos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
+    "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
+    "", "type": "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf03",
+    "vrf": "evpn-vrf", "ipAddress": "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10",
     "ifname": "Vlan20", "bondMembers": "", "type": "interface", "l2miss": false},
-    {"namespace": "nxos", "hostname": "leaf02", "vrf": "evpn-vrf", "ipAddress": "172.16.1.254",
-    "vlan": 10, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan10", "bondMembers":
-    "", "type": "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf02",
-    "vrf": "evpn-vrf", "ipAddress": "172.16.3.254", "vlan": 30, "macaddr": "00:00:00:11:12:10",
-    "ifname": "Vlan30", "bondMembers": "", "type": "interface", "l2miss": false},
-    {"namespace": "nxos", "hostname": "leaf02", "vrf": "", "ipAddress": "", "vlan":
-    999, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan999", "bondMembers": "", "type":
-    "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "exit01", "vrf":
-    "", "ipAddress": "", "vlan": 999, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan999",
-    "bondMembers": "", "type": "interface", "l2miss": false}, {"namespace": "nxos",
-    "hostname": "exit02", "vrf": "", "ipAddress": "", "vlan": 999, "macaddr": "00:00:00:11:12:10",
-    "ifname": "Vlan999", "bondMembers": "", "type": "interface", "l2miss": false}]'
+    {"namespace": "nxos", "hostname": "leaf03", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
+    "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
+    "", "type": "interface", "l2miss": false}, {"namespace": "nxos", "hostname": "leaf04",
+    "vrf": "evpn-vrf", "ipAddress": "172.16.2.254", "vlan": 20, "macaddr": "00:00:00:11:12:10",
+    "ifname": "Vlan20", "bondMembers": "", "type": "interface", "l2miss": false},
+    {"namespace": "nxos", "hostname": "leaf04", "vrf": "evpn-vrf", "ipAddress": "172.16.3.254",
+    "vlan": 30, "macaddr": "00:00:00:11:12:10", "ifname": "Vlan30", "bondMembers":
+    "", "type": "interface", "l2miss": false}]'

@@ -3,753 +3,90 @@ tests:
 - command: address show --format=json --namespace=vmx --columns='*'
   data-directory: tests/data/parquet
   marks: address show all junos vmx
-  output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0.16385",
-    "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
-    "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "subinterface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "fti3", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "fti2", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "fti1", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "fti0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "esi", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "vtep",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "em1", "ipAddressList": [], "macaddr": "50:06:00:0f:00:01", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "ethernet",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "dsc", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "null",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "demux0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "software-pseudo",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "cbp0", "ipAddressList": [], "macaddr": "2c:6b:f5:7d:ef:11", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "ae1", "ipAddressList": [], "macaddr": "2c:6b:f5:7d:f6:c1", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "bond",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "ae0", "ipAddressList": [], "macaddr": "2c:6b:f5:7d:f6:c0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "bond",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "fti4", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "ge-0/0/9", "ipAddressList": [], "macaddr": "50:06:00:10:00:0b", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/7", "ipAddressList": [], "macaddr": "50:06:00:10:00:09",
-    "ip6AddressList": [], "state": "down", "vrf": "", "timestamp": 1631009088901,
-    "vlan": 0, "type": "ethernet", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/6", "ipAddressList":
-    [], "macaddr": "50:06:00:10:00:08", "ip6AddressList": [], "state": "down", "vrf":
-    "", "timestamp": 1631009088901, "vlan": 0, "type": "ethernet", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
-    "ge-0/0/5", "ipAddressList": [], "macaddr": "50:06:00:10:00:07", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/4", "ipAddressList": [], "macaddr": "50:06:00:10:00:06",
-    "ip6AddressList": [], "state": "down", "vrf": "", "timestamp": 1631009088901,
-    "vlan": 0, "type": "ethernet", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ge-0/0/3", "ipAddressList":
-    [], "macaddr": "2c:6b:f5:7d:f6:c0", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009088901, "vlan": 0, "type": "bond_slave", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
-    "ge-0/0/2", "ipAddressList": [], "macaddr": "2c:6b:f5:7d:f6:c0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "ge-0/0/0", "ipAddressList": [], "macaddr": "2c:6b:f5:7d:f6:c1", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "ge-0/0/1", "ipAddressList": [], "macaddr": "2c:6b:f5:7d:f6:c1", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "pfh-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "pfe-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "lc-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "ge-0/0/8", "ipAddressList": [], "macaddr": "50:06:00:10:00:0a", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "TOR4CRP-DGW-RT01", "ifname": "fti5", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan":
-    0, "type": "flexible-tunnel-interface", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0.16384", "ipAddressList":
-    ["127.0.0.1/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
-    "up", "vrf": "default", "timestamp": 1631009088901, "vlan": 0, "type": "subinterface",
-    "active": true, "ipAddress": ["127.0.0.1/32"]}, {"namespace": "vmx", "hostname":
-    "TOR4CRP-DGW-RT01", "ifname": "fti7", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan":
-    0, "type": "flexible-tunnel-interface", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fti6", "ipAddressList": [],
-    "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "",
-    "timestamp": 1631009088901, "vlan": 0, "type": "flexible-tunnel-interface", "active":
-    true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
-    "fxp0.0", "ipAddressList": ["172.26.145.154/22"], "macaddr": "50:06:00:0f:00:00",
+  output: '[{"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "lo0.16384",
+    "ipAddressList": ["127.0.0.1/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
+    [], "state": "up", "vrf": "default", "timestamp": 1631009088901, "vlan": 0, "type":
+    "subinterface", "active": true, "ipAddress": ["127.0.0.1/32"]}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "fxp0.0", "ipAddressList": ["172.26.145.154/22"],
+    "macaddr": "50:06:00:0f:00:00", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1631009088901, "vlan": 0, "type": "internal", "active": true, "ipAddress":
+    ["172.26.145.154/22"]}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
+    "em1.0", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "macaddr":
+    "50:06:00:0f:00:01", "ip6AddressList": ["fe80::5206:ff:fe0f:1/64", "fec0::a:0:0:4/64"],
+    "state": "up", "vrf": "default", "timestamp": 1631009088901, "vlan": 0, "type":
+    "subinterface", "active": true, "ipAddress": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2",
+    "fe80::5206:ff:fe0f:1/64", "fec0::a:0:0:4/64"]}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ifname": "irb.201", "ipAddressList": ["172.16.21.254/24"],
+    "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList": [], "state": "up", "vrf": "default",
+    "timestamp": 1631009088901, "vlan": 201, "type": "vlan", "active": true, "ipAddress":
+    ["172.16.21.254/24"]}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
+    "jsrv.1", "ipAddressList": ["128.0.0.127/2"], "macaddr": "2c:6b:f5:7d:f6:c0",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009088901,
-    "vlan": 0, "type": "internal", "active": true, "ipAddress": ["172.26.145.154/22"]},
-    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "em1.0", "ipAddressList":
-    ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "macaddr": "50:06:00:0f:00:01",
-    "ip6AddressList": ["fe80::5206:ff:fe0f:1/64", "fec0::a:0:0:4/64"], "state": "up",
-    "vrf": "default", "timestamp": 1631009088901, "vlan": 0, "type": "subinterface",
-    "active": true, "ipAddress": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2", "fe80::5206:ff:fe0f:1/64",
-    "fec0::a:0:0:4/64"]}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
-    "irb.201", "ipAddressList": ["172.16.21.254/24"], "macaddr": "2c:6b:f5:7d:f6:f0",
-    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009088901,
-    "vlan": 201, "type": "vlan", "active": true, "ipAddress": ["172.16.21.254/24"]},
-    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "jsrv.1", "ipAddressList":
-    ["128.0.0.127/2"], "macaddr": "2c:6b:f5:7d:f6:c0", "ip6AddressList": [], "state":
-    "up", "vrf": "default", "timestamp": 1631009088901, "vlan": 1, "type": "internal",
-    "active": true, "ipAddress": ["128.0.0.127/2"]}, {"namespace": "vmx", "hostname":
-    "TOR4CRP-DGW-RT01", "ifname": "ae1.20", "ipAddressList": ["10.0.20.3/29"], "macaddr":
+    "vlan": 1, "type": "internal", "active": true, "ipAddress": ["128.0.0.127/2"]},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "ae1.20", "ipAddressList":
+    ["10.0.20.3/29"], "macaddr": "2c:6b:f5:7d:f6:c1", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1631009088901, "vlan": 20, "type": "subinterface",
+    "active": true, "ipAddress": ["10.0.20.3/29"]}, {"namespace": "vmx", "hostname":
+    "TOR4CRP-DGW-RT01", "ifname": "ae1.10", "ipAddressList": ["10.0.10.3/29"], "macaddr":
     "2c:6b:f5:7d:f6:c1", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
-    1631009088901, "vlan": 20, "type": "subinterface", "active": true, "ipAddress":
-    ["10.0.20.3/29"]}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
-    "ae1.10", "ipAddressList": ["10.0.10.3/29"], "macaddr": "2c:6b:f5:7d:f6:c1", "ip6AddressList":
-    [], "state": "up", "vrf": "default", "timestamp": 1631009088901, "vlan": 10, "type":
-    "subinterface", "active": true, "ipAddress": ["10.0.10.3/29"]}, {"namespace":
-    "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "VRF-B", "ipAddressList": [],
-    "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "",
-    "timestamp": 1631009088901, "vlan": 0, "type": "vrf", "active": true, "ipAddress":
-    []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "VRF-A", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009088901, "vlan": 0, "type": "vrf", "active": true, "ipAddress":
-    []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "vtep", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009088901, "vlan": 0, "type": "vtep", "active": true, "ipAddress":
-    []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "tap", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009088901, "vlan": 0, "type": "internal", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
-    "rbeb", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "remote-beb",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "irb.101", "ipAddressList": ["172.16.11.254/24"], "macaddr": "2c:6b:f5:7d:f6:f0",
+    1631009088901, "vlan": 10, "type": "subinterface", "active": true, "ipAddress":
+    ["10.0.10.3/29"]}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
+    "irb.101", "ipAddressList": ["172.16.11.254/24"], "macaddr": "2c:6b:f5:7d:f6:f0",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009088901,
     "vlan": 101, "type": "vlan", "active": true, "ipAddress": ["172.16.11.254/24"]},
-    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname": "pip0", "ipAddressList":
-    [], "macaddr": "2c:6b:f5:7d:f6:b0", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009088901, "vlan": 0, "type": "internal", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "ifname":
-    "pp0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "pppoe",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "fxp0", "ipAddressList": [], "macaddr": "50:06:00:0f:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "ipip", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "irb", "ipAddressList": [], "macaddr": "2c:6b:f5:7d:f6:f0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "jsrv", "ipAddressList": [], "macaddr": "2c:6b:f5:7d:f6:c0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "gre", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "lsi", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "mtun", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "pimd", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "pime", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "ifname": "lo0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009088901, "vlan": 0, "type": "loopback",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "gre", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "ipip", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "irb", "ipAddressList": [], "macaddr": "2c:6b:f5:2e:e8:f0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "jsrv", "ipAddressList": [], "macaddr": "2c:6b:f5:2e:e8:c0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "lo0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "loopback",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "lsi", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "mtun", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "pimd", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "pime", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "vtep", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "vtep",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "pp0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "pppoe",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "rbeb", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "remote-beb",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "tap", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "em1.0", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"],
-    "macaddr": "50:06:00:03:00:01", "ip6AddressList": ["fe80::5206:ff:fe03:1/64",
-    "fec0::a:0:0:4/64"], "state": "up", "vrf": "default", "timestamp": 1631009089182,
-    "vlan": 0, "type": "subinterface", "active": true, "ipAddress": ["10.0.0.4/8",
-    "128.0.0.1/2", "128.0.0.4/2", "fe80::5206:ff:fe03:1/64", "fec0::a:0:0:4/64"]},
-    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fxp0.0", "ipAddressList":
-    ["172.26.145.152/22"], "macaddr": "50:06:00:03:00:00", "ip6AddressList": [], "state":
-    "up", "vrf": "default", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": ["172.26.145.152/22"]}, {"namespace": "vmx", "hostname":
-    "CRP-DIS-SW01", "ifname": "jsrv.1", "ipAddressList": ["128.0.0.127/2"], "macaddr":
-    "2c:6b:f5:2e:e8:c0", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
-    1631009089182, "vlan": 1, "type": "internal", "active": true, "ipAddress": ["128.0.0.127/2"]},
-    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "lo0.16384", "ipAddressList":
-    ["127.0.0.1/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
-    "up", "vrf": "default", "timestamp": 1631009089182, "vlan": 0, "type": "subinterface",
-    "active": true, "ipAddress": ["127.0.0.1/32"]}, {"namespace": "vmx", "hostname":
-    "CRP-DIS-SW01", "ifname": "lo0.16385", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan":
-    0, "type": "subinterface", "active": true, "ipAddress": []}, {"namespace": "vmx",
-    "hostname": "CRP-DIS-SW01", "ifname": "fxp0", "ipAddressList": [], "macaddr":
-    "50:06:00:03:00:00", "ip6AddressList": [], "state": "up", "vrf": "", "timestamp":
-    1631009089182, "vlan": 0, "type": "internal", "active": true, "ipAddress": []},
-    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "pip0", "ipAddressList":
-    [], "macaddr": "2c:6b:f5:2e:e8:b0", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089182, "vlan": 0, "type": "internal", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "fti7",
-    "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
-    "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "demux0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "software-pseudo",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "fti5", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "ge-0/0/0", "ipAddressList": [], "macaddr": "50:06:00:04:00:02", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "flexible-ethernet",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "lc-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "pfh-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "ge-0/0/1", "ipAddressList": [], "macaddr": "50:06:00:04:00:03", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "CRP-DIS-SW01", "ifname": "ge-0/0/2", "ipAddressList": [], "macaddr": "2c:6b:f5:2e:e8:c1",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan":
-    0, "type": "bond_slave", "active": true, "ipAddress": []}, {"namespace": "vmx",
-    "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/3", "ipAddressList": [], "macaddr":
-    "2c:6b:f5:2e:e8:c1", "ip6AddressList": [], "state": "up", "vrf": "", "timestamp":
-    1631009089182, "vlan": 0, "type": "bond_slave", "active": true, "ipAddress": []},
-    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/4", "ipAddressList":
-    [], "macaddr": "2c:6b:f5:2e:e8:c2", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089182, "vlan": 0, "type": "bond_slave", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/5",
-    "ipAddressList": [], "macaddr": "2c:6b:f5:2e:e8:c2", "ip6AddressList": [], "state":
-    "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "ge-0/0/6", "ipAddressList": [], "macaddr": "50:06:00:04:00:08", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "CRP-DIS-SW01", "ifname": "ge-0/0/7", "ipAddressList": [], "macaddr": "50:06:00:04:00:09",
-    "ip6AddressList": [], "state": "down", "vrf": "", "timestamp": 1631009089182,
-    "vlan": 0, "type": "ethernet", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/8", "ipAddressList": [],
-    "macaddr": "50:06:00:04:00:0a", "ip6AddressList": [], "state": "down", "vrf":
-    "", "timestamp": 1631009089182, "vlan": 0, "type": "ethernet", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "ge-0/0/9",
-    "ipAddressList": [], "macaddr": "50:06:00:04:00:0b", "ip6AddressList": [], "state":
-    "down", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "ethernet",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "ae1", "ipAddressList": [], "macaddr": "2c:6b:f5:2e:e8:c1", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "bond",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "ae2", "ipAddressList": [], "macaddr": "2c:6b:f5:2e:e8:c2", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "bond",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "cbp0", "ipAddressList": [], "macaddr": "2c:6b:f5:2e:e1:11", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "dsc", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "null",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "em1", "ipAddressList": [], "macaddr": "50:06:00:03:00:01", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "ethernet",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "esi", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "vtep",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "fti0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "fti1", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "fti2", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "fti3", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "fti4", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "fti6", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01",
-    "ifname": "pfe-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089182, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "ge-0/0/0", "ipAddressList": [], "macaddr": "2c:6b:f5:82:1c:c0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "fti6", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "fti7", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "fxp0", "ipAddressList": [], "macaddr": "50:06:00:0b:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "gre", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "ipip", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "irb", "ipAddressList": [], "macaddr": "2c:6b:f5:82:1c:f0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "jsrv", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "lo0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "loopback",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "lsi", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "mtun", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "fti5", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "pimd", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "pip0", "ipAddressList": [], "macaddr": "2c:6b:f5:82:1c:b0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "pp0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "pppoe",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "rbeb", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "remote-beb",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "tap", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "vtep", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "vtep",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "em1.0", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"],
-    "macaddr": "50:06:00:0b:00:01", "ip6AddressList": ["fe80::5206:ff:fe0b:1/64",
-    "fec0::a:0:0:4/64"], "state": "up", "vrf": "default", "timestamp": 1631009089423,
-    "vlan": 0, "type": "subinterface", "active": true, "ipAddress": ["10.0.0.4/8",
-    "128.0.0.1/2", "128.0.0.4/2", "fe80::5206:ff:fe0b:1/64", "fec0::a:0:0:4/64"]},
-    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fxp0.0", "ipAddressList":
-    ["172.26.145.151/22"], "macaddr": "50:06:00:0b:00:00", "ip6AddressList": [], "state":
-    "up", "vrf": "default", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": ["172.26.145.151/22"]}, {"namespace": "vmx", "hostname":
-    "CRP-ACC-SW01", "ifname": "jsrv.1", "ipAddressList": ["128.0.0.127/2"], "macaddr":
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "em1.0", "ipAddressList":
+    ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "macaddr": "50:06:00:03:00:01",
+    "ip6AddressList": ["fe80::5206:ff:fe03:1/64", "fec0::a:0:0:4/64"], "state": "up",
+    "vrf": "default", "timestamp": 1631009089182, "vlan": 0, "type": "subinterface",
+    "active": true, "ipAddress": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2", "fe80::5206:ff:fe03:1/64",
+    "fec0::a:0:0:4/64"]}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname":
+    "fxp0.0", "ipAddressList": ["172.26.145.152/22"], "macaddr": "50:06:00:03:00:00",
+    "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009089182,
+    "vlan": 0, "type": "internal", "active": true, "ipAddress": ["172.26.145.152/22"]},
+    {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "ifname": "jsrv.1", "ipAddressList":
+    ["128.0.0.127/2"], "macaddr": "2c:6b:f5:2e:e8:c0", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1631009089182, "vlan": 1, "type": "internal",
+    "active": true, "ipAddress": ["128.0.0.127/2"]}, {"namespace": "vmx", "hostname":
+    "CRP-DIS-SW01", "ifname": "lo0.16384", "ipAddressList": ["127.0.0.1/32"], "macaddr":
     "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
-    1631009089423, "vlan": 1, "type": "internal", "active": true, "ipAddress": ["128.0.0.127/2"]},
-    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "lo0.16384", "ipAddressList":
-    ["127.0.0.1/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
-    "up", "vrf": "default", "timestamp": 1631009089423, "vlan": 0, "type": "subinterface",
-    "active": true, "ipAddress": ["127.0.0.1/32"]}, {"namespace": "vmx", "hostname":
-    "CRP-ACC-SW01", "ifname": "pime", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan":
-    0, "type": "internal", "active": true, "ipAddress": []}, {"namespace": "vmx",
-    "hostname": "CRP-ACC-SW01", "ifname": "lo0.16385", "ipAddressList": [], "macaddr":
-    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "", "timestamp":
+    1631009089182, "vlan": 0, "type": "subinterface", "active": true, "ipAddress":
+    ["127.0.0.1/32"]}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname":
+    "em1.0", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "macaddr":
+    "50:06:00:0b:00:01", "ip6AddressList": ["fe80::5206:ff:fe0b:1/64", "fec0::a:0:0:4/64"],
+    "state": "up", "vrf": "default", "timestamp": 1631009089423, "vlan": 0, "type":
+    "subinterface", "active": true, "ipAddress": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2",
+    "fe80::5206:ff:fe0b:1/64", "fec0::a:0:0:4/64"]}, {"namespace": "vmx", "hostname":
+    "CRP-ACC-SW01", "ifname": "fxp0.0", "ipAddressList": ["172.26.145.151/22"], "macaddr":
+    "50:06:00:0b:00:00", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
+    1631009089423, "vlan": 0, "type": "internal", "active": true, "ipAddress": ["172.26.145.151/22"]},
+    {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "jsrv.1", "ipAddressList":
+    ["128.0.0.127/2"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1631009089423, "vlan": 1, "type": "internal",
+    "active": true, "ipAddress": ["128.0.0.127/2"]}, {"namespace": "vmx", "hostname":
+    "CRP-ACC-SW01", "ifname": "lo0.16384", "ipAddressList": ["127.0.0.1/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1631009089423, "vlan": 0, "type": "subinterface", "active": true, "ipAddress":
-    []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fti4", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089423, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "fti2", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "lc-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "pfe-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "pfh-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "ge-0/0/1", "ipAddressList": [], "macaddr": "2c:6b:f5:82:1c:c0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "ge-0/0/2", "ipAddressList": [], "macaddr": "2c:6b:f5:82:1c:c1", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "ge-0/0/3", "ipAddressList": [], "macaddr": "2c:6b:f5:82:1c:c1", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "ge-0/0/4", "ipAddressList": [], "macaddr": "50:06:00:0a:00:06", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "CRP-ACC-SW01", "ifname": "ge-0/0/5", "ipAddressList": [], "macaddr": "50:06:00:0a:00:07",
-    "ip6AddressList": [], "state": "down", "vrf": "", "timestamp": 1631009089423,
-    "vlan": 0, "type": "ethernet", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/6", "ipAddressList": [],
-    "macaddr": "50:06:00:0a:00:08", "ip6AddressList": [], "state": "up", "vrf": "",
-    "timestamp": 1631009089423, "vlan": 201, "type": "ethernet", "active": true, "ipAddress":
-    []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "ge-0/0/7", "ipAddressList":
-    [], "macaddr": "50:06:00:0a:00:09", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089423, "vlan": 200, "type": "ethernet", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "fti3",
-    "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
-    "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "ge-0/0/8", "ipAddressList": [], "macaddr": "50:06:00:0a:00:0a", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 101, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "CRP-ACC-SW01", "ifname": "ae0", "ipAddressList": [], "macaddr": "2c:6b:f5:82:1c:c0",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan":
-    0, "type": "bond", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "CRP-ACC-SW01", "ifname": "ae1", "ipAddressList": [], "macaddr": "2c:6b:f5:82:1c:c1",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan":
-    0, "type": "bond", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "CRP-ACC-SW01", "ifname": "cbp0", "ipAddressList": [], "macaddr": "2c:6b:f5:82:15:11",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan":
-    0, "type": "internal", "active": true, "ipAddress": []}, {"namespace": "vmx",
-    "hostname": "CRP-ACC-SW01", "ifname": "demux0", "ipAddressList": [], "macaddr":
-    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "", "timestamp":
-    1631009089423, "vlan": 0, "type": "software-pseudo", "active": true, "ipAddress":
-    []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "dsc", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089423, "vlan": 0, "type": "null", "active": true, "ipAddress":
-    []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "em1", "ipAddressList":
-    [], "macaddr": "50:06:00:0b:00:01", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089423, "vlan": 0, "type": "ethernet", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname": "esi",
-    "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
-    "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "vtep", "active":
-    true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "ifname":
-    "fti0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "fti1", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01",
-    "ifname": "ge-0/0/9", "ipAddressList": [], "macaddr": "50:06:00:0a:00:0b", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089423, "vlan": 100, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "TOR1BBN-PE-RT01", "ifname": "pfh-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan":
-    0, "type": "internal", "active": true, "ipAddress": []}, {"namespace": "vmx",
-    "hostname": "TOR1BBN-PE-RT01", "ifname": "pfe-0/0/0", "ipAddressList": [], "macaddr":
-    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "", "timestamp":
-    1631009089434, "vlan": 0, "type": "internal", "active": true, "ipAddress": []},
-    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "ge-0/0/4", "ipAddressList":
-    [], "macaddr": "50:06:00:0c:00:06", "ip6AddressList": [], "state": "down", "vrf":
-    "", "timestamp": 1631009089434, "vlan": 0, "type": "ethernet", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
-    "ge-0/0/0", "ipAddressList": [], "macaddr": "50:06:00:0c:00:02", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "TOR1BBN-PE-RT01", "ifname": "ge-0/0/1", "ipAddressList": [], "macaddr": "50:06:00:0c:00:03",
-    "ip6AddressList": [], "state": "down", "vrf": "", "timestamp": 1631009089434,
-    "vlan": 0, "type": "ethernet", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "lc-0/0/0", "ipAddressList": [],
-    "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "",
-    "timestamp": 1631009089434, "vlan": 0, "type": "internal", "active": true, "ipAddress":
-    []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "ge-0/0/3",
-    "ipAddressList": [], "macaddr": "50:06:00:0c:00:05", "ip6AddressList": [], "state":
-    "down", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "ethernet",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "irb", "ipAddressList": [], "macaddr": "2c:6b:f5:9b:2c:f0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "ge-0/0/2", "ipAddressList": [], "macaddr": "50:06:00:0c:00:04", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "ethernet",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "jsrv", "ipAddressList": [], "macaddr": "2c:6b:f5:9b:2c:c0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "lo0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "loopback",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "lsi", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "mtun", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "pimd", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "pime", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "pip0", "ipAddressList": [], "macaddr": "2c:6b:f5:9b:2c:b0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "pp0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "pppoe",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "rbeb", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "remote-beb",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "tap", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "vtep", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "vtep",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "ge-0/0/2.0", "ipAddressList": ["10.0.100.0/31"], "macaddr": "50:06:00:0c:00:04",
+    ["127.0.0.1/32"]}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "ge-0/0/2.0", "ipAddressList": ["10.0.100.0/31"], "macaddr": "50:06:00:0c:00:04",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009089434,
     "vlan": 0, "type": "subinterface", "active": true, "ipAddress": ["10.0.100.0/31"]},
-    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "ge-0/0/3.0", "ipAddressList":
-    [], "macaddr": "50:06:00:0c:00:05", "ip6AddressList": [], "state": "down", "vrf":
-    "", "timestamp": 1631009089434, "vlan": 0, "type": "subinterface", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
-    "em1.0", "ipAddressList": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "macaddr":
-    "50:06:00:01:00:01", "ip6AddressList": ["fe80::5206:ff:fe01:1/64", "fec0::a:0:0:4/64"],
-    "state": "up", "vrf": "default", "timestamp": 1631009089434, "vlan": 0, "type":
-    "subinterface", "active": true, "ipAddress": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2",
-    "fe80::5206:ff:fe01:1/64", "fec0::a:0:0:4/64"]}, {"namespace": "vmx", "hostname":
-    "TOR1BBN-PE-RT01", "ifname": "fxp0.0", "ipAddressList": ["172.26.145.155/22"],
-    "macaddr": "50:06:00:01:00:00", "ip6AddressList": [], "state": "up", "vrf": "default",
-    "timestamp": 1631009089434, "vlan": 0, "type": "internal", "active": true, "ipAddress":
-    ["172.26.145.155/22"]}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
-    "jsrv.1", "ipAddressList": ["128.0.0.127/2"], "macaddr": "2c:6b:f5:9b:2c:c0",
+    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "em1.0", "ipAddressList":
+    ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2"], "macaddr": "50:06:00:01:00:01",
+    "ip6AddressList": ["fe80::5206:ff:fe01:1/64", "fec0::a:0:0:4/64"], "state": "up",
+    "vrf": "default", "timestamp": 1631009089434, "vlan": 0, "type": "subinterface",
+    "active": true, "ipAddress": ["10.0.0.4/8", "128.0.0.1/2", "128.0.0.4/2", "fe80::5206:ff:fe01:1/64",
+    "fec0::a:0:0:4/64"]}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
+    "fxp0.0", "ipAddressList": ["172.26.145.155/22"], "macaddr": "50:06:00:01:00:00",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009089434,
-    "vlan": 1, "type": "internal", "active": true, "ipAddress": ["128.0.0.127/2"]},
-    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "lo0.16384", "ipAddressList":
-    ["127.0.0.1/32"], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state":
-    "up", "vrf": "default", "timestamp": 1631009089434, "vlan": 0, "type": "subinterface",
-    "active": true, "ipAddress": ["127.0.0.1/32"]}, {"namespace": "vmx", "hostname":
-    "TOR1BBN-PE-RT01", "ifname": "ipip", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan":
-    0, "type": "internal", "active": true, "ipAddress": []}, {"namespace": "vmx",
-    "hostname": "TOR1BBN-PE-RT01", "ifname": "lo0.16385", "ipAddressList": [], "macaddr":
-    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "", "timestamp":
+    "vlan": 0, "type": "internal", "active": true, "ipAddress": ["172.26.145.155/22"]},
+    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "jsrv.1", "ipAddressList":
+    ["128.0.0.127/2"], "macaddr": "2c:6b:f5:9b:2c:c0", "ip6AddressList": [], "state":
+    "up", "vrf": "default", "timestamp": 1631009089434, "vlan": 1, "type": "internal",
+    "active": true, "ipAddress": ["128.0.0.127/2"]}, {"namespace": "vmx", "hostname":
+    "TOR1BBN-PE-RT01", "ifname": "lo0.16384", "ipAddressList": ["127.0.0.1/32"], "macaddr":
+    "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp":
     1631009089434, "vlan": 0, "type": "subinterface", "active": true, "ipAddress":
-    []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "gre", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089434, "vlan": 0, "type": "internal", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
-    "fti7", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "ge-0/0/5", "ipAddressList": [], "macaddr": "50:06:00:0c:00:07", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "TOR1BBN-PE-RT01", "ifname": "ge-0/0/6", "ipAddressList": [], "macaddr": "50:06:00:0c:00:08",
-    "ip6AddressList": [], "state": "down", "vrf": "", "timestamp": 1631009089434,
-    "vlan": 0, "type": "ethernet", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "ge-0/0/7", "ipAddressList": [],
-    "macaddr": "50:06:00:0c:00:09", "ip6AddressList": [], "state": "down", "vrf":
-    "", "timestamp": 1631009089434, "vlan": 0, "type": "ethernet", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
-    "ge-0/0/8", "ipAddressList": [], "macaddr": "50:06:00:0c:00:0a", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "TOR1BBN-PE-RT01", "ifname": "ge-0/0/9", "ipAddressList": [], "macaddr": "50:06:00:0c:00:0b",
-    "ip6AddressList": [], "state": "down", "vrf": "", "timestamp": 1631009089434,
-    "vlan": 0, "type": "ethernet", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "cbp0", "ipAddressList": [], "macaddr":
-    "2c:6b:f5:9b:25:11", "ip6AddressList": [], "state": "up", "vrf": "", "timestamp":
-    1631009089434, "vlan": 0, "type": "internal", "active": true, "ipAddress": []},
-    {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname": "demux0", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089434, "vlan": 0, "type": "software-pseudo", "active":
-    true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "ifname":
-    "dsc", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "null",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "fxp0", "ipAddressList": [], "macaddr": "50:06:00:01:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "em1", "ipAddressList": [], "macaddr": "50:06:00:01:00:01", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "ethernet",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "fti0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "fti1", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "fti2", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "fti3", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "fti4", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "fti5", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "fti6", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "ifname": "esi", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089434, "vlan": 0, "type": "vtep",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "pfe-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "lc-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ae1", "ipAddressList": [], "macaddr": "2c:6b:f5:b6:ce:c1", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "bond",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "pfh-0/0/0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ge-0/0/0", "ipAddressList": [], "macaddr": "2c:6b:f5:b6:ce:c1", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ge-0/0/1", "ipAddressList": [], "macaddr": "2c:6b:f5:b6:ce:c1", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ge-0/0/2", "ipAddressList": [], "macaddr": "2c:6b:f5:b6:ce:c0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ge-0/0/3", "ipAddressList": [], "macaddr": "2c:6b:f5:b6:ce:c0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "bond_slave",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "lsi", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ge-0/0/9", "ipAddressList": [], "macaddr": "50:06:00:0e:00:0b", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "TOR1CRP-DGW-RT01", "ifname": "jsrv", "ipAddressList": [], "macaddr": "00:00:00:00:00:00",
-    "ip6AddressList": [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan":
-    0, "type": "internal", "active": true, "ipAddress": []}, {"namespace": "vmx",
-    "hostname": "TOR1CRP-DGW-RT01", "ifname": "irb", "ipAddressList": [], "macaddr":
-    "2c:6b:f5:b6:ce:f0", "ip6AddressList": [], "state": "up", "vrf": "", "timestamp":
-    1631009089864, "vlan": 0, "type": "internal", "active": true, "ipAddress": []},
-    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ipip", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089864, "vlan": 0, "type": "internal", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
-    "gre", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "fxp0", "ipAddressList": [], "macaddr": "50:06:00:0d:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "fti7", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "fti6", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "mtun", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "fti5", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "fti3", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "fti2", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "fti1", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "fti0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "esi", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "vtep",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "em1", "ipAddressList": [], "macaddr": "50:06:00:0d:00:01", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "ethernet",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "dsc", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "null",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "demux0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "software-pseudo",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "cbp0", "ipAddressList": [], "macaddr": "2c:6b:f5:b6:c7:11", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "fti4", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "flexible-tunnel-interface",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ae0", "ipAddressList": [], "macaddr": "2c:6b:f5:b6:ce:c0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "bond",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "pimd", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "pip0", "ipAddressList": [], "macaddr": "2c:6b:f5:b6:ce:b0", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "ge-0/0/4", "ipAddressList": [], "macaddr": "50:06:00:0e:00:06", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/5", "ipAddressList": [], "macaddr": "50:06:00:0e:00:07",
-    "ip6AddressList": [], "state": "down", "vrf": "", "timestamp": 1631009089864,
-    "vlan": 0, "type": "ethernet", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/6", "ipAddressList":
-    [], "macaddr": "50:06:00:0e:00:08", "ip6AddressList": [], "state": "down", "vrf":
-    "", "timestamp": 1631009089864, "vlan": 0, "type": "ethernet", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
-    "ge-0/0/7", "ipAddressList": [], "macaddr": "50:06:00:0e:00:09", "ip6AddressList":
-    [], "state": "down", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type":
-    "ethernet", "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname":
-    "TOR1CRP-DGW-RT01", "ifname": "ge-0/0/8", "ipAddressList": [], "macaddr": "50:06:00:0e:00:0a",
-    "ip6AddressList": [], "state": "down", "vrf": "", "timestamp": 1631009089864,
-    "vlan": 0, "type": "ethernet", "active": true, "ipAddress": []}, {"namespace":
-    "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "lo0.16385", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089864, "vlan": 0, "type": "subinterface", "active": true,
-    "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
+    ["127.0.0.1/32"]}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
     "lo0.16384", "ipAddressList": ["127.0.0.1/32"], "macaddr": "00:00:00:00:00:00",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009089864,
     "vlan": 0, "type": "subinterface", "active": true, "ipAddress": ["127.0.0.1/32"]},
@@ -761,10 +98,7 @@ tests:
     "macaddr": "2c:6b:f5:b6:ce:f0", "ip6AddressList": [], "state": "up", "vrf": "default",
     "timestamp": 1631009089864, "vlan": 200, "type": "vlan", "active": true, "ipAddress":
     ["172.16.20.254/24"]}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname":
-    "pime", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "irb.100", "ipAddressList": ["172.16.10.254/24"], "macaddr": "2c:6b:f5:b6:ce:f0",
+    "irb.100", "ipAddressList": ["172.16.10.254/24"], "macaddr": "2c:6b:f5:b6:ce:f0",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009089864,
     "vlan": 100, "type": "vlan", "active": true, "ipAddress": ["172.16.10.254/24"]},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "em1.0", "ipAddressList":
@@ -780,31 +114,9 @@ tests:
     "macaddr": "2c:6b:f5:b6:ce:c1", "ip6AddressList": [], "state": "up", "vrf": "default",
     "timestamp": 1631009089864, "vlan": 10, "type": "subinterface", "active": true,
     "ipAddress": ["10.0.10.2/29"]}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "VRF-B", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "vrf",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "VRF-A", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "vrf",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "vtep", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "vtep",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "tap", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "internal",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "rbeb", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "remote-beb",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "ifname": "pp0", "ipAddressList": [], "macaddr": "00:00:00:00:00:00", "ip6AddressList":
-    [], "state": "up", "vrf": "", "timestamp": 1631009089864, "vlan": 0, "type": "pppoe",
-    "active": true, "ipAddress": []}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
     "ifname": "fxp0.0", "ipAddressList": ["172.26.145.153/22"], "macaddr": "50:06:00:0d:00:00",
     "ip6AddressList": [], "state": "up", "vrf": "default", "timestamp": 1631009089864,
-    "vlan": 0, "type": "internal", "active": true, "ipAddress": ["172.26.145.153/22"]},
-    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "ifname": "lo0", "ipAddressList":
-    [], "macaddr": "00:00:00:00:00:00", "ip6AddressList": [], "state": "up", "vrf":
-    "", "timestamp": 1631009089864, "vlan": 0, "type": "loopback", "active": true,
-    "ipAddress": []}]'
+    "vlan": 0, "type": "internal", "active": true, "ipAddress": ["172.26.145.153/22"]}]'
 - command: arpnd show --columns=* --format=json --namespace=vmx
   data-directory: tests/data/parquet
   marks: arpnd show junos all vmx
@@ -2345,13 +1657,13 @@ tests:
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1629106061664, "active": true}, {"namespace": "vmx",
     "hostname": "CRP-ACC-SW01", "vrf": "default", "prefix": "172.26.144.0/22", "nexthopIps":
-    [], "oifs": ["fxp0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1631009086664, "weights": [], "prefixlen":
+    [], "oifs": ["fxp0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1631009086664, "weights": [], "prefixlen":
     22, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1629106061664, "active": true},
     {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "vrf": "default", "prefix": "172.26.145.151/32",
     "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1631009086664, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1631009086664, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629106061664,
     "active": true}, {"namespace": "vmx", "hostname": "CRP-ACC-SW01", "vrf": "default",
@@ -2361,13 +1673,13 @@ tests:
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
     1629105530664, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
     "vrf": "default", "prefix": "172.26.144.0/22", "nexthopIps": [], "oifs": ["fxp0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1631009087173, "weights": [], "prefixlen": 22, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1631009087173, "weights": [], "prefixlen": 22, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1630916539173, "active": true}, {"namespace":
     "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "default", "prefix": "172.26.145.154/32",
     "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1631009087173, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1631009087173, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1630916539173,
     "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A",
@@ -2377,182 +1689,183 @@ tests:
     "asPathList": ["E"], "validState": "unverified", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1630916569173, "active": true}, {"namespace":
     "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A", "prefix": "10.0.10.0/29",
-    "nexthopIps": [], "oifs": ["ae1.10"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["ae1.10"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1631009087173, "weights": [],
     "prefixlen": 29, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1630916567173,
     "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A",
     "prefix": "10.0.10.3/32", "nexthopIps": [], "oifs": ["ae1.10"], "protocol": "local",
-    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1631009087173,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1630916567173, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "vrf": "VRF-A", "prefix": "172.16.10.0/24", "nexthopIps": ["10.0.10.2"], "oifs":
-    ["ae1.10"], "protocol": "bgp", "source": "", "preference": 170, "ipvers": 4, "action":
-    "forward", "timestamp": 1631009087173, "weights": [], "prefixlen": 24, "numNexthops":
-    1, "routeTag": "", "asPathList": ["I"], "validState": "unverified", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1630916579173, "active": true},
-    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A", "prefix":
-    "172.16.11.0/24", "nexthopIps": [], "oifs": ["irb.101"], "protocol": "direct",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1631009087173, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
+    1631009087173, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1630916648173, "active": true}, {"namespace": "vmx",
-    "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "0.0.0.0/0", "nexthopIps":
-    ["10.0.20.1"], "oifs": ["ae1.20"], "protocol": "bgp", "source": "", "preference":
+    0, "statusChangeTimestamp": 1630916567173, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A", "prefix": "172.16.10.0/24", "nexthopIps":
+    ["10.0.10.2"], "oifs": ["ae1.10"], "protocol": "bgp", "source": "", "preference":
     170, "ipvers": 4, "action": "forward", "timestamp": 1631009087173, "weights":
-    [], "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList": ["E"], "validState":
+    [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": ["I"], "validState":
     "unverified", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1630916569173, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.26.147.254"], "oifs":
-    ["fxp0.0"], "protocol": "static", "source": "", "preference": 5, "ipvers": 4,
-    "action": "forward", "timestamp": 1631009087173, "weights": [], "prefixlen": 0,
-    "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1630916539173, "active": true},
-    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "prefix":
-    "10.0.20.0/29", "nexthopIps": [], "oifs": ["ae1.20"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1631009087173,
-    "weights": [], "prefixlen": 29, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1630916567173, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "vrf": "VRF-B", "prefix": "10.0.20.3/32", "nexthopIps": [], "oifs": ["ae1.20"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
-    "timestamp": 1631009087173, "weights": [], "prefixlen": 32, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1630916567173, "active": true}, {"namespace":
-    "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "172.16.20.0/24",
-    "nexthopIps": ["10.0.20.2"], "oifs": ["ae1.20"], "protocol": "bgp", "source":
+    1630916579173, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
+    "vrf": "VRF-A", "prefix": "172.16.11.0/24", "nexthopIps": [], "oifs": ["irb.101"],
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 4, "action":
+    "forward", "timestamp": 1631009087173, "weights": [], "prefixlen": 24, "numNexthops":
+    1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1630916648173, "active": true}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "0.0.0.0/0",
+    "nexthopIps": ["10.0.20.1"], "oifs": ["ae1.20"], "protocol": "bgp", "source":
     "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1631009087173,
-    "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList":
-    ["I"], "validState": "unverified", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1630916571173, "active": true}, {"namespace": "vmx",
-    "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "172.16.21.0/24", "nexthopIps":
-    [], "oifs": ["irb.201"], "protocol": "direct", "source": "", "preference": 0,
-    "ipvers": 4, "action": "forward", "timestamp": 1631009087173, "weights": [], "prefixlen":
-    24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1630916648173, "active": true},
+    "weights": [], "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList":
+    ["E"], "validState": "unverified", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1630916569173, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR4CRP-DGW-RT01", "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["172.26.147.254"], "oifs": ["fxp0.0"], "protocol": "static", "source": "", "preference":
+    5, "ipvers": 4, "action": "forward", "timestamp": 1631009087173, "weights": [],
+    "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1630916539173,
+    "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B",
+    "prefix": "10.0.20.0/29", "nexthopIps": [], "oifs": ["ae1.20"], "protocol": "connected",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1631009087173, "weights": [], "prefixlen": 29, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1630916567173, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "10.0.20.3/32", "nexthopIps":
+    [], "oifs": ["ae1.20"], "protocol": "local", "source": "", "preference": 0, "ipvers":
+    4, "action": "forward", "timestamp": 1631009087173, "weights": [], "prefixlen":
+    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1630916567173, "active": true},
     {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "prefix":
-    "172.16.21.254/32", "nexthopIps": [], "oifs": ["irb.201"], "protocol": "local",
-    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1631009087173,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
+    "172.16.20.0/24", "nexthopIps": ["10.0.20.2"], "oifs": ["ae1.20"], "protocol":
+    "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1631009087173, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
+    "asPathList": ["I"], "validState": "unverified", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1630916571173, "active": true}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "172.16.21.0/24",
+    "nexthopIps": [], "oifs": ["irb.201"], "protocol": "connected", "source": "",
+    "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1631009087173,
+    "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
     1630916648173, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
-    "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
-    1631009087173, "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag":
-    "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1630916537173, "active": true}, {"namespace": "vmx",
-    "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A", "prefix": "172.16.11.254/32",
-    "nexthopIps": [], "oifs": ["irb.101"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1631009087173, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1630916648173,
+    "vrf": "VRF-B", "prefix": "172.16.21.254/32", "nexthopIps": [], "oifs": ["irb.201"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1631009087173, "weights": [], "prefixlen": 32, "numNexthops": 1,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1630916648173, "active": true}, {"namespace":
+    "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "default", "prefix": "ff02::2/128",
+    "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "", "preference":
+    0, "ipvers": 6, "action": "multirecv", "timestamp": 1631009087173, "weights":
+    [], "prefixlen": 128, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1630916537173,
     "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A",
-    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
-    "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1631009087173,
+    "prefix": "172.16.11.254/32", "nexthopIps": [], "oifs": ["irb.101"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1631009087173, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1630916648173, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-A", "prefix": "ff02::2/128", "nexthopIps":
+    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
+    6, "action": "multirecv", "timestamp": 1631009087173, "weights": [], "prefixlen":
+    128, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1630916537173, "active": true},
+    {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01", "vrf": "VRF-B", "prefix":
+    "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "",
+    "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1631009087173,
     "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1630916537173, "active": true}, {"namespace": "vmx", "hostname": "TOR4CRP-DGW-RT01",
-    "vrf": "VRF-B", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
-    "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
-    1631009087173, "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag":
-    "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1630916537173, "active": true}, {"namespace": "vmx",
-    "hostname": "TOR1CRP-DGW-RT01", "vrf": "default", "prefix": "172.26.145.153/32",
-    "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1631009087230, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    1630916537173, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "vrf": "default", "prefix": "172.26.145.153/32", "nexthopIps": [], "oifs": ["fxp0.0"],
+    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1631009087230, "weights": [], "prefixlen": 32, "numNexthops": 1,
+    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1629183445230, "active": true}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "default", "prefix": "172.26.144.0/22",
+    "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1631009087230, "weights": [],
+    "prefixlen": 22, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629183445230,
-    "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "default",
-    "prefix": "172.26.144.0/22", "nexthopIps": [], "oifs": ["fxp0.0"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1631009087230, "weights": [], "prefixlen": 22, "numNexthops": 1, "routeTag": "",
-    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1629183445230, "active": true}, {"namespace": "vmx",
-    "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "ff02::2/128", "nexthopIps":
-    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
-    6, "action": "multirecv", "timestamp": 1631009087230, "weights": [], "prefixlen":
-    128, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1629183225230, "active": true},
-    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A", "prefix":
-    "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "",
-    "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1631009087230,
+    "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B",
+    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
+    "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1631009087230,
     "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag": "", "asPathList":
     [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
     1629183225230, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
+    "vrf": "VRF-A", "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol":
     "inet6", "source": "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp":
     1631009087230, "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag":
     "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1629182583230, "active": true}, {"namespace": "vmx",
-    "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "172.16.21.0/24", "nexthopIps":
-    ["10.0.20.3"], "oifs": ["ae1.20"], "protocol": "bgp", "source": "", "preference":
-    170, "ipvers": 4, "action": "forward", "timestamp": 1631009087230, "weights":
-    [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": ["I"], "validState":
-    "unverified", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1630916649230, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "vrf": "VRF-B", "prefix": "172.16.20.254/32", "nexthopIps": [], "oifs": ["irb.200"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
-    "timestamp": 1631009087230, "weights": [], "prefixlen": 32, "numNexthops": 1,
+    0, "statusChangeTimestamp": 1629183225230, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR1CRP-DGW-RT01", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
+    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
+    6, "action": "multirecv", "timestamp": 1631009087230, "weights": [], "prefixlen":
+    128, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1629182583230, "active": true},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "prefix":
+    "172.16.21.0/24", "nexthopIps": ["10.0.20.3"], "oifs": ["ae1.20"], "protocol":
+    "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1631009087230, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
+    "asPathList": ["I"], "validState": "unverified", "hardwareProgrammed": "unknown",
+    "metric": 0, "statusChangeTimestamp": 1630916649230, "active": true}, {"namespace":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "172.16.20.254/32",
+    "nexthopIps": [], "oifs": ["irb.200"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1631009087230, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629183361230,
+    "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B",
+    "prefix": "172.16.20.0/24", "nexthopIps": [], "oifs": ["irb.200"], "protocol":
+    "connected", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
+    "timestamp": 1631009087230, "weights": [], "prefixlen": 24, "numNexthops": 1,
     "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1629183361230, "active": true}, {"namespace":
-    "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "172.16.20.0/24",
-    "nexthopIps": [], "oifs": ["irb.200"], "protocol": "direct", "source": "", "preference":
+    "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "10.0.20.2/32",
+    "nexthopIps": [], "oifs": ["ae1.20"], "protocol": "local", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1631009087230, "weights": [],
+    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629183409230,
+    "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A",
+    "prefix": "172.16.10.254/32", "nexthopIps": [], "oifs": ["irb.100"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1631009087230, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1629183361230, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "0.0.0.0/0", "nexthopIps":
+    ["10.0.20.1"], "oifs": ["ae1.20"], "protocol": "bgp", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1631009087230, "weights":
+    [], "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList": ["E"], "validState":
+    "unverified", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1630658722230, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
+    "vrf": "VRF-A", "prefix": "172.16.11.0/24", "nexthopIps": ["10.0.10.3"], "oifs":
+    ["ae1.10"], "protocol": "bgp", "source": "", "preference": 170, "ipvers": 4, "action":
+    "forward", "timestamp": 1631009087230, "weights": [], "prefixlen": 24, "numNexthops":
+    1, "routeTag": "", "asPathList": ["I"], "validState": "unverified", "hardwareProgrammed":
+    "unknown", "metric": 0, "statusChangeTimestamp": 1630916649230, "active": true},
+    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "default", "prefix":
+    "0.0.0.0/0", "nexthopIps": ["172.26.147.254"], "oifs": ["fxp0.0"], "protocol":
+    "static", "source": "", "preference": 5, "ipvers": 4, "action": "forward", "timestamp":
+    1631009087230, "weights": [], "prefixlen": 0, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1629183445230, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A", "prefix": "172.16.10.0/24", "nexthopIps":
+    [], "oifs": ["irb.100"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1631009087230, "weights": [],
     "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629183361230,
-    "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B",
-    "prefix": "10.0.20.2/32", "nexthopIps": [], "oifs": ["ae1.20"], "protocol": "local",
-    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1631009087230,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1629183409230, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "vrf": "VRF-A", "prefix": "172.16.10.254/32", "nexthopIps": [], "oifs": ["irb.100"],
-    "protocol": "local", "source": "", "preference": 0, "ipvers": 4, "action": "local",
-    "timestamp": 1631009087230, "weights": [], "prefixlen": 32, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1629183361230, "active": true}, {"namespace":
-    "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "0.0.0.0/0",
-    "nexthopIps": ["10.0.20.1"], "oifs": ["ae1.20"], "protocol": "bgp", "source":
-    "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp": 1631009087230,
-    "weights": [], "prefixlen": 0, "numNexthops": 1, "routeTag": "", "asPathList":
-    ["E"], "validState": "unverified", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1630658722230, "active": true}, {"namespace": "vmx",
-    "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A", "prefix": "172.16.11.0/24", "nexthopIps":
-    ["10.0.10.3"], "oifs": ["ae1.10"], "protocol": "bgp", "source": "", "preference":
-    170, "ipvers": 4, "action": "forward", "timestamp": 1631009087230, "weights":
-    [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": ["I"], "validState":
-    "unverified", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1630916649230, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "vrf": "default", "prefix": "0.0.0.0/0", "nexthopIps": ["172.26.147.254"], "oifs":
-    ["fxp0.0"], "protocol": "static", "source": "", "preference": 5, "ipvers": 4,
-    "action": "forward", "timestamp": 1631009087230, "weights": [], "prefixlen": 0,
-    "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1629183445230, "active": true},
-    {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A", "prefix":
-    "172.16.10.0/24", "nexthopIps": [], "oifs": ["irb.100"], "protocol": "direct",
+    "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A",
+    "prefix": "10.0.10.2/32", "nexthopIps": [], "oifs": ["ae1.10"], "protocol": "local",
     "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1631009087230, "weights": [], "prefixlen": 24, "numNexthops": 1, "routeTag": "",
+    1631009087230, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
-    0, "statusChangeTimestamp": 1629183361230, "active": true}, {"namespace": "vmx",
-    "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A", "prefix": "10.0.10.2/32", "nexthopIps":
-    [], "oifs": ["ae1.10"], "protocol": "local", "source": "", "preference": 0, "ipvers":
-    4, "action": "local", "timestamp": 1631009087230, "weights": [], "prefixlen":
-    32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
+    0, "statusChangeTimestamp": 1629183409230, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A", "prefix": "10.0.10.0/29", "nexthopIps":
+    [], "oifs": ["ae1.10"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1631009087230, "weights": [], "prefixlen":
+    29, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1629183409230, "active": true},
     {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-A", "prefix":
-    "10.0.10.0/29", "nexthopIps": [], "oifs": ["ae1.10"], "protocol": "direct", "source":
-    "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp": 1631009087230,
-    "weights": [], "prefixlen": 29, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1629183409230, "active": true}, {"namespace": "vmx", "hostname": "TOR1CRP-DGW-RT01",
-    "vrf": "VRF-A", "prefix": "0.0.0.0/0", "nexthopIps": ["10.0.10.1"], "oifs": ["ae1.10"],
-    "protocol": "bgp", "source": "", "preference": 170, "ipvers": 4, "action": "forward",
-    "timestamp": 1631009087230, "weights": [], "prefixlen": 0, "numNexthops": 1, "routeTag":
-    "", "asPathList": ["E"], "validState": "unverified", "hardwareProgrammed": "unknown",
+    "0.0.0.0/0", "nexthopIps": ["10.0.10.1"], "oifs": ["ae1.10"], "protocol": "bgp",
+    "source": "", "preference": 170, "ipvers": 4, "action": "forward", "timestamp":
+    1631009087230, "weights": [], "prefixlen": 0, "numNexthops": 1, "routeTag": "",
+    "asPathList": ["E"], "validState": "unverified", "hardwareProgrammed": "unknown",
     "metric": 0, "statusChangeTimestamp": 1630658722230, "active": true}, {"namespace":
     "vmx", "hostname": "TOR1CRP-DGW-RT01", "vrf": "VRF-B", "prefix": "10.0.20.0/29",
-    "nexthopIps": [], "oifs": ["ae1.20"], "protocol": "direct", "source": "", "preference":
+    "nexthopIps": [], "oifs": ["ae1.20"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 4, "action": "forward", "timestamp": 1631009087230, "weights": [],
     "prefixlen": 29, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629183409230,
@@ -2563,13 +1876,13 @@ tests:
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1629106192291, "active": true}, {"namespace": "vmx",
     "hostname": "CRP-DIS-SW01", "vrf": "default", "prefix": "172.26.144.0/22", "nexthopIps":
-    [], "oifs": ["fxp0.0"], "protocol": "direct", "source": "", "preference": 0, "ipvers":
-    4, "action": "forward", "timestamp": 1631009087291, "weights": [], "prefixlen":
+    [], "oifs": ["fxp0.0"], "protocol": "connected", "source": "", "preference": 0,
+    "ipvers": 4, "action": "forward", "timestamp": 1631009087291, "weights": [], "prefixlen":
     22, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
     "unknown", "metric": 0, "statusChangeTimestamp": 1629106192291, "active": true},
     {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "vrf": "default", "prefix": "172.26.145.152/32",
     "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1631009087291, "weights": [],
+    0, "ipvers": 4, "action": "forward", "timestamp": 1631009087291, "weights": [],
     "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
     "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629106192291,
     "active": true}, {"namespace": "vmx", "hostname": "CRP-DIS-SW01", "vrf": "default",
@@ -2603,49 +1916,50 @@ tests:
     "unknown", "metric": 0, "statusChangeTimestamp": 1630916650742, "active": true},
     {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default", "prefix":
     "10.0.100.0/32", "nexthopIps": [], "oifs": ["ge-0/0/2.0"], "protocol": "local",
-    "source": "", "preference": 0, "ipvers": 4, "action": "local", "timestamp": 1631009087742,
-    "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList":
-    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1629185745742, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "vrf": "default", "prefix": "172.16.10.0/24", "nexthopIps": ["10.0.100.1"], "oifs":
-    ["ge-0/0/2.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
-    4, "action": "forward", "timestamp": 1631009087742, "weights": [], "prefixlen":
-    24, "numNexthops": 1, "routeTag": "", "asPathList": ["65000", "I"], "validState":
-    "unverified", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1630658723742, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "vrf": "default", "prefix": "172.16.20.0/24", "nexthopIps": ["10.0.100.1"], "oifs":
-    ["ge-0/0/2.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
-    4, "action": "forward", "timestamp": 1631009087742, "weights": [], "prefixlen":
-    24, "numNexthops": 1, "routeTag": "", "asPathList": ["65000", "I"], "validState":
-    "unverified", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1630658723742, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "vrf": "default", "prefix": "172.16.21.0/24", "nexthopIps": ["10.0.100.1"], "oifs":
-    ["ge-0/0/2.0"], "protocol": "bgp", "source": "", "preference": 170, "ipvers":
-    4, "action": "forward", "timestamp": 1631009087742, "weights": [], "prefixlen":
-    24, "numNexthops": 1, "routeTag": "", "asPathList": ["65000", "I"], "validState":
-    "unverified", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
-    1630916650742, "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01",
-    "vrf": "default", "prefix": "172.26.144.0/22", "nexthopIps": [], "oifs": ["fxp0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward",
-    "timestamp": 1631009087742, "weights": [], "prefixlen": 22, "numNexthops": 1,
-    "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed": "unknown",
-    "metric": 0, "statusChangeTimestamp": 1629185758742, "active": true}, {"namespace":
-    "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default", "prefix": "172.26.145.155/32",
-    "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "local", "source": "", "preference":
-    0, "ipvers": 4, "action": "local", "timestamp": 1631009087742, "weights": [],
-    "prefixlen": 32, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
-    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629185758742,
-    "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default",
-    "prefix": "10.0.100.0/31", "nexthopIps": [], "oifs": ["ge-0/0/2.0"], "protocol":
-    "direct", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
-    1631009087742, "weights": [], "prefixlen": 31, "numNexthops": 1, "routeTag": "",
+    "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1631009087742, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
     "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
     0, "statusChangeTimestamp": 1629185745742, "active": true}, {"namespace": "vmx",
-    "hostname": "TOR1BBN-PE-RT01", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
-    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
-    6, "action": "multirecv", "timestamp": 1631009087742, "weights": [], "prefixlen":
-    128, "numNexthops": 0, "routeTag": "", "asPathList": [], "validState": "", "hardwareProgrammed":
-    "unknown", "metric": 0, "statusChangeTimestamp": 1629185244742, "active": true}]'
+    "hostname": "TOR1BBN-PE-RT01", "vrf": "default", "prefix": "172.16.10.0/24", "nexthopIps":
+    ["10.0.100.1"], "oifs": ["ge-0/0/2.0"], "protocol": "bgp", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1631009087742, "weights":
+    [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": ["65000",
+    "I"], "validState": "unverified", "hardwareProgrammed": "unknown", "metric": 0,
+    "statusChangeTimestamp": 1630658723742, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR1BBN-PE-RT01", "vrf": "default", "prefix": "172.16.20.0/24", "nexthopIps":
+    ["10.0.100.1"], "oifs": ["ge-0/0/2.0"], "protocol": "bgp", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1631009087742, "weights":
+    [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": ["65000",
+    "I"], "validState": "unverified", "hardwareProgrammed": "unknown", "metric": 0,
+    "statusChangeTimestamp": 1630658723742, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR1BBN-PE-RT01", "vrf": "default", "prefix": "172.16.21.0/24", "nexthopIps":
+    ["10.0.100.1"], "oifs": ["ge-0/0/2.0"], "protocol": "bgp", "source": "", "preference":
+    170, "ipvers": 4, "action": "forward", "timestamp": 1631009087742, "weights":
+    [], "prefixlen": 24, "numNexthops": 1, "routeTag": "", "asPathList": ["65000",
+    "I"], "validState": "unverified", "hardwareProgrammed": "unknown", "metric": 0,
+    "statusChangeTimestamp": 1630916650742, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR1BBN-PE-RT01", "vrf": "default", "prefix": "172.26.144.0/22",
+    "nexthopIps": [], "oifs": ["fxp0.0"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1631009087742, "weights": [],
+    "prefixlen": 22, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629185758742,
+    "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default",
+    "prefix": "172.26.145.155/32", "nexthopIps": [], "oifs": ["fxp0.0"], "protocol":
+    "local", "source": "", "preference": 0, "ipvers": 4, "action": "forward", "timestamp":
+    1631009087742, "weights": [], "prefixlen": 32, "numNexthops": 1, "routeTag": "",
+    "asPathList": [], "validState": "", "hardwareProgrammed": "unknown", "metric":
+    0, "statusChangeTimestamp": 1629185758742, "active": true}, {"namespace": "vmx",
+    "hostname": "TOR1BBN-PE-RT01", "vrf": "default", "prefix": "10.0.100.0/31", "nexthopIps":
+    [], "oifs": ["ge-0/0/2.0"], "protocol": "connected", "source": "", "preference":
+    0, "ipvers": 4, "action": "forward", "timestamp": 1631009087742, "weights": [],
+    "prefixlen": 31, "numNexthops": 1, "routeTag": "", "asPathList": [], "validState":
+    "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp": 1629185745742,
+    "active": true}, {"namespace": "vmx", "hostname": "TOR1BBN-PE-RT01", "vrf": "default",
+    "prefix": "ff02::2/128", "nexthopIps": [], "oifs": [], "protocol": "inet6", "source":
+    "", "preference": 0, "ipvers": 6, "action": "multirecv", "timestamp": 1631009087742,
+    "weights": [], "prefixlen": 128, "numNexthops": 0, "routeTag": "", "asPathList":
+    [], "validState": "", "hardwareProgrammed": "unknown", "metric": 0, "statusChangeTimestamp":
+    1629185244742, "active": true}]'
 - command: vlan show --columns='*' --format=json --namespace=vmx
   data-directory: tests/data/parquet
   marks: vlan show junos all vmx

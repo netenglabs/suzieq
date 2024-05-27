@@ -138,14 +138,14 @@ tests:
   marks: devconfig describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "config", "type": "string", "key":
-    "", "display": 1, "description": "The running config"}, {"name": "deviceSession",
+    "", "display": 2, "description": "The running config"}, {"name": "deviceSession",
     "type": "timestamp", "key": "", "display": "", "description": "Device boot session
     id"}, {"name": "hostname", "type": "string", "key": 1, "display": 1, "description":
     "Hostname associated with this record"}, {"name": "namespace", "type": "string",
     "key": 0, "display": 0, "description": "Namespace associated with this record"},
     {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
     "Schema version, not selectable"}, {"name": "timestamp", "type": "timestamp",
-    "key": "", "display": 2, "description": "Unix epach When this record was created,
+    "key": "", "display": 3, "description": "Unix epach When this record was created,
     in ms"}]'
 - command: device describe --format=json
   data-directory: tests/data/parquet
@@ -283,14 +283,14 @@ tests:
     "If this entry is active or deleted"}, {"name": "deviceSession", "type": "timestamp",
     "key": "", "display": "", "description": "Device boot session id"}, {"name": "hostname",
     "type": "string", "key": 1, "display": 1, "description": "Hostname associated
-    with this entry"}, {"name": "model", "type": "string", "key": 3, "display": 3,
+    with this entry"}, {"name": "model", "type": "string", "key": "", "display": 3,
     "description": "Model of the entry"}, {"name": "name", "type": "string", "key":
     2, "display": 2, "description": "Name of inventory entry"}, {"name": "namespace",
     "type": "string", "key": 0, "display": 0, "description": "Namespace associated
-    with this entry"}, {"name": "partNum", "type": "string", "key": 5, "display":
+    with this entry"}, {"name": "partNum", "type": "string", "key": "", "display":
     "", "description": "Part number of entry"}, {"name": "partType", "type": "string",
     "key": "", "display": 8, "description": "Type specific info such as optics and
-    such"}, {"name": "serial", "type": "string", "key": 4, "display": "", "description":
+    such"}, {"name": "serial", "type": "string", "key": "", "display": "", "description":
     "Serial number of entry"}, {"name": "sqvers", "type": "string", "key": "", "display":
     "", "description": "Schema version, not selectable"}, {"name": "status", "type":
     "string", "key": "", "display": 4, "description": "Status of the entry"}, {"name":
@@ -575,7 +575,7 @@ tests:
     carrying this VLAN"}, {"name": "namespace", "type": "string", "key": 0, "display":
     0, "description": "Namespace associated with record"}, {"name": "sqvers", "type":
     "string", "key": "", "display": "", "description": "Schema version, not selectable"},
-    {"name": "state", "type": "string", "key": 2, "display": 4, "description": "VLAN
+    {"name": "state", "type": "string", "key": "", "display": 4, "description": "VLAN
     state: active or suspended"}, {"name": "timestamp", "type": "timestamp", "key":
     "", "display": 7, "description": ""}, {"name": "vlan", "type": "long", "key":
     "", "display": 6, "description": "VLAN ID"}, {"name": "vlanName", "type": "string",

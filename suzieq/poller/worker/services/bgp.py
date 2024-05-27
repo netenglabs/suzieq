@@ -40,6 +40,7 @@ class BgpService(Service):
                 entry['afi'] = entry['safi'] = ''
                 if not entry.get('bfdStatus', ''):
                     entry['bfdStatus'] = ''
+                entry['bfdStatus'] = entry['bfdStatus'].lower()
                 if (entry.get('holdTime', '0') == '0' and
                         entry.get('configHoldtime', '')):
                     entry['holdTime'] = entry['configHoldtime']
@@ -464,15 +465,16 @@ class BgpService(Service):
         drop_indices = []
 
         for i, entry in enumerate(processed_data):
-            if entry['state'] != 'Established':
-                continue
-
             bfd_status = entry.get('bfdStatus', 'disabled').lower()
             if not bfd_status or (bfd_status == "unknown"):
                 bfd_status = "disabled"
             entry['bfdStatus'] = bfd_status
 
             self._normalize_asn(entry)
+
+            if entry['state'] != 'Established':
+                continue
+
             for afi in entry.get('_afiInfo', {}):
                 if afi in (entry.get('afisAdvOnly', []) or []):
                     continue
@@ -662,7 +664,7 @@ class BgpService(Service):
             if "peerIP" in entry:
                 peerIp = entry.get("peerIP", "").split(":")[0]
                 entry["peerIP"] = peerIp
-                entry["bfdStatus"] = bfdDict.get(peerIp, "")
+                entry["bfdStatus"] = bfdDict.get(peerIp, "").lower()
 
             if "updateSource" in entry:
                 entry["updateSource"] = entry.get(

@@ -198,7 +198,7 @@ class EvpnVniService(Service):
                             'vrf': vrf,
                             'os': 'junos'
                         }
-                    newntries[vni] = vni_entry
+                        newntries[vni] = vni_entry
                     continue
             elif entry['_entryType'] == 'l3':
                 vni = int(entry.get('vni', '0'))

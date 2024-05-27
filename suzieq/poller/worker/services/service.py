@@ -321,8 +321,8 @@ class Service(SqPlugin):
                 # There are various outputs that due to an old parsing bug
                 # return a node version of 0. Use 'all' for those
                 continue
-            opdict = {'>': operator.gt, '<': operator.lt,
-                      '>=': operator.ge, '<=': operator.le,
+            opdict = {'>=': operator.ge, '<=': operator.le,
+                      '>': operator.gt, '<': operator.lt,
                       '=': operator.eq, '!=': operator.ne}
             op = operator.eq
 
