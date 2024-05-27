@@ -15,6 +15,8 @@ SuzieQ:
 
 With the applications that we build on top of the framework we want to demonstrate a different and more systematic approach to thinking about networks. We want to show how useful it is to think of your network holistically.
 
+**To get information about the enterprise version of SuzieQ, visit the Stardust Systems (website)[https://www.stardustsystems.net/]**.
+
 You can join the conversation via [slack](https://netenglabs.slack.com). Send email to Dinesh with the email address to send the Slack invitation to.
 
 We're also looking for collaborators to help us make SuzieQ a truly useful multi-vendor, open source platform

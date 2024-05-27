@@ -1,5 +1,33 @@
 # Release Notes
 
+## 0.23.0 (May 27, 2024)
+
+This has some useful features added, and a bunch of important bug fixes, most of them in the parsing logic, all of which are ports from the enterprise version. Some of these changes resulted in a  few breaking changes, all to fix inconsistencies in parsing output. Fixing these inconsistencies should make writing logic using this info much simpler. Existing scripts that used this logic need to be fixed.
+
+* **Search inside device config**: You can now query for matching line or section inside a device's config via the `section` keyword. The specified string can be a simple string or a regular expression
+* **Look for portchannel member interfaces**: Using the `bond` keyword, look for member ports for a specific set of portchannel interfaces
+* **Specify user name as an environment var in poller**: In instances where users setup the poller using environment variables, username was not one of these sensitive fields. Added username to be retrieved via an environment variable as well.
+* **Breaking Change**: By default, the device config is now displayed using markdown which makes the output more readable. If you want unformatted output, use `format=devconfig`
+* **Breaking Change**: Change some of the internal interface names i SONiC to be internal. These are no longer displayed by default. You can look for them by specifying type=internal or type=all
+* **Breaking Change**: In `address` table, only display entries with an IP address. To search by macaddr, use `interface` table via `macaddr` keyword
+* **Breaking Change**: bfdStatus field in BGP is now always in lowercase, even for non-established sessions (its case could vary based on platform before this fix). This may cause us to show a change in the bgp table for non established sessions when there's no change
+* **Endpoint locator fix**: In a classical access-aggregation network, endpoint locatoy failed if there was more than one level of L2 between the aggregation and the first hop L2 switch
+* **Running reverse path in GUI**: If you clicked on the icon to run path by reversing source and dest it did not work. This has been fixed
+* **Normalize protocol value for connected routes**: Normalize protocol field for connected routes to be always "connected". Junos and NXOS used "direct". Existing entries should work correctly. New entries will have "connected" instead of "direct"
+* **Routes parser fix for SONIC**: For SONiC versions > 4.2, we need to retrieve the VRF names separately to convert vrf id to vrf name in routing table
+* **EOS parser fixes**: Connected routes had a nexthop IP of '0.0.0.0', which was wrong, it should be empty to be consistent with other devices. This may cause us to show a change in the routing table for connected entries when there's no change.
+* **Fix uptime logic in IOSXE**: Fix the computation of the timestamp when the device only provided an uptime such as in BGP, interface etc.
+* **Cumlus parser fixes**: Fixed subtype value when it was mac address in LLDP
+* Handle both CDP & LLDP being enabled
+* Remove state field as key from VLAN table
+* Remove model, serialNumber and partNum as keys from inventory table
+* Fixed a bug in checking for versions which ignored ">=" or "<=" operators. This caused the wrong version identification for some of the devices causing parsing errors
+* Bug fix to parser to make adminState notconnected if the operational state was notConnected for NXOS (user Fabien Vincen contribution, thank you)
+* Ensured namespace kwarg is a list, not a string when using python API to avoid crashes
+* Added default columns to display for ospf in case OSPF neighbor data was missing, which caused a crash in the GUI
+* Fix poller exception due to use of undeclared variable (user Fabien Vincent contribution, thank you)
+* Update dependent libraries due to security fixes
+
 ## 0.22.0 (Jan 10, 2024)
 
 This is largely a bugfix release, with some improvements in the output of some commands, and dependent library updates.
