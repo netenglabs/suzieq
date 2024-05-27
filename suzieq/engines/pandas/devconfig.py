@@ -21,7 +21,12 @@ class DevconfigObj(SqPandasEngine):
         query_str = kwargs.pop('query_str', '')
 
         df = super().get(columns=columns, **kwargs)
-        if df.empty or 'error' in df.columns or not section:
+        if df.empty or 'error' in df.columns:
+            return df
+
+        if not section:
+            if query_str:
+                df = df.query(query_str).reset_index(drop=True)
             return df
 
         devdf = self._get_table_sqobj('device') \
