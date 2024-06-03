@@ -1338,7 +1338,7 @@ class EosNode(Node):
     async def _rest_connect(self):
         '''Check that connectivity and authentication works'''
 
-        timeout = self.cmd_timeout
+        timeout = aiohttp.ClientTimeout(self.cmd_timeout)
 
         auth = aiohttp.BasicAuth(self.username,
                                  password=self.password or 'vagrant')
@@ -1346,7 +1346,7 @@ class EosNode(Node):
 
         try:
             self._conn = aiohttp.ClientSession(
-                auth=auth, timeout=self.connect_timeout,
+                auth=auth, timeout=timeout,
                 connector=aiohttp.TCPConnector(ssl=False))
             async with self._conn.post(url, timeout=timeout) as response:
                 _ = response.status
@@ -1414,7 +1414,7 @@ class EosNode(Node):
                 await self._post_result(service_callback, result, cb_token)
                 return
 
-        timeout = timeout or self.cmd_timeout
+        timeout = aiohttp.ClientTimeout(timeout or self.cmd_timeout)
 
         now = int(time.time() * 1000)
         data = {
@@ -2154,8 +2154,8 @@ class PanosNode(Node):
         if not self._retry:
             return
         async with self._cmd_pacer.wait(self.per_cmd_auth):
-            async with self._conn.get(url, timeout=self.connect_timeout) \
-                    as response:
+            timeout = aiohttp.ClientTimeout(self.connect_timeout)
+            async with self._conn.get(url, timeout=timeout) as response:
                 status, xml = response.status, await response.text()
                 if status == 200:
                     data = xmltodict.parse(xml)
@@ -2215,9 +2215,10 @@ class PanosNode(Node):
         # In case of PANOS, getting here means REST is up
         if not self._conn:
             async with self._cmd_pacer.wait(self.per_cmd_auth):
+                timeout = aiohttp.ClientTimeout(self.connect_timeout)
                 try:
                     self._conn = aiohttp.ClientSession(
-                        conn_timeout=self.connect_timeout,
+                        conn_timeout=timeout,
                         connector=aiohttp.TCPConnector(ssl=False),
                     )
                     if self.api_key is None:
@@ -2240,7 +2241,7 @@ class PanosNode(Node):
         if not cmd_list:
             return result
 
-        timeout = timeout or self.connect_timeout
+        timeout = aiohttp.ClientTimeout(timeout or self.connect_timeout)
 
         url = f"https://{self.address}:{self.port}/api/"
 
