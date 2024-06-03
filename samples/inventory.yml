@@ -1,11 +1,14 @@
 ---
 # SAMPLE ONLY!!!
-# Container will crash if it cannot
 sources:
 - name: netbox-instance-123
   token: af8717c89ec0ff420c19d89e6c20646ad55dd54e
   url: http://127.0.0.1:8000
   tag: suzieq-demo
+  device_query_filters: # the below is the equvilent of the ansible netbox nb_inventory filter
+    - has_primary_ip: 'true'
+    - manufacturer_id: 1
+    - site: 'site1' # uses the slug
   type: netbox
   period: 3600
 

@@ -211,6 +211,7 @@ Here is an example of the configuration of a netbox type source:
 
 #### Selecting devices from Netbox
 
+##### Tags
 Starting from 0.19, it's possible to specify more than one tag to be matched, defining a list of one or more rules.
 A single rule can contain a set of tags divided by the `,` separator, which should **ALL** be matched.
 A device is polled by SuzieQ if it matches at least one of the defined rules.
@@ -230,6 +231,21 @@ For example, the source above tells SuzieQ to select from Netbox all the devices
 !!!Warning
     SuzieQ versions older than 0.19 supported one single tag.
     The old syntax, following the pattern `tag: netbox-tag`, is deprecated and it might be removed in the future releases.
+
+##### More Advanced Filtering
+Starting in 0.20.2, it's possible to specify more advanced filtering rules to select devices from Netbox.  The rules are specified in the `device_query_filters` field of the source.  This works exactly like the netbox ansible collection's nb_inventory module `device_query_filters` field.  See the [Netbox Ansible Collection](https://netbox-ansible-collection.readthedocs.io/en/latest/plugins/nb_inventory_inventory.html#parameter-device_query_filters) for more details.
+
+```yaml
+- name: netbox-multi-tag
+  type: netbox
+  token: your-api-token-here
+  url: https://127.0.0.1:8000
+  device_query_filters:
+    - has_primary_ip: 'true'
+    - manufacturer_id: 1
+    - site: 'site1' # uses the slug
+```
+For example, the source above tells SuzieQ to select from Netbox all the devices having a `has_primary_ip` set to True, with a `manufacturer_id` equal to `1`, and uses a `site` slug equal to `site1`. This filter can be combined with tags as well within the `device_query_filters` or the `tags` field.
 
 #### Map Netbox sitenames to namespaces
 
