@@ -89,6 +89,19 @@ def get_src_sample_config(src_type: str) -> Dict:
                 'password': 'plain:password'
             }),
         })
+    elif src_type == 'vcenter':
+        sample_config.update({
+            'url': 'http://fake-url:1234',
+            'username': "test-user",
+            "password": "fake-password",
+            'attributes': ['monitoring', 'suzieq'],
+            'run_once': True,
+            'auth': StaticLoader({
+                'name': 'static0',
+                'username': 'username',
+                'password': 'plain:password'
+            }),
+        })
 
     return sample_config
 
