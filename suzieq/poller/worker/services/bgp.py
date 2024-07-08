@@ -2,13 +2,13 @@ import re
 from datetime import datetime
 from copy import deepcopy
 
-from dateparser import parse
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (get_timestamp_from_cisco_time,
                                  get_timestamp_from_junos_time,
-                                 convert_asndot_to_asn)
+                                 convert_asndot_to_asn,
+                                 parse_relative_timestamp)
 
 
 # pylint: disable=too-many-statements
@@ -40,17 +40,15 @@ class BgpService(Service):
                 entry['afi'] = entry['safi'] = ''
                 if not entry.get('bfdStatus', ''):
                     entry['bfdStatus'] = ''
+                entry['bfdStatus'] = entry['bfdStatus'].lower()
                 if (entry.get('holdTime', '0') == '0' and
                         entry.get('configHoldtime', '')):
                     entry['holdTime'] = entry['configHoldtime']
                     entry['keepaliveTime'] = entry['configKeepalive']
                 continue
 
-            estdTime = parse(
-                entry.get('estdTime', ''),
-                settings={'RELATIVE_BASE':
-                          datetime.fromtimestamp(
-                              (raw_data[0]['timestamp'])/1000), })
+            estdTime = parse_relative_timestamp(
+                entry.get('estdTime', ''), raw_data[0]['timestamp'], ms=True)
 
             if 'EVPN' in entry.get('afi', []):
                 afidx = entry['afi'].index('EVPN')
@@ -81,7 +79,7 @@ class BgpService(Service):
                     new_entry['rrclient'] = True
                 else:
                     new_entry['rrclient'] = False
-                new_entry['estdTime'] = int(estdTime.timestamp()*1000)
+                new_entry['estdTime'] = estdTime
                 if entry['pfxBestRx']:
                     # Depending on the moodiness of the output, this field
                     # may not be present. So, ignore it.
@@ -448,13 +446,10 @@ class BgpService(Service):
                 entry['afi'] = entry['afi'].lower()
             if entry.get('safi', ''):
                 entry['safi'] = entry['safi'].lower()
-            estdTime = parse(
-                entry.get('estdTime', ''),
-                settings={'RELATIVE_BASE':
-                          datetime.fromtimestamp(
-                              (raw_data[0]['timestamp'])/1000), })
+            estdTime = parse_relative_timestamp(
+                entry.get('estdTime', ''), raw_data[0]['timestamp'], ms=True)
             if estdTime:
-                entry['estdTime'] = int(estdTime.timestamp()*1000)
+                entry['estdTime'] = estdTime
             entry['routerId'] = vrf_rtrid.get(entry['vrf'], '')
             if entry.get('rrclient', '') == '':
                 entry['rrclient'] = 'False'
@@ -470,15 +465,16 @@ class BgpService(Service):
         drop_indices = []
 
         for i, entry in enumerate(processed_data):
-            if entry['state'] != 'Established':
-                continue
-
             bfd_status = entry.get('bfdStatus', 'disabled').lower()
             if not bfd_status or (bfd_status == "unknown"):
                 bfd_status = "disabled"
             entry['bfdStatus'] = bfd_status
 
             self._normalize_asn(entry)
+
+            if entry['state'] != 'Established':
+                continue
+
             for afi in entry.get('_afiInfo', {}):
                 if afi in (entry.get('afisAdvOnly', []) or []):
                     continue
@@ -668,7 +664,7 @@ class BgpService(Service):
             if "peerIP" in entry:
                 peerIp = entry.get("peerIP", "").split(":")[0]
                 entry["peerIP"] = peerIp
-                entry["bfdStatus"] = bfdDict.get(peerIp, "")
+                entry["bfdStatus"] = bfdDict.get(peerIp, "").lower()
 
             if "updateSource" in entry:
                 entry["updateSource"] = entry.get(

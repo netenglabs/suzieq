@@ -35,7 +35,7 @@ apply:
 
   eos:
     version: all
-    command: show interfaces Vxlan $
+    command: show interfaces Vxlan 1-$
     normalize: 'interfaces/*/[
     "vlanToVniMap: _vlan2VniMap",
     "vlanToVtepList: _vlan2VtepMap?|{}",

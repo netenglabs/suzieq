@@ -23,6 +23,7 @@ class AnsibleSourceModel(SourceModel):
     def validate_and_set(cls, path: str):
         """checks if the path is valid
         """
+        inventory = None
         if isinstance(path, str):
             if not Path(path).is_file():
                 raise ValueError(
@@ -38,6 +39,10 @@ class AnsibleSourceModel(SourceModel):
 
         elif isinstance(path, Dict):
             inventory = path
+
+        if not inventory:
+            raise ValueError('Unknown inventory format: expect path or dict')
+
         if '_meta' not in inventory \
                 or 'hostvars' not in inventory['_meta']:
             if isinstance(inventory, list) and 'namespace' in inventory[0]:
@@ -108,15 +113,20 @@ class AnsibleInventory(Source):
             if 'ansible_password' in entry:
                 password = entry['ansible_password']
 
-            # Retrieve password information
+            if 'ansible_ssh_pass' in entry:
+                password = entry['ansible_ssh_pass']
+
             devtype = None
-            if entry.get('ansible_network_os') in ['eos', 'panos']:
-                devtype = entry.get('ansible_network_os')
+            if entry.get('ansible_network_os') in ['panos']:
+                devtype = 'panos'
                 transport = 'https'
                 port = 443
             else:
-                transport = 'ssh'
                 port = entry.get('ansible_port', 22)
+                if port == 443:
+                    transport = 'https'
+                else:
+                    transport = 'ssh'
 
             # Get keyfile
             keyfile = entry.get('ansible_ssh_private_key_file', None)
@@ -130,12 +140,12 @@ class AnsibleInventory(Source):
             host = {
                 'address': ansible_host,
                 'username': ansible_user,
-                'port': port,
                 'password': password,
-                'transport': transport,
-                'devtype': devtype,
                 'namespace': self._namespace,
                 'ssh_keyfile': keyfile,
+                'port': port,
+                'devtype': devtype,
+                'transport': transport,
                 'hostname': None
             }
             out_inv[f"{self._namespace}.{ansible_host}.{port}"] = host

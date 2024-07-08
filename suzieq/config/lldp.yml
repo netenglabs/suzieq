@@ -118,24 +118,28 @@ apply:
           
     - version: all
       command:
-        - command: show cdp neighbors | json native
-          normalize: 'TABLE_cdp_neighbor_brief_info/ROW_cdp_neighbor_brief_info/*?/[
+        - command: show cdp neighbors detail | json native
+          normalize: 'TABLE_cdp_neighbor_detail_info/ROW_cdp_neighbor_detail_info/*?/[
           "interface: ifname?|",
           "intf_id: ifname?|ifname",
-          "device_id: peerHostname?|",
-          "platform_id: description?|",
+          "sysname: peerHostname?|",
+          "platform_id: peerPlatform?|",
           "port_id: peerIfname",
+          "v4addr: mgmtIP?|",
+          "version: description?|",
           "protocol: protocol?|cdp",
           ]'
 
-        - command: show lldp neighbors | json native
-          normalize: 'TABLE_nbor/ROW_nbor/*?/[
-          "chassis_id: peerHostname?|",
+        - command: show lldp neighbors detail | json native
+          normalize: 'TABLE_nbor_detail/ROW_nbor_detail/*?/[
+          "sys_name: peerHostname?|",
           "chassis_type: _chassisType",
           "l_port_id: ifname?|",
           "port_type: subtype?|",
           "port_id: peerIfname?|",
-          "mgmt_addr: mgmtIP?|"
+          "mgmt_addr: mgmtIP?|",
+          "sys_desc: description?|",
+          "enabled_capability: _capabilities?|",
           ]'
 
   panos:

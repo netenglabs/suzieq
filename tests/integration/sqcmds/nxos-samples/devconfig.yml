@@ -3,10 +3,10 @@ tests:
 - command: devconfig show --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: devconfig show nxos
-  output: '[{"namespace": "nxos", "config": "## Last commit: 2021-05-22 19:12:54 UTC
-    by vagrant\nversion 20191212.201431_builder.r1074901;\nsystem {\n    host-name
-    dcedge01;\n    root-authentication {\n    }\n    login {\n        user vagrant
-    {\n            uid 2000;\n            class super-user;\n            authentication
+  output: '[{"namespace": "nxos", "hostname": "dcedge01", "config": "## Last commit:
+    2021-05-22 19:12:54 UTC by vagrant\nversion 20191212.201431_builder.r1074901;\nsystem
+    {\n    host-name dcedge01;\n    root-authentication {\n    }\n    login {\n        user
+    vagrant {\n            uid 2000;\n            class super-user;\n            authentication
     {\n            }\n        }\n    }\n    services {\n        ssh {\n            root-login
     allow;\n        }\n        netconf {\n            ssh;\n        }\n        rest
     {\n            http {\n                port 8080;\n            }\n            enable-explorer;\n        }\n    }\n    syslog
@@ -842,8 +842,8 @@ tests:
     169.254.127.1 {\n                peer-as 65522;\n            }\n            neighbor
     169.254.127.3 {\n                peer-as 65522;\n            }\n        }\n    }\n    lldp
     {\n        interface all;\n    }\n    igmp-snooping {\n        vlan default;\n    }\n}\nvlans
-    {\n    default {\n        vlan-id 1;\n    }\n}", "hostname": "dcedge01", "timestamp":
-    1622031362170}, {"namespace": "nxos", "config": "\n!Command: show running-config
+    {\n    default {\n        vlan-id 1;\n    }\n}", "timestamp": 1622031362170},
+    {"namespace": "nxos", "hostname": "leaf03", "config": "\n!Command: show running-config
     exclude security\n!Running configuration last done at: Wed May 26 11:59:17 2021\n\nversion
     9.3(4) Bios:version  \nhostname leaf03\nvdc leaf03 id 1\n  limit-resource vlan
     minimum 16 maximum 4094\n  limit-resource vrf minimum 2 maximum 4096\n  limit-resource
@@ -917,8 +917,8 @@ tests:
     extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
     peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
     ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
-    ibgp 4\n\nlogging server dns-refresh-interval 0\n\n", "hostname": "leaf03", "timestamp":
-    1622031362698}, {"namespace": "nxos", "config": "\n!Command: show running-config
+    ibgp 4\n\nlogging server dns-refresh-interval 0\n\n", "timestamp": 1622031362698},
+    {"namespace": "nxos", "hostname": "leaf04", "config": "\n!Command: show running-config
     exclude security\n!Running configuration last done at: Wed May 26 12:00:19 2021\n\nversion
     9.3(4) Bios:version  \nhostname leaf04\nvdc leaf04 id 1\n  limit-resource vlan
     minimum 16 maximum 4094\n  limit-resource vrf minimum 2 maximum 4096\n  limit-resource
@@ -992,8 +992,8 @@ tests:
     extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
     peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
     ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
-    ibgp 4\n\n\n", "hostname": "leaf04", "timestamp": 1622031362708}, {"namespace":
-    "nxos", "config": "\n!Command: show running-config exclude security\n!Running
+    ibgp 4\n\n\n", "timestamp": 1622031362708}, {"namespace": "nxos", "hostname":
+    "leaf01", "config": "\n!Command: show running-config exclude security\n!Running
     configuration last done at: Wed May 26 11:59:05 2021\n\nversion 9.3(4) Bios:version  \nhostname
     leaf01\nvdc leaf01 id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource
     vrf minimum 2 maximum 4096\n  limit-resource port-channel minimum 0 maximum 511\n  limit-resource
@@ -1066,8 +1066,8 @@ tests:
     extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
     peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
     ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
-    ibgp 4\n\n\n", "hostname": "leaf01", "timestamp": 1622031362773}, {"namespace":
-    "nxos", "config": "\n!Command: show running-config exclude security\n!Running
+    ibgp 4\n\n\n", "timestamp": 1622031362773}, {"namespace": "nxos", "hostname":
+    "spine02", "config": "\n!Command: show running-config exclude security\n!Running
     configuration last done at: Wed May 26 11:59:55 2021\n\nversion 9.3(4) Bios:version  \nhostname
     spine02\nvdc spine02 id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource
     vrf minimum 2 maximum 4096\n  limit-resource port-channel minimum 0 maximum 511\n  limit-resource
@@ -1120,7 +1120,7 @@ tests:
     bgp 64520\n  log-neighbor-changes\n  address-family l2vpn evpn\n    retain route-target
     all\n  neighbor 10.0.0.0/24\n    remote-as 64520\n    update-source loopback0\n    address-family
     l2vpn evpn\n      send-community\n      send-community extended\n      route-reflector-client\n\n\n",
-    "hostname": "spine02", "timestamp": 1622031362791}, {"namespace": "nxos", "config":
+    "timestamp": 1622031362791}, {"namespace": "nxos", "hostname": "spine01", "config":
     "\n!Command: show running-config exclude security\n!Running configuration last
     done at: Wed May 26 11:59:46 2021\n\nversion 9.3(4) Bios:version  \nhostname spine01\nvdc
     spine01 id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource
@@ -1174,7 +1174,7 @@ tests:
     bgp 64520\n  log-neighbor-changes\n  address-family l2vpn evpn\n    retain route-target
     all\n  neighbor 10.0.0.0/24\n    remote-as 64520\n    update-source loopback0\n    address-family
     l2vpn evpn\n      send-community\n      send-community extended\n      route-reflector-client\n\n\n",
-    "hostname": "spine01", "timestamp": 1622031362803}, {"namespace": "nxos", "config":
+    "timestamp": 1622031362803}, {"namespace": "nxos", "hostname": "exit01", "config":
     "\n!Command: show running-config exclude security\n!Running configuration last
     done at: Wed May 26 11:56:34 2021\n\nversion 9.3(4) Bios:version  \nhostname exit01\nvdc
     exit01 id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource vrf
@@ -1246,8 +1246,8 @@ tests:
     internet-vrf\n    neighbor 169.254.127.0\n      inherit peer FIREWALL\n      remote-as
     65534\n      local-as 65522 no-prepend replace-as\n      address-family ipv4 unicast\n    neighbor
     169.254.254.10\n      inherit peer FIREWALL\n      remote-as 65533\n      local-as
-    65522 no-prepend replace-as\n      address-family ipv4 unicast\n\n\n", "hostname":
-    "exit01", "timestamp": 1622031362813}, {"namespace": "nxos", "config": "\n!Command:
+    65522 no-prepend replace-as\n      address-family ipv4 unicast\n\n\n", "timestamp":
+    1622031362813}, {"namespace": "nxos", "hostname": "exit02", "config": "\n!Command:
     show running-config exclude security\n!Running configuration last done at: Wed
     May 26 11:59:16 2021\n\nversion 9.3(4) Bios:version  \nhostname exit02\nvdc exit02
     id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource vrf minimum
@@ -1319,8 +1319,8 @@ tests:
     internet-vrf\n    neighbor 169.254.127.2\n      inherit peer FIREWALL\n      remote-as
     65534\n      local-as 65522 no-prepend replace-as\n      address-family ipv4 unicast\n    neighbor
     169.254.253.10\n      inherit peer FIREWALL\n      remote-as 65533\n      local-as
-    65522 no-prepend replace-as\n      address-family ipv4 unicast\n\n\n", "hostname":
-    "exit02", "timestamp": 1622031362822}, {"namespace": "nxos", "config": "\n!Command:
+    65522 no-prepend replace-as\n      address-family ipv4 unicast\n\n\n", "timestamp":
+    1622031362822}, {"namespace": "nxos", "hostname": "leaf02", "config": "\n!Command:
     show running-config exclude security\n!Running configuration last done at: Wed
     May 26 11:59:35 2021\n\nversion 9.3(4) Bios:version  \nhostname leaf02\nvdc leaf02
     id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource vrf minimum
@@ -1394,31 +1394,31 @@ tests:
     extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
     peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
     ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
-    ibgp 4\n\n\n", "hostname": "leaf02", "timestamp": 1622031362822}]'
+    ibgp 4\n\n\n", "timestamp": 1622031362822}]'
 - command: devconfig show --hostname=leaf01 --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: devconfig show nxos
-  output: '[{"namespace": "nxos", "config": "\n!Command: show running-config exclude
-    security\n!Running configuration last done at: Wed May 26 11:59:05 2021\n\nversion
-    9.3(4) Bios:version  \nhostname leaf01\nvdc leaf01 id 1\n  limit-resource vlan
-    minimum 16 maximum 4094\n  limit-resource vrf minimum 2 maximum 4096\n  limit-resource
-    port-channel minimum 0 maximum 511\n  limit-resource u4route-mem minimum 128 maximum
-    128\n  limit-resource u6route-mem minimum 96 maximum 96\n  limit-resource m4route-mem
-    minimum 58 maximum 58\n  limit-resource m6route-mem minimum 8 maximum 8\n\nfeature
-    privilege\ncfs eth distribute\nnv overlay evpn\nfeature ospf\nfeature bgp\nfeature
-    pim\nfeature fabric forwarding\nfeature interface-vlan\nfeature vn-segment-vlan-based\nfeature
-    lacp\nfeature vpc\nfeature lldp\nfeature nv overlay\n\nip domain-lookup\nip name-server
-    10.255.4.1 use-vrf management\nrmon event 1 description FATAL(1) owner PMON@FATAL\nrmon
-    event 2 description CRITICAL(2) owner PMON@CRITICAL\nrmon event 3 description
-    ERROR(3) owner PMON@ERROR\nrmon event 4 description WARNING(4) owner PMON@WARNING\nrmon
-    event 5 description INFORMATION(5) owner PMON@INFO\n\nfabric forwarding anycast-gateway-mac
-    0000.0011.1210\nvlan 1,10,30,999,3960\nvlan 10\n  vn-segment 10\nvlan 30\n  vn-segment
-    30\nvlan 999\n  vn-segment 999\n\nip prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16
-    ge 24 \nroute-map ADV_SVIS permit 10\n  match ip address prefix-list ATTACHED_SVIS
-    \nvrf context evpn-vrf\n  vni 999\nvrf context management\n  ip route 0.0.0.0/0
-    10.255.4.1\nhardware access-list tcam region vpc-convergence 0\nhardware access-list
-    tcam region arp-ether 256\nvpc domain 12\n  peer-switch\n  peer-keepalive destination
-    10.255.4.185 source 10.255.4.184\n  peer-gateway\n  layer3 peer-router\n  auto-recovery\n  ipv6
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "config": "\n!Command: show
+    running-config exclude security\n!Running configuration last done at: Wed May
+    26 11:59:05 2021\n\nversion 9.3(4) Bios:version  \nhostname leaf01\nvdc leaf01
+    id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource vrf minimum
+    2 maximum 4096\n  limit-resource port-channel minimum 0 maximum 511\n  limit-resource
+    u4route-mem minimum 128 maximum 128\n  limit-resource u6route-mem minimum 96 maximum
+    96\n  limit-resource m4route-mem minimum 58 maximum 58\n  limit-resource m6route-mem
+    minimum 8 maximum 8\n\nfeature privilege\ncfs eth distribute\nnv overlay evpn\nfeature
+    ospf\nfeature bgp\nfeature pim\nfeature fabric forwarding\nfeature interface-vlan\nfeature
+    vn-segment-vlan-based\nfeature lacp\nfeature vpc\nfeature lldp\nfeature nv overlay\n\nip
+    domain-lookup\nip name-server 10.255.4.1 use-vrf management\nrmon event 1 description
+    FATAL(1) owner PMON@FATAL\nrmon event 2 description CRITICAL(2) owner PMON@CRITICAL\nrmon
+    event 3 description ERROR(3) owner PMON@ERROR\nrmon event 4 description WARNING(4)
+    owner PMON@WARNING\nrmon event 5 description INFORMATION(5) owner PMON@INFO\n\nfabric
+    forwarding anycast-gateway-mac 0000.0011.1210\nvlan 1,10,30,999,3960\nvlan 10\n  vn-segment
+    10\nvlan 30\n  vn-segment 30\nvlan 999\n  vn-segment 999\n\nip prefix-list ATTACHED_SVIS
+    seq 10 permit 172.16.0.0/16 ge 24 \nroute-map ADV_SVIS permit 10\n  match ip address
+    prefix-list ATTACHED_SVIS \nvrf context evpn-vrf\n  vni 999\nvrf context management\n  ip
+    route 0.0.0.0/0 10.255.4.1\nhardware access-list tcam region vpc-convergence 0\nhardware
+    access-list tcam region arp-ether 256\nvpc domain 12\n  peer-switch\n  peer-keepalive
+    destination 10.255.4.185 source 10.255.4.184\n  peer-gateway\n  layer3 peer-router\n  auto-recovery\n  ipv6
     nd synchronize\n  ip arp synchronize\n\n\ninterface Vlan1\n  no ip redirects\n  no
     ipv6 redirects\n\ninterface Vlan10\n  no shutdown\n  mtu 9000\n  vrf member evpn-vrf\n  no
     ip redirects\n  ip address 172.16.1.254/24\n  no ipv6 redirects\n  fabric forwarding
@@ -1472,31 +1472,31 @@ tests:
     extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
     peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
     ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
-    ibgp 4\n\n\n", "hostname": "leaf01", "timestamp": 1622031362773}]'
+    ibgp 4\n\n\n", "timestamp": 1622031362773}]'
 - command: devconfig show --hostname='leaf01 spine01' --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: devconfig show nxos
-  output: '[{"namespace": "nxos", "config": "\n!Command: show running-config exclude
-    security\n!Running configuration last done at: Wed May 26 11:59:05 2021\n\nversion
-    9.3(4) Bios:version  \nhostname leaf01\nvdc leaf01 id 1\n  limit-resource vlan
-    minimum 16 maximum 4094\n  limit-resource vrf minimum 2 maximum 4096\n  limit-resource
-    port-channel minimum 0 maximum 511\n  limit-resource u4route-mem minimum 128 maximum
-    128\n  limit-resource u6route-mem minimum 96 maximum 96\n  limit-resource m4route-mem
-    minimum 58 maximum 58\n  limit-resource m6route-mem minimum 8 maximum 8\n\nfeature
-    privilege\ncfs eth distribute\nnv overlay evpn\nfeature ospf\nfeature bgp\nfeature
-    pim\nfeature fabric forwarding\nfeature interface-vlan\nfeature vn-segment-vlan-based\nfeature
-    lacp\nfeature vpc\nfeature lldp\nfeature nv overlay\n\nip domain-lookup\nip name-server
-    10.255.4.1 use-vrf management\nrmon event 1 description FATAL(1) owner PMON@FATAL\nrmon
-    event 2 description CRITICAL(2) owner PMON@CRITICAL\nrmon event 3 description
-    ERROR(3) owner PMON@ERROR\nrmon event 4 description WARNING(4) owner PMON@WARNING\nrmon
-    event 5 description INFORMATION(5) owner PMON@INFO\n\nfabric forwarding anycast-gateway-mac
-    0000.0011.1210\nvlan 1,10,30,999,3960\nvlan 10\n  vn-segment 10\nvlan 30\n  vn-segment
-    30\nvlan 999\n  vn-segment 999\n\nip prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16
-    ge 24 \nroute-map ADV_SVIS permit 10\n  match ip address prefix-list ATTACHED_SVIS
-    \nvrf context evpn-vrf\n  vni 999\nvrf context management\n  ip route 0.0.0.0/0
-    10.255.4.1\nhardware access-list tcam region vpc-convergence 0\nhardware access-list
-    tcam region arp-ether 256\nvpc domain 12\n  peer-switch\n  peer-keepalive destination
-    10.255.4.185 source 10.255.4.184\n  peer-gateway\n  layer3 peer-router\n  auto-recovery\n  ipv6
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "config": "\n!Command: show
+    running-config exclude security\n!Running configuration last done at: Wed May
+    26 11:59:05 2021\n\nversion 9.3(4) Bios:version  \nhostname leaf01\nvdc leaf01
+    id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource vrf minimum
+    2 maximum 4096\n  limit-resource port-channel minimum 0 maximum 511\n  limit-resource
+    u4route-mem minimum 128 maximum 128\n  limit-resource u6route-mem minimum 96 maximum
+    96\n  limit-resource m4route-mem minimum 58 maximum 58\n  limit-resource m6route-mem
+    minimum 8 maximum 8\n\nfeature privilege\ncfs eth distribute\nnv overlay evpn\nfeature
+    ospf\nfeature bgp\nfeature pim\nfeature fabric forwarding\nfeature interface-vlan\nfeature
+    vn-segment-vlan-based\nfeature lacp\nfeature vpc\nfeature lldp\nfeature nv overlay\n\nip
+    domain-lookup\nip name-server 10.255.4.1 use-vrf management\nrmon event 1 description
+    FATAL(1) owner PMON@FATAL\nrmon event 2 description CRITICAL(2) owner PMON@CRITICAL\nrmon
+    event 3 description ERROR(3) owner PMON@ERROR\nrmon event 4 description WARNING(4)
+    owner PMON@WARNING\nrmon event 5 description INFORMATION(5) owner PMON@INFO\n\nfabric
+    forwarding anycast-gateway-mac 0000.0011.1210\nvlan 1,10,30,999,3960\nvlan 10\n  vn-segment
+    10\nvlan 30\n  vn-segment 30\nvlan 999\n  vn-segment 999\n\nip prefix-list ATTACHED_SVIS
+    seq 10 permit 172.16.0.0/16 ge 24 \nroute-map ADV_SVIS permit 10\n  match ip address
+    prefix-list ATTACHED_SVIS \nvrf context evpn-vrf\n  vni 999\nvrf context management\n  ip
+    route 0.0.0.0/0 10.255.4.1\nhardware access-list tcam region vpc-convergence 0\nhardware
+    access-list tcam region arp-ether 256\nvpc domain 12\n  peer-switch\n  peer-keepalive
+    destination 10.255.4.185 source 10.255.4.184\n  peer-gateway\n  layer3 peer-router\n  auto-recovery\n  ipv6
     nd synchronize\n  ip arp synchronize\n\n\ninterface Vlan1\n  no ip redirects\n  no
     ipv6 redirects\n\ninterface Vlan10\n  no shutdown\n  mtu 9000\n  vrf member evpn-vrf\n  no
     ip redirects\n  ip address 172.16.1.254/24\n  no ipv6 redirects\n  fabric forwarding
@@ -1550,8 +1550,8 @@ tests:
     extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
     peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
     ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
-    ibgp 4\n\n\n", "hostname": "leaf01", "timestamp": 1622031362773}, {"namespace":
-    "nxos", "config": "\n!Command: show running-config exclude security\n!Running
+    ibgp 4\n\n\n", "timestamp": 1622031362773}, {"namespace": "nxos", "hostname":
+    "spine01", "config": "\n!Command: show running-config exclude security\n!Running
     configuration last done at: Wed May 26 11:59:46 2021\n\nversion 9.3(4) Bios:version  \nhostname
     spine01\nvdc spine01 id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource
     vrf minimum 2 maximum 4096\n  limit-resource port-channel minimum 0 maximum 511\n  limit-resource
@@ -1604,32 +1604,32 @@ tests:
     bgp 64520\n  log-neighbor-changes\n  address-family l2vpn evpn\n    retain route-target
     all\n  neighbor 10.0.0.0/24\n    remote-as 64520\n    update-source loopback0\n    address-family
     l2vpn evpn\n      send-community\n      send-community extended\n      route-reflector-client\n\n\n",
-    "hostname": "spine01", "timestamp": 1622031362803}]'
+    "timestamp": 1622031362803}]'
 - command: devconfig show --hostname='leaf01 spine01' --query-str='config.str.contains("10.0.0.21")'
     --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: devconfig show nxos
-  output: '[{"namespace": "nxos", "config": "\n!Command: show running-config exclude
-    security\n!Running configuration last done at: Wed May 26 11:59:05 2021\n\nversion
-    9.3(4) Bios:version  \nhostname leaf01\nvdc leaf01 id 1\n  limit-resource vlan
-    minimum 16 maximum 4094\n  limit-resource vrf minimum 2 maximum 4096\n  limit-resource
-    port-channel minimum 0 maximum 511\n  limit-resource u4route-mem minimum 128 maximum
-    128\n  limit-resource u6route-mem minimum 96 maximum 96\n  limit-resource m4route-mem
-    minimum 58 maximum 58\n  limit-resource m6route-mem minimum 8 maximum 8\n\nfeature
-    privilege\ncfs eth distribute\nnv overlay evpn\nfeature ospf\nfeature bgp\nfeature
-    pim\nfeature fabric forwarding\nfeature interface-vlan\nfeature vn-segment-vlan-based\nfeature
-    lacp\nfeature vpc\nfeature lldp\nfeature nv overlay\n\nip domain-lookup\nip name-server
-    10.255.4.1 use-vrf management\nrmon event 1 description FATAL(1) owner PMON@FATAL\nrmon
-    event 2 description CRITICAL(2) owner PMON@CRITICAL\nrmon event 3 description
-    ERROR(3) owner PMON@ERROR\nrmon event 4 description WARNING(4) owner PMON@WARNING\nrmon
-    event 5 description INFORMATION(5) owner PMON@INFO\n\nfabric forwarding anycast-gateway-mac
-    0000.0011.1210\nvlan 1,10,30,999,3960\nvlan 10\n  vn-segment 10\nvlan 30\n  vn-segment
-    30\nvlan 999\n  vn-segment 999\n\nip prefix-list ATTACHED_SVIS seq 10 permit 172.16.0.0/16
-    ge 24 \nroute-map ADV_SVIS permit 10\n  match ip address prefix-list ATTACHED_SVIS
-    \nvrf context evpn-vrf\n  vni 999\nvrf context management\n  ip route 0.0.0.0/0
-    10.255.4.1\nhardware access-list tcam region vpc-convergence 0\nhardware access-list
-    tcam region arp-ether 256\nvpc domain 12\n  peer-switch\n  peer-keepalive destination
-    10.255.4.185 source 10.255.4.184\n  peer-gateway\n  layer3 peer-router\n  auto-recovery\n  ipv6
+  output: '[{"namespace": "nxos", "hostname": "leaf01", "config": "\n!Command: show
+    running-config exclude security\n!Running configuration last done at: Wed May
+    26 11:59:05 2021\n\nversion 9.3(4) Bios:version  \nhostname leaf01\nvdc leaf01
+    id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource vrf minimum
+    2 maximum 4096\n  limit-resource port-channel minimum 0 maximum 511\n  limit-resource
+    u4route-mem minimum 128 maximum 128\n  limit-resource u6route-mem minimum 96 maximum
+    96\n  limit-resource m4route-mem minimum 58 maximum 58\n  limit-resource m6route-mem
+    minimum 8 maximum 8\n\nfeature privilege\ncfs eth distribute\nnv overlay evpn\nfeature
+    ospf\nfeature bgp\nfeature pim\nfeature fabric forwarding\nfeature interface-vlan\nfeature
+    vn-segment-vlan-based\nfeature lacp\nfeature vpc\nfeature lldp\nfeature nv overlay\n\nip
+    domain-lookup\nip name-server 10.255.4.1 use-vrf management\nrmon event 1 description
+    FATAL(1) owner PMON@FATAL\nrmon event 2 description CRITICAL(2) owner PMON@CRITICAL\nrmon
+    event 3 description ERROR(3) owner PMON@ERROR\nrmon event 4 description WARNING(4)
+    owner PMON@WARNING\nrmon event 5 description INFORMATION(5) owner PMON@INFO\n\nfabric
+    forwarding anycast-gateway-mac 0000.0011.1210\nvlan 1,10,30,999,3960\nvlan 10\n  vn-segment
+    10\nvlan 30\n  vn-segment 30\nvlan 999\n  vn-segment 999\n\nip prefix-list ATTACHED_SVIS
+    seq 10 permit 172.16.0.0/16 ge 24 \nroute-map ADV_SVIS permit 10\n  match ip address
+    prefix-list ATTACHED_SVIS \nvrf context evpn-vrf\n  vni 999\nvrf context management\n  ip
+    route 0.0.0.0/0 10.255.4.1\nhardware access-list tcam region vpc-convergence 0\nhardware
+    access-list tcam region arp-ether 256\nvpc domain 12\n  peer-switch\n  peer-keepalive
+    destination 10.255.4.185 source 10.255.4.184\n  peer-gateway\n  layer3 peer-router\n  auto-recovery\n  ipv6
     nd synchronize\n  ip arp synchronize\n\n\ninterface Vlan1\n  no ip redirects\n  no
     ipv6 redirects\n\ninterface Vlan10\n  no shutdown\n  mtu 9000\n  vrf member evpn-vrf\n  no
     ip redirects\n  ip address 172.16.1.254/24\n  no ipv6 redirects\n  fabric forwarding
@@ -1683,8 +1683,8 @@ tests:
     extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
     peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
     ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
-    ibgp 4\n\n\n", "hostname": "leaf01", "timestamp": 1622031362773}, {"namespace":
-    "nxos", "config": "\n!Command: show running-config exclude security\n!Running
+    ibgp 4\n\n\n", "timestamp": 1622031362773}, {"namespace": "nxos", "hostname":
+    "spine01", "config": "\n!Command: show running-config exclude security\n!Running
     configuration last done at: Wed May 26 11:59:46 2021\n\nversion 9.3(4) Bios:version  \nhostname
     spine01\nvdc spine01 id 1\n  limit-resource vlan minimum 16 maximum 4094\n  limit-resource
     vrf minimum 2 maximum 4096\n  limit-resource port-channel minimum 0 maximum 511\n  limit-resource
@@ -1737,7 +1737,7 @@ tests:
     bgp 64520\n  log-neighbor-changes\n  address-family l2vpn evpn\n    retain route-target
     all\n  neighbor 10.0.0.0/24\n    remote-as 64520\n    update-source loopback0\n    address-family
     l2vpn evpn\n      send-community\n      send-community extended\n      route-reflector-client\n\n\n",
-    "hostname": "spine01", "timestamp": 1622031362803}]'
+    "timestamp": 1622031362803}]'
 - command: devconfig summarize --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   marks: devconfig summarize nxos
@@ -1751,3 +1751,172 @@ tests:
   error:
     error: '[{"error": "Unique not supported for Device Config"}]'
   marks: devconfig unique nxos
+- command: devconfig show --format=json --namespace=nxos --section='^interface Ethernet1/1$'
+  data-directory: tests/data/parquet/
+  marks: devconfig show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "config": "interface Ethernet1/1\n  no
+    switchport\n  mtu 9216\n  medium p2p\n  ip unnumbered loopback0\n  ip ospf network
+    point-to-point\n  ip router ospf UNDERLAY area 0.0.0.0\n  no shutdown", "timestamp":
+    1622031362698}, {"namespace": "nxos", "hostname": "leaf04", "config": "interface
+    Ethernet1/1\n  no switchport\n  mtu 9216\n  medium p2p\n  ip unnumbered loopback0\n  ip
+    ospf network point-to-point\n  ip router ospf UNDERLAY area 0.0.0.0\n  no shutdown",
+    "timestamp": 1622031362708}, {"namespace": "nxos", "hostname": "leaf01", "config":
+    "interface Ethernet1/1\n  no switchport\n  mtu 9216\n  medium p2p\n  ip unnumbered
+    loopback0\n  ip ospf network point-to-point\n  ip router ospf UNDERLAY area 0.0.0.0\n  no
+    shutdown", "timestamp": 1622031362773}, {"namespace": "nxos", "hostname": "spine02",
+    "config": "interface Ethernet1/1\n  no switchport\n  mtu 9216\n  medium p2p\n  ip
+    unnumbered loopback0\n  ip ospf network point-to-point\n  ip router ospf UNDERLAY
+    area 0.0.0.0\n  no shutdown", "timestamp": 1622031362791}, {"namespace": "nxos",
+    "hostname": "spine01", "config": "interface Ethernet1/1\n  no switchport\n  mtu
+    9216\n  medium p2p\n  ip unnumbered loopback0\n  ip ospf network point-to-point\n  ip
+    router ospf UNDERLAY area 0.0.0.0\n  no shutdown", "timestamp": 1622031362803},
+    {"namespace": "nxos", "hostname": "exit01", "config": "interface Ethernet1/1\n  no
+    switchport\n  mtu 9216\n  medium p2p\n  ip unnumbered loopback0\n  ip ospf network
+    point-to-point\n  ip router ospf UNDERLAY area 0.0.0.0\n  no shutdown", "timestamp":
+    1622031362813}, {"namespace": "nxos", "hostname": "exit02", "config": "interface
+    Ethernet1/1\n  no switchport\n  mtu 9216\n  medium p2p\n  ip unnumbered loopback0\n  ip
+    ospf network point-to-point\n  ip router ospf UNDERLAY area 0.0.0.0\n  no shutdown",
+    "timestamp": 1622031362822}, {"namespace": "nxos", "hostname": "leaf02", "config":
+    "interface Ethernet1/1\n  no switchport\n  mtu 9216\n  medium p2p\n  ip unnumbered
+    loopback0\n  ip ospf network point-to-point\n  ip router ospf UNDERLAY area 0.0.0.0\n  no
+    shutdown", "timestamp": 1622031362822}]'
+- command: devconfig show --format=json --namespace=nxos --section='interface Ethernet1/1'
+  data-directory: tests/data/parquet/
+  marks: devconfig show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "config": "interface Ethernet1/1\n  no
+    switchport\n  mtu 9216\n  medium p2p\n  ip unnumbered loopback0\n  ip ospf network
+    point-to-point\n  ip router ospf UNDERLAY area 0.0.0.0\n  no shutdown\ninterface
+    Ethernet1/10\ninterface Ethernet1/11\ninterface Ethernet1/12\ninterface Ethernet1/13\ninterface
+    Ethernet1/14\ninterface Ethernet1/15\ninterface Ethernet1/16\ninterface Ethernet1/17\ninterface
+    Ethernet1/18\ninterface Ethernet1/19", "timestamp": 1622031362698}, {"namespace":
+    "nxos", "hostname": "leaf04", "config": "interface Ethernet1/1\n  no switchport\n  mtu
+    9216\n  medium p2p\n  ip unnumbered loopback0\n  ip ospf network point-to-point\n  ip
+    router ospf UNDERLAY area 0.0.0.0\n  no shutdown\ninterface Ethernet1/10\ninterface
+    Ethernet1/11\ninterface Ethernet1/12\ninterface Ethernet1/13\ninterface Ethernet1/14\ninterface
+    Ethernet1/15\ninterface Ethernet1/16\ninterface Ethernet1/17\ninterface Ethernet1/18\ninterface
+    Ethernet1/19", "timestamp": 1622031362708}, {"namespace": "nxos", "hostname":
+    "leaf01", "config": "interface Ethernet1/1\n  no switchport\n  mtu 9216\n  medium
+    p2p\n  ip unnumbered loopback0\n  ip ospf network point-to-point\n  ip router
+    ospf UNDERLAY area 0.0.0.0\n  no shutdown\ninterface Ethernet1/10\ninterface Ethernet1/11\ninterface
+    Ethernet1/12\ninterface Ethernet1/13\ninterface Ethernet1/14\ninterface Ethernet1/15\ninterface
+    Ethernet1/16\ninterface Ethernet1/17\ninterface Ethernet1/18\ninterface Ethernet1/19",
+    "timestamp": 1622031362773}, {"namespace": "nxos", "hostname": "spine02", "config":
+    "interface Ethernet1/1\n  no switchport\n  mtu 9216\n  medium p2p\n  ip unnumbered
+    loopback0\n  ip ospf network point-to-point\n  ip router ospf UNDERLAY area 0.0.0.0\n  no
+    shutdown\ninterface Ethernet1/10\ninterface Ethernet1/11\ninterface Ethernet1/12\ninterface
+    Ethernet1/13\ninterface Ethernet1/14\ninterface Ethernet1/15\ninterface Ethernet1/16\ninterface
+    Ethernet1/17\ninterface Ethernet1/18\ninterface Ethernet1/19", "timestamp": 1622031362791},
+    {"namespace": "nxos", "hostname": "spine01", "config": "interface Ethernet1/1\n  no
+    switchport\n  mtu 9216\n  medium p2p\n  ip unnumbered loopback0\n  ip ospf network
+    point-to-point\n  ip router ospf UNDERLAY area 0.0.0.0\n  no shutdown\ninterface
+    Ethernet1/10\ninterface Ethernet1/11\ninterface Ethernet1/12\ninterface Ethernet1/13\ninterface
+    Ethernet1/14\ninterface Ethernet1/15\ninterface Ethernet1/16\ninterface Ethernet1/17\ninterface
+    Ethernet1/18\ninterface Ethernet1/19", "timestamp": 1622031362803}, {"namespace":
+    "nxos", "hostname": "exit01", "config": "interface Ethernet1/1\n  no switchport\n  mtu
+    9216\n  medium p2p\n  ip unnumbered loopback0\n  ip ospf network point-to-point\n  ip
+    router ospf UNDERLAY area 0.0.0.0\n  no shutdown\ninterface Ethernet1/10\ninterface
+    Ethernet1/11\ninterface Ethernet1/12\ninterface Ethernet1/13\ninterface Ethernet1/14\ninterface
+    Ethernet1/15\ninterface Ethernet1/16\ninterface Ethernet1/17\ninterface Ethernet1/18\ninterface
+    Ethernet1/19", "timestamp": 1622031362813}, {"namespace": "nxos", "hostname":
+    "exit02", "config": "interface Ethernet1/1\n  no switchport\n  mtu 9216\n  medium
+    p2p\n  ip unnumbered loopback0\n  ip ospf network point-to-point\n  ip router
+    ospf UNDERLAY area 0.0.0.0\n  no shutdown\ninterface Ethernet1/10\ninterface Ethernet1/11\ninterface
+    Ethernet1/12\ninterface Ethernet1/13\ninterface Ethernet1/14\ninterface Ethernet1/15\ninterface
+    Ethernet1/16\ninterface Ethernet1/17\ninterface Ethernet1/18\ninterface Ethernet1/19",
+    "timestamp": 1622031362822}, {"namespace": "nxos", "hostname": "leaf02", "config":
+    "interface Ethernet1/1\n  no switchport\n  mtu 9216\n  medium p2p\n  ip unnumbered
+    loopback0\n  ip ospf network point-to-point\n  ip router ospf UNDERLAY area 0.0.0.0\n  no
+    shutdown\ninterface Ethernet1/10\ninterface Ethernet1/11\ninterface Ethernet1/12\ninterface
+    Ethernet1/13\ninterface Ethernet1/14\ninterface Ethernet1/15\ninterface Ethernet1/16\ninterface
+    Ethernet1/17\ninterface Ethernet1/18\ninterface Ethernet1/19", "timestamp": 1622031362822}]'
+- command: devconfig show --format=json --namespace=nxos --section='ip ospf network
+    point-to-point'
+  data-directory: tests/data/parquet/
+  marks: devconfig show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "config": "  ip ospf network
+    point-to-point\n  ip ospf network point-to-point\n  ip ospf network point-to-point",
+    "timestamp": 1622031362698}, {"namespace": "nxos", "hostname": "leaf04", "config":
+    "  ip ospf network point-to-point\n  ip ospf network point-to-point\n  ip ospf
+    network point-to-point", "timestamp": 1622031362708}, {"namespace": "nxos", "hostname":
+    "leaf01", "config": "  ip ospf network point-to-point\n  ip ospf network point-to-point\n  ip
+    ospf network point-to-point", "timestamp": 1622031362773}, {"namespace": "nxos",
+    "hostname": "spine02", "config": "  ip ospf network point-to-point\n  ip ospf
+    network point-to-point\n  ip ospf network point-to-point\n  ip ospf network point-to-point\n  ip
+    ospf network point-to-point\n  ip ospf network point-to-point", "timestamp": 1622031362791},
+    {"namespace": "nxos", "hostname": "spine01", "config": "  ip ospf network point-to-point\n  ip
+    ospf network point-to-point\n  ip ospf network point-to-point\n  ip ospf network
+    point-to-point\n  ip ospf network point-to-point\n  ip ospf network point-to-point",
+    "timestamp": 1622031362803}, {"namespace": "nxos", "hostname": "exit01", "config":
+    "  ip ospf network point-to-point\n  ip ospf network point-to-point", "timestamp":
+    1622031362813}, {"namespace": "nxos", "hostname": "exit02", "config": "  ip ospf
+    network point-to-point\n  ip ospf network point-to-point", "timestamp": 1622031362822},
+    {"namespace": "nxos", "hostname": "leaf02", "config": "  ip ospf network point-to-point\n  ip
+    ospf network point-to-point\n  ip ospf network point-to-point", "timestamp": 1622031362822}]'
+- command: devconfig show --format=json --namespace=nxos --section='router bgp'
+  data-directory: tests/data/parquet/
+  marks: devconfig show nxos
+  output: '[{"namespace": "nxos", "hostname": "leaf03", "config": "router bgp 64520\n  log-neighbor-changes\n  template
+    peer VXLAN_SPINE\n    remote-as 64520\n    update-source loopback0\n    address-family
+    l2vpn evpn\n      send-community\n      send-community extended\n  neighbor 10.0.0.21\n    inherit
+    peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
+    ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
+    ibgp 4", "timestamp": 1622031362698}, {"namespace": "nxos", "hostname": "leaf04",
+    "config": "router bgp 64520\n  log-neighbor-changes\n  template peer VXLAN_SPINE\n    remote-as
+    64520\n    update-source loopback0\n    address-family l2vpn evpn\n      send-community\n      send-community
+    extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
+    peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
+    ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
+    ibgp 4", "timestamp": 1622031362708}, {"namespace": "nxos", "hostname": "leaf01",
+    "config": "router bgp 64520\n  log-neighbor-changes\n  template peer VXLAN_SPINE\n    remote-as
+    64520\n    update-source loopback0\n    address-family l2vpn evpn\n      send-community\n      send-community
+    extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
+    peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
+    ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
+    ibgp 4", "timestamp": 1622031362773}, {"namespace": "nxos", "hostname": "spine02",
+    "config": "router bgp 64520\n  log-neighbor-changes\n  address-family l2vpn evpn\n    retain
+    route-target all\n  neighbor 10.0.0.0/24\n    remote-as 64520\n    update-source
+    loopback0\n    address-family l2vpn evpn\n      send-community\n      send-community
+    extended\n      route-reflector-client", "timestamp": 1622031362791}, {"namespace":
+    "nxos", "hostname": "spine01", "config": "router bgp 64520\n  log-neighbor-changes\n  address-family
+    l2vpn evpn\n    retain route-target all\n  neighbor 10.0.0.0/24\n    remote-as
+    64520\n    update-source loopback0\n    address-family l2vpn evpn\n      send-community\n      send-community
+    extended\n      route-reflector-client", "timestamp": 1622031362803}, {"namespace":
+    "nxos", "hostname": "exit01", "config": "router bgp 64520\n  log-neighbor-changes\n  template
+    peer FIREWALL\n    address-family ipv4 unicast\n      soft-reconfiguration inbound
+    always\n  template peer VXLAN_SPINE\n    remote-as 64520\n    update-source loopback0\n    address-family
+    l2vpn evpn\n      send-community\n      send-community extended\n  neighbor 10.0.0.21\n    inherit
+    peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit peer VXLAN_SPINE\n  neighbor
+    169.254.254.2\n    inherit peer FIREWALL\n    remote-as 65533\n    local-as 65520
+    no-prepend replace-as\n    address-family ipv4 unicast\n  vrf evpn-vrf\n    address-family
+    ipv4 unicast\n      aggregate-address 172.16.1.0/24 summary-only attribute-map
+    LOWER_AGGRT_PREF\n      aggregate-address 172.16.2.0/24 summary-only attribute-map
+    LOWER_AGGRT_PREF\n      aggregate-address 172.16.3.0/24 summary-only attribute-map
+    LOWER_AGGRT_PREF\n    neighbor 169.254.254.6\n      inherit peer FIREWALL\n      remote-as
+    65533\n      local-as 65521 no-prepend replace-as\n      address-family ipv4 unicast\n  vrf
+    internet-vrf\n    neighbor 169.254.127.0\n      inherit peer FIREWALL\n      remote-as
+    65534\n      local-as 65522 no-prepend replace-as\n      address-family ipv4 unicast\n    neighbor
+    169.254.254.10\n      inherit peer FIREWALL\n      remote-as 65533\n      local-as
+    65522 no-prepend replace-as\n      address-family ipv4 unicast", "timestamp":
+    1622031362813}, {"namespace": "nxos", "hostname": "exit02", "config": "router
+    bgp 64520\n  log-neighbor-changes\n  template peer FIREWALL\n    address-family
+    ipv4 unicast\n      soft-reconfiguration inbound always\n  template peer VXLAN_SPINE\n    remote-as
+    64520\n    update-source loopback0\n    address-family l2vpn evpn\n      send-community\n      send-community
+    extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
+    peer VXLAN_SPINE\n  neighbor 169.254.253.2\n    inherit peer FIREWALL\n    remote-as
+    65533\n    local-as 65520 no-prepend replace-as\n    address-family ipv4 unicast\n  vrf
+    evpn-vrf\n    address-family ipv4 unicast\n      aggregate-address 172.16.1.0/24
+    summary-only attribute-map LOWER_AGGRT_PREF\n      aggregate-address 172.16.2.0/24
+    summary-only attribute-map LOWER_AGGRT_PREF\n      aggregate-address 172.16.3.0/24
+    summary-only attribute-map LOWER_AGGRT_PREF\n    neighbor 169.254.253.6\n      inherit
+    peer FIREWALL\n      remote-as 65533\n      local-as 65521 no-prepend replace-as\n      address-family
+    ipv4 unicast\n  vrf internet-vrf\n    neighbor 169.254.127.2\n      inherit peer
+    FIREWALL\n      remote-as 65534\n      local-as 65522 no-prepend replace-as\n      address-family
+    ipv4 unicast\n    neighbor 169.254.253.10\n      inherit peer FIREWALL\n      remote-as
+    65533\n      local-as 65522 no-prepend replace-as\n      address-family ipv4 unicast",
+    "timestamp": 1622031362822}, {"namespace": "nxos", "hostname": "leaf02", "config":
+    "router bgp 64520\n  log-neighbor-changes\n  template peer VXLAN_SPINE\n    remote-as
+    64520\n    update-source loopback0\n    address-family l2vpn evpn\n      send-community\n      send-community
+    extended\n  neighbor 10.0.0.21\n    inherit peer VXLAN_SPINE\n  neighbor 10.0.0.22\n    inherit
+    peer VXLAN_SPINE\n  vrf evpn-vrf\n    log-neighbor-changes\n    address-family
+    ipv4 unicast\n      redistribute direct route-map ADV_SVIS\n      maximum-paths
+    ibgp 4", "timestamp": 1622031362822}]'

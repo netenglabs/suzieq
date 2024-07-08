@@ -389,8 +389,7 @@ class XplorePage(SqGuiPage):
 
         start_row = self._state.start_row
         end_row = self._state.end_row
-        if end_row > df.shape[0]:
-            end_row = df.shape[0]
+        end_row = min(end_row, df.shape[0])
 
         if end_row - start_row > MAX_ROW_WARN:
             st.warning('Printing too many rows can fail or be very slow')

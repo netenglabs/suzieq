@@ -1,4 +1,4 @@
-from typing import TypeVar, Dict, Callable, List
+from typing import TypeVar, Dict, Callable, List, Optional
 from abc import abstractmethod
 from collections import defaultdict
 import time
@@ -126,7 +126,7 @@ class Node:
         self._conn_lock = asyncio.Lock()
         self._last_exception = None
         self._exception_timestamp = None
-        self._current_exception = None
+        self._current_exception: Optional[Exception] = None
         self.api_key = None
         self._fetching_dev_data = False  # If we are fetching the dev data
         self._stdin = self._stdout = self._long_proc = None
@@ -148,7 +148,7 @@ class Node:
         self.ssh_config_file = kwargs.get("ssh_config_file", None)
         self.enable_password = kwargs.get('enable_password')
 
-        passphrase = kwargs.get("passphrase", None)
+        passphrase: str = kwargs.get("passphrase", None)
         jump_host = kwargs.get("jump_host", "")
         if jump_host:
             jump_result = urlparse(jump_host)
@@ -237,7 +237,7 @@ class Node:
         return self._last_exception
 
     @property
-    def current_exception(self) -> Exception:
+    def current_exception(self) -> Optional[Exception]:
         '''The current exception faced on this device'''
         return self._current_exception
 
@@ -351,6 +351,7 @@ class Node:
     async def _parse_device_type_hostname(self, output, _) -> None:
         devtype = 'unsupported'
         hostname = None
+        version_str = '0.0.0'   # default that's possibly never used
 
         if output[0]["status"] == 0:
             data = output[0]["data"]
@@ -544,10 +545,14 @@ class Node:
             elif self.devtype == "eos":
                 self.__class__ = EosNode
             elif self.devtype == "iosxe":
+                # Since we need to create one single interactive session with
+                # ios and iosxe, we cannot concurrently issue commands
+                self.batch_size = 1
                 self.__class__ = IosXENode
             elif self.devtype == "iosxr":
                 self.__class__ = IosXRNode
             elif self.devtype == "ios":
+                self.batch_size = 1
                 self.__class__ = IOSNode
             elif self.devtype.startswith("junos"):
                 self.__class__ = JunosNode
@@ -791,7 +796,8 @@ class Node:
 
                 else:
                     self.logger.error('Unable to connect to '
-                                      f'{self.address}:{self.port}, {e}')
+                                      f'{self.address}:{self.port}, {e}, '
+                                      f'{type(e)}')
                 self.current_exception = e
                 await self._close_connection()
                 self._conn = None
@@ -1115,8 +1121,8 @@ class Node:
                     for item in use:
                         if item.get('version', '') != "all":
                             os_version = item['version']
-                            opdict = {'>': operator.gt, '<': operator.lt,
-                                      '>=': operator.ge, '<=': operator.le,
+                            opdict = {'>=': operator.ge, '<=': operator.le,
+                                      '>': operator.gt, '<': operator.lt,
                                       '=': operator.eq, '!=': operator.ne}
                             op = operator.eq
 
@@ -1380,7 +1386,7 @@ class EosNode(Node):
     async def _rest_connect(self):
         '''Check that connectivity and authentication works'''
 
-        timeout = self.cmd_timeout
+        timeout = aiohttp.ClientTimeout(self.cmd_timeout)
 
         auth = aiohttp.BasicAuth(self.username,
                                  password=self.password or 'vagrant')
@@ -1388,7 +1394,7 @@ class EosNode(Node):
 
         try:
             self._conn = aiohttp.ClientSession(
-                auth=auth, timeout=self.connect_timeout,
+                auth=auth, timeout=timeout,
                 connector=aiohttp.TCPConnector(ssl=False))
             async with self._conn.post(url, timeout=timeout) as response:
                 _ = response.status
@@ -1456,7 +1462,7 @@ class EosNode(Node):
                 await self._post_result(service_callback, result, cb_token)
                 return
 
-        timeout = timeout or self.cmd_timeout
+        timeout = aiohttp.ClientTimeout(timeout or self.cmd_timeout)
 
         now = int(time.time() * 1000)
         data = {
@@ -1527,7 +1533,7 @@ class EosNode(Node):
                     return
             else:
                 data = output[0]["data"]
-            self.bootupTimestamp = data["bootupTimestamp"]
+            self.bootupTimestamp = int(data["bootupTimestamp"])
             self._extract_nos_version(data)
             if not self.version:
                 self.logger.error(f'nodeinit: Error getting version for '
@@ -1617,6 +1623,15 @@ class AosNode(Node):
 class CumulusNode(Node):
     '''Cumulus Node specific implementation'''
 
+    async def _rest_connect(self):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
+    async def _rest_gather(self, service_callback, cmd_list, cb_token,
+                           oformat="json", timeout=None, reconnect=True):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
     async def _fetch_init_dev_data_devtype(self, reconnect: bool):
         """Fill in the boot time of the node by executing certain cmds"""
         await self._exec_cmd(self._parse_init_dev_data,
@@ -1656,76 +1671,18 @@ class CumulusNode(Node):
             self.logger.error(
                 f'Cannot parse version from {self.address}:{self.port}')
 
-    async def _rest_connect(self):
-        '''Check that connectivity exists and works'''
-
-        auth = aiohttp.BasicAuth(self.username, password=self.password)
-        url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
-        headers = {"Content-Type": "application/json"}
-
-        async with self._cmd_pacer.wait(self.per_cmd_auth):
-            try:
-                self._conn = aiohttp.ClientSession(
-                        auth=auth, timeout=self.cmd_timeout,
-                        connector=aiohttp.TCPConnector(ssl=False)
-                )
-                async with self._conn.post(url, headers=headers) as response:
-                    _ = response.status
-            except Exception as e:
-                self.current_exception = e
-                self.logger.error(
-                    f"{self.transport}://{self.hostname}:{self.port}: Unable "
-                    f"to communicate with node due to {str(e)}")
-
-    async def _rest_gather(self, service_callback, cmd_list, cb_token,
-                           oformat='json', timeout=None, reconnect=True):
-
-        result = []
-        if not cmd_list:
-            return result
-
-        if not self.is_connected or self._is_connecting:
-            if reconnect:
-                await self._init_rest()
-            if not self.is_connected:
-                self.logger.error(
-                    f'Unable to connect to node {self.address}:{self.port}'
-                    f'. While executing: {cmd_list}')
-                for cmd in cmd_list:
-                    result.append(self._create_error(cmd))
-                await self._post_result(service_callback, result, cb_token)
-                return
-
-        url = "https://{0}:{1}/nclu/v1/rpc".format(self.address, self.port)
-        headers = {"Content-Type": "application/json"}
-
-        async with self._cmd_pacer.wait(self.per_cmd_auth):
-            try:
-                for cmd in cmd_list:
-                    data = {"cmd": cmd}
-                    cmd_timestamp = time.time()
-                    self.logger.info(f'{self.address}:{self.port} exec: {cmd}')
-                    async with self._conn.post(
-                            url, json=data, headers=headers
-                    ) as response:
-                        data_res = await response.text()
-                        result.append(
-                            self._create_result(
-                                cmd, response.status, data_res,
-                                cmd_timestamp)
-                        )
-            except Exception as e:
-                self.current_exception = e
-                result.append(self._create_error(cmd_list))
-                self.logger.error(
-                    f"{self.transport}://{self.hostname}:{self.port}: Unable "
-                    f"to communicate with node due to {str(e)}")
-
-        await self._post_result(service_callback, result, cb_token)
-
 
 class LinuxNode(CumulusNode):
     '''Linux server node'''
+
+    async def _rest_connect(self):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
+    async def _rest_gather(self, service_callback, cmd_list, cb_token,
+                           oformat="json", timeout=None, reconnect=True):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
 
 
 class IosXRNode(Node):
@@ -1772,7 +1729,7 @@ class IosXRNode(Node):
                 self.current_exception = e
                 self.logger.error('Unable to create persistent SSH session'
                                   f' for {self.hostname} due to {str(e)}')
-                self._close_connection()
+                await self._close_connection()
                 self._long_proc = None
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
@@ -1811,7 +1768,7 @@ class IosXRNode(Node):
 
 class IosXENode(Node):
     '''IOS-XE Node-sepcific telemetry gather implementation'''
-    WAITFOR = r'.*[>#]\s*$'  # devtype specific termination sequence
+    IOS_DEFAULT_PROMPT = ('>', '#')  # devtype specific termination sequence
 
     async def _rest_connect(self):
         raise NotImplementedError(
@@ -1833,6 +1790,7 @@ class IosXENode(Node):
         enough as we need to start an interactive session for XE.
         """
         await super()._ssh_connect()
+        self.prompt = self.IOS_DEFAULT_PROMPT
 
         if self.is_connected and not self._stdin:
             self.logger.info(
@@ -1845,13 +1803,35 @@ class IosXENode(Node):
                         f'Persistent SSH created for {self.hostname}')
 
                     output = await self.wait_for_prompt()
+                    if 'suzieq timeout' in output:
+                        raise TimeoutError(
+                            'Did not receive > or # prompt before privilege '
+                            'escalation')
+
                     if output.strip().endswith('>'):
                         if await self._handle_privilege_escalation() == -1:
+                            self.logger.error(f'{self.address}:{self.port}: '
+                                              'Privilege escalation failed')
                             await self._close_connection()
                             self._conn = None
                             self._stdin = None
                             self._retry -= 1
                             return
+
+                    # Set the terminal length to 0 to avoid paging
+                    self.logger.info(
+                        f'{self.hostname} set terminal length to 0')
+                    self._stdin.write('terminal length 0\n')
+                    try:
+                        output = await asyncio.wait_for(
+                            self._stdout.readuntil(self.prompt),
+                            90)
+                    except TimeoutError:
+                        raise TimeoutError(
+                            'Unable to set the terminal length to 0, did not '
+                            'receive prompt.')
+                    self.logger.info(
+                        f'{self.hostname} set terminal length to 0: DONE')
                     # Reset number of retries on successful auth
                     self._retry = self._max_retries_on_auth_fail
                 except Exception as e:
@@ -1860,12 +1840,8 @@ class IosXENode(Node):
                     self.current_exception = e
                     self.logger.error('Unable to create persistent SSH session'
                                       f' for {self.hostname} due to {str(e)}')
-                    self._close_connection()
+                    await self._close_connection()
                     return
-
-                # Set the terminal length to 0 to avoid paging
-                self._stdin.write('terminal length 0\n')
-                output = await self._stdout.readuntil(self.WAITFOR)
 
     async def _handle_privilege_escalation(self) -> int:
         '''Escalata privilege if necessary
@@ -1875,7 +1851,13 @@ class IosXENode(Node):
         self.logger.info(
             f'Privilege escalation required for {self.hostname}')
         self._stdin.write('enable\n')
-        output = await self.wait_for_prompt(r'Password:\s*')
+        output = await self.wait_for_prompt(('Password:', '%'))
+        if '%' in output:
+            self.logger.error('Privilege escalation failed, Aborting')
+            self.current_exception = PollingError(
+                'Privilege Escalation Failed')
+            return -1
+
         if self.enable_password:
             self._stdin.write(self.enable_password + '\n')
         else:
@@ -1885,8 +1867,8 @@ class IosXENode(Node):
         if (output in ['suzieq timeout', 'Password:'] or
                 output.strip().endswith('>')):
             self.logger.error(
-                f'Privilege escalation failed for {self.hostname}'
-                ', Aborting connection')
+                f'{self.address}:{self.port} Privilege escalation failed, '
+                'Aborting connection')
             return -1
 
         self.logger.info(f'Privilege escalation succeeded for {self.hostname}')
@@ -1908,17 +1890,28 @@ class IosXENode(Node):
             the output data or 'timeout'
         """
         if prompt is None:
-            prompt = self.WAITFOR
-        coro = self._stdout.readuntil(prompt)
-        try:
-            output = await asyncio.wait_for(coro, timeout=timeout)
-            return output
-        except asyncio.TimeoutError:
-            self.current_exception = asyncio.TimeoutError
-            self.logger.error(f'{self.address}.{self.port} '
-                              'Timed out waiting for expected prompt')
-            # Return something that won't ever be in real output
-            return 'suzieq timeout'
+            prompt = self.prompt
+        data = []
+        while True:
+            try:
+                output = await asyncio.wait_for(
+                    self._stdout.readuntil(prompt), timeout=timeout)
+                data.append(output)
+                return ''.join(data)
+            except asyncio.IncompleteReadError as exc:
+                if exc.partial:
+                    data.append(exc.partial)
+                    self.logger.warning('Received partial data, continuing')
+                else:
+                    continue
+            except asyncio.TimeoutError:
+                self.current_exception = asyncio.TimeoutError
+                self.logger.error(f'{self.address}.{self.port} '
+                                  'Timed out waiting for expected prompt')
+                # Return something that won't ever be in real output
+                await self._close_connection()
+                self.prompt = self.IOS_DEFAULT_PROMPT
+                return 'suzieq timeout'
 
     async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
         '''Parse the version for uptime and hostname'''
@@ -1932,6 +1925,9 @@ class IosXENode(Node):
             hostupstr = re.search(r'(\S+)\s+uptime is (.*)\n', data)
             if hostupstr:
                 self._set_hostname(hostupstr.group(1))
+                self.prompt = tuple(f'{self.hostname}{x}'
+                                    for x in self.IOS_DEFAULT_PROMPT)
+
                 timestr = hostupstr.group(2)
                 self.bootupTimestamp = parse_relative_timestamp(
                     timestr, output[0]['cmd_timestamp'] / 1000)
@@ -1952,6 +1948,11 @@ class IosXENode(Node):
         if cmd_list is None:
             await self._post_result(service_callback, result, cb_token)
             return
+
+        self.logger.info(
+            f'{self.hostname} {self.address}:{self.port} '
+            f'executing cmds: {cmd_list}'
+        )
 
         if not self.is_connected or not self._stdin:
             if reconnect:
@@ -1978,7 +1979,7 @@ class IosXENode(Node):
 
                     cmd_timestamp = time.time()
                     self._stdin.write(cmd + '\n')
-                    output = await self.wait_for_prompt()
+                    output = await self.wait_for_prompt(timeout=timeout)
                     if 'Invalid input detected' in output:
                         status = -1
                     elif 'suzieq timeout' in output:
@@ -1996,8 +1997,8 @@ class IosXENode(Node):
                     result.append(self._create_error(cmd))
                     if not isinstance(e, asyncio.TimeoutError):
                         self.logger.error(
-                            f"Unable to connect to {self.hostname} for {cmd} "
-                            f"due to {e}")
+                            f'{self.hostname} {self.address}:{self.port}'
+                            f'output failed for {cmd} due to {e}')
                         try:
                             await self._close_connection()
                             self.logger.debug("Closed conn successfully for "
@@ -2008,8 +2009,8 @@ class IosXENode(Node):
                                 f" for {cmd}: {close_exc}")
                     else:
                         self.logger.error(
-                            f"Unable to connect to {self.hostname} {cmd} "
-                            "due to timeout")
+                            f'{self.hostname} {self.address}:{self.port}'
+                            f'output failed for {cmd} due to timeout')
                     break
 
         await self._post_result(service_callback, result, cb_token)
@@ -2194,7 +2195,7 @@ class SonicNode(Node):
         if (len(output) > 1) and (output[1]["status"] == 0):
             self.hostname = output[1]["data"].strip()
         if (len(output) > 2) and (output[2]["status"] == 0):
-            self._extract_nos_version(output[1]["data"])
+            self._extract_nos_version(output[2]["data"])
 
     def _extract_nos_version(self, data: str) -> None:
         match = re.search(r'Version:\s+SONiC-OS-([^-]+)', data)
@@ -2254,8 +2255,8 @@ class PanosNode(Node):
         if not self._retry:
             return
         async with self._cmd_pacer.wait(self.per_cmd_auth):
-            async with self._conn.get(url, timeout=self.connect_timeout) \
-                    as response:
+            timeout = aiohttp.ClientTimeout(self.connect_timeout)
+            async with self._conn.get(url, timeout=timeout) as response:
                 status, xml = response.status, await response.text()
                 if status == 200:
                     data = xmltodict.parse(xml)
@@ -2315,9 +2316,10 @@ class PanosNode(Node):
         # In case of PANOS, getting here means REST is up
         if not self._conn:
             async with self._cmd_pacer.wait(self.per_cmd_auth):
+                timeout = aiohttp.ClientTimeout(self.connect_timeout)
                 try:
                     self._conn = aiohttp.ClientSession(
-                        conn_timeout=self.connect_timeout,
+                        conn_timeout=timeout,
                         connector=aiohttp.TCPConnector(ssl=False),
                     )
                     if self.api_key is None:
@@ -2340,7 +2342,7 @@ class PanosNode(Node):
         if not cmd_list:
             return result
 
-        timeout = timeout or self.connect_timeout
+        timeout = aiohttp.ClientTimeout(timeout or self.connect_timeout)
 
         url = f"https://{self.address}:{self.port}/api/"
 

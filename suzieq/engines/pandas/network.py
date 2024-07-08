@@ -27,6 +27,10 @@ class NetworkObj(SqPandasEngine):
         query_str = kwargs.pop('query_str', '')
         fields = self.schema.get_display_fields(['default'])
 
+        if ((self.iobj.start_time and self.iobj.end_time) or
+                (self.iobj.view == 'all')):
+            fields.insert(0, 'active')
+            fields.append('timestamp')
         dflist = []
         if isinstance(addrlist, str):
             addrlist = [addrlist]
@@ -477,8 +481,8 @@ class NetworkObj(SqPandasEngine):
                     match_ifname = row.ifname
                     break
 
-                lldp_df = lldpobj.get(namespace=[row.namespace],
-                                      hostname=[row.hostname],
+                lldp_df = lldpobj.get(namespace=[match_namespace],
+                                      hostname=[match_hostname],
                                       ifname=mbr_ports)
 
                 if not lldp_df.empty:

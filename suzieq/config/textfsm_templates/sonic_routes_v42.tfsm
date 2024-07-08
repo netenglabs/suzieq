@@ -1,0 +1,24 @@
+Value protocol (\w+)
+Value Required prefix ([0-9./]*|[0-9a-f:/]*|default)
+Value vrf_id (\d+)
+Value source ([0-9./]*)
+Value List nexthopIps ([0-9./]*|[0-9a-f:/]*)
+Value List oifs (\S+)
+Value List weights (\d+)
+Value metric (\d+)
+Value action (blackhole)
+
+Start
+  ^\S+ -> Continue.Record
+  ^${action}\s+(?:nhid \d+\s+)?${prefix}\s+proto ${protocol}\s+metric ${metric}.*$$
+  ^\s+nexthop via\s+${nexthopIps}\s+dev ${oifs}\s+weight ${weights}.*$$
+  ^${prefix}\s+(?:nhid \d+\s+)?via\s+${nexthopIps}\s+dev ${oifs}\s+table ${vrf_id}\s+proto ${protocol}\s+metric ${metric}.*$$
+  ^${prefix}\s+(?:nhid \d+\s+)?dev ${oifs}\s+table ${vrf_id}\s+proto ${protocol}.*src ${source}.*$$
+  ^unreachable\s+(?:nhid \d+\s+)?${prefix}\s+table ${vrf_id}\s+metric ${metric}.*$$
+  ^${prefix}\s+(?:nhid \d+\s+)?via\s+${nexthopIps}\s+dev ${oifs}\s+table ${vrf_id}
+  ^${prefix}\s+(?:nhid \d+\s+)?proto ${protocol}\s+metric ${metric}.*$$
+  ^${prefix}\s+(?:nhid \d+\s+)?proto ${protocol}\s+src ${source}\s+metric ${metric}.*$$  
+  ^${prefix}\s+(?:nhid \d+\s+)?via ${nexthopIps}\s+dev ${oifs}\s+proto ${protocol}\s+metric ${metric}.*$$ 
+  ^${prefix}\s+(?:nhid \d+\s+)?dev ${oifs}\s+proto ${protocol}.*src ${source}.*$$  
+  ^${prefix}\s+(?:nhid \d+\s+)?via ${nexthopIps}\s+dev ${oifs}.*$$
+  ^${prefix}\s+(?:nhid \d+\s+)?table ${vrf_id}\s+proto ${protocol}\s+metric ${metric}

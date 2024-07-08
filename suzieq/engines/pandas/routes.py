@@ -95,9 +95,12 @@ class RoutesObj(SqPandasEngine):
                     query_str = f'prefixlen != {prefixlen[1:]}'
                 else:
                     query_str = f'prefixlen == {prefixlen}'
-
                 # drop in reset_index to not add an additional index col
                 df = df.query(query_str).reset_index(drop=True)
+        if 'protocol' in df:
+            df['protocol'] = df.protocol.replace('direct', 'connected')
+        if 'action' in df:
+            df['action'] = df.action.replace('local', 'forward')
 
         if 'numNexthops' in columns or (columns == ['*']):
             srs_oif = df['oifs'].str.len()

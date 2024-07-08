@@ -29,6 +29,7 @@ class TopologyObj(SqPandasEngine):
         self.lsdb = pd.DataFrame()
         self._a_df = pd.DataFrame()
         self._ip_table = pd.DataFrame()
+        self._namespaces = []
 
     @staticmethod
     def table_name():
@@ -77,7 +78,7 @@ class TopologyObj(SqPandasEngine):
             extra_cols: list
             augment: any
 
-        self._namespaces = kwargs.get("namespace", self.ctxt.namespace)
+        self._namespaces = kwargs.get("namespace", self.ctxt.namespace) or []
         hostname = kwargs.pop('hostname', [])
         user_query = kwargs.pop('query_str', '')
         polled = kwargs.pop('polled', '')

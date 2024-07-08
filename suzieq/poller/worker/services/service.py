@@ -321,8 +321,8 @@ class Service(SqPlugin):
                 # There are various outputs that due to an old parsing bug
                 # return a node version of 0. Use 'all' for those
                 continue
-            opdict = {'>': operator.gt, '<': operator.lt,
-                      '>=': operator.ge, '<=': operator.le,
+            opdict = {'>=': operator.ge, '<=': operator.le,
+                      '>': operator.gt, '<': operator.lt,
                       '=': operator.eq, '!=': operator.ne}
             op = operator.eq
 
@@ -519,7 +519,7 @@ class Service(SqPlugin):
 
         final_res = list(int_res.values())
 
-        return(final_res)
+        return (final_res)
 
     def _get_devtype_from_input(self, input_data):
         if isinstance(input_data, list):
@@ -572,10 +572,12 @@ class Service(SqPlugin):
 
         # pylint: disable=too-many-nested-blocks
         for entry in processed_data or []:
-            entry.update({"hostname": read_from["hostname"]})
-            entry.update({"namespace": read_from["namespace"]})
-            entry.update({"timestamp": read_from["timestamp"]})
-            entry.update({"sqvers": self.version})
+            entry.update({
+                "hostname": read_from["hostname"],
+                "namespace": read_from["namespace"],
+                "timestamp": read_from["timestamp"],
+                "sqvers": self.version
+            })
             for fld, val in schema_rec.items():
                 if fld not in entry:
                     if fld == "active":
@@ -605,7 +607,7 @@ class Service(SqPlugin):
         return processed_data
 
     async def commit_data(self, result: Dict, namespace: str, hostname: str,
-                          boot_timestamp: float):
+                          boot_timestamp: int):
         """Write the result data out"""
         records = []
         key = f'{namespace}.{hostname}'
@@ -630,7 +632,16 @@ class Service(SqPlugin):
                 namespace=[namespace]).query('active')
             # Get the latest device session we have written with this service
             if not df.empty:
-                last_device_session = df['deviceSession'].iloc[0] or 0
+                # If we are dealing with old data then the value of
+                # deviceSession will be unset, if this is the case, set the
+                # value to 0 so that we force write. We need to check only
+                # the first value of deviceSession as it is equal for all the
+                # latest record, as in case of reboot we rewrite everything.
+                if not df['deviceSession'].iloc[:1].isnull().any():
+                    last_device_session = df['deviceSession'].iloc[0] or 0
+                else:
+                    last_device_session = 0
+
                 self._node_boot_timestamps[key] = int(last_device_session)
 
             prev_res = df.to_dict('records')
@@ -651,16 +662,23 @@ class Service(SqPlugin):
                 for entry in adds:
                     entry['deviceSession'] = last_device_session
                     records.append(entry)
+                # make sure to use the same timestamp for all the deleted
+                # records. If the result is not empty, use that to get the
+                # timestamp. If the result is empty, use the current timestamp
+                if result:
+                    del_ts = result[0]['timestamp']
+                else:
+                    del_ts = int(datetime.now(
+                        tz=timezone.utc).timestamp() * 1000)
+
                 for entry in dels:
                     if entry.get("active", True):
                         # If there's already an entry marked as deleted
                         # No point in adding one more
-                        entry.update({"active": False})
-                        entry.update(
-                            {"timestamp":
-                             int(datetime.now(tz=timezone.utc).timestamp()
-                                 * 1000)}
-                        )
+                        entry.update({
+                            "active": False,
+                            "timestamp": del_ts
+                        })
                         records.append(entry)
 
                 self._post_work_to_writer(records)

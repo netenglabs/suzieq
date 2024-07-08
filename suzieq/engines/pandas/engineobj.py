@@ -105,15 +105,15 @@ class SqPandasEngine(SqEngineObj):
         return column.apply(lambda x: any(v in x for v in values))
 
     def _is_in_subnet(self, addr: pd.Series, net: str) -> pd.Series:
-        """Check if the IP addresses in a Pandas dataframe
-        belongs to the given subnet
+        """check which of the addresses belongs to a given subnet
 
+        Used to implement the prefix filter of arpnd/address/dhcp
         Args:
-            addr (PandasObject): the collection of ip addresses to check
-            net: (str): network id of the subnet
+            addr (pd.Series): the pandas series of ip addresses to check
+            net: (str): the IP network to check the addresses against
 
         Returns:
-            PandasObject: A collection of bool reporting the result
+            pd.Series: A collection of bool reporting the result
         """
         network = ip_network(net)
         if isinstance(addr.iloc[0], np.ndarray):
@@ -125,6 +125,34 @@ class SqPandasEngine(SqEngineObj):
         else:
             return addr.apply(lambda a: (
                 False if not a else ip_address(a.split("/")[0]) in network)
+            )
+
+    def _in_subnet_series(self, addr: str, net: pd.Series) -> pd.Series:
+        """Check if an addr is in any of series' subnets
+
+        unlike is_in_subnet which checks if a pandas series of addresses
+        belongs in a given subnet, this routine checks if a given address
+        belongs to any of the provided pandas series of subnets. THis is
+        currently used in path to identify an SVI for a given address
+
+        Args:
+            addr (str): the address we're checking for
+            net: (pd.Series): the pandas series of subnets
+
+        Returns:
+            pd.Series: A collection of bool reporting the result
+        """
+        address = ip_address(addr)
+        if isinstance(net.iloc[0], np.ndarray):
+            return net.apply(lambda x, network:
+                             False if not x.any()
+                             else any(address in ip_network(a, strict=False)
+                                      for a in x if a != '0.0.0.0/0'),
+                             args=(address,))
+        else:
+            return net.apply(lambda a: (
+                False if not a or a == '0.0.0.0/0'
+                else address in ip_network(a, strict=False))
             )
 
     def _check_ipvers(self,  addr: pd.Series, version: int) -> pd.Series:
@@ -587,7 +615,7 @@ class SqPandasEngine(SqEngineObj):
             if self.ns[ns][check_empty_col] == 0:
                 delete_keys.append(ns)
         for ns in delete_keys:
-            del(self.ns[ns])
+            del (self.ns[ns])
 
         ns_df = pd.DataFrame(self.ns)
         if len(self.summary_row_order) > 0:

@@ -1,10 +1,12 @@
-from nubia import command
+from nubia import command, argument
 
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.devconfig import DevconfigObj
 
 
 @command("devconfig", help="Act on device data")
+@argument("section",
+          description="show device config only for this regex match")
 class DevconfigCmd(SqTableCommand):
     """Device configurations"""
 
@@ -19,6 +21,7 @@ class DevconfigCmd(SqTableCommand):
             format: str = "",  # pylint: disable=redefined-builtin
             query_str: str = " ",
             columns: str = "default",
+            section: str = '',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -33,10 +36,12 @@ class DevconfigCmd(SqTableCommand):
             sqobj=DevconfigObj,
         )
 
+        self.lvars['section'] = section
+
     @command("show", help="Show device information")
     def show(self):
         """Show device config info
         """
         if not self.format or (self.format == 'text'):
-            self.format = 'devconfig'
+            self.format = 'markdown'
         return super().show()

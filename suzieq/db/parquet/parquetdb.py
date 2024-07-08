@@ -1,7 +1,7 @@
 import os
 import re
 from time import time
-from typing import List, Optional
+from typing import Any, Callable, List, Optional
 import logging
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
@@ -130,8 +130,7 @@ class SqParquetDB(SqDB):
                         continue
                     if need_sqvers:
                         vers = float(str(elem).split('=')[-1])
-                        if vers > max_vers:
-                            max_vers = vers
+                        max_vers = max(vers, max_vers)
 
                     dataset = ds.dataset(elem, format='parquet',
                                          partitioning='hive')
@@ -226,6 +225,9 @@ class SqParquetDB(SqDB):
                 df = pd.DataFrame.from_dict(data["records"])
                 table = pa.Table.from_pandas(df, schema=schema,
                                              preserve_index=False)
+            else:
+                raise ValueError('Unknown format of data provided:'
+                                 f'{type(data)}')
 
             pq.write_to_dataset(table,
                                 root_path=folder,
@@ -539,8 +541,7 @@ class SqParquetDB(SqDB):
                 continue
             if need_sqvers:
                 vers = float(str(elem).split('=')[-1])
-                if vers > max_vers:
-                    max_vers = vers
+                max_vers = max(vers, max_vers)
 
             dataset = ds.dataset(elem, format='parquet', partitioning='hive')
 
@@ -618,7 +619,7 @@ class SqParquetDB(SqDB):
             ds: pyarrow dataset of only the files that match filter
         """
         def check_ns_conds(ns_to_test: str, filter_list: List[str],
-                           op: operator.or_) -> bool:
+                           op: Callable[[Any, Any], Any]) -> bool:
             """Concat the expressions with the provided (AND or OR) operator
             and return the result of the resulting expression tested on the
             provided namespace.
@@ -631,15 +632,14 @@ class SqParquetDB(SqDB):
             Returns:
                 bool: the result of the expression
             """
-            # pylint: disable=comparison-with-callable
             # We would like to init the result to False if we concat the
             # expressions with OR, while with True if we use AND.
             res = False
-            if operator.and_ == op:
+            if operator.and_ is op:
                 res = True
             for filter_val in filter_list:
-                res = op(res, bool(re.search(
-                    f'namespace={filter_val}', ns_to_test)))
+                ns_to_test = ns_to_test.split('namespace=')[-1]
+                res = op(res, bool(re.fullmatch(filter_val, ns_to_test)))
             return res
 
         if not namespaces:

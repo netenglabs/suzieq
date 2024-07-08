@@ -3,8 +3,9 @@ from ipaddress import ip_address
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
-from suzieq.shared.utils import get_timestamp_from_cisco_time
-from suzieq.shared.utils import get_timestamp_from_junos_time
+from suzieq.shared.utils import (get_timestamp_from_cisco_time,
+                                 get_timestamp_from_iosxe_time,
+                                 get_timestamp_from_junos_time)
 
 
 class OspfNbrService(Service):
@@ -136,15 +137,16 @@ class OspfNbrService(Service):
         return processed_data
 
     def _clean_ios_data(self, processed_data, raw_data):
+        rel_timestamp = raw_data[0]['cmd_timestamp']/1000
         for entry in processed_data:
             # make area the dotted model
             area = entry.get('area', '')
             if area.isdecimal():
                 entry['area'] = str(ip_address(int(area)))
             entry['state'] = entry['state'].lower()
-            entry['lastUpTime'] = get_timestamp_from_cisco_time(
-                entry['lastUpTime'], raw_data[0]['timestamp']/1000)
-            entry['lastChangeTime'] = entry['lastUpTime']
+            up_ts: int = get_timestamp_from_iosxe_time(entry['lastUpTime'],
+                                                       rel_timestamp)
+            entry['lastChangeTime'] = up_ts*1000
             entry['lastDownTime'] = 0
             entry['lsaRtxCnt'] = int(entry['lsaRetxCnt'])
             entry['areaStub'] = entry['areaStub'] == 'Stub'

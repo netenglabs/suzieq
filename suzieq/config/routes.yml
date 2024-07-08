@@ -39,7 +39,16 @@ apply:
     copy: cumulus
 
   sonic:
-    copy: cumulus
+    - version: '>= 4.2.0'
+      merge: False
+      command:
+        - command: ip vrf show
+          textfsm: textfsm_templates/sonic_vrf_show.tfsm
+        - command: ip route show table all
+          textfsm: textfsm_templates/sonic_routes_v42.tfsm
+    - version: all
+      command: ip route show table all
+      textfsm: textfsm_templates/linux_routes.tfsm
 
   eos:
     version: all

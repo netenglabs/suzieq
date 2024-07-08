@@ -109,26 +109,11 @@ def gui_get_df(table: str,
     return df.reset_index(drop=True)
 
 
-def get_base_url():
-    '''Return the base URL of the page.
-    Usually connections are http://localhost:8501. But the port can change
-    or it can be a remote connection. And so, its useful to get the base
-    URL for use with links on various pages.
-    '''
-    session_id = get_script_run_ctx().session_id
-    session_info = Server.get_current()._get_session_info(session_id)
-
-    if session_info:
-        return f'http://{session_info.ws.request.host}/'
-
-    return 'http://localhost:8501/'
-
-
 def get_session_id():
     '''Return Streamlit's session ID'''
     ctx = get_script_run_ctx()
     if ctx is None:
-        raise Exception("Failed to get the thread context")
+        raise AttributeError("Failed to get the thread context")
     return ctx.session_id
 
 
@@ -166,8 +151,8 @@ def set_def_aggrid_options(grid_options: dict):
 
 def get_image_dir():
     '''Get directory where images are stored'''
-    return(os.path.dirname(find_spec('suzieq.gui')
-                           .loader.path) + '/images')
+    return (os.path.dirname(find_spec('suzieq.gui')
+                            .loader.path) + '/images')
 
 
 def color_row(row, **kwargs):

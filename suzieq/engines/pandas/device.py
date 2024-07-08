@@ -52,12 +52,15 @@ class DeviceObj(SqPandasEngine):
         if view == 'latest' and 'status' in df.columns:
             df['status'] = np.where(df.active, df['status'], 'dead')
 
-        poller_df = pd.DataFrame()
+        poller_df: pd.DataFrame = pd.DataFrame()
+
+        # Retrieve the devices that have possibly not made it into the device
+        # list because they never could connect due to any reason
         if not ignore_neverpoll:
             poller_df = self._get_table_sqobj('sqPoller').get(
                 namespace=kwargs.get('namespace', []),
                 hostname=kwargs.get('hostname', []),
-                service='device',
+                service='device', status='fail',
                 columns='namespace hostname status timestamp'.split())
 
         if not poller_df.empty:
@@ -77,7 +80,7 @@ class DeviceObj(SqPandasEngine):
                 .reset_index(drop=True)
 
             df = df.merge(poller_df, on=['namespace', 'hostname'],
-                          how='outer', suffixes=['', '_y'])  \
+                          how='outer', suffixes=('', '_y')) \
                 .fillna({'bootupTimestamp': 0,
                          'active': True})
 
@@ -121,6 +124,7 @@ class DeviceObj(SqPandasEngine):
         # The poller merge kills the filtering we did earlier, so redo:
         if status:
             df = df.loc[df.status.isin(status)]
+
         if os_version:
             opdict = {'>': operator.gt, '<': operator.lt, '>=': operator.ge,
                       '<=': operator.le, '=': operator.eq, '!': operator.ne}

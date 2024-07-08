@@ -122,7 +122,7 @@ tests:
     "evpn-vrf", "state": "up", "adminState": "up", "type": "vrf", "mtu": 65536, "vlan":
     0, "master": "", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254817},
     {"namespace": "panos", "hostname": "exit01", "ifname": "vni999", "state": "up",
-    "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": "999", "master": "bridge",
+    "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": 999, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254817}, {"namespace":
     "panos", "hostname": "exit01", "ifname": "swp3.2", "state": "up", "adminState":
     "up", "type": "vlan", "mtu": 9216, "vlan": 2, "master": "", "ipAddressList": ["169.254.254.1/30"],
@@ -175,7 +175,7 @@ tests:
     "type": "vrf", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1639476254817}, {"namespace": "panos", "hostname": "exit02",
     "ifname": "vni999", "state": "up", "adminState": "up", "type": "vxlan", "mtu":
-    9216, "vlan": "999", "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    9216, "vlan": 999, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1639476254817}, {"namespace": "panos", "hostname": "exit02",
     "ifname": "vlan999", "state": "up", "adminState": "up", "type": "vlan", "mtu":
     9216, "vlan": 999, "master": "evpn-vrf", "ipAddressList": [], "ip6AddressList":
@@ -233,12 +233,12 @@ tests:
     "evpn-vrf", "ipAddressList": [], "ip6AddressList": ["fe80::4639:39ff:feff:4096/64"],
     "timestamp": 1639476254836}, {"namespace": "panos", "hostname": "leaf04", "ifname":
     "vni20", "state": "up", "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan":
-    "20", "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    20, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1639476254836}, {"namespace": "panos", "hostname": "leaf04", "ifname": "vni30",
-    "state": "up", "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": "30",
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254836},
+    "state": "up", "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": 30, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254836},
     {"namespace": "panos", "hostname": "leaf04", "ifname": "vni999", "state": "up",
-    "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": "999", "master": "bridge",
+    "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": 999, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254836}, {"namespace":
     "panos", "hostname": "leaf04", "ifname": "Vlan20", "state": "up", "adminState":
     "up", "type": "vlan", "mtu": 9000, "vlan": 20, "master": "evpn-vrf", "ipAddressList":
@@ -257,24 +257,24 @@ tests:
     0, "master": "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": ["::1/128"],
     "timestamp": 1639476254836}, {"namespace": "panos", "hostname": "leaf04", "ifname":
     "bond02", "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan":
-    "30", "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    30, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1639476254836}, {"namespace": "panos", "hostname": "leaf04", "ifname": "swp6",
     "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan":
     0, "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1639476254836}, {"namespace": "panos", "hostname": "leaf04", "ifname": "bond01",
-    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": "20",
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254836},
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 20, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254836},
     {"namespace": "panos", "hostname": "leaf02", "ifname": "evpn-vrf", "state": "up",
     "adminState": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1639476254836}, {"namespace": "panos",
     "hostname": "leaf02", "ifname": "bond02", "state": "up", "adminState": "up", "type":
-    "bond", "mtu": 9000, "vlan": "30", "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    "bond", "mtu": 9000, "vlan": 30, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1639476254836}, {"namespace": "panos", "hostname": "leaf02",
     "ifname": "Vlan30", "state": "up", "adminState": "up", "type": "vlan", "mtu":
     9000, "vlan": 30, "master": "evpn-vrf", "ipAddressList": ["172.16.3.254/24"],
     "ip6AddressList": ["fe80::200:ff:fe11:1230/64"], "timestamp": 1639476254836},
     {"namespace": "panos", "hostname": "leaf02", "ifname": "vni30", "state": "up",
-    "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": "30", "master": "bridge",
+    "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": 30, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254836}, {"namespace":
     "panos", "hostname": "leaf02", "ifname": "vlan999", "state": "up", "adminState":
     "up", "type": "vlan", "mtu": 9216, "vlan": 999, "master": "evpn-vrf", "ipAddressList":
@@ -284,7 +284,7 @@ tests:
     "ipAddressList": ["10.255.2.185/24"], "ip6AddressList": ["fe80::4638:39ff:fe01:202/64"],
     "timestamp": 1639476254836}, {"namespace": "panos", "hostname": "leaf02", "ifname":
     "vni10", "state": "up", "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan":
-    "10", "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    10, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1639476254836}, {"namespace": "panos", "hostname": "leaf02", "ifname": "swp6",
     "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan":
     0, "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
@@ -320,13 +320,13 @@ tests:
     "state": "up", "adminState": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
     "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": ["::1/128"], "timestamp":
     1639476254836}, {"namespace": "panos", "hostname": "leaf02", "ifname": "bond01",
-    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": "10",
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254836},
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 10, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254836},
     {"namespace": "panos", "hostname": "leaf02", "ifname": "peerlink", "state": "up",
     "adminState": "up", "type": "bond", "mtu": 9216, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": ["fe80::4a47:ff:fe98:3d08/64"], "timestamp": 1639476254836},
     {"namespace": "panos", "hostname": "leaf02", "ifname": "vni999", "state": "up",
-    "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": "999", "master": "bridge",
+    "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": 999, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254836}, {"namespace":
     "panos", "hostname": "spine02", "ifname": "lo", "state": "up", "adminState": "up",
     "type": "loopback", "mtu": 65536, "vlan": 0, "master": "", "ipAddressList": ["10.0.0.22/32"],
@@ -351,13 +351,13 @@ tests:
     0, "master": "", "ipAddressList": ["10.0.0.22/32"], "ip6AddressList": ["fe80::5054:ff:fe3d:4507/64"],
     "timestamp": 1639476254844}, {"namespace": "panos", "hostname": "leaf03", "ifname":
     "bond01", "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan":
-    "20", "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    20, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1639476254844}, {"namespace": "panos", "hostname": "leaf03", "ifname": "mgmt",
     "state": "up", "adminState": "up", "type": "vrf", "mtu": 65536, "vlan": 0, "master":
     "", "ipAddressList": ["127.0.0.1/8"], "ip6AddressList": ["::1/128"], "timestamp":
     1639476254844}, {"namespace": "panos", "hostname": "leaf03", "ifname": "bond02",
-    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": "30",
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254844},
+    "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan": 30, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254844},
     {"namespace": "panos", "hostname": "leaf03", "ifname": "bridge", "state": "up",
     "adminState": "up", "type": "bridge", "mtu": 9216, "vlan": 0, "master": "", "ipAddressList":
     [], "ip6AddressList": ["fe80::5054:ff:fe6c:e04a/64"], "timestamp": 1639476254844},
@@ -392,13 +392,13 @@ tests:
     "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan":
     0, "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1639476254844}, {"namespace": "panos", "hostname": "leaf03", "ifname": "vni20",
-    "state": "up", "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": "20",
-    "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254844},
+    "state": "up", "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": 20, "master":
+    "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254844},
     {"namespace": "panos", "hostname": "leaf03", "ifname": "vni30", "state": "up",
-    "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": "30", "master": "bridge",
+    "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan": 30, "master": "bridge",
     "ipAddressList": [], "ip6AddressList": [], "timestamp": 1639476254844}, {"namespace":
     "panos", "hostname": "leaf03", "ifname": "vni999", "state": "up", "adminState":
-    "up", "type": "vxlan", "mtu": 9216, "vlan": "999", "master": "bridge", "ipAddressList":
+    "up", "type": "vxlan", "mtu": 9216, "vlan": 999, "master": "bridge", "ipAddressList":
     [], "ip6AddressList": [], "timestamp": 1639476254844}, {"namespace": "panos",
     "hostname": "leaf03", "ifname": "Vlan20", "state": "up", "adminState": "up", "type":
     "vlan", "mtu": 9000, "vlan": 20, "master": "evpn-vrf", "ipAddressList": ["172.16.2.254/24"],
@@ -447,7 +447,7 @@ tests:
     0, "master": "mgmt", "ipAddressList": ["10.255.2.117/24"], "ip6AddressList": ["fe80::4638:39ff:fe01:101/64"],
     "timestamp": 1639476254852}, {"namespace": "panos", "hostname": "leaf01", "ifname":
     "bond01", "state": "up", "adminState": "up", "type": "bond", "mtu": 9000, "vlan":
-    "10", "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    10, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1639476254854}, {"namespace": "panos", "hostname": "leaf01", "ifname": "bridge",
     "state": "up", "adminState": "up", "type": "bridge", "mtu": 9216, "vlan": 0, "master":
     "", "ipAddressList": [], "ip6AddressList": ["fe80::5054:ff:fe05:e0cc/64"], "timestamp":
@@ -474,25 +474,25 @@ tests:
     10, "master": "evpn-vrf", "ipAddressList": ["172.16.1.254/24"], "ip6AddressList":
     ["fe80::200:ff:fe11:1210/64"], "timestamp": 1639476254854}, {"namespace": "panos",
     "hostname": "leaf01", "ifname": "vni999", "state": "up", "adminState": "up", "type":
-    "vxlan", "mtu": 9216, "vlan": "999", "master": "bridge", "ipAddressList": [],
-    "ip6AddressList": [], "timestamp": 1639476254854}, {"namespace": "panos", "hostname":
-    "leaf01", "ifname": "bond02", "state": "up", "adminState": "up", "type": "bond",
-    "mtu": 9000, "vlan": "30", "master": "bridge", "ipAddressList": [], "ip6AddressList":
+    "vxlan", "mtu": 9216, "vlan": 999, "master": "bridge", "ipAddressList": [], "ip6AddressList":
     [], "timestamp": 1639476254854}, {"namespace": "panos", "hostname": "leaf01",
-    "ifname": "vni30", "state": "up", "adminState": "up", "type": "vxlan", "mtu":
-    9216, "vlan": "30", "master": "bridge", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1639476254854}, {"namespace": "panos", "hostname": "leaf01",
-    "ifname": "swp6", "state": "up", "adminState": "up", "type": "bond_slave", "mtu":
-    9216, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1639476254854}, {"namespace": "panos", "hostname": "leaf01",
-    "ifname": "swp5", "state": "up", "adminState": "up", "type": "bond_slave", "mtu":
-    9216, "vlan": 0, "master": "peerlink", "ipAddressList": [], "ip6AddressList":
-    [], "timestamp": 1639476254854}, {"namespace": "panos", "hostname": "leaf01",
-    "ifname": "swp4", "state": "up", "adminState": "up", "type": "bond_slave", "mtu":
-    9000, "vlan": 0, "master": "bond02", "ipAddressList": [], "ip6AddressList": [],
+    "ifname": "bond02", "state": "up", "adminState": "up", "type": "bond", "mtu":
+    9000, "vlan": 30, "master": "bridge", "ipAddressList": [], "ip6AddressList": [],
     "timestamp": 1639476254854}, {"namespace": "panos", "hostname": "leaf01", "ifname":
-    "swp2", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9216, "vlan":
-    0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": ["fe80::5054:ff:fe89:1356/64"],
+    "vni30", "state": "up", "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan":
+    30, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1639476254854}, {"namespace": "panos", "hostname": "leaf01", "ifname": "swp6",
+    "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan":
+    0, "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1639476254854}, {"namespace": "panos", "hostname": "leaf01", "ifname": "swp5",
+    "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9216, "vlan":
+    0, "master": "peerlink", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1639476254854}, {"namespace": "panos", "hostname": "leaf01", "ifname": "swp4",
+    "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9000, "vlan":
+    0, "master": "bond02", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    1639476254854}, {"namespace": "panos", "hostname": "leaf01", "ifname": "swp2",
+    "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9216, "vlan": 0,
+    "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": ["fe80::5054:ff:fe89:1356/64"],
     "timestamp": 1639476254854}, {"namespace": "panos", "hostname": "leaf01", "ifname":
     "swp1", "state": "up", "adminState": "up", "type": "ethernet", "mtu": 9216, "vlan":
     0, "master": "", "ipAddressList": ["10.0.0.11/32"], "ip6AddressList": ["fe80::5054:ff:fec4:1983/64"],
@@ -504,7 +504,7 @@ tests:
     0, "master": "", "ipAddressList": [], "ip6AddressList": ["fe80::4a47:ff:fea1:2acc/64"],
     "timestamp": 1639476254854}, {"namespace": "panos", "hostname": "leaf01", "ifname":
     "vni10", "state": "up", "adminState": "up", "type": "vxlan", "mtu": 9216, "vlan":
-    "10", "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
+    10, "master": "bridge", "ipAddressList": [], "ip6AddressList": [], "timestamp":
     1639476254854}, {"namespace": "panos", "hostname": "leaf01", "ifname": "swp3",
     "state": "up", "adminState": "up", "type": "bond_slave", "mtu": 9000, "vlan":
     0, "master": "bond01", "ipAddressList": [], "ip6AddressList": [], "timestamp":
@@ -567,9 +567,9 @@ tests:
   marks: interface summarize panos
   output: '{"panos": {"deviceCnt": 14, "interfaceCnt": 167, "devicesWithL2Cnt": 6,
     "devicesWithVxlanCnt": 14, "ifDownCnt": 0, "ifAdminDownCnt": 0, "ifWithMultipleIPCnt":
-    4, "uniqueMTUCnt": 5, "uniqueIfTypesCnt": 9, "speedCnt": 4, "ifChangesStat": [0,
-    5, 0.0], "ifPerDeviceStat": [5, 21, 9.5], "uniqueIPv4AddrCnt": 50, "uniqueIPv6AddrCnt":
-    3}}'
+    4, "errDisabledCnt": 0, "uniqueMTUCnt": 5, "uniqueIfTypesCnt": 9, "speedCnt":
+    4, "ifChangesStat": [0, 5, 0.0], "ifPerDeviceStat": [5, 21, 9.5], "uniqueIPv4AddrCnt":
+    50, "uniqueIPv6AddrCnt": 3}}'
 - command: interface unique --format=json --namespace=panos
   data-directory: tests/data/parquet/
   marks: interface unique panos

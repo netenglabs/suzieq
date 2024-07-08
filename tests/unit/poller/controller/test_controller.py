@@ -5,12 +5,14 @@ import signal
 from tempfile import NamedTemporaryFile
 from typing import Dict
 from unittest.mock import MagicMock, patch
+from mock import AsyncMock
 
 import pytest
 import suzieq.poller.controller.controller as controller_module
 from suzieq.poller.controller.chunker.static import StaticChunker
 from suzieq.poller.controller.controller import Controller
 from suzieq.poller.controller.manager.static import StaticManager
+from suzieq.poller.controller.source.base_source import _DEFAULT_PORTS
 from suzieq.poller.controller.source.native import SqNativeFile
 from suzieq.poller.controller.source.netbox import Netbox
 from suzieq.shared.exceptions import InventorySourceError, SqPollerConfError
@@ -256,6 +258,9 @@ def mock_plugins():
         self.set_device()
         self._load(inv)
 
+    def mock_get_name(self):
+        return self._name
+
     def mock_set_inventory(self, inv):
         self._inventory = inv.copy()
         if not self._inv_is_set:
@@ -284,12 +289,14 @@ def mock_plugins():
     native_mock = patch.multiple(SqNativeFile, __init__=mock_src_init,
                                  set_inventory=mock_set_inventory,
                                  get_inventory=mock_get_inventory,
+                                 name=mock_get_name,
                                  _load=mock_native_load,
                                  set_device=MagicMock())
 
     netbox_mock = patch.multiple(Netbox, __init__=mock_src_init,
                                  set_inventory=mock_set_inventory,
                                  get_inventory=mock_get_inventory,
+                                 name=mock_get_name,
                                  _load=MagicMock(), run=mock_netbox_run,
                                  set_device=MagicMock())
 
@@ -392,7 +399,7 @@ def test_controller_invalid_args(config_file: str, args: Dict):
 @pytest.mark.controller
 @pytest.mark.poller_unit_tests
 @pytest.mark.controller_unit_tests
-def test_missing_default_inventory(default_args):
+def test_missing_default_inventory(default_args: Dict):
     """Test if the controller launches and exception if no inventory if
     passed in the configuration and there is no file in the default path
     """
@@ -407,7 +414,7 @@ def test_missing_default_inventory(default_args):
 @pytest.mark.controller
 @pytest.mark.poller_unit_tests
 @pytest.mark.controller_unit_tests
-def test_default_controller_config(default_args):
+def test_default_controller_config(default_args: Dict):
     """Test controller default configuration
     """
     args = default_args
@@ -434,7 +441,7 @@ def test_default_controller_config(default_args):
 @pytest.mark.poller_unit_tests
 @pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
-def test_controller_init_plugins(inv_file: str, default_args):
+def test_controller_init_plugins(inv_file: str, default_args: Dict):
     """Test Controller.init_plugins function
 
     Args:
@@ -448,7 +455,7 @@ def test_controller_init_plugins(inv_file: str, default_args):
 
     # check all plugins are loaded correctly
     src_plugins = c.init_plugins('source')
-    assert len(set(src_plugins)) == len(src_plugins) == 2
+    assert len(set(src_plugins)) == len(src_plugins) == 3
     for v in src_plugins:
         if not isinstance(v, (Netbox, SqNativeFile)):
             assert False
@@ -459,7 +466,7 @@ def test_controller_init_plugins(inv_file: str, default_args):
 @pytest.mark.poller_unit_tests
 @pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
-def test_controller_init(inv_file: str, mock_plugins, default_args):
+def test_controller_init(inv_file: str, mock_plugins: None, default_args: Dict):
     """Test Controler.init function
 
     Args:
@@ -470,7 +477,7 @@ def test_controller_init(inv_file: str, mock_plugins, default_args):
     c = generate_controller(args=args, inv_file=inv_file)
 
     c.init()
-    assert len(set(c.sources)) == len(c.sources) == 2
+    assert len(set(c.sources)) == len(c.sources) == 3
     for v in c.sources:
         if not isinstance(v, (Netbox, SqNativeFile)):
             assert False
@@ -494,8 +501,62 @@ def test_controller_init(inv_file: str, mock_plugins, default_args):
 @pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 @pytest.mark.asyncio
-async def test_controller_run(inv_file: str, mock_plugins,
-                              default_args):
+async def test_inventory_defaults(inv_file: str, default_args: Dict):
+    """Test inventory default params"""
+
+    netbox_inventory = {
+        'my-ns.192.168.0.1': {
+            'address': '192.168.0.1',
+            'namespace': 'my-ns',
+            'hostname': 'host0',
+        },
+    }
+
+    async def mock_netbox_run(self):
+        self.set_inventory(netbox_inventory.copy())
+
+    async def mock_manager_apply(self, inv_chunks):
+        self.mock_inv_chunks = inv_chunks
+
+    args = default_args
+    args['debug'] = True
+    args['run_once'] = 'update'
+    with patch.multiple(Netbox, run=mock_netbox_run):
+        with patch.multiple(StaticManager, apply=mock_manager_apply,
+                            run=AsyncMock()):
+            c = generate_controller(args=args, inv_file=inv_file)
+            c.init()
+            await c.run()
+            out_inventory: Dict[str, Dict] = c.manager.mock_inv_chunks[0]
+            for node_key, node in out_inventory.items():
+                key = f"{node['namespace']}.{node['address']}.{node['port']}"
+                assert node_key == key, (
+                    f'Wrong key for {node_key} -> {key}'
+                )
+                if node['namespace'] != 'native-default':
+                    continue
+
+                # verify defaults
+                assert node.get('username'), f'{node_key}: No username set'
+                assert node.get('password'), f'{node_key}: No password set'
+                node_transport = node.get('transport')
+                assert node_transport, f'{node_key}: No transport set'
+                node_port = node.get('port')
+                assert node_port, f'{node_key}: No port set'
+                exp_port = _DEFAULT_PORTS.get(node_transport)
+                assert node_port == exp_port, (
+                    f"{node_key}: Wrong port. Expected {exp_port}, got "
+                    f"{node_port}"
+                )
+
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
+@pytest.mark.asyncio
+async def test_controller_run(inv_file: str, mock_plugins: None,
+                              default_args: Dict):
     """Test Controller.run function
 
     Args:
@@ -586,7 +647,7 @@ async def test_controller_run(inv_file: str, mock_plugins,
                         native_inventory
                     await c.run()
                     # test 'run' functions are called
-                    assert await c.sources[1].get_inventory() == \
+                    assert await c.sources[2].get_inventory() == \
                         netbox_inventory
                     assert hasattr(c.manager, 'mock_mng_run'), \
                         'manager.run was not called'
@@ -617,8 +678,8 @@ async def test_controller_run(inv_file: str, mock_plugins,
 @pytest.mark.poller_unit_tests
 @pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
-def test_controller_init_errors(inv_file: str, mock_plugins,
-                                default_args):
+def test_controller_init_errors(inv_file: str, mock_plugins: None,
+                                default_args: Dict):
     """Test Controller.init function errors
 
     Args:
@@ -678,8 +739,8 @@ def test_controller_init_errors(inv_file: str, mock_plugins,
 @pytest.mark.controller_unit_tests
 @pytest.mark.parametrize('inv_file', _INVENTORY_FILE)
 @pytest.mark.asyncio
-async def test_controller_empty_inventory(inv_file: str, mock_plugins,
-                                          default_args):
+async def test_controller_empty_inventory(inv_file: str, mock_plugins: None,
+                                          default_args: Dict):
     """Test that the controller launches an exception with an
     empty global inventory
 
@@ -708,7 +769,7 @@ async def test_controller_empty_inventory(inv_file: str, mock_plugins,
 @pytest.mark.parametrize('config_file', _CONFIG_FILE)
 @pytest.mark.asyncio
 async def test_controller_run_timeout_error(inv_file: str, config_file: str,
-                                            mock_plugins, default_args):
+                                            mock_plugins: None, default_args: Dict):
     """Test that the controller launches an exception if the get_inventory
     function doesn't return before the timeout
 

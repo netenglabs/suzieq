@@ -138,14 +138,14 @@ tests:
   marks: devconfig describe
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "config", "type": "string", "key":
-    "", "display": 1, "description": "The running config"}, {"name": "deviceSession",
+    "", "display": 2, "description": "The running config"}, {"name": "deviceSession",
     "type": "timestamp", "key": "", "display": "", "description": "Device boot session
     id"}, {"name": "hostname", "type": "string", "key": 1, "display": 1, "description":
     "Hostname associated with this record"}, {"name": "namespace", "type": "string",
     "key": 0, "display": 0, "description": "Namespace associated with this record"},
     {"name": "sqvers", "type": "string", "key": "", "display": "", "description":
     "Schema version, not selectable"}, {"name": "timestamp", "type": "timestamp",
-    "key": "", "display": 2, "description": "Unix epach When this record was created,
+    "key": "", "display": 3, "description": "Unix epach When this record was created,
     in ms"}]'
 - command: device describe --format=json
   data-directory: tests/data/parquet
@@ -153,7 +153,7 @@ tests:
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "address", "type": "string", "key":
     "", "display": 7, "description": "The IP address/hostname used for polling"},
-    {"name": "architecture", "type": "string", "key": "", "display": 5, "description":
+    {"name": "architecture", "type": "string", "key": "", "display": "", "description":
     ""}, {"name": "bootupTimestamp", "type": "double", "key": "", "display": 9, "description":
     ""}, {"name": "deviceSession", "type": "timestamp", "key": "", "display": "",
     "description": "Device boot session id"}, {"name": "hostname", "type": "string",
@@ -164,7 +164,7 @@ tests:
     "Namespace associated with this record"}, {"name": "os", "type": "string", "key":
     "", "display": "", "description": ""}, {"name": "reason", "type": "string", "key":
     "", "display": "", "description": ""}, {"name": "serialNumber", "type": "string",
-    "key": "", "display": "", "description": ""}, {"name": "sqvers", "type": "string",
+    "key": "", "display": 5, "description": ""}, {"name": "sqvers", "type": "string",
     "key": "", "display": "", "description": "Schema version, not selectable"}, {"name":
     "status", "type": "string", "key": "", "display": 6, "description": "Status of
     device: alive/dead/neverpoll"}, {"name": "timestamp", "type": "timestamp", "key":
@@ -283,14 +283,14 @@ tests:
     "If this entry is active or deleted"}, {"name": "deviceSession", "type": "timestamp",
     "key": "", "display": "", "description": "Device boot session id"}, {"name": "hostname",
     "type": "string", "key": 1, "display": 1, "description": "Hostname associated
-    with this entry"}, {"name": "model", "type": "string", "key": 3, "display": 3,
+    with this entry"}, {"name": "model", "type": "string", "key": "", "display": 3,
     "description": "Model of the entry"}, {"name": "name", "type": "string", "key":
     2, "display": 2, "description": "Name of inventory entry"}, {"name": "namespace",
     "type": "string", "key": 0, "display": 0, "description": "Namespace associated
-    with this entry"}, {"name": "partNum", "type": "string", "key": 5, "display":
+    with this entry"}, {"name": "partNum", "type": "string", "key": "", "display":
     "", "description": "Part number of entry"}, {"name": "partType", "type": "string",
     "key": "", "display": 8, "description": "Type specific info such as optics and
-    such"}, {"name": "serial", "type": "string", "key": 4, "display": "", "description":
+    such"}, {"name": "serial", "type": "string", "key": "", "display": "", "description":
     "Serial number of entry"}, {"name": "sqvers", "type": "string", "key": "", "display":
     "", "description": "Schema version, not selectable"}, {"name": "status", "type":
     "string", "key": "", "display": 4, "description": "Status of the entry"}, {"name":
@@ -405,12 +405,14 @@ tests:
     {"name": "hasOspf", "type": "boolean", "key": "", "display": 4, "description":
     "Is OSPF used in this namespace"}, {"name": "hasVxlan", "type": "boolean", "key":
     "", "display": 6, "description": "Is VXLAN used in this namespace"}, {"name":
-    "lastUpdate", "type": "timestamp", "key": "", "display": 8, "description": "Time
-    when any service was last polled"}, {"name": "namespace", "type": "string", "key":
-    0, "display": 0, "description": "Namespace associated with this record"}, {"name":
-    "serviceCnt", "type": "long", "key": "", "display": 2, "description": "Number
-    of services polled in this namespace"}, {"name": "sqvers", "type": "string", "key":
-    "", "display": "", "description": "Schema version, not selectable"}]'
+    "lastUpdate", "type": "timestamp", "key": "", "display": 8, "description": "The
+    last time the poller updated this namespace"}, {"name": "lastUpdate", "type":
+    "timestamp", "key": "", "display": 8, "description": "Time when any service was
+    last polled"}, {"name": "namespace", "type": "string", "key": 0, "display": 0,
+    "description": "Namespace associated with this record"}, {"name": "serviceCnt",
+    "type": "long", "key": "", "display": 2, "description": "Number of services polled
+    in this namespace"}, {"name": "sqvers", "type": "string", "key": "", "display":
+    "", "description": "Schema version, not selectable"}]'
 - command: path describe --format=json
   data-directory: tests/data/parquet
   marks: path describe
@@ -573,7 +575,7 @@ tests:
     carrying this VLAN"}, {"name": "namespace", "type": "string", "key": 0, "display":
     0, "description": "Namespace associated with record"}, {"name": "sqvers", "type":
     "string", "key": "", "display": "", "description": "Schema version, not selectable"},
-    {"name": "state", "type": "string", "key": 2, "display": 4, "description": "VLAN
+    {"name": "state", "type": "string", "key": "", "display": 4, "description": "VLAN
     state: active or suspended"}, {"name": "timestamp", "type": "timestamp", "key":
     "", "display": 7, "description": ""}, {"name": "vlan", "type": "long", "key":
     "", "display": 6, "description": "VLAN ID"}, {"name": "vlanName", "type": "string",
@@ -584,16 +586,16 @@ tests:
   output: '[{"name": "active", "type": "boolean", "key": "", "display": "", "description":
     "If this entry is active or deleted"}, {"name": "gatherTime", "type": {"type":
     "array", "items": {"type": "float", "name": "time"}}, "key": "", "display": 4,
-    "description": "[min, max, avg] of time taken to get data, computed over the greater
-    between the last 5 mins and the polling period"}, {"name": "hostname", "type":
-    "string", "key": 1, "display": 1, "description": "Hostname associated with this
-    record"}, {"name": "namespace", "type": "string", "key": 0, "display": 0, "description":
-    "The namespace associated with this record"}, {"name": "nodeQsize", "type": {"type":
-    "array", "items": {"type": "float", "name": "nodeQsize"}}, "key": "", "display":
-    8, "description": "[min, max, avg] of node queue size, computed over the greater
-    between the last 5 mins and the polling period"}, {"name": "nodesFailedCnt", "type":
-    "long", "key": "", "display": "", "description": "Number of nodes that could not
-    be polled"}, {"name": "nodesPolledCnt", "type": "long", "key": "", "display":
+    "description": "[min, max, avg] of time(ms) taken to get data, computed over the
+    greater between the last 5 mins and the polling period"}, {"name": "hostname",
+    "type": "string", "key": 1, "display": 1, "description": "Hostname associated
+    with this record"}, {"name": "namespace", "type": "string", "key": 0, "display":
+    0, "description": "The namespace associated with this record"}, {"name": "nodeQsize",
+    "type": {"type": "array", "items": {"type": "float", "name": "nodeQsize"}}, "key":
+    "", "display": 8, "description": "[min, max, avg] of node queue length, computed
+    over the greater between the last 5 mins and the polling period"}, {"name": "nodesFailedCnt",
+    "type": "long", "key": "", "display": "", "description": "Number of nodes that
+    could not be polled"}, {"name": "nodesPolledCnt", "type": "long", "key": "", "display":
     "", "description": "Number of nodes polled"}, {"name": "pollExcdPeriodCount",
     "type": "long", "key": "", "display": 10, "description": "Number of times the
     poller has exceeded the poll period"}, {"name": "rxBytes", "type": {"type": "array",
@@ -602,21 +604,23 @@ tests:
     and the polling period"}, {"name": "service", "type": "string", "key": 2, "display":
     2, "description": "The polled service (a.k.a table) name"}, {"name": "sqvers",
     "type": "string", "key": "", "display": "", "description": "Schema version, not
-    selectable"}, {"name": "status", "type": "long", "key": "", "display": 3, "description":
-    "Service polling status. 0 or 200 means successfully polled, -1 means time timeout,
-    other values mean failed to poll"}, {"name": "svcQsize", "type": {"type": "array",
-    "items": {"type": "float", "name": "svcQsize"}}, "key": "", "display": 6, "description":
-    "[min, max, avg] of service queue size, computed over the greater between the
-    last 5 mins and the polling period"}, {"name": "timestamp", "type": "long", "key":
-    "", "display": 11, "description": "The timestamp of the record"}, {"name": "totalTime",
-    "type": {"type": "array", "items": {"type": "float", "name": "time"}}, "key":
-    "", "display": 5, "description": "[min, max, avg] of time taken to get & process
-    data,computed over the greater between the last 5 mins and the polling period"},
-    {"name": "version", "type": "string", "key": "", "display": "", "description":
-    "The suzieq version used to create this record"}, {"name": "wrQsize", "type":
-    {"type": "array", "items": {"type": "float", "name": "wrQsize"}}, "key": "", "display":
-    7, "description": "[min, max, avg] of write queue size, computed over the greater
-    between the last 5 mins and the polling period"}]'
+    selectable"}, {"name": "status", "type": "long", "key": "", "display": "", "description":
+    "Service polling status code. 0 or 200 means successfully polled, -1 means time
+    timeout, other values mean failed to poll"}, {"name": "statusStr", "type": "string",
+    "key": "", "display": 3, "description": "Service polling status string"}, {"name":
+    "svcQsize", "type": {"type": "array", "items": {"type": "float", "name": "svcQsize"}},
+    "key": "", "display": 6, "description": "[min, max, avg] of service queue length,
+    computed over the greater between the last 5 mins and the polling period"}, {"name":
+    "timestamp", "type": "long", "key": "", "display": 11, "description": "The timestamp
+    of the record"}, {"name": "totalTime", "type": {"type": "array", "items": {"type":
+    "float", "name": "time"}}, "key": "", "display": 5, "description": "[min, max,
+    avg] of time(ms) taken to get & process data,computed over the greater between
+    the last 5 mins and the polling period"}, {"name": "version", "type": "string",
+    "key": "", "display": "", "description": "The suzieq version used to create this
+    record"}, {"name": "wrQsize", "type": {"type": "array", "items": {"type": "float",
+    "name": "wrQsize"}}, "key": "", "display": 7, "description": "[min, max, avg]
+    of write queue length, computed over the greater between the last 5 mins and the
+    polling period"}]'
 - command: table describe --format=json
   data-directory: tests/data/parquet
   marks: table describe

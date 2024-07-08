@@ -132,7 +132,8 @@ def _get_swport_interfaces_iosy(conf: CiscoConfParse,
 
     pm_dict = {}
     if what == 'access':
-        for intf in conf.find_objects_w_child('^interface ', '.*access'):
+        for intf in conf.find_objects_w_child(r'^interface ',
+                                              r'^\s+switchport.*access'):
             ifname = intf.text.split('interface')[1].strip()
             acc_vlan = intf.re_match_iter_typed(r'^.*vlan\s+(\d+)')
             if acc_vlan.isnumeric():
@@ -141,7 +142,8 @@ def _get_swport_interfaces_iosy(conf: CiscoConfParse,
                 pm_dict[ifname] = 0
 
     if what == 'trunk':
-        for intf in conf.find_objects_w_child('^interface', '.*trunk'):
+        for intf in conf.find_objects_w_child(r'^interface',
+                                              r'^\s+switchport.*trunk'):
             ifname = intf.text.split('interface')[1].strip()
             nvlan = intf.re_match_iter_typed(r'.*native vlan\s+(\d+)',
                                              default='1')

@@ -4,39 +4,39 @@ tests:
   data-directory: tests/data/parquet/
   marks: device top junos
   output: '[{"namespace": "junos", "hostname": "server202", "model": "vm", "version":
-    "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64", "status": "alive",
-    "address": "10.255.5.71", "bootupTimestamp": 1622997902000, "uptime": 27893928,
-    "timestamp": 1623025795928}, {"namespace": "junos", "hostname": "server101", "model":
-    "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture": "x86-64",
-    "status": "alive", "address": "10.255.5.72", "bootupTimestamp": 1622997922000,
-    "uptime": 27873928, "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
-    "firewall01", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.5.40", "bootupTimestamp": 1622997934000,
+    "18.04.3 LTS", "vendor": "Ubuntu", "serialNumber": "", "status": "alive", "address":
+    "10.255.5.71", "bootupTimestamp": 1622997902000, "uptime": 27893928, "timestamp":
+    1623025795928}, {"namespace": "junos", "hostname": "server101", "model": "vm",
+    "version": "18.04.3 LTS", "vendor": "Ubuntu", "serialNumber": "", "status": "alive",
+    "address": "10.255.5.72", "bootupTimestamp": 1622997922000, "uptime": 27873928,
+    "timestamp": 1623025795928}, {"namespace": "junos", "hostname": "firewall01",
+    "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "serialNumber": "",
+    "status": "alive", "address": "10.255.5.40", "bootupTimestamp": 1622997934000,
     "uptime": 27862138, "timestamp": 1623025796138}, {"namespace": "junos", "hostname":
-    "server201", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.5.49", "bootupTimestamp": 1622997945000,
+    "server201", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "serialNumber":
+    "", "status": "alive", "address": "10.255.5.49", "bootupTimestamp": 1622997945000,
     "uptime": 27850928, "timestamp": 1623025795928}, {"namespace": "junos", "hostname":
-    "server102", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "architecture":
-    "x86-64", "status": "alive", "address": "10.255.5.169", "bootupTimestamp": 1622997951000,
+    "server102", "model": "vm", "version": "18.04.3 LTS", "vendor": "Ubuntu", "serialNumber":
+    "", "status": "alive", "address": "10.255.5.169", "bootupTimestamp": 1622997951000,
     "uptime": 27844928, "timestamp": 1623025795928}]'
 - command: device top --what=bootupTimestamp --format=json --namespace='junos'
   data-directory: tests/data/parquet/
   marks: device top junos
   output: '[{"namespace": "junos", "hostname": "leaf02", "model": "vqfx-10000", "version":
-    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
-    "10.255.5.185", "bootupTimestamp": 1622998018407, "timestamp": 1623025799407},
+    "19.4R1.10", "vendor": "Juniper", "serialNumber": "01333004301", "status": "alive",
+    "address": "10.255.5.185", "bootupTimestamp": 1622998018407, "timestamp": 1623025799407},
     {"namespace": "junos", "hostname": "dcedge01", "model": "vqfx-10000", "version":
-    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
-    "10.255.5.250", "bootupTimestamp": 1622998015405, "timestamp": 1623025800405},
+    "19.4R1.10", "vendor": "Juniper", "serialNumber": "52105701727", "status": "alive",
+    "address": "10.255.5.250", "bootupTimestamp": 1622998015405, "timestamp": 1623025800405},
     {"namespace": "junos", "hostname": "exit02", "model": "vqfx-10000", "version":
-    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
-    "10.255.5.252", "bootupTimestamp": 1622998009947, "timestamp": 1623025800947},
+    "19.4R1.10", "vendor": "Juniper", "serialNumber": "87673382385", "status": "alive",
+    "address": "10.255.5.252", "bootupTimestamp": 1622998009947, "timestamp": 1623025800947},
     {"namespace": "junos", "hostname": "exit01", "model": "vqfx-10000", "version":
-    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
-    "10.255.5.251", "bootupTimestamp": 1622998009512, "timestamp": 1623025799512},
+    "19.4R1.10", "vendor": "Juniper", "serialNumber": "47187512782", "status": "alive",
+    "address": "10.255.5.251", "bootupTimestamp": 1622998009512, "timestamp": 1623025799512},
     {"namespace": "junos", "hostname": "spine02", "model": "vqfx-10000", "version":
-    "19.4R1.10", "vendor": "Juniper", "architecture": "", "status": "alive", "address":
-    "10.255.5.118", "bootupTimestamp": 1622998003357, "timestamp": 1623025799357}]'
+    "19.4R1.10", "vendor": "Juniper", "serialNumber": "05518142768", "status": "alive",
+    "address": "10.255.5.118", "bootupTimestamp": 1622998003357, "timestamp": 1623025799357}]'
 - command: bgp top --what=estdTime --format=json --namespace='junos'
   data-directory: tests/data/parquet/
   marks: bgp top junos
@@ -147,13 +147,13 @@ tests:
     "preference": 0, "ipvers": 6, "action": "multirecv", "prefixlen": 128, "timestamp":
     1623025802688}, {"namespace": "junos", "hostname": "spine02", "vrf": "default",
     "prefix": "fe80::205:860f:fc71:c600/128", "nexthopIps": [], "oifs": ["lo0.0"],
-    "protocol": "direct", "source": "", "preference": 0, "ipvers": 6, "action": "forward",
-    "prefixlen": 128, "timestamp": 1623025802688}, {"namespace": "junos", "hostname":
-    "spine01", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps": [], "oifs":
-    [], "protocol": "inet6", "source": "", "preference": 0, "ipvers": 6, "action":
-    "multirecv", "prefixlen": 128, "timestamp": 1623025802890}, {"namespace": "junos",
-    "hostname": "spine01", "vrf": "default", "prefix": "fe80::205:860f:fc71:2e00/128",
-    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "direct", "source": "", "preference":
+    "protocol": "connected", "source": "", "preference": 0, "ipvers": 6, "action":
+    "forward", "prefixlen": 128, "timestamp": 1623025802688}, {"namespace": "junos",
+    "hostname": "spine01", "vrf": "default", "prefix": "ff02::2/128", "nexthopIps":
+    [], "oifs": [], "protocol": "inet6", "source": "", "preference": 0, "ipvers":
+    6, "action": "multirecv", "prefixlen": 128, "timestamp": 1623025802890}, {"namespace":
+    "junos", "hostname": "spine01", "vrf": "default", "prefix": "fe80::205:860f:fc71:2e00/128",
+    "nexthopIps": [], "oifs": ["lo0.0"], "protocol": "connected", "source": "", "preference":
     0, "ipvers": 6, "action": "forward", "prefixlen": 128, "timestamp": 1623025802890},
     {"namespace": "junos", "hostname": "leaf02", "vrf": "evpn-vrf", "prefix": "ff02::2/128",
     "nexthopIps": [], "oifs": [], "protocol": "inet6", "source": "", "preference":

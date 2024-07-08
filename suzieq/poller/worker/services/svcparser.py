@@ -196,8 +196,8 @@ def cons_recs_from_json_template(tmplt_str, in_data):
                         # Some outputs contain just the main key with a null
                         # body such as ospfNbr from EOS: {'vrfs': {}}.
                         logging.info(
-                            f"Unnatural return from svcparser. xstr is {xstr}. \
-                            Result is {result}")
+                            f"Unnatural return from svcparser. xstr is {xstr}.\
+                             Result is {result}")
                         return cleanup_and_return(result)
                     result = [{"rest": data[xstr]}]
                 else:
@@ -415,6 +415,7 @@ def cons_recs_from_json_template(tmplt_str, in_data):
         # Process default value processing of the form <key>?|<def_val> or
         # <key>?<expected_val>|<def_val>
         op = None  # pylint: disable=redefined-outer-name
+        exp_val = None
         if "?" in rval:
             rval, op = rval.split("?")
             exp_val, def_val = op.split("|")

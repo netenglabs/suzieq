@@ -2,13 +2,14 @@ import re
 from datetime import datetime
 from collections import defaultdict
 from json import loads
-from dateparser import parse
+from typing import Dict
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (get_timestamp_from_junos_time,
-                                 expand_ios_ifname, expand_nxos_ifname)
-from suzieq.shared.utils import convert_macaddr_format_to_colon
+                                 expand_ios_ifname, expand_nxos_ifname,
+                                 convert_macaddr_format_to_colon,
+                                 parse_relative_timestamp)
 from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
 
@@ -325,11 +326,9 @@ class InterfaceService(Service):
             adm_state = entry.get('adminState', 'down')
             if adm_state == 'notconnect':
                 entry['reason'] = 'notconnect'
-                entry['adminState'] = 'down'
                 entry['state'] = 'notConnected'
             elif adm_state == 'errdisabled':
                 entry['reason'] = 'errdisabled'
-                entry['adminState'] = 'down'
                 entry['state'] = 'errDisabled'
             elif adm_state == 'connected':
                 entry['adminState'] = 'up'
@@ -378,25 +377,22 @@ class InterfaceService(Service):
 
         return processed_data
 
-    def _clean_cumulus_data(self, processed_data, _):
-        """We have to merge the appropriate outputs of two separate commands"""
+    def _entry_cumulus_sonic_cleaner(self, entry: Dict):
+        if entry.get('hardware', '') == 'ether':
+            entry['type'] = 'ethernet'
 
-        for entry in processed_data:
-            if entry.get('hardware', '') == 'ether':
-                entry['type'] = 'ethernet'
+        if entry['adminState'] == "down":
+            entry['state'] = "down"
 
-            if entry['adminState'] == "down":
-                entry['state'] = "down"
+        if entry['type'] == 'ether':
+            entry['type'] = 'ethernet'
+        if entry.get('type', '') == 'vxlan':
+            entry['speed'] = NO_SPEED
 
-            if entry['type'] == 'ether':
-                entry['type'] = 'ethernet'
-            if entry.get('type', '') == 'vxlan':
-                entry['speed'] = NO_SPEED
-
-            if not entry['linkUpCnt']:
-                entry['linkUpCnt'] = 0
-            if not entry['linkDownCnt']:
-                entry['linkDownCnt'] = 0
+        if not entry['linkUpCnt']:
+            entry['linkUpCnt'] = 0
+        if not entry['linkDownCnt']:
+            entry['linkDownCnt'] = 0
 
             entry["numChanges"] = (int(entry["linkUpCnt"]) +
                                    int(entry["linkDownCnt"]))
@@ -419,30 +415,36 @@ class InterfaceService(Service):
             entry["statusChangeTimestamp1"] = entry.get(
                 "statusChangeTimestamp", '')
 
-            if '(' in entry['master']:
-                entry['master'] = entry['master'].replace(
-                    '(', '').replace(')', '')
+        if '(' in entry['master']:
+            entry['master'] = entry['master'].replace(
+                '(', '').replace(')', '')
 
-            # Lowercase the master value thanks to SoNIC
-            entry['master'] = entry.get('master', '').lower()
-            if entry['ip6AddressList'] and 'ip6AddressList-_2nd' in entry:
-                # This is because textfsm adds peer LLA as well
-                entry['ip6AddressList'] = entry['ip6AddressList-_2nd']
+        # Lowercase the master value thanks to SoNIC
+        entry['master'] = entry.get('master', '').lower()
+        if entry['ip6AddressList'] and 'ip6AddressList-_2nd' in entry:
+            # This is because textfsm adds peer LLA as well
+            entry['ip6AddressList'] = entry['ip6AddressList-_2nd']
 
-            # Remove loopbacks
-            entry['ip6AddressList'] = [x for x in entry['ip6AddressList']
-                                       if x != "::1/128"]
+        # Remove loopbacks
+        entry['ip6AddressList'] = [x for x in entry['ip6AddressList']
+                                   if x != "::1/128"]
 
-            if 'type-_2nd' in entry:
-                entry['type'] = entry['type-_2nd']
+        if 'type-_2nd' in entry:
+            entry['type'] = entry['type-_2nd']
 
-            del entry["linkUpCnt"]
-            del entry["linkDownCnt"]
-            del entry["linkUpTimestamp"]
-            del entry["linkDownTimestamp"]
-            del entry["vrf"]
+        del entry["linkUpCnt"]
+        del entry["linkDownCnt"]
+        del entry["linkUpTimestamp"]
+        del entry["linkDownTimestamp"]
+        del entry["vrf"]
 
-            entry['speed'] = self._textfsm_valid_speed_value(entry)
+        entry['speed'] = self._textfsm_valid_speed_value(entry)
+
+    def _clean_cumulus_data(self, processed_data, _):
+        """We have to merge the appropriate outputs of two separate commands"""
+
+        for entry in processed_data:
+            self._entry_cumulus_sonic_cleaner(entry)
 
         return processed_data
 
@@ -613,6 +615,7 @@ class InterfaceService(Service):
                     macaddr = entry.get('macaddr', '00:00:00:00:00:00')
 
                 addrlist = []
+                afi_mtu = entry['mtu']
                 for elem in afis:
                     afi_mtu = elem.get('mtu', [{}])[0].get(
                         'data', entry['mtu'])
@@ -638,7 +641,8 @@ class InterfaceService(Service):
                     continue
 
                 vrf = entry_dict.get(ifname, {}).get('vrf', '')
-
+                l_description = lentry.get('description',
+                                           [{}])[0].get('data', '')
                 new_entry = {'ifname': lifname,
                              'mtu': afi_mtu,
                              'type': iftype,
@@ -647,7 +651,7 @@ class InterfaceService(Service):
                              'master': vrf,
                              'macaddr': macaddr,
                              'adminState': 'up',
-                             'description': entry['description'],
+                             'description': l_description,
                              'state': 'up',
                              'statusChangeTimestamp':
                              entry['statusChangeTimestamp'],
@@ -764,14 +768,10 @@ class InterfaceService(Service):
                         if any(x in lastChange for x in 'dwmy'):
                             lastChange = f'{lastChange} hours ago'
 
-                        lastChange = parse(
-                            lastChange,
-                            settings={'RELATIVE_BASE': datetime.fromtimestamp(
-                                (raw_data[0]['timestamp'])/1000),
-                                'TIMEZONE': 'UTC'})
+                        lastChange = parse_relative_timestamp(
+                            lastChange, raw_data[0]['timestamp'], ms=True)
                     if lastChange:
-                        old_entry['statusChangeTimestamp'] = int(
-                            lastChange.timestamp() * 1000)
+                        old_entry['statusChangeTimestamp'] = lastChange
                     else:
                         old_entry['statusChangeTimestamp'] = 0
                     old_entry['description'] = entry.get('description', '')
@@ -792,6 +792,7 @@ class InterfaceService(Service):
             entry['ifname'] = ifname
 
             ipaddresses = entry.get('ipAddressList', None)
+            pri_ipaddr = ''
             if ipaddresses and ipaddresses != "--":
                 pri_ipaddr = f"{entry['ipAddressList']}/{entry['_maskLen']}"
                 ipaddr = [pri_ipaddr]
@@ -846,9 +847,12 @@ class InterfaceService(Service):
                 if entry['reason'] == 'none' or not entry['reason']:
                     entry['reason'] = ''
 
-                if entry['reason'] in ["link not connected",
-                                       "xcvr not inserted"]:
+                if entry['reason'] == "link not connected":
                     entry['state'] = 'notConnected'
+
+                if entry['reason'] == "xcvr not inserted":
+                    entry['state'] = 'notConnected'
+                    entry['adminState'] = 'down'
 
             if entry.get('reason', '') == 'administratively down':
                 entry['adminState'] = 'down'
@@ -995,8 +999,10 @@ class InterfaceService(Service):
                 elif 'Autostate Enabled' in state:
                     entry['state'] = 'down'
                     entry['reason'] = state.split(',')[1].strip()
-                elif 'disabled' in state:
+                elif 'err-disabled' in state:
                     entry['state'] = 'errDisabled'
+                elif 'disabled' in state:
+                    entry['state'] = 'down'
                 elif 'monitoring' in state:
                     entry['state'] = 'down'
                 elif 'suspended' in state:
@@ -1051,8 +1057,12 @@ class InterfaceService(Service):
                                            'type': 'bond_slave'}
 
             if entry['adminState'] == 'administratively down':
-                entry['state'] = 'down'
                 entry['adminState'] = 'down'
+            else:
+                # IOS reports the admin state as down when the oper state
+                # (line protocol) is down. administratively down is what
+                # is administratively down.
+                entry['adminState'] = 'up'
 
             entry['macaddr'] = convert_macaddr_format_to_colon(
                 entry.get('macaddr', '0000.0000.0000'))
@@ -1063,14 +1073,12 @@ class InterfaceService(Service):
             entry['interfaceMac'] = convert_macaddr_format_to_colon(
                 entry.get('interfaceMac', '0000.0000.0000'))
 
-            lastChange = parse(
+            lastChange = parse_relative_timestamp(
                 entry.get('statusChangeTimestamp', ''),
-                settings={'RELATIVE_BASE':
-                          datetime.fromtimestamp(
-                              (raw_data[0]['timestamp'])/1000), })
+                raw_data[0]['timestamp'], ms=True)
+
             if lastChange:
-                entry['statusChangeTimestamp'] = int(lastChange.timestamp()
-                                                     * 1000)
+                entry['statusChangeTimestamp'] = lastChange
             if 'ipAddressList' not in entry:
                 entry['ipAddressList'] = []
                 entry['ip6AddressList'] = []
@@ -1126,8 +1134,17 @@ class InterfaceService(Service):
     def _clean_ios_data(self, processed_data, raw_data):
         return self._clean_iosxr_data(processed_data, raw_data)
 
-    def _clean_sonic_data(self, processed_data, raw_data):
-        return self._clean_cumulus_data(processed_data, raw_data)
+    def _clean_sonic_data(self, processed_data, _):
+
+        internal_ifnames = ['BFDRX', 'BFDTX', 'CPU', 'bcm0', 'dummy']
+
+        for entry in processed_data:
+            self._entry_cumulus_sonic_cleaner(entry)
+
+            if entry.get('ifname', '') in internal_ifnames:
+                entry['type'] = 'internal'
+
+        return processed_data
 
     def _common_data_cleaner(self, processed_data, _):
         for entry in processed_data:
