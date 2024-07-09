@@ -1,11 +1,11 @@
 Value Key,Required chassis_slot_port (\d\/\d+\/\d+[\w]*)
 Value admin_status (-|en|dis)
 Value autonego (-|en|dis)
-Value speed (-|Auto|10|100|1000|2500|5000|10000|21000|25000|40000|50000|100000)
+Value detected_speed (-|Auto|\d{0,})
 Value detected_duplex (-|Half|Full|Auto)
 Value detected_pause (-|Rx-N-Tx|Rx|Tx)
 Value detected_fec (-|FC|RS|DIS)
-Value configured_speed (-|Auto|10|100|1000|2500|5000|10000|21000|25000|40000|50000|100000)
+Value configured_speed (-|Auto|\d{0,})
 Value configured_duplex (-|Half|Full|Auto)
 Value configured_pause (-|Rx-N-Tx|Rx|Tx)
 Value configured_fec (AUTO|DIS|FC|RS)
@@ -19,5 +19,5 @@ Start
   ^[-+\+]+\s*$$ -> Interfaces
 
 Interfaces
-  ^\s*${chassis_slot_port}\s+${admin_status}\s+${autonego}\s+${speed}\s+${detected_duplex}\s+${detected_pause}\s+${detected_fec}\s+${configured_speed}\s+${configured_duplex}\s+${configured_pause}\s+${configured_fec}\s+${trap_linkupdown}\s+${eee}\s*$$ -> Record
+  ^\s*${chassis_slot_port}\s+${admin_status}\s+${autonego}\s+${detected_speed}\s+${detected_duplex}\s+${detected_pause}\s+${detected_fec}\s+${configured_speed}\s+${configured_duplex}\s+${configured_pause}\s+${configured_fec}\s+${trap_linkupdown}\s+${eee}\s*$$ -> Record
 #  ^. -> Error
