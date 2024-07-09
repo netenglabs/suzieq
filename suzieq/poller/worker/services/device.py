@@ -55,7 +55,7 @@ class DeviceService(Service):
                                       / 1000 - upsecs)
 
             entry['bootupTimestamp'] = bootupTimestamp
-            entry['memory'] = entry['available']
+            entry['memory'] = int(entry['available'])/1024
             entry['os'] = 'aos'
             entry['model'] = model
             entry['vendor'] = "Alcatel-Lucent Enterprise"
