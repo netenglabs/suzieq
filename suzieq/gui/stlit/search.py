@@ -1,4 +1,4 @@
-## Changes done in search updated new technologies
+## Changes done in search updated new technologies with suitable commands
 from collections import deque
 from dataclasses import dataclass, field
 from ipaddress import ip_address
