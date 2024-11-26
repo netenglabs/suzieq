@@ -1,7 +1,6 @@
 # Gathering Data: Poller
 
-To gather data from your network, you need to run the poller. We support gathering data from Arista EOS, Cisco's IOS, IOS-XE, and IOS-XR platforms, Cisco's NXOS, Cumulus Linux, Juniper's Junos(QFX, EX, MX and SRX platforms), Palo Alto's Panos (version 8.0 or higher, see the  [guide](./panos-support.md) and SoNIC devices, besides Linux servers.
-
+To gather data from your network, you need to run the poller. We support gathering data from Arista EOS, Cisco IOS, IOS-XE, and IOS-XR platforms, Cisco's NXOS, Cumulus Linux, Juniper's Junos(QFX, EX, MX and SRX platforms), Palo Alto's Panos (version 8.0 or higher, see the  [guide](./panos-support.md) and SoNIC devices, besides Linux 
 To start, launch the docker container, **netenglabs/suzieq:latest** and attach to it via the following steps:
 
 ```
