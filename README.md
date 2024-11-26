@@ -17,7 +17,7 @@ If you answered yes to one or more of these questions, then SuzieQ is a tool tha
 
 SuzieQ does multiple things. It [collects](https://suzieq.readthedocs.io/en/latest/poller/) data from devices and systems across your network. It normalizes the data and then stores it in a vendor independent way. Then it allows analysis of that data. With the applications that we build on top of the framework we want to demonstrate a different and more systematic approach to thinking about networks. We want to show how useful it is to think of your network holistically.
 
-**An enterprise version of SuzieQ is also available**. It has been deployed in production by multiple customers, and the company behind SuzieQ, (Stardust Systems)[https://stardustsystems.net] was named a "Cool Vendor" by Gartner for making network automation easy for enterprises. 
+**An enterprise version of SuzieQ is also available**. It has been deployed in production by multiple customers, and the company behind SuzieQ, [Stardust Systems](https://stardustsystems.net) was named a "Cool Vendor" by Gartner for making network automation easy for enterprises. 
 
 ## Quick Start
 
@@ -132,4 +132,4 @@ We've also been adding screencasts on [Youtube](https://www.youtube.com/results?
 
 # SuzieQ Enterprise
 
-SuzieQ also has a commercial offering, SuzieQ Enterprise. To know more about this and contact us, please visit the Stardust Systems (website)[https://stardustsystems.net].
+SuzieQ also has a commercial offering, SuzieQ Enterprise. To know more about this and contact us, please visit the Stardust Systems [website](https://stardustsystems.net).
