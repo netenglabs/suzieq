@@ -1,0 +1,12 @@
+Value vlan (\d+)
+Value port ((\d{1,2}\/)+\d*)
+Value type (default|tagged|untagged|qtagged|dynamic|mirror|mirrored|spb|unpUntag|unpQntag)
+Value status (inactive|forwarding|blocking)
+
+Start
+  ^\s*vlan\s+port\s+type\s+status\s*$$
+  ^[-+\+]+\s*$$ -> MEMBERS
+
+MEMBERS
+  ^\s+${vlan}\s+${port}\s+${type}\s+${status}$$ -> Record
+#  ^. -> Error

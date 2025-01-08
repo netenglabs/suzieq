@@ -8,6 +8,17 @@ show-fields:
   - interfaces
 
 apply:
+  aos:
+    version: all
+    merge: False
+    command:
+      - command: show vlan
+        textfsm: textfsm_templates/aos_show_vlan.tfsm
+        _entryType: vlan
+      - command: show vlan members
+        textfsm: textfsm_templates/aos_show_vlan_members.tfsm
+        _entryType: members
+
   cumulus:
     version: all
     command: /sbin/bridge -c vlan show

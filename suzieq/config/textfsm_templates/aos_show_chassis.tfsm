@@ -1,0 +1,30 @@
+Value Key,Required chassis ([1-8])
+Value model_name (.+)
+Value model_type (.+)
+Value description (.+)
+Value part_number (\d+-\d+)
+Value hardware_revision (\w+)
+Value serial_number (.+)
+Value manufacture_date (\w{3}\s+\d{1,2}\s\d{4})
+Value admin_status (.+)
+Value operational_status ([A-Z]+)
+Value number_of_resets (\d+)
+Value mac_address (([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]){2})
+
+Start
+  ^Local\sChassis\sID\s${chassis}\s\(Master\)$$ -> Chassis
+  ^Remote\sChassis\sID\s${chassis}\s\(Slave\)$$ -> Chassis
+
+Chassis
+  ^\s{2}Model Name:\s+${model_name},$$
+  ^\s{2}Module Type:\s+${model_type},$$
+  ^\s{2}Description:\s+${description},$$
+  ^\s{2}Part Number:\s+${part_number},$$
+  ^\s{2}Hardware Revision:\s+${hardware_revision},$$
+  ^\s{2}Serial Number:\s+${serial_number},$$
+  ^\s{2}Manufacture Date:\s+${manufacture_date},$$
+  ^\s{2}Admin Status:\s+${admin_status},$$
+  ^\s{2}Operational Status:\s+${operational_status},$$
+  ^\s{2}Number Of Resets:\s+${number_of_resets},$$
+  ^\s{2}MAC Address:\s+${mac_address}$$ -> Record Start
+#  ^. -> Error

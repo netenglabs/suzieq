@@ -6,6 +6,7 @@ from datetime import datetime, timezone
 import logging
 import random
 from http import HTTPStatus
+from itertools import chain
 import json
 import re
 import operator
@@ -29,6 +30,12 @@ from suzieq.shared.exceptions import (PollingError, SqPollerConfError,
 logger = logging.getLogger(__name__)
 
 IOS_TIME_AFTER_DISCOVERY = 60   # time to wait after ios(xe,xr) auto-discovery
+
+ERRMSG_TO_STATUS_MAP = {
+    'aos': [
+        (re.compile(r'.*[\r\n]?ERROR:\s*.*', re.IGNORECASE), 1)
+    ],
+}
 
 TNode = TypeVar('TNode', bound='Node')
 
@@ -342,13 +349,11 @@ class Node:
         await service_callback(result, cb_token)
 
     async def _parse_device_type_hostname(self, output, _) -> None:
-        devtype = ""
+        devtype = 'unsupported'
         hostname = None
         version_str = '0.0.0'   # default that's possibly never used
 
         if output[0]["status"] == 0:
-            # don't keep trying if we're connected to an unsupported dev
-            devtype = 'unsupported'
             data = output[0]["data"]
             version_str = data
 
@@ -389,7 +394,10 @@ class Node:
                     f'{self.address}: Got unrecognized device show version: '
                     f'{data}')
 
-            if devtype.startswith("junos"):
+            if devtype == "aos":
+                # We'll fill in the hostname when the node gets re-init
+                hostname = None
+            elif devtype.startswith("junos"):
                 hmatch = re.search(r'Hostname:\s+(\S+)\n', data)
                 if hmatch:
                     hostname = hmatch.group(1)
@@ -414,9 +422,7 @@ class Node:
                     hostname = hgrp.group(1)
                 else:
                     hostname = self.address
-
-        elif (len(output) > 1) and (output[1]["status"] == 0):
-            devtype = 'unsupported'
+        elif len(output) > 1 and output[1]["status"] == 0:
             data = output[1]["data"]
             if data:
                 if "Cumulus Linux" in data:
@@ -428,6 +434,11 @@ class Node:
                 # Hostname is the last line of the output
                 if len(data.strip()) > 0:
                     hostname = data.splitlines()[-1].strip()
+        elif len(output) > 2 and output[2]["status"] == 0:
+            data = output[2]["data"]
+            version_str = data
+            if 'Alcatel-Lucent' in data:
+                devtype = "aos"
 
         if devtype == 'unsupported':
             if not self.current_exception:
@@ -500,10 +511,13 @@ class Node:
         # There isn't that much of a difference in running two commands versus
         # running them one after the other as this involves an additional ssh
         # setup time. show version works on most networking boxes and
-        # hostnamectl on Linux systems. That's all we support today.
+        # cat /etc/os-release on Linux systems, while show system for AOS.
+        # That's all we support today. Do not revert the order since IOS*
+        # closes the connection after the first command.
         await self._exec_cmd(self._parse_device_type_hostname,
                              ["show version",
-                              "cat /etc/os-release && hostname"],
+                              "cat /etc/os-release && hostname",
+                              "show system"],
                              None, 'text', only_one=True)
 
     def _set_devtype(self, devtype: str, version_str: str) -> None:
@@ -524,7 +538,9 @@ class Node:
 
         if self.devtype != devtype:
             self.devtype = devtype
-            if self.devtype == "cumulus":
+            if self.devtype == "aos":
+                self.__class__ = AosNode
+            elif self.devtype == "cumulus":
                 self.__class__ = CumulusNode
             elif self.devtype == "eos":
                 self.__class__ = EosNode
@@ -905,6 +921,33 @@ class Node:
             f'from {next_time}'
         )
 
+    def _guess_cmd_status_code(self, output: str, status_code: int) -> int:
+        """Some devices always return status code 0 even when an error
+        occurred. This function uses the regex stored in ERRMSG_TO_STATUS_MAP
+        to guess a better and more standard status code given the output.
+        When the device has not already been discovered, it will try all the
+        available regex until one matches. While when the device is known, we
+        get only the device-specific regex.
+
+        Args:
+            output (str): the output of the command.
+            status_code (int): the status code of the command
+
+        Returns:
+            int: the status code detected from the output.
+        """
+        if not self.devtype:
+            patterns = chain.from_iterable(ERRMSG_TO_STATUS_MAP.values())
+        else:
+            patterns = ERRMSG_TO_STATUS_MAP.get(self.devtype)
+
+        if patterns:
+            for p, p_exit_code in patterns:
+                if re.match(p, output):
+                    return p_exit_code
+
+        return status_code
+
     # pylint: disable=unused-argument
     async def _ssh_gather(self, service_callback: Callable,
                           cmd_list: List[str], cb_token: RsltToken,
@@ -959,9 +1002,14 @@ class Node:
                             '%s recovered from previous exception',
                             self.hostname)
                         self.current_exception = None
+
+                    exit_status = self._guess_cmd_status_code(
+                        output.stdout,
+                        output.exit_status
+                    )
                     result.append(self._create_result(
-                        cmd, output.exit_status, output.stdout, cmd_timestamp))
-                    if (output.exit_status == 0) and only_one:
+                        cmd, exit_status, output.stdout, cmd_timestamp))
+                    if exit_status == 0 and only_one:
                         break
                 except Exception as e:
                     self.current_exception = e
@@ -1517,6 +1565,59 @@ class EosNode(Node):
                 self.version = "all"
         else:
             self.version = data['version']
+
+
+class AosNode(Node):
+    '''Alcatel AOS Node-specific implementation'''
+
+    async def _rest_connect(self):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
+    async def _rest_gather(self, service_callback, cmd_list, cb_token,
+                           oformat='json', timeout=None, reconnect=True):
+        raise NotImplementedError(
+            f'{self.address}: REST transport is not supported')
+
+    async def _parse_init_dev_data_devtype(self, output, cb_token) -> None:
+
+        if output[0]['status'] == 0:
+            data = output[0]['data']
+
+            # Extract hostname
+            hname = re.search(r'\s+Name:\s+(\S+),', data)
+            hostname = hname.group(1)
+
+            if hostname:
+                self._set_hostname(hostname)
+
+            uptime_result = re.search(r'\s+Up Time:\s+(\d{1,3})\s'
+                                      r'days\s(\d{1,2})\s'
+                                      r'hours\s(\d{1,2})\s'
+                                      r'minutes\sand\s(\d{1,2})\s'
+                                      r'seconds,',
+                                      data)
+            days = uptime_result.group(1).strip()
+            hours = uptime_result.group(2).strip()
+            minutes = uptime_result.group(3).strip()
+            seconds = uptime_result.group(4).strip()
+            upsecs = 86400 * int(days) + 3600 * int(hours) + \
+                60 * int(minutes) + int(seconds)
+            self.bootupTimestamp = int(
+                        int(time.time()*1000) - float(upsecs)*1000)
+
+            self._extract_nos_version(data)
+
+    async def _fetch_init_dev_data_devtype(self, reconnect: bool):
+        """Fill in the boot time of the node by executing certain cmds"""
+        await self._exec_cmd(self._parse_init_dev_data,
+                             ["show system"], None, 'text',
+                             reconnect=reconnect)
+
+    def _extract_nos_version(self, data: str) -> None:
+        version_result = re.search(r'((\d+\.){3,}.*?(?=,))', data)
+        version = version_result.group(1)
+        self.version = version
 
 
 class CumulusNode(Node):

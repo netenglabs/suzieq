@@ -6,23 +6,26 @@ is the BGP data
 that the bgp service collects from routers. To see what information is collected for each table, you can use the ```<table> describe``` (```bgp describe``` for example) via suzieq-cli to get the details. To see the list of tables, you can type ```help``` in suzieq-cli or run ```suzieq-cli --help```.
 
 
-|         | Cumulus Linux | Arista EOS | Linux | Cisco NXOS | Juniper JunOS<sup>1<sup> | SONIC | IOSXR | IOS | IOSXE | PanOS |
-| :---------: | :---------------: | :------------: | :-------: | :------: | :-------: | :-------: | :-------: | :-------: | :-------: | :-------: |
-| Arpnd   |    yes        |      yes   | yes   | yes  |  yes  | yes | yes | yes | yes | yes |
-| BGP     | yes | yes | yes | yes | yes | yes | yes | yes | yes | yes |
-| Device  | yes | yes | yes | yes | yes |  yes | yes | yes | yes |  yes |
-| EvpnVni | yes | yes | no | yes<sup>2<sup> | yes | yes | no | no | no | no |
-| Filesystem (fs) | yes | no | yes | no | yes | yes | yes | no | no | no |
-| Interfaces | yes | yes | yes| yes | yes | yes | yes | yes | yes | yes |
-| Inventory | no | yes | no | yes | yes | no | no | no | no | no |
-| LLDP | yes | yes | yes | yes | yes | yes | yes | yes | yes | yes |
-| CDP  | no | no | no | yes | no | no | no | yes | yes | no |
-| Macs |yes | yes | yes | yes | yes | yes | no | yes | yes | no |
-| MLAG | yes | yes | no | yes | no | no | no | no | no | no |
-| Ospf |yes | yes | yes | yes | yes | yes | no | yes | yes | no |
-| Routes | yes | yes | yes | yes | yes<sup>3<sup> | yes | yes | yes | yes | yes |
-| sqPoller | yes | yes | yes | yes | yes | yes | yes | yes | yes | yes |
-| VLAN | yes | yes | yes | yes | yes | yes | no | yes | yes | no |
+|         | Cumulus Linux | Alcatel AOS8 | Arista EOS | Linux | Cisco NXOS | Juniper JunOS | SONIC | IOSXR | IOS | IOSXE | PanOS |
+| :---------: | :---------: | :---------------: | :------------: | :-------: | :------: | :-------: | :-------: | :-------: | :-------: | :-------: | :-------: |
+| Arpnd   |    yes        | yes |      yes   | yes   | yes  |  yes  | yes | yes | yes | yes | yes |
+| BGP     | yes | no | yes | yes | yes | yes | yes | yes | yes | yes | yes |
+| Device  | yes | yes | yes | yes | yes | yes |  yes | yes | yes | yes |  yes |
+| EvpnVni         | no | yes | yes | no | yes* | yes | yes | no | no | no | no |
+| Filesystem (fs) | yes | no | yes | yes | yes | no | yes | no | no | no | no |
+| IfCounters      | yes | no |  yes | yes | no | no | yes | no | no | no | no |
+| Interfaces  | yes | yes | yes | yes| yes | yes | yes | yes | yes | yes | yes |
+| Inventory   | no | yes | yes | no | yes | yes | no | no | no | no | no |
+| LLDP | yes | no | yes | yes | yes | yes | yes | yes | yes | yes | yes |
+| CDP  | no | no | no | no | yes | no | no | no | yes | yes | no |
+| Macs |yes | yes | yes | yes | yes | yes | yes | no | yes | yes | no |
+| MLAG | yes | no | yes | no | yes | no | no | no | no | no | no |
+| Ospf |yes | no | yes | yes | yes | yes | yes | no | yes | yes | no |
+| Routes | yes | yes | yes | yes | yes | yes | yes | yes | yes | yes | yes |
+| sqPoller | yes | yes | yes | yes | yes | yes | yes | yes | yes | yes | yes |
+| Topcpu | yes | no | yes | yes | yes | no | yes | no | no | no | no |
+| Topmem | yes | no | yes | yes | no | no | yes | no | no | no | no |
+| VLAN | yes | yes | yes | yes | yes | yes | yes | no | yes | yes | no |
 
 1. Junos supported devices includes MX, QFX, QFX10K, EX, SRX, and EVO.
 2. EVPN support for NXOS requires version 9.3.3 or above, please reach out if you're using older versions of NXOS

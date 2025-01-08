@@ -1,0 +1,17 @@
+Value domain (VLAN|SPB|VXLAN|L2GRE)
+Value id (([\d]+(:[\d+]+)?))
+Value mac_address (([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]){2})
+Value type (dynamic|static|bmac)
+Value operation (bridging|filtering|servicing|quarantined)
+Value interface ((sap:|sdp:)?((\d+\/\d+\/\d+(\w)?)|(\d\/\d+)|(\d+))(:\d+)?)
+
+Start
+  ^Legend: Mac Address: \* = address not valid,$$
+  ^\s+     Mac Address: \& = duplicate static address,$$ 
+  ^   Domain    Vlan/SrvcId[ISId/vnId]     Mac Address           Type          Operation          Interface$$
+  ^[-+\+]+\s*$$ -> Mac
+
+Mac
+  ^\s+${domain}\s+${id}\s+${mac_address}\s+${type}\s+${operation}\s+${interface}\s*$$ -> Record
+  ^\s+Total number of Valid MAC addresses above = (\d+)
+#  ^. -> Error

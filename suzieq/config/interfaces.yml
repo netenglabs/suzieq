@@ -13,6 +13,29 @@ show-fields:
   - ip6AddressList
 
 apply:
+  aos:
+    version: all
+    merge: false
+    command:
+      - command: show interfaces status
+        textfsm: textfsm_templates/aos_show_interfaces_status.tfsm
+        _entryType: interfaces_status
+      - command: show interfaces
+        textfsm: textfsm_templates/aos_show_interfaces.tfsm
+        _entryType: interfaces
+      - command: show vlan members
+        textfsm: textfsm_templates/aos_show_vlan_members.tfsm
+        _entryType: members
+      - command: show ip interface
+        textfsm: textfsm_templates/aos_show_ip_interface.tfsm
+        _entryType: ip_interface
+      - command: show linkagg
+        textfsm: textfsm_templates/aos_show_linkagg.tfsm
+        _entryType: linkagg
+      - command: show linkagg port
+        textfsm: textfsm_templates/aos_show_linkagg_port.tfsm
+        _entryType: linkagg_ports
+
   cumulus:
     version: all
     command: sudo vtysh -c "show int vrf all"; ip -d address show

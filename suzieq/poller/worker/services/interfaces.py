@@ -66,6 +66,180 @@ class InterfaceService(Service):
         """Return speed value or a missing value for textfsm retrieved data"""
         return self._speed_field_check(entry, '')
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry_new = []
+        entry_interfaces_status = []
+        entry_interfaces = []
+        entry_vlan_members = []
+        entry_ip_interface = []
+        # entry_linkagg_ports = []
+
+        entry_interfaces_status = [
+            item for item in processed_data
+            if item.get('_entryType') == 'interfaces_status'
+        ]
+        entry_interfaces = [
+            item for item in processed_data
+            if item.get('_entryType') == 'interfaces'
+        ]
+        entry_ip_interface = [
+            item for item in processed_data
+            if item.get('_entryType') == 'ip_interface'
+        ]
+        entry_vlan_members = [
+            item for item in processed_data
+            if item.get('_entryType') == 'members'
+        ]
+        entry_linkagg = [
+            item for item in processed_data
+            if item.get('_entryType') == 'linkagg'
+        ]
+        # entry_linkagg_ports = [
+        #     item for item in processed_data
+        #     if item.get('_entryType') == 'linkagg_ports'
+        # ]
+
+        # linkagg interfaces
+        for linkagg in entry_linkagg:
+
+            entry_dict = {}
+
+            if linkagg['admin_state'] == "ENABLED":
+                adminState = "up"
+            else:
+                adminState = "down"
+
+            ifname = "0/" + linkagg['number']
+            state = linkagg['oper_state']
+
+            vlans = [
+                vlan_member['vlan'] for vlan_member in entry_vlan_members
+                if vlan_member['port'] == ifname
+                if vlan_member['type'] in ["default", "untagged"]
+            ]
+            vlanList = [
+                vlan_member['vlan'] for vlan_member in entry_vlan_members
+                if vlan_member['port'] == ifname
+                if vlan_member['type'] in ["unpUntag", "tagged", "qtagged"]
+            ]
+
+            if len(vlans) < 1:
+                vlan = "None"
+            else:
+                vlan = vlans[0]
+
+            if len(vlanList) < 1:
+                vlanList = "None"
+
+            entry_dict = {
+                'adminState': str(adminState).lower(),
+                'ifname': str(ifname).lower(),
+                'state': str(state).lower(),
+                'type': 'bond',
+                'vlan': vlan,
+                'vlanList': vlanList
+            }
+
+            entry_new.append(entry_dict)
+
+        # vlan interfaces
+        for ip_interface in entry_ip_interface:
+
+            entry_dict = {}
+            ip_address = []
+
+            adminState = ip_interface['status']
+            device = ip_interface['device']
+            forward = ip_interface['forward']
+            ifname = ip_interface['name']
+            ip_address.append(ip_interface['ip_address'])
+
+            if forward == "YES":
+                state = "up"
+            else:
+                state = "down"
+
+            if "vlan" in device or "service" in device:
+                device = str(device).split()
+                interface_type = device[0]
+                vlan = device[1]
+            else:
+                interface_type = device
+                vlan = ""
+
+            if "EMP" in device:
+                interface_type = 'ethernet'
+
+            entry_dict = {
+                'adminState': str(adminState).lower(),
+                'ifname': str(ifname).lower(),
+                'ipAddressList': ip_address,
+                'state': str(state).lower(),
+                'type': str(interface_type).lower(),
+                'vlan': vlan
+            }
+
+            entry_new.append(entry_dict)
+
+        # ethernet interfaces
+        for interfaces_status, interfaces \
+                in zip(entry_interfaces_status, entry_interfaces):
+
+            entry_dict = {}
+
+            adminState = interfaces_status['admin_status']
+            ifname = interfaces_status['chassis_slot_port']
+            interfaceMac = interfaces['mac_address']
+            mtu = interfaces['long_frame_size']
+            numChanges = interfaces['number_of_status_change']
+            reason = interfaces['port_down_violation_reason']
+            speed = self._textfsm_valid_speed_value(interfaces_status)
+            state = interfaces['operation_status']
+            type_int = interfaces['type']
+
+            vlans = [
+                vlan_member['vlan'] for vlan_member in entry_vlan_members
+                if vlan_member['port'] == ifname
+                if vlan_member['type'] in ["default", "untagged"]
+            ]
+            vlanList = [
+                vlan_member['vlan'] for vlan_member in entry_vlan_members
+                if vlan_member['port'] == ifname
+                if vlan_member['type'] in ["unpUntag", "tagged", "qtagged"]
+            ]
+
+            if len(vlans) < 1:
+                vlan = "None"
+            else:
+                vlan = vlans[0]
+
+            if len(vlanList) < 1:
+                vlanList = "None"
+
+            if adminState == "en":
+                adminState = "up"
+            else:
+                adminState = "down"
+
+            entry_dict = {
+                'adminState': adminState,
+                'ifname': ifname,
+                'interfaceMac': interfaceMac,
+                'mtu': mtu,
+                'numChanges': numChanges,
+                'reason': reason,
+                'speed': speed,
+                'state': state,
+                'type': str(type_int).lower(),
+                'vlan': vlan,
+                'vlanList': vlanList
+            }
+
+            entry_new.append(entry_dict)
+
+        return entry_new
+
     def _clean_eos_data(self, processed_data, _):
         """Clean up EOS interfaces output"""
 
@@ -73,7 +247,7 @@ class InterfaceService(Service):
         drop_indices = []
         vlan_entries = {}       # Needed to fix the anycast MAC entries
 
-        # pylint: disable=too-many-nested-blocks
+        # pylint: disable=too-many-nested-blockss
         for i, entry in enumerate(processed_data):
 
             if entry['type'] == 'vrf':
