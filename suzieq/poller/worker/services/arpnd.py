@@ -51,7 +51,8 @@ class ArpndService(Service):
                 entry['remote'] = True
             if entry['oif']:
                 entry['oif'] = re.sub(r' \[.*\]', '', entry['oif'])
-            entry['state'] = 'reachable'
+            if not entry.get('state', None):
+                entry['state'] = 'reachable'
             if not entry.get('macaddr', None):
                 entry['macaddr'] = '00:00:00:00:00:00'
 
