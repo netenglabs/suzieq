@@ -12,6 +12,7 @@ import operator
 from urllib.parse import urlparse
 import asyncio
 from asyncio.subprocess import PIPE, DEVNULL
+import os
 # pylint: disable=redefined-builtin
 from concurrent.futures._base import TimeoutError
 
@@ -634,6 +635,21 @@ class Node:
                 options=options,
                 config=[self.ssh_config_file],
             )
+
+        if self.pvtkey_file:
+            cert_file = f"{self.pvtkey_file}-cert.pub"
+            if os.path.isfile(cert_file):
+                self.logger.debug(f"Using SSH cert file: {cert_file}")
+                client_keys = [self.pvtkey, cert_file]
+            else:
+                client_keys = self.pvtkey
+        else:
+            client_keys = None
+
+        options = asyncssh.SSHClientConnectionOptions(
+            options=options,
+            client_keys=client_keys,
+        )
 
         return options
 
