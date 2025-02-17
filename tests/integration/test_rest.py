@@ -244,6 +244,12 @@ GOOD_FILTER_EMPTY_RESULT_FILTER = [
     'interface/summarize?macaddr=4439.39FF.4095',
     'interface/assert?macaddr=4439.39ff.4095',
     'interface/assert?macaddr=44:39:39:ff:00:13&macaddr=44:39:39:ff:00:24',
+    'device/summarize?address=172.16.1.101',
+    'device/show?address=172.16.1.101',
+    'device/summarize?address=10.0.0.11',
+    'device/summarize?address=10.0.0.11&view=all',
+    'device/show?address=10.0.0.11',
+    'device/show?address=10.0.0.11&view=all'
 ]
 
 GOOD_SERVICE_VERBS = {

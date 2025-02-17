@@ -168,3 +168,12 @@ tests:
   data-directory: tests/data/parquet/
   marks: device show filter junos
   output: '[{"version": "19.4R1.10"}]'
+- command: device show --format=json --namespace=junos --address='10.255.5.118 10.255.5.117'
+  data-directory: tests/data/parquet/
+  marks: device show junos
+  output: '[{"namespace": "junos", "hostname": "spine01", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "serialNumber": "38645725387", "status": "alive",
+    "address": "10.255.5.117", "bootupTimestamp": 1622997977.081, "timestamp": 1623025799081},
+    {"namespace": "junos", "hostname": "spine02", "model": "vqfx-10000", "version":
+    "19.4R1.10", "vendor": "Juniper", "serialNumber": "05518142768", "status": "alive",
+    "address": "10.255.5.118", "bootupTimestamp": 1622998003.357, "timestamp": 1623025799357}]'
