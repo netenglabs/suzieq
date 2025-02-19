@@ -15,7 +15,7 @@ from itertools import groupby
 from logging.handlers import RotatingFileHandler
 from os import getenv
 from time import time
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional, Union, Tuple
 
 import pandas as pd
 import psutil
@@ -1229,3 +1229,28 @@ def log_suzieq_info(name: str, c_logger: logging.Logger = None,
             'higher with 4 cores and 16 GB RAM')
     if prev_level > logging.INFO:
         c_logger.setLevel(prev_level)
+
+def set_rest_engine(cfg:Dict[str, Any]) -> Tuple:
+    """Unpack the rest configuration from the cfg object. It is used to switch
+    to rest engine with the right config params
+
+    Args:
+        cfg (dict): the configuration object.
+
+    Returns:
+        tuple:
+            rest_server_ip
+            rest_server_port
+            rest_transport
+            rest_api_key            
+    """
+    restcfg = cfg.get('rest', {})
+    rest_server_ip = restcfg.get('address', '127.0.0.1')
+    rest_server_port = restcfg.get('port', '80')
+    if restcfg.get('no-https', False):
+        rest_transport = 'http'
+    else:
+        rest_transport = 'https'
+    rest_api_key = restcfg.get('API_KEY', '')
+
+    return rest_server_ip, rest_server_port, rest_transport, rest_api_key
