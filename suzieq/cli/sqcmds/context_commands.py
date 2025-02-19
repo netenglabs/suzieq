@@ -7,7 +7,9 @@ from prompt_toolkit.completion import Completion
 from termcolor import cprint, colored
 
 from suzieq.cli.nubia_patch import argument
-from suzieq.shared.utils import SUPPORTED_ENGINES, print_version
+from suzieq.shared.utils import SUPPORTED_ENGINES,\
+                                print_version,\
+                                set_rest_engine
 
 
 @command("set")
@@ -86,7 +88,13 @@ def set_ctxt(
         ctxt.end_time = end_time
 
     if engine:
-        plugin_ctx.change_engine(engine)
+        if ctxt.engine != engine:
+            if engine == 'rest':
+                ctxt.rest_server_ip,\
+                ctxt.rest_server_port,\
+                ctxt.rest_transport,\
+                ctxt.rest_api_key = set_rest_engine(ctxt.cfg)
+            plugin_ctx.change_engine(engine)
 
     if debug:
         ctxt.debug = debug == 'True'
