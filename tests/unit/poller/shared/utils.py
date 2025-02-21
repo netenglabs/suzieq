@@ -1,6 +1,4 @@
 import random
-import socket
-from contextlib import closing
 from pathlib import Path
 from typing import Any, Dict, Tuple
 
@@ -119,15 +117,3 @@ def read_yaml_file(path: str) -> Any:
     if not file_path.is_file():
         raise RuntimeError(f'Invalid file to read {path}')
     return yaml.safe_load(open(file_path, 'r'))
-
-
-def get_free_port() -> int:
-    """Return a free port
-
-    Returns:
-        int: free port
-    """
-    with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
-        s.bind(('', 0))
-        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
-        return s.getsockname()[1]
