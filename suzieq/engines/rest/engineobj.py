@@ -2,6 +2,7 @@ from typing import Type, Dict
 import urllib
 import requests
 import urllib3
+import os
 
 import pandas as pd
 
@@ -105,7 +106,15 @@ class SqRestEngine(SqEngineObj):
             f'{query_params}')
 
         # pylint: disable=missing-timeout
-        response = requests.get(url, verify=None)
+        cert_verify = self.ctxt.cfg.get('rest', {}).get('cert-verify', True)
+
+        if isinstance(cert_verify, (str, bool)) is False:
+            raise TypeError('cert_verify must be a boolean or a string')
+        elif isinstance(cert_verify, str):
+            if not os.path.exists(os.path.dirname(cert_verify)):
+                raise ValueError('cert_verify path does not exist')
+
+        response = requests.get(url, verify=cert_verify)
         if response.status_code != 200:
             if response.text:
                 msg = response.json().get("detail", str(response.status_code))
