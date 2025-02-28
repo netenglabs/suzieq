@@ -15,15 +15,21 @@ on:
 jobs:
   pre-commit:
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install poetry
+        run: pipx install poetry==1.*
 
       - name: Set up Python 3.8
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.8'
-          architecture: 'x64'
+          cache: 'poetry'
+
+      - name: Install dependencies and library
+        run: poetry install --no-interaction
 
       - name: Install pre-commit
         run: pip install pre-commit
