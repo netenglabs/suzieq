@@ -1,14 +1,17 @@
 import re
+from dataclasses import dataclass
 from tempfile import NamedTemporaryFile
+from typing import Dict
 from unittest.mock import MagicMock, patch
 
 import pytest
+
+from suzieq.cli.sqcmds import context_commands
+from suzieq.shared.context import SqContext
 from suzieq.shared.utils import (get_sq_install_dir, load_sq_config,
                                  validate_sq_config)
 from tests.conftest import create_dummy_config_file
-from suzieq.shared.context import SqContext
-from suzieq.cli.sqcmds import context_commands
-from dataclasses import dataclass
+
 
 @pytest.mark.sq_config
 def test_valid_sq_config():
@@ -94,14 +97,17 @@ def test_config_validation(monkeypatch):
     assert error is None, error
 
 
-@ pytest.mark.sq_config
-@ pytest.mark.rest
-def test_config_rest():
-    #with pandas engine
-    cfg = {'rest': {}}
+@pytest.mark.sq_config
+@pytest.mark.rest
+def test_config_rest() -> None:
+    """
+        Test config file
+    """
+    # with pandas engine
+    cfg: Dict = {'rest': {}}
 
     ctxt = SqContext(cfg=cfg)
-    #check that the default value are the same
+    # check that the default value are the same
     assert ctxt.rest_transport == 'https'
     assert ctxt.rest_server_ip == '127.0.0.1'
     assert ctxt.rest_server_port == 8000
@@ -113,7 +119,7 @@ def test_config_rest():
     cfg['rest']['address'] = '0.0.0.0'
     cfg['rest']['port'] = 8000
     cfg['rest']['no-https'] = True
-    cfg['ux']= {'engine': 'rest'}
+    cfg['ux'] = {'engine': 'rest'}
 
     ctxt = SqContext(cfg=cfg)
     assert ctxt.rest_transport == 'http'
@@ -122,7 +128,7 @@ def test_config_rest():
     assert ctxt.rest_api_key == '496157e6e869ef7f3d6ecb24a6f6d847b224ee4f'
     assert ctxt.engine == 'rest'
 
-    #https with rest engine
+    # https with rest engine
     cfg['rest']['no-https'] = False
     ctxt = SqContext(cfg=cfg)
     assert ctxt.rest_transport == 'https'
@@ -132,12 +138,12 @@ def test_config_rest():
     assert ctxt.engine == 'rest'
 
 
-
-
-
-@ pytest.mark.sq_config
-@ pytest.mark.rest
+@pytest.mark.sq_config
+@pytest.mark.rest
 def test_context_commands_context(monkeypatch):
+    """
+        test context
+    """
     CTXT_REST_ATTRS = {
                 'rest_server_ip': 'address',
                 'rest_server_port': 'port',
@@ -147,7 +153,7 @@ def test_context_commands_context(monkeypatch):
     @dataclass
     class fake_ctxt_class():
         engine = 'rest'
-        cfg = {'rest': 
+        cfg = {'rest':
                {
                 'address': '0.0.0.0',
                 'port': '8000',
@@ -169,8 +175,7 @@ def test_context_commands_context(monkeypatch):
     def fake_get_context():
         return fake_context_class()
 
-
-    #sending set engine: rest when is already selected, nothing should change
+    # sending set engine: rest when is already selected, nothing should change
     monkeypatch.setattr(context_commands.context,
                         'get_context',
                         fake_get_context)
@@ -185,8 +190,7 @@ def test_context_commands_context(monkeypatch):
     assert getattr(context_commands.context.get_context().ctxt,
                    'rest_transport') == 'test_rest_transport'
 
-
-    #sending set engine: rest when is selected engine: pandas with http  
+    # sending set engine: rest when is selected engine: pandas with http  
     fake_context_class.ctxt.engine = 'pandas'
     monkeypatch.setattr(context_commands.context,
                         'get_context',
@@ -194,18 +198,17 @@ def test_context_commands_context(monkeypatch):
     context_commands.set_ctxt(engine='rest')
     assert context_commands.context.get_context().ctxt.engine == 'rest'
     for attr in CTXT_REST_ATTRS:
-        #get the expexted value of the rest param
+        # get the expexted value of the rest param
         expected_value = fake_ctxt_class.cfg['rest'][CTXT_REST_ATTRS[attr]]
         if CTXT_REST_ATTRS[attr] == 'no-https':
-            expected_value = 'http' if expected_value == True else 'https'
-        #check if all the rest attr match
+            expected_value = 'http' if expected_value is True else 'https'
+        # check if all the rest attr match
         assert getattr(
             context_commands.context.get_context().ctxt,
             attr) == expected_value, f'{attr} value shold be {expected_value},\
             not {getattr(context_commands.context.get_context().ctxt, attr)}'
 
-    
-    #sending set engine: rest when is selected engine: pandas with https
+    # sending set engine: rest when is selected engine: pandas with https
     fake_context_class.ctxt.engine = 'pandas'
     fake_ctxt_class.cfg['rest']['no-https'] = False
     monkeypatch.setattr(context_commands.context,
@@ -214,11 +217,11 @@ def test_context_commands_context(monkeypatch):
     context_commands.set_ctxt(engine='rest')
     assert context_commands.context.get_context().ctxt.engine == 'rest'
     for attr in CTXT_REST_ATTRS:
-        #get the expexted value of the rest param
+        # get the expexted value of the rest param
         expected_value = fake_ctxt_class.cfg['rest'][CTXT_REST_ATTRS[attr]]
         if CTXT_REST_ATTRS[attr] == 'no-https':
-            expected_value = 'http' if expected_value == True else 'https'
-        #check if all the rest attr match
+            expected_value = 'http' if expected_value is True else 'https'
+        # check if all the rest attr match
         assert getattr(
             context_commands.context.get_context().ctxt,
             attr) == expected_value, f'{attr} value shold be {expected_value},\

@@ -34,10 +34,10 @@ class SqContext:
         if not self.engine:
             self.engine = self.cfg.get('ux', {}).get('engine', 'pandas')
             if self.engine == 'rest':
-                self.rest_server_ip,\
-                self.rest_server_port,\
-                self.rest_transport,\
-                self.rest_api_key = set_rest_engine(self.cfg)
+                self.rest_server_ip, \
+                 self.rest_server_port, \
+                 self.rest_transport, \
+                 self.rest_api_key = set_rest_engine(self.cfg)
 
         if self.engine not in SUPPORTED_ENGINES:
             raise ValueError(f'Engine {self.engine} not supported')

@@ -1230,7 +1230,8 @@ def log_suzieq_info(name: str, c_logger: logging.Logger = None,
     if prev_level > logging.INFO:
         c_logger.setLevel(prev_level)
 
-def set_rest_engine(cfg:Dict[str, Any]) -> Tuple:
+
+def set_rest_engine(cfg: Dict[str, Any]) -> Tuple:
     """Unpack the rest configuration from the cfg object. It is used to switch
     to rest engine with the right config params
 
@@ -1242,7 +1243,7 @@ def set_rest_engine(cfg:Dict[str, Any]) -> Tuple:
             rest_server_ip
             rest_server_port
             rest_transport
-            rest_api_key            
+            rest_api_key
     """
     restcfg = cfg.get('rest', {})
     rest_server_ip = restcfg.get('address', '127.0.0.1')
