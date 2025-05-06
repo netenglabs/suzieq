@@ -1,21 +1,19 @@
+import os
+import subprocess
 from dataclasses import dataclass
 from itertools import combinations
+from tempfile import mkstemp
+from time import sleep
 from typing import Dict
 from urllib.parse import parse_qs, urlparse
 
 import pytest
-from requests.exceptions import ConnectionError
-from suzieq.engines.rest.engineobj import SqRestEngine
-from time import sleep
-import subprocess
-import os
-
 import yaml
-import pytest
+from requests.exceptions import ConnectionError
 
-from tests.conftest import suzieq_rest_server_path
+from suzieq.engines.rest.engineobj import SqRestEngine
 from suzieq.shared.utils import load_sq_config
-from tests.conftest import get_free_port
+from tests.conftest import get_free_port, suzieq_rest_server_path
 
 
 @dataclass
@@ -81,10 +79,10 @@ def validate_args(engine: SqRestEngine, params: Dict):
 
         # check query parameters
         url_query = parse_qs(url.query)
-        for query_param, query_value in url_query.items():
-            assert len(query_value) == 1, \
+        for query_param, query_values in url_query.items():
+            assert len(query_values) == 1, \
                 f'Got more than 1 value for {query_param}'
-            query_value = query_value[0]
+            query_value = query_values[0]
             if query_param == 'access_token':
                 # access_token needs a special validation
                 assert query_value == engine.ctxt.rest_api_key, \
@@ -122,13 +120,11 @@ def test_request_params():
             validate_args(engine, req_params)
 
 
-
 @pytest.mark.rest
 @pytest.mark.skipif(not os.environ.get('TEST_SERVER', None),
                     reason='causes github action hang')
 def test_server_cert():
     '''Can we can get a valid response with & without certificate'''
-    from tempfile import mkstemp
 
     # We need to change the port used to avoid conflicts
     config = {'data-directory': './tests/data/parquet',
@@ -172,40 +168,36 @@ def test_server_cert():
 
     def make_get_response_request(sqcfg):
         ctxt = SqContextMock(
-        rest_api_key=sqcfg['rest']['API_KEY'],
-        rest_transport= \
-            'http' if sqcfg['rest']['no-https'] == True else 'https',
-        rest_server_ip=sqcfg['rest']['address'],
-        rest_server_port=sqcfg['rest']['port'],
-        cfg={'rest': sqcfg['rest']})
+            rest_api_key=sqcfg['rest']['API_KEY'],
+            rest_transport='http' if sqcfg['rest']['no-https'] is True
+                           else 'https',
+            rest_server_ip=sqcfg['rest']['address'],
+            rest_server_port=sqcfg['rest']['port'],
+            cfg={'rest': sqcfg['rest']})
 
         sqobj = SqObjMock(ctxt, '', '', 'default',
-                        'default', 'latest', 'device', 'default')
+                          'default', 'latest', 'device', 'default')
 
-        print(ctxt)                                                                           
-        print(sqobj)
         engine = SqRestEngine(sqobj)
         try:
             response = engine._get_response('show')
             print(f'responsein test: {response}')
             return 200
-        except:
+        except Exception:
             return 400
-
 
     def close_session(proc, cfgfile):
         proc.kill()
         os.remove(cfgfile)
 
-    #test with http verify None
+    # test with http verify None
     sqcfg, cfgfile = create_config(config)
     proc = open_rest_server(cfgfile)
     response = make_get_response_request(sqcfg)
     assert response == 200
     close_session(proc, cfgfile)
 
-
-    #test with https verify None
+    # test with https verify None
     config['rest']['no-https'] = False
     sqcfg, cfgfile = create_config(config)
     proc = open_rest_server(cfgfile)
@@ -213,8 +205,7 @@ def test_server_cert():
     assert response == 400
     close_session(proc, cfgfile)
 
-
-    #test with https verify False
+    # test with https verify False
     config['rest']['cert-verify'] = False
     sqcfg, cfgfile = create_config(config)
     proc = open_rest_server(cfgfile)
@@ -222,8 +213,7 @@ def test_server_cert():
     assert response == 200
     close_session(proc, cfgfile)
 
-
-    #test with https verify True
+    # test with https verify True
     config['rest']['cert-verify'] = True
     sqcfg, cfgfile = create_config(config)
     proc = open_rest_server(cfgfile)
@@ -231,8 +221,7 @@ def test_server_cert():
     assert response == 400
     close_session(proc, cfgfile)
 
-
-    #test with https verify CA
+    # test with https verify CA
     config['rest']['cert-verify'] =\
         './tests/test_cert_CA/ca-cert.pem'
     sqcfg, cfgfile = create_config(config)

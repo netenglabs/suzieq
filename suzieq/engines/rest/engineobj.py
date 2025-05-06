@@ -1,10 +1,10 @@
-from typing import Type, Dict
-import urllib
-import requests
-import urllib3
 import os
+import urllib
+from typing import Dict, Type
 
 import pandas as pd
+import requests
+import urllib3
 
 from suzieq.engines.base_engine import SqEngineObj
 
@@ -110,7 +110,7 @@ class SqRestEngine(SqEngineObj):
 
         if isinstance(cert_verify, (str, bool)) is False:
             raise TypeError('cert_verify must be a boolean or a string')
-        elif isinstance(cert_verify, str):
+        if isinstance(cert_verify, str):
             if not os.path.exists(os.path.dirname(cert_verify)):
                 raise ValueError('cert_verify path does not exist')
 
