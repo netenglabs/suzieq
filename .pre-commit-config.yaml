@@ -8,3 +8,17 @@ repos:
     hooks:
       - id: end-of-file-fixer
       - id: mixed-line-ending
+  - repo: local
+    hooks:
+      - id: system
+        name: Pylint
+        entry: poetry run pylint -j 0 suzieq
+        pass_filenames: false
+        language: system
+  - repo: local
+    hooks:
+      - id: system
+        name: Flake8
+        entry: poetry run flake8 suzieq
+        pass_filenames: false
+        language: system

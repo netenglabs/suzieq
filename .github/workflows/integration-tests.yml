@@ -20,31 +20,19 @@ jobs:
         python-version: [3.8, 3.9]
         group: [1, 2, 3, 4]
     steps:
-    - uses: actions/checkout@v2
+
+    - uses: actions/checkout@v4
+
+    - name: Install poetry
+      run: pipx install poetry==1.*
 
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
+        cache: 'poetry'
 
-    - name: Install Poetry
-      uses: snok/install-poetry@v1
-      with:
-        virtualenvs-create: true
-        virtualenvs-in-project: true
-
-    - name: Load cached venv
-      id: cached-poetry-dependencies
-      uses: actions/cache@v2
-      with:
-        path: .venv
-        key: venv-${{ runner.os }}-${{ matrix.python-version }}-${{ hashFiles('pyproject.toml') }}-${{ hashFiles('poetry.lock') }}
-
-    - name: Install dependencies
-      if: steps.cached-poetry-dependencies.outputs.cache-hit != 'true'
-      run: poetry install --no-interaction --no-root
-
-    - name: Install library
+    - name: Install dependencies and library
       run: poetry install --no-interaction
 
     - name: Set up suzieq config
@@ -57,7 +45,7 @@ jobs:
       run: mkdir test_durations
 
     - name: Get durations from cache
-      uses: actions/cache@v2
+      uses: actions/cache@v4
       with:
         path: test_durations
         # artificial cache miss to always save at the end of the job and avoid out of sync test runs
@@ -69,7 +57,7 @@ jobs:
       run: poetry run pytest --splits 4 --group ${{ matrix.group }} --store-durations --durations-path test_durations/.test_durations_${{ matrix.python-version }}
 
     - name: Upload partial durations
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         retention-days: 1
         name: duration-chunk-${{ matrix.group }}-python-${{ matrix.python-version }}
@@ -81,10 +69,10 @@ jobs:
     needs: test
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Get durations from cache
-        uses: actions/cache@v2
+        uses: actions/cache@v4
         with:
           path: test_durations
           # artificial cache miss to always save at the end of the job and avoid out of sync test runs
@@ -93,7 +81,7 @@ jobs:
             test-durations
 
       - name: Download artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v4
 
       - name: Merge test durations
         run: python3 tests/utilities/merge_test_durations_ci.py
