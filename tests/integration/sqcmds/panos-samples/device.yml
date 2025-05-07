@@ -99,3 +99,12 @@ tests:
   error:
     error: '[{"error": "ERROR: Invalid columns specified: [''badcolumn'']"}]'
   marks: device unique panos
+- command: device show --format=json --namespace=panos --address='10.255.2.118 10.255.2.117'
+  data-directory: tests/data/parquet/
+  marks: device show panos
+  output: '[{"namespace": "panos", "hostname": "spine01", "model": "VX", "version":
+    "4.1.1", "vendor": "Cumulus", "serialNumber": "None", "status": "alive", "address":
+    "10.255.2.117", "bootupTimestamp": 1639470234.0, "timestamp": 1639476254852},
+    {"namespace": "panos", "hostname": "spine02", "model": "VX", "version": "4.1.1",
+    "vendor": "Cumulus", "serialNumber": "None", "status": "alive", "address": "10.255.2.118",
+    "bootupTimestamp": 1639470234.0, "timestamp": 1639476254852}]'

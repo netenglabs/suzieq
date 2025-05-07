@@ -13,7 +13,7 @@ from suzieq.sqobjects.address import AddressObj
           description="type of address, v4, v6 or l2",
           choices=["v4", "v6", "l2"])
 @argument("address",
-          description="Address(es), in quotes, space separated")
+          description="IP Address(es), in quotes, space separated")
 @argument("prefix",
           description=("Show all the addresses in this "
                        "subnet prefix (in quotes)"))

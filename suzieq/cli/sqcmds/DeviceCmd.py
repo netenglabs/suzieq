@@ -12,6 +12,7 @@ from suzieq.sqobjects.device import DeviceObj
 @argument("version", description="NOS version(s), space separated")
 @argument("vendor", description="Vendor(s), space separated")
 @argument("model", description="Model(s), space separated")
+@argument("address", description="IP Address(es), in quotes, space separated")
 class DeviceCmd(SqTableCommand):
     """Basic device information such as OS, version, model etc."""
 
@@ -31,6 +32,7 @@ class DeviceCmd(SqTableCommand):
             status: str = '',
             vendor: str = '',
             model: str = '',
+            address: str = '',
     ) -> None:
         super().__init__(
             engine=engine,
@@ -60,5 +62,6 @@ class DeviceCmd(SqTableCommand):
             'version': version.split(),
             'status': status.split(),
             'model': model,
-            'vendor': vendor.split()
+            'vendor': vendor.split(),
+            'address': address.split()
         }
