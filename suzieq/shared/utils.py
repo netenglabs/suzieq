@@ -1231,7 +1231,7 @@ def log_suzieq_info(name: str, c_logger: logging.Logger = None,
         c_logger.setLevel(prev_level)
 
 
-def set_rest_engine(cfg: Dict[str, Any]) -> Tuple:
+def set_rest_engine(cfg: Dict[str, Any]) -> Tuple[str, str, str, str]:
     """Unpack the rest configuration from the cfg object. It is used to switch
     to rest engine with the right config params
 
