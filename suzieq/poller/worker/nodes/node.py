@@ -12,6 +12,7 @@ import operator
 from urllib.parse import urlparse
 import asyncio
 from asyncio.subprocess import PIPE, DEVNULL
+import os
 # pylint: disable=redefined-builtin
 from concurrent.futures._base import TimeoutError
 
@@ -141,27 +142,21 @@ class Node:
         self.ssh_config_file = kwargs.get("ssh_config_file", None)
         self.enable_password = kwargs.get('enable_password')
 
-        passphrase: str = kwargs.get("passphrase", None)
+        self.pvtkey_file = kwargs.get("ssh_keyfile", None)
+        self.jump_host_pvtkey_file = kwargs.get("jump_host_key_file", None)
+        self.passphrase: str = kwargs.get("passphrase", None)
+
         jump_host = kwargs.get("jump_host", "")
         if jump_host:
             jump_result = urlparse(jump_host)
             self.jump_user = jump_result.username or self.username
             self.jump_host = jump_result.hostname
-            self.jump_host_key = None
             if jump_result.port:
                 self.jump_port = jump_result.port
             else:
                 self.jump_port = 22
-            pvtkey_file = kwargs.pop('jump_host_key_file')
-            if pvtkey_file:
-                self.jump_host_key = self._decrypt_pvtkey(pvtkey_file,
-                                                          passphrase)
-                if not self.jump_host_key:
-                    raise SqPollerConfError('Unable to read private key file'
-                                            f' at {pvtkey_file}')
         else:
             self.jump_host = None
-            self.jump_host_key = None
 
         self.ignore_known_hosts = kwargs.get('ignore_known_hosts', False)
         self.slow_host = kwargs.get('slow_host', False)
@@ -173,15 +168,6 @@ class Node:
             # 4 is a number we picked to limit using up too many SSH sessions
             # Many newer implementations allow upto 5 simultaneous SSH sessions
             self.batch_size = 4
-        pvtkey_file = kwargs.get("ssh_keyfile", None)
-        if pvtkey_file:
-            self.pvtkey = self._decrypt_pvtkey(pvtkey_file, passphrase)
-            if not self.pvtkey:
-                self.logger.error("ERROR: Falling back to password for "
-                                  f"{self.address}:{self.port}")
-                self.pvtkey = None
-        else:
-            self.pvtkey = None
 
         self._init_service_queue()
 
@@ -257,8 +243,8 @@ class Node:
                                                                passphrase)
             except Exception as e:  # pylint: disable=broad-except
                 self.logger.error(
-                    f"ERROR: Unable to read private key file {pvtkey_file}"
-                    f"for jump host due to {e}")
+                    f"ERROR: Unable to read private key file {pvtkey_file} "
+                    f"due to {e}")
 
         return keydata
 
@@ -570,9 +556,10 @@ class Node:
         if self._tunnel:
             return
 
-        if self.jump_host_key:
+        if self.jump_host_pvtkey_file:
             jump_host_options = asyncssh.SSHClientConnectionOptions(
-                client_keys=self.jump_host_key,
+                client_keys=self.jump_host_pvtkey_file,
+                passphrase=self.passphrase,
                 connect_timeout=self.connect_timeout,
             )
 
@@ -618,9 +605,7 @@ class Node:
         options = asyncssh.SSHClientConnectionOptions(
             connect_timeout=self.connect_timeout,
             username=self.username,
-            agent_identities=self.pvtkey if self.pvtkey else None,
-            client_keys=self.pvtkey if self.pvtkey else None,
-            password=self.password if not self.pvtkey else None,
+            password=self.password if not self.pvtkey_file else None,
             kex_algs='+diffie-hellman-group1-sha1',  # for older boxes
             encryption_algs='+aes256-cbc',           # for older boxes
         )
@@ -633,6 +618,22 @@ class Node:
             options = asyncssh.SSHClientConnectionOptions(
                 options=options,
                 config=[self.ssh_config_file],
+            )
+
+        if self.pvtkey_file:
+            # Giving just the filename let's asyncssh know to look for the
+            # corresponding cert file in the same directory.
+            # Ref: https://asyncssh.readthedocs.io/en/stable/api.html#specifying-private-keys
+            client_keys = self.pvtkey_file
+            options = asyncssh.SSHClientConnectionOptions(
+                options=options,
+                client_keys=client_keys,
+            )
+
+        if self.passphrase:
+            options = asyncssh.SSHClientConnectionOptions(
+                options=options,
+                passphrase=self.passphrase,
             )
 
         return options
