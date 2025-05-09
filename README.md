@@ -17,7 +17,7 @@ If you answered yes to one or more of these questions, then SuzieQ is a tool tha
 
 SuzieQ does multiple things. It [collects](https://suzieq.readthedocs.io/en/latest/poller/) data from devices and systems across your network. It normalizes the data and then stores it in a vendor independent way. Then it allows analysis of that data. With the applications that we build on top of the framework we want to demonstrate a different and more systematic approach to thinking about networks. We want to show how useful it is to think of your network holistically.
 
-**An enterprise version of SuzieQ is also available**. It has been deployed in production by multiple customers, and the company behind SuzieQ, (Stardust Systems)[https://stardustsystems.net] was named a "Cool Vendor" by Gartner for making network automation easy for enterprises. 
+**An enterprise version of SuzieQ is also available**. It has been deployed in production by multiple customers, and the company behind SuzieQ, [Stardust Systems](https://stardustsystems.net) was named a "Cool Vendor" by Gartner for making network automation easy for enterprises. 
 
 ## Quick Start
 
@@ -42,7 +42,7 @@ To start collecting data for your network, create an inventory file to gather th
 
 ### Using Python Packaging
 
-If you don't want to use docker container or cannot use a docker container, an alternative approach is to install SuzieQ as a python package. It is **strongly** recommended to install suzieq inside a virtual environment. If you already use a tool to create and manage virtual environments, you can skip the step of creating a virtual envirobment below.
+If you don't want to use docker container or cannot use a docker container, an alternative approach is to install SuzieQ as a python package. It is **strongly** recommended to install suzieq inside a virtual environment. If you already use a tool to create and manage virtual environments, you can skip the step of creating a virtual environment below.
 
 SuzieQ requires python version 3.7.1 at least, and has been tested with python versions 3.7 and 3.8. It has not been tested to work on Windows. Use Linux (recommended) or macOS. To create a virtual environment, in case you haven't got a tool to create one, type:
 
@@ -86,7 +86,7 @@ The CLI supports the same kind of analysis as the explore page. ![CLI device](im
 
 ## Path
 
-SuzieQ has the ability to show the path between two IP addresses, including the ability to show the path through EVPN overlay. You can use this to see each of the paths from a source to a destination and to see if you have anything asymetrical in your paths. ![GUI PATH](images/path-gui.png)
+SuzieQ has the ability to show the path between two IP addresses, including the ability to show the path through EVPN overlay. You can use this to see each of the paths from a source to a destination and to see if you have anything asymmetrical in your paths. ![GUI PATH](images/path-gui.png)
 
 ## Asserts
 
@@ -132,4 +132,4 @@ We've also been adding screencasts on [Youtube](https://www.youtube.com/results?
 
 # SuzieQ Enterprise
 
-SuzieQ also has a commercial offering, SuzieQ Enterprise. To know more about this and contact us, please visit the Stardust Systems (website)[https://stardustsystems.net].
+SuzieQ also has a commercial offering, SuzieQ Enterprise. To know more about this and contact us, please visit the Stardust Systems [website](https://stardustsystems.net).

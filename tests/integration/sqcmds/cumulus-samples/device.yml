@@ -189,3 +189,13 @@ tests:
   error:
     error: '[{"error": "ERROR: Invalid columns specified: [''badcolumn'']"}]'
   marks: device unique
+- command: device show --format=json --namespace='ospf-single dual-evpn ospf-ibgp'
+    --address='192.168.121.13 192.168.121.38'
+  data-directory: tests/data/parquet/
+  marks: device show
+  output: '[{"namespace": "dual-evpn", "hostname": "leaf03", "model": "VX", "version":
+    "3.7.9", "vendor": "Cumulus", "serialNumber": "None", "status": "alive", "address":
+    "192.168.121.13", "bootupTimestamp": 1616644598.0, "timestamp": 1616644822331},
+    {"namespace": "dual-evpn", "hostname": "leaf04", "model": "VX", "version": "3.7.9",
+    "vendor": "Cumulus", "serialNumber": "None", "status": "alive", "address": "192.168.121.38",
+    "bootupTimestamp": 1616644597.0, "timestamp": 1616644822465}]'

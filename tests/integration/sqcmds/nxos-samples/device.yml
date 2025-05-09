@@ -403,3 +403,13 @@ tests:
     "model": "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "serialNumber":
     "9AC2MF0S5QO", "status": "alive", "address": "10.255.2.188", "bootupTimestamp":
     1619043783.0, "timestamp": 1619275265679}]'
+- command: device show --format=json --namespace=nxos --address='10.255.2.119 10.255.2.120'
+  data-directory: tests/data/parquet/
+  marks: device show nxos
+  output: '[{"namespace": "nxos", "hostname": "spine02", "model": "Nexus9000 C9300v
+    Chassis", "version": "9.3(4)", "vendor": "Cisco", "serialNumber": "9SM7CHR8WEF",
+    "status": "alive", "address": "10.255.2.120", "bootupTimestamp": 1619013194.0,
+    "timestamp": 1619275263055}, {"namespace": "nxos", "hostname": "spine01", "model":
+    "Nexus9000 C9300v Chassis", "version": "9.3(4)", "vendor": "Cisco", "serialNumber":
+    "9U1GLRQOXD7", "status": "alive", "address": "10.255.2.119", "bootupTimestamp":
+    1619013190.0, "timestamp": 1619275263589}]'

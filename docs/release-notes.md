@@ -1,5 +1,25 @@
 # Release Notes
 
+## 0.24.0 (May 7, 2025)
+
+This release adds several new capabilities and important bug fixes. Notably, it includes more flexible filtering options, improvements to REST engine parameter handling, support for certificate verification settings, and new integrations with the VMWare's vCenter and Junos IPv6 neighbor discovery. These changes are backward-compatible.
+
+* **Filter devices by address**  
+  You can now filter devices based on one or more IP addresses using the `address` argument in the CLI.
+
+* **Set certificate verification mode**  
+  Added support for the `cert-verify` parameter in configuration. You can set it to `True`, `False`, or a path to a CA certificate. This controls whether and how certificates are verified when connecting over HTTPS.
+
+* **REST engine parameter update fix**  
+  When switching to `engine='rest'`, the engine parameters (`rest-server-ip`, `rest-server-port`, `rest-api-key`, `rest-use-https`) are now correctly updated instead of keeping defaults. This avoids inconsistent behavior when switching between engines.
+
+* **Add VMWare's vCenter source for inventory**  
+  Introduced support for `vcenter` as an inventory source. This enables automatic discovery of VMs and their IPs based on custom attributes. Configuration includes support for authentication and SSL settings.  
+  Dependency added: `pyvnomi`.
+
+* **Collect IPv6 neighbor data on Junos**  
+  Extended `arpnd` data collection to include IPv6 neighbors for Junos devices. This complements the existing IPv4 support and provides a more complete view of network neighbors on Junos platforms.
+
 ## 0.23.0 (May 27, 2024)
 
 This has some useful features added, and a bunch of important bug fixes, most of them in the parsing logic, all of which are ports from the enterprise version. Some of these changes resulted in a  few breaking changes, all to fix inconsistencies in parsing output. Fixing these inconsistencies should make writing logic using this info much simpler. Existing scripts that used this logic need to be fixed.

@@ -1,7 +1,7 @@
 from typing import Dict, List
 from dataclasses import dataclass, field
 
-from suzieq.shared.utils import SUPPORTED_ENGINES
+from suzieq.shared.utils import SUPPORTED_ENGINES, set_rest_engine
 
 
 @dataclass
@@ -34,15 +34,10 @@ class SqContext:
         if not self.engine:
             self.engine = self.cfg.get('ux', {}).get('engine', 'pandas')
             if self.engine == 'rest':
-                # See if we can extract the REST info from the REST part
-                restcfg = self.cfg.get('rest', {})
-                self.rest_server_ip = restcfg.get('address', '127.0.0.1')
-                self.rest_server_port = restcfg.get('port', '80')
-                if restcfg.get('no-https', False):
-                    self.rest_transport = 'http'
-                else:
-                    self.rest_transport = 'https'
-                self.rest_api_key = restcfg.get('API_KEY', '')
+                self.rest_server_ip, \
+                 self.rest_server_port, \
+                 self.rest_transport, \
+                 self.rest_api_key = set_rest_engine(self.cfg)
 
         if self.engine not in SUPPORTED_ENGINES:
             raise ValueError(f'Engine {self.engine} not supported')

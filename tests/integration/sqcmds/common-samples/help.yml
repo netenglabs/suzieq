@@ -279,10 +279,11 @@ tests:
   format: text
   marks: device help command
   output: "device show: \e[36mShow address info\e[0m\n\e[33m\nUse quotes when providing\
-    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - columns: \e[36m\e[1mSpace\
-    \ separated list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time\
-    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
-    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ more than one value\e[0m\n\e[33m\nArguments:\e[0m\n - address: \e[36m\e[1mIP\
+    \ Address(es), in quotes, space separated\e[0m\n - columns: \e[36m\e[1mSpace separated\
+    \ list of columns, * for all\e[0m\n - end_time: \e[36m\e[1mEnd of time window,\
+    \ try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat of\
+    \ the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
     \ - model: \e[36m\e[1mFilter by model\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
     \ space separated\e[0m\n - os: \e[36m\e[1mNOS(s), space separated\e[0m\n - query_str:\
     \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
@@ -297,46 +298,49 @@ tests:
   marks: device help command
   output: "device summarize: \e[36mSummarize relevant information about the table\e\
     [0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mHostname(s), space separated\e[0m\n - model: \e[36m\e[1mFilter by model\e\
-    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - os: \e[36m\e\
-    [1mNOS(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
-    [1mStart of time window, try natural language spec\e[0m\n - status: \e[36m\e[1mstatus\
-    \ of service to match\e[0m\n - vendor: \e[36m\e[1mVendor(s), space separated\e\
-    [0m\n - version: \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e\
-    [36m\e[1mView all records or just the latest\e[0m\n"
+    [0m\n - address: \e[36m\e[1mIP Address(es), in quotes, space separated\e[0m\n\
+    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - model: \e[36m\e[1mFilter by model\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - os: \e[36m\e[1mNOS(s), space\
+    \ separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
+    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
+    \ time window, try natural language spec\e[0m\n - status: \e[36m\e[1mstatus of\
+    \ service to match\e[0m\n - vendor: \e[36m\e[1mVendor(s), space separated\e[0m\n\
+    \ - version: \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e[36m\e\
+    [1mView all records or just the latest\e[0m\n"
 - command: device help --command=unique
   data-directory: tests/data/parquet
   format: text
   marks: device help command
   output: "device unique: \e[36mGet unique values (and counts) associated with requested\
     \ field\e[0m\n\e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\n\
-    Arguments:\e[0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for\
-    \ all\e[0m\n - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n\
-    \ - end_time: \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n\
-    \ - format: \e[36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e\
-    [36m\e[1mHostname(s), space separated\e[0m\n - model: \e[36m\e[1mFilter by model\e\
-    [0m\n - namespace: \e[36m\e[1mNamespace(s), space separated\e[0m\n - os: \e[36m\e\
-    [1mNOS(s), space separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated\
-    \ pandas query format to further filter the output\e[0m\n - start_time: \e[36m\e\
-    [1mStart of time window, try natural language spec\e[0m\n - status: \e[36m\e[1mstatus\
-    \ of service to match\e[0m\n - vendor: \e[36m\e[1mVendor(s), space separated\e\
-    [0m\n - version: \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e\
-    [36m\e[1mView all records or just the latest\e[0m\n"
+    Arguments:\e[0m\n - address: \e[36m\e[1mIP Address(es), in quotes, space separated\e\
+    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
+    \ - count: \e[36m\e[1minclude count of times a value is seen\e[0m\n - end_time:\
+    \ \e[36m\e[1mEnd of time window, try natural language spec \e[0m\n - format: \e\
+    [36m\e[1mSelect the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s),\
+    \ space separated\e[0m\n - model: \e[36m\e[1mFilter by model\e[0m\n - namespace:\
+    \ \e[36m\e[1mNamespace(s), space separated\e[0m\n - os: \e[36m\e[1mNOS(s), space\
+    \ separated\e[0m\n - query_str: \e[36m\e[1mTrailing blank terminated pandas query\
+    \ format to further filter the output\e[0m\n - start_time: \e[36m\e[1mStart of\
+    \ time window, try natural language spec\e[0m\n - status: \e[36m\e[1mstatus of\
+    \ service to match\e[0m\n - vendor: \e[36m\e[1mVendor(s), space separated\e[0m\n\
+    \ - version: \e[36m\e[1mNOS version(s), space separated\e[0m\n - view: \e[36m\e\
+    [1mView all records or just the latest\e[0m\n"
 - command: device help --command=top
   data-directory: tests/data/parquet
   format: text
   marks: device help command
   output: "device top: \e[36mReturn the top n values for a field in a table\e[0m\n\
     \e[33m\nUse quotes when providing more than one value\e[0m\n\e[33m\nArguments:\e\
-    [0m\n - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n\
-    \ - count: \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd\
-    \ of time window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect\
-    \ the pformat of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e\
-    [0m\n - model: \e[36m\e[1mFilter by model\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
+    [0m\n - address: \e[36m\e[1mIP Address(es), in quotes, space separated\e[0m\n\
+    \ - columns: \e[36m\e[1mSpace separated list of columns, * for all\e[0m\n - count:\
+    \ \e[36m\e[1mnumber of rows to return\e[0m\n - end_time: \e[36m\e[1mEnd of time\
+    \ window, try natural language spec \e[0m\n - format: \e[36m\e[1mSelect the pformat\
+    \ of the output\e[0m\n - hostname: \e[36m\e[1mHostname(s), space separated\e[0m\n\
+    \ - model: \e[36m\e[1mFilter by model\e[0m\n - namespace: \e[36m\e[1mNamespace(s),\
     \ space separated\e[0m\n - os: \e[36m\e[1mNOS(s), space separated\e[0m\n - query_str:\
     \ \e[36m\e[1mTrailing blank terminated pandas query format to further filter the\
     \ output\e[0m\n - reverse: \e[36m\e[1mreturn bottom n values\e[0m\n - start_time:\

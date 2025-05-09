@@ -171,3 +171,12 @@ tests:
   data-directory: tests/data/parquet/
   marks: device show filter eos
   output: '[{"version": "4.23.5M"}]'
+- command: device show --format=json --namespace=eos --address='10.255.2.118 10.255.2.117'
+  data-directory: tests/data/parquet/
+  marks: device show eos
+  output: '[{"namespace": "eos", "hostname": "spine01", "model": "vEOS", "version":
+    "4.23.5M", "vendor": "Arista", "serialNumber": "", "status": "alive", "address":
+    "10.255.2.117", "bootupTimestamp": 1620676825.0, "timestamp": 1623025176945},
+    {"namespace": "eos", "hostname": "spine02", "model": "vEOS", "version": "4.23.5M",
+    "vendor": "Arista", "serialNumber": "", "status": "alive", "address": "10.255.2.118",
+    "bootupTimestamp": 1620676826.0, "timestamp": 1623025177075}]'

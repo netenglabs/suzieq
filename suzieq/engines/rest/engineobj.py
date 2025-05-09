@@ -1,9 +1,10 @@
-from typing import Type, Dict
+import os
 import urllib
-import requests
-import urllib3
+from typing import Dict, Type
 
 import pandas as pd
+import requests
+import urllib3
 
 from suzieq.engines.base_engine import SqEngineObj
 
@@ -105,7 +106,15 @@ class SqRestEngine(SqEngineObj):
             f'{query_params}')
 
         # pylint: disable=missing-timeout
-        response = requests.get(url, verify=None)
+        cert_verify = self.ctxt.cfg.get('rest', {}).get('cert-verify', True)
+
+        if isinstance(cert_verify, (str, bool)) is False:
+            raise TypeError('cert_verify must be a boolean or a string')
+        if isinstance(cert_verify, str):
+            if not os.path.exists(os.path.dirname(cert_verify)):
+                raise ValueError('cert_verify path does not exist')
+
+        response = requests.get(url, verify=cert_verify)
         if response.status_code != 200:
             if response.text:
                 msg = response.json().get("detail", str(response.status_code))

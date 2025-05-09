@@ -22,8 +22,8 @@ RUN python3 -m pip install --no-cache-dir /tmp/suzieq-$version-py3-none-any.whl 
     rm -rf /tmp/* /var/tmp/*
 
 VOLUME [ "/home/$username/parquet" ]
- 
-ENV PATH=/root/.local/bin:$PATH:/root/.local/lib/python3.7/site-packages/suzieq/cli/:/root/.local/lib/python3.7/site-packages/suzieq/poller/:/root/.local/lib/python3.7/site-packages/suzieq/restServer
+
+ENV PATH=/root/.local/bin:$PATH:/root/.local/lib/python3.9/site-packages/suzieq/cli/:/root/.local/lib/python3.9/site-packages/suzieq/poller/:/root/.local/lib/python3.9/site-packages/suzieq/restServer
 
 ENV SQENV=docker
 

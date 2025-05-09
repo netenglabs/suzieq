@@ -23,6 +23,8 @@ from suzieq.shared.context import SqContext
 from suzieq.shared.schema import Schema
 from suzieq.shared.utils import load_sq_config
 from suzieq.sqobjects import get_sqobject, get_tables
+import socket
+from contextlib import closing
 
 suzieq_cli_path = './suzieq/cli/sq_cli.py'
 suzieq_rest_server_path = './suzieq/restServer/sq_rest_server.py'
@@ -286,3 +288,15 @@ def validate_host_shape(df: pd.DataFrame, ns_dict: dict):
         if ns in df.namespace.unique():
             assert df.query(
                 f'namespace == "{ns}"').hostname.nunique() == ns_dict[ns]
+
+
+def get_free_port() -> int:
+    """Return a free port
+
+    Returns:
+        int: free port
+    """
+    with closing(socket.socket(socket.AF_INET, socket.SOCK_STREAM)) as s:
+        s.bind(('', 0))
+        s.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+        return s.getsockname()[1]
