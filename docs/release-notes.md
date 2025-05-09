@@ -20,13 +20,6 @@ This release adds several new capabilities and important bug fixes. Notably, it 
 * **Collect IPv6 neighbor data on Junos**  
   Extended `arpnd` data collection to include IPv6 neighbors for Junos devices. This complements the existing IPv4 support and provides a more complete view of network neighbors on Junos platforms.
 
-* **Update CI actions**  
-  GitHub Actions were updated to fix deprecation warnings, re-enable linting, and test execution on pull requests.
-
-* **Upgrade dependencies**  
-  - Upgraded `uvicorn` to version `0.15.0`  
-  - Upgraded Docker base image to `python:3.9.21-slim-bullseye`
-
 ## 0.23.0 (May 27, 2024)
 
 This has some useful features added, and a bunch of important bug fixes, most of them in the parsing logic, all of which are ports from the enterprise version. Some of these changes resulted in a  few breaking changes, all to fix inconsistencies in parsing output. Fixing these inconsistencies should make writing logic using this info much simpler. Existing scripts that used this logic need to be fixed.
