@@ -4,7 +4,7 @@ We use [poetry](https://python-poetry.org/) to both setup the working virtual en
 
 Setting up the development environment for SuzieQ involves the following steps:
 
-* Make sure you have a python3 version that is > 3.7.1 and less than 3.9.0. If you don't have a system provided python version that matches this requirement, you can use [pyenv](https://realpython.com/intro-to-pyenv/) to install one.
+* Make sure you have a python3 version that is > 3.9.0. If you don't have a system provided python version that matches this requirement, you can use [pyenv](https://realpython.com/intro-to-pyenv/) to install one.
 * If you've used pyenv to install a specific python version, ensure you activate it.
 * Install poetry--follow the instructions posted [here](https://python-poetry.org/docs/#installation).
 * Ensure you have git installed (follow the instructions [here](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git))
