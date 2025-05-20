@@ -1,6 +1,7 @@
 from nubia import command
-from suzieq.cli.nubia_patch import argument
 
+import suzieq.cli.sqcmds.sq_completions as completitions
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.vlan import VlanObj
 
@@ -9,7 +10,8 @@ from suzieq.sqobjects.vlan import VlanObj
 @argument("state", description="State of VLAN to query",
           choices=['active', 'suspended'])
 @argument("vlan",
-          description="VLAN(s), space separated, can use <, >, <=, >=, !")
+          description="VLAN(s), space separated, can use <, >, <=, >=, !",
+          choices=completitions.vlan_completer)
 @argument('vlanName',
           description="VLAN name(s), space separated")
 class VlanCmd(SqTableCommand):
