@@ -314,3 +314,10 @@ class SchemaForTable:
     def get_parent_fields(self, field) -> List[str]:
         '''Get dependent fields for a given augmented field in table'''
         return self._all_schemas.get_parent_fields(self._table, field)
+
+    def get_user_visible_fields(self) -> List[str]:
+        '''Return the list of fields that are not suppressed
+        '''
+        # type: ignore
+        return [f['name'] for f in self.get_raw_schema()
+                if 'suppress' not in f]
