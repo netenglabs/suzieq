@@ -1,16 +1,18 @@
 import time
 from datetime import timedelta
-from nubia import command
 
 import pandas as pd
+from nubia import command
 
+import suzieq.cli.sqcmds.sq_completions as completitions
 from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.bgp import BgpObj
 
 
 @command("bgp", help="Act on BGP data")
-@argument("vrf", description="VRF(s), space separated")
+@argument("vrf", description="VRF(s), space separated",
+          choices=completitions.vrf_completer)
 @argument("state", description="status of the session to match",
           choices=["Established", "NotEstd", "dynamic"])
 @argument("peer",

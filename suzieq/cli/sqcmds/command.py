@@ -1,24 +1,23 @@
 
-import time
 import ast
 import inspect
-from io import StringIO
 import shutil
+import time
+from io import StringIO
 from typing import List
 
 import numpy as np
 import pandas as pd
-from nubia import command, context
-
-
-from prompt_toolkit import prompt
-from natsort import natsort_keygen
 from colorama import Fore, Style
+from natsort import natsort_keygen
+from nubia import command, context
+from prompt_toolkit import prompt
+from termcolor import colored, cprint
 
-from termcolor import cprint, colored
+import suzieq.cli.sqcmds.sq_completions as completitions
 from suzieq.cli.nubia_patch import argument
-from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.exceptions import UserQueryError
+from suzieq.shared.sq_plugin import SqPlugin
 from suzieq.shared.utils import (DATA_FORMATS, SUPPORTED_ENGINES,
                                  deprecated_command_warning)
 
@@ -35,10 +34,12 @@ def colorize(x, color):
     choices=SUPPORTED_ENGINES,
 )
 @argument(
-    "namespace", description="Namespace(s), space separated"
+    "namespace", description="Namespace(s), space separated",
+    choices=completitions.namespace_completer
 )
 @argument("hostname",
-          description="Hostname(s), space separated")
+          description="Hostname(s), space separated",
+          choices=completitions.hostname_completer)
 @argument(
     "start_time", description="Start of time window, try natural language spec"
 )
@@ -50,7 +51,8 @@ def colorize(x, color):
     description="View all records or just the latest",
     choices=["all", "latest"],
 )
-@argument("columns", description="Space separated list of columns, * for all")
+@argument("columns", description="Space separated list of columns, * for all",
+          choices=completitions.column_name_completer)
 @argument(
     "format",
     description="Select the pformat of the output",
@@ -149,8 +151,8 @@ class SqCommand(SqPlugin):
         '''Return the schemas'''
         return self._schemas
 
-    @ command("help", help="show help for a command")
-    @ argument("command", description="command to show help for")
+    @command("help", help="show help for a command")
+    @argument("command", description="command to show help for")
     # pylint: disable=redefined-outer-name
     def help(self, command: str = ''):
         """Show help for a command
@@ -537,11 +539,12 @@ class SqTableCommand(SqCommand):
                 df.sort_values(by=['numRows', df.columns[0]]),
                 dont_strip_cols=True)
 
-    @ command("top", help="find the top n values for a field")
-    @ argument("count", description="number of rows to return")
-    @ argument("what", description="numeric field to get top values for")
-    @ argument("reverse", description="return bottom n values",
-               choices=['True', 'False'])
+    @command("top", help="find the top n values for a field")
+    @argument("count", description="number of rows to return")
+    @argument("what", description="numeric field to get top values for",
+              choices=completitions.column_name_completer)
+    @argument("reverse", description="return bottom n values",
+              choices=['True', 'False'])
     def top(self, count: int = 5, what: str = '', reverse: str = 'False',
             **kwargs) -> int:
         """Return the top n values for a field in a table
@@ -576,10 +579,10 @@ class SqTableCommand(SqCommand):
         else:
             return self._gen_output(df)
 
-    @ command("help", help="show help for a command")
-    @ argument("command", description="command to show help for",
-               choices=['show', 'unique', 'summarize', 'assert', 'describe',
-                        'top', "lpm"])
+    @command("help", help="show help for a command")
+    @argument("command", description="command to show help for",
+              choices=['show', 'unique', 'summarize', 'assert', 'describe',
+                       'top', "lpm"])
     # pylint: disable=redefined-outer-name
     def help(self, command: str = ''):
         return super().help(command)

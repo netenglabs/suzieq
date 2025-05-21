@@ -3,10 +3,12 @@ from suzieq.cli.nubia_patch import argument
 
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.macs import MacsObj
+import suzieq.cli.sqcmds.sq_completions as completitions
 
 
 @command("mac", help="Act on MAC Table data")
-@argument("vlan", description="VLAN(s). space separated")
+@argument("vlan", description="VLAN(s). space separated",
+          choices=completitions.vlan_completer)
 @argument("macaddr",
           description="MAC address(es), in quotes, space separated")
 @argument("remoteVtepIp",

@@ -1,13 +1,16 @@
 import time
-from nubia import command
-from suzieq.cli.nubia_patch import argument
 
+from nubia import command
+
+import suzieq.cli.sqcmds.sq_completions as completitions
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.evpnVni import EvpnvniObj
 
 
 @command("evpnVni", help="Act on EVPN VNI data")
-@argument("vni", description="VNI ID(s), space separated")
+@argument("vni", description="VNI ID(s), space separated",
+          choices=completitions.vni_completer)
 @argument("priVtepIp", description="Primary VTEP IP(s), space separated")
 class EvpnVniCmd(SqTableCommand):
     """EVPN information such as VNI/VLAN mapping, VTEP IPs etc."""

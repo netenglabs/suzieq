@@ -7,15 +7,16 @@ import os
 import platform
 import re
 import sys
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 from enum import Enum
+from functools import lru_cache, wraps
 from importlib.util import find_spec
 from ipaddress import ip_network
 from itertools import groupby
 from logging.handlers import RotatingFileHandler
 from os import getenv
 from time import time
-from typing import Any, Dict, List, Optional, Union, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import pandas as pd
 import psutil
@@ -1255,3 +1256,33 @@ def set_rest_engine(cfg: Dict[str, Any]) -> Tuple[str, str, str, str]:
     rest_api_key = restcfg.get('API_KEY', '')
 
     return rest_server_ip, rest_server_port, rest_transport, rest_api_key
+
+
+# timed_lru_cache copied from
+# https://realpython.com/lru-cache-python/#evicting-cache-entries-based-on-both-time-and-space
+def timed_lru_cache(seconds: int, maxsize: int = 128):
+    """lru_cache that also expires entries with time
+
+    This is from realpython.com. In many situations, we need memoization
+    with timed expiry. For example, if we memoize dataframes, we need to
+    refresh them after a while, or we'll be left with stale data until the
+    entry is evicted due to unuse which is unpredictable and could be forever.
+
+    Args:
+        seconds: time to live for an entry, in seconds
+        maxsize: maximum cache size, 128 default
+    """
+
+    def wrapper_cache(func):
+        func = lru_cache(maxsize=maxsize)(func)
+        func.lifetime = timedelta(seconds=seconds)
+        func.expiration = datetime.now(tz=timezone.utc) + func.lifetime
+
+        @wraps(func)
+        def wrapped_func(*args, **kwargs):
+            if datetime.now(tz=timezone.utc) >= func.expiration:
+                func.cache_clear()
+                func.expiration = datetime.now(tz=timezone.utc) + func.lifetime
+            return func(*args, **kwargs)
+        return wrapped_func
+    return wrapper_cache

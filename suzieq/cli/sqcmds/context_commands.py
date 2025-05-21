@@ -197,14 +197,14 @@ class SqHelpCommand (Command):
         super().__init__()
         self._allcmds = self._sqcmds = None
 
-    def run_interactive(self, cmd, args, raw):
+    async def run_interactive(self, cmd, args, raw):
         arglist = args.split()
-        return self._help_cmd(*arglist)
+        return await self._help_cmd(*arglist)
 
     def get_command_names(self):
         return self.thiscmd
 
-    def add_arguments(self, parser):
+    async def add_arguments(self, parser):
         parser.add_parser("help")
 
     def get_help(self, cmd, *args):
@@ -236,11 +236,11 @@ class SqHelpCommand (Command):
                        if x.startswith(verb)]
         return completions
 
-    def _help_cmd(self, *args):
+    async def _help_cmd(self, *args):
         """Show help for a service"""
         if len(args) == 0:
             helpcmd = HelpCommand()
-            helpcmd.run_interactive('', '', '')
+            await helpcmd.run_interactive('', '', '')
             cprint(
                 "Use "
                 f"{colored('help <name of command/service> [<verb>]', 'cyan')}"
@@ -258,10 +258,11 @@ class SqHelpCommand (Command):
         self._build_cmd_verb_list()
         if service in self._sqcmds:
             if verb:
-                self._allcmds[service].run_interactive(
+                await self._allcmds[service].run_interactive(
                     service, f'help command={verb}', '')
             else:
-                self._allcmds[service].run_interactive(service, 'help', '')
+                await self._allcmds[service].run_interactive(service,
+                                                             'help', '')
 
     def _build_cmd_verb_list(self):
         if not self._allcmds:

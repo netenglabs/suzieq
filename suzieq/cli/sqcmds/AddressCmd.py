@@ -3,10 +3,12 @@ from suzieq.cli.nubia_patch import argument
 
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.address import AddressObj
+import suzieq.cli.sqcmds.sq_completions as completitions
 
 
 @argument("vrf",
-          description="VRF(s), space separated")
+          description="VRF(s), space separated",
+          choices=completitions.vrf_completer)
 @argument("type", description="Interface type(s), space separated")
 @argument("ifname", description="Interface name(s), space separated")
 @argument("ipvers",

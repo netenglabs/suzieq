@@ -1,6 +1,7 @@
 from nubia import command
-from suzieq.cli.nubia_patch import argument
 
+import suzieq.cli.sqcmds.sq_completions as completitions
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.topology import TopologyObj
 
@@ -12,13 +13,14 @@ from suzieq.sqobjects.topology import TopologyObj
 @argument("via",
           description="Protocol(s) via which nodes are connected, "
           "space separated")
-@argument("vrf", description="VRF(s), space separated")
+@argument("vrf", description="VRF(s), space separated",
+          choices=completitions.vrf_completer)
 @argument("asn", description="BGP ASN(s), space separated")
 @argument("area", description="OSPF Area(s), space separated")
 @argument("afiSafi", description="BGP AFI SAFI lens to filter the topology")
-@ argument("peerHostname",
-           description="Peer hostname(s), space separated, "
-           "space separated")
+@argument("peerHostname",
+          description="Peer hostname(s), space separated, "
+          "space separated")
 class TopologyCmd(SqTableCommand):
     """Information about the topology constructed from various protocols"""
 
