@@ -10,8 +10,6 @@ from suzieq.sqobjects.inventory import InventoryObj
 
 @command("inventory", help="Act on inventory data")
 @argument("type", description="Filter by type",
-          #   choices=["fan", "power", "xcvr", "supervisor", "port-adapter",
-          #            "linecard", "fabric", "midplane", "mx-cb"]
           choices=completitions.inv_type_completer)
 @argument("status", description="Filter by status",
           choices=['present', 'absent'])
