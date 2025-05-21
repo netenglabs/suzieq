@@ -1,11 +1,10 @@
-from typing import List, Dict, Optional, Tuple, Set
-import pandas as pd
+from typing import Dict, List, Optional, Set, Tuple
 
 from nubia.internal import context
-from suzieq.shared.context import SqContext
-from suzieq.sqobjects import get_sqobject, get_tables
-from suzieq.shared.utils import timed_lru_cache, lru_cache
 
+from suzieq.shared.context import SqContext
+from suzieq.shared.utils import lru_cache, timed_lru_cache
+from suzieq.sqobjects import get_sqobject, get_tables
 
 virt_tbl_cmd_mapping: Dict[str, str] = {
     'endpoint': 'device',
@@ -15,8 +14,6 @@ virt_tbl_cmd_mapping: Dict[str, str] = {
     'route': 'routes',
     'mac': 'macs',
     'interface': 'interfaces',
-    'assert': 'device',   # only for namespace/hostname
-    'query': 'device',    # only for namespace/hostname
 }
 
 
@@ -39,11 +36,7 @@ def completion_get_data(cmd: str, column: str,
         if isinstance(v, tuple):
             kwargs[k] = list(v)
 
-    if cmd in ["assert", "query"]:
-        df = get_sqobject(cmd)(context=ctxt).get(columns=[column], **kwargs)
-        if not df.empty and 'error' not in df.columns:
-            result = set(df[column].unique())
-    elif cmd == "extdb":
+    if cmd == "extdb":
         result = set()
         # TODO: implement autocompletion with external tables
         # ext_table = kwargs.pop('ext_table', None)
@@ -56,33 +49,8 @@ def completion_get_data(cmd: str, column: str,
     return result
 
 
-@timed_lru_cache(60)
-def get_assert_query_completions(cmd: str, column: str,
-                                 **kwargs) -> pd.DataFrame:
-    '''Get completion for assert/query which return a dict'''
-
-    nubia_ctxt = context.get_context()
-    if not nubia_ctxt:
-        return pd.DataFrame({column: []})
-
-    ctxt: SqContext = nubia_ctxt.ctxt
-
-    # kwargs are passed with values as tuples, not lists which
-    # causes a bunch of problems in asserts. So, convert tuples
-    # to lists again
-    for k, v in kwargs.items():
-        if isinstance(v, tuple):
-            kwargs[k] = list(v)
-    try:
-        df = get_sqobject(cmd)(context=ctxt) \
-            .get(columns=[column], **kwargs)
-        return df
-    except Exception:
-        return pd.DataFrame({column: []})
-
-
 @lru_cache
-def completion_get_columns(cmd: str, component: Optional[str] = None
+def completion_get_columns(cmd: str, component: Optional[str] = None,
                            ) -> List[str]:
     '''Return columns associated with a table for unique/top/assert'''
     ctxt: SqContext = context.get_context().ctxt
@@ -115,7 +83,6 @@ def return_completions(cmd, column, val_so_far, quote_result=False,
                        **kwargs) -> List[str]:
     '''Given a cmd and column, return valid completion list'''
 
-    result = []
     try:
         valid_set = completion_get_data(cmd, column, **kwargs)
     except Exception:
@@ -174,65 +141,7 @@ def hostname_completer(cmd: str, _subcmd: str, last_token: str,
 
     kwargs = get_kwargs_so_far(raw_cmd, ['namespace'])
 
-    cmd = virt_tbl_cmd_mapping.get(cmd, cmd)
-
     return return_completions('device', 'hostname', hostname_so_far, **kwargs)
-
-
-def assert_name_completer(_cmd: str, _: str,
-                          last_token: str,
-                          raw_cmd: str) -> List[str]:
-    '''Return the completion for asserts'''
-
-    asrt_so_far = None
-
-    if isinstance(last_token, str):
-        asrt_so_far = last_token.split('=')[-1]
-
-    kwargs = get_kwargs_so_far(raw_cmd, ['workflow'])
-
-    return return_completions('assert', 'name', asrt_so_far, **kwargs)
-
-
-def assert_vars_name_completer(_cmd: str, _: str,
-                               last_token: str,
-                               _raw_cmd: str) -> List[str]:
-    """assert_vars completition"""
-    vars_so_far = None
-
-    if isinstance(last_token, str):
-        vars_so_far = last_token.split('=')[-1]
-
-    kwargs = {'assert_vars': tuple(['*'])}
-
-    return return_completions('assert', 'name', vars_so_far, **kwargs)
-
-
-def query_vars_name_completer(_cmd: str, _: str, last_token: str,
-                              _raw_cmd: str) -> List[str]:
-    """query_vars completitions"""
-    vars_so_far: Optional[str] = None
-
-    if isinstance(last_token, str):
-        vars_so_far = last_token.split('=')[-1]
-
-    kwargs = {'query_vars': tuple(['*'])}
-
-    return return_completions('query', 'name', vars_so_far, **kwargs)
-
-
-def workflow_name_completer(_cmd: str, _subcmd: str, last_token: str,
-                            _raw_cmd: str) -> List[str]:
-    '''Return the completion for workflows'''
-
-    wf_so_far = None
-
-    if isinstance(last_token, str):
-        wf_so_far = last_token.split('=')[-1]
-
-    kwargs = {'workflow': tuple(['*'])}
-
-    return return_completions('assert', 'name', wf_so_far, **kwargs)
 
 
 def column_name_completer(cmd: str, subcmd: str, last_token: str,
@@ -250,8 +159,7 @@ def column_name_completer(cmd: str, subcmd: str, last_token: str,
                           [None])[0]
         }
     else:
-        ext_table = get_kwargs_so_far(raw_cmd, ['table'])
-        kwargs = {'ext_table': (ext_table.get('table', [None]) or [None])[0]}
+        kwargs = {}
 
     if (subcmd in ['unique', 'top', 'assert']
             and cmd not in ["endpoint", "assert"]):
@@ -291,7 +199,7 @@ def service_completer(_cmd: str, _subcmd: str, last_token: str,
 
     svcs = set({x for x in get_tables()
                 if x not in ['path', 'topology', 'namespace', 'endpoint',
-                             'topcpu', 'topmem', 'assert', 'query',
+                             'topcpu', 'topmem',
                              'extdb']})
     if svcs:
         if svc_so_far:

@@ -79,7 +79,6 @@ class InterfaceCmd(SqTableCommand):
     @argument(
         "what",
         description="What do you want to assert",
-        # choices=["mtu-value"],
         choices=completitions.column_name_completer
     )
     @argument("value", description="Value to match against")
