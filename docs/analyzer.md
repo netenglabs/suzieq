@@ -237,14 +237,14 @@ and end-time and don't specify 'view=all', then you will see only the changes du
 ###  2.2. <a name='installation-with-pipenv'></a>Installation with Pipenv
 The complicated non-docker way to install SuzieQ is to get the code from GitHub:
  1. git clone: `git clone git@github.com:netenglabs/suzieq.git`
- 2. SuzieQ assumes the use of python3.7 which may not be installed on your computer by default.
+ 2. SuzieQ assumes the use of python3.9 which may not be installed on your computer by default.
  Ubuntu 18.04 ships with 3.6 as default, for example. Check your python version with `python3 --version`.
- If that is different from 3.7, you’ll need to add the python3.7 and 3.7 dev package.
+ If that is different from 3.9, you’ll need to add the python3.9 and 3.9 dev package.
  But, until we can build the different engines separately, we’re stuck with this requirement.
- 3. To install python3.7 on Ubuntu 18.04, please execute the following commands:
+ 3. To install python3.9 on Ubuntu 18.04, please execute the following commands:
     ```
     sudo add-apt-repository ppa:deadsnakes/ppa
-    sudo apt install python3.7 python3.7-dev
+    sudo apt install python3.9 python3.9-dev
     ```
  4. Install python3-pip if it has not been installed.
     ```
