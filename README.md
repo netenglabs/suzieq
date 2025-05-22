@@ -44,7 +44,7 @@ To start collecting data for your network, create an inventory file to gather th
 
 If you don't want to use docker container or cannot use a docker container, an alternative approach is to install SuzieQ as a python package. It is **strongly** recommended to install suzieq inside a virtual environment. If you already use a tool to create and manage virtual environments, you can skip the step of creating a virtual environment below.
 
-SuzieQ requires python version 3.9 at least, and has been tested with python versions 3.9. It has not been tested to work on Windows. Use Linux (recommended) or macOS. To create a virtual environment, in case you haven't got a tool to create one, type:
+Suzieq supports python 3.8 to 3.9. It has not been tested to work on Windows. Use Linux (recommended) or macOS. To create a virtual environment, in case you haven't got a tool to create one, type:
 
 ```bash
 python -m venv suzieq
