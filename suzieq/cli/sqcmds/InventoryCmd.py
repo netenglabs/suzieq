@@ -1,15 +1,16 @@
 import re
-from nubia import command
-from suzieq.cli.nubia_patch import argument
 
+from nubia import command
+
+import suzieq.cli.sqcmds.sq_completions as completitions
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.inventory import InventoryObj
 
 
 @command("inventory", help="Act on inventory data")
 @argument("type", description="Filter by type",
-          choices=["fan", "power", "xcvr", "supervisor", "port-adapter",
-                   "linecard", "fabric", "midplane", "mx-cb"])
+          choices=completitions.inv_type_completer)
 @argument("status", description="Filter by status",
           choices=['present', 'absent'])
 @argument("model", description="Filter by model")
