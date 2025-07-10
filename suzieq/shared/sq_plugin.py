@@ -3,6 +3,7 @@ This module contains all the common logic of
 the Suzieq plugins
 """
 
+import os
 from importlib import import_module
 from importlib.util import find_spec
 from inspect import getmembers, getmro, isclass
@@ -65,8 +66,31 @@ class SqPlugin:
             pspec = find_spec(pkg)
             if pspec and pspec.loader:
                 try:
-                    mfound = [x.split('.')[0] for x in pspec.loader.contents()
-                              if not x.startswith('_') and x.endswith(".py")]
+                    # Get the package path for listing modules
+                    if hasattr(pspec, 'origin') and pspec.origin:
+                        # For regular packages, origin points to __init__.py
+                        if pspec.origin.endswith('__init__.py'):
+                            pkg_path = os.path.dirname(pspec.origin)
+                        else:
+                            # For single modules, get the directory containing
+                            # the module
+                            pkg_path = os.path.dirname(pspec.origin)
+                        # List all .py files in the package directory
+                        mfound = [
+                            x.split('.')[0] for x in os.listdir(pkg_path)
+                            if not x.startswith('_') and x.endswith(".py")
+                        ]
+                    elif (hasattr(pspec, 'submodule_search_locations') and
+                          pspec.submodule_search_locations):
+                        # Fallback: use submodule_search_locations for
+                        # namespace packages
+                        pkg_path = pspec.submodule_search_locations[0]
+                        mfound = [
+                            x.split('.')[0] for x in os.listdir(pkg_path)
+                            if not x.startswith('_') and x.endswith(".py")
+                        ]
+                    else:
+                        mfound = []
                 except Exception:  # pylint: disable=broad-except
                     mfound = []
                 for minfo in mfound:
