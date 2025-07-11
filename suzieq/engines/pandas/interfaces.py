@@ -569,7 +569,7 @@ class InterfacesObj(SqPandasEngine):
 
         combined_df['assertReason'] += combined_df.apply(
             lambda x, mlag_peerlinks: []
-            if ((x.indexPeer > 0 and
+            if ((x.indexPeer >= 0 and
                 ((x.namespace, x.hostname, x.master) not in mlag_peerlinks) and
                  (set(x['vlanList']) == set(x['vlanListPeer']))) or
                 ((x.indexPeer < 0) or
