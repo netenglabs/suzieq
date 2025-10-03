@@ -129,7 +129,7 @@ class DeviceService(Service):
 
         for entry in processed_data:
             entry['bootupTimestamp'] = get_timestamp_from_junos_time(
-                entry['bootupTimestamp'], ms=False)
+                entry.get('bootupTimestamp'), ms=False)
 
             if entry.get('version', '').endswith('EVO'):
                 entry['os'] = 'junos-evo'

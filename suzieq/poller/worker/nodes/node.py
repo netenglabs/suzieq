@@ -1967,7 +1967,7 @@ class JunosNode(Node):
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
                 if self.devtype not in ["junos-mx", "junos-qfx10k",
-                                        "junos-evo"]:
+                                        "junos-evo", "junos-ex"]:
                     jdata = (jdata['multi-routing-engine-results'][0]
                              ['multi-routing-engine-item'][0])
 
