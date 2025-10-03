@@ -297,7 +297,12 @@ class InterfaceService(Service):
             if not entry.get('macaddr', ''):
                 entry['macaddr'] = '00:00:00:00:00:00'
 
-            entry['type'] = entry.get('type', '').lower()
+            etype = entry.get('type', '')
+            if isinstance(etype, list):
+                etype = etype[0] if etype else ''
+            elif isinstance(etype, dict):
+                etype = etype.get('data', '')
+            entry['type'] = str(etype).lower() if etype else ''
 
             if entry['type'] in ['vrf', 'virtual-router']:
                 entry['type'] = 'vrf'

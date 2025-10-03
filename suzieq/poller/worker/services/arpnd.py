@@ -47,10 +47,13 @@ class ArpndService(Service):
 
     def _clean_junos_data(self, processed_data, _):
         for entry in processed_data:
-            if '[vtep.' in entry['oif']:
+            oif = entry.get('oif') or ''
+            if '[vtep.' in oif:
                 entry['remote'] = True
-            if entry['oif']:
-                entry['oif'] = re.sub(r' \[.*\]', '', entry['oif'])
+            if oif:
+                entry['oif'] = re.sub(r' \[.*\]', '', oif)
+            else:
+                entry['oif'] = ''
             if not entry.get('state', None):
                 entry['state'] = 'reachable'
             if not entry.get('macaddr', None):
