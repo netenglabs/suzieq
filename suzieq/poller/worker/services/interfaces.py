@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 from collections import defaultdict
-from json import loads
+from json import loads, JSONDecodeError
 from typing import Dict
 import numpy as np
 
@@ -993,13 +993,32 @@ class InterfaceService(Service):
 
             # mtu values are collected separatly
             if _mtu_data:
+                try:
+                    _, json_blob = _mtu_data.split(": ", 1)
+                except ValueError:
+                    self.logger.warning(
+                        "Unexpected panos MTU data format: %s", _mtu_data)
+                    continue
+
                 # fix json so that it can be parsed
-                d = _mtu_data.split(": ", 1)[1].replace("'", "\"")
+                d = json_blob.replace("'", "\"")
                 d = re.sub(
                     r"([a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5})", r'"\1"', d)
                 d = re.sub(r"(\"[\w0-9\.\/]+\": \{\s\},\s)", r"", d)
-                d = re.sub(r"(,\s\})", r" }", d)
-                j = loads(d)
+                d = re.sub(r"(,\s\})", r" }", d).strip()
+
+                if not d:
+                    self.logger.warning(
+                        "Empty panos MTU data after cleanup: %s", _mtu_data)
+                    continue
+
+                try:
+                    j = loads(d)
+                except JSONDecodeError:  # pragma: no cover - defensive
+                    self.logger.warning(
+                        "Unable to parse panos MTU data: %s", d)
+                    continue
+
                 for ifname, value in j.items():
                     mtu_data[ifname] = value["mtu"]
                 continue
