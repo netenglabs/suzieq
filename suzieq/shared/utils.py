@@ -1164,6 +1164,18 @@ def get_default_per_vals() -> Dict:
         pa.binary(): b''
     })
 
+def normalize_junos_field(raw_value):
+    """Handle Junos fields that sometimes arrive wrapped in a single-item list."""
+
+    if isinstance(raw_value, str):
+        return raw_value
+
+    elif isinstance(raw_value, list) and raw_value:
+        return raw_value[0] or ''
+        
+    else:
+        return ''
+
 
 def log_suzieq_info(name: str, c_logger: logging.Logger = None,
                     show_more=False):
