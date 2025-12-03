@@ -7,23 +7,9 @@ import pytest
 from suzieq.db.parquet.parquetdb import SqParquetDB
 from suzieq.poller.worker.services.interfaces import InterfaceService
 from suzieq.shared.schema import Schema, SchemaForTable
-from suzieq.shared.utils import load_sq_config, normalize_junos_field
+from suzieq.shared.utils import load_sq_config
 from tests.conftest import create_dummy_config_file
 
-
-NORMALIZE_TYPE_FIELD_CASES = [
-    ('Ethernet', 'Ethernet', 'string_ethernet'),
-    ('Virtual-router', 'Virtual-router', 'string_virtual_router'),
-    ('', '', 'string_empty'),
-    (['Ethernet'], 'Ethernet', 'list_ethernet'),
-    (['Virtual-router'], 'Virtual-router', 'list_virtual_router'),
-    ([''], '', 'list_empty_string'),
-    ([None], '', 'list_none'),
-    ([], '', 'empty_list'),
-    (None, '', 'none_input'),
-    (['Ethernet', 'Other'], 'Ethernet', 'list_multiple_1'),
-    (['First', 'Second', 'Third'], 'First', 'list_multiple_2'),
-]
 
 JUNOS_TYPE_LOGIC_CASES = [
     ('some-type', 'Ethernet', 'ethernet', 'linktype_overrides_str'),
@@ -33,6 +19,12 @@ JUNOS_TYPE_LOGIC_CASES = [
     ('', 'Ethernet', 'ethernet', 'type_empty_linktype_str'),
     ('', ['Ethernet'], 'ethernet', 'type_empty_linktype_list'),
     ('', '', 'internal', 'both_empty'),
+    ([''], '', 'internal', 'list_empty_string'),
+    ([None], '', 'internal', 'list_none'),
+    ([], '', 'internal', 'empty_list'),
+    (None, '', 'internal', 'none_input'),
+    (['Ethernet', 'Other'], '', 'ethernet', 'list_multiple_1'),
+    (['First', 'Second', 'Third'], '', 'first', 'list_multiple_2'),
 ]
 
 
@@ -52,18 +44,6 @@ def interface_service():
     yield service
     os.remove(cfg_file)
     rmtree(data_dir)
-
-
-@pytest.mark.poller
-@pytest.mark.poller_worker
-@pytest.mark.poller_unit_tests
-@pytest.mark.parametrize("input_value,expected,test_id", NORMALIZE_TYPE_FIELD_CASES)
-def test_normalize_type_field(input_value, expected, test_id):
-    """Test the normalize_junos_field helper method"""
-    result = normalize_junos_field(input_value)
-    assert result == expected, \
-        f"Failed: input={input_value}, expected={expected}, got={result}"
-
 
 @pytest.mark.poller
 @pytest.mark.poller_worker
