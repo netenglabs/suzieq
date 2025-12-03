@@ -1172,7 +1172,7 @@ def normalize_junos_field(raw_value):
 
     elif isinstance(raw_value, list) and raw_value:
         return raw_value[0] or ''
-        
+    
     else:
         return ''
 
