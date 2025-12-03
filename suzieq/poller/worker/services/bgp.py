@@ -335,14 +335,6 @@ class BgpService(Service):
                     adv = af_adv[i] if i < len(af_adv) else None
                     rcv = af_rcv[i] if i < len(af_rcv) else None
                     
-                    # if adv is None or rcv is None:
-                    #     continue
-                    # if adv != rcv:
-                    #     if adv == 'true':
-                    #         entry['afisAdvOnly'].append(item)
-                    #     else:
-                    #         entry['afisRcvOnly'].append(item)
-                    
                     if adv and rcv and adv != rcv:
                         entry['afisAdvOnly' if adv == 'true' else 'afisRcvOnly'].append(item)
                 
