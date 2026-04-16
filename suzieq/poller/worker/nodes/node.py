@@ -1,4 +1,4 @@
-from typing import TypeVar, Dict, Callable, List, Optional
+from typing import Awaitable, TypeVar, Dict, Callable, List, Optional
 from abc import abstractmethod
 from collections import defaultdict
 import time
@@ -323,7 +323,8 @@ class Node:
         }
         return result
 
-    async def _post_result(self, service_callback: asyncio.coroutine,
+    async def _post_result(self, service_callback: Callable[
+                           [List[Dict], RsltToken], Awaitable[None]],
                            result: List[Dict],
                            cb_token: RsltToken):
         """This function submits the result calling the service callback, this
@@ -331,7 +332,7 @@ class Node:
         preliminary actions before calling the callback.
 
         Args:
-            service_callback (asyncio.coroutine): service callback
+            service_callback: async service callback
             result (List[Dict]): the result of teh command
             cb_token (RsltToken): the metadata passed between the node and the
                 service.
