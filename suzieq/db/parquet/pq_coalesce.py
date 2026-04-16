@@ -121,9 +121,9 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
                 this_df = this_df.set_index(state.keys)
                 sett = set(this_df.index)
                 setc = set(state.current_df.index)
-                missing_set = setc.difference(sett)
-                if missing_set:
-                    missing_df = state.current_df.loc[missing_set]
+                missing_list = list(setc.difference(sett))
+                if missing_list:
+                    missing_df = state.current_df.loc[missing_list]
                     this_df = pd.concat([this_df.reset_index(),
                                          missing_df.reset_index()])
                 else:
