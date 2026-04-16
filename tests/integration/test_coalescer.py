@@ -330,8 +330,8 @@ def _write_verify_transform(mod_df, table, dbeng, schema, config_file,
 
     assert((mod_df.index == qdf.index).all())
 
-    assert_df_equal(mod_df[changed_fields].reset_index(),
-                    qdf[changed_fields].reset_index(),
+    assert_df_equal(mod_df[list(changed_fields)].reset_index(),
+                    qdf[list(changed_fields)].reset_index(),
                     None)
 
 
