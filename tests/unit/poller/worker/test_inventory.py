@@ -171,4 +171,4 @@ async def test_node_scheduling(ready_inventory):
     assert ready_inventory.running_nodes
     assert len(ready_inventory.running_nodes) == len(sample_inventory)
     # Suppress never awaited alert
-    await asyncio.wait(list(ready_inventory.running_nodes.values()))
+    await asyncio.gather(*ready_inventory.running_nodes.values())
