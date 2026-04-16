@@ -7,6 +7,7 @@ import logging
 import os
 import sys
 import uuid
+from contextlib import asynccontextmanager
 from enum import Enum
 from typing import List
 
@@ -27,15 +28,21 @@ api_key_query = APIKeyQuery(name=API_KEY_NAME, auto_error=False)
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
 
-def check_config_file():
-    if not getattr(app, 'cfg_file', None):
+def check_config_file(sq_app):
+    if not getattr(sq_app, 'cfg_file', None):
         print('missing config file')
         sys.exit(1)
 
 
+@asynccontextmanager
+async def lifespan(sq_app: FastAPI):
+    check_config_file(sq_app)
+    yield
+
+
 # Changing the default URLs to help with reverse proxy stuff as described
 # in issue #381 (https://github.com/netenglabs/suzieq/issues/381)
-app = FastAPI(on_startup=[check_config_file],
+app = FastAPI(lifespan=lifespan,
               openapi_url="/api/openapi.json",
               docs_url="/api/docs",
               redoc_url="/api/redoc")
