@@ -840,14 +840,17 @@ def create_filters(function_name, command, request, local_vars):
     for arg in query_ks.keys():
         if arg in remove_args:
             continue
+        arg_value = local_vars.get(arg, None)
+        if isinstance(arg_value, Enum):
+            arg_value = arg_value.value
         if arg in all_cmd_args:
             if query_ks.get(arg) is not None:
-                command_args[arg] = local_vars.get(arg, None)
+                command_args[arg] = arg_value
                 if arg in both_verb_and_command:
                     verb_args[arg] = command_args[arg]
         else:
             if query_ks.get(arg) is not None:
-                verb_args[arg] = local_vars.get(arg, None)
+                verb_args[arg] = arg_value
 
     return command_args, verb_args
 
