@@ -15,20 +15,6 @@ from suzieq.version import SUZIEQ_VERSION
 from suzieq.shared.utils import sq_get_config_file
 
 
-def set_horizontal_radio():
-    '''Make the radio buttons horizontal'''
-    st.write('<style>div.row-widget.stRadio > '
-             'div{flex-direction:row;}</style>',
-             unsafe_allow_html=True)
-
-
-def set_vertical_radio():
-    '''Make the radio buttons horizontal'''
-    st.write('<style>div.row-widget.stRadio > '
-             'div{flex-direction:column;}</style>',
-             unsafe_allow_html=True)
-
-
 def display_help_icon(url: str):
     '''Display Help Icon with click to take you to appropriate page'''
 
@@ -113,10 +99,9 @@ def display_title(page: str):
     with page_col:
         # The empty writes are for aligning the pages link with the logo
         st.text(' ')
-        set_horizontal_radio()
         st.radio('Page', sel_menulist, key='sq_page',
                  index=sel_menulist.index(page or 'Status'),
-                 on_change=main_sync_state)
+                 on_change=main_sync_state, horizontal=True)
         page = state.sq_page
 
     return page, search_str
