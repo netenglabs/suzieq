@@ -6,11 +6,14 @@ from importlib.util import find_spec
 import pandas as pd
 import streamlit as st
 from IPython.display import Markdown
+from st_aggrid import JsCode
 from streamlit.runtime.scriptrunner import get_script_run_ctx
 from suzieq.sqobjects import get_sqobject
 
 SUZIEQ_COLOR = "#68279D"
 _QUERY_PARAM_SCALAR_TYPES = (str, bool, int, float)
+AGGRID_ROW_ID_COL = '__sq_row_id__'
+AGGRID_INTERNAL_COLUMNS = ['::auto_unique_id::', AGGRID_ROW_ID_COL]
 
 
 class SuzieqMainPages(str, Enum):
@@ -185,6 +188,46 @@ def set_def_aggrid_options(grid_options: dict):
     grid_options['ensureDomOrder'] = True
 
     return grid_options
+
+
+def build_aggrid_display_df(df: pd.DataFrame) -> pd.DataFrame:
+    '''Return a render-only AgGrid DataFrame with a stable hidden row ID.'''
+    display_df = df.drop(columns=AGGRID_INTERNAL_COLUMNS,
+                         errors='ignore').copy()
+    _stringify_mixed_object_columns(display_df)
+    display_df[AGGRID_ROW_ID_COL] = [
+        str(i) for i in range(len(display_df))
+    ]
+    return display_df
+
+
+def _stringify_mixed_object_columns(df: pd.DataFrame) -> None:
+    '''Make mixed object columns safe for Arrow serialization.'''
+    for col in df.select_dtypes(include='object').columns:
+        inferred_type = pd.api.types.infer_dtype(df[col].dropna(),
+                                                 skipna=True)
+        if inferred_type.startswith('mixed'):
+            df[col] = df[col].astype(str)
+
+
+def set_aggrid_id_options(grid_options: dict) -> dict:
+    '''Configure AgGrid row IDs without exposing render-only columns.'''
+    for col_def in grid_options.get('columnDefs', []):
+        if col_def.get('field') == AGGRID_ROW_ID_COL:
+            col_def['hide'] = True
+            break
+
+    grid_options['getRowId'] = JsCode(f'''
+        function(params) {{
+            return params.data.{AGGRID_ROW_ID_COL};
+        }}
+    ''')
+    return grid_options
+
+
+def strip_aggrid_internal_columns(df: pd.DataFrame) -> pd.DataFrame:
+    '''Remove render-only AgGrid columns from a DataFrame.'''
+    return df.drop(columns=AGGRID_INTERNAL_COLUMNS, errors='ignore')
 
 
 def get_image_dir():

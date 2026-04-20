@@ -8,7 +8,9 @@ import graphviz
 from st_aggrid import GridOptionsBuilder, AgGrid, JsCode
 
 from suzieq.sqobjects import get_sqobject
-from suzieq.gui.stlit.guiutils import (gui_get_df, set_def_aggrid_options,
+from suzieq.gui.stlit.guiutils import (build_aggrid_display_df, gui_get_df,
+                                       set_aggrid_id_options,
+                                       set_def_aggrid_options,
                                        display_help_icon,
                                        get_session_id, SuzieqMainPages)
 from suzieq.gui.stlit.pagecls import SqGuiPage
@@ -200,7 +202,8 @@ class PathPage(SqGuiPage):
 
     def _draw_aggrid_df(self, df):
 
-        gb = GridOptionsBuilder.from_dataframe(df)
+        display_df = build_aggrid_display_df(df)
+        gb = GridOptionsBuilder.from_dataframe(display_df)
         gb.configure_pagination(paginationPageSize=25)
 
         gb.configure_default_column(floatingFilter=True)
@@ -214,10 +217,11 @@ class PathPage(SqGuiPage):
 
         gridOptions = gb.build()
         gridOptions = set_def_aggrid_options(gridOptions)
+        gridOptions = set_aggrid_id_options(gridOptions)
         gridOptions['getRowStyle'] = self._aggrid_style_rows(df)
 
         _ = AgGrid(
-            df,
+            display_df,
             gridOptions=gridOptions,
             allow_unsafe_jscode=True,
             update_on=[],

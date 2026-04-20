@@ -7,8 +7,11 @@ import pandas as pd
 import streamlit as st
 from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 from suzieq.gui.stlit.guiutils import (SUZIEQ_COLOR, SuzieqMainPages,
+                                       build_aggrid_display_df,
                                        gui_get_df, pandas_df_to_markdown_table,
-                                       set_def_aggrid_options, sq_gui_style)
+                                       set_aggrid_id_options,
+                                       set_def_aggrid_options, sq_gui_style,
+                                       strip_aggrid_internal_columns)
 from suzieq.gui.stlit.pagecls import SqGuiPage
 from suzieq.sqobjects import get_sqobject, get_tables
 
@@ -358,7 +361,7 @@ class XplorePage(SqGuiPage):
             agdf = show_df
             ag = self._draw_aggrid_df(agdf)
             selected = ag['data']
-            selected_df = pd.DataFrame(selected)
+            selected_df = strip_aggrid_internal_columns(pd.DataFrame(selected))
             st.session_state['xplore_show_df'] = selected_df
             self._draw_uniq_histogram(layout, selected_df)
 
@@ -375,7 +378,8 @@ class XplorePage(SqGuiPage):
 
     def _draw_aggrid_df(self, df) -> AgGrid:
 
-        gb = GridOptionsBuilder.from_dataframe(df)
+        display_df = build_aggrid_display_df(df)
+        gb = GridOptionsBuilder.from_dataframe(display_df)
         gb.configure_pagination(paginationPageSize=25)
 
         gb.configure_default_column(floatingFilter=True, selectable=False)
@@ -384,6 +388,7 @@ class XplorePage(SqGuiPage):
 
         gridOptions = gb.build()
         gridOptions = set_def_aggrid_options(gridOptions)
+        gridOptions = set_aggrid_id_options(gridOptions)
         jscode = self._aggrid_style_rows()
         gridOptions['getRowStyle'] = jscode
 
@@ -410,7 +415,7 @@ class XplorePage(SqGuiPage):
             gridOptions['autoSizeStrategy'] = {'type': 'fitGridWidth'}
 
         grid_response = AgGrid(
-            df.iloc[start_row:end_row],
+            display_df.iloc[start_row:end_row].copy(),
             gridOptions=gridOptions,
             allow_unsafe_jscode=True,
             data_return_mode=retmode,

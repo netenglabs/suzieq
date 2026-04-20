@@ -7,6 +7,8 @@ import streamlit as st
 from pandas.core.frame import DataFrame
 from st_aggrid import AgGrid, GridOptionsBuilder
 from suzieq.gui.stlit.guiutils import (SuzieqMainPages, gui_get_df,
+                                       build_aggrid_display_df,
+                                       set_aggrid_id_options,
                                        set_def_aggrid_options)
 from suzieq.gui.stlit.pagecls import SqGuiPage
 from suzieq.shared.utils import (convert_macaddr_format_to_colon,
@@ -184,7 +186,8 @@ When specifying a table, you can specify multiple addresses to look for by
                 st.error(df['error'][0])
             else:
 
-                gb = GridOptionsBuilder.from_dataframe(df)
+                display_df = build_aggrid_display_df(df)
+                gb = GridOptionsBuilder.from_dataframe(display_df)
                 gb.configure_pagination(paginationPageSize=25)
 
                 gb.configure_default_column(floatingFilter=True,
@@ -194,15 +197,17 @@ When specifying a table, you can specify multiple addresses to look for by
                 gb.configure_grid_options(
                     domLayout='normal', preventDefaultOnContextMenu=True)
                 gridOptions = set_def_aggrid_options(gb.build())
+                gridOptions = set_aggrid_id_options(gridOptions)
+                gridOptions.pop('autoSizeStrategy', None)
 
-                if df.shape[0] == 1:
+                if display_df.shape[0] == 1:
                     height = 150
-                elif df.shape[0] < 4:
+                elif display_df.shape[0] < 4:
                     height = 200
                 else:
                     height = 400
                 _ = AgGrid(
-                    df,
+                    display_df,
                     height=height,
                     gridOptions=gridOptions,
                     allow_unsafe_jscode=True,
