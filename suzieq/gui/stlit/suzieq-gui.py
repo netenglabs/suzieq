@@ -135,6 +135,7 @@ def main_sync_state():
         set_query_params(**{'page': wsstate.page})
         if wsstate.page != 'Search':
             wsstate.search_text = ''
+            wsstate.search = ''
 
 
 def build_pages() -> Dict:
