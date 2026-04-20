@@ -10,6 +10,7 @@ from streamlit.runtime.scriptrunner import get_script_run_ctx
 from suzieq.sqobjects import get_sqobject
 
 SUZIEQ_COLOR = "#68279D"
+_QUERY_PARAM_SCALAR_TYPES = (str, bool, int, float)
 
 
 class SuzieqMainPages(str, Enum):
@@ -112,9 +113,25 @@ def set_query_params(**params) -> None:
     '''Set query params with the Streamlit 1.54 query params API.'''
     st.query_params.clear()
     for key, val in params.items():
-        if val is None:
+        query_val = _get_url_safe_query_value(val)
+        if query_val is None:
             continue
-        st.query_params[key] = val
+        st.query_params[key] = query_val
+
+
+def _get_url_safe_query_value(value):
+    '''Return a value accepted by st.query_params or None to skip it.'''
+    if value is None:
+        return None
+
+    if isinstance(value, _QUERY_PARAM_SCALAR_TYPES):
+        return str(value)
+
+    if isinstance(value, (list, tuple, set)):
+        if all(isinstance(item, _QUERY_PARAM_SCALAR_TYPES) for item in value):
+            return [str(item) for item in value]
+
+    return None
 
 
 def clear_gui_cache() -> None:
