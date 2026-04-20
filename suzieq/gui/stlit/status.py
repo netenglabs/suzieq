@@ -5,7 +5,8 @@ import numpy as np
 import streamlit as st
 import altair as alt
 
-from suzieq.gui.stlit.guiutils import gui_get_df, SuzieqMainPages
+from suzieq.gui.stlit.guiutils import (clear_gui_cache, gui_get_df,
+                                       SuzieqMainPages)
 from suzieq.gui.stlit.pagecls import SqGuiPage
 
 
@@ -53,7 +54,7 @@ class StatusPage(SqGuiPage):
                                          on_change=self._sync_state)
 
         if do_refresh:
-            st.experimental_memo.clear()
+            clear_gui_cache()
 
         st.sidebar.markdown(
             '''This page provides an overview of the overall network status

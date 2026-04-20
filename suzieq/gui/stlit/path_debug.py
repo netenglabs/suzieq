@@ -3,6 +3,7 @@ from itertools import zip_longest
 import pandas as pd
 import streamlit as st
 
+from suzieq.gui.stlit.guiutils import get_query_params
 from suzieq.gui.stlit.pagecls import SqGuiPage
 
 
@@ -37,7 +38,7 @@ class PathDebugPage(SqGuiPage):
         pass
 
     def _render(self, _) -> None:
-        url_params = st.experimental_get_query_params()
+        url_params = get_query_params()
         if url_params.get('lookupType', 'hop') == ['hop']:
             self._handle_hop_url(url_params)
         else:

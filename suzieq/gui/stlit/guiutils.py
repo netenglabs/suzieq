@@ -6,14 +6,7 @@ from importlib.util import find_spec
 import pandas as pd
 import streamlit as st
 from IPython.display import Markdown
-from streamlit.server.server import Server
-try:
-    from streamlit.scriptrunner.script_run_context import get_script_run_ctx
-except ModuleNotFoundError:
-    # streamlit < 1.4
-    from streamlit.report_thread import (  # type: ignore
-        get_report_ctx as get_script_run_ctx,
-    )
+from streamlit.runtime.scriptrunner import get_script_run_ctx
 from suzieq.sqobjects import get_sqobject
 
 SUZIEQ_COLOR = "#68279D"
@@ -57,7 +50,7 @@ def display_help_icon(url: str):
         unsafe_allow_html=True)
 
 
-@st.experimental_memo
+@st.cache_data
 def gui_get_df(table: str,
                config_file: str,
                verb: str = 'get', **kwargs) -> pd.DataFrame:
@@ -109,6 +102,26 @@ def gui_get_df(table: str,
     return df.reset_index(drop=True)
 
 
+def get_query_params() -> dict:
+    '''Return query params in the list-valued format used by GUI pages.'''
+    params = st.query_params
+    return {key: params.get_all(key) for key in params.keys()}
+
+
+def set_query_params(**params) -> None:
+    '''Set query params with the Streamlit 1.54 query params API.'''
+    st.query_params.clear()
+    for key, val in params.items():
+        if val is None:
+            continue
+        st.query_params[key] = val
+
+
+def clear_gui_cache() -> None:
+    '''Clear cached GUI data.'''
+    st.cache_data.clear()
+
+
 def get_session_id():
     '''Return Streamlit's session ID'''
     ctx = get_script_run_ctx()
@@ -128,7 +141,15 @@ def get_main_session_by_id(session_id):
     Returns:
         [type]: session state associated with session or None
     """
-    session = Server.get_current()._session_info_by_id.get(session_id, None)
+    from streamlit.runtime.runtime import Runtime
+
+    try:
+        session_mgr = Runtime.instance()._session_mgr
+    except RuntimeError:
+        return None
+
+    session = session_mgr.get_active_session_info(session_id)
+
     if session:
         return session.session.session_state
 

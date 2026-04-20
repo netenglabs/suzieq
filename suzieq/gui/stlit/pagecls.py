@@ -6,6 +6,7 @@ from abc import ABC, abstractmethod
 from dataclasses import asdict
 
 import streamlit as st
+from suzieq.gui.stlit.guiutils import get_query_params, set_query_params
 from suzieq.shared.sq_plugin import SqPlugin
 
 
@@ -48,7 +49,7 @@ class SqGuiPage(ABC, SqPlugin):
         raise NotImplementedError
 
     def _get_state_from_url(self):
-        url_params = st.experimental_get_query_params()
+        url_params = get_query_params()
         page = url_params.pop('page', '')
 
         if self._title in page:
@@ -98,4 +99,4 @@ class SqGuiPage(ABC, SqPlugin):
         state = asdict(self._state)
         for param in self._URL_PARAMS_BLACKLIST:
             state.pop(param, None)
-        st.experimental_set_query_params(**state)
+        set_query_params(**state)
