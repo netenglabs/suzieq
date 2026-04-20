@@ -5,7 +5,7 @@ from random import randint
 
 import streamlit as st
 from pandas.core.frame import DataFrame
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode
+from st_aggrid import AgGrid, GridOptionsBuilder
 from suzieq.gui.stlit.guiutils import (SuzieqMainPages, gui_get_df,
                                        set_def_aggrid_options)
 from suzieq.gui.stlit.pagecls import SqGuiPage
@@ -206,7 +206,7 @@ When specifying a table, you can specify multiple addresses to look for by
                     height=height,
                     gridOptions=gridOptions,
                     allow_unsafe_jscode=True,
-                    update_mode=GridUpdateMode.NO_UPDATE,
+                    update_on=[],
                     theme='streamlit',
                     key=str(randint(1, 10000000))
                 )

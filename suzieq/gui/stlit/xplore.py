@@ -5,7 +5,7 @@ import altair as alt
 import numpy as np
 import pandas as pd
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode
+from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 from suzieq.gui.stlit.guiutils import (SUZIEQ_COLOR, SuzieqMainPages,
                                        gui_get_df, pandas_df_to_markdown_table,
                                        set_def_aggrid_options, sq_gui_style)
@@ -400,19 +400,21 @@ class XplorePage(SqGuiPage):
 
         if self._state.experimental_ok:
             retmode = 'FILTERED'
-            upd8_mode = GridUpdateMode.FILTERING_CHANGED
+            update_on = ['filterChanged']
         else:
             retmode = 'AS_INPUT'
-            upd8_mode = GridUpdateMode.VALUE_CHANGED
+            update_on = ['cellValueChanged']
 
         fit_columns = (len(df.columns) < 12)
+        if fit_columns:
+            gridOptions['autoSizeStrategy'] = {'type': 'fitGridWidth'}
+
         grid_response = AgGrid(
             df.iloc[start_row:end_row],
             gridOptions=gridOptions,
             allow_unsafe_jscode=True,
             data_return_mode=retmode,
-            update_mode=upd8_mode,
-            fit_columns_on_grid_load=fit_columns,
+            update_on=update_on,
             theme='streamlit',
         )
         return grid_response

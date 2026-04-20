@@ -5,8 +5,7 @@ from urllib.parse import quote
 import pandas as pd
 import streamlit as st
 import graphviz
-from st_aggrid import (GridOptionsBuilder, AgGrid, GridUpdateMode,
-                       JsCode)
+from st_aggrid import GridOptionsBuilder, AgGrid, JsCode
 
 from suzieq.sqobjects import get_sqobject
 from suzieq.gui.stlit.guiutils import (gui_get_df, set_def_aggrid_options,
@@ -221,7 +220,7 @@ class PathPage(SqGuiPage):
             df,
             gridOptions=gridOptions,
             allow_unsafe_jscode=True,
-            update_mode=GridUpdateMode.NO_UPDATE,
+            update_on=[],
             theme='streamlit',
         )
 
