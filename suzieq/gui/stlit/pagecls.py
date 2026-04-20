@@ -5,7 +5,6 @@ Any page built inside the SuzieQ GUI has to adhere to this interface
 from abc import ABC, abstractmethod
 from dataclasses import asdict
 
-import streamlit as st
 from suzieq.gui.stlit.guiutils import get_query_params, set_query_params
 from suzieq.shared.sq_plugin import SqPlugin
 

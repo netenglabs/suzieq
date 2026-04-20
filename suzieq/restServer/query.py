@@ -50,10 +50,6 @@ app = FastAPI(lifespan=lifespan,
 
 def app_init(cfg_file):
     '''This is the actual API initilaizer'''
-    # pylint: disable=global-variable-not-assigned
-
-    global app
-
     app.cfg_file = cfg_file
 
     return app
@@ -312,7 +308,7 @@ def query_address(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/arpnd/{verb}")
+@app.get("/api/v2/arpnd/{verb}")
 def query_arpnd(verb: CommonVerbs, request: Request,
                 token: str = Depends(get_api_key),
                 format: str = None,
@@ -332,7 +328,7 @@ def query_arpnd(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/bgp/{verb}")
+@app.get("/api/v2/bgp/{verb}")
 def query_bgp(verb: CommonExtraVerbs, request: Request,
               token: str = Depends(get_api_key),
               format: str = None,
@@ -354,7 +350,7 @@ def query_bgp(verb: CommonExtraVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/device/{verb}")
+@app.get("/api/v2/device/{verb}")
 def query_device(verb: CommonVerbs, request: Request,
                  token: str = Depends(get_api_key),
                  format: str = None,
@@ -380,7 +376,7 @@ def query_device(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/devconfig/{verb}")
+@app.get("/api/v2/devconfig/{verb}")
 def query_devconfig(verb: CommonVerbs, request: Request,
                     token: str = Depends(get_api_key),
                     format: str = None,
@@ -398,7 +394,7 @@ def query_devconfig(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/evpnVni/{verb}")
+@app.get("/api/v2/evpnVni/{verb}")
 def query_evpnVni(verb: CommonExtraVerbs, request: Request,
                   token: str = Depends(get_api_key),
                   format: str = None,
@@ -417,7 +413,7 @@ def query_evpnVni(verb: CommonExtraVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/fs/{verb}")
+@app.get("/api/v2/fs/{verb}")
 def query_fs(verb: CommonVerbs, request: Request,
              token: str = Depends(get_api_key),
              format: str = None,
@@ -434,7 +430,7 @@ def query_fs(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/interface/{verb}")
+@app.get("/api/v2/interface/{verb}")
 def query_interface(verb: CommonExtraVerbs, request: Request,
                     token: str = Depends(get_api_key),
                     format: str = None,
@@ -485,7 +481,7 @@ def query_inventory(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/lldp/{verb}")
+@app.get("/api/v2/lldp/{verb}")
 def query_lldp(verb: CommonVerbs, request: Request,
                token: str = Depends(get_api_key),
                format: str = None,
@@ -505,7 +501,7 @@ def query_lldp(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/mac/{verb}")
+@app.get("/api/v2/mac/{verb}")
 def query_mac(verb: CommonVerbs, request: Request,
               token: str = Depends(get_api_key),
               format: str = None,
@@ -527,7 +523,7 @@ def query_mac(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/mlag/{verb}")
+@app.get("/api/v2/mlag/{verb}")
 def query_mlag(verb: CommonVerbs, request: Request,
                token: str = Depends(get_api_key),
                format: str = None,
@@ -673,7 +669,7 @@ def query_namespace(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/ospf/{verb}")
+@app.get("/api/v2/ospf/{verb}")
 def query_ospf(verb: CommonExtraVerbs, request: Request,
                token: str = Depends(get_api_key),
                format: str = None,
@@ -694,7 +690,7 @@ def query_ospf(verb: CommonExtraVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/path/{verb}")
+@app.get("/api/v2/path/{verb}")
 def query_path(verb: CommonVerbs, request: Request,
                token: str = Depends(get_api_key),
                format: str = None,
@@ -713,7 +709,7 @@ def query_path(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/route/{verb}")
+@app.get("/api/v2/route/{verb}")
 def query_route(verb: RouteVerbs, request: Request,
                 token: str = Depends(get_api_key),
                 format: str = None,
@@ -734,7 +730,7 @@ def query_route(verb: RouteVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/sqPoller/{verb}")
+@app.get("/api/v2/sqPoller/{verb}")
 def query_sqPoller(verb: CommonVerbs, request: Request,
                    token: str = Depends(get_api_key),
                    format: str = None,
@@ -753,7 +749,7 @@ def query_sqPoller(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/topology/{verb}")
+@app.get("/api/v2/topology/{verb}")
 def query_topology(verb: CommonVerbs, request: Request,
                    token: str = Depends(get_api_key),
                    format: str = None,
@@ -794,7 +790,7 @@ def query_table(
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/vlan/{verb}")
+@app.get("/api/v2/vlan/{verb}")
 def query_vlan(verb: CommonVerbs, request: Request,
                token: str = Depends(get_api_key),
                format: str = None,
@@ -967,14 +963,14 @@ def return_error(code: int, msg: str):
     raise HTTPException(status_code=code, detail=msg)
 
 
-@ app.get("/api/v2/{command}", include_in_schema=False)
+@app.get("/api/v2/{command}", include_in_schema=False)
 def missing_verb(command):
     return_error(
         404, f'{command} command missing a verb. for example '
         f'/api/v2/{command}/show')
 
 
-@ app.get("/", include_in_schema=False)
+@app.get("/", include_in_schema=False)
 def bad_path():
     return_error(
         404,

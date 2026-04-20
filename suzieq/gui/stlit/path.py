@@ -164,7 +164,6 @@ class PathPage(SqGuiPage):
             layout['pgbar'].progress(100)
             self._path_df = pd.DataFrame()
             st.stop()
-            return
 
         layout['pgbar'].progress(40)
 
@@ -173,7 +172,6 @@ class PathPage(SqGuiPage):
             st.info(f'No path to trace between {self._state.source} and '
                     f'{self._state.dest}')
             st.stop()
-            return
 
         self._get_failed_data(state.namespace, layout['pgbar'])
 

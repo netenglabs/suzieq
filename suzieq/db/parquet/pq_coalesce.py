@@ -33,7 +33,7 @@ class SqCoalesceState:
         self.wrrec_count = 0
         self.block_start = self.block_end = 0
 
-    @ property
+    @property
     def pq_file_name(self):
         """Callback to create a filename that uses the timestamp of start
         of hour. This makes it easy for us to lookup data when we need to.

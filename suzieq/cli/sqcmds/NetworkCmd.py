@@ -136,11 +136,12 @@ class NetworkCmd(SqCommand):
                 df.sort_values(by=['numRows', df.columns[0]]),
                 dont_strip_cols=True)
 
-    @ command("top", help="Deprecated. Use 'namespace top' instead")
-    @ argument("count", description="number of rows to return")
-    @ argument("what", description="numeric field to get top values for")
-    @ argument("reverse", description="return bottom n values",
-               choices=['True', 'False'])
+    @command("top", help="Deprecated. Use 'namespace top' instead")
+    @argument("count", description="number of rows to return")
+    @argument("what", description="numeric field to get top values for")
+    @argument("reverse",
+              description="return bottom n values",
+              choices=['True', 'False'])
     def top(self, count: int = 5, what: str = '', reverse: str = 'False',
             **kwargs) -> int:
         """Deprecated. Use 'namespace top' instead
@@ -180,9 +181,10 @@ class NetworkCmd(SqCommand):
         else:
             return self._gen_output(df)
 
-    @ command("help", help="show help for a command")
-    @ argument("command", description="command to show help for",
-               choices=['find', 'show', 'summarize', 'top', 'unique'])
+    @command("help", help="show help for a command")
+    @argument("command",
+              description="command to show help for",
+              choices=['find', 'show', 'summarize', 'top', 'unique'])
     # pylint: disable=redefined-outer-name
     def help(self, command: str = ''):
         return super().help(command)

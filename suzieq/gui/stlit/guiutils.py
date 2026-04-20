@@ -161,6 +161,7 @@ def get_main_session_by_id(session_id):
     Returns:
         [type]: session state associated with session or None
     """
+    # pylint: disable=import-outside-toplevel
     from streamlit.runtime.runtime import Runtime
 
     try:

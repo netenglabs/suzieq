@@ -562,7 +562,7 @@ class PathObj(SqPandasEngine):
             protocol = rslt.protocol.iloc[0]
         return self._get_l2_nexthop(device, vrf, dest, None, protocol)
 
-    @ lru_cache(maxsize=256)
+    @lru_cache(maxsize=256)
     def _get_nh_with_peer(self, device: str, vrf: str, dest: str, is_l2: bool,
                           vtep_ip: str, macaddr: str) -> list:
         """Get the nexthops & peer node for each nexthop for a given device/vrf

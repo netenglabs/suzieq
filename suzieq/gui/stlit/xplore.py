@@ -266,12 +266,10 @@ class XplorePage(SqGuiPage):
                 st.error(df.iloc[0].error)
                 self._save_page_url()
                 st.stop()
-                return
         else:
             st.info('No data returned by the table')
             self._save_page_url()
             st.stop()
-            return
 
         if not df.empty:
             self._draw_summary_df(layout, query_str)
