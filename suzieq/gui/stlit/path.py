@@ -326,7 +326,7 @@ class PathPage(SqGuiPage):
                                .convert_dtypes()
 
     # pylint: disable=too-many-statements
-    @st.cache(max_entries=10, allow_output_mutation=True)
+    @st.cache_data(max_entries=10)
     def _build_graphviz_obj(self, show_ifnames: bool, df: pd.DataFrame):
         '''Return a graphviz object'''
 
