@@ -794,7 +794,7 @@ class PathObj(SqPandasEngine):
         dstvers = ip_network(dest, strict=False).version
         if srcvers != dstvers:
             raise AttributeError(
-                "Source and Dest MUST belong to same address familt")
+                "Source and Dest MUST belong to same address family")
         # All exceptions in the initial data gathering will happen in this init
         # After this, at least we know we have the data to work on
         self._init_dfs(self.namespace, src, dest)
