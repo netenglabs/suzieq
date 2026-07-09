@@ -1306,8 +1306,9 @@ class Node:
 
                     if request:
                         callback, service_dfn, token = request
-                        tasks.append(self._exec_service(
-                            callback, service_dfn, token))
+                        tasks.append(asyncio.create_task(
+                            self._exec_service(callback, service_dfn, token)
+                        ))
                         self.logger.debug(
                             f"Scheduling {token.service} for execution")
                     if self._service_queue.empty():
