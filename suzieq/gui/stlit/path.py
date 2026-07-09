@@ -175,7 +175,8 @@ class PathPage(SqGuiPage):
 
         self._get_failed_data(state.namespace, layout['pgbar'])
 
-        g = self._build_graphviz_obj(state.show_ifnames, df)
+        node_styles = self._get_node_styles(df)
+        g = self._build_graphviz_obj(state.show_ifnames, df, node_styles)
         layout['pgbar'].progress(100)
         # if not rev_df.empty:
         #     rev_g = build_graphviz_obj(state, rev_df)
@@ -190,7 +191,7 @@ class PathPage(SqGuiPage):
 <b style="color:red">Red Lines</b> => Hops with Error<br>
 ''', unsafe_allow_html=True)
 
-        layout['fw_path'].graphviz_chart(g, use_container_width=True)
+        layout['fw_path'].graphviz_chart(g, width='content')
         # rev_ph.graphviz_chart(rev_g, use_container_width=True)
 
         with layout['table']:
@@ -326,9 +327,19 @@ class PathPage(SqGuiPage):
         return pd.DataFrame(ns).reindex(summary_fields, axis=0) \
                                .convert_dtypes()
 
+    def _get_node_styles(self, df: pd.DataFrame) -> dict:
+        """Get Graphviz node tooltip and color values for path hosts."""
+
+        return {
+            hostname: self._get_node_tooltip_color(hostname)
+            for hostname in df.hostname.unique()
+        }
+
     # pylint: disable=too-many-statements
+    @staticmethod
     @st.cache_data(max_entries=10)
-    def _build_graphviz_obj(self, show_ifnames: bool, df: pd.DataFrame):
+    def _build_graphviz_obj(show_ifnames: bool, df: pd.DataFrame,
+                            node_styles: dict):
         '''Return a graphviz object'''
 
         graph_attr = {'splines': 'polyline', 'layout': 'dot'}
@@ -354,8 +365,7 @@ class PathPage(SqGuiPage):
                         f'session={quote(get_session_id())}',
                         f'hostname={quote(hostname)}',
                     ])
-                    tooltip, color = self._get_node_tooltip_color(
-                        hostname)
+                    tooltip, color = node_styles.get(hostname, ('', 'black'))
                     s.node(hostname, tooltip=tooltip, color=color,
                            URL=debugURL, target='_graphviz', shape='box')
 
