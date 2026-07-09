@@ -192,12 +192,19 @@ def apprun(*args):
             page = page[0]
         old_session_state = get_main_session_by_id(
             url_params.get('session', [''])[0])
-        if old_session_state:
-            if page == "Path-Debug":
+
+        if page == "Path-Debug":
+            if old_session_state:
                 state.pages[page].set_path_state(old_session_state)
                 state.pages[page].build()
-                st.stop()
-            elif page == "Help":
+            else:
+                st.error(
+                    "Path debug session is no longer available. "
+                    "Re-run the path trace.")
+            st.stop()
+
+        if old_session_state:
+            if page == "Help":
                 state.pages[page].build()
                 st.stop()
 
