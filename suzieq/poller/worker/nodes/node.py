@@ -1966,19 +1966,21 @@ class JunosNode(Node):
             data = output[0]["data"]
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
-                if self.devtype not in ["junos-mx", "junos-qfx10k",
-                                        "junos-evo"]:
+                
+                if jdata.get('multi-routing-engine-results'):
                     jdata = (jdata['multi-routing-engine-results'][0]
                              ['multi-routing-engine-item'][0])
 
                 timestr = (jdata['system-uptime-information'][0]
                            ['system-booted-time'][0]['date-time'][0]
                            ['attributes'])
+                        
             except Exception:
                 self.logger.warning(
                     f'{self.address}:{self.port} Unable to parse junos boot '
                     f'time from {data}')
                 timestr = '{"junos:seconds": "0"}'
+                
             self.bootupTimestamp = get_timestamp_from_junos_time(
                 timestr, ms=False)
 

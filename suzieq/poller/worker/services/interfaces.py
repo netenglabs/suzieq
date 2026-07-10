@@ -9,8 +9,7 @@ from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (get_timestamp_from_junos_time,
                                  expand_ios_ifname, expand_nxos_ifname,
                                  convert_macaddr_format_to_colon,
-                                 parse_relative_timestamp, 
-                                 normalize_junos_field)
+                                 parse_relative_timestamp, normalize_junos_field)
 from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
 
