@@ -1,23 +1,36 @@
 # Release Notes
 
+## 0.25.0 (August 5, 2026)
+
+This release adds support for python versions 3.10 and higher (providing the dependent libs support it) including updates to pretty much all the dependencies. It also includes fixes due to security vulnerabilities in the dependencies. It drops support for python versions < 3.10 because those versions have already reached end-of-life. People remaining on those versions should probably not upgrade as we're no longer testing with those versions.
+
+In addition it also contains some minor fixes:
+
+* **Fix Some path bugs**
+* **Fix TypeError when parsing NXOS BGP data (#637)**
+* **Fix AttributeError when Junos devices return interface type fields as lists (#902)**
+* **Fix KeyError when parsing Junos device data with missing bootupTimestamp (#903)**
+* **Fixed interface assert vlan mismatch for mlag interfaces (#987)**
+* **Fixed 2 broken links in README** Thanks @wynro
+
 ## 0.24.0 (May 7, 2025)
 
 This release adds several new capabilities and important bug fixes. Notably, it includes more flexible filtering options, improvements to REST engine parameter handling, support for certificate verification settings, and new integrations with the VMWare's vCenter and Junos IPv6 neighbor discovery. These changes are backward-compatible.
 
-* **Filter devices by address**  
+* **Filter devices by address**
   You can now filter devices based on one or more IP addresses using the `address` argument in the CLI.
 
-* **Set certificate verification mode**  
+* **Set certificate verification mode**
   Added support for the `cert-verify` parameter in configuration. You can set it to `True`, `False`, or a path to a CA certificate. This controls whether and how certificates are verified when connecting over HTTPS.
 
-* **REST engine parameter update fix**  
+* **REST engine parameter update fix**
   When switching to `engine='rest'`, the engine parameters (`rest-server-ip`, `rest-server-port`, `rest-api-key`, `rest-use-https`) are now correctly updated instead of keeping defaults. This avoids inconsistent behavior when switching between engines.
 
-* **Add VMWare's vCenter source for inventory**  
-  Introduced support for `vcenter` as an inventory source. This enables automatic discovery of VMs and their IPs based on custom attributes. Configuration includes support for authentication and SSL settings.  
+* **Add VMWare's vCenter source for inventory**
+  Introduced support for `vcenter` as an inventory source. This enables automatic discovery of VMs and their IPs based on custom attributes. Configuration includes support for authentication and SSL settings.
   Dependency added: `pyvnomi`.
 
-* **Collect IPv6 neighbor data on Junos**  
+* **Collect IPv6 neighbor data on Junos**
   Extended `arpnd` data collection to include IPv6 neighbors for Junos devices. This complements the existing IPv4 support and provides a more complete view of network neighbors on Junos platforms.
 
 ## 0.23.0 (May 27, 2024)
