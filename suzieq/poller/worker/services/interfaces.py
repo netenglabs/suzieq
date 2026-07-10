@@ -9,7 +9,7 @@ from suzieq.poller.worker.services.service import Service
 from suzieq.shared.utils import (get_timestamp_from_junos_time,
                                  expand_ios_ifname, expand_nxos_ifname,
                                  convert_macaddr_format_to_colon,
-                                 parse_relative_timestamp)
+                                 parse_relative_timestamp, normalize_junos_field)
 from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
 
@@ -297,12 +297,11 @@ class InterfaceService(Service):
             if not entry.get('macaddr', ''):
                 entry['macaddr'] = '00:00:00:00:00:00'
 
-            etype = entry.get('type', '')
-            if isinstance(etype, list):
-                etype = etype[0] if etype else ''
-            elif isinstance(etype, dict):
-                etype = etype.get('data', '')
-            entry['type'] = str(etype).lower() if etype else ''
+            normalized_type = normalize_junos_field(entry.get('type')).lower()
+            normalized_link_type = normalize_junos_field(
+                entry.get('_linkLevelType')).lower()
+
+            entry['type'] = normalized_link_type or normalized_type
 
             if entry['type'] in ['vrf', 'virtual-router']:
                 entry['type'] = 'vrf'

@@ -1164,6 +1164,21 @@ def get_default_per_vals() -> Dict:
         pa.binary(): b''
     })
 
+def normalize_junos_field(raw_value):
+    """Handle Junos fields that sometimes arrive wrapped in a single-item list
+    and/or a ``{'data': value}`` dict (e.g. junos-es multi-RE output)."""
+
+    if isinstance(raw_value, list):
+        raw_value = raw_value[0] if raw_value else ''
+
+    if isinstance(raw_value, dict):
+        raw_value = raw_value.get('data', '')
+
+    if isinstance(raw_value, str):
+        return raw_value
+
+    return ''
+
 
 def log_suzieq_info(name: str, c_logger: logging.Logger = None,
                     show_more=False):
