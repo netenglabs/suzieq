@@ -426,14 +426,14 @@ class SqPandasEngine(SqEngineObj):
             df = df.explode(column).dropna(how='any')
 
         if count:
-            r = df[column].value_counts()
+            r = df[column].value_counts().sort_index()
             df = pd.DataFrame({column: r}) \
                 .reset_index() \
                 .rename(columns={column: 'numRows',
                                  'index': column}) \
                    .sort_values(column)
         else:
-            df = pd.DataFrame({f'{column}': df[column].unique()})
+            df = pd.DataFrame({f'{column}': sorted(df[column].unique())})
 
         if query_str:
             df = self._handle_user_query_str(df, query_str)
@@ -528,7 +528,7 @@ class SqPandasEngine(SqEngineObj):
         if df.empty:
             return
 
-        self.ns = {i: {} for i in df['namespace'].unique()}
+        self.ns = {i: {} for i in sorted(df['namespace'].unique())}
         self.nsgrp = df.groupby(by=["namespace"], observed=True)
 
     def _gen_summarize_data(self):
@@ -651,7 +651,8 @@ class SqPandasEngine(SqEngineObj):
             field_name = field
 
         for n in self.ns.keys():
-            unique_for_ns = self.nsgrp.get_group(n)[field].value_counts()
+            unique_for_ns = self.nsgrp.get_group(n)[
+                field].value_counts().sort_index()
             value = unique_for_ns.to_dict()
             # Filter numm entries if category because of how pandas
             # behaves here
