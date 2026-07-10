@@ -109,7 +109,8 @@ class BgpObj(SqPandasEngine):
                                           'peer']) \
                               .query('~index.duplicated(keep="last")') \
                               .reset_index()
-        self.ns = {i: {} for i in self.summary_df['namespace'].unique()}
+        self.ns = {i: {} for i in
+                   sorted(self.summary_df['namespace'].unique())}
         self.nsgrp = self.summary_df.groupby(by=["namespace"],
                                              observed=True)
 
