@@ -1966,7 +1966,6 @@ class JunosNode(Node):
             data = output[0]["data"]
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
-                
                 if jdata.get('multi-routing-engine-results'):
                     jdata = (jdata['multi-routing-engine-results'][0]
                              ['multi-routing-engine-item'][0])
