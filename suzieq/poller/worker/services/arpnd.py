@@ -47,10 +47,13 @@ class ArpndService(Service):
 
     def _clean_junos_data(self, processed_data, _):
         for entry in processed_data:
-            if '[vtep.' in entry['oif']:
+            oif = entry.get('oif') or ''
+            if '[vtep.' in oif:
                 entry['remote'] = True
-            if entry['oif']:
-                entry['oif'] = re.sub(r' \[.*\]', '', entry['oif'])
+            if oif:
+                entry['oif'] = re.sub(r' \[.*\]', '', oif)
+            else:
+                entry['oif'] = ''
             if not entry.get('state', None):
                 entry['state'] = 'reachable'
             if not entry.get('macaddr', None):
@@ -117,7 +120,7 @@ class ArpndService(Service):
             # ARP entries are shown with status as merely a letter while
             # ND entries are shown with the status as a self-respecting word.
             # sigh
-            state = entry.get("state", "").lower()
+            state = (entry.get("state") or "").lower()
             if state in ["s", "static"]:
                 entry["state"] = "permanent"
             elif state in ["c", "e", "stale", "reachable"]:
