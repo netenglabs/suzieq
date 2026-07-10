@@ -1,7 +1,7 @@
 import re
 from datetime import datetime
 from collections import defaultdict
-from json import loads
+from json import loads, JSONDecodeError
 from typing import Dict
 import numpy as np
 
@@ -996,15 +996,18 @@ class InterfaceService(Service):
 
             # mtu values are collected separatly
             if _mtu_data:
-                # fix json so that it can be parsed
-                d = _mtu_data.split(": ", 1)[1].replace("'", "\"")
-                d = re.sub(
-                    r"([a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5})", r'"\1"', d)
-                d = re.sub(r"(\"[\w0-9\.\/]+\": \{\s\},\s)", r"", d)
-                d = re.sub(r"(,\s\})", r" }", d)
-                j = loads(d)
-                for ifname, value in j.items():
-                    mtu_data[ifname] = value["mtu"]
+                # # fix json so that it can be parsed
+                try:
+                    fixed_json_mtu = _mtu_data.split(": ", 1)[1].replace("'", "\"")
+                    fixed_json_mtu = re.sub(r"([a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5})"\
+                                            , r'"\1"', fixed_json_mtu)
+                    fixed_json_mtu = re.sub(r"(\"[\w0-9\.\/]+\": \{\s\},\s)", r""\
+                                            , fixed_json_mtu)
+                    fixed_json_mtu = re.sub(r"(,\s\})", r" }", fixed_json_mtu)
+                    for ifname, value in loads(fixed_json_mtu).items():
+                        mtu_data[ifname] = value["mtu"]
+                except (ValueError, JSONDecodeError, KeyError, TypeError):
+                    self.logger.warning("Failed to parse panos MTU data: %s", _mtu_data)
                 continue
 
             if entry["ifname"] in mtu_data:
