@@ -117,7 +117,7 @@ class ArpndService(Service):
             # ARP entries are shown with status as merely a letter while
             # ND entries are shown with the status as a self-respecting word.
             # sigh
-            state = entry.get("state", "").lower()
+            state = (entry.get("state") or "").lower()
             if state in ["s", "static"]:
                 entry["state"] = "permanent"
             elif state in ["c", "e", "stale", "reachable"]:
