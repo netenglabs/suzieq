@@ -272,7 +272,7 @@ def test_table_describe(setup_nubia):
 
 
 @pytest.mark.sqcmds
-@ pytest.mark.parametrize('table',
+@pytest.mark.parametrize('table',
                           [pytest.param(
                               x,
                               marks=getattr(pytest.mark, x))
@@ -282,7 +282,7 @@ def test_table_describe(setup_nubia):
                                         'ospfIf', 'ospfNbr', 'network',
                                         'namespace', 'inventory']
                            ])
-@ pytest.mark.parametrize('datadir', DATADIR)
+@pytest.mark.parametrize('datadir', DATADIR)
 def test_sqcmds_regex_hostname(table, datadir):
 
     cfgfile = create_dummy_config_file(datadir=datadir)
@@ -311,14 +311,14 @@ def test_sqcmds_regex_hostname(table, datadir):
 
 
 @pytest.mark.sqcmds
-@ pytest.mark.parametrize('table',
+@pytest.mark.parametrize('table',
                           [pytest.param(
                               x,
                               marks=getattr(pytest.mark, x))
                            for x in TABLES
                            if x not in ['path', 'inventory', 'network']
                            ])
-@ pytest.mark.parametrize('datadir', ['tests/data/parquet/'])
+@pytest.mark.parametrize('datadir', ['tests/data/parquet/'])
 def test_sqcmds_regex_namespace(table, datadir):
 
     cfgfile = create_dummy_config_file(datadir=datadir)
@@ -440,9 +440,9 @@ def _test_sqcmds(testvar, context_config):
         raise Exception(f"either xfail or output requried {error}")
 
 
-@ pytest.mark.smoke
-@ pytest.mark.sqcmds
-@ pytest.mark.parametrize(
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize(
     "testvar",
     load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                       '/tests/integration/sqcmds/cumulus-samples')))
@@ -450,9 +450,9 @@ def test_cumulus_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
-@ pytest.mark.smoke
-@ pytest.mark.sqcmds
-@ pytest.mark.parametrize(
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize(
     "testvar",
     load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                  '/tests/integration/sqcmds/nxos-samples')))
@@ -460,9 +460,9 @@ def test_nxos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
-@ pytest.mark.smoke
-@ pytest.mark.sqcmds
-@ pytest.mark.parametrize(
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize(
     "testvar",
     load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                  '/tests/integration/sqcmds/junos-samples')))
@@ -470,9 +470,9 @@ def test_junos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
-@ pytest.mark.smoke
-@ pytest.mark.sqcmds
-@ pytest.mark.parametrize(
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize(
     "testvar",
     load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                  '/tests/integration/sqcmds/panos-samples')))
@@ -480,9 +480,9 @@ def test_panos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
-@ pytest.mark.smoke
-@ pytest.mark.sqcmds
-@ pytest.mark.parametrize(
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize(
     "testvar",
     load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                  '/tests/integration/sqcmds/eos-samples')))
@@ -490,9 +490,9 @@ def test_eos_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
-@ pytest.mark.smoke
-@ pytest.mark.sqcmds
-@ pytest.mark.parametrize(
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize(
     "testvar",
     load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                  '/tests/integration/sqcmds/mixed-samples')))
@@ -500,9 +500,9 @@ def test_mixed_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
-@ pytest.mark.smoke
-@ pytest.mark.sqcmds
-@ pytest.mark.parametrize(
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize(
     "testvar",
     load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                  '/tests/integration/sqcmds/vmx-samples')))
@@ -510,9 +510,9 @@ def test_vmx_sqcmds(testvar, create_context_config):
     _test_sqcmds(testvar, create_context_config)
 
 
-@ pytest.mark.smoke
-@ pytest.mark.sqcmds
-@ pytest.mark.parametrize(
+@pytest.mark.smoke
+@pytest.mark.sqcmds
+@pytest.mark.parametrize(
     "testvar",
     load_up_the_tests(os.scandir(os.path.abspath(os.curdir) +
                                  '/tests/integration/sqcmds/common-samples')))

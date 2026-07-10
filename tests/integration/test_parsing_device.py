@@ -15,10 +15,10 @@ def validate_device_tbl(df: pd.DataFrame):
     assert (df.model != '').all()
 
 
-@ pytest.mark.parsing
-@ pytest.mark.device
-@ pytest.mark.parametrize('table', ['device'])
-@ pytest.mark.parametrize('datadir', DATADIR)
+@pytest.mark.parsing
+@pytest.mark.device
+@pytest.mark.parametrize('table', ['device'])
+@pytest.mark.parametrize('datadir', DATADIR)
 # pylint: disable=unused-argument
 def test_device_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for device table'''

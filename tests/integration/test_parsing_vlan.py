@@ -66,10 +66,10 @@ def validate_interfaces(df: pd.DataFrame, datadir: str):
         'Unknown interfaces in VLAN table'
 
 
-@ pytest.mark.parsing
-@ pytest.mark.vlan
-@ pytest.mark.parametrize('table', ['vlan'])
-@ pytest.mark.parametrize('datadir', DATADIR)
+@pytest.mark.parsing
+@pytest.mark.vlan
+@pytest.mark.parametrize('table', ['vlan'])
+@pytest.mark.parametrize('datadir', DATADIR)
 # pylint: disable=unused-argument
 def test_vlan_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for VLAN table'''
