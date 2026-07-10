@@ -167,9 +167,9 @@ def _get_non_aug_all(schema: SchemaForTable) -> List[str]:
     return columns
 
 
-@ pytest.mark.coalesce
-@ pytest.mark.cumulus
-@ pytest.mark.parametrize("pq_dir, namespace, path_src, path_dest",
+@pytest.mark.coalesce
+@pytest.mark.cumulus
+@pytest.mark.parametrize("pq_dir, namespace, path_src, path_dest",
                           [('tests/data/parquet', 'dual-evpn',
                            '172.16.1.101', '172.16.2.104')])
 def test_basic_multi_namespace(pq_dir, namespace, path_src, path_dest):
@@ -177,7 +177,7 @@ def test_basic_multi_namespace(pq_dir, namespace, path_src, path_dest):
     _coalescer_basic_test(pq_dir, namespace, path_src, path_dest)
 
 
-@ pytest.mark.coalesce
+@pytest.mark.coalesce
 # pylint: disable=unused-argument
 def test_coalescer_bin(run_sequential):
     '''Verify the sq-coalescer bin works'''
@@ -218,8 +218,8 @@ async def _run_multiple_coalescer(coalescer_cmd_args):
     assert(rc[0] != rc[1])
 
 
-@ pytest.mark.coalesce
-@ pytest.mark.asyncio
+@pytest.mark.coalesce
+@pytest.mark.asyncio
 # pylint: disable=unused-argument
 async def test_single_instance_run(run_sequential):
     '''Verify that only a single instance of the coalescer is running'''

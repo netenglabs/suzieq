@@ -500,22 +500,22 @@ def get(endpoint, service, verb, args):
     return response.status_code
 
 
-@ pytest.mark.rest
-@ pytest.mark.parametrize("service", [
+@pytest.mark.rest
+@pytest.mark.parametrize("service", [
     pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
-@ pytest.mark.parametrize("verb", [
+@pytest.mark.parametrize("verb", [
     pytest.param(verb, marks=getattr(pytest.mark, verb))
     for verb in VERBS])
-@ pytest.mark.parametrize("arg", FILTERS)
+@pytest.mark.parametrize("arg", FILTERS)
 # pylint: disable=redefined-outer-name, unused-argument
 def test_rest_services(app_initialize, service, verb, arg):
     '''Main workhorse'''
     get(ENDPOINT, service, verb, arg)
 
 
-@ pytest.mark.rest
-@ pytest.mark.parametrize("service, verb", [
+@pytest.mark.rest
+@pytest.mark.parametrize("service, verb", [
     (cmd, verb) for cmd in TABLES for verb in VERBS])
 def test_rest_arg_consistency(service, verb):
     '''check that the arguments used in REST match whats in sqobjects'''
@@ -608,7 +608,7 @@ def test_rest_arg_consistency(service, verb):
                         category=ImportWarning)
 
 
-@ pytest.fixture()
+@pytest.fixture()
 def app_initialize():
     '''Initialize the test server'''
 
@@ -626,8 +626,8 @@ def app_initialize():
 # so we need to test this separately. xdist tries to run tests in parallel
 # which screws things up. So, we run server with & without https sequentially
 # For some reason, putting the no_https in a for loop didn't work either
-@ pytest.mark.rest
-@ pytest.mark.filterwarnings(
+@pytest.mark.rest
+@pytest.mark.filterwarnings(
     'ignore::urllib3.exceptions.InsecureRequestWarning')
 def test_rest_server():
     '''Try starting the REST server, actually'''
@@ -680,7 +680,7 @@ def test_rest_server():
     os.remove(cfgfile)
 
 
-@ pytest.mark.rest
+@pytest.mark.rest
 def test_routes_sqobj_consistency():
     """Checks if the app routes params are consistent with the sqobject
        params"""

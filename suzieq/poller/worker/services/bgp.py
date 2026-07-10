@@ -327,17 +327,19 @@ class BgpService(Service):
                 afis = entry.get('afiSafi') or []
                 af_adv = entry.get('afAdvertised') or []
                 af_rcv = entry.get('afRcvd') or []
-                
+
                 entry['afisAdvOnly'] = []
                 entry['afisRcvOnly'] = []
-                
+
                 for i, item in enumerate(afis):
                     adv = af_adv[i] if i < len(af_adv) else None
                     rcv = af_rcv[i] if i < len(af_rcv) else None
-                    
+
                     if adv and rcv and adv != rcv:
-                        entry['afisAdvOnly' if adv == 'true' else 'afisRcvOnly'].append(item)
-                
+                        entry_key = 'afisAdvOnly' \
+                            if adv == 'true' else 'afisRcvOnly'
+                        entry[entry_key].append(item)
+
                 entry.pop('afiSafi', None)
                 entry.pop('afAdvertised', None)
                 entry.pop('afRcvd', None)
