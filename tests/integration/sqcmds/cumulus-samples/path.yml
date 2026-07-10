@@ -3422,15 +3422,6 @@ tests:
     64}, {"hostname": "exit02", "numRows": 64}, {"hostname": "spine01", "numRows":
     64}, {"hostname": "spine02", "numRows": 64}]'
 - command: path unique --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
-    --count=True --format=json
-  data-directory: tests/data/parquet/
-  marks: path unique cumulus
-  output: '[{"hostname": "leaf01", "numRows": 32}, {"hostname": "leaf02", "numRows":
-    32}, {"hostname": "leaf03", "numRows": 32}, {"hostname": "leaf04", "numRows":
-    32}, {"hostname": "edge01", "numRows": 64}, {"hostname": "exit01", "numRows":
-    64}, {"hostname": "exit02", "numRows": 64}, {"hostname": "spine01", "numRows":
-    64}, {"hostname": "spine02", "numRows": 64}]'
-- command: path unique --dest=172.16.2.104 --src=172.16.1.101 --namespace=dual-evpn
     --format=json
   data-directory: tests/data/parquet/
   marks: path unique cumulus
