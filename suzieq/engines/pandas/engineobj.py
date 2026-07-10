@@ -455,7 +455,7 @@ class SqPandasEngine(SqEngineObj):
         is upto the caller to ensure that the desired column is in the output.
         """
         what = kwargs.pop("what", None)
-        reverse = kwargs.pop("reverse", False)
+        reverse = bool(kwargs.pop("reverse", False))
         sqTopCount = kwargs.pop("count", 5)
         columns = kwargs.pop("columns", ['default'])
 
