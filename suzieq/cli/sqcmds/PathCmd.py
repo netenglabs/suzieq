@@ -1,6 +1,7 @@
 from nubia import command
-from suzieq.cli.nubia_patch import argument
 
+import suzieq.cli.sqcmds.sq_completions as completitions
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.path import PathObj
 
@@ -8,7 +9,8 @@ from suzieq.sqobjects.path import PathObj
 @command("path", help="build and act on path data")
 @argument("src", description="Source IP address, in quotes")
 @argument("dest", description="Destination IP address, in quotes")
-@argument("vrf", description="VRF to trace path in")
+@argument("vrf", description="VRF to trace path in",
+          choices=completitions.vrf_completer)
 class PathCmd(SqTableCommand):
     """Path trace information including overlay and underlay"""
 

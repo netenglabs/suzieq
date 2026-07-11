@@ -1,11 +1,12 @@
 import time
 
-from nubia import command
 import pandas as pd
+from nubia import command
 
+import suzieq.cli.sqcmds.sq_completions as completitions
 from suzieq.cli.nubia_patch import argument
-from suzieq.sqobjects import get_sqobject
 from suzieq.cli.sqcmds.command import SqTableCommand
+from suzieq.sqobjects import get_sqobject
 
 
 @command("interface", help="Act on Interface data")
@@ -14,7 +15,8 @@ from suzieq.cli.sqcmds.command import SqTableCommand
 @argument("vrf", description="VRF(s), space separated")
 @argument("portmode", description="Portmode(s), space separated")
 @argument("vlan", description="Vlan(s), space separated")
-@argument("vrf", description="VRF(s), space separated")
+@argument("vrf", description="VRF(s), space separated",
+          choices=completitions.vrf_completer)
 @argument("state", description="interface state to qualify show",
           choices=["up", "down", "notConnected", "!up", "!down",
                    "!notConnected"])
@@ -77,7 +79,7 @@ class InterfaceCmd(SqTableCommand):
     @argument(
         "what",
         description="What do you want to assert",
-        choices=["mtu-value"],
+        choices=completitions.column_name_completer
     )
     @argument("value", description="Value to match against")
     @argument("result", description="Show only assert that matches this value",

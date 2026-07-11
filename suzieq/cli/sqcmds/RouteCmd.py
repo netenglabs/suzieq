@@ -1,17 +1,20 @@
-import time
 import ipaddress
+import time
+
 import pandas as pd
-
 from nubia import command
-from suzieq.cli.nubia_patch import argument
 
+import suzieq.cli.sqcmds.sq_completions as completitions
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.routes import RoutesObj
 
 
 @command("route", help="Act on Routes")
-@argument("vrf", description="VRF(s), space separated")
-@argument("protocol", description="Routing protocol(s), space separated")
+@argument("vrf", description="VRF(s), space separated",
+          choices=completitions.vrf_completer)
+@argument("protocol", description="Routing protocol(s), space separated",
+          choices=completitions.route_proto_completer)
 @argument("prefix", description="Prefix(es), in quotes, space separated")
 @argument("prefixlen", description="must be of the form "
           "[<|<=|>=|>|!] length")

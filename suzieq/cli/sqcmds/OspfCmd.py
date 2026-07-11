@@ -1,8 +1,9 @@
 import time
 
-from nubia import command
 import pandas as pd
+from nubia import command
 
+import suzieq.cli.sqcmds.sq_completions as completitions
 from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.ospf import OspfObj
@@ -13,7 +14,8 @@ from suzieq.sqobjects.ospf import OspfObj
     "ifname",
     description="Interface name(s), space separated"
 )
-@argument("vrf", description="VRF(s), space separated")
+@argument("vrf", description="VRF(s), space separated",
+          choices=completitions.vrf_completer)
 @argument("area", description="Area(s), space separated")
 @argument("state", description="Select view based on OSPF state",
           choices=["full", "other", "passive", "!full", "!passive",

@@ -1,12 +1,14 @@
 from nubia import command
-from suzieq.cli.nubia_patch import argument
 
+import suzieq.cli.sqcmds.sq_completions as completitions
+from suzieq.cli.nubia_patch import argument
 from suzieq.cli.sqcmds.command import SqTableCommand
 from suzieq.sqobjects.sqPoller import SqPollerObj
 
 
 @command("sqPoller", help="Act on SqPoller data")
-@argument("service", description="Service(s), space separated")
+@argument("service", description="Service(s), space separated",
+          choices=completitions.service_completer)
 @argument("status", description="status of service to match",
           choices=["all", "pass", "fail"])
 @argument('poll_period_exceeded',
