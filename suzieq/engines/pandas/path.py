@@ -120,8 +120,10 @@ class PathObj(SqPandasEngine):
         self._macsobj = self._get_table_sqobj('macs')
 
         if ':' in source:
-            self._src_df = self._if_df[self._if_df.ip6AddressList.astype(str)
-                                       .str.startswith(source + "/")]
+            self._src_df: pd.DataFrame = (
+                self._if_df[self._if_df.ip6AddressList.astype(str)
+                            .str.startswith(source + "/")]
+            )
         else:
             self._src_df = self._if_df[self._if_df.ipAddressList.astype(str)
                                        .str.startswith(source + "/")]
@@ -149,14 +151,35 @@ class PathObj(SqPandasEngine):
                     self._if_df.query(
                         f'@self._in_subnet_series("{source}", ip6AddressList)'
                         ' and ifname.str.startswith(@svi_names)')
-                )
+                ).reset_index(drop=True)
             else:
                 self._src_df = (
                     self._if_df.query(
                         f'@self._in_subnet_series("{source}", ipAddressList)'
                         ' and ifname.str.startswith(@svi_names)')
-                )
+                ).reset_index(drop=True)
             if not self._src_df.empty:
+                # We have multiple cases to consider here, for solutions such
+                # as Cumulus. There can be vlan and macvlan interface types
+                # for carrying the shared anycast IP and the device-individual
+                # IPs. Some others may not have specified any individual IP
+                # by error. macvlan interfaces have no vlan field which is bad
+                # because they should have had a vlan value added. So, we're
+                # forced to derive them if needed
+                self._src_df['vlan'] = np.where(
+                    self._src_df.ifname.str.endswith('-v0'),
+                    self._src_df.ifname.str.replace(
+                        r'vlan(\d+)-v0', r'\1', regex=True),
+                    self._src_df.vlan
+                )
+                self._src_df['vlan'] = self._src_df.vlan.astype('int32')
+                self._src_df['ifname'] = self._src_df.ifname.str.replace(
+                    '-v0', '')
+                self._src_df.drop_duplicates(
+                    subset=['namespace', 'hostname', 'ifname'],
+                    keep='first', inplace=True
+                )
+
                 hosts = self._src_df.hostname.unique().tolist()
                 if len(hosts) > 2:
                     raise ValueError(
