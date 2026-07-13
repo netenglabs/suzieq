@@ -173,6 +173,15 @@ class PathObj(SqPandasEngine):
             # of Unnumbered interfaces. See if there's a loopback in there
             if 'loopback' in self._src_df.type.unique().tolist():
                 self._src_df = self._src_df.query('type == "loopback"')
+            # in case of junos, the addresses are on the subinterface
+            # panos doesn't have this issue. Some other platforms may have
+            # this issue, but we don't support them at this time
+            else:
+                lo_df = (
+                    self._src_df[self._src_df.ifname.str.contains(r'^lo\d+')]
+                )
+                if not lo_df.empty:
+                    self._src_df = lo_df.reset_index(drop=True)
 
         if ':' in dest:
             self._dest_df = self._if_df[self._if_df.ip6AddressList.astype(str)
@@ -207,6 +216,16 @@ class PathObj(SqPandasEngine):
                 # of Unnumbered interfaces. See if there's a loopback in there
                 if 'loopback' in self._dest_df.type.unique().tolist():
                     self._dest_df = self._dest_df.query('type == "loopback"')
+                # in case of junos, the addresses are on the subinterface
+                # panos doesn't have this issue. Some other platforms may have
+                # this issue, but we don't support them at this time
+                else:
+                    lo_df = (
+                        self._dest_df[self._dest_df.ifname.str.contains(
+                            r'^lo\d+')]
+                    )
+                    if not lo_df.empty:
+                        self._dest_df = lo_df.reset_index(drop=True)
 
             self.dest_device = self._dest_df["hostname"].unique()
         else:
