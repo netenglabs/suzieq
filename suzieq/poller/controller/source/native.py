@@ -1,11 +1,9 @@
-# pylint: disable=no-name-in-module
-# pylint: disable=no-self-argument
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, get_args
 from urllib.parse import urlparse
 
-from pydantic import BaseModel, Field, validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 from suzieq.poller.controller.source.base_source import Source, SourceModel
 from suzieq.poller.controller.utils.inventory_utils import validate_hostname
 from suzieq.shared.utils import PollerTransport
@@ -16,19 +14,25 @@ logger = logging.getLogger(__name__)
 class HostModel(BaseModel):
     """Model used to validate the hosts of a native inventory
     """
-    username: str = Field(default=None)
+    username: Optional[str] = Field(default=None)
     password: Optional[str] = Field(default=None)
     keyfile: Optional[str] = Field(default=None)
     devtype: Optional[str] = Field(default=None)
-    port: Optional[str] = Field(default=None)
-    address: str = Field(default=None)
-    transport: str = Field(default=None)
+    port: Optional[int] = Field(default=None)
+    address: Optional[str] = Field(default=None)
+    transport: Optional[PollerTransport] = Field(default=None)
     url: str
 
-    @validator('url')
-    def validate_and_set(cls, url: str, values):
+    @model_validator(mode='before')
+    @classmethod
+    def validate_and_set(cls, data):
         """Validate the 'url' parameter and set the other parameters
         """
+        if not isinstance(data, dict):
+            return data
+        url = data.get('url')
+        if url is None:
+            raise ValueError('url: field required')
         words = url.split()
         decoded_url = urlparse(words[0])
 
@@ -40,9 +44,7 @@ class HostModel(BaseModel):
         if not validate_hostname(address):
             raise ValueError(f'Invalid hostname or address {address}')
         transport = decoded_url.scheme or "https"
-        try:
-            PollerTransport[transport]
-        except KeyError:
+        if transport not in get_args(PollerTransport):
             raise ValueError(
                 f"Transport '{transport}' not supported for host {address}")
         port = decoded_url.port
@@ -72,15 +74,15 @@ class HostModel(BaseModel):
                 f"keyfile {keyfile} does not exist"
             )
 
-        values['username'] = username
-        values['password'] = password
-        values['keyfile'] = keyfile
-        values['devtype'] = devtype
-        values['port'] = port
-        values['address'] = address
-        values['transport'] = transport
+        data['username'] = username
+        data['password'] = password
+        data['keyfile'] = keyfile
+        data['devtype'] = devtype
+        data['port'] = port
+        data['address'] = address
+        data['transport'] = transport
 
-        return url
+        return data
 
 
 class NativeSourceModel(SourceModel):
@@ -88,7 +90,8 @@ class NativeSourceModel(SourceModel):
     """
     hosts: List[HostModel]
 
-    @validator('hosts')
+    @field_validator('hosts')
+    @classmethod
     def hosts_not_empty(cls, hosts: List):
         """checks if the hosts list is not empty"""
         if not hosts:

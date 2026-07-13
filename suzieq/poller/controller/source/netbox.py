@@ -6,55 +6,60 @@ and retrieve the devices inventory
 Classes:
     Netbox: this class dinamically retrieve the inventory from Netbox
 """
-# pylint: disable=no-name-in-module
-# pylint: disable=no-self-argument
 
 import asyncio
 import logging
 from typing import Any, Dict, List, Optional, Tuple, Union
 from urllib.parse import urlparse
 
-from pydantic import BaseModel, validator, Field
-
 import aiohttp
+from pydantic import BaseModel, Field, field_validator, model_validator
+
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
 from suzieq.poller.controller.source.base_source import Source, SourceModel
-from suzieq.shared.utils import get_sensitive_data
 from suzieq.shared.exceptions import InventorySourceError, SensitiveLoadError
+from suzieq.shared.utils import get_sensitive_data
 
 _DEFAULT_PORTS = {'http': 80, 'https': 443}
 
 logger = logging.getLogger(__name__)
 
 
-class NetboxServerModel(BaseModel):
+class NetboxServerModel(BaseModel, extra='forbid'):
     """Model containing data to connect with Netbox server
     """
     host: str
     protocol: str
-    port: str
-
-    class Config:
-        """pydantic configuration
-        """
-        extra = 'forbid'
+    port: int
 
 
 class NetboxSourceModel(SourceModel):
     """Netbox source validation model
     """
-    tag: Optional[Any] = Field(default=['suzieq'])
+    tag: Optional[Any] = Field(default_factory=lambda: ['suzieq'])
     period: Optional[int] = Field(default=3600)
     token: str
-    ssl_verify: Optional[bool] = Field(alias='ssl-verify')
+    ssl_verify: Optional[bool] = Field(default=None, alias='ssl-verify')
     server: Union[str, NetboxServerModel] = Field(alias='url')
     run_once: Optional[bool] = Field(default=False, alias='run_once')
 
-    @validator('server', pre=True)
-    def validate_and_set(cls, url, values):
+    @model_validator(mode='before')
+    @classmethod
+    def validate_and_set(cls, data):
         """Validate the field 'url' and set the correct parameters
         """
+        if not isinstance(data, dict):
+            return data
+        valid_fields = {'name', 'type', 'tag', 'period', 'token',
+                        'ssl-verify', 'url', 'run_once'}
+        extra_fields = set(data) - valid_fields
+        if extra_fields:
+            raise ValueError(
+                f'{sorted(extra_fields)[0]}: extra fields not permitted')
+        if 'token' not in data:
+            raise ValueError('token: field required')
+        url = data.get('url')
         if isinstance(url, str):
             url_data = urlparse(url)
             host = url_data.hostname
@@ -67,7 +72,7 @@ class NetboxSourceModel(SourceModel):
             if not port:
                 raise ValueError(f'Unable to parse port {url}')
             server = NetboxServerModel(host=host, port=port, protocol=protocol)
-            ssl_verify = values['ssl_verify']
+            ssl_verify = data.get('ssl-verify')
             if ssl_verify is None:
                 if server.protocol == 'http':
                     ssl_verify = False
@@ -77,14 +82,16 @@ class NetboxSourceModel(SourceModel):
                 if server.protocol == 'http' and ssl_verify:
                     raise ValueError(
                         'Cannot use ssl_verify=True with http host')
-            values['ssl_verify'] = ssl_verify
-            return server
+            data['ssl-verify'] = ssl_verify
+            data['url'] = server
+            return data
         elif isinstance(url, NetboxServerModel):
-            return url
+            return data
         else:
             raise ValueError('Unknown input type')
 
-    @validator('token')
+    @field_validator('token')
+    @classmethod
     def validate_token(cls, token):
         """checks if the token can be load as sensible data
         """
@@ -95,7 +102,8 @@ class NetboxSourceModel(SourceModel):
         except SensitiveLoadError as e:
             raise ValueError(e)
 
-    @validator('tag')
+    @field_validator('tag')
+    @classmethod
     def validate_tag(cls, tags):
         """checks if the tag is a list or a string. It always returns a list
         """
@@ -129,7 +137,7 @@ class Netbox(Source, InventoryAsyncPlugin):
     def _load(self, input_data):
         # load the server class from the dictionary
         if not self._validate:
-            input_data['server'] = NetboxServerModel.construct(
+            input_data['server'] = NetboxServerModel.model_construct(
                 **input_data.pop('url', {}))
             input_data['ssl_verify'] = input_data.pop('ssl-verify', False)
         super()._load(input_data)

@@ -2,12 +2,11 @@
 This module contains the logic of the plugin in charge of importing an
 inventory from an Ansible inventory file.
 """
-# pylint: disable=no-self-argument
 
 from pathlib import Path
 from typing import Dict, Union
 import logging
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 import yaml
 from suzieq.poller.controller.source.base_source import Source, SourceModel
 
@@ -19,7 +18,8 @@ class AnsibleSourceModel(SourceModel):
     """
     hosts: Union[str, Dict] = Field(alias='path')
 
-    @validator('hosts')
+    @field_validator('hosts')
+    @classmethod
     def validate_and_set(cls, path: str):
         """checks if the path is valid
         """

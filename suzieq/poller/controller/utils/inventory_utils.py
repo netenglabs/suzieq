@@ -120,10 +120,10 @@ def validate_raw_inventory(inventory: dict) -> Dict:
                 name='',
                 what=e
             )])
-    new_inventory = {k: {} for k in inv_model.dict()}
+    new_inventory = {k: {} for k in inv_model.model_dump()}
     base_plugins = ControllerPlugin.get_plugins()
     errors: List[InventoryValidationError] = []
-    for mf, fields in inv_model.dict().items():
+    for mf, fields in inv_model.model_dump().items():
         if not fields:
             # 'devices' and 'auths' can be omitted if not needed
             continue
@@ -189,7 +189,7 @@ def validate_raw_inventory(inventory: dict) -> Dict:
                     raise InventorySourceError(
                         f'{mf}.{name} is not unique')
                 global_specs[name] = {
-                    'validated': validated_obj.dict(by_alias=True),
+                    'validated': validated_obj.model_dump(by_alias=True),
                     'specs': plugin_specs
                 }
             except Exception as e:
@@ -217,7 +217,7 @@ def validate_raw_inventory(inventory: dict) -> Dict:
                 )
             )
             continue
-        for field, value in ns.dict().items():
+        for field, value in ns.model_dump().items():
             if field == 'name':
                 continue
             inv_field = field + 's'
@@ -237,7 +237,7 @@ def validate_raw_inventory(inventory: dict) -> Dict:
                     )
                 )
 
-        global_ns_specs.append(ns.dict(by_alias=True))
+        global_ns_specs.append(ns.model_dump(by_alias=True))
     new_inventory['namespaces'] = global_ns_specs
 
     if errors:

@@ -1,47 +1,38 @@
 """This module contains the class to import device credentials using files
 """
-# pylint: disable=no-name-in-module
-# pylint: disable=no-self-argument
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Union
-from pydantic import BaseModel, Field, validator
 
 import yaml
-from suzieq.poller.controller.credential_loader.base_credential_loader import \
-    CredentialLoader, CredentialLoaderModel, check_credentials
+from pydantic import BaseModel, Field, field_validator
+
+from suzieq.poller.controller.credential_loader.base_credential_loader import (
+    CredentialLoader, CredentialLoaderModel, check_credentials)
 from suzieq.shared.exceptions import InventorySourceError
 
 logger = logging.getLogger(__name__)
 
 
-class CredFileEntryModel(BaseModel):
+class CredFileEntryModel(BaseModel, extra='forbid'):
     """Model to validate entries in credential file
     """
-    hostname: Optional[str]
-    address: Optional[str]
-    username: Optional[str]
-    password: Optional[str]
-    keyfile: Optional[str]
-    key_passphrase: Optional[str] = Field(alias='key-passphrase')
-    enable_password: Optional[str] = Field(alias='enable-password')
-
-    class Config:
-        """pydantic configuration
-        """
-        extra = 'forbid'
+    hostname: Optional[str] = None
+    address: Optional[str] = None
+    username: Optional[str] = None
+    password: Optional[str] = None
+    keyfile: Optional[str] = None
+    key_passphrase: Optional[str] = Field(default=None,
+                                          alias='key-passphrase')
+    enable_password: Optional[str] = Field(default=None,
+                                           alias='enable-password')
 
 
-class CredFileNamespaceModel(BaseModel):
+class CredFileNamespaceModel(BaseModel, extra='forbid'):
     """Model to validate the content of the credential file
     """
     namespace: str
     devices: List[CredFileEntryModel]
-
-    class Config:
-        """pydantic configuration
-        """
-        extra = 'forbid'
 
 
 class CredFileModel(CredentialLoaderModel):
@@ -49,7 +40,8 @@ class CredFileModel(CredentialLoaderModel):
     """
     credentials: Union[str, List[CredFileNamespaceModel]] = Field(alias='path')
 
-    @validator('credentials')
+    @field_validator('credentials')
+    @classmethod
     def validate_credentials(cls, cred):
         """validate the credentials
         """
@@ -124,7 +116,7 @@ class CredFile(CredentialLoader):
                 continue
 
             for ns_node in ns_nodes:
-                node_info = ns_node.dict(by_alias=True)
+                node_info = ns_node.model_dump(by_alias=True)
                 if node_info.get('hostname'):
                     node_id = node_info['hostname']
                     node_key = 'hostname'

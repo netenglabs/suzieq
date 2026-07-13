@@ -8,14 +8,13 @@ import platform
 import re
 import sys
 from datetime import datetime
-from enum import Enum
 from importlib.util import find_spec
 from ipaddress import ip_network
 from itertools import groupby
 from logging.handlers import RotatingFileHandler
 from os import getenv
 from time import time
-from typing import Any, Dict, List, Optional, Union, Tuple
+from typing import Any, Dict, List, Literal, Optional, Union, Tuple
 
 import pandas as pd
 import psutil
@@ -45,10 +44,7 @@ SUPPORTED_ENGINES = ['pandas', 'rest']
 DATA_FORMATS = ["text", "json", "csv", "markdown"]
 
 
-class PollerTransport(str, Enum):
-    """Supported poller transoport enum"""
-    ssh = 'ssh'
-    https = 'https'
+PollerTransport = Literal['ssh', 'https']
 
 
 def validate_sq_config(cfg):
