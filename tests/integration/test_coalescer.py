@@ -190,6 +190,11 @@ def test_coalescer_bin(run_sequential):
     coalescer_args = f'-c {tmpfile.name} --run-once'.split()
     coalescer_cmd_args = [coalescer_bin] + coalescer_args
 
+    # Known flaky failure under CPU contention (e.g. CI runners): the
+    # coalescer subprocess can die with SIGABRT on exit due to an open
+    # upstream pyarrow/Arrow bug where a Dataset scanner thread races with
+    # Python interpreter finalization. Not reproducible on idle/many-core
+    # machines. See https://github.com/apache/arrow/issues/34314
     _ = check_output(coalescer_cmd_args)
 
     _verify_coalescing(temp_dir)
