@@ -72,14 +72,14 @@ def test_mandatory_fields(field: str, default_inventory):
     old_field = inventory.pop(field)
     inventory[field] = []
     with pytest.raises(InventorySourceError,
-                       match=r".*{field}: ensure this value has at least 1 "
-                       "items".format(field=field)):
+                       match=r".*{field}: List should have at least 1 item "
+                       "after validation, not 0".format(field=field)):
         validate_raw_inventory(inventory)
 
     inventory.pop(field)
 
     with pytest.raises(InventorySourceError,
-                       match=r".* {field}: field required"
+                       match=r".* {field}: Field required"
                        .format(field=field)):
         validate_raw_inventory(inventory)
 
@@ -103,14 +103,14 @@ def test_inventory_fields_validation(field, default_inventory):
     old_value, inventory[field] = inventory[field], 'not-a-list'
 
     with pytest.raises(InventorySourceError,
-                       match=r'.*{field}: value is not a valid list'
+                       match=r'.*{field}: Input should be a valid list'
                        .format(field=field)):
         validate_raw_inventory(inventory)
 
     # subitem is not a dictionary
     inventory[field] = ['not-a-dict']
     with pytest.raises(InventorySourceError,
-                       match=r'.*{field}.0: value is not a valid dict'
+                       match=r'.*{field}.0: Input should be a valid dictionary'
                        .format(field=field)):
         validate_raw_inventory(inventory)
 
@@ -120,7 +120,7 @@ def test_inventory_fields_validation(field, default_inventory):
             inventory[field] = [old_value[0].copy()]
             inventory[field][0].pop(f)
             with pytest.raises(InventorySourceError,
-                               match=r".*{f}: field required"
+                               match=r".*{f}: Field required"
                                .format(f=f)):
                 validate_raw_inventory(inventory)
 
@@ -137,7 +137,7 @@ def test_inventory_fields_validation(field, default_inventory):
         # field without a name
         inventory[field] = [{'not-name': 'name'}]
         with pytest.raises(InventorySourceError,
-                           match=r".*name: field required"):
+                           match=r".*name: Field required"):
             validate_raw_inventory(inventory)
 
         # not unique name
@@ -169,7 +169,7 @@ def test_detected_unknown_field(default_inventory):
     inventory['not-valid'] = []
 
     with pytest.raises(InventorySourceError,
-                       match=r".*not-valid: extra fields not permitted"):
+                       match=r".*not-valid: Extra inputs are not permitted"):
         validate_raw_inventory(inventory)
 
 

@@ -6,7 +6,6 @@ from pydantic import ValidationError
 import pytest
 from suzieq.poller.controller.source.base_source import Source
 from suzieq.poller.controller.utils.inventory_utils import DeviceModel
-from suzieq.shared.utils import PollerTransport
 
 
 _INVENTORY = {
@@ -148,7 +147,7 @@ async def test_devices_set(inventory: Dict, result_inventory: Dict):
             'jump-host': None,
             'jump-host-key-file': None,
             'devtype': 'panos',
-            'transport': PollerTransport.ssh,
+            'transport': 'ssh',
             'slow_host': False,
             'per_cmd_auth': True,
             'retries-on-auth-fail': 0
@@ -189,3 +188,18 @@ def test_wrong_device_config():
 
     with pytest.raises(ValidationError):
         DeviceModel(**config)
+
+
+@pytest.mark.controller_device
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+def test_device_transport_is_string():
+    """Test transport remains a string in validated device configs."""
+    device = DeviceModel(name='dev0', transport='ssh')
+
+    assert device.transport == 'ssh'
+    assert type(device.transport) is str
+    assert device.model_dump(by_alias=True)['transport'] == 'ssh'
+    assert type(device.model_dump(by_alias=True)['transport']) is str

@@ -160,7 +160,7 @@ async def test_valid_config(server_conf: Dict, default_config):
     assert src._server.protocol == config['url'].split(':')[0], \
         'wrong server protocol'
     assert src._server.host == '127.0.0.1', 'wrong server host'
-    assert src._server.port == str(server_conf['port']), 'wrong server port'
+    assert src._server.port == server_conf['port'], 'wrong server port'
     assert src._data.tag == exp_tags, 'wrong tag'
     assert src._data.token == config['token'], 'wrong token'
     assert isinstance(src._auth, StaticLoader), 'wrong auth object'

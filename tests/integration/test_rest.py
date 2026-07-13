@@ -3,7 +3,7 @@ import json
 import os
 import warnings
 from dataclasses import dataclass
-from typing import Dict, List
+from typing import Any, Dict, List
 
 import yaml
 import pandas as pd
@@ -11,7 +11,6 @@ import pytest
 from fastapi import FastAPI
 from fastapi.routing import APIRoute
 from fastapi.testclient import TestClient
-from pydantic.fields import ModelField
 from suzieq.restServer import query
 from suzieq.restServer.query import (API_KEY_NAME, CommonExtraVerbs,
                                      CommonVerbs, NetworkVerbs, RouteVerbs,
@@ -342,18 +341,18 @@ VALIDATE_OUTPUT_FILTER = {
 ####
 
 
-@ dataclass
+@dataclass
 class RouteSpecs:
     verbs: List[str]
     query_params: List[str]
 
 
 def get_app_routes(sq_app: FastAPI) -> Dict:
-    def extract_verbs_from_model(model: ModelField) -> List[str]:
-        verbs_enum = model.type_
+    def extract_verbs_from_model(model: Any) -> List[str]:
+        verbs_enum = model.field_info.annotation
         return [e.value for e in verbs_enum]
 
-    def extract_query_params_from_models(models: List[ModelField]) \
+    def extract_query_params_from_models(models: List[Any]) \
             -> List[str]:
         return [m.name for m in models]
 
