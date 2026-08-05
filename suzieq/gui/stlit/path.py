@@ -301,7 +301,8 @@ class PathPage(SqGuiPage):
 
         if path_df.empty:
             return pd.DataFrame()
-
+        if 'error' in path_df.columns:
+            raise ValueError(path_df['error'].iloc[0].removeprefix('ERROR: '))
         namespace = path_df.namespace.iloc[0]
         ns = {}
         ns[namespace] = {}

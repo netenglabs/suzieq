@@ -78,7 +78,7 @@ class Source(ControllerPlugin):
         if self._validate:
             self._data = self.get_data_model()(**input_data)
         else:
-            self._data = self.get_data_model().construct(**input_data)
+            self._data = self.get_data_model().model_construct(**input_data)
         if not self._data:
             raise InventorySourceError(
                 'input_data was not loaded correctly')
@@ -224,9 +224,6 @@ class Source(ControllerPlugin):
                                            f" at {jump_host_key_file} doesn't"
                                            " exists")
             transport = self._device.get('transport')
-            if transport:
-                # get the string from the enum
-                transport = transport.value
             ignore_known_hosts = self._device.get('ignore-known-hosts', False)
             slow_host = self._device.get('slow-host', False)
             per_cmd_auth = self._device.get('per-cmd-auth', True)

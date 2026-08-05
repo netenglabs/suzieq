@@ -190,11 +190,14 @@ class PathDebugPage(SqGuiPage):
                     f'Failed {tbl} Table', expanded=not fdf.empty)
                 table_expander.dataframe(fdf)
 
-        pathobj = getattr(self._state, '_pathobj', pd.DataFrame())
+        pathobj = getattr(self._state, '_pathobj', None)
+        if pathobj is None:
+            st.error('No path trace state found. Re-run the path trace.')
+            st.stop()
         df = getattr(self._state, '_path_df', None)
         engobj = pathobj.engine
 
-        if not df or df.empty:
+        if df is None or df.empty:
             st.warning('Empty path dataframe')
             st.stop()
 
