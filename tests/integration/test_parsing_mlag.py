@@ -83,10 +83,10 @@ def validate_interfaces(df: pd.DataFrame, datadir: str):
             f'Unknown interfaces in mlag table column:{field}'
 
 
-@ pytest.mark.parsing
-@ pytest.mark.mlag
-@ pytest.mark.parametrize('table', ['mlag'])
-@ pytest.mark.parametrize('datadir', DATADIR)
+@pytest.mark.parsing
+@pytest.mark.mlag
+@pytest.mark.parametrize('table', ['mlag'])
+@pytest.mark.parametrize('datadir', DATADIR)
 # pylint: disable=unused-argument
 def test_mlag_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for MLAG table'''

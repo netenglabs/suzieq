@@ -206,7 +206,7 @@ class Inventory(SqPlugin):
 
         return nodes_list
 
-    @ abc.abstractmethod
+    @abc.abstractmethod
     async def _get_device_list(self) -> List[Dict]:
         """Retrieve the devices credentials from the inventory
         source
@@ -220,7 +220,7 @@ class Inventory(SqPlugin):
         """
         raise NotImplementedError
 
-    @ staticmethod
+    @staticmethod
     def get_node_key(node: Node) -> str:
         """Given a node object it returns its ID key
 

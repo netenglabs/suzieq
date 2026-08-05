@@ -324,18 +324,25 @@ class BgpService(Service):
                 continue
 
             if 'afiSafi' in entry:
+                afis = entry.get('afiSafi') or []
+                af_adv = entry.get('afAdvertised') or []
+                af_rcv = entry.get('afRcvd') or []
+
                 entry['afisAdvOnly'] = []
                 entry['afisRcvOnly'] = []
-                for i, item in enumerate(entry['afiSafi']):
-                    if entry['afAdvertised'][i] != entry['afRcvd'][i]:
-                        if entry['afAdvertised'][i] == 'true':
-                            entry['afisAdvOnly'].append(entry['afiSafi'])
-                        else:
-                            entry['afisRcvOnly'].append(entry['afiSafi'])
 
-                entry.pop('afiSafi')
-                entry.pop('afAdvertised')
-                entry.pop('afRcvd')
+                for i, item in enumerate(afis):
+                    adv = af_adv[i] if i < len(af_adv) else None
+                    rcv = af_rcv[i] if i < len(af_rcv) else None
+
+                    if adv and rcv and adv != rcv:
+                        entry_key = 'afisAdvOnly' \
+                            if adv == 'true' else 'afisRcvOnly'
+                        entry[entry_key].append(item)
+
+                entry.pop('afiSafi', None)
+                entry.pop('afAdvertised', None)
+                entry.pop('afRcvd', None)
 
             rrclient = entry.get('rrclient', [])
             if rrclient and 'true' in rrclient:

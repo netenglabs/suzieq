@@ -1,4 +1,4 @@
-from typing import TypeVar, Dict, Callable, List, Optional
+from typing import Awaitable, TypeVar, Dict, Callable, List, Optional
 from abc import abstractmethod
 from collections import defaultdict
 import time
@@ -323,7 +323,8 @@ class Node:
         }
         return result
 
-    async def _post_result(self, service_callback: asyncio.coroutine,
+    async def _post_result(self, service_callback: Callable[
+                           [List[Dict], RsltToken], Awaitable[None]],
                            result: List[Dict],
                            cb_token: RsltToken):
         """This function submits the result calling the service callback, this
@@ -331,7 +332,7 @@ class Node:
         preliminary actions before calling the callback.
 
         Args:
-            service_callback (asyncio.coroutine): service callback
+            service_callback: async service callback
             result (List[Dict]): the result of teh command
             cb_token (RsltToken): the metadata passed between the node and the
                 service.
@@ -1305,8 +1306,9 @@ class Node:
 
                     if request:
                         callback, service_dfn, token = request
-                        tasks.append(self._exec_service(
-                            callback, service_dfn, token))
+                        tasks.append(asyncio.create_task(
+                            self._exec_service(callback, service_dfn, token)
+                        ))
                         self.logger.debug(
                             f"Scheduling {token.service} for execution")
                     if self._service_queue.empty():
@@ -1966,19 +1968,21 @@ class JunosNode(Node):
             data = output[0]["data"]
             try:
                 jdata = json.loads(data.replace('\n', '').strip())
-                if self.devtype not in ["junos-mx", "junos-qfx10k",
-                                        "junos-evo"]:
+
+                if jdata.get('multi-routing-engine-results'):
                     jdata = (jdata['multi-routing-engine-results'][0]
                              ['multi-routing-engine-item'][0])
 
                 timestr = (jdata['system-uptime-information'][0]
                            ['system-booted-time'][0]['date-time'][0]
                            ['attributes'])
+
             except Exception:
                 self.logger.warning(
                     f'{self.address}:{self.port} Unable to parse junos boot '
                     f'time from {data}')
                 timestr = '{"junos:seconds": "0"}'
+
             self.bootupTimestamp = get_timestamp_from_junos_time(
                 timestr, ms=False)
 

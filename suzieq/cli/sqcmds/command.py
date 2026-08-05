@@ -149,8 +149,8 @@ class SqCommand(SqPlugin):
         '''Return the schemas'''
         return self._schemas
 
-    @ command("help", help="show help for a command")
-    @ argument("command", description="command to show help for")
+    @command("help", help="show help for a command")
+    @argument("command", description="command to show help for")
     # pylint: disable=redefined-outer-name
     def help(self, command: str = ''):
         """Show help for a command
@@ -537,11 +537,12 @@ class SqTableCommand(SqCommand):
                 df.sort_values(by=['numRows', df.columns[0]]),
                 dont_strip_cols=True)
 
-    @ command("top", help="find the top n values for a field")
-    @ argument("count", description="number of rows to return")
-    @ argument("what", description="numeric field to get top values for")
-    @ argument("reverse", description="return bottom n values",
-               choices=['True', 'False'])
+    @command("top", help="find the top n values for a field")
+    @argument("count", description="number of rows to return")
+    @argument("what", description="numeric field to get top values for")
+    @argument("reverse",
+              description="return bottom n values",
+              choices=['True', 'False'])
     def top(self, count: int = 5, what: str = '', reverse: str = 'False',
             **kwargs) -> int:
         """Return the top n values for a field in a table
@@ -576,10 +577,11 @@ class SqTableCommand(SqCommand):
         else:
             return self._gen_output(df)
 
-    @ command("help", help="show help for a command")
-    @ argument("command", description="command to show help for",
-               choices=['show', 'unique', 'summarize', 'assert', 'describe',
-                        'top', "lpm"])
+    @command("help", help="show help for a command")
+    @argument("command",
+              description="command to show help for",
+              choices=['show', 'unique', 'summarize', 'assert', 'describe',
+                       'top', "lpm"])
     # pylint: disable=redefined-outer-name
     def help(self, command: str = ''):
         return super().help(command)

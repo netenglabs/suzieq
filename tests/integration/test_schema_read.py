@@ -4,12 +4,12 @@ from tests.conftest import DATADIR, TABLES, create_dummy_config_file
 from suzieq.sqobjects import get_sqobject
 
 
-@ pytest.mark.schema
-@ pytest.mark.parametrize('table',
+@pytest.mark.schema
+@pytest.mark.parametrize('table',
                           [pytest.param(x,
                                         marks=getattr(pytest.mark, x))
                            for x in TABLES])
-@ pytest.mark.parametrize('datadir', DATADIR)
+@pytest.mark.parametrize('datadir', DATADIR)
 @pytest.mark.parametrize('columns', [['*'], ['default']])
 def test_schema_data_consistency(table, datadir, columns, get_table_data_cols):
     '''Test that all fields in dataframe and schema are consistent

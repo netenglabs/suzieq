@@ -125,7 +125,7 @@ class Service(SqPlugin):
             self.dev_clean_fn[x] = getattr(
                 self, f'_clean_{dev}_data', None) or common_dev_clean_fn
 
-    @ staticmethod
+    @staticmethod
     def is_status_ok(status: int) -> bool:
         '''Did the node return a successful command output'''
         if status in [0, HTTPStatus.OK]:

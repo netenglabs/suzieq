@@ -123,8 +123,8 @@ You can join the conversation via [slack](https://join.slack.com/t/netenglabs/sh
 
 We've done some blogging about SuzieQ:
 
-* [Introducing SuzieQ](https://elegantnetwork.github.io/posts/SuzieQ/)
-* [10ish ways to explore your network with SuzieQ](https://elegantnetwork.github.io/posts/10ish_ways_to_explore_your_network_with_SuzieQ/)
+* [Introducing SuzieQ](https://elegantnetwork.github.io/posts/Suzieq/)
+* [10ish ways to explore your network with SuzieQ](https://elegantnetwork.github.io/posts/10ish_ways_to_explore_your_network_with_Suzieq/)
 * [Questions to SuzieQ](https://elegantnetwork.github.io/posts/10qa-suzieq/)
 * [Time in SuzieQ](https://elegantnetwork.github.io/posts/time-suzieq/)
 

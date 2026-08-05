@@ -1,8 +1,7 @@
-# pylint: disable=no-name-in-module
 from copy import deepcopy
 from typing import Dict, List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, model_validator
 from suzieq.shared.exceptions import SqPollerConfError
 from suzieq.shared.sq_plugin import SqPlugin
 
@@ -16,19 +15,37 @@ def _underscore_to_dash(field_name: str) -> str:
 class BasePluginModel(BaseModel):
     """Base model for plugins validation
     """
+    model_config = ConfigDict(
+        extra='forbid',
+        alias_generator=_underscore_to_dash,
+    )
+
     name: str
 
-    class Config:
-        """pydantic configuration
-        """
-        extra = 'forbid'
-        alias_generator = _underscore_to_dash
+    @model_validator(mode='before')
+    @classmethod
+    def check_extra_fields(cls, data):
+        """Keep the legacy validation error message for unknown fields."""
+        if not isinstance(data, dict):
+            return data
+        if 'name' not in data:
+            return data
+        valid_fields = set(cls.model_fields)
+        valid_fields.update(
+            field.alias for field in cls.model_fields.values()
+            if field.alias
+        )
+        extra_fields = set(data) - valid_fields
+        if extra_fields:
+            raise ValueError(
+                f'{sorted(extra_fields)[0]}: extra fields not permitted')
+        return data
 
 
 class InventoryPluginModel(BasePluginModel):
     """Model for inventory validation
     """
-    type: Optional[str]
+    type: Optional[str] = None
 
 
 class ControllerPlugin(SqPlugin):

@@ -89,10 +89,10 @@ def validate_interfaces(df: pd.DataFrame, datadir: str):
         'Unknown interfaces in ospf table'
 
 
-@ pytest.mark.parsing
-@ pytest.mark.ospf
-@ pytest.mark.parametrize('table', ['ospf'])
-@ pytest.mark.parametrize('datadir', DATADIR)
+@pytest.mark.parsing
+@pytest.mark.ospf
+@pytest.mark.parametrize('table', ['ospf'])
+@pytest.mark.parametrize('datadir', DATADIR)
 # pylint: disable=unused-argument
 def test_ospf_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for OSPF'''

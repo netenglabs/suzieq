@@ -6,17 +6,14 @@ from importlib.util import find_spec
 import pandas as pd
 import streamlit as st
 from IPython.display import Markdown
-from streamlit.server.server import Server
-try:
-    from streamlit.scriptrunner.script_run_context import get_script_run_ctx
-except ModuleNotFoundError:
-    # streamlit < 1.4
-    from streamlit.report_thread import (  # type: ignore
-        get_report_ctx as get_script_run_ctx,
-    )
+from st_aggrid import JsCode
+from streamlit.runtime.scriptrunner import get_script_run_ctx
 from suzieq.sqobjects import get_sqobject
 
 SUZIEQ_COLOR = "#68279D"
+_QUERY_PARAM_SCALAR_TYPES = (str, bool, int, float)
+AGGRID_ROW_ID_COL = '__sq_row_id__'
+AGGRID_INTERNAL_COLUMNS = ['::auto_unique_id::', AGGRID_ROW_ID_COL]
 
 
 class SuzieqMainPages(str, Enum):
@@ -57,7 +54,7 @@ def display_help_icon(url: str):
         unsafe_allow_html=True)
 
 
-@st.experimental_memo
+@st.cache_data
 def gui_get_df(table: str,
                config_file: str,
                verb: str = 'get', **kwargs) -> pd.DataFrame:
@@ -109,6 +106,42 @@ def gui_get_df(table: str,
     return df.reset_index(drop=True)
 
 
+def get_query_params() -> dict:
+    '''Return query params in the list-valued format used by GUI pages.'''
+    params = st.query_params
+    return {key: params.get_all(key) for key in params.keys()}
+
+
+def set_query_params(**params) -> None:
+    '''Set query params with the Streamlit 1.54 query params API.'''
+    st.query_params.clear()
+    for key, val in params.items():
+        query_val = _get_url_safe_query_value(val)
+        if query_val is None:
+            continue
+        st.query_params[key] = query_val
+
+
+def _get_url_safe_query_value(value):
+    '''Return a value accepted by st.query_params or None to skip it.'''
+    if value is None:
+        return None
+
+    if isinstance(value, _QUERY_PARAM_SCALAR_TYPES):
+        return str(value)
+
+    if isinstance(value, (list, tuple, set)):
+        if all(isinstance(item, _QUERY_PARAM_SCALAR_TYPES) for item in value):
+            return [str(item) for item in value]
+
+    return None
+
+
+def clear_gui_cache() -> None:
+    '''Clear cached GUI data.'''
+    st.cache_data.clear()
+
+
 def get_session_id():
     '''Return Streamlit's session ID'''
     ctx = get_script_run_ctx()
@@ -128,7 +161,16 @@ def get_main_session_by_id(session_id):
     Returns:
         [type]: session state associated with session or None
     """
-    session = Server.get_current()._session_info_by_id.get(session_id, None)
+    # pylint: disable=import-outside-toplevel
+    from streamlit.runtime.runtime import Runtime
+
+    try:
+        session_mgr = Runtime.instance()._session_mgr
+    except RuntimeError:
+        return None
+
+    session = session_mgr.get_active_session_info(session_id)
+
     if session:
         return session.session.session_state
 
@@ -147,6 +189,46 @@ def set_def_aggrid_options(grid_options: dict):
     grid_options['ensureDomOrder'] = True
 
     return grid_options
+
+
+def build_aggrid_display_df(df: pd.DataFrame) -> pd.DataFrame:
+    '''Return a render-only AgGrid DataFrame with a stable hidden row ID.'''
+    display_df = df.drop(columns=AGGRID_INTERNAL_COLUMNS,
+                         errors='ignore').copy()
+    _stringify_mixed_object_columns(display_df)
+    display_df[AGGRID_ROW_ID_COL] = [
+        str(i) for i in range(len(display_df))
+    ]
+    return display_df
+
+
+def _stringify_mixed_object_columns(df: pd.DataFrame) -> None:
+    '''Make mixed object columns safe for Arrow serialization.'''
+    for col in df.select_dtypes(include='object').columns:
+        inferred_type = pd.api.types.infer_dtype(df[col].dropna(),
+                                                 skipna=True)
+        if inferred_type.startswith('mixed'):
+            df[col] = df[col].astype(str)
+
+
+def set_aggrid_id_options(grid_options: dict) -> dict:
+    '''Configure AgGrid row IDs without exposing render-only columns.'''
+    for col_def in grid_options.get('columnDefs', []):
+        if col_def.get('field') == AGGRID_ROW_ID_COL:
+            col_def['hide'] = True
+            break
+
+    grid_options['getRowId'] = JsCode(f'''
+        function(params) {{
+            return params.data.{AGGRID_ROW_ID_COL};
+        }}
+    ''')
+    return grid_options
+
+
+def strip_aggrid_internal_columns(df: pd.DataFrame) -> pd.DataFrame:
+    '''Remove render-only AgGrid columns from a DataFrame.'''
+    return df.drop(columns=AGGRID_INTERNAL_COLUMNS, errors='ignore')
 
 
 def get_image_dir():

@@ -3,56 +3,52 @@
 This module contains the methods to connect to a Vcenter server to
 retrieve the list of VMs.
 """
-# pylint: disable=no-name-in-module
-# pylint: disable=no-self-argument
 
 import asyncio
 import logging
+import ssl
 from typing import Dict, List, Optional, Union
 from urllib.parse import urlparse
-import ssl
+
+from pydantic import BaseModel, Field, field_validator, model_validator
 from pyVim.connect import Disconnect, SmartConnect
 from pyVmomi import vim, vmodl
-
-
-from pydantic import BaseModel, validator, Field
 
 from suzieq.poller.controller.inventory_async_plugin import \
     InventoryAsyncPlugin
 from suzieq.poller.controller.source.base_source import Source, SourceModel
-from suzieq.shared.utils import get_sensitive_data
 from suzieq.shared.exceptions import InventorySourceError, SensitiveLoadError
+from suzieq.shared.utils import get_sensitive_data
 
 _DEFAULT_PORTS = {'https': 443}
 
 logger = logging.getLogger(__name__)
 
 
-class VcenterServerModel(BaseModel):
+class VcenterServerModel(BaseModel, extra='forbid'):
     """Model containing data to connect with vcenter server."""
     host: str
-    port: str
-
-    class Config:
-        """pydantic configuration
-        """
-        extra = 'forbid'
+    port: int
 
 
 class VcenterSourceModel(SourceModel):
     """Vcenter source validation model."""
     username: str
     password: str
-    attributes: Optional[List] = Field(default=['suzieq'])
+    attributes: Optional[List] = Field(default_factory=lambda: ['suzieq'])
     period: Optional[int] = Field(default=3600)
-    ssl_verify: Optional[bool] = Field(alias='ssl-verify')
+    ssl_verify: Optional[bool] = Field(default=None, alias='ssl-verify')
     server: Union[str, VcenterServerModel] = Field(alias='url')
     run_once: Optional[bool] = Field(default=False, alias='run_once')
 
-    @validator('server', pre=True)
-    def validate_and_set(cls, url, values):
+    @model_validator(mode='before')
+    @classmethod
+    def validate_and_set(cls, data):
         """Validate the field 'url' and set the correct parameters
         """
+        if not isinstance(data, dict):
+            return data
+        url = data.get('url')
         if isinstance(url, str):
             url_data = urlparse(url)
             host = url_data.hostname
@@ -62,17 +58,19 @@ class VcenterSourceModel(SourceModel):
             if not port:
                 raise ValueError(f'Unable to parse port {url}')
             server = VcenterServerModel(host=host, port=port)
-            ssl_verify = values['ssl_verify']
+            ssl_verify = data.get('ssl-verify')
             if ssl_verify is None:
                 ssl_verify = True
-            values['ssl_verify'] = ssl_verify
-            return server
+            data['ssl-verify'] = ssl_verify
+            data['url'] = server
+            return data
         elif isinstance(url, VcenterServerModel):
-            return url
+            return data
         else:
             raise ValueError('Unknown input type')
 
-    @validator('password')
+    @field_validator('password')
+    @classmethod
     def validate_password(cls, password):
         """checks if the password can be load as sensible data
         """
@@ -102,7 +100,7 @@ class Vcenter(Source, InventoryAsyncPlugin):
     def _load(self, input_data):
         # load the server class from the dictionary
         if not self._validate:
-            input_data['server'] = VcenterServerModel.construct(
+            input_data['server'] = VcenterServerModel.model_construct(
                 **input_data.pop('url', {}))
             input_data['ssl_verify'] = input_data.pop('ssl-verify', False)
         super()._load(input_data)
@@ -118,7 +116,8 @@ class Vcenter(Source, InventoryAsyncPlugin):
 
     def _init_session(self):
         """Initialize the session property"""
-        context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        context.check_hostname = False
         context.verify_mode = ssl.CERT_REQUIRED
         if not self._data.ssl_verify:
             context.verify_mode = ssl.CERT_NONE

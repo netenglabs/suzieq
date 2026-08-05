@@ -168,7 +168,7 @@ class NetworkObj(SqPandasEngine):
             .get(namespace=[namespace], hostname=[hostname], master=[ifname])
 
         if not ifdf.empty:
-            return ifdf.ifname.unique().tolist()
+            return sorted(ifdf.ifname.unique().tolist())
 
         return [ifname]
 

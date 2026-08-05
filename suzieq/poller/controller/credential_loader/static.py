@@ -1,7 +1,6 @@
-# pylint: disable=no-self-argument
 from typing import Dict, Optional
 
-from pydantic import Field, validator
+from pydantic import Field, field_validator
 
 from suzieq.poller.controller.credential_loader.base_credential_loader import \
     CredentialLoader, CredentialLoaderModel, check_credentials
@@ -12,21 +11,24 @@ from suzieq.shared.utils import get_sensitive_data
 class StaticModel(CredentialLoaderModel):
     """Model for static credential loader
     """
-    username: Optional[str]
-    password: Optional[str]
-    key_passphrase: Optional[str] = Field(alias='key-passphrase')
-    keyfile: Optional[str]
-    enable_password: Optional[str] = Field(alias='enable-password')
+    username: Optional[str] = None
+    password: Optional[str] = None
+    key_passphrase: Optional[str] = Field(default=None, alias='key-passphrase')
+    keyfile: Optional[str] = None
+    enable_password: Optional[str] = Field(default=None,
+                                           alias='enable-password')
 
-    @validator('username', 'password', 'key_passphrase', 'enable_password')
-    def validate_sens_field(cls, field):
+    @field_validator('username', 'password', 'key_passphrase',
+                     'enable_password')
+    @classmethod
+    def validate_sens_field(cls, value):
         """Validate if the sensitive var was passed correctly
         """
         try:
-            if field == 'ask':
+            if value == 'ask':
                 # the field is valid, but I cannot ask here the value
-                return field
-            return get_sensitive_data(field)
+                return value
+            return get_sensitive_data(value)
         except SensitiveLoadError as e:
             raise ValueError(e)
 

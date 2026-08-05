@@ -56,10 +56,10 @@ def validate_interfaces(df: pd.DataFrame, datadir: str):
         'Unknown interfaces in arpnd table'
 
 
-@ pytest.mark.parsing
-@ pytest.mark.arpnd
-@ pytest.mark.parametrize('table', ['arpnd'])
-@ pytest.mark.parametrize('datadir', DATADIR)
+@pytest.mark.parsing
+@pytest.mark.arpnd
+@pytest.mark.parametrize('table', ['arpnd'])
+@pytest.mark.parametrize('datadir', DATADIR)
 # pylint: disable=unused-argument
 def test_arpnd_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for ARPND table'''

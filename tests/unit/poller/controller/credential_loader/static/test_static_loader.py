@@ -44,7 +44,7 @@ def test_load(data_path: Dict):
         'enable-password': 'my-password'
     }
 
-    valid_data = StaticModel(**init_data).dict(by_alias=True)
+    valid_data = StaticModel(**init_data).model_dump(by_alias=True)
 
     sl = StaticLoader(valid_data)
 
@@ -110,7 +110,7 @@ def test_variables_init(monkeypatch):
         'username': 'ask',
         'password': 'ask'
     }
-    valid_data = StaticModel(**init_data).dict(by_alias=True)
+    valid_data = StaticModel(**init_data).model_dump(by_alias=True)
     mock_get_pass = MockGetPass([ask_username, ask_password])
     monkeypatch.setattr('getpass.getpass', mock_get_pass)
     sl = StaticLoader(valid_data)

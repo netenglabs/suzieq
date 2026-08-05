@@ -33,7 +33,7 @@ class SqCoalesceState:
         self.wrrec_count = 0
         self.block_start = self.block_end = 0
 
-    @ property
+    @property
     def pq_file_name(self):
         """Callback to create a filename that uses the timestamp of start
         of hour. This makes it easy for us to lookup data when we need to.
@@ -121,9 +121,9 @@ def write_files(table: str, filelist: List[str], in_basedir: str,
                 this_df = this_df.set_index(state.keys)
                 sett = set(this_df.index)
                 setc = set(state.current_df.index)
-                missing_set = setc.difference(sett)
-                if missing_set:
-                    missing_df = state.current_df.loc[missing_set]
+                missing_list = list(setc.difference(sett))
+                if missing_list:
+                    missing_df = state.current_df.loc[missing_list]
                     this_df = pd.concat([this_df.reset_index(),
                                          missing_df.reset_index()])
                 else:

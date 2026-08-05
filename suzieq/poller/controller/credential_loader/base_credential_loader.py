@@ -84,7 +84,7 @@ class CredentialLoader(ControllerPlugin):
         if self._validate:
             self._data = self.get_data_model()(**init_data)
         else:
-            self._data = self.get_data_model().construct(**init_data)
+            self._data = self.get_data_model().model_construct(**init_data)
         if not self._data:
             raise InventorySourceError(
                 'input_data was not loaded correctly')

@@ -1,20 +1,21 @@
 import re
-from datetime import datetime
 from collections import defaultdict
+from datetime import datetime
 from json import loads
 from typing import Dict
+
 import numpy as np
 
 from suzieq.poller.worker.services.service import Service
-from suzieq.shared.utils import (get_timestamp_from_junos_time,
+from suzieq.shared.utils import (MISSING_SPEED, MISSING_SPEED_IF_TYPES,
+                                 NO_SPEED, convert_macaddr_format_to_colon,
                                  expand_ios_ifname, expand_nxos_ifname,
-                                 convert_macaddr_format_to_colon,
+                                 get_timestamp_from_junos_time,
+                                 normalize_junos_field,
                                  parse_relative_timestamp)
-from suzieq.shared.utils import MISSING_SPEED, NO_SPEED, MISSING_SPEED_IF_TYPES
 
 
 # pylint: disable=too-many-statements
-
 class InterfaceService(Service):
     """Service class for interfaces. Cleanup of data is specific"""
 
@@ -297,7 +298,11 @@ class InterfaceService(Service):
             if not entry.get('macaddr', ''):
                 entry['macaddr'] = '00:00:00:00:00:00'
 
-            entry['type'] = entry.get('type', '').lower()
+            normalized_type = normalize_junos_field(entry.get('type')).lower()
+            normalized_link_type = normalize_junos_field(
+                entry.get('_linkLevelType')).lower()
+
+            entry['type'] = normalized_link_type or normalized_type
 
             if entry['type'] in ['vrf', 'virtual-router']:
                 entry['type'] = 'vrf'

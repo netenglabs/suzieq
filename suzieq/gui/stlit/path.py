@@ -5,11 +5,12 @@ from urllib.parse import quote
 import pandas as pd
 import streamlit as st
 import graphviz
-from st_aggrid import (GridOptionsBuilder, AgGrid, GridUpdateMode,
-                       JsCode)
+from st_aggrid import GridOptionsBuilder, AgGrid, JsCode
 
 from suzieq.sqobjects import get_sqobject
-from suzieq.gui.stlit.guiutils import (gui_get_df, set_def_aggrid_options,
+from suzieq.gui.stlit.guiutils import (build_aggrid_display_df, gui_get_df,
+                                       set_aggrid_id_options,
+                                       set_def_aggrid_options,
                                        display_help_icon,
                                        get_session_id, SuzieqMainPages)
 from suzieq.gui.stlit.pagecls import SqGuiPage
@@ -163,7 +164,6 @@ class PathPage(SqGuiPage):
             layout['pgbar'].progress(100)
             self._path_df = pd.DataFrame()
             st.stop()
-            return
 
         layout['pgbar'].progress(40)
 
@@ -172,11 +172,11 @@ class PathPage(SqGuiPage):
             st.info(f'No path to trace between {self._state.source} and '
                     f'{self._state.dest}')
             st.stop()
-            return
 
         self._get_failed_data(state.namespace, layout['pgbar'])
 
-        g = self._build_graphviz_obj(state.show_ifnames, df)
+        node_styles = self._get_node_styles(df)
+        g = self._build_graphviz_obj(state.show_ifnames, df, node_styles)
         layout['pgbar'].progress(100)
         # if not rev_df.empty:
         #     rev_g = build_graphviz_obj(state, rev_df)
@@ -191,7 +191,7 @@ class PathPage(SqGuiPage):
 <b style="color:red">Red Lines</b> => Hops with Error<br>
 ''', unsafe_allow_html=True)
 
-        layout['fw_path'].graphviz_chart(g, use_container_width=True)
+        layout['fw_path'].graphviz_chart(g, width='content')
         # rev_ph.graphviz_chart(rev_g, use_container_width=True)
 
         with layout['table']:
@@ -201,7 +201,8 @@ class PathPage(SqGuiPage):
 
     def _draw_aggrid_df(self, df):
 
-        gb = GridOptionsBuilder.from_dataframe(df)
+        display_df = build_aggrid_display_df(df)
+        gb = GridOptionsBuilder.from_dataframe(display_df)
         gb.configure_pagination(paginationPageSize=25)
 
         gb.configure_default_column(floatingFilter=True)
@@ -215,13 +216,14 @@ class PathPage(SqGuiPage):
 
         gridOptions = gb.build()
         gridOptions = set_def_aggrid_options(gridOptions)
+        gridOptions = set_aggrid_id_options(gridOptions)
         gridOptions['getRowStyle'] = self._aggrid_style_rows(df)
 
         _ = AgGrid(
-            df,
+            display_df,
             gridOptions=gridOptions,
             allow_unsafe_jscode=True,
-            update_mode=GridUpdateMode.NO_UPDATE,
+            update_on=[],
             theme='streamlit',
         )
 
@@ -299,7 +301,8 @@ class PathPage(SqGuiPage):
 
         if path_df.empty:
             return pd.DataFrame()
-
+        if 'error' in path_df.columns:
+            raise ValueError(path_df['error'].iloc[0].removeprefix('ERROR: '))
         namespace = path_df.namespace.iloc[0]
         ns = {}
         ns[namespace] = {}
@@ -325,9 +328,19 @@ class PathPage(SqGuiPage):
         return pd.DataFrame(ns).reindex(summary_fields, axis=0) \
                                .convert_dtypes()
 
+    def _get_node_styles(self, df: pd.DataFrame) -> dict:
+        """Get Graphviz node tooltip and color values for path hosts."""
+
+        return {
+            hostname: self._get_node_tooltip_color(hostname)
+            for hostname in df.hostname.unique()
+        }
+
     # pylint: disable=too-many-statements
-    @st.cache(max_entries=10, allow_output_mutation=True)
-    def _build_graphviz_obj(self, show_ifnames: bool, df: pd.DataFrame):
+    @staticmethod
+    @st.cache_data(max_entries=10)
+    def _build_graphviz_obj(show_ifnames: bool, df: pd.DataFrame,
+                            node_styles: dict):
         '''Return a graphviz object'''
 
         graph_attr = {'splines': 'polyline', 'layout': 'dot'}
@@ -353,8 +366,7 @@ class PathPage(SqGuiPage):
                         f'session={quote(get_session_id())}',
                         f'hostname={quote(hostname)}',
                     ])
-                    tooltip, color = self._get_node_tooltip_color(
-                        hostname)
+                    tooltip, color = node_styles.get(hostname, ('', 'black'))
                     s.node(hostname, tooltip=tooltip, color=color,
                            URL=debugURL, target='_graphviz', shape='box')
 
