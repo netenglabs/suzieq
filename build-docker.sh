@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 VERSION=`./suzieq/version.py`
+echo $VERSION
 poetry build
 if [ $# -eq 0 ]; then
     BUILD_TAG=$VERSION
