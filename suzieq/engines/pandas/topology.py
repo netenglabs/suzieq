@@ -236,7 +236,7 @@ class TopologyObj(SqPandasEngine):
 
     def _create_graphs_from_lsdb(self):
         self.graphs = {}
-        for ns, df in self.lsdb.groupby(by=['namespace']):
+        for ns, df in self.lsdb.groupby(by='namespace'):
             attrs = [srv.name for srv in self.services
                      if srv.name in df.columns]
             self.graphs[ns] = nx.from_pandas_edgelist(

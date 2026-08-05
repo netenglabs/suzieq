@@ -16,9 +16,9 @@ from suzieq.sqobjects.topology import TopologyObj
 @argument("asn", description="BGP ASN(s), space separated")
 @argument("area", description="OSPF Area(s), space separated")
 @argument("afiSafi", description="BGP AFI SAFI lens to filter the topology")
-@ argument("peerHostname",
-           description="Peer hostname(s), space separated, "
-           "space separated")
+@argument("peerHostname",
+          description="Peer hostname(s), space separated, "
+          "space separated")
 class TopologyCmd(SqTableCommand):
     """Information about the topology constructed from various protocols"""
 

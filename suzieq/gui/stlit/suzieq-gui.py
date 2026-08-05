@@ -7,24 +7,12 @@ from typing import Dict
 import streamlit as st
 
 from suzieq.gui.stlit.guiutils import (SUZIEQ_COLOR, get_image_dir,
-                                       get_main_session_by_id, SuzieqMainPages)
+                                       get_main_session_by_id,
+                                       get_query_params, set_query_params,
+                                       SuzieqMainPages)
 from suzieq.gui.stlit.pagecls import SqGuiPage
 from suzieq.version import SUZIEQ_VERSION
 from suzieq.shared.utils import sq_get_config_file
-
-
-def set_horizontal_radio():
-    '''Make the radio buttons horizontal'''
-    st.write('<style>div.row-widget.stRadio > '
-             'div{flex-direction:row;}</style>',
-             unsafe_allow_html=True)
-
-
-def set_vertical_radio():
-    '''Make the radio buttons horizontal'''
-    st.write('<style>div.row-widget.stRadio > '
-             'div{flex-direction:column;}</style>',
-             unsafe_allow_html=True)
 
 
 def display_help_icon(url: str):
@@ -111,10 +99,9 @@ def display_title(page: str):
     with page_col:
         # The empty writes are for aligning the pages link with the logo
         st.text(' ')
-        set_horizontal_radio()
         st.radio('Page', sel_menulist, key='sq_page',
                  index=sel_menulist.index(page or 'Status'),
-                 on_change=main_sync_state)
+                 on_change=main_sync_state, horizontal=True)
         page = state.sq_page
 
     return page, search_str
@@ -130,9 +117,10 @@ def main_sync_state():
 
     if wsstate.page != wsstate.sq_page:
         wsstate.page = wsstate.sq_page
-        st.experimental_set_query_params(**{'page': wsstate.page})
+        set_query_params(**{'page': wsstate.page})
         if wsstate.page != 'Search':
             wsstate.search_text = ''
+            wsstate.search = ''
 
 
 def build_pages() -> Dict:
@@ -197,19 +185,26 @@ def apprun(*args):
     if 'first_time' not in state:
         state.first_time = True
 
-    url_params = st.experimental_get_query_params()
+    url_params = get_query_params()
     if url_params.get('page', ''):
         page = url_params['page']
         if isinstance(page, list):
             page = page[0]
         old_session_state = get_main_session_by_id(
             url_params.get('session', [''])[0])
-        if old_session_state:
-            if page == "Path-Debug":
+
+        if page == "Path-Debug":
+            if old_session_state:
                 state.pages[page].set_path_state(old_session_state)
                 state.pages[page].build()
-                st.stop()
-            elif page == "Help":
+            else:
+                st.error(
+                    "Path debug session is no longer available. "
+                    "Re-run the path trace.")
+            st.stop()
+
+        if old_session_state:
+            if page == "Help":
                 state.pages[page].build()
                 st.stop()
 

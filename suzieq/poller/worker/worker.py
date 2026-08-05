@@ -159,7 +159,10 @@ class Worker:
         """Add new tasks to be executed in the poller worker run loop."""
 
         await self.waiting_tasks_lock.acquire()
-        self.waiting_tasks += tasks
+        self.waiting_tasks += [
+            task if asyncio.isfuture(task) else asyncio.create_task(task)
+            for task in tasks
+        ]
         self.waiting_tasks_lock.release()
 
     def _get_inventory_plugins(self) -> Dict[str, Type]:

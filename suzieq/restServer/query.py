@@ -7,6 +7,7 @@ import logging
 import os
 import sys
 import uuid
+from contextlib import asynccontextmanager
 from enum import Enum
 from typing import List
 
@@ -27,15 +28,21 @@ api_key_query = APIKeyQuery(name=API_KEY_NAME, auto_error=False)
 api_key_header = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
 
 
-def check_config_file():
-    if not getattr(app, 'cfg_file', None):
+def check_config_file(sq_app):
+    if not getattr(sq_app, 'cfg_file', None):
         print('missing config file')
         sys.exit(1)
 
 
+@asynccontextmanager
+async def lifespan(sq_app: FastAPI):
+    check_config_file(sq_app)
+    yield
+
+
 # Changing the default URLs to help with reverse proxy stuff as described
 # in issue #381 (https://github.com/netenglabs/suzieq/issues/381)
-app = FastAPI(on_startup=[check_config_file],
+app = FastAPI(lifespan=lifespan,
               openapi_url="/api/openapi.json",
               docs_url="/api/docs",
               redoc_url="/api/redoc")
@@ -43,10 +50,6 @@ app = FastAPI(on_startup=[check_config_file],
 
 def app_init(cfg_file):
     '''This is the actual API initilaizer'''
-    # pylint: disable=global-variable-not-assigned
-
-    global app
-
     app.cfg_file = cfg_file
 
     return app
@@ -305,7 +308,7 @@ def query_address(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/arpnd/{verb}")
+@app.get("/api/v2/arpnd/{verb}")
 def query_arpnd(verb: CommonVerbs, request: Request,
                 token: str = Depends(get_api_key),
                 format: str = None,
@@ -325,7 +328,7 @@ def query_arpnd(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/bgp/{verb}")
+@app.get("/api/v2/bgp/{verb}")
 def query_bgp(verb: CommonExtraVerbs, request: Request,
               token: str = Depends(get_api_key),
               format: str = None,
@@ -347,7 +350,7 @@ def query_bgp(verb: CommonExtraVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/device/{verb}")
+@app.get("/api/v2/device/{verb}")
 def query_device(verb: CommonVerbs, request: Request,
                  token: str = Depends(get_api_key),
                  format: str = None,
@@ -373,7 +376,7 @@ def query_device(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/devconfig/{verb}")
+@app.get("/api/v2/devconfig/{verb}")
 def query_devconfig(verb: CommonVerbs, request: Request,
                     token: str = Depends(get_api_key),
                     format: str = None,
@@ -391,7 +394,7 @@ def query_devconfig(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/evpnVni/{verb}")
+@app.get("/api/v2/evpnVni/{verb}")
 def query_evpnVni(verb: CommonExtraVerbs, request: Request,
                   token: str = Depends(get_api_key),
                   format: str = None,
@@ -410,7 +413,7 @@ def query_evpnVni(verb: CommonExtraVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/fs/{verb}")
+@app.get("/api/v2/fs/{verb}")
 def query_fs(verb: CommonVerbs, request: Request,
              token: str = Depends(get_api_key),
              format: str = None,
@@ -427,7 +430,7 @@ def query_fs(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/interface/{verb}")
+@app.get("/api/v2/interface/{verb}")
 def query_interface(verb: CommonExtraVerbs, request: Request,
                     token: str = Depends(get_api_key),
                     format: str = None,
@@ -478,7 +481,7 @@ def query_inventory(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/lldp/{verb}")
+@app.get("/api/v2/lldp/{verb}")
 def query_lldp(verb: CommonVerbs, request: Request,
                token: str = Depends(get_api_key),
                format: str = None,
@@ -498,7 +501,7 @@ def query_lldp(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/mac/{verb}")
+@app.get("/api/v2/mac/{verb}")
 def query_mac(verb: CommonVerbs, request: Request,
               token: str = Depends(get_api_key),
               format: str = None,
@@ -520,7 +523,7 @@ def query_mac(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/mlag/{verb}")
+@app.get("/api/v2/mlag/{verb}")
 def query_mlag(verb: CommonVerbs, request: Request,
                token: str = Depends(get_api_key),
                format: str = None,
@@ -666,7 +669,7 @@ def query_namespace(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/ospf/{verb}")
+@app.get("/api/v2/ospf/{verb}")
 def query_ospf(verb: CommonExtraVerbs, request: Request,
                token: str = Depends(get_api_key),
                format: str = None,
@@ -687,7 +690,7 @@ def query_ospf(verb: CommonExtraVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/path/{verb}")
+@app.get("/api/v2/path/{verb}")
 def query_path(verb: CommonVerbs, request: Request,
                token: str = Depends(get_api_key),
                format: str = None,
@@ -706,7 +709,7 @@ def query_path(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/route/{verb}")
+@app.get("/api/v2/route/{verb}")
 def query_route(verb: RouteVerbs, request: Request,
                 token: str = Depends(get_api_key),
                 format: str = None,
@@ -727,7 +730,7 @@ def query_route(verb: RouteVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/sqPoller/{verb}")
+@app.get("/api/v2/sqPoller/{verb}")
 def query_sqPoller(verb: CommonVerbs, request: Request,
                    token: str = Depends(get_api_key),
                    format: str = None,
@@ -746,7 +749,7 @@ def query_sqPoller(verb: CommonVerbs, request: Request,
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/topology/{verb}")
+@app.get("/api/v2/topology/{verb}")
 def query_topology(verb: CommonVerbs, request: Request,
                    token: str = Depends(get_api_key),
                    format: str = None,
@@ -787,7 +790,7 @@ def query_table(
     return read_shared(function_name, verb, request, locals())
 
 
-@ app.get("/api/v2/vlan/{verb}")
+@app.get("/api/v2/vlan/{verb}")
 def query_vlan(verb: CommonVerbs, request: Request,
                token: str = Depends(get_api_key),
                format: str = None,
@@ -840,14 +843,17 @@ def create_filters(function_name, command, request, local_vars):
     for arg in query_ks.keys():
         if arg in remove_args:
             continue
+        arg_value = local_vars.get(arg, None)
+        if isinstance(arg_value, Enum):
+            arg_value = arg_value.value
         if arg in all_cmd_args:
             if query_ks.get(arg) is not None:
-                command_args[arg] = local_vars.get(arg, None)
+                command_args[arg] = arg_value
                 if arg in both_verb_and_command:
                     verb_args[arg] = command_args[arg]
         else:
             if query_ks.get(arg) is not None:
-                verb_args[arg] = local_vars.get(arg, None)
+                verb_args[arg] = arg_value
 
     return command_args, verb_args
 
@@ -957,14 +963,14 @@ def return_error(code: int, msg: str):
     raise HTTPException(status_code=code, detail=msg)
 
 
-@ app.get("/api/v2/{command}", include_in_schema=False)
+@app.get("/api/v2/{command}", include_in_schema=False)
 def missing_verb(command):
     return_error(
         404, f'{command} command missing a verb. for example '
         f'/api/v2/{command}/show')
 
 
-@ app.get("/", include_in_schema=False)
+@app.get("/", include_in_schema=False)
 def bad_path():
     return_error(
         404,

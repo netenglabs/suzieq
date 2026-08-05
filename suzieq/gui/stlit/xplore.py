@@ -5,10 +5,13 @@ import altair as alt
 import numpy as np
 import pandas as pd
 import streamlit as st
-from st_aggrid import AgGrid, GridOptionsBuilder, GridUpdateMode, JsCode
+from st_aggrid import AgGrid, GridOptionsBuilder, JsCode
 from suzieq.gui.stlit.guiutils import (SUZIEQ_COLOR, SuzieqMainPages,
+                                       build_aggrid_display_df,
                                        gui_get_df, pandas_df_to_markdown_table,
-                                       set_def_aggrid_options, sq_gui_style)
+                                       set_aggrid_id_options,
+                                       set_def_aggrid_options, sq_gui_style,
+                                       strip_aggrid_internal_columns)
 from suzieq.gui.stlit.pagecls import SqGuiPage
 from suzieq.sqobjects import get_sqobject, get_tables
 
@@ -263,12 +266,10 @@ class XplorePage(SqGuiPage):
                 st.error(df.iloc[0].error)
                 self._save_page_url()
                 st.stop()
-                return
         else:
             st.info('No data returned by the table')
             self._save_page_url()
             st.stop()
-            return
 
         if not df.empty:
             self._draw_summary_df(layout, query_str)
@@ -358,7 +359,7 @@ class XplorePage(SqGuiPage):
             agdf = show_df
             ag = self._draw_aggrid_df(agdf)
             selected = ag['data']
-            selected_df = pd.DataFrame(selected)
+            selected_df = strip_aggrid_internal_columns(pd.DataFrame(selected))
             st.session_state['xplore_show_df'] = selected_df
             self._draw_uniq_histogram(layout, selected_df)
 
@@ -375,7 +376,8 @@ class XplorePage(SqGuiPage):
 
     def _draw_aggrid_df(self, df) -> AgGrid:
 
-        gb = GridOptionsBuilder.from_dataframe(df)
+        display_df = build_aggrid_display_df(df)
+        gb = GridOptionsBuilder.from_dataframe(display_df)
         gb.configure_pagination(paginationPageSize=25)
 
         gb.configure_default_column(floatingFilter=True, selectable=False)
@@ -384,6 +386,7 @@ class XplorePage(SqGuiPage):
 
         gridOptions = gb.build()
         gridOptions = set_def_aggrid_options(gridOptions)
+        gridOptions = set_aggrid_id_options(gridOptions)
         jscode = self._aggrid_style_rows()
         gridOptions['getRowStyle'] = jscode
 
@@ -400,19 +403,21 @@ class XplorePage(SqGuiPage):
 
         if self._state.experimental_ok:
             retmode = 'FILTERED'
-            upd8_mode = GridUpdateMode.FILTERING_CHANGED
+            update_on = ['filterChanged']
         else:
             retmode = 'AS_INPUT'
-            upd8_mode = GridUpdateMode.VALUE_CHANGED
+            update_on = ['cellValueChanged']
 
         fit_columns = (len(df.columns) < 12)
+        if fit_columns:
+            gridOptions['autoSizeStrategy'] = {'type': 'fitGridWidth'}
+
         grid_response = AgGrid(
-            df.iloc[start_row:end_row],
+            display_df.iloc[start_row:end_row].copy(),
             gridOptions=gridOptions,
             allow_unsafe_jscode=True,
             data_return_mode=retmode,
-            update_mode=upd8_mode,
-            fit_columns_on_grid_load=fit_columns,
+            update_on=update_on,
             theme='streamlit',
         )
         return grid_response

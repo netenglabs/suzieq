@@ -232,23 +232,23 @@ class SchemaForTable:
         if table not in self._all_schemas.tables():
             raise ValueError(f"Unknown table {table}, no schema found for it")
 
-    @ property
+    @property
     def type(self):
         '''Type of table'''
         return self._all_schemas.type_for_table(self._table)
 
-    @ property
+    @property
     def version(self):
         '''DB version for table'''
         return self._all_schemas.field_for_table(self._table,
                                                  'sqvers')['default']
 
-    @ property
+    @property
     def fields(self):
         '''Returns list of fields for table'''
         return self._all_schemas.fields_for_table(self._table)
 
-    @ property
+    @property
     def array_fields(self):
         '''Return list of array fields in table'''
         return self._all_schemas.array_fields_for_table(self._table)

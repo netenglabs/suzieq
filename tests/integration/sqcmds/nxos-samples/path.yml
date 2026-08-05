@@ -1678,35 +1678,35 @@ tests:
     --what=inMtu
   data-directory: tests/data/parquet/
   marks: path top nxos
-  output: '[{"pathid": 1, "hopCount": 0, "namespace": "nxos", "hostname": "server101",
-    "iif": "bond0", "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false,
-    "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "", "ipLookup": "172.16.0.0/16",
-    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "hopError": "",
-    "timestamp": 1619275256085}, {"pathid": 10, "hopCount": 1, "namespace": "nxos",
-    "hostname": "leaf02", "iif": "port-channel3", "oif": "Ethernet1/1", "vrf": "evpn-vrf",
-    "isL2": true, "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216,
-    "protocol": "bgp", "ipLookup": "172.16.2.0/24", "vtepLookup": "10.0.0.134", "macLookup":
-    "", "nexthopIp": "10.0.0.21", "hopError": "", "timestamp": 1619275257446}, {"pathid":
-    12, "hopCount": 0, "namespace": "nxos", "hostname": "server101", "iif": "bond0",
-    "oif": "bond0", "vrf": "default", "isL2": false, "overlay": false, "mtuMatch":
-    true, "inMtu": 9216, "outMtu": 9216, "protocol": "", "ipLookup": "172.16.0.0/16",
-    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.1.254", "hopError": "",
-    "timestamp": 1619275256085}, {"pathid": 11, "hopCount": 3, "namespace": "nxos",
-    "hostname": "leaf03", "iif": "Ethernet1/2", "oif": "Vlan20", "vrf": "evpn-vrf",
-    "isL2": false, "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000,
-    "protocol": "connected", "ipLookup": "172.16.2.0/24", "vtepLookup": "", "macLookup":
-    "", "nexthopIp": "172.16.2.254", "hopError": "", "timestamp": 1619275257228},
-    {"pathid": 11, "hopCount": 2, "namespace": "nxos", "hostname": "spine02", "iif":
-    "Ethernet1/1", "oif": "Ethernet1/3", "vrf": "default", "isL2": true, "overlay":
-    true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "ospf", "ipLookup":
-    "10.0.0.134", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.13",
-    "hopError": "", "timestamp": 1619275257123}]'
+  output: '[{"pathid": 16, "hopCount": 3, "namespace": "nxos", "hostname": "leaf04",
+    "iif": "Ethernet1/2", "oif": "Vlan20", "vrf": "evpn-vrf", "isL2": false, "overlay":
+    true, "mtuMatch": true, "inMtu": 9216, "outMtu": 9000, "protocol": "connected",
+    "ipLookup": "172.16.2.0/24", "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.2.254",
+    "hopError": "", "timestamp": 1619275257671}, {"pathid": 16, "hopCount": 2, "namespace":
+    "nxos", "hostname": "spine02", "iif": "Ethernet1/2", "oif": "Ethernet1/4", "vrf":
+    "default", "isL2": true, "overlay": true, "mtuMatch": true, "inMtu": 9216, "outMtu":
+    9216, "protocol": "ospf", "ipLookup": "10.0.0.134", "vtepLookup": "10.0.0.134",
+    "macLookup": "", "nexthopIp": "10.0.0.14", "hopError": "", "timestamp": 1619275257123},
+    {"pathid": 16, "hopCount": 1, "namespace": "nxos", "hostname": "leaf02", "iif":
+    "port-channel3", "oif": "Ethernet1/2", "vrf": "evpn-vrf", "isL2": true, "overlay":
+    false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216, "protocol": "bgp", "ipLookup":
+    "172.16.2.0/24", "vtepLookup": "10.0.0.134", "macLookup": "", "nexthopIp": "10.0.0.22",
+    "hopError": "", "timestamp": 1619275257446}, {"pathid": 16, "hopCount": 0, "namespace":
+    "nxos", "hostname": "server101", "iif": "bond0", "oif": "bond0", "vrf": "default",
+    "isL2": false, "overlay": false, "mtuMatch": true, "inMtu": 9216, "outMtu": 9216,
+    "protocol": "", "ipLookup": "172.16.0.0/16", "vtepLookup": "", "macLookup": "",
+    "nexthopIp": "172.16.1.254", "hopError": "", "timestamp": 1619275256085}, {"pathid":
+    15, "hopCount": 3, "namespace": "nxos", "hostname": "leaf04", "iif": "Ethernet1/2",
+    "oif": "Vlan20", "vrf": "evpn-vrf", "isL2": false, "overlay": true, "mtuMatch":
+    true, "inMtu": 9216, "outMtu": 9000, "protocol": "connected", "ipLookup": "172.16.2.0/24",
+    "vtepLookup": "", "macLookup": "", "nexthopIp": "172.16.2.254", "hopError": "",
+    "timestamp": 1619275257671}]'
 - command: path top --dest=172.16.2.104 --src=172.16.1.101 --format=json --namespace=nxos
     --what=inMtu --columns=hostname
   data-directory: tests/data/parquet/
   marks: path top nxos
-  output: '[{"hostname": "server101"}, {"hostname": "leaf02"}, {"hostname": "server101"},
-    {"hostname": "leaf03"}, {"hostname": "spine02"}]'
+  output: '[{"hostname": "leaf04"}, {"hostname": "spine02"}, {"hostname": "leaf02"},
+    {"hostname": "server101"}, {"hostname": "leaf04"}]'
 - command: path show --dest=172.16.3.202 --src=172.16.21.104 --format=json --namespace=nxos
   data-directory: tests/data/parquet/
   error:

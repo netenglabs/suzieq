@@ -127,8 +127,8 @@ def get_table_data_cols(table: str, datadir: str, columns: List[str]):
     return df
 
 
-@ pytest.fixture
-@ pytest.mark.asyncio
+@pytest.fixture
+@pytest.mark.asyncio
 def init_services_default(event_loop):
     '''Mock setup of services'''
     configs = os.path.abspath(os.curdir) + '/suzieq/config/'
@@ -140,7 +140,7 @@ def init_services_default(event_loop):
     return services
 
 
-@ pytest.fixture
+@pytest.fixture
 # pylint: disable=unused-argument
 def run_sequential(tmpdir):
     """Uses a file lock to run tests using this fixture, sequentially

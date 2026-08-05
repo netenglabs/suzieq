@@ -167,9 +167,9 @@ def _get_non_aug_all(schema: SchemaForTable) -> List[str]:
     return columns
 
 
-@ pytest.mark.coalesce
-@ pytest.mark.cumulus
-@ pytest.mark.parametrize("pq_dir, namespace, path_src, path_dest",
+@pytest.mark.coalesce
+@pytest.mark.cumulus
+@pytest.mark.parametrize("pq_dir, namespace, path_src, path_dest",
                           [('tests/data/parquet', 'dual-evpn',
                            '172.16.1.101', '172.16.2.104')])
 def test_basic_multi_namespace(pq_dir, namespace, path_src, path_dest):
@@ -177,7 +177,7 @@ def test_basic_multi_namespace(pq_dir, namespace, path_src, path_dest):
     _coalescer_basic_test(pq_dir, namespace, path_src, path_dest)
 
 
-@ pytest.mark.coalesce
+@pytest.mark.coalesce
 # pylint: disable=unused-argument
 def test_coalescer_bin(run_sequential):
     '''Verify the sq-coalescer bin works'''
@@ -190,6 +190,11 @@ def test_coalescer_bin(run_sequential):
     coalescer_args = f'-c {tmpfile.name} --run-once'.split()
     coalescer_cmd_args = [coalescer_bin] + coalescer_args
 
+    # Known flaky failure under CPU contention (e.g. CI runners): the
+    # coalescer subprocess can die with SIGABRT on exit due to an open
+    # upstream pyarrow/Arrow bug where a Dataset scanner thread races with
+    # Python interpreter finalization. Not reproducible on idle/many-core
+    # machines. See https://github.com/apache/arrow/issues/34314
     _ = check_output(coalescer_cmd_args)
 
     _verify_coalescing(temp_dir)
@@ -218,8 +223,8 @@ async def _run_multiple_coalescer(coalescer_cmd_args):
     assert(rc[0] != rc[1])
 
 
-@ pytest.mark.coalesce
-@ pytest.mark.asyncio
+@pytest.mark.coalesce
+@pytest.mark.asyncio
 # pylint: disable=unused-argument
 async def test_single_instance_run(run_sequential):
     '''Verify that only a single instance of the coalescer is running'''
@@ -330,8 +335,8 @@ def _write_verify_transform(mod_df, table, dbeng, schema, config_file,
 
     assert((mod_df.index == qdf.index).all())
 
-    assert_df_equal(mod_df[changed_fields].reset_index(),
-                    qdf[changed_fields].reset_index(),
+    assert_df_equal(mod_df[list(changed_fields)].reset_index(),
+                    qdf[list(changed_fields)].reset_index(),
                     None)
 
 

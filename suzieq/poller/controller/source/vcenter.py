@@ -118,7 +118,8 @@ class Vcenter(Source, InventoryAsyncPlugin):
 
     def _init_session(self):
         """Initialize the session property"""
-        context = ssl.SSLContext(ssl.PROTOCOL_SSLv23)
+        context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+        context.check_hostname = False
         context.verify_mode = ssl.CERT_REQUIRED
         if not self._data.ssl_verify:
             context.verify_mode = ssl.CERT_NONE

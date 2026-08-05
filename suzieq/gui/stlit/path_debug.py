@@ -3,6 +3,7 @@ from itertools import zip_longest
 import pandas as pd
 import streamlit as st
 
+from suzieq.gui.stlit.guiutils import get_query_params
 from suzieq.gui.stlit.pagecls import SqGuiPage
 
 
@@ -37,7 +38,7 @@ class PathDebugPage(SqGuiPage):
         pass
 
     def _render(self, _) -> None:
-        url_params = st.experimental_get_query_params()
+        url_params = get_query_params()
         if url_params.get('lookupType', 'hop') == ['hop']:
             self._handle_hop_url(url_params)
         else:
@@ -79,8 +80,12 @@ class PathDebugPage(SqGuiPage):
         if ipLookup:
             if not vtepLookup or (ipLookup != vtepLookup):
                 st.info(f'Route Lookup on {hostname}')
-                st.dataframe(data=engobj._rdf.query(
-                    f'hostname=="{hostname}" and vrf=="{vrf}"'))
+                rdf = getattr(engobj, '_rdf', pd.DataFrame())
+                if not rdf.empty:
+                    st.dataframe(data=rdf.query(
+                        f'hostname=="{hostname}" and vrf=="{vrf}"'))
+                else:
+                    st.info(f'No route lookup data available for {hostname}')
 
             if vtepLookup:
                 st.info(f'Underlay Lookup on {hostname} for {vtepLookup}')
@@ -93,48 +98,71 @@ class PathDebugPage(SqGuiPage):
                 st.info(
                     f'ARP/ND Table on {hostname} for nexthop {nhip}, '
                     f'oif={oif}')
-                arpdf = engobj._arpnd_df.query(f'hostname=="{hostname}" and '
-                                               f'ipAddress=="{nhip}" and '
-                                               f'oif=="{oif}"')
+                arpnd_df = getattr(engobj, '_arpnd_df', pd.DataFrame())
+
+                if not arpnd_df.empty:
+                    arpdf = arpnd_df.query(
+                        f'hostname=="{hostname}" and '
+                        f'ipAddress=="{nhip}" and '
+                        f'oif=="{oif}"')
+                else:
+                    arpdf = pd.DataFrame()
+
                 st.dataframe(data=arpdf)
 
                 if ':' in nhip:
                     dropcol = ['ipAddressList']
                 else:
                     dropcol = ['ip6AddressList']
-                if not arpdf.empty:
+
+                if_df_all = getattr(engobj, '_if_df', pd.DataFrame())
+                if not arpdf.empty and not if_df_all.empty:
                     nhmac = arpdf.macaddr.iloc[0]
                     if nhmac:
-                        if_df = engobj._if_df.query(f'macaddr=="{nhmac}" and '
-                                                    f'hostname=="{ifhost}"') \
-                                             .drop(columns=dropcol)
+                        if_df = if_df_all.query(f'macaddr=="{nhmac}" and '
+                                                f'hostname=="{ifhost}"') \
+                                         .drop(columns=dropcol)
                         label = (f'matching nexthop {nhip}, '
                                  f'macaddr {nhmac} on '
                                  f'host {ifhost}')
                     else:
                         label = f'matching nexthop {nhip} on host {ifhost}'
-                        if_df = engobj._if_df.query(f'hostname=="{ifhost}"') \
-                                             .drop(columns=dropcol)
-                else:
-                    if_df = engobj._if_df.query(f'hostname=="{ifhost}"')\
+                        if_df = if_df_all.query(
+                            f'hostname=="{ifhost}"') \
+                            .drop(columns=dropcol)
+                elif not if_df_all.empty:
+                    if_df = if_df_all.query(f'hostname=="{ifhost}"')\
                         .drop(columns=dropcol)
+                    label = f'matching host {ifhost}'
+                else:
+                    if_df = pd.DataFrame()
                     label = f'matching host {ifhost}'
                 if nhip != '169.254.0.1':
                     st.info(f'Interfaces {label}')
-                    s = if_df.ipAddressList.str \
-                                           .startswith(f'{nhip}/') \
-                                           .dropna()
-                    s = s.loc[s]
-                    st.dataframe(
-                        data=engobj._if_df.iloc[s.loc[s].index])
+                    if not if_df.empty:
+                        s = if_df.ipAddressList.str \
+                                               .startswith(f'{nhip}/') \
+                                               .dropna()
+                        s = s.loc[s]
+                        st.dataframe(
+                            data=if_df_all.iloc[s.loc[s].index])
+                    else:
+                        st.dataframe(data=if_df)
                 else:
                     st.info(f'Interfaces {label}')
                     st.dataframe(data=if_df)
         if macaddr:
             with st.expander(f'MAC Table for {hostname}, MAC addr {macaddr}',
                              expanded=True):
-                st.dataframe(data=pathobj.engine._macsobj.get(
-                    namespace=namespace, hostname=hostname, macaddr=macaddr))
+                macsobj = getattr(pathobj.engine, '_macsobj', None)
+
+                if macsobj is not None:
+                    st.dataframe(data=macsobj.get(
+                        namespace=namespace, hostname=hostname,
+                        macaddr=macaddr))
+                else:
+                    st.info(f'No MAC table data available for {hostname}, '
+                            f'MAC addr {macaddr}')
 
     # pylint: disable=too-many-statements
     def _handle_hop_url(self, url_params):
@@ -162,11 +190,11 @@ class PathDebugPage(SqGuiPage):
                     f'Failed {tbl} Table', expanded=not fdf.empty)
                 table_expander.dataframe(fdf)
 
-        pathobj = getattr(self._state, '_pathobj', None)
+        pathobj = getattr(self._state, '_pathobj', pd.DataFrame())
         df = getattr(self._state, '_path_df', None)
         engobj = pathobj.engine
 
-        if df.empty:
+        if not df or df.empty:
             st.warning('Empty path dataframe')
             st.stop()
 

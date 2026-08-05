@@ -27,10 +27,10 @@ def validate_evpnVni(df: pd.DataFrame):
     assert (df.query('os == "nxos"').routerMac != '').all()
 
 
-@ pytest.mark.parsing
-@ pytest.mark.evpnVni
-@ pytest.mark.parametrize('table', ['evpnVni'])
-@ pytest.mark.parametrize('datadir', DATADIR)
+@pytest.mark.parsing
+@pytest.mark.evpnVni
+@pytest.mark.parametrize('table', ['evpnVni'])
+@pytest.mark.parametrize('datadir', DATADIR)
 # pylint: disable=unused-argument
 def test_evpnVni_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for EVPN VNI table'''

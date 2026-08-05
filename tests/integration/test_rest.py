@@ -500,22 +500,22 @@ def get(endpoint, service, verb, args):
     return response.status_code
 
 
-@ pytest.mark.rest
-@ pytest.mark.parametrize("service", [
+@pytest.mark.rest
+@pytest.mark.parametrize("service", [
     pytest.param(cmd, marks=getattr(pytest.mark, cmd))
     for cmd in cli_commands])
-@ pytest.mark.parametrize("verb", [
+@pytest.mark.parametrize("verb", [
     pytest.param(verb, marks=getattr(pytest.mark, verb))
     for verb in VERBS])
-@ pytest.mark.parametrize("arg", FILTERS)
+@pytest.mark.parametrize("arg", FILTERS)
 # pylint: disable=redefined-outer-name, unused-argument
 def test_rest_services(app_initialize, service, verb, arg):
     '''Main workhorse'''
     get(ENDPOINT, service, verb, arg)
 
 
-@ pytest.mark.rest
-@ pytest.mark.parametrize("service, verb", [
+@pytest.mark.rest
+@pytest.mark.parametrize("service, verb", [
     (cmd, verb) for cmd in TABLES for verb in VERBS])
 def test_rest_arg_consistency(service, verb):
     '''check that the arguments used in REST match whats in sqobjects'''
@@ -552,63 +552,68 @@ def test_rest_arg_consistency(service, verb):
     if not fnlist:
         assert fnlist, f"No functions found for {service}/{verb}"
 
-    for fn in fnlist:
-        rest_args = []
+    config_file = create_dummy_config_file()
+    try:
+        for fn in fnlist:
+            rest_args = []
 
-        for i in inspect.getfullargspec(fn[1]).args:
-            if i in ['verb', 'token', 'request']:
+            for i in inspect.getfullargspec(fn[1]).args:
+                if i in ['verb', 'token', 'request']:
+                    continue
+                aliases = alias_args.get(service, {})
+                val = i if i not in aliases else aliases[i]
+                rest_args.append(val)
+
+            sqobj = get_sqobject(service)(config_file=config_file)
+            supported_verbs = {x[0].replace('aver', 'assert')
+                               .replace('get', 'show')
+                               for x in inspect.getmembers(sqobj)
+                               if inspect.ismethod(x[1]) and
+                               not x[0].startswith('_')}
+
+            if verb not in supported_verbs:
                 continue
+
             aliases = alias_args.get(service, {})
-            val = i if i not in aliases else aliases[i]
-            rest_args.append(val)
 
-        sqobj = get_sqobject(service)()
-        supported_verbs = {x[0].replace('aver', 'assert')
-                           .replace('get', 'show')
-                           for x in inspect.getmembers(sqobj)
-                           if inspect.ismethod(x[1]) and
-                           not x[0].startswith('_')}
-
-        if verb not in supported_verbs:
-            continue
-
-        aliases = alias_args.get(service, {})
-
-        arglist = getattr(sqobj, f'_valid_{verb}_args', None)
-        if not arglist:
-            if verb == "show":
-                arglist = getattr(sqobj, '_valid_get_args', None)
-            else:
-                warnings.warn(
-                    f'Skipping arg check for {verb} in {service} due to '
-                    f'missing valid_args list', category=ImportWarning)
-                return
-
-        arglist.extend(['namespace', 'hostname', 'start_time', 'end_time',
-                        'format', 'view', 'columns', 'query_str'])
-
-        valid_args = set(arglist)
-
-        # In the tests below, we warn when we don't have the exact
-        # {service}_{verb} REST function, which prevents us from picking the
-        # correct set of args.
-        for arg in valid_args:
-            assert arg in rest_args, \
-                f"{arg} missing from {fn} arguments for verb {verb}"
-
-        for arg in rest_args:
-            if arg not in valid_args and arg != "result":
-                # result is usually part of assert keyword and so ignore
-                if found_service_rest_fn:
-                    assert False, \
-                        f"{arg} not in {service} sqobj {verb} arguments"
+            arglist = getattr(sqobj, f'_valid_{verb}_args', None)
+            if not arglist:
+                if verb == "show":
+                    arglist = getattr(sqobj, '_valid_get_args', None)
                 else:
                     warnings.warn(
-                        f"{arg} not in {service} sqobj {verb} arguments",
-                        category=ImportWarning)
+                        f'Skipping arg check for {verb} in {service} due to '
+                        f'missing valid_args list', category=ImportWarning)
+                    return
+
+            arglist.extend(['namespace', 'hostname', 'start_time',
+                            'end_time', 'format', 'view', 'columns',
+                            'query_str'])
+
+            valid_args = set(arglist)
+
+            # In the tests below, we warn when we don't have the exact
+            # {service}_{verb} REST function, which prevents us from picking
+            # the correct set of args.
+            for arg in valid_args:
+                assert arg in rest_args, \
+                    f"{arg} missing from {fn} arguments for verb {verb}"
+
+            for arg in rest_args:
+                if arg not in valid_args and arg != "result":
+                    # result is usually part of assert keyword and so ignore
+                    if found_service_rest_fn:
+                        assert False, \
+                            f"{arg} not in {service} sqobj {verb} arguments"
+                    else:
+                        warnings.warn(
+                            f"{arg} not in {service} sqobj {verb} arguments",
+                            category=ImportWarning)
+    finally:
+        os.remove(config_file)
 
 
-@ pytest.fixture()
+@pytest.fixture()
 def app_initialize():
     '''Initialize the test server'''
 
@@ -626,8 +631,8 @@ def app_initialize():
 # so we need to test this separately. xdist tries to run tests in parallel
 # which screws things up. So, we run server with & without https sequentially
 # For some reason, putting the no_https in a for loop didn't work either
-@ pytest.mark.rest
-@ pytest.mark.filterwarnings(
+@pytest.mark.rest
+@pytest.mark.filterwarnings(
     'ignore::urllib3.exceptions.InsecureRequestWarning')
 def test_rest_server():
     '''Try starting the REST server, actually'''
@@ -680,7 +685,7 @@ def test_rest_server():
     os.remove(cfgfile)
 
 
-@ pytest.mark.rest
+@pytest.mark.rest
 def test_routes_sqobj_consistency():
     """Checks if the app routes params are consistent with the sqobject
        params"""

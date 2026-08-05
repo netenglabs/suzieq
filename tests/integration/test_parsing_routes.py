@@ -87,10 +87,10 @@ def validate_interfaces(df: pd.DataFrame, datadir: str):
         'Unknown interfaces in routes table'
 
 
-@ pytest.mark.parsing
-@ pytest.mark.route
-@ pytest.mark.parametrize('table', ['routes'])
-@ pytest.mark.parametrize('datadir', DATADIR)
+@pytest.mark.parsing
+@pytest.mark.route
+@pytest.mark.parametrize('table', ['routes'])
+@pytest.mark.parametrize('datadir', DATADIR)
 # pylint: disable=unused-argument
 def test_routes_parsing(table, datadir, get_table_data):
     '''Main workhorse routine to test parsed output for Routes'''
