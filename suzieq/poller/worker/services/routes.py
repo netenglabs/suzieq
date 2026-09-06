@@ -35,6 +35,56 @@ class RoutesService(Service):
 
         return processed_data
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry_new = []
+        entry_arp = []
+        entry_ip_interface = []
+        entry_ip_routes = []
+
+        entry_arp = [
+            item for item in processed_data
+            if item.get('_entryType') == 'arp'
+        ]
+
+        entry_ip_interface = [
+            item for item in processed_data
+            if item.get('_entryType') == 'ip_interface'
+        ]
+
+        entry_ip_routes = [
+            item for item in processed_data
+            if item.get('_entryType') == 'ip_routes'
+        ]
+
+        for ip_route in entry_ip_routes:
+
+            entry_dict = {}
+            oifs = []
+
+            oifs += [
+                arp["interface"]
+                for arp in entry_arp
+                if arp["ip_address"] == ip_route["gateway_addr"]
+            ]
+            oifs += [
+                interface["name"]
+                for interface in entry_ip_interface
+                if interface["ip_address"] == ip_route["gateway_addr"]
+            ]
+
+            entry_dict = {
+                'nexthopIps': [ip_route['gateway_addr']],
+                'oifs': oifs,
+                'prefix': ip_route['dest_addr'],
+                'protocol': ip_route['protocol'],
+                'vrf': 'default'
+            }
+
+            entry_new.append(entry_dict)
+
+        return entry_new
+
     def _clean_eos_data(self, processed_data, _):
         '''Massage EVPN routes'''
         for entry in processed_data:

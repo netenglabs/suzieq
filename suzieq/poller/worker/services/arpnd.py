@@ -10,6 +10,21 @@ from suzieq.shared.utils import (
 class ArpndService(Service):
     """arpnd service. Different class because minor munging of output"""
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry, = processed_data
+
+        if entry["type"] == "STATIC":
+            entry["state"] = "permanent"
+        elif entry["type"] == "DYNAMIC":
+            entry["state"] = "reachable"
+
+        entry['ipAddress'] = entry['ip_address']
+        entry['macaddr'] = entry['hardware_addr']
+        entry['oif'] = entry['port']
+
+        return processed_data
+
     def _clean_linux_data(self, processed_data, _):
         for entry in processed_data:
             entry["remote"] = entry["remote"] == "offload"

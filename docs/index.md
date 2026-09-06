@@ -8,10 +8,11 @@ system goes well beyond what is normally considered monitoring and alerting. Suz
 
 SuzieQ:
 
-* [Gathers data](https://suzieq.readthedocs.io/en/latest/poller/) using an agentless model using either SSH or REST API as the transport. We gather data from routers, bridges and Linux servers. We support gathering data from Arista EOS, Cisco's IOS, IOS-XE, and IOS-XR platforms, Cisco's NXOS, Cumulus Linux, Juniper's Junos(QFX, EX, MX and SRX platforms and Evolved OS), Palo Alto's Panos (version 8.0 or higher) and SoNIC devices, besides Linux servers.
-* Normalizes the data into a vendor-agnostic format.
-* Stores all data in files using the popular big data format, [Parquet](https://parquet.apache.org/).
-* Exposes via a CLI, [GUI](https://suzieq.readthedocs.io/en/latest/gui/), a [REST API](https://suzieq.readthedocs.io/en/latest/rest-server/), or via Python the analysis of the data gathered using easy, intuitive commands. The output can be rendered in various formats from plain text to JSON, CSV and Markdown.
+* We [gather data](https://suzieq.readthedocs.io/en/latest/poller/) using an agentless model using either SSH or REST API as the transport. We gather data from routers, bridges and Linux servers. We support gathering data from Alcatel-Lucent Enterprise AOS8, Arista EOS, Cisco's IOS, IOS-XE, and IOS-XR platforms, Cisco's NXOS (N7K with versions 8.4.4 or higher, and N9K with versions 9.3.1 or higher), Cumulus Linux, Juniper's Junos(QFX, EX, MX and SRX platforms and Evolved OS), Palo Alto's Panos (version 8.0 or higher) and SoNIC devices, besides Linux servers.
+* We normalize the data into a vendor-agnostic format.
+* We store all data in files using the popular big data format, [Parquet](https://parquet.apache.org/).
+* All the analysis are exposed either via a CLI, [GUI](https://suzieq.readthedocs.io/en/latest/gui/), a [REST API](https://suzieq.readthedocs.io/en/latest/rest-server/), or via Python. The output can be rendered in various formats from plain text to JSON and CSV.
+* The analysis engine used in this release is pandas, though we have prototyped with other analysis engines.
 
 With the applications that we build on top of the framework we want to demonstrate a different and more systematic approach to thinking about networks. We want to show how useful it is to think of your network holistically.
 

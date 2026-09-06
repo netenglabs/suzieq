@@ -1,0 +1,17 @@
+Value ip_address ((?:[0-9]{1,3}\.){3}[0-9]{1,3})
+Value hardware_addr (([0-9A-Fa-f]{2}[:-]){5}([0-9A-Fa-f]){2})
+Value type (DYNAMIC|STATIC)
+Value flags ([PAVBHIM]*)
+Value port (((\d+\/\d+\/\d+(\w)?)|(\d\/\d+)|(\d+)))
+Value interface (\S*)
+Value name (\S*)
+
+Start
+  ^Total \d+ arp entries$$
+  ^Flags (P=Proxy, A=Authentication, V=VRRP, B=BFD, H=HAVLAN, I=INTF, M=Managed)$$
+  ^IP Addr\s+Hardware Addr\s+Type\s+Flags\s+Port\s+Interface\s+Name$$
+  ^[-+\+]+\s*$$ -> Arp
+
+Arp
+  ^\s+${ip_address}\s+${hardware_addr}\s+${type}\s*${flags}\s*${port}\s*${interface}\s*${name}\s*$$ -> Record
+#  ^. -> Error

@@ -16,6 +16,20 @@ show-fields:
   - action
 
 apply:
+  aos:
+    version: all
+    merge: false
+    command:
+      - command: show arp
+        textfsm: textfsm_templates/aos_show_arp.tfsm
+        _entryType: arp
+      - command: show ip interface
+        textfsm: textfsm_templates/aos_show_ip_interface.tfsm
+        _entryType: ip_interface
+      - command: show ip routes
+        textfsm: textfsm_templates/aos_show_ip_routes.tfsm
+        _entryType: ip_routes
+
   cumulus:
     version: all
     command: ip route show table all

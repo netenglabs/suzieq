@@ -1,0 +1,15 @@
+Value Filldown dest_addr ((?:[0-9]{1,3}\.){3}[0-9]{1,3}\/[0-9]{1,2})
+Value Required gateway_addr ((?:[0-9]{1,3}\.){3}[0-9]{1,3})
+Value age ((\d+:\d+:\d+)|(\d+d\s*\d+h))
+Value protocol (\w+)
+
+Start
+  ^\+ = Equal cost multipath routes$$
+  ^ Total (\d) routes$$
+  ^  Dest Address       Gateway Addr        Age        Protocol $$
+  ^[-+\+]+\s*$$ -> Routes
+
+Routes
+  ^\s+${dest_addr}\s+(\+)*${gateway_addr}\s+${age}\s+${protocol}\s*$$ -> Record
+  ^\s+(\+)*${gateway_addr}\s+${age}\s+${protocol}\s*$$ -> Record
+#  ^. -> Error

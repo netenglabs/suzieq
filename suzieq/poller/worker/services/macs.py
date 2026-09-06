@@ -62,6 +62,36 @@ class MacsService(Service):
                     else:
                         entry['mackey'] = '0'
 
+    def _clean_aos_data(self, processed_data, _):
+
+        entry_new = []
+
+        for entry in processed_data:
+
+            entry_dict = {}
+
+            flags = entry['operation']
+            macaddr = entry['mac_address']
+            bd = entry['domain']
+            oif = entry['interface']
+            protocol = entry['type']
+            vlan = entry['id']
+
+            entry_dict = {
+                "flags": flags,
+                "macaddr": macaddr,
+                "bd": bd,
+                "oif": oif,
+                "protocol": protocol,
+                "vlan": vlan,
+            }
+
+            self._add_mackey_protocol(entry_dict)
+
+            entry_new.append(entry_dict)
+
+        return entry_new
+
     def _clean_linux_data(self, processed_data, _):
         drop_indices = []
         macentries = {}
