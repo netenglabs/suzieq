@@ -1,5 +1,11 @@
+import os
+
 import pytest
+
+from suzieq.shared.context import SqContext
+from suzieq.shared.schema import Schema
 from suzieq.sqobjects.basicobj import SqObject
+import suzieq.sqobjects.basicobj as basicobj
 from suzieq.engines.base_engine import SqEngineObj
 from suzieq.sqobjects.vlan import VlanObj
 from suzieq.sqobjects import get_tables, get_sqobject
@@ -42,3 +48,34 @@ def test_plugin():
 
     with pytest.raises(DBNotFoundError):
         get_sqdb_engine({'db': {'foobar': 'bar'}}, 'foobar', None, None)
+
+
+def test_rest_engine_initializes_context_from_config(monkeypatch):
+    """Per-command rest engine selection should load REST config."""
+
+    class DummyEngine:
+        def __init__(self, obj):
+            self.obj = obj
+
+    cfg = {
+        'schema-directory': os.path.abspath('suzieq/config/schema'),
+        'rest': {
+            'API_KEY': 'my-api-key',
+            'address': '127.0.0.1',
+            'port': 8000,
+            'no-https': True,
+        },
+    }
+    ctxt = SqContext(cfg=cfg)
+    ctxt.schemas = Schema(cfg['schema-directory'])
+
+    monkeypatch.setattr(
+        basicobj, 'get_sqengine', lambda engine, table: lambda obj: DummyEngine(obj))
+
+    obj = VlanObj(context=ctxt, engine_name='rest')
+
+    assert obj.ctxt.engine == 'pandas'
+    assert obj.ctxt.rest_api_key == 'my-api-key'
+    assert obj.ctxt.rest_server_ip == '127.0.0.1'
+    assert obj.ctxt.rest_server_port == 8000
+    assert obj.ctxt.rest_transport == 'http'

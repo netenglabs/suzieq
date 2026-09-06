@@ -5,7 +5,8 @@ import pandas as pd
 from pandas.core.dtypes.dtypes import DatetimeTZDtype
 
 from suzieq.shared.utils import (load_sq_config, humanize_timestamp,
-                                 deprecated_table_function_warning)
+                                 deprecated_table_function_warning,
+                                 set_rest_engine)
 from suzieq.shared.schema import Schema, SchemaForTable
 from suzieq.engines import get_sqengine
 from suzieq.shared.sq_plugin import SqPlugin
@@ -29,12 +30,18 @@ class SqObject(SqPlugin):
             self.ctxt.schemas = Schema(self.ctxt.cfg["schema-directory"])
         else:
             self.ctxt = context
+            orig_engine = self.ctxt.engine
             if not self.ctxt.cfg:
                 self.ctxt.cfg = load_sq_config(validate=True,
                                                config_file=config_file)
                 self.ctxt.schemas = Schema(self.ctxt.cfg["schema-directory"])
             if not self.ctxt.engine:
                 self.ctxt.engine = engine_name
+            if engine_name == 'rest' and orig_engine != 'rest':
+                self.ctxt.rest_server_ip, \
+                 self.ctxt.rest_server_port, \
+                 self.ctxt.rest_transport, \
+                 self.ctxt.rest_api_key = set_rest_engine(self.ctxt.cfg)
 
         self._cfg = self.ctxt.cfg
         self._schema = SchemaForTable(table, self.ctxt.schemas)
