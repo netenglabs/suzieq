@@ -10,25 +10,45 @@ show-fields:
   - mlagErrorPortsCnt
 apply:
   cumulus:
-    version: all
-    command: 'if [ -f "/etc/default/clagd" ]; then net show clag json; else echo {}; fi'
-    normalize: '[
-    "status/peerAlive: state",
-    "status/sysMac: systemId",
-    "status/peerIp: peerAddress",
-    "status/ourRole: role",
-    "status/peerRole: peerRole",
-    "status/peerId: peerMacAddress",
-    "status/peerIf: peerLink",
-    "peerLinkStatus: peerLinkStatus?|",
-    "status/backupActive: backupActive?|False",
-    "status/backupIp: backupIP",
-    "status/backupReason: backupReason?|",
-    "status/linklocal: usesLinkLocal?|False",
-    "status/domainId: domainId?|",
-    "status/vxlanAnycast: vtepIP",
-    "clagIntfs: mlagInterfacesList",
-    ]'
+    - version: '>= 5.0'
+      command: 'if systemctl is-active --quiet clagd; then sudo clagctl -j; else echo {}; fi'
+      normalize: '[
+      "status/peerAlive: state",
+      "status/sysMac: systemId",
+      "status/peerIp: peerAddress",
+      "status/ourRole: role",
+      "status/peerRole: peerRole",
+      "status/peerId: peerMacAddress",
+      "status/peerIf: peerLink",
+      "peerLinkStatus: peerLinkStatus?|",
+      "status/backupActive: backupActive?|False",
+      "status/backupIp: backupIP",
+      "status/backupReason: backupReason?|",
+      "status/linklocal: usesLinkLocal?|False",
+      "status/domainId: domainId?|",
+      "status/vxlanAnycast: vtepIP",
+      "clagIntfs: mlagInterfacesList",
+      ]'
+
+    - version: all
+      command: 'if [ -f "/etc/default/clagd" ]; then net show clag json; else echo {}; fi'
+      normalize: '[
+      "status/peerAlive: state",
+      "status/sysMac: systemId",
+      "status/peerIp: peerAddress",
+      "status/ourRole: role",
+      "status/peerRole: peerRole",
+      "status/peerId: peerMacAddress",
+      "status/peerIf: peerLink",
+      "peerLinkStatus: peerLinkStatus?|",
+      "status/backupActive: backupActive?|False",
+      "status/backupIp: backupIP",
+      "status/backupReason: backupReason?|",
+      "status/linklocal: usesLinkLocal?|False",
+      "status/domainId: domainId?|",
+      "status/vxlanAnycast: vtepIP",
+      "clagIntfs: mlagInterfacesList",
+      ]'
 
   sonic:
     version: all
