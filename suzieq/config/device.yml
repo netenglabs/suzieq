@@ -24,29 +24,40 @@ apply:
     "bootupTimestamp: bootupTimestamp"]'
 
   cumulus:
-    version: all
-    merge: False
-    command:
-      - command: net show system json
-        normalize: '[
-        "os-version: version",
-        "vendor: vendor?|Cumulus",
-        "os: os?|cumulus",
-        "memory: memory?|0",
-        "platform/info/model_name: _modelName?|",
-        "platform/model: model?|",
-        "eeprom/Serial Number/value: serialNumber?|",
-        "platform/info/cpu/summary: architecture?|x86_64",
-        "_entryType: _entryType?|json"
-        ]'
+    - version: '>= 5.0'
+      merge: False
+      command:
+        - command: cat /proc/stat | grep btime | grep -o '[0-9]*'
+          textfsm: textfsm_templates/cls_uptime_hostname.tfsm
+          _entryType: bootupTimestamp
 
-      - command: cat /proc/stat | grep btime | grep -o '[0-9]*'
-        textfsm: textfsm_templates/cls_uptime_hostname.tfsm
-        _entryType: bootupTimestamp
+        - command: /usr/cumulus/bin/decode-syseeprom; cat /etc/os-release; cat /proc/meminfo
+          textfsm: textfsm_templates/cls_model_rel.tfsm
+          _entryType: model
 
-      - command: /usr/cumulus/bin/decode-syseeprom; cat /etc/os-release; cat /proc/meminfo
-        textfsm: textfsm_templates/cls_model_rel.tfsm
-        _entryType: model
+    - version: all
+      merge: False
+      command:
+        - command: net show system json
+          normalize: '[
+          "os-version: version",
+          "vendor: vendor?|Cumulus",
+          "os: os?|cumulus",
+          "memory: memory?|0",
+          "platform/info/model_name: _modelName?|",
+          "platform/model: model?|",
+          "eeprom/Serial Number/value: serialNumber?|",
+          "platform/info/cpu/summary: architecture?|x86_64",
+          "_entryType: _entryType?|json"
+          ]'
+
+        - command: cat /proc/stat | grep btime | grep -o '[0-9]*'
+          textfsm: textfsm_templates/cls_uptime_hostname.tfsm
+          _entryType: bootupTimestamp
+
+        - command: /usr/cumulus/bin/decode-syseeprom; cat /etc/os-release; cat /proc/meminfo
+          textfsm: textfsm_templates/cls_model_rel.tfsm
+          _entryType: model
 
   iosxe:
     version: all

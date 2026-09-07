@@ -27,35 +27,65 @@ apply:
     textfsm: textfsm_templates/eos_show_bgp_nbr.tfsm
 
   cumulus:
-    version: all
-    command: net show bgp vrf all neighbor json
-    normalize: '*:vrf/*:peer/[
-        "neighborCapabilities/multiprotocolExtensions/*:_sqstore/received: afisRcvOnly",
-        "neighborCapabilities/multiprotocolExtensions/*:_sqstore/advertised: afisAdvOnly",
-        "addressFamilyInfo: _afiInfo",
-        "remoteAs: peerAsn",
-        "localAs: asn",
-        "lastResetDueTo: reason?|",
-        "lastNotificationReason: notificnReason?|",
-        "lastResetTimerMsecs: lastDownTime?|0",
-        "messageStats/updatesSent: updatesTx",
-        "messageStats/updatesRecv: updatesRx",
-        "remoteRouterId: peerRouterId",
-        "localRouterId: routerId",
-        "bgpState: state?Established|NotEstd",
-        "bgpTimerUpEstablishedEpoch: estdTime*1000",
-        "connectionsEstablished: numChanges",
-        "connectionsDropped: numChanges+numChanges",
-        "bgpTimerHoldTimeMsecs: holdTime/1000",
-        "bgpTimerKeepAliveIntervalMsecs: keepaliveTime/1000",
-        "minBtwnAdvertisementRunsTimerMsecs: mrai/1000",
-        "peerBfdInfo/status: bfdStatus?|disabled",
-        "neighborCapabilities/extendedNexthop": extnhEnabled",
-        "neighborCapabilities/hostName/rcvHostName: peerHostname?|",
-        "messageStats/updatesSent: updatesTx",
-        "messageStats/updatesRecv: updatesRx",
-        "hostLocal: updateSource?|",
-        "hostForeign: peerIP?|"]'
+    - version: '>= 5.0'
+      command: sudo vtysh -c "show bgp vrf all neighbors json"
+      normalize: '*:vrf/*:peer/[
+          "neighborCapabilities/multiprotocolExtensions/*:_sqstore/received: afisRcvOnly",
+          "neighborCapabilities/multiprotocolExtensions/*:_sqstore/advertised: afisAdvOnly",
+          "addressFamilyInfo: _afiInfo",
+          "remoteAs: peerAsn",
+          "localAs: asn",
+          "lastResetDueTo: reason?|",
+          "lastNotificationReason: notificnReason?|",
+          "lastResetTimerMsecs: lastDownTime?|0",
+          "messageStats/updatesSent: updatesTx",
+          "messageStats/updatesRecv: updatesRx",
+          "remoteRouterId: peerRouterId",
+          "localRouterId: routerId",
+          "bgpState: state?Established|NotEstd",
+          "bgpTimerUpEstablishedEpoch: estdTime*1000",
+          "connectionsEstablished: numChanges",
+          "connectionsDropped: numChanges+numChanges",
+          "bgpTimerHoldTimeMsecs: holdTime/1000",
+          "bgpTimerKeepAliveIntervalMsecs: keepaliveTime/1000",
+          "minBtwnAdvertisementRunsTimerMsecs: mrai/1000",
+          "peerBfdInfo/status: bfdStatus?|disabled",
+          "neighborCapabilities/extendedNexthop": extnhEnabled",
+          "neighborCapabilities/hostName/rcvHostName: peerHostname?|",
+          "messageStats/updatesSent: updatesTx",
+          "messageStats/updatesRecv: updatesRx",
+          "hostLocal: updateSource?|",
+          "hostForeign: peerIP?|"]'
+
+    - version: all
+      command: net show bgp vrf all neighbor json
+      normalize: '*:vrf/*:peer/[
+          "neighborCapabilities/multiprotocolExtensions/*:_sqstore/received: afisRcvOnly",
+          "neighborCapabilities/multiprotocolExtensions/*:_sqstore/advertised: afisAdvOnly",
+          "addressFamilyInfo: _afiInfo",
+          "remoteAs: peerAsn",
+          "localAs: asn",
+          "lastResetDueTo: reason?|",
+          "lastNotificationReason: notificnReason?|",
+          "lastResetTimerMsecs: lastDownTime?|0",
+          "messageStats/updatesSent: updatesTx",
+          "messageStats/updatesRecv: updatesRx",
+          "remoteRouterId: peerRouterId",
+          "localRouterId: routerId",
+          "bgpState: state?Established|NotEstd",
+          "bgpTimerUpEstablishedEpoch: estdTime*1000",
+          "connectionsEstablished: numChanges",
+          "connectionsDropped: numChanges+numChanges",
+          "bgpTimerHoldTimeMsecs: holdTime/1000",
+          "bgpTimerKeepAliveIntervalMsecs: keepaliveTime/1000",
+          "minBtwnAdvertisementRunsTimerMsecs: mrai/1000",
+          "peerBfdInfo/status: bfdStatus?|disabled",
+          "neighborCapabilities/extendedNexthop": extnhEnabled",
+          "neighborCapabilities/hostName/rcvHostName: peerHostname?|",
+          "messageStats/updatesSent: updatesTx",
+          "messageStats/updatesRecv: updatesRx",
+          "hostLocal: updateSource?|",
+          "hostForeign: peerIP?|"]'
 
   iosxr:
     version: all
