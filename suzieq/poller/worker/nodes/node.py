@@ -1709,6 +1709,20 @@ class IosXENode(Node):
                             'Did not receive > or # prompt before privilege '
                             'escalation')
 
+                    # Anchor the prompt on the real hostname as soon as we see
+                    # it. Otherwise a bare '#'/'>' inside command output (e.g.
+                    # "Device#  PID  SN" in IOS 15.x `show version` license
+                    # table) is taken as the prompt, truncating the output and
+                    # desynchronizing every following command.
+                    last_line = output.strip().splitlines()[-1].strip() \
+                        if output.strip() else ''
+                    prompt_host = ''
+                    if last_line[-1:] in ('>', '#'):
+                        prompt_host = last_line[:-1]
+                    if prompt_host and ' ' not in prompt_host:
+                        self.prompt = tuple(f'{prompt_host}{x}'
+                                            for x in self.IOS_DEFAULT_PROMPT)
+
                     if output.strip().endswith('>'):
                         if await self._handle_privilege_escalation() == -1:
                             self.logger.error(f'{self.address}:{self.port}: '
