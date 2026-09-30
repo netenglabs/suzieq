@@ -1714,12 +1714,22 @@ class IosXENode(Node):
                     # "Device#  PID  SN" in IOS 15.x `show version` license
                     # table) is taken as the prompt, truncating the output and
                     # desynchronizing every following command.
-                    last_line = output.strip().splitlines()[-1].strip() \
-                        if output.strip() else ''
-                    prompt_host = ''
-                    if last_line[-1:] in ('>', '#'):
+                    # Drain the rest of the login banner (it may contain '#'
+                    # or '>' as ASCII art) until the device goes quiet, then
+                    # take the hostname from the real prompt on the last line.
+                    for _ in range(200):
+                        try:
+                            chunk = await asyncio.wait_for(
+                                self._stdout.read(65536), 2)
+                        except asyncio.TimeoutError:
+                            break
+                        if not chunk:
+                            break
+                        output += chunk
+                    lines = output.strip().splitlines()
+                    last_line = lines[-1].strip() if lines else ''
+                    if re.match(r'^\w[\w.:/()-]*[>#]$', last_line):
                         prompt_host = last_line[:-1]
-                    if prompt_host and ' ' not in prompt_host:
                         self.prompt = tuple(f'{prompt_host}{x}'
                                             for x in self.IOS_DEFAULT_PROMPT)
 
