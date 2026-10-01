@@ -953,8 +953,29 @@ class Node:
                         await asyncio.sleep(self.SLEEP_BET_CMDS_SLOW)
 
                     cmd_timestamp = time.time()
-                    output = await asyncio.wait_for(self._conn.run(cmd),
-                                                    timeout=timeout)
+                    try:
+                        output = await asyncio.wait_for(self._conn.run(cmd),
+                                                        timeout=timeout)
+                    except (asyncssh.misc.ChannelOpenError,
+                            asyncssh.misc.ConnectionLost,
+                            asyncssh.misc.DisconnectError,
+                            BrokenPipeError, ConnectionResetError) as e:
+                        # Some NOS (e.g. NX-OS 7.3) silently drop an idle SSH
+                        # connection ~40s after the last channel closes. The
+                        # next poll then fails on a dead connection. Reconnect
+                        # once and retry the command instead of losing it.
+                        self.logger.info(
+                            '%s: connection lost before %s (%s), reconnecting',
+                            self.hostname, cmd, e)
+                        await self._close_connection()
+                        if not reconnect:
+                            raise
+                        await self._init_ssh(init_dev_data=False)
+                        if not self.is_connected:
+                            raise
+                        cmd_timestamp = time.time()
+                        output = await asyncio.wait_for(self._conn.run(cmd),
+                                                        timeout=timeout)
                     if self.current_exception:
                         self.logger.info(
                             '%s recovered from previous exception',
