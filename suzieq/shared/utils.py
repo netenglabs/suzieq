@@ -432,6 +432,8 @@ def get_timestamp_from_cisco_time(in_data: str, timestamp: int) -> int:
         int: a unix timestamp in milliseconds
     """
     if in_data and not in_data.startswith('P'):
+        # NX-OS down peers: '17w5d, retry in 00:00:01'; keep the duration
+        in_data = in_data.split(',')[0].strip()
         in_data = in_data.replace('y', 'years')
         in_data = in_data.replace('w', 'weeks')
         in_data = in_data.replace('d', 'days')
