@@ -4,6 +4,7 @@ import json
 import logging
 import operator
 import os
+import re
 import time
 from collections import defaultdict
 from dataclasses import dataclass, field
@@ -382,7 +383,7 @@ class Service(SqPlugin):
                 if norm_str:
                     if isinstance(data["data"], str):
                         try:
-                            in_info = json.loads(data["data"])
+                            in_info = _json_loads(data["data"])
                         except json.JSONDecodeError:
                             in_info = self.clean_json_input(data)
                             if not in_info:
@@ -945,3 +946,19 @@ class Service(SqPlugin):
             loop.call_later(self.period, self.call_node_postcmd,
                             self.node_postcall_list.get(token.nodename),
                             token.nodename)
+
+
+def _json_loads(text: str):
+    """json.loads that also accepts invalid backslash escapes.
+
+    Some NOS emit unescaped backslashes inside JSON strings (e.g. Junos
+    'junos:commit-user' set to DOMAIN\\user). Retry with them escaped and
+    re-raise the original error if that fails too.
+    """
+    try:
+        return json.loads(text)
+    except json.JSONDecodeError as err:
+        try:
+            return json.loads(re.sub(r'\\(?![\\"/bfnrtu])', r'\\\\', text))
+        except json.JSONDecodeError:
+            raise err from None
