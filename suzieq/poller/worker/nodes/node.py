@@ -2012,6 +2012,22 @@ class JunosNode(Node):
 class NxosNode(Node):
     '''Cisco's NXOS Node-specific implementation'''
 
+    async def _exec_service(self, service_callback, svc_defn: dict,
+                            cb_token: RsltToken):
+        # Local fix: with devtype supplied, services are dispatched before
+        # the init `show version` has set self.version. LegacyVersion("all")
+        # < "9.3(0)" is True, so the first cycle sends the plain-text
+        # commands (show version, show bgp ..., show ip arp ...) to NX-OS
+        # >= 9.3 and the JSON parse fails. Connect and init the device data
+        # first; concurrent callers wait on the connection lock.
+        if self.version == "all" and self.transport == "ssh":
+            try:
+                await self._init_ssh()
+            except Exception as e:
+                self.logger.error('%s: init before %s failed: %s',
+                                  self.address, cb_token.service, e)
+        await super()._exec_service(service_callback, svc_defn, cb_token)
+
     async def _rest_connect(self):
         raise NotImplementedError(
             f'{self.address}: REST transport is not supported')
