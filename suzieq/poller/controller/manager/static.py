@@ -288,7 +288,7 @@ class StaticManager(Manager, InventoryAsyncPlugin):
         """
         confidential_data = ['password', 'passphrase',
                              'ssh_keyfile', 'jump_host_key_file',
-                             'enable_password']
+                             'enable_password', 'api_key']
         out_name = {}
         out_name['inv'] = (f'{str(self._inventory_path)}/'
                            f'{self._inventory_file_name}_{poller_id}.yml')

@@ -163,3 +163,21 @@ class MockGetPass:
         if self.call_count >= len(self.responses):
             self.call_count = 0
         return response
+
+
+@pytest.mark.poller
+@pytest.mark.controller
+@pytest.mark.poller_unit_tests
+@pytest.mark.controller_unit_tests
+@pytest.mark.controller_credential_loader
+@pytest.mark.controller_credential_loader_static
+def test_api_key(monkeypatch):
+    """An api key alone is a valid credential (e.g. PAN-OS via Panorama)
+    """
+    monkeypatch.setenv('SUZIEQ_ENV_API_KEY', 'my-key')
+    init_data = {'name': 'n', 'api-key': 'env:SUZIEQ_ENV_API_KEY'}
+    sl = StaticLoader(StaticModel(**init_data).model_dump(by_alias=True))
+    inventory = {'dev0': {'address': '192.0.2.1', 'port': 443}}
+    sl.load(inventory)
+    assert inventory['dev0']['api_key'] == 'my-key'
+    assert inventory['dev0']['password'] is None

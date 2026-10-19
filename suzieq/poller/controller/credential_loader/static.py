@@ -17,9 +17,10 @@ class StaticModel(CredentialLoaderModel):
     keyfile: Optional[str] = None
     enable_password: Optional[str] = Field(default=None,
                                            alias='enable-password')
+    api_key: Optional[str] = Field(default=None, alias='api-key')
 
     @field_validator('username', 'password', 'key_passphrase',
-                     'enable_password')
+                     'enable_password', 'api_key')
     @classmethod
     def validate_sens_field(cls, value):
         """Validate if the sensitive var was passed correctly
@@ -57,6 +58,7 @@ class StaticLoader(CredentialLoader):
             init_data['enable_password'] = \
                 init_data.pop('enable-password', None)
             init_data['key_passphrase'] = init_data.pop('key-passphrase', None)
+            init_data['api_key'] = init_data.pop('api-key', None)
         super().init(init_data)
 
         if self._data.username == 'ask':
@@ -84,6 +86,13 @@ class StaticLoader(CredentialLoader):
             except SensitiveLoadError as e:
                 raise InventorySourceError(f'{self.name} {e}')
 
+        if self._data.api_key == 'ask':
+            try:
+                self._data.api_key = get_sensitive_data(
+                    self._data.api_key, f'{self.name} Insert API key: ')
+            except SensitiveLoadError as e:
+                raise InventorySourceError(f'{self.name} {e}')
+
         if self._data.key_passphrase == 'ask':
             try:
                 self._data.key_passphrase = get_sensitive_data(
@@ -102,8 +111,10 @@ class StaticLoader(CredentialLoader):
                 'username': device.get('username') or self._data.username,
                 'passphrase': device.get('passphrase')
                 or self._data.key_passphrase,
-                'enable_password': self._data.enable_password
+                'enable_password': self._data.enable_password,
             }
+            if self._data.api_key and not device.get('api_key'):
+                dev_creds['api_key'] = self._data.api_key
 
             self.write_credentials(device, dev_creds)
 

@@ -21,6 +21,7 @@ class HostModel(BaseModel):
     port: Optional[int] = Field(default=None)
     address: Optional[str] = Field(default=None)
     transport: Optional[PollerTransport] = Field(default=None)
+    serial: Optional[str] = Field(default=None)
     url: str
 
     @model_validator(mode='before')
@@ -50,6 +51,7 @@ class HostModel(BaseModel):
         port = decoded_url.port
         devtype = None
         keyfile = None
+        serial = None
 
         try:
             for i in range(1, len(words[1:])+1):
@@ -61,6 +63,8 @@ class HostModel(BaseModel):
                     username = words[i].split('=')[1]
                 elif words[i].startswith('password'):
                     password = words[i].split('=')[1]
+                elif words[i].startswith('serial'):
+                    serial = words[i].split('=')[1]
                 else:
                     raise ValueError(
                         f'Unknown parameter: {words[i]} for {address}')
@@ -81,6 +85,7 @@ class HostModel(BaseModel):
         data['port'] = port
         data['address'] = address
         data['transport'] = transport
+        data['serial'] = serial
 
         return data
 
@@ -143,7 +148,12 @@ class SqNativeFile(Source):
                 'ssh_keyfile': host.keyfile,
                 'hostname': None,
             }
-            inventory[f'{self._namespace}.{host.address}.{host.port}'] = entry
+            key = f'{self._namespace}.{host.address}.{host.port}'
+            if host.serial:
+                entry['serial'] = host.serial
+                # many devices behind one manager (e.g. Panorama)
+                key += f'.{host.serial}'
+            inventory[key] = entry
 
         if not inventory:
             logger.error('No hosts detected in provided inventory file')
