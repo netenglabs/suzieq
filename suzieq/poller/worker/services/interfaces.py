@@ -983,6 +983,23 @@ class InterfaceService(Service):
 
         return processed_data
 
+    @staticmethod
+    def _parse_panos_mtu(text: str) -> dict:
+        """Extract {ifname: mtu} from 'sw.dev.interface.config' output.
+
+        The output is a python-like dict, but values such as 'comment'
+        are unquoted free text, so it can't be converted to JSON.
+        """
+        body = text.split(": ", 1)[-1]
+        keys = list(re.finditer(r"'([\w./:-]+)':\s*\{", body))
+        mtus = {}
+        for i, key in enumerate(keys):
+            end = keys[i+1].start() if i+1 < len(keys) else len(body)
+            mtu = re.search(r"'mtu':\s*(\d+)", body[key.end():end])
+            if mtu:
+                mtus[key.group(1)] = int(mtu.group(1))
+        return mtus
+
     def _clean_panos_data(self, processed_data, _):
         mtu_data = {}
         interfaces = {}
@@ -998,19 +1015,15 @@ class InterfaceService(Service):
 
             # mtu values are collected separatly
             if _mtu_data:
-                # fix json so that it can be parsed
-                d = _mtu_data.split(": ", 1)[1].replace("'", "\"")
-                d = re.sub(
-                    r"([a-fA-F0-9]{2}(:[a-fA-F0-9]{2}){5})", r'"\1"', d)
-                d = re.sub(r"(\"[\w0-9\.\/]+\": \{\s\},\s)", r"", d)
-                d = re.sub(r"(,\s\})", r" }", d)
-                j = loads(d)
-                for ifname, value in j.items():
-                    mtu_data[ifname] = value["mtu"]
+                mtu_data.update(self._parse_panos_mtu(_mtu_data))
                 continue
 
+            parent_if = entry["ifname"].split(".")[0]
             if entry["ifname"] in mtu_data:
                 entry["mtu"] = mtu_data[entry["ifname"]]
+            elif parent_if in mtu_data:
+                # e.g. ae1.193: inherit from the aggregate parent
+                entry["mtu"] = mtu_data[parent_if]
             else:
                 entry["mtu"] = ""
 
@@ -1029,10 +1042,13 @@ class InterfaceService(Service):
                     entry["type"] = ""
 
             if master:
-                if master != "N/A":
-                    entry["master"] = master.split(":")[1]
-                else:
+                if ":" in master:
+                    entry["master"] = master.split(":", 1)[1]
+                elif master == "N/A":
                     entry["master"] = "default"
+                else:
+                    # ha/tap/vwire interfaces are not bound to a VR/LR
+                    entry["master"] = ""
 
             # speed is not always provided
             if speed and speed == "[n/a]":

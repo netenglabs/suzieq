@@ -264,8 +264,10 @@ class LldpService(Service):
         return self._clean_linux_data(processed_data, raw_data)
 
     def _clean_panos_data(self, processed_data, _):
+        processed_data = [x for x in processed_data
+                          if x.get('peerHostname') or x.get('peerIfname')]
         for entry in processed_data:
-            entry["subtype"] = entry["subtype"].lower()
+            entry["subtype"] = (entry.get("subtype") or "").lower()
 
             self._common_cleaner(entry)
         return processed_data
