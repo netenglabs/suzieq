@@ -393,6 +393,8 @@ class RoutesService(Service):
                 entry["nexthopIps"] = []
             if 'C' in flags:
                 entry['protocol'] = 'connected'
+            if 'S' in flags:
+                entry['protocol'] = 'static'
 
             self._fix_ipvers(entry)
 

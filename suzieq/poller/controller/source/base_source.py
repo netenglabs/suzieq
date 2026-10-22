@@ -266,6 +266,8 @@ class Source(ControllerPlugin):
                 # "nodes_to_add" the current node assigned to the correct key
                 node_keys_to_remove.append(node_name)
                 new_key = f"{node['namespace']}.{node['address']}.{node_port}"
+                if node.get('serial'):
+                    new_key += f".{node['serial']}"
                 nodes_to_add[new_key] = node
 
         if node_keys_to_remove:

@@ -17,10 +17,12 @@ from concurrent.futures._base import TimeoutError
 
 from packaging import version as version_parse
 import xmltodict
+import xml.etree.ElementTree as ET
 import asyncssh
 import aiohttp
 
 from suzieq.poller.worker.services.service import RsltToken
+from suzieq.poller.worker.nodes import panos_advanced_routing as panos_ar
 from suzieq.shared.utils import get_timestamp_from_junos_time, \
     known_devtypes, parse_relative_timestamp
 from suzieq.shared.exceptions import (PollingError, SqPollerConfError,
@@ -120,7 +122,8 @@ class Node:
         self._last_exception = None
         self._exception_timestamp = None
         self._current_exception: Optional[Exception] = None
-        self.api_key = None
+        self.api_key = kwargs.get('api_key')
+        self.serial = kwargs.get('serial')
         self._fetching_dev_data = False  # If we are fetching the dev data
         self._stdin = self._stdout = self._long_proc = None
         self._max_retries_on_auth_fail = (kwargs.get('retries_on_auth_fail')
@@ -131,7 +134,8 @@ class Node:
         self.per_cmd_auth = kwargs.get('per_cmd_auth', True)
 
         self.address = kwargs["address"]
-        self.hostname = kwargs["address"]  # default till we get hostname
+        # default till we get hostname
+        self.hostname = kwargs.get('serial') or kwargs["address"]
         self.username = kwargs.get("username", "vagrant") or "vagrant"
         self.password = kwargs.get("password", "vagrant") or "vagrant"
         self.transport = kwargs.get("transport", "ssh")
@@ -2111,11 +2115,29 @@ class SonicNode(Node):
 
 
 class PanosNode(Node):
-    '''Node object representing access to a Palo Alto Networks FW'''
+    '''Node object representing access to a Palo Alto Networks FW
+
+    Besides direct access, the firewall can be polled through Panorama: set
+    the Panorama address in the inventory, the firewall serial number via
+    the ``serial`` host option and a pre-generated API key via the
+    ``api-key`` credential. Every request is then proxied by Panorama with
+    ``target=<serial>``, so the firewall management plane does not need to
+    be reachable from the poller.
+    Firewalls running the Advanced Routing Engine are detected via
+    ``show system info`` and polled with the ``show advanced-routing``
+    commands, whose output is converted to the legacy format.
+    '''
+    _advanced_routing = False
 
     async def _fetch_init_dev_data_devtype(self, _reconnect: bool):
         discovery_cmd = 'show system info'
         result = []
+        if self.api_key:
+            # API key given: never use ssh, it may reach Panorama itself
+            if not self._conn:
+                await self._rest_connect()
+            await self._fetch_init_dev_data_api(discovery_cmd)
+            return
         try:
             # temporary hack to detect device info using ssh
             async with self._cmd_pacer.wait():
@@ -2149,6 +2171,87 @@ class PanosNode(Node):
                     f'{self.hostname}:{self.port}: Command "{discovery_cmd}" '
                     f'failed due to {e}')
         await self._parse_init_dev_data(result, None)
+
+    async def _fetch_init_dev_data_api(self, discovery_cmd: str):
+        """Get the device info via XML API (required when using Panorama)"""
+        result = []
+        cmd_timestamp = time.time()
+        try:
+            status, xml = await self._api_op(
+                '<show><system><info/></system></show>')
+            system = ET.fromstring(xml).find('.//system') \
+                if status == 200 else None
+            if system is None:
+                raise ValueError(f'unexpected answer, status {status}')
+            # same format as the CLI output, parsed by the devtype parser
+            output = ''.join(f'{c.tag}: {(c.text or "").strip()}\n'
+                             for c in system)
+            result.append(self._create_result(discovery_cmd, 0, output,
+                                              cmd_timestamp))
+        except Exception as e:  # pylint: disable=broad-except
+            self.current_exception = e
+            result.append(self._create_error(discovery_cmd))
+            self.logger.error(f'{self.hostname}: Command "{discovery_cmd}" '
+                              f'failed due to {e}')
+        await self._parse_init_dev_data(result, None)
+
+    async def _api_op(self, cmd: str, timeout=None):
+        """Run an op command via POST, so that the key is never in the URL
+        """
+        data = {'type': 'op', 'cmd': cmd, 'key': self.api_key}
+        if self.serial:
+            data['target'] = self.serial
+        timeout = aiohttp.ClientTimeout(timeout or self.connect_timeout)
+        async with self._conn.post(f"https://{self.address}:{self.port}/api/",
+                                   data=data, timeout=timeout) as response:
+            return response.status, await response.text()
+
+    async def _ar_json(self, cmd: str, timeout):
+        """Run an Advanced Routing command and return its JSON payload"""
+        status, xml = await self._api_op(cmd, timeout)
+        if status != 200:
+            raise ValueError(f'status {status}')
+        root = ET.fromstring(xml)
+        if root.get('status') != 'success':
+            raise ValueError(' '.join(''.join(root.itertext()).split()))
+        payload = root.findtext('.//json')
+        return json.loads(payload) if payload else {}
+
+    async def _ar_bgp_peers(self, timeout, cache: Dict) -> Dict:
+        """BGP peer details of all the logical routers running BGP"""
+        if 'peers' not in cache:
+            lrouters = await self._ar_json(panos_ar.AR_BGP_SUMMARY, timeout)
+            cache['peers'] = {
+                lr: await self._ar_json(panos_ar.ar_bgp_peer_cmd(lr), timeout)
+                for lr in lrouters}
+        return cache['peers']
+
+    async def _panos_exec(self, cmd: str, timeout, cache: Dict):
+        """Execute a command, returning the HTTP status and the JSON output.
+        On Advanced Routing firewalls the legacy routing commands are
+        replaced by their ``show advanced-routing`` equivalent.
+        """
+        if self._advanced_routing:
+            if cmd == panos_ar.LEG_ROUTE:
+                data = panos_ar.ar_routes(
+                    await self._ar_json(panos_ar.AR_ROUTE, timeout))
+            elif cmd == panos_ar.LEG_BGP_SUMMARY:
+                data = panos_ar.ar_bgp_summary(
+                    await self._ar_json(panos_ar.AR_BGP_SUMMARY, timeout))
+            elif cmd == panos_ar.LEG_BGP_PEER:
+                data = panos_ar.ar_bgp_peers(
+                    await self._ar_bgp_peers(timeout, cache))
+            elif cmd == panos_ar.LEG_BGP_PEER_GROUP:
+                data = panos_ar.ar_bgp_peer_groups(
+                    await self._ar_bgp_peers(timeout, cache))
+            else:
+                data = None
+            if data is not None:
+                return 200, json.dumps(data)
+            cmd = panos_ar.AR_PLAIN_COMMANDS.get(cmd, cmd)
+        status, xml = await self._api_op(cmd, timeout)
+        return status, (json.dumps(xmltodict.parse(xml))
+                        if status == 200 else None)
 
     async def get_api_key(self):
         """Authenticate to get the api key needed in all cmd requests"""
@@ -2205,6 +2308,8 @@ class PanosNode(Node):
                     f'Cannot parse hostname from {self.address}:{self.port}')
 
             self._extract_nos_version(data)
+            self._advanced_routing = bool(
+                re.search(r'advanced-routing:\s+on\b', data))
 
     def _extract_nos_version(self, data: str) -> None:
         vmatch = re.search(r'sw-version:\s+(\S+)', data)
@@ -2245,11 +2350,7 @@ class PanosNode(Node):
         if not cmd_list:
             return result
 
-        timeout = aiohttp.ClientTimeout(timeout or self.connect_timeout)
-
-        url = f"https://{self.address}:{self.port}/api/"
-
-        status = 200  # status OK
+        cache = {}
 
         if not self.is_connected or self._is_connecting:
             if reconnect:
@@ -2266,25 +2367,21 @@ class PanosNode(Node):
         async with self._cmd_pacer.wait(self.per_cmd_auth):
             try:
                 for cmd in cmd_list:
-                    self.logger.info(f'{self.address}:{self.port} exec: {cmd}')
-                    url_cmd = f"{url}?type=op&cmd={cmd}&key={self.api_key}"
+                    self.logger.info(f'{self.hostname} exec: {cmd}')
                     cmd_timestamp = time.time()
-                    async with self._conn.get(
-                            url_cmd, timeout=timeout) as response:
-                        status, xml = response.status, await response.text()
-                        if status == 200:
-                            json_out = json.dumps(
-                                xmltodict.parse(xml))
-                            result.append(
-                                self._create_result(
-                                    cmd, status, json_out, cmd_timestamp)
-                            )
-                        else:
-                            result.append(self._create_error(cmd))
-                            self.logger.error(
-                                f'{self.transport}://{self.hostname}:'
-                                f'{self.port}: Command {cmd} failed with '
-                                f'status {response.status}')
+                    status, json_out = await self._panos_exec(cmd, timeout,
+                                                            cache)
+                    if status == 200:
+                        result.append(
+                            self._create_result(
+                                cmd, status, json_out, cmd_timestamp)
+                        )
+                    else:
+                        result.append(self._create_error(cmd))
+                        self.logger.error(
+                            f'{self.transport}://{self.hostname}:'
+                            f'{self.port}: Command {cmd} failed with '
+                            f'status {status}')
             except Exception as e:
                 self.current_exception = e
                 for cmd in cmd_list:

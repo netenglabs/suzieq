@@ -22,6 +22,7 @@ def check_credentials(inventory: Dict):
         for d in inventory.values()
         if not d.get('username', None) or
         not (d.get('password') or d.get('ssh_keyfile'))
+        if not d.get('api_key')
     ]
     if no_cred_nodes:
         raise InventorySourceError(
@@ -48,11 +49,13 @@ class CredentialLoader(ControllerPlugin):
             'password',
             'ssh_keyfile',
             'passphrase',
-            'enable_password'
+            'enable_password',
+            'api_key',
         ]
 
         self._optional_cred_keys = [
             'enable_password',
+            'api_key',
         ]
 
         self._data: CredentialLoaderModel = None
@@ -108,6 +111,11 @@ class CredentialLoader(ControllerPlugin):
             InventorySourceError: Invalid credentials
         """
         missing_keys = self._validate_credentials(credentials)
+        if credentials.get('api_key'):
+            # a pre-generated API key replaces username/password
+            missing_keys = [k for k in missing_keys if k not in (
+                'username', 'password', 'ssh_keyfile',
+                'password or ssh_keyfile')]
         if missing_keys:
             raise InventorySourceError(
                 f'Invalid credentials: missing keys {missing_keys}')
@@ -141,7 +149,8 @@ class CredentialLoader(ControllerPlugin):
         if 'password' in cred_keys and 'ssh_keyfile' in cred_keys:
             cred_keys.remove('password')
             cred_keys.remove('ssh_keyfile')
-            ret = list(cred_keys)
+            ret = [x for x in cred_keys
+                   if x not in self._optional_cred_keys]
             ret.append('password or ssh_keyfile')
             return ret
 
