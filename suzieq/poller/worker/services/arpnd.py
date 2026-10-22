@@ -112,12 +112,13 @@ class ArpndService(Service):
         return self._clean_common_ios_data(processed_data, raw_data)
 
     def _clean_panos_data(self, processed_data, _):
+        processed_data = [x for x in processed_data if x.get('ipAddress')]
         for entry in processed_data:
             # status: s = static, c = complete, e = expiring, i = incomplete
             # ARP entries are shown with status as merely a letter while
             # ND entries are shown with the status as a self-respecting word.
             # sigh
-            state = entry.get("state", "").lower()
+            state = (entry.get("state") or "").lower()
             if state in ["s", "static"]:
                 entry["state"] = "permanent"
             elif state in ["c", "e", "stale", "reachable"]:
