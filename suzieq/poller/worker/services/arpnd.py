@@ -47,7 +47,7 @@ class ArpndService(Service):
 
     def _clean_junos_data(self, processed_data, _):
         for entry in processed_data:
-            if '[vtep.' in entry['oif']:
+            if '[vtep.' in (entry.get('oif') or ''):
                 entry['remote'] = True
             if entry['oif']:
                 entry['oif'] = re.sub(r' \[.*\]', '', entry['oif'])

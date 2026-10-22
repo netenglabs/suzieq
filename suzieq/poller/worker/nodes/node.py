@@ -1855,6 +1855,15 @@ class IosXENode(Node):
             f'executing cmds: {cmd_list}'
         )
 
+        # The device may have closed the interactive session while idle
+        # (exec-timeout shorter than the poll period). Writing to it would
+        # fail with 'Channel not open for sending', so reconnect first.
+        if self._stdin is not None and self._stdin.is_closing():
+            self.logger.warning(
+                '%s: interactive session closed by device, reconnecting',
+                self.hostname)
+            await self._close_connection()
+
         if not self.is_connected or not self._stdin:
             if reconnect:
                 await self._init_ssh()
