@@ -952,9 +952,38 @@ class Node:
                     if self.slow_host:
                         await asyncio.sleep(self.SLEEP_BET_CMDS_SLOW)
 
-                    cmd_timestamp = time.time()
-                    output = await asyncio.wait_for(self._conn.run(cmd),
-                                                    timeout=timeout)
+                    # Some NOS (e.g. NX-OS 7.3) silently drop an idle SSH
+                    # connection ~40s after the last channel closes, so the
+                    # next poll hits a dead connection. Several services share
+                    # the connection, so another one may already have closed
+                    # it (self._conn is None) or replaced it. Reconnect once
+                    # and retry, closing only the connection that failed.
+                    for attempt in range(2):
+                        if self._conn is None:
+                            if not reconnect:
+                                raise asyncssh.misc.ConnectionLost(
+                                    'SSH connection closed')
+                            await self._init_ssh(init_dev_data=False)
+                            if self._conn is None:
+                                raise asyncssh.misc.ConnectionLost(
+                                    'SSH connection closed')
+                        conn = self._conn
+                        cmd_timestamp = time.time()
+                        try:
+                            output = await asyncio.wait_for(conn.run(cmd),
+                                                            timeout=timeout)
+                            break
+                        except (asyncssh.misc.ChannelOpenError,
+                                asyncssh.misc.ConnectionLost,
+                                asyncssh.misc.DisconnectError,
+                                BrokenPipeError, ConnectionResetError) as e:
+                            if attempt or not reconnect:
+                                raise
+                            self.logger.warning(
+                                '%s: connection lost before %s (%s), '
+                                'reconnecting', self.hostname, cmd, e)
+                            if self._conn is conn:
+                                await self._close_connection()
                     if self.current_exception:
                         self.logger.info(
                             '%s recovered from previous exception',
@@ -1708,6 +1737,30 @@ class IosXENode(Node):
                         raise TimeoutError(
                             'Did not receive > or # prompt before privilege '
                             'escalation')
+
+                    # Anchor the prompt on the real hostname as soon as we see
+                    # it. Otherwise a bare '#'/'>' inside command output (e.g.
+                    # "Device#  PID  SN" in IOS 15.x `show version` license
+                    # table) is taken as the prompt, truncating the output and
+                    # desynchronizing every following command.
+                    # Drain the rest of the login banner (it may contain '#'
+                    # or '>' as ASCII art) until the device goes quiet, then
+                    # take the hostname from the real prompt on the last line.
+                    for _ in range(200):
+                        try:
+                            chunk = await asyncio.wait_for(
+                                self._stdout.read(65536), 2)
+                        except asyncio.TimeoutError:
+                            break
+                        if not chunk:
+                            break
+                        output += chunk
+                    lines = output.strip().splitlines()
+                    last_line = lines[-1].strip() if lines else ''
+                    if re.match(r'^\w[\w.:/()-]*[>#]$', last_line):
+                        prompt_host = last_line[:-1]
+                        self.prompt = tuple(f'{prompt_host}{x}'
+                                            for x in self.IOS_DEFAULT_PROMPT)
 
                     if output.strip().endswith('>'):
                         if await self._handle_privilege_escalation() == -1:
